@@ -139,6 +139,9 @@
     <ClInclude Include="ToString.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Set.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tt3.Util.rc">

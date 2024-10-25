@@ -39,7 +39,7 @@ public:
     //  Operations
 public:
     //  Called by XML SAX parser when a beginning of an XML document is recognized.
-    virtual void            BeginDocument(XmlVersion version, CharacterSet * encoding, bool standalone) = 0;
+    virtual void            BeginDocument(XmlVersion version, CCharacterSet * pEncoding, bool standalone) = 0;
 
     //  Called by XML SAX parser when an end of an XML document is recognized.
     virtual void            EndDocument() = 0;
@@ -90,23 +90,23 @@ private:
     CStack<CString>         m_OpenXmlElementTags;
 
     //  Helpers
-    typedef CXmlContentHandler::Attribute       _Attribute;
-    typedef CXmlContentHandler::CAttributeList  _AttributeList;
+    typedef IXmlContentHandler::Attribute       _Attribute;
+    typedef IXmlContentHandler::CAttributeList  _AttributeList;
 
     typedef CDictionary<CString, CString>       _NamespaceMap;   //  prefix -> namespace URI
 
     static CCharacterSet *  _DetermineEncoding(const CString & xmlFileName);
     TCHAR                   _Lookahead(size_t distance);
     void                    _SkipCharacter();
-    void                    _SkipCharacter(Char c);
+    void                    _SkipCharacter(TCHAR c);
     void                    _SkipSpaces();
     void                    _ParseXmlStream();
-    void                    _ParseXmlDeclaration(XmlVersion & version, CharacterSet *& encoding, bool & standalone);
+    void                    _ParseXmlDeclaration(XmlVersion & version, CCharacterSet *& pEncoding, bool & standalone);
     void                    _ParseXmlElement(_NamespaceMap & namespaceMap);
     void                    _ParseComment();
     void                    _ParseProcessingInstruction(_NamespaceMap & namespaceMap);
     _AttributeList          _ParseAttributes(_NamespaceMap & namespaceMap);
-    String                  _ParseIdentifier();
+    CString                 _ParseIdentifier();
     static void             _ResolveNamespaceUri(const _NamespaceMap & namespaceMap, CString & name, CString & namespaceUri);
 };
 

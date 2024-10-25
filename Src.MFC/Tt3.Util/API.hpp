@@ -60,6 +60,7 @@
 #include "Tt3.Util/Vector.hpp"
 #include "Tt3.Util/Dictionary.hpp"
 #include "Tt3.Util/Stack.hpp"
+#include "Tt3.Util/Set.hpp"
 
 #include "Tt3.Util/Streaming.hpp"
 

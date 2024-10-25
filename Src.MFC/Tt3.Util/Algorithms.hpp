@@ -85,6 +85,114 @@ public:
 };
 
 template <>
+class CDefaultHash<char> : public virtual IHash<char>
+{
+    //////////
+    //  IHash<T>
+public:
+    virtual size_t      HashCode(const char& a) override { return unsigned char(a); }
+};
+
+template <>
+class CDefaultHash<wchar_t> : public virtual IHash<wchar_t>
+{
+    //////////
+    //  IHash<T>
+public:
+    virtual size_t      HashCode(const wchar_t& a) override { return a; }
+};
+
+template <>
+class CDefaultHash<signed char> : public virtual IHash<signed char>
+{
+    //////////
+    //  IHash<T>
+public:
+    virtual size_t      HashCode(const signed char& a) override { return unsigned char(a); }
+};
+
+template <>
+class CDefaultHash<unsigned char> : public virtual IHash<unsigned char>
+{
+    //////////
+    //  IHash<T>
+public:
+    virtual size_t      HashCode(const unsigned char& a) override { return a; }
+};
+
+template <>
+class CDefaultHash<signed short> : public virtual IHash<signed short>
+{
+    //////////
+    //  IHash<T>
+public:
+    virtual size_t      HashCode(const signed short& a) override { return unsigned short(a); }
+};
+
+template <>
+class CDefaultHash<unsigned short> : public virtual IHash<unsigned short>
+{
+    //////////
+    //  IHash<T>
+public:
+    virtual size_t      HashCode(const unsigned short& a) override { return a; }
+};
+
+template <>
+class CDefaultHash<signed int> : public virtual IHash<signed int>
+{
+    //////////
+    //  IHash<T>
+public:
+    virtual size_t      HashCode(const signed int& a) override { return unsigned int(a); }
+};
+
+template <>
+class CDefaultHash<unsigned int> : public virtual IHash<unsigned int>
+{
+    //////////
+    //  IHash<T>
+public:
+    virtual size_t      HashCode(const unsigned int& a) override { return a; }
+};
+
+template <>
+class CDefaultHash<signed long> : public virtual IHash<signed long>
+{
+    //////////
+    //  IHash<T>
+public:
+    virtual size_t      HashCode(const signed long& a) override { return size_t(a); }
+};
+
+template <>
+class CDefaultHash<unsigned long> : public virtual IHash<unsigned long>
+{
+    //////////
+    //  IHash<T>
+public:
+    virtual size_t      HashCode(const unsigned long& a) override { return size_t(a); }
+};
+
+template <>
+class CDefaultHash<signed long long> : public virtual IHash<signed long long>
+{
+    //////////
+    //  IHash<T>
+public:
+    virtual size_t      HashCode(const signed long long& a) override { return size_t(a); }
+};
+
+template <>
+class CDefaultHash<unsigned long long> : public virtual IHash<unsigned long long>
+{
+    //////////
+    //  IHash<T>
+public:
+    virtual size_t      HashCode(const unsigned long long& a) override { return size_t(a); }
+};
+
+template <>
 class CDefaultHash<CString> : public virtual IHash<CString>
 {
     //////////

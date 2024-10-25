@@ -148,7 +148,7 @@ bool CStack<T, TC>::Contains(const T& value) const
 template <class T, class TC>
 CIterator<T> CStack<T, TC>::GetElements() const
 {
-    return _TopToBottomIterator(new _TopToBottomIteratorImpl(m_pImpl->data));
+    return _TopToBottomIterator(new _TopToBottomIteratorImpl(*this));
 }
 
 //////////

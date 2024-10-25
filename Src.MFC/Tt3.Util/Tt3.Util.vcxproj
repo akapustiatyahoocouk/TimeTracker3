@@ -257,6 +257,7 @@
     <ClInclude Include="Exceptions.hpp" />
     <ClInclude Include="Io.hpp" />
     <ClInclude Include="Locale.hpp" />
+    <ClInclude Include="Set.hpp" />
     <ClInclude Include="Stack.hpp" />
     <ClInclude Include="Streaming.hpp" />
     <ClInclude Include="ToString.hpp" />
