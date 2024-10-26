@@ -11,6 +11,11 @@
 *.hh    text diff=cpp
 *.hxx   text diff=cpp
 
+*.cs   text diff=cpp
+*.resx text diff=cpp
+*.config text diff=cpp
+*.settings text diff=cpp
+
 # Compiled Object files
 *.slo   binary
 *.lo    binary

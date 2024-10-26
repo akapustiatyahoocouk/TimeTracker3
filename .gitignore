@@ -1,3 +1,9 @@
 /Obj.MFC
 /Bin.MFC
 /Src.MFC/.vs
+/Src.NET/.vs
+/Bin.NET
+/Doc/TimeTracker3.ldb
+/Src.NET/TimeTracker3.Db.API/obj/Debug
+/Src.NET/TimeTracker3/obj/Debug
+/Src.NET/TimeTracker3.Util/obj/Debug
