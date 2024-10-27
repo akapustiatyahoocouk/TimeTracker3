@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using TimeTracker3.Util;
 
 namespace TimeTracker3
 {
@@ -13,6 +14,9 @@ namespace TimeTracker3
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            PluginManager.LoadPlugins();
+
             Application.Run(new Form1());
         }
     }

@@ -66,7 +66,14 @@
     <Compile Include="IWork.cs" />
     <Compile Include="IWorkload.cs" />
     <Compile Include="IWorkStream.cs" />
+    <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TimeTracker3.Util\TimeTracker3.Util.csproj">
+      <Project>{42b99517-ef8b-4e2a-9183-dcca70e17007}</Project>
+      <Name>TimeTracker3.Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
