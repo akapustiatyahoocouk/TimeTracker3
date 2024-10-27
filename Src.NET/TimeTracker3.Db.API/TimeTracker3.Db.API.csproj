@@ -43,10 +43,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Capabilities.cs" />
     <Compile Include="DatabaseException.cs" />
+    <Compile Include="IAccount.cs" />
+    <Compile Include="IActivity.cs" />
+    <Compile Include="IActivityType.cs" />
+    <Compile Include="IBeneficiary.cs" />
     <Compile Include="IDatabase.cs" />
     <Compile Include="IDatabaseAddress.cs" />
+    <Compile Include="IDatabaseObject.cs" />
     <Compile Include="IDatabaseType.cs" />
+    <Compile Include="IEvent.cs" />
+    <Compile Include="IPrincipal.cs" />
+    <Compile Include="IPrivateActivity.cs" />
+    <Compile Include="IPrivateTask.cs" />
+    <Compile Include="IProject.cs" />
+    <Compile Include="IPublicActivity.cs" />
+    <Compile Include="IPublicTask.cs" />
+    <Compile Include="ITask.cs" />
+    <Compile Include="IUiTraits.cs" />
+    <Compile Include="IUser.cs" />
+    <Compile Include="IWork.cs" />
+    <Compile Include="IWorkload.cs" />
+    <Compile Include="IWorkStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

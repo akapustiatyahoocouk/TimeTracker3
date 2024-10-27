@@ -1,13 +1,11 @@
-﻿// Ignore Spelling: API
-
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace TimeTracker3.Db.API
 {
     /// <summary>
     ///     Represents the storage technology used to keep persistent data..
     /// </summary>
-    internal interface IDatabaseType
+    public interface IDatabaseType
     {
         //////////
         //  General properties

@@ -1,28 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TimeTracker3.Db.API
+﻿namespace TimeTracker3.Db.API
 {
     /// <summary>
     ///     A connection to a persistent data storage.
     /// </summary>
-    internal interface IDatabase
+    public interface IDatabase
     {
         //////////
         //  Properties
 
         /// <summary>
         ///     The type of this database; can be obtained safely for
-        ///     both open and closed databases.
+        ///     both open and closed databases, never null.
         /// </summary>
         IDatabaseType Type { get; }
 
         /// <summary>
         ///     The address of this database; can be obtained safely for
-        ///     both open and closed databases.
+        ///     both open and closed databases, never null.
         /// </summary>
         IDatabaseType Address { get; }
 
@@ -43,5 +37,127 @@ namespace TimeTracker3.Db.API
         ///     the exception is thrown).
         /// </exception>
         void Close();
+
+        //////////
+        //  Associations
+
+        /// <summary>
+        ///     An unordered list of all users in the database,
+        ///     never null or contains nulls, but can be empty.
+        /// </summary>
+        /// <exception cref="DatabaseException">
+        ///     If an error occurs.
+        /// </exception>
+        IUser[] User { get; }
+
+        /// <summary>
+        ///     An unordered list of all activity types in the database,
+        ///     never null or contains nulls, but can be empty.
+        /// </summary>
+        /// <exception cref="DatabaseException">
+        ///     If an error occurs.
+        /// </exception>
+        IActivityType[] ActivityTypes { get; }
+
+        /// <summary>
+        ///     An unordered list of all public activities and tasks
+        ///     in the database, never null or contains nulls, but can be empty.
+        /// </summary>
+        /// <exception cref="DatabaseException">
+        ///     If an error occurs.
+        /// </exception>
+        IPublicActivity[] PublicActivitiesAndTasks { get; }
+
+        /// <summary>
+        ///     An unordered list of all public activities (but not 
+        ///     tasks) in the database, never null or contains nulls,
+        ///     but can be empty.
+        /// </summary>
+        /// <exception cref="DatabaseException">
+        ///     If an error occurs.
+        /// </exception>
+        IPublicActivity[] PublicActivities { get; }
+
+        /// <summary>
+        ///     An unordered list of all public tasks in the database.
+        /// </summary>
+        /// <exception cref="DatabaseException">
+        ///     If an error occurs.
+        /// </exception>
+        IPublicTask[] PublicTasks { get; }
+
+        /// <summary>
+        ///     An unordered list of all root (i.e. with no parent) 
+        ///     public tasks in the database, never null or contains nulls, 
+        ///     but can be empty.
+        /// </summary>
+        /// <exception cref="DatabaseException">
+        ///     If an error occurs.
+        /// </exception>
+        IPublicTask[] RootPublicTasks { get; }
+
+        /// <summary>
+        ///     An unordered list of all works (regardless of the user 
+        ///     which booked them), never null or contains nulls, but can be empty.
+        /// </summary>
+        /// <exception cref="DatabaseException">
+        ///     If an error occurs.
+        /// </exception>
+        IWork[] Works { get; }
+
+        /// <summary>
+        ///     An unordered list of all events (regardless of the user 
+        ///     which booked them), never null or contains nulls, but can be empty.
+        /// </summary>
+        /// <exception cref="DatabaseException">
+        ///     If an error occurs.
+        /// </exception>
+        IEvent[] Events { get; }
+
+        /// <summary>
+        ///     An unordered list of all beneficiaries, never null 
+        ///     or contains nulls, but can be empty.
+        /// </summary>
+        /// <exception cref="DatabaseException">
+        ///     If an error occurs.
+        /// </exception>
+        IBeneficiary[] Beneficiaries { get; }
+
+        /// <summary>
+        ///     An unordered list of all workloads (whether projects 
+        ///     or work streams), never null or contains nulls, but can be empty.
+        /// </summary>
+        /// <exception cref="DatabaseException">
+        ///     If an error occurs.
+        /// </exception>
+        IWorkload[] Workloads { get; }
+
+        /// <summary>
+        ///     An unordered list of all projects (whether root,
+        ///     intermediate or leaf), never null or contains nulls, 
+        ///     but can be empty.
+        /// </summary>
+        /// <exception cref="DatabaseException">
+        ///     If an error occurs.
+        /// </exception>
+        IProject[] Projects { get; }
+
+        /// <summary>
+        ///     An unordered list of all root projects, never null 
+        ///     or contains nulls, but can be empty.
+        /// </summary>
+        /// <exception cref="DatabaseException">
+        ///     If an error occurs.
+        /// </exception>
+        IProject[] RootProjects { get; }
+
+        /// <summary>
+        ///     An unordered list of all work streams, never null 
+        ///     or contains nulls, but can be empty.
+        /// </summary>
+        /// <exception cref="DatabaseException">
+        ///     If an error occurs.
+        /// </exception>
+        IWorkStream[] WorkStreams { get; }
     }
 }

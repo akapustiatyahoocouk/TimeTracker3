@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TimeTracker3.Db.API
+﻿namespace TimeTracker3.Db.API
 {
     /// <summary>
     ///     Represents a location of a specific database.
     /// </summary>
-    internal interface IDatabaseAddress
+    public interface IDatabaseAddress
     {
         //////////
         //  Properties
 
         /// <summary>
-        ///     The database type to which this database address belongs.
+        ///     The database type to which this database address belongs,
+        ///     never null.
         /// </summary>
         IDatabaseType DatabaseType { get; }
 
