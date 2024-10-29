@@ -2,10 +2,10 @@
 using System;
 using TimeTracker3.Util;
 
-namespace TimeTracker3.Db.API
+namespace TimeTracker3.Db.XmlFile
 {
     /// <summary>
-    ///     The DB API plugin.
+    ///     The XML file DB plugin.
     /// </summary>
     public sealed class Plugin : IPlugin
     {
@@ -19,7 +19,7 @@ namespace TimeTracker3.Db.API
         //  IPlugin
         public string DisplayName
         {
-            get => "Database API";
+            get => "XML file database";
         }
 
         public Version Version
@@ -34,7 +34,7 @@ namespace TimeTracker3.Db.API
 
         public string Summary
         {
-            get => "Defines abstract API for database access";
+            get => "Allows storing database in a local XML file (single-user)";
         }
 
         public void Initialize()

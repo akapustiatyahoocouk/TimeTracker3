@@ -4,18 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F01F8F35-E877-4AFB-AAE1-7C4FF0D8ACB3}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>TimeTracker3</RootNamespace>
-    <AssemblyName>TimeTracker3</AssemblyName>
+    <ProjectGuid>{D915E63D-7DC6-4F5B-BBB3-D822DAC3EC5F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TimeTracker3.Workspace</RootNamespace>
+    <AssemblyName>TimeTracker3.Workspace</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -25,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Bin.NET\Release\</OutputPath>
@@ -40,57 +37,21 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Plugin.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Credentials.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TimeTracker3.GUI\TimeTracker3.GUI.csproj">
-      <Project>{8a91b1d2-51f0-49a2-b4fa-6f7eb4f8391a}</Project>
-      <Name>TimeTracker3.GUI</Name>
+    <ProjectReference Include="..\TimeTracker3.Db.API\TimeTracker3.Db.API.csproj">
+      <Project>{4e741d93-ddd0-4384-9fd7-37e43d094bcf}</Project>
+      <Name>TimeTracker3.Db.API</Name>
     </ProjectReference>
     <ProjectReference Include="..\TimeTracker3.Util\TimeTracker3.Util.csproj">
       <Project>{42b99517-ef8b-4e2a-9183-dcca70e17007}</Project>
       <Name>TimeTracker3.Util</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TimeTracker3.Workspace\TimeTracker3.Workspace.csproj">
-      <Project>{d915e63d-7dc6-4f5b-bbb3-d822dac3ec5f}</Project>
-      <Name>TimeTracker3.Workspace</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

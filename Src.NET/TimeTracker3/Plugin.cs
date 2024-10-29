@@ -21,14 +21,17 @@ namespace TimeTracker3
         {
             get => "Application";
         }
+
         public Version Version 
         {
             get => Assembly.GetCallingAssembly().GetName().Version;
         }
+
         public string Copyright 
         {
             get => "Copyright (C) 2025, Andrey Kapustin";
         }
+
         public string Summary 
         {
             get => "Defines startup and termination logic";

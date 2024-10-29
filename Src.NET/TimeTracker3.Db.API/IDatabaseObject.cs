@@ -9,6 +9,12 @@
         //  Properties
 
         /// <summary>
+        ///     The name of this object's type. Implementations should
+        ///     use the TypeNames - defined constants for compatibility.
+        /// </summary>
+        string TypeName { get; }
+
+        /// <summary>
         ///     True if this object is live and can be used, false 
         ///     if dead.
         /// </summary>

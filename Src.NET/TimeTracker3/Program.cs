@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using TimeTracker3.GUI;
 using TimeTracker3.Util;
 
 namespace TimeTracker3
@@ -17,6 +18,8 @@ namespace TimeTracker3
 
             PluginManager.LoadPlugins();
 
+            LoginDialog dlg = new LoginDialog();
+            dlg.ShowDialog();
             Application.Run(new Form1());
         }
     }
