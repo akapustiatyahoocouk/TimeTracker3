@@ -8,34 +8,14 @@ namespace TimeTracker3
     ///     The TT3 app plugin.
     /// </summary>
     public sealed class Plugin : IPlugin
-    {
-        //////////
-        //  Construction
-        public Plugin()
-        {
-        }
+    {   //  Public default constructor is generated automatically
 
         //////////
         //  IPlugin
-        public string DisplayName 
-        {
-            get => "Application";
-        }
-
-        public Version Version 
-        {
-            get => Assembly.GetCallingAssembly().GetName().Version;
-        }
-
-        public string Copyright 
-        {
-            get => "Copyright (C) 2025, Andrey Kapustin";
-        }
-
-        public string Summary 
-        {
-            get => "Defines startup and termination logic";
-        }
+        public string DisplayName => "Application";
+        public Version Version => Assembly.GetCallingAssembly().GetName().Version;
+        public string Copyright => "Copyright (C) 2025, Andrey Kapustin";
+        public string Summary => "Defines startup and termination logic";
 
         public void Initialize()
         {

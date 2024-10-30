@@ -10,7 +10,7 @@ namespace TimeTracker3.Workspace
     {
         //////////
         //  Construction
-        internal Credentials(string login, string password)
+        public Credentials(string login, string password)
         {
             Debug.Assert(login != null);
             Debug.Assert(password != null);

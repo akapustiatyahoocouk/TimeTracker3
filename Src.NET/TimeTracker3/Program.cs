@@ -5,21 +5,27 @@ using TimeTracker3.Util;
 
 namespace TimeTracker3
 {
+    /// <summary>
+    ///     The TimeTracker3 entry point.
+    /// </summary>
     internal static class Program
     {
         /// <summary>
-        /// The main entry point for the application.
+        ///     The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             PluginManager.LoadPlugins();
 
-            LoginDialog dlg = new LoginDialog();
-            dlg.ShowDialog();
+            using (var dlg = new LoginDialog("123"))
+            {
+                dlg.ShowDialog();
+            }
+
             Application.Run(new Form1());
         }
     }

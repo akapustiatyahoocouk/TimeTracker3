@@ -8,34 +8,14 @@ namespace TimeTracker3.Db.API
     ///     The DB API plugin.
     /// </summary>
     public sealed class Plugin : IPlugin
-    {
-        //////////
-        //  Construction
-        public Plugin()
-        {
-        }
+    {   //  Public default constructor is generated automatically
 
         //////////
         //  IPlugin
-        public string DisplayName
-        {
-            get => "Database API";
-        }
-
-        public Version Version
-        {
-            get => Assembly.GetCallingAssembly().GetName().Version;
-        }
-
-        public string Copyright
-        {
-            get => "Copyright (C) 2025, Andrey Kapustin";
-        }
-
-        public string Summary
-        {
-            get => "Defines abstract API for database access";
-        }
+        public string DisplayName => "Database API";
+        public Version Version => Assembly.GetCallingAssembly().GetName().Version;
+        public string Copyright => "Copyright (C) 2025, Andrey Kapustin";
+        public string Summary => "Defines abstract API for database access";
 
         public void Initialize()
         {

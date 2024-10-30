@@ -1,7 +1,7 @@
 ﻿namespace TimeTracker3.Db.API
 {
     /// <summary>
-    ///     The activity category (e.g. "R&R", "engineering", 
+    ///     The activity category (e.g. "R & R", "engineering", 
     ///     "umbrella activities", etc.)
     /// </summary>
     public interface IActivityType : IDatabaseObject

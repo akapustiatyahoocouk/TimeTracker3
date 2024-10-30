@@ -49,6 +49,7 @@
     <Compile Include="LoginDialog.Designer.cs">
       <DependentUpon>LoginDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -64,6 +65,16 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TimeTracker3.Util\TimeTracker3.Util.csproj">
+      <Project>{42B99517-EF8B-4E2A-9183-DCCA70E17007}</Project>
+      <Name>TimeTracker3.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TimeTracker3.Workspace\TimeTracker3.Workspace.csproj">
+      <Project>{D915E63D-7DC6-4F5B-BBB3-D822DAC3EC5F}</Project>
+      <Name>TimeTracker3.Workspace</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

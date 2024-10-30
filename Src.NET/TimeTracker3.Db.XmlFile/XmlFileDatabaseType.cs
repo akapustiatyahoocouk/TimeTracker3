@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Windows.Forms;
 using TimeTracker3.Db.API;
 
@@ -10,26 +9,16 @@ namespace TimeTracker3.Db.XmlFile
     {
         //////////
         //  Constants
-        public const string PreferredExtension = ".tt3";
+        private const string PreferredExtension = ".tt3";
 
         //////////
         //  Singleton
-        private static XmlFileDatabaseType _Instance = null;
+        private static XmlFileDatabaseType _Instance /*= null*/;
 
         /// <summary>
         ///     The one and only instance of this class
         /// </summary>
-        public static XmlFileDatabaseType Instance
-        {
-            get
-            {
-                if (_Instance == null)
-                {
-                    _Instance = new XmlFileDatabaseType();
-                }
-                return _Instance;
-            }
-        }
+        public static XmlFileDatabaseType Instance => _Instance ?? (_Instance = new XmlFileDatabaseType());
 
         //////////
         //  IDatabaseType - General properties

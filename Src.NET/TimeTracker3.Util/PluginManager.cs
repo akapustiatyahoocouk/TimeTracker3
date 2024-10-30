@@ -18,9 +18,13 @@ namespace TimeTracker3.Util
 
         public static void LoadPlugins()
         {
-            string startupDirectory = Directory.GetParent(Assembly.GetEntryAssembly().Location).FullName;
+            Assembly entryAssembly = Assembly.GetEntryAssembly();
+            string startupDirectory = 
+                (entryAssembly != null) ?
+                    Directory.GetParent(entryAssembly.Location)?.FullName :
+                    ".";
             //  Locate all DLLs in the startup directory
-            foreach (string dllFile in Directory.GetFiles(startupDirectory, "*.dll"))
+            foreach (string dllFile in Directory.GetFiles(startupDirectory ?? ".", "*.dll"))
             {
                 _ProcessDllFile(dllFile);
             }
@@ -73,7 +77,6 @@ namespace TimeTracker3.Util
             }
             catch
             {   //  OOPS! Ignore this DLL
-                return;
             }
         }
 
