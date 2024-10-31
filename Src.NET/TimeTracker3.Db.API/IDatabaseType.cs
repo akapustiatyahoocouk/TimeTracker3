@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Windows.Forms;
 
 namespace TimeTracker3.Db.API
 {
@@ -20,6 +21,16 @@ namespace TimeTracker3.Db.API
         ///     for the current UI culture.
         /// </summary>
         string DisplayName { get; }
+
+        /// <summary>
+        ///     The small (16x16) image representing this database type.
+        /// </summary>
+        Image SmallImage { get; }
+
+        /// <summary>
+        ///     The large (32x32) image representing this database type.
+        /// </summary>
+        Image LargeImage { get; }
 
         /// <summary>
         ///     True if this database type is "operational" (i.e. can 

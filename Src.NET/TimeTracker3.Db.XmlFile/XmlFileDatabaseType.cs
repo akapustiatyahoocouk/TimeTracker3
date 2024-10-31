@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Windows.Forms;
 using TimeTracker3.Db.API;
 
@@ -15,6 +16,10 @@ namespace TimeTracker3.Db.XmlFile
         //  Singleton
         private static XmlFileDatabaseType _Instance /*= null*/;
 
+        private XmlFileDatabaseType()
+        {
+        }
+
         /// <summary>
         ///     The one and only instance of this class
         /// </summary>
@@ -24,6 +29,8 @@ namespace TimeTracker3.Db.XmlFile
         //  IDatabaseType - General properties
         public string Mnemonic => "XmlFile";
         public string DisplayName => "XML file";
+        public Image SmallImage => Properties.Resources.XmlDatabaseTypeSmall;
+        public Image LargeImage => Properties.Resources.XmlDatabaseTypeLarge;
         public bool IsOperational => true;
         public string ShortStatusReport => "XML file storage is operational";
         public string LongStatusReport => ShortStatusReport;

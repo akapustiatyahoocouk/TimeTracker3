@@ -16,8 +16,17 @@ namespace TimeTracker3.Util
         //////////
         //  Operations
 
-        public static void LoadPlugins()
+        /// <summary>
+        ///     Discovers, loads and initializes available plugins.
+        ///     IMPORTANT: NOT REENTRANT!
+        /// </summary>
+        /// <param name="progressTracker">
+        ///     The progress tracker to be notified of the plugin
+        ///     loading progress, null == none.
+        /// </param>
+        public static void LoadPlugins(IProgressTracker progressTracker)
         {
+            _ProgressTracker = progressTracker;
             Assembly entryAssembly = Assembly.GetEntryAssembly();
             string startupDirectory = 
                 (entryAssembly != null) ?
@@ -56,6 +65,7 @@ namespace TimeTracker3.Util
 
         //////////
         //  Implementation
+        private static IProgressTracker _ProgressTracker;
         private static readonly ISet<string> _ProcessedDllFiles = new HashSet<string>();
         private static readonly ISet<Assembly> _ProcessedAssemblies = new HashSet<Assembly>();
         private static readonly ISet<IPlugin> _DiscoveredPlugins = new HashSet<IPlugin>();

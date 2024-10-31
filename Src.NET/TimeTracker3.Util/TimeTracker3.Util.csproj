@@ -43,6 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractSetting.cs" />
+    <Compile Include="IProgressTracker.cs" />
+    <Compile Include="SettingsRegistry.cs" />
     <Compile Include="Formatting.cs" />
     <Compile Include="IPlugin.cs" />
     <Compile Include="Parsing.cs" />

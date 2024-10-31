@@ -37,6 +37,7 @@ namespace TimeTracker3.Util
 
             _Formatter = formatter;
             _Parser = parser;
+            _DefaultValue = value;
             _Value = value;
         }
 
@@ -69,6 +70,12 @@ namespace TimeTracker3.Util
         //  Properties
 
         /// <summary>
+        ///     The default value of the setting, can be
+        ///     null for object types.
+        /// </summary>
+        public T DefaultValue => _DefaultValue;
+
+        /// <summary>
         ///     The value of the setting, can be null for
         ///     object types.
         /// </summary>
@@ -82,6 +89,7 @@ namespace TimeTracker3.Util
         //  Implementation
         private readonly Formatter<T> _Formatter;
         private readonly Parser<T> _Parser;
+        private readonly T _DefaultValue;
         private T _Value;
     }
 }

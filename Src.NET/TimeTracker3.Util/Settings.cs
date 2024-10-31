@@ -10,7 +10,21 @@ namespace TimeTracker3.Util
     public abstract class Settings
     {
         //////////
+        //  Construction
+        protected Settings(string mnemonic)
+        {
+            Debug.Assert(mnemonic != null);
+
+            _Mnemonic = mnemonic;
+        }
+
+        //////////
         //  Properties
+
+        /// <summary>
+        ///     The mnemonic identifier of this settings bunch.
+        /// </summary>
+        public string Mnemonic => _Mnemonic;
 
         /// <summary>
         ///     An unordered list of all "Setting"s added
@@ -37,6 +51,7 @@ namespace TimeTracker3.Util
 
         //////////
         //  Implementation
+        private readonly string _Mnemonic;
         private readonly Dictionary<string, AbstractSetting> _Settings = new Dictionary<string, AbstractSetting>();
     }
 }

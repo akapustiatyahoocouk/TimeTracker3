@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GuiSettings.cs" />
+    <Compile Include="ISkin.cs" />
     <Compile Include="LoginDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -56,6 +58,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SkinRegistry.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="LoginDialog.resx">

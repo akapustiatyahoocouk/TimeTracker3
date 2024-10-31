@@ -19,6 +19,7 @@ namespace TimeTracker3.GUI
 
         public void Initialize()
         {
+            SettingsRegistry.RegisterSettings(GuiSettings.Instance);
         }
     }
 }
