@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4E741D93-DDD0-4384-9FD7-37E43D094BCF}</ProjectGuid>
+    <ProjectGuid>{0934CE9C-E0D8-4625-A9EF-913E9CC7DC4D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TimeTracker3.Db.API</RootNamespace>
-    <AssemblyName>TimeTracker3.Db.API</AssemblyName>
+    <RootNamespace>TimeTracker3.Skin.Admin</RootNamespace>
+    <AssemblyName>TimeTracker3.Skin.Admin</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,7 +20,7 @@
     <OutputPath>..\..\Bin.NET\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>2</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -38,39 +37,47 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Capabilities.cs" />
-    <Compile Include="DatabaseException.cs" />
-    <Compile Include="DatabaseTypeRegistry.cs" />
-    <Compile Include="IAccount.cs" />
-    <Compile Include="IActivity.cs" />
-    <Compile Include="IActivityType.cs" />
-    <Compile Include="IBeneficiary.cs" />
-    <Compile Include="IDatabase.cs" />
-    <Compile Include="IDatabaseAddress.cs" />
-    <Compile Include="IDatabaseObject.cs" />
-    <Compile Include="IDatabaseType.cs" />
-    <Compile Include="IEvent.cs" />
-    <Compile Include="IPrincipal.cs" />
-    <Compile Include="IPrivateActivity.cs" />
-    <Compile Include="IPrivateTask.cs" />
-    <Compile Include="IProject.cs" />
-    <Compile Include="IPublicActivity.cs" />
-    <Compile Include="IPublicTask.cs" />
-    <Compile Include="ITask.cs" />
-    <Compile Include="IUiTraits.cs" />
-    <Compile Include="IUser.cs" />
-    <Compile Include="IWork.cs" />
-    <Compile Include="IWorkload.cs" />
-    <Compile Include="IWorkStream.cs" />
+    <Compile Include="AdminSkin.cs" />
+    <Compile Include="AdminSkinMainFrame.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdminSkinMainFrame.Designer.cs">
+      <DependentUpon>AdminSkinMainFrame.cs</DependentUpon>
+    </Compile>
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TypeNames.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TimeTracker3.GUI\TimeTracker3.GUI.csproj">
+      <Project>{8a91b1d2-51f0-49a2-b4fa-6f7eb4f8391a}</Project>
+      <Name>TimeTracker3.GUI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TimeTracker3.Util\TimeTracker3.Util.csproj">
       <Project>{42b99517-ef8b-4e2a-9183-dcca70e17007}</Project>
       <Name>TimeTracker3.Util</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AdminSkinMainFrame.resx">
+      <DependentUpon>AdminSkinMainFrame.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Tt3Large.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Tt3Small.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

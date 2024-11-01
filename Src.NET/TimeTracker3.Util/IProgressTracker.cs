@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TimeTracker3.Util
+﻿namespace TimeTracker3.Util
 {
     /// <summary>
     ///     An abstract interface to an agent that can be notified

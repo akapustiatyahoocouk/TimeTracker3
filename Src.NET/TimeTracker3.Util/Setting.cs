@@ -55,6 +55,7 @@ namespace TimeTracker3.Util
         {
             _Formatter = Formatting.GetDefaultFormatter<T>(); 
             _Parser = Parsing.GetDefaultParser<T>();
+            _DefaultValue = value;
             _Value = value;
         }
 

@@ -14,6 +14,8 @@ namespace TimeTracker3.GUI
         private GuiSettings()
         : base(typeof(GuiSettings).FullName)
         {
+            Add(LastLogin);
+            Add(CurrentSkin);
         }
 
         /// <summary>

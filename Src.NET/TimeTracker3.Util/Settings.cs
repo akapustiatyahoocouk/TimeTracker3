@@ -49,6 +49,24 @@ namespace TimeTracker3.Util
             }
         }
 
+        /// <summary>
+        ///     Finds a Setting with the specified mnemonic
+        ///     in this Settings.
+        /// </summary>
+        /// <param name="mnemonic">
+        ///     The mnemonic to look for.
+        /// </param>
+        /// <returns>
+        ///     The Setting with the specified mnemonic or
+        ///     null if not found.
+        /// </returns>
+        public AbstractSetting FindSetting(string mnemonic)
+        {
+            Debug.Assert(mnemonic != null);
+
+            return _Settings.TryGetValue(mnemonic, out var setting) ? setting : null;
+        }
+
         //////////
         //  Implementation
         private readonly string _Mnemonic;

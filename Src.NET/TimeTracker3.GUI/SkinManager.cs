@@ -5,9 +5,9 @@ using System.Linq;
 namespace TimeTracker3.GUI
 {
     /// <summary>
-    ///     The registry of known skins.
+    ///     The registry/manager of known skins.
     /// </summary>
-    public static class SkinRegistry
+    public static class SkinManager
     {
         //////////
         //  Properties
@@ -16,6 +16,24 @@ namespace TimeTracker3.GUI
         ///     An unordered list of all registered Skins.
         /// </summary>
         public static ISkin[] AllSkins => _AllSkins.ToArray();
+
+        /// <summary>
+        ///     The "current" skin; always active.
+        /// </summary>
+        public static ISkin CurrentSkin
+        {
+            get => _CurrentSkin;
+            set
+            {
+                if (value != _CurrentSkin)
+                {   //  Change
+                    _CurrentSkin?.Deactivate();
+                    _CurrentSkin = value;
+                }
+                //  Just make sure it's [still] active
+                _CurrentSkin?.Activate();
+            }
+        }
 
         //////////
         //  Operations
@@ -30,7 +48,7 @@ namespace TimeTracker3.GUI
         ///     True if the skin registration was successful,
         /// else false.
         /// </returns>
-        public static bool RegisterSkins(ISkin skin)
+        public static bool RegisterSkin(ISkin skin)
         {
             Debug.Assert(skin != null);
 
@@ -69,5 +87,6 @@ namespace TimeTracker3.GUI
         //////////
         //  Implementation
         private static readonly IList<ISkin> _AllSkins = new List<ISkin>();
+        private static ISkin _CurrentSkin; /* = null; */
     }
 }

@@ -19,6 +19,7 @@ namespace TimeTracker3.GUI
         public LoginDialog()
         {
             InitializeComponent();
+            Refresh();
         }
 
         /// <summary>
@@ -30,6 +31,7 @@ namespace TimeTracker3.GUI
 
             InitializeComponent();
             _LoginTextBox.Text = login;
+            Refresh();
         }
 
         //////////
