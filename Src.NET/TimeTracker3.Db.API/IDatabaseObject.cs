@@ -1,4 +1,6 @@
-﻿namespace TimeTracker3.Db.API
+﻿using TimeTracker3.Db.API.Exceptions;
+
+namespace TimeTracker3.Db.API
 {
     /// <summary>
     ///     A generic object residing in a database.
@@ -11,6 +13,7 @@
         /// <summary>
         ///     This object's type. Implementations should use
         ///     constants defined in DatabaseObjectTypes class.
+        ///     Can be safely called on live and dead object alike.
         /// </summary>
         DatabaseObjectType Type { get; }
 
@@ -34,7 +37,7 @@
         /// <exception cref="DatabaseException">
         ///     If an error occurs while setting the OID.
         /// </exception>
-        long Oid { get; set; }
+        IDatabaseObjectId Oid { get; set; }
 
         /// <summary>
         ///     The UI traits of this object, never null.

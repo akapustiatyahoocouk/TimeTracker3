@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using TimeTracker3.Db.API.Exceptions;
 
 namespace TimeTracker3.Db.API
 {

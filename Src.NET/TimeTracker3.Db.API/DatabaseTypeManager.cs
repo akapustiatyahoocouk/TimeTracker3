@@ -72,6 +72,5 @@ namespace TimeTracker3.Db.API
         //////////
         //  Implementation
         private static readonly IList<IDatabaseType> _DatabaseTypes = new List<IDatabaseType>();
-
     }
 }

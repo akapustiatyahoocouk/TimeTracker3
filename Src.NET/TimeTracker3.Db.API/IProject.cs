@@ -1,4 +1,6 @@
-﻿namespace TimeTracker3.Db.API
+﻿using TimeTracker3.Db.API.Exceptions;
+
+namespace TimeTracker3.Db.API
 {
     /// <summary>
     ///     A "project" is a workload that has a life cycle (milestones, 

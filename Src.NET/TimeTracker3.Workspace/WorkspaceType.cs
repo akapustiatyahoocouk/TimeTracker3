@@ -1,9 +1,11 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 using TimeTracker3.Db.API;
+using TimeTracker3.Workspace.Exceptions;
 
 namespace TimeTracker3.Workspace
 {
@@ -64,6 +66,197 @@ namespace TimeTracker3.Workspace
         public string LongStatusReport => _DatabaseType.LongStatusReport;
 
         //////////
+        //  Address handling
+
+        /// <summary>
+        ///     If workspaces of this type has a concept of a "default"
+        ///     workspace, returns its address, otherwise returns null.
+        /// </summary>
+        public WorkspaceAddress DefaultWorkspaceAddress
+        {
+            get
+            {
+                IDatabaseAddress databaseAddress = _DatabaseType.DefaultDatabaseAddress;
+                return databaseAddress == null ? null : _MapDatabaseAddress(databaseAddress);
+            }
+        }
+
+        /// <summary>
+        ///     Parses an external (re-parsable) form of a workspace 
+        ///     address of this type.
+        /// </summary>
+        /// <param name="externalForm">
+        ///     The external (re-parsable) form of a workspace address.
+        /// </param>
+        /// <returns>
+        ///     The parsed workspace address.
+        /// </returns>
+        /// <exception cref="WorkspaceException">
+        ///     Thrown if the address parsing fails for any reason.
+        /// </exception>
+        public WorkspaceAddress ParseWorkspaceAddress(string externalForm)
+        {
+            Debug.Assert(externalForm != null);
+
+            try
+            {
+                return _MapDatabaseAddress(_DatabaseType.ParseDatabaseAddress(externalForm));
+            }
+            catch (Exception ex)
+            {   //  OOPS! Translate & re-throw
+                throw WorkspaceException.Translate(ex);
+            }
+        }
+
+        /// <summary>
+        ///     Prompts the user to enter the address for a new workspace
+        ///     of this type.
+        /// </summary>
+        /// <param name="parent">
+        ///     The window to use as a parent for any modal dialogs used
+        ///     during address entry.
+        /// </param>
+        /// <returns>
+        ///     The workspace address entered by the user or null if the user
+        ///     has chosen to cancel the address entry process.
+        /// </returns>
+        public WorkspaceAddress EnterNewWorkspaceAddress(IWin32Window parent)
+        {
+            try
+            {
+                IDatabaseAddress databaseAddress = _DatabaseType.EnterNewDatabaseAddress(parent);
+                return (databaseAddress == null) ? null : _MapDatabaseAddress(databaseAddress);
+            }
+            catch (Exception ex)
+            {   //  OOPS! Translate & re-throw
+                throw WorkspaceException.Translate(ex);
+            }
+        }
+
+        /// <summary>
+        ///     Prompts the user to enter the address of an existing
+        ///     workspace of this type.
+        /// </summary>
+        /// <param name="parent">
+        ///     The window to use as a parent for any modal dialogs used
+        ///     during address entry.
+        /// </param>
+        /// <returns>
+        ///     The workspace address entered by the user or null if the user
+        ///     has chosen to cancel the address entry process.
+        /// </returns>
+        public WorkspaceAddress EnterExistingWorkspaceAddress(IWin32Window parent)
+        {
+            try
+            {
+                IDatabaseAddress databaseAddress = _DatabaseType.EnterExistingDatabaseAddress(parent);
+                return (databaseAddress == null) ? null : _MapDatabaseAddress(databaseAddress);
+            }
+            catch (Exception ex)
+            {   //  OOPS! Translate & re-throw
+                throw WorkspaceException.Translate(ex);
+            }
+        }
+
+        //////////
+        //  Workspace handling
+
+        /// <summary>
+        ///     Creates a new empty workspace of this type at the specified 
+        ///     address.
+        /// </summary>
+        /// <param name="address">
+        ///     The address to create a new workspace at.
+        /// </param>
+        /// <returns>
+        ///     The newly created workspace.
+        /// </returns>
+        /// <exception cref="WorkspaceException">
+        ///     If an error occurs.
+        /// </exception>
+        public Workspace CreateWorkspace(WorkspaceAddress address)
+        {
+            Debug.Assert(address != null);
+
+            if (address.WorkspaceType != this)
+            {   //  OOPS! Address does not belong to this workspace type
+                throw new IncompatibleObjectsWorkspaceException("WorkspaceAddress", "Workspace");
+            }
+            //  Do the work
+            try
+            {
+                IDatabase database = _DatabaseType.CreateDatabase(address._DatabaseAddress);
+                return new Workspace(database);
+            }
+            catch (Exception ex)
+            {   //  OOPS! Translate & re-throw
+                throw WorkspaceException.Translate(ex);
+            }
+        }
+
+        /// <summary>
+        ///     Opens an existing workspace of this type at the specified 
+        ///     address.
+        /// </summary>
+        /// <param name="address">
+        ///     The address to open a workspace at.
+        /// </param>
+        /// <returns>
+        ///     The newly opened workspace.
+        /// </returns>
+        /// <exception cref="WorkspaceException">
+        ///     If an error occurs.
+        /// </exception>
+        public Workspace OpenWorkspace(WorkspaceAddress address)
+        {
+            Debug.Assert(address != null);
+
+            if (address.WorkspaceType != this)
+            {   //  OOPS! Address does not belong to this workspace type
+                throw new IncompatibleObjectsWorkspaceException("WorkspaceAddress", "Workspace");
+            }
+            //  Do the work
+            try
+            {
+                IDatabase database = _DatabaseType.OpenDatabase(address._DatabaseAddress);
+                return new Workspace(database);
+            }
+            catch (Exception ex)
+            {   //  OOPS! Translate & re-throw
+                throw WorkspaceException.Translate(ex);
+            }
+        }
+
+        /// <summary>
+        ///     Destroys an existing workspace of this type at the specified 
+        ///     address. The workspace must not be in use by any process.
+        /// </summary>
+        /// <param name="address">
+        ///     The address to destroy a workspace at.
+        /// </param>
+        /// <exception cref="WorkspaceException">
+        ///     If an error occurs.
+        /// </exception>
+        public void DestroyWorkspace(WorkspaceAddress address)
+        {
+            Debug.Assert(address != null);
+
+            if (address.WorkspaceType != this)
+            {   //  OOPS! Address does not belong to this workspace type
+                throw new IncompatibleObjectsWorkspaceException("WorkspaceAddress", "Workspace");
+            }
+            //  Do the work
+            try
+            {
+                _DatabaseType.DestroyDatabase(address._DatabaseAddress);
+            }
+            catch (Exception ex)
+            {   //  OOPS! Translate & re-throw
+                throw WorkspaceException.Translate(ex);
+            }
+        }
+
+        //////////
         //  Registry
 
         /// <summary>
@@ -83,6 +276,8 @@ namespace TimeTracker3.Workspace
         private static readonly Dictionary<string, WorkspaceType> _WorkspaceTypes = new Dictionary<string, WorkspaceType>(); /* = null == not initialized */
         private readonly IDatabaseType _DatabaseType;   //  never null
 
+        private readonly Dictionary<IDatabaseAddress, WorkspaceAddress> _DatabaseAddressMapping = new Dictionary<IDatabaseAddress, WorkspaceAddress>();
+
         //  Helpers
         private static void _DetectWorkspaceTypes()
         {
@@ -99,6 +294,15 @@ namespace TimeTracker3.Workspace
         {
             _DetectWorkspaceTypes();
             return _WorkspaceTypes[databaseType.Mnemonic];
+        }
+
+        internal WorkspaceAddress _MapDatabaseAddress(IDatabaseAddress databaseAddress)
+        {
+            if (!_DatabaseAddressMapping.ContainsKey(databaseAddress))
+            {
+                _DatabaseAddressMapping.Add(databaseAddress, new WorkspaceAddress(databaseAddress));
+            }
+            return _DatabaseAddressMapping[databaseAddress];
         }
     }
 }

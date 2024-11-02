@@ -21,6 +21,8 @@ namespace TimeTracker3.Skin.Admin
         public void Initialize()
         {
             SkinManager.RegisterSkin(AdminSkin.Instance);
+
+            SettingsManager.RegisterSettings(AdminSkinSettings.Instance);
         }
     }
 }

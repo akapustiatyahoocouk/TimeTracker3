@@ -1,4 +1,5 @@
 ﻿using System;
+using TimeTracker3.Db.API.Exceptions;
 
 namespace TimeTracker3.Db.API
 {
@@ -20,7 +21,7 @@ namespace TimeTracker3.Db.API
         ///     The address of this database; can be obtained safely for
         ///     both open and closed databases, never null.
         /// </summary>
-        IDatabaseType Address { get; }
+        IDatabaseAddress Address { get; }
 
         /// <summary>
         ///     True if this database is currently open, false if closed.

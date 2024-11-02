@@ -22,6 +22,10 @@ namespace TimeTracker3.Workspace
         //  object
         public override bool Equals(object obj)
         {
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
             if (obj is WorkspaceAddress op2)
             {
                 return _DatabaseAddress.Equals(op2._DatabaseAddress);
@@ -38,7 +42,7 @@ namespace TimeTracker3.Workspace
         //  Properties
 
         /// <summary>
-        ///     The database type to which this workspace
+        ///     The workspace type to which this workspace
         ///     address belongs, never null.
         /// </summary>
         public WorkspaceType WorkspaceType => WorkspaceType._MapDatabaseType(_DatabaseAddress.DatabaseType);
@@ -57,6 +61,6 @@ namespace TimeTracker3.Workspace
 
         //////////
         //  Implementation
-        private readonly IDatabaseAddress _DatabaseAddress;
+        internal readonly IDatabaseAddress _DatabaseAddress;
     }
 }

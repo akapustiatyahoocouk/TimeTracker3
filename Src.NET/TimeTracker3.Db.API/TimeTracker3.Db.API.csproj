@@ -40,13 +40,14 @@
   <ItemGroup>
     <Compile Include="Capabilities.cs" />
     <Compile Include="DatabaseEventArgs.cs" />
-    <Compile Include="DatabaseException.cs" />
+    <Compile Include="Exceptions\DatabaseException.cs" />
     <Compile Include="DatabaseObjectModifiedEventArgs.cs" />
     <Compile Include="DatabaseObjectDestroyedEventArgs.cs" />
     <Compile Include="DatabaseObjectCreatedEventArgs.cs" />
     <Compile Include="DatabaseObjectType.cs" />
     <Compile Include="DatabaseObjectTypes.cs" />
     <Compile Include="DatabaseTypeManager.cs" />
+    <Compile Include="Exceptions\IncompatibleObjectsDatabaseException.cs" />
     <Compile Include="IAccount.cs" />
     <Compile Include="IActivity.cs" />
     <Compile Include="IActivityType.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="IDatabase.cs" />
     <Compile Include="IDatabaseAddress.cs" />
     <Compile Include="IDatabaseObject.cs" />
+    <Compile Include="IDatabaseObjectId.cs" />
     <Compile Include="IDatabaseType.cs" />
     <Compile Include="IEvent.cs" />
     <Compile Include="IPrincipal.cs" />
@@ -78,5 +80,6 @@
       <Name>TimeTracker3.Util</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,4 +1,5 @@
 ﻿using System;
+using TimeTracker3.Db.API.Exceptions;
 
 namespace TimeTracker3.Db.API
 {

@@ -87,6 +87,10 @@
       <Project>{42b99517-ef8b-4e2a-9183-dcca70e17007}</Project>
       <Name>TimeTracker3.Util</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TimeTracker3.Workspace\TimeTracker3.Workspace.csproj">
+      <Project>{D915E63D-7DC6-4F5B-BBB3-D822DAC3EC5F}</Project>
+      <Name>TimeTracker3.Workspace</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Tt3Large.ico" />

@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Drawing;
+using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using TimeTracker3.GUI;
 using TimeTracker3.Skin.Admin;
 using TimeTracker3.Util;
+using TimeTracker3.Workspace;
 
 namespace TimeTracker3
 {
@@ -56,6 +59,8 @@ namespace TimeTracker3
                 {   //  Don't even start!
                     Environment.Exit(0);
                 }
+
+                Credentials.Current = loginDialog.Credentials;
             }
 
             //  Select initial skin

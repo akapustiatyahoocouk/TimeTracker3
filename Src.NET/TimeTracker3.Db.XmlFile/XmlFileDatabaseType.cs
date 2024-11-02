@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using TimeTracker3.Db.API;
+using TimeTracker3.Db.API.Exceptions;
 
 namespace TimeTracker3.Db.XmlFile
 {

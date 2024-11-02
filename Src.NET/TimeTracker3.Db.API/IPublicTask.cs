@@ -1,4 +1,6 @@
-﻿namespace TimeTracker3.Db.API
+﻿using TimeTracker3.Db.API.Exceptions;
+
+namespace TimeTracker3.Db.API
 {
     /// <summary>
     ///     A task available to all users.

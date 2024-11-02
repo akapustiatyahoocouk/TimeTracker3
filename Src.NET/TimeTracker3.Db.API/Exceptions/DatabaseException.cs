@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TimeTracker3.Db.API
+namespace TimeTracker3.Db.API.Exceptions
 {
     /// <summary>
     ///     The common base class for all exceptions throws 

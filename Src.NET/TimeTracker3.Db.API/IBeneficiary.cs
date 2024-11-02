@@ -1,4 +1,6 @@
-﻿namespace TimeTracker3.Db.API
+﻿using TimeTracker3.Db.API.Exceptions;
+
+namespace TimeTracker3.Db.API
 {
     /// <summary>
     ///     An agent (person or organization, whether internal 
