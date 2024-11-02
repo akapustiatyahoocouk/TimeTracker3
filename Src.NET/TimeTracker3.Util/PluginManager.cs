@@ -26,19 +26,34 @@ namespace TimeTracker3.Util
         /// </param>
         public static void LoadPlugins(IProgressTracker progressTracker)
         {
-            _ProgressTracker = progressTracker;
+            _ProgressTracker = progressTracker ?? new _DummyProgressTracker();
             Assembly entryAssembly = Assembly.GetEntryAssembly();
             string startupDirectory = 
                 (entryAssembly != null) ?
                     Directory.GetParent(entryAssembly.Location)?.FullName :
                     ".";
             //  Locate all DLLs in the startup directory
-            foreach (string dllFile in Directory.GetFiles(startupDirectory ?? ".", "*.dll"))
+            string[] dllFiles = Directory.GetFiles(startupDirectory ?? ".", "*.dll");
+            if (dllFiles.Length > 0)
             {
-                _ProcessDllFile(dllFile);
+                for (int i = 0; i < dllFiles.Length; i++)
+                {
+                    _ProgressTracker.OnProgressReached(
+                        "Loading",
+                        dllFiles[i],
+                        (double)i / dllFiles.Length);
+                    _ProcessDllFile(dllFiles[i]);
+                }
             }
             //  .EXE can define plugins too
-            _ProcessAssembly(Assembly.GetEntryAssembly());
+            if (entryAssembly != null)
+            {
+                _ProcessAssembly(Assembly.GetEntryAssembly());
+                _ProgressTracker.OnProgressReached(
+                    "Loading",
+                    entryAssembly.Location,
+                    1.0);
+            }
             //  Now initialize plugins. Repeatedly, as there may be
             //  dependencies between them.
             for (bool keepGoing = true; keepGoing;)
@@ -46,18 +61,23 @@ namespace TimeTracker3.Util
                 keepGoing = false;
                 foreach (IPlugin plugin in _DiscoveredPlugins)
                 {
-                    if (!_InitializedPlugins.Contains(plugin))
+                    if (_InitializedPlugins.Contains(plugin))
                     {
-                        try
-                        {
-                            plugin.Initialize();
-                            //  Plugin initialization successful
-                            _InitializedPlugins.Add(plugin);
-                            keepGoing = true;
-                        }
-                        catch
-                        {   //  OOPS! Plugin initialization failed
-                        }
+                        continue;
+                    }
+                    try
+                    {
+                        plugin.Initialize();
+                        //  Plugin initialization successful
+                        _InitializedPlugins.Add(plugin);
+                        _ProgressTracker.OnProgressReached(
+                            "Initializing", 
+                            plugin.DisplayName,
+                            (double)_InitializedPlugins.Count / _DiscoveredPlugins.Count);
+                        keepGoing = true;
+                    }
+                    catch
+                    {   //  OOPS! Plugin initialization failed
                     }
                 }
             }
@@ -65,11 +85,18 @@ namespace TimeTracker3.Util
 
         //////////
         //  Implementation
-        private static IProgressTracker _ProgressTracker;
+        private static IProgressTracker _ProgressTracker;   //  never null
         private static readonly ISet<string> _ProcessedDllFiles = new HashSet<string>();
         private static readonly ISet<Assembly> _ProcessedAssemblies = new HashSet<Assembly>();
         private static readonly ISet<IPlugin> _DiscoveredPlugins = new HashSet<IPlugin>();
         private static readonly ISet<IPlugin> _InitializedPlugins = new HashSet<IPlugin>();
+
+        private sealed class _DummyProgressTracker : IProgressTracker
+        {
+            //////////
+            //  IProgressTracker
+            public void OnProgressReached(string activity, string context, double? completed) {}
+        }
 
         //  Helpers
         private static void _ProcessDllFile(string dllFile)
@@ -116,16 +143,14 @@ namespace TimeTracker3.Util
                     continue;
                 }
                 //  ...that we need to call
-                IPlugin plugin;
                 try
                 {
-                    plugin = (IPlugin)constructorInfo.Invoke(new object[0]);
+                    IPlugin plugin = (IPlugin)constructorInfo.Invoke(new object[0]);
+                    _DiscoveredPlugins.Add(plugin);
                 }
                 catch
                 {   //  OOPS! Ignore this type.
-                    continue;
                 }
-                _DiscoveredPlugins.Add(plugin);
             }
         }
     }

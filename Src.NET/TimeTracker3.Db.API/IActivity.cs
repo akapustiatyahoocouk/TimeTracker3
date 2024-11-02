@@ -75,7 +75,7 @@ namespace TimeTracker3.Db.API
         /// <exception cref="DatabaseException">
         ///     If an error occurs.
         /// </exception>
-        IActivityType Type { get; set; }
+        IActivityType ActivityType { get; set; }
 
         /// <summary>
         ///     An unordered list of all works booked for this activity,

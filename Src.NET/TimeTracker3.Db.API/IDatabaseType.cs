@@ -4,7 +4,8 @@ using System.Windows.Forms;
 namespace TimeTracker3.Db.API
 {
     /// <summary>
-    ///     Represents the storage technology used to keep persistent data..
+    ///     Represents the storage technology used to
+    ///     keep persistent data..
     /// </summary>
     public interface IDatabaseType
     {

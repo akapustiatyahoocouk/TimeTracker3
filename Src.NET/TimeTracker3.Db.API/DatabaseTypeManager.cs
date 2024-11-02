@@ -5,9 +5,9 @@ using System.Linq;
 namespace TimeTracker3.Db.API
 {
     /// <summary>
-    ///     The registry of known database types.
+    ///     The registry/manager of known database types.
     /// </summary>
-    public static class DatabaseTypeRegistry
+    public static class DatabaseTypeManager
     {
         //////////
         //  Properties

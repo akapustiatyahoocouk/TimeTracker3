@@ -18,7 +18,7 @@ namespace TimeTracker3.Skin.Admin
             InitializeComponent();
         }
 
-        // ////////
+        //////////
         //  Implementation
 
         //  Helpers
@@ -30,6 +30,11 @@ namespace TimeTracker3.Skin.Admin
         //////////
         //  Event handlers
         private void AdminSkinMainFrame_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _Exit();
+        }
+
+        private void _FileExitMenuItem_Click(object sender, System.EventArgs e)
         {
             _Exit();
         }

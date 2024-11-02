@@ -1,4 +1,6 @@
-﻿namespace TimeTracker3.Db.API
+﻿using System;
+
+namespace TimeTracker3.Db.API
 {
     /// <summary>
     ///     A connection to a persistent data storage.
@@ -159,5 +161,26 @@
         ///     If an error occurs.
         /// </exception>
         IWorkStream[] WorkStreams { get; }
+
+        //////////
+        //  Events
+
+        /// <summary>
+        ///     Raised ON AN ARBITRARY WORKER THREAD when a
+        ///     new object is created in this database.
+        /// </summary>
+        event EventHandler<DatabaseObjectCreatedEventArgs> ObjectCreated;
+
+        /// <summary>
+        ///     Raised ON AN ARBITRARY WORKER THREAD when an
+        ///     existing object is modified in this database.
+        /// </summary>
+        event EventHandler<DatabaseObjectModifiedEventArgs> ObjectModified;
+
+        /// <summary>
+        ///     Raised ON AN ARBITRARY WORKER THREAD when an
+        ///     existing object is destroyed in this database.
+        /// </summary>
+        event EventHandler<DatabaseObjectDestroyedEventArgs> ObjectDestroyed;
     }
 }

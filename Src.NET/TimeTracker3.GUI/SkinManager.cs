@@ -19,6 +19,7 @@ namespace TimeTracker3.GUI
 
         /// <summary>
         ///     The "current" skin; always active.
+        ///     TODO do we need to synchronize?
         /// </summary>
         public static ISkin CurrentSkin
         {

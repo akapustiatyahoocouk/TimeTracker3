@@ -59,5 +59,15 @@ namespace TimeTracker3.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon Tt3Large {
+            get {
+                object obj = ResourceManager.GetObject("Tt3Large", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }

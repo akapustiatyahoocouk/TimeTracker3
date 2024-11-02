@@ -2,6 +2,9 @@
 {
     /// <summary>
     ///     Represents a location of a specific database.
+    ///     IMPORTANT: Concrete classes implementing this
+    ///     interface MUST override object.Equals() and
+    ///     object.GetHashCode() as necessary.
     /// </summary>
     public interface IDatabaseAddress
     {

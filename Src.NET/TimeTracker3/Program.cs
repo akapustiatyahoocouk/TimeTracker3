@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows.Forms;
 using TimeTracker3.GUI;
 using TimeTracker3.Skin.Admin;
@@ -15,15 +16,37 @@ namespace TimeTracker3
         ///     The main entry point for the application.
         /// </summary>
         [STAThread]
-        private static void Main()
+        private static void Main(string[] args)
         {
             //  Initialize .NET/WinForms
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            CommandLine.Instance.Parse(args);
+
+            //  Do we need a splash screen ?
+            SplashScreen splashScreen = null;
+            DateTime splashScreenStartedAt = DateTime.UtcNow;
+            if (CommandLine.Instance.ShowSplashScreen)
+            {
+                splashScreen = new SplashScreen();
+                splashScreen.Visible = true;
+                Application.DoEvents();
+            }
+
             //  Initialize TT3
-            PluginManager.LoadPlugins(null);    //  TODO use splash screen
+            PluginManager.LoadPlugins(splashScreen);
             SettingsManager.LoadSettings();
+
+            //  Away with the splash screen
+            if (splashScreen != null)
+            {
+                while (DateTime.UtcNow < splashScreenStartedAt + new TimeSpan(0, 0, 10))
+                {
+                    Thread.Sleep(100);
+                }
+                splashScreen.Dispose();
+            }
 
             //  Perform initial login
             string initialLogin = GuiSettings.Instance.LastLogin.Value ?? "";
@@ -43,6 +66,8 @@ namespace TimeTracker3
             Application.Run();
 
             //  Cleanup & exit
+            //  TODO stop "current" activity if there is one
+            //  TODO close "current" workspace if there is one
             SettingsManager.SaveSettings();
         }
     }

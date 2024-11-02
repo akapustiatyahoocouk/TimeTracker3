@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractSetting.cs" />
+    <Compile Include="IValueProvider.cs" />
     <Compile Include="IProgressTracker.cs" />
     <Compile Include="SettingsManager.cs" />
     <Compile Include="Formatting.cs" />

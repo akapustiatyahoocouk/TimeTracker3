@@ -3,7 +3,7 @@
     /// <summary>
     ///     Type names of database objects.
     /// </summary>
-    public static class TypeNames
+    public static class DatabaseObjectTypeNames
     {
         public const string User = "User";
         public const string Account = "Account";

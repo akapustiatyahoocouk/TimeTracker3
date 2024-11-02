@@ -16,7 +16,7 @@ namespace TimeTracker3.Workspace
             Debug.Assert(password != null);
 
             _Login = login;
-            _Password = password;
+            //  TODO keep? kill? _Password = password;
             _PasswordHash = Sha1.HashString(password);
         }
 
@@ -33,10 +33,21 @@ namespace TimeTracker3.Workspace
         /// </summary>
         public string PasswordHash => _PasswordHash;
 
+        /// <summary>
+        ///     The "current" credentials; can be null.
+        /// </summary>
+        public static Credentials Current
+        {
+            get => _CurrentCredentials;
+            set => _CurrentCredentials = value;
+        }
+
         //////////
         //  Implementation
-        internal readonly string _Login;
-        internal readonly string _Password;
-        internal readonly string _PasswordHash;  //  SHA-1
+        private readonly string _Login;
+        //  TODO keep? kill? private readonly string _Password;
+        private readonly string _PasswordHash;  //  SHA-1
+
+        private static Credentials _CurrentCredentials; //  can be null!
     }
 }

@@ -9,10 +9,10 @@
         //  Properties
 
         /// <summary>
-        ///     The name of this object's type. Implementations should
-        ///     use the TypeNames - defined constants for compatibility.
+        ///     This object's type. Implementations should use
+        ///     constants defined in DatabaseObjectTypes class.
         /// </summary>
-        string TypeName { get; }
+        DatabaseObjectType Type { get; }
 
         /// <summary>
         ///     True if this object is live and can be used, false 
