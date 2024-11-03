@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Drawing;
-using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using TimeTracker3.GUI;

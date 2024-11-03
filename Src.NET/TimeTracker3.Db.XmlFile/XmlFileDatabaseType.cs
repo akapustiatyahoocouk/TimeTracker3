@@ -11,7 +11,7 @@ namespace TimeTracker3.Db.XmlFile
     {
         //////////
         //  Constants
-        private const string PreferredExtension = ".tt3";
+        public const string PreferredExtension = ".tt3";
 
         //////////
         //  Singleton

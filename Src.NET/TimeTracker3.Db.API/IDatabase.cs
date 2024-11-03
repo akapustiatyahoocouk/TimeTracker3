@@ -51,7 +51,7 @@ namespace TimeTracker3.Db.API
         /// <exception cref="DatabaseException">
         ///     If an error occurs.
         /// </exception>
-        IUser[] User { get; }
+        IUser[] Users { get; }
 
         /// <summary>
         ///     An unordered list of all activity types in the database,

@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using TimeTracker3.Workspace;
 
 namespace TimeTracker3.Skin.Admin
@@ -42,7 +41,7 @@ namespace TimeTracker3.Skin.Admin
 
         //////////
         //  Implementation
-        private bool _TrackPosition = false;
+        private bool _TrackPosition /*= false */;
 
         //  Helpers
         private void _Exit()

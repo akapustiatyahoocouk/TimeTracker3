@@ -6,17 +6,25 @@ namespace TimeTracker3.Db.API.Exceptions
     {
         //////////
         //  Construction
-        //  TODO document all
 
-        public IncompatibleObjectsDatabaseException(string obj1, string obj2)
-            : base(obj1 + " is not compatible with " + obj2)
+        /// <summary>
+        ///     Constructs the exception.
+        /// </summary>
+        /// <param name="obj1">
+        ///     The object that is incompatible with obj2.
+        /// </param>
+        /// <param name="obj2">
+        ///     The object with which obj1 is incompatible.
+        /// </param>
+        public IncompatibleObjectsDatabaseException(object obj1, object obj2)
+            : base(Convert.ToString(obj1)  + " is not compatible with " + Convert.ToString(obj2))
         {
             Object1 = obj1;
             Object2 = obj2;
         }
 
-        public IncompatibleObjectsDatabaseException(string obj1, string obj2, Exception cause)
-            : base(obj1 + " is not compatible with " + obj2, cause)
+        public IncompatibleObjectsDatabaseException(object obj1, object obj2, Exception cause)
+            : base(Convert.ToString(obj1) + " is not compatible with " + Convert.ToString(obj2), cause)
         {
             Object1 = obj1;
             Object2 = obj2;
@@ -24,9 +32,15 @@ namespace TimeTracker3.Db.API.Exceptions
 
         //////////
         //  Properties
-        //  TODO document all
 
-        public readonly string Object1;
-        public readonly string Object2;
+        /// <summary>
+        ///     The object that is incompatible with Object2.
+        /// </summary>
+        public readonly object Object1;
+
+        /// <summary>
+        ///     The object with which Object1 is incompatible.
+        /// </summary>
+        public readonly object Object2;
     }
 }

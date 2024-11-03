@@ -39,6 +39,9 @@
   <ItemGroup>
     <Compile Include="BusinessObject.cs" />
     <Compile Include="Credentials.cs" />
+    <Compile Include="Exceptions\AlreadyExistsWorkspaceException.cs" />
+    <Compile Include="Exceptions\DoesNotExistWorkspaceException.cs" />
+    <Compile Include="Exceptions\WorkspaceInUseWorkspaceException.cs" />
     <Compile Include="Exceptions\IncompatibleObjectsWorkspaceException.cs" />
     <Compile Include="Exceptions\WorkspaceException.cs" />
     <Compile Include="Plugin.cs" />

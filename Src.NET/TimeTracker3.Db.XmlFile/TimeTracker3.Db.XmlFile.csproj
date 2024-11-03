@@ -44,8 +44,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="XmlFileDatabase.cs" />
     <Compile Include="XmlFileDatabaseAddress.cs" />
     <Compile Include="XmlFileDatabaseType.cs" />
+    <Compile Include="XmlFileIDatabaseObjectId.cs" />
+    <Compile Include="_XmlFileDatabaseLock.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TimeTracker3.Db.API\TimeTracker3.Db.API.csproj">

@@ -40,6 +40,8 @@
   <ItemGroup>
     <Compile Include="Capabilities.cs" />
     <Compile Include="DatabaseEventArgs.cs" />
+    <Compile Include="Exceptions\DoesNotExistDatabaseException.cs" />
+    <Compile Include="Exceptions\AlreadyExistsDatabaseException.cs" />
     <Compile Include="Exceptions\DatabaseException.cs" />
     <Compile Include="DatabaseObjectModifiedEventArgs.cs" />
     <Compile Include="DatabaseObjectDestroyedEventArgs.cs" />
@@ -47,6 +49,7 @@
     <Compile Include="DatabaseObjectType.cs" />
     <Compile Include="DatabaseObjectTypes.cs" />
     <Compile Include="DatabaseTypeManager.cs" />
+    <Compile Include="Exceptions\DatabaseInUseDatabaseException.cs" />
     <Compile Include="Exceptions\IncompatibleObjectsDatabaseException.cs" />
     <Compile Include="IAccount.cs" />
     <Compile Include="IActivity.cs" />

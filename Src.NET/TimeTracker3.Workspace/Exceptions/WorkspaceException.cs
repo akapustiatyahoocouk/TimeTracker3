@@ -31,14 +31,32 @@ namespace TimeTracker3.Workspace.Exceptions
         //////////
         //  Operations
 
+        /// <summary>
+        ///     Translates an arbitrary exception to a
+        ///     WorkspaceException.
+        /// </summary>
+        /// <param name="ex">
+        ///     The exception to translate to WorkspaceException.
+        /// </param>
+        /// <returns>
+        ///     The resulting WorkspaceException.
+        /// </returns>
         public static WorkspaceException Translate(Exception ex)
         {
-            if (ex is IncompatibleObjectsDatabaseException exx)
+            switch (ex)
             {
-                return new IncompatibleObjectsWorkspaceException(exx.Object1, exx.Object2);
+                case AlreadyExistsDatabaseException exx:
+                    return new AlreadyExistsWorkspaceException(exx.ObjectTypeName, exx.PropertyName, exx.PropertyValue);
+                case DatabaseInUseDatabaseException exx:
+                    return new WorkspaceInUseWorkspaceException(new WorkspaceAddress(exx.Address));
+                case DoesNotExistDatabaseException exx:
+                    return new DoesNotExistWorkspaceException(exx.ObjectTypeName, exx.PropertyName, exx.PropertyValue);
+                case IncompatibleObjectsDatabaseException exx:
+                    return new IncompatibleObjectsWorkspaceException(exx.Object1, exx.Object2);
+                //  TODO other database exceptions
+                default:
+                    return (ex is WorkspaceException wex) ? wex : new WorkspaceException(ex);
             }
-            //  TODO implement properly
-            return (ex is WorkspaceException wex) ? wex : new WorkspaceException(ex);
         }
     }
 }
