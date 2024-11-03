@@ -18,7 +18,7 @@ namespace TimeTracker3.Db.XmlFile
 
             _Address = address;
             //  We need to grab a lock first
-            _Lock = new _XmlFileDatabaseLock(address);
+            _DatabaseFileLock = new _XmlFileDatabaseLock(address);
         }
 
         //////////
@@ -32,7 +32,7 @@ namespace TimeTracker3.Db.XmlFile
             {
                 lock (_Guard)
                 {
-                    return _Lock != null && _Lock._IsOpen;
+                    return _DatabaseFileLock != null && _DatabaseFileLock._IsOpen;
                 }
             }
         }
@@ -43,7 +43,7 @@ namespace TimeTracker3.Db.XmlFile
         {
             lock (_Guard)
             {
-                if (_Lock != null)
+                if (_DatabaseFileLock != null)
                 {   //  Still "open" - save...
                     Exception ex = null;
                     try
@@ -55,12 +55,12 @@ namespace TimeTracker3.Db.XmlFile
                         ex = exx;
                     }
                     //  ...release the lock...
-                    _Lock._Close();
+                    _DatabaseFileLock._Close();
                     //  ...then mark all objects as "dead" and
                     //  release references to them
                     //  TODO
                     //  ...and we're closed
-                    _Lock = null;
+                    _DatabaseFileLock = null;
                     if (ex != null)
                     {
                         throw DatabaseException.Translate(ex);
@@ -94,7 +94,7 @@ namespace TimeTracker3.Db.XmlFile
         //////////
         //  Implementation
         private readonly XmlFileDatabaseAddress _Address;
-        private _XmlFileDatabaseLock _Lock; //  null == database is closed
-        private readonly object _Guard = new object();  //  for all access synchronization
+        private _XmlFileDatabaseLock _DatabaseFileLock; //  null == database is closed
+        internal readonly object _Guard = new object();  //  for all access synchronization
     }
 }

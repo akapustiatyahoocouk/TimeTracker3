@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System;
+using TimeTracker3.Db.API;
 using TimeTracker3.Util;
 
 namespace TimeTracker3.Db.XmlFile
@@ -19,6 +20,7 @@ namespace TimeTracker3.Db.XmlFile
 
         public void Initialize()
         {
+            DatabaseTypeManager.RegisterDatabaseType(XmlFileDatabaseType.Instance);
         }
     }
 }

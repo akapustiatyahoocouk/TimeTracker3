@@ -15,7 +15,7 @@ namespace TimeTracker3.Db.API
         ///     constants defined in DatabaseObjectTypes class.
         ///     Can be safely called on live and dead object alike.
         /// </summary>
-        DatabaseObjectType Type { get; }
+        DatabaseObjectType ObjectType { get; }
 
         /// <summary>
         ///     True if this object is live and can be used, false 

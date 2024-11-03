@@ -75,51 +75,55 @@
             // 
             this._NewWorkspaceMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_NewWorkspaceMenuItem.Image")));
             this._NewWorkspaceMenuItem.Name = "_NewWorkspaceMenuItem";
-            this._NewWorkspaceMenuItem.Size = new System.Drawing.Size(173, 22);
+            this._NewWorkspaceMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this._NewWorkspaceMenuItem.Size = new System.Drawing.Size(208, 22);
             this._NewWorkspaceMenuItem.Text = "&New workspace";
+            this._NewWorkspaceMenuItem.Click += new System.EventHandler(this._NewWorkspaceMenuItem_Click);
             // 
             // _OpenWorkspaceMenuItem
             // 
             this._OpenWorkspaceMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_OpenWorkspaceMenuItem.Image")));
             this._OpenWorkspaceMenuItem.Name = "_OpenWorkspaceMenuItem";
-            this._OpenWorkspaceMenuItem.Size = new System.Drawing.Size(173, 22);
+            this._OpenWorkspaceMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this._OpenWorkspaceMenuItem.Size = new System.Drawing.Size(208, 22);
             this._OpenWorkspaceMenuItem.Text = "&Open workspace";
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(170, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(205, 6);
             // 
             // _CloseWorkspaceMenuItem
             // 
             this._CloseWorkspaceMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_CloseWorkspaceMenuItem.Image")));
             this._CloseWorkspaceMenuItem.Name = "_CloseWorkspaceMenuItem";
-            this._CloseWorkspaceMenuItem.Size = new System.Drawing.Size(173, 22);
+            this._CloseWorkspaceMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F4)));
+            this._CloseWorkspaceMenuItem.Size = new System.Drawing.Size(208, 22);
             this._CloseWorkspaceMenuItem.Text = "C&lose workspace";
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(170, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(205, 6);
             // 
             // _DestroyWorkspaceMenuItem
             // 
             this._DestroyWorkspaceMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_DestroyWorkspaceMenuItem.Image")));
             this._DestroyWorkspaceMenuItem.Name = "_DestroyWorkspaceMenuItem";
-            this._DestroyWorkspaceMenuItem.Size = new System.Drawing.Size(173, 22);
+            this._DestroyWorkspaceMenuItem.Size = new System.Drawing.Size(208, 22);
             this._DestroyWorkspaceMenuItem.Text = "&Destroy workspace";
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(170, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(205, 6);
             // 
             // _FileExitMenuItem
             // 
             this._FileExitMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_FileExitMenuItem.Image")));
             this._FileExitMenuItem.Name = "_FileExitMenuItem";
             this._FileExitMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this._FileExitMenuItem.Size = new System.Drawing.Size(173, 22);
+            this._FileExitMenuItem.Size = new System.Drawing.Size(208, 22);
             this._FileExitMenuItem.Text = "E&xit";
             this._FileExitMenuItem.Click += new System.EventHandler(this._FileExitMenuItem_Click);
             // 

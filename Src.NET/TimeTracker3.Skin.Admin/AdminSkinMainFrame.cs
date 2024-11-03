@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using TimeTracker3.GUI;
 using TimeTracker3.Workspace;
 
 namespace TimeTracker3.Skin.Admin
@@ -99,5 +100,16 @@ namespace TimeTracker3.Skin.Admin
                 _SavePosition();
             }
         }
-}
+
+        private void _NewWorkspaceMenuItem_Click(object sender, System.EventArgs e)
+        {
+            using (NewWorkspaceDialog dlg = new NewWorkspaceDialog())
+            {
+                if (dlg.ShowDialog(this) == DialogResult.OK)
+                {
+
+                }
+            }
+        }
+    }
 }

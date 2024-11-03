@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Capabilities.cs" />
     <Compile Include="DatabaseEventArgs.cs" />
+    <Compile Include="DatabaseObjectUiTraits.cs" />
     <Compile Include="Exceptions\DoesNotExistDatabaseException.cs" />
     <Compile Include="Exceptions\AlreadyExistsDatabaseException.cs" />
     <Compile Include="Exceptions\DatabaseException.cs" />
@@ -76,6 +77,11 @@
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DatabaseObjectTypeNames.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TimeTracker3.Util\TimeTracker3.Util.csproj">
@@ -83,6 +89,35 @@
       <Name>TimeTracker3.Util</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AccountLarge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AccountSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\UserLarge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\UserSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\WorkspaceLarge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\WorkspaceSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ErrorLarge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ErrorSmall.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

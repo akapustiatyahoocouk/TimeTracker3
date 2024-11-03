@@ -1,7 +1,7 @@
 ﻿namespace TimeTracker3.Db.API
 {
     /// <summary>
-    ///     Type names of database objects.
+    ///     ObjectType names of database objects.
     /// </summary>
     public static class DatabaseObjectTypeNames
     {

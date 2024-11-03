@@ -118,19 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="_OkButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAcZJREFUOE9j
-        YCAXMDFkMHAyd6ELEwOYGbmYJpv3Sf1TsGG/jy5JCPBwSbBsCV8r+d+xRegvAwODK7oCfEBGVp/5fMEx
-        yf9xO1X/s/IwTkFXgA8YmvsyPam/KvM//5LxfwlTjpsMDAxc6IpwAd+QAqbPrXcU/5dcsfxvWiL2m4GB
-        wRwuyynOslrSgPUMAwODO4o2UEAzM+Ql97H9abqj+b/0qvX/wLVq/5nZGZtRFLnHML7b+UXmf/Mqxn+S
-        Sow7GBgYdEEhzcrNODl1Md+/+lsGYM2Jpwz/C2qyn2VgYGBFMYCZhaFs4Wnb/3s/+f+f/0ziv205/x82
-        Jc4riZvE/9ffMgNrTj1v+l8zReQ7AwODNopmKGDTtme9ue1d1P91r6P+T31s+r/wqsr/hlvWcM1O85T+
-        MzIzFKNrRAZeGXMU/y18FvR/8gPP/y23HeGaAw/q/ueWZzsATnv4gIAM0+a2a5YomkNPGP6XDxH8yMDA
-        oICuHhtQscwR/lFy1QqsOeyk4X+TfoX/DIwMSegKcQJmDsb24C3qYM1O27T+s4uxbERXQwjwSDryPHE7
-        qPtfzI3/FQMDgzi6AmKAPYc022YQjS6BDQAADGiokwMLpVQAAAAASUVORK5CYII=
-</value>
-  </data>
   <data name="_CancelButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAwxJREFUOE9d
@@ -148,6 +135,36 @@
         /P1JRnft4qYFIW1JEslJEoE5K0mZWUFIzQlCypKkTzlJogBoM4KQHuvo4MC7fV4IeXLkSPKjKNazokg+
         iyLdCdRAe3r0aPLYTvPOkI6mJnR23z7+oc+XeOv3W+8EoQbA+vHoaOJ8Xx+/227ffOqt8Qe0232+pPXr
         nAAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="_OkButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAcZJREFUOE9j
+        YCAXMDFkMHAyd6ELEwOYGbmYJpv3Sf1TsGG/jy5JCPBwSbBsCV8r+d+xRegvAwODK7oCfEBGVp/5fMEx
+        yf9xO1X/s/IwTkFXgA8YmvsyPam/KvM//5LxfwlTjpsMDAxc6IpwAd+QAqbPrXcU/5dcsfxvWiL2m4GB
+        wRwuyynOslrSgPUMAwODO4o2UEAzM+Ql97H9abqj+b/0qvX/wLVq/5nZGZtRFLnHML7b+UXmf/Mqxn+S
+        Sow7GBgYdEEhzcrNODl1Md+/+lsGYM2Jpwz/C2qyn2VgYGBFMYCZhaFs4Wnb/3s/+f+f/0ziv205/x82
+        Jc4riZvE/9ffMgNrTj1v+l8zReQ7AwODNopmKGDTtme9ue1d1P91r6P+T31s+r/wqsr/hlvWcM1O85T+
+        MzIzFKNrRAZeGXMU/y18FvR/8gPP/y23HeGaAw/q/ueWZzsATnv4gIAM0+a2a5YomkNPGP6XDxH8yMDA
+        oICuHhtQscwR/lFy1QqsOeyk4X+TfoX/DIwMSegKcQJmDsb24C3qYM1O27T+s4uxbERXQwjwSDryPHE7
+        qPtfzI3/FQMDgzi6AmKAPYc022YQjS6BDQAADGiokwMLpVQAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="_BrowseButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAqdJREFUOE+N
+        kl1IU2EcxoUuJRKsi1Ka9IEUFZYSgWGceRNo+BHOmS1nUzc/pitMK3WbX23rTI/uYtpSc1lSOBVBJAVN
+        jVJHfoyZiTLnpmQyV9DKSi+eOKdYbpL0wB/Oxfv7nf/78Pr4/CMSUuMfn5VHsbm8FTaXhz9jvZx9g7xV
+        U7fH+7xHYoTicBqUVtXilXEcH1YdWF5ZZb7zK5S0aElCaYO9OSaCUmUAm8tztLR3Yd5qQ1njE1xUPUA0
+        qYOquRUW2xKanhsYSdZ9zfZN2Fxe3V1VNYxT04iUVqHEaMGYwwWjwwXZ2BxiKjUwzcwhV1aBGFGewpun
+        BZ+7+l4iX6NDxvAs2qxr6LA5mTEsrkE0+A5SbSPauvuYTjxgjiiHRZfV//otYtUNyBldgHzKjkrTEmST
+        duSOLSCufxYJKi16h0aZYj0EV4QiRtDZO4REqhHCNxYUT9ihNC9DZV6GdNKOzBELrqrrYegZ2C6gQyQm
+        f9c8egZRuRryiUU0zH1E++LvazTNr6Js3ApxZTXIej0tWPGA48NYFEGcR1qBFEqtHrnaZnTb1mByfoX5
+        0ze8sDuRoaqFWvcUKTfvICotm3LDiaEHqLijuzEkDEMUPx0SOYlisg6Z0nug9K2o0bciR65EiboeYqmC
+        /rsjpbjCn4GTTu9j4Pei49ic7oBpuBNRyclIEhdAUlqNQoWWmTyZGtzsfAaOFmSGMzDnpF8RA2cEY2Og
+        CJvmx1inIjB47RiIyAjQnWx5yi42l/fw+m1ZgHt1IsjXNSk4gh8tF7DRI8C6+hxm+IdBS+NDD1JiEX9X
+        Aj+VFZuaznJDW0ME+eKLLgw/W85iXRnihjln9v8taKcQQb4jZEIgnOWnMME7xMBJIXv/D6ajuBTIoiX0
+        JvR1OCf8Cr3P7JRfTemnVVpmmB0AAAAASUVORK5CYII=
 </value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
