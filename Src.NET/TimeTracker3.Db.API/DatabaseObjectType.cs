@@ -15,6 +15,10 @@
         //////////
         //  Properties
 
+        /// <summary>
+        ///     The internal name of this object type
+        ///     (i.e. "User", "Account", etc.)
+        /// </summary>
         public string Name => _Name;
 
         //////////

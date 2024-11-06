@@ -20,20 +20,20 @@ namespace TimeTracker3.Db.API
         ///     The database where an existing object has
         ///     been destroyed.
         /// </param>
-        /// <param name="objectTypeName">
-        ///     The name of the object's type (one of
-        ///     the values defined in TypeNames).
+        /// <param name="objectType">
+        ///     The object's type.
         /// </param>
         /// <param name="oid">
         ///     The OID of the destroyed object.
         /// </param>
         public DatabaseObjectDestroyedEventArgs(
-            IDatabase database, string objectTypeName, long oid)
+            IDatabase database, DatabaseObjectType objectType, IDatabaseObjectId oid)
         :   base(database)
         {
-            Debug.Assert(objectTypeName != null);
+            Debug.Assert(objectType != null);
+            Debug.Assert(oid != null);
 
-            ObjectTypeName = objectTypeName;
+            ObjectType = objectType;
             Oid = oid;
         }
 
@@ -41,14 +41,13 @@ namespace TimeTracker3.Db.API
         //  Properties
 
         /// <summary>
-        ///     The name of the object's type (one of
-        ///     the values defined in TypeNames).
+        ///     The object's type.
         /// </summary>
-        public readonly string ObjectTypeName;
+        public readonly DatabaseObjectType ObjectType;
 
         /// <summary>
         ///     The OID of the destroyed object.
         /// </summary>
-        public readonly long Oid;
+        public readonly IDatabaseObjectId Oid;
     }
 }

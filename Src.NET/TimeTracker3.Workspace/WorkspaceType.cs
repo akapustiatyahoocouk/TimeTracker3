@@ -66,7 +66,7 @@ namespace TimeTracker3.Workspace
         public string LongStatusReport => _DatabaseType.LongStatusReport;
 
         //////////
-        //  Address handling
+        //  DatabaseAddress handling
 
         /// <summary>
         ///     If workspaces of this type has a concept of a "default"
@@ -179,8 +179,8 @@ namespace TimeTracker3.Workspace
             Debug.Assert(address != null);
 
             if (address.WorkspaceType != this)
-            {   //  OOPS! Address does not belong to this workspace type
-                throw new IncompatibleObjectsWorkspaceException("WorkspaceAddress", "Workspace");
+            {   //  OOPS! DatabaseAddress does not belong to this workspace type
+                throw new IncompatibleObjectsWorkspaceException("WorkspaceWorkspaceAddress", "Workspace");
             }
             //  Do the work
             try
@@ -212,8 +212,8 @@ namespace TimeTracker3.Workspace
             Debug.Assert(address != null);
 
             if (address.WorkspaceType != this)
-            {   //  OOPS! Address does not belong to this workspace type
-                throw new IncompatibleObjectsWorkspaceException("WorkspaceAddress", "Workspace");
+            {   //  OOPS! DatabaseAddress does not belong to this workspace type
+                throw new IncompatibleObjectsWorkspaceException("WorkspaceWorkspaceAddress", "Workspace");
             }
             //  Do the work
             try
@@ -242,8 +242,8 @@ namespace TimeTracker3.Workspace
             Debug.Assert(address != null);
 
             if (address.WorkspaceType != this)
-            {   //  OOPS! Address does not belong to this workspace type
-                throw new IncompatibleObjectsWorkspaceException("WorkspaceAddress", "Workspace");
+            {   //  OOPS! DatabaseAddress does not belong to this workspace type
+                throw new IncompatibleObjectsWorkspaceException("WorkspaceWorkspaceAddress", "Workspace");
             }
             //  Do the work
             try

@@ -52,7 +52,7 @@ namespace TimeTracker3.Db.API
         string LongStatusReport { get; }
 
         //////////
-        //  Address handling
+        //  DatabaseAddress handling
 
         /// <summary>
         ///     If databases of this type has a concept of a "default"

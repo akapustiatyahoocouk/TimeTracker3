@@ -15,7 +15,7 @@ namespace TimeTracker3.Db.XmlFile
         }
 
         //////////
-        //  Object
+        //  object
         public override bool Equals(object obj)
         {
             if (obj is XmlFileIDatabaseObjectId op2)
@@ -28,6 +28,11 @@ namespace TimeTracker3.Db.XmlFile
         public override int GetHashCode()
         {
             return _Oid.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return _Oid.ToString();
         }
 
         //////////

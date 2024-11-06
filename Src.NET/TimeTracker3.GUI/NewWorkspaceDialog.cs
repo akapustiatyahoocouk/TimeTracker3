@@ -48,17 +48,44 @@ namespace TimeTracker3.GUI
             base.Refresh();
             _WorkspaceAddressTextBox.Text =
                 (_SelectedWorkspaceAddress != null) ? _SelectedWorkspaceAddress.DisplayForm : "";
+            _LoginLabel.Enabled = _UseCustomCredentialsRadioButton.Checked;
+            _LoginTextBox.Enabled = _UseCustomCredentialsRadioButton.Checked;
+            _Password1Label.Enabled = _UseCustomCredentialsRadioButton.Checked;
+            _Password1TextBox.Enabled = _UseCustomCredentialsRadioButton.Checked;
+            _Password2Label.Enabled = _UseCustomCredentialsRadioButton.Checked;
+            _Password2TextBox.Enabled = _UseCustomCredentialsRadioButton.Checked;
             _OkButton.Enabled =
                 (_SelectedWorkspaceType != null) &&
-                (_SelectedWorkspaceAddress != null);
+                (_SelectedWorkspaceAddress != null) &&
+                _UseCurrentCredentialsRadioButton.Checked ?
+                    CurrentCredentialsProvider.Instance.Value != null :
+                    (_LoginTextBox.Text.Length > 0 && _LoginTextBox.Text.Length <= 255 &&
+                     _Password1TextBox.Text == _Password2TextBox.Text);
         }
 
         //////////
+        //  Properties
+
+        /// <summary>
+        ///     The workspace created with this dialog or null
+        ///     if the user has cancelled the workspace creation
+        ///     process by cancelling this dialog.
+        /// </summary>
+        public Workspace.Workspace CreatedWorkspace => _CreatedWorkspace;
+
+        /// <summary>
+        ///     The administrator credentials for the newly
+        ///     created workspace..
+        /// </summary>
+        public Credentials CreatedWorkspaceCredentials => _CreatedWorkspaceCredentials;
+
+        //////////
         //  Implementation
-        private WorkspaceType _SelectedWorkspaceType => 
+        private WorkspaceType _SelectedWorkspaceType =>
             ((_WorkspaceTypeComboBoxItem)_WorkspaceTypeComboBox.SelectedItem)?._WorkspaceType;
         private WorkspaceAddress _SelectedWorkspaceAddress /* = null */;
-        private Workspace.Workspace _CreateWorkspace /* = null*/;
+        private Workspace.Workspace _CreatedWorkspace /* = null*/;
+        private Credentials _CreatedWorkspaceCredentials /* = null*/;
 
         private sealed class _WorkspaceTypeComboBoxItem
         {
@@ -80,7 +107,7 @@ namespace TimeTracker3.GUI
 
         //////////
         //  Event handlers
-        private void _WorkspaceTypeComboBox_SelectedIndexChanged(object sender, System.EventArgs e)
+        private void _WorkspaceTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (_SelectedWorkspaceAddress != null &&
                 _SelectedWorkspaceType != _SelectedWorkspaceAddress.WorkspaceType)
@@ -90,7 +117,7 @@ namespace TimeTracker3.GUI
             Refresh();
         }
 
-        private void _BrowseButton_Click(object sender, System.EventArgs e)
+        private void _BrowseButton_Click(object sender, EventArgs e)
         {
             if (_SelectedWorkspaceType != null)
             {
@@ -104,13 +131,17 @@ namespace TimeTracker3.GUI
             }
         }
 
-        private void _OkButton_Click(object sender, System.EventArgs e)
+        private void _OkButton_Click(object sender, EventArgs e)
         {
             if (_SelectedWorkspaceAddress != null)
             {   //  Try creating the workspace
                 try
                 {
-                    _CreateWorkspace = _SelectedWorkspaceAddress.WorkspaceType.CreateWorkspace(_SelectedWorkspaceAddress);
+                    _CreatedWorkspace = _SelectedWorkspaceAddress.WorkspaceType.CreateWorkspace(_SelectedWorkspaceAddress);
+                    _CreatedWorkspaceCredentials =
+                        _UseCurrentCredentialsRadioButton.Checked ?
+                            CurrentCredentialsProvider.Instance.Value :
+                            new Credentials(_LoginTextBox.Text, _Password1TextBox.Text);
                     DialogResult = DialogResult.OK;
                 }
                 catch (Exception ex)
@@ -120,9 +151,34 @@ namespace TimeTracker3.GUI
             }
         }
 
-        private void _CancelButton_Click(object sender, System.EventArgs e)
+        private void _CancelButton_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
+        }
+
+        private void _UseCurrentCredentialsRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            Refresh();
+        }
+
+        private void _UseCustomCredentialsRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            Refresh();
+        }
+
+        private void _LoginTextBox_TextChanged(object sender, EventArgs e)
+        {
+            Refresh();
+        }
+
+        private void _Password1TextBox_TextChanged(object sender, EventArgs e)
+        {
+            Refresh();
+        }
+
+        private void _Password2TextBox_TextChanged(object sender, EventArgs e)
+        {
+            Refresh();
         }
     }
 }

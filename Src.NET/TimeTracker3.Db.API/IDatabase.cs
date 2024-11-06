@@ -28,6 +28,12 @@ namespace TimeTracker3.Db.API
         /// </summary>
         bool IsOpen { get; }
 
+        /// <summary>
+        ///     The validator used by this Database; can be obtained
+        ///     safely for both open and closed databases, never null.
+        /// </summary>
+        IValidator Validator { get; }
+
         //////////
         //  Operations - general
 
@@ -35,8 +41,8 @@ namespace TimeTracker3.Db.API
         ///     Closes this database, has no effect if already closed.
         /// </summary>
         /// <exception cref="DatabaseException">
-        ///     Throws if an error occurs (the database is still marked 
-        ///     as "closed" and all resources it uses are released before 
+        ///     Throws if an error occurs (the database is still marked
+        ///     as "closed" and all resources it uses are released before
         ///     the exception is thrown).
         /// </exception>
         void Close();
@@ -72,7 +78,7 @@ namespace TimeTracker3.Db.API
         IPublicActivity[] PublicActivitiesAndTasks { get; }
 
         /// <summary>
-        ///     An unordered list of all public activities (but not 
+        ///     An unordered list of all public activities (but not
         ///     tasks) in the database, never null or contains nulls,
         ///     but can be empty.
         /// </summary>
@@ -90,8 +96,8 @@ namespace TimeTracker3.Db.API
         IPublicTask[] PublicTasks { get; }
 
         /// <summary>
-        ///     An unordered list of all root (i.e. with no parent) 
-        ///     public tasks in the database, never null or contains nulls, 
+        ///     An unordered list of all root (i.e. with no parent)
+        ///     public tasks in the database, never null or contains nulls,
         ///     but can be empty.
         /// </summary>
         /// <exception cref="DatabaseException">
@@ -100,7 +106,7 @@ namespace TimeTracker3.Db.API
         IPublicTask[] RootPublicTasks { get; }
 
         /// <summary>
-        ///     An unordered list of all works (regardless of the user 
+        ///     An unordered list of all works (regardless of the user
         ///     which booked them), never null or contains nulls, but can be empty.
         /// </summary>
         /// <exception cref="DatabaseException">
@@ -109,7 +115,7 @@ namespace TimeTracker3.Db.API
         IWork[] Works { get; }
 
         /// <summary>
-        ///     An unordered list of all events (regardless of the user 
+        ///     An unordered list of all events (regardless of the user
         ///     which booked them), never null or contains nulls, but can be empty.
         /// </summary>
         /// <exception cref="DatabaseException">
@@ -118,7 +124,7 @@ namespace TimeTracker3.Db.API
         IEvent[] Events { get; }
 
         /// <summary>
-        ///     An unordered list of all beneficiaries, never null 
+        ///     An unordered list of all beneficiaries, never null
         ///     or contains nulls, but can be empty.
         /// </summary>
         /// <exception cref="DatabaseException">
@@ -127,7 +133,7 @@ namespace TimeTracker3.Db.API
         IBeneficiary[] Beneficiaries { get; }
 
         /// <summary>
-        ///     An unordered list of all workloads (whether projects 
+        ///     An unordered list of all workloads (whether projects
         ///     or work streams), never null or contains nulls, but can be empty.
         /// </summary>
         /// <exception cref="DatabaseException">
@@ -137,7 +143,7 @@ namespace TimeTracker3.Db.API
 
         /// <summary>
         ///     An unordered list of all projects (whether root,
-        ///     intermediate or leaf), never null or contains nulls, 
+        ///     intermediate or leaf), never null or contains nulls,
         ///     but can be empty.
         /// </summary>
         /// <exception cref="DatabaseException">
@@ -146,7 +152,7 @@ namespace TimeTracker3.Db.API
         IProject[] Projects { get; }
 
         /// <summary>
-        ///     An unordered list of all root projects, never null 
+        ///     An unordered list of all root projects, never null
         ///     or contains nulls, but can be empty.
         /// </summary>
         /// <exception cref="DatabaseException">
@@ -155,13 +161,37 @@ namespace TimeTracker3.Db.API
         IProject[] RootProjects { get; }
 
         /// <summary>
-        ///     An unordered list of all work streams, never null 
+        ///     An unordered list of all work streams, never null
         ///     or contains nulls, but can be empty.
         /// </summary>
         /// <exception cref="DatabaseException">
         ///     If an error occurs.
         /// </exception>
         IWorkStream[] WorkStreams { get; }
+
+        //////////
+        //  Access control
+
+        /// <summary>
+        ///     If there exists an "enabled" account in this
+        ///     database with the specified login and password
+        ///     and it belongs to an "enabled" user, returns that
+        ///     account, otherwise returns null.
+        /// </summary>
+        /// <param name="login">
+        ///     The required account login.
+        /// </param>
+        /// <param name="password">
+        ///     The required account password.
+        /// </param>
+        /// <returns>
+        ///     The account with the specified credentials, null
+        ///     if none.
+        /// </returns>
+        /// <exception cref="DatabaseException">
+        ///     If an error occurs.
+        /// </exception>
+        IAccount TryLogin(string login, string password);
 
         //////////
         //  Events

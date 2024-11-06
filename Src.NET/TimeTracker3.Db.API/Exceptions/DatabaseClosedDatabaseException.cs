@@ -3,11 +3,9 @@
 namespace TimeTracker3.Db.API.Exceptions
 {
     /// <summary>
-    ///     Thrown when an attempt is made to open a
-    ///     single-user database or destroy a database
-    ///     that are currently open elsewhere.
+    ///     Thrown when an attempt is made to use a closed database.
     /// </summary>
-    public class DatabaseInUseDatabaseException : DatabaseException
+    public class DatabaseClosedDatabaseException : DatabaseException
     {
         //////////
         //  Construction
@@ -16,13 +14,12 @@ namespace TimeTracker3.Db.API.Exceptions
         ///     Constructs the exception.
         /// </summary>
         /// <param name="databaseAddress">
-        ///     The databaseAddress of the offending database.
+        ///     The address of the "closed" database.
         /// </param>
-        public DatabaseInUseDatabaseException(IDatabaseAddress databaseAddress)
-        : base("Database " + databaseAddress.ExternalForm + " is already in use")
+        public DatabaseClosedDatabaseException(IDatabaseAddress databaseAddress)
+        : base("The database " + databaseAddress.ExternalForm + " is closed")
         {
             Debug.Assert(databaseAddress != null);
-
             DatabaseAddress = databaseAddress;
         }
 
@@ -30,7 +27,7 @@ namespace TimeTracker3.Db.API.Exceptions
         //  Properties
 
         /// <summary>
-        ///     The address of the offending database.
+        ///     The address of the "closed" database.
         /// </summary>
         public readonly IDatabaseAddress DatabaseAddress;
     }

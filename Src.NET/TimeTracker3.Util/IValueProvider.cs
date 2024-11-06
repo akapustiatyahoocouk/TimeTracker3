@@ -67,7 +67,10 @@ namespace TimeTracker3.Util
         ///     The value currently "provided" by
         ///     this provider.
         /// </summary>
-        T Credentials { get; }
+        T Value { get; }
+
+        //////////
+        //  Events
 
         /// <summary>
         ///     Raised by this value provider when the

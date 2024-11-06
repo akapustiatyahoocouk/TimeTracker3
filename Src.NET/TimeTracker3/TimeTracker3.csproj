@@ -75,6 +75,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TimeTracker3.Db.API\TimeTracker3.Db.API.csproj">
+      <Project>{4e741d93-ddd0-4384-9fd7-37e43d094bcf}</Project>
+      <Name>TimeTracker3.Db.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TimeTracker3.Db.XmlFile\TimeTracker3.Db.XmlFile.csproj">
+      <Project>{e78f4926-8d35-4bbf-9321-6cc76dd03df9}</Project>
+      <Name>TimeTracker3.Db.XmlFile</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TimeTracker3.GUI\TimeTracker3.GUI.csproj">
       <Project>{8a91b1d2-51f0-49a2-b4fa-6f7eb4f8391a}</Project>
       <Name>TimeTracker3.GUI</Name>

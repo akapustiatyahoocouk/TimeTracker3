@@ -41,8 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractSetting.cs" />
+    <Compile Include="Guard.cs" />
+    <Compile Include="InterthreadQueue.cs" />
     <Compile Include="IValueProvider.cs" />
     <Compile Include="IProgressTracker.cs" />
+    <Compile Include="Lock.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

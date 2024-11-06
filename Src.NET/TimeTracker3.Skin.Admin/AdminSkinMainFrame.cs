@@ -1,6 +1,9 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Net;
+using System.Windows.Forms;
 using TimeTracker3.GUI;
 using TimeTracker3.Workspace;
+using TimeTracker3.Workspace.Exceptions;
 
 namespace TimeTracker3.Skin.Admin
 {
@@ -31,7 +34,7 @@ namespace TimeTracker3.Skin.Admin
 
             //  Title
             string title = "TimeTracker3";
-            Credentials currentCredentials = Credentials.Current;
+            Credentials currentCredentials = CurrentCredentialsProvider.Instance.Value;
             if (currentCredentials != null)
             {
                 title += " [" + currentCredentials.Login + "]";
@@ -73,6 +76,80 @@ namespace TimeTracker3.Skin.Admin
             }
         }
 
+        private Credentials _ObtainCompatibleCredentials(Workspace.Workspace workspace, Credentials credentials)
+        {   //  Returns null if the user has chosen to "cancel"
+            if (workspace == null)
+            {   //  Any Credentials, even empty ones, are compatible
+                //  with "no workspace"
+                return credentials;
+            }
+            while (credentials == null ||
+                   workspace.TryLogin(credentials) == null)
+            {   //  Ask user for new credentials
+                using (var dlg = new LoginDialog(credentials?.Login))
+                {
+                    if (dlg.ShowDialog(this) != DialogResult.OK)
+                    {   //  Give up
+                        return null;
+                    }
+                    credentials = dlg.Credentials;  //  try these ones
+                }
+            }
+            return credentials;
+        }
+
+        private bool _ChangeWorkspace(Workspace.Workspace newWorkspace, Credentials newCredentials)
+        {   //  returns true if newWorkspace has become "current", else false
+            if (newWorkspace == null)
+            {   //  Just make sure there is no "current" workspace
+                try
+                {
+                    CurrentWorkspaceProvider.Instance.Value?.Close();
+                }
+                finally
+                {   //  Even in case Close() throws, the "current"
+                    //  workspace must still become null
+                    CurrentWorkspaceProvider.Instance.Value = null;
+                }
+                return true;
+            }
+            if (newCredentials == null)
+            {   //  OOPS! Null credentials do not grant
+                //  access to any workspace
+                throw new AccessDeniedWorkspaceException();
+            }
+            //  General case - newWorkspace and newCredentials
+            //  are both not null
+            if (newWorkspace == CurrentWorkspaceProvider.Instance.Value)
+            {   //  Workspace doesn't change - but do the credentials ?
+                if (newCredentials != CurrentCredentialsProvider.Instance.Value)
+                {   //  Yes - must replace "current" credentials.
+                    //  Do newCredentials grant access to the "current" workspace?
+                    newCredentials = _ObtainCompatibleCredentials(newWorkspace, newCredentials);
+                    if (newCredentials == null)
+                    {   //  OOPS! The user has refused to provide credentials
+                        //  compatible with newWorkspace
+                        return false;
+                    }
+                }
+                //  Nothing to do
+                return true;
+            }
+            //  The "current" workspace actually changes.
+            //  Do newCredentials grant access to the newWorkspace?
+            newCredentials = _ObtainCompatibleCredentials(newWorkspace, newCredentials);
+            if (newCredentials == null)
+            {   //  OOPS! The user has refused to provide credentials
+                //  compatible with newWorkspace
+                return false;
+            }
+            //  All OK - replace "current" Workspace and Credentials
+            CurrentWorkspaceProvider.Instance.Value?.Close();   //  TODO catch...
+            CurrentWorkspaceProvider.Instance.Value = newWorkspace;
+            CurrentCredentialsProvider.Instance.Value = newCredentials;
+            return true;
+        }
+
         //////////
         //  Event handlers
         private void AdminSkinMainFrame_FormClosing(object sender, FormClosingEventArgs e)
@@ -80,12 +157,12 @@ namespace TimeTracker3.Skin.Admin
             _Exit();
         }
 
-        private void _FileExitMenuItem_Click(object sender, System.EventArgs e)
+        private void _FileExitMenuItem_Click(object sender, EventArgs e)
         {
             _Exit();
         }
 
-        private void AdminSkinMainFrame_LocationChanged(object sender, System.EventArgs e)
+        private void AdminSkinMainFrame_LocationChanged(object sender, EventArgs e)
         {
             if (_TrackPosition)
             {
@@ -93,7 +170,7 @@ namespace TimeTracker3.Skin.Admin
             }
         }
 
-        private void AdminSkinMainFrame_SizeChanged(object sender, System.EventArgs e)
+        private void AdminSkinMainFrame_SizeChanged(object sender, EventArgs e)
         {
             if (_TrackPosition)
             {
@@ -101,13 +178,31 @@ namespace TimeTracker3.Skin.Admin
             }
         }
 
-        private void _NewWorkspaceMenuItem_Click(object sender, System.EventArgs e)
+        private void _NewWorkspaceMenuItem_Click(object sender, EventArgs e)
         {
             using (NewWorkspaceDialog dlg = new NewWorkspaceDialog())
             {
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
-
+                    if (!_ChangeWorkspace(dlg.CreatedWorkspace, dlg.CreatedWorkspaceCredentials))
+                    {   //  OOPS! We won't be using the newly created workspace
+                        try
+                        {
+                            dlg.CreatedWorkspace.Close();   //  TODO catch...
+                        }
+                        catch (Exception ex)
+                        {
+                            ErrorDialog.Show(this, ex);
+                        }
+                        try
+                        {
+                            dlg.CreatedWorkspace.Type.DestroyWorkspace(dlg.CreatedWorkspace.Address);   //  TODO catch...
+                        }
+                        catch (Exception ex)
+                        {
+                            ErrorDialog.Show(this, ex);
+                        }
+                    }
                 }
             }
         }

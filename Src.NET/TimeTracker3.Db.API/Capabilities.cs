@@ -19,6 +19,9 @@ namespace TimeTracker3.Db.API
         LogWork = 0x0100,
         LogEvents = 0x0200,
         GenerateReports = 0x0400,
-        BackupAndRestore = 0x0800
+        BackupAndRestore = 0x0800,
+        //  Flag sets
+        None = 0x0000,
+        All = 0x0FFF
     }
 }

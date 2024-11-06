@@ -4,7 +4,7 @@ using TimeTracker3.Db.API.Exceptions;
 namespace TimeTracker3.Workspace.Exceptions
 {
     /// <summary>
-    ///     The common base class for all exceptions throws 
+    ///     The common base class for all exceptions throws
     ///     by Workspace services.
     /// </summary>
     public class WorkspaceException : Exception
@@ -47,12 +47,18 @@ namespace TimeTracker3.Workspace.Exceptions
             {
                 case AlreadyExistsDatabaseException exx:
                     return new AlreadyExistsWorkspaceException(exx.ObjectTypeName, exx.PropertyName, exx.PropertyValue);
+                case DatabaseClosedDatabaseException exx:
+                    return new WorkspaceClosedWorkspaceException(new WorkspaceAddress(exx.DatabaseAddress));
                 case DatabaseInUseDatabaseException exx:
-                    return new WorkspaceInUseWorkspaceException(new WorkspaceAddress(exx.Address));
+                    return new WorkspaceInUseWorkspaceException(new WorkspaceAddress(exx.DatabaseAddress));
                 case DoesNotExistDatabaseException exx:
                     return new DoesNotExistWorkspaceException(exx.ObjectTypeName, exx.PropertyName, exx.PropertyValue);
                 case IncompatibleObjectsDatabaseException exx:
                     return new IncompatibleObjectsWorkspaceException(exx.Object1, exx.Object2);
+                case InvalidPropertyValueDatabaseException exx:
+                    return new InvalidPropertyValueWorkspaceException(exx.ObjectTypeName, exx.PropertyName, exx.PropertyValue);
+                case ObjectDeadDatabaseException exx:
+                    return new ObjectDeadWorkspaceException(BusinessObjectType._Translate(exx.ObjectType), BusinessObjectId._Translate( exx.ObjectId));
                 //  TODO other database exceptions
                 default:
                     return (ex is WorkspaceException wex) ? wex : new WorkspaceException(ex);

@@ -57,8 +57,7 @@ namespace TimeTracker3
                 {   //  Don't even start!
                     Environment.Exit(0);
                 }
-
-                Credentials.Current = loginDialog.Credentials;
+                CurrentCredentialsProvider.Instance.Value = loginDialog.Credentials;
             }
 
             //  Select initial skin
@@ -69,8 +68,21 @@ namespace TimeTracker3
             Application.Run();
 
             //  Cleanup & exit
+
             //  TODO stop "current" activity if there is one
-            //  TODO close "current" workspace if there is one
+            //  Close "current" workspace if there is one
+            Workspace.Workspace currentWorkspace = CurrentWorkspaceProvider.Instance.Value;
+            CurrentWorkspaceProvider.Instance.Value = null;
+            try
+            {
+                currentWorkspace?.Close();
+            }
+            catch (Exception ex)
+            {
+                ErrorDialog.Show(null, ex);
+            }
+
+            //  We're done
             SettingsManager.SaveSettings();
         }
     }

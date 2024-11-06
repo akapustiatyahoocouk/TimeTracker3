@@ -37,7 +37,7 @@ namespace TimeTracker3.Db.XmlFile
         public string LongStatusReport => ShortStatusReport;
 
         //////////
-        //  IDatabaseType - Address handling
+        //  IDatabaseType - DatabaseAddress handling
         public IDatabaseAddress DefaultDatabaseAddress => null;
 
         public IDatabaseAddress ParseDatabaseAddress(string externalForm)
@@ -92,7 +92,13 @@ namespace TimeTracker3.Db.XmlFile
         //  IDatabaseType - Database handling
         public IDatabase CreateDatabase(IDatabaseAddress address)
         {
-            throw new NotImplementedException();
+            Debug.Assert(address != null);
+
+            if (!(address is XmlFileDatabaseAddress databaseAddress))
+            {   //  OOPS!
+                throw new IncompatibleObjectsDatabaseException("Database address", DisplayName + " databases");
+            }
+            return new XmlFileDatabase(databaseAddress, XmlFileDatabase.Mode.CreateNew);
         }
 
         public IDatabase OpenDatabase(IDatabaseAddress address)
@@ -107,8 +113,8 @@ namespace TimeTracker3.Db.XmlFile
 
         //////////
         //  Implementation
-        private static readonly string _FileFilter = 
-            "TimeTracker3 files (*" + PreferredExtension + 
+        private static readonly string _FileFilter =
+            "TimeTracker3 files (*" + PreferredExtension +
             ")|*" + PreferredExtension + "|All files (*.*)|*.*";
     }
 }

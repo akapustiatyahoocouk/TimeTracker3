@@ -16,10 +16,47 @@ namespace TimeTracker3.Workspace
             Debug.Assert(password != null);
 
             _Login = login;
-            //  TODO keep? kill? _Password = password;
+            _Password = password;
             _PasswordHash = Sha1.HashString(password);
         }
 
+        //////////
+        //  Operators
+        public static bool operator ==(Credentials c1, Credentials c2)
+        {
+            return c1?.Equals(c2) ?? ReferenceEquals(c2, null);
+        }
+
+        public static bool operator !=(Credentials c1, Credentials c2)
+        {
+            return !(c1 == c2);
+        }
+
+        //////////
+        //  object
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (obj is Credentials op2)
+            {
+                return _Login == op2._Login &&
+                       _PasswordHash == op2._PasswordHash;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return _Login.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return _Login;
+        }
         //////////
         //  Properties
 
@@ -33,21 +70,10 @@ namespace TimeTracker3.Workspace
         /// </summary>
         public string PasswordHash => _PasswordHash;
 
-        /// <summary>
-        ///     The "current" credentials; can be null.
-        /// </summary>
-        public static Credentials Current
-        {
-            get => _CurrentCredentials;
-            set => _CurrentCredentials = value;
-        }
-
         //////////
         //  Implementation
-        private readonly string _Login;
-        //  TODO keep? kill? private readonly string _Password;
+        internal readonly string _Login;
+        internal readonly string _Password;
         private readonly string _PasswordHash;  //  SHA-1
-
-        private static Credentials _CurrentCredentials; //  can be null!
     }
 }

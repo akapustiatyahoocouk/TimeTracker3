@@ -41,6 +41,11 @@
     <Compile Include="Capabilities.cs" />
     <Compile Include="DatabaseEventArgs.cs" />
     <Compile Include="DatabaseObjectUiTraits.cs" />
+    <Compile Include="DefaultValidator.cs" />
+    <Compile Include="Exceptions\DatabaseClosedDatabaseException.cs" />
+    <Compile Include="Exceptions\DatabaseCorruptDatabaseException.cs" />
+    <Compile Include="Exceptions\InvalidPropertyValueDatabaseException.cs" />
+    <Compile Include="Exceptions\ObjectDeadDatabaseException.cs" />
     <Compile Include="Exceptions\DoesNotExistDatabaseException.cs" />
     <Compile Include="Exceptions\AlreadyExistsDatabaseException.cs" />
     <Compile Include="Exceptions\DatabaseException.cs" />
@@ -82,6 +87,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Validators.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TimeTracker3.Util\TimeTracker3.Util.csproj">

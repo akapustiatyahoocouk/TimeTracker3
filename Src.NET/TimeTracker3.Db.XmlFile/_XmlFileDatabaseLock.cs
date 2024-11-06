@@ -59,6 +59,7 @@ namespace TimeTracker3.Db.XmlFile
             }
             //  Start lock refresh thread
             _RefreshThread = new Thread(_RefreshThreadProc);
+            _RefreshThread.Start();
         }
 
         //////////
@@ -71,10 +72,7 @@ namespace TimeTracker3.Db.XmlFile
         {
             Thread refreshThread = _RefreshThread;
             _RefreshThreadStopRequested = true;
-            if (refreshThread != null)
-            {
-                refreshThread.Join();
-            }
+            refreshThread?.Join();
         }
 
         //////////

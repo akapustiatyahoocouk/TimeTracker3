@@ -53,7 +53,7 @@ namespace TimeTracker3.GUI
             //  object
             public override string ToString()
             {
-                return _Exception.GetType()?.FullName ?? "???";
+                return _Exception.GetType().FullName ?? "???";
             }
 
             //  Properties

@@ -11,16 +11,16 @@ namespace TimeTracker3.Workspace.Exceptions
     {
         //////////
         //  Construction
-        public WorkspaceInUseWorkspaceException(WorkspaceAddress address)
-        : base("Workspace " + address.ExternalForm + " is already in use")
+        public WorkspaceInUseWorkspaceException(WorkspaceAddress workspaceAddress)
+        : base("Workspace " + workspaceAddress.ExternalForm + " is already in use")
         {
-            Debug.Assert(address != null);
+            Debug.Assert(workspaceAddress != null);
 
-            Address = address;
+            WorkspaceWorkspaceAddress = workspaceAddress;
         }
 
         //////////
         //  Properties
-        public readonly WorkspaceAddress Address;
+        public readonly WorkspaceAddress WorkspaceWorkspaceAddress;
     }
 }
