@@ -67,6 +67,7 @@
     <Compile Include="Exceptions\WorkspaceInUseWorkspaceException.cs" />
     <Compile Include="Exceptions\IncompatibleObjectsWorkspaceException.cs" />
     <Compile Include="Exceptions\WorkspaceException.cs" />
+    <Compile Include="WorkspaceSettings.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BusinessObjectType.cs" />

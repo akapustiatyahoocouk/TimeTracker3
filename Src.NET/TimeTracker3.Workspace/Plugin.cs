@@ -19,6 +19,7 @@ namespace TimeTracker3.Workspace
 
         public void Initialize()
         {
+            SettingsManager.RegisterSettings(WorkspaceSettings.Instance);
         }
     }
 }

@@ -19,6 +19,18 @@ namespace TimeTracker3.Workspace
         }
 
         //////////
+        //  Operators
+        public static bool operator ==(WorkspaceAddress a1, WorkspaceAddress a2)
+        {
+            return a1?.Equals(a2) ?? ReferenceEquals(a2, null);
+        }
+
+        public static bool operator !=(WorkspaceAddress a1, WorkspaceAddress a2)
+        {
+            return !(a1 == a2);
+        }
+
+        //////////
         //  object
         public override bool Equals(object obj)
         {

@@ -51,9 +51,12 @@ namespace TimeTracker3.Skin.Admin
             this.Text = title;
 
             //  Menu item availability
-            _CloseWorkspaceMenuItem.Enabled = (currentWorkspace != null);
+            _FileCloseWorkspaceMenuItem.Enabled = (currentWorkspace != null);
             _DestroyWorkspaceMenuItem.Enabled = false;  //  TODO implement
             _RecentWorkspacesMenu.Enabled = false;  //  TODO implement
+
+            //  Tool strip item availability
+            _CloseWorkspaceButton.Enabled = _FileCloseWorkspaceMenuItem.Enabled;
         }
 
         //////////
@@ -202,7 +205,7 @@ namespace TimeTracker3.Skin.Admin
             Refresh();
         }
 
-        private void _NewWorkspaceMenuItem_Click(object sender, EventArgs e)
+        private void _FileNewWorkspaceMenuItem_Click(object sender, EventArgs e)
         {
             using (NewWorkspaceDialog dlg = new NewWorkspaceDialog())
             {
@@ -231,7 +234,7 @@ namespace TimeTracker3.Skin.Admin
             }
         }
 
-        private void _OpenWorkspaceMenuItem_Click(object sender, EventArgs e)
+        private void _FileOpenWorkspaceMenuItem_Click(object sender, EventArgs e)
         {
             using (OpenWorkspaceDialog dlg = new OpenWorkspaceDialog())
             {
@@ -252,10 +255,10 @@ namespace TimeTracker3.Skin.Admin
             }
         }
 
-        private void _CloseWorkspaceMenuItem_Click(object sender, EventArgs e)
+        private void _FileCloseWorkspaceMenuItem_Click(object sender, EventArgs e)
         {
             try
-            {
+            {   //  Todo confirm workspace closure
                 CurrentWorkspaceProvider.Instance.Value?.Close();
             }
             catch (Exception ex)
@@ -265,6 +268,14 @@ namespace TimeTracker3.Skin.Admin
             finally
             {
                 CurrentWorkspaceProvider.Instance.Value = null;
+            }
+        }
+
+        private void _HelpAboutMenuItem_Click(object sender, EventArgs e)
+        {
+            using (AboutDialog dlg = new AboutDialog())
+            {
+                dlg.ShowDialog(this);
             }
         }
     }
