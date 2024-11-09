@@ -5,7 +5,7 @@ namespace TimeTracker3.Db.API
     /// <summary>
     ///     An activity available to only a specific user.
     /// </summary>
-    public interface IPrivateActivity
+    public interface IPrivateActivity : IActivity
     {
         //////////
         //  Associations

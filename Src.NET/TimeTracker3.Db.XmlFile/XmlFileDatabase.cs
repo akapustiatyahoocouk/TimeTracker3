@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Xml;
@@ -67,7 +68,20 @@ namespace TimeTracker3.Db.XmlFile
         }
 
         //////////
-        //  Properties
+        //  IDisposable
+        public void Dispose()
+        {
+            try
+            {
+                Close();
+            }
+            catch (Exception)
+            {   //  TODO log ?
+            }
+        }
+
+        //////////
+        //  IDatabase - Properties
         public IDatabaseType Type => XmlFileDatabaseType.Instance;
         public IDatabaseAddress Address => _Address;
 
@@ -85,7 +99,7 @@ namespace TimeTracker3.Db.XmlFile
         public IValidator Validator => _Validator;
 
         //////////
-        //  Operations - general
+        //  IDatabase - Operations - general
         public void Close()
         {
             using (new Lock(_Guard))
@@ -124,7 +138,7 @@ namespace TimeTracker3.Db.XmlFile
         }
 
         //////////
-        //  Associations
+        //  IDatabase - Associations
         public IUser[] Users => throw new NotImplementedException();
         public IActivityType[] ActivityTypes => throw new NotImplementedException();
         public IPublicActivity[] PublicActivitiesAndTasks => throw new NotImplementedException();
@@ -140,7 +154,7 @@ namespace TimeTracker3.Db.XmlFile
         public IWorkStream[] WorkStreams => throw new NotImplementedException();
 
         //////////
-        //  Access control
+        //  IDatabase - Access control
         public IAccount TryLogin(string login, string password)
         {
             Debug.Assert(login != null);
@@ -160,6 +174,52 @@ namespace TimeTracker3.Db.XmlFile
         }
 
         //////////
+        //  IDatabase - Operations - life cycle
+        public IUser CreateUser(bool enabled, string[] emailAddresses,
+            string realName, TimeSpan? inactivityTimeout, CultureInfo uiCulture)
+        {
+            Debug.Assert(emailAddresses != null);
+            Debug.Assert(realName != null);
+
+            using (new Lock(_Guard))
+            {
+                _CheckOpen();
+
+                //  Validate parameters
+                if (!_Validator.User.IsValidUserEmailAddresses(emailAddresses))
+                {
+                    throw new InvalidPropertyValueDatabaseException(DatabaseObjectTypes.User.Name, "emailAddresses", emailAddresses);
+                }
+                if (!_Validator.User.IsValidUserRealName(realName))
+                {
+                    throw new InvalidPropertyValueDatabaseException(DatabaseObjectTypes.User.Name, "realName", realName);
+                }
+                if (!_Validator.User.IsValidUserInactivityTimeout(inactivityTimeout))
+                {
+                    throw new InvalidPropertyValueDatabaseException(DatabaseObjectTypes.User.Name, "inactivityTimeout", inactivityTimeout);
+                }
+                if (!_Validator.User.IsValidUserUiCulture(uiCulture))
+                {
+                    throw new InvalidPropertyValueDatabaseException(DatabaseObjectTypes.User.Name, "uiCulture", uiCulture);
+                }
+                //  Make the change...
+                XmlFileUser user =
+                    new XmlFileUser(this,
+                        new XmlFileIDatabaseObjectId(_NextUnusedOid++),
+                        emailAddresses, enabled,
+                        inactivityTimeout, realName, uiCulture);
+                //  ...schedule change notifications...
+                _ScheduleNotification(
+                    new DatabaseObjectCreatedEventArgs(
+                        this,
+                        DatabaseObjectTypes.User,
+                        user._Oid));
+                //  ...and we're done
+                return user;
+            }
+        }
+
+        //////////
         //  Events
         public event EventHandler<DatabaseObjectCreatedEventArgs> ObjectCreated;
         public event EventHandler<DatabaseObjectModifiedEventArgs> ObjectModified;
@@ -167,16 +227,20 @@ namespace TimeTracker3.Db.XmlFile
 
         //////////
         //  Implementation
-        private readonly XmlFileDatabaseAddress _Address;
+        internal readonly XmlFileDatabaseAddress _Address;
         private _XmlFileDatabaseLock _DatabaseFileLock; //  null == database is closed
         internal readonly Guard _Guard = new Guard();   //  for all access synchronization
         private bool _NeedsSaving /* = false */;
-        private readonly IValidator _Validator = new DefaultValidator();
+        internal readonly IValidator _Validator = new DefaultValidator();
 
         //  Object tables
         internal readonly IDictionary<XmlFileIDatabaseObjectId, XmlFileDatabaseObject> _Objects =
             new Dictionary<XmlFileIDatabaseObjectId, XmlFileDatabaseObject>();
-        internal static long _NextUnusedOid = 1;
+        internal long _NextUnusedOid = 1;
+
+        //  Deserialization support
+        internal Dictionary<XmlFileDatabaseObject, XmlElement> _XmlElementsForDatabaseObjects =
+            new Dictionary<XmlFileDatabaseObject, XmlElement>();
 
         //  Helpers
         internal void _CheckOpen()
@@ -206,9 +270,12 @@ namespace TimeTracker3.Db.XmlFile
                 {   //  OOPS! Not a valid TT3 database file!
                     throw new DatabaseCorruptDatabaseException(_Address);
                 }
+                if (!long.TryParse(document.DocumentElement.GetAttribute("FormatVersion"), out _NextUnusedOid))
+                {   //  OOPS! Absent or invalid!
+                    throw new DatabaseCorruptDatabaseException(_Address);
+                }
+                _XmlElementsForDatabaseObjects.Clear();
 
-                Dictionary<XmlFileDatabaseObject, XmlElement> xmlElementsForDatabaseObjects =
-                    new Dictionary<XmlFileDatabaseObject, XmlElement>();
                 foreach (XmlElement userElement in
                          document.DocumentElement.ChildNodes
                              .OfType<XmlElement>()
@@ -221,10 +288,10 @@ namespace TimeTracker3.Db.XmlFile
                         throw new DatabaseCorruptDatabaseException(_Address);
                     }
                     //  Create & de-serialize user
-                    XmlFileUser user = new XmlFileUser(this, oid, new string[0], true, null, "unknown", null);
+                    XmlFileUser user = new XmlFileUser(this, oid);
                     user._DeserializeProperties(userElement);
                     user._DeserializeAggregations(userElement);
-                    xmlElementsForDatabaseObjects[user] = userElement;
+                    _XmlElementsForDatabaseObjects[user] = userElement;
                 }
                 //  TODO finish implementation
 
@@ -232,8 +299,11 @@ namespace TimeTracker3.Db.XmlFile
                 //  to de-serialize associations between them
                 foreach (XmlFileDatabaseObject databaseObject in _Objects.Values)
                 {
-                    databaseObject._DeserializeAssociations(xmlElementsForDatabaseObjects[databaseObject]);
+                    databaseObject._DeserializeAssociations(_XmlElementsForDatabaseObjects[databaseObject]);
                 }
+
+                //  Done!
+                _XmlElementsForDatabaseObjects.Clear();
             }
             catch (Exception ex)
             {   //  TODO log ?
@@ -250,6 +320,7 @@ namespace TimeTracker3.Db.XmlFile
             XmlDocument document = new XmlDocument();
             XmlElement documentElement = document.CreateElement("TimeTrackerDatabase");
             documentElement.SetAttribute("FormatVersion", "3");
+            documentElement.SetAttribute("NextUnusedOid", _NextUnusedOid.ToString());
             document.AppendChild(documentElement);
             Debug.Assert(document.DocumentElement != null);
 
@@ -274,7 +345,7 @@ namespace TimeTracker3.Db.XmlFile
             }
         }
 
-        private void _SerializeObject(XmlFileDatabaseObject databaseObject, XmlElement parentElement)
+        internal void _SerializeObject(XmlFileDatabaseObject databaseObject, XmlElement parentElement)
         {
             Debug.Assert(databaseObject != null);
             Debug.Assert(parentElement != null);

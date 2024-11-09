@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using TimeTracker3.Db.API;
 using TimeTracker3.Db.API.Exceptions;
+using TimeTracker3.Util;
 using TimeTracker3.Workspace.Exceptions;
 
 namespace TimeTracker3.Workspace
@@ -30,19 +31,19 @@ namespace TimeTracker3.Workspace
         ///     This object's type.
         ///     Can be safely called on live and dead object alike.
         /// </summary>
-        public BusinessObjectType ObjectType { get; }
+        public BusinessObjectType ObjectType => BusinessObjectType._Translate(_DataObject.ObjectType);
 
         /// <summary>
         ///     True if this business object is live and can
         ///     be used, false if dead.
         /// </summary>
-        public bool IsLive { get; }
+        public bool IsLive => _DataObject.IsLive;
 
         /// <summary>
         ///     The workspace where this business object resides
         ///     (if live) or used to reside (if dead), never null.
         /// </summary>
-        public Workspace Workspace{ get; }
+        public Workspace Workspace => _Workspace;
 
         /// <summary>
         ///     The OID of this object - unique per workspace.
@@ -60,7 +61,7 @@ namespace TimeTracker3.Workspace
         ///     return the same IUiTraits instance for a given
         ///     IDatabaseObject instance.
         /// </summary>
-        public IUiTraits UiTraits { get; }
+        public IUiTraits UiTraits => _DataObject.UiTraits;
 
         //////////
         //  Operations - life cycle
@@ -68,10 +69,13 @@ namespace TimeTracker3.Workspace
         /// <summary>
         ///     Destroys this object, delete-cascading as necessary.
         /// </summary>
+        /// <param name="credentials">
+        ///     The credentials of the service caller.
+        /// </param>
         /// <exception cref="DatabaseException">
         ///     If an error occurs.
         /// </exception>
-        public abstract void Destroy();
+        public abstract void Destroy(Credentials credentials);
 
         //////////
         //  Implementation

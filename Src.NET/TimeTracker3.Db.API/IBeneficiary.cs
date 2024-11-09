@@ -3,11 +3,11 @@
 namespace TimeTracker3.Db.API
 {
     /// <summary>
-    ///     An agent (person or organization, whether internal 
-    ///     or external) who benefits from a given workload; this 
+    ///     An agent (person or organization, whether internal
+    ///     or external) who benefits from a given workload; this
     ///     will typically be the one billed for it.
     /// </summary>
-    public interface IBeneficiary
+    public interface IBeneficiary : IDatabaseObject
     {
         //////////
         //  Properties
@@ -21,7 +21,7 @@ namespace TimeTracker3.Db.API
         string DisplayName { get; set; }
 
         /// <summary>
-        ///     The description of this beneficiary; can contain 
+        ///     The description of this beneficiary; can contain
         ///     multiple lines separated by a newline '\n'.
         /// </summary>
         /// <exception cref="DatabaseException">
@@ -32,7 +32,7 @@ namespace TimeTracker3.Db.API
         //////////
         //  Associations
         /// <summary>
-        ///     An unordered list of all workloads associated with 
+        ///     An unordered list of all workloads associated with
         ///     this beneficiary, never null or contains nulls, but can be empty.
         /// </summary>
         IWorkload [] Workloads { get; }

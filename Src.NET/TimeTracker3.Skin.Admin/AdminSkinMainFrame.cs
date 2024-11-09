@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Windows.Forms;
 using TimeTracker3.GUI;
 using TimeTracker3.Workspace;
@@ -24,6 +23,10 @@ namespace TimeTracker3.Skin.Admin
             _LoadPosition();
             _TrackPosition = true;
             Refresh();
+
+            //  Set up event handler
+            CurrentWorkspaceProvider.Instance.ValueChanged += (sender, args) => _CurrentWorkspaceChanged();
+            CurrentCredentialsProvider.Instance.ValueChanged += (sender, args) => _CurrentCredentialsChanged();
         }
 
         //////////
@@ -39,13 +42,23 @@ namespace TimeTracker3.Skin.Admin
             {
                 title += " [" + currentCredentials.Login + "]";
             }
-
+            Workspace.Workspace currentWorkspace = CurrentWorkspaceProvider.Instance.Value;
+            if (currentWorkspace != null)
+            {
+                title += " - ";
+                title += currentWorkspace.Type.DisplayName + " " + currentWorkspace.Address.DisplayForm;
+            }
             this.Text = title;
+
+            //  Menu item availability
+            _CloseWorkspaceMenuItem.Enabled = (currentWorkspace != null);
+            _DestroyWorkspaceMenuItem.Enabled = false;  //  TODO implement
+            _RecentWorkspacesMenu.Enabled = false;  //  TODO implement
         }
 
         //////////
         //  Implementation
-        private bool _TrackPosition /*= false */;
+        private readonly bool _TrackPosition /*= false */;
 
         //  Helpers
         private void _Exit()
@@ -86,13 +99,14 @@ namespace TimeTracker3.Skin.Admin
             while (credentials == null ||
                    workspace.TryLogin(credentials) == null)
             {   //  Ask user for new credentials
-                using (var dlg = new LoginDialog(credentials?.Login))
+                using (var dlg = new LoginDialog())
                 {
+                    dlg.StartPosition = FormStartPosition.CenterParent;
                     if (dlg.ShowDialog(this) != DialogResult.OK)
                     {   //  Give up
                         return null;
                     }
-                    credentials = dlg.Credentials;  //  try these ones
+                    credentials = dlg.Credentials;  //  try these
                 }
             }
             return credentials;
@@ -178,6 +192,16 @@ namespace TimeTracker3.Skin.Admin
             }
         }
 
+        private void _CurrentWorkspaceChanged()
+        {
+            Refresh();
+        }
+
+        private void _CurrentCredentialsChanged()
+        {
+            Refresh();
+        }
+
         private void _NewWorkspaceMenuItem_Click(object sender, EventArgs e)
         {
             using (NewWorkspaceDialog dlg = new NewWorkspaceDialog())
@@ -204,6 +228,43 @@ namespace TimeTracker3.Skin.Admin
                         }
                     }
                 }
+            }
+        }
+
+        private void _OpenWorkspaceMenuItem_Click(object sender, EventArgs e)
+        {
+            using (OpenWorkspaceDialog dlg = new OpenWorkspaceDialog())
+            {
+                if (dlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    if (!_ChangeWorkspace(dlg.OpenedWorkspace, CurrentCredentialsProvider.Instance.Value))
+                    {   //  OOPS! We won't be using the newly opened workspace
+                        try
+                        {
+                            dlg.OpenedWorkspace.Close();   //  TODO catch...
+                        }
+                        catch (Exception ex)
+                        {
+                            ErrorDialog.Show(this, ex);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void _CloseWorkspaceMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CurrentWorkspaceProvider.Instance.Value?.Close();
+            }
+            catch (Exception ex)
+            {
+                ErrorDialog.Show(this, ex);
+            }
+            finally
+            {
+                CurrentWorkspaceProvider.Instance.Value = null;
             }
         }
     }

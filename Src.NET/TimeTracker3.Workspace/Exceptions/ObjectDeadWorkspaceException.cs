@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using TimeTracker3.Db.API.Exceptions;
 
 namespace TimeTracker3.Workspace.Exceptions
 {

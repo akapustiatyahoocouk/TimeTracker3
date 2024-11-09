@@ -38,6 +38,8 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this._DestroyWorkspaceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this._RecentWorkspacesMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this._FileExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
             this._HelpAboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,6 +68,8 @@
             this.toolStripMenuItem2,
             this._DestroyWorkspaceMenuItem,
             this.toolStripMenuItem3,
+            this._RecentWorkspacesMenu,
+            this.toolStripMenuItem4,
             this._FileExitMenuItem});
             this._FileMenu.Name = "_FileMenu";
             this._FileMenu.Size = new System.Drawing.Size(37, 22);
@@ -87,6 +91,7 @@
             this._OpenWorkspaceMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this._OpenWorkspaceMenuItem.Size = new System.Drawing.Size(208, 22);
             this._OpenWorkspaceMenuItem.Text = "&Open workspace";
+            this._OpenWorkspaceMenuItem.Click += new System.EventHandler(this._OpenWorkspaceMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -100,6 +105,7 @@
             this._CloseWorkspaceMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F4)));
             this._CloseWorkspaceMenuItem.Size = new System.Drawing.Size(208, 22);
             this._CloseWorkspaceMenuItem.Text = "C&lose workspace";
+            this._CloseWorkspaceMenuItem.Click += new System.EventHandler(this._CloseWorkspaceMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -117,6 +123,18 @@
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             this.toolStripMenuItem3.Size = new System.Drawing.Size(205, 6);
+            // 
+            // _RecentWorkspacesMenu
+            // 
+            this._RecentWorkspacesMenu.Image = ((System.Drawing.Image)(resources.GetObject("_RecentWorkspacesMenu.Image")));
+            this._RecentWorkspacesMenu.Name = "_RecentWorkspacesMenu";
+            this._RecentWorkspacesMenu.Size = new System.Drawing.Size(208, 22);
+            this._RecentWorkspacesMenu.Text = "&Recent workspaces";
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(205, 6);
             // 
             // _FileExitMenuItem
             // 
@@ -179,5 +197,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem _DestroyWorkspaceMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem _RecentWorkspacesMenu;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
     }
 }

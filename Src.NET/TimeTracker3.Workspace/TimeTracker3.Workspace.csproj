@@ -38,8 +38,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessAccount.cs" />
+    <Compile Include="BusinessWorkStream.cs" />
+    <Compile Include="BusinessProject.cs" />
+    <Compile Include="BusinessWorkload.cs" />
+    <Compile Include="BusinessBeneficiary.cs" />
+    <Compile Include="BusinessEvent.cs" />
+    <Compile Include="BusinessWork.cs" />
+    <Compile Include="BusinessPrivateTask.cs" />
+    <Compile Include="BusinessPrivateActivity.cs" />
+    <Compile Include="BusinessPublicTask.cs" />
+    <Compile Include="BusinessPublicActivity.cs" />
+    <Compile Include="BusinessActivity.cs" />
+    <Compile Include="BusinessActivityType.cs" />
     <Compile Include="BusinessObject.cs" />
     <Compile Include="BusinessPrincipal.cs" />
+    <Compile Include="BusinessTask.cs" />
     <Compile Include="BusinessUser.cs" />
     <Compile Include="BusinessCapabilities.cs" />
     <Compile Include="Credentials.cs" />

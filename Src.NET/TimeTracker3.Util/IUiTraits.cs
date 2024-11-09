@@ -1,9 +1,9 @@
 ﻿using System.Drawing;
 
-namespace TimeTracker3.Db.API
+namespace TimeTracker3.Util
 {
     /// <summary>
-    ///     The UI traits of a database object.
+    ///     The UI traits of an object.
     /// </summary>
     public interface IUiTraits
     {
@@ -16,13 +16,13 @@ namespace TimeTracker3.Db.API
         string TypeName { get; }
 
         /// <summary>
-        ///     The user-readable display name of the object's 
+        ///     The user-readable display name of the object's
         ///     type for the current UI culture.
         /// </summary>
         string TypeDisplayName { get; }
 
         /// <summary>
-        ///     The user-readable display name of the object 
+        ///     The user-readable display name of the object
         ///     for the current UI culture.
         /// </summary>
         string DisplayName { get; }

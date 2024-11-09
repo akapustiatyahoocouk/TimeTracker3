@@ -72,7 +72,13 @@ namespace TimeTracker3.Db.XmlFile
         {
             Thread refreshThread = _RefreshThread;
             _RefreshThreadStopRequested = true;
-            refreshThread?.Join();
+            if (refreshThread != null)
+            {
+                if (!refreshThread.Join(_LockRefreshIntervalMs))
+                {
+                    refreshThread.Abort();
+                }
+            }
         }
 
         //////////

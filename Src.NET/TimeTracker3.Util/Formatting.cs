@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 
 namespace TimeTracker3.Util
 {
@@ -90,6 +94,13 @@ namespace TimeTracker3.Util
         }
 
         //////////
+        //  Operations - System.Globalization.* types
+        public static string FormatCultureInfo(CultureInfo ci)
+        {
+            return ci == null ? "" : ci.Name;
+        }
+
+        //////////
         //  Operations - System.Drawing.* types
 
         /// <summary>
@@ -156,7 +167,7 @@ namespace TimeTracker3.Util
         //  Operations (formatter factories)
 
         /// <summary>
-        ///     Selects the default (as provided by this class) 
+        ///     Selects the default (as provided by this class)
         ///     formatter for the specified type.
         /// </summary>
         /// <typeparam name="T">
@@ -170,40 +181,80 @@ namespace TimeTracker3.Util
         ///     not supported.
         /// </exception>
         public static Formatter<T> GetDefaultFormatter<T>()
-        {    //  TODO implement caching type -> Formatter
+        {
+            //  Already cached ?
+            if (_FormattersForTypes.ContainsKey(typeof(T)))
+            {   //  Yes - use cached formatter
+                return (Formatter<T>)_FormattersForTypes[typeof(T)];
+            }
+            //  Need to create a new formatter
+            object newFormatter;
             //  C# basic types
             if (typeof(bool) == typeof(T))
             {
-                return (Formatter<T>)Delegate.CreateDelegate(typeof(Formatter<bool>), typeof(Formatting), "FormatBool", false);
+                newFormatter = Delegate.CreateDelegate(typeof(Formatter<bool>), typeof(Formatting), "FormatBool", false);
             }
-            if (typeof(int) == typeof(T))
+            else if (typeof(int) == typeof(T))
             {
-                return (Formatter<T>)Delegate.CreateDelegate(typeof(Formatter<int>), typeof(Formatting), "FormatInt", false);
+                newFormatter = Delegate.CreateDelegate(typeof(Formatter<int>), typeof(Formatting), "FormatInt", false);
             }
-            if (typeof(string) == typeof(T))
+            else if (typeof(string) == typeof(T))
             {
-                return (Formatter<T>)Delegate.CreateDelegate(typeof(Formatter<string>), typeof(Formatting), "FormatString", false);
+                newFormatter = Delegate.CreateDelegate(typeof(Formatter<string>), typeof(Formatting), "FormatString", false);
             }
             //  System.* types
-            if (typeof(DateTime) == typeof(T))
+            else if (typeof(DateTime) == typeof(T))
             {
-                return (Formatter<T>)Delegate.CreateDelegate(typeof(Formatter<DateTime>), typeof(Formatting), "FormatDateTime", false);
+                newFormatter = Delegate.CreateDelegate(typeof(Formatter<DateTime>), typeof(Formatting), "FormatDateTime", false);
+            }
+            //  System.Globalization.* types
+            else if (typeof(CultureInfo) == typeof(T))
+            {
+                newFormatter = Delegate.CreateDelegate(typeof(Formatter<CultureInfo>), typeof(Formatting), "FormatCultureInfo", false);
             }
             //  System.Drawing.* types
-            if (typeof(Point) == typeof(T))
+            else if (typeof(Point) == typeof(T))
             {
-                return (Formatter<T>)Delegate.CreateDelegate(typeof(Formatter<Point>), typeof(Formatting), "FormatPoint", false);
+                newFormatter = Delegate.CreateDelegate(typeof(Formatter<Point>), typeof(Formatting), "FormatPoint", false);
             }
-            if (typeof(Size) == typeof(T))
+            else if (typeof(Size) == typeof(T))
             {
-                return (Formatter<T>)Delegate.CreateDelegate(typeof(Formatter<Size>), typeof(Formatting), "FormatSize", false);
+                newFormatter = Delegate.CreateDelegate(typeof(Formatter<Size>), typeof(Formatting), "FormatSize", false);
             }
-            if (typeof(Rectangle) == typeof(T))
+            else if (typeof(Rectangle) == typeof(T))
             {
-                return (Formatter<T>)Delegate.CreateDelegate(typeof(Formatter<Rectangle>), typeof(Formatting), "FormatRectangle", false);
+                newFormatter = Delegate.CreateDelegate(typeof(Formatter<Rectangle>), typeof(Formatting), "FormatRectangle", false);
             }
             //  TODO more types
-            throw new NotImplementedException();
+            else
+            {   //  OOPS! Can't!
+                throw new ArgumentException();
+            }
+            //  Cache & return
+            _FormattersForTypes[typeof(T)] = newFormatter;
+            return (Formatter<T>)newFormatter;
         }
+
+        /// <summary>
+        ///     Registers a "default" formatter for the
+        ///     specified type.
+        /// </summary>
+        /// <typeparam name="T">
+        ///     The type to register a "default" formatter for.
+        /// </typeparam>
+        /// <param name="formatter">
+        ///     The formatter to register.
+        /// </param>
+        public static void RegisterDefaultFormatter<T>(Formatter<T> formatter)
+        {
+            Debug.Assert(formatter != null);
+
+            _FormattersForTypes[typeof(T)] = formatter;
+        }
+
+        //////////
+        //  Implementation
+        private static readonly IDictionary<Type, object> _FormattersForTypes =
+            new ConcurrentDictionary<Type, object>();
     }
 }

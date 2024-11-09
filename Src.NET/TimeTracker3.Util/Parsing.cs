@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 
 namespace TimeTracker3.Util
 {
@@ -325,6 +329,30 @@ namespace TimeTracker3.Util
         }
 
         //////////
+        //  Operations (fragment parsing) - System.Globalization.* types
+        public static bool ParseCultureInfoFragment(string valueString, ref int scan, out CultureInfo value)
+        {
+            if (valueString == null || scan + 5 > valueString.Length)
+            {
+                value = null;
+                return false;
+            }
+
+            //  <language2>-<country2/region2>
+            try
+            {
+                value = new CultureInfo(valueString.Substring(scan, 5));
+                scan += 5;
+                return true;
+            }
+            catch (Exception e)
+            {
+                value = null;
+                return false;
+            }
+        }
+
+        //////////
         //  Operations (fragment parsing) - System.Drawing.* types
 
         /// <summary>
@@ -357,7 +385,7 @@ namespace TimeTracker3.Util
 
             //  (x,y))
             int prescan = scan;
-            if (_SkipCharacter(valueString, '(', ref prescan) && 
+            if (_SkipCharacter(valueString, '(', ref prescan) &&
                 ParseIntFragment(valueString, ref prescan, out int x) &&
                 _SkipCharacter(valueString, ',', ref prescan) &&
                 ParseIntFragment(valueString, ref prescan, out int y) &&
@@ -495,7 +523,7 @@ namespace TimeTracker3.Util
         //  Operations (parser factories)
 
         /// <summary>
-        ///     Selects the default (as provided by this class) 
+        ///     Selects the default (as provided by this class)
         ///     parser for the specified type.
         /// </summary>
         /// <typeparam name="T">
@@ -514,7 +542,7 @@ namespace TimeTracker3.Util
         }
 
         /// <summary>
-        ///     Selects the default (as provided by this class) 
+        ///     Selects the default (as provided by this class)
         ///     fragment parser for the specified type.
         /// </summary>
         /// <typeparam name="T">
@@ -528,44 +556,81 @@ namespace TimeTracker3.Util
         ///     type is not supported.
         /// </exception>
         public static FragmentParser<T> GetDefaultFragmentParser<T>()
-        {   //  TODO implement caching type -> FragmentParser
+        {   //  Already cached ?
+            if (_FragmentParsersForTypes.ContainsKey(typeof(T)))
+            {   //  Yes - use cached formatter
+                return (FragmentParser<T>)_FragmentParsersForTypes[typeof(T)];
+            }
+            //  Need to create a new fragment parser
+            object newFragmentParser;
             //  C# basic types
             if (typeof(bool) == typeof(T))
             {
-                return (FragmentParser<T>)Delegate.CreateDelegate(typeof(FragmentParser<bool>), typeof(Parsing), "ParseBoolFragment", false);
+                newFragmentParser = Delegate.CreateDelegate(typeof(FragmentParser<bool>), typeof(Parsing), "ParseBoolFragment", false);
             }
-            if (typeof(int) == typeof(T))
+            else if (typeof(int) == typeof(T))
             {
-                return (FragmentParser<T>)Delegate.CreateDelegate(typeof(FragmentParser<int>), typeof(Parsing), "ParseIntFragment", false);
+                newFragmentParser = Delegate.CreateDelegate(typeof(FragmentParser<int>), typeof(Parsing), "ParseIntFragment", false);
             }
-            if (typeof(string) == typeof(T))
+            else if (typeof(string) == typeof(T))
             {
-                return (FragmentParser<T>)Delegate.CreateDelegate(typeof(FragmentParser<string>), typeof(Parsing), "ParseStringFragment", false);
+                newFragmentParser = Delegate.CreateDelegate(typeof(FragmentParser<string>), typeof(Parsing), "ParseStringFragment", false);
             }
             //  System.* types
-            if (typeof(DateTime) == typeof(T))
+            else if (typeof(DateTime) == typeof(T))
             {
-                return (FragmentParser<T>)Delegate.CreateDelegate(typeof(FragmentParser<DateTime>), typeof(Parsing), "ParseDateTimeFragment", false);
+                newFragmentParser = Delegate.CreateDelegate(typeof(FragmentParser<DateTime>), typeof(Parsing), "ParseDateTimeFragment", false);
+            }
+            //  System.Globalization.* types
+            else if (typeof(CultureInfo) == typeof(T))
+            {
+                newFragmentParser = Delegate.CreateDelegate(typeof(FragmentParser<CultureInfo>), typeof(Parsing), "ParseCultureInfoFragment", false);
             }
             //  System.Drawing.* types
-            if (typeof(Point) == typeof(T))
+            else if (typeof(Point) == typeof(T))
             {
-                return (FragmentParser<T>)Delegate.CreateDelegate(typeof(FragmentParser<Point>), typeof(Parsing), "ParsePointFragment", false);
+                newFragmentParser = Delegate.CreateDelegate(typeof(FragmentParser<Point>), typeof(Parsing), "ParsePointFragment", false);
             }
-            if (typeof(Size) == typeof(T))
+            else if (typeof(Size) == typeof(T))
             {
-                return (FragmentParser<T>)Delegate.CreateDelegate(typeof(FragmentParser<Size>), typeof(Parsing), "ParseSizeFragment", false);
+                newFragmentParser = Delegate.CreateDelegate(typeof(FragmentParser<Size>), typeof(Parsing), "ParseSizeFragment", false);
             }
-            if (typeof(Rectangle) == typeof(T))
+            else if (typeof(Rectangle) == typeof(T))
             {
-                return (FragmentParser<T>)Delegate.CreateDelegate(typeof(FragmentParser<Rectangle>), typeof(Parsing), "ParseRectangleFragment", false);
+                newFragmentParser = Delegate.CreateDelegate(typeof(FragmentParser<Rectangle>), typeof(Parsing), "ParseRectangleFragment", false);
             }
-            //  System.Drawing.* types
             //  TODO more types
-            throw new NotImplementedException();
+            else
+            {
+                throw new ArgumentException();
+            }
+            //  Cache & return
+            _FragmentParsersForTypes[typeof(T)] = newFragmentParser;
+            return (FragmentParser<T>)newFragmentParser;
+        }
+
+        /// <summary>
+        ///     Registers a "default" fragment parser
+        ///     for the specified type.
+        /// </summary>
+        /// <typeparam name="T">
+        ///     The type to register a "default" formatter for.
+        /// </typeparam>
+        /// <param name="fragmentParser">
+        ///     The fragment parser to register.
+        /// </param>
+        public static void RegisterDefaultFragmentParser<T>(FragmentParser<T> fragmentParser)
+        {
+            Debug.Assert(fragmentParser != null);
+
+            _FragmentParsersForTypes[typeof(T)] = fragmentParser;
         }
 
         //////////
+        //  Implementation
+        private static readonly IDictionary<Type, object> _FragmentParsersForTypes =
+            new ConcurrentDictionary<Type, object>();
+
         //  Helpers
         private static bool _SkipCharacter(string s, char c, ref int scan)
         {

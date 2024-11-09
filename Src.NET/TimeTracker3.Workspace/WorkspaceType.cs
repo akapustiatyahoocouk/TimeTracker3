@@ -49,7 +49,7 @@ namespace TimeTracker3.Workspace
         public Image LargeImage => _DatabaseType.LargeImage;
 
         /// <summary>
-        ///     True if this workspace type is "operational" (i.e. can 
+        ///     True if this workspace type is "operational" (i.e. can
         ///     be used), else false.
         /// </summary>
         public bool IsOperational => _DatabaseType.IsOperational;
@@ -82,7 +82,7 @@ namespace TimeTracker3.Workspace
         }
 
         /// <summary>
-        ///     Parses an external (re-parsable) form of a workspace 
+        ///     Parses an external (re-parsable) form of a workspace
         ///     address of this type.
         /// </summary>
         /// <param name="externalForm">
@@ -162,11 +162,15 @@ namespace TimeTracker3.Workspace
         //  Workspace handling
 
         /// <summary>
-        ///     Creates a new empty workspace of this type at the specified 
+        ///     Creates a new empty workspace of this type at the specified
         ///     address.
         /// </summary>
         /// <param name="address">
         ///     The address to create a new workspace at.
+        /// </param>
+        /// <param name="adminCredentials">
+        ///     The credentials for the administrator
+        ///     for the new workspace.
         /// </param>
         /// <returns>
         ///     The newly created workspace.
@@ -174,7 +178,7 @@ namespace TimeTracker3.Workspace
         /// <exception cref="WorkspaceException">
         ///     If an error occurs.
         /// </exception>
-        public Workspace CreateWorkspace(WorkspaceAddress address)
+        public Workspace CreateWorkspace(WorkspaceAddress address, Credentials adminCredentials)
         {
             Debug.Assert(address != null);
 
@@ -183,19 +187,33 @@ namespace TimeTracker3.Workspace
                 throw new IncompatibleObjectsWorkspaceException("WorkspaceWorkspaceAddress", "Workspace");
             }
             //  Do the work
+            IDatabase database = null;
             try
             {
-                IDatabase database = _DatabaseType.CreateDatabase(address._DatabaseAddress);
+                database = _DatabaseType.CreateDatabase(address._DatabaseAddress);
+                //  Create Admin user...
+                IUser dataUser = database.CreateUser(true, Array.Empty<string>(), adminCredentials._Login, null, null);
+                //  ...with an Admin account...
+                IAccount dataAccount = dataUser.CreateAccount(true, Array.Empty<string>(), adminCredentials._Login, adminCredentials._Password, Capabilities.Administrator);
+                //  ...and we're done
                 return new Workspace(database);
             }
             catch (Exception ex)
-            {   //  OOPS! Translate & re-throw
+            {   //  OOPS! Cleanup, translate & re-throw
+                try
+                {
+                    database?.Close();
+                    _DatabaseType.DestroyDatabase(address._DatabaseAddress);
+                }
+                catch (Exception)
+                {   //  Suppress - we already have "ex"
+                }
                 throw WorkspaceException.Translate(ex);
             }
         }
 
         /// <summary>
-        ///     Opens an existing workspace of this type at the specified 
+        ///     Opens an existing workspace of this type at the specified
         ///     address.
         /// </summary>
         /// <param name="address">
@@ -228,7 +246,7 @@ namespace TimeTracker3.Workspace
         }
 
         /// <summary>
-        ///     Destroys an existing workspace of this type at the specified 
+        ///     Destroys an existing workspace of this type at the specified
         ///     address. The workspace must not be in use by any process.
         /// </summary>
         /// <param name="address">

@@ -103,7 +103,13 @@ namespace TimeTracker3.Db.XmlFile
 
         public IDatabase OpenDatabase(IDatabaseAddress address)
         {
-            throw new NotImplementedException();
+            Debug.Assert(address != null);
+
+            if (!(address is XmlFileDatabaseAddress databaseAddress))
+            {   //  OOPS!
+                throw new IncompatibleObjectsDatabaseException("Database address", DisplayName + " databases");
+            }
+            return new XmlFileDatabase(databaseAddress, XmlFileDatabase.Mode.OpenExisting);
         }
 
         public void DestroyDatabase(IDatabaseAddress address)

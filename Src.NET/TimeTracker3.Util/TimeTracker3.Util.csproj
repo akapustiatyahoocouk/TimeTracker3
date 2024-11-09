@@ -43,6 +43,7 @@
     <Compile Include="AbstractSetting.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="InterthreadQueue.cs" />
+    <Compile Include="IUiTraits.cs" />
     <Compile Include="IValueProvider.cs" />
     <Compile Include="IProgressTracker.cs" />
     <Compile Include="Lock.cs" />
@@ -67,6 +68,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -74,7 +74,6 @@
     <Compile Include="IPublicActivity.cs" />
     <Compile Include="IPublicTask.cs" />
     <Compile Include="ITask.cs" />
-    <Compile Include="IUiTraits.cs" />
     <Compile Include="IUser.cs" />
     <Compile Include="IWork.cs" />
     <Compile Include="IWorkload.cs" />

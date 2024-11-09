@@ -4,16 +4,16 @@ using TimeTracker3.Db.API;
 namespace TimeTracker3.Workspace
 {
     /// <summary>
-    ///     An Account in a workspace.
+    ///     A Workload in a workspace.
     /// </summary>
-    public sealed class BusinessAccount : BusinessPrincipal
+    public abstract class BusinessWorkload : BusinessObject
     {
         //////////
         //  Construction
-        internal BusinessAccount(Workspace workspace, IAccount dataAccount)
-            : base(workspace, dataAccount)
+        internal BusinessWorkload(Workspace workspace, IWorkload dataWorkload)
+            : base(workspace, dataWorkload)
         {
-            _DataAccount = dataAccount;
+            _DataWorkload = dataWorkload;
         }
 
         //////////
@@ -25,6 +25,6 @@ namespace TimeTracker3.Workspace
 
         //////////
         //  Implementation
-        internal readonly IAccount _DataAccount;
+        internal readonly IWorkload _DataWorkload;
     }
 }

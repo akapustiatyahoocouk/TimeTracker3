@@ -5,7 +5,7 @@ using TimeTracker3.Db.API.Exceptions;
 namespace TimeTracker3.Db.API
 {
     /// <summary>
-    ///     An actual person who can log in to the TimeTracker 
+    ///     An actual person who can log in to the TimeTracker
     ///     and do some work there.
     /// </summary>
     public interface IUser : IPrincipal
@@ -31,7 +31,7 @@ namespace TimeTracker3.Db.API
         string RealName { get; set; }
 
         /// <summary>
-        ///     The user's preferred UI locale; null == use system.
+        ///     The user's preferred UI culture; null == use system.
         /// </summary>
         /// <exception cref="DatabaseException">
         ///     If an error occurs.
@@ -51,7 +51,7 @@ namespace TimeTracker3.Db.API
         IAccount[] Accounts { get; }
 
         /// <summary>
-        ///     An unordered list of all private activities and tasks 
+        ///     An unordered list of all private activities and tasks
         ///     of this user, never null or contains nulls, but can be empty.
         /// </summary>
         /// <exception cref="DatabaseException">
@@ -106,7 +106,7 @@ namespace TimeTracker3.Db.API
 
         /// <summary>
         ///     An unordered list of all workloads where this user is
-        ///     permitted to contribute, never null or contains nulls, but 
+        ///     permitted to contribute, never null or contains nulls, but
         ///     can be empty.
         /// </summary>
         /// <exception cref="DatabaseException">
@@ -115,7 +115,7 @@ namespace TimeTracker3.Db.API
         IWorkload[] PermittedWorkloads { get; }
 
         /// <summary>
-        ///     Adds the specified workload to the list of workloads 
+        ///     Adds the specified workload to the list of workloads
         ///     permitted for this user.
         /// </summary>
         /// <param name="workload">
@@ -127,7 +127,7 @@ namespace TimeTracker3.Db.API
         void AddPermittedWorkload(IWorkload workload);
 
         /// <summary>
-        ///     Removes the specified workload from the list of workloads 
+        ///     Removes the specified workload from the list of workloads
         ///     permitted for this user.
         /// </summary>
         /// <param name="workload">
@@ -137,5 +137,38 @@ namespace TimeTracker3.Db.API
         ///     If an error occurs.
         /// </exception>
         void RemovePermittedWorkload(IWorkload workload);
+
+        //////////
+        //  Operations - life cycle
+
+        /// <summary>
+        ///     Creates a new account for this user with
+        ///     the specified properties.
+        /// </summary>
+        /// <param name="enabled">
+        ///     True if account shall be created "enabled", false
+        ///     if "disabled".
+        /// </param>
+        /// <param name="emailAddresses">
+        ///     The list of e-mail addresses for the account.
+        ///     Can be empty, but not null or contain nulls.
+        /// </param>
+        /// <param name="login">
+        ///     The login identifier for the new account.
+        /// </param>
+        /// <param name="password">
+        ///     The password for the new account.
+        /// </param>
+        /// <param name="capabilities">
+        ///     The capabilities for the new account.
+        /// </param>
+        /// <returns>
+        ///     The newly created account.
+        /// </returns>
+        /// <exception cref="DatabaseException">
+        ///     If an error occurs.
+        /// </exception>
+        IAccount CreateAccount(bool enabled, string[] emailAddresses,
+            string login, string password, Capabilities capabilities);
     }
 }

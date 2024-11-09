@@ -49,7 +49,7 @@ namespace TimeTracker3.Workspace
 
         /// <summary>
         ///     The user/readable display form of this
-        ///     workspace address the current UI locale.
+        ///     workspace address the current UI culture.
         /// </summary>
         public string DisplayForm => _DatabaseAddress.DisplayForm;
 

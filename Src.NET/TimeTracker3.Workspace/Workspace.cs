@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using TimeTracker3.Db.API;
 using TimeTracker3.Util;
@@ -6,7 +7,7 @@ using TimeTracker3.Workspace.Exceptions;
 
 namespace TimeTracker3.Workspace
 {
-    public sealed class Workspace
+    public sealed class Workspace : IDisposable
     {
         //////////
         //  Construction
@@ -17,6 +18,19 @@ namespace TimeTracker3.Workspace
             _Database = database;
             _Type = WorkspaceType._MapDatabaseType(database.Type);
             _Address = _Type._MapDatabaseAddress(database.Address);
+        }
+
+        //////////
+        //  IDisposable
+        public void Dispose()
+        {
+            try
+            {
+                Close();
+            }
+            catch (Exception)
+            {   //  TODO log ?
+            }
         }
 
         //////////
@@ -122,6 +136,53 @@ namespace TimeTracker3.Workspace
             }
         }
 
+        /// <summary>
+        ///     Retrieves the access capabilities granted to the
+        ///     client with the specified credentials.
+        /// </summary>
+        /// <param name="credentials">
+        ///     The client's credentials.
+        /// </param>
+        /// <returns>
+        ///     The client's access capabilities or null if the
+        ///     specified Credentials do not grant access to this
+        ///     workspace at all.
+        /// </returns>
+        /// <exception cref="WorkspaceException">
+        ///     If an error occurs.
+        /// </exception>
+        public BusinessCapabilities? GetCapabilities(Credentials credentials)
+        {
+            Debug.Assert(credentials != null);
+
+            using (new Lock(_Guard))
+            {
+                _CheckOpen();
+                //  Already cached ?
+                if (_CapabilitiesCache.TryGetValue(credentials, out BusinessCapabilities? capabilities))
+                {   //  Found in cache!
+                    return capabilities;
+                }
+                //  Determine...
+                if (_CapabilitiesCache.Count >= _MaxCapabilitiesCacheSize)
+                {
+                    _CapabilitiesCache.Clear();
+                }
+                IAccount dataAccount = _Database.TryLogin(credentials._Login, credentials._Password);
+                if (dataAccount == null)
+                {   //  Login failed - no capabilities
+                    _CapabilitiesCache.Add(credentials, null);
+                    return null;
+                }
+                //  Login succeeded - translate, cache and return
+                //  the account's capabilities.
+                Capabilities dataCapabilities = dataAccount.Capabilities;
+                BusinessCapabilities result = (BusinessCapabilities)dataCapabilities;
+                _CapabilitiesCache.Add(credentials, result);
+                return result;
+            }
+        }
+
         //////////
         //  Implementation
         private readonly IDatabase _Database;
@@ -133,6 +194,10 @@ namespace TimeTracker3.Workspace
         //  Object caches
         private readonly WeakValueDictionary<IDatabaseObject, BusinessObject> _ObjectCache =
             new WeakValueDictionary<IDatabaseObject, BusinessObject>();
+
+        private readonly Dictionary<Credentials, BusinessCapabilities?> _CapabilitiesCache =
+            new Dictionary<Credentials, BusinessCapabilities?>();
+        private const int _MaxCapabilitiesCacheSize = 256;
 
         //  Helpers
         internal void _CheckOpen()

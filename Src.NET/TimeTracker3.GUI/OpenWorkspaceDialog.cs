@@ -6,13 +6,13 @@ using TimeTracker3.Workspace;
 namespace TimeTracker3.GUI
 {
     /// <summary>
-    ///     The "new workspace" modal dialog.
+    ///     The "open workspace" modal dialog.
     /// </summary>
-    public sealed partial class NewWorkspaceDialog : Form
+    public sealed partial class OpenWorkspaceDialog : Form
     {
         //////////
         //  Construction
-        public NewWorkspaceDialog()
+        public OpenWorkspaceDialog()
         {
             InitializeComponent();
 
@@ -48,46 +48,27 @@ namespace TimeTracker3.GUI
             base.Refresh();
             _WorkspaceAddressTextBox.Text =
                 (_SelectedWorkspaceAddress != null) ? _SelectedWorkspaceAddress.DisplayForm : "";
-            _LoginLabel.Enabled = _UseCustomCredentialsRadioButton.Checked;
-            _LoginTextBox.Enabled = _UseCustomCredentialsRadioButton.Checked;
-            _Password1Label.Enabled = _UseCustomCredentialsRadioButton.Checked;
-            _Password1TextBox.Enabled = _UseCustomCredentialsRadioButton.Checked;
-            _Password2Label.Enabled = _UseCustomCredentialsRadioButton.Checked;
-            _Password2TextBox.Enabled = _UseCustomCredentialsRadioButton.Checked;
             _OkButton.Enabled =
                 (_SelectedWorkspaceType != null) &&
-                (_SelectedWorkspaceAddress != null) &&
-                _UseCurrentCredentialsRadioButton.Checked ?
-                    CurrentCredentialsProvider.Instance.Value != null :
-                    (_LoginTextBox.Text.Length > 0 && _LoginTextBox.Text.Length <= 255 &&
-                     _Password1TextBox.Text == _Password2TextBox.Text);
+                (_SelectedWorkspaceAddress != null);
         }
 
         //////////
         //  Properties
 
         /// <summary>
-        ///     The workspace created with this dialog or null
-        ///     if the user has cancelled the workspace creation
+        ///     The newly opened workspace or null if the
+        ///     user has cancelled the workspace opening
         ///     process by cancelling this dialog.
         /// </summary>
-        public Workspace.Workspace CreatedWorkspace => _CreatedWorkspace;
-
-        /// <summary>
-        ///     The administrator credentials for the newly
-        ///     created workspace or null if the user has
-        ///     cancelled the workspace creation process by
-        ///     cancelling this dialog.
-        /// </summary>
-        public Credentials CreatedWorkspaceCredentials => _CreatedWorkspaceCredentials;
+        public Workspace.Workspace OpenedWorkspace => _OpenedWorkspace;
 
         //////////
         //  Implementation
         private WorkspaceType _SelectedWorkspaceType =>
             ((_WorkspaceTypeComboBoxItem)_WorkspaceTypeComboBox.SelectedItem)?._WorkspaceType;
         private WorkspaceAddress _SelectedWorkspaceAddress /* = null */;
-        private Workspace.Workspace _CreatedWorkspace /* = null*/;
-        private Credentials _CreatedWorkspaceCredentials /* = null*/;
+        private Workspace.Workspace _OpenedWorkspace /* = null*/;
 
         private sealed class _WorkspaceTypeComboBoxItem
         {
@@ -124,7 +105,7 @@ namespace TimeTracker3.GUI
             if (_SelectedWorkspaceType != null)
             {
                 WorkspaceAddress workspaceAddress =
-                    _SelectedWorkspaceType.EnterNewWorkspaceAddress(this);
+                    _SelectedWorkspaceType.EnterExistingWorkspaceAddress(this);
                 if (workspaceAddress != null)
                 {
                     _SelectedWorkspaceAddress = workspaceAddress;
@@ -139,15 +120,9 @@ namespace TimeTracker3.GUI
             {   //  Try creating the workspace
                 try
                 {
-                    _CreatedWorkspaceCredentials =
-                        _UseCurrentCredentialsRadioButton.Checked ?
-                            CurrentCredentialsProvider.Instance.Value :
-                            new Credentials(_LoginTextBox.Text, _Password1TextBox.Text);
-                    _CreatedWorkspace =
+                    _OpenedWorkspace =
                         _SelectedWorkspaceAddress.WorkspaceType.
-                            CreateWorkspace(
-                                _SelectedWorkspaceAddress,
-                                _CreatedWorkspaceCredentials);
+                            OpenWorkspace(_SelectedWorkspaceAddress);
                     DialogResult = DialogResult.OK;
                 }
                 catch (Exception ex)
@@ -159,34 +134,8 @@ namespace TimeTracker3.GUI
 
         private void _CancelButton_Click(object sender, EventArgs e)
         {
-            _CreatedWorkspaceCredentials = null;
-            _CreatedWorkspace = null;
+            _OpenedWorkspace = null;
             DialogResult = DialogResult.Cancel;
-        }
-
-        private void _UseCurrentCredentialsRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            Refresh();
-        }
-
-        private void _UseCustomCredentialsRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            Refresh();
-        }
-
-        private void _LoginTextBox_TextChanged(object sender, EventArgs e)
-        {
-            Refresh();
-        }
-
-        private void _Password1TextBox_TextChanged(object sender, EventArgs e)
-        {
-            Refresh();
-        }
-
-        private void _Password2TextBox_TextChanged(object sender, EventArgs e)
-        {
-            Refresh();
         }
     }
 }

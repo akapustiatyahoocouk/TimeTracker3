@@ -19,7 +19,7 @@
 
         /// <summary>
         ///     The user/readable display form of this database address
-        ///     for the current UI locale.
+        ///     for the current UI culture.
         /// </summary>
         string DisplayForm { get; }
 

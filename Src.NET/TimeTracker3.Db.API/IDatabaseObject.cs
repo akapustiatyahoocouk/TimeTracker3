@@ -1,4 +1,5 @@
 ﻿using TimeTracker3.Db.API.Exceptions;
+using TimeTracker3.Util;
 
 namespace TimeTracker3.Db.API
 {
@@ -18,7 +19,7 @@ namespace TimeTracker3.Db.API
         DatabaseObjectType ObjectType { get; }
 
         /// <summary>
-        ///     True if this object is live and can be used, false 
+        ///     True if this object is live and can be used, false
         ///     if dead.
         /// </summary>
         bool IsLive { get; }
@@ -42,7 +43,7 @@ namespace TimeTracker3.Db.API
         /// <summary>
         ///     The UI traits of this object, never null.
         ///     Implementations are strongly encouraged to always
-        ///     return the same IUiTraits instance for a given 
+        ///     return the same IUiTraits instance for a given
         ///     IDatabaseObject instance.
         /// </summary>
         IUiTraits UiTraits { get; }

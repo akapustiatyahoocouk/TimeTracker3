@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using TimeTracker3.Db.API.Exceptions;
 
 namespace TimeTracker3.Db.API
@@ -6,7 +7,7 @@ namespace TimeTracker3.Db.API
     /// <summary>
     ///     A connection to a persistent data storage.
     /// </summary>
-    public interface IDatabase
+    public interface IDatabase : IDisposable
     {
         //////////
         //  Properties
@@ -192,6 +193,40 @@ namespace TimeTracker3.Db.API
         ///     If an error occurs.
         /// </exception>
         IAccount TryLogin(string login, string password);
+
+        //////////
+        //  Operations - life cycle
+
+        /// <summary>
+        ///     Creates a new user with the specified properties.
+        /// </summary>
+        /// <param name="enabled">
+        ///     True if user shall be created "enabled", false
+        ///     if "disabled".
+        /// </param>
+        /// <param name="emailAddresses">
+        ///     The list of e-mail addresses for the user.
+        ///     Can be empty, but not null or contain nulls.
+        /// </param>
+        /// <param name="realName">
+        ///     The "real name" of the new user.
+        /// </param>
+        /// <param name="inactivityTimeout">
+        ///     The default inactivity timeout for the new
+        ///     user, null = none.
+        /// </param>
+        /// <param name="uiCulture">
+        ///     The UI culture for the new user, null == use
+        ///     system UI culture.
+        /// </param>
+        /// <returns>
+        ///     The newly created user.
+        /// </returns>
+        /// <exception cref="DatabaseException">
+        ///     If an error occurs.
+        /// </exception>
+        IUser CreateUser(bool enabled, string[] emailAddresses,
+            string realName, TimeSpan? inactivityTimeout, CultureInfo uiCulture);
 
         //////////
         //  Events
