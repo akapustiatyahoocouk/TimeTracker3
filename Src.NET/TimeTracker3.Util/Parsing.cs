@@ -345,7 +345,7 @@ namespace TimeTracker3.Util
                 scan += 5;
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 value = null;
                 return false;

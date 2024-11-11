@@ -30,7 +30,7 @@ namespace TimeTracker3.Skin.Admin
         }
 
         //////////
-        //  object
+        //  Control
         public override void Refresh()
         {
             base.Refresh();
@@ -53,15 +53,98 @@ namespace TimeTracker3.Skin.Admin
             //  Menu item availability
             _FileCloseWorkspaceMenuItem.Enabled = (currentWorkspace != null);
             _DestroyWorkspaceMenuItem.Enabled = false;  //  TODO implement
-            _RecentWorkspacesMenu.Enabled = false;  //  TODO implement
 
             //  Tool strip item availability
             _CloseWorkspaceButton.Enabled = _FileCloseWorkspaceMenuItem.Enabled;
+
+            //  "Recent workspaces" menu
+            WorkspaceAddress[] recentWorkspaceAddresses =
+                WorkspaceSettings.Instance.RecentWorkspaces.Value;
+            _RecentWorkspacesMenu.DropDownItems.Clear();
+            for (int i = 0; i <= 9 && i < recentWorkspaceAddresses.Length; i++)
+            {
+                string text =
+                    '&' + (i + 1).ToString() +
+                    " - " + recentWorkspaceAddresses[i].WorkspaceType.DisplayName +
+                    " " + recentWorkspaceAddresses[i].ExternalForm;
+                _RecentWorkspaceOpener opener = new _RecentWorkspaceOpener(this, recentWorkspaceAddresses[i]);
+                _RecentWorkspacesMenu.DropDownItems.Add(text, recentWorkspaceAddresses[i].WorkspaceType.SmallImage, opener._Invoke);
+            }
+            _RecentWorkspacesMenu.Enabled = (_RecentWorkspacesMenu.DropDownItems.Count > 0);
         }
 
         //////////
         //  Implementation
         private readonly bool _TrackPosition /*= false */;
+
+        private sealed class _RecentWorkspaceOpener
+        {
+            //  Construction
+            internal _RecentWorkspaceOpener(AdminSkinMainFrame mainFrame, WorkspaceAddress workspaceAddress)
+            {
+                _MainFrame = mainFrame;
+                _WorkspaceAddress = workspaceAddress;
+            }
+
+            //  Event handlers
+            internal void _Invoke(object sender, EventArgs e)
+            {   //  If the workspace is already the current one, we
+                //  have nothing to do...
+                if (CurrentWorkspaceProvider.Instance.Value != null &&
+                    CurrentWorkspaceProvider.Instance.Value.Address == _WorkspaceAddress)
+                {   //  ...except bring that workspace to the top of
+                    //  the "recent workspaces" list
+                    WorkspaceSettings.Instance.AddRecentWorkspaceAddress(_WorkspaceAddress);
+                    return;
+                }
+                //  Try opening the workspace
+                Workspace.Workspace newWorkspace;
+                try
+                {
+                    newWorkspace = _WorkspaceAddress.WorkspaceType.OpenWorkspace(_WorkspaceAddress);
+                }
+                catch (Exception ex)
+                {   //  OOPS! Show...
+                    ErrorDialog.Show(_MainFrame, ex);
+                    //  ...and ask the used if to forget that "recent workspace"
+                    if (MessageBox.Show(
+                            "Do you want to remove the workspace\n" +
+                            _WorkspaceAddress +
+                            "\nfrom the list of recent workspaces?",
+                            "Error",
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        WorkspaceSettings.Instance.RemoveRecentWorkspaceAddress(_WorkspaceAddress);
+                    }
+                    _MainFrame.Refresh();
+                    return;
+                }
+                //  Workspace opened successfully - check access rights
+                try
+                {
+                    Workspace.Workspace oldWorkspace = CurrentWorkspaceProvider.Instance.Value;
+                    if (_MainFrame._ChangeWorkspace(newWorkspace, CurrentCredentialsProvider.Instance.Value))
+                    {   //  Workspace changed - close old workspace
+                        oldWorkspace?.Close();
+                        WorkspaceSettings.Instance.AddRecentWorkspaceAddress(_WorkspaceAddress);
+                    }
+                    else
+                    {   //  Workspace not changed - close new workspace
+                        newWorkspace.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ErrorDialog.Show(_MainFrame, ex);
+                }
+                _MainFrame.Refresh();
+            }
+
+            //  Implementation
+            private readonly AdminSkinMainFrame _MainFrame;
+            private readonly WorkspaceAddress _WorkspaceAddress;
+        }
 
         //  Helpers
         private void _Exit()
@@ -164,6 +247,7 @@ namespace TimeTracker3.Skin.Admin
             CurrentWorkspaceProvider.Instance.Value?.Close();   //  TODO catch...
             CurrentWorkspaceProvider.Instance.Value = newWorkspace;
             CurrentCredentialsProvider.Instance.Value = newCredentials;
+            WorkspaceSettings.Instance.AddRecentWorkspaceAddress(newWorkspace.Address);
             return true;
         }
 
@@ -195,14 +279,30 @@ namespace TimeTracker3.Skin.Admin
             }
         }
 
+        private delegate void RefreshDelegate();
+
         private void _CurrentWorkspaceChanged()
         {
-            Refresh();
+            if (InvokeRequired)
+            {   //  Called on worker thread
+                Invoke((RefreshDelegate)Refresh);
+            }
+            else
+            {   //  Called on event thread
+                Refresh();
+            }
         }
 
         private void _CurrentCredentialsChanged()
         {
-            Refresh();
+            if (InvokeRequired)
+            {   //  Called on worker thread
+                Invoke((RefreshDelegate)Refresh);
+            }
+            else
+            {   //  Called on event thread
+                Refresh();
+            }
         }
 
         private void _FileNewWorkspaceMenuItem_Click(object sender, EventArgs e)

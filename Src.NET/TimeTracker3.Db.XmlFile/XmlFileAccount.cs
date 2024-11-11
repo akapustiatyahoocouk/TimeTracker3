@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
 using TimeTracker3.Db.API;
@@ -133,7 +132,7 @@ namespace TimeTracker3.Db.XmlFile
 
             _Login = element.GetAttribute("Login");
             _PasswordHash = element.GetAttribute("PasswordHash");
-            _Capabilities = Parsing.Parse<Capabilities>(element.GetAttribute("Capabilities"), Capabilities.None);
+            _Capabilities = Parsing.Parse(element.GetAttribute("Capabilities"), Capabilities.None);
         }
 
         internal override void _DeserializeAggregations(XmlElement element)

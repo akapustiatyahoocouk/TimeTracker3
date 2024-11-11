@@ -108,9 +108,11 @@
             this._LicenceButton.Text = "Licence";
             this._LicenceButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this._LicenceButton.UseVisualStyleBackColor = true;
+            this._LicenceButton.Click += new System.EventHandler(this._LicenceButton_Click);
             // 
             // _ConfigurationButton
             // 
+            this._ConfigurationButton.Enabled = false;
             this._ConfigurationButton.Image = ((System.Drawing.Image)(resources.GetObject("_ConfigurationButton.Image")));
             this._ConfigurationButton.Location = new System.Drawing.Point(112, 64);
             this._ConfigurationButton.Name = "_ConfigurationButton";
@@ -143,6 +145,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About TimeTracker3";
+            this.Shown += new System.EventHandler(this.AboutDialog_Shown);
             ((System.ComponentModel.ISupportInitialize)(this._PictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._PictureBox2)).EndInit();
             this.ResumeLayout(false);

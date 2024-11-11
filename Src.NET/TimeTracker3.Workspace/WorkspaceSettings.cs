@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using TimeTracker3.Util;
 
 namespace TimeTracker3.Workspace
@@ -44,5 +47,48 @@ namespace TimeTracker3.Workspace
 
         //////////
         //  Operations
+
+        /// <summary>
+        ///     Adds the specified workspace address to the
+        ///     beginning of the recent workspace addresses
+        ///     list. If the workspace address is already
+        ///     somewhere in the list, it becomes first.
+        /// </summary>
+        /// <param name="workspaceAddress">
+        ///     The workspace address to add.
+        /// </param>
+        public void AddRecentWorkspaceAddress(WorkspaceAddress workspaceAddress)
+        {
+            Debug.Assert(workspaceAddress != null);
+
+            IList<WorkspaceAddress> workspaceAddresses =
+                RecentWorkspaces.Value.ToList();
+            workspaceAddresses.Remove(workspaceAddress);
+            workspaceAddresses.Insert(0, workspaceAddress);
+            RecentWorkspaces.Value =
+                workspaceAddresses.Take(MaxRecentWorkspaces).ToArray();
+        }
+
+        /// <summary>
+        ///     Removes the specified workspace address from
+        ///     the list of recent workspace addresses. If the
+        ///     workspace address is not in that list, the call
+        ///     has no effect.
+        /// </summary>
+        /// <param name="workspaceAddress">
+        ///     The workspace address to remove.
+        /// </param>
+        public void RemoveRecentWorkspaceAddress(WorkspaceAddress workspaceAddress)
+        {
+            Debug.Assert(workspaceAddress != null);
+
+            IList<WorkspaceAddress> workspaceAddresses =
+                RecentWorkspaces.Value.ToList();
+            if (workspaceAddresses.Remove(workspaceAddress))
+            {   //  Must save the changes
+                RecentWorkspaces.Value =
+                    workspaceAddresses.Take(MaxRecentWorkspaces).ToArray();
+            }
+        }
     }
 }

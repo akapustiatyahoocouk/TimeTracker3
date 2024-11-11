@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml;
@@ -126,7 +125,7 @@ namespace TimeTracker3.Db.XmlFile
                        .Split('|')
                        .Where(a => a.Trim().Length > 0)
                        .ToArray();
-            _Enabled = Util.Parsing.Parse<bool>(element.GetAttribute("Enabled"), false);
+            _Enabled = Parsing.Parse(element.GetAttribute("Enabled"), false);
         }
 
         internal override void _DeserializeAggregations(XmlElement element)

@@ -24,7 +24,10 @@
         string DisplayForm { get; }
 
         /// <summary>
-        ///     The external (re-parsable) form of this database address.
+        ///     The external (re-parsable) form of this
+        ///     database address.
+        ///     IMPORTANT: Must not include '\n' and '\r'
+        ///     characters!
         /// </summary>
         string ExternalForm { get; }
     }

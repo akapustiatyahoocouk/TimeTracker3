@@ -194,7 +194,7 @@ namespace TimeTracker3.Workspace
                 //  Create Admin user...
                 IUser dataUser = database.CreateUser(true, Array.Empty<string>(), adminCredentials._Login, null, null);
                 //  ...with an Admin account...
-                IAccount dataAccount = dataUser.CreateAccount(true, Array.Empty<string>(), adminCredentials._Login, adminCredentials._Password, Capabilities.Administrator);
+                dataUser.CreateAccount(true, Array.Empty<string>(), adminCredentials._Login, adminCredentials._Password, Capabilities.Administrator);
                 //  ...and we're done
                 return new Workspace(database);
             }

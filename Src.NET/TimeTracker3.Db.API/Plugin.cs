@@ -1,9 +1,7 @@
 ﻿using System.Reflection;
 using System;
 using System.Diagnostics;
-using System.Windows.Forms.ComponentModel.Com2Interop;
 using TimeTracker3.Util;
-using System.Threading;
 
 namespace TimeTracker3.Db.API
 {
@@ -31,6 +29,7 @@ namespace TimeTracker3.Db.API
 
         //////////
         //  Implementation helpers
+        //  ReSharper disable once UnusedMember.Local
         private static string _FormatCapabilities(Capabilities c)
         {
             string result = "";
@@ -49,6 +48,7 @@ namespace TimeTracker3.Db.API
             return result;
         }
 
+        //  ReSharper disable once UnusedMember.Local
         private static bool _ParseCapabilitiesFragment(string valueString, ref int scan, out Capabilities value)
         {
             if (valueString == null || scan > valueString.Length)

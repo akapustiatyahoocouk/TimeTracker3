@@ -8,7 +8,6 @@ using System.Linq;
 using TimeTracker3.Db.API.Exceptions;
 using System.Xml;
 using Formatting = TimeTracker3.Util.Formatting;
-using System.Net;
 
 namespace TimeTracker3.Db.XmlFile
 {
@@ -225,7 +224,7 @@ namespace TimeTracker3.Db.XmlFile
             _RealName = element.GetAttribute("RealName");
             if (element.HasAttribute("InactivityTimeout"))
             {
-                _InactivityTimeout = Parsing.Parse<TimeSpan>(element.GetAttribute("InactivityTimeout"), TimeSpan.Zero);
+                _InactivityTimeout = Parsing.Parse(element.GetAttribute("InactivityTimeout"), TimeSpan.Zero);
             }
             if (element.HasAttribute("UiCulture"))
             {

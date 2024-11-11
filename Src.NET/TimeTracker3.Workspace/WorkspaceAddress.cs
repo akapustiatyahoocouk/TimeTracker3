@@ -50,6 +50,13 @@ namespace TimeTracker3.Workspace
             return _DatabaseAddress.GetHashCode();
         }
 
+        public override string ToString()
+        {
+            return _DatabaseAddress.DatabaseType.DisplayName +
+                   " " +
+                   _DatabaseAddress.DisplayForm;
+        }
+
         //////////
         //  Properties
 
