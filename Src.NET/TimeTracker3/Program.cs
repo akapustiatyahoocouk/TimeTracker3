@@ -18,6 +18,7 @@ using System;
 using System.Threading;
 using System.Windows.Forms;
 using TimeTracker3.GUI;
+using TimeTracker3.GUI.Dialogs;
 using TimeTracker3.Skin.Admin;
 using TimeTracker3.Util;
 using TimeTracker3.Workspace;

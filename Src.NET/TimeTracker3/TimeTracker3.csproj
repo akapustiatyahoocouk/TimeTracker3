@@ -37,8 +37,7 @@
     <StartupObject>TimeTracker3.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>Tt3Large.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -102,6 +101,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Tt3Large.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Tt3Large.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

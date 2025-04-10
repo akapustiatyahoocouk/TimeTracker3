@@ -37,20 +37,24 @@
             // _OperationLabel
             // 
             this._OperationLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this._OperationLabel.BackColor = System.Drawing.Color.Transparent;
             this._OperationLabel.Location = new System.Drawing.Point(8, 152);
             this._OperationLabel.Name = "_OperationLabel";
-            this._OperationLabel.Size = new System.Drawing.Size(608, 23);
+            this._OperationLabel.Size = new System.Drawing.Size(608, 16);
             this._OperationLabel.TabIndex = 0;
             this._OperationLabel.Text = "<<OPERATION>>";
+            this._OperationLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // _ContextLabel
             // 
             this._ContextLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this._ContextLabel.BackColor = System.Drawing.Color.Transparent;
             this._ContextLabel.Location = new System.Drawing.Point(8, 176);
             this._ContextLabel.Name = "_ContextLabel";
-            this._ContextLabel.Size = new System.Drawing.Size(608, 23);
+            this._ContextLabel.Size = new System.Drawing.Size(608, 16);
             this._ContextLabel.TabIndex = 1;
             this._ContextLabel.Text = "<<CONTEXT>>";
+            this._ContextLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // _ProgressBar
             // 
@@ -64,7 +68,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(627, 231);
+            this.ClientSize = new System.Drawing.Size(623, 227);
             this.ControlBox = false;
             this.Controls.Add(this._ProgressBar);
             this.Controls.Add(this._ContextLabel);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using TimeTracker3.GUI;
+using TimeTracker3.GUI.Dialogs;
 using TimeTracker3.Workspace;
 using TimeTracker3.Workspace.Exceptions;
 
