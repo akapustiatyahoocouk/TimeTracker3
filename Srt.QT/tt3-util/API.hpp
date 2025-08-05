@@ -95,11 +95,10 @@ public:
 #include "tt3-util/FromString.hpp"
 #include "tt3-util/Collections.hpp"
 
-/*  TODO kill off
-#include "umlaut-util/Settings.hpp"
-#include "umlaut-util/Component.hpp"
-#include "umlaut-util/Plugin.hpp"
+#include "tt3-util/Plugin.hpp"
+#include "tt3-util/Settings.hpp"
+#include "tt3-util/Component.hpp"
 
-#include "umlaut-util/Components.hpp"
-*/
+#include "tt3-util/Components.hpp"
+
 //  End of tt3-util/API.hpp
