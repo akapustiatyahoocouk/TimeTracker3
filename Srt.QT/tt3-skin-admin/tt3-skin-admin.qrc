@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/tt3-skin-admin">
+        <file>Resources/Images/Objects/AdminSkinLarge.png</file>
+        <file>Resources/Images/Objects/AdminSkinSmall.png</file>
+    </qresource>
+</RCC>

@@ -1,5 +1,5 @@
 //
-//  tt3-gui/CurrentSkin.cpp - CurrentSkin class implementation
+//  tt3-skin-admin/AdminSkinComponent.cpp - AdminSkinComponent class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,24 +14,21 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#include "tt3-gui/API.hpp"
-using namespace gui;
+#include "tt3-skin-admin/API.hpp"
+using namespace skin::admin;
 
-ISkin * CurrentSkin::_currentSkin = nullptr;
-
-//////////
-//  Operationds
-ISkin * CurrentSkin::get()
+IMPLEMENT_SINGLETON(AdminSkinComponent)
+AdminSkinComponent::AdminSkinComponent()
+    :   Component("tt3-skin-admin",
+                "TimeTracker3 Administrator skin",
+                "Defines GUI Administrator skin for TimeTracker3",
+                "Copyright (C) 2026, Andrey Kapustin",
+                QVersionNumber(1, 0, 0))
 {
-    return _currentSkin;    //  can be nullptr
 }
 
-void CurrentSkin::set(ISkin * skin)
+AdminSkinComponent::~AdminSkinComponent()
 {
-    if (skin != _currentSkin)
-    {
-        _currentSkin = skin;    //  can be nullptr
-    }
 }
 
-//  End of tt3-gui/CurrentSkin.cpp
+//  End of tt3-skin-admin/AdminSkinComponent.cpp

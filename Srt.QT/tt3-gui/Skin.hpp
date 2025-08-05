@@ -37,7 +37,7 @@ namespace gui
         //  The user-readable display name of this skin
         virtual QString     displayName() const = 0;
 
-        //  The sjort description of this skin
+        //  The short description of this skin
         virtual QString     desciption() const = 0;
 
         //  The small (16x16) icon representing this skin.

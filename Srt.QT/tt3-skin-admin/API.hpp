@@ -1,5 +1,5 @@
 //
-//  tt3-gui/CurrentSkin.cpp - CurrentSkin class implementation
+//  tt3-skin-admin/API.hpp - tt3-skin-admin master header
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,24 +14,18 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#include "tt3-gui/API.hpp"
-using namespace gui;
-
-ISkin * CurrentSkin::_currentSkin = nullptr;
+#pragma once
 
 //////////
-//  Operationds
-ISkin * CurrentSkin::get()
-{
-    return _currentSkin;    //  can be nullptr
-}
+//  Dependencies
+#include "tt3-gui/API.hpp"
+#include "tt3-util/API.hpp"
 
-void CurrentSkin::set(ISkin * skin)
-{
-    if (skin != _currentSkin)
-    {
-        _currentSkin = skin;    //  can be nullptr
-    }
-}
+//////////
+//  tt3-skin-admin components
+#include "tt3-skin-admin/Linkage.hpp"
+#include "tt3-skin-admin/Components.hpp"
 
-//  End of tt3-gui/CurrentSkin.cpp
+#include "tt3-skin-admin/AdminSkin.hpp"
+
+//  End of tt3-skin-admin/API.hpp
