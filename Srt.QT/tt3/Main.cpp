@@ -110,6 +110,40 @@ namespace
             }
         }
     }
+
+    void selectActiveSkin()
+    {
+        gui::ISkin * initialSkin =
+            gui::SkinRegistry::findSkin(gui::GuiSettings::instance()->activeSkin);
+        //  Use a default skin ?
+        for (gui::ISkin * skin : gui::SkinRegistry::allSkins())
+        {
+            if (skin->isDefault() && initialSkin == nullptr)
+            {
+                initialSkin = skin;
+                break;
+            }
+        }
+        //  Use any available skin ?
+        for (gui::ISkin * skin : gui::SkinRegistry::allSkins())
+        {
+            if (initialSkin == nullptr)
+            {
+                initialSkin = skin;
+                break;
+            }
+        }
+        //  A skin MUST be selected
+        if (initialSkin == nullptr)
+        {
+            QMessageBox msgBox;
+            msgBox.setText("No UI skins defined.");
+            msgBox.setIcon(QMessageBox::Icon::Critical);
+            msgBox.exec();
+            QCoreApplication::quit();
+        }
+        gui::CurrentSkin::set(initialSkin);
+    }
 }
 
 //////////
@@ -130,12 +164,14 @@ int main(int argc, char *argv[])
     QPixmap pm;
     pm.load(":/tt3/Resources/Images/Misc/Tt3Large.png");
     QIcon ic(pm);
-    //  TODO kill off this->setWindowIcon(ic);
     QGuiApplication::setWindowIcon(ic);
+    QGuiApplication::setApplicationName("TimeTracker3");
 
     registerStandardComponents();
     util::PluginManager::loadPlugins();
     loadSettings();
+
+    selectActiveSkin();
 
     /*  TODO uncomment
     MainWindow w;

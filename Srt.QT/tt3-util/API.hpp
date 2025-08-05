@@ -56,6 +56,7 @@
 #include <QMainWindow>
 #include <QMenu>
 #include <QMenuBar>
+#include <QMessageBox>
 #include <QMoveEvent>
 #include <QMutex>
 #include <QMutexLocker>

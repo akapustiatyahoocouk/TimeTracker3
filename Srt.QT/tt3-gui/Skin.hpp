@@ -1,5 +1,5 @@
 //
-//  tt3-gui/Skin.hpp - TT3-gui Skins framework
+//  tt3-gui/Skin.hpp - tt3 Skins framework
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -31,10 +31,20 @@ namespace gui
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  The mnemonic identifier of this skin
         virtual QString     mnemonic() const = 0;
+
+        //  The user-readable display name of this skin
         virtual QString     displayName() const = 0;
+
+        //  The sjort description of this skin
         virtual QString     desciption() const = 0;
+
+        //  The small (16x16) icon representing this skin.
+        virtual QIcon       smallIcon() const = 0;
+
+        //  The large (32x32) icon representing this skin.
+        virtual QIcon       largeIcon() const = 0;
 
         //  True if this skin can be chosed by default
         //  if no skin or a nonexistent skin is requested
@@ -60,6 +70,25 @@ namespace gui
         //  Implementation
     private:
         static QMap<QString, ISkin*>    _registry;  //  key = mnemonic
+    };
+
+    //////////
+    //  The accessors for a "currently active" skin
+    class TT3_GUI_PUBLIC CurrentSkin final
+    {
+        UTILITY_CLASS(CurrentSkin)
+
+        //////////
+        //  Operationds
+    public:
+        //  TODO document
+        static ISkin *  get();
+        static void     set(ISkin * skin);
+
+        //////////
+        //  Implementation
+    private:
+        static ISkin *  _currentSkin;
     };
 }
 
