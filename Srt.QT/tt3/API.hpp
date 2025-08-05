@@ -18,7 +18,7 @@
 
 //////////
 //  Dependencies
-//  TODO uncomment #include "tt3-gui/API.hpp"
+#include "tt3-gui/API.hpp"
 //  TODO uncomment #include "tt3-bws/API.hpp"
 //  TODO uncomment #include "tt3-db-api/API.hpp"
 #include "tt3-util/API.hpp"

@@ -64,7 +64,7 @@ namespace util
     };
 
     //////////
-    //  THe registry of known components
+    //  The registry of known components
     class TT3_UTIL_PUBLIC ComponentRegistry final
     {
         UTILITY_CLASS(ComponentRegistry)

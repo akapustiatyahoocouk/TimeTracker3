@@ -1,5 +1,5 @@
 //
-//  tt3-util/API.hpp - yy3-util master header
+//  tt3-util/API.hpp - tt3-util master header
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -81,15 +81,9 @@
 #endif
 
 //////////
-//  Util components
+//  tt3-util components
 #include "tt3-util/Linkage.hpp"
 #include "tt3-util/Macros.hpp"
-
-class TT3_UTIL_PUBLIC Tt3Util
-{
-public:
-    Tt3Util();
-};
 
 #include "tt3-util/ToString.hpp"
 #include "tt3-util/FromString.hpp"

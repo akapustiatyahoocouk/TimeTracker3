@@ -11,7 +11,7 @@ HEADERS += \
 
 FORMS += \
 
-LIBS += -ltt3-util
-
 RESOURCES += \
     tt3.qrc
+
+LIBS += -ltt3-gui -ltt3-util

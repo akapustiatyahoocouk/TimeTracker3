@@ -1,5 +1,5 @@
 //
-//  tt3-util/Linkage.hpp - tt3-util linkage definitions
+//  tt3-gui/API.hpp - tt3-gui master header
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,11 +14,17 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
+#pragma once
 
-#if defined(TT3_UTIL_LIBRARY)
-    #define TT3_UTIL_PUBLIC     Q_DECL_EXPORT
-#else
-    #define TT3_UTIL_PUBLIC     Q_DECL_IMPORT
-#endif
+//////////
+//  Dependencies
+#include "tt3-util/API.hpp"
 
-//  End of tt3-util/Linkage.hpp
+//////////
+//  tt3-gui components
+#include "tt3-gui/Linkage.hpp"
+#include "tt3-gui/Components.hpp"
+
+#include "tt3-gui/Skin.hpp"
+
+//  End of tt3-gui/API.hpp

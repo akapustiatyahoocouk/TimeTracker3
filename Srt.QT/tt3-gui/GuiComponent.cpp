@@ -1,5 +1,5 @@
 //
-//  tt3-util/Linkage.hpp - tt3-util linkage definitions
+//  tt3-gui/GuiComponent.cpp - GuiComponent class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,11 +14,21 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
+#include "tt3-gui/API.hpp"
+using namespace gui;
 
-#if defined(TT3_UTIL_LIBRARY)
-    #define TT3_UTIL_PUBLIC     Q_DECL_EXPORT
-#else
-    #define TT3_UTIL_PUBLIC     Q_DECL_IMPORT
-#endif
+IMPLEMENT_SINGLETON(GuiComponent)
+GuiComponent::GuiComponent()
+    :   Component("tt3-gui",
+                "TimeTracker3 GUI",
+                "Defines GUI facilities for TimeTracker3",
+                "Copyright (C) 2026, Andrey Kapustin",
+                QVersionNumber(1, 0, 0))
+{
+}
 
-//  End of tt3-util/Linkage.hpp
+GuiComponent::~GuiComponent()
+{
+}
+
+//  End of tt3-gui/GuiComponent.cpp

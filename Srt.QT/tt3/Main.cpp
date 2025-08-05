@@ -22,6 +22,7 @@ namespace
     {   //  Some components are always part of a running application (i.e.
         //  they do not come from plugins). Register these upfront.
         util::ComponentRegistry::registerComponent(ApplicationComponent::instance());
+        util::ComponentRegistry::registerComponent(gui::GuiComponent::instance());
         //  TODO uncomment util::ComponentRegistry::registerComponent(bws::BwsComponent::instance());
         //  TODO uncomment util::ComponentRegistry::registerComponent(dbapi::DbApiComponent::instance());
         util::ComponentRegistry::registerComponent(util::UtilComponent::instance());

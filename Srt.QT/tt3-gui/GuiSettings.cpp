@@ -1,5 +1,5 @@
 //
-//  tt3-util/Linkage.hpp - tt3-util linkage definitions
+//  tt3-gui/GuiSettings.cpp - GuiSettings class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,11 +14,23 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
+#include "tt3-gui/API.hpp"
+using namespace gui;
 
-#if defined(TT3_UTIL_LIBRARY)
-    #define TT3_UTIL_PUBLIC     Q_DECL_EXPORT
-#else
-    #define TT3_UTIL_PUBLIC     Q_DECL_IMPORT
-#endif
+//////////
+//  Singleton
+IMPLEMENT_SINGLETON(GuiSettings)
 
-//  End of tt3-util/Linkage.hpp
+GuiSettings::GuiSettings()
+    :   activeSkin(
+          "ActiveSkin",
+          "The identifier of the currently active skin",
+          "")
+{
+    addSetting(&activeSkin);
+}
+GuiSettings::~GuiSettings()
+{
+}
+
+//  End of tt3-gui/GuiSettings.cpp
