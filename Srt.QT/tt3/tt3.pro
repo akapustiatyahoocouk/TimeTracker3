@@ -3,7 +3,7 @@ include(../tt3.pri)
 SOURCES += \
     ApplicationComponent.cpp \
     ApplicationSettings.cpp \
-    Main1.cpp
+    Main.cpp
 
 HEADERS += \
     API.hpp \
