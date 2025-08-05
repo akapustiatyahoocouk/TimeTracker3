@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/tt3">
+        <file>Resources/Images/Misc/Tt3Large.png</file>
+        <file>Resources/Images/Misc/Tt3Small.png</file>
+    </qresource>
+</RCC>
