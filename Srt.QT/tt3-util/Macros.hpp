@@ -50,40 +50,21 @@
 //  pre-main() time once
 class TT3_UTIL_PUBLIC OnceExecutor final
 {
+    //////////
+    //  Construction/destruction
 public:
-    OnceExecutor(const char * file, int line, void (*f)())
-        :   _file(file), _line(line)
-    {
-        for (OnceExecutor * oi = _onceExecutors; oi != nullptr; oi = oi->_nextInChain)
-        {
-            if (line == oi->_line && strcmp(file, oi->_file) == 0)
-            {   //  Already done!
-                return;
-            }
-        }
-        _nextInChain = _onceExecutors;
-        _onceExecutors = this;
-        qDebug() << _file;
-        qDebug() << _line;
-        f();
-    }
-    ~OnceExecutor()
-    {
-        for (OnceExecutor ** oi = &_onceExecutors; (*oi) != nullptr; oi = &((*oi)->_nextInChain))
-        {
-            if (_line == (*oi)->_line && strcmp(_file, (*oi)->_file) == 0)
-            {   //  This one!
-                *oi = _nextInChain;
-                _nextInChain = nullptr;
-                break;
-            }
-        }
-    }
+    OnceExecutor(const char * file, int line, void (*f)());
+    ~OnceExecutor();
+
+    //////////
+    //  Implementation
 private:
-    const char *const   _file;
-    const int           _line;
+    const char *const   _file;  //  as given by __FILE__
+    const int           _line;  //  as given by __LINE__
+    int                 _usageCount = 1;
     OnceExecutor *      _nextInChain = nullptr;
-    static inline OnceExecutor *    _onceExecutors = nullptr;
+
+    static OnceExecutor*_onceExecutors;
 };
 
 #define CONCAT_IMPL(x,y)    x##y

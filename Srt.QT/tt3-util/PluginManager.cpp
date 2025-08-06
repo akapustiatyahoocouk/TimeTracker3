@@ -32,7 +32,8 @@ void PluginManager::loadPlugins()
     //  Discover plugins
     for (const auto & ei : QDir(startupDirectory).entryInfoList())
     {
-        if (ei.isFile() && !ei.isSymbolicLink() && ei.absoluteFilePath() != exeFile)
+        if (ei.isFile() && !ei.isSymbolicLink() &&
+            ei.baseName().startsWith("tt3-") && ei.absoluteFilePath() != exeFile)
         {
             qDebug() << ei;
             _loadPluginsFromLibrary(ei.absoluteFilePath());
@@ -75,7 +76,7 @@ QSet<IPlugin*> PluginManager::initializedPlugins()
 void PluginManager::_loadPluginsFromLibrary(const QString & fileName)
 {
     if (_processedDlls.contains(fileName))
-    {
+    {   //  Already processed
         return;
     }
     _processedDlls.insert(fileName);

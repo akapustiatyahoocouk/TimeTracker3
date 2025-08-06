@@ -18,16 +18,6 @@
 
 namespace
 {
-    void registerStandardComponents()
-    {   //  Some components are always part of a running application (i.e.
-        //  they do not come from plugins). Register these upfront.
-        util::ComponentRegistry::registerComponent(ApplicationComponent::instance());
-        util::ComponentRegistry::registerComponent(gui::GuiComponent::instance());
-        //  TODO uncomment util::ComponentRegistry::registerComponent(bws::BwsComponent::instance());
-        util::ComponentRegistry::registerComponent(db::api::DbApiComponent::instance());
-        util::ComponentRegistry::registerComponent(util::UtilComponent::instance());
-    }
-
     void loadSettings()
     {
         QDir home = QDir::home();
@@ -168,7 +158,6 @@ int main(int argc, char *argv[])
     QGuiApplication::setWindowIcon(ic);
     QGuiApplication::setApplicationName("TimeTracker3");
 
-    registerStandardComponents();
     util::PluginManager::loadPlugins();
     loadSettings();
 

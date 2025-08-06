@@ -44,4 +44,6 @@ namespace gui
     };
 }
 
+EXECUTE_ONCE(util::ComponentRegistry::registerComponent(gui::GuiComponent::instance()))
+
 //  End of tt3-gui/Components.hpp

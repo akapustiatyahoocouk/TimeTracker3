@@ -43,4 +43,6 @@ namespace db::api
     };
 }
 
+EXECUTE_ONCE(util::ComponentRegistry::registerComponent(db::api::DbApiComponent::instance()))
+
 //  End of tt3-db-api/Components.hpp
