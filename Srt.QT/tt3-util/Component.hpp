@@ -37,6 +37,7 @@ namespace util
                 _desciption(description),
                 _copyright(copyright),
                 _version(version) {}
+    protected:
         virtual ~Component() = default;
 
         //////////

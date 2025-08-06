@@ -17,10 +17,10 @@ HEADERS += \
     Components.hpp \
     Linkage.hpp
 
-LIBS += -ltt3-gui -ltt3-util
-
 RESOURCES += \
     tt3-skin-admin.qrc
 
 FORMS += \
     AdminSkinMainFrame.ui
+
+LIBS += -ltt3-gui -ltt3-util

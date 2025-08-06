@@ -1,6 +1,6 @@
 //
-//  tt3/API.hpp - TT3 master header
-//  TODO add GPLv3 header to EVERY .hpp and .cpp file
+//  tt3-db-api/DbApiComponent.cpp - AdminSkinComponent class implementation
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -14,18 +14,21 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
-
-//////////
-//  Dependencies
-#include "tt3-gui/API.hpp"
-//  TODO uncomment #include "tt3-bws/API.hpp"
 #include "tt3-db-api/API.hpp"
-#include "tt3-util/API.hpp"
+using namespace db::api;
 
-//////////
-//  tt3 components
-#include "tt3/Components.hpp"
-//  TODO uncomment #include "tt3/MainWindow.hpp"
+IMPLEMENT_SINGLETON(DbApiComponent)
+DbApiComponent::DbApiComponent()
+    :   Component("tt3-db-api",
+                "TimeTracker3 database API",
+                "Defines common API for TimeTracker3 databases",
+                "Copyright (C) 2026, Andrey Kapustin",
+                QVersionNumber(1, 0, 0))
+{
+}
 
-//  End of tt3/API.hpp
+DbApiComponent::~DbApiComponent()
+{
+}
+
+//  End of tt3-db-api/DbApiComponent.cpp

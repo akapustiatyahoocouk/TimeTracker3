@@ -22,12 +22,11 @@ namespace gui
     //  A generic "skin" is a way to preent a GUI
     class TT3_GUI_PUBLIC ISkin
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ISkin)
-
         //////////
         //  This is an interface
     public:
         ISkin() = default;
+    protected:
         virtual ~ISkin() = default;
 
         //////////

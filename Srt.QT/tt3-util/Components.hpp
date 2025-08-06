@@ -43,4 +43,25 @@ namespace util
     };
 }
 
+//  TODO use similar technique for component
+//  registration in form of e.g.
+//  EXECUTE_ONCE(STATEMENT) macro
+#define CONCAT_IMPL(x,y)    x##y
+#define CONCAT(x,y)         CONCAT_IMPL(x, y)
+
+#define EXECUTE_ONCE_IMPL(statement,suffix) \
+class CONCAT(X,suffix) final                \
+{                                           \
+public:                                     \
+    CONCAT(X,suffix)()                      \
+    {                                       \
+        if (_counter == 0) { statement; }   \
+        _counter++;                         \
+    }                                       \
+private:                                    \
+    static inline int _counter = 0;         \
+};                                          \
+static CONCAT(X,suffix) CONCAT(x,suffix);
+#define EXECUTE_ONCE(statement) EXECUTE_ONCE_IMPL(statement,__COUNTER__)
+//  EXECUTE_ONCE(util::ComponentRegistry::registerComponent(util::UtilComponent::instance()))
 //  End of tt3-util/Components.hpp

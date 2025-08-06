@@ -1,6 +1,6 @@
 //
-//  tt3/API.hpp - TT3 master header
-//  TODO add GPLv3 header to EVERY .hpp and .cpp file
+//  tt3-db-api/Classes.hpp - forward declarations and typedefs
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -14,18 +14,20 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
 
-//////////
-//  Dependencies
-#include "tt3-gui/API.hpp"
-//  TODO uncomment #include "tt3-bws/API.hpp"
-#include "tt3-db-api/API.hpp"
-#include "tt3-util/API.hpp"
+namespace db::api
+{
+    class TT3_DB_API_PUBLIC IDatabaseType;
+    class TT3_DB_API_PUBLIC IDatabaseAddress;
+    class TT3_DB_API_PUBLIC IDatabase;
+    class TT3_DB_API_PUBLIC OID;
+    class TT3_DB_API_PUBLIC IDatabaseObject;
 
-//////////
-//  tt3 components
-#include "tt3/Components.hpp"
-//  TODO uncomment #include "tt3/MainWindow.hpp"
+    using DatabaseTypes = QSet<IDatabaseType*>;
+    using DatabaseAddresses= QSet<IDatabaseAddress*>;
+    using DatabaseObjects = QSet<IDatabaseObject*>;
 
-//  End of tt3/API.hpp
+    class TT3_DB_API_PUBLIC DatabaseException;
+}
+
+//  End of tt3-db-api/Classes.hpp

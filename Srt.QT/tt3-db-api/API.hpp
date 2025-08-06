@@ -1,6 +1,6 @@
 //
-//  tt3/API.hpp - TT3 master header
-//  TODO add GPLv3 header to EVERY .hpp and .cpp file
+//  tt3-db-api/API.hpp - tt3-db-api master header
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -18,14 +18,17 @@
 
 //////////
 //  Dependencies
-#include "tt3-gui/API.hpp"
-//  TODO uncomment #include "tt3-bws/API.hpp"
-#include "tt3-db-api/API.hpp"
 #include "tt3-util/API.hpp"
 
 //////////
-//  tt3 components
-#include "tt3/Components.hpp"
-//  TODO uncomment #include "tt3/MainWindow.hpp"
+//  db-api-admin components
+#include "tt3-db-api/Linkage.hpp"
+#include "tt3-db-api/Classes.hpp"
+#include "tt3-db-api/Components.hpp"
 
-//  End of tt3/API.hpp
+#include "tt3-db-api/DatabaseType.hpp"
+#include "tt3-db-api/DatabaseAddress.hpp"
+
+#include "tt3-db-api/Exceptions.hpp"
+
+//  End of tt3-db-api/API.hpp

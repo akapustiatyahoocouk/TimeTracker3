@@ -22,12 +22,11 @@ namespace util
     //  and instantiated at runtime
     class TT3_UTIL_PUBLIC IPlugin
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(IPlugin)
-
         //////////
         //  This is an interface
     public:
         IPlugin() = default;
+    protected:
         virtual ~IPlugin() = default;
 
         //////////
