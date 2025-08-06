@@ -20,14 +20,83 @@ using namespace skin::admin;
 
 AdminSkinMainFrame::AdminSkinMainFrame(QWidget * parent)
     :   QMainWindow(parent),
-        _ui(new Ui::AdminSkinMainFrame)
+        _ui(new Ui::AdminSkinMainFrame),
+        _savePositionTimer()
 {
     _ui->setupUi(this);
+    _loadPosition();
+
+    _savePositionTimer.setSingleShot(true);
+    QObject::connect(&_savePositionTimer, &QTimer::timeout,
+                     this, &AdminSkinMainFrame::_savePositionTimerTimeout);
+    _trackPosition = true;
 }
 
 AdminSkinMainFrame::~AdminSkinMainFrame()
 {
     delete _ui;
+}
+
+//////////
+//  QWidget
+void AdminSkinMainFrame::moveEvent(QMoveEvent * event)
+{
+    QMainWindow::moveEvent(event);
+    if (_trackPosition)
+    {
+        _savePositionTimer.start(500);
+    }
+}
+
+void AdminSkinMainFrame::resizeEvent(QResizeEvent * event)
+{
+    QMainWindow::resizeEvent(event);
+    if (_trackPosition)
+    {
+        _savePositionTimer.start(500);
+    }
+}
+
+void AdminSkinMainFrame::closeEvent(QCloseEvent * event)
+{
+    event->accept();
+    _onActionExit();
+}
+
+//////////
+//  Implementation
+void AdminSkinMainFrame::_loadPosition()
+{
+    this->setGeometry(AdminSkinSettings::instance()->mainFrameBounds);
+    if (AdminSkinSettings::instance()->mainFrameMaximized)
+    {
+        this->showMaximized();
+    }
+}
+
+void AdminSkinMainFrame::_savePosition()
+{
+    if (this->isMaximized())
+    {
+        AdminSkinSettings::instance()->mainFrameMaximized = true;
+    }
+    else if (!this->isMinimized())
+    {
+        AdminSkinSettings::instance()->mainFrameBounds = this->geometry();
+        AdminSkinSettings::instance()->mainFrameMaximized = false;
+    }
+}
+
+//////////
+//  Signal handlers
+void AdminSkinMainFrame::_savePositionTimerTimeout()
+{
+    _savePosition();
+}
+
+void AdminSkinMainFrame::_onActionExit()
+{
+    QApplication::exit(0);
 }
 
 //  End of tt3-skin-admin/AdminSkinMainFrame.cpp

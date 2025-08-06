@@ -34,9 +34,32 @@ namespace skin::admin
         virtual ~AdminSkinMainFrame();
 
         //////////
+        //  QWidget
+    public:
+        virtual void    moveEvent(QMoveEvent * event) override;
+        virtual void    resizeEvent(QResizeEvent * event) override;
+        virtual void	closeEvent(QCloseEvent * event) override;
+
+        //////////
+        //  Implementation
+    private:
+        bool            _trackPosition = false;
+
+        //  Helpers
+        void            _loadPosition();
+        void            _savePosition();
+
+        //////////
         //  Controls
     private:
         Ui::AdminSkinMainFrame *    _ui;
+        QTimer          _savePositionTimer;
+
+        //////////
+        //  Signal handlers
+    private slots:
+        void            _savePositionTimerTimeout();
+        void            _onActionExit();
     };
 }
 

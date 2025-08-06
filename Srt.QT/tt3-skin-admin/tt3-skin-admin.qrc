@@ -2,5 +2,19 @@
     <qresource prefix="/tt3-skin-admin">
         <file>Resources/Images/Objects/AdminSkinLarge.png</file>
         <file>Resources/Images/Objects/AdminSkinSmall.png</file>
+        <file>Resources/Images/Actions/AboutLarge.png</file>
+        <file>Resources/Images/Actions/AboutSmall.png</file>
+        <file>Resources/Images/Actions/ExitLarge.png</file>
+        <file>Resources/Images/Actions/ExitSmall.png</file>
+        <file>Resources/Images/Actions/CloseWorkspaceLarge.png</file>
+        <file>Resources/Images/Actions/CloseWorkspaceSmall.png</file>
+        <file>Resources/Images/Actions/CreateWorkspaceLarge.png</file>
+        <file>Resources/Images/Actions/CreateWorkspaceSmall.png</file>
+        <file>Resources/Images/Actions/OpenWorkspaceLarge.png</file>
+        <file>Resources/Images/Actions/OpenWorkspaceSmall.png</file>
+        <file>Resources/Images/Actions/DestroyWorkspaceLarge.png</file>
+        <file>Resources/Images/Actions/DestroyWorkspaceSmall.png</file>
+        <file>Resources/Images/Objects/SubmenuLarge.png</file>
+        <file>Resources/Images/Objects/SubmenuSmall.png</file>
     </qresource>
 </RCC>

@@ -29,9 +29,138 @@
      <height>25</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="actionNewWorkspace"/>
+    <addaction name="actionOpenWorkspace"/>
+    <addaction name="separator"/>
+    <addaction name="actionCloseWorkspace"/>
+    <addaction name="separator"/>
+    <addaction name="actionDestroyWorkspace"/>
+    <addaction name="separator"/>
+    <addaction name="actionRecentWorkspaces"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionAbout">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/AboutSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/AboutSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>A&amp;bout</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F1</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/ExitSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/ExitSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>E&amp;xit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="actionNewWorkspace">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/CreateWorkspaceSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/CreateWorkspaceSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;New workspace</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionOpenWorkspace">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/OpenWorkspaceSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/OpenWorkspaceSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Open workspace</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionCloseWorkspace">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/CloseWorkspaceSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/CloseWorkspaceSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>C&amp;lose workspace</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actionDestroyWorkspace">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/DestroyWorkspaceSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/DestroyWorkspaceSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Destroy workspace</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+D</string>
+   </property>
+  </action>
+  <action name="actionRecentWorkspaces">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Objects/SubmenuSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/SubmenuSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Recent workspaces</string>
+   </property>
+  </action>
  </widget>
- <resources/>
- <connections/>
+ <resources>
+  <include location="tt3-skin-admin.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>actionExit</sender>
+   <signal>triggered()</signal>
+   <receiver>skin::admin::AdminSkinMainFrame</receiver>
+   <slot>_onActionExit()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_onActionExit()</slot>
+ </slots>
 </ui>
