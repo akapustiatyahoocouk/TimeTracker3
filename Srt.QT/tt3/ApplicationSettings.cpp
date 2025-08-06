@@ -17,22 +17,13 @@
 #include "tt3/API.hpp"
 
 IMPLEMENT_SINGLETON(ApplicationSettings)
+
 ApplicationSettings::ApplicationSettings()
-    :   mainFrameBounds(
-          "mainFrameBounds",
-          "Main frame bounds (when not maximized)",
-          QRect(32, 32, 480, 320)),
-        mainFrameMaximized(
-          "mainFrameMaximized",
-          "Main frame is maximized",
-          false),
-        reloadLastWorkspaceOnStartup(
-          "ReloadLastWorkspaceOnStartup",
-          "Reload last workspace on startup",
-          false)
+    :   reloadLastWorkspaceOnStartup(
+            "ReloadLastWorkspaceOnStartup",
+            "Reload last workspace on startup",
+            false)
 {
-    addSetting(&mainFrameBounds);
-    addSetting(&mainFrameMaximized);
     addSetting(&reloadLastWorkspaceOnStartup);
 }
 

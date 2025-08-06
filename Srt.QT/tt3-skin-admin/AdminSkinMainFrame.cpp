@@ -1,5 +1,5 @@
 //
-//  tt3-skin-admin/AdminSkinSettings.cpp - AdminSkinSettings class implementation
+//  tt3-skin-admin/AdminSkinMainFrame.cpp - AdminSkinMainFrame class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,28 +15,19 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-skin-admin/API.hpp"
+#include "ui_AdminSkinMainFrame.h"
 using namespace skin::admin;
 
-//////////
-//  Singleton
-IMPLEMENT_SINGLETON(AdminSkinSettings)
-
-AdminSkinSettings::AdminSkinSettings()
-    :   mainFrameBounds(
-            "MainFrameBounds",
-            "Main frame bounds (when not maximized)",
-            QRect(32, 32, 480, 320)),
-        mainFrameMaximized(
-            "MainFrameMaximized",
-            "Main frame is maximized",
-            false)
+AdminSkinMainFrame::AdminSkinMainFrame(QWidget * parent)
+    :   QMainWindow(parent),
+        _ui(new Ui::AdminSkinMainFrame)
 {
-    addSetting(&mainFrameBounds);
-    addSetting(&mainFrameMaximized);
+    _ui->setupUi(this);
 }
 
-AdminSkinSettings::~AdminSkinSettings()
+AdminSkinMainFrame::~AdminSkinMainFrame()
 {
+    delete _ui;
 }
 
-//  End of tt3-gui/AdminSkinSettings.cpp
+//  End of tt3-skin-admin/AdminSkinMainFrame.cpp

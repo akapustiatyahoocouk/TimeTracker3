@@ -25,6 +25,8 @@ namespace skin::admin
         //////////
         //  Properties
     public:
+        mutable util::Setting<QRect>    mainFrameBounds;
+        mutable util::Setting<bool>     mainFrameMaximized;
     };
 
     //  The "TT3 Admin skin" component

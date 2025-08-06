@@ -143,6 +143,7 @@ namespace
             QCoreApplication::quit();
         }
         gui::theCurrentSkin = initialSkin;
+        initialSkin->activate();
     }
 }
 
@@ -173,13 +174,10 @@ int main(int argc, char *argv[])
 
     selectActiveSkin();
 
-    /*  TODO uncomment
-    MainWindow w;
-    w.show();
     int exitCode = a.exec();
-    */
+
     saveSettings();
-    return 0;   //  TODO exitCode;
+    return exitCode;
 }
 
 //  End of tt3/Main.cpp

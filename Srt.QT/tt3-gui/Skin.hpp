@@ -31,7 +31,7 @@ namespace gui
         virtual ~ISkin() = default;
 
         //////////
-        //  Operations
+        //  Operations (properties)
     public:
         //  The mnemonic identifier of this skin
         virtual QString     mnemonic() const = 0;
@@ -52,6 +52,14 @@ namespace gui
         //  if no skin or a nonexistent skin is requested
         //  (e.g. on first TT3 start).
         virtual bool        isDefault() const = 0;
+
+        //////////
+        //  Operations (state)
+    public:
+        //  TODO document
+        virtual bool        isActive() const = 0;
+        virtual void        activate() = 0;
+        virtual void        deactivate() = 0;
     };
 
     //////////
@@ -82,7 +90,6 @@ namespace gui
     class TT3_GUI_PUBLIC CurrentSkin final : public QObject
     {
         Q_OBJECT // Required for signals and slots
-
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentSkin)
 
         //////////

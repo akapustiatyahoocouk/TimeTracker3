@@ -63,4 +63,32 @@ bool AdminSkin::isDefault() const
     return true;
 }
 
+//////////
+//  gui::ISkin (state)
+bool AdminSkin::isActive() const
+{
+    return _mainFrame != nullptr;
+}
+
+void AdminSkin::activate()
+{
+    if (_mainFrame == nullptr)
+    {
+        _mainFrame = new AdminSkinMainFrame();
+        _mainFrame->show();
+    }
+    _mainFrame->activateWindow();
+    _mainFrame->raise();
+}
+
+void AdminSkin::deactivate()
+{
+    if (_mainFrame != nullptr)
+    {
+        _mainFrame->hide();
+        delete _mainFrame;
+        _mainFrame = nullptr;
+    }
+}
+
 //  End of tt3-gui/AdminSkin.cpp

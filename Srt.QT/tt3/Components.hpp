@@ -24,9 +24,8 @@ class ApplicationSettings final : public util::Settings
     //////////
     //  Properties
 public:
-    mutable util::Setting<QRect>    mainFrameBounds;    //  TODO move to "admin skin" settings
-    mutable util::Setting<bool>     mainFrameMaximized; //  TODO move to "admin skin" settings
-    mutable util::Setting<bool>     reloadLastWorkspaceOnStartup;
+    //  TODO document
+    util::Setting<bool> reloadLastWorkspaceOnStartup;
 };
 
 //////////
