@@ -82,7 +82,7 @@ namespace util
         //////////
         //  Implementation
     private:
-        static QMap<QString, Component*>    _registry;  //  key = "mnemonic" + "version"
+        static QMap<QString, Component*> &  _registry();    //  key = "mnemonic" + "version"
     };
 }
 

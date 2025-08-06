@@ -46,4 +46,51 @@
 //  A helper macro to document exceptions thrown by a method or function
 #define throws(E,...) noexcept(false)
 
+//  Helper macros for executing code at
+//  pre-main() time once
+class TT3_UTIL_PUBLIC OnceExecutor final
+{
+public:
+    OnceExecutor(const char * file, int line, void (*f)())
+        :   _file(file), _line(line)
+    {
+        for (OnceExecutor * oi = _onceExecutors; oi != nullptr; oi = oi->_nextInChain)
+        {
+            if (line == oi->_line && strcmp(file, oi->_file) == 0)
+            {   //  Already done!
+                return;
+            }
+        }
+        _nextInChain = _onceExecutors;
+        _onceExecutors = this;
+        qDebug() << _file;
+        qDebug() << _line;
+        f();
+    }
+    ~OnceExecutor()
+    {
+        for (OnceExecutor ** oi = &_onceExecutors; (*oi) != nullptr; oi = &((*oi)->_nextInChain))
+        {
+            if (_line == (*oi)->_line && strcmp(_file, (*oi)->_file) == 0)
+            {   //  This one!
+                *oi = _nextInChain;
+                _nextInChain = nullptr;
+                break;
+            }
+        }
+    }
+private:
+    const char *const   _file;
+    const int           _line;
+    OnceExecutor *      _nextInChain = nullptr;
+    static inline OnceExecutor *    _onceExecutors = nullptr;
+};
+
+#define CONCAT_IMPL(x,y)    x##y
+#define CONCAT(x,y)         CONCAT_IMPL(x, y)
+
+#define EXECUTE_ONCE_IMPL(statement,suffix) \
+    static OnceExecutor CONCAT(onceExecutor,suffix){__FILE__,__LINE__,[] { statement; }};
+#define EXECUTE_ONCE(statement) EXECUTE_ONCE_IMPL(statement,__COUNTER__)
+
 //  End of tt3-util/Macros.cpp

@@ -17,13 +17,11 @@
 #include "tt3-util/API.hpp"
 using namespace util;
 
-QMap<QString, Component*> ComponentRegistry::_registry;
-
 //////////
 //  Operationds
 QSet<Component*> ComponentRegistry::allComponents()
 {
-    return toSet(_registry.values());
+    return toSet(_registry().values());
 }
 
 bool ComponentRegistry::registerComponent(Component * component)
@@ -38,7 +36,7 @@ bool ComponentRegistry::registerComponent(Component * component)
     else
     {
         QString key = component->mnemonic() + "|" + util::toString(component->version());
-        _registry[key] = component;
+        _registry()[key] = component;
         return true;
     }
 }
@@ -46,13 +44,13 @@ bool ComponentRegistry::registerComponent(Component * component)
 Component * ComponentRegistry::findComponent(const QString & mnemonic, const QVersionNumber & version)
 {   //  TODO synchronize ?
     QString key = mnemonic + "|" + util::toString(version);
-    return _registry.contains(key) ? _registry[key] : nullptr;
+    return _registry().contains(key) ? _registry()[key] : nullptr;
 }
 
 Component * ComponentRegistry::findComponent(const QString & mnemonic)
 {   //  TODO synchronize ?
     Component * result = nullptr;
-    for (Component * component : _registry.values())
+    for (Component * component : _registry().values())
     {
         if (component->mnemonic() == mnemonic)
         {
@@ -64,6 +62,14 @@ Component * ComponentRegistry::findComponent(const QString & mnemonic)
         }
     }
     return result;
+}
+
+//////////
+//  Implementation
+QMap<QString, Component*> & ComponentRegistry::_registry()
+{
+    static QMap<QString, Component*> registry;
+    return registry;
 }
 
 //  End of tt3-util/ComponentRegistry.cpp

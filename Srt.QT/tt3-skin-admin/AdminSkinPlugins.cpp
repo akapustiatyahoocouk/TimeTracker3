@@ -59,7 +59,7 @@ namespace
 
         virtual void            initialize() throws(QException) override
         {
-            util::ComponentRegistry::registerComponent(AdminSkinComponent::instance());
+            //  TODO kill off util::ComponentRegistry::registerComponent(AdminSkinComponent::instance());
             gui::SkinRegistry::registerSkin(AdminSkin::instance());
         }
     };
