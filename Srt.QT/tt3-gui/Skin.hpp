@@ -14,6 +14,8 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
+#pragma once
+#include "tt3-gui/API.hpp"
 
 namespace gui
 {
@@ -73,9 +75,14 @@ namespace gui
     };
 
     //////////
-    //  The accessors for a "currently active" skin
+    //  The accessor for a "currently active" skin.
+    //  Only one global static instance of this class
+    //  exists, and other instances should NOT be
+    //  constructed.
     class TT3_GUI_PUBLIC CurrentSkin final : public QObject
     {
+        Q_OBJECT // Required for signals and slots
+
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentSkin)
 
         //////////
@@ -83,9 +90,11 @@ namespace gui
     public:
         CurrentSkin();
         virtual ~CurrentSkin();
-
+\
         //////////
         //  Operators
+        //  IMPORTANT: Changing the "current" skin does
+        //  NOT change its "active" status.
     public:
         void        operator = (ISkin * skin);
         ISkin *     operator -> () const;
@@ -94,7 +103,7 @@ namespace gui
         //////////
         //  Implementation
     private:
-        static int      _instanceCount;
+        static int      _instanceCount; //  ...to disallow a second instance
         static ISkin *  _currentSkin;
     };
 
