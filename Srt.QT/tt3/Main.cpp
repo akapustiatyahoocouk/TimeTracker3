@@ -142,7 +142,7 @@ namespace
             msgBox.exec();
             QCoreApplication::quit();
         }
-        gui::CurrentSkin::set(initialSkin);
+        gui::theCurrentSkin = initialSkin;
     }
 }
 

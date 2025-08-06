@@ -17,21 +17,48 @@
 #include "tt3-gui/API.hpp"
 using namespace gui;
 
+int CurrentSkin::_instanceCount = 0;
 ISkin * CurrentSkin::_currentSkin = nullptr;
 
 //////////
-//  Operationds
-ISkin * CurrentSkin::get()
+//  Construction/destruction
+CurrentSkin::CurrentSkin()
 {
-    return _currentSkin;    //  can be nullptr
+    Q_ASSERT(_instanceCount == 0);
+    _instanceCount++;
 }
 
-void CurrentSkin::set(ISkin * skin)
+CurrentSkin::~CurrentSkin()
 {
-    if (skin != _currentSkin)
-    {
-        _currentSkin = skin;    //  can be nullptr
-    }
+    Q_ASSERT(_instanceCount == 1);
+    _instanceCount--;
+}
+
+//////////
+//  Operators
+void CurrentSkin::operator = (ISkin * skin)
+{
+    Q_ASSERT(_instanceCount == 1);
+    _currentSkin = skin;
+}
+
+ISkin * CurrentSkin::operator -> () const
+{
+    Q_ASSERT(_instanceCount == 1);
+    return _currentSkin;
+}
+
+CurrentSkin::operator ISkin * () const
+{
+    Q_ASSERT(_instanceCount == 1);
+    return _currentSkin;
+}
+
+//////////
+//  Global statics
+namespace gui
+{
+    Q_DECL_EXPORT CurrentSkin theCurrentSkin;
 }
 
 //  End of tt3-gui/CurrentSkin.cpp

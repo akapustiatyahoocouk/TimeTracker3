@@ -74,22 +74,36 @@ namespace gui
 
     //////////
     //  The accessors for a "currently active" skin
-    class TT3_GUI_PUBLIC CurrentSkin final
+    class TT3_GUI_PUBLIC CurrentSkin final : public QObject
     {
-        UTILITY_CLASS(CurrentSkin)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentSkin)
 
         //////////
-        //  Operationds
+        //  Construction/destruction
     public:
-        //  TODO document
-        static ISkin *  get();
-        static void     set(ISkin * skin);
+        CurrentSkin();
+        virtual ~CurrentSkin();
+
+        //////////
+        //  Operators
+    public:
+        void        operator = (ISkin * skin);
+        ISkin *     operator -> () const;
+                    operator ISkin * () const;
 
         //////////
         //  Implementation
     private:
+        static int      _instanceCount;
         static ISkin *  _currentSkin;
     };
+
+#if defined(TT3_GUI_LIBRARY)
+    //  Building tt3-gui
+#else
+    //  Building tt3-gui client
+    Q_DECL_IMPORT CurrentSkin theCurrentSkin;
+#endif
 }
 
 //  End of tt3-gui/Skin.hpp
