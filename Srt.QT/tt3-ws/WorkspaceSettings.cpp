@@ -1,6 +1,6 @@
 //
-//  tt3/API.hpp - TT3 master header
-//  TODO add GPLv3 header to EVERY .hpp and .cpp file
+//  tt3-ws/WorkspaceSettings.cpp - tt3::ws::WorkspaceSettings class implementation
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -14,18 +14,14 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
-
-//////////
-//  Dependencies
-#include "tt3-gui/API.hpp"
 #include "tt3-ws/API.hpp"
-#include "tt3-db-api/API.hpp"
-#include "tt3-util/API.hpp"
+using namespace tt3::ws;
 
 //////////
-//  tt3 components
-#include "tt3/Components.hpp"
-//  TODO uncomment #include "tt3/MainWindow.hpp"
+//  Singleton
+IMPLEMENT_SINGLETON(WorkspaceSettings)
 
-//  End of tt3/API.hpp
+WorkspaceSettings::WorkspaceSettings() {}
+WorkspaceSettings::~WorkspaceSettings() {}
+
+//  End of tt3-ws/WorkspaceSettings.cpp

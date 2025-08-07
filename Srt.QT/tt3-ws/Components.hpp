@@ -1,0 +1,46 @@
+//
+//  tt3-ws/Components.hpp - tt3-ws Components
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+
+namespace tt3::ws
+{
+    //  The "TT3 Workspace" component settings
+    class TT3_WS_PUBLIC WorkspaceSettings final : public util::Settings
+    {
+        DECLARE_SINGLETON(WorkspaceSettings)
+
+        //////////
+        //  Properties
+    public:
+    };
+
+    //  The "TT3 Workspace" component
+    class TT3_WS_PUBLIC WorkspaceComponent final : public util::Component
+    {
+        DECLARE_SINGLETON(WorkspaceComponent)
+
+        //////////
+        //  Component
+    public:
+        virtual WorkspaceSettings & settings() override { return *WorkspaceSettings::instance(); }
+
+        //////////
+        //  Implementation
+    private:
+    };
+}
+
+//  End of tt3-qw/Components.hpp

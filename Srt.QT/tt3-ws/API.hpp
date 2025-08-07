@@ -1,6 +1,6 @@
 //
-//  tt3/API.hpp - TT3 master header
-//  TODO add GPLv3 header to EVERY .hpp and .cpp file
+//  tt3-ws/API.hpp - tt3-ws master header
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -18,14 +18,12 @@
 
 //////////
 //  Dependencies
-#include "tt3-gui/API.hpp"
-#include "tt3-ws/API.hpp"
 #include "tt3-db-api/API.hpp"
 #include "tt3-util/API.hpp"
 
 //////////
-//  tt3 components
-#include "tt3/Components.hpp"
-//  TODO uncomment #include "tt3/MainWindow.hpp"
+//  tt3-ws components
+#include "tt3-ws/Linkage.hpp"
+#include "tt3-ws/Components.hpp"
 
-//  End of tt3/API.hpp
+//  End of tt3-ws/API.hpp

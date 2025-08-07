@@ -22,6 +22,7 @@ namespace
     {
         util::ComponentRegistry::registerComponent(ApplicationComponent::instance());
         util::ComponentRegistry::registerComponent(gui::GuiComponent::instance());
+        util::ComponentRegistry::registerComponent(tt3::ws::WorkspaceComponent::instance());
         util::ComponentRegistry::registerComponent(db::api::DbApiComponent::instance());
         util::ComponentRegistry::registerComponent(util::UtilComponent::instance());
     }

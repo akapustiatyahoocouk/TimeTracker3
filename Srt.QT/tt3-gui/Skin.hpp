@@ -24,9 +24,8 @@ namespace gui
     {
         //////////
         //  This is an interface
-    public:
-        ISkin() = default;
     protected:
+        ISkin() = default;
         virtual ~ISkin() = default;
 
         //////////

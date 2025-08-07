@@ -24,11 +24,9 @@ namespace util
     //  for a single plugin to define (and register) several components.
     class TT3_UTIL_PUBLIC Component
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Component)
-
         //////////
         //  Construction/destruction
-    public:
+    protected:
         Component(const QString & mnemonic, const QString & displayName,
                   const QString & description, const QString & copyright,
                   const QVersionNumber & version)
@@ -37,7 +35,6 @@ namespace util
                 _desciption(description),
                 _copyright(copyright),
                 _version(version) {}
-    protected:
         virtual ~Component() = default;
 
         //////////

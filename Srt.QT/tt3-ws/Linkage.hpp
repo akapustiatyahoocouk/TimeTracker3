@@ -1,6 +1,6 @@
 //
-//  tt3/API.hpp - TT3 master header
-//  TODO add GPLv3 header to EVERY .hpp and .cpp file
+//  tt3-ws/Linkage.hpp - tt3-ws linkage definitions
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -14,18 +14,11 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
 
-//////////
-//  Dependencies
-#include "tt3-gui/API.hpp"
-#include "tt3-ws/API.hpp"
-#include "tt3-db-api/API.hpp"
-#include "tt3-util/API.hpp"
+#if defined(TT3_WS_LIBRARY)
+    #define TT3_WS_PUBLIC   Q_DECL_EXPORT
+#else
+    #define TT3_WS_PUBLIC   Q_DECL_IMPORT
+#endif
 
-//////////
-//  tt3 components
-#include "tt3/Components.hpp"
-//  TODO uncomment #include "tt3/MainWindow.hpp"
-
-//  End of tt3/API.hpp
+//  End of tt3-ws/Linkage.hpp

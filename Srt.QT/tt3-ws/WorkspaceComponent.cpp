@@ -1,6 +1,6 @@
 //
-//  tt3/API.hpp - TT3 master header
-//  TODO add GPLv3 header to EVERY .hpp and .cpp file
+//  tt3-ws/WorkspaceComponent.cpp - tt3::ws::WorkspaceComponent class implementation
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -14,18 +14,21 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
-
-//////////
-//  Dependencies
-#include "tt3-gui/API.hpp"
 #include "tt3-ws/API.hpp"
-#include "tt3-db-api/API.hpp"
-#include "tt3-util/API.hpp"
+using namespace tt3::ws;
 
-//////////
-//  tt3 components
-#include "tt3/Components.hpp"
-//  TODO uncomment #include "tt3/MainWindow.hpp"
+IMPLEMENT_SINGLETON(WorkspaceComponent)
+WorkspaceComponent::WorkspaceComponent()
+    :   Component("tt3-ws",
+                "TimeTracker3 workspace layer",
+                "Defines workspace data access layer for TimeTracker3",
+                "Copyright (C) 2026, Andrey Kapustin",
+                QVersionNumber(1, 0, 0))
+{
+}
 
-//  End of tt3/API.hpp
+WorkspaceComponent::~WorkspaceComponent()
+{
+}
+
+//  End of tt3-ws/WorkspaceComponent.cpp
