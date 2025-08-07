@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace util
+namespace tt3::util
 {
     //////////
     //  An abstract interface to a "plugin" - an agent discovered
@@ -80,11 +80,11 @@ namespace util
     typedef void (*PluginExportProc)(QSet<IPlugin*> & plugins);
 }
 
-#define BEGIN_PLUGIN_TABLE()                                            \
-    extern "C"                                                          \
-    Q_DECL_EXPORT void PluginProvider(QSet<util::IPlugin*> & plugins);  \
-    extern "C"                                                          \
-    Q_DECL_EXPORT void PluginProvider(QSet<util::IPlugin*> & plugins)   \
+#define BEGIN_PLUGIN_TABLE()                                                \
+    extern "C"                                                              \
+    Q_DECL_EXPORT void PluginProvider(QSet<tt3::util::IPlugin*> & plugins); \
+    extern "C"                                                              \
+    Q_DECL_EXPORT void PluginProvider(QSet<tt3::util::IPlugin*> & plugins)  \
     {
 
 #define EXPORT_PLUGIN(PluginClazz)                                      \

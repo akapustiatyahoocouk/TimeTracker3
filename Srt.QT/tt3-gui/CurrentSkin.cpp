@@ -1,5 +1,5 @@
 //
-//  tt3-gui/CurrentSkin.cpp - CurrentSkin class implementation
+//  tt3-gui/CurrentSkin.cpp - tt3::gui::CurrentSkin class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-gui/API.hpp"
-using namespace gui;
+using namespace tt3::gui;
 
 int CurrentSkin::_instanceCount = 0;
 ISkin * CurrentSkin::_currentSkin = nullptr;
@@ -56,7 +56,7 @@ CurrentSkin::operator ISkin * () const
 
 //////////
 //  Global statics
-namespace gui
+namespace tt3::gui
 {
     Q_DECL_EXPORT CurrentSkin theCurrentSkin;
 }

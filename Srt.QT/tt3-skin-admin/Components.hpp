@@ -18,7 +18,7 @@
 namespace skin::admin
 {
     //  The "TT3 Admin skin" component settings
-    class TT3_SKIN_ADMIN_PUBLIC AdminSkinSettings final : public util::Settings
+    class TT3_SKIN_ADMIN_PUBLIC AdminSkinSettings final : public tt3::util::Settings
     {
         DECLARE_SINGLETON(AdminSkinSettings)
 
@@ -26,12 +26,12 @@ namespace skin::admin
         //  Properties
     public:
         //  TODO document
-        util::Setting<QRect>    mainFrameBounds;
-        util::Setting<bool>     mainFrameMaximized;
+        tt3::util::Setting<QRect>   mainFrameBounds;
+        tt3::util::Setting<bool>    mainFrameMaximized;
     };
 
     //  The "TT3 Admin skin" component
-    class TT3_SKIN_ADMIN_PUBLIC AdminSkinComponent final : public util::Component
+    class TT3_SKIN_ADMIN_PUBLIC AdminSkinComponent final : public tt3::util::Component
     {
         DECLARE_SINGLETON(AdminSkinComponent)
 

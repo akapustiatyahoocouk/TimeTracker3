@@ -1,5 +1,5 @@
 //
-//  tt3-util/UtilComponent.cpp - UtilComponent class implementation
+//  tt3-util/UtilComponent.cpp - tt3::util::UtilComponent class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,8 +15,10 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-util/API.hpp"
-using namespace util;
+using namespace tt3::util;
 
+//////////
+//  Singleton
 IMPLEMENT_SINGLETON(UtilComponent)
 UtilComponent::UtilComponent()
     :   Component("tt3-util",

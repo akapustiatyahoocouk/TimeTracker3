@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace db::api
+namespace tt3::db::api
 {
     class TT3_DB_API_PUBLIC IDatabaseType;
     class TT3_DB_API_PUBLIC IDatabaseAddress;

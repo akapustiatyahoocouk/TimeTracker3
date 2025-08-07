@@ -1,5 +1,5 @@
 //
-//  tt3-util/Plugin.cpp - Plugin class implementation
+//  tt3-util/Plugin.cpp - tt3::util::IPlugin class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-util/API.hpp"
-using namespace util;
+using namespace tt3::util;
 
 //////////
 //  Operations

@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace db::api
+namespace tt3::db::api
 {
     //////////
     //  A "database address" represents a location of a speific

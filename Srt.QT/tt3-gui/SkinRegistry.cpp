@@ -1,5 +1,5 @@
 //
-//  tt3-gui/SkinRegistry.cpp - SkinRegistry class implementation
+//  tt3-gui/SkinRegistry.cpp - tt3::gui::SkinRegistry class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-gui/API.hpp"
-using namespace gui;
+using namespace tt3::gui;
 
 QMap<QString, ISkin*> SkinRegistry::_registry;
 
@@ -23,7 +23,7 @@ QMap<QString, ISkin*> SkinRegistry::_registry;
 //  Operationds
 QSet<ISkin*> SkinRegistry::allSkins()
 {
-    return util::toSet(_registry.values());
+    return tt3::util::toSet(_registry.values());
 }
 
 bool SkinRegistry::registerSkin(ISkin * skin)

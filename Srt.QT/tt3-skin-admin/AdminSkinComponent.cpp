@@ -17,7 +17,10 @@
 #include "tt3-skin-admin/API.hpp"
 using namespace skin::admin;
 
+//////////
+//  Singleton
 IMPLEMENT_SINGLETON(AdminSkinComponent)
+
 AdminSkinComponent::AdminSkinComponent()
     :   Component("tt3-skin-admin",
                 "TimeTracker3 Administrator skin",

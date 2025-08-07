@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-db-api/API.hpp"
-using namespace db::api;
+using namespace tt3::db::api;
 
 //////////
 //  Singleton

@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-db-api/API.hpp"
-using namespace db::api;
+using namespace tt3::db::api;
 
 QMap<QString, IDatabaseType*> DatabaseTypeRegistry::_registry;
 
@@ -41,7 +41,7 @@ IDatabaseType * DatabaseTypeRegistry::findDatabaseType(const QString & mnemonic)
 
 DatabaseTypes DatabaseTypeRegistry::allDatabaseTypes()
 {   //  TODO synchronize ?
-    return util::toSet(_registry.values());
+    return tt3::util::toSet(_registry.values());
 }
 
 //  End of tt3-db-api/DatabaseTypeRegistry.cpp

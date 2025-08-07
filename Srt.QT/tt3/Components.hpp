@@ -15,33 +15,36 @@
 //  GNU General Public License for more details.
 //////////
 
-//////////
-//  The "TT3 application" component settings
-class ApplicationSettings final : public util::Settings
+namespace tt3
 {
-    DECLARE_SINGLETON(ApplicationSettings)
+    //////////
+    //  The "TT3 application" component settings
+    class ApplicationSettings final : public tt3::util::Settings
+    {
+        DECLARE_SINGLETON(ApplicationSettings)
+
+        //////////
+        //  Properties
+    public:
+        //  TODO document
+        tt3::util::Setting<bool>    reloadLastWorkspaceOnStartup;
+    };
 
     //////////
-    //  Properties
-public:
-    //  TODO document
-    util::Setting<bool> reloadLastWorkspaceOnStartup;
-};
+    //  The "TT3 application" component
+    class ApplicationComponent final : public tt3::util::Component
+    {
+        DECLARE_SINGLETON(ApplicationComponent)
 
-//////////
-//  The "TT3 application" component
-class ApplicationComponent final : public util::Component
-{
-    DECLARE_SINGLETON(ApplicationComponent)
+        //////////
+        //  Component
+    public:
+        virtual ApplicationSettings &   settings() override { return *ApplicationSettings::instance(); }
 
-    //////////
-    //  Component
-public:
-    virtual ApplicationSettings &   settings() override { return *ApplicationSettings::instance(); }
-
-    //////////
-    //  Implementation
-private:
-};
+        //////////
+        //  Implementation
+    private:
+    };
+}
 
 //  End of tt3/Components.hpp

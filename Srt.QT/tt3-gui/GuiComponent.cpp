@@ -1,5 +1,5 @@
 //
-//  tt3-gui/GuiComponent.cpp - GuiComponent class implementation
+//  tt3-gui/GuiComponent.cpp - tt3::gui::GuiComponent class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,9 +15,12 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-gui/API.hpp"
-using namespace gui;
+using namespace tt3::gui;
 
+//////////
+//  Singleton
 IMPLEMENT_SINGLETON(GuiComponent)
+
 GuiComponent::GuiComponent()
     :   Component("tt3-gui",
                 "TimeTracker3 GUI",

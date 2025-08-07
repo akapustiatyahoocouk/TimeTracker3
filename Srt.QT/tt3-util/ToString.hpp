@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace util
+namespace tt3::util
 {
     template <class T>
     QString toString(const T & value) = delete;

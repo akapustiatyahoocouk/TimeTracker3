@@ -19,7 +19,7 @@ using namespace skin::admin;
 
 namespace
 {
-    class AdminSkinPlugin final : public virtual util::IPlugin
+    class AdminSkinPlugin final : public virtual tt3::util::IPlugin
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AdminSkinPlugin)
 
@@ -59,8 +59,8 @@ namespace
 
         virtual void            initialize() throws(QException) override
         {
-            util::ComponentRegistry::registerComponent(AdminSkinComponent::instance());
-            gui::SkinRegistry::registerSkin(AdminSkin::instance());
+            tt3::util::ComponentRegistry::registerComponent(AdminSkinComponent::instance());
+            tt3::gui::SkinRegistry::registerSkin(AdminSkin::instance());
         }
     };
 }

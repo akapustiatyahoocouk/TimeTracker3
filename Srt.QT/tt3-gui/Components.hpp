@@ -15,21 +15,21 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace gui
+namespace tt3::gui
 {
     //  The "TT3 GUO" component settings
-    class TT3_GUI_PUBLIC GuiSettings final : public util::Settings
+    class TT3_GUI_PUBLIC GuiSettings final : public tt3::util::Settings
     {
         DECLARE_SINGLETON(GuiSettings)
 
         //////////
         //  Properties
     public:
-        mutable util::Setting<QString>  activeSkin; //  The mnemonic of the active skin
+        mutable tt3::util::Setting<QString> activeSkin; //  The mnemonic of the active skin
     };
 
     //  The "TT3 Gui" component
-    class TT3_GUI_PUBLIC GuiComponent final : public util::Component
+    class TT3_GUI_PUBLIC GuiComponent final : public tt3::util::Component
     {
         DECLARE_SINGLETON(GuiComponent)
 

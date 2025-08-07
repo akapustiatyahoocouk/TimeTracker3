@@ -15,16 +15,17 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3/API.hpp"
+using namespace tt3;
 
 namespace
 {
     void registerStandardComponents()
     {
-        util::ComponentRegistry::registerComponent(ApplicationComponent::instance());
-        util::ComponentRegistry::registerComponent(gui::GuiComponent::instance());
-        util::ComponentRegistry::registerComponent(tt3::ws::WorkspaceComponent::instance());
-        util::ComponentRegistry::registerComponent(db::api::DbApiComponent::instance());
-        util::ComponentRegistry::registerComponent(util::UtilComponent::instance());
+        tt3::util::ComponentRegistry::registerComponent(ApplicationComponent::instance());
+        tt3::util::ComponentRegistry::registerComponent(tt3::gui::GuiComponent::instance());
+        tt3::util::ComponentRegistry::registerComponent(tt3::ws::WorkspaceComponent::instance());
+        tt3::util::ComponentRegistry::registerComponent(tt3::db::api::DbApiComponent::instance());
+        tt3::util::ComponentRegistry::registerComponent(tt3::util::UtilComponent::instance());
     }
 
     void loadSettings()
@@ -35,7 +36,7 @@ namespace
         QFile iniFile(iniFileName);
         if (iniFile.open(QIODevice::ReadOnly))
         {
-            util::Component * currentComponent = nullptr;
+            tt3::util::Component * currentComponent = nullptr;
             QTextStream iniStream(&iniFile);
             while (!iniStream.atEnd())
             {
@@ -53,11 +54,11 @@ namespace
                     try
                     {
                         QString componentMnemonic = line.mid(1, separatorIndex - 1);
-                        QVersionNumber componentVersion = util::fromString<QVersionNumber>(line.mid(separatorIndex + 1, line.length() - separatorIndex - 2));
-                        currentComponent = util::ComponentRegistry::findComponent(componentMnemonic, componentVersion);
+                        QVersionNumber componentVersion = tt3::util::fromString<QVersionNumber>(line.mid(separatorIndex + 1, line.length() - separatorIndex - 2));
+                        currentComponent = tt3::util::ComponentRegistry::findComponent(componentMnemonic, componentVersion);
                         continue;
                     }
-                    catch (const util::ParseException &)
+                    catch (const tt3::util::ParseException &)
                     {
                         currentComponent = nullptr;
                         continue;
@@ -71,7 +72,7 @@ namespace
                 }
                 QString settingName = line.mid(0, eqIndex).trimmed();
                 QString settingValueString = line.mid(eqIndex + 1).trimmed();
-                util::AbstractSetting * setting = currentComponent->settings().findSetting(settingName);
+                tt3::util::AbstractSetting * setting = currentComponent->settings().findSetting(settingName);
                 if (setting == nullptr)
                 {
                     continue;
@@ -90,15 +91,15 @@ namespace
         if (iniFile.open(QIODevice::WriteOnly))
         {
             QTextStream iniStream(&iniFile);
-            for (util::Component * component : util::ComponentRegistry::allComponents())
+            for (tt3::util::Component * component : tt3::util::ComponentRegistry::allComponents())
             {
                 iniStream << "["
                           << component->mnemonic()
                           << ":"
-                          << util::toString(component->version())
+                          << tt3::util::toString(component->version())
                           << "]"
                           << Qt::endl;
-                for (util::AbstractSetting * setting : component->settings().settings())
+                for (tt3::util::AbstractSetting * setting : component->settings().settings())
                 {
                     iniStream << setting->mnemonic()
                               << "="
@@ -112,10 +113,10 @@ namespace
 
     void selectActiveSkin()
     {
-        gui::ISkin * initialSkin =
-            gui::SkinRegistry::findSkin(gui::GuiSettings::instance()->activeSkin);
+        tt3::gui::ISkin * initialSkin =
+            tt3::gui::SkinRegistry::findSkin(tt3::gui::GuiSettings::instance()->activeSkin);
         //  Use a default skin ?
-        for (gui::ISkin * skin : gui::SkinRegistry::allSkins())
+        for (tt3::gui::ISkin * skin : tt3::gui::SkinRegistry::allSkins())
         {
             if (skin->isDefault() && initialSkin == nullptr)
             {
@@ -124,7 +125,7 @@ namespace
             }
         }
         //  Use any available skin ?
-        for (gui::ISkin * skin : gui::SkinRegistry::allSkins())
+        for (tt3::gui::ISkin * skin : tt3::gui::SkinRegistry::allSkins())
         {
             if (initialSkin == nullptr)
             {
@@ -141,7 +142,7 @@ namespace
             msgBox.exec();
             QCoreApplication::quit();
         }
-        gui::theCurrentSkin = initialSkin;
+        tt3::gui::theCurrentSkin = initialSkin;
         initialSkin->activate();
     }
 }
@@ -168,7 +169,7 @@ int main(int argc, char *argv[])
     QGuiApplication::setApplicationName("TimeTracker3");
 
     registerStandardComponents();
-    util::PluginManager::loadPlugins();
+    tt3::util::PluginManager::loadPlugins();
     loadSettings();
 
     selectActiveSkin();

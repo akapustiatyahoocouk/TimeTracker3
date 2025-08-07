@@ -15,6 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3/API.hpp"
+using namespace tt3;
 
 IMPLEMENT_SINGLETON(ApplicationComponent)
 ApplicationComponent::ApplicationComponent()

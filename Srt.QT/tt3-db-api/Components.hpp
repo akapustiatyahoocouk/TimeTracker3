@@ -15,10 +15,10 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace db::api
+namespace tt3::db::api
 {
     //  The "TT3 DB API" component settings
-    class TT3_DB_API_PUBLIC DbApiSettings final : public util::Settings
+    class TT3_DB_API_PUBLIC DbApiSettings final : public tt3::util::Settings
     {
         DECLARE_SINGLETON(DbApiSettings)
 
@@ -28,7 +28,7 @@ namespace db::api
     };
 
     //  The "TT3 DB API" component
-    class TT3_DB_API_PUBLIC DbApiComponent final : public util::Component
+    class TT3_DB_API_PUBLIC DbApiComponent final : public tt3::util::Component
     {
         DECLARE_SINGLETON(DbApiComponent)
 

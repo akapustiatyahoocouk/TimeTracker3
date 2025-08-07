@@ -17,64 +17,64 @@
 #include "tt3-util/API.hpp"
 
 //  C++ types
-template <> TT3_UTIL_PUBLIC QString util::toString<bool>(const bool & value)
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<bool>(const bool & value)
 {
     return value ? "true" : "false";
 }
 
-template <> TT3_UTIL_PUBLIC QString util::toString<char>(const char & value)
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<char>(const char & value)
 {
     return QString(QChar(value));
 }
 
-template <> TT3_UTIL_PUBLIC QString util::toString<signed char>(const signed char & value)
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<signed char>(const signed char & value)
 {
     return toString<signed long long>(value);
 }
 
-template <> TT3_UTIL_PUBLIC QString util::toString<unsigned char>(const unsigned char & value)
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<unsigned char>(const unsigned char & value)
 {
     return toString<unsigned long long>(value);
 }
 
-template <> TT3_UTIL_PUBLIC QString util::toString<signed short>(const signed short & value)
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<signed short>(const signed short & value)
 {
     return toString<signed long long>(value);
 }
 
-template <> TT3_UTIL_PUBLIC QString util::toString<unsigned short>(const unsigned short & value)
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<unsigned short>(const unsigned short & value)
 {
     return toString<unsigned long long>(value);
 }
 
-template <> TT3_UTIL_PUBLIC QString util::toString<signed int>(const signed int & value)
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<signed int>(const signed int & value)
 {
     return toString<signed long long>(value);
 }
 
-template <> TT3_UTIL_PUBLIC QString util::toString<unsigned int>(const unsigned int & value)
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<unsigned int>(const unsigned int & value)
 {
     return toString<unsigned long long>(value);
 }
 
-template <> TT3_UTIL_PUBLIC QString util::toString<signed long>(const signed long & value)
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<signed long>(const signed long & value)
 {
     return toString<signed long long>(value);
 }
 
-template <> TT3_UTIL_PUBLIC QString util::toString<unsigned long>(const unsigned long & value)
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<unsigned long>(const unsigned long & value)
 {
     return toString<unsigned long long>(value);
 }
 
-template <> TT3_UTIL_PUBLIC QString util::toString<signed long long>(const signed long long & value)
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<signed long long>(const signed long long & value)
 {
     char s[64];
     sprintf(s, "%lld", value);
     return s;
 }
 
-template <> TT3_UTIL_PUBLIC QString util::toString<unsigned long long>(const unsigned long long & value)
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<unsigned long long>(const unsigned long long & value)
 {
     char s[64];
     sprintf(s, "%llu", value);
@@ -82,17 +82,17 @@ template <> TT3_UTIL_PUBLIC QString util::toString<unsigned long long>(const uns
 }
 
 //  QT types
-template <> TT3_UTIL_PUBLIC QString util::toString<QChar>(const QChar & value)
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QChar>(const QChar & value)
 {
     return QString(value);
 }
 
-template <> TT3_UTIL_PUBLIC QString util::toString<QString>(const QString & value)
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QString>(const QString & value)
 {
     return value;
 }
 
-template <> TT3_UTIL_PUBLIC QString util::toString<QRect>(const QRect & value)
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QRect>(const QRect & value)
 {
     char s[128];
 
@@ -102,7 +102,7 @@ template <> TT3_UTIL_PUBLIC QString util::toString<QRect>(const QRect & value)
     return s;
 }
 
-template <> TT3_UTIL_PUBLIC QString util::toString<QVersionNumber>(const QVersionNumber & value)
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QVersionNumber>(const QVersionNumber & value)
 {
     return toString(value.majorVersion()) + "." +
            toString(value.minorVersion()) + "." +

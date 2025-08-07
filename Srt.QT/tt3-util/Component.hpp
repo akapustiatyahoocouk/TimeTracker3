@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace util
+namespace tt3::util
 {
     //////////
     //  A "component".

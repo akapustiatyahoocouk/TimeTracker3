@@ -17,7 +17,7 @@
 #pragma once
 #include "tt3-gui/API.hpp"
 
-namespace gui
+namespace tt3::gui
 {
     //  A generic "skin" is a way to preent a GUI
     class TT3_GUI_PUBLIC ISkin

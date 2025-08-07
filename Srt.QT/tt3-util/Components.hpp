@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace util
+namespace tt3::util
 {
     //  The "TT3 Util" component settings
     class TT3_UTIL_PUBLIC UtilSettings final : public Settings

@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace db::api
+namespace tt3::db::api
 {
     //////////
     //  The common base class for all DB API - level exceptions

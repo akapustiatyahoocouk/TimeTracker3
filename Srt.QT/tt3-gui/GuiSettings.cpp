@@ -1,5 +1,5 @@
 //
-//  tt3-gui/GuiSettings.cpp - GuiSettings class implementation
+//  tt3-gui/GuiSettings.cpp - tt3::gui::GuiSettings class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-gui/API.hpp"
-using namespace gui;
+using namespace tt3::gui;
 
 //////////
 //  Singleton

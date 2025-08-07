@@ -22,7 +22,7 @@ namespace skin::admin
 
     //////////
     //  The "TT3 Administrator skin"
-    class TT3_SKIN_ADMIN_PUBLIC AdminSkin final : public virtual gui::ISkin
+    class TT3_SKIN_ADMIN_PUBLIC AdminSkin final : public virtual tt3::gui::ISkin
     {
         DECLARE_SINGLETON(AdminSkin)
 
