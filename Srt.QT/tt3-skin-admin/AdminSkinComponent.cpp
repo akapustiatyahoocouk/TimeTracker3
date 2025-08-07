@@ -21,17 +21,39 @@ using namespace skin::admin;
 //  Singleton
 IMPLEMENT_SINGLETON(AdminSkinComponent)
 
-AdminSkinComponent::AdminSkinComponent()
-    :   Component("tt3-skin-admin",
-                "TimeTracker3 Administrator skin",
-                "Defines GUI Administrator skin for TimeTracker3",
-                "Copyright (C) 2026, Andrey Kapustin",
-                QVersionNumber(1, 0, 0))
+AdminSkinComponent::AdminSkinComponent() {}
+AdminSkinComponent::~AdminSkinComponent() {}
+
+//////////
+//  IComponent
+QString AdminSkinComponent::mnemonic() const
 {
+    return "tt3-skin-admin";
 }
 
-AdminSkinComponent::~AdminSkinComponent()
+QString AdminSkinComponent::displayName() const
 {
+    return "TimeTracker3 Administrator skin";
+}
+
+QString AdminSkinComponent::desciption() const
+{
+    return "Defines GUI Administrator skin for TimeTracker3";
+}
+
+QString AdminSkinComponent::copyright() const
+{
+    return "Copyright (C) 2026, Andrey Kapustin";
+}
+
+QVersionNumber AdminSkinComponent::version() const
+{
+    return QVersionNumber(1, 0, 0);
+}
+
+QString AdminSkinComponent::buildNumber() const
+{
+    return __TIMESTAMP__;
 }
 
 //  End of tt3-skin-admin/AdminSkinComponent.cpp

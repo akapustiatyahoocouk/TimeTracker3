@@ -18,17 +18,39 @@
 using namespace tt3;
 
 IMPLEMENT_SINGLETON(ApplicationComponent)
-ApplicationComponent::ApplicationComponent()
-    :   Component("tt3",
-                  "TimeTracker3 application",
-                  "Defines startup and top-level logic of TimeTracker3 application",
-                  "Copyright (C) 2026, Andrey Kapustin",
-                  QVersionNumber(1, 0, 0))
+ApplicationComponent::ApplicationComponent() {}
+ApplicationComponent::~ApplicationComponent() {}
+
+//////////
+//  IComponent
+QString ApplicationComponent::mnemonic() const
 {
+    return "tt3";
 }
 
-ApplicationComponent::~ApplicationComponent()
+QString ApplicationComponent::displayName() const
 {
+    return "TimeTracker3 application";
+}
+
+QString ApplicationComponent::desciption() const
+{
+    return "Defines startup and top-level logic of TimeTracker3 application";
+}
+
+QString ApplicationComponent::copyright() const
+{
+    return "Copyright (C) 2026, Andrey Kapustin";
+}
+
+QVersionNumber ApplicationComponent::version() const
+{
+    return QVersionNumber(1, 0, 0);
+}
+
+QString ApplicationComponent::buildNumber() const
+{
+    return __TIMESTAMP__;
 }
 
 //  End of tt3/ApplicationComponent.cpp

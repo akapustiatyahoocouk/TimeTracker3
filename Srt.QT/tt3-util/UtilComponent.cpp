@@ -20,17 +20,39 @@ using namespace tt3::util;
 //////////
 //  Singleton
 IMPLEMENT_SINGLETON(UtilComponent)
-UtilComponent::UtilComponent()
-    :   Component("tt3-util",
-                "TimeTracker3 utility",
-                "Defines utility services for TimeTracker3",
-                "Copyright (C) 2026, Andrey Kapustin",
-                QVersionNumber(1, 0, 0))
+UtilComponent::UtilComponent() {}
+UtilComponent::~UtilComponent() {}
+
+//////////
+//  IComponent
+QString UtilComponent::mnemonic() const
 {
+    return "tt3-util";
 }
 
-UtilComponent::~UtilComponent()
+QString UtilComponent::displayName() const
 {
+    return "TimeTracker3 utility";
+}
+
+QString UtilComponent::desciption() const
+{
+    return "Defines utility services for TimeTracker3";
+}
+
+QString UtilComponent::copyright() const
+{
+    return "Copyright (C) 2026, Andrey Kapustin";
+}
+
+QVersionNumber UtilComponent::version() const
+{
+    return QVersionNumber(1, 0, 0);
+}
+
+QString UtilComponent::buildNumber() const
+{
+    return __TIMESTAMP__;
 }
 
 //  End of tt3-util/UtilComponent.cpp

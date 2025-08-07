@@ -32,13 +32,19 @@ namespace tt3
 
     //////////
     //  The "TT3 application" component
-    class ApplicationComponent final : public tt3::util::Component
+    class ApplicationComponent final : public virtual tt3::util::IComponent
     {
         DECLARE_SINGLETON(ApplicationComponent)
 
         //////////
-        //  Component
+        //  IComponent
     public:
+        virtual QString         mnemonic() const override;
+        virtual QString         displayName() const override;
+        virtual QString         desciption() const override;
+        virtual QString         copyright() const override;
+        virtual QVersionNumber  version() const override;
+        virtual QString         buildNumber() const override;
         virtual ApplicationSettings &   settings() override { return *ApplicationSettings::instance(); }
 
         //////////

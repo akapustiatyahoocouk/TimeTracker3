@@ -21,17 +21,39 @@ using namespace tt3::db::api;
 //  Singleton
 IMPLEMENT_SINGLETON(DbApiComponent)
 
-DbApiComponent::DbApiComponent()
-    :   Component("tt3-db-api",
-                "TimeTracker3 database API",
-                "Defines common API for TimeTracker3 databases",
-                "Copyright (C) 2026, Andrey Kapustin",
-                QVersionNumber(1, 0, 0))
+DbApiComponent::DbApiComponent() {}
+DbApiComponent::~DbApiComponent() {}
+
+//////////
+//  IComponent
+QString DbApiComponent::mnemonic() const
 {
+    return "tt3-db-api";
 }
 
-DbApiComponent::~DbApiComponent()
+QString DbApiComponent::displayName() const
 {
+    return "TimeTracker3 database API";
+}
+
+QString DbApiComponent::desciption() const
+{
+    return "Defines common API for TimeTracker3 databases";
+}
+
+QString DbApiComponent::copyright() const
+{
+    return "Copyright (C) 2026, Andrey Kapustin";
+}
+
+QVersionNumber DbApiComponent::version() const
+{
+    return QVersionNumber(1, 0, 0);
+}
+
+QString DbApiComponent::buildNumber() const
+{
+    return __TIMESTAMP__;
 }
 
 //  End of tt3-db-api/DbApiComponent.cpp

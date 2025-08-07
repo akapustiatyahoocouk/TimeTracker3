@@ -28,14 +28,20 @@ namespace tt3::util
     };
 
     //  The "TT3 Util" component
-    class TT3_UTIL_PUBLIC UtilComponent final : public Component
+    class TT3_UTIL_PUBLIC UtilComponent final : public virtual IComponent
     {
         DECLARE_SINGLETON(UtilComponent)
 
         //////////
-        //  Component
+        //  IComponent
     public:
-        virtual UtilSettings &   settings() override { return *UtilSettings::instance(); }
+        virtual QString         mnemonic() const override;
+        virtual QString         displayName() const override;
+        virtual QString         desciption() const override;
+        virtual QString         copyright() const override;
+        virtual QVersionNumber  version() const override;
+        virtual QString         buildNumber() const override;
+        virtual UtilSettings &  settings() override { return *UtilSettings::instance(); }
 
         //////////
         //  Implementation

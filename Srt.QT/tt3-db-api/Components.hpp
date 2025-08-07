@@ -28,13 +28,19 @@ namespace tt3::db::api
     };
 
     //  The "TT3 DB API" component
-    class TT3_DB_API_PUBLIC DbApiComponent final : public tt3::util::Component
+    class TT3_DB_API_PUBLIC DbApiComponent final : public virtual tt3::util::IComponent
     {
         DECLARE_SINGLETON(DbApiComponent)
 
         //////////
-        //  Component
+        //  IComponent
     public:
+        virtual QString         mnemonic() const override;
+        virtual QString         displayName() const override;
+        virtual QString         desciption() const override;
+        virtual QString         copyright() const override;
+        virtual QVersionNumber  version() const override;
+        virtual QString         buildNumber() const override;
         virtual DbApiSettings & settings() override { return *DbApiSettings::instance(); }
 
         //////////

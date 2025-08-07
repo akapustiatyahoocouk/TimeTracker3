@@ -31,13 +31,19 @@ namespace skin::admin
     };
 
     //  The "TT3 Admin skin" component
-    class TT3_SKIN_ADMIN_PUBLIC AdminSkinComponent final : public tt3::util::Component
+    class TT3_SKIN_ADMIN_PUBLIC AdminSkinComponent final : public virtual tt3::util::IComponent
     {
         DECLARE_SINGLETON(AdminSkinComponent)
 
         //////////
-        //  Component
+        //  IComponent
     public:
+        virtual QString         mnemonic() const override;
+        virtual QString         displayName() const override;
+        virtual QString         desciption() const override;
+        virtual QString         copyright() const override;
+        virtual QVersionNumber  version() const override;
+        virtual QString         buildNumber() const override;
         virtual AdminSkinSettings & settings() override { return *AdminSkinSettings::instance(); }
 
         //////////

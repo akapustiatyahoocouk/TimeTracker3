@@ -36,7 +36,7 @@ namespace
         QFile iniFile(iniFileName);
         if (iniFile.open(QIODevice::ReadOnly))
         {
-            tt3::util::Component * currentComponent = nullptr;
+            tt3::util::IComponent * currentComponent = nullptr;
             QTextStream iniStream(&iniFile);
             while (!iniStream.atEnd())
             {
@@ -91,7 +91,7 @@ namespace
         if (iniFile.open(QIODevice::WriteOnly))
         {
             QTextStream iniStream(&iniFile);
-            for (tt3::util::Component * component : tt3::util::ComponentRegistry::allComponents())
+            for (tt3::util::IComponent * component : tt3::util::ComponentRegistry::allComponents())
             {
                 iniStream << "["
                           << component->mnemonic()

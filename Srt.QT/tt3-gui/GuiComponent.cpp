@@ -20,18 +20,39 @@ using namespace tt3::gui;
 //////////
 //  Singleton
 IMPLEMENT_SINGLETON(GuiComponent)
+GuiComponent::GuiComponent() {}
+GuiComponent::~GuiComponent() {}
 
-GuiComponent::GuiComponent()
-    :   Component("tt3-gui",
-                "TimeTracker3 GUI",
-                "Defines GUI facilities for TimeTracker3",
-                "Copyright (C) 2026, Andrey Kapustin",
-                QVersionNumber(1, 0, 0))
+//////////
+//  IComponent
+QString GuiComponent::mnemonic() const
 {
+    return "tt3-gui";
 }
 
-GuiComponent::~GuiComponent()
+QString GuiComponent::displayName() const
 {
+    return "TimeTracker3 GUI";
+}
+
+QString GuiComponent::desciption() const
+{
+    return "Defines GUI facilities for TimeTracker3";
+}
+
+QString GuiComponent::copyright() const
+{
+    return "Copyright (C) 2026, Andrey Kapustin";
+}
+
+QVersionNumber GuiComponent::version() const
+{
+    return QVersionNumber(1, 0, 0);
+}
+
+QString GuiComponent::buildNumber() const
+{
+    return __TIMESTAMP__;
 }
 
 //  End of tt3-gui/GuiComponent.cpp

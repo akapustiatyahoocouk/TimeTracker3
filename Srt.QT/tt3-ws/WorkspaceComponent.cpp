@@ -18,17 +18,39 @@
 using namespace tt3::ws;
 
 IMPLEMENT_SINGLETON(WorkspaceComponent)
-WorkspaceComponent::WorkspaceComponent()
-    :   Component("tt3-ws",
-                "TimeTracker3 workspace layer",
-                "Defines workspace data access layer for TimeTracker3",
-                "Copyright (C) 2026, Andrey Kapustin",
-                QVersionNumber(1, 0, 0))
+WorkspaceComponent::WorkspaceComponent() {}
+WorkspaceComponent::~WorkspaceComponent() {}
+
+//////////
+//  IComponent
+QString WorkspaceComponent::mnemonic() const
 {
+    return "tt3-ws";
 }
 
-WorkspaceComponent::~WorkspaceComponent()
+QString WorkspaceComponent::displayName() const
 {
+    return "TimeTracker3 workspace layer";
+}
+
+QString WorkspaceComponent::desciption() const
+{
+    return "Defines workspace data access layer for TimeTracker3";
+}
+
+QString WorkspaceComponent::copyright() const
+{
+    return "Copyright (C) 2026, Andrey Kapustin";
+}
+
+QVersionNumber WorkspaceComponent::version() const
+{
+    return QVersionNumber(1, 0, 0);
+}
+
+QString WorkspaceComponent::buildNumber() const
+{
+    return __TIMESTAMP__;
 }
 
 //  End of tt3-ws/WorkspaceComponent.cpp

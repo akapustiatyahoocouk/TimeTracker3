@@ -22,43 +22,27 @@ namespace tt3::util
     //  While a "plugin" is a unit of disctibution (e.g. 1 DLL == 1 plugin),
     //  "components" are architectural elements, so it may be not uncommon
     //  for a single plugin to define (and register) several components.
-    class TT3_UTIL_PUBLIC Component
+    class TT3_UTIL_PUBLIC IComponent
     {
         //////////
-        //  Construction/destruction
+        //  This is an interface
     protected:
-        Component(const QString & mnemonic, const QString & displayName,
-                  const QString & description, const QString & copyright,
-                  const QVersionNumber & version)
-            :   _mnemonic(mnemonic),
-                _displayName(displayName),
-                _desciption(description),
-                _copyright(copyright),
-                _version(version) {}
-        virtual ~Component() = default;
+        IComponent() = default;
+        virtual ~IComponent() = default;
 
         //////////
         //  Operations
     public:
         //  TODO document
-        virtual QString         mnemonic() const { return _mnemonic; }
-        virtual QString         displayName() const { return _displayName; }
-        virtual QString         desciption() const { return _desciption; }
-        virtual QString         copyright() const { return _copyright; }
-        virtual QVersionNumber  version() const { return _version; }
-        virtual QString         buildNumber() const { return __DATE__; }
+        virtual QString         mnemonic() const = 0;
+        virtual QString         displayName() const = 0;
+        virtual QString         desciption() const = 0;
+        virtual QString         copyright() const = 0;
+        virtual QVersionNumber  version() const = 0;
+        virtual QString         buildNumber() const = 0;
 
         //  The settings of this component
         virtual Settings &      settings() = 0;
-
-        //////////
-        //  Implementation
-    private:
-        QString                 _mnemonic;
-        QString                 _displayName;
-        QString                 _desciption;
-        QString                 _copyright;
-        QVersionNumber          _version;
     };
 
     //////////
@@ -71,15 +55,15 @@ namespace tt3::util
         //  Operationds
     public:
         //  TODO document
-        static QSet<Component*>     allComponents();
-        static bool                 registerComponent(Component * component);
-        static Component *          findComponent(const QString & mnemonic, const QVersionNumber & version);
-        static Component *          findComponent(const QString & mnemonic);    //  finds the latest version
+        static QSet<IComponent*>    allComponents();
+        static bool                 registerComponent(IComponent * component);
+        static IComponent *         findComponent(const QString & mnemonic, const QVersionNumber & version);
+        static IComponent *         findComponent(const QString & mnemonic);    //  finds the latest version
 
         //////////
         //  Implementation
     private:
-        static QMap<QString, Component*> &  _registry();    //  key = "mnemonic" + "version"
+        static QMap<QString, IComponent*>   _registry;    //  key = "mnemonic" + "version"
     };
 }
 
