@@ -20,12 +20,13 @@ using namespace tt3;
 namespace
 {
     void registerStandardComponents()
-    {
-        tt3::util::ComponentRegistry::registerComponent(ApplicationComponent::instance());
-        tt3::util::ComponentRegistry::registerComponent(tt3::gui::GuiComponent::instance());
-        tt3::util::ComponentRegistry::registerComponent(tt3::ws::WorkspaceComponent::instance());
-        tt3::util::ComponentRegistry::registerComponent(tt3::db::api::DbApiComponent::instance());
-        tt3::util::ComponentRegistry::registerComponent(tt3::util::UtilComponent::instance());
+    {   //  Sone components form the TT3 skeleton
+        //  and, therefore, are NOT registered by plugins
+        tt3::util::ComponentRegistry::registerComponent(tt3::Component::instance());
+        tt3::util::ComponentRegistry::registerComponent(tt3::gui::Component::instance());
+        tt3::util::ComponentRegistry::registerComponent(tt3::ws::Component::instance());
+        tt3::util::ComponentRegistry::registerComponent(tt3::db::api::Component::instance());
+        tt3::util::ComponentRegistry::registerComponent(tt3::util::Component::instance());
     }
 
     void loadSettings()
@@ -114,7 +115,7 @@ namespace
     void selectActiveSkin()
     {
         tt3::gui::ISkin * initialSkin =
-            tt3::gui::SkinRegistry::findSkin(tt3::gui::GuiSettings::instance()->activeSkin);
+            tt3::gui::SkinRegistry::findSkin(tt3::gui::Component::Settings::instance()->activeSkin);
         //  Use a default skin ?
         for (tt3::gui::ISkin * skin : tt3::gui::SkinRegistry::allSkins())
         {

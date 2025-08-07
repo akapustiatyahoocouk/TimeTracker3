@@ -1,5 +1,5 @@
 //
-//  tt3-db-api/DatabaseTypeRegistry.cpp db::api::DatabaseTypeRegistry class implementation
+//  tt3-db-api/DatabaseTypeRegistry.cpp tt3::db::api::DatabaseTypeRegistry class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin

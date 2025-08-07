@@ -4,9 +4,8 @@ TEMPLATE = lib
 DEFINES += TT3_GUI_LIBRARY
 
 SOURCES += \
+    Component.cpp \
     CurrentSkin.cpp \
-    GuiComponent.cpp \
-    GuiSettings.cpp \
     SkinRegistry.cpp
 
 HEADERS += \

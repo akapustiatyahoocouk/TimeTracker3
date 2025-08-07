@@ -16,7 +16,7 @@
 //////////
 #include "tt3-skin-admin/API.hpp"
 #include "ui_AdminSkinMainFrame.h"
-using namespace skin::admin;
+using namespace tt3::skin::admin;
 
 AdminSkinMainFrame::AdminSkinMainFrame(QWidget * parent)
     :   QMainWindow(parent),
@@ -67,8 +67,8 @@ void AdminSkinMainFrame::closeEvent(QCloseEvent * event)
 //  Implementation
 void AdminSkinMainFrame::_loadPosition()
 {
-    this->setGeometry(AdminSkinSettings::instance()->mainFrameBounds);
-    if (AdminSkinSettings::instance()->mainFrameMaximized)
+    this->setGeometry(Component::Settings::instance()->mainFrameBounds);
+    if (Component::Settings::instance()->mainFrameMaximized)
     {
         this->showMaximized();
     }
@@ -78,12 +78,12 @@ void AdminSkinMainFrame::_savePosition()
 {
     if (this->isMaximized())
     {
-        AdminSkinSettings::instance()->mainFrameMaximized = true;
+        Component::Settings::instance()->mainFrameMaximized = true;
     }
     else if (!this->isMinimized())
     {
-        AdminSkinSettings::instance()->mainFrameBounds = this->geometry();
-        AdminSkinSettings::instance()->mainFrameMaximized = false;
+        Component::Settings::instance()->mainFrameBounds = this->geometry();
+        Component::Settings::instance()->mainFrameMaximized = false;
     }
 }
 

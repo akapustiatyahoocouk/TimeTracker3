@@ -1,5 +1,5 @@
 //
-//  tt3-gui/GuiComponent.cpp - tt3::gui::GuiComponent class implementation
+//  tt3-gui/Component.cpp - tt3::gui::Component class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,40 +19,57 @@ using namespace tt3::gui;
 
 //////////
 //  Singleton
-IMPLEMENT_SINGLETON(GuiComponent)
-GuiComponent::GuiComponent() {}
-GuiComponent::~GuiComponent() {}
+IMPLEMENT_SINGLETON(Component)
+Component::Component() {}
+Component::~Component() {}
 
 //////////
 //  IComponent
-QString GuiComponent::mnemonic() const
+QString Component::mnemonic() const
 {
     return "tt3-gui";
 }
 
-QString GuiComponent::displayName() const
+QString Component::displayName() const
 {
     return "TimeTracker3 GUI";
 }
 
-QString GuiComponent::desciption() const
+QString Component::desciption() const
 {
     return "Defines GUI facilities for TimeTracker3";
 }
 
-QString GuiComponent::copyright() const
+QString Component::copyright() const
 {
     return "Copyright (C) 2026, Andrey Kapustin";
 }
 
-QVersionNumber GuiComponent::version() const
+QVersionNumber Component::version() const
 {
     return QVersionNumber(1, 0, 0);
 }
 
-QString GuiComponent::buildNumber() const
+QString Component::buildNumber() const
 {
-    return __TIMESTAMP__;
+    return __DATE__;
+}
+
+//////////
+//  Component::Settings
+IMPLEMENT_SINGLETON(Component::Settings)
+
+Component::Settings::Settings()
+    :   activeSkin(
+          "ActiveSkin",
+          "The identifier of the currently active skin",
+          "")
+{
+    addSetting(&activeSkin);
+}
+
+Component::Settings::~Settings()
+{
 }
 
 //  End of tt3-gui/GuiComponent.cpp

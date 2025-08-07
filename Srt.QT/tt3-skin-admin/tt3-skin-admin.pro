@@ -5,10 +5,9 @@ DEFINES += TT3_SKIN_ADMIN_LIBRARY
 
 SOURCES += \
     AdminSkin.cpp \
-    AdminSkinComponent.cpp \
     AdminSkinMainFrame.cpp \
-    AdminSkinPlugins.cpp \
-    AdminSkinSettings.cpp
+    Component.cpp \
+    Plugins.cpp
 
 HEADERS += \
     API.hpp \

@@ -1,5 +1,5 @@
 //
-//  tt3-db-api/DbApiComponent.cpp - AdminSkinComponent class implementation
+//  tt3-db-api/Component.cpp - tt3::db::api::Component class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,41 +19,47 @@ using namespace tt3::db::api;
 
 //////////
 //  Singleton
-IMPLEMENT_SINGLETON(DbApiComponent)
+IMPLEMENT_SINGLETON(Component)
 
-DbApiComponent::DbApiComponent() {}
-DbApiComponent::~DbApiComponent() {}
+Component::Component() {}
+Component::~Component() {}
 
 //////////
 //  IComponent
-QString DbApiComponent::mnemonic() const
+QString Component::mnemonic() const
 {
     return "tt3-db-api";
 }
 
-QString DbApiComponent::displayName() const
+QString Component::displayName() const
 {
     return "TimeTracker3 database API";
 }
 
-QString DbApiComponent::desciption() const
+QString Component::desciption() const
 {
     return "Defines common API for TimeTracker3 databases";
 }
 
-QString DbApiComponent::copyright() const
+QString Component::copyright() const
 {
     return "Copyright (C) 2026, Andrey Kapustin";
 }
 
-QVersionNumber DbApiComponent::version() const
+QVersionNumber Component::version() const
 {
     return QVersionNumber(1, 0, 0);
 }
 
-QString DbApiComponent::buildNumber() const
+QString Component::buildNumber() const
 {
-    return __TIMESTAMP__;
+    return __DATE__;
 }
+
+//////////
+//  Component::Settings
+IMPLEMENT_SINGLETON(Component::Settings)
+Component::Settings::Settings() {}
+Component::Settings::~Settings() {}
 
 //  End of tt3-db-api/DbApiComponent.cpp

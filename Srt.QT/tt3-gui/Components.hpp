@@ -17,21 +17,24 @@
 
 namespace tt3::gui
 {
-    //  The "TT3 GUO" component settings
-    class TT3_GUI_PUBLIC GuiSettings final : public tt3::util::Settings
+    //  The "TT3 Gui" component
+    class TT3_GUI_PUBLIC Component final : public virtual tt3::util::IComponent
     {
-        DECLARE_SINGLETON(GuiSettings)
+        DECLARE_SINGLETON(Component)
 
         //////////
-        //  Properties
+        //  Types
     public:
-        mutable tt3::util::Setting<QString> activeSkin; //  The mnemonic of the active skin
-    };
+        //  The "TT3 GUO" component settings
+        class TT3_GUI_PUBLIC Settings final : public tt3::util::Settings
+        {
+            DECLARE_SINGLETON(Settings)
 
-    //  The "TT3 Gui" component
-    class TT3_GUI_PUBLIC GuiComponent final : public virtual tt3::util::IComponent
-    {
-        DECLARE_SINGLETON(GuiComponent)
+            //////////
+            //  Properties
+        public:
+            mutable tt3::util::Setting<QString> activeSkin; //  The mnemonic of the active skin
+        };
 
         //////////
         //  IComponent
@@ -42,7 +45,7 @@ namespace tt3::gui
         virtual QString         copyright() const override;
         virtual QVersionNumber  version() const override;
         virtual QString         buildNumber() const override;
-        virtual GuiSettings &   settings() override { return *GuiSettings::instance(); }
+        virtual Settings &      settings() override { return *Settings::instance(); }
 
         //////////
         //  Implementation

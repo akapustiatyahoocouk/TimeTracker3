@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>skin::admin::AdminSkinMainFrame</class>
- <widget class="QMainWindow" name="skin::admin::AdminSkinMainFrame">
+ <class>tt3::skin::admin::AdminSkinMainFrame</class>
+ <widget class="QMainWindow" name="tt3::skin::admin::AdminSkinMainFrame">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -146,7 +146,7 @@
   <connection>
    <sender>actionExit</sender>
    <signal>triggered()</signal>
-   <receiver>skin::admin::AdminSkinMainFrame</receiver>
+   <receiver>tt3::skin::admin::AdminSkinMainFrame</receiver>
    <slot>_onActionExit()</slot>
    <hints>
     <hint type="sourcelabel">

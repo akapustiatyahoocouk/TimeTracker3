@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-skin-admin/API.hpp"
-using namespace skin::admin;
+using namespace tt3::skin::admin;
 
 //////////
 //  Singleton

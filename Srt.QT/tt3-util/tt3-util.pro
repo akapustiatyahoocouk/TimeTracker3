@@ -4,14 +4,13 @@ TEMPLATE = lib
 DEFINES += TT3_UTIL_LIBRARY
 
 SOURCES += \
+    Component.cpp \
     ComponentRegistry.cpp \
     FromString.cpp \
     Plugin.cpp \
     PluginManager.cpp \
     Settings.cpp \
-    ToString.cpp \
-    UtilComponent.cpp \
-    UtilSettings.cpp
+    ToString.cpp
 
 HEADERS += \
     API.hpp \

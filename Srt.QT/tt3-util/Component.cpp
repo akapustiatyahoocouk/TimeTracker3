@@ -1,5 +1,5 @@
 //
-//  tt3-util/UtilComponent.cpp - tt3::util::UtilComponent class implementation
+//  tt3-util/Component.cpp - tt3::util::Component class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,40 +19,46 @@ using namespace tt3::util;
 
 //////////
 //  Singleton
-IMPLEMENT_SINGLETON(UtilComponent)
-UtilComponent::UtilComponent() {}
-UtilComponent::~UtilComponent() {}
+IMPLEMENT_SINGLETON(Component)
+Component::Component() {}
+Component::~Component() {}
 
 //////////
 //  IComponent
-QString UtilComponent::mnemonic() const
+QString Component::mnemonic() const
 {
     return "tt3-util";
 }
 
-QString UtilComponent::displayName() const
+QString Component::displayName() const
 {
     return "TimeTracker3 utility";
 }
 
-QString UtilComponent::desciption() const
+QString Component::desciption() const
 {
     return "Defines utility services for TimeTracker3";
 }
 
-QString UtilComponent::copyright() const
+QString Component::copyright() const
 {
     return "Copyright (C) 2026, Andrey Kapustin";
 }
 
-QVersionNumber UtilComponent::version() const
+QVersionNumber Component::version() const
 {
     return QVersionNumber(1, 0, 0);
 }
 
-QString UtilComponent::buildNumber() const
+QString Component::buildNumber() const
 {
-    return __TIMESTAMP__;
+    return __DATE__;
 }
 
-//  End of tt3-util/UtilComponent.cpp
+//////////
+//  Component::UtilSettings
+IMPLEMENT_SINGLETON(Component::Settings)
+Component::Settings::Settings() {}
+Component::Settings::~Settings() {}
+
+//  End of tt3-util/Component.cpp

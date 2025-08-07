@@ -4,9 +4,8 @@ TEMPLATE = lib
 DEFINES += TT3_DB_API_LIBRARY
 
 SOURCES += \
-    DatabaseTypeRegistry.cpp \
-    DbApiComponent.cpp \
-    DbApiSettings.cpp
+    Component.cpp \
+    DatabaseTypeRegistry.cpp
 
 HEADERS += \
     API.hpp \

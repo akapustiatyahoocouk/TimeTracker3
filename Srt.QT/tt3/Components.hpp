@@ -17,24 +17,25 @@
 
 namespace tt3
 {
-    //////////
-    //  The "TT3 application" component settings
-    class ApplicationSettings final : public tt3::util::Settings
+    //  The "TT3 application" component
+    class Component final : public virtual tt3::util::IComponent
     {
-        DECLARE_SINGLETON(ApplicationSettings)
+        DECLARE_SINGLETON(Component)
 
         //////////
-        //  Properties
+        //  Types
     public:
-        //  TODO document
-        tt3::util::Setting<bool>    reloadLastWorkspaceOnStartup;
-    };
+        //  The "TT3 application" component settings
+        class Settings final : public tt3::util::Settings
+        {
+            DECLARE_SINGLETON(Settings)
 
-    //////////
-    //  The "TT3 application" component
-    class ApplicationComponent final : public virtual tt3::util::IComponent
-    {
-        DECLARE_SINGLETON(ApplicationComponent)
+            //////////
+            //  Properties
+        public:
+            //  TODO document
+            tt3::util::Setting<bool>    reloadLastWorkspaceOnStartup;
+        };
 
         //////////
         //  IComponent
@@ -45,7 +46,7 @@ namespace tt3
         virtual QString         copyright() const override;
         virtual QVersionNumber  version() const override;
         virtual QString         buildNumber() const override;
-        virtual ApplicationSettings &   settings() override { return *ApplicationSettings::instance(); }
+        virtual Settings &      settings() override { return *Settings::instance(); }
 
         //////////
         //  Implementation

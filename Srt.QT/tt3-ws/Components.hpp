@@ -17,20 +17,23 @@
 
 namespace tt3::ws
 {
-    //  The "TT3 Workspace" component settings
-    class TT3_WS_PUBLIC WorkspaceSettings final : public util::Settings
+    //  The "TT3 Workspace" component
+    class TT3_WS_PUBLIC Component final : public virtual tt3::util::IComponent
     {
-        DECLARE_SINGLETON(WorkspaceSettings)
+        DECLARE_SINGLETON(Component)
 
         //////////
-        //  Properties
+        //  Types
     public:
-    };
+        //  The "TT3 Workspace" component settings
+        class TT3_WS_PUBLIC Settings final : public tt3::util::Settings
+        {
+            DECLARE_SINGLETON(Settings)
 
-    //  The "TT3 Workspace" component
-    class TT3_WS_PUBLIC WorkspaceComponent final : public virtual tt3::util::IComponent
-    {
-        DECLARE_SINGLETON(WorkspaceComponent)
+            //////////
+            //  Properties
+        public:
+        };
 
         //////////
         //  IComponent
@@ -41,7 +44,7 @@ namespace tt3::ws
         virtual QString         copyright() const override;
         virtual QVersionNumber  version() const override;
         virtual QString         buildNumber() const override;
-        virtual WorkspaceSettings & settings() override { return *WorkspaceSettings::instance(); }
+        virtual Settings &      settings() override { return *Settings::instance(); }
 
         //////////
         //  Implementation

@@ -15,25 +15,28 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace skin::admin
+namespace tt3::skin::admin
 {
-    //  The "TT3 Admin skin" component settings
-    class TT3_SKIN_ADMIN_PUBLIC AdminSkinSettings final : public tt3::util::Settings
+    //  The "TT3 Admin skin" component
+    class TT3_SKIN_ADMIN_PUBLIC Component final : public virtual tt3::util::IComponent
     {
-        DECLARE_SINGLETON(AdminSkinSettings)
+        DECLARE_SINGLETON(Component)
 
         //////////
-        //  Properties
+        //  Types
     public:
-        //  TODO document
-        tt3::util::Setting<QRect>   mainFrameBounds;
-        tt3::util::Setting<bool>    mainFrameMaximized;
-    };
+        //  The "TT3 Admin skin" component settings
+        class TT3_SKIN_ADMIN_PUBLIC Settings final : public tt3::util::Settings
+        {
+            DECLARE_SINGLETON(Settings)
 
-    //  The "TT3 Admin skin" component
-    class TT3_SKIN_ADMIN_PUBLIC AdminSkinComponent final : public virtual tt3::util::IComponent
-    {
-        DECLARE_SINGLETON(AdminSkinComponent)
+            //////////
+            //  Properties
+        public:
+            //  TODO document
+            tt3::util::Setting<QRect>   mainFrameBounds;
+            tt3::util::Setting<bool>    mainFrameMaximized;
+        };
 
         //////////
         //  IComponent
@@ -44,7 +47,7 @@ namespace skin::admin
         virtual QString         copyright() const override;
         virtual QVersionNumber  version() const override;
         virtual QString         buildNumber() const override;
-        virtual AdminSkinSettings & settings() override { return *AdminSkinSettings::instance(); }
+        virtual Settings &      settings() override { return *Settings::instance(); }
 
         //////////
         //  Implementation

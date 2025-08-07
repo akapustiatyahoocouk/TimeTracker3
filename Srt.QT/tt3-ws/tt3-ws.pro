@@ -4,8 +4,7 @@ TEMPLATE = lib
 DEFINES += TT3_WS_LIBRARY
 
 SOURCES += \
-    WorkspaceComponent.cpp \
-    WorkspaceSettings.cpp
+    Component.cpp
 
 HEADERS += \
     API.hpp \

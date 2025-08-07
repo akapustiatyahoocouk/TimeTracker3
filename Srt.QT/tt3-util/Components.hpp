@@ -17,20 +17,23 @@
 
 namespace tt3::util
 {
-    //  The "TT3 Util" component settings
-    class TT3_UTIL_PUBLIC UtilSettings final : public Settings
+    //  The "TT3 Util" component
+    class TT3_UTIL_PUBLIC Component final : public virtual IComponent
     {
-        DECLARE_SINGLETON(UtilSettings)
+        DECLARE_SINGLETON(Component)
 
         //////////
-        //  Properties
+        //  Types
     public:
-    };
+        //  The "TT3 Util" component settings
+        class TT3_UTIL_PUBLIC Settings final : public tt3::util::Settings
+        {
+            DECLARE_SINGLETON(Settings)
 
-    //  The "TT3 Util" component
-    class TT3_UTIL_PUBLIC UtilComponent final : public virtual IComponent
-    {
-        DECLARE_SINGLETON(UtilComponent)
+            //////////
+            //  Properties
+        public:
+        };
 
         //////////
         //  IComponent
@@ -41,7 +44,7 @@ namespace tt3::util
         virtual QString         copyright() const override;
         virtual QVersionNumber  version() const override;
         virtual QString         buildNumber() const override;
-        virtual UtilSettings &  settings() override { return *UtilSettings::instance(); }
+        virtual Settings &      settings() override { return *Settings::instance(); }
 
         //////////
         //  Implementation

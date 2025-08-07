@@ -17,7 +17,7 @@
 #pragma once
 #include "tt3-skin-admin/API.hpp"
 
-namespace skin::admin
+namespace tt3::skin::admin
 {
     //  Main frame of the admin skin
     namespace Ui { class AdminSkinMainFrame; }

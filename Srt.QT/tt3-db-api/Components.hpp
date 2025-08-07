@@ -17,20 +17,23 @@
 
 namespace tt3::db::api
 {
-    //  The "TT3 DB API" component settings
-    class TT3_DB_API_PUBLIC DbApiSettings final : public tt3::util::Settings
+    //  The "TT3 DB API" component
+    class TT3_DB_API_PUBLIC Component final : public virtual tt3::util::IComponent
     {
-        DECLARE_SINGLETON(DbApiSettings)
+        DECLARE_SINGLETON(Component)
 
         //////////
-        //  Properties
+        //  Types
     public:
-    };
+        //  The "TT3 DB API" component settings
+        class TT3_DB_API_PUBLIC Settings final : public tt3::util::Settings
+        {
+            DECLARE_SINGLETON(Settings)
 
-    //  The "TT3 DB API" component
-    class TT3_DB_API_PUBLIC DbApiComponent final : public virtual tt3::util::IComponent
-    {
-        DECLARE_SINGLETON(DbApiComponent)
+            //////////
+            //  Properties
+        public:
+        };
 
         //////////
         //  IComponent
@@ -41,7 +44,7 @@ namespace tt3::db::api
         virtual QString         copyright() const override;
         virtual QVersionNumber  version() const override;
         virtual QString         buildNumber() const override;
-        virtual DbApiSettings & settings() override { return *DbApiSettings::instance(); }
+        virtual Settings &      settings() override { return *Settings::instance(); }
 
         //////////
         //  Implementation

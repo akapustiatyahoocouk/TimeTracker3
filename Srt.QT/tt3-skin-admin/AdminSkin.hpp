@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace skin::admin
+namespace tt3::skin::admin
 {
     //  TODO move these to Classes.hpp
     class TT3_SKIN_ADMIN_PUBLIC AdminSkinMainFrame;

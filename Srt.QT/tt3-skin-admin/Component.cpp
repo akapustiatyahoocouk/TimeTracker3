@@ -1,5 +1,5 @@
 //
-//  tt3-skin-admin/AdminSkinComponent.cpp - AdminSkinComponent class implementation
+//  tt3-skin-admin/Component.cpp - Component class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,45 +15,66 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-skin-admin/API.hpp"
-using namespace skin::admin;
+using namespace tt3::skin::admin;
 
 //////////
 //  Singleton
-IMPLEMENT_SINGLETON(AdminSkinComponent)
-
-AdminSkinComponent::AdminSkinComponent() {}
-AdminSkinComponent::~AdminSkinComponent() {}
+IMPLEMENT_SINGLETON(Component)
+Component::Component() {}
+Component::~Component() {}
 
 //////////
 //  IComponent
-QString AdminSkinComponent::mnemonic() const
+QString Component::mnemonic() const
 {
     return "tt3-skin-admin";
 }
 
-QString AdminSkinComponent::displayName() const
+QString Component::displayName() const
 {
     return "TimeTracker3 Administrator skin";
 }
 
-QString AdminSkinComponent::desciption() const
+QString Component::desciption() const
 {
     return "Defines GUI Administrator skin for TimeTracker3";
 }
 
-QString AdminSkinComponent::copyright() const
+QString Component::copyright() const
 {
     return "Copyright (C) 2026, Andrey Kapustin";
 }
 
-QVersionNumber AdminSkinComponent::version() const
+QVersionNumber Component::version() const
 {
     return QVersionNumber(1, 0, 0);
 }
 
-QString AdminSkinComponent::buildNumber() const
+QString Component::buildNumber() const
 {
-    return __TIMESTAMP__;
+    return __DATE__;
+}
+
+//////////
+//  Component::Settings
+IMPLEMENT_SINGLETON(Component::Settings)
+
+Component::Settings::Settings()
+    :   mainFrameBounds(
+            "MainFrameBounds",
+            "Main frame bounds (when not maximized)",
+            QRect(32, 32, 480, 320)),
+        mainFrameMaximized(
+            "MainFrameMaximized",
+            "Main frame is maximized",
+            false)
+{
+    addSetting(&mainFrameBounds);
+    addSetting(&mainFrameMaximized);
+}
+
+Component::Settings::~Settings()
+{
 }
 
 //  End of tt3-skin-admin/AdminSkinComponent.cpp

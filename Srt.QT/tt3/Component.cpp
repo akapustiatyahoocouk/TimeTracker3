@@ -17,40 +17,57 @@
 #include "tt3/API.hpp"
 using namespace tt3;
 
-IMPLEMENT_SINGLETON(ApplicationComponent)
-ApplicationComponent::ApplicationComponent() {}
-ApplicationComponent::~ApplicationComponent() {}
+IMPLEMENT_SINGLETON(Component)
+Component::Component() {}
+Component::~Component() {}
 
 //////////
 //  IComponent
-QString ApplicationComponent::mnemonic() const
+QString Component::mnemonic() const
 {
     return "tt3";
 }
 
-QString ApplicationComponent::displayName() const
+QString Component::displayName() const
 {
     return "TimeTracker3 application";
 }
 
-QString ApplicationComponent::desciption() const
+QString Component::desciption() const
 {
     return "Defines startup and top-level logic of TimeTracker3 application";
 }
 
-QString ApplicationComponent::copyright() const
+QString Component::copyright() const
 {
     return "Copyright (C) 2026, Andrey Kapustin";
 }
 
-QVersionNumber ApplicationComponent::version() const
+QVersionNumber Component::version() const
 {
     return QVersionNumber(1, 0, 0);
 }
 
-QString ApplicationComponent::buildNumber() const
+QString Component::buildNumber() const
 {
-    return __TIMESTAMP__;
+    return __DATE__;
+}
+
+//////////
+//  Component::Settings
+IMPLEMENT_SINGLETON(Component::Settings)
+
+Component::Settings::Settings()
+    :   reloadLastWorkspaceOnStartup(
+          "ReloadLastWorkspaceOnStartup",
+          "Reload last workspace on startup",
+          false)
+{
+    addSetting(&reloadLastWorkspaceOnStartup);
+}
+
+Component::Settings::~Settings()
+{
 }
 
 //  End of tt3/ApplicationComponent.cpp

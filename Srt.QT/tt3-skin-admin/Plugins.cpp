@@ -1,5 +1,5 @@
 //
-//  tt3-skin-admin/AdminSkinPlugins.cpp - admin skin plugins
+//  tt3-skin-admin/Plugins.cpp - admin skin plugins
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-skin-admin/API.hpp"
-using namespace skin::admin;
+using namespace tt3::skin::admin;
 
 namespace
 {
@@ -57,9 +57,14 @@ namespace
             return QVersionNumber(1, 0, 0);
         }
 
+        virtual QString         buildNumber() const override
+        {
+            return __DATE__;
+        }
+
         virtual void            initialize() throws(QException) override
         {
-            tt3::util::ComponentRegistry::registerComponent(AdminSkinComponent::instance());
+            tt3::util::ComponentRegistry::registerComponent(Component::instance());
             tt3::gui::SkinRegistry::registerSkin(AdminSkin::instance());
         }
     };
@@ -69,4 +74,4 @@ BEGIN_PLUGIN_TABLE()
     EXPORT_PLUGIN(AdminSkinPlugin)
 END_PLUGIN_TABLE()
 
-//  End of tt3-skin-admin/AdminSkinPlugins.cpp
+//  End of tt3-skin-admin/Plugins.cpp

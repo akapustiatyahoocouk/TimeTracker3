@@ -38,7 +38,7 @@ namespace tt3::util
         virtual QString         desciption() const = 0;
         virtual QString         copyright() const = 0;
         virtual QVersionNumber  version() const = 0;
-        virtual QString         buildNumber() const { return __DATE__; }
+        virtual QString         buildNumber() const = 0;
 
         //  Called by plugin manager to initialize this plugin.
         //  On success, returns normally. On failure throws.

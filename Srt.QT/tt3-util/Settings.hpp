@@ -136,6 +136,9 @@ namespace tt3::util
     public:
         //  An unordered list of all settings in this bunch
         QList<AbstractSetting*> settings() const { return _settings.values(); }
+
+        //  Finds a setting with the specified mnemonic in
+        //  this settings; returns nullptr if not found
         AbstractSetting *   findSetting(const QString & mnemonic) const;
 
         //////////
