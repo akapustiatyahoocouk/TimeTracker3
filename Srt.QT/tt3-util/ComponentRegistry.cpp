@@ -35,6 +35,7 @@ bool ComponentRegistry::registerComponent(Component * component)
     }
     else
     {
+        qDebug() << "Registering " << component->displayName();
         QString key = component->mnemonic() + "|" + util::toString(component->version());
         _registry()[key] = component;
         return true;

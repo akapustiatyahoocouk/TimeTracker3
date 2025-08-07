@@ -43,5 +43,4 @@ namespace util
     };
 }
 
-EXECUTE_ONCE(util::ComponentRegistry::registerComponent(util::UtilComponent::instance()))
 //  End of tt3-util/Components.hpp

@@ -6,7 +6,6 @@ DEFINES += TT3_UTIL_LIBRARY
 SOURCES += \
     ComponentRegistry.cpp \
     FromString.cpp \
-    OnceExecutor.cpp \
     Plugin.cpp \
     PluginManager.cpp \
     Settings.cpp \

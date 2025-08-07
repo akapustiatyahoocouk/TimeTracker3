@@ -18,6 +18,14 @@
 
 namespace
 {
+    void registerStandardComponents()
+    {
+        util::ComponentRegistry::registerComponent(ApplicationComponent::instance());
+        util::ComponentRegistry::registerComponent(gui::GuiComponent::instance());
+        util::ComponentRegistry::registerComponent(db::api::DbApiComponent::instance());
+        util::ComponentRegistry::registerComponent(util::UtilComponent::instance());
+    }
+
     void loadSettings()
     {
         QDir home = QDir::home();
@@ -158,6 +166,7 @@ int main(int argc, char *argv[])
     QGuiApplication::setWindowIcon(ic);
     QGuiApplication::setApplicationName("TimeTracker3");
 
+    registerStandardComponents();
     util::PluginManager::loadPlugins();
     loadSettings();
 

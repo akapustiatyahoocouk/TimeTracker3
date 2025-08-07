@@ -46,6 +46,4 @@ namespace skin::admin
     };
 }
 
-EXECUTE_ONCE(util::ComponentRegistry::registerComponent(skin::admin::AdminSkinComponent::instance()))
-
 //  End of tt3-skin-admin/Components.hpp

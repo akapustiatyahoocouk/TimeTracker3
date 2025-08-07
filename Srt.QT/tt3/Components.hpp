@@ -44,6 +44,4 @@ public:
 private:
 };
 
-EXECUTE_ONCE(util::ComponentRegistry::registerComponent(ApplicationComponent::instance()))
-
 //  End of tt3/Components.hpp
