@@ -56,7 +56,9 @@ namespace tt3::db::xml
         int                     _referenceCount = 0;
 
         //  Helpers
-        void                    _checkState();
+#ifdef QT_DEBUG
+        void                    _assertState();
+#endif
     };
 }
 

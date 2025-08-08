@@ -71,15 +71,21 @@ void DatabaseAddress::addReference()
     switch (_state)
     {
         case State::New:
-            _checkState();
+#ifdef QT_DEBUG
+            _assertState();
+#endif
             databaseType->_newDatabaseAddresses.remove(_path);
             databaseType->_managedDatabaseAddresses[_path] = this;
             _referenceCount = 1;
             _state = State::Managed;
-            _checkState();
+#ifdef QT_DEBUG
+            _assertState();
+#endif
             break;
         case State::Managed:
-            _checkState();
+#ifdef QT_DEBUG
+            _assertState();
+#endif
             if (_referenceCount < INT_MAX)
             {   //  Instance remains Managed
                 _referenceCount++;
@@ -88,15 +94,21 @@ void DatabaseAddress::addReference()
             {   //  Can't acquire any more references
                 Q_ASSERT(false);
             }
-            _checkState();
+#ifdef QT_DEBUG
+            _assertState();
+#endif
             break;
         case State::Old:
-            _checkState();
+#ifdef QT_DEBUG
+            _assertState();
+#endif
             databaseType->_oldDatabaseAddresses.remove(_path);
             databaseType->_managedDatabaseAddresses[_path] = this;
             _referenceCount = 1;
             _state = State::Managed;
-            _checkState();
+#ifdef QT_DEBUG
+            _assertState();
+#endif
             break;
         default:
             Q_ASSERT(false);
@@ -111,21 +123,29 @@ void DatabaseAddress::releaseReference()
     switch (_state)
     {
         case State::New:
-            _checkState();
+#ifdef QT_DEBUG
+            _assertState();
+#endif
             Q_ASSERT(false);    //  Can't release a New instance
             break;
         case State::Managed:
-            _checkState();
+#ifdef QT_DEBUG
+            _assertState();
+#endif
             if (--_referenceCount == 0)
             {   //  Instance becomes Old whe n losing a last reference
                 databaseType->_managedDatabaseAddresses.remove(_path);
                 databaseType->_oldDatabaseAddresses[_path] = this;
                 _state = State::Old;
-                _checkState();
+#ifdef QT_DEBUG
+                _assertState();
+#endif
             }
             break;
         case State::Old:
-            _checkState();
+#ifdef QT_DEBUG
+            _assertState();
+#endif
             Q_ASSERT(false);    //  Can't release an Old instance
             break;
         default:
@@ -135,7 +155,8 @@ void DatabaseAddress::releaseReference()
 
 //////////
 //  Implementation helpers
-void DatabaseAddress::_checkState()
+#ifdef QT_DEBUG
+void DatabaseAddress::_assertState()
 {
     static DatabaseType * databaseType = DatabaseType::instance();  //  idempotent
 
@@ -166,5 +187,6 @@ void DatabaseAddress::_checkState()
             Q_ASSERT(false);
     }
 }
+#endif
 
 //  End of tt3-db-xml/DatabaseAddress.cpp

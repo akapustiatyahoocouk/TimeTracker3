@@ -2,7 +2,7 @@
 //  tt3-util/API.hpp - tt3-util master header
 //
 //  TimeTracker3
-//  Copyright (C) 2026, Andrey Kapustin
+//  Copyright (C) `2026, Andrey Kapustin
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -31,6 +31,8 @@
     #pragma warning(disable:4355)   //  'this': used in base member initializer list
     #pragma warning(disable:4365)   //  '=': conversion from '<TYPE>' to '<TYPE>', signed/unsigned mismatch
     #pragma warning(disable:4371)   //  '<CLASS>': layout of class may have changed from a previous version of the compiler due to better packing of member '<MEMBER>'
+    #pragma warning(disable:4710)   //  '<FUNCTION>': function not inlined
+    #pragma warning(disable:4711)   //  '<FUNCTION>': function selected for automatic inline expansion
     #pragma warning(disable:5045)   //  Compiler will insert Spectre mitigation for memory load if /Qspectre switch specified
     #pragma warning(disable:5219)   //  implicit conversion from 'const int' to 'float', possible loss of data
     #pragma warning(disable:5249)   //  '<CLASS>::<MEMBER>' of type '<TYPE' has named enumerators with values that cannot be represented in the given bit field width of '<WIDTH>'.
@@ -75,6 +77,8 @@
     //  Some warnings shall be disabled in user code as well
     #pragma warning(disable:4251)   //  '<VARIABLE>': '<CLASS>' needs to have dll-interface to be used by clients of '<CLASS>'
     #pragma warning(disable:4355)   //  'this': used in base member initializer list
+    #pragma warning(disable:4710)   //  '<FUNCTION>': function not inlined
+    #pragma warning(disable:4711)   //  '<FUNCTION>': function selected for automatic inline expansion
     #pragma warning(disable:4866)   //  compiler may not enforce left-to-right evaluation order for call to 'C++17 operator'
     #pragma warning(disable:5045)   //  Compiler will insert Spectre mitigation for memory load if /Qspectre switch specified
 #else

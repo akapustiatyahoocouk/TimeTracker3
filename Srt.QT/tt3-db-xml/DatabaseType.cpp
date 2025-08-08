@@ -97,22 +97,34 @@ tt3::db::api::IDatabaseAddress * DatabaseType::parseDatabaseAddress(const QStrin
 
     QMutexLocker<QMutex> locker(&_databaseAddressesGuard);
 
+    DatabaseAddress * databaseAddress;
     if (_newDatabaseAddresses.contains(path))
-    {
-        return _newDatabaseAddresses[path];
+    {   //  An instance is New (i.e. not recyclable)
+        databaseAddress = _newDatabaseAddresses[path];
     }
-    if (_managedDatabaseAddresses.contains(path))
-    {
-        return _managedDatabaseAddresses[path];
+    else if (_managedDatabaseAddresses.contains(path))
+    {   //  An instance is Managed (i.e. not recyclable)
+        databaseAddress =  _managedDatabaseAddresses[path];
     }
-    //  Don't examine _oldDatabaseAddresses - these can
-    //  be recycled at any moment.
-    //  So, need a new Address instance.
-    //  TODO what if a reference is added to an Old address?
-    DatabaseAddress * databaseAddress = new DatabaseAddress(path);
-    Q_ASSERT(databaseAddress->_referenceCount == 0 &&
-             databaseAddress->_state == DatabaseAddress::State::New);
-    _newDatabaseAddresses[path] = databaseAddress;
+    else if (_oldDatabaseAddresses.contains(path))
+    {   //  An instance is Old, but a client just
+        //  expressed interest in it, so promote
+        //  it to New
+        databaseAddress =  _oldDatabaseAddresses[path];
+        _oldDatabaseAddresses.remove(path);
+        _newDatabaseAddresses[path] = databaseAddress;
+        databaseAddress->_state = DatabaseAddress::State::New;
+    }
+    else
+    {   //  Need a new instance
+        databaseAddress = new DatabaseAddress(path);
+        Q_ASSERT(databaseAddress->_referenceCount == 0 &&
+                 databaseAddress->_state == DatabaseAddress::State::New);
+        _newDatabaseAddresses[path] = databaseAddress;
+    }
+#ifdef QT_DEBUG
+    databaseAddress->_assertState();
+#endif
     return databaseAddress;
 }
 
