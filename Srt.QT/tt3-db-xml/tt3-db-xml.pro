@@ -18,3 +18,6 @@ HEADERS += \
     Linkage.hpp
 
 LIBS += -ltt3-db-api -ltt3-util
+
+RESOURCES += \
+    tt3-db-xml.qrc

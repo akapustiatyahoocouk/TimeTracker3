@@ -20,8 +20,16 @@ using namespace tt3::db::xml;
 //////////
 //  Sigleton
 IMPLEMENT_SINGLETON(DatabaseType)
-DatabaseType::DatabaseType() {}
-DatabaseType::~DatabaseType() {}
+
+DatabaseType::DatabaseType()
+    :   _smallIcon(":/tt3-db-xml/Resources/Images/Objects/XmlDatabaseTypeSmall.png"),
+        _largeIcon(":/tt3-db-xml/Resources/Images/Objects/XmlDatabaseTypeLarge.png")
+{
+}
+
+DatabaseType::~DatabaseType()
+{
+}
 
 //////////
 //  tt3::db::api::IDatabaseType (general)
@@ -33,6 +41,16 @@ QString DatabaseType::mnemonic() const
 QString DatabaseType::displayName() const
 {
     return "XML file";
+}
+
+QIcon DatabaseType::smallIcon() const
+{
+    return _smallIcon;
+}
+
+QIcon DatabaseType::largeIcon() const
+{
+    return _largeIcon;
 }
 
 bool DatabaseType::isOperational() const

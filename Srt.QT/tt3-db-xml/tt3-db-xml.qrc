@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/tt3-db-xml">
+        <file>Resources/Images/Objects/XmlDatabaseTypeLarge.png</file>
+        <file>Resources/Images/Objects/XmlDatabaseTypeSmall.png</file>
+    </qresource>
+</RCC>

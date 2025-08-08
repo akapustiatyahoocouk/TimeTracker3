@@ -34,6 +34,8 @@ namespace tt3::db::xml
     public:
         virtual QString     mnemonic() const override;
         virtual QString     displayName() const override;
+        virtual QIcon       smallIcon() const override;
+        virtual QIcon       largeIcon() const override;
         virtual bool        isOperational() const override;
         virtual QString     shortStatusReport() const override;
         virtual QString     fullStatusReport() const override;
@@ -56,7 +58,11 @@ namespace tt3::db::xml
         //////////
         //  Implementation
     private:
+        QIcon               _smallIcon;
+        QIcon               _largeIcon;
+
         //  Cache of known database addresses
+        //  TODO can we unify 3 caches into one ?
         QMutex              _databaseAddressesGuard;
         QMap<QString, DatabaseAddress*> _newDatabaseAddresses;
         QMap<QString, DatabaseAddress*> _managedDatabaseAddresses;

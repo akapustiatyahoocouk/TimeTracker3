@@ -36,6 +36,13 @@ namespace tt3::db::api
         //  TODO document
         virtual QString     mnemonic() const = 0;
         virtual QString     displayName() const = 0;
+
+        //  The small (16x16) icon representing this database type.
+        virtual QIcon           smallIcon() const = 0;
+
+        //  The large (32x32) icon representing this database type.
+        virtual QIcon           largeIcon() const = 0;
+
         virtual bool        isOperational() const = 0;
         virtual QString     shortStatusReport() const = 0;
         virtual QString     fullStatusReport() const = 0;
