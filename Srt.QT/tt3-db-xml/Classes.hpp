@@ -1,5 +1,5 @@
 //
-//  tt3-db-api/API.hpp - tt3-db-api master header
+//  tt3-db-xml/Classes.hpp - forware declarations and typedefs
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,21 +14,11 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
 
-//////////
-//  Dependencies
-#include "tt3-util/API.hpp"
+namespace tt3::db::xml
+{
+    class TT3_DB_XML_PUBLIC DatabaseType;
+    class TT3_DB_XML_PUBLIC DatabaseAddress;
+}
 
-//////////
-//  db-db-xml components
-#include "tt3-db-api/Linkage.hpp"
-#include "tt3-db-api/Classes.hpp"
-#include "tt3-db-api/Components.hpp"
-
-#include "tt3-db-api/DatabaseType.hpp"
-#include "tt3-db-api/DatabaseAddress.hpp"
-
-#include "tt3-db-api/Exceptions.hpp"
-
-//  End of tt3-db-api/API.hpp
+//  End of tt3-db-xml/Classes.hpp

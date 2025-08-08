@@ -21,17 +21,40 @@ namespace tt3::db::api
     //  A "database address" represents a location of a speific
     //  database of a given type. Database address instances are
     //  managed by their corresponding database type.
+    //  An instance of a IDatabaseAddress has an associated
+    //  reference count. Depending on it, that instance can be
+    //  in one of the following states:
+    //  *   New - the instance has just been created; its
+    //      reference count is 0. New instances are not
+    //      recycled.
+    //  *   Managed - a New instance becomes Managed when its
+    //      reference count goes from 0 to 1 for the first
+    //      time. Managed instances are not recycled.
+    //  *   Old - a Managed instance becodes Old when its
+    //      reference count changes from 1 to 0. Old instances
+    //      can be recycled by the database type they belong
+    //      to. Changing their reference count from 0 to 1
+    //      again makes them Managed again.
     class TT3_DB_API_PUBLIC IDatabaseAddress
     {
         //////////
-        //  This is an interface
+        //  Types
     public:
-        IDatabaseAddress() = default;
+        enum class State
+        {
+            New,
+            Managed,
+            Old
+        };
+
+        //////////
+        //  This is an interface
     protected:
+        IDatabaseAddress() = default;
         virtual ~IDatabaseAddress() = default;
 
         //////////
-        //  Operations
+        //  Operations (general)
     public:
         //  The database type to which this database address belongs.
         virtual IDatabaseType * databaseType() const = 0;
@@ -41,6 +64,16 @@ namespace tt3::db::api
 
         //  The external (re-parsable) form of this database address.
         virtual QString         externalForm() const = 0;
+
+        //////////
+        //  Operations (reference counting)
+        //  All these operations are thread-safe.
+    public:
+        //  TODO document
+        virtual State           state() const = 0;
+        virtual int             referenceCount() const = 0;
+        virtual void            acquireReference() = 0;
+        virtual void            releaseReference() = 0;
     };
 }
 

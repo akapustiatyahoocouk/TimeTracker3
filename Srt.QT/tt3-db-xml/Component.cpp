@@ -1,5 +1,5 @@
 //
-//  tt3-db-api/Component.cpp - tt3::db::api::Component class implementation
+//  tt3-db-xml/Component.cpp - tt3::db::xml::Component class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,8 +14,8 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#include "tt3-db-api/API.hpp"
-using namespace tt3::db::api;
+#include "tt3-db-xml/API.hpp"
+using namespace tt3::db::xml;
 
 //////////
 //  Singleton
@@ -28,17 +28,17 @@ Component::~Component() {}
 //  IComponent
 QString Component::mnemonic() const
 {
-    return "tt3-db-api";
+    return "tt3-db-xml";
 }
 
 QString Component::displayName() const
 {
-    return "TimeTracker3 database API";
+    return "TimeTracker3 X<L file database support";
 }
 
 QString Component::desciption() const
 {
-    return "Defines common API for TimeTracker3 databases";
+    return "Enables storing TimeTracker3 databases as XML files (single-user)";
 }
 
 QString Component::copyright() const
@@ -62,4 +62,4 @@ IMPLEMENT_SINGLETON(Component::Settings)
 Component::Settings::Settings() {}
 Component::Settings::~Settings() {}
 
-//  End of tt3-db-api/Component.cpp
+//  End of tt3-db-xml/Component.cpp
