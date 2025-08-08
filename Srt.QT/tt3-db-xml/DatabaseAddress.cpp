@@ -63,7 +63,7 @@ int DatabaseAddress::referenceCount() const
     return _referenceCount;
 }
 
-void DatabaseAddress::acquireReference()
+void DatabaseAddress::addReference()
 {
     static DatabaseType * databaseType = DatabaseType::instance();  //  idempotent
     QMutexLocker<QMutex> locker(&databaseType->_databaseAddressesGuard);

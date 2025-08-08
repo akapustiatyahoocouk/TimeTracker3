@@ -64,7 +64,7 @@ namespace tt3::db::api
         //  Parses an external form of a database address of this type.
         //  Returns the parsed database address or throws DatabaseException if
         //  the address parsing fails for some reason
-        virtual IDatabaseAddress *  parseDatabaseAddress(const QString & externalForm) throws(ParseException) = 0;
+        virtual IDatabaseAddress *  parseDatabaseAddress(const QString & externalForm) throws(DatabaseException) = 0;
 
         //////////
         //  Operations (databases)

@@ -45,7 +45,7 @@ namespace tt3::db::xml
     public:
         virtual State           state() const override;
         virtual int             referenceCount() const override;
-        virtual void            acquireReference() override;
+        virtual void            addReference() override;
         virtual void            releaseReference() override;
 
         //////////

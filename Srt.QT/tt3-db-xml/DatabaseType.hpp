@@ -44,7 +44,7 @@ namespace tt3::db::xml
         virtual tt3::db::api::IDatabaseAddress *  defaultDatabaseAddress() const override;
         virtual tt3::db::api::IDatabaseAddress *  enterNewDatabaseAddress(QWidget * parent) override;
         virtual tt3::db::api::IDatabaseAddress *  enterExistingDatabaseAddress(QWidget * parent) override;
-        virtual tt3::db::api::IDatabaseAddress *  parseDatabaseAddress(const QString & externalForm) throws(ParseException) override;
+        virtual tt3::db::api::IDatabaseAddress *  parseDatabaseAddress(const QString & externalForm) throws(DatabaseException) override;
 
         //////////
         //  tt3::db::api::IDatabaseType (databases)
