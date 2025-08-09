@@ -173,7 +173,12 @@ int main(int argc, char *argv[])
     tt3::util::PluginManager::loadPlugins();
     loadSettings();
 
-    selectActiveSkin();
+    //  TODO define & use "synchronized (lock)" statement - like macro
+    tt3::util::Mutex m;
+    if (tt3::util::Lock(m), true)
+    {
+        selectActiveSkin();
+    }
 
     int exitCode = a.exec();
 
