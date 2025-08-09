@@ -27,6 +27,8 @@ namespace tt3::ws
     {
         //////////
         //  Construction/destruction/assignment
+    private:
+        explicit WorkspaceAddress(tt3::db::api::IDatabaseAddress * databaseAddress);
     public:
         WorkspaceAddress();
         WorkspaceAddress(const WorkspaceAddress & src);
@@ -56,7 +58,7 @@ namespace tt3::ws
 
         //  The workspace type to which this workspace address belongs
         //  or nullptr is this workspace address is invalid.
-        WorkspaceType   workspaceType() const;
+        WorkspaceType * workspaceType() const;
 
         //  The user-readable form of this workspace address.
         QString         displayForm() const;
