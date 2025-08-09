@@ -113,7 +113,7 @@ tt3::db::api::IDatabaseAddress * DatabaseType::parseDatabaseAddress(const QStrin
         throw tt3::db::api::InvalidDatabaseAddressException();
     }
 
-    QMutexLocker<QMutex> locker(&_databaseAddressesGuard);
+    tt3::util::Lock lock(_databaseAddressesGuard);
 
     DatabaseAddress * databaseAddress;
     if (_databaseAddresses.contains(path))

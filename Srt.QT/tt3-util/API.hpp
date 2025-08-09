@@ -90,6 +90,8 @@
 #include "tt3-util/Linkage.hpp"
 #include "tt3-util/Macros.hpp"
 
+#include "tt3-util/Sync.hpp"
+
 #include "tt3-util/ToString.hpp"
 #include "tt3-util/FromString.hpp"
 #include "tt3-util/Collections.hpp"

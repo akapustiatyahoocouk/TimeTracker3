@@ -7,6 +7,7 @@ SOURCES += \
     Component.cpp \
     ComponentRegistry.cpp \
     FromString.cpp \
+    Mutex.cpp \
     Plugin.cpp \
     PluginManager.cpp \
     Settings.cpp \
@@ -22,4 +23,5 @@ HEADERS += \
     Macros.hpp \
     Plugin.hpp \
     Settings.hpp \
+    Sync.hpp \
     ToString.hpp

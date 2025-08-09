@@ -62,8 +62,9 @@ namespace tt3::db::xml
         QIcon               _largeIcon;
 
         //  Cache of known database addresses
-        QMutex              _databaseAddressesGuard;
+        tt3::util::Mutex    _databaseAddressesGuard;
         QMap<QString, DatabaseAddress*> _databaseAddresses; //  key == full path
+        //  TODO how do we recycled Old DatabaseAddress instances ? Queue of Olds ?
     };
 }
 

@@ -50,7 +50,7 @@ QString DatabaseAddress::externalForm() const
 DatabaseAddress::State DatabaseAddress::state() const
 {
     static DatabaseType * databaseType = DatabaseType::instance();  //  idempotent
-    QMutexLocker<QMutex> locker(&databaseType->_databaseAddressesGuard);
+    tt3::util::Lock lock(databaseType->_databaseAddressesGuard);
 
     return _state;
 }
@@ -58,7 +58,7 @@ DatabaseAddress::State DatabaseAddress::state() const
 int DatabaseAddress::referenceCount() const
 {
     static DatabaseType * databaseType = DatabaseType::instance();  //  idempotent
-    QMutexLocker<QMutex> locker(&databaseType->_databaseAddressesGuard);
+    tt3::util::Lock lock(databaseType->_databaseAddressesGuard);
 
     return _referenceCount;
 }
@@ -66,7 +66,7 @@ int DatabaseAddress::referenceCount() const
 void DatabaseAddress::addReference()
 {
     static DatabaseType * databaseType = DatabaseType::instance();  //  idempotent
-    QMutexLocker<QMutex> locker(&databaseType->_databaseAddressesGuard);
+    tt3::util::Lock lock(databaseType->_databaseAddressesGuard);
 
     switch (_state)
     {
@@ -114,7 +114,7 @@ void DatabaseAddress::addReference()
 void DatabaseAddress::releaseReference()
 {
     static DatabaseType * databaseType = DatabaseType::instance();  //  idempotent
-    QMutexLocker<QMutex> locker(&databaseType->_databaseAddressesGuard);
+    tt3::util::Lock lock(databaseType->_databaseAddressesGuard);
 
     switch (_state)
     {
@@ -154,6 +154,7 @@ void DatabaseAddress::_assertState()
 {
     static DatabaseType * databaseType = DatabaseType::instance();  //  idempotent
 
+    Q_ASSERT(databaseType->_databaseAddressesGuard.isLockedByCurrentThread());
     switch (_state)
     {
         case State::New:
