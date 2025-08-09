@@ -62,11 +62,8 @@ namespace tt3::db::xml
         QIcon               _largeIcon;
 
         //  Cache of known database addresses
-        //  TODO can we unify 3 caches into one ?
         QMutex              _databaseAddressesGuard;
-        QMap<QString, DatabaseAddress*> _newDatabaseAddresses;
-        QMap<QString, DatabaseAddress*> _managedDatabaseAddresses;
-        QMap<QString, DatabaseAddress*> _oldDatabaseAddresses;  //  ready for recycling
+        QMap<QString, DatabaseAddress*> _databaseAddresses; //  key == full path
     };
 }
 

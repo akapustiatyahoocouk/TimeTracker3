@@ -1,5 +1,5 @@
 //
-//  tt3-db-xml/Classes.hpp - forward declarations and typedefs
+//  tt3-ws/Classes.hpp - forward declarations and typedefs
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,10 +15,13 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace tt3::db::xml
+namespace tt3::ws
 {
-    class TT3_DB_XML_PUBLIC DatabaseType;
-    class TT3_DB_XML_PUBLIC DatabaseAddress;
+    class TT3_WS_PUBLIC WorkspaceType;
+    class TT3_WS_PUBLIC nWorkspaceTypeRegistry;
+    class TT3_WS_PUBLIC WorkspaceAddress;
+
+    using WorkspaceTypes = QSet<WorkspaceType*>;
 }
 
-//  End of tt3-db-xml/Classes.hpp
+//  End of tt3-ws/Classes.hpp

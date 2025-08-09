@@ -74,8 +74,6 @@ void DatabaseAddress::addReference()
 #ifdef QT_DEBUG
             _assertState();
 #endif
-            databaseType->_newDatabaseAddresses.remove(_path);
-            databaseType->_managedDatabaseAddresses[_path] = this;
             _referenceCount = 1;
             _state = State::Managed;
 #ifdef QT_DEBUG
@@ -102,8 +100,6 @@ void DatabaseAddress::addReference()
 #ifdef QT_DEBUG
             _assertState();
 #endif
-            databaseType->_oldDatabaseAddresses.remove(_path);
-            databaseType->_managedDatabaseAddresses[_path] = this;
             _referenceCount = 1;
             _state = State::Managed;
 #ifdef QT_DEBUG
@@ -133,9 +129,7 @@ void DatabaseAddress::releaseReference()
             _assertState();
 #endif
             if (--_referenceCount == 0)
-            {   //  Instance becomes Old whe n losing a last reference
-                databaseType->_managedDatabaseAddresses.remove(_path);
-                databaseType->_oldDatabaseAddresses[_path] = this;
+            {   //  Instance becomes Old when losing a last reference
                 _state = State::Old;
 #ifdef QT_DEBUG
                 _assertState();
@@ -163,24 +157,18 @@ void DatabaseAddress::_assertState()
     switch (_state)
     {
         case State::New:
-            Q_ASSERT(databaseType->_newDatabaseAddresses.contains(_path) &&
-                     databaseType->_newDatabaseAddresses[_path] == this);
-            Q_ASSERT(!databaseType->_managedDatabaseAddresses.contains(_path));
-            Q_ASSERT(!databaseType->_oldDatabaseAddresses.contains(_path));
+            Q_ASSERT(databaseType->_databaseAddresses.contains(_path) &&
+                     databaseType->_databaseAddresses[_path] == this);
             Q_ASSERT(_referenceCount == 0);
             break;
         case State::Managed:
-            Q_ASSERT(databaseType->_managedDatabaseAddresses.contains(_path) &&
-                     databaseType->_managedDatabaseAddresses[_path] == this);
-            Q_ASSERT(!databaseType->_newDatabaseAddresses.contains(_path));
-            Q_ASSERT(!databaseType->_oldDatabaseAddresses.contains(_path));
+            Q_ASSERT(databaseType->_databaseAddresses.contains(_path) &&
+                     databaseType->_databaseAddresses[_path] == this);
             Q_ASSERT(_referenceCount > 0);
             break;
         case State::Old:
-            Q_ASSERT(databaseType->_oldDatabaseAddresses.contains(_path) &&
-                     databaseType->_oldDatabaseAddresses[_path] == this);
-            Q_ASSERT(!databaseType->_newDatabaseAddresses.contains(_path));
-            Q_ASSERT(!databaseType->_managedDatabaseAddresses.contains(_path));
+            Q_ASSERT(databaseType->_databaseAddresses.contains(_path) &&
+                     databaseType->_databaseAddresses[_path] == this);
             Q_ASSERT(_referenceCount == 0);
             break;
         default:

@@ -62,4 +62,4 @@ IMPLEMENT_SINGLETON(Component::Settings)
 Component::Settings::Settings() {}
 Component::Settings::~Settings() {}
 
-//  End of tt3-ws/WorkspaceComponent.cpp
+//  End of tt3-ws/Component.cpp

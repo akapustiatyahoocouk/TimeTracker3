@@ -35,6 +35,11 @@ namespace tt3::db::api
     //      can be recycled by the database type they belong
     //      to. Changing their reference count from 0 to 1
     //      again makes them Managed again.
+    //  IMPORTANT: The implementation ensures that no two
+    //  instanes of a derived class refer to the same database;
+    //  therefore, to compare two database addresses for equality
+    //  it is sufficient to compare the pointers to the two
+    //  instances.
     class TT3_DB_API_PUBLIC IDatabaseAddress
     {
         //////////

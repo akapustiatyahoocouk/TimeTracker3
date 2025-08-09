@@ -1,5 +1,5 @@
 //
-//  tt3-db-api/DatabaseType.hpp - "database type" ADT
+//  tt3-ws/WorkspaceType.hpp - "Workspace type" ADT
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,41 +15,46 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace tt3::db::api
+namespace tt3::ws
 {
     //////////
-    //  A "database type" represents a specific storage technology
+    //  A "workspace type" represents a specific storage technology
     //  used to keep data persistent.
-    //  Concrete database types will normally be singletons
-    //  registered by plugins.
-    class TT3_DB_API_PUBLIC IDatabaseType
+    //  The set of available workspace types is generated
+    //  automatically based on the available database types.
+    class TT3_WS_PUBLIC WorkspaceType final
     {
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkspaceType)
+
+        friend class WorkspaceTypeRegistry;
+
         //////////
-        //  This is an interface
-    protected:
-        IDatabaseType() = default;
-        virtual ~IDatabaseType() = default;
+        //  Construction/destruction - from friends only
+    private:
+        explicit WorkspaceType(tt3::db::api::IDatabaseType * databaseType);
+        ~WorkspaceType();
 
         //////////
         //  Operation (general)
     public:
-        //  The mnemonic identifier of this database type
-        virtual QString     mnemonic() const = 0;
+        //  The mnemonic identifier of this workspace type
+        QString     mnemonic() const;
 
-        //  The user-readable display name of this database type
-        virtual QString     displayName() const = 0;
+        //  The user-readable display name of this workspace type
+        QString     displayName() const;
 
-        //  The small (16x16) icon representing this database type.
-        virtual QIcon       smallIcon() const = 0;
+        //  The small (16x16) icon representing this workspace type.
+        QIcon       smallIcon() const;
 
-        //  The large (32x32) icon representing this database type.
-        virtual QIcon       largeIcon() const = 0;
+        //  The large (32x32) icon representing this workspace type.
+        QIcon       largeIcon() const;
 
         //  TODO document
-        virtual bool        isOperational() const = 0;
-        virtual QString     shortStatusReport() const = 0;
-        virtual QString     fullStatusReport() const = 0;
+        bool        isOperational() const;
+        QString     shortStatusReport() const;
+        QString     fullStatusReport() const;
 
+#if 0 //    TODO uncomment
         //////////
         //  Operations (address handling)
     public:
@@ -83,27 +88,35 @@ namespace tt3::db::api
         virtual IDatabase *         createDatabase(IDatabaseAddress * address) throws(DatabaseException) = 0;
         virtual IDatabase *         openDatabase(IDatabaseAddress * address) throws(DatabaseException) = 0;
         virtual void                destroyDatabase(IDatabaseAddress * address) throws(DatabaseException) = 0;
+#endif
+
+        //////////
+        //  Implementation
+    private:
+        tt3::db::api::IDatabaseType *const  _databaseType;  //  nullptr == invalid
     };
 
     //////////
-    //  The registry/manager of known database types
-    class TT3_DB_API_PUBLIC DatabaseTypeRegistry final
+    //  The registry/manager of known workspace types
+    class TT3_WS_PUBLIC WorkspaceTypeRegistry final
     {
-        UTILITY_CLASS(DatabaseTypeRegistry)
+        UTILITY_CLASS(WorkspaceTypeRegistry)
 
         //////////
         //  Operations
     public:
         //  TODO document
-        static bool             registerDatabaseType(IDatabaseType * databaseType);
-        static IDatabaseType *  findDatabaseType(const QString & mnemonic);
-        static DatabaseTypes    allDatabaseTypes();
+        static WorkspaceType *  findWorkspaceType(const QString & mnemonic);
+        static WorkspaceTypes   allWorkspaceTypes();
 
         //////////
         //  Implementation
     private:
-        static QMap<QString, IDatabaseType*>    _registry;  //  key == mnemonic
+        static QMap<tt3::db::api::IDatabaseType*, WorkspaceType*>   _registry;
+
+        //  Helpers
+        static void             _collectWorkspaceTypes();
     };
 }
 
-//  End of tt3-db-api/DatabaseType.hpp
+//  End of tt3-ws/WorkspaceType.hpp
