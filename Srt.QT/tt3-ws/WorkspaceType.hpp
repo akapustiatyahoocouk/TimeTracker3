@@ -102,6 +102,8 @@ namespace tt3::ws
     {
         UTILITY_CLASS(WorkspaceTypeRegistry)
 
+        friend class WorkspaceAddress;
+
         //////////
         //  Operations
     public:
@@ -116,6 +118,7 @@ namespace tt3::ws
 
         //  Helpers
         static void             _collectWorkspaceTypes();
+        static WorkspaceType *  _findWorkspaceType(tt3::db::api::IDatabaseType * databaseType);
     };
 }
 

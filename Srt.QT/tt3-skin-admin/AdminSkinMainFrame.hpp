@@ -59,6 +59,8 @@ namespace tt3::skin::admin
         //  Signal handlers
     private slots:
         void            _savePositionTimerTimeout();
+        void            _onActionNewWorkspace();
+        void            _onActionOpenWorkspace();
         void            _onActionExit();
     };
 }

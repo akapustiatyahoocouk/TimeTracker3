@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/tt3-gui">
+        <file>Resources/Images/Actions/CreateWorkspaceLarge.png</file>
+        <file>Resources/Images/Actions/CreateWorkspaceSmall.png</file>
+        <file>Resources/Images/Actions/OpenWorkspaceLarge.png</file>
+        <file>Resources/Images/Actions/OpenWorkspaceSmall.png</file>
+    </qresource>
+</RCC>

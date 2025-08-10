@@ -1,5 +1,5 @@
 //
-//  tt3-gui/API.hpp - tt3-gui master header
+//  tt3-gui/NewWorkspaceDialog.cpp - tt3::gui::NewWorkspaceDialog class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,19 +14,22 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
+#include "tt3-gui/API.hpp"
+#include "ui_NewWorkspaceDialog.h"
+using namespace tt3::gui;
 
 //////////
-//  Dependencies
-#include "tt3-util/API.hpp"
+//  Construction/destruction
+NewWorkspaceDialog::NewWorkspaceDialog(QWidget * parent)
+    :   QDialog(parent),
+        _ui(new Ui::NewWorkspaceDialog)
+{
+    _ui->setupUi(this);
+}
 
-//////////
-//  tt3-gui components
-#include "tt3-gui/Linkage.hpp"
-#include "tt3-gui/Components.hpp"
+NewWorkspaceDialog::~NewWorkspaceDialog()
+{
+    delete _ui;
+}
 
-#include "tt3-gui/Skin.hpp"
-#include "tt3-gui/NewWorkspaceDialog.hpp"
-#include "tt3-gui/OpenWorkspaceDialog.hpp"
-
-//  End of tt3-gui/API.hpp
+//  End of tt3-gui/NewWorkspaceDialog.cpp

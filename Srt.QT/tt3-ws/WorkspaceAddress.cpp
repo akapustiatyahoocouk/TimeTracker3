@@ -125,7 +125,7 @@ WorkspaceType * WorkspaceAddress::workspaceType() const
 {   //  TODO synchronize ?
     return (_databaseAddress == nullptr) ?
                 nullptr :
-                WorkspaceTypeRegistry::findWorkspaceType(_databaseAddress->databaseType()->mnemonic());
+                WorkspaceTypeRegistry::_findWorkspaceType(_databaseAddress->databaseType());
 }
 
 QString WorkspaceAddress::displayForm() const

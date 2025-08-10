@@ -18,6 +18,8 @@
 #include "ui_AdminSkinMainFrame.h"
 using namespace tt3::skin::admin;
 
+//////////
+//  Construction/destruction
 AdminSkinMainFrame::AdminSkinMainFrame(QWidget * parent)
     :   QMainWindow(parent),
         _ui(new Ui::AdminSkinMainFrame),
@@ -92,6 +94,22 @@ void AdminSkinMainFrame::_savePosition()
 void AdminSkinMainFrame::_savePositionTimerTimeout()
 {
     _savePosition();
+}
+
+void AdminSkinMainFrame::_onActionNewWorkspace()
+{
+    tt3::gui::NewWorkspaceDialog dlg(this);
+    if (dlg.exec() == QDialog::Accepted)
+    {
+    }
+}
+
+void AdminSkinMainFrame::_onActionOpenWorkspace()
+{
+    tt3::gui::OpenWorkspaceDialog dlg(this);
+    if (dlg.exec() == QDialog::Accepted)
+    {
+    }
 }
 
 void AdminSkinMainFrame::_onActionExit()

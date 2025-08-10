@@ -39,6 +39,7 @@ WorkspaceTypes WorkspaceTypeRegistry::allWorkspaceTypes()
 //  Implementation helpers
 void WorkspaceTypeRegistry::_collectWorkspaceTypes()
 {
+    //  TODO assert synchronized
     if (_registry.isEmpty())
     {
         for (tt3::db::api::IDatabaseType * databaseType :
@@ -47,6 +48,12 @@ void WorkspaceTypeRegistry::_collectWorkspaceTypes()
             _registry[databaseType] = new WorkspaceType(databaseType);
         }
     }
+}
+
+WorkspaceType * WorkspaceTypeRegistry::_findWorkspaceType(tt3::db::api::IDatabaseType * databaseType)
+{   //  TODO assert synchronized
+    _collectWorkspaceTypes();
+    return _registry.contains(databaseType) ? _registry[databaseType] : nullptr;
 }
 
 //  End of tt3-ws/WorkspaceTypeRegistry.cpp
