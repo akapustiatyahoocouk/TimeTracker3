@@ -13,7 +13,9 @@ HEADERS += \
     API.hpp \
     Classes.hpp \
     Components.hpp \
+    Exceptions.hpp \
     Linkage.hpp \
+    Workspace.hpp \
     WorkspaceAddress.hpp \
     WorkspaceType.hpp
 

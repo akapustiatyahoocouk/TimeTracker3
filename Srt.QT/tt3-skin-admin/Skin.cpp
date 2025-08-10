@@ -19,58 +19,58 @@ using namespace tt3::skin::admin;
 
 //////////
 //  Singleton
-IMPLEMENT_SINGLETON(AdminSkin)
+IMPLEMENT_SINGLETON(Skin)
 
-AdminSkin::AdminSkin()
+Skin::Skin()
     :   _smallIcon(":/tt3-skin-admin/Resources/Images/Objects/AdminSkinSmall.png"),
         _largeIcon(":/tt3-skin-admin/Resources/Images/Objects/AdminSkinLarge.png")
 {
 }
 
-AdminSkin::~AdminSkin()
+Skin::~Skin()
 {
 }
 
 //////////
 //  gui::ISkin
-QString AdminSkin::mnemonic() const
+QString Skin::mnemonic() const
 {
     return "Admin";
 }
 
-QString AdminSkin::displayName() const
+QString Skin::displayName() const
 {
     return "Administrator";
 }
 
-QString AdminSkin::desciption() const
+QString Skin::desciption() const
 {
     return "Provides full management facilities for TimeTracker3 workspaces";
 }
 
-QIcon AdminSkin::smallIcon() const
+QIcon Skin::smallIcon() const
 {
     return _smallIcon;
 }
 
-QIcon AdminSkin::largeIcon() const
+QIcon Skin::largeIcon() const
 {
     return _largeIcon;
 }
 
-bool AdminSkin::isDefault() const
+bool Skin::isDefault() const
 {
     return true;
 }
 
 //////////
 //  gui::ISkin (state)
-bool AdminSkin::isActive() const
+bool Skin::isActive() const
 {
     return _mainFrame != nullptr;
 }
 
-void AdminSkin::activate()
+void Skin::activate()
 {
     if (_mainFrame == nullptr)
     {
@@ -81,7 +81,7 @@ void AdminSkin::activate()
     _mainFrame->raise();
 }
 
-void AdminSkin::deactivate()
+void Skin::deactivate()
 {
     if (_mainFrame != nullptr)
     {
@@ -91,4 +91,4 @@ void AdminSkin::deactivate()
     }
 }
 
-//  End of tt3-gui/AdminSkin.cpp
+//  End of tt3-gui/Skin.cpp

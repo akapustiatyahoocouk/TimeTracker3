@@ -27,6 +27,6 @@
 #include "tt3-skin-admin/Components.hpp"
 
 #include "tt3-skin-admin/MainFrame.hpp"
-#include "tt3-skin-admin/AdminSkin.hpp"
+#include "tt3-skin-admin/Skin.hpp"
 
 //  End of tt3-skin-admin/API.hpp

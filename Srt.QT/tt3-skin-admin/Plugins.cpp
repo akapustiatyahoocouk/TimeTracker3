@@ -65,7 +65,7 @@ namespace
         virtual void            initialize() throws(QException) override
         {
             tt3::util::ComponentRegistry::registerComponent(Component::instance());
-            tt3::gui::SkinRegistry::registerSkin(AdminSkin::instance());
+            tt3::gui::SkinRegistry::registerSkin(Skin::instance());
         }
     };
 }

@@ -4,17 +4,17 @@ TEMPLATE = lib
 DEFINES += TT3_SKIN_ADMIN_LIBRARY
 
 SOURCES += \
-    AdminSkin.cpp \
     Component.cpp \
     MainFrame.cpp \
-    Plugins.cpp
+    Plugins.cpp \
+    Skin.cpp
 
 HEADERS += \
     API.hpp \
-    AdminSkin.hpp \
     Components.hpp \
     Linkage.hpp \
-    MainFrame.hpp
+    MainFrame.hpp \
+    Skin.hpp
 
 RESOURCES += \
     tt3-skin-admin.qrc

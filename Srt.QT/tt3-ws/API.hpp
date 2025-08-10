@@ -29,5 +29,8 @@
 
 #include "tt3-ws/WorkspaceType.hpp"
 #include "tt3-ws/WorkspaceAddress.hpp"
+#include "tt3-ws/Workspace.hpp"
+
+#include "tt3-ws/Exceptions.hpp"
 
 //  End of tt3-ws/API.hpp

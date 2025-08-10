@@ -1,5 +1,5 @@
 //
-//  tt3-ws/Classes.hpp - forward declarations and typedefs
+//  tt3-ws/Exceptions.hpp - Workspace - level exceptions
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -17,12 +17,11 @@
 
 namespace tt3::ws
 {
-    class TT3_WS_PUBLIC WorkspaceType;
-    class TT3_WS_PUBLIC nWorkspaceTypeRegistry;
-    class TT3_WS_PUBLIC WorkspaceAddress;
-    class TT3_WS_PUBLIC Workspace;
-
-    using WorkspaceTypes = QSet<WorkspaceType*>;
+    using WorkspaceException = tt3::db::api::DatabaseException;
+    using InvalidWorkspaceAddressException = tt3::db::api::InvalidDatabaseAddressException;
+    using WorkspaceInUseException = tt3::db::api::DatabaseInUseException;
+    using WorkspaceCorruptException = tt3::db::api::DatabaseCorruptException;
+    using WorkspaceClosedException = tt3::db::api::DatabaseClosedException;
 }
 
-//  End of tt3-ws/Classes.hpp
+//  End of tt3-ws/Exceptions.hpp

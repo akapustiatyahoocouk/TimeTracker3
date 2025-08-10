@@ -95,4 +95,11 @@ WorkspaceAddress WorkspaceType::parseWorkspaceAddress(const QString & externalFo
     return WorkspaceAddress(databaseAddress);
 }
 
+//////////
+//  Operations (workspace)
+/*  TODO uncommnt
+Workspace * WorkspaceType::createWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
+Workspace * WorkspaceType::openWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
+void WorkspaceType::destroyWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
+*/
 //  End of tt3-ws/WorkspaceType.cpp

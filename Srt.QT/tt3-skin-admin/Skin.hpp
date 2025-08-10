@@ -1,5 +1,5 @@
 //
-//  tt3-skin-admin/AdminSkin.hpp - tt3 Administrator skin
+//  tt3-skin-admin/Skin.hpp - tt3 Administrator skin
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -22,9 +22,9 @@ namespace tt3::skin::admin
 
     //////////
     //  The "TT3 Administrator skin"
-    class TT3_SKIN_ADMIN_PUBLIC AdminSkin final : public virtual tt3::gui::ISkin
+    class TT3_SKIN_ADMIN_PUBLIC Skin final : public virtual tt3::gui::ISkin
     {
-        DECLARE_SINGLETON(AdminSkin)
+        DECLARE_SINGLETON(Skin)
 
         //////////
         //  gui::ISkin (properties)
@@ -53,4 +53,4 @@ namespace tt3::skin::admin
     };
 }
 
-//  End of tt3-skin-admin/AdminSkin.hpp
+//  End of tt3-skin-admin/Skin.hpp

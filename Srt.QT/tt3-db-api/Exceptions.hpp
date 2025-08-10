@@ -93,6 +93,23 @@ namespace tt3::db::api
         virtual QException *    clone() const { return new DatabaseCorruptException(*this); }
         virtual void            raise() const { throw *this; }
     };
+
+    //  Thrown when a service is called on a closed database.
+    class TT3_DB_API_PUBLIC DatabaseClosedException : public DatabaseException
+    {
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        explicit DatabaseClosedException(IDatabaseAddress * address)
+            :   DatabaseException(address->databaseType()->displayName() + " "  +
+                                  address->displayForm() + " is already in use") {}
+
+        //////////
+        //  QException
+    public:
+        virtual QException *    clone() const { return new DatabaseClosedException(*this); }
+        virtual void            raise() const { throw *this; }
+    };
 }
 
 //  End of tt3-db-api/Exceptions.hpp

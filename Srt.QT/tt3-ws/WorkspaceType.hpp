@@ -80,15 +80,13 @@ namespace tt3::ws
         //  the address parsing fails for some reason
         WorkspaceAddress    parseWorkspaceAddress(const QString & externalForm) throws(WorkspaceException);
 
-#if 0 //    TODO uncomment
         //////////
-        //  Operations (databases)
+        //  Operations (workspace)
     public:
         //  TODO document
-        virtual IDatabase *         createDatabase(IDatabaseAddress * address) throws(DatabaseException) = 0;
-        virtual IDatabase *         openDatabase(IDatabaseAddress * address) throws(DatabaseException) = 0;
-        virtual void                destroyDatabase(IDatabaseAddress * address) throws(DatabaseException) = 0;
-#endif
+        Workspace *         createWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
+        Workspace *         openWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
+        void                destroyWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
 
         //////////
         //  Implementation
