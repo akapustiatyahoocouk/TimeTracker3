@@ -59,6 +59,10 @@ namespace tt3::gui
     private slots:
         void            _workspaceTypeComboBoxCurrentIndexChanged(int);
         void            _browsePushButtonClicked();
+        void            _userNameLineEditTextChanged(QString);
+        void            _loginLineEditTextChanged(QString);
+        void            _passwordLineEditTextChanged(QString);
+        void            _confirmPasswordLineEditTextChanged(QString);
     };
 }
 

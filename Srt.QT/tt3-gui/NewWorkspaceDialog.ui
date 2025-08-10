@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>596</width>
-    <height>137</height>
+    <width>457</width>
+    <height>206</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,107 @@
    <bool>true</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="0" rowspan="2" colspan="3">
+   <item row="0" column="0">
+    <widget class="QLabel" name="workspaceTypeLabel">
+     <property name="text">
+      <string>Workspace type:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" colspan="4">
+    <widget class="QComboBox" name="workspaceTypeComboBox"/>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="locationLabel">
+     <property name="text">
+      <string>Location:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" colspan="3">
+    <widget class="QLineEdit" name="locationLineEdit">
+     <property name="echoMode">
+      <enum>QLineEdit::EchoMode::Normal</enum>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="4">
+    <widget class="QPushButton" name="browsePushButton">
+     <property name="text">
+      <string>Browse</string>
+     </property>
+     <property name="icon">
+      <iconset resource="tt3-gui.qrc">
+       <normaloff>:/tt3-gui/Resources/Images/Actions/BrowseSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/BrowseSmall.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="userNameLabel">
+     <property name="text">
+      <string>Administrator:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="userNameLineEdit">
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QLabel" name="loginLabel">
+     <property name="text">
+      <string>Login:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="3" colspan="2">
+    <widget class="QLineEdit" name="loginLineEdit">
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="passwordLabel">
+     <property name="text">
+      <string>Password:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QLineEdit" name="passwordLineEdit">
+     <property name="echoMode">
+      <enum>QLineEdit::EchoMode::Password</enum>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="QLabel" name="confirmPasswordLabel">
+     <property name="text">
+      <string>Confirm:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="3" colspan="2">
+    <widget class="QLineEdit" name="confirmPasswordLineEdit">
+     <property name="echoMode">
+      <enum>QLineEdit::EchoMode::Password</enum>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="5">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Orientation::Vertical</enum>
@@ -37,42 +137,7 @@
      </property>
     </spacer>
    </item>
-   <item row="0" column="1" colspan="2">
-    <widget class="QComboBox" name="workspaceTypeComboBox"/>
-   </item>
-   <item row="1" column="2">
-    <widget class="QPushButton" name="browsePushButton">
-     <property name="text">
-      <string>Browse</string>
-     </property>
-     <property name="icon">
-      <iconset resource="tt3-gui.qrc">
-       <normaloff>:/tt3-gui/Resources/Images/Actions/BrowseSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/BrowseSmall.png</iconset>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="workspaceTypeLabel">
-     <property name="text">
-      <string>Workspace type:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="locationLabel">
-     <property name="text">
-      <string>Location:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="locationLineEdit">
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0" colspan="3">
+   <item row="5" column="0" colspan="5">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
@@ -152,9 +217,77 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>userNameLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::NewWorkspaceDialog</receiver>
+   <slot>_userNameLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>188</x>
+     <y>94</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>228</x>
+     <y>102</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>loginLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::NewWorkspaceDialog</receiver>
+   <slot>_loginLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>383</x>
+     <y>94</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>228</x>
+     <y>102</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>passwordLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::NewWorkspaceDialog</receiver>
+   <slot>_passwordLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>188</x>
+     <y>129</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>228</x>
+     <y>102</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>confirmPasswordLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::NewWorkspaceDialog</receiver>
+   <slot>_confirmPasswordLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>383</x>
+     <y>129</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>228</x>
+     <y>102</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_workspaceTypeComboBoxCurrentIndexChanged(int)</slot>
   <slot>_browsePushButtonClicked()</slot>
+  <slot>_userNameLineEditTextChanged(QString)</slot>
+  <slot>_loginLineEditTextChanged(QString)</slot>
+  <slot>_passwordLineEditTextChanged(QString)</slot>
+  <slot>_confirmPasswordLineEditTextChanged(QString)</slot>
  </slots>
 </ui>

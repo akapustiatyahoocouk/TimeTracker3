@@ -72,8 +72,14 @@ void NewWorkspaceDialog::_refresh()
         _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(false);
         return;
     }
+    //  General case
+    tt3::ws::WorkspaceType * workspaceType =
+        _ui->workspaceTypeComboBox->currentData().value<tt3::ws::WorkspaceType*>();
+    Q_ASSERT(workspaceType != nullptr);
+    //  TODO we only really need a validator, not WorkspaceType
     _ui->locationLineEdit->setText(_workspaceAddress.displayForm());
-    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(_workspaceAddress.isValid());
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setEnabled(_workspaceAddress.isValid());    //  YODO user name, login and passwords are valid as well
 }
 
 //////////
@@ -103,6 +109,26 @@ void NewWorkspaceDialog::_browsePushButtonClicked()
         _workspaceAddress = workspaceAddress;
         _refresh();
     }
+}
+
+void NewWorkspaceDialog::_userNameLineEditTextChanged(QString)
+{
+    _refresh();
+}
+
+void NewWorkspaceDialog::_loginLineEditTextChanged(QString)
+{
+    _refresh();
+}
+
+void NewWorkspaceDialog::_passwordLineEditTextChanged(QString)
+{
+    _refresh();
+}
+
+void NewWorkspaceDialog::_confirmPasswordLineEditTextChanged(QString)
+{
+    _refresh();
 }
 
 //  End of tt3-gui/NewWorkspaceDialog.cpp

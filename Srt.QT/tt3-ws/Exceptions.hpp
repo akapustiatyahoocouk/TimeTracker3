@@ -22,6 +22,23 @@ namespace tt3::ws
     using WorkspaceInUseException = tt3::db::api::DatabaseInUseException;
     using WorkspaceCorruptException = tt3::db::api::DatabaseCorruptException;
     using WorkspaceClosedException = tt3::db::api::DatabaseClosedException;
+
+    //  Thrown when a workspace service is access-denied
+    class TT3_WS_PUBLIC AccessDeniedException : public WorkspaceException
+    {
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        AccessDeniedException()
+            :   WorkspaceException("Access denied") {}
+
+        //////////
+        //  QException
+    public:
+        virtual AccessDeniedException *
+                        clone() const { return new AccessDeniedException(*this); }
+        virtual void    raise() const { throw *this; }
+    };
 }
 
 //  End of tt3-ws/Exceptions.hpp
