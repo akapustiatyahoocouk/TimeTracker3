@@ -22,4 +22,4 @@ RESOURCES += \
 FORMS += \
     AdminSkinMainFrame.ui
 
-LIBS += -ltt3-gui -ltt3-util
+LIBS += -ltt3-gui -ltt3-ws -ltt3-util

@@ -81,6 +81,7 @@
     #pragma warning(disable:4711)   //  '<FUNCTION>': function selected for automatic inline expansion
     #pragma warning(disable:4866)   //  compiler may not enforce left-to-right evaluation order for call to 'C++17 operator'
     #pragma warning(disable:5045)   //  Compiler will insert Spectre mitigation for memory load if /Qspectre switch specified
+    #pragma warning(disable:5249)   //  '<CLASS>::<MEMBER>' of type '<TYPE' has named enumerators with values that cannot be represented in the given bit field width of '<WIDTH>'.
 #else
     #error Unsupported C++ toolchain
 #endif

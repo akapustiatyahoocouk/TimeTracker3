@@ -54,33 +54,33 @@ namespace tt3::ws
         QString     shortStatusReport() const;
         QString     fullStatusReport() const;
 
-#if 0 //    TODO uncomment
         //////////
         //  Operations (address handling)
     public:
-        //  If this dataase type has a concept of a "default" database,
-        //  returns its address; otherwise returns nullptr.
-        virtual IDatabaseAddress *  defaultDatabaseAddress() const = 0;
+        //  If this workspace type has a concept of a "default" workspace,
+        //  returns its address; otherwise returns invalid workspace addrsss.
+        WorkspaceAddress    defaultWorkspaceAddress() const;
 
         //  Prompts the user to interactively specify an address for a new
-        //  database of this type, using the specified widget as a parent
+        //  workspace of this type, using the specified widget as a parent
         //  for all modal dialogs that may be involved in address choosing.
-        //  Returns the database address chosen by the user or nullptr if
-        //  the user has chosen to cancel the dialog.
-        virtual IDatabaseAddress *  enterNewDatabaseAddress(QWidget * parent) = 0;
+        //  Returns the workspace address chosen by the user or invalid
+        //  workspace address if the user has chosen to cancel the dialog.
+        WorkspaceAddress    enterNewWorkspaceAddress(QWidget * parent);
 
         //  Prompts the user to interactively specify an address of an existing
-        //  database of this type, using the specified widget as a parent
+        //  workspace of this type, using the specified widget as a parent
         //  for all modal dialogs that may be involved in address choosing.
-        //  Returns the database address chosen by the user or nullptr if
-        //  the user has chosen to cancel the dialog.
-        virtual IDatabaseAddress *  enterExistingDatabaseAddress(QWidget * parent) = 0;
+        //  Returns the workspace address chosen by the user or invalid
+        //  workspace address if the user has chosen to cancel the dialog.
+        WorkspaceAddress    enterExistingWorkspaceAddress(QWidget * parent);
 
-        //  Parses an external form of a database address of this type.
-        //  Returns the parsed database address or throws DatabaseException if
+        //  Parses an external form of a workspace address of this type.
+        //  Returns the parsed workspace address or throws WorkspaceException if
         //  the address parsing fails for some reason
-        virtual IDatabaseAddress *  parseDatabaseAddress(const QString & externalForm) throws(DatabaseException) = 0;
+        WorkspaceAddress    parseWorkspaceAddress(const QString & externalForm) throws(WorkspaceException);
 
+#if 0 //    TODO uncomment
         //////////
         //  Operations (databases)
     public:

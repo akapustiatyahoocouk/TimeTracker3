@@ -25,6 +25,8 @@ namespace tt3::ws
     //  any existing workspace.
     class TT3_WS_PUBLIC WorkspaceAddress final
     {
+        friend class WorkspaceType;
+
         //////////
         //  Construction/destruction/assignment
     private:

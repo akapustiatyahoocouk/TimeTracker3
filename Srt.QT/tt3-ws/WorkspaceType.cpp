@@ -66,4 +66,33 @@ QString WorkspaceType::fullStatusReport() const
     return _databaseType->fullStatusReport();
 }
 
+//////////
+//  Operations (address handling)
+WorkspaceAddress WorkspaceType::defaultWorkspaceAddress() const
+{
+    return WorkspaceAddress(_databaseType->defaultDatabaseAddress());
+}
+
+WorkspaceAddress WorkspaceType::enterNewWorkspaceAddress(QWidget * parent)
+{
+    tt3::db::api::IDatabaseAddress * databaseAddress =
+        _databaseType->enterNewDatabaseAddress(parent);
+    return WorkspaceAddress(databaseAddress);
+}
+
+WorkspaceAddress WorkspaceType::enterExistingWorkspaceAddress(QWidget * parent)
+{
+    tt3::db::api::IDatabaseAddress * databaseAddress =
+        _databaseType->enterExistingDatabaseAddress(parent);
+    return WorkspaceAddress(databaseAddress);
+}
+
+WorkspaceAddress WorkspaceType::parseWorkspaceAddress(const QString & externalForm) throws(WorkspaceException)
+{
+    tt3::db::api::IDatabaseAddress * databaseAddress =
+        _databaseType->parseDatabaseAddress(externalForm);
+    //  TODO catch & re-throw tt3::db::api::DatabaseException!!!
+    return WorkspaceAddress(databaseAddress);
+}
+
 //  End of tt3-ws/WorkspaceType.cpp

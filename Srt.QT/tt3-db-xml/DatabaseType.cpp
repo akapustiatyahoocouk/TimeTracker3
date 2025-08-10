@@ -82,7 +82,7 @@ tt3::db::api::IDatabaseAddress * DatabaseType::enterNewDatabaseAddress(QWidget *
             parent,
             "Create XML file database",
             /*dir =*/ QString(),
-            "XML database files (*.tt3);;Text files (*.txt)");
+            "XML database files (*.tt3);;All files (*.*)");
     if (path.isEmpty())
     {
         return nullptr;
@@ -97,7 +97,7 @@ tt3::db::api::IDatabaseAddress * DatabaseType::enterExistingDatabaseAddress(QWid
             parent,
             "Select XML file database",
             /*dir =*/ QString(),
-            "XML database files (*.tt3);;Text files (*.txt)");
+            "XML database files (*.tt3);;All files (*.*)");
     if (path.isEmpty())
     {
         return nullptr;

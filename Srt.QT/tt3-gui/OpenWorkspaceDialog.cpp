@@ -25,6 +25,11 @@ OpenWorkspaceDialog::OpenWorkspaceDialog(QWidget * parent)
         _ui(new Ui::OpenWorkspaceDialog)
 {
     _ui->setupUi(this);
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 }
 
 OpenWorkspaceDialog::~OpenWorkspaceDialog()

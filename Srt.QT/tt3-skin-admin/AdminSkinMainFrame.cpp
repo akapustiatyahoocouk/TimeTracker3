@@ -101,6 +101,10 @@ void AdminSkinMainFrame::_onActionNewWorkspace()
     tt3::gui::NewWorkspaceDialog dlg(this);
     if (dlg.exec() == QDialog::Accepted)
     {
+        tt3::ws::WorkspaceAddress workspaceAddress = dlg.selectedWorkspaceAddress();
+        Q_ASSERT(workspaceAddress.isValid());
+        qDebug() << workspaceAddress.displayForm();
+        qDebug() << workspaceAddress.externalForm();
     }
 }
 
