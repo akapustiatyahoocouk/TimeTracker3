@@ -1,5 +1,5 @@
 //
-//  tt3-skin-admin/AdminSkinMainFrame.hpp - Main frame of the admin skin
+//  tt3-skin-admin/MainFrame.hpp - Main frame of the admin skin
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -20,18 +20,18 @@
 namespace tt3::skin::admin
 {
     //  Main frame of the admin skin
-    namespace Ui { class AdminSkinMainFrame; }
+    namespace Ui { class MainFrame; }
 
-    class TT3_SKIN_ADMIN_PUBLIC AdminSkinMainFrame : public QMainWindow
+    class TT3_SKIN_ADMIN_PUBLIC MainFrame : public QMainWindow
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AdminSkinMainFrame)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(MainFrame)
 
         //////////
         //  Construction
     public:
-        explicit AdminSkinMainFrame(QWidget * parent = nullptr);
-        virtual ~AdminSkinMainFrame();
+        explicit MainFrame(QWidget * parent = nullptr);
+        virtual ~MainFrame();
 
         //////////
         //  QWidget
@@ -55,7 +55,7 @@ namespace tt3::skin::admin
         //////////
         //  Controls
     private:
-        Ui::AdminSkinMainFrame *    _ui;
+        Ui::MainFrame * _ui;
         QTimer          _savePositionTimer;
 
         //////////
@@ -68,4 +68,4 @@ namespace tt3::skin::admin
     };
 }
 
-//  End of tt3-skin-admin/AdminSkinMainFrame.hpp
+//  End of tt3-skin-admin/MainFrame.hpp

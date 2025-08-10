@@ -74,7 +74,7 @@ void AdminSkin::activate()
 {
     if (_mainFrame == nullptr)
     {
-        _mainFrame = new AdminSkinMainFrame();
+        _mainFrame = new MainFrame();
         _mainFrame->show();
     }
     _mainFrame->activateWindow();

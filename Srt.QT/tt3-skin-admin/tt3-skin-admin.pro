@@ -5,21 +5,21 @@ DEFINES += TT3_SKIN_ADMIN_LIBRARY
 
 SOURCES += \
     AdminSkin.cpp \
-    AdminSkinMainFrame.cpp \
     Component.cpp \
+    MainFrame.cpp \
     Plugins.cpp
 
 HEADERS += \
     API.hpp \
     AdminSkin.hpp \
-    AdminSkinMainFrame.hpp \
     Components.hpp \
-    Linkage.hpp
+    Linkage.hpp \
+    MainFrame.hpp
 
 RESOURCES += \
     tt3-skin-admin.qrc
 
 FORMS += \
-    AdminSkinMainFrame.ui
+    MainFrame.ui
 
 LIBS += -ltt3-gui -ltt3-ws -ltt3-util

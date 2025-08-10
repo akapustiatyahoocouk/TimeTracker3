@@ -1,5 +1,5 @@
 //
-//  tt3-skin-admin/AdminSkinMainFrame.cpp - AdminSkinMainFrame class implementation
+//  tt3-skin-admin/MainFrame.cpp - tt3::skin::admin::MainFrame class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,14 +15,14 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-skin-admin/API.hpp"
-#include "ui_AdminSkinMainFrame.h"
+#include "ui_MainFrame.h"
 using namespace tt3::skin::admin;
 
 //////////
 //  Construction/destruction
-AdminSkinMainFrame::AdminSkinMainFrame(QWidget * parent)
+MainFrame::MainFrame(QWidget * parent)
     :   QMainWindow(parent),
-        _ui(new Ui::AdminSkinMainFrame),
+        _ui(new Ui::MainFrame),
         _savePositionTimer()
 {
     _ui->setupUi(this);
@@ -30,18 +30,18 @@ AdminSkinMainFrame::AdminSkinMainFrame(QWidget * parent)
 
     _savePositionTimer.setSingleShot(true);
     QObject::connect(&_savePositionTimer, &QTimer::timeout,
-                     this, &AdminSkinMainFrame::_savePositionTimerTimeout);
+                     this, &MainFrame::_savePositionTimerTimeout);
     _trackPosition = true;
 }
 
-AdminSkinMainFrame::~AdminSkinMainFrame()
+MainFrame::~MainFrame()
 {
     delete _ui;
 }
 
 //////////
 //  QWidget
-void AdminSkinMainFrame::moveEvent(QMoveEvent * event)
+void MainFrame::moveEvent(QMoveEvent * event)
 {
     QMainWindow::moveEvent(event);
     if (_trackPosition)
@@ -50,7 +50,7 @@ void AdminSkinMainFrame::moveEvent(QMoveEvent * event)
     }
 }
 
-void AdminSkinMainFrame::resizeEvent(QResizeEvent * event)
+void MainFrame::resizeEvent(QResizeEvent * event)
 {
     QMainWindow::resizeEvent(event);
     if (_trackPosition)
@@ -59,7 +59,7 @@ void AdminSkinMainFrame::resizeEvent(QResizeEvent * event)
     }
 }
 
-void AdminSkinMainFrame::closeEvent(QCloseEvent * event)
+void MainFrame::closeEvent(QCloseEvent * event)
 {
     event->accept();
     _onActionExit();
@@ -67,7 +67,7 @@ void AdminSkinMainFrame::closeEvent(QCloseEvent * event)
 
 //////////
 //  Implementation
-void AdminSkinMainFrame::_loadPosition()
+void MainFrame::_loadPosition()
 {
     this->setGeometry(Component::Settings::instance()->mainFrameBounds);
     if (Component::Settings::instance()->mainFrameMaximized)
@@ -76,7 +76,7 @@ void AdminSkinMainFrame::_loadPosition()
     }
 }
 
-void AdminSkinMainFrame::_savePosition()
+void MainFrame::_savePosition()
 {
     if (this->isMaximized())
     {
@@ -89,24 +89,24 @@ void AdminSkinMainFrame::_savePosition()
     }
 }
 
-void AdminSkinMainFrame::_createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress)
+void MainFrame::_createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress)
 {
     Q_ASSERT(workspaceAddress.isValid());
 }
 
-void AdminSkinMainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress)
+void MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress)
 {
     Q_ASSERT(workspaceAddress.isValid());
 }
 
 //////////
 //  Signal handlers
-void AdminSkinMainFrame::_savePositionTimerTimeout()
+void MainFrame::_savePositionTimerTimeout()
 {
     _savePosition();
 }
 
-void AdminSkinMainFrame::_onActionNewWorkspace()
+void MainFrame::_onActionNewWorkspace()
 {
     tt3::gui::NewWorkspaceDialog dlg(this);
     if (dlg.exec() == QDialog::Accepted)
@@ -119,7 +119,7 @@ void AdminSkinMainFrame::_onActionNewWorkspace()
     }
 }
 
-void AdminSkinMainFrame::_onActionOpenWorkspace()
+void MainFrame::_onActionOpenWorkspace()
 {
     tt3::gui::OpenWorkspaceDialog dlg(this);
     if (dlg.exec() == QDialog::Accepted)
@@ -132,9 +132,9 @@ void AdminSkinMainFrame::_onActionOpenWorkspace()
     }
 }
 
-void AdminSkinMainFrame::_onActionExit()
+void MainFrame::_onActionExit()
 {
     QApplication::exit(0);
 }
 
-//  End of tt3-skin-admin/AdminSkinMainFrame.cpp
+//  End of tt3-skin-admin/MainFrame.cpp

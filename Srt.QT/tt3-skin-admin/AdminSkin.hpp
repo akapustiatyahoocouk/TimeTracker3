@@ -18,7 +18,7 @@
 namespace tt3::skin::admin
 {
     //  TODO move these to Classes.hpp
-    class TT3_SKIN_ADMIN_PUBLIC AdminSkinMainFrame;
+    class TT3_SKIN_ADMIN_PUBLIC MainFrame;
 
     //////////
     //  The "TT3 Administrator skin"
@@ -29,27 +29,27 @@ namespace tt3::skin::admin
         //////////
         //  gui::ISkin (properties)
     public:
-        virtual QString     mnemonic() const override;
-        virtual QString     displayName() const override;
-        virtual QString     desciption() const override;
-        virtual QIcon       smallIcon() const override;
-        virtual QIcon       largeIcon() const override;
-        virtual bool        isDefault() const override;
+        virtual QString mnemonic() const override;
+        virtual QString displayName() const override;
+        virtual QString desciption() const override;
+        virtual QIcon   smallIcon() const override;
+        virtual QIcon   largeIcon() const override;
+        virtual bool    isDefault() const override;
 
         //////////
         //  gui::ISkin (state)
     public:
-        virtual bool        isActive() const override;
-        virtual void        activate() override;
-        virtual void        deactivate() override;
+        virtual bool    isActive() const override;
+        virtual void    activate() override;
+        virtual void    deactivate() override;
 
         //////////
         //  Implementation
     private:
-        const QIcon         _smallIcon;
-        const QIcon         _largeIcon;
+        const QIcon     _smallIcon;
+        const QIcon     _largeIcon;
 
-        AdminSkinMainFrame *_mainFrame = nullptr;   //  nullptr when skin is inactive
+        MainFrame *     _mainFrame = nullptr;   //  nullptr when skin is inactive
     };
 }
 
