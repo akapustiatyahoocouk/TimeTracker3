@@ -87,5 +87,74 @@
  <resources>
   <include location="tt3-gui.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>workspaceTypeComboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>tt3::gui::OpenWorkspaceDialog</receiver>
+   <slot>_workspaceTypeComboBoxCurrentIndexChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>355</x>
+     <y>24</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>297</x>
+     <y>69</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>browsePushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::OpenWorkspaceDialog</receiver>
+   <slot>_browsePushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>544</x>
+     <y>59</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>297</x>
+     <y>69</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>tt3::gui::OpenWorkspaceDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>297</x>
+     <y>110</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>297</x>
+     <y>69</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>tt3::gui::OpenWorkspaceDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>297</x>
+     <y>110</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>297</x>
+     <y>69</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_workspaceTypeComboBoxCurrentIndexChanged(int)</slot>
+  <slot>_browsePushButtonClicked()</slot>
+ </slots>
 </ui>

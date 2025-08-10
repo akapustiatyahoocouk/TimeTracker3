@@ -89,6 +89,16 @@ void AdminSkinMainFrame::_savePosition()
     }
 }
 
+void AdminSkinMainFrame::_createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress)
+{
+    Q_ASSERT(workspaceAddress.isValid());
+}
+
+void AdminSkinMainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress)
+{
+    Q_ASSERT(workspaceAddress.isValid());
+}
+
 //////////
 //  Signal handlers
 void AdminSkinMainFrame::_savePositionTimerTimeout()
@@ -105,6 +115,7 @@ void AdminSkinMainFrame::_onActionNewWorkspace()
         Q_ASSERT(workspaceAddress.isValid());
         qDebug() << workspaceAddress.displayForm();
         qDebug() << workspaceAddress.externalForm();
+        _createWorkspace(workspaceAddress);
     }
 }
 
@@ -113,6 +124,11 @@ void AdminSkinMainFrame::_onActionOpenWorkspace()
     tt3::gui::OpenWorkspaceDialog dlg(this);
     if (dlg.exec() == QDialog::Accepted)
     {
+        tt3::ws::WorkspaceAddress workspaceAddress = dlg.selectedWorkspaceAddress();
+        Q_ASSERT(workspaceAddress.isValid());
+        qDebug() << workspaceAddress.displayForm();
+        qDebug() << workspaceAddress.externalForm();
+        _openWorkspace(workspaceAddress);
     }
 }
 

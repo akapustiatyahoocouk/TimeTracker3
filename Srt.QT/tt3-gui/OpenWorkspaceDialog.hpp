@@ -34,9 +34,31 @@ namespace tt3::gui
         virtual ~OpenWorkspaceDialog();
 
         //////////
+        //  Operations
+    public:
+        //  The workspace address selected by the user or an
+        //  invalid workspace address if the user has cancelled
+        //  the dialog.
+        tt3::ws::WorkspaceAddress   selectedWorkspaceAddress() { return _workspaceAddress; }
+
+        //////////
+        //  Implementation
+    private:
+        tt3::ws::WorkspaceAddress   _workspaceAddress;  //  invalid == not selected
+
+        //  Helpers
+        void            _refresh();
+
+        //////////
         //  Controls
     private:
         Ui::OpenWorkspaceDialog *   _ui;
+
+        //////////
+        //  Event handlers
+    private slots:
+        void            _workspaceTypeComboBoxCurrentIndexChanged(int);
+        void            _browsePushButtonClicked();
     };
 }
 
