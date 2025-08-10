@@ -6,6 +6,7 @@ DEFINES += TT3_GUI_LIBRARY
 SOURCES += \
     Component.cpp \
     CurrentSkin.cpp \
+    ErrorDialog.cpp \
     NewWorkspaceDialog.cpp \
     OpenWorkspaceDialog.cpp \
     SkinRegistry.cpp
@@ -13,6 +14,7 @@ SOURCES += \
 HEADERS += \
     API.hpp \
     Components.hpp \
+    ErrorDialog.hpp \
     Linkage.hpp \
     NewWorkspaceDialog.hpp \
     OpenWorkspaceDialog.hpp \

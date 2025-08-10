@@ -137,10 +137,7 @@ namespace
         //  A skin MUST be selected
         if (initialSkin == nullptr)
         {
-            QMessageBox msgBox;
-            msgBox.setText("No UI skins defined.");
-            msgBox.setIcon(QMessageBox::Icon::Critical);
-            msgBox.exec();
+            tt3::gui::ErrorDialog::show("No UI skins defined.");
             QCoreApplication::quit();
         }
         tt3::gui::theCurrentSkin = initialSkin;

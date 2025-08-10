@@ -92,6 +92,30 @@ void MainFrame::_savePosition()
 void MainFrame::_createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress)
 {
     Q_ASSERT(workspaceAddress.isValid());
+
+    //  If the workspaceAddress refers to the currently
+    //  open workspace, the call is an error
+    //  TODO
+
+    //  Create & use
+    try
+    {
+        std::unique_ptr<tt3::ws::Workspace> workspace
+            { workspaceAddress.workspaceType()->createWorkspace(workspaceAddress) };
+        //  TODO finish the implementation
+    }
+    catch (const tt3::ws::WorkspaceException & ex)
+    {
+        tt3::gui::ErrorDialog::show(this, ex);
+    }
+    catch (const std::exception & ex)
+    {
+        tt3::gui::ErrorDialog::show(this, ex);
+    }
+    catch (...)
+    {
+        tt3::gui::ErrorDialog::show(this);
+    }
 }
 
 void MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress)
@@ -111,17 +135,15 @@ void MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddres
     }
     catch (const tt3::ws::WorkspaceException & ex)
     {
-        QMessageBox msgBox(this);
-        msgBox.setText(ex.errorMessage());
-        msgBox.setIcon(QMessageBox::Icon::Critical);
-        msgBox.exec();
+        tt3::gui::ErrorDialog::show(this, ex);
+    }
+    catch (const std::exception & ex)
+    {
+        tt3::gui::ErrorDialog::show(this, ex);
     }
     catch (...)
     {
-        QMessageBox msgBox(this);
-        msgBox.setText("Unknown error");
-        msgBox.setIcon(QMessageBox::Icon::Critical);
-        msgBox.exec();
+        tt3::gui::ErrorDialog::show(this);
     }
 }
 

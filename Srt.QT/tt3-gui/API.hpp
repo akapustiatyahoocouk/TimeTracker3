@@ -26,6 +26,8 @@
 #include "tt3-gui/Linkage.hpp"
 #include "tt3-gui/Components.hpp"
 
+#include "tt3-gui/ErrorDialog.hpp"
+
 #include "tt3-gui/Skin.hpp"
 #include "tt3-gui/NewWorkspaceDialog.hpp"
 #include "tt3-gui/OpenWorkspaceDialog.hpp"

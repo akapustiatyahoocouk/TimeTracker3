@@ -18,6 +18,7 @@ HEADERS += \
     Collections.hpp \
     Component.hpp \
     Components.hpp \
+    Exceptions.hpp \
     FromString.hpp \
     Linkage.hpp \
     Macros.hpp \

@@ -19,30 +19,22 @@ namespace tt3::db::api
 {
     //////////
     //  The common base class for all DB API - level exceptions
-    class TT3_DB_API_PUBLIC DatabaseException : public QException
+    class TT3_DB_API_PUBLIC DatabaseException : public tt3::util::Exception
     {
         //////////
         //  Construction/destruction/assignment
     public:
-        DatabaseException() : _errorMessage("Unknowqn database error") {}
-        explicit DatabaseException(const QString & errorMessage) : _errorMessage(errorMessage) {}
+        DatabaseException()
+            :   tt3::util::Exception("Unknown database error") {}
+        explicit DatabaseException(const QString & errorMessage)
+            :   tt3::util::Exception(errorMessage) {}
 
         //////////
         //  QException
     public:
-        virtual QException *    clone() const { return new DatabaseException(*this); }
-        virtual void            raise() const { throw *this; }
-
-        //////////
-        //  Operations
-    public:
-        //  TODO document
-        QString         errorMessage() const { return _errorMessage; }
-
-        //////////
-        //  Implementation
-    private:
-        QString         _errorMessage;
+        virtual DatabaseException *
+                        clone() const { return new DatabaseException(*this); }
+        virtual void    raise() const { throw *this; }
     };
 
     //  Thrown when an invalid database address is specified
@@ -51,13 +43,15 @@ namespace tt3::db::api
         //////////
         //  Construction/destruction/assignment
     public:
-        InvalidDatabaseAddressException() : DatabaseException("Invalid database address") {}
+        InvalidDatabaseAddressException()
+            :   DatabaseException("Invalid database address") {}
 
         //////////
         //  QException
     public:
-        virtual QException *    clone() const { return new InvalidDatabaseAddressException(*this); }
-        virtual void            raise() const { throw *this; }
+        virtual InvalidDatabaseAddressException *
+                        clone() const { return new InvalidDatabaseAddressException(*this); }
+        virtual void    raise() const { throw *this; }
     };
 
     //  Thrown when a single-user database is already in use
@@ -73,8 +67,9 @@ namespace tt3::db::api
         //////////
         //  QException
     public:
-        virtual QException *    clone() const { return new DatabaseInUseException(*this); }
-        virtual void            raise() const { throw *this; }
+        virtual DatabaseInUseException *
+                        clone() const { return new DatabaseInUseException(*this); }
+        virtual void    raise() const { throw *this; }
     };
 
     //  Thrown when a database is corrupt
@@ -90,8 +85,9 @@ namespace tt3::db::api
         //////////
         //  QException
     public:
-        virtual QException *    clone() const { return new DatabaseCorruptException(*this); }
-        virtual void            raise() const { throw *this; }
+        virtual DatabaseCorruptException *
+                        clone() const { return new DatabaseCorruptException(*this); }
+        virtual void    raise() const { throw *this; }
     };
 
     //  Thrown when a service is called on a closed database.
@@ -107,8 +103,9 @@ namespace tt3::db::api
         //////////
         //  QException
     public:
-        virtual QException *    clone() const { return new DatabaseClosedException(*this); }
-        virtual void            raise() const { throw *this; }
+        virtual DatabaseClosedException *
+                        clone() const { return new DatabaseClosedException(*this); }
+        virtual void    raise() const { throw *this; }
     };
 }
 

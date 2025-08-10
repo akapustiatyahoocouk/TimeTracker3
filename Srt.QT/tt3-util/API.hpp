@@ -90,6 +90,7 @@
 //  tt3-util components
 #include "tt3-util/Linkage.hpp"
 #include "tt3-util/Macros.hpp"
+#include "tt3-util/Exceptions.hpp"
 
 #include "tt3-util/Sync.hpp"
 
