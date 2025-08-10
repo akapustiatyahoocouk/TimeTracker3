@@ -97,6 +97,32 @@ void MainFrame::_createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddr
 void MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress)
 {
     Q_ASSERT(workspaceAddress.isValid());
+
+    //  If the workspaceAddress refers to the currently
+    //  open workspace, we don't need to re-open
+    //  TODO
+
+    //  Open & use
+    try
+    {
+        std::unique_ptr<tt3::ws::Workspace> workspace
+            { workspaceAddress.workspaceType()->openWorkspace(workspaceAddress) };
+        //  TODO finish the implementation
+    }
+    catch (const tt3::ws::WorkspaceException & ex)
+    {
+        QMessageBox msgBox(this);
+        msgBox.setText(ex.errorMessage());
+        msgBox.setIcon(QMessageBox::Icon::Critical);
+        msgBox.exec();
+    }
+    catch (...)
+    {
+        QMessageBox msgBox(this);
+        msgBox.setText("Unknown error");
+        msgBox.setIcon(QMessageBox::Icon::Critical);
+        msgBox.exec();
+    }
 }
 
 //////////

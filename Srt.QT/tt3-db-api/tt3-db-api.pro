@@ -11,6 +11,7 @@ HEADERS += \
     API.hpp \
     Classes.hpp \
     Components.hpp \
+    Database.hpp \
     DatabaseAddress.hpp \
     DatabaseType.hpp \
     Exceptions.hpp \

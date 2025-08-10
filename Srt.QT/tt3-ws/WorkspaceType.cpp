@@ -97,9 +97,31 @@ WorkspaceAddress WorkspaceType::parseWorkspaceAddress(const QString & externalFo
 
 //////////
 //  Operations (workspace)
+Workspace * WorkspaceType::createWorkspace(const WorkspaceAddress & address) throws(WorkspaceException)
+{
+    if (!address.isValid() || address.workspaceType() != this)
+    {   //  OOPS! Can't use this address
+        throw InvalidWorkspaceAddressException();
+    }
+    std::unique_ptr<tt3::db::api::IDatabase> databasePtr
+        { address._databaseAddress->databaseType()->createDatabase(address._databaseAddress) };
+    //  TODO translate & re-throw DatabaseException ?
+    return new Workspace(address, databasePtr.release());
+}
+
+Workspace * WorkspaceType::openWorkspace(const WorkspaceAddress & address) throws(WorkspaceException)
+{
+    if (!address.isValid() || address.workspaceType() != this)
+    {   //  OOPS! Can't use this address
+        throw InvalidWorkspaceAddressException();
+    }
+    std::unique_ptr<tt3::db::api::IDatabase> databasePtr
+        { address._databaseAddress->databaseType()->openDatabase(address._databaseAddress) };
+    //  TODO translate & re-throw DatabaseException ?
+    return new Workspace(address, databasePtr.release());
+}
+
 /*  TODO uncommnt
-Workspace * WorkspaceType::createWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
-Workspace * WorkspaceType::openWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
 void WorkspaceType::destroyWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
 */
 //  End of tt3-ws/WorkspaceType.cpp

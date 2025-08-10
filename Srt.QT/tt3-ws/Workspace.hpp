@@ -24,6 +24,8 @@ namespace tt3::ws
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Workspace)
 
+        friend class WorkspaceType;
+
         //////////
         //  Construction/destruction - from friends only
     private:
@@ -35,7 +37,7 @@ namespace tt3::ws
         //  Operations (general)
     public:
         //  TODO document
-        WorkspaceType       type() const;
+        WorkspaceType *     type() const;
         WorkspaceAddress    address() const;
         bool                isOpen();
         void                close() throws(WorkspaceException);
