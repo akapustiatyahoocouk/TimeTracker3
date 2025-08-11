@@ -5,6 +5,7 @@ DEFINES += TT3_DB_XML_LIBRARY
 
 SOURCES += \
     Component.cpp \
+    Database.cpp \
     DatabaseAddress.cpp \
     DatabaseType.cpp \
     Plugins.cpp
@@ -13,6 +14,7 @@ HEADERS += \
     API.hpp \
     Classes.hpp \
     Components.hpp \
+    Database.hpp \
     DatabaseAddress.hpp \
     DatabaseType.hpp \
     Linkage.hpp

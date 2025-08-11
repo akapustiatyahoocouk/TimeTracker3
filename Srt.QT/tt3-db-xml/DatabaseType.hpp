@@ -59,8 +59,9 @@ namespace tt3::db::xml
         //////////
         //  Implementation
     private:
-        QIcon               _smallIcon;
-        QIcon               _largeIcon;
+        const QIcon         _smallIcon;
+        const QIcon         _largeIcon;
+        tt3::db::api::IValidator *const _validator;
 
         //  Cache of known database addresses
         tt3::util::Mutex    _databaseAddressesGuard;

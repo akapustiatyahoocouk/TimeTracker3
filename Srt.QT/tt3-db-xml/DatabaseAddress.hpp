@@ -26,6 +26,7 @@ namespace tt3::db::xml
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DatabaseAddress)
 
         friend class DatabaseType;
+        friend class Database;
 
         //////////
         //  Construction/destruction(from DB type only)

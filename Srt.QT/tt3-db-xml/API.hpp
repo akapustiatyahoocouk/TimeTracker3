@@ -29,5 +29,6 @@
 
 #include "tt3-db-xml/DatabaseType.hpp"
 #include "tt3-db-xml/DatabaseAddress.hpp"
+#include "tt3-db-xml/Database.hpp"
 
 //  End of tt3-db-xml/API.hpp

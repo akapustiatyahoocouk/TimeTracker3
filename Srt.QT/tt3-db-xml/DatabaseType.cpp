@@ -23,7 +23,8 @@ IMPLEMENT_SINGLETON(DatabaseType)
 
 DatabaseType::DatabaseType()
     :   _smallIcon(":/tt3-db-xml/Resources/Images/Objects/XmlDatabaseTypeSmall.png"),
-        _largeIcon(":/tt3-db-xml/Resources/Images/Objects/XmlDatabaseTypeLarge.png")
+        _largeIcon(":/tt3-db-xml/Resources/Images/Objects/XmlDatabaseTypeLarge.png"),
+        _validator(tt3::db::api::DefaultValidator::instance())
 {
 }
 
@@ -70,7 +71,7 @@ QString DatabaseType::fullStatusReport() const
 
 tt3::db::api::IValidator * DatabaseType::validator() const
 {
-    return tt3::db::api::DefaultValidator::instance();
+    return _validator;
 }
 
 //////////
@@ -151,7 +152,7 @@ tt3::db::api::IDatabase * DatabaseType::createDatabase(tt3::db::api::IDatabaseAd
     if (DatabaseAddress * xmlDatabaseAddress =
         dynamic_cast<DatabaseAddress*>(address))
     {   //  Address is of a proper type
-        throw tt3::db::api::DatabaseException("Not yet implemented");
+        return new Database(xmlDatabaseAddress, Database::_Mode::_Create);
     }
     throw tt3::db::api::InvalidDatabaseAddressException();
 }
@@ -161,7 +162,7 @@ tt3::db::api::IDatabase * DatabaseType::openDatabase(tt3::db::api::IDatabaseAddr
     if (DatabaseAddress * xmlDatabaseAddress =
         dynamic_cast<DatabaseAddress*>(address))
     {   //  Address is of a proper type
-        throw tt3::db::api::DatabaseException("Not yet implemented");
+        return new Database(xmlDatabaseAddress, Database::_Mode::_Open);
     }
     throw tt3::db::api::InvalidDatabaseAddressException();
 }
