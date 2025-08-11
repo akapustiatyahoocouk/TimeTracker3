@@ -26,6 +26,7 @@
 #include "tt3-db-api/Classes.hpp"
 #include "tt3-db-api/Components.hpp"
 
+#include "tt3-db-api/Validator.hpp"
 #include "tt3-db-api/DatabaseType.hpp"
 #include "tt3-db-api/DatabaseAddress.hpp"
 #include "tt3-db-api/Database.hpp"

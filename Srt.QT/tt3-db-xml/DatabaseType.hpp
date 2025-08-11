@@ -39,6 +39,7 @@ namespace tt3::db::xml
         virtual bool        isOperational() const override;
         virtual QString     shortStatusReport() const override;
         virtual QString     fullStatusReport() const override;
+        virtual tt3::db::api::IValidator *  validator() const override;
 
         //////////
         //  tt3::db::api::IDatabaseType (address handling)

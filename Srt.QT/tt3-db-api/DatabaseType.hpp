@@ -50,6 +50,9 @@ namespace tt3::db::api
         virtual QString     shortStatusReport() const = 0;
         virtual QString     fullStatusReport() const = 0;
 
+        //  The validator for databases of this type
+        virtual IValidator *validator() const = 0;
+
         //////////
         //  Operations (address handling)
     public:

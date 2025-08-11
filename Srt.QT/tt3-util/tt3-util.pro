@@ -11,6 +11,7 @@ SOURCES += \
     Plugin.cpp \
     PluginManager.cpp \
     Settings.cpp \
+    TimeSpan.cpp \
     ToString.cpp
 
 HEADERS += \
@@ -18,6 +19,7 @@ HEADERS += \
     Collections.hpp \
     Component.hpp \
     Components.hpp \
+    DateTime.hpp \
     Exceptions.hpp \
     FromString.hpp \
     Linkage.hpp \

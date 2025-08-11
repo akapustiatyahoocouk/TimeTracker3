@@ -68,6 +68,11 @@ QString DatabaseType::fullStatusReport() const
     return shortStatusReport();
 }
 
+tt3::db::api::IValidator * DatabaseType::validator() const
+{
+    return tt3::db::api::DefaultValidator::instance();
+}
+
 //////////
 //  tt3::db::api::IDatabaseType (address handling)
 tt3::db::api::IDatabaseAddress * DatabaseType::defaultDatabaseAddress() const

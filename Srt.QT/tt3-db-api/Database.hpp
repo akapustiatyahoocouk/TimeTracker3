@@ -34,6 +34,7 @@ namespace tt3::db::api
         //  TODO document
         virtual IDatabaseType *     type() const = 0;
         virtual IDatabaseAddress *  address() const = 0;
+        virtual IValidator *        validator() const = 0;
         virtual bool                isOpen() = 0;
         virtual void                close() throws(DatabaseException) = 0;
     };

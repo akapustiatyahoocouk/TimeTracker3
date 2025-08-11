@@ -40,6 +40,8 @@
     #error Unsupported C++ toolchain
 #endif
 
+#include <regex>
+
 #include <QtCore/qglobal.h>
 
 #include <QApplication>
@@ -93,10 +95,11 @@
 #include "tt3-util/Exceptions.hpp"
 
 #include "tt3-util/Sync.hpp"
+#include "tt3-util/DateTime.hpp"
 
+#include "tt3-util/Collections.hpp"
 #include "tt3-util/ToString.hpp"
 #include "tt3-util/FromString.hpp"
-#include "tt3-util/Collections.hpp"
 
 #include "tt3-util/Plugin.hpp"
 #include "tt3-util/Settings.hpp"
