@@ -82,7 +82,7 @@ namespace tt3::db::api
             virtual bool    isValidLogin(const QString & login) = 0;
             virtual bool    isValidPassword(const QString & password) = 0;
         };
-        virtual IAccountValidator * accountl() const = 0;
+        virtual IAccountValidator * account() const = 0;
     };
 
     //  The "default" validator, normally suitable
@@ -96,7 +96,7 @@ namespace tt3::db::api
     public:
         virtual IPrincipalValidator *   principal() const override;
         virtual IUserValidator *        user() const override;
-        virtual IAccountValidator *     accountl() const override;
+        virtual IAccountValidator *     account() const override;
 
         //////////
         //  Implementatiob

@@ -27,6 +27,7 @@
 #include "tt3-ws/Classes.hpp"
 #include "tt3-ws/Components.hpp"
 
+#include "tt3-ws/Validator.hpp"
 #include "tt3-ws/WorkspaceType.hpp"
 #include "tt3-ws/WorkspaceAddress.hpp"
 #include "tt3-ws/Workspace.hpp"

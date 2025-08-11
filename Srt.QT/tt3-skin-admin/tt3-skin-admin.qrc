@@ -16,5 +16,11 @@
         <file>Resources/Images/Actions/DestroyWorkspaceSmall.png</file>
         <file>Resources/Images/Objects/SubmenuLarge.png</file>
         <file>Resources/Images/Objects/SubmenuSmall.png</file>
+        <file>Resources/Images/Actions/HelpContentLarge.png</file>
+        <file>Resources/Images/Actions/HelpContentSmall.png</file>
+        <file>Resources/Images/Actions/HelpIndexLarge.png</file>
+        <file>Resources/Images/Actions/HelpIndexSmall.png</file>
+        <file>Resources/Images/Actions/HelpSearchLarge.png</file>
+        <file>Resources/Images/Actions/HelpSearchSmall.png</file>
     </qresource>
 </RCC>

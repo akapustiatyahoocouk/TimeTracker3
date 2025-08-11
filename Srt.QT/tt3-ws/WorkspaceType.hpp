@@ -54,11 +54,12 @@ namespace tt3::ws
         QString     shortStatusReport() const;
         QString     fullStatusReport() const;
 
+        //  The validator for workspaces of this type
+        Validator * validator() const { return const_cast<Validator*>(&_validator); }
+
         //////////
         //  Operations (address handling)
     public:
-        //  If this workspace type has a concept of a "default" workspace,
-        //  returns its address; otherwise returns invalid workspace addrsss.
         WorkspaceAddress    defaultWorkspaceAddress() const;
 
         //  Prompts the user to interactively specify an address for a new
@@ -92,6 +93,7 @@ namespace tt3::ws
         //  Implementation
     private:
         tt3::db::api::IDatabaseType *const  _databaseType;  //  nullptr == invalid
+        const Validator     _validator;
     };
 
     //////////

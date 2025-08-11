@@ -65,6 +65,9 @@ namespace tt3::skin::admin
         void            _onActionNewWorkspace();
         void            _onActionOpenWorkspace();
         void            _onActionExit();
+        void            _onActionHelpContent();
+        void            _onActionHelpIndex();
+        void            _onActionHelpSearch();
     };
 }
 

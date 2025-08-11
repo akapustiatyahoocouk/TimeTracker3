@@ -42,6 +42,9 @@ namespace tt3::ws
         bool                isOpen();
         void                close() throws(WorkspaceException);
 
+        //  The validator for this workspace
+        Validator * validator() const { return type()->validator(); }
+
         //////////
         //  Implementation
     private:

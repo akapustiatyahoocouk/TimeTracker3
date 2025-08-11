@@ -48,6 +48,10 @@
     <property name="title">
      <string>&amp;Help</string>
     </property>
+    <addaction name="actionHelpContent"/>
+    <addaction name="actionHelpIndex"/>
+    <addaction name="actionHelpSearch"/>
+    <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
    <addaction name="menuFile"/>
@@ -138,6 +142,36 @@
     <string>&amp;Recent workspaces</string>
    </property>
   </action>
+  <action name="actionHelpContent">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/HelpContentSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/HelpContentSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Content</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="actionHelpIndex">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/HelpIndexSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/HelpIndexSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Index</string>
+   </property>
+  </action>
+  <action name="actionHelpSearch">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/HelpSearchSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/HelpSearchSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Search</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="tt3-skin-admin.qrc"/>
@@ -191,10 +225,61 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionHelpContent</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionHelpContent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionHelpIndex</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionHelpIndex()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionHelpSearch</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionHelpSearch()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_onActionExit()</slot>
   <slot>_onActionOpenWorkspace()</slot>
   <slot>_onActionNewWorkspace()</slot>
+  <slot>_onActionHelpContent()</slot>
+  <slot>_onActionHelpIndex()</slot>
+  <slot>_onActionHelpSearch()</slot>
  </slots>
 </ui>

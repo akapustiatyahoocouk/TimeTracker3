@@ -20,7 +20,8 @@ using namespace tt3::ws;
 //////////
 //  Construction/destruction - from friends only
 WorkspaceType::WorkspaceType(tt3::db::api::IDatabaseType * databaseType)
-    :   _databaseType(databaseType)
+    :   _databaseType(databaseType),
+        _validator(databaseType->validator())
 {
     Q_ASSERT(_databaseType != nullptr);
 }

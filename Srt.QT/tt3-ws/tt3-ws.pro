@@ -16,6 +16,7 @@ HEADERS += \
     Components.hpp \
     Exceptions.hpp \
     Linkage.hpp \
+    Validator.hpp \
     Workspace.hpp \
     WorkspaceAddress.hpp \
     WorkspaceType.hpp

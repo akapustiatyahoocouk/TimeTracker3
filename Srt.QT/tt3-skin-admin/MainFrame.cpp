@@ -185,4 +185,19 @@ void MainFrame::_onActionExit()
     QApplication::exit(0);
 }
 
+void MainFrame::_onActionHelpContent()
+{
+    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+}
+
+void MainFrame::_onActionHelpIndex()
+{
+    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+}
+
+void MainFrame::_onActionHelpSearch()
+{
+    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+}
+
 //  End of tt3-skin-admin/MainFrame.cpp

@@ -35,7 +35,7 @@ IValidator::IUserValidator * DefaultValidator::user() const
     return _UserValidator::instance();
 }
 
-IValidator::IAccountValidator * DefaultValidator::accountl() const
+IValidator::IAccountValidator * DefaultValidator::account() const
 {
     return _AccountValidator::instance();
 }

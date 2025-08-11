@@ -76,10 +76,18 @@ void NewWorkspaceDialog::_refresh()
     tt3::ws::WorkspaceType * workspaceType =
         _ui->workspaceTypeComboBox->currentData().value<tt3::ws::WorkspaceType*>();
     Q_ASSERT(workspaceType != nullptr);
-    //  TODO we only really need a validator, not WorkspaceType
+    tt3::ws::Validator::User * userValidator = workspaceType->validator()->user();
+    tt3::ws::Validator::Account * accountValidator = workspaceType->validator()->account();
+
     _ui->locationLineEdit->setText(_workspaceAddress.displayForm());
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
-        setEnabled(_workspaceAddress.isValid());    //  YODO user name, login and passwords are valid as well
+        setEnabled(
+           _workspaceAddress.isValid() &&
+            userValidator->isValidRealName(_ui->userNameLineEdit->text()) &&
+            accountValidator->isValidLogin(_ui->loginLineEdit->text()) &&
+            accountValidator->isValidPassword(_ui->passwordLineEdit->text()) &&
+            _ui->confirmPasswordLineEdit->text() == _ui->passwordLineEdit->text());
+
 }
 
 //////////
