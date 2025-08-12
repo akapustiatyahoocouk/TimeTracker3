@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/tt3-db-api">
+        <file>Resources/Images/Objects/AccountLarge.png</file>
+        <file>Resources/Images/Objects/AccountSmall.png</file>
+        <file>Resources/Images/Objects/UserLarge.png</file>
+        <file>Resources/Images/Objects/UserSmall.png</file>
+    </qresource>
+</RCC>

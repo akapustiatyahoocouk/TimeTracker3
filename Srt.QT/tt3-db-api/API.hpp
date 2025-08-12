@@ -31,6 +31,12 @@
 #include "tt3-db-api/DatabaseAddress.hpp"
 #include "tt3-db-api/Database.hpp"
 
+#include "tt3-db-api/DatabaseObjectType.hpp"
+#include "tt3-db-api/DatabaseObject.hpp"
+#include "tt3-db-api/Principal.hpp"
+#include "tt3-db-api/User.hpp"
+#include "tt3-db-api/Account.hpp"
+
 #include "tt3-db-api/Exceptions.hpp"
 
 //  End of tt3-db-api/API.hpp

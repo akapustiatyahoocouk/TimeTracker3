@@ -22,10 +22,15 @@ namespace tt3::db::api
     class TT3_DB_API_PUBLIC IDatabase;
     class TT3_DB_API_PUBLIC OID;
     class TT3_DB_API_PUBLIC IDatabaseObject;
+    class TT3_DB_API_PUBLIC IPrincipal;
+    class TT3_DB_API_PUBLIC IUser;
+    class TT3_DB_API_PUBLIC IAccount;
 
     using DatabaseTypes = QSet<IDatabaseType*>;
     using DatabaseAddresses= QSet<IDatabaseAddress*>;
     using DatabaseObjects = QSet<IDatabaseObject*>;
+    using Users = QSet<IUser*>;
+    using Accounts = QSet<IAccount*>;
 
     class TT3_DB_API_PUBLIC DatabaseException;
 }
