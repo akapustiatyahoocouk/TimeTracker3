@@ -121,8 +121,17 @@ Database::_LockRefresher::_LockRefresher(Database * database)
         QFileInfo fileInfo(_lockFile);
         if (fileInfo.isFile())
         {
+            if (!_lockFile.open(QIODevice::ReadWrite))
+            {   //  OOPS! Can't!
+                throw tt3::db::api::DatabaseException(_lockFile.errorString());
+            }
             QDateTime lastModifiedAt = fileInfo.lastModified(QTimeZone::UTC);
             QDateTime utcNow = QDateTime::currentDateTimeUtc();
+            qDebug() << lastModifiedAt
+                     << " -> "
+                     << utcNow
+                     << " = "
+                     << lastModifiedAt.secsTo(utcNow);
             if (lastModifiedAt.secsTo(utcNow) < StaleTimeoutMin * 60)
             {   //  OOPS! Lock too young
                 throw tt3::db::api::DatabaseInUseException(_database->_address);
@@ -159,6 +168,13 @@ void Database::_LockRefresher::run()
     {
         msleep(WaitChunkMs);
         QDateTime utcNow = QDateTime::currentDateTimeUtc();
+        /*  TODO kill off
+        qDebug() << waitChunkStartedAt
+                 << " -> "
+                 << utcNow
+                 << " = "
+                 << waitChunkStartedAt.secsTo(utcNow);
+        */
         if (waitChunkStartedAt.secsTo(utcNow) < RefreshIntervalMin)
         {   //  Keep waiting
             continue;
