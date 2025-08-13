@@ -7,10 +7,12 @@ SOURCES += \
     Component.cpp \
     ComponentRegistry.cpp \
     FromString.cpp \
+    MessageDigest.cpp \
     Mutex.cpp \
     Plugin.cpp \
     PluginManager.cpp \
     Settings.cpp \
+    Sha1MessageDigest.cpp \
     TimeSpan.cpp \
     ToString.cpp
 
@@ -24,6 +26,7 @@ HEADERS += \
     FromString.hpp \
     Linkage.hpp \
     Macros.hpp \
+    MessageDigest.hpp \
     Plugin.hpp \
     Settings.hpp \
     Sync.hpp \

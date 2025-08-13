@@ -35,8 +35,31 @@ namespace tt3::db::api
         virtual IDatabaseType *     type() const = 0;
         virtual IDatabaseAddress *  address() const = 0;
         virtual IValidator *        validator() const = 0;
-        virtual bool                isOpen() = 0;
+        virtual bool                isOpen() const = 0;
         virtual void                close() throws(DatabaseException) = 0;
+
+        //////////
+        //  Operations (associations)
+    public:
+        //  The set of all users in this database
+        virtual Users       users() const throws(DatabaseException) = 0;
+
+        //  The set of all accounts of all users in this database
+        virtual Accounts    accounts() const throws(DatabaseException) = 0;
+
+        //////////
+        //  Operations (access control)
+    public:
+        //  If there exists an a) enabled account b) of an
+        //  enabled user c) with the spcified login and
+        //  password, returns it; otherwise returns nullptr.
+        virtual IAccount *  tryLogin(const QString & login, const QString & password) const throws(DatabaseException) = 0;
+
+        //  If there exists an a) enabled account b) of an
+        //  enabled user c) with the spcified login and
+        //  password, returns it; otherwise throws an
+        //  AccessDeniedException.
+        virtual IAccount *  login(const QString & login, const QString & password) const throws(DatabaseException);
     };
 }
 

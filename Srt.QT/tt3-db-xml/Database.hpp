@@ -40,8 +40,19 @@ namespace tt3::db::xml
         virtual DatabaseType *     type() const override { return DatabaseType::instance(); }
         virtual DatabaseAddress *  address() const override { return _address; }
         virtual tt3::db::api::IValidator *  validator() const override { return _validator; }
-        virtual bool                isOpen() override;
+        virtual bool                isOpen() const override;
         virtual void                close() throws(DatabaseException) override;
+
+        //////////
+        //  tt3::db::api::IDatabase (associations)
+    public:
+        virtual tt3::db::api::Users     users() const throws(DatabaseException) override;
+        virtual tt3::db::api::Accounts  accounts() const throws(DatabaseException) override;
+
+        //////////
+        //  tt3::db::api::IDatabase (access control)
+    public:
+        virtual tt3::db::api::IAccount *    tryLogin(const QString & login, const QString & password) const throws(DatabaseException) override;
 
         //////////
         //  Implementation
@@ -51,6 +62,16 @@ namespace tt3::db::xml
 
         mutable tt3::util::Mutex    _guard; //  for all access synchronization
 
+        bool                _needsSaving = false;
+        tt3::db::api::IDatabaseObject::Oid  _nextUnusedOid = 1;
+
+        //  Primary object caches (usable objects only)
+        QSet<User*>         _users; //  count as "references"
+
+        //  Delete-able instances: live == false && refcount == 0
+        QSet<DatabaseObject*>   _graveyard; //  do NOT count as references
+
+        //  Database file locking mechanism
         class TT3_DB_XML_PUBLIC _LockRefresher final : public QThread
         {
             CANNOT_ASSIGN_OR_COPY_CONSTRUCT(_LockRefresher)

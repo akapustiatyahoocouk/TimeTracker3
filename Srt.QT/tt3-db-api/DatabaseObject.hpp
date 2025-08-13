@@ -17,9 +17,6 @@
 
 namespace tt3::db::api
 {
-    typedef uint64_t Oid;
-    static inline const Oid InvalidOid = 0;
-
     //  A generic object that resides, or used to reside,
     //  in a database. Database object instances are managed
     //  by their corresponding database.
@@ -49,6 +46,9 @@ namespace tt3::db::api
         //////////
         //  Types
     public:
+        typedef uint64_t Oid;
+        static inline const Oid InvalidOid = 0;
+
         enum class State
         {
             New,
@@ -96,7 +96,7 @@ namespace tt3::db::api
         virtual State           state() const = 0;
         virtual int             referenceCount() const = 0;
         virtual void            addReference() = 0;
-        virtual void            releaseReference() = 0;
+        virtual void            removeReference() = 0;
     };
 }
 

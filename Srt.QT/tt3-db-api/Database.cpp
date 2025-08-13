@@ -1,5 +1,5 @@
 //
-//  tt3-ws/Exceptions.hpp - Workspace - level exceptions
+//  tt3-db-api/Database.cpp tt3::db::api::IDatabase class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,15 +14,18 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
+#include "tt3-db-api/API.hpp"
+using namespace tt3::db::api;
 
-namespace tt3::ws
+//////////
+//  Operations (access control)
+IAccount * IDatabase::login(const QString & login, const QString & password) const throws(DatabaseException)
 {
-    using WorkspaceException = tt3::db::api::DatabaseException;
-    using InvalidWorkspaceAddressException = tt3::db::api::InvalidDatabaseAddressException;
-    using WorkspaceInUseException = tt3::db::api::DatabaseInUseException;
-    using WorkspaceCorruptException = tt3::db::api::DatabaseCorruptException;
-    using WorkspaceClosedException = tt3::db::api::DatabaseClosedException;
-    using AccessDeniedException = tt3::db::api::AccessDeniedException;
+    if (IAccount * account = tryLogin(login, password))
+    {
+        return account;
+    }
+    throw AccessDeniedException();
 }
 
-//  End of tt3-ws/DateTime.hpp
+//  End of tt3-db-api/Database.cpp

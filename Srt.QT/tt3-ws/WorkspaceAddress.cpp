@@ -55,7 +55,7 @@ WorkspaceAddress::~WorkspaceAddress()
 {   //  TODO synchronize ?
     if (_databaseAddress != nullptr)
     {
-        _databaseAddress->releaseReference();
+        _databaseAddress->removeReference();
     }
 }
 
@@ -65,7 +65,7 @@ WorkspaceAddress & WorkspaceAddress::operator = (const WorkspaceAddress & src)
     {   //  TODO synchronize ?
         if (_databaseAddress != nullptr)
         {
-            _databaseAddress->releaseReference();
+            _databaseAddress->removeReference();
         }
         _databaseAddress = src._databaseAddress;
         if (_databaseAddress != nullptr)

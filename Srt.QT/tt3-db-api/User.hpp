@@ -41,7 +41,7 @@ namespace tt3::db::api
         virtual QString     realName() const throws(DatabaseException) = 0;
         virtual void        setRealName(const QString & realName) throws(DatabaseException) = 0;
         virtual std::optional<tt3::util::TimeSpan>
-        inactivityTimeout() const throws(DatabaseException) = 0;
+                            inactivityTimeout() const throws(DatabaseException) = 0;
         virtual void        setInactivityTimeout(const std::optional<tt3::util::TimeSpan> & inactivityTimeout) throws(DatabaseException) = 0;
         virtual std::optional<QLocale>
                             uiLocale() const throws(DatabaseException) = 0;

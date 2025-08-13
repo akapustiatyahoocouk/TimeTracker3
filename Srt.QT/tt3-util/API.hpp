@@ -77,6 +77,7 @@
 #elif defined(_MSC_VER)
     #pragma warning(pop)
     //  Some warnings shall be disabled in user code as well
+    #pragma warning(disable:4250)   //  '<DERIVED CLASS>': inherits '<BASE MEMBER>' via dominance
     #pragma warning(disable:4251)   //  '<VARIABLE>': '<CLASS>' needs to have dll-interface to be used by clients of '<CLASS>'
     #pragma warning(disable:4355)   //  'this': used in base member initializer list
     #pragma warning(disable:4710)   //  '<FUNCTION>': function not inlined
@@ -100,6 +101,8 @@
 #include "tt3-util/Collections.hpp"
 #include "tt3-util/ToString.hpp"
 #include "tt3-util/FromString.hpp"
+
+#include "tt3-util/MessageDigest.hpp"
 
 #include "tt3-util/Plugin.hpp"
 #include "tt3-util/Settings.hpp"

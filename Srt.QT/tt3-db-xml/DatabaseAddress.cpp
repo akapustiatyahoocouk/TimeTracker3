@@ -111,7 +111,7 @@ void DatabaseAddress::addReference()
     }
 }
 
-void DatabaseAddress::releaseReference()
+void DatabaseAddress::removeReference()
 {
     static DatabaseType * databaseType = DatabaseType::instance();  //  idempotent
     tt3::util::Lock lock(databaseType->_databaseAddressesGuard);

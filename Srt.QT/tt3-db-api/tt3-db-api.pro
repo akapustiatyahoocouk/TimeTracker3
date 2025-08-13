@@ -5,6 +5,7 @@ DEFINES += TT3_DB_API_LIBRARY
 
 SOURCES += \
     Component.cpp \
+    Database.cpp \
     DatabaseObjectTypes.cpp \
     DatabaseTypeRegistry.cpp \
     DefaultValidator.cpp

@@ -12,12 +12,16 @@ SOURCES += \
 
 HEADERS += \
     API.hpp \
+    Account.hpp \
     Classes.hpp \
     Components.hpp \
     Database.hpp \
     DatabaseAddress.hpp \
+    DatabaseObject.hpp \
     DatabaseType.hpp \
-    Linkage.hpp
+    Linkage.hpp \
+    Principal.hpp \
+    User.hpp
 
 LIBS += -ltt3-db-api -ltt3-util
 

@@ -107,6 +107,23 @@ namespace tt3::db::api
                         clone() const { return new DatabaseClosedException(*this); }
         virtual void    raise() const { throw *this; }
     };
-}
+
+    //  Thrown when a workspace service is access-denied
+    class TT3_DB_API_PUBLIC AccessDeniedException : public DatabaseException
+    {
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        AccessDeniedException()
+            :   DatabaseException("Access denied") {}
+
+        //////////
+        //  QException
+    public:
+        virtual AccessDeniedException *
+        clone() const { return new AccessDeniedException(*this); }
+        virtual void    raise() const { throw *this; }
+    };
+    }
 
 //  End of tt3-db-api/Exceptions.hpp

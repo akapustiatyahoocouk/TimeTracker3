@@ -46,7 +46,7 @@ Database::~Database()
 
 //////////
 //  tt3::db::api::IDatabase (general)
-bool Database::isOpen()
+bool Database::isOpen() const
 {
     tt3::util::Lock lock(_guard);
 
@@ -58,6 +58,55 @@ void Database::close() throws(DatabaseException)
     tt3::util::Lock lock(_guard);
 
     //  TODO implement
+}
+
+//////////
+//  tt3::db::api::IDatabase (associations)
+tt3::db::api::Users Database::users() const throws(DatabaseException)
+{
+    tt3::util::Lock lock(_guard);
+
+    return tt3::db::api::Users(_users.cbegin(), _users.cend());
+}
+
+tt3::db::api::Accounts Database::accounts() const throws(DatabaseException)
+{
+    tt3::util::Lock lock(_guard);
+
+    tt3::db::api::Accounts result;
+    for (User * user : _users)
+    {
+        result += tt3::db::api::Accounts(user->_accounts.begin(), user->_accounts.end());
+    }
+    return result;
+}
+
+//////////
+//  tt3::db::api::IDatabase (access control)
+tt3::db::api::IAccount * Database::tryLogin(const QString & login, const QString & password) const throws(DatabaseException)
+{
+    static tt3::util::MessageDigest * sha1 = tt3::util::Sha1MessageDigest::instance();  //  idempotent
+
+    tt3::util::Lock lock(_guard);
+
+    std::unique_ptr<tt3::util::MessageDigest::Builder> sha1Builder { sha1->createBuilder() };
+    sha1Builder->digest(password);
+    QString passwordHash = sha1Builder->digestAsString();
+
+    for (User * user : _users)
+    {
+        if (user->_enabled)
+        {
+            for (Account * account : user->_accounts)
+            {
+                if (account->_enabled && account->_login == login && account->_passwordHash == passwordHash)
+                {
+                    return account;
+                }
+            }
+        }
+    }
+    return nullptr;
 }
 
 //////////

@@ -1,5 +1,5 @@
 //
-//  tt3-db-xml/DatabaseAddress.hpp - "XML file database address"
+//  tt3-db-xml/DatabaseObject.hpp - a generic object in an XML file database
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -18,31 +18,27 @@
 namespace tt3::db::xml
 {
     //////////
-    //  An address og an "XML fle database"is its full
-    //  canonical path.
-    class TT3_DB_XML_PUBLIC DatabaseAddress final
-        :   public virtual tt3::db::api::IDatabaseAddress
+    //  A generic object in an xXML file database
+    class TT3_DB_XML_PUBLIC DatabaseObject
+        :   public virtual tt3::db::api::IDatabaseObject
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DatabaseAddress)
-
-        friend class DatabaseType;
-        friend class Database;
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DatabaseObject)
 
         //////////
-        //  Construction/destruction(from DB type only)
-    private:
-        explicit DatabaseAddress(const QString & path);
-        virtual ~DatabaseAddress();
+        //  Construction/destruction (from DB type only)
+    protected:
+        DatabaseObject(Database * database, Oid oid);
+        virtual ~DatabaseObject();
 
         //////////
-        //  tt3::db::api::IDatabaseAddress (general)
+        //  tt3::db::api::IDatabaseObject (general)
     public:
-        virtual tt3::db::api::IDatabaseType *   databaseType() const override;
-        virtual QString         displayForm() const override;
-        virtual QString         externalForm() const override;
+        virtual Database *  database() const override { return _database; }
+        virtual Oid         oid() const override { return _oid; }
+        virtual bool        isLive() const override;
 
         //////////
-        //  tt3::db::api::IDatabaseAddress (reference counting)
+        //  tt3::db::api::IDatabaseObject (reference counting)
     public:
         virtual State           state() const override;
         virtual int             referenceCount() const override;
@@ -52,15 +48,13 @@ namespace tt3::db::xml
         //////////
         //  Implementation
     private:
-        QString                 _path;  //  always full path
+        Database *const         _database;
+        const Oid               _oid;
+
         State                   _state = State::New;
         int                     _referenceCount = 0;
-
-        //  Helpers
-#ifdef QT_DEBUG
-        void                    _assertState();
-#endif
+        bool                    _isLive = true;
     };
 }
 
-//  End of tt3-db-api/DatabaseAddress.hpp
+//  End of tt3-db-api/DatabaseObject.hpp
