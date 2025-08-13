@@ -30,7 +30,7 @@ namespace tt3::db::xml
         //  Construction/destruction
     private:
         enum _Mode { _Create, _Open };
-        Database(DatabaseAddress * address, _Mode mode);
+        Database(DatabaseAddress * address, _Mode mode) throws(DatabaseException);
     public:
         virtual ~Database();    //  closes database if still open
 
@@ -106,6 +106,13 @@ namespace tt3::db::xml
             QFile               _lockFile;
         };
         _LockRefresher *    _lockRefresher = nullptr;   //  nullptr == database is closed
+
+        //  Helpers
+        void            _ensureOpen() throws (DatabaseException);
+        void            _markClosed();
+
+        //  Serialization
+        void            _save() throws(DatabaseException);
     };
 }
 

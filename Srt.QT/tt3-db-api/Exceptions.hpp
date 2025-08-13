@@ -96,9 +96,8 @@ namespace tt3::db::api
         //////////
         //  Construction/destruction/assignment
     public:
-        explicit DatabaseClosedException(IDatabaseAddress * address)
-            :   DatabaseException(address->databaseType()->displayName() + " "  +
-                                  address->displayForm() + " is already in use") {}
+        explicit DatabaseClosedException()
+            :   DatabaseException("The database is closed") {}
 
         //////////
         //  QException

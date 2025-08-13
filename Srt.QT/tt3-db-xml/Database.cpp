@@ -28,7 +28,23 @@ Database::Database(DatabaseAddress * address, _Mode mode)
     //  We need to create a lock before we do anything about the database
     std::unique_ptr<_LockRefresher> lockRefresher { new _LockRefresher(this) };
 
-    //  Start the lock refresher
+    //  Now for the content
+    switch (mode)
+    {
+        case _Mode::_Create:
+            //  Need to save e,pty DB content
+            _save();
+            break;
+        case _Mode::_Open:
+            //  Need to load existing DB content
+            //  TODO
+            break;
+        default:
+            Q_ASSERT(false);
+    }
+    Q_ASSERT(!_needsSaving);
+
+    //  Finally, take over and start the lock refresher
     _lockRefresher = lockRefresher.release();
     _lockRefresher->start();
 }
@@ -57,7 +73,19 @@ void Database::close() throws(DatabaseException)
 {
     tt3::util::Lock lock(_guard);
 
-    //  TODO implement
+    if (_needsSaving)
+    {
+        try
+        {
+            _save();    //  may throw!
+            _markClosed();
+        }
+        catch (...)
+        {   //  Cleanup & re-throw
+            _markClosed();
+            throw;
+        }
+    }
 }
 
 //////////
@@ -107,6 +135,60 @@ tt3::db::api::IAccount * Database::tryLogin(const QString & login, const QString
         }
     }
     return nullptr;
+}
+
+//////////
+//  Implementation helpers
+void Database::_ensureOpen()
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+
+    if (_lockRefresher == nullptr)
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseClosedException();
+    }
+}
+
+void Database::_markClosed()
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+
+    if (_lockRefresher != nullptr)
+    {
+        _lockRefresher->requestStop();
+        if (!_lockRefresher->wait(_LockRefresher::StaleTimeoutMin * 60 * 1000))
+        {   /// OOPS! Force termination
+            _lockRefresher->terminate();
+            _lockRefresher->wait(ULONG_MAX);
+        }
+        delete _lockRefresher;
+        _lockRefresher = nullptr;
+    }
+}
+
+//////////
+//  Serialization
+void Database::_save() throws(DatabaseException)
+{
+    //  Create DOM document with a root node
+    QDomDocument document;
+    QDomProcessingInstruction xmlDeclaration = document.createProcessingInstruction("xml", "version='1.0' encoding='UTF-8' standalone='yes'");
+    document.appendChild(xmlDeclaration);
+
+    QDomElement rootElement = document.createElement("TT3");
+    rootElement.setAttribute("FormatVersion", "1");
+    document.appendChild(rootElement);
+
+    //  Save DOM
+    QFile file(_address->_path);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseException(file.errorString());
+    }
+    QTextStream stream(&file);
+    document.save(stream, 4);
+    file.close();
+    _needsSaving = false;
 }
 
 //////////

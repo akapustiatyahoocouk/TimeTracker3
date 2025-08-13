@@ -26,7 +26,7 @@ namespace tt3::db::xml
 
         //////////
         //  Construction/destruction (from DB type only)
-    protected:
+    private:
         DatabaseObject(Database * database, Oid oid);
         virtual ~DatabaseObject();
 
@@ -40,20 +40,23 @@ namespace tt3::db::xml
         //////////
         //  tt3::db::api::IDatabaseObject (reference counting)
     public:
-        virtual State           state() const override;
-        virtual int             referenceCount() const override;
-        virtual void            addReference() override;
-        virtual void            removeReference() override;
+        virtual State       state() const override;
+        virtual int         referenceCount() const override;
+        virtual void        addReference() override;
+        virtual void        removeReference() override;
 
         //////////
         //  Implementation
     private:
-        Database *const         _database;
-        const Oid               _oid;
+        Database *const     _database;
+        const Oid           _oid;
 
-        State                   _state = State::New;
-        int                     _referenceCount = 0;
-        bool                    _isLive = true;
+        State               _state = State::New;
+        int                 _referenceCount = 0;
+        bool                _isLive = true;
+
+        //  Helpers
+        void                _ensureLive() throws (DatabaseException);
     };
 }
 

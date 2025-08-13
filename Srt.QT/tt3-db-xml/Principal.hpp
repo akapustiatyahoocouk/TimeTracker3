@@ -29,7 +29,7 @@ namespace tt3::db::xml
 
         //////////
         //  Construction/destruction (from DB type only)
-    protected:
+    private:
         Principal(Database * database, Oid oid);
         virtual ~Principal();
 
