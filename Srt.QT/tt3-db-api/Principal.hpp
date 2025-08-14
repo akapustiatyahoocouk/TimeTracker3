@@ -18,7 +18,7 @@
 namespace tt3::db::api
 {
     //  A generic access control principal
-    class TT3_DB_API_PUBLIC IPrincipal : public virtual IDatabaseObject
+    class TT3_DB_API_PUBLIC IPrincipal : public virtual IObject
     {
         //////////
         //  This is an interface

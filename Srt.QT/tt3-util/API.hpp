@@ -64,6 +64,7 @@
 #include <QMoveEvent>
 #include <QMutex>
 #include <QMutexLocker>
+#include <QSemaphore>
 #include <QStatusBar>
 #include <QTextEdit>
 #include <QThread>
@@ -96,6 +97,7 @@
 #include "tt3-util/Exceptions.hpp"
 
 #include "tt3-util/Sync.hpp"
+#include "tt3-util/BlockingQueue.hpp"
 #include "tt3-util/DateTime.hpp"
 
 #include "tt3-util/Collections.hpp"

@@ -45,11 +45,11 @@ namespace tt3::db::api
         virtual ~IAccount() = default;
 
         //////////
-        //  IDatabaseObject
+        //  IObject
     public:
-        virtual IDatabaseObjectType *   type() const override
+        virtual IObjectType *   type() const override
         {
-            return DatabaseObjectTypes::Account::instance();
+            return ObjectTypes::Account::instance();
         }
 
         //////////

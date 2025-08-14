@@ -6,9 +6,9 @@ DEFINES += TT3_DB_API_LIBRARY
 SOURCES += \
     Component.cpp \
     Database.cpp \
-    DatabaseObjectTypes.cpp \
     DatabaseTypeRegistry.cpp \
-    DefaultValidator.cpp
+    DefaultValidator.cpp \
+    ObjectTypes.cpp
 
 HEADERS += \
     API.hpp \
@@ -17,12 +17,12 @@ HEADERS += \
     Components.hpp \
     Database.hpp \
     DatabaseAddress.hpp \
-    DatabaseObject.hpp \
-    DatabaseObjectType.hpp \
     DatabaseType.hpp \
     Exceptions.hpp \
     Linkage.hpp \
     Notifications.hpp \
+    Object.hpp \
+    ObjectType.hpp \
     Principal.hpp \
     User.hpp \
     Validator.hpp

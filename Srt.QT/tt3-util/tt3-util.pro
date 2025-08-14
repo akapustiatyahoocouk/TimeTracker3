@@ -18,6 +18,7 @@ SOURCES += \
 
 HEADERS += \
     API.hpp \
+    BlockingQueue.hpp \
     Collections.hpp \
     Component.hpp \
     Components.hpp \

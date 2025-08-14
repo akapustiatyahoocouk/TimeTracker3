@@ -31,7 +31,7 @@
 #include "tt3-db-xml/DatabaseAddress.hpp"
 #include "tt3-db-xml/Database.hpp"
 
-#include "tt3-db-xml/DatabaseObject.hpp"
+#include "tt3-db-xml/Object.hpp"
 #include "tt3-db-xml/Principal.hpp"
 #include "tt3-db-xml/User.hpp"
 #include "tt3-db-xml/Account.hpp"

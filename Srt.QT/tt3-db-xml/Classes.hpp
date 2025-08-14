@@ -20,7 +20,7 @@ namespace tt3::db::xml
     class TT3_DB_XML_PUBLIC DatabaseType;
     class TT3_DB_XML_PUBLIC DatabaseAddress;
 
-    class TT3_DB_XML_PUBLIC DatabaseObject;
+    class TT3_DB_XML_PUBLIC Object;
     class TT3_DB_XML_PUBLIC Principal;
     class TT3_DB_XML_PUBLIC User;
     class TT3_DB_XML_PUBLIC Account;

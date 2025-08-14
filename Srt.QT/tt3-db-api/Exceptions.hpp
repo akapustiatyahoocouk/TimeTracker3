@@ -135,12 +135,12 @@ namespace tt3::db::api
             :   DatabaseException("Property '" + propertyName +
                                 "' of '" + objectTypeName +
                                 "' cannot be set to '" + propertyValue + "'") {}
-        InvalidPropertyValueException(IDatabaseObjectType * objectType,
+        InvalidPropertyValueException(IObjectType * objectType,
                                       const QString & propertyName, const QString & propertyValue)
             :   InvalidPropertyValueException(objectType->displayName(), propertyName, propertyValue) {}
 
         template <class T>
-        InvalidPropertyValueException(IDatabaseObjectType * objectType,
+        InvalidPropertyValueException(IObjectType * objectType,
                                       const QString & propertyName, const T & propertyValue)
             :   InvalidPropertyValueException(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
         template <class T>

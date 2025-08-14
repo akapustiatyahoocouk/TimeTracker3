@@ -1,5 +1,5 @@
 //
-//  tt3-db-xml/DatabaseObject.cpp - tt3::db::xml::DatabaseObject class implementation
+//  tt3-db-xml/Object.cpp - tt3::db::xml::Object class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,7 +19,7 @@ using namespace tt3::db::xml;
 
 //////////
 //  Construction/destruction (from DB type only)
-DatabaseObject::DatabaseObject(Database * database, Oid oid)
+Object::Object(Database * database, Oid oid)
     :   _database(database),
         _oid(oid)
 {
@@ -28,33 +28,33 @@ DatabaseObject::DatabaseObject(Database * database, Oid oid)
     Q_ASSERT(_database->isOpen());
 }
 
-DatabaseObject::~DatabaseObject()
+Object::~Object()
 {
 }
 
 //////////
-//  tt3::db::api::IDatabaseObject (general)
-bool DatabaseObject::isLive() const
+//  tt3::db::api::IObject (general)
+bool Object::isLive() const
 {
     tt3::util::Lock lock(_database->_guard);
     return _isLive;
 }
 
 //////////
-//  tt3::db::api::IDatabaseObject (reference counting)
-DatabaseObject::State DatabaseObject::state() const
+//  tt3::db::api::IObject (reference counting)
+Object::State Object::state() const
 {
     tt3::util::Lock lock(_database->_guard);
     return _state;
 }
 
-int DatabaseObject::referenceCount() const
+int Object::referenceCount() const
 {
     tt3::util::Lock lock(_database->_guard);
     return _referenceCount;
 }
 
-void DatabaseObject::addReference()
+void Object::addReference()
 {
     tt3::util::Lock lock(_database->_guard);
 
@@ -87,7 +87,7 @@ void DatabaseObject::addReference()
     }
 }
 
-void DatabaseObject::removeReference()
+void Object::removeReference()
 {
     tt3::util::Lock lock(_database->_guard);
 
@@ -122,7 +122,7 @@ void DatabaseObject::removeReference()
 
 //////////
 //  Implementation helpers
-void DatabaseObject::_ensureLive() const throws (DatabaseException)
+void Object::_ensureLive() const throws (DatabaseException)
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
 
@@ -133,4 +133,4 @@ void DatabaseObject::_ensureLive() const throws (DatabaseException)
     }
 }
 
-//  End of tt3-db-xml/DatabaseObject.cpp
+//  End of tt3-db-xml/Object.cpp

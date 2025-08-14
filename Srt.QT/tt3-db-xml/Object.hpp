@@ -1,5 +1,5 @@
 //
-//  tt3-db-xml/DatabaseObject.hpp - a generic object in an XML file database
+//  tt3-db-xml/Object.hpp - a generic object in an XML file database
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -18,11 +18,11 @@
 namespace tt3::db::xml
 {
     //////////
-    //  A generic object in an xXML file database
-    class TT3_DB_XML_PUBLIC DatabaseObject
-        :   public virtual tt3::db::api::IDatabaseObject
+    //  A generic object in an XML file database
+    class TT3_DB_XML_PUBLIC Object
+        :   public virtual tt3::db::api::IObject
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DatabaseObject)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Object)
 
         friend class Principal;
         friend class User;
@@ -30,18 +30,18 @@ namespace tt3::db::xml
         //////////
         //  Construction/destruction (from DB type only)
     private:
-        DatabaseObject(Database * database, Oid oid);
-        virtual ~DatabaseObject();
+        Object(Database * database, Oid oid);
+        virtual ~Object();
 
         //////////
-        //  tt3::db::api::IDatabaseObject (general)
+        //  tt3::db::api::IObject (general)
     public:
         virtual Database *  database() const override { return _database; }
         virtual Oid         oid() const override { return _oid; }
         virtual bool        isLive() const override;
 
         //////////
-        //  tt3::db::api::IDatabaseObject (reference counting)
+        //  tt3::db::api::IObject (reference counting)
     public:
         virtual State       state() const override;
         virtual int         referenceCount() const override;
@@ -63,4 +63,4 @@ namespace tt3::db::xml
     };
 }
 
-//  End of tt3-db-api/DatabaseObject.hpp
+//  End of tt3-db-api/Object.hpp

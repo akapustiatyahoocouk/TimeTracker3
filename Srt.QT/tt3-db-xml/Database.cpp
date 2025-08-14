@@ -163,14 +163,14 @@ tt3::db::api::IUser * Database::createUser(
     if (!_validator->principal()->isValidEmailAddresses(emailAddresses))
     {
         throw tt3::db::api::InvalidPropertyValueException(
-            tt3::db::api::DatabaseObjectTypes::User::instance(),
+            tt3::db::api::ObjectTypes::User::instance(),
             "emailAddresses",
             emailAddresses.join(','));
     }
     if (!_validator->user()->isValidRealName(realName))
     {
         throw tt3::db::api::InvalidPropertyValueException(
-            tt3::db::api::DatabaseObjectTypes::User::instance(),
+            tt3::db::api::ObjectTypes::User::instance(),
             "realName",
             realName);
     }
@@ -178,7 +178,7 @@ tt3::db::api::IUser * Database::createUser(
         !_validator->user()->isValidInactivityTimeout(inactivityTimeout.value()))
     {
         throw tt3::db::api::InvalidPropertyValueException(
-            tt3::db::api::DatabaseObjectTypes::User::instance(),
+            tt3::db::api::ObjectTypes::User::instance(),
             "inactivityTimeout",
             inactivityTimeout.value());
     }
@@ -186,7 +186,7 @@ tt3::db::api::IUser * Database::createUser(
         !_validator->user()->isValidUiLocale(uiLocale.value()))
     {
         throw tt3::db::api::InvalidPropertyValueException(
-            tt3::db::api::DatabaseObjectTypes::User::instance(),
+            tt3::db::api::ObjectTypes::User::instance(),
             "uiLocale",
             uiLocale.value());
     }

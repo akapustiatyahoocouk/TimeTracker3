@@ -7,8 +7,8 @@ SOURCES += \
     Component.cpp \
     Database.cpp \
     DatabaseAddress.cpp \
-    DatabaseObject.cpp \
     DatabaseType.cpp \
+    Object.cpp \
     Plugins.cpp \
     Principal.cpp \
     User.cpp
@@ -20,9 +20,9 @@ HEADERS += \
     Components.hpp \
     Database.hpp \
     DatabaseAddress.hpp \
-    DatabaseObject.hpp \
     DatabaseType.hpp \
     Linkage.hpp \
+    Object.hpp \
     Principal.hpp \
     User.hpp
 

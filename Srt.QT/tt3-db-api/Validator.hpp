@@ -54,7 +54,7 @@ namespace tt3::db::api
                         return false;
                     }
                 }
-                return true;
+                return QSet<QString>(emailAddresses.begin(), emailAddresses.end()).size() == emailAddresses.size();
             }
         };
         virtual IPrincipalValidator *   principal() const = 0;

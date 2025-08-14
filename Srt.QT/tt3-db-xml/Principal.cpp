@@ -20,7 +20,7 @@ using namespace tt3::db::xml;
 //////////
 //  Construction/destruction (from DB type only)
 Principal::Principal(Database * database, Oid oid)
-    :   DatabaseObject(database, oid)
+    :   Object(database, oid)
 {
 }
 

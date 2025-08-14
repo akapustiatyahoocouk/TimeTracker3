@@ -1,5 +1,5 @@
 //
-//  tt3-db-api/DatabaseObject.hpp - a generic database objectT
+//  tt3-db-api/Object.hpp - a generic database objectT
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -20,7 +20,7 @@ namespace tt3::db::api
     //  A generic object that resides, or used to reside,
     //  in a database. Database object instances are managed
     //  by their corresponding database.
-    //  An instance of a IDatabaseObject has an associated
+    //  An instance of a IObject has an associated
     //  reference count. Depending on it, that instance can be
     //  in one of the following states:
     //  *   New - the instance has just been created; its
@@ -37,11 +37,11 @@ namespace tt3::db::api
     //  Normallty, an IDatabase - implementing classwill act as
     //  a cache for the real data kepy in the persistent storage,
     //  At any time only the part of that data can be represented
-    //  by a corresponding IDatabaseObject instance.
+    //  by a corresponding IObject instance.
     //  IMPORTANT: The implementation ensures that no two live
     //  instanes of a derived class refer to the same database
     //  object.
-    class TT3_DB_API_PUBLIC IDatabaseObject
+    class TT3_DB_API_PUBLIC IObject
     {
         //////////
         //  Types
@@ -59,15 +59,15 @@ namespace tt3::db::api
         //////////
         //  This is an interface
     protected:
-        IDatabaseObject() = default;
-        virtual ~IDatabaseObject() = default;
+        IObject() = default;
+        virtual ~IObject() = default;
 
         //////////
         //  Operations (general)
     public:
         //  The type of this database object; can be
         //  safely obtained for both live and dead objects
-        virtual IDatabaseObjectType *   type() const = 0;
+        virtual IObjectType *   type() const = 0;
 
         //  The database where the corresponding data object
         //  resides (if live) or used to reside (if dead).
@@ -86,7 +86,7 @@ namespace tt3::db::api
     public:
         //  Destroys the corresponding database object,
         //  delete-cascading as necessary. The instance of
-        //  the IDatabaseObject - implementing class remains
+        //  the IObject - implementing class remains
         //  in existence, but is marked as "reoresenting
         //  a dead object" and, therefore, unusable.
         virtual void        destroy() throws(DatabaseException) = 0;
@@ -103,4 +103,4 @@ namespace tt3::db::api
     };
 }
 
-//  End of tt3-db-api/DatabaseObject.hpp
+//  End of tt3-db-api/Object.hpp

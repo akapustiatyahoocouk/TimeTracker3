@@ -14,18 +14,22 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
+#pragma once
+#include "tt3-db-api/API.hpp"
 
 namespace tt3::db::api
 {
-    //  Yje common base class for all database change notifications.
+    //  The common base class for all database change notifications.
     class TT3_DB_API_PUBLIC ChangeNotification
     {
         //////////
-        //  Construction/destruction
+        //  Construction/destruction/assignment
     protected:
         ChangeNotification(IDatabase * db)
             :   database(db) { Q_ASSERT(database != nullptr); }
         virtual ~ChangeNotification() = default;
+
+        //  Defult copy-constructor and assigmnent are OK
 
         //////////
         //  Properties
@@ -33,6 +37,48 @@ namespace tt3::db::api
         //  The database where the change has occurred
         IDatabase *const    database;
     };
+
+    //  A per-database agent that emits change
+    //  notification signals for that database.
+    class TT3_DB_API_PUBLIC ChangeNotifier final : public QObject
+    {
+        Q_OBJECT
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ChangeNotifier)
+
+        //////////
+        //  Construction/destruction
+    public:
+        ChangeNotifier() = default;
+        ~ChangeNotifier() = default;
+
+        //////////
+        //  Operations
+    public:
+        //  Posts the spefified change notification to this
+        //  notifier, taking ownership of that change notification.
+        //  The posted change notification will be emitted as a
+        //  corresponding signal from the notifier as soon as
+        //  practicable.
+        void        post(ChangeNotification * notification);
+
+        //////////
+        //  Signals
+        //  All signals are emitted on a hidden worker
+        //  thread private to a specific notifier. As a
+        //  consequence, any e.g. UI thread connecting
+        //  one of its slots to these notifier signals
+        //  will automatically use "queued connections",
+        //  thus making surthese slots are invoked on
+        //  an UI thread.
+    signals:
+
+        //////////
+        //  Implementation
+    private:
+    };
+
 }
+
+Q_DECLARE_METATYPE(tt3::db::api::ChangeNotification)
 
 //  End of tt3-db-api/Notifications.hpp

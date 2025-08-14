@@ -1,5 +1,5 @@
 //
-//  tt3-db-api/DatabaseObjectTypes.cpp tt3::db::api::DatabaseObjectTypes class implementation
+//  tt3-db-api/ObjectTypes.cpp tt3::db::api::ObjectTypes class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -18,71 +18,71 @@
 using namespace tt3::db::api;
 
 //////////
-//  DatabaseObjectTypes::User
-IMPLEMENT_SINGLETON(DatabaseObjectTypes::User)
+//  ObjectTypes::User
+IMPLEMENT_SINGLETON(ObjectTypes::User)
 
-DatabaseObjectTypes::User::User()
+ObjectTypes::User::User()
     :   _smallIcon(":/tt3-db-api/Resources/Images/Objects/UserSmall.png"),
         _largeIcon(":/tt3-db-api/Resources/Images/Objects/UserLarge.png")
 {
 }
 
-DatabaseObjectTypes::User::~User()
+ObjectTypes::User::~User()
 {
 }
 
-QString DatabaseObjectTypes::User::mnemonic() const
-{
-    return "User";
-}
-
-QString DatabaseObjectTypes::User::displayName() const
+QString ObjectTypes::User::mnemonic() const
 {
     return "User";
 }
 
-QIcon DatabaseObjectTypes::User::smallIcon() const
+QString ObjectTypes::User::displayName() const
+{
+    return "User";
+}
+
+QIcon ObjectTypes::User::smallIcon() const
 {
     return _smallIcon;
 }
 
-QIcon DatabaseObjectTypes::User::largeIcon() const
+QIcon ObjectTypes::User::largeIcon() const
 {
     return _largeIcon;
 }
 
 //////////
-//  DatabaseObjectTypes::Account
-IMPLEMENT_SINGLETON(DatabaseObjectTypes::Account)
+//  ObjectTypes::Account
+IMPLEMENT_SINGLETON(ObjectTypes::Account)
 
-DatabaseObjectTypes::Account::Account()
+ObjectTypes::Account::Account()
     :   _smallIcon(":/tt3-db-api/Resources/Images/Objects/AccountSmall.png"),
         _largeIcon(":/tt3-db-api/Resources/Images/Objects/AccountLarge.png")
 {
 }
 
-DatabaseObjectTypes::Account::~Account()
+ObjectTypes::Account::~Account()
 {
 }
 
-QString DatabaseObjectTypes::Account::mnemonic() const
-{
-    return "Account";
-}
-
-QString DatabaseObjectTypes::Account::displayName() const
+QString ObjectTypes::Account::mnemonic() const
 {
     return "Account";
 }
 
-QIcon DatabaseObjectTypes::Account::smallIcon() const
+QString ObjectTypes::Account::displayName() const
+{
+    return "Account";
+}
+
+QIcon ObjectTypes::Account::smallIcon() const
 {
     return _smallIcon;
 }
 
-QIcon DatabaseObjectTypes::Account::largeIcon() const
+QIcon ObjectTypes::Account::largeIcon() const
 {
     return _largeIcon;
 }
 
-//  End of tt3-db-api/DatabaseObjectTypes.cpp
+//  End of tt3-db-api/ObjectTypes.cpp

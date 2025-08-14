@@ -34,7 +34,7 @@ namespace tt3::db::xml
         virtual ~User();
 
         //////////
-        //  tt3::db::api::IDatabaseObject (life cycle)
+        //  tt3::db::api::IObject (life cycle)
     public:
         virtual void        destroy() throws(DatabaseException) override;
 

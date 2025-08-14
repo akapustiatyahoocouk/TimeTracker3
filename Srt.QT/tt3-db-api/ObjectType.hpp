@@ -1,5 +1,5 @@
 //
-//  tt3-db-api/DatabaseObjectType.hpp - a database object type
+//  tt3-db-api/ObjectType.hpp - a database object type
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,14 +19,14 @@ namespace tt3::db::api
 {
     //  Represents a type of a database object.
     //  All predefined database object types are
-    //  singletons defined in DatabaseObjectTypes.
-    class TT3_DB_API_PUBLIC IDatabaseObjectType
+    //  singletons defined in ObjectTypes.
+    class TT3_DB_API_PUBLIC IObjectType
     {
         //////////
         //  This is an interface
     protected:
-        IDatabaseObjectType() = default;
-        virtual ~IDatabaseObjectType() = default;
+        IObjectType() = default;
+        virtual ~IObjectType() = default;
 
         //////////
         //  Operations
@@ -45,19 +45,19 @@ namespace tt3::db::api
     };
 
     //  Standard database object types
-    class TT3_DB_API_PUBLIC DatabaseObjectTypes final
+    class TT3_DB_API_PUBLIC ObjectTypes final
     {
-        UTILITY_CLASS(DatabaseObjectTypes)
+        UTILITY_CLASS(ObjectTypes)
 
         //////////
         //  Database object types
     public:
-        class TT3_DB_API_PUBLIC User final : public virtual IDatabaseObjectType
+        class TT3_DB_API_PUBLIC User final : public virtual IObjectType
         {
             DECLARE_SINGLETON(User)
 
             //////////
-            //  IDatabaseObjectType
+            //  IObjectType
         public:
             virtual QString mnemonic() const override;
             virtual QString displayName() const override;
@@ -71,12 +71,12 @@ namespace tt3::db::api
             const QIcon     _largeIcon;
         };
 
-        class TT3_DB_API_PUBLIC Account final : public virtual IDatabaseObjectType
+        class TT3_DB_API_PUBLIC Account final : public virtual IObjectType
         {
             DECLARE_SINGLETON(Account)
 
             //////////
-            //  IDatabaseObjectType
+            //  IObjectType
         public:
             virtual QString mnemonic() const override;
             virtual QString displayName() const override;
@@ -92,4 +92,4 @@ namespace tt3::db::api
     };
 }
 
-//  End of tt3-db-api/DatabaseObjectType.hpp
+//  End of tt3-db-api/ObjectType.hpp

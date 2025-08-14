@@ -27,11 +27,11 @@ namespace tt3::db::api
         virtual ~IUser() = default;
 
         //////////
-        //  IDatabaseObject
+        //  IObject
     public:
-        virtual IDatabaseObjectType *   type() const override
+        virtual IObjectType *   type() const override
         {
-            return DatabaseObjectTypes::User::instance();
+            return ObjectTypes::User::instance();
         }
 
         //////////

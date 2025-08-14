@@ -21,8 +21,14 @@ using namespace tt3::db::api;
 //  Singleton
 IMPLEMENT_SINGLETON(Component)
 
-Component::Component() {}
-Component::~Component() {}
+Component::Component()
+{
+    qRegisterMetaType<tt3::db::api::ChangeNotification>();
+}
+
+Component::~Component()
+{
+}
 
 //////////
 //  IComponent

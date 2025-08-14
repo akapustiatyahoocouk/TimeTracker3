@@ -25,7 +25,7 @@ namespace tt3::db::xml
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Database)
 
         friend class DatabaseType;
-        friend class DatabaseObject;
+        friend class Object;
         friend class Principal;
         friend class User;
 
@@ -74,13 +74,13 @@ namespace tt3::db::xml
         mutable tt3::util::Mutex    _guard; //  for all access synchronization
 
         bool                _needsSaving = false;
-        tt3::db::api::IDatabaseObject::Oid  _nextUnusedOid = 1;
+        tt3::db::api::IObject::Oid  _nextUnusedOid = 1;
 
         //  Primary object caches (usable objects only)
         QSet<User*>         _users; //  count as "references"
 
         //  Delete-able instances: live == false && refcount == 0
-        QSet<DatabaseObject*>   _graveyard; //  do NOT count as references
+        QSet<Object*>       _graveyard; //  do NOT count as references
 
         //  Database file locking mechanism
         class TT3_DB_XML_PUBLIC _LockRefresher final : public QThread

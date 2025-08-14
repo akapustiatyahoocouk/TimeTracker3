@@ -29,7 +29,7 @@ User::~User()
 }
 
 //////////
-//  tt3::db::api::IDatabaseObject (life cycle)
+//  tt3::db::api::IObject (life cycle)
 void User::destroy() throws(DatabaseException)
 {
     throw tt3::db::api::DatabaseException("Not yet implemented");
@@ -129,6 +129,16 @@ void User::setUiLocale(const std::optional<QLocale> & uiLocale) throws(DatabaseE
         //  ...and schedule change notifications
         //  TODO
     }
+}
+
+//////////
+//  tt3::db::api::IUser (associations)
+tt3::db::api::Accounts User::accounts() const throws(DatabaseException)
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+
+    return tt3::db::api::Accounts(_accounts.begin(), _accounts.end());
 }
 
 //  End of tt3-db-xml/User.cpp

@@ -20,7 +20,7 @@ namespace tt3::db::xml
     //////////
     //  A generic access control principal
     class TT3_DB_XML_PUBLIC Principal
-        :   public DatabaseObject,
+        :   public Object,
             public virtual tt3::db::api::IPrincipal
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Principal)
