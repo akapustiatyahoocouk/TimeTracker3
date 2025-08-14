@@ -24,6 +24,9 @@ namespace tt3::db::xml
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DatabaseObject)
 
+        friend class Principal;
+        friend class User;
+
         //////////
         //  Construction/destruction (from DB type only)
     private:
@@ -56,7 +59,7 @@ namespace tt3::db::xml
         bool                _isLive = true;
 
         //  Helpers
-        void                _ensureLive() throws (DatabaseException);
+        void                _ensureLive() const throws (DatabaseException);
     };
 }
 

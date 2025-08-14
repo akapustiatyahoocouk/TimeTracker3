@@ -39,6 +39,10 @@ namespace tt3::util
     template <> TT3_UTIL_PUBLIC QString toString<QString>(const QString & value);
     template <> TT3_UTIL_PUBLIC QString toString<QRect>(const QRect & value);
     template <> TT3_UTIL_PUBLIC QString toString<QVersionNumber>(const QVersionNumber & value);
+    template <> TT3_UTIL_PUBLIC QString toString<QLocale>(const QLocale & value);
+
+    //  tt3::util types
+    template <> TT3_UTIL_PUBLIC QString toString<TimeSpan>(const TimeSpan & value);
 }
 
 //  End of tt3-util/ToString.hpp

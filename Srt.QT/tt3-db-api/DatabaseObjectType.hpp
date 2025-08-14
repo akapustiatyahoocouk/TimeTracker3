@@ -17,7 +17,9 @@
 
 namespace tt3::db::api
 {
-    //  Represents a type of a database object
+    //  Represents a type of a database object.
+    //  All predefined database object types are
+    //  singletons defined in DatabaseObjectTypes.
     class TT3_DB_API_PUBLIC IDatabaseObjectType
     {
         //////////

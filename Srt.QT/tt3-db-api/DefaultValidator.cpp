@@ -80,6 +80,11 @@ bool DefaultValidator::_UserValidator::isValidEmailAddress(const QString & email
     return _isValidEmailAddress(emailAddress);
 }
 
+bool DefaultValidator::_UserValidator::isValidUiLocale(const QLocale & /*uiLocale*/)
+{
+    return true;
+}
+
 bool DefaultValidator::_UserValidator::isValidRealName(const QString & realName)
 {
     return _isValidName(realName, 127);

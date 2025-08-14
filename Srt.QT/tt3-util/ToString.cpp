@@ -109,5 +109,16 @@ template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QVersionNumber>(const QV
            toString(value.microVersion());
 }
 
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QLocale>(const QLocale & value)
+{
+    return value.name();
+}
+
+//  tt3::util types
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<tt3::util::TimeSpan>(const TimeSpan & value)
+{
+    return value.isValid() ? toString(value.asMinutes()) : "-";
+}
+
 //  End of tt3-util/ToString.cpp
 

@@ -120,7 +120,56 @@ namespace tt3::db::api
         //  QException
     public:
         virtual AccessDeniedException *
-        clone() const { return new AccessDeniedException(*this); }
+                        clone() const { return new AccessDeniedException(*this); }
+        virtual void    raise() const { throw *this; }
+    };
+
+    //  Thrown when attempting to assign an invalid value to a property
+    class TT3_DB_API_PUBLIC InvalidPropertyValueException : public DatabaseException
+    {
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        InvalidPropertyValueException(const QString & objectTypeName,
+                                      const QString & propertyName, const QString & propertyValue)
+            :   DatabaseException("Property '" + propertyName +
+                                "' of '" + objectTypeName +
+                                "' cannot be set to '" + propertyValue + "'") {}
+        InvalidPropertyValueException(IDatabaseObjectType * objectType,
+                                      const QString & propertyName, const QString & propertyValue)
+            :   InvalidPropertyValueException(objectType->displayName(), propertyName, propertyValue) {}
+
+        template <class T>
+        InvalidPropertyValueException(IDatabaseObjectType * objectType,
+                                      const QString & propertyName, const T & propertyValue)
+            :   InvalidPropertyValueException(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
+        template <class T>
+        InvalidPropertyValueException(const QString & objectTypeName,
+                                      const QString & propertyName, const T & propertyValue)
+            :   InvalidPropertyValueException(objectTypeName, propertyName, tt3::util::toString(propertyValue)) {}
+
+        //////////
+        //  QException
+    public:
+        virtual InvalidPropertyValueException *
+                        clone() const { return new InvalidPropertyValueException(*this); }
+        virtual void    raise() const { throw *this; }
+    };
+
+    //  Thrown when attempting to access a "dead" instance
+    class TT3_DB_API_PUBLIC InstanceDeadException : public DatabaseException
+    {
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        InstanceDeadException()
+            :   DatabaseException("Instance is dead") {}
+
+        //////////
+        //  QException
+    public:
+        virtual InstanceDeadException *
+                        clone() const { return new InstanceDeadException(*this); }
         virtual void    raise() const { throw *this; }
     };
     }

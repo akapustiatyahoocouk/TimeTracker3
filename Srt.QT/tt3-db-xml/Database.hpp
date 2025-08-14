@@ -25,6 +25,9 @@ namespace tt3::db::xml
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Database)
 
         friend class DatabaseType;
+        friend class DatabaseObject;
+        friend class Principal;
+        friend class User;
 
         //////////
         //  Construction/destruction
@@ -37,8 +40,8 @@ namespace tt3::db::xml
         //////////
         //  tt3::db::api::IDatabase (general)
     public:
-        virtual DatabaseType *     type() const override { return DatabaseType::instance(); }
-        virtual DatabaseAddress *  address() const override { return _address; }
+        virtual DatabaseType *      type() const override { return DatabaseType::instance(); }
+        virtual DatabaseAddress *   address() const override { return _address; }
         virtual tt3::db::api::IValidator *  validator() const override { return _validator; }
         virtual bool                isOpen() const override;
         virtual void                close() throws(DatabaseException) override;
@@ -53,6 +56,14 @@ namespace tt3::db::xml
         //  tt3::db::api::IDatabase (access control)
     public:
         virtual tt3::db::api::IAccount *    tryLogin(const QString & login, const QString & password) const throws(DatabaseException) override;
+
+        //////////
+        //  tt3::db::api::IDatabase (life cycle)
+    public:
+        virtual tt3::db::api::IUser *   createUser(bool enables, const QStringList & emailAddresses,
+                                    const QString & realName,
+                                    const std::optional<tt3::util::TimeSpan> & inactivityTimeout,
+                                    const std::optional<QLocale> & uiLocale) throws(DatabaseException) override;
 
         //////////
         //  Implementation
@@ -113,6 +124,8 @@ namespace tt3::db::xml
 
         //  Serialization
         void            _save() throws(DatabaseException);
+        void            _load() throws(DatabaseException);
+        QList<QDomElement>  _childElements(const QDomElement & parentElement, const QString & tagName);
     };
 }
 

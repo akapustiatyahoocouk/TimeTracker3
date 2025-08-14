@@ -22,6 +22,7 @@ HEADERS += \
     DatabaseType.hpp \
     Exceptions.hpp \
     Linkage.hpp \
+    Notifications.hpp \
     Principal.hpp \
     User.hpp \
     Validator.hpp

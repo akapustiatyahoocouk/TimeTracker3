@@ -37,6 +37,7 @@
 #include "tt3-db-api/User.hpp"
 #include "tt3-db-api/Account.hpp"
 
+#include "tt3-db-api/Notifications.hpp"
 #include "tt3-db-api/Exceptions.hpp"
 
 //  End of tt3-db-api/API.hpp

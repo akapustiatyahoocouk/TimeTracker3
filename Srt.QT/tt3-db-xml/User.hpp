@@ -34,6 +34,11 @@ namespace tt3::db::xml
         virtual ~User();
 
         //////////
+        //  tt3::db::api::IDatabaseObject (life cycle)
+    public:
+        virtual void        destroy() throws(DatabaseException) override;
+
+        //////////
         //  tt3::db::api::IUser (properties)
     public:
         virtual QString     realName() const throws(DatabaseException) override;
@@ -44,6 +49,11 @@ namespace tt3::db::xml
         virtual std::optional<QLocale>
                             uiLocale() const throws(DatabaseException) override;
         virtual void        setUiLocale(const std::optional<QLocale> & uiLocale) throws(DatabaseException) override;
+
+        //////////
+        //  tt3::db::api::IUser (associations)
+    public:
+        virtual tt3::db::api::Accounts  accounts() const throws(DatabaseException) override;
 
         //////////
         //  Implementation

@@ -7,8 +7,11 @@ SOURCES += \
     Component.cpp \
     Database.cpp \
     DatabaseAddress.cpp \
+    DatabaseObject.cpp \
     DatabaseType.cpp \
-    Plugins.cpp
+    Plugins.cpp \
+    Principal.cpp \
+    User.cpp
 
 HEADERS += \
     API.hpp \

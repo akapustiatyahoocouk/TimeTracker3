@@ -26,6 +26,7 @@ namespace tt3::db::xml
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Principal)
 
         friend class Database;
+        friend class User;
 
         //////////
         //  Construction/destruction (from DB type only)

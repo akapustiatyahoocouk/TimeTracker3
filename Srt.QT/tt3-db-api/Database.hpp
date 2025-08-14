@@ -60,6 +60,15 @@ namespace tt3::db::api
         //  password, returns it; otherwise throws an
         //  AccessDeniedException.
         virtual IAccount *  login(const QString & login, const QString & password) const throws(DatabaseException);
+
+        //////////
+        //  Opertions (life cycle)
+    public:
+        //  TODO document
+        virtual IUser *     createUser(bool enables, const QStringList & emailAddresses,
+                                const QString & realName,
+                                const std::optional<tt3::util::TimeSpan> & inactivityTimeout,
+                                const std::optional<QLocale> & uiLocale) throws(DatabaseException) = 0;
     };
 }
 

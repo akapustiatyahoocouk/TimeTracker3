@@ -45,6 +45,17 @@ namespace tt3::db::api
         public:
             //  TODO document
             virtual bool    isValidEmailAddress(const QString & emailAddress) = 0;
+            virtual bool    isValidEmailAddresses(const QStringList & emailAddresses)
+            {
+                for (QString emailAddress : emailAddresses)
+                {
+                    if (!isValidEmailAddress(emailAddress))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
         };
         virtual IPrincipalValidator *   principal() const = 0;
 
@@ -63,6 +74,7 @@ namespace tt3::db::api
             //  TODO document
             virtual bool    isValidRealName(const QString & realName) = 0;
             virtual bool    isValidInactivityTimeout(const tt3::util::TimeSpan & inactivityTimeout) = 0;
+            virtual bool    isValidUiLocale(const QLocale & uiLocale) = 0;
         };
         virtual IUserValidator *    user() const = 0;
 
@@ -131,6 +143,7 @@ namespace tt3::db::api
         public:
             virtual bool    isValidRealName(const QString & realName) override;
             virtual bool    isValidInactivityTimeout(const tt3::util::TimeSpan & inactivityTimeout) override;
+            virtual bool    isValidUiLocale(const QLocale & uiLocale) override;
         };
 
         class TT3_DB_API_PUBLIC _AccountValidator final : public virtual IAccountValidator

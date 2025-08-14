@@ -81,6 +81,9 @@ namespace tt3::db::api
         //  object residing in a database, else false.
         virtual bool        isLive() const = 0;
 
+        //////////
+        //  Opertions (life cycle)
+    public:
         //  Destroys the corresponding database object,
         //  delete-cascading as necessary. The instance of
         //  the IDatabaseObject - implementing class remains

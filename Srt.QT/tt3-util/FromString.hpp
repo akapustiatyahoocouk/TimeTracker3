@@ -71,6 +71,10 @@ namespace tt3::util
     template <> TT3_UTIL_PUBLIC QString fromString<QString>(const QString & s, int & scan) throws(ParseException);
     template <> TT3_UTIL_PUBLIC QRect fromString<QRect>(const QString & s, int & scan) throws(ParseException);
     template <> TT3_UTIL_PUBLIC QVersionNumber fromString<QVersionNumber>(const QString & s, int & scan) throws(ParseException);
+    template <> TT3_UTIL_PUBLIC QLocale fromString<QLocale>(const QString & s, int & scan) throws(ParseException);
+
+    //  tt3::util types
+    template <> TT3_UTIL_PUBLIC TimeSpan fromString<TimeSpan>(const QString & s, int & scan) throws(ParseException);
 
     //////////
     //  Parsing helpers

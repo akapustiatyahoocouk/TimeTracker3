@@ -33,11 +33,11 @@ Database::Database(DatabaseAddress * address, _Mode mode)
     {
         case _Mode::_Create:
             //  Need to save e,pty DB content
-            _save();
+            _save();    //  may throw
             break;
         case _Mode::_Open:
             //  Need to load existing DB content
-            //  TODO
+            _load();    //  may throw
             break;
         default:
             Q_ASSERT(false);
@@ -73,12 +73,20 @@ void Database::close() throws(DatabaseException)
 {
     tt3::util::Lock lock(_guard);
 
+    if (_lockRefresher == nullptr)
+    {   //  Already closed
+        return;
+    }
+
+    //  Disconnect all slots from notification signals
+    //  TODO
+
+    //  Save ?
     if (_needsSaving)
     {
         try
         {
             _save();    //  may throw!
-            _markClosed();
         }
         catch (...)
         {   //  Cleanup & re-throw
@@ -86,6 +94,9 @@ void Database::close() throws(DatabaseException)
             throw;
         }
     }
+
+    //  Done
+    _markClosed();
 }
 
 //////////
@@ -138,6 +149,67 @@ tt3::db::api::IAccount * Database::tryLogin(const QString & login, const QString
 }
 
 //////////
+//  tt3::db::api::IDatabase (life cycle)
+tt3::db::api::IUser * Database::createUser(
+    bool enables, const QStringList & emailAddresses,
+    const QString & realName,
+    const std::optional<tt3::util::TimeSpan> & inactivityTimeout,
+    const std::optional<QLocale> & uiLocale) throws(DatabaseException)
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+
+    //  Validate parameters
+    if (!_validator->principal()->isValidEmailAddresses(emailAddresses))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::DatabaseObjectTypes::User::instance(),
+            "emailAddresses",
+            emailAddresses.join(','));
+    }
+    if (!_validator->user()->isValidRealName(realName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::DatabaseObjectTypes::User::instance(),
+            "realName",
+            realName);
+    }
+    if (inactivityTimeout.has_value() &&
+        !_validator->user()->isValidInactivityTimeout(inactivityTimeout.value()))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::DatabaseObjectTypes::User::instance(),
+            "inactivityTimeout",
+            inactivityTimeout.value());
+    }
+    if (uiLocale.has_value() &&
+        !_validator->user()->isValidUiLocale(uiLocale.value()))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::DatabaseObjectTypes::User::instance(),
+            "uiLocale",
+            uiLocale.value());
+    }
+
+    //  Do the work - create & initialize the User...
+    User * user = new User(this, _nextUnusedOid++);
+    user->_enabled = enables;
+    user->_emailAddresses = emailAddresses;
+    user->_realName = realName;
+    user->_inactivityTimeout = inactivityTimeout;
+    user->_uiLocale = uiLocale;
+    //  ...register it...
+    _users.insert(user);
+    user->addReference();
+    _needsSaving = true;
+    //  ...schedulechange  notifications...
+    //  TODO
+    //  ...and we're done
+    return user;
+
+}
+
+//////////
 //  Implementation helpers
 void Database::_ensureOpen()
 {
@@ -179,6 +251,14 @@ void Database::_save() throws(DatabaseException)
     rootElement.setAttribute("FormatVersion", "1");
     document.appendChild(rootElement);
 
+    //  Serialize users (and accounts)
+    QDomElement usersElement = document.createElement("Users");
+    rootElement.appendChild(usersElement);
+    for (User * user : _users)
+    {   //  TODO try to sort by OID to reduce changes
+    }
+
+
     //  Save DOM
     QFile file(_address->_path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -189,6 +269,56 @@ void Database::_save() throws(DatabaseException)
     document.save(stream, 4);
     file.close();
     _needsSaving = false;
+}
+
+void Database::_load() throws(DatabaseException)
+{
+    //  Load XML DOM
+    QDomDocument document;
+    QFile file(_address->_path);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseException(file.errorString());
+    }
+    if (!document.setContent(&file))
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseCorruptException(_address);
+    }
+
+    //  Validate root element
+    QDomElement rootElement = document.documentElement();
+    if (rootElement.isNull() ||
+        rootElement.tagName() != "TT3" ||
+        rootElement.attribute("FormatVersion") != "1")
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseCorruptException(_address);
+    }
+
+    //  Process users
+    QList<QDomElement> usersElements = _childElements(rootElement, "Users");
+    if (usersElements.size() != 1)
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseCorruptException(_address);
+    }
+}
+
+QList<QDomElement> Database::_childElements(const QDomElement & parentElement, const QString & tagName)
+{
+    QList<QDomElement> result;
+    for (QDomNode childNode = parentElement.firstChild();
+         !childNode.isNull();
+         childNode = childNode.nextSibling())
+    {
+        if (childNode.isElement())
+        {
+            QDomElement childElement = childNode.toElement();
+            if (childElement.tagName() == tagName)
+            {
+                result.append(childElement);
+            }
+        }
+    }
+    return result;
 }
 
 //////////
