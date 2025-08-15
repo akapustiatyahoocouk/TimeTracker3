@@ -4,6 +4,7 @@ TEMPLATE = lib
 DEFINES += TT3_DB_API_LIBRARY
 
 SOURCES += \
+    ChangeNotifier.cpp \
     Component.cpp \
     Database.cpp \
     DatabaseTypeRegistry.cpp \

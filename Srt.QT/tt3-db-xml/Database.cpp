@@ -235,6 +235,8 @@ void Database::_markClosed()
         }
         delete _lockRefresher;
         _lockRefresher = nullptr;
+        //  Schedule "database is closed" change notification
+        _changeNotifier.post(new tt3::db::api::DatabaseClosedNotification(this));
     }
 }
 

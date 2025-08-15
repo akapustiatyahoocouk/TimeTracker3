@@ -5,6 +5,7 @@ DEFINES += TT3_WS_LIBRARY
 
 SOURCES += \
     Component.cpp \
+    CurrentWorkspace.cpp \
     Workspace.cpp \
     WorkspaceAddress.cpp \
     WorkspaceType.cpp \

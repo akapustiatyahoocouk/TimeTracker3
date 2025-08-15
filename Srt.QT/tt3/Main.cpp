@@ -149,15 +149,7 @@ namespace
 //  TT3 entry point
 int main(int argc, char *argv[])
 {
-    /*  TODO kill off
-    dbapi::Capabilities c1 = util::fromString<dbapi::Capabilities>("");
-    dbapi::Capabilities c2 = util::fromString<dbapi::Capabilities>("a");
-    dbapi::Capabilities c3 = util::fromString<dbapi::Capabilities>("Administrator");
-    dbapi::Capabilities c4 = util::fromString<dbapi::Capabilities>("ManageUsers");
-    dbapi::Capabilities c5 = util::fromString<dbapi::Capabilities>("ManageUsers+ManageModels");
-    dbapi::Capabilities c6 = util::fromString<dbapi::Capabilities>("ManageUsers+ManageModels+");
-    */
-
+    //  Initialize the application
     QApplication a(argc, argv);
 
     QPixmap pm;
@@ -169,16 +161,23 @@ int main(int argc, char *argv[])
     registerStandardComponents();
     tt3::util::PluginManager::loadPlugins();
     loadSettings();
+    selectActiveSkin();
 
-    //  TODO define & use "synchronized (lock)" statement - like macro
-    tt3::util::Mutex m;
-    if (tt3::util::Lock(m), true)
-    {
-        selectActiveSkin();
-    }
-
+    //  Go!
     int exitCode = a.exec();
 
+    //  Cleanup
+    //  TODO if there's a "current" activity, record & syop it
+    //  If there's a "current" workspace, close it
+    tt3::ws::WorkspacePtr currentWorkspace;
+    tt3::ws::theCurrentWorkspace.swap(currentWorkspace);
+    if (currentWorkspace != nullptr)
+    {
+        currentWorkspace->close();
+        //  TODO handle "close" exceptions
+    }
+
+    //  Done
     saveSettings();
     return exitCode;
 }

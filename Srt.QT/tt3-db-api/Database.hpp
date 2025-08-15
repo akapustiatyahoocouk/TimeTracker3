@@ -69,6 +69,12 @@ namespace tt3::db::api
                                 const QString & realName,
                                 const std::optional<tt3::util::TimeSpan> & inactivityTimeout,
                                 const std::optional<QLocale> & uiLocale) throws(DatabaseException) = 0;
+
+        //////////
+        //  Operations (change notification handling)
+    public:
+        //  The change notifier used by this database
+        virtual ChangeNotifier &changeNotifier() = 0;
     };
 }
 

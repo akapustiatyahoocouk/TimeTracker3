@@ -22,6 +22,8 @@ namespace tt3::ws
     class TT3_WS_PUBLIC WorkspaceAddress;
     class TT3_WS_PUBLIC Workspace;
 
+    using WorkspacePtr = std::shared_ptr<Workspace>;
+
     using WorkspaceTypes = QSet<WorkspaceType*>;
 }
 

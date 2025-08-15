@@ -66,6 +66,11 @@ namespace tt3::db::xml
                                     const std::optional<QLocale> & uiLocale) throws(DatabaseException) override;
 
         //////////
+        //  tt3::db::api::IDatabase (change notification handling)
+    public:
+        virtual tt3::db::api::ChangeNotifier &  changeNotifier() override { return _changeNotifier; }
+
+        //////////
         //  Implementation
     private:
         DatabaseAddress *const  _address;
@@ -117,6 +122,8 @@ namespace tt3::db::xml
             QFile               _lockFile;
         };
         _LockRefresher *    _lockRefresher = nullptr;   //  nullptr == database is closed
+
+        tt3::db::api::ChangeNotifier    _changeNotifier;
 
         //  Helpers
         void            _ensureOpen() throws (DatabaseException);

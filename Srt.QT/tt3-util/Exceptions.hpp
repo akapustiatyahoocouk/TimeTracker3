@@ -20,7 +20,7 @@ namespace tt3::util
     //////////
     //  The common base class for all tt3-specific exceptions
     class TT3_UTIL_PUBLIC Exception : public QException
-    {
+    {   //  TODO make abstract & define subclasses
         //////////
         //  Construction/destruction/assignment
     public:

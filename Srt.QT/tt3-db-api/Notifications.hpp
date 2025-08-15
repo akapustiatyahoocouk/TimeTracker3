@@ -38,6 +38,18 @@ namespace tt3::db::api
         IDatabase *const    database;
     };
 
+    //  Issued after a database is closed
+    class TT3_DB_API_PUBLIC DatabaseClosedNotification : public ChangeNotification
+    {
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        DatabaseClosedNotification(IDatabase * db)
+            :   ChangeNotification(db) {}
+
+        //  Defult copy-constructor and assigmnent are OK
+    };
+
     //  A per-database agent that emits change
     //  notification signals for that database.
     class TT3_DB_API_PUBLIC ChangeNotifier final : public QObject
@@ -48,8 +60,8 @@ namespace tt3::db::api
         //////////
         //  Construction/destruction
     public:
-        ChangeNotifier() = default;
-        ~ChangeNotifier() = default;
+        ChangeNotifier();
+        ~ChangeNotifier();
 
         //////////
         //  Operations
@@ -59,7 +71,7 @@ namespace tt3::db::api
         //  The posted change notification will be emitted as a
         //  corresponding signal from the notifier as soon as
         //  practicable.
-        void        post(ChangeNotification * notification);
+        void            post(ChangeNotification * notification);
 
         //////////
         //  Signals
@@ -71,10 +83,42 @@ namespace tt3::db::api
         //  thus making surthese slots are invoked on
         //  an UI thread.
     signals:
+        void        databaseClosed(DatabaseClosedNotification notification);
 
         //////////
         //  Implementation
     private:
+        //  post nullptr to the queue to stop the worker thread
+        tt3::util::BlockingQueue<ChangeNotification*>   _pendingNotifications;
+
+        //  The worker thread is where signals are emitted
+        class TT3_DB_API_PUBLIC _WorkerThread : public QThread
+        {
+            CANNOT_ASSIGN_OR_COPY_CONSTRUCT(_WorkerThread)
+
+            //////////
+            //  Constants
+        public:
+            static inline int   WaitChunkMs = 250;
+
+            //////////
+            //  Construction/destruction
+        public:
+            explicit _WorkerThread(ChangeNotifier * changeNotifier)
+                :   _changeNotifier(changeNotifier) {}
+            virtual ~_WorkerThread() = default;
+
+            //////////
+            //  QThread
+        protected:
+            virtual void    run() override;
+
+            //////////
+            //  Implementation
+        private:
+            ChangeNotifier *const   _changeNotifier;
+        };
+        _WorkerThread   _workerThread;
     };
 
 }

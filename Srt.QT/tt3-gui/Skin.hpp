@@ -85,16 +85,15 @@ namespace tt3::gui
     //  Only one global static instance of this class
     //  exists, and other instances should NOT be
     //  constructed.
-    class TT3_GUI_PUBLIC CurrentSkin final : public QObject
+    class TT3_GUI_PUBLIC CurrentSkin final
     {
-        Q_OBJECT // Required for signals and slots
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentSkin)
 
         //////////
         //  Construction/destruction
     public:
         CurrentSkin();
-        virtual ~CurrentSkin();
+        ~CurrentSkin();
 \
         //////////
         //  Operators

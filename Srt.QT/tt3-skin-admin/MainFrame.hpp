@@ -41,6 +41,12 @@ namespace tt3::skin::admin
         virtual void	closeEvent(QCloseEvent * event) override;
 
         //////////
+        //  Operations
+    public:
+        //  Refreshes this main frame and controls within
+        void            refresh();
+
+        //////////
         //  Implementation
     private:
         bool            _trackPosition = false;

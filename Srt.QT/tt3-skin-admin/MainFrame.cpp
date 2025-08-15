@@ -32,6 +32,9 @@ MainFrame::MainFrame(QWidget * parent)
     QObject::connect(&_savePositionTimer, &QTimer::timeout,
                      this, &MainFrame::_savePositionTimerTimeout);
     _trackPosition = true;
+
+    //  Done
+    refresh();
 }
 
 MainFrame::~MainFrame()
@@ -63,6 +66,26 @@ void MainFrame::closeEvent(QCloseEvent * event)
 {
     event->accept();
     _onActionExit();
+}
+
+//////////
+//  Operations
+void MainFrame::refresh()
+{
+    tt3::ws::WorkspacePtr currentWorkspace = tt3::ws::theCurrentWorkspace;
+    //  Frame title
+    QString title = "TimeTracker3";
+    if (currentWorkspace != nullptr)
+    {
+        title += " - ";
+        title += currentWorkspace->address().displayForm();
+    }
+    this->setWindowTitle(title);
+
+    //  Menu items
+    _ui->actionCloseWorkspace->setEnabled(tt3::ws::theCurrentWorkspace != nullptr);
+
+    //  TODO controls
 }
 
 //////////
@@ -129,11 +152,12 @@ void MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddres
     //  Open & use
     try
     {
-        std::unique_ptr<tt3::ws::Workspace> workspace
+        tt3::ws::WorkspacePtr workspacePtr
             { workspaceAddress.workspaceType()->openWorkspace(workspaceAddress) };
-        //  TODO finish the implementation
+        tt3::ws::theCurrentWorkspace.swap(workspacePtr);
+        refresh();
     }
-    catch (const tt3::ws::WorkspaceException & ex)
+    catch (const tt3::util::Exception & ex)
     {
         tt3::gui::ErrorDialog::show(this, ex);
     }

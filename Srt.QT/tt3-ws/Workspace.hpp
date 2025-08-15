@@ -53,6 +53,54 @@ namespace tt3::ws
         const WorkspaceAddress  _address;
         tt3::db::api::IDatabase *   _database;  //  nullptr == workspace closed
     };
+
+    //////////
+    //  The accessor for a "current" workspace.
+    //  Only one global static instance of this class
+    //  exists, and other instances should NOT be
+    //  constructed.
+    class TT3_WS_PUBLIC CurrentWorkspace final
+    {
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentWorkspace)
+
+        //////////
+        //  Construction/destruction
+    public:
+        CurrentWorkspace();
+        ~CurrentWorkspace();
+        \
+        //////////
+        //  Operators
+        //  IMPORTANT: Changing the "current" workspace does
+        //  NOT change its "open/closed" status.
+    public:
+        void                operator = (const WorkspacePtr & workspace);
+        Workspace *         operator -> () const;
+                            operator WorkspacePtr() const;
+
+        bool                operator == (nullptr_t null) const;
+        bool                operator != (nullptr_t null) const;
+
+        //////////
+        //  Operations
+    public:
+        //  TODO document
+        Workspace *         get() const;    //  can yield nullptr
+        void                swap(WorkspacePtr & other);
+
+        //////////
+        //  Implementation
+    private:
+        static int          _instanceCount; //  ...to disallow a second instance
+        static WorkspacePtr _currentWorkspace;
+    };
+
+#if defined(TT3_WS_LIBRARY)
+    //  Building tt3-ws
+#else
+    //  Building tt3-ws client
+    Q_DECL_IMPORT CurrentWorkspace theCurrentWorkspace;
+#endif
 }
 
 //  End of tt3-ws/Workspace.hpp

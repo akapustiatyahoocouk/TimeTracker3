@@ -17,6 +17,9 @@
 
 namespace tt3::ws
 {
+    //  TODO define proper workspace-level exception
+    //  classes, with WorkspaceException::from(exception)
+    //  to translate any exception to WorkspaceException
     using WorkspaceException = tt3::db::api::DatabaseException;
     using InvalidWorkspaceAddressException = tt3::db::api::InvalidDatabaseAddressException;
     using WorkspaceInUseException = tt3::db::api::DatabaseInUseException;
