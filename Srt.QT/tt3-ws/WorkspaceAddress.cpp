@@ -144,149 +144,173 @@ QString WorkspaceAddress::externalForm() const
 
 //////////
 //  Formatting/parsing
-template <> TT3_WS_PUBLIC QString tt3::util::toString<WorkspaceAddress>(const WorkspaceAddress & value)
+namespace
 {
-    if (!value.isValid())
+    QString escape(const QString & s)
     {
-        return "-";
-    }
-    QString m = value.workspaceType()->mnemonic();;
-    QString a = value.externalForm();
-    //  We need a mnemonic/address separator not used by either part
-    QSet<QChar> usedCharacters;
-    usedCharacters += QSet<QChar>(m.cbegin(), m.cend());
-    usedCharacters += QSet<QChar>(a.cbegin(), a.cend());
+        char escape[8];
 
-    QChar chunkSeparator = '\t';
-    if (usedCharacters.contains(chunkSeparator))
-    {   //  Default won't do
-        for (int code = 256; ; code++)
+        QString result;
+        for (QChar c : s)
         {
-            chunkSeparator = QChar(code);
-            if (!usedCharacters.contains(chunkSeparator))
+            switch (c.unicode())
             {
+                //  special characters
+            case '\a':
+                result += "\\a";
+                break;
+            case '\b':
+                result += "\\b";
+                break;
+            case '\f':
+                result += "\\f";
+                break;
+            case '\n':
+                result += "\\n";
+                break;
+            case '\r':
+                result += "\\r";
+                break;
+            case '\t':
+                result += "\\t";
+                break;
+            case '\v':
+                result += "\\v";
+                break;
+                //  literal escapes
+            case '<':   case '>':
+            case '[':   case ']':
+            case ',':   case '\\':
+                result += '\\';
+                result += c;
+                break;
+                //  default case
+            default:
+                if (c.unicode() > 255)
+                {   //  0uXXXX
+                    sprintf(escape, "\\u%04X", c.unicode());
+                    result += escape;
+                }
+                else if (c < '\x20' || c >= '\x7F')
+                {   //  \xXX
+                    sprintf(escape, "\\x%02X", c.unicode());
+                    result += escape;
+                }
+                else
+                {
+                    result += c;
+                }
                 break;
             }
         }
+        return result;
     }
-    usedCharacters.insert(chunkSeparator);
+}
 
-    //  Build the result
-    return chunkSeparator + m + chunkSeparator + a + chunkSeparator;
+template <> TT3_WS_PUBLIC QString tt3::util::toString<WorkspaceAddress>(const WorkspaceAddress & value)
+{
+    if (value.isValid())
+    {
+        return '<' +
+               escape(value.workspaceType()->mnemonic()) +
+               ',' +
+               escape(value.externalForm()) +
+               '>';
+    }
+    return "<>";
 }
 
 template <> TT3_WS_PUBLIC QString tt3::util::toString<WorkspaceAddressesList>(const tt3::ws::WorkspaceAddressesList & value)
 {
-    QStringList addresses;
-    for (WorkspaceAddress a : value)
-    {
-        if (a.isValid())
-        {
-            addresses.append(toString(a));
-        }
-    }
-    QSet<QChar> usedCharacters;
-    for (QString a : addresses)
-    {
-        usedCharacters += QSet<QChar>(a.cbegin(), a.cend());
-    }
-
-    //  We need a separator for the items list
-    QChar itemSeparator = '\n';
-    if (usedCharacters.contains(itemSeparator))
-    {   //  Default won't do
-        for (int code = 256; ; code++)
-        {
-            itemSeparator = QChar(code);
-            if (!usedCharacters.contains(itemSeparator))
-            {
-                break;
-            }
-        }
-    }
-    usedCharacters.insert(itemSeparator);
-
-    //  Assemble the result
     QString result;
-    result += itemSeparator;
-    for (int i = 0; i < addresses.size(); i++)
+    result += '[';
+    for (int i = 0; i < value.size(); i++)
     {
-        result += addresses[i];
-        if (i + 1 < addresses.size())
+        result += toString(value[i]);
+        if (i + 1 < value.size())
         {
-            result += itemSeparator;
+            result += ',';
         }
     }
-    result += itemSeparator;
-    result += itemSeparator;    //  double item separator == end of list
+    result += ']';
     return result;
 }
 
 template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddress tt3::util::fromString<tt3::ws::WorkspaceAddress>(const QString & s, int & scan) throws(ParseException)
 {
-    //  Handle special cases
-    if (scan < s.length() && s[scan] == '?')
-    {
-        scan++;
-        return WorkspaceAddress();  //  invalid address
-    }
-
-    //  General case
-    if (scan + 3 >= s.length())
+    //  Skip '<'
+    if (scan >= s.length() || s[scan] != '<')
     {
         throw tt3::util::ParseException(s, scan);
     }
-
-    QChar chunkSeparator = s[scan];
-    //  Where is the chunk separator 2 ?
-    int prescan2;
-    for (prescan2 = scan + 1; prescan2 < s.length(); prescan2++)
-    {
-        if (s[prescan2] == chunkSeparator)
-        {   //  Here!
-            break;
-        }
+    int prescan;
+    //  Find '>'
+    for (prescan = scan + 1; prescan < s.length() && s[prescan] != '>'; prescan++)
+    {   //  All work done in the loop header
     }
-    if (prescan2 == s.length())
-    {   //  OOPS Not found!
+    if (prescan == s.length())
+    {
         throw tt3::util::ParseException(s, scan);
     }
-    QString workspaceTypeMnenonic = s.mid(scan + 1, prescan2 - scan - 1);
-    //  Where is the chunk separator 3 ?
-    int prescan3;
-    for (prescan3 = prescan2 + 1; prescan3 < s.length(); prescan3++)
+    //  Break into <mnemonic>,<address> parts
+    QStringList chunks = s.mid(scan + 1, prescan - scan - 1).split(',');
+    if (chunks.size() != 2)
     {
-        if (s[prescan3] == chunkSeparator)
-        {   //  Here!
-            break;
-        }
-    }
-    if (prescan3 == s.length())
-    {   //  OOPS Not found!
         throw tt3::util::ParseException(s, scan);
     }
-    QString addressExternalForm = s.mid(prescan2 + 1, prescan3 - prescan2);
-    tt3::ws::WorkspaceType * workspaceType =
-        tt3::ws::WorkspaceTypeRegistry::findWorkspaceType(workspaceTypeMnenonic);
+    //  Resolve mnemonic
+    WorkspaceType * workspaceType = WorkspaceTypeRegistry::findWorkspaceType(chunks[0]);
     if (workspaceType == nullptr)
-    {   //  OOPS! Not supported!
-        return WorkspaceAddress();  //  invalid address
+    {   //  OOPS!
+        throw tt3::util::ParseException(s, scan);
     }
+    //  Parse address
     try
     {
-        tt3::ws::WorkspaceAddress workspaceAddress =
-            workspaceType->parseWorkspaceAddress(addressExternalForm);
-        scan = prescan3 + 1;
-        return workspaceAddress;
+        WorkspaceAddress address = workspaceType->parseWorkspaceAddress(chunks[1]);
+        scan = prescan + 1;
+        return address;
     }
     catch (...)
-    {   //  OOPS!@ Can't!
+    {   //  OOPS! Must translate
         throw tt3::util::ParseException(s, scan);
     }
 }
 
 template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddressesList tt3::util::fromString<tt3::ws::WorkspaceAddressesList>(const QString & s, int & scan) throws(ParseException)
 {
+    //  Skip '['
+    if (scan >= s.length() || s[scan] != '[')
+    {
+        throw tt3::util::ParseException(s, scan);
+    }
+    int prescan = scan + 1;
+    //  Parse list items
+    WorkspaceAddressesList result;
+    if (prescan < s.length() && s[prescan] != ']')
+    {   //  At least 1 item exists
+        for (; ; )
+        {
+            result.append(fromString<WorkspaceAddress>(s, prescan));    //  may throw
+            //  More ?
+            if (prescan < s.length() && s[prescan] == ',')
+            {   //  yes
+                prescan++;
+            }
+            else
+            {   //  no
+                break;
+            }
+        }
+    }
+    //  Skip ']'
+    if (prescan >= s.length() || s[prescan] != ']')
+    {
+        throw tt3::util::ParseException(s, scan);
+    }
+    //  Done
+    scan = prescan + 1;
+    return result;
 }
 
 //  End of tt3-ws/WorkspaceAddress.cpp

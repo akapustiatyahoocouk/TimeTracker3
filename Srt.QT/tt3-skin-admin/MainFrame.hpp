@@ -58,6 +58,8 @@ namespace tt3::skin::admin
         void            _createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress);
         void            _openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress);
 
+        void            _updateMruWorkspaces(const tt3::ws::WorkspaceAddress & workspaceAddress);
+
         //////////
         //  Controls
     private:

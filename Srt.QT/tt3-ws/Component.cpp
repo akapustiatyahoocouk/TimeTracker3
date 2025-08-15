@@ -73,6 +73,7 @@ Component::Settings::Settings()
             "Recently used workspaces",
             WorkspaceAddressesList())
 {
+    addSetting(&recentWorkspaces);
 }
 
 Component::Settings::~Settings()

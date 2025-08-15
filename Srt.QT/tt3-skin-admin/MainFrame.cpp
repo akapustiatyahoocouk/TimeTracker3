@@ -163,6 +163,7 @@ void MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddres
         tt3::ws::WorkspacePtr workspacePtr
             { workspaceAddress.workspaceType()->openWorkspace(workspaceAddress) };
         tt3::ws::theCurrentWorkspace.swap(workspacePtr);
+        _updateMruWorkspaces(workspaceAddress);
         refresh();
     }
     catch (const tt3::util::Exception & ex)
@@ -177,6 +178,27 @@ void MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddres
     {
         tt3::gui::ErrorDialog::show(this);
     }
+}
+
+void MainFrame::_updateMruWorkspaces(const tt3::ws::WorkspaceAddress & workspaceAddress)
+{   //  TODO move this part to component's settings ?
+    //  Update the MRU list...
+    tt3::ws::WorkspaceAddressesList mru = tt3::ws::Component::Settings::instance()->recentWorkspaces;
+    mru.removeOne(workspaceAddress);
+    mru.insert(0, workspaceAddress);
+    while (mru.size() > 9)  //  TODO named constans
+    {
+        mru.removeLast();
+    }
+    tt3::ws::Component::Settings::instance()->recentWorkspaces = mru;
+    //  ...and the MRU workspaces submenu
+    QMenu * menu = new QMenu();
+    _ui->actionRecentWorkspaces->setMenu(menu);
+    for (tt3::ws::WorkspaceAddress a : mru)
+    {
+        menu->addAction(a.workspaceType()->smallIcon(), a.displayForm());
+    }
+    _ui->actionRecentWorkspaces->setEnabled(!menu->isEmpty());
 }
 
 //////////
