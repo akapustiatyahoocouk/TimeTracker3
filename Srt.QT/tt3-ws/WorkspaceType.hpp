@@ -85,8 +85,8 @@ namespace tt3::ws
         //  Operations (workspace)
     public:
         //  TODO document
-        Workspace *         createWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
-        Workspace *         openWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
+        WorkspacePtr        createWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
+        WorkspacePtr        openWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
         void                destroyWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
 
         //////////

@@ -123,11 +123,12 @@ void MainFrame::_createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddr
     //  Create & use
     try
     {
-        std::unique_ptr<tt3::ws::Workspace> workspace
+        tt3::ws::WorkspacePtr workspacePtr
             { workspaceAddress.workspaceType()->createWorkspace(workspaceAddress) };
-        //  TODO finish the implementation
+        tt3::ws::theCurrentWorkspace.swap(workspacePtr);
+        refresh();
     }
-    catch (const tt3::ws::WorkspaceException & ex)
+    catch (const tt3::util::Exception & ex)
     {
         tt3::gui::ErrorDialog::show(this, ex);
     }

@@ -24,6 +24,10 @@ Database::Database(DatabaseAddress * address, _Mode mode)
         _validator(tt3::db::api::DefaultValidator::instance())
 {
     Q_ASSERT(_address != nullptr);
+    if (QFile(_address->_path).exists())
+    {   //  OOPS! TODO throw proper exception
+        throw tt3::db::api::DatabaseException("Database already exists");
+    }
 
     //  We need to create a lock before we do anything about the database
     std::unique_ptr<_LockRefresher> lockRefresher { new _LockRefresher(this) };

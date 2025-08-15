@@ -98,7 +98,7 @@ WorkspaceAddress WorkspaceType::parseWorkspaceAddress(const QString & externalFo
 
 //////////
 //  Operations (workspace)
-Workspace * WorkspaceType::createWorkspace(const WorkspaceAddress & address) throws(WorkspaceException)
+WorkspacePtr WorkspaceType::createWorkspace(const WorkspaceAddress & address) throws(WorkspaceException)
 {
     if (!address.isValid() || address.workspaceType() != this)
     {   //  OOPS! Can't use this address
@@ -107,10 +107,10 @@ Workspace * WorkspaceType::createWorkspace(const WorkspaceAddress & address) thr
     std::unique_ptr<tt3::db::api::IDatabase> databasePtr
         { address._databaseAddress->databaseType()->createDatabase(address._databaseAddress) };
     //  TODO translate & re-throw DatabaseException ?
-    return new Workspace(address, databasePtr.release());
+    return WorkspacePtr(new Workspace(address, databasePtr.release()));
 }
 
-Workspace * WorkspaceType::openWorkspace(const WorkspaceAddress & address) throws(WorkspaceException)
+WorkspacePtr WorkspaceType::openWorkspace(const WorkspaceAddress & address) throws(WorkspaceException)
 {
     if (!address.isValid() || address.workspaceType() != this)
     {   //  OOPS! Can't use this address
@@ -119,7 +119,7 @@ Workspace * WorkspaceType::openWorkspace(const WorkspaceAddress & address) throw
     std::unique_ptr<tt3::db::api::IDatabase> databasePtr
         { address._databaseAddress->databaseType()->openDatabase(address._databaseAddress) };
     //  TODO translate & re-throw DatabaseException ?
-    return new Workspace(address, databasePtr.release());
+    return WorkspacePtr(new Workspace(address, databasePtr.release()));
 }
 
 /*  TODO uncommnt
