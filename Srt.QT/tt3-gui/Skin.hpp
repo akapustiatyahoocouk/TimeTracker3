@@ -102,7 +102,12 @@ namespace tt3::gui
     public:
         void        operator = (ISkin * skin);
         ISkin *     operator -> () const;
-                    operator ISkin * () const;
+
+        //////////
+        //  Operations
+    public:
+        //  TODO document
+        void        swap(ISkin * & other);
 
         //////////
         //  Implementation

@@ -18,13 +18,16 @@
 namespace tt3::ws
 {
     class TT3_WS_PUBLIC WorkspaceType;
-    class TT3_WS_PUBLIC nWorkspaceTypeRegistry;
+    class TT3_WS_PUBLIC WorkspaceTypeRegistry;
     class TT3_WS_PUBLIC WorkspaceAddress;
     class TT3_WS_PUBLIC Workspace;
+
+    class TT3_WS_PUBLIC WorkspaceClosedNotification;
 
     using WorkspacePtr = std::shared_ptr<Workspace>;
 
     using WorkspaceTypes = QSet<WorkspaceType*>;
+    using WorkspaceAddressesList = QList<WorkspaceAddress>;
 }
 
 //  End of tt3-ws/Classes.hpp

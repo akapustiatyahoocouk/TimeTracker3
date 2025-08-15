@@ -149,9 +149,9 @@ namespace
 //  TT3 entry point
 int main(int argc, char *argv[])
 {
-    //  Initialize the application
     QApplication a(argc, argv);
 
+    //  Initialize the application TODO in a separate function
     QPixmap pm;
     pm.load(":/tt3/Resources/Images/Misc/Tt3Large.png");
     QIcon ic(pm);
@@ -166,7 +166,16 @@ int main(int argc, char *argv[])
     //  Go!
     int exitCode = a.exec();
 
-    //  Cleanup
+    //  Cleanup TODO in a separate function
+
+    //  If there's a "current" skin, deactivate it
+    tt3::gui::ISkin * currentSkin;
+    tt3::gui::theCurrentSkin.swap(currentSkin);
+    if (currentSkin != nullptr)
+    {
+        currentSkin->deactivate();
+    }
+
     //  TODO if there's a "current" activity, record & syop it
     //  If there's a "current" workspace, close it
     tt3::ws::WorkspacePtr currentWorkspace;

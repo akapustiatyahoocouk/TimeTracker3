@@ -48,10 +48,15 @@ ISkin * CurrentSkin::operator -> () const
     return _currentSkin;
 }
 
-CurrentSkin::operator ISkin * () const
+//////////
+//  Operations
+void CurrentSkin::swap(ISkin * & other)
 {
-    Q_ASSERT(_instanceCount == 1);
-    return _currentSkin;
+    if (other != _currentSkin)
+    {
+        std::swap(_currentSkin, other);
+        //  TODO emit a signal
+    }
 }
 
 //////////

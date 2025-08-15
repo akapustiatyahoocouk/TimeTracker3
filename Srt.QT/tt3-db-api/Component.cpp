@@ -23,7 +23,8 @@ IMPLEMENT_SINGLETON(Component)
 
 Component::Component()
 {
-    qRegisterMetaType<tt3::db::api::ChangeNotification>();
+    qRegisterMetaType<ChangeNotification>();
+    qRegisterMetaType<DatabaseClosedNotification>();
 }
 
 Component::~Component()

@@ -70,10 +70,14 @@ namespace tt3::skin::admin
         void            _savePositionTimerTimeout();
         void            _onActionNewWorkspace();
         void            _onActionOpenWorkspace();
+        void            _onActionCloseWorkspace();
         void            _onActionExit();
         void            _onActionHelpContent();
         void            _onActionHelpIndex();
         void            _onActionHelpSearch();
+
+        void            _onCurrentWorkspaceChanged();
+        void            _onWorkspaceClosed(tt3::ws::WorkspaceClosedNotification);
     };
 }
 

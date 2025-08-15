@@ -39,7 +39,11 @@ CurrentWorkspace::~CurrentWorkspace()
 void CurrentWorkspace::operator = (const WorkspacePtr & workspace)
 {
     Q_ASSERT(_instanceCount == 1);
-    _currentWorkspace = workspace;
+    if (workspace != _currentWorkspace)
+    {
+        _currentWorkspace = workspace;
+        emit currentWorkspaceChanged();
+    }
 }
 
 Workspace * CurrentWorkspace::operator -> () const
@@ -68,15 +72,13 @@ bool CurrentWorkspace::operator != (nullptr_t null) const
 
 //////////
 //  Operations
-Workspace * CurrentWorkspace::get() const
-{
-    Q_ASSERT(_instanceCount == 1);
-    return _currentWorkspace.get();
-}
-
 void CurrentWorkspace::swap(WorkspacePtr & other)
 {
-    std::swap(_currentWorkspace, other);
+    if (other != _currentWorkspace)
+    {
+        std::swap(_currentWorkspace, other);
+        emit currentWorkspaceChanged();
+    }
 }
 
 //////////

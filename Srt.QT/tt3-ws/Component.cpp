@@ -20,8 +20,16 @@ using namespace tt3::ws;
 //////////
 //  Singleton
 IMPLEMENT_SINGLETON(Component)
-Component::Component() {}
-Component::~Component() {}
+
+Component::Component()
+{
+    qRegisterMetaType<ChangeNotification>();
+    qRegisterMetaType<WorkspaceClosedNotification>();
+}
+
+Component::~Component()
+{
+}
 
 //////////
 //  IComponent
@@ -59,7 +67,16 @@ QString Component::buildNumber() const
 //////////
 //  Component::Settings
 IMPLEMENT_SINGLETON(Component::Settings)
-Component::Settings::Settings() {}
-Component::Settings::~Settings() {}
+Component::Settings::Settings()
+    :   recentWorkspaces(
+            "RecentWorkspaces",
+            "Recently used workspaces",
+            WorkspaceAddressesList())
+{
+}
+
+Component::Settings::~Settings()
+{
+}
 
 //  End of tt3-ws/Component.cpp

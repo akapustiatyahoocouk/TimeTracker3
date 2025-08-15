@@ -273,6 +273,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionCloseWorkspace</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionCloseWorkspace()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_onActionExit()</slot>
@@ -281,5 +297,6 @@
   <slot>_onActionHelpContent()</slot>
   <slot>_onActionHelpIndex()</slot>
   <slot>_onActionHelpSearch()</slot>
+  <slot>_onActionCloseWorkspace()</slot>
  </slots>
 </ui>

@@ -29,9 +29,16 @@ MainFrame::MainFrame(QWidget * parent)
     _loadPosition();
 
     _savePositionTimer.setSingleShot(true);
-    QObject::connect(&_savePositionTimer, &QTimer::timeout,
-                     this, &MainFrame::_savePositionTimerTimeout);
+    connect(&_savePositionTimer,
+            &QTimer::timeout,
+            this,
+            &MainFrame::_savePositionTimerTimeout);
     _trackPosition = true;
+
+    connect(&tt3::ws::theCurrentWorkspace,
+            &tt3::ws::CurrentWorkspace::currentWorkspaceChanged,
+            this,
+            &MainFrame::_onCurrentWorkspaceChanged);
 
     //  Done
     refresh();
@@ -205,6 +212,17 @@ void MainFrame::_onActionOpenWorkspace()
     }
 }
 
+void MainFrame::_onActionCloseWorkspace()
+{
+    if (tt3::ws::theCurrentWorkspace != nullptr)
+    {
+        tt3::ws::WorkspacePtr workspace;
+        tt3::ws::theCurrentWorkspace.swap(workspace);
+        workspace->close();
+        refresh();
+    }
+}
+
 void MainFrame::_onActionExit()
 {
     QApplication::exit(0);
@@ -223,6 +241,16 @@ void MainFrame::_onActionHelpIndex()
 void MainFrame::_onActionHelpSearch()
 {
     tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+}
+
+void MainFrame::_onCurrentWorkspaceChanged()
+{
+    refresh();
+}
+
+void MainFrame::_onWorkspaceClosed(tt3::ws::WorkspaceClosedNotification)
+{
+    refresh();
 }
 
 //  End of tt3-skin-admin/MainFrame.cpp

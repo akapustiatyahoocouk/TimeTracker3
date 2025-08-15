@@ -14,14 +14,17 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
+#pragma once
+#include "tt3-ws/API.hpp"
 
 namespace tt3::ws
 {
     //////////
     //  A "workspace" is a connection to a
     //  persistent  container of business data.
-    class TT3_WS_PUBLIC Workspace final
+    class TT3_WS_PUBLIC Workspace final : public QObject
     {
+        Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Workspace)
 
         friend class WorkspaceType;
@@ -46,12 +49,25 @@ namespace tt3::ws
         Validator * validator() const { return type()->validator(); }
 
         //////////
+        //  Signals
+    signals:
+        void        workspaceClosed(WorkspaceClosedNotification notification);
+
+        //////////
         //  Implementation
     private:
         tt3::util::Mutex    _guard {};  //  for synchronizing all accesses to workspace
 
         const WorkspaceAddress  _address;
         tt3::db::api::IDatabase *   _database;  //  nullptr == workspace closed
+
+        //  Helpers
+        void                _markClosed();
+
+        //////////
+        //  Event handlers
+    private slots:
+        void                _onDatabaseClosed(tt3::db::api::DatabaseClosedNotification notification);
     };
 
     //////////
@@ -59,8 +75,9 @@ namespace tt3::ws
     //  Only one global static instance of this class
     //  exists, and other instances should NOT be
     //  constructed.
-    class TT3_WS_PUBLIC CurrentWorkspace final
+    class TT3_WS_PUBLIC CurrentWorkspace final : public QObject
     {
+        Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentWorkspace)
 
         //////////
@@ -85,8 +102,12 @@ namespace tt3::ws
         //  Operations
     public:
         //  TODO document
-        Workspace *         get() const;    //  can yield nullptr
         void                swap(WorkspacePtr & other);
+
+        //////////
+        //  Signals
+    signals:
+        void                currentWorkspaceChanged();
 
         //////////
         //  Implementation

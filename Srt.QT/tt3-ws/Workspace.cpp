@@ -25,11 +25,26 @@ Workspace::Workspace(const WorkspaceAddress & address, tt3::db::api::IDatabase *
 {
     Q_ASSERT(_address.isValid());
     Q_ASSERT(_database != nullptr);
+
+    //  Forward database change events
+    /*  TODO uncomment & fix the bug
+    connect(&_database->changeNotifier(),
+            &tt3::db::api::ChangeNotifier::databaseClosed,
+            this,
+            &Workspace::_onDatabaseClosed,
+            Qt::ConnectionType::BlockingQueuedConnection);
+    */
 }
 
 Workspace::~Workspace()
 {
-    delete _database;   //  "delete nullptr" is safe
+    try
+    {
+        close();
+    }
+    catch (...)
+    {   //  OOPS! Suppress TODO but log ?
+    }
 }
 
 //////////
@@ -61,16 +76,35 @@ void Workspace::close() throws(WorkspaceException)
         {
             _database->close(); //  may throw
             //  TODO translate & re-throw WorkspaceException
-            delete _database;
-            _database = nullptr;
+            _markClosed();
         }
         catch (...)
         {   //  Ensure cleanup on throw
-            delete _database;
-            _database = nullptr;
+            _markClosed();
+            throw;
         }
     }
 }
 
+//////////
+//  Implementation helpers
+void Workspace::_markClosed()
+{
+    delete _database;
+    _database = nullptr;
+    //  The "database closed" notification fro m the
+    //  database will be missed, as database (along with
+    //  its change notifier) no longer existsm so we
+    //  need to fake a "workspace closed" signal
+    //  TODO uncomment & fix the bug emit workspaceClosed(WorkspacePtr(this));
+}
+
+//////////
+//  Event handlers
+void Workspace::_onDatabaseClosed(tt3::db::api::DatabaseClosedNotification notification)
+{
+    qDebug() << "Workspace::_onDatabaseClosed()";
+    Q_ASSERT(notification.database == _database);
+}
 
 //  End of tt3-ws/Workspace.cpp

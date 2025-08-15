@@ -33,6 +33,7 @@ namespace tt3::ws
             //////////
             //  Properties
         public:
+            tt3::util::Setting<WorkspaceAddressesList>  recentWorkspaces;
         };
 
         //////////

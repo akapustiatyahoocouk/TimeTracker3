@@ -120,9 +120,9 @@ namespace tt3::db::api
         };
         _WorkerThread   _workerThread;
     };
-
 }
 
 Q_DECLARE_METATYPE(tt3::db::api::ChangeNotification)
+Q_DECLARE_METATYPE(tt3::db::api::DatabaseClosedNotification)
 
 //  End of tt3-db-api/Notifications.hpp
