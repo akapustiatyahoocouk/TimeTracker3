@@ -19,6 +19,8 @@
 
 namespace tt3::skin::admin
 {
+    class TT3_SKIN_ADMIN_PUBLIC RecentWorkspaceOpener;
+
     //  Main frame of the admin skin
     namespace Ui { class MainFrame; }
 
@@ -26,6 +28,8 @@ namespace tt3::skin::admin
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(MainFrame)
+
+        friend class RecentWorkspaceOpener;
 
         //////////
         //  Construction
@@ -58,7 +62,12 @@ namespace tt3::skin::admin
         void            _createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress);
         void            _openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress);
 
-        void            _updateMruWorkspaces(const tt3::ws::WorkspaceAddress & workspaceAddress);
+        void            _updateMruWorkspaces();
+
+        //////////
+        //  Implementation
+    private:
+        QList<RecentWorkspaceOpener*>   _recentWorkspaceOpeners;
 
         //////////
         //  Controls
@@ -80,6 +89,42 @@ namespace tt3::skin::admin
 
         void            _onCurrentWorkspaceChanged();
         void            _onWorkspaceClosed(tt3::ws::WorkspaceClosedNotification);
+    };
+
+    //  A helper class for opening recent workspaces
+    class TT3_SKIN_ADMIN_PUBLIC RecentWorkspaceOpener final : public QObject
+    {
+        Q_OBJECT
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(RecentWorkspaceOpener)
+
+        friend class MainFrame;
+
+        //////////
+        //  Construction/destruction
+    private:
+        RecentWorkspaceOpener(MainFrame * mainFrame, const tt3::ws::WorkspaceAddress & workspaceAddress)
+            :   _mainFrame(mainFrame),
+                _workspaceAddress(workspaceAddress)
+        {
+            Q_ASSERT(_mainFrame != nullptr);
+            Q_ASSERT(_workspaceAddress.isValid());
+        }
+
+        virtual ~RecentWorkspaceOpener() = default;
+
+        //////////
+        //  Implementation
+    private:
+        MainFrame *const    _mainFrame;
+        const tt3::ws::WorkspaceAddress _workspaceAddress;
+
+        //////////
+        //  Eveht handlers
+    private slots:
+        void            _onTriggered()
+        {
+            _mainFrame->_openWorkspace(_workspaceAddress);
+        }
     };
 }
 

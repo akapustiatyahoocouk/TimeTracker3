@@ -33,7 +33,14 @@ namespace tt3::ws
             //////////
             //  Properties
         public:
+            //  TODO document
             tt3::util::Setting<WorkspaceAddressesList>  recentWorkspaces;
+
+            //////////
+            //  Operations
+        public:
+            //  TODO document
+            void                recordRecentWorkspace(const WorkspaceAddress & workspaceAddress);
         };
 
         //////////

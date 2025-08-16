@@ -67,6 +67,7 @@ QString Component::buildNumber() const
 //////////
 //  Component::Settings
 IMPLEMENT_SINGLETON(Component::Settings)
+
 Component::Settings::Settings()
     :   recentWorkspaces(
             "RecentWorkspaces",
@@ -78,6 +79,23 @@ Component::Settings::Settings()
 
 Component::Settings::~Settings()
 {
+}
+
+//////////
+//  Operations
+void Component::Settings::recordRecentWorkspace(const WorkspaceAddress & workspaceAddress)
+{
+    if (workspaceAddress.isValid())
+    {
+        WorkspaceAddressesList mru = recentWorkspaces;
+        mru.removeOne(workspaceAddress);
+        mru.insert(0, workspaceAddress);
+        while (mru.size() > 9)  //  TODO named constans
+        {
+            mru.removeLast();
+        }
+        recentWorkspaces = mru;
+    }
 }
 
 //  End of tt3-ws/Component.cpp

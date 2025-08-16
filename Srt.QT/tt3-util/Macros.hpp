@@ -39,8 +39,8 @@
 #define IMPLEMENT_SINGLETON(Clazz)                      \
     Clazz * Clazz::instance()                           \
     {                                                   \
-        static Clazz theInstance;                       \
-        return &theInstance;                            \
+        static Clazz * theInstance = new Clazz();       \
+        return theInstance;                            \
     }
 
 //  A helper macro to document exceptions thrown by a method or function

@@ -27,6 +27,7 @@ MainFrame::MainFrame(QWidget * parent)
 {
     _ui->setupUi(this);
     _loadPosition();
+    _updateMruWorkspaces();
 
     _savePositionTimer.setSingleShot(true);
     connect(&_savePositionTimer,
@@ -47,6 +48,11 @@ MainFrame::MainFrame(QWidget * parent)
 MainFrame::~MainFrame()
 {
     delete _ui;
+
+    for (RecentWorkspaceOpener * o : _recentWorkspaceOpeners)
+    {
+        delete o;
+    }
 }
 
 //////////
@@ -125,7 +131,11 @@ void MainFrame::_createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddr
 
     //  If the workspaceAddress refers to the currently
     //  open workspace, the call is an error
-    //  TODO
+    if (tt3::ws::theCurrentWorkspace != nullptr &&
+        tt3::ws::theCurrentWorkspace->address() == workspaceAddress)
+    {
+        return; //  TODO report error and return instead
+    }
 
     //  Create & use
     try
@@ -133,6 +143,15 @@ void MainFrame::_createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddr
         tt3::ws::WorkspacePtr workspacePtr
             { workspaceAddress.workspaceType()->createWorkspace(workspaceAddress) };
         tt3::ws::theCurrentWorkspace.swap(workspacePtr);
+        tt3::ws::Component::Settings::instance()->recordRecentWorkspace(workspaceAddress);
+        _updateMruWorkspaces();
+        //  The previously "current" workspace is closed
+        //  when replaced
+        if (workspacePtr != nullptr)
+        {
+            workspacePtr->close();  //  TODO handle close errors
+        }
+        //  Done
         refresh();
     }
     catch (const tt3::util::Exception & ex)
@@ -155,7 +174,11 @@ void MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddres
 
     //  If the workspaceAddress refers to the currently
     //  open workspace, we don't need to re-open
-    //  TODO
+    if (tt3::ws::theCurrentWorkspace != nullptr &&
+        tt3::ws::theCurrentWorkspace->address() == workspaceAddress)
+    {
+        return;
+    }
 
     //  Open & use
     try
@@ -163,7 +186,15 @@ void MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddres
         tt3::ws::WorkspacePtr workspacePtr
             { workspaceAddress.workspaceType()->openWorkspace(workspaceAddress) };
         tt3::ws::theCurrentWorkspace.swap(workspacePtr);
-        _updateMruWorkspaces(workspaceAddress);
+        tt3::ws::Component::Settings::instance()->recordRecentWorkspace(workspaceAddress);
+        _updateMruWorkspaces();
+        //  The previously "current" workspace is closed
+        //  when replaced
+        if (workspacePtr != nullptr)
+        {
+            workspacePtr->close();  //  TODO handle close errors
+        }
+        //  Done
         refresh();
     }
     catch (const tt3::util::Exception & ex)
@@ -180,23 +211,36 @@ void MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddres
     }
 }
 
-void MainFrame::_updateMruWorkspaces(const tt3::ws::WorkspaceAddress & workspaceAddress)
-{   //  TODO move this part to component's settings ?
-    //  Update the MRU list...
-    tt3::ws::WorkspaceAddressesList mru = tt3::ws::Component::Settings::instance()->recentWorkspaces;
-    mru.removeOne(workspaceAddress);
-    mru.insert(0, workspaceAddress);
-    while (mru.size() > 9)  //  TODO named constans
+void MainFrame::_updateMruWorkspaces()
+{
+    QMenu * menu = _ui->actionRecentWorkspaces->menu();
+    if (menu == nullptr)
     {
-        mru.removeLast();
+        menu = new QMenu();
+        _ui->actionRecentWorkspaces->setMenu(menu);
     }
-    tt3::ws::Component::Settings::instance()->recentWorkspaces = mru;
-    //  ...and the MRU workspaces submenu
-    QMenu * menu = new QMenu();
-    _ui->actionRecentWorkspaces->setMenu(menu);
-    for (tt3::ws::WorkspaceAddress a : mru)
+    menu->clear();
+    for (RecentWorkspaceOpener * o : _recentWorkspaceOpeners)
     {
-        menu->addAction(a.workspaceType()->smallIcon(), a.displayForm());
+        delete o;
+    }
+    _recentWorkspaceOpeners.clear();
+
+    tt3::ws::WorkspaceAddressesList mru =
+        tt3::ws::Component::Settings::instance()->recentWorkspaces;
+    for (int i = 0; i < mru.size() && i < 9; i++)
+    {
+        tt3::ws::WorkspaceAddress a = mru[i];
+        QAction * action = menu->addAction(
+            a.workspaceType()->smallIcon(),
+            "&" + QString(QChar('1' + i)) + " - " + a.displayForm());
+        //  Handle "action triggered" signal
+        RecentWorkspaceOpener * opener = new RecentWorkspaceOpener(this, a);
+        _recentWorkspaceOpeners.append(opener);
+        connect(action,
+                &QAction::triggered,
+                opener,
+                &RecentWorkspaceOpener::_onTriggered);
     }
     _ui->actionRecentWorkspaces->setEnabled(!menu->isEmpty());
 }
