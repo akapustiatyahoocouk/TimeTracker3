@@ -1,5 +1,5 @@
 //
-//  tt3-gui/OpenWorkspaceDialog.hpp - The modal "Open workspace" dialog
+//  tt3-gui/SelectWorkspaceDialog.hpp - The modal "Open workspace" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -20,18 +20,18 @@
 namespace tt3::gui
 {
     //  The modal "Open workspace" dialog
-    namespace Ui { class OpenWorkspaceDialog; }
+    namespace Ui { class SelectWorkspaceDialog; }
 
-    class TT3_GUI_PUBLIC OpenWorkspaceDialog : public QDialog
+    class TT3_GUI_PUBLIC SelectWorkspaceDialog : public QDialog
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(OpenWorkspaceDialog)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(SelectWorkspaceDialog)
 
         //////////
         //  Construction/destruction
     public:
-        explicit OpenWorkspaceDialog(QWidget * parent = nullptr);
-        virtual ~OpenWorkspaceDialog();
+        explicit SelectWorkspaceDialog(QWidget * parent = nullptr);
+        virtual ~SelectWorkspaceDialog();
 
         //////////
         //  Operations
@@ -52,7 +52,7 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::OpenWorkspaceDialog *   _ui;
+        Ui::SelectWorkspaceDialog *   _ui;
 
         //////////
         //  Event handlers
@@ -62,4 +62,4 @@ namespace tt3::gui
     };
 }
 
-//  End of tt3-gui/OpenWorkspaceDialog.hpp
+//  End of tt3-gui/SelectWorkspaceDialog.hpp

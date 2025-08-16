@@ -30,6 +30,6 @@
 
 #include "tt3-gui/Skin.hpp"
 #include "tt3-gui/NewWorkspaceDialog.hpp"
-#include "tt3-gui/OpenWorkspaceDialog.hpp"
+#include "tt3-gui/SelectWorkspaceDialog.hpp"
 
 //  End of tt3-gui/API.hpp

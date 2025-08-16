@@ -156,6 +156,45 @@ namespace tt3::db::api
         virtual void    raise() const { throw *this; }
     };
 
+    //  Thrown when an object with the specified property value,
+    //  which is supposed to be unique, already exists
+    class TT3_DB_API_PUBLIC AlreadyExistsException : public DatabaseException
+    {
+        //////////
+        //  Types
+    public:
+        //  TODO use for all exceptions?
+        using Self = AlreadyExistsException;
+
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        AlreadyExistsException(const QString & objectTypeName,
+                               const QString & propertyName, const QString & propertyValue)
+            :   DatabaseException("The " + objectTypeName +
+                                " with '" + propertyName +
+                                "' = '" + propertyValue +
+                                "' already exists") {}
+        AlreadyExistsException(IObjectType * objectType,
+                               const QString & propertyName, const QString & propertyValue)
+            :   AlreadyExistsException(objectType->displayName(), propertyName, propertyValue) {}
+
+        template <class T>
+        AlreadyExistsException(IObjectType * objectType,
+                              const QString & propertyName, const T & propertyValue)
+            :   AlreadyExistsException(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
+        template <class T>
+        AlreadyExistsException(const QString & objectTypeName,
+                               const QString & propertyName, const T & propertyValue)
+            :   AlreadyExistsException(objectTypeName, propertyName, tt3::util::toString(propertyValue)) {}
+
+        //////////
+        //  QException
+    public:
+        virtual Self *  clone() const { return new Self(*this); }
+        virtual void    raise() const { throw *this; }
+    };
+
     //  Thrown when attempting to access a "dead" instance
     class TT3_DB_API_PUBLIC InstanceDeadException : public DatabaseException
     {

@@ -8,7 +8,7 @@ SOURCES += \
     CurrentSkin.cpp \
     ErrorDialog.cpp \
     NewWorkspaceDialog.cpp \
-    OpenWorkspaceDialog.cpp \
+    SelectWorkspaceDialog.cpp \
     SkinRegistry.cpp
 
 HEADERS += \
@@ -17,12 +17,12 @@ HEADERS += \
     ErrorDialog.hpp \
     Linkage.hpp \
     NewWorkspaceDialog.hpp \
-    OpenWorkspaceDialog.hpp \
+    SelectWorkspaceDialog.hpp \
     Skin.hpp
 
 FORMS += \
     NewWorkspaceDialog.ui \
-    OpenWorkspaceDialog.ui
+    SelectWorkspaceDialog.ui
 
 RESOURCES += \
     tt3-gui.qrc

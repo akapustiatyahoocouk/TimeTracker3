@@ -88,6 +88,7 @@ void MainFrame::refresh()
     tt3::ws::WorkspacePtr currentWorkspace = tt3::ws::theCurrentWorkspace;
     //  Frame title
     QString title = "TimeTracker3";
+    //  TODO [current credentials' login]
     if (currentWorkspace != nullptr)
     {
         title += " - ";
@@ -133,8 +134,12 @@ void MainFrame::_createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddr
     //  open workspace, the call is an error
     if (tt3::ws::theCurrentWorkspace != nullptr &&
         tt3::ws::theCurrentWorkspace->address() == workspaceAddress)
-    {
-        return; //  TODO report error and return instead
+    {   //  OOPS!
+        tt3::gui::ErrorDialog::show(
+            this,
+            tt3::db::api::AlreadyExistsException(
+                "Workspace", "location", workspaceAddress.displayForm()));
+        return;
     }
 
     //  Create & use
@@ -142,6 +147,7 @@ void MainFrame::_createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddr
     {
         tt3::ws::WorkspacePtr workspacePtr
             { workspaceAddress.workspaceType()->createWorkspace(workspaceAddress) };
+        //  TODO if there is a "current activity", record & stop it
         tt3::ws::theCurrentWorkspace.swap(workspacePtr);
         tt3::ws::Component::Settings::instance()->recordRecentWorkspace(workspaceAddress);
         _updateMruWorkspaces();
@@ -185,6 +191,7 @@ void MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddres
     {
         tt3::ws::WorkspacePtr workspacePtr
             { workspaceAddress.workspaceType()->openWorkspace(workspaceAddress) };
+        //  TODO if there is a "current activity", record & stop it
         tt3::ws::theCurrentWorkspace.swap(workspacePtr);
         tt3::ws::Component::Settings::instance()->recordRecentWorkspace(workspaceAddress);
         _updateMruWorkspaces();
@@ -267,7 +274,7 @@ void MainFrame::_onActionNewWorkspace()
 
 void MainFrame::_onActionOpenWorkspace()
 {
-    tt3::gui::OpenWorkspaceDialog dlg(this);
+    tt3::gui::SelectWorkspaceDialog dlg(this);
     if (dlg.exec() == QDialog::Accepted)
     {
         tt3::ws::WorkspaceAddress workspaceAddress = dlg.selectedWorkspaceAddress();
@@ -282,9 +289,9 @@ void MainFrame::_onActionCloseWorkspace()
 {
     if (tt3::ws::theCurrentWorkspace != nullptr)
     {
-        tt3::ws::WorkspacePtr workspace;
+        tt3::ws::theCurrentWorkspace->close();
+        tt3::ws::WorkspacePtr workspace = nullptr;
         tt3::ws::theCurrentWorkspace.swap(workspace);
-        workspace->close();
         refresh();
     }
 }

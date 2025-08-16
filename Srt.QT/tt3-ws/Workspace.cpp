@@ -90,6 +90,9 @@ void Workspace::close() throws(WorkspaceException)
 //  Implementation helpers
 void Workspace::_markClosed()
 {
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    Q_ASSERT(_database != nullptr);
+
     delete _database;
     _database = nullptr;
     //  The "database closed" notification fro m the

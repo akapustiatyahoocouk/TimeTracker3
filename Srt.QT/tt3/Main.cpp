@@ -168,13 +168,8 @@ int main(int argc, char *argv[])
 
     //  Cleanup TODO in a separate function
 
-    //  If there's a "current" skin, deactivate it
-    tt3::gui::ISkin * currentSkin;
-    tt3::gui::theCurrentSkin.swap(currentSkin);
-    if (currentSkin != nullptr)
-    {
-        currentSkin->deactivate();
-    }
+
+    //  TODO if there is a "current activity", record & stop it
 
     //  TODO if there's a "current" activity, record & syop it
     //  If there's a "current" workspace, close it
@@ -185,6 +180,12 @@ int main(int argc, char *argv[])
         currentWorkspace->close();
         //  TODO handle "close" exceptions
     }
+
+    //  If there's a "current" skin, deactivate it
+    tt3::gui::ISkin * currentSkin = nullptr;
+    tt3::gui::theCurrentSkin.swap(currentSkin);
+    Q_ASSERT(currentSkin != nullptr);
+    currentSkin->deactivate();
 
     //  Done
     saveSettings();

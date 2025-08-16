@@ -33,8 +33,9 @@ Database::Database(DatabaseAddress * address, _Mode mode)
     {
         case _Mode::_Create:
             if (QFile(_address->_path).exists())
-            {   //  OOPS! TODO throw proper exception
-                throw tt3::db::api::DatabaseException("Database already exists");
+            {   //  OOPS!
+                throw tt3::db::api::AlreadyExistsException(
+                    "XML file database", "location", _address->_path);
             }
             //  Need to save empty DB content
             _save();    //  may throw

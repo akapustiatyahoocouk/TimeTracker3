@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>tt3::gui::OpenWorkspaceDialog</class>
- <widget class="QDialog" name="tt3::gui::OpenWorkspaceDialog">
+ <class>tt3::gui::SelectWorkspaceDialog</class>
+ <widget class="QDialog" name="tt3::gui::SelectWorkspaceDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -91,7 +91,7 @@
   <connection>
    <sender>workspaceTypeComboBox</sender>
    <signal>currentIndexChanged(int)</signal>
-   <receiver>tt3::gui::OpenWorkspaceDialog</receiver>
+   <receiver>tt3::gui::SelectWorkspaceDialog</receiver>
    <slot>_workspaceTypeComboBoxCurrentIndexChanged(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -107,7 +107,7 @@
   <connection>
    <sender>browsePushButton</sender>
    <signal>clicked()</signal>
-   <receiver>tt3::gui::OpenWorkspaceDialog</receiver>
+   <receiver>tt3::gui::SelectWorkspaceDialog</receiver>
    <slot>_browsePushButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -123,7 +123,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>tt3::gui::OpenWorkspaceDialog</receiver>
+   <receiver>tt3::gui::SelectWorkspaceDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -139,7 +139,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>tt3::gui::OpenWorkspaceDialog</receiver>
+   <receiver>tt3::gui::SelectWorkspaceDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

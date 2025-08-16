@@ -1,5 +1,5 @@
 //
-//  tt3-gui/OpenWorkspaceDialog.cpp - tt3::gui::OpenWorkspaceDialog class implementation
+//  tt3-gui/SelectWorkspaceDialog.cpp - tt3::gui::SelectWorkspaceDialog class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,14 +15,14 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-gui/API.hpp"
-#include "ui_OpenWorkspaceDialog.h"
+#include "ui_SelectWorkspaceDialog.h"
 using namespace tt3::gui;
 
 //////////
 //  Construction/destruction
-OpenWorkspaceDialog::OpenWorkspaceDialog(QWidget * parent)
+SelectWorkspaceDialog::SelectWorkspaceDialog(QWidget * parent)
     :   QDialog(parent),
-        _ui(new Ui::OpenWorkspaceDialog)
+        _ui(new Ui::SelectWorkspaceDialog)
 {
     _ui->setupUi(this);
 
@@ -54,14 +54,14 @@ OpenWorkspaceDialog::OpenWorkspaceDialog(QWidget * parent)
     _refresh();
 }
 
-OpenWorkspaceDialog::~OpenWorkspaceDialog()
+SelectWorkspaceDialog::~SelectWorkspaceDialog()
 {
     delete _ui;
 }
 
 //////////
 //  Implementation helpers
-void OpenWorkspaceDialog::_refresh()
+void SelectWorkspaceDialog::_refresh()
 {
     if (_ui->workspaceTypeComboBox->count() == 0)
     {   //  A special case - no workspace types are available
@@ -78,7 +78,7 @@ void OpenWorkspaceDialog::_refresh()
 
 //////////
 //  Event handlers
-void OpenWorkspaceDialog::_workspaceTypeComboBoxCurrentIndexChanged(int)
+void SelectWorkspaceDialog::_workspaceTypeComboBoxCurrentIndexChanged(int)
 {
     Q_ASSERT(_ui->workspaceTypeComboBox->currentIndex() != -1);
     tt3::ws::WorkspaceType * workspaceType =
@@ -91,7 +91,7 @@ void OpenWorkspaceDialog::_workspaceTypeComboBoxCurrentIndexChanged(int)
     _refresh();
 }
 
-void OpenWorkspaceDialog::_browsePushButtonClicked()
+void SelectWorkspaceDialog::_browsePushButtonClicked()
 {
     Q_ASSERT(_ui->workspaceTypeComboBox->currentIndex() != -1);
     tt3::ws::WorkspaceType * workspaceType =
@@ -105,4 +105,4 @@ void OpenWorkspaceDialog::_browsePushButtonClicked()
     }
 }
 
-//  End of tt3-gui/OpenWorkspaceDialog.cpp
+//  End of tt3-gui/SelectWorkspaceDialog.cpp
