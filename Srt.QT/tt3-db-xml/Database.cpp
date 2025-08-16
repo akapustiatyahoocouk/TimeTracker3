@@ -270,7 +270,7 @@ void Database::_save() throws(DatabaseException)
     QFile file(_address->_path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {   //  OOPS!
-        throw tt3::db::api::DatabaseException(file.errorString());
+        throw tt3::db::api::CustomDatabaseException(file.errorString());
     }
     QTextStream stream(&file);
     document.save(stream, 4);
@@ -285,7 +285,7 @@ void Database::_load() throws(DatabaseException)
     QFile file(_address->_path);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {   //  OOPS!
-        throw tt3::db::api::DatabaseException(file.errorString());
+        throw tt3::db::api::CustomDatabaseException(file.errorString());
     }
     if (!document.setContent(&file))
     {   //  OOPS!
@@ -342,7 +342,7 @@ Database::_LockRefresher::_LockRefresher(Database * database)
         {
             if (!_lockFile.open(QIODevice::ReadWrite))
             {   //  OOPS! Can't!
-                throw tt3::db::api::DatabaseException(_lockFile.errorString());
+                throw tt3::db::api::CustomDatabaseException(_lockFile.errorString());
             }
             QDateTime lastModifiedAt = fileInfo.lastModified(QTimeZone::UTC);
             QDateTime utcNow = QDateTime::currentDateTimeUtc();
@@ -367,7 +367,7 @@ Database::_LockRefresher::_LockRefresher(Database * database)
     {
         if (!_lockFile.open(QIODevice::NewOnly))
         {   //  OOPS! Can't!
-            throw tt3::db::api::DatabaseException(_lockFile.errorString());
+            throw tt3::db::api::CustomDatabaseException(_lockFile.errorString());
         }
     }
 }

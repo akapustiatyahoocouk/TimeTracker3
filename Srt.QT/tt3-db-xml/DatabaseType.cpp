@@ -172,7 +172,7 @@ void DatabaseType::destroyDatabase(tt3::db::api::IDatabaseAddress * address) thr
     if (DatabaseAddress * xmlDatabaseAddress =
         dynamic_cast<DatabaseAddress*>(address))
     {   //  Address is of a proper type
-        throw tt3::db::api::DatabaseException("Not yet implemented");
+        throw tt3::db::api::CustomDatabaseException("Not yet implemented");
     }
     throw tt3::db::api::InvalidDatabaseAddressException();
 }

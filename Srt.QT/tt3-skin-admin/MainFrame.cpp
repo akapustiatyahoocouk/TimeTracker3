@@ -97,7 +97,7 @@ void MainFrame::refresh()
     this->setWindowTitle(title);
 
     //  Menu items
-    _ui->actionCloseWorkspace->setEnabled(tt3::ws::theCurrentWorkspace != nullptr);
+    _ui->actionCloseWorkspace->setEnabled(currentWorkspace != nullptr);
 
     //  TODO controls
 }
@@ -126,7 +126,7 @@ void MainFrame::_savePosition()
     }
 }
 
-void MainFrame::_createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress)
+bool MainFrame::_createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress)
 {
     Q_ASSERT(workspaceAddress.isValid());
 
@@ -139,7 +139,7 @@ void MainFrame::_createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddr
             this,
             tt3::db::api::AlreadyExistsException(
                 "Workspace", "location", workspaceAddress.displayForm()));
-        return;
+        return false;
     }
 
     //  Create & use
@@ -149,7 +149,7 @@ void MainFrame::_createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddr
             { workspaceAddress.workspaceType()->createWorkspace(workspaceAddress) };
         //  TODO if there is a "current activity", record & stop it
         tt3::ws::theCurrentWorkspace.swap(workspacePtr);
-        tt3::ws::Component::Settings::instance()->recordRecentWorkspace(workspaceAddress);
+        tt3::ws::Component::Settings::instance()->addRecentWorkspace(workspaceAddress);
         _updateMruWorkspaces();
         //  The previously "current" workspace is closed
         //  when replaced
@@ -159,22 +159,26 @@ void MainFrame::_createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddr
         }
         //  Done
         refresh();
+        return true;
     }
     catch (const tt3::util::Exception & ex)
     {
         tt3::gui::ErrorDialog::show(this, ex);
+        return false;
     }
     catch (const std::exception & ex)
     {
         tt3::gui::ErrorDialog::show(this, ex);
+        return false;
     }
     catch (...)
     {
         tt3::gui::ErrorDialog::show(this);
+        return false;
     }
 }
 
-void MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress)
+bool MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress)
 {
     Q_ASSERT(workspaceAddress.isValid());
 
@@ -183,7 +187,7 @@ void MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddres
     if (tt3::ws::theCurrentWorkspace != nullptr &&
         tt3::ws::theCurrentWorkspace->address() == workspaceAddress)
     {
-        return;
+        return true;
     }
 
     //  Open & use
@@ -193,7 +197,7 @@ void MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddres
             { workspaceAddress.workspaceType()->openWorkspace(workspaceAddress) };
         //  TODO if there is a "current activity", record & stop it
         tt3::ws::theCurrentWorkspace.swap(workspacePtr);
-        tt3::ws::Component::Settings::instance()->recordRecentWorkspace(workspaceAddress);
+        tt3::ws::Component::Settings::instance()->addRecentWorkspace(workspaceAddress);
         _updateMruWorkspaces();
         //  The previously "current" workspace is closed
         //  when replaced
@@ -203,18 +207,22 @@ void MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddres
         }
         //  Done
         refresh();
+        return true;
     }
     catch (const tt3::util::Exception & ex)
     {
         tt3::gui::ErrorDialog::show(this, ex);
+        return false;
     }
     catch (const std::exception & ex)
     {
         tt3::gui::ErrorDialog::show(this, ex);
+        return false;
     }
     catch (...)
     {
         tt3::gui::ErrorDialog::show(this);
+        return false;
     }
 }
 

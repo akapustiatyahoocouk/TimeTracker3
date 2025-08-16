@@ -59,8 +59,8 @@ namespace tt3::skin::admin
         void            _loadPosition();
         void            _savePosition();
 
-        void            _createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress);
-        void            _openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress);
+        bool            _createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress);
+        bool            _openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress);
 
         void            _updateMruWorkspaces();
 
@@ -105,7 +105,7 @@ namespace tt3::skin::admin
         RecentWorkspaceOpener(MainFrame * mainFrame, const tt3::ws::WorkspaceAddress & workspaceAddress)
             :   _mainFrame(mainFrame),
                 _workspaceAddress(workspaceAddress)
-        {
+        {   //  TODO move out-of-line
             Q_ASSERT(_mainFrame != nullptr);
             Q_ASSERT(_workspaceAddress.isValid());
         }
@@ -122,8 +122,23 @@ namespace tt3::skin::admin
         //  Eveht handlers
     private slots:
         void            _onTriggered()
-        {
-            _mainFrame->_openWorkspace(_workspaceAddress);
+        {   //  TODO move out-of-line
+            if (!_mainFrame->_openWorkspace(_workspaceAddress))
+            {   //  May want to remove this woekspace from the MRU
+                if (QMessageBox::question(
+                        _mainFrame,
+                        "Failed to open workspace",
+                        "Would you like to remove the workspace\n" +
+                            _workspaceAddress.displayForm() +
+                            "\nfrom the recent workspaces list ?",
+                        QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+                {   //  Do it!
+                    tt3::ws::Component::Settings::instance()->removeRecentWorkspace(_workspaceAddress);
+                    MainFrame * mainFrame = _mainFrame;
+                    mainFrame->_updateMruWorkspaces();  //  will delete "*this" instance!
+                    mainFrame->refresh();
+                }
+            }
         }
     };
 }

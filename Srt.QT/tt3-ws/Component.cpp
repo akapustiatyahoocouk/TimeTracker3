@@ -83,18 +83,30 @@ Component::Settings::~Settings()
 
 //////////
 //  Operations
-void Component::Settings::recordRecentWorkspace(const WorkspaceAddress & workspaceAddress)
+void Component::Settings::addRecentWorkspace(const WorkspaceAddress & workspaceAddress)
 {
     if (workspaceAddress.isValid())
     {
         WorkspaceAddressesList mru = recentWorkspaces;
         mru.removeOne(workspaceAddress);
         mru.insert(0, workspaceAddress);
-        while (mru.size() > 9)  //  TODO named constans
+        while (mru.size() > MaxRecentWorkspaces)
         {
             mru.removeLast();
         }
         recentWorkspaces = mru;
+    }
+}
+
+void Component::Settings::removeRecentWorkspace(const WorkspaceAddress & workspaceAddress)
+{
+    if (workspaceAddress.isValid())
+    {
+        WorkspaceAddressesList mru = recentWorkspaces;
+        if (mru.removeOne(workspaceAddress))
+        {
+            recentWorkspaces = mru;
+        }
     }
 }
 

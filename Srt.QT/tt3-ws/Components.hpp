@@ -31,6 +31,12 @@ namespace tt3::ws
             DECLARE_SINGLETON(Settings)
 
             //////////
+            //  Constants
+        public:
+            //  TODO document
+            static inline const int MaxRecentWorkspaces = 9;
+
+            //////////
             //  Properties
         public:
             //  TODO document
@@ -40,7 +46,8 @@ namespace tt3::ws
             //  Operations
         public:
             //  TODO document
-            void                recordRecentWorkspace(const WorkspaceAddress & workspaceAddress);
+            void                addRecentWorkspace(const WorkspaceAddress & workspaceAddress);
+            void                removeRecentWorkspace(const WorkspaceAddress & workspaceAddress);
         };
 
         //////////

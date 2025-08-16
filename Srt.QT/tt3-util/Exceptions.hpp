@@ -24,27 +24,14 @@ namespace tt3::util
         //////////
         //  Construction/destruction/assignment
     public:
-        Exception()
-            :   _errorMessage("Unknowqn error") {}
-        explicit Exception(const QString & errorMessage)
-            :   _errorMessage(errorMessage) {}
-
-        //////////
-        //  QException
-    public:
-        virtual Exception *     clone() const { return new Exception(*this); }
-        virtual void            raise() const { throw *this; }
+        Exception() = default;
 
         //////////
         //  Operations
     public:
-        //  TODO document
-        QString         errorMessage() const { return _errorMessage; }
-
-        //////////
-        //  Implementation
-    private:
-        QString         _errorMessage;
+        //  Returns the error message describing the
+        //  exception for the current default locale
+        virtual QString     errorMessage() const = 0;
     };
 }
 

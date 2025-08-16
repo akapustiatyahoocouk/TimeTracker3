@@ -205,6 +205,122 @@ namespace
         }
         return result;
     }
+
+    int xdigit(const QChar & c)
+    {
+        if (c >= '0' && c <= '9')
+        {
+            return c.unicode() - '0';
+        }
+        else if (c >= 'a' && c <= 'f')
+        {
+            return c.unicode() - 'a' + 10;
+        }
+        else if (c >= 'A' && c <= 'F')
+        {
+            return c.unicode() - 'A' + 10;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    QString unescape(const QString & s) throws (ParseExce[tion)
+    {
+        QString result;
+        for (int i = 0; i < s.length(); )
+        {
+            if (s[i] != '\\')
+            {   //  A literal character
+                result += s[i];
+                i++;
+                continue;
+            }
+            //  We have ab escape sequence. Skip '\'
+            i++;
+            if (i >= s.length())
+            {   //  OOP! Missing
+                throw tt3::util::ParseException(s, 0);
+            }
+            //  Special character ?
+            if (s[i] == 'a')
+            {   //  \a
+                result += '\a';
+                i++;
+            }
+            else if (s[i] == 'b')
+            {   //  \b
+                result += '\b';
+                i++;
+            }
+            else if (s[i] == 'f')
+            {   //  \f
+                result += '\f';
+                i++;
+            }
+            else if (s[i] == 'n')
+            {   //  \n
+                result += '\n';
+                i++;
+            }
+            else if (s[i] == 'r')
+            {   //  \r
+                result += '\r';
+                i++;
+            }
+            else if (s[i] == 't')
+            {   //  \t
+                result += '\t';
+                i++;
+            }
+            else if (s[i] == 'v')
+            {   //  \a
+                result += '\v';
+                i++;
+            }
+            //  Numeric escape ?
+            else if (s[i] == 'x')
+            {   //  \xXX
+                i++;
+                if (i + 1 < s.length() &&
+                    xdigit(s[i]) != -1 && xdigit(s[i + 1]) != -1)
+                {
+                    result += QChar(xdigit(s[i]) * 16 +
+                                    xdigit(s[i + 1]));
+                    i += 2;
+                }
+                else
+                {   //  OOPS! Invalid hex escape!
+                    throw tt3::util::ParseException(s, 0);
+                }
+            }
+            else if (s[i] == 'u')
+            {   //  \uXXXX
+                i++;
+                if (i + 3 < s.length() &&
+                    xdigit(s[i]) != -1 && xdigit(s[i + 1]) != -1 &&
+                    xdigit(s[i + 2]) != -1 && xdigit(s[i + 3]) != -1)
+                {
+                    result += QChar(xdigit(s[i]) * 4096 +
+                                    xdigit(s[i + 1]) * 256 +
+                                    xdigit(s[i + 2]) * 16 +
+                                    xdigit(s[i + 3]));
+                    i += 4;
+                }
+                else
+                {   //  OOPS! Invalid hex escape!
+                    throw tt3::util::ParseException(s, 0);
+                }
+            }
+            //  Literal escape
+            else
+            {
+                result += s[i++];
+            }
+        }
+        return result;
+    }
 }
 
 template <> TT3_WS_PUBLIC QString tt3::util::toString<WorkspaceAddress>(const WorkspaceAddress & value)
@@ -259,7 +375,8 @@ template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddress tt3::util::fromString<tt3::w
         throw tt3::util::ParseException(s, scan);
     }
     //  Resolve mnemonic
-    WorkspaceType * workspaceType = WorkspaceTypeRegistry::findWorkspaceType(chunks[0]);
+    WorkspaceType * workspaceType =
+        WorkspaceTypeRegistry::findWorkspaceType(unescape(chunks[0]));
     if (workspaceType == nullptr)
     {   //  OOPS!
         throw tt3::util::ParseException(s, scan);
@@ -267,7 +384,8 @@ template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddress tt3::util::fromString<tt3::w
     //  Parse address
     try
     {
-        WorkspaceAddress address = workspaceType->parseWorkspaceAddress(chunks[1]);
+        WorkspaceAddress address =
+            workspaceType->parseWorkspaceAddress(unescape(chunks[1]));
         scan = prescan + 1;
         return address;
     }

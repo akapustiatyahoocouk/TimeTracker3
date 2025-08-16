@@ -24,136 +24,237 @@ namespace tt3::db::api
         //////////
         //  Construction/destruction/assignment
     public:
-        DatabaseException()
-            :   tt3::util::Exception("Unknown database error") {}
-        explicit DatabaseException(const QString & errorMessage)
-            :   tt3::util::Exception(errorMessage) {}
-
-        //////////
-        //  QException
-    public:
-        virtual DatabaseException *
-                        clone() const { return new DatabaseException(*this); }
-        virtual void    raise() const { throw *this; }
+        DatabaseException() = default;
     };
 
     //  Thrown when an invalid database address is specified
     class TT3_DB_API_PUBLIC InvalidDatabaseAddressException : public DatabaseException
     {
         //////////
+        //  Types:
+        using Self = InvalidDatabaseAddressException;
+
+        //////////
         //  Construction/destruction/assignment
     public:
-        InvalidDatabaseAddressException()
-            :   DatabaseException("Invalid database address") {}
+        InvalidDatabaseAddressException() = default;
 
         //////////
         //  QException
     public:
-        virtual InvalidDatabaseAddressException *
-                        clone() const { return new InvalidDatabaseAddressException(*this); }
+        virtual Self *  clone() const { return new Self(*this); }
         virtual void    raise() const { throw *this; }
+
+        //////////
+        //  tt3::util::Exception
+    public:
+        virtual QString errorMessage() const override
+        {
+            return "Invalid database address";
+        }
     };
 
     //  Thrown when a single-user database is already in use
     class TT3_DB_API_PUBLIC DatabaseInUseException : public DatabaseException
     {
         //////////
+        //  Types
+    public:
+        using Self = DatabaseInUseException;
+
+        //////////
         //  Construction/destruction/assignment
     public:
-        explicit DatabaseInUseException(IDatabaseAddress * address)
-            :   DatabaseException(address->databaseType()->displayName() + " "  +
-                                  address->displayForm() + " is already in use") {}
+        explicit DatabaseInUseException(IDatabaseAddress * databaseAddress)
+            :   _databaseAddress(databaseAddress) { Q_ASSERT(_databaseAddress != nullptr); }
 
         //////////
         //  QException
     public:
-        virtual DatabaseInUseException *
-                        clone() const { return new DatabaseInUseException(*this); }
+        virtual Self *  clone() const { return new Self(*this); }
         virtual void    raise() const { throw *this; }
+
+        //////////
+        //  tt3::util::Exception
+    public:
+        virtual QString errorMessage() const override
+        {
+            return _databaseAddress->databaseType()->displayName() +
+                   " "  +
+                   _databaseAddress->displayForm() +
+                   " is already in use";
+        }
+
+        //////////
+        //  Operations
+    public:
+        //  Returns the address of the database that is already in use
+        IDatabaseAddress *  databaseAddress() const { return _databaseAddress; }
+
+        //////////
+        //  Implementayion
+    private:
+        IDatabaseAddress *  _databaseAddress;   //  TODO counts as "reference"
     };
 
     //  Thrown when a database is corrupt
     class TT3_DB_API_PUBLIC DatabaseCorruptException : public DatabaseException
     {
         //////////
+        //  Types
+    public:
+        using Self = DatabaseCorruptException;
+
+        //////////
         //  Construction/destruction/assignment
     public:
-        explicit DatabaseCorruptException(IDatabaseAddress * address)
-            :   DatabaseException(address->databaseType()->displayName() + " "  +
-                                  address->displayForm() + " is corrupt") {}
+        explicit DatabaseCorruptException(IDatabaseAddress * databaseAddress)
+            :   _databaseAddress(databaseAddress) { Q_ASSERT(_databaseAddress != nullptr); }
 
         //////////
         //  QException
     public:
-        virtual DatabaseCorruptException *
-                        clone() const { return new DatabaseCorruptException(*this); }
+        virtual Self *  clone() const { return new Self(*this); }
         virtual void    raise() const { throw *this; }
+
+        //////////
+        //  tt3::util::Exception
+    public:
+        virtual QString errorMessage() const override
+        {
+            return _databaseAddress->databaseType()->displayName() +
+                   " "  +
+                   _databaseAddress->displayForm() +
+                   " is invalid or corrupt";
+        }
+
+        //////////
+        //  Operations
+    public:
+        //  Returns the address of the database that is corrupt
+        IDatabaseAddress *  databaseAddress() const { return _databaseAddress; }
+
+        //////////
+        //  Implementayion
+    private:
+        IDatabaseAddress *  _databaseAddress;   //  TODO counts as "reference"
     };
 
     //  Thrown when a service is called on a closed database.
     class TT3_DB_API_PUBLIC DatabaseClosedException : public DatabaseException
     {
         //////////
+        //  Types
+    public:
+        using Self = DatabaseClosedException;
+
+        //////////
         //  Construction/destruction/assignment
     public:
-        explicit DatabaseClosedException()
-            :   DatabaseException("The database is closed") {}
+        DatabaseClosedException() = default;
 
         //////////
         //  QException
     public:
-        virtual DatabaseClosedException *
-                        clone() const { return new DatabaseClosedException(*this); }
+        virtual Self *  clone() const { return new Self(*this); }
         virtual void    raise() const { throw *this; }
+
+        //////////
+        //  tt3::util::Exception
+    public:
+        virtual QString errorMessage() const override
+        {
+            return "Daabase is closed";
+        }
     };
 
     //  Thrown when a workspace service is access-denied
     class TT3_DB_API_PUBLIC AccessDeniedException : public DatabaseException
     {
         //////////
+        //  Types
+    public:
+        using Self = AccessDeniedException;
+
+        //////////
         //  Construction/destruction/assignment
     public:
-        AccessDeniedException()
-            :   DatabaseException("Access denied") {}
+        AccessDeniedException() = default;
 
         //////////
         //  QException
     public:
-        virtual AccessDeniedException *
-                        clone() const { return new AccessDeniedException(*this); }
+        virtual Self *  clone() const { return new Self(*this); }
         virtual void    raise() const { throw *this; }
+
+        //////////
+        //  tt3::util::Exception
+    public:
+        virtual QString errorMessage() const override
+        {
+            return "Access denied";
+        }
     };
 
     //  Thrown when attempting to assign an invalid value to a property
     class TT3_DB_API_PUBLIC InvalidPropertyValueException : public DatabaseException
     {
         //////////
+        //  Types
+    public:
+        using Self = InvalidPropertyValueException;
+
+        //////////
         //  Construction/destruction/assignment
     public:
         InvalidPropertyValueException(const QString & objectTypeName,
-                                      const QString & propertyName, const QString & propertyValue)
-            :   DatabaseException("Property '" + propertyName +
-                                "' of '" + objectTypeName +
-                                "' cannot be set to '" + propertyValue + "'") {}
+                                      const QString & propertyName, const QString & propertyValueString)
+            :   _objectTypeName(objectTypeName),
+                _propertyName(propertyName),
+                _propertyValueString(propertyValueString) {}
         InvalidPropertyValueException(IObjectType * objectType,
-                                      const QString & propertyName, const QString & propertyValue)
-            :   InvalidPropertyValueException(objectType->displayName(), propertyName, propertyValue) {}
+                                      const QString & propertyName, const QString & propertyValueString)
+            :   Self(objectType->displayName(), propertyName, propertyValueString) {}
 
         template <class T>
         InvalidPropertyValueException(IObjectType * objectType,
                                       const QString & propertyName, const T & propertyValue)
-            :   InvalidPropertyValueException(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
+            :   Self(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
         template <class T>
         InvalidPropertyValueException(const QString & objectTypeName,
                                       const QString & propertyName, const T & propertyValue)
-            :   InvalidPropertyValueException(objectTypeName, propertyName, tt3::util::toString(propertyValue)) {}
+            :   Self(objectTypeName, propertyName, tt3::util::toString(propertyValue)) {}
 
         //////////
         //  QException
     public:
-        virtual InvalidPropertyValueException *
-                        clone() const { return new InvalidPropertyValueException(*this); }
+        virtual Self *  clone() const { return new Self(*this); }
         virtual void    raise() const { throw *this; }
+
+        //////////
+        //  tt3::util::Exception
+    public:
+        virtual QString errorMessage() const override
+        {
+            return "Property '" + _propertyName +
+                   "' of '" + _objectTypeName +
+                   "' cannot be set to '" + _propertyValueString + "'";
+        }
+
+        //////////
+        //  Operations
+    public:
+        //  TODO document
+        QString         objectTypeName() const { return _objectTypeName; }
+        QString         propertyName() const { return _propertyName; }
+        QString         propertyValueString() const { return _propertyValueString; }
+
+        //////////
+        //  Implementation
+    private:
+        QString         _objectTypeName;
+        QString         _propertyName;
+        QString         _propertyValueString;
     };
 
     //  Thrown when an object with the specified property value,
@@ -163,54 +264,186 @@ namespace tt3::db::api
         //////////
         //  Types
     public:
-        //  TODO use for all exceptions?
         using Self = AlreadyExistsException;
 
         //////////
         //  Construction/destruction/assignment
     public:
         AlreadyExistsException(const QString & objectTypeName,
-                               const QString & propertyName, const QString & propertyValue)
-            :   DatabaseException("The " + objectTypeName +
-                                " with '" + propertyName +
-                                "' = '" + propertyValue +
-                                "' already exists") {}
+                               const QString & propertyName, const QString & propertyValueString)
+            :   _objectTypeName(objectTypeName),
+                _propertyName(propertyName),
+                _propertyValueString(propertyValueString) {}
         AlreadyExistsException(IObjectType * objectType,
-                               const QString & propertyName, const QString & propertyValue)
-            :   AlreadyExistsException(objectType->displayName(), propertyName, propertyValue) {}
+                               const QString & propertyName, const QString & propertyValueString)
+            :   Self(objectType->displayName(), propertyName, propertyValueString) {}
 
         template <class T>
         AlreadyExistsException(IObjectType * objectType,
                               const QString & propertyName, const T & propertyValue)
-            :   AlreadyExistsException(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
+            :   Self(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
         template <class T>
         AlreadyExistsException(const QString & objectTypeName,
                                const QString & propertyName, const T & propertyValue)
-            :   AlreadyExistsException(objectTypeName, propertyName, tt3::util::toString(propertyValue)) {}
+            :   Self(objectTypeName, propertyName, tt3::util::toString(propertyValue)) {}
 
         //////////
         //  QException
     public:
         virtual Self *  clone() const { return new Self(*this); }
         virtual void    raise() const { throw *this; }
+
+        //////////
+        //  tt3::util::Exception
+    public:
+        virtual QString errorMessage() const override
+        {
+            return "The " + _objectTypeName +
+                   " with '" + _propertyName +
+                   "' = '" + _propertyValueString +
+                   "' already exists";
+        }
+
+        //////////
+        //  Operations
+    public:
+        //  TODO document
+        QString         objectTypeName() const { return _objectTypeName; }
+        QString         propertyName() const { return _propertyName; }
+        QString         propertyValueString() const { return _propertyValueString; }
+
+        //////////
+        //  Implementation
+    private:
+        QString         _objectTypeName;
+        QString         _propertyName;
+        QString         _propertyValueString;
+    };
+
+    //  Thrown when an object with the specified property value,
+    //  which is supposed to exist, does not.
+    class TT3_DB_API_PUBLIC DoesNotExistException : public DatabaseException
+    {
+        //////////
+        //  Types
+    public:
+        using Self = DoesNotExistException;
+
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        DoesNotExistException(const QString & objectTypeName,
+                              const QString & propertyName, const QString & propertyValueString)
+            :   _objectTypeName(objectTypeName),
+                _propertyName(propertyName),
+                _propertyValueString(propertyValueString) {}
+        DoesNotExistException(IObjectType * objectType,
+                              const QString & propertyName, const QString & propertyValueString)
+            :   Self(objectType->displayName(), propertyName, propertyValueString) {}
+
+        template <class T>
+        DoesNotExistException(IObjectType * objectType,
+                              const QString & propertyName, const T & propertyValue)
+            :   Self(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
+        template <class T>
+        DoesNotExistException(const QString & objectTypeName,
+                              const QString & propertyName, const T & propertyValue)
+            :   Self(objectTypeName, propertyName, tt3::util::toString(propertyValue)) {}
+
+        //////////
+        //  QException
+    public:
+        virtual Self *  clone() const { return new Self(*this); }
+        virtual void    raise() const { throw *this; }
+
+        //////////
+        //  tt3::util::Exception
+    public:
+        virtual QString errorMessage() const override
+        {
+            return "The " + _objectTypeName +
+                   " with '" + _propertyName +
+                   "' = '" + _propertyValueString +
+                   "' does not exist";
+        }
+
+        //////////
+        //  Operations
+    public:
+        //  TODO document
+        QString         objectTypeName() const { return _objectTypeName; }
+        QString         propertyName() const { return _propertyName; }
+        QString         propertyValueString() const { return _propertyValueString; }
+
+        //////////
+        //  Implementation
+    private:
+        QString         _objectTypeName;
+        QString         _propertyName;
+        QString         _propertyValueString;
     };
 
     //  Thrown when attempting to access a "dead" instance
     class TT3_DB_API_PUBLIC InstanceDeadException : public DatabaseException
     {
         //////////
+        //  Types
+    public:
+        using Self = InstanceDeadException;
+
+        //////////
         //  Construction/destruction/assignment
     public:
-        InstanceDeadException()
-            :   DatabaseException("Instance is dead") {}
+        InstanceDeadException() = default;
 
         //////////
         //  QException
     public:
-        virtual InstanceDeadException *
-                        clone() const { return new InstanceDeadException(*this); }
+        virtual Self *  clone() const { return new Self(*this); }
         virtual void    raise() const { throw *this; }
+
+        //////////
+        //  tt3::util::Exception
+    public:
+        virtual QString errorMessage() const override
+        {
+            return "The instance is dead";
+        }
     };
-    }
+
+    //  Thrown when must carry a custom error message (from OS, etc.)
+    class TT3_DB_API_PUBLIC CustomDatabaseException : public DatabaseException
+    {
+        //////////
+        //  Types
+    public:
+        using Self = CustomDatabaseException;
+
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        explicit CustomDatabaseException(const QString & errorMessage)
+            :   _errorMessage(errorMessage) {}
+
+        //////////
+        //  QException
+    public:
+        virtual Self *  clone() const { return new Self(*this); }
+        virtual void    raise() const { throw *this; }
+
+        //////////
+        //  tt3::util::Exception
+    public:
+        virtual QString errorMessage() const override
+        {
+            return _errorMessage;
+        }
+
+        //////////
+        //  Implementation
+    private:
+        QString         _errorMessage;
+    };
+}
 
 //  End of tt3-db-api/Exceptions.hpp

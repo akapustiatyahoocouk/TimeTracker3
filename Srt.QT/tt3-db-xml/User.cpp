@@ -32,7 +32,7 @@ User::~User()
 //  tt3::db::api::IObject (life cycle)
 void User::destroy() throws(DatabaseException)
 {
-    throw tt3::db::api::DatabaseException("Not yet implemented");
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
 //////////
