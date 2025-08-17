@@ -41,10 +41,18 @@ namespace tt3::gui
         //  the dialog.
         tt3::ws::WorkspaceAddress   selectedWorkspaceAddress() { return _workspaceAddress; }
 
+        //  TODO document
+        QString         adminUser() const { return _adminUser; }
+        QString         adminLogin() const { return _adminLogin; }
+        QString         adminPassword() const { return _adminPassword; }
+
         //////////
         //  Implementation
     private:
         tt3::ws::WorkspaceAddress   _workspaceAddress;  //  invalid == not selected
+        QString         _adminUser;
+        QString         _adminLogin;
+        QString         _adminPassword;
 
         //  Helpers
         void            _refresh();

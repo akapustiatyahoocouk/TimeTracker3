@@ -59,7 +59,9 @@ namespace tt3::skin::admin
         void            _loadPosition();
         void            _savePosition();
 
-        bool            _createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress);
+        bool            _createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress,
+                              const QString & adminUser,
+                              const QString & adminLogin, const QString & adminPassword);
         bool            _openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress);
 
         void            _updateMruWorkspaces();
@@ -82,6 +84,7 @@ namespace tt3::skin::admin
         void            _onActionNewWorkspace();
         void            _onActionOpenWorkspace();
         void            _onActionCloseWorkspace();
+        void            _onActionDestroyWorkspace();
         void            _onActionExit();
         void            _onActionHelpContent();
         void            _onActionHelpIndex();
@@ -89,6 +92,7 @@ namespace tt3::skin::admin
 
         void            _onCurrentWorkspaceChanged();
         void            _onWorkspaceClosed(tt3::ws::WorkspaceClosedNotification);
+        void            _onCurrentCredentialsChanged();
     };
 
     //  A helper class for opening recent workspaces

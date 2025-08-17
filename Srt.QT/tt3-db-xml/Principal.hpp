@@ -47,6 +47,11 @@ namespace tt3::db::xml
     private:
         bool            _enabled = true;
         QStringList     _emailAddresses {};
+
+        //////////
+        //  Serialization
+    private:
+        virtual void        _serializePreoperties(QDomElement & element) override;
     };
 }
 

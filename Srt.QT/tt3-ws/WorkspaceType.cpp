@@ -98,7 +98,10 @@ WorkspaceAddress WorkspaceType::parseWorkspaceAddress(const QString & externalFo
 
 //////////
 //  Operations (workspace)
-WorkspacePtr WorkspaceType::createWorkspace(const WorkspaceAddress & address) throws(WorkspaceException)
+WorkspacePtr WorkspaceType::createWorkspace(
+    const WorkspaceAddress & address,
+    const QString & adminUser,
+    const QString adminLogin, const QString & adminPassword) throws(WorkspaceException)
 {
     if (!address.isValid() || address.workspaceType() != this)
     {   //  OOPS! Can't use this address
@@ -106,8 +109,18 @@ WorkspacePtr WorkspaceType::createWorkspace(const WorkspaceAddress & address) th
     }
     std::unique_ptr<tt3::db::api::IDatabase> databasePtr
         { address._databaseAddress->databaseType()->createDatabase(address._databaseAddress) };
-    //  TODO translate & re-throw DatabaseException ?
+    //  Create admin user...
+    tt3::db::api::IUser * user =
+        databasePtr->createUser(
+            true,
+            QStringList(),
+            adminUser,
+            std::optional<tt3::util::TimeSpan>(),
+            std::optional<QLocale>());
+    //  ...and account...
+    //  ...and we're done
     return WorkspacePtr(new Workspace(address, databasePtr.release()));
+    //  TODO translate & re-throw DatabaseException ?
 }
 
 WorkspacePtr WorkspaceType::openWorkspace(const WorkspaceAddress & address) throws(WorkspaceException)

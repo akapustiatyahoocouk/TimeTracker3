@@ -64,6 +64,11 @@ namespace tt3::db::xml
         std::optional<QLocale>  _uiLocale;
         //  Associations
         Accounts        _accounts;  //  count as "references"
+
+        //////////
+        //  Serialization
+    private:
+        virtual void        _serializePreoperties(QDomElement & element) override;
     };
 }
 

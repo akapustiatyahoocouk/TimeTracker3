@@ -45,6 +45,7 @@ Workspace::~Workspace()
     catch (...)
     {   //  OOPS! Suppress TODO but log ?
     }
+    delete _accessCacheKey; //  "delete nullptr" is safe
 }
 
 //////////

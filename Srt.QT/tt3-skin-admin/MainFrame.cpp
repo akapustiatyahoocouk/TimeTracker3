@@ -40,6 +40,10 @@ MainFrame::MainFrame(QWidget * parent)
             &tt3::ws::CurrentWorkspace::currentWorkspaceChanged,
             this,
             &MainFrame::_onCurrentWorkspaceChanged);
+    connect(&tt3::ws::theCurrentCredentials,
+            &tt3::ws::CurrentCredentials::currentCredentialsChanged,
+            this,
+            &MainFrame::_onCurrentCredentialsChanged);
 
     //  Done
     refresh();
@@ -88,7 +92,12 @@ void MainFrame::refresh()
     tt3::ws::WorkspacePtr currentWorkspace = tt3::ws::theCurrentWorkspace;
     //  Frame title
     QString title = "TimeTracker3";
-    //  TODO [current credentials' login]
+    if (tt3::ws::theCurrentCredentials.isValid())
+    {
+        title += " [";
+        title += tt3::ws::theCurrentCredentials.login();
+        title += "]";
+    }
     if (currentWorkspace != nullptr)
     {
         title += " - ";
@@ -126,7 +135,10 @@ void MainFrame::_savePosition()
     }
 }
 
-bool MainFrame::_createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress)
+bool MainFrame::_createWorkspace(
+    const tt3::ws::WorkspaceAddress & workspaceAddress,
+    const QString & adminUser,
+    const QString & adminLogin, const QString & adminPassword)
 {
     Q_ASSERT(workspaceAddress.isValid());
 
@@ -146,7 +158,10 @@ bool MainFrame::_createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddr
     try
     {
         tt3::ws::WorkspacePtr workspacePtr
-            { workspaceAddress.workspaceType()->createWorkspace(workspaceAddress) };
+        {
+            workspaceAddress.workspaceType()->createWorkspace(
+                workspaceAddress, adminUser, adminLogin, adminPassword)
+        };
         //  TODO if there is a "current activity", record & stop it
         tt3::ws::theCurrentWorkspace.swap(workspacePtr);
         tt3::ws::Component::Settings::instance()->addRecentWorkspace(workspaceAddress);
@@ -157,6 +172,8 @@ bool MainFrame::_createWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddr
         {
             workspacePtr->close();  //  TODO handle close errors
         }
+        //  We need to change th "current" credentials to allow access to the new workspace
+        tt3::ws::theCurrentCredentials = tt3::ws::Credentials(adminLogin, adminPassword);
         //  Done
         refresh();
         return true;
@@ -276,7 +293,7 @@ void MainFrame::_onActionNewWorkspace()
         Q_ASSERT(workspaceAddress.isValid());
         qDebug() << workspaceAddress.displayForm();
         qDebug() << workspaceAddress.externalForm();
-        _createWorkspace(workspaceAddress);
+        _createWorkspace(workspaceAddress, dlg.adminUser(), dlg.adminLogin(), dlg.adminPassword());
     }
 }
 
@@ -309,6 +326,11 @@ void MainFrame::_onActionExit()
     QApplication::exit(0);
 }
 
+void MainFrame::_onActionDestroyWorkspace()
+{
+    tt3::gui::ErrorDialog::show(this, "Npt yet implemented");
+}
+
 void MainFrame::_onActionHelpContent()
 {
     tt3::gui::ErrorDialog::show(this, "Not yet implemented");
@@ -330,6 +352,11 @@ void MainFrame::_onCurrentWorkspaceChanged()
 }
 
 void MainFrame::_onWorkspaceClosed(tt3::ws::WorkspaceClosedNotification)
+{
+    refresh();
+}
+
+void MainFrame::_onCurrentCredentialsChanged()
 {
     refresh();
 }

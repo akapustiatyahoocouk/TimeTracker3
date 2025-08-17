@@ -156,7 +156,7 @@ tt3::db::api::IAccount * Database::tryLogin(const QString & login, const QString
 //////////
 //  tt3::db::api::IDatabase (life cycle)
 tt3::db::api::IUser * Database::createUser(
-    bool enables, const QStringList & emailAddresses,
+    bool enabled, const QStringList & emailAddresses,
     const QString & realName,
     const std::optional<tt3::util::TimeSpan> & inactivityTimeout,
     const std::optional<QLocale> & uiLocale) throws(DatabaseException)
@@ -198,7 +198,7 @@ tt3::db::api::IUser * Database::createUser(
 
     //  Do the work - create & initialize the User...
     User * user = new User(this, _nextUnusedOid++);
-    user->_enabled = enables;
+    user->_enabled = enabled;
     user->_emailAddresses = emailAddresses;
     user->_realName = realName;
     user->_inactivityTimeout = inactivityTimeout;
@@ -263,6 +263,10 @@ void Database::_save() throws(DatabaseException)
     rootElement.appendChild(usersElement);
     for (User * user : _users)
     {   //  TODO try to sort by OID to reduce changes
+        QDomElement userElement = document.createElement("User");
+        usersElement.appendChild(userElement);
+        //  Serialize user features
+        user->_serializePreoperties(userElement);
     }
 
 

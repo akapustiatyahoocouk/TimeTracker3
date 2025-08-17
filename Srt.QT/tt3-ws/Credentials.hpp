@@ -24,11 +24,16 @@ namespace tt3::ws
     class TT3_WS_PUBLIC Credentials final
     {
         //////////
+        //  Constats
+    public:
+        //  The invalid credentials
+        static const Credentials Invalid;
+
+        //////////
         //  Construction/destruction/assignment
     public:
         Credentials() = default;
-        Credentials(const QString & login, const QString & password)
-            :   _login(login.trimmed()), _password(password) {}
+        Credentials(const QString & login, const QString & password);
         ~Credentials() = default;
         //  Default copy constructor and assignment are both OK
 
@@ -56,7 +61,7 @@ namespace tt3::ws
         //  Implementation
     private:
         QString         _login;
-        QString         _password;
+        QString         _password;  //  always "" if _login == ""
     };
 
     //////////

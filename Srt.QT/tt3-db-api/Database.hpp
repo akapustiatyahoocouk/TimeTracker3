@@ -65,7 +65,7 @@ namespace tt3::db::api
         //  Opertions (life cycle)
     public:
         //  TODO document
-        virtual IUser *     createUser(bool enables, const QStringList & emailAddresses,
+        virtual IUser *     createUser(bool enabled, const QStringList & emailAddresses,
                                 const QString & realName,
                                 const std::optional<tt3::util::TimeSpan> & inactivityTimeout,
                                 const std::optional<QLocale> & uiLocale) throws(DatabaseException) = 0;

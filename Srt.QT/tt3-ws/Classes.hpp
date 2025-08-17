@@ -17,6 +17,7 @@
 
 namespace tt3::ws
 {
+    class TT3_WS_PUBLIC Credentials;
     class TT3_WS_PUBLIC WorkspaceType;
     class TT3_WS_PUBLIC WorkspaceTypeRegistry;
     class TT3_WS_PUBLIC WorkspaceAddress;
@@ -28,6 +29,9 @@ namespace tt3::ws
 
     using WorkspaceTypes = QSet<WorkspaceType*>;
     using WorkspaceAddressesList = QList<WorkspaceAddress>;
+
+    //  We can piggyback on some DB API types
+    using Capabilities = tt3::db::api::Capabilities;
 }
 
 //  End of tt3-ws/Classes.hpp

@@ -141,4 +141,20 @@ tt3::db::api::Accounts User::accounts() const throws(DatabaseException)
     return tt3::db::api::Accounts(_accounts.begin(), _accounts.end());
 }
 
+//////////
+//  Serialization
+void User::_serializePreoperties(QDomElement & element)
+{
+    Principal::_serializePreoperties(element);
+    element.setAttribute("RealName", _realName);
+    if (_inactivityTimeout.has_value())
+    {
+        element.setAttribute("UiLocale", tt3::util::toString(_uiLocale.value()));
+    }
+    if (_uiLocale.has_value())
+    {
+        element.setAttribute("InactivityTimeout", tt3::util::toString(_inactivityTimeout.value()));
+    }
+}
+
 //  End of tt3-db-xml/User.cpp

@@ -60,6 +60,11 @@ namespace tt3::db::xml
 
         //  Helpers
         void                _ensureLive() const throws (DatabaseException);
+
+        //////////
+        //  Serialization
+    private:
+        virtual void        _serializePreoperties(QDomElement & element);
     };
 }
 

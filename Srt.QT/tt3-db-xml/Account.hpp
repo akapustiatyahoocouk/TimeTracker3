@@ -52,6 +52,11 @@ namespace tt3::db::xml
         tt3::db::api::Capabilities  _capabilities;
         //  Associations
         User *              _user;  //  counts as "reference"
+
+        //////////
+        //  Serialization
+    private:
+        virtual void        _serializePreoperties(QDomElement & element) override;
     };
 }
 

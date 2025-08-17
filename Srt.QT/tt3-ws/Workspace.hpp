@@ -49,6 +49,17 @@ namespace tt3::ws
         Validator * validator() const { return type()->validator(); }
 
         //////////
+        //  Operations (access control)
+    public:
+        //  Checks whether the specified Credentials allow ANY kind of
+        //  access to this woirkspace
+        bool            canAccess(const Credentials & credentials) const throws(WorkspaceException);
+
+        //  Returns the capabilities that the specified credentials grant
+        //  for thos workspace. If none, returns Capabilities::None.
+        Capabilities    capabilities(const Credentials & credentials) const throws(WorkspaceException);
+
+        //////////
         //  Signals
     signals:
         void        workspaceClosed(WorkspaceClosedNotification notification);
@@ -60,6 +71,12 @@ namespace tt3::ws
 
         const WorkspaceAddress  _address;
         tt3::db::api::IDatabase *   _database;  //  nullptr == workspace closed
+
+        //  Acces control "cache" - 1 entry is enough, as workspace
+        //  services will typically be invoked with the same Credentials
+        using CredentialsPtr = Credentials*;
+        mutable CredentialsPtr  _accessCacheKey = nullptr;  //  mullptr == value not cached
+        mutable Capabilities    _accessCacheValue = Capabilities::None;
 
         //  Helpers
         void                _markClosed();

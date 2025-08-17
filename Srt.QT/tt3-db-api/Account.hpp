@@ -20,6 +20,7 @@ namespace tt3::db::api
     //  Capabilities of a login account
     enum class Capabilities
     {
+        //  Individual capabilty flags
         Administrator = 0x0001,
         ManageUsers = 0x0002,
         ManageActivityTypes = 0x0004,
@@ -32,7 +33,10 @@ namespace tt3::db::api
         LogWork = 0x0200,
         LogEvents = 0x0400,
         GenerateReports = 0x0800,
-        BackupAndRestore = 0x1000
+        BackupAndRestore = 0x1000,
+        //  Flag combinatons
+        None = 0x0000,
+        All = 0x1FFF
     };
 
     //  A login account

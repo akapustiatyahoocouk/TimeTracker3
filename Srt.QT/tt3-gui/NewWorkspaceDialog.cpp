@@ -120,16 +120,19 @@ void NewWorkspaceDialog::_browsePushButtonClicked()
 
 void NewWorkspaceDialog::_userNameLineEditTextChanged(QString)
 {
+    _adminUser = _ui->userNameLineEdit->text();
     _refresh();
 }
 
 void NewWorkspaceDialog::_loginLineEditTextChanged(QString)
 {
+    _adminLogin = _ui->loginLineEdit->text();
     _refresh();
 }
 
 void NewWorkspaceDialog::_passwordLineEditTextChanged(QString)
 {
+    _adminPassword = _ui->passwordLineEdit->text();
     _refresh();
 }
 

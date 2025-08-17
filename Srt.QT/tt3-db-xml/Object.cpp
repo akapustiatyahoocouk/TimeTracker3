@@ -133,4 +133,11 @@ void Object::_ensureLive() const throws (DatabaseException)
     }
 }
 
+//////////
+//  Serialization
+void Object::_serializePreoperties(QDomElement & element)
+{
+    element.setAttribute("OID", tt3::util::toString(_oid));
+}
+
 //  End of tt3-db-xml/Object.cpp
