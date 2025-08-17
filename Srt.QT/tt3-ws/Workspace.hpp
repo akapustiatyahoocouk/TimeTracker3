@@ -75,6 +75,7 @@ namespace tt3::ws
     //  Only one global static instance of this class
     //  exists, and other instances should NOT be
     //  constructed.
+    //  Can be nullptr if there is no "current" workspace.
     class TT3_WS_PUBLIC CurrentWorkspace final : public QObject
     {
         Q_OBJECT

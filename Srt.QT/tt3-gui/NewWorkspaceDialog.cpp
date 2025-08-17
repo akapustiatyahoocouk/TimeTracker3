@@ -87,7 +87,6 @@ void NewWorkspaceDialog::_refresh()
             accountValidator->isValidLogin(_ui->loginLineEdit->text()) &&
             accountValidator->isValidPassword(_ui->passwordLineEdit->text()) &&
             _ui->confirmPasswordLineEdit->text() == _ui->passwordLineEdit->text());
-
 }
 
 //////////

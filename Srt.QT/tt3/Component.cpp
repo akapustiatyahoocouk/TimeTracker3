@@ -60,7 +60,6 @@ IMPLEMENT_SINGLETON(Component::Settings)
 Component::Settings::Settings()
     :   reloadLastWorkspaceOnStartup(
           "ReloadLastWorkspaceOnStartup",
-          "Reload last workspace on startup",
           false)
 {
     addSetting(&reloadLastWorkspaceOnStartup);

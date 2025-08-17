@@ -58,6 +58,7 @@ namespace tt3::gui
         virtual bool        isActive() const = 0;
         virtual void        activate() = 0;
         virtual void        deactivate() = 0;
+        virtual QMainWindow*mainWindow() = 0;
     };
 
     //////////
@@ -85,6 +86,7 @@ namespace tt3::gui
     //  Only one global static instance of this class
     //  exists, and other instances should NOT be
     //  constructed.
+    //  Can be nullptr if there is no "current" dlon.
     class TT3_GUI_PUBLIC CurrentSkin final
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentSkin)

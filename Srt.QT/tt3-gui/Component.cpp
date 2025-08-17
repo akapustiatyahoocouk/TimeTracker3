@@ -61,11 +61,14 @@ IMPLEMENT_SINGLETON(Component::Settings)
 
 Component::Settings::Settings()
     :   activeSkin(
-          "ActiveSkin",
-          "The identifier of the currently active skin",
-          "")
+            "ActiveSkin",
+            ""),
+        lastLogin(
+            "LastLogin",
+            "")
 {
     addSetting(&activeSkin);
+    addSetting(&lastLogin);
 }
 
 Component::Settings::~Settings()

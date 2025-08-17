@@ -33,7 +33,11 @@ namespace tt3::gui
             //////////
             //  Properties
         public:
-            mutable tt3::util::Setting<QString> activeSkin; //  The mnemonic of the active skin
+            //  The mnemonic of the active skin
+            tt3::util::Setting<QString> activeSkin;
+
+            //  The login last used
+            tt3::util::Setting<QString> lastLogin;
         };
 
         //////////

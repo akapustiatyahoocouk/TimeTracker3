@@ -7,6 +7,7 @@ SOURCES += \
     Component.cpp \
     CurrentSkin.cpp \
     ErrorDialog.cpp \
+    LoginDialog.cpp \
     NewWorkspaceDialog.cpp \
     SelectWorkspaceDialog.cpp \
     SkinRegistry.cpp
@@ -16,11 +17,13 @@ HEADERS += \
     Components.hpp \
     ErrorDialog.hpp \
     Linkage.hpp \
+    LoginDialog.hpp \
     NewWorkspaceDialog.hpp \
     SelectWorkspaceDialog.hpp \
     Skin.hpp
 
 FORMS += \
+    LoginDialog.ui \
     NewWorkspaceDialog.ui \
     SelectWorkspaceDialog.ui
 

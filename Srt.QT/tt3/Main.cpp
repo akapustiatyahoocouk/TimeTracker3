@@ -143,6 +143,55 @@ namespace
         tt3::gui::theCurrentSkin = initialSkin;
         initialSkin->activate();
     }
+
+    void initialize()
+    {
+        QPixmap pm;
+        pm.load(":/tt3/Resources/Images/Misc/Tt3Large.png");
+        QIcon ic(pm);
+        QGuiApplication::setWindowIcon(ic);
+        QGuiApplication::setApplicationName("TimeTracker3");
+
+        registerStandardComponents();
+        tt3::util::PluginManager::loadPlugins();
+        loadSettings();
+        selectActiveSkin();
+
+        //  Perform initial login
+        tt3::gui::LoginDialog loginDialog(
+            tt3::gui::theCurrentSkin->mainWindow(),
+            tt3::gui::Component::Settings::instance()->lastLogin);
+        if (loginDialog.exec() != QDialog::DialogCode::Accepted)
+        {   //  No need to cleanup - nothing has
+            //  chnaged in application's settings
+            exit(0);
+        }
+        tt3::ws::theCurrentCredentials = loginDialog.credentials();
+    }
+
+    void cleanup()
+    {
+        //  TODO if there is a "current activity", record & stop it
+
+        //  TODO if there's a "current" activity, record & syop it
+        //  If there's a "current" workspace, close it
+        tt3::ws::WorkspacePtr currentWorkspace;
+        tt3::ws::theCurrentWorkspace.swap(currentWorkspace);
+        if (currentWorkspace != nullptr)
+        {
+            currentWorkspace->close();
+            //  TODO handle "close" exceptions
+        }
+
+        //  If there's a "current" skin, deactivate it
+        tt3::gui::ISkin * currentSkin = nullptr;
+        tt3::gui::theCurrentSkin.swap(currentSkin);
+        Q_ASSERT(currentSkin != nullptr);
+        currentSkin->deactivate();
+
+        //  Done
+        saveSettings();
+    }
 }
 
 //////////
@@ -151,44 +200,14 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    //  Initialize the application TODO in a separate function
-    QPixmap pm;
-    pm.load(":/tt3/Resources/Images/Misc/Tt3Large.png");
-    QIcon ic(pm);
-    QGuiApplication::setWindowIcon(ic);
-    QGuiApplication::setApplicationName("TimeTracker3");
-
-    registerStandardComponents();
-    tt3::util::PluginManager::loadPlugins();
-    loadSettings();
-    selectActiveSkin();
+    //  Initialize the application
+    initialize();
 
     //  Go!
     int exitCode = a.exec();
 
-    //  Cleanup TODO in a separate function
-
-
-    //  TODO if there is a "current activity", record & stop it
-
-    //  TODO if there's a "current" activity, record & syop it
-    //  If there's a "current" workspace, close it
-    tt3::ws::WorkspacePtr currentWorkspace;
-    tt3::ws::theCurrentWorkspace.swap(currentWorkspace);
-    if (currentWorkspace != nullptr)
-    {
-        currentWorkspace->close();
-        //  TODO handle "close" exceptions
-    }
-
-    //  If there's a "current" skin, deactivate it
-    tt3::gui::ISkin * currentSkin = nullptr;
-    tt3::gui::theCurrentSkin.swap(currentSkin);
-    Q_ASSERT(currentSkin != nullptr);
-    currentSkin->deactivate();
-
-    //  Done
-    saveSettings();
+    //  Cleanup & we're done
+    cleanup();
     return exitCode;
 }
 

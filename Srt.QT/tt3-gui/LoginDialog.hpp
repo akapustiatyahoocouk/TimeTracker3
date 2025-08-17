@@ -1,5 +1,5 @@
 //
-//  tt3-gui/SelectWorkspaceDialog.hpp - The modal "Open workspace" dialog
+//  tt3-gui/LoginDialog.hpp - The modal "Login" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,32 +19,30 @@
 
 namespace tt3::gui
 {
-    //  The modal "Open workspace" dialog
-    namespace Ui { class SelectWorkspaceDialog; }
+    //  The modal "login" dialog
+    namespace Ui { class LoginDialog; }
 
-    class TT3_GUI_PUBLIC SelectWorkspaceDialog : public QDialog
+    class TT3_GUI_PUBLIC LoginDialog : public QDialog
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(SelectWorkspaceDialog)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(LoginDialog)
 
         //////////
         //  Construction/destruction
     public:
-        explicit SelectWorkspaceDialog(QWidget * parent);
-        virtual ~SelectWorkspaceDialog();
+        LoginDialog(QWidget * parent, const QString & login);
+        virtual ~LoginDialog();
 
         //////////
         //  Operations
     public:
-        //  The workspace address selected by the user or an
-        //  invalid workspace address if the user has cancelled
-        //  the dialog.
-        tt3::ws::WorkspaceAddress   selectedWorkspaceAddress() { return _workspaceAddress; }
+        //  The credentials entered by the user
+        tt3::ws::Credentials    credentials() const { return _credentials; }
 
         //////////
         //  Implementation
     private:
-        tt3::ws::WorkspaceAddress   _workspaceAddress;  //  invalid == not selected
+        tt3::ws::Credentials    _credentials;
 
         //  Helpers
         void            _refresh();
@@ -52,14 +50,16 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::SelectWorkspaceDialog *   _ui;
+        Ui::LoginDialog *   _ui;
 
         //////////
         //  Event handlers
     private slots:
-        void            _workspaceTypeComboBoxCurrentIndexChanged(int);
-        void            _browsePushButtonClicked();
+        void            _loginLineEditTextChanged(QString);
+        void            _passwordLineEditTextChanged(QString);
+        void            _accept();
     };
 }
 
-//  End of tt3-gui/SelectWorkspaceDialog.hpp
+//  End of tt3-gui/LoginDialog.hpp
+

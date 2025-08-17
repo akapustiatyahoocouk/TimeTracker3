@@ -24,8 +24,8 @@ namespace tt3::util
         //////////
         //  Construction/destruction
     public:
-        AbstractSetting(const QString & mnemonic, const QString & displayName)
-            :   _mnemonic(mnemonic), _displayName(displayName) {}
+        explicit AbstractSetting(const QString & mnemonic)
+            :   _mnemonic(mnemonic) {}
         virtual ~AbstractSetting() = default;
 
         //////////
@@ -33,7 +33,6 @@ namespace tt3::util
     public:
         //  TODO document
         QString         mnemonic() const { return _mnemonic; }
-        QString         displayName() const { return _displayName; }
 
         virtual QString valueString() const = 0;
         virtual void    setValueString(const QString & valueString) = 0;
@@ -42,7 +41,6 @@ namespace tt3::util
         //  Implementation
     private:
         const QString   _mnemonic;
-        const QString   _displayName;
     };
 
     //////////
@@ -55,8 +53,8 @@ namespace tt3::util
         //////////
         //  Construction/destruction
     public:
-        Setting(const QString & mnemonic, const QString & displayName, const T & defaultValue)
-            :   AbstractSetting(mnemonic, displayName),
+        Setting(const QString & mnemonic, const T & defaultValue)
+            :   AbstractSetting(mnemonic),
                 _defaultValue(defaultValue),
                 _value(defaultValue),
                 _valueLoaded(false),

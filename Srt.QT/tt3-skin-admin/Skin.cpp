@@ -91,4 +91,9 @@ void Skin::deactivate()
     }
 }
 
+QMainWindow * Skin::mainWindow()
+{
+    return _mainFrame;
+}
+
 //  End of tt3-gui/Skin.cpp

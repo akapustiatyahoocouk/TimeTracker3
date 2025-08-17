@@ -10,5 +10,7 @@
         <file>Resources/Images/Actions/CancelSmall.png</file>
         <file>Resources/Images/Actions/CancelLarge.png</file>
         <file>Resources/Images/Actions/OkLarge.png</file>
+        <file>Resources/Images/Actions/LoginLarge.png</file>
+        <file>Resources/Images/Actions/LoginSmall.png</file>
     </qresource>
 </RCC>

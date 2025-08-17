@@ -19,7 +19,7 @@
 
 namespace tt3::gui
 {
-    //  The modal "Mew workspace" dialog
+    //  The modal "New workspace" dialog
     namespace Ui { class NewWorkspaceDialog; }
 
     class TT3_GUI_PUBLIC NewWorkspaceDialog : public QDialog
@@ -30,7 +30,7 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        explicit NewWorkspaceDialog(QWidget * parent = nullptr);
+        explicit NewWorkspaceDialog(QWidget * parent);
         virtual ~NewWorkspaceDialog();
 
         //////////

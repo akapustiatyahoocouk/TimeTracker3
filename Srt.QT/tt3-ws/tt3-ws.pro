@@ -5,6 +5,7 @@ DEFINES += TT3_WS_LIBRARY
 
 SOURCES += \
     Component.cpp \
+    CurrentCredentials.cpp \
     CurrentWorkspace.cpp \
     Workspace.cpp \
     WorkspaceAddress.cpp \
@@ -15,6 +16,7 @@ HEADERS += \
     API.hpp \
     Classes.hpp \
     Components.hpp \
+    Credentials.hpp \
     Exceptions.hpp \
     Linkage.hpp \
     Notifications.hpp \
