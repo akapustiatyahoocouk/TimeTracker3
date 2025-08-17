@@ -1,0 +1,165 @@
+//
+//  tt3-db-xml/Account.cpp - tt3::db::xml::Account class implementation
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+#include "tt3-db-xml/API.hpp"
+using namespace tt3::db::xml;
+
+//////////
+//  Construction/destruction (from DB type only)
+Account::Account(Database * database, Oid oid)
+    :   Principal(database, oid)
+{
+}
+
+Account::~Account()
+{
+}
+
+//////////
+//  tt3::db::api::IObject (life cycle)
+void Account::destroy() throws(DatabaseException)
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+//////////
+//  tt3::db::api::IAccount (properties)
+QString Account::login() const throws(DatabaseException)
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+
+    return _login;
+}
+
+void Account::setLogin(const QString & login) throws(DatabaseException)
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+
+    //  Validate parameters
+    if (!_database->_validator->account()->isValidLogin(login))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "login",
+            login);
+    }
+
+    //  Logins must be unique per database
+    Account * existingAccount = _database->_findAccount(login);
+    if (existingAccount != nullptr && existingAccount != this)
+    {   //  OOPS! Already there!
+        throw tt3::db::api::AlreadyExistsException(
+            type(),
+            "login",
+            login);
+    }
+
+    if (login != _login)
+    {   //  Make the change...
+        _login = login;
+        _database->_needsSaving = true;
+        //  ...and schedule change notifications
+        //  TODO
+    }
+}
+
+QString Account::passwordHash() const throws(DatabaseException)
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+
+    return _passwordHash;
+}
+
+void Account::setPassword(const QString & password) throws(DatabaseException)
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+
+    //  Validate parameters
+    if (!_database->_validator->account()->isValidPassword(password))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "password",
+            password);
+    }
+
+    //  Do the work
+    std::unique_ptr<tt3::util::MessageDigest::Builder> digestBuilder
+        { tt3::util::Sha1MessageDigest::instance()->createBuilder() };
+    digestBuilder->digest(password);
+    QString passwordHash = digestBuilder->digestAsString();
+
+    //  Always make the change (we want XML file
+    //  to STILL be saved even if new password is
+    //  the same as old one)...
+    _passwordHash = passwordHash;
+    _database->_needsSaving = true;
+    //  ...and schedule change notifications
+    //  TODO
+}
+
+tt3::db::api::Capabilities Account::capabilities() const throws(DatabaseException)
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+
+    return _capabilities;
+}
+
+void Account::setCapabilities(tt3::db::api::Capabilities capabilities) throws(DatabaseException)
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+
+    if (capabilities != _capabilities)
+    {   //  Make the change...
+        _capabilities = capabilities;
+        _database->_needsSaving = true;
+        //  ...and schedule change notifications
+        //  TODO
+    }
+}
+
+//////////
+//  tt3::db::api::IAccount (associations)
+tt3::db::api::IUser * Account::user() const throws(DatabaseException)
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+
+    return _user;
+}
+
+//////////
+//  Serialization
+void Account::_serializeProperties(QDomElement & objectElement)
+{
+    Principal::_serializeProperties(objectElement);
+    objectElement.setAttribute("Login", _login);
+    objectElement.setAttribute("PasswordHash", _passwordHash);
+    objectElement.setAttribute("Capabilities", tt3::util::toString(_capabilities));
+}
+
+void Account::_serializeAggregations(QDomElement & parentElement)
+{
+    Principal::_serializeAggregations(parentElement);
+}
+
+//  End of tt3-db-xml/Account.cpp

@@ -207,16 +207,15 @@ tt3::db::api::IUser * Database::createUser(
     _users.insert(user);
     user->addReference();
     _needsSaving = true;
-    //  ...schedulechange  notifications...
+    //  ...schedule change notifications...
     //  TODO
     //  ...and we're done
     return user;
-
 }
 
 //////////
 //  Implementation helpers
-void Database::_ensureOpen()
+void Database::_ensureOpen() const
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
 
@@ -245,6 +244,24 @@ void Database::_markClosed()
     }
 }
 
+Account * Database::_findAccount(const QString & login) const
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    _ensureOpen();
+
+    for (User * user : _users)
+    {
+        for (Account * account : user->_accounts)
+        {
+            if (account->_login == login)
+            {
+                return account;
+            }
+        }
+    }
+    return nullptr;
+}
+
 //////////
 //  Serialization
 void Database::_save() throws(DatabaseException)
@@ -266,7 +283,8 @@ void Database::_save() throws(DatabaseException)
         QDomElement userElement = document.createElement("User");
         usersElement.appendChild(userElement);
         //  Serialize user features
-        user->_serializePreoperties(userElement);
+        user->_serializeProperties(userElement);
+        user->_serializeAggregations(userElement);
     }
 
 

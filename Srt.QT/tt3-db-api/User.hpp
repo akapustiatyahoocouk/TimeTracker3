@@ -52,6 +52,14 @@ namespace tt3::db::api
     public:
         //  TODO document
         virtual Accounts    accounts() const throws(DatabaseException) = 0;
+
+        //////////
+        //  Operations (life cycle)
+    public:
+        virtual IAccount *  createAccount(
+            bool enabled, const QStringList & emailAddresses,
+            const QString & login, const QString & password,
+            Capabilities capabilities) throws(DatabaseException) = 0;
     };
 }
 

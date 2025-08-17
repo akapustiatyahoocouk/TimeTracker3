@@ -4,6 +4,7 @@ TEMPLATE = lib
 DEFINES += TT3_DB_API_LIBRARY
 
 SOURCES += \
+    Capabilities.cpp \
     ChangeNotifier.cpp \
     Component.cpp \
     Database.cpp \
@@ -14,6 +15,7 @@ SOURCES += \
 HEADERS += \
     API.hpp \
     Account.hpp \
+    Capabilities.hpp \
     Classes.hpp \
     Components.hpp \
     Database.hpp \

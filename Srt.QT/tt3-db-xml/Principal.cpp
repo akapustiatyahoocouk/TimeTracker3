@@ -84,14 +84,19 @@ void Principal::setEmailAddresses(const QStringList & emailAddresses) throws(Dat
 
 //////////
 //  Serialization
-void Principal::_serializePreoperties(QDomElement & element)
+void Principal::_serializeProperties(QDomElement & objectElement)
 {
-    Object::_serializePreoperties(element);
-    element.setAttribute("Enabled", tt3::util::toString(_enabled));
+    Object::_serializeProperties(objectElement);
+    objectElement.setAttribute("Enabled", tt3::util::toString(_enabled));
     if (!_emailAddresses.isEmpty())
     {   //  A valid e-mail address has no ',' in it
-        element.setAttribute("EmailAddresses", _emailAddresses.join(','));
+        objectElement.setAttribute("EmailAddresses", _emailAddresses.join(','));
     }
+}
+
+void Principal::_serializeAggregations(QDomElement & parentElement)
+{
+    Object::_serializeAggregations(parentElement);
 }
 
 //  End of tt3-db-xml/Principal.cpp

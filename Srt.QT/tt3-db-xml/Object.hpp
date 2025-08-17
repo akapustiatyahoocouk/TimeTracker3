@@ -26,6 +26,7 @@ namespace tt3::db::xml
 
         friend class Principal;
         friend class User;
+        friend class Account;
 
         //////////
         //  Construction/destruction (from DB type only)
@@ -64,7 +65,8 @@ namespace tt3::db::xml
         //////////
         //  Serialization
     private:
-        virtual void        _serializePreoperties(QDomElement & element);
+        virtual void        _serializeProperties(QDomElement & objectElement);
+        virtual void        _serializeAggregations(QDomElement & parentElement);
     };
 }
 

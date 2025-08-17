@@ -17,28 +17,6 @@
 
 namespace tt3::db::api
 {
-    //  Capabilities of a login account
-    enum class Capabilities
-    {
-        //  Individual capabilty flags
-        Administrator = 0x0001,
-        ManageUsers = 0x0002,
-        ManageActivityTypes = 0x0004,
-        ManageBeheficiaries = 0x0008,
-        ManageWorkloads = 0x0010,
-        ManagePublicActivities = 0x0020,
-        ManagePublicTasks = 0x0040,
-        ManagePrivateActivities = 0x0080,
-        ManagePrivateTasks = 0x0100,
-        LogWork = 0x0200,
-        LogEvents = 0x0400,
-        GenerateReports = 0x0800,
-        BackupAndRestore = 0x1000,
-        //  Flag combinatons
-        None = 0x0000,
-        All = 0x1FFF
-    };
-
     //  A login account
     class TT3_DB_API_PUBLIC IAccount : public virtual IPrincipal
     {

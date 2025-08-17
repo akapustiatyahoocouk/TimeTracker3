@@ -26,12 +26,18 @@ namespace tt3::db::xml
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Account)
 
         friend class Database;
+        friend class User;
 
         //////////
         //  Construction/destruction (from DB type only)
     private:
         Account(Database * database, Oid oid);
         virtual ~Account();
+
+        //////////
+        //  tt3::db::api::IObject (life cycle)
+    public:
+        virtual void        destroy() throws(DatabaseException) override;
 
         //////////
         //  tt3::db::api::IAccount (properties)
@@ -42,6 +48,11 @@ namespace tt3::db::xml
         virtual void        setPassword(const QString & password) throws(DatabaseException) override;
         virtual tt3::db::api::Capabilities  capabilities() const throws(DatabaseException) override;
         virtual void        setCapabilities(tt3::db::api::Capabilities capabilities) throws(DatabaseException) override;
+
+        //////////
+        //  tt3::db::api::IAccount (associations)
+    public:
+        virtual tt3::db::api::IUser *   user() const throws(DatabaseException) override;
 
         //////////
         //  Implementation
@@ -56,7 +67,8 @@ namespace tt3::db::xml
         //////////
         //  Serialization
     private:
-        virtual void        _serializePreoperties(QDomElement & element) override;
+        virtual void        _serializeProperties(QDomElement & objectElement) override;
+        virtual void        _serializeAggregations(QDomElement & parentElement) override;
     };
 }
 

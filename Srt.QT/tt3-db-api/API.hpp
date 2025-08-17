@@ -30,6 +30,7 @@
 #include "tt3-db-api/DatabaseType.hpp"
 #include "tt3-db-api/DatabaseAddress.hpp"
 #include "tt3-db-api/Database.hpp"
+#include "tt3-db-api/Capabilities.hpp"
 
 #include "tt3-db-api/ObjectType.hpp"
 #include "tt3-db-api/Object.hpp"

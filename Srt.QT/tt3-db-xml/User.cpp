@@ -132,6 +132,73 @@ void User::setUiLocale(const std::optional<QLocale> & uiLocale) throws(DatabaseE
 }
 
 //////////
+//  tt3::db::api::IUser  (life cycle)
+tt3::db::api::IAccount *
+User::createAccount(
+    bool enabled, const QStringList & emailAddresses,
+    const QString & login, const QString & password,
+    tt3::db::api::Capabilities capabilities) throws(DatabaseException)
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+
+    //  Validate parameters
+    if (!_database->_validator->principal()->isValidEmailAddresses(emailAddresses))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Account::instance(),
+            "emailAddresses",
+            emailAddresses.join(','));
+    }
+    if (!_database->_validator->account()->isValidLogin(login))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Account::instance(),
+            "login",
+            login);
+    }
+    if (!_database->_validator->account()->isValidPassword(password))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Account::instance(),
+            "password",
+            password);
+    }
+
+    //  Logins must be unique per database
+    if (_database->_findAccount(login) != nullptr)
+    {   //  OOPS! Already there!
+        throw tt3::db::api::AlreadyExistsException(
+            tt3::db::api::ObjectTypes::Account::instance(),
+            "login",
+            login);
+    }
+
+    //  Do the work - create & initialize the Account...
+    std::unique_ptr<tt3::util::MessageDigest::Builder> digestBuilder
+        { tt3::util::Sha1MessageDigest::instance()->createBuilder() };
+    digestBuilder->digest(password);
+    QString passwordHash = digestBuilder->digestAsString();
+
+    Account * account = new Account(_database, _database->_nextUnusedOid++);
+    account->_enabled = enabled;
+    account->_emailAddresses = emailAddresses;
+    account->_login = login;
+    account->_passwordHash = passwordHash;
+    account->_capabilities = capabilities & tt3::db::api::Capabilities::All;
+    //  ...register it...
+    _accounts.insert(account);
+    account->addReference();
+    account->_user = this;
+    this->addReference();
+    _database->_needsSaving = true;
+    //  ...schedule change notifications...
+    //  TODO
+    //  ...and we're done
+    return account;
+}
+
+//////////
 //  tt3::db::api::IUser (associations)
 tt3::db::api::Accounts User::accounts() const throws(DatabaseException)
 {
@@ -143,17 +210,33 @@ tt3::db::api::Accounts User::accounts() const throws(DatabaseException)
 
 //////////
 //  Serialization
-void User::_serializePreoperties(QDomElement & element)
+void User::_serializeProperties(QDomElement & objectElement)
 {
-    Principal::_serializePreoperties(element);
-    element.setAttribute("RealName", _realName);
+    Principal::_serializeProperties(objectElement);
+    objectElement.setAttribute("RealName", _realName);
     if (_inactivityTimeout.has_value())
     {
-        element.setAttribute("UiLocale", tt3::util::toString(_uiLocale.value()));
+        objectElement.setAttribute("UiLocale", tt3::util::toString(_uiLocale.value()));
     }
     if (_uiLocale.has_value())
     {
-        element.setAttribute("InactivityTimeout", tt3::util::toString(_inactivityTimeout.value()));
+        objectElement.setAttribute("InactivityTimeout", tt3::util::toString(_inactivityTimeout.value()));
+    }
+}
+
+void User::_serializeAggregations(QDomElement & parentElement)
+{
+    Principal::_serializeAggregations(parentElement);
+    //  Do the accounts
+    QDomElement accountsElement = parentElement.ownerDocument().createElement("Accounts");
+    parentElement.appendChild(accountsElement);
+    for (Account * account : _accounts)
+    {   //  TODO try to sort by OID to reduce changes
+        QDomElement accountElement = parentElement.ownerDocument().createElement("Account");
+        accountsElement.appendChild(accountElement);
+        //  Serialize user features
+        account->_serializeProperties(accountElement);
+        account->_serializeAggregations(accountElement);
     }
 }
 

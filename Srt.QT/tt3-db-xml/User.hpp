@@ -56,6 +56,14 @@ namespace tt3::db::xml
         virtual tt3::db::api::Accounts  accounts() const throws(DatabaseException) override;
 
         //////////
+        //  tt3::db::api::IUser  (life cycle)
+    public:
+        virtual tt3::db::api::IAccount *    createAccount(
+            bool enabled, const QStringList & emailAddresses,
+            const QString & login, const QString & password,
+            tt3::db::api::Capabilities capabilities) throws(DatabaseException) override;
+
+        //////////
         //  Implementation
     private:
         //  Properties
@@ -68,7 +76,8 @@ namespace tt3::db::xml
         //////////
         //  Serialization
     private:
-        virtual void        _serializePreoperties(QDomElement & element) override;
+        virtual void        _serializeProperties(QDomElement & objectElement) override;
+        virtual void        _serializeAggregations(QDomElement & parentElement) override;
     };
 }
 

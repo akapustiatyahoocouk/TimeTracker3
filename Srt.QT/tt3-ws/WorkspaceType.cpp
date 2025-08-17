@@ -118,9 +118,17 @@ WorkspacePtr WorkspaceType::createWorkspace(
             std::optional<tt3::util::TimeSpan>(),
             std::optional<QLocale>());
     //  ...and account...
+    /* TODO kill off ? tt3::db::api::IAccount * account = */
+        user->createAccount(
+            true,
+            QStringList(),
+            adminLogin,
+            adminPassword,
+            tt3::db::api::Capabilities::Administrator);
     //  ...and we're done
     return WorkspacePtr(new Workspace(address, databasePtr.release()));
-    //  TODO translate & re-throw DatabaseException ?
+    //  TODO translate & re-throw DatabaseException ?,
+    //  destroyig the newly created database along the way
 }
 
 WorkspacePtr WorkspaceType::openWorkspace(const WorkspaceAddress & address) throws(WorkspaceException)

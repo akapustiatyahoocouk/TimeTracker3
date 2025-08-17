@@ -28,6 +28,7 @@ namespace tt3::db::xml
         friend class Object;
         friend class Principal;
         friend class User;
+        friend class Account;
 
         //////////
         //  Construction/destruction
@@ -126,8 +127,9 @@ namespace tt3::db::xml
         tt3::db::api::ChangeNotifier    _changeNotifier;
 
         //  Helpers
-        void            _ensureOpen() throws (DatabaseException);
+        void            _ensureOpen() const throws (DatabaseException);
         void            _markClosed();
+        Account *       _findAccount(const QString & login) const;
 
         //  Serialization
         void            _save() throws(DatabaseException);

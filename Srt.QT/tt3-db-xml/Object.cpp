@@ -135,9 +135,13 @@ void Object::_ensureLive() const throws (DatabaseException)
 
 //////////
 //  Serialization
-void Object::_serializePreoperties(QDomElement & element)
+void Object::_serializeProperties(QDomElement & objectElement)
 {
-    element.setAttribute("OID", tt3::util::toString(_oid));
+    objectElement.setAttribute("OID", tt3::util::toString(_oid));
+}
+
+void Object::_serializeAggregations(QDomElement & /*parentElement*/)
+{   //  Nothing at this level
 }
 
 //  End of tt3-db-xml/Object.cpp
