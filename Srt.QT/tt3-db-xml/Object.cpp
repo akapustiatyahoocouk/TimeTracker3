@@ -36,20 +36,13 @@ Object::Object(Database * database, Oid oid)
 Object::~Object()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
-
+    Q_ASSERT(!_isLive);
+    Q_ASSERT(!_database->_liveObjects.contains(_oid));
+    Q_ASSERT(_database->_graveyard.contains(this));
     Q_ASSERT(_referenceCount == 0);
-    Q_ASSERT((_isLive && _database->_liveObjects[_oid] == this) ||
-             (!_isLive && _database->_graveyard.contains(this)));
 
     //  Unregister with parent
-    if (_isLive)
-    {
-        _database->_liveObjects.remove(_oid);
-    }
-    else
-    {
-        _database->_graveyard.remove(this);
-    }
+    _database->_graveyard.remove(this);
 }
 
 //////////
@@ -157,12 +150,11 @@ void Object::_markDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
+    Q_ASSERT(_database->_liveObjects.contains(_oid));
 
     _isLive = false;
-    if (_referenceCount == 0)
-    {   //  No more refs too!
-        _database->_graveyard.insert(this);
-    }
+    _database->_liveObjects.remove(_oid);
+    _database->_graveyard.insert(this);
 }
 
 //////////

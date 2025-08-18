@@ -83,6 +83,16 @@ void Principal::setEmailAddresses(const QStringList & emailAddresses) throws(Dat
 }
 
 //////////
+//  Implementation helpers
+void Principal::_markDead()
+{
+    Q_ASSERT(_database->_guard.isLockedByCurrentThread());
+    Q_ASSERT(_isLive);
+
+    Object::_markDead();
+}
+
+//////////
 //  Serialization
 void Principal::_serializeProperties(QDomElement & objectElement)
 {

@@ -64,6 +64,9 @@ namespace tt3::db::xml
         //  Associations
         User *              _user;  //  counts as "reference"
 
+        //  Helpers
+        virtual void    _markDead() override;
+
         //////////
         //  Serialization
     private:

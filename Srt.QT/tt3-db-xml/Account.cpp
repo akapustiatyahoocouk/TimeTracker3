@@ -52,14 +52,6 @@ void Account::destroy() throws(DatabaseException)
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
 
-    //  Remove this account from User
-    Q_ASSERT(_user != nullptr && _user->_isLive);
-    Q_ASSERT(_user->_accounts.contains(this));
-    _user->_accounts.remove(this);
-    this->removeReference();
-    _user->removeReference();
-    _user = nullptr;
-
     //  This object is now "dead"
     _markDead();
 }
@@ -174,6 +166,25 @@ tt3::db::api::IUser * Account::user() const throws(DatabaseException)
     _ensureLive();  //  may throw
 
     return _user;
+}
+
+//////////
+//  Implementation helpers
+void Account::_markDead()
+{
+    Q_ASSERT(_database->_guard.isLockedByCurrentThread());
+    Q_ASSERT(_isLive);
+
+    //  Remove from "live" caches
+    Q_ASSERT(_user != nullptr && _user->_isLive);
+    Q_ASSERT(_user->_accounts.contains(this));
+    _user->_accounts.remove(this);
+    this->removeReference();
+    _user->removeReference();
+    _user = nullptr;
+
+    //  The rest is up to the base class
+    Principal::_markDead();
 }
 
 //////////

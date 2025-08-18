@@ -50,8 +50,8 @@ void ChangeNotifier::_WorkerThread::run()
 {
     //  Move signals to this thread to ensure queued
     //  connections to all slots
-    _changeNotifier->moveToThread(this);
-    //  TODO all of them!
+    //  TODO kill off this thread ? _changeNotifier->moveToThread(this);
+    //  TODO all of them ?
 
     //  Go!
     for (; ; )

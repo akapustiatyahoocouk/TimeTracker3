@@ -57,11 +57,6 @@ void User::destroy() throws(DatabaseException)
         account->destroy();
     }
 
-    //  Remove this User from database
-    Q_ASSERT(_database->_users.contains(this));
-    _database->_users.remove(this);
-    this->removeReference();
-
     //  This object is now "dead"
     _markDead();
 }
@@ -235,6 +230,24 @@ tt3::db::api::Accounts User::accounts() const throws(DatabaseException)
     _ensureLive();  //  may throw
 
     return tt3::db::api::Accounts(_accounts.begin(), _accounts.end());
+}
+
+//////////
+//  Implementation helpers
+void User::_markDead()
+{
+    Q_ASSERT(_database->_guard.isLockedByCurrentThread());
+    Q_ASSERT(_isLive);
+
+    Q_ASSERT(_accounts.isEmpty());
+
+    //  Remove from "live" caches
+    Q_ASSERT(_database->_users.contains(this));
+    _database->_users.remove(this);
+    this->removeReference();
+
+    //  The rest is up to the base class
+    Principal::_markDead();
 }
 
 //////////

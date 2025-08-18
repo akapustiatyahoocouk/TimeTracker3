@@ -49,6 +49,9 @@ namespace tt3::db::xml
         bool            _enabled = true;
         QStringList     _emailAddresses {};
 
+        //  Helpers
+        virtual void    _markDead() override;
+
         //////////
         //  Serialization
     private:

@@ -62,7 +62,7 @@ namespace tt3::db::xml
 
         //  Helpers
         void                _ensureLive() const throws (DatabaseException);
-        void                _markDead();
+        virtual void        _markDead();
 
         //////////
         //  Serialization

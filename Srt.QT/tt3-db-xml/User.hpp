@@ -68,11 +68,14 @@ namespace tt3::db::xml
         //  Implementation
     private:
         //  Properties
-        QString         _realName;
+        QString             _realName;
         std::optional<tt3::util::TimeSpan>  _inactivityTimeout;
         std::optional<QLocale>  _uiLocale;
         //  Associations
-        Accounts        _accounts;  //  count as "references"
+        Accounts            _accounts;  //  count as "references"
+
+        //  Helpers
+        virtual void        _markDead() override;
 
         //////////
         //  Serialization

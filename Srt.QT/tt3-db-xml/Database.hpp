@@ -82,12 +82,15 @@ namespace tt3::db::xml
         bool                _needsSaving = false;
         tt3::db::api::IObject::Oid  _nextUnusedOid = 1;
 
-        //  Primary object caches (usable objects only)
-        QMap<tt3::db::api::IObject::Oid, Object*>    _liveObjects;   //  NOT treated as "references"
+        //  Primary object caches - these contain all live
+        //  objects, either directly (like Users) or indirectly
+        //  (like Accounts, accessible through Users).
         QSet<User*>         _users; //  count as "references"
 
-        //  Delete-able instances: live == false && refcount == 0
-        QSet<Object*>       _graveyard; //  do NOT count as references
+        //  Seconsary caches - these do NOT count as "references"
+        QMap<tt3::db::api::IObject::Oid, Object*>
+                            _liveObjects;   //  All "live" objects
+        QSet<Object*>       _graveyard;     //  All "dead" objects
 
         //  Database file locking mechanism
         class TT3_DB_XML_PUBLIC _LockRefresher final : public QThread

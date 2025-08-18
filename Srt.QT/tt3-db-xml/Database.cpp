@@ -65,10 +65,12 @@ Database::~Database()
     }
     //  All Objects should be in graveyard by now
     tt3::util::Lock lock(_guard);
+    Q_ASSERT(_liveObjects.isEmpty());
     for (Object * object : _graveyard.values())
     {
         delete object;
     }
+    Q_ASSERT(_graveyard.isEmpty());
 }
 
 //////////
@@ -109,10 +111,12 @@ void Database::close() throws(DatabaseException)
     //  Destroy all Object instances...
     for (User * user : _users.values())
     {
+        /*  TODO kill off
         while (user->referenceCount() != 0)
         {
             user->removeReference();
         }
+        */
         user->destroy();    //  also destroys Accounts, Works, etc.
     }
     Q_ASSERT(_users.isEmpty());
@@ -256,7 +260,9 @@ void Database::_markClosed()
         delete _lockRefresher;
         _lockRefresher = nullptr;
         //  Schedule "database is closed" change notification
-        _changeNotifier.post(new tt3::db::api::DatabaseClosedNotification(this));
+        //  TODO keep? kill? _changeNotifier.post(new tt3::db::api::DatabaseClosedNotification(this));
+        tt3::db::api::DatabaseClosedNotification n(this);
+        _changeNotifier.databaseClosed(n);
     }
 }
 
