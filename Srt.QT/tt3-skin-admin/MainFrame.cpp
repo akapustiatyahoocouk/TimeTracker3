@@ -361,7 +361,8 @@ void MainFrame::_onActionHelpSearch()
 
 void MainFrame::_onActionAbout()
 {
-    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+    tt3::gui::AboutDialog dlg(this);
+    dlg.exec();
 }
 
 void MainFrame::_onCurrentWorkspaceChanged()

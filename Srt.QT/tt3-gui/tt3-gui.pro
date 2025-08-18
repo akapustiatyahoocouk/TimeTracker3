@@ -4,6 +4,7 @@ TEMPLATE = lib
 DEFINES += TT3_GUI_LIBRARY
 
 SOURCES += \
+    AboutDialog.cpp \
     Component.cpp \
     CurrentSkin.cpp \
     ErrorDialog.cpp \
@@ -14,6 +15,7 @@ SOURCES += \
 
 HEADERS += \
     API.hpp \
+    AboutDialog.hpp \
     Components.hpp \
     ErrorDialog.hpp \
     Linkage.hpp \
@@ -23,6 +25,7 @@ HEADERS += \
     Skin.hpp
 
 FORMS += \
+    AboutDialog.ui \
     LoginDialog.ui \
     NewWorkspaceDialog.ui \
     SelectWorkspaceDialog.ui

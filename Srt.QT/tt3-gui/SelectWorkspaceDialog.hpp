@@ -22,7 +22,7 @@ namespace tt3::gui
     //  The modal "Open workspace" dialog
     namespace Ui { class SelectWorkspaceDialog; }
 
-    class TT3_GUI_PUBLIC SelectWorkspaceDialog : public QDialog
+    class TT3_GUI_PUBLIC SelectWorkspaceDialog final : public QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(SelectWorkspaceDialog)

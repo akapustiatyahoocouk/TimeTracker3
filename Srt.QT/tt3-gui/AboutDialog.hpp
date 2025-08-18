@@ -1,5 +1,5 @@
 //
-//  tt3-gui/API.hpp - tt3-gui master header
+//  tt3-gui/AboutDialog.hpp - The modal "About" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,23 +15,29 @@
 //  GNU General Public License for more details.
 //////////
 #pragma once
+#include "tt3-gui/API.hpp"
 
-//////////
-//  Dependencies
-#include "tt3-ws/API.hpp"
-#include "tt3-util/API.hpp"
+namespace tt3::gui
+{
+    //  The modal "About" dialog
+    namespace Ui { class AboutDialog; }
 
-//////////
-//  tt3-gui components
-#include "tt3-gui/Linkage.hpp"
-#include "tt3-gui/Components.hpp"
+    class TT3_GUI_PUBLIC AboutDialog final : public QDialog
+    {
+        Q_OBJECT
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AboutDialog)
 
-#include "tt3-gui/ErrorDialog.hpp"
+        //////////
+        //  Construction/destruction
+    public:
+        explicit AboutDialog(QWidget * parent);
+        virtual ~AboutDialog();
 
-#include "tt3-gui/Skin.hpp"
-#include "tt3-gui/NewWorkspaceDialog.hpp"
-#include "tt3-gui/SelectWorkspaceDialog.hpp"
-#include "tt3-gui/LoginDialog.hpp"
-#include "tt3-gui/AboutDialog.hpp"
+        //////////
+        //  Controls
+    private:
+        Ui::AboutDialog *   _ui;
+    };
+}
 
-//  End of tt3-gui/API.hpp
+//  End of tt3-gui/AboutDialog.hpp

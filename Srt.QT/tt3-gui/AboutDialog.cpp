@@ -1,5 +1,5 @@
 //
-//  tt3-gui/API.hpp - tt3-gui master header
+//  tt3-gui/AboutDialog.cpp - tt3::gui::AboutDialog class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,24 +14,27 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
+#include "tt3-gui/API.hpp"
+#include "ui_AboutDialog.h"
+using namespace tt3::gui;
 
 //////////
-//  Dependencies
-#include "tt3-ws/API.hpp"
-#include "tt3-util/API.hpp"
+//  Construction/destruction
+AboutDialog::AboutDialog(QWidget * parent)
+    :   QDialog(parent),
+        _ui(new Ui::AboutDialog)
+{
+    _ui->setupUi(this);
 
-//////////
-//  tt3-gui components
-#include "tt3-gui/Linkage.hpp"
-#include "tt3-gui/Components.hpp"
+    _ui->versionLabel->setText(
+        "Version " + Component::instance()->version().toString() +
+        " (build " + Component::instance()->buildNumber() +
+        ")");
+}
 
-#include "tt3-gui/ErrorDialog.hpp"
+AboutDialog::~AboutDialog()
+{
+    delete _ui;
+}
 
-#include "tt3-gui/Skin.hpp"
-#include "tt3-gui/NewWorkspaceDialog.hpp"
-#include "tt3-gui/SelectWorkspaceDialog.hpp"
-#include "tt3-gui/LoginDialog.hpp"
-#include "tt3-gui/AboutDialog.hpp"
-
-//  End of tt3-gui/API.hpp
+//  End of tt3-gui/AboutDialog.cpp

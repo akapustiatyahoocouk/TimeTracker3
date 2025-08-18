@@ -22,7 +22,7 @@ namespace tt3::gui
     //  The modal "login" dialog
     namespace Ui { class LoginDialog; }
 
-    class TT3_GUI_PUBLIC LoginDialog : public QDialog
+    class TT3_GUI_PUBLIC LoginDialog final : public QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(LoginDialog)
