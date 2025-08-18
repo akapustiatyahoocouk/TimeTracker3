@@ -174,6 +174,7 @@ bool MainFrame::_createWorkspace(
         }
         //  We need to change th "current" credentials to allow access to the new workspace
         tt3::ws::theCurrentCredentials = tt3::ws::Credentials(adminLogin, adminPassword);
+        tt3::gui::Component::Settings::instance()->lastLogin = adminLogin;  //  ...for next startup
         //  Done
         refresh();
         return true;

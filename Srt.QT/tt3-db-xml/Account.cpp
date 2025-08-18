@@ -19,20 +19,49 @@ using namespace tt3::db::xml;
 
 //////////
 //  Construction/destruction (from DB type only)
-Account::Account(Database * database, Oid oid)
-    :   Principal(database, oid)
+Account::Account(User * user, Oid oid)
+    :   Principal(user->_database, oid)
 {
+    //  Register with parent
+    user->_accounts.insert(this);
+    this->emailAddresses();
+    this->_user = user;
+    user->addReference();
 }
 
 Account::~Account()
 {
+    Q_ASSERT((_isLive &&
+              _user->_accounts.contains(this) &&
+              !_database->_graveyard.contains(this)) ||
+             (!_isLive &&
+              _user == nullptr &&
+              _database->_graveyard.contains(this)));
+
+    //  Unregister with parent
+    if (_isLive)
+    {
+        _user->_accounts.remove(this);
+    }
 }
 
 //////////
 //  tt3::db::api::IObject (life cycle)
 void Account::destroy() throws(DatabaseException)
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+
+    //  Remove this account from User
+    Q_ASSERT(_user != nullptr && _user->_isLive);
+    Q_ASSERT(_user->_accounts.contains(this));
+    _user->_accounts.remove(this);
+    this->removeReference();
+    _user->removeReference();
+    _user = nullptr;
+
+    //  This object is now "dead"
+    _markDead();
 }
 
 //////////

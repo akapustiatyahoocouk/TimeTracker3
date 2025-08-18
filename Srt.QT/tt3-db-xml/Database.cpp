@@ -63,6 +63,12 @@ Database::~Database()
     catch (...)
     {   //  OOPS! TODO log?
     }
+    //  All Objects should be in graveyard by now
+    tt3::util::Lock lock(_guard);
+    for (Object * object : _graveyard.values())
+    {
+        delete object;
+    }
 }
 
 //////////
@@ -99,6 +105,17 @@ void Database::close() throws(DatabaseException)
             throw;
         }
     }
+
+    //  Destroy all Object instances...
+    for (User * user : _users.values())
+    {
+        while (user->referenceCount() != 0)
+        {
+            user->removeReference();
+        }
+        user->destroy();    //  also destroys Accounts, Works, etc.
+    }
+    Q_ASSERT(_users.isEmpty());
 
     //  Done
     _markClosed();
@@ -197,15 +214,14 @@ tt3::db::api::IUser * Database::createUser(
     }
 
     //  Do the work - create & initialize the User...
-    User * user = new User(this, _nextUnusedOid++);
+    User * user = new User(this, _nextUnusedOid++); //  registers with Database
     user->_enabled = enabled;
     user->_emailAddresses = emailAddresses;
     user->_realName = realName;
     user->_inactivityTimeout = inactivityTimeout;
     user->_uiLocale = uiLocale;
     //  ...register it...
-    _users.insert(user);
-    user->addReference();
+    Q_ASSERT(_liveObjects.contains(user->_oid));
     _needsSaving = true;
     //  ...schedule change notifications...
     //  TODO

@@ -26,10 +26,30 @@ Object::Object(Database * database, Oid oid)
     Q_ASSERT(_database != nullptr);
     Q_ASSERT(_oid != InvalidOid);
     Q_ASSERT(_database->isOpen());
+
+    Q_ASSERT(_database->_guard.isLockedByCurrentThread());
+
+    Q_ASSERT(!_database->_liveObjects.contains(_oid));
+    _database->_liveObjects[_oid] = this;
 }
 
 Object::~Object()
 {
+    Q_ASSERT(_database->_guard.isLockedByCurrentThread());
+
+    Q_ASSERT(_referenceCount == 0);
+    Q_ASSERT((_isLive && _database->_liveObjects[_oid] == this) ||
+             (!_isLive && _database->_graveyard.contains(this)));
+
+    //  Unregister with parent
+    if (_isLive)
+    {
+        _database->_liveObjects.remove(_oid);
+    }
+    else
+    {
+        _database->_graveyard.remove(this);
+    }
 }
 
 //////////
@@ -130,6 +150,18 @@ void Object::_ensureLive() const throws (DatabaseException)
     if (!_isLive)
     {
         throw tt3::db::api::InstanceDeadException();
+    }
+}
+
+void Object::_markDead()
+{
+    Q_ASSERT(_database->_guard.isLockedByCurrentThread());
+    Q_ASSERT(_isLive);
+
+    _isLive = false;
+    if (_referenceCount == 0)
+    {   //  No more refs too!
+        _database->_graveyard.insert(this);
     }
 }
 

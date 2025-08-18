@@ -83,6 +83,7 @@ namespace tt3::db::xml
         tt3::db::api::IObject::Oid  _nextUnusedOid = 1;
 
         //  Primary object caches (usable objects only)
+        QMap<tt3::db::api::IObject::Oid, Object*>    _liveObjects;   //  NOT treated as "references"
         QSet<User*>         _users; //  count as "references"
 
         //  Delete-able instances: live == false && refcount == 0

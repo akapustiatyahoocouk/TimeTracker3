@@ -24,6 +24,7 @@ namespace tt3::db::xml
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Object)
 
+        friend class Database;
         friend class Principal;
         friend class User;
         friend class Account;
@@ -61,6 +62,7 @@ namespace tt3::db::xml
 
         //  Helpers
         void                _ensureLive() const throws (DatabaseException);
+        void                _markDead();
 
         //////////
         //  Serialization

@@ -22,17 +22,48 @@ using namespace tt3::db::xml;
 User::User(Database * database, Oid oid)
     :   Principal(database, oid)
 {
+    //  Register User with parent
+    _database->_users.insert(this);
+    this->addReference();
 }
 
 User::~User()
 {
+    Q_ASSERT((_isLive &&
+              _database->_users.contains(this) &&
+              !_database->_graveyard.contains(this)) ||
+             (!_isLive &&
+              !_database->_users.contains(this) &&
+              _database->_graveyard.contains(this)));
+    Q_ASSERT(_accounts.isEmpty());
+
+    //  Unregister with parent
+    if (_isLive)
+    {
+        _database->_users.remove(this);
+    }
 }
 
 //////////
 //  tt3::db::api::IObject (life cycle)
 void User::destroy() throws(DatabaseException)
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+
+    //  Aggregated objects
+    for (Account * account : _accounts.values())
+    {
+        account->destroy();
+    }
+
+    //  Remove this User from database
+    Q_ASSERT(_database->_users.contains(this));
+    _database->_users.remove(this);
+    this->removeReference();
+
+    //  This object is now "dead"
+    _markDead();
 }
 
 //////////
@@ -180,17 +211,15 @@ User::createAccount(
     digestBuilder->digest(password);
     QString passwordHash = digestBuilder->digestAsString();
 
-    Account * account = new Account(_database, _database->_nextUnusedOid++);
+    Account * account = new Account(this, _database->_nextUnusedOid++); //  registers with User
     account->_enabled = enabled;
     account->_emailAddresses = emailAddresses;
     account->_login = login;
     account->_passwordHash = passwordHash;
     account->_capabilities = capabilities & tt3::db::api::Capabilities::All;
     //  ...register it...
-    _accounts.insert(account);
-    account->addReference();
-    account->_user = this;
-    this->addReference();
+    Q_ASSERT(_accounts.contains(account));
+    Q_ASSERT(account->_user == this);
     _database->_needsSaving = true;
     //  ...schedule change notifications...
     //  TODO
