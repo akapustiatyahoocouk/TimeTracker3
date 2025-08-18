@@ -47,6 +47,9 @@ namespace tt3::db::api
         //  The set of all accounts of all users in this database
         virtual Accounts    accounts() const throws(DatabaseException) = 0;
 
+        //  The account with the specified login
+        virtual IAccount *  findAccount(const QString & login) const throws(DatabaseException) = 0;
+
         //////////
         //  Operations (access control)
     public:

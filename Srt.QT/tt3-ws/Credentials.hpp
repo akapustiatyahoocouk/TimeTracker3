@@ -23,6 +23,8 @@ namespace tt3::ws
     //  The login credentials
     class TT3_WS_PUBLIC Credentials final
     {
+        friend class Workspace;
+
         //////////
         //  Constats
     public:

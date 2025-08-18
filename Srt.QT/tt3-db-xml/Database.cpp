@@ -68,7 +68,17 @@ Database::~Database()
     Q_ASSERT(_liveObjects.isEmpty());
     for (Object * object : _graveyard.values())
     {
-        delete object;
+        if (object->_referenceCount == 0)
+        {
+            delete object;
+        }
+        else
+        {   //  ...but some of them may still have references -
+            //  these shall become "orphans" without an associated
+            //  database which are deleted when the last reference
+            //  is lost
+            Q_ASSERT(false); //  TODO implement properly
+        }
     }
     Q_ASSERT(_graveyard.isEmpty());
 }
@@ -144,6 +154,13 @@ tt3::db::api::Accounts Database::accounts() const throws(DatabaseException)
         result += tt3::db::api::Accounts(user->_accounts.begin(), user->_accounts.end());
     }
     return result;
+}
+
+tt3::db::api::IAccount * Database::findAccount(const QString & login) const throws(DatabaseException)
+{
+    tt3::util::Lock lock(_guard);
+
+    return _findAccount(login);
 }
 
 //////////

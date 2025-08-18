@@ -52,6 +52,7 @@ namespace tt3::db::xml
     public:
         virtual tt3::db::api::Users     users() const throws(DatabaseException) override;
         virtual tt3::db::api::Accounts  accounts() const throws(DatabaseException) override;
+        virtual tt3::db::api::IAccount *findAccount(const QString & login) const throws(DatabaseException) override;
 
         //////////
         //  tt3::db::api::IDatabase (access control)

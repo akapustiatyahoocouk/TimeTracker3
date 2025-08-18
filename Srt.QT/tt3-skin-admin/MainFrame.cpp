@@ -213,7 +213,14 @@ bool MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddres
     {
         tt3::ws::WorkspacePtr workspacePtr
             { workspaceAddress.workspaceType()->openWorkspace(workspaceAddress) };
+        //  If the current credentials do not allow access
+        //  to the newly open workspace, what do we do?
+        if (!workspacePtr->canAccess(tt3::ws::theCurrentCredentials))
+        {   //  TODO implement properly
+            throw tt3::db::api::CustomDatabaseException("Access impossible");
+        }
         //  TODO if there is a "current activity", record & stop it
+        //  Use the newly open workspace
         tt3::ws::theCurrentWorkspace.swap(workspacePtr);
         tt3::ws::Component::Settings::instance()->addRecentWorkspace(workspaceAddress);
         _updateMruWorkspaces();
@@ -332,6 +339,11 @@ void MainFrame::_onActionDestroyWorkspace()
     tt3::gui::ErrorDialog::show(this, "Npt yet implemented");
 }
 
+void MainFrame::_onActionPreferences()
+{
+    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+}
+
 void MainFrame::_onActionHelpContent()
 {
     tt3::gui::ErrorDialog::show(this, "Not yet implemented");
@@ -343,6 +355,11 @@ void MainFrame::_onActionHelpIndex()
 }
 
 void MainFrame::_onActionHelpSearch()
+{
+    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+}
+
+void MainFrame::_onActionAbout()
 {
     tt3::gui::ErrorDialog::show(this, "Not yet implemented");
 }

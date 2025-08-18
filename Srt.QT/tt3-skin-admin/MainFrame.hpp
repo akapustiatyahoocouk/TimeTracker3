@@ -86,9 +86,11 @@ namespace tt3::skin::admin
         void            _onActionCloseWorkspace();
         void            _onActionDestroyWorkspace();
         void            _onActionExit();
+        void            _onActionPreferences();
         void            _onActionHelpContent();
         void            _onActionHelpIndex();
         void            _onActionHelpSearch();
+        void            _onActionAbout();
 
         void            _onCurrentWorkspaceChanged();
         void            _onWorkspaceClosed(tt3::ws::WorkspaceClosedNotification);

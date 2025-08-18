@@ -46,7 +46,7 @@ namespace tt3::ws
         void                close() throws(WorkspaceException);
 
         //  The validator for this workspace
-        Validator * validator() const { return type()->validator(); }
+        Validator *         validator() const { return type()->validator(); }
 
         //////////
         //  Operations (access control)
@@ -67,9 +67,9 @@ namespace tt3::ws
         //////////
         //  Implementation
     private:
-        tt3::util::Mutex    _guard {};  //  for synchronizing all accesses to workspace
+        mutable tt3::util::Mutex    _guard {};  //  for synchronizing all accesses to workspace
 
-        const WorkspaceAddress  _address;
+        const WorkspaceAddress      _address;
         tt3::db::api::IDatabase *   _database;  //  nullptr == workspace closed
 
         //  Acces control "cache" - 1 entry is enough, as workspace
@@ -79,6 +79,7 @@ namespace tt3::ws
         mutable Capabilities    _accessCacheValue = Capabilities::None;
 
         //  Helpers
+        void                _ensureOpen() const throws(WorkspaceException);
         void                _markClosed();
 
         //////////

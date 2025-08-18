@@ -22,5 +22,7 @@
         <file>Resources/Images/Actions/HelpIndexSmall.png</file>
         <file>Resources/Images/Actions/HelpSearchLarge.png</file>
         <file>Resources/Images/Actions/HelpSearchSmall.png</file>
+        <file>Resources/Images/Actions/PreferencesLarge.png</file>
+        <file>Resources/Images/Actions/PreferencesSmall.png</file>
     </qresource>
 </RCC>

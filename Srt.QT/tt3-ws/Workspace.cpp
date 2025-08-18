@@ -87,7 +87,27 @@ void Workspace::close() throws(WorkspaceException)
 }
 
 //////////
+//  Operations (access control)
+bool Workspace::canAccess(const Credentials & credentials) const throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();
+
+    return _database->tryLogin(credentials.login(), credentials._password) != nullptr;
+}
+
+//////////
 //  Implementation helpers
+void Workspace::_ensureOpen() const throws(WorkspaceException)
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+
+    if (_database == nullptr)
+    {
+        throw WorkspaceClosedException();
+    }
+}
+
 void Workspace::_markClosed()
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
