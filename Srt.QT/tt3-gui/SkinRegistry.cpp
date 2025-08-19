@@ -23,7 +23,8 @@ QMap<QString, ISkin*> SkinRegistry::_registry;
 //  Operationds
 QSet<ISkin*> SkinRegistry::allSkins()
 {
-    return tt3::util::toSet(_registry.values());
+    QList<ISkin*> values = _registry.values();
+    return QSet<ISkin*>(values.begin(), values.end());
 }
 
 bool SkinRegistry::registerSkin(ISkin * skin)

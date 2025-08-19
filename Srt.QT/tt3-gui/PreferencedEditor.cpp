@@ -1,5 +1,5 @@
 //
-//  tt3-util/Preferences.cpp - Preferences framework
+//  tt3-gui/PreferencedEditor.cpp - tt3::gui::PreferencedEditor class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,10 +14,19 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
+#include "tt3-gui/API.hpp"
+#include "ui_AboutDialog.h"
+    using namespace tt3::gui;
 
-//  TODO kill off this file
-namespace tt3::util
+//////////
+//  Construction/destruction
+PreferencedEditor::PreferencedEditor(QWidget * parent)
+    :   QWidget(parent)
 {
 }
 
-//  End of tt3-util/Preferences.cpp
+PreferencedEditor::~PreferencedEditor()
+{
+}
+
+//  End of tt3-gui/PreferencedEditor.cpp

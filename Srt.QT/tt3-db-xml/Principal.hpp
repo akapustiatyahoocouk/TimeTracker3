@@ -57,6 +57,9 @@ namespace tt3::db::xml
     private:
         virtual void        _serializeProperties(QDomElement & objectElement) override;
         virtual void        _serializeAggregations(QDomElement & parentElement);
+
+        virtual void        _deserializeProperties(const QDomElement & objectElement) throws(ParseException) override;
+        virtual void        _deserializeAggregations(const QDomElement & parentElement) override;
     };
 }
 

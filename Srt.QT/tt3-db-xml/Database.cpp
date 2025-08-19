@@ -25,8 +25,9 @@ Database::Database(DatabaseAddress * address, _Mode mode)
 {
     Q_ASSERT(_address != nullptr);
 
+    tt3::util::Lock lock(_guard);
     //  We need to create a lock before we do anything about the database
-    std::unique_ptr<_LockRefresher> lockRefresher { new _LockRefresher(this) };
+    _lockRefresher = new _LockRefresher(this);
 
     //  Now for the content
     switch (mode)
@@ -34,23 +35,39 @@ Database::Database(DatabaseAddress * address, _Mode mode)
         case _Mode::_Create:
             if (QFile(_address->_path).exists())
             {   //  OOPS!
+                delete _lockRefresher;
                 throw tt3::db::api::AlreadyExistsException(
                     "XML file database", "location", _address->_path);
             }
             //  Need to save empty DB content
-            _save();    //  may throw
+            try
+            {
+                _save();    //  may throw
+            }
+            catch (...)
+            {   //  Cleanup & re-throw
+                delete _lockRefresher;
+                throw;
+            }
             break;
         case _Mode::_Open:
             //  Need to load existing DB content
-            _load();    //  may throw
+            try
+            {
+                _load();    //  may throw
+            }
+            catch (...)
+            {   //  Cleanup & re-throw
+                delete _lockRefresher;
+                throw;
+            }
             break;
         default:
             Q_ASSERT(false);
     }
     Q_ASSERT(!_needsSaving);
 
-    //  Finally, take over and start the lock refresher
-    _lockRefresher = lockRefresher.release();
+    //  Finally, start the lock refresher
     _lockRefresher->start();
 }
 
@@ -362,11 +379,29 @@ void Database::_load() throws(DatabaseException)
         throw tt3::db::api::DatabaseCorruptException(_address);
     }
 
-    //  Process users
-    QList<QDomElement> usersElements = _childElements(rootElement, "Users");
-    if (usersElements.size() != 1)
-    {   //  OOPS!
-        throw tt3::db::api::DatabaseCorruptException(_address);
+    try
+    {
+        //  Process users (+ nested Accounts, etc.)
+        QDomElement usersElement = _childElement(rootElement, "Users");  //  may throw
+        for (QDomElement userElement : _childElements(usersElement, "User"))
+        {
+            Object::Oid oid = tt3::util::fromString<Object::Oid>(userElement.attribute("OID", ""));
+            if (_liveObjects.contains(oid))
+            {   //  OOPS!
+                throw tt3::db::api::DatabaseCorruptException(_address);
+            }
+            User * user = new User(this, oid);
+            user->_deserializeProperties(userElement);
+            user->_deserializeAggregations(userElement);
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  e.g. ParseException, etc.
+        if (dynamic_cast<const tt3::db::api::DatabaseException*>(&ex) != nullptr)
+        {   //  Can re-throw "as is"
+            throw;
+        }
+        throw tt3::db::api::CustomDatabaseException(ex.errorMessage());
     }
 }
 
@@ -387,6 +422,16 @@ QList<QDomElement> Database::_childElements(const QDomElement & parentElement, c
         }
     }
     return result;
+}
+
+QDomElement Database::_childElement(const QDomElement & parentElement, const QString & tagName) throws(DatabaseException)
+{
+    QList<QDomElement> children = _childElements(parentElement, tagName);
+    if (children.size() != 1)
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseCorruptException(_address);
+    }
+    return children[0];
 }
 
 //////////

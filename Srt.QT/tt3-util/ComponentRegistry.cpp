@@ -23,7 +23,8 @@ QMap<QString, IComponent*> ComponentRegistry::_registry;
 //  Operationds
 QSet<IComponent*> ComponentRegistry::allComponents()
 {
-    return toSet(_registry.values());
+    QList<IComponent*> values = _registry.values();
+    return QSet<IComponent*>(values.begin(), values.end());
 }
 
 bool ComponentRegistry::registerComponent(IComponent * component)

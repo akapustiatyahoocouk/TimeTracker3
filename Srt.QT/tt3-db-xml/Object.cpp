@@ -148,6 +148,10 @@ void Object::_markDead()
     _isLive = false;
     _database->_liveObjects.remove(_oid);
     _database->_graveyard.insert(this);
+    if (_referenceCount == 0)
+    {   //  We can recycle
+        delete this;
+    }
 }
 
 //////////
@@ -160,5 +164,20 @@ void Object::_serializeProperties(QDomElement & objectElement)
 void Object::_serializeAggregations(QDomElement & /*parentElement*/)
 {   //  Nothing at this level
 }
+
+void Object::_deserializeProperties(const QDomElement & objectElement)  throws(ParseException)
+{
+    Object::Oid oid = tt3::util::fromString<Object::Oid>(objectElement.attribute("OID", ""));
+    if (oid != _oid)
+    {   //  OOPS! Deserialization implemented wrong!
+        throw tt3::db::api::DatabaseCorruptException(_database->_address);
+    }
+}
+
+void Object::_deserializeAggregations(const QDomElement & parentElement) throws(ParseException)
+{   //  Nothing at this level
+}
+
+
 
 //  End of tt3-db-xml/Object.cpp

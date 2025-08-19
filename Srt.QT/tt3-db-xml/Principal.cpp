@@ -97,6 +97,7 @@ void Principal::_markDead()
 void Principal::_serializeProperties(QDomElement & objectElement)
 {
     Object::_serializeProperties(objectElement);
+
     objectElement.setAttribute("Enabled", tt3::util::toString(_enabled));
     if (!_emailAddresses.isEmpty())
     {   //  A valid e-mail address has no ',' in it
@@ -107,6 +108,22 @@ void Principal::_serializeProperties(QDomElement & objectElement)
 void Principal::_serializeAggregations(QDomElement & parentElement)
 {
     Object::_serializeAggregations(parentElement);
+}
+
+void Principal::_deserializeProperties(const QDomElement & objectElement) throws(ParseException)
+{
+    Object::_deserializeProperties(objectElement);
+
+    _enabled = tt3::util::fromString<bool>(objectElement.attribute("Enabled"));
+    if (objectElement.hasAttribute("EmailAddresses"))
+    {   //  A valid e-mail address has no ',' in it
+        _emailAddresses = objectElement.attribute("EmailAddresses").split(',');
+    }
+}
+
+void Principal::_deserializeAggregations(const QDomElement & parentElement)
+{
+    Object::_deserializeAggregations(parentElement);
 }
 
 //  End of tt3-db-xml/Principal.cpp

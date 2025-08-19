@@ -41,7 +41,8 @@ IDatabaseType * DatabaseTypeRegistry::findDatabaseType(const QString & mnemonic)
 
 DatabaseTypes DatabaseTypeRegistry::allDatabaseTypes()
 {   //  TODO synchronize ?
-    return tt3::util::toSet(_registry.values());
+    QList<IDatabaseType*> values = _registry.values();
+    return DatabaseTypes(values.begin(), values.end());
 }
 
 //  End of tt3-db-api/DatabaseTypeRegistry.cpp

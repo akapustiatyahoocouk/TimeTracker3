@@ -15,17 +15,9 @@
 //  GNU General Public License for more details.
 //////////
 
+//  TODO kill off this file
 namespace tt3::util
 {
-    template <class T> QSet<T> toSet(const QList<T> & list)
-    {
-        return QSet(list.begin(), list.end());
-    }
-
-    template <class T> QList<T> toList(const QSet<T> & set)
-    {
-        return QList(set.begin(), set.end());
-    }
 }
 
 //  End of tt3-util/Collections.hpp

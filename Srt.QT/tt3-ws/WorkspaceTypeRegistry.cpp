@@ -32,7 +32,8 @@ WorkspaceType * WorkspaceTypeRegistry::findWorkspaceType(const QString & mnemoni
 WorkspaceTypes WorkspaceTypeRegistry::allWorkspaceTypes()
 {   //  TODO synchronize ?
     _collectWorkspaceTypes();
-    return tt3::util::toSet(_registry.values());
+    QList<WorkspaceType*> values = _registry.values();
+    return WorkspaceTypes(values.begin(), values.end());
 }
 
 //////////

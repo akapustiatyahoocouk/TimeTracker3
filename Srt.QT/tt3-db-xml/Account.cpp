@@ -202,4 +202,16 @@ void Account::_serializeAggregations(QDomElement & parentElement)
     Principal::_serializeAggregations(parentElement);
 }
 
+void Account::_deserializeProperties(const QDomElement & objectElement) throws(ParseException)
+{
+    Principal::_deserializeProperties(objectElement);
+
+    //  TODO
+}
+
+void Account::_deserializeAggregations(const QDomElement & parentElement)
+{
+    Principal::_deserializeAggregations(parentElement);
+}
+
 //  End of tt3-db-xml/Account.cpp

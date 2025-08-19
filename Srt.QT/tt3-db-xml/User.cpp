@@ -255,6 +255,7 @@ void User::_markDead()
 void User::_serializeProperties(QDomElement & objectElement)
 {
     Principal::_serializeProperties(objectElement);
+
     objectElement.setAttribute("RealName", _realName);
     if (_inactivityTimeout.has_value())
     {
@@ -269,6 +270,7 @@ void User::_serializeProperties(QDomElement & objectElement)
 void User::_serializeAggregations(QDomElement & parentElement)
 {
     Principal::_serializeAggregations(parentElement);
+
     //  Do the accounts
     QDomElement accountsElement = parentElement.ownerDocument().createElement("Accounts");
     parentElement.appendChild(accountsElement);
@@ -280,6 +282,20 @@ void User::_serializeAggregations(QDomElement & parentElement)
         account->_serializeProperties(accountElement);
         account->_serializeAggregations(accountElement);
     }
+}
+
+void User::_deserializeProperties(const QDomElement & objectElement) throws(ParseException)
+{
+    Principal::_deserializeProperties(objectElement);
+
+    //  TODO
+}
+
+void User::_deserializeAggregations(const QDomElement & parentElement)
+{
+    Principal::_deserializeAggregations(parentElement);
+
+    //  TODO
 }
 
 //  End of tt3-db-xml/User.cpp

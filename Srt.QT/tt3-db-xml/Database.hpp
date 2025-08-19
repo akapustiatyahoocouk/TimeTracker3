@@ -140,6 +140,7 @@ namespace tt3::db::xml
         void            _save() throws(DatabaseException);
         void            _load() throws(DatabaseException);
         QList<QDomElement>  _childElements(const QDomElement & parentElement, const QString & tagName);
+        QDomElement     _childElement(const QDomElement & parentElement, const QString & tagName) throws(DatabaseException);
     };
 }
 

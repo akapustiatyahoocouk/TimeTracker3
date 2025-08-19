@@ -10,6 +10,7 @@ SOURCES += \
     ErrorDialog.cpp \
     LoginDialog.cpp \
     NewWorkspaceDialog.cpp \
+    PreferencedEditor.cpp \
     SelectWorkspaceDialog.cpp \
     SkinRegistry.cpp
 
@@ -21,6 +22,7 @@ HEADERS += \
     Linkage.hpp \
     LoginDialog.hpp \
     NewWorkspaceDialog.hpp \
+    Preferences.hpp \
     SelectWorkspaceDialog.hpp \
     Skin.hpp
 
