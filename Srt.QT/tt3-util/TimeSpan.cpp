@@ -18,6 +18,10 @@
 using namespace tt3::util;
 
 //////////
+//  Constants
+const TimeSpan TimeSpan::Invalid;
+
+//////////
 //  Construction/destruction/assignment
 TimeSpan TimeSpan::hours(int h)
 {

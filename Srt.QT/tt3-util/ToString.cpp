@@ -117,7 +117,7 @@ template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QLocale>(const QLocale &
 //  tt3::util types
 template <> TT3_UTIL_PUBLIC QString tt3::util::toString<tt3::util::TimeSpan>(const TimeSpan & value)
 {
-    return value.isValid() ? toString(value.asMinutes()) : "-";
+    return value.isValid() ? toString(value.asMinutes()) : "?";
 }
 
 //  End of tt3-util/ToString.cpp

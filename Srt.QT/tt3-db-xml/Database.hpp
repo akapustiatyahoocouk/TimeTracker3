@@ -137,10 +137,10 @@ namespace tt3::db::xml
         Account *       _findAccount(const QString & login) const;
 
         //  Serialization
-        void            _save() throws(DatabaseException);
-        void            _load() throws(DatabaseException);
+        void            _save() throws(Exception);
+        void            _load() throws(Exception);
         QList<QDomElement>  _childElements(const QDomElement & parentElement, const QString & tagName);
-        QDomElement     _childElement(const QDomElement & parentElement, const QString & tagName) throws(DatabaseException);
+        QDomElement         _childElement(const QDomElement & parentElement, const QString & tagName) throws(DatabaseException);
     };
 }
 

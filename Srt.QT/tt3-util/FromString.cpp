@@ -333,4 +333,48 @@ template <> TT3_UTIL_PUBLIC QVersionNumber tt3::util::fromString<QVersionNumber>
     return QVersionNumber(major, minor, micro);
 }
 
+template <> TT3_UTIL_PUBLIC QLocale tt3::util::fromString<QLocale>(const QString & s, int & scan) throws(ParseException)
+{
+    if (scan > s.length())
+    {
+        throw ParseException(s, scan);
+    }
+
+    QLocale result;
+    if (scan + 4  < s.length() &&
+        s[scan].isLower() &&
+        s[scan + 1].isLower() &&
+        s[scan + 2] == '_' &&
+        s[scan + 3].isUpper() &&
+        s[scan + 4].isUpper())
+    {   //  ll-CC
+        result = QLocale(s.mid(scan, 5));
+        scan += 5;
+    }
+    else if (scan + 1  < s.length() &&
+             s[scan].isLower() &&
+             s[scan + 1].isLower())
+    {   //  ll
+        result = QLocale(s.mid(scan, 5));
+        scan += 2;
+    }
+    else
+    {   //  Invariant
+        result = QLocale(QLocale::Language::AnyLanguage, QLocale::Territory::AnyCountry);
+    }
+    return result;
+}
+
+//  tt3::util types
+template <> TT3_UTIL_PUBLIC tt3::util::TimeSpan tt3::util::fromString<tt3::util::TimeSpan>(const QString & s, int & scan) throws(ParseException)
+{
+    if (scan < s.length() && s[scan] == '?')
+    {
+        scan++;
+        return tt3::util::TimeSpan::Invalid;
+    }
+    int minutes = fromString<int>(s, scan);
+    return tt3::util::TimeSpan::minutes(minutes);
+}
+
 //  End of tt3-util/FromString.cpp

@@ -44,10 +44,19 @@ Database::Database(DatabaseAddress * address, _Mode mode)
             {
                 _save();    //  may throw
             }
+            catch (const tt3::util::Exception & ex)
+            {   //  Cleanup & re-throw
+                delete _lockRefresher;
+                if (dynamic_cast<const tt3::db::api::DatabaseException*>(&ex) != nullptr)
+                {   //  Can re-throw "as is"
+                    throw;
+                }
+                throw tt3::db::api::CustomDatabaseException(ex.errorMessage());
+            }
             catch (...)
             {   //  Cleanup & re-throw
                 delete _lockRefresher;
-                throw;
+                throw tt3::db::api::CustomDatabaseException("Unknown database error");
             }
             break;
         case _Mode::_Open:
@@ -56,10 +65,20 @@ Database::Database(DatabaseAddress * address, _Mode mode)
             {
                 _load();    //  may throw
             }
+            catch (const tt3::util::Exception & ex)
+            {   //  e.g. ParseException, etc.
+                //  Cleanup & re-throw
+                delete _lockRefresher;
+                if (dynamic_cast<const tt3::db::api::DatabaseException*>(&ex) != nullptr)
+                {   //  Can re-throw "as is"
+                    throw;
+                }
+                throw tt3::db::api::CustomDatabaseException(ex.errorMessage());
+            }
             catch (...)
             {   //  Cleanup & re-throw
                 delete _lockRefresher;
-                throw;
+                throw tt3::db::api::CustomDatabaseException("Unknown database error");
             }
             break;
         default:
@@ -320,7 +339,7 @@ Account * Database::_findAccount(const QString & login) const
 
 //////////
 //  Serialization
-void Database::_save() throws(DatabaseException)
+void Database::_save() throws(Exception)
 {
     //  Create DOM document with a root node
     QDomDocument document;
@@ -356,7 +375,7 @@ void Database::_save() throws(DatabaseException)
     _needsSaving = false;
 }
 
-void Database::_load() throws(DatabaseException)
+void Database::_load() throws(Exception)
 {
     //  Load XML DOM
     QDomDocument document;
@@ -379,29 +398,18 @@ void Database::_load() throws(DatabaseException)
         throw tt3::db::api::DatabaseCorruptException(_address);
     }
 
-    try
+    //  Process users (+ nested Accounts, etc.)
+    QDomElement usersElement = _childElement(rootElement, "Users");  //  may throw
+    for (QDomElement userElement : _childElements(usersElement, "User"))
     {
-        //  Process users (+ nested Accounts, etc.)
-        QDomElement usersElement = _childElement(rootElement, "Users");  //  may throw
-        for (QDomElement userElement : _childElements(usersElement, "User"))
-        {
-            Object::Oid oid = tt3::util::fromString<Object::Oid>(userElement.attribute("OID", ""));
-            if (_liveObjects.contains(oid))
-            {   //  OOPS!
-                throw tt3::db::api::DatabaseCorruptException(_address);
-            }
-            User * user = new User(this, oid);
-            user->_deserializeProperties(userElement);
-            user->_deserializeAggregations(userElement);
+        Object::Oid oid = tt3::util::fromString<Object::Oid>(userElement.attribute("OID", ""));
+        if (_liveObjects.contains(oid))
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_address);
         }
-    }
-    catch (const tt3::util::Exception & ex)
-    {   //  e.g. ParseException, etc.
-        if (dynamic_cast<const tt3::db::api::DatabaseException*>(&ex) != nullptr)
-        {   //  Can re-throw "as is"
-            throw;
-        }
-        throw tt3::db::api::CustomDatabaseException(ex.errorMessage());
+        User * user = new User(this, oid);
+        user->_deserializeProperties(userElement);
+        user->_deserializeAggregations(userElement);
     }
 }
 

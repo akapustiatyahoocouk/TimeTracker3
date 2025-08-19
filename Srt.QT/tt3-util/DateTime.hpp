@@ -21,6 +21,12 @@ namespace tt3::util
     class TT3_UTIL_PUBLIC TimeSpan
     {
         //////////
+        //  Constants
+    public:
+        //  The invalid time span
+        static const TimeSpan Invalid;
+
+        //////////
         //  Construction/destruction/assignment
     private:
         explicit TimeSpan(int minutes) : _minutes(minutes) {}

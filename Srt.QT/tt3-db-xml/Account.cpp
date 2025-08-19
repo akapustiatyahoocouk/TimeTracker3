@@ -206,7 +206,9 @@ void Account::_deserializeProperties(const QDomElement & objectElement) throws(P
 {
     Principal::_deserializeProperties(objectElement);
 
-    //  TODO
+    _login = objectElement.attribute("Login");
+    _passwordHash = objectElement.attribute("PasswordHash");
+    _capabilities = tt3::util::fromString<tt3::db::api::Capabilities>(objectElement.attribute("Capabilities"));
 }
 
 void Account::_deserializeAggregations(const QDomElement & parentElement)

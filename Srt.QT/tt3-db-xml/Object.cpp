@@ -174,7 +174,7 @@ void Object::_deserializeProperties(const QDomElement & objectElement)  throws(P
     }
 }
 
-void Object::_deserializeAggregations(const QDomElement & parentElement) throws(ParseException)
+void Object::_deserializeAggregations(const QDomElement & /*parentElement*/) throws(ParseException)
 {   //  Nothing at this level
 }
 

@@ -259,11 +259,11 @@ void User::_serializeProperties(QDomElement & objectElement)
     objectElement.setAttribute("RealName", _realName);
     if (_inactivityTimeout.has_value())
     {
-        objectElement.setAttribute("UiLocale", tt3::util::toString(_uiLocale.value()));
+        objectElement.setAttribute("InactivityTimeout", tt3::util::toString(_inactivityTimeout.value()));
     }
     if (_uiLocale.has_value())
     {
-        objectElement.setAttribute("InactivityTimeout", tt3::util::toString(_inactivityTimeout.value()));
+        objectElement.setAttribute("UiLocale", tt3::util::toString(_uiLocale.value()));
     }
 }
 
@@ -288,14 +288,38 @@ void User::_deserializeProperties(const QDomElement & objectElement) throws(Pars
 {
     Principal::_deserializeProperties(objectElement);
 
-    //  TODO
+    _realName = objectElement.attribute("RealName");
+    if (objectElement.hasAttribute("InactivityTimeout"))
+    {
+        _inactivityTimeout =
+            tt3::util::fromString<tt3::util::TimeSpan>(
+                objectElement.attribute("InactivityTimeout"));
+    }
+    if (objectElement.hasAttribute("UiLocale"))
+    {
+        _uiLocale =
+            tt3::util::fromString<QLocale>(
+                objectElement.attribute("UiLocale"));
+    }
 }
 
 void User::_deserializeAggregations(const QDomElement & parentElement)
 {
     Principal::_deserializeAggregations(parentElement);
 
-    //  TODO
+    //  Do the accounts
+    QDomElement accountsElement = _database->_childElement(parentElement, "Accounts");  //  may throw
+    for (QDomElement accountElement : _database->_childElements(accountsElement, "Account"))
+    {
+        Object::Oid oid = tt3::util::fromString<Object::Oid>(accountElement.attribute("OID", ""));
+        if (_database->_liveObjects.contains(oid))
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
+        Account * account = new Account(this, oid);
+        account->_deserializeProperties(accountElement);
+        account->_deserializeAggregations(accountElement);
+    }
 }
 
 //  End of tt3-db-xml/User.cpp
