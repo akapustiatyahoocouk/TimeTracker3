@@ -71,17 +71,16 @@ void Object::addReference()
 {
     tt3::util::Lock lock(_database->_guard);
 
+    Q_ASSERT(_isLive || _database->_graveyard.contains(this));
     switch (_state)
     {
         case State::New:
             Q_ASSERT(_referenceCount == 0);
-            Q_ASSERT(!_database->_graveyard.contains(this));
             _referenceCount++;
             _state = State::Managed;
             break;
         case State::Managed:
             Q_ASSERT(_referenceCount > 0);
-            Q_ASSERT(!_database->_graveyard.contains(this));
             Q_ASSERT(_referenceCount + 1 > _referenceCount);
             if (_referenceCount + 1 > _referenceCount)
             {   //  Be defensive in release mode
@@ -90,8 +89,6 @@ void Object::addReference()
             break;
         case State::Old:
             Q_ASSERT(_referenceCount == 0);
-            Q_ASSERT(_isLive ||_database->_graveyard.contains(this));
-            _database->_graveyard.remove(this);
             _referenceCount++;
             _state = State::Managed;
             break;
@@ -104,28 +101,24 @@ void Object::removeReference()
 {
     tt3::util::Lock lock(_database->_guard);
 
+    Q_ASSERT(_isLive || _database->_graveyard.contains(this));
     switch (_state)
     {
         case State::New:
             Q_ASSERT(_referenceCount == 0);
-            Q_ASSERT(!_database->_graveyard.contains(this));
             //  Be defensive in release mode
             break;
         case State::Managed:
             Q_ASSERT(_referenceCount > 0);
-            Q_ASSERT(!_database->_graveyard.contains(this));
             if (--_referenceCount == 0)
-            {   //  The object becomes Old...
+            {   //  The object becomes Old. Note that this
+                //  does not move the object to the "graveyard" -
+                //  only making it "dead" will.
                 _state = State::Old;
-                if (!_isLive)
-                {   //  ...and discardable
-                    _database->_graveyard.insert(this);
-                }
             }
             break;
         case State::Old:
             Q_ASSERT(_referenceCount == 0);
-            Q_ASSERT(_isLive ||_database->_graveyard.contains(this));
             //  Be defensive in release mode
             break;
         default:

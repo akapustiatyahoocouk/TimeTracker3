@@ -1,5 +1,5 @@
 //
-//  tt3-util/Exceptions.cpp - Exceptions framework
+//  tt3-util/Preferences.cpp - Preferences framework
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -17,22 +17,6 @@
 
 namespace tt3::util
 {
-    //////////
-    //  The common base class for all tt3-specific exceptions
-    class TT3_UTIL_PUBLIC Exception : public QException
-    {   //  TODO make abstract & define subclasses
-        //////////
-        //  Construction/destruction/assignment
-    public:
-        Exception() = default;
-
-        //////////
-        //  Operations
-    public:
-        //  Returns the error message describing the
-        //  exception for the current default locale
-        virtual QString     errorMessage() const = 0;
-    };
 }
 
-//  End of tt3-util/Exceptions.cpp
+//  End of tt3-util/Preferences.cpp

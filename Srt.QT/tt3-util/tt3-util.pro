@@ -29,6 +29,7 @@ HEADERS += \
     Macros.hpp \
     MessageDigest.hpp \
     Plugin.hpp \
+    Preferences.hpp \
     Settings.hpp \
     Sync.hpp \
     ToString.hpp

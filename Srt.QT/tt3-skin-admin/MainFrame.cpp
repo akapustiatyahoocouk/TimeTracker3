@@ -211,24 +211,24 @@ bool MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddres
     //  Open & use
     try
     {
-        tt3::ws::WorkspacePtr workspacePtr
+        tt3::ws::WorkspacePtr workspace
             { workspaceAddress.workspaceType()->openWorkspace(workspaceAddress) };
         //  If the current credentials do not allow access
         //  to the newly open workspace, what do we do?
-        if (!workspacePtr->canAccess(tt3::ws::theCurrentCredentials))
-        {   //  TODO implement properly
-            throw tt3::db::api::CustomDatabaseException("Access impossible");
+        if (!_reconcileCurrntCredentials(workspace))
+        {   //  No reconciliation - stop opening the workspace
+            return false;
         }
         //  TODO if there is a "current activity", record & stop it
         //  Use the newly open workspace
-        tt3::ws::theCurrentWorkspace.swap(workspacePtr);
+        tt3::ws::theCurrentWorkspace.swap(workspace);
         tt3::ws::Component::Settings::instance()->addRecentWorkspace(workspaceAddress);
         _updateMruWorkspaces();
         //  The previously "current" workspace is closed
         //  when replaced
-        if (workspacePtr != nullptr)
+        if (workspace != nullptr)
         {
-            workspacePtr->close();  //  TODO handle close errors
+            workspace->close();
         }
         //  Done
         refresh();
@@ -237,18 +237,53 @@ bool MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddres
     catch (const tt3::util::Exception & ex)
     {
         tt3::gui::ErrorDialog::show(this, ex);
+        refresh();
         return false;
     }
     catch (const std::exception & ex)
     {
         tt3::gui::ErrorDialog::show(this, ex);
+        refresh();
         return false;
     }
     catch (...)
     {
         tt3::gui::ErrorDialog::show(this);
+        refresh();
         return false;
     }
+}
+
+bool MainFrame::_reconcileCurrntCredentials(const tt3::ws::WorkspacePtr & workspace)
+{
+    Q_ASSERT(workspace != nullptr && workspace->isOpen());
+
+    if (workspace->canAccess(tt3::ws::theCurrentCredentials))
+    {   //  Already OK
+        return true;
+    }
+    //  Ask the user whether to login with different credentials
+    while (QMessageBox::question(
+        this,
+        "Access denied",
+        "Current credentials do not allow access to\n" +
+            workspace->address().displayForm() +
+            "\nDo you want to log in with different credentials ?",
+        QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+    {
+        tt3::gui::LoginDialog dlg(this, "");
+        if (dlg.exec() != QDialog::DialogCode::Accepted)
+        {   //  The user has cancelled the re-login
+            return false;
+        }
+        if (workspace->canAccess(dlg.credentials()))
+        {   //  Access OK
+            tt3::ws::theCurrentCredentials = dlg.credentials();
+            return true;
+        }
+    }
+    //  OOPS! The user does NOT want to re-login
+    return false;
 }
 
 void MainFrame::_updateMruWorkspaces()
