@@ -84,6 +84,51 @@ namespace tt3::gui
     private:
         static QMap<QString, Preferences*>  _registry;  //  key = mnemonic
     };
+
+    //  The "/General" preferences
+    class TT3_GUI_PUBLIC GeneralPreferences final : public Preferences
+    {
+        DECLARE_SINGLETON(GeneralPreferences)
+
+        //////////
+        //  Preferences
+    public:
+        virtual QString         mnemonic() const override;
+        virtual QString         displayName() const override;
+        virtual Preferences *   parent() const override;
+        virtual int             order() const { return 0; }
+        virtual PreferencesEditor * createEditor() override;
+    };
+
+    //  The "/General/Appearance" preferences
+    class TT3_GUI_PUBLIC GeneralAppearancePreferences final : public Preferences
+    {
+        DECLARE_SINGLETON(GeneralAppearancePreferences)
+
+        //////////
+        //  Preferences
+    public:
+        virtual QString         mnemonic() const override;
+        virtual QString         displayName() const override;
+        virtual Preferences *   parent() const override;
+        virtual int             order() const { return 0; }
+        virtual PreferencesEditor * createEditor() override;
+    };
+
+    //  The "/General/Startup" preferences
+    class TT3_GUI_PUBLIC GeneralStartupPreferences final : public Preferences
+    {
+        DECLARE_SINGLETON(GeneralStartupPreferences)
+
+        //////////
+        //  Preferences
+    public:
+        virtual QString         mnemonic() const override;
+        virtual QString         displayName() const override;
+        virtual Preferences *   parent() const override;
+        virtual int             order() const { return 10; }
+        virtual PreferencesEditor * createEditor() override;
+    };
 }
 
 //  End of tt3-gui/Preferences.hpp

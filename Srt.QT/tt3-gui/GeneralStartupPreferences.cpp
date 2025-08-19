@@ -1,5 +1,5 @@
 //
-//  tt3-gui/GeneralPreferences.cpp - tt3::gui::GeneralPreferences class implementation
+//  tt3-gui/GeneralStartupPreferences.cpp - tt3::gui::GeneralStartupPreferences class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,34 +15,34 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-gui/API.hpp"
-using namespace tt3::gui;
+    using namespace tt3::gui;
 
 //////////
 //  Singleton
-IMPLEMENT_SINGLETON(GeneralPreferences)
-GeneralPreferences::GeneralPreferences() {}
-GeneralPreferences::~GeneralPreferences() {}
+IMPLEMENT_SINGLETON(GeneralStartupPreferences)
+GeneralStartupPreferences::GeneralStartupPreferences() {}
+GeneralStartupPreferences::~GeneralStartupPreferences() {}
 
 //////////
 //  Preferences
-QString GeneralPreferences::mnemonic() const
+QString GeneralStartupPreferences::mnemonic() const
 {
-    return "/General";
+    return parent()->mnemonic() + "/Startup";
 }
 
-QString GeneralPreferences::displayName() const
+QString GeneralStartupPreferences::displayName() const
 {
-    return "General";
+    return "Startup";
 }
 
-Preferences * GeneralPreferences::parent() const
+Preferences * GeneralStartupPreferences::parent() const
+{
+    return GeneralPreferences::instance();
+}
+
+PreferencesEditor * GeneralStartupPreferences::createEditor()
 {
     return nullptr;
 }
 
-PreferencesEditor * GeneralPreferences::createEditor()
-{
-    return nullptr;
-}
-
-//  End of tt3-gui/GeneralPreferences.cpp
+//  End of tt3-gui/GeneralStartupPreferences.cpp

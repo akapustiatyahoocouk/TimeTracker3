@@ -1,5 +1,5 @@
 //
-//  tt3-gui/PreferencedEditor.cpp - tt3::gui::PreferencedEditor class implementation
+//  tt3-gui/GeneralAppearancePreferencesEditor.cpp - tt3::gui::GeneralAppearancePreferencesEditor class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,18 +15,21 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-gui/API.hpp"
-#include "ui_AboutDialog.h"
-    using namespace tt3::gui;
+#include "ui_GeneralAppearancePreferencesEditor.h"
+using namespace tt3::gui;
 
 //////////
 //  Construction/destruction
-PreferencedEditor::PreferencedEditor(QWidget * parent)
-    :   QWidget(parent)
+GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *parent)
+    :   PreferencesEditor(parent),
+        _ui(new Ui::GeneralAppearancePreferencesEditor)
 {
+    _ui->setupUi(this);
 }
 
-PreferencedEditor::~PreferencedEditor()
+GeneralAppearancePreferencesEditor::~GeneralAppearancePreferencesEditor()
 {
+    delete _ui;
 }
 
-//  End of tt3-gui/PreferencedEditor.cpp
+//  End of tt3-gui/GeneralAppearancePreferencesEditor.cpp

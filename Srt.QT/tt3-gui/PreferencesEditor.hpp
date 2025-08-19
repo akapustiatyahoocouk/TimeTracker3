@@ -19,21 +19,26 @@
 
 namespace tt3::gui
 {
+    class TT3_GUI_PUBLIC Preferences;
+
     //  The common base class for all "preferences editor" widgets
-    class TT3_GUI_PUBLIC PreferencedEditor : public QWidget
+    class TT3_GUI_PUBLIC PreferencesEditor : public QWidget
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PreferencedEditor)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PreferencesEditor)
 
         //////////
         //  Construction/destruction
     public:
-        explicit PreferencedEditor(QWidget * parent);
-        virtual ~PreferencedEditor();
+        explicit PreferencesEditor(QWidget * parent);
+        virtual ~PreferencesEditor();
 
         //////////
         //  Operations
     public:
+        //  The Preferences edited by this editor
+        virtual Preferences *   preferences() const = 0;
+
         //  Populates inner widgets with values taken
         //  from persistent settings
         virtual void    loadControlValues() = 0;
@@ -53,6 +58,9 @@ namespace tt3::gui
         virtual bool    isValid() const = 0;
     };
 }
+
+//  Macro needed for MOC-generated .cpp files
+#define TT3_GUI_PREFERENCES_EDITOR_DEFINED
 
 //  End of tt3-gui/PreferencesEditor.hpp
 

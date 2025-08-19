@@ -1,5 +1,5 @@
 //
-//  tt3-gui/GeneralPreferences.cpp - tt3::gui::GeneralPreferences class implementation
+//  tt3-gui/GeneralAppearancePreferences.cpp - tt3::gui::GeneralAppearancePreferences class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,30 +19,30 @@ using namespace tt3::gui;
 
 //////////
 //  Singleton
-IMPLEMENT_SINGLETON(GeneralPreferences)
-GeneralPreferences::GeneralPreferences() {}
-GeneralPreferences::~GeneralPreferences() {}
+IMPLEMENT_SINGLETON(GeneralAppearancePreferences)
+GeneralAppearancePreferences::GeneralAppearancePreferences() {}
+GeneralAppearancePreferences::~GeneralAppearancePreferences() {}
 
 //////////
 //  Preferences
-QString GeneralPreferences::mnemonic() const
+QString GeneralAppearancePreferences::mnemonic() const
 {
-    return "/General";
+    return parent()->mnemonic() + "/Appearance";
 }
 
-QString GeneralPreferences::displayName() const
+QString GeneralAppearancePreferences::displayName() const
 {
-    return "General";
+    return "Appearance";
 }
 
-Preferences * GeneralPreferences::parent() const
+Preferences * GeneralAppearancePreferences::parent() const
+{
+    return GeneralPreferences::instance();
+}
+
+PreferencesEditor * GeneralAppearancePreferences::createEditor()
 {
     return nullptr;
 }
 
-PreferencesEditor * GeneralPreferences::createEditor()
-{
-    return nullptr;
-}
-
-//  End of tt3-gui/GeneralPreferences.cpp
+//  End of tt3-gui/GeneralAppearancePreferences.cpp

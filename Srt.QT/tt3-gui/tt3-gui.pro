@@ -8,11 +8,14 @@ SOURCES += \
     Component.cpp \
     CurrentSkin.cpp \
     ErrorDialog.cpp \
+    GeneralAppearancePreferences.cpp \
+    GeneralAppearancePreferencesEditor.cpp \
     GeneralPreferences.cpp \
+    GeneralStartupPreferences.cpp \
     LoginDialog.cpp \
     NewWorkspaceDialog.cpp \
-    PreferencedEditor.cpp \
     Preferences.cpp \
+    PreferencesEditor.cpp \
     PreferencesRegistry.cpp \
     SelectWorkspaceDialog.cpp \
     SkinRegistry.cpp
@@ -22,7 +25,7 @@ HEADERS += \
     AboutDialog.hpp \
     Components.hpp \
     ErrorDialog.hpp \
-    GeneralPreferences.hpp \
+    GeneralAppearancePreferencesEditor.hpp \
     Linkage.hpp \
     LoginDialog.hpp \
     NewWorkspaceDialog.hpp \
@@ -33,6 +36,7 @@ HEADERS += \
 
 FORMS += \
     AboutDialog.ui \
+    GeneralAppearancePreferencesEditor.ui \
     LoginDialog.ui \
     NewWorkspaceDialog.ui \
     SelectWorkspaceDialog.ui

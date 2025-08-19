@@ -1,5 +1,5 @@
 //
-//  tt3-gui/GeneralPreferences.hpp - The "/General" preferences
+//  tt3-gui/PreferencesEditor.cpp - tt3::gui::PreferencesEditor class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,23 +14,19 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
+#include "tt3-gui/API.hpp"
+#include "ui_AboutDialog.h"
+using namespace tt3::gui;
 
-namespace tt3::gui
+//////////
+//  Construction/destruction
+PreferencesEditor::PreferencesEditor(QWidget * parent)
+    :   QWidget(parent)
 {
-    //  The "/General" preferences
-    class TT3_GUI_PUBLIC GeneralPreferences final : public Preferences
-    {
-        DECLARE_SINGLETON(GeneralPreferences)
-
-        //////////
-        //  Preferences
-    public:
-        virtual QString         mnemonic() const override;
-        virtual QString         displayName() const override;
-        virtual Preferences *   parent() const override;
-        virtual PreferencesEditor * createEditor() override;
-    };
 }
 
-//  End of tt3-gui/GeneralPreferences.hpp
+PreferencesEditor::~PreferencesEditor()
+{
+}
 
+//  End of tt3-gui/PreferencesEditor.cpp

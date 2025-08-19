@@ -29,8 +29,8 @@
 #include "tt3-gui/Skin.hpp"
 
 #include "tt3-gui/PreferencesEditor.hpp"
+#include "tt3-gui/GeneralAppearancePreferencesEditor.hpp"
 #include "tt3-gui/Preferences.hpp"
-#include "tt3-gui/GeneralPreferences.hpp"
 
 #include "tt3-gui/ErrorDialog.hpp"
 #include "tt3-gui/NewWorkspaceDialog.hpp"

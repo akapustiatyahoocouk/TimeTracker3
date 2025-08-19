@@ -29,6 +29,8 @@ namespace
         tt3::util::ComponentRegistry::registerComponent(tt3::util::Component::instance());
 
         tt3::gui::PreferencesRegistry::registerPreferences(tt3::gui::GeneralPreferences::instance());
+        tt3::gui::PreferencesRegistry::registerPreferences(tt3::gui::GeneralAppearancePreferences::instance());
+        tt3::gui::PreferencesRegistry::registerPreferences(tt3::gui::GeneralStartupPreferences::instance());
     }
 
     void loadSettings()
