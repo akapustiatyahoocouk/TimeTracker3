@@ -14,30 +14,18 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
-#include "tt3-gui/API.hpp"
 
 namespace tt3::gui
 {
-    //  The common base class for all "preferences editor" widgets
-    class TT3_GUI_PUBLIC PreferencedEditor : public QWidget
-    {
-        Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PreferencedEditor)
-
-        //////////
-        //  Construction/destruction
-    public:
-        explicit PreferencedEditor(QWidget * parent);
-        virtual ~PreferencedEditor();
-
-        //////////
-        //  Operations
-    public:
-    };
+    class TT3_GUI_PUBLIC PreferencesEditor;
 
     //  The generic "preferences" - a node in the
-    //  hierarchy of editable preferences
+    //  hierarchy of editable preferences.
+    //  Normally the actual preferences in a given
+    //  Preferences node will be acked uo via Settings
+    //  of some components; Preferences just organize
+    //  these settings into a hierarchy of editable
+    //  setting groups.
     class TT3_GUI_PUBLIC Preferences
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Preferences)
@@ -51,12 +39,50 @@ namespace tt3::gui
         //////////
         //  Operations
     public:
+        //  The mnemonic identifier of this preferences node
+        virtual QString         mnemonic() const = 0;
+
         //  The user-readable display name of this preferences node
-        virtual QString     displayName() const = 0;
+        virtual QString         displayName() const = 0;
+
+        //  The immediate parent node of this Preferences
+        //  ir null if this is one of the root nodes.
+        virtual Preferences *   parent() const = 0;
+
+        //  The set of immediate child nodes of this
+        //  Preferences node.
+        //  TODO create default implementation
+        virtual QSet<Preferences*>  children() const;
+
+        //  The relative order of this Preferences within its
+        //  parent (lower orders come before higher orders; children
+        //  with the same order are sorted by display name).
+        virtual int             order() const { return INT_MAX; }
 
         //  Creates a new editor widget for this preferences node,
         //  or nullptr if this node is not editable
-        virtual PreferencedEditor * createEditor() = 0;
+        virtual PreferencesEditor * createEditor() = 0;
+    };
+
+    //////////
+    //  The registry of known Preferences
+    class TT3_GUI_PUBLIC PreferencesRegistry final
+    {
+        UTILITY_CLASS(PreferencesRegistry)
+
+        //////////
+        //  Operationds
+    public:
+        //  TODO document
+        static QSet<Preferences*>   allPreferences();
+        static QSet<Preferences*>   rootPreferences();
+        static bool                 registerPreferences(Preferences * preferences);
+        static Preferences *        findPreferences(const QString & mnemonic);
+
+        //////////
+        //  Implementation
+    private:
+        static QMap<QString, Preferences*>  _registry;  //  key = mnemonic
     };
 }
 

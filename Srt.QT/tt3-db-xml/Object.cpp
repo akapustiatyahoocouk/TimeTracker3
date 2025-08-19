@@ -178,6 +178,28 @@ void Object::_deserializeAggregations(const QDomElement & /*parentElement*/) thr
 {   //  Nothing at this level
 }
 
+//////////
+//  Validation
+void Object::_validate(QSet<Object*> & validatedObjects) throws(DatabaseException)
+{   //  Only validate each object PNCE
+    Q_ASSERT(!validatedObjects.contains(this));
+    validatedObjects.insert(this);
 
+    //  Validate properties
+    if (!_isLive || _oid == Object::InvalidOid)
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseCorruptException(_database->_address);
+    }
+
+    //  Validate associations
+    if (!_database->_liveObjects.contains(_oid) ||
+        _database->_liveObjects[_oid] != this ||
+        _database->_graveyard.contains(this))
+    {   //  OOPS! Primary and secondary cached do not match
+        throw tt3::db::api::DatabaseCorruptException(_database->_address);
+    }
+
+    //  Validate aggregations
+}
 
 //  End of tt3-db-xml/Object.cpp

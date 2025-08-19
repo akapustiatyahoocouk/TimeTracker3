@@ -216,4 +216,27 @@ void Account::_deserializeAggregations(const QDomElement & parentElement)
     Principal::_deserializeAggregations(parentElement);
 }
 
+//////////
+//  Validation
+void Account::_validate(QSet<Object*> & validatedObjects) throws(DatabaseException)
+{
+    Principal::_validate(validatedObjects);
+
+    //  Validate properties
+    if (!_database->_validator->account()->isValidLogin(_login))
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseCorruptException(_database->_address);
+    }
+
+    //  Validate associations
+    if (_user == nullptr || !_user->_isLive ||
+        _user->_database != _database ||
+        !_user->_accounts.contains(this))
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseCorruptException(_database->_address);
+    }
+
+    //  Validate aggregations
+}
+
 //  End of tt3-db-xml/Account.cpp

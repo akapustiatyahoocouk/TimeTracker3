@@ -341,6 +341,12 @@ Account * Database::_findAccount(const QString & login) const
 //  Serialization
 void Database::_save() throws(Exception)
 {
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    _ensureOpen();
+
+    //  Make sure we're consistent
+    _validate();
+
     //  Create DOM document with a root node
     QDomDocument document;
     QDomProcessingInstruction xmlDeclaration = document.createProcessingInstruction("xml", "version='1.0' encoding='UTF-8' standalone='yes'");
@@ -350,7 +356,7 @@ void Database::_save() throws(Exception)
     rootElement.setAttribute("FormatVersion", "1");
     document.appendChild(rootElement);
 
-    //  Serialize users (and accounts)
+    //  Serialize users (+ accounts, etc.)
     QDomElement usersElement = document.createElement("Users");
     rootElement.appendChild(usersElement);
     for (User * user : _users)
@@ -361,7 +367,6 @@ void Database::_save() throws(Exception)
         user->_serializeProperties(userElement);
         user->_serializeAggregations(userElement);
     }
-
 
     //  Save DOM
     QFile file(_address->_path);
@@ -377,6 +382,9 @@ void Database::_save() throws(Exception)
 
 void Database::_load() throws(Exception)
 {
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    _ensureOpen();
+
     //  Load XML DOM
     QDomDocument document;
     QFile file(_address->_path);
@@ -411,6 +419,9 @@ void Database::_load() throws(Exception)
         user->_deserializeProperties(userElement);
         user->_deserializeAggregations(userElement);
     }
+
+    //  Done loading - make sure we're consistent
+    _validate();
 }
 
 QList<QDomElement> Database::_childElements(const QDomElement & parentElement, const QString & tagName)
@@ -440,6 +451,25 @@ QDomElement Database::_childElement(const QDomElement & parentElement, const QSt
         throw tt3::db::api::DatabaseCorruptException(_address);
     }
     return children[0];
+}
+
+//////////
+//  Validation
+void Database::_validate() throws(DatabaseException)
+{
+    QSet<Object*> validatedObjects;
+
+    //  Validate users (+ accounts, etc.)
+    for (User * user : _users)
+    {
+        user->_validate(validatedObjects);
+    }
+
+    //  Final checks
+    if (validatedObjects.size() != _liveObjects.size())
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseCorruptException(_address);
+    }
 }
 
 //////////

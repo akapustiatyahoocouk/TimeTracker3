@@ -126,4 +126,19 @@ void Principal::_deserializeAggregations(const QDomElement & parentElement)
     Object::_deserializeAggregations(parentElement);
 }
 
+//////////
+//  Validation
+void Principal::_validate(QSet<Object*> & validatedObjects) throws(DatabaseException)
+{
+    Object::_validate(validatedObjects);
+
+    //  Validate properties
+    if (!_database->_validator->principal()->isValidEmailAddresses(_emailAddresses))
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseCorruptException(_database->_address);
+    }
+
+    //  Validate aggregations
+}
+
 //  End of tt3-db-xml/Principal.cpp

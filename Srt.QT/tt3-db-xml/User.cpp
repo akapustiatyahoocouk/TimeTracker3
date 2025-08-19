@@ -322,4 +322,42 @@ void User::_deserializeAggregations(const QDomElement & parentElement)
     }
 }
 
+//////////
+//  Validation
+void User::_validate(QSet<Object*> & validatedObjects) throws(DatabaseException)
+{
+    Principal::_validate(validatedObjects);
+
+    //  Validate properties
+    if (!_database->_validator->user()->isValidRealName(_realName))
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseCorruptException(_database->_address);
+    }
+    if (_inactivityTimeout.has_value() &&
+        !_database->_validator->user()->isValidInactivityTimeout(_inactivityTimeout.value()))
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseCorruptException(_database->_address);
+    }
+    if (_uiLocale.has_value() &&
+        !_database->_validator->user()->isValidUiLocale(_uiLocale.value()))
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseCorruptException(_database->_address);
+    }
+
+    //  Validate associations
+    //  TODO
+
+    //  Validate aggregations
+    for (Account * account : _accounts)
+    {
+        if (account == nullptr || !account->_isLive ||
+            account->_database != _database ||
+            account->_user != this)
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
+        account->_validate(validatedObjects);
+    }
+}
+
 //  End of tt3-db-xml/User.cpp

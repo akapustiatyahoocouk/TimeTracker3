@@ -85,6 +85,11 @@ namespace tt3::db::xml
 
         virtual void        _deserializeProperties(const QDomElement & objectElement) throws(ParseException) override;
         virtual void        _deserializeAggregations(const QDomElement & parentElement) override;
+
+        //////////
+        //  Validation
+    private:
+        virtual void        _validate(QSet<Object*> & validatedObjects) throws(DatabaseException) override;
     };
 }
 

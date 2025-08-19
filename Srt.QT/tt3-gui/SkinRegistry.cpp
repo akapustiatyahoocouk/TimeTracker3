@@ -22,7 +22,7 @@ QMap<QString, ISkin*> SkinRegistry::_registry;
 //////////
 //  Operationds
 QSet<ISkin*> SkinRegistry::allSkins()
-{
+{   //  TODO synchronize ?
     QList<ISkin*> values = _registry.values();
     return QSet<ISkin*>(values.begin(), values.end());
 }

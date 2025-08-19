@@ -8,9 +8,12 @@ SOURCES += \
     Component.cpp \
     CurrentSkin.cpp \
     ErrorDialog.cpp \
+    GeneralPreferences.cpp \
     LoginDialog.cpp \
     NewWorkspaceDialog.cpp \
     PreferencedEditor.cpp \
+    Preferences.cpp \
+    PreferencesRegistry.cpp \
     SelectWorkspaceDialog.cpp \
     SkinRegistry.cpp
 
@@ -19,10 +22,12 @@ HEADERS += \
     AboutDialog.hpp \
     Components.hpp \
     ErrorDialog.hpp \
+    GeneralPreferences.hpp \
     Linkage.hpp \
     LoginDialog.hpp \
     NewWorkspaceDialog.hpp \
     Preferences.hpp \
+    PreferencesEditor.hpp \
     SelectWorkspaceDialog.hpp \
     Skin.hpp
 

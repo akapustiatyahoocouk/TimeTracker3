@@ -141,6 +141,9 @@ namespace tt3::db::xml
         void            _load() throws(Exception);
         QList<QDomElement>  _childElements(const QDomElement & parentElement, const QString & tagName);
         QDomElement         _childElement(const QDomElement & parentElement, const QString & tagName) throws(DatabaseException);
+
+        //  Validation
+        void            _validate() throws(DatabaseException);
     };
 }
 

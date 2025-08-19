@@ -1,5 +1,5 @@
 //
-//  tt3-gui/API.hpp - tt3-gui master header
+//  tt3-gui/Preferences.cpp - tt3::gui::Preferences class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,28 +14,22 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
+#include "tt3-gui/API.hpp"
+using namespace tt3::gui;
 
 //////////
-//  Dependencies
-#include "tt3-ws/API.hpp"
-#include "tt3-util/API.hpp"
+//  Operations
+QSet<Preferences*> Preferences::children() const
+{
+    QSet<Preferences*> result;
+    for (Preferences * p : PreferencesRegistry::allPreferences())
+    {
+        if (p->parent() == this)
+        {
+            result.insert(p);
+        }
+    }
+    return result;
+}
 
-//////////
-//  tt3-gui components
-#include "tt3-gui/Linkage.hpp"
-#include "tt3-gui/Components.hpp"
-
-#include "tt3-gui/Skin.hpp"
-
-#include "tt3-gui/PreferencesEditor.hpp"
-#include "tt3-gui/Preferences.hpp"
-#include "tt3-gui/GeneralPreferences.hpp"
-
-#include "tt3-gui/ErrorDialog.hpp"
-#include "tt3-gui/NewWorkspaceDialog.hpp"
-#include "tt3-gui/SelectWorkspaceDialog.hpp"
-#include "tt3-gui/LoginDialog.hpp"
-#include "tt3-gui/AboutDialog.hpp"
-
-//  End of tt3-gui/API.hpp
+//  End of tt3-gui/Preferences.cpp
