@@ -41,6 +41,11 @@ namespace tt3::gui
 
             //  The preferred UI locale
             tt3::util::Setting<QLocale> uiLocale;
+
+            //  TODO document
+            tt3::util::Setting<bool>    loadLastWorkspaceAtStartup;
+            tt3::util::Setting<bool>    rememberLastLogin;
+            tt3::util::Setting<QString> currentPreferences;
         };
 
         //////////

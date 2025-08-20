@@ -33,8 +33,6 @@ namespace tt3
             //////////
             //  Properties
         public:
-            //  TODO document
-            tt3::util::Setting<bool>    reloadLastWorkspaceOnStartup;
         };
 
         //////////

@@ -35,21 +35,24 @@ PreferencesDialog::PreferencesDialog(QWidget * parent) throw(int)
     //  editors for each Preferences node
     QList<Preferences*> rootNodes = PreferencesRegistry::rootPreferences().values();
     std::sort(rootNodes.begin(), rootNodes.end(), _compare);
+    QMap<Preferences*,QTreeWidgetItem*> itemsForPreferences;
     for (Preferences * rootNode : rootNodes)
     {
         QTreeWidgetItem * rootItem = new QTreeWidgetItem();
+        itemsForPreferences[rootNode] = rootItem;
         _ui->preferencesTreeWidget->addTopLevelItem(rootItem);
         rootItem->setText(0, rootNode->displayName());
         rootItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(rootNode));
         _createEditor(rootItem);
-        _createChildItems(rootItem);
+        _createChildItems(rootItem, itemsForPreferences);
     }
 
     _editorsFrameLayout->addWidget(_noPropertiesLabel);
     _noPropertiesLabel->setParent(_ui->editorsFrame);
     _editorsFrameLayout->setCurrentWidget(_noPropertiesLabel);
 
-    //  TODO selest last "current" item
+    //  Selest last "current" item
+    _loadCurrentPreferences(itemsForPreferences);
 
     //  Done
     _refresh();
@@ -76,7 +79,8 @@ bool PreferencesDialog::_compare(const Preferences * a, const Preferences * b)
     return a->displayName() < b->displayName();
 }
 
-void PreferencesDialog::_createChildItems(QTreeWidgetItem * parentItem)
+void PreferencesDialog::_createChildItems(QTreeWidgetItem * parentItem,
+                                          QMap<Preferences*,QTreeWidgetItem*> & itemsForPreferences)
 {
     Preferences * parentNode =
         parentItem->data(0, Qt::ItemDataRole::UserRole).value<Preferences*>();;
@@ -85,11 +89,12 @@ void PreferencesDialog::_createChildItems(QTreeWidgetItem * parentItem)
     for (Preferences * childNode : childNodes)
     {
         QTreeWidgetItem * childItem = new QTreeWidgetItem();
+        itemsForPreferences[childNode] = childItem;
         parentItem->addChild(childItem);
         childItem->setText(0, childNode->displayName());
         childItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(childNode));
         _createEditor(childItem);
-        _createChildItems(childItem);
+        _createChildItems(childItem, itemsForPreferences);
     }
 }
 
@@ -108,6 +113,31 @@ void PreferencesDialog::_createEditor(QTreeWidgetItem * item)
                 &PreferencesEditor::controlValueChanged,
                 this,
                 &PreferencesDialog::_refresh);
+    }
+}
+
+void PreferencesDialog::_loadCurrentPreferences(const QMap<Preferences*,QTreeWidgetItem*> & itemsForPreferences)
+{
+    if (Preferences * node =
+            PreferencesRegistry::findPreferences(
+                Component::Settings::instance()->currentPreferences))
+    {
+        if (itemsForPreferences.contains(node))
+        {
+            _ui->preferencesTreeWidget->setCurrentItem(itemsForPreferences[node]);
+        }
+    }
+}
+
+void PreferencesDialog::_saveCurrentPreferences()
+{
+    QTreeWidgetItem * item =
+        _ui->preferencesTreeWidget->currentItem();
+    if (item != nullptr)
+    {   //  Save!
+        Preferences * node =
+            item->data(0, Qt::ItemDataRole::UserRole).value<Preferences*>();;
+        Component::Settings::instance()->currentPreferences = node->mnemonic();
     }
 }
 
@@ -141,13 +171,19 @@ void PreferencesDialog::_refresh()
 
 void PreferencesDialog::_accept()
 {
-    //  TODO save last "current" item
+    //  Apply all changes to all settings
+    for (PreferencesEditor * editor : _editorsForItems.values())
+    {
+        editor->saveControlValues();
+    }
+    //  TODO Can we save all settings to file NOW?
+    _saveCurrentPreferences();
     accept();
 }
 
 void PreferencesDialog::_reject()
 {
-    //  TODO save last "current" item
+    _saveCurrentPreferences();
     reject();
 }
 

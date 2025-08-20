@@ -40,8 +40,11 @@ namespace tt3::gui
 
         //  Helpers
         static bool     _compare(const Preferences * a, const Preferences * b);
-        void            _createChildItems(QTreeWidgetItem * parentItem);
+        void            _createChildItems(QTreeWidgetItem * parentItem,
+                                          QMap<Preferences*,QTreeWidgetItem*> & itemsForPreferences);
         void            _createEditor(QTreeWidgetItem * item);
+        void            _loadCurrentPreferences(const QMap<Preferences*,QTreeWidgetItem*> & itemsForPreferences);
+        void            _saveCurrentPreferences();
 
         //////////
         //  Controls

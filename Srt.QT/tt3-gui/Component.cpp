@@ -68,11 +68,23 @@ Component::Settings::Settings()
             ""),
         uiLocale(
             "UiLocale",
-            QLocale(QLocale::English, QLocale::UnitedKingdom))
+            QLocale(QLocale::English, QLocale::UnitedKingdom)),
+        loadLastWorkspaceAtStartup(
+            "LoadLastWorkspaceAtStartup",
+            false),
+        rememberLastLogin(
+            "RememberLastLogin",
+            true),
+        currentPreferences(
+            "CurrentPreferences",
+            "")
 {
     addSetting(&activeSkin);
     addSetting(&lastLogin);
     addSetting(&uiLocale);
+    addSetting(&loadLastWorkspaceAtStartup);
+    addSetting(&rememberLastLogin);
+    addSetting(&currentPreferences);
 }
 
 Component::Settings::~Settings()

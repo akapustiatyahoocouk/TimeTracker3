@@ -17,6 +17,7 @@
 
 namespace tt3::util
 {
+    //  A generic "settings" is a single value which is retained between runs
     class TT3_UTIL_PUBLIC AbstractSetting
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AbstractSetting)
@@ -43,7 +44,6 @@ namespace tt3::util
         const QString   _mnemonic;
     };
 
-    //////////
     //  A "settings" is a single value which is retained between runs
     template <class T>
     class Setting final : public AbstractSetting

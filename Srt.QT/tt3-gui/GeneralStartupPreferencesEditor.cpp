@@ -44,17 +44,26 @@ Preferences * GeneralStartupPreferencesEditor::preferences() const
 
 void GeneralStartupPreferencesEditor::loadControlValues()
 {
-    //  TODO implement
+    _ui->loadLastWorkspaceAtStartupCheckBox->setChecked(
+        Component::Settings::instance()->loadLastWorkspaceAtStartup);
+    _ui->rememnerLastLoginCheckBox->setChecked(
+        Component::Settings::instance()->rememberLastLogin);
 }
 
 void GeneralStartupPreferencesEditor::saveControlValues()
 {
-    //  TODO implement
+    Component::Settings::instance()->loadLastWorkspaceAtStartup =
+        _ui->loadLastWorkspaceAtStartupCheckBox->isChecked();
+    Component::Settings::instance()->rememberLastLogin =
+        _ui->rememnerLastLoginCheckBox->isChecked();
 }
 
 void GeneralStartupPreferencesEditor::resetControlValues()
 {
-    //  TODO implement
+    _ui->loadLastWorkspaceAtStartupCheckBox->setChecked(
+        Component::Settings::instance()->loadLastWorkspaceAtStartup.defaultValue());
+    _ui->rememnerLastLoginCheckBox->setChecked(
+        Component::Settings::instance()->rememberLastLogin.defaultValue());
 }
 
 bool GeneralStartupPreferencesEditor::isValid() const

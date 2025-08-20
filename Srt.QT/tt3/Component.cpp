@@ -58,11 +58,7 @@ QString Component::buildNumber() const
 IMPLEMENT_SINGLETON(Component::Settings)
 
 Component::Settings::Settings()
-    :   reloadLastWorkspaceOnStartup(
-          "ReloadLastWorkspaceOnStartup",
-          false)
 {
-    addSetting(&reloadLastWorkspaceOnStartup);
 }
 
 Component::Settings::~Settings()
