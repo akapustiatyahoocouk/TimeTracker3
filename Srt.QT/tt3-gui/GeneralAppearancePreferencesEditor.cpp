@@ -27,17 +27,20 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
     _ui->setupUi(this);
 
     //  Fill the language combo box with available locales
-    //  TODO properly - from the set of locales supported by components
+    //  TODO properly - from the set of locales supported
+    //  by components and sorted by display name
     _locales.append(Component::Settings::instance()->uiLocale.defaultValue());
+    std::sort(_locales.begin(),
+              _locales.end(),
+              [](auto a, auto b) { return _displayName(a) < _displayName(b); });
 
     for (QLocale locale : _locales)
     {
-        _ui->languageComboBox->addItem(
-            QLocale::languageToString(locale.language()) +
-            " (" +
-            QLocale::territoryToString(locale.territory()) +
-            ")");
+        _ui->languageComboBox->addItem(_displayName(locale));
     }
+
+    //  Start off with current values from Settings
+    loadControlValues();
 }
 
 GeneralAppearancePreferencesEditor::~GeneralAppearancePreferencesEditor()
@@ -69,7 +72,24 @@ void GeneralAppearancePreferencesEditor::resetControlValues()
 
 bool GeneralAppearancePreferencesEditor::isValid() const
 {
-    return true;
+    return _ui->languageComboBox->currentIndex() != -1;
+}
+
+//////////
+//  Implementation helpers
+QString GeneralAppearancePreferencesEditor::_displayName(const QLocale & locale)
+{
+    return QLocale::languageToString(locale.language()) +
+           " (" +
+           QLocale::territoryToString(locale.territory()) +
+           ")";
+}
+
+//////////
+//  Signal handlers
+void GeneralAppearancePreferencesEditor::_languageComboBoxCurrentIndexChanged(int)
+{
+    emit controlValueChanged();
 }
 
 //  End of tt3-gui/GeneralAppearancePreferencesEditor.cpp

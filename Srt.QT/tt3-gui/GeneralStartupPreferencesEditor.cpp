@@ -25,6 +25,9 @@ GeneralStartupPreferencesEditor::GeneralStartupPreferencesEditor(QWidget * paren
         _ui(new Ui::GeneralStartupPreferencesEditor)
 {
     _ui->setupUi(this);
+
+    //  Start off with current values from Settings
+    loadControlValues();
 }
 
 GeneralStartupPreferencesEditor::~GeneralStartupPreferencesEditor()
@@ -58,5 +61,18 @@ bool GeneralStartupPreferencesEditor::isValid() const
 {
     return true;
 }
+
+//////////
+//  Signal handlers
+void GeneralStartupPreferencesEditor::_loadLastWorkspaceAtStartupCheckBoxStateChanged(int)
+{
+    emit controlValueChanged();
+}
+
+void GeneralStartupPreferencesEditor::_rememberLastLoginCheckBoxStateChanged(int)
+{
+    emit controlValueChanged();
+}
+
 
 //  End of tt3-gui/GeneralStartupPreferencesEditor.cpp

@@ -49,10 +49,18 @@ namespace tt3::gui
     private:
         QList<QLocale>  _locales;   //  same order as in combo box
 
+        //  Helpers
+        static QString  _displayName(const QLocale & locale);
+
         //////////
         //  Controls
     private:
         Ui::GeneralAppearancePreferencesEditor *_ui;
+
+        //////////
+        //  Signal handlers
+    private slots:
+        void            _languageComboBoxCurrentIndexChanged(int);
     };
 }
 

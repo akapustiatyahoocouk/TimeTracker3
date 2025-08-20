@@ -48,6 +48,12 @@ namespace tt3::gui
         //  Controls
     private:
         Ui::GeneralStartupPreferencesEditor *   _ui;
+
+        //////////
+        //  Signal handlers
+    private slots:
+        void            _loadLastWorkspaceAtStartupCheckBoxStateChanged(int);
+        void            _rememberLastLoginCheckBoxStateChanged(int);
     };
 }
 
