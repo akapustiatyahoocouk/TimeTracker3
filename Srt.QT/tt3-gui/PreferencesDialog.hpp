@@ -54,6 +54,7 @@ namespace tt3::gui
         //  Signal handlers
     private slots:
         void                _preferencesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
+        void                _refresh();
         void                _accept();
         void                _reject();
     };

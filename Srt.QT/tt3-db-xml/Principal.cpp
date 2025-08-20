@@ -30,7 +30,7 @@ Principal::~Principal()
 
 //////////
 //  tt3::db::api::IPrincipal (general)
-bool Principal::enabled() const throws(DatabaseException)
+bool Principal::enabled() const throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -38,7 +38,7 @@ bool Principal::enabled() const throws(DatabaseException)
     return _enabled;
 }
 
-void Principal::setEnabled(bool enabled) throws(DatabaseException)
+void Principal::setEnabled(bool enabled) throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -52,7 +52,7 @@ void Principal::setEnabled(bool enabled) throws(DatabaseException)
     }
 }
 
-QStringList Principal::emailAddresses() const throws(DatabaseException)
+QStringList Principal::emailAddresses() const throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -60,7 +60,7 @@ QStringList Principal::emailAddresses() const throws(DatabaseException)
     return _emailAddresses;
 }
 
-void Principal::setEmailAddresses(const QStringList & emailAddresses) throws(DatabaseException)
+void Principal::setEmailAddresses(const QStringList & emailAddresses) throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -110,7 +110,7 @@ void Principal::_serializeAggregations(QDomElement & parentElement)
     Object::_serializeAggregations(parentElement);
 }
 
-void Principal::_deserializeProperties(const QDomElement & objectElement) throws(ParseException)
+void Principal::_deserializeProperties(const QDomElement & objectElement) throws(tt3::util::ParseException)
 {
     Object::_deserializeProperties(objectElement);
 
@@ -121,14 +121,14 @@ void Principal::_deserializeProperties(const QDomElement & objectElement) throws
     }
 }
 
-void Principal::_deserializeAggregations(const QDomElement & parentElement)
+void Principal::_deserializeAggregations(const QDomElement & parentElement) throws(tt3::util::ParseException)
 {
     Object::_deserializeAggregations(parentElement);
 }
 
 //////////
 //  Validation
-void Principal::_validate(QSet<Object*> & validatedObjects) throws(DatabaseException)
+void Principal::_validate(QSet<Object*> & validatedObjects) throws(tt3::db::api::DatabaseException)
 {
     Object::_validate(validatedObjects);
 

@@ -18,7 +18,7 @@
 
 namespace
 {
-    void skipCharacter(const QString & s, int & scan, QChar c) throws(ParseException)
+    void skipCharacter(const QString & s, int & scan, QChar c) throws(tt3::util::ParseException)
     {
         if (scan < s.length() && s[scan] == c)
         {

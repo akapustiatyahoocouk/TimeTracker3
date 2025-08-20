@@ -128,7 +128,7 @@ bool Database::isOpen() const
     return _lockRefresher != nullptr;
 }
 
-void Database::close() throws(DatabaseException)
+void Database::close() throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_guard);
 
@@ -173,14 +173,14 @@ void Database::close() throws(DatabaseException)
 
 //////////
 //  tt3::db::api::IDatabase (associations)
-tt3::db::api::Users Database::users() const throws(DatabaseException)
+tt3::db::api::Users Database::users() const throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_guard);
 
     return tt3::db::api::Users(_users.cbegin(), _users.cend());
 }
 
-tt3::db::api::Accounts Database::accounts() const throws(DatabaseException)
+tt3::db::api::Accounts Database::accounts() const throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_guard);
 
@@ -192,7 +192,7 @@ tt3::db::api::Accounts Database::accounts() const throws(DatabaseException)
     return result;
 }
 
-tt3::db::api::IAccount * Database::findAccount(const QString & login) const throws(DatabaseException)
+tt3::db::api::IAccount * Database::findAccount(const QString & login) const throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_guard);
 
@@ -201,7 +201,7 @@ tt3::db::api::IAccount * Database::findAccount(const QString & login) const thro
 
 //////////
 //  tt3::db::api::IDatabase (access control)
-tt3::db::api::IAccount * Database::tryLogin(const QString & login, const QString & password) const throws(DatabaseException)
+tt3::db::api::IAccount * Database::tryLogin(const QString & login, const QString & password) const throws(tt3::db::api::DatabaseException)
 {
     static tt3::util::MessageDigest * sha1 = tt3::util::Sha1MessageDigest::instance();  //  idempotent
 
@@ -233,7 +233,7 @@ tt3::db::api::IUser * Database::createUser(
     bool enabled, const QStringList & emailAddresses,
     const QString & realName,
     const std::optional<tt3::util::TimeSpan> & inactivityTimeout,
-    const std::optional<QLocale> & uiLocale) throws(DatabaseException)
+    const std::optional<QLocale> & uiLocale) throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_guard);
     _ensureOpen();  //  may throw
@@ -339,7 +339,7 @@ Account * Database::_findAccount(const QString & login) const
 
 //////////
 //  Serialization
-void Database::_save() throws(Exception)
+void Database::_save() throws(tt3::util::Exception)
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
     _ensureOpen();
@@ -380,7 +380,7 @@ void Database::_save() throws(Exception)
     _needsSaving = false;
 }
 
-void Database::_load() throws(Exception)
+void Database::_load() throws(tt3::util::Exception)
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
     _ensureOpen();
@@ -443,7 +443,7 @@ QList<QDomElement> Database::_childElements(const QDomElement & parentElement, c
     return result;
 }
 
-QDomElement Database::_childElement(const QDomElement & parentElement, const QString & tagName) throws(DatabaseException)
+QDomElement Database::_childElement(const QDomElement & parentElement, const QString & tagName) throws(tt3::db::api::DatabaseException)
 {
     QList<QDomElement> children = _childElements(parentElement, tagName);
     if (children.size() != 1)
@@ -455,7 +455,7 @@ QDomElement Database::_childElement(const QDomElement & parentElement, const QSt
 
 //////////
 //  Validation
-void Database::_validate() throws(DatabaseException)
+void Database::_validate() throws(tt3::db::api::DatabaseException)
 {
     QSet<Object*> validatedObjects;
 

@@ -56,6 +56,13 @@ namespace tt3::gui
         //  text fields that allow only numeric values
         //  have only valid numbers in them, etc.)
         virtual bool    isValid() const = 0;
+
+        //////////
+        //  Signals
+    signals:
+        //  Emitted when the value of some
+        //  inner widget changes
+        void            controlValueChanged();
     };
 }
 

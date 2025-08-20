@@ -46,7 +46,7 @@ User::~User()
 
 //////////
 //  tt3::db::api::IObject (life cycle)
-void User::destroy() throws(DatabaseException)
+void User::destroy() throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -63,7 +63,7 @@ void User::destroy() throws(DatabaseException)
 
 //////////
 //  tt3::db::api::IUser (properties)
-QString User::realName() const throws(DatabaseException)
+QString User::realName() const throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -71,7 +71,7 @@ QString User::realName() const throws(DatabaseException)
     return _realName;
 }
 
-void User::setRealName(const QString & realName) throws(DatabaseException)
+void User::setRealName(const QString & realName) throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -94,7 +94,7 @@ void User::setRealName(const QString & realName) throws(DatabaseException)
 }
 
 std::optional<tt3::util::TimeSpan>
-User::inactivityTimeout() const throws(DatabaseException)
+User::inactivityTimeout() const throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -102,7 +102,7 @@ User::inactivityTimeout() const throws(DatabaseException)
     return _inactivityTimeout;
 }
 
-void User::setInactivityTimeout(const std::optional<tt3::util::TimeSpan> & inactivityTimeout) throws(DatabaseException)
+void User::setInactivityTimeout(const std::optional<tt3::util::TimeSpan> & inactivityTimeout) throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -126,7 +126,7 @@ void User::setInactivityTimeout(const std::optional<tt3::util::TimeSpan> & inact
 }
 
 std::optional<QLocale>
-User::uiLocale() const throws(DatabaseException)
+User::uiLocale() const throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -134,7 +134,7 @@ User::uiLocale() const throws(DatabaseException)
     return _uiLocale;
 }
 
-void User::setUiLocale(const std::optional<QLocale> & uiLocale) throws(DatabaseException)
+void User::setUiLocale(const std::optional<QLocale> & uiLocale) throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -163,7 +163,7 @@ tt3::db::api::IAccount *
 User::createAccount(
     bool enabled, const QStringList & emailAddresses,
     const QString & login, const QString & password,
-    tt3::db::api::Capabilities capabilities) throws(DatabaseException)
+    tt3::db::api::Capabilities capabilities) throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -224,7 +224,7 @@ User::createAccount(
 
 //////////
 //  tt3::db::api::IUser (associations)
-tt3::db::api::Accounts User::accounts() const throws(DatabaseException)
+tt3::db::api::Accounts User::accounts() const throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -284,7 +284,7 @@ void User::_serializeAggregations(QDomElement & parentElement)
     }
 }
 
-void User::_deserializeProperties(const QDomElement & objectElement) throws(ParseException)
+void User::_deserializeProperties(const QDomElement & objectElement) throws(tt3::util::ParseException)
 {
     Principal::_deserializeProperties(objectElement);
 
@@ -303,7 +303,7 @@ void User::_deserializeProperties(const QDomElement & objectElement) throws(Pars
     }
 }
 
-void User::_deserializeAggregations(const QDomElement & parentElement)
+void User::_deserializeAggregations(const QDomElement & parentElement) throws(tt3::util::ParseException)
 {
     Principal::_deserializeAggregations(parentElement);
 
@@ -324,7 +324,7 @@ void User::_deserializeAggregations(const QDomElement & parentElement)
 
 //////////
 //  Validation
-void User::_validate(QSet<Object*> & validatedObjects) throws(DatabaseException)
+void User::_validate(QSet<Object*> & validatedObjects) throws(tt3::db::api::DatabaseException)
 {
     Principal::_validate(validatedObjects);
 

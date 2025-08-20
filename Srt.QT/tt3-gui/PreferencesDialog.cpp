@@ -20,7 +20,7 @@ using namespace tt3::gui;
 
 //////////
 //  Construction/destruction
-PreferencesDialog::PreferencesDialog(QWidget * parent)
+PreferencesDialog::PreferencesDialog(QWidget * parent) throw(int)
     :   QDialog(parent),
         _ui(new Ui::PreferencesDialog)
 {
@@ -50,6 +50,9 @@ PreferencesDialog::PreferencesDialog(QWidget * parent)
     _editorsFrameLayout->setCurrentWidget(_noPropertiesLabel);
 
     //  TODO selest last "current" item
+
+    //  Done
+    _refresh();
 }
 
 PreferencesDialog::~PreferencesDialog()
@@ -100,6 +103,11 @@ void PreferencesDialog::_createEditor(QTreeWidgetItem * item)
         _editorsFrameLayout->addWidget(editor);
         editor->setParent(_ui->editorsFrame);
         _editorsForItems[item] = editor;
+        //  Set up signal listeners
+        connect(editor,
+                &PreferencesEditor::controlValueChanged,
+                this,
+                &PreferencesDialog::_refresh);
     }
 }
 
@@ -116,6 +124,19 @@ void PreferencesDialog::_preferencesTreeWidgetCurrentItemChanged(QTreeWidgetItem
     {
         _editorsFrameLayout->setCurrentWidget(_noPropertiesLabel);
     }
+}
+
+void PreferencesDialog::_refresh()
+{
+    bool okEnabled = true;
+    for (PreferencesEditor * editor : _editorsForItems.values())
+    {
+        if (!editor->isValid())
+        {
+            okEnabled = false;
+        }
+    }
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(okEnabled);
 }
 
 void PreferencesDialog::_accept()

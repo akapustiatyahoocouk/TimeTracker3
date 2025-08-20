@@ -38,10 +38,10 @@ namespace tt3::db::xml
         //////////
         //  tt3::db::api::IPrincipal (general)
     public:
-        virtual bool        enabled() const throws(DatabaseException) override;
-        virtual void        setEnabled(bool enabled) throws(DatabaseException) override;
-        virtual QStringList emailAddresses() const throws(DatabaseException) override;
-        virtual void        setEmailAddresses(const QStringList & emailAddresses) throws(DatabaseException) override;
+        virtual bool        enabled() const throws(tt3::db::api::DatabaseException) override;
+        virtual void        setEnabled(bool enabled) throws(tt3::db::api::DatabaseException) override;
+        virtual QStringList emailAddresses() const throws(tt3::db::api::DatabaseException) override;
+        virtual void        setEmailAddresses(const QStringList & emailAddresses) throws(tt3::db::api::DatabaseException) override;
 
         //////////
         //  Implementation
@@ -58,14 +58,14 @@ namespace tt3::db::xml
         virtual void        _serializeProperties(QDomElement & objectElement) override;
         virtual void        _serializeAggregations(QDomElement & parentElement);
 
-        virtual void        _deserializeProperties(const QDomElement & objectElement) throws(ParseException) override;
-        virtual void        _deserializeAggregations(const QDomElement & parentElement) override;
+        virtual void        _deserializeProperties(const QDomElement & objectElement) throws(tt3::util::ParseException) override;
+        virtual void        _deserializeAggregations(const QDomElement & parentElement) throws(tt3::util::ParseException) override;
 
         //////////
         //  Validation
     private:
-        virtual void        _validate(QSet<Object*> & validatedObjects) throws(DatabaseException) override;
+        virtual void        _validate(QSet<Object*> & validatedObjects) throws(tt3::db::api::DatabaseException) override;
     };
 }
 
-//  End of tt3-db-api/Principal.hpp
+//  End of tt3-db-xml/Principal.hpp

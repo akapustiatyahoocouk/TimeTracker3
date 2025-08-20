@@ -47,14 +47,14 @@ namespace tt3::db::xml
         virtual tt3::db::api::IDatabaseAddress *  defaultDatabaseAddress() const override;
         virtual tt3::db::api::IDatabaseAddress *  enterNewDatabaseAddress(QWidget * parent) override;
         virtual tt3::db::api::IDatabaseAddress *  enterExistingDatabaseAddress(QWidget * parent) override;
-        virtual tt3::db::api::IDatabaseAddress *  parseDatabaseAddress(const QString & externalForm) throws(DatabaseException) override;
+        virtual tt3::db::api::IDatabaseAddress *  parseDatabaseAddress(const QString & externalForm) throws(tt3::db::api::DatabaseException) override;
 
         //////////
         //  tt3::db::api::IDatabaseType (databases)
     public:
-        virtual tt3::db::api::IDatabase *   createDatabase(tt3::db::api::IDatabaseAddress * address) throws(DatabaseException) override;
-        virtual tt3::db::api::IDatabase *   openDatabase(tt3::db::api::IDatabaseAddress * address) throws(DatabaseException) override;
-        virtual void        destroyDatabase(tt3::db::api::IDatabaseAddress * address) throws(DatabaseException) override;
+        virtual tt3::db::api::IDatabase *   createDatabase(tt3::db::api::IDatabaseAddress * address) throws(tt3::db::api::DatabaseException) override;
+        virtual tt3::db::api::IDatabase *   openDatabase(tt3::db::api::IDatabaseAddress * address) throws(tt3::db::api::DatabaseException) override;
+        virtual void        destroyDatabase(tt3::db::api::IDatabaseAddress * address) throws(tt3::db::api::DatabaseException) override;
 
         //////////
         //  Implementation

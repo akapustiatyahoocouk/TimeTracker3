@@ -37,22 +37,22 @@ namespace tt3::db::xml
         //////////
         //  tt3::db::api::IObject (life cycle)
     public:
-        virtual void        destroy() throws(DatabaseException) override;
+        virtual void        destroy() throws(tt3::db::api::DatabaseException) override;
 
         //////////
         //  tt3::db::api::IAccount (properties)
     public:
-        virtual QString     login() const throws(DatabaseException) override;
-        virtual void        setLogin(const QString & login) throws(DatabaseException) override;
-        virtual QString     passwordHash() const throws(DatabaseException) override;
-        virtual void        setPassword(const QString & password) throws(DatabaseException) override;
-        virtual tt3::db::api::Capabilities  capabilities() const throws(DatabaseException) override;
-        virtual void        setCapabilities(tt3::db::api::Capabilities capabilities) throws(DatabaseException) override;
+        virtual QString     login() const throws(tt3::db::api::DatabaseException) override;
+        virtual void        setLogin(const QString & login) throws(tt3::db::api::DatabaseException) override;
+        virtual QString     passwordHash() const throws(tt3::db::api::DatabaseException) override;
+        virtual void        setPassword(const QString & password) throws(tt3::db::api::DatabaseException) override;
+        virtual tt3::db::api::Capabilities  capabilities() const throws(tt3::db::api::DatabaseException) override;
+        virtual void        setCapabilities(tt3::db::api::Capabilities capabilities) throws(tt3::db::api::DatabaseException) override;
 
         //////////
         //  tt3::db::api::IAccount (associations)
     public:
-        virtual tt3::db::api::IUser *   user() const throws(DatabaseException) override;
+        virtual tt3::db::api::IUser *   user() const throws(tt3::db::api::DatabaseException) override;
 
         //////////
         //  Implementation
@@ -65,7 +65,7 @@ namespace tt3::db::xml
         User *              _user;  //  counts as "reference"
 
         //  Helpers
-        virtual void    _markDead() override;
+        virtual void        _markDead() override;
 
         //////////
         //  Serialization
@@ -73,14 +73,14 @@ namespace tt3::db::xml
         virtual void        _serializeProperties(QDomElement & objectElement) override;
         virtual void        _serializeAggregations(QDomElement & parentElement) override;
 
-        virtual void        _deserializeProperties(const QDomElement & objectElement) throws(ParseException) override;
-        virtual void        _deserializeAggregations(const QDomElement & parentElement) override;
+        virtual void        _deserializeProperties(const QDomElement & objectElement) throws(tt3::util::ParseException) override;
+        virtual void        _deserializeAggregations(const QDomElement & parentElement) throws(tt3::util::ParseException) override;
 
         //////////
         //  Validation
     private:
-        virtual void        _validate(QSet<Object*> & validatedObjects) throws(DatabaseException) override;
+        virtual void        _validate(QSet<Object*> & validatedObjects) throws(tt3::db::api::DatabaseException) override;
     };
 }
 
-//  End of tt3-db-api/User.hpp
+//  End of tt3-db-xml/User.hpp

@@ -89,12 +89,19 @@ namespace tt3::util
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  The default value of this setting
+        const T         defaultValue() const
+        {
+            return _defaultValue;
+        }
+
+        //  Returns the current value of this setting
         T               value() const
         {
             return _valueLoaded ? _value : _defaultValue;
         }
 
+        //  Sets the current value of this setting
         void            setValue(const T & value)
         {
             if (value != this->value())

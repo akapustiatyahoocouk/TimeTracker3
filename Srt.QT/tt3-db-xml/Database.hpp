@@ -34,7 +34,7 @@ namespace tt3::db::xml
         //  Construction/destruction
     private:
         enum _Mode { _Create, _Open };
-        Database(DatabaseAddress * address, _Mode mode) throws(DatabaseException);
+        Database(DatabaseAddress * address, _Mode mode) throws(tt3::db::api::DatabaseException);
     public:
         virtual ~Database();    //  closes database if still open
 
@@ -45,19 +45,19 @@ namespace tt3::db::xml
         virtual DatabaseAddress *   address() const override { return _address; }
         virtual tt3::db::api::IValidator *  validator() const override { return _validator; }
         virtual bool                isOpen() const override;
-        virtual void                close() throws(DatabaseException) override;
+        virtual void                close() throws(tt3::db::api::DatabaseException) override;
 
         //////////
         //  tt3::db::api::IDatabase (associations)
     public:
-        virtual tt3::db::api::Users     users() const throws(DatabaseException) override;
-        virtual tt3::db::api::Accounts  accounts() const throws(DatabaseException) override;
-        virtual tt3::db::api::IAccount *findAccount(const QString & login) const throws(DatabaseException) override;
+        virtual tt3::db::api::Users     users() const throws(tt3::db::api::DatabaseException) override;
+        virtual tt3::db::api::Accounts  accounts() const throws(tt3::db::api::DatabaseException) override;
+        virtual tt3::db::api::IAccount *findAccount(const QString & login) const throws(tt3::db::api::DatabaseException) override;
 
         //////////
         //  tt3::db::api::IDatabase (access control)
     public:
-        virtual tt3::db::api::IAccount *    tryLogin(const QString & login, const QString & password) const throws(DatabaseException) override;
+        virtual tt3::db::api::IAccount *    tryLogin(const QString & login, const QString & password) const throws(tt3::db::api::DatabaseException) override;
 
         //////////
         //  tt3::db::api::IDatabase (life cycle)
@@ -65,7 +65,7 @@ namespace tt3::db::xml
         virtual tt3::db::api::IUser *   createUser(bool enabled, const QStringList & emailAddresses,
                                     const QString & realName,
                                     const std::optional<tt3::util::TimeSpan> & inactivityTimeout,
-                                    const std::optional<QLocale> & uiLocale) throws(DatabaseException) override;
+                                    const std::optional<QLocale> & uiLocale) throws(tt3::db::api::DatabaseException) override;
 
         //////////
         //  tt3::db::api::IDatabase (change notification handling)
@@ -132,19 +132,19 @@ namespace tt3::db::xml
         tt3::db::api::ChangeNotifier    _changeNotifier;
 
         //  Helpers
-        void            _ensureOpen() const throws (DatabaseException);
+        void            _ensureOpen() const throws (tt3::db::api::DatabaseException);
         void            _markClosed();
         Account *       _findAccount(const QString & login) const;
 
         //  Serialization
-        void            _save() throws(Exception);
-        void            _load() throws(Exception);
+        void            _save() throws(tt3::util::Exception);
+        void            _load() throws(tt3::util::Exception);
         QList<QDomElement>  _childElements(const QDomElement & parentElement, const QString & tagName);
-        QDomElement         _childElement(const QDomElement & parentElement, const QString & tagName) throws(DatabaseException);
+        QDomElement         _childElement(const QDomElement & parentElement, const QString & tagName) throws(tt3::db::api::DatabaseException);
 
         //  Validation
-        void            _validate() throws(DatabaseException);
+        void            _validate() throws(tt3::db::api::DatabaseException);
     };
 }
 
-//  End of tt3-db-api/Database.hpp
+//  End of tt3-db-xml/Database.hpp

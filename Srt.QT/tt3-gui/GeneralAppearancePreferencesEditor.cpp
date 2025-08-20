@@ -28,7 +28,7 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
 
     //  Fill the language combo box with available locales
     //  TODO properly - from the set of locales supported by components
-    _locales.append(Component::Settings::instance()->uiLocale);
+    _locales.append(Component::Settings::instance()->uiLocale.defaultValue());
 
     for (QLocale locale : _locales)
     {

@@ -111,7 +111,7 @@ tt3::db::api::IDatabaseAddress * DatabaseType::enterExistingDatabaseAddress(QWid
     return parseDatabaseAddress(path);
 }
 
-tt3::db::api::IDatabaseAddress * DatabaseType::parseDatabaseAddress(const QString & externalForm) throws(DatabaseException)
+tt3::db::api::IDatabaseAddress * DatabaseType::parseDatabaseAddress(const QString & externalForm) throws(tt3::db::api::DatabaseException)
 {
     QString path = QFileInfo(externalForm).absoluteFilePath();
     if (path != externalForm)
@@ -147,7 +147,7 @@ tt3::db::api::IDatabaseAddress * DatabaseType::parseDatabaseAddress(const QStrin
 
 //////////
 //  tt3::db::api::IDatabaseType (databases)
-tt3::db::api::IDatabase * DatabaseType::createDatabase(tt3::db::api::IDatabaseAddress * address) throws(DatabaseException)
+tt3::db::api::IDatabase * DatabaseType::createDatabase(tt3::db::api::IDatabaseAddress * address) throws(tt3::db::api::DatabaseException)
 {
     if (DatabaseAddress * xmlDatabaseAddress =
         dynamic_cast<DatabaseAddress*>(address))
@@ -157,7 +157,7 @@ tt3::db::api::IDatabase * DatabaseType::createDatabase(tt3::db::api::IDatabaseAd
     throw tt3::db::api::InvalidDatabaseAddressException();
 }
 
-tt3::db::api::IDatabase * DatabaseType::openDatabase(tt3::db::api::IDatabaseAddress * address) throws(DatabaseException)
+tt3::db::api::IDatabase * DatabaseType::openDatabase(tt3::db::api::IDatabaseAddress * address) throws(tt3::db::api::DatabaseException)
 {
     if (DatabaseAddress * xmlDatabaseAddress =
         dynamic_cast<DatabaseAddress*>(address))
@@ -167,7 +167,7 @@ tt3::db::api::IDatabase * DatabaseType::openDatabase(tt3::db::api::IDatabaseAddr
     throw tt3::db::api::InvalidDatabaseAddressException();
 }
 
-void DatabaseType::destroyDatabase(tt3::db::api::IDatabaseAddress * address) throws(DatabaseException)
+void DatabaseType::destroyDatabase(tt3::db::api::IDatabaseAddress * address) throws(tt3::db::api::DatabaseException)
 {
     if (DatabaseAddress * xmlDatabaseAddress =
         dynamic_cast<DatabaseAddress*>(address))

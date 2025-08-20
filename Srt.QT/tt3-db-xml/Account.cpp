@@ -47,7 +47,7 @@ Account::~Account()
 
 //////////
 //  tt3::db::api::IObject (life cycle)
-void Account::destroy() throws(DatabaseException)
+void Account::destroy() throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -58,7 +58,7 @@ void Account::destroy() throws(DatabaseException)
 
 //////////
 //  tt3::db::api::IAccount (properties)
-QString Account::login() const throws(DatabaseException)
+QString Account::login() const throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -66,7 +66,7 @@ QString Account::login() const throws(DatabaseException)
     return _login;
 }
 
-void Account::setLogin(const QString & login) throws(DatabaseException)
+void Account::setLogin(const QString & login) throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -99,7 +99,7 @@ void Account::setLogin(const QString & login) throws(DatabaseException)
     }
 }
 
-QString Account::passwordHash() const throws(DatabaseException)
+QString Account::passwordHash() const throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -107,7 +107,7 @@ QString Account::passwordHash() const throws(DatabaseException)
     return _passwordHash;
 }
 
-void Account::setPassword(const QString & password) throws(DatabaseException)
+void Account::setPassword(const QString & password) throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -136,7 +136,7 @@ void Account::setPassword(const QString & password) throws(DatabaseException)
     //  TODO
 }
 
-tt3::db::api::Capabilities Account::capabilities() const throws(DatabaseException)
+tt3::db::api::Capabilities Account::capabilities() const throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -144,7 +144,7 @@ tt3::db::api::Capabilities Account::capabilities() const throws(DatabaseExceptio
     return _capabilities;
 }
 
-void Account::setCapabilities(tt3::db::api::Capabilities capabilities) throws(DatabaseException)
+void Account::setCapabilities(tt3::db::api::Capabilities capabilities) throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -160,7 +160,7 @@ void Account::setCapabilities(tt3::db::api::Capabilities capabilities) throws(Da
 
 //////////
 //  tt3::db::api::IAccount (associations)
-tt3::db::api::IUser * Account::user() const throws(DatabaseException)
+tt3::db::api::IUser * Account::user() const throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -202,7 +202,7 @@ void Account::_serializeAggregations(QDomElement & parentElement)
     Principal::_serializeAggregations(parentElement);
 }
 
-void Account::_deserializeProperties(const QDomElement & objectElement) throws(ParseException)
+void Account::_deserializeProperties(const QDomElement & objectElement) throws(tt3::util::ParseException)
 {
     Principal::_deserializeProperties(objectElement);
 
@@ -211,14 +211,14 @@ void Account::_deserializeProperties(const QDomElement & objectElement) throws(P
     _capabilities = tt3::util::fromString<tt3::db::api::Capabilities>(objectElement.attribute("Capabilities"));
 }
 
-void Account::_deserializeAggregations(const QDomElement & parentElement)
+void Account::_deserializeAggregations(const QDomElement & parentElement) throws(tt3::util::ParseException)
 {
     Principal::_deserializeAggregations(parentElement);
 }
 
 //////////
 //  Validation
-void Account::_validate(QSet<Object*> & validatedObjects) throws(DatabaseException)
+void Account::_validate(QSet<Object*> & validatedObjects) throws(tt3::db::api::DatabaseException)
 {
     Principal::_validate(validatedObjects);
 

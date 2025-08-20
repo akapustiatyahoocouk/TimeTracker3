@@ -226,7 +226,7 @@ namespace
         }
     }
 
-    QString unescape(const QString & s) throws (ParseExce[tion)
+    QString unescape(const QString & s) throws(tt3::util::ParseException)
     {
         QString result;
         for (int i = 0; i < s.length(); )

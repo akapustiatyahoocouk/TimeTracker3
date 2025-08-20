@@ -37,24 +37,24 @@ namespace tt3::db::xml
         //////////
         //  tt3::db::api::IObject (life cycle)
     public:
-        virtual void        destroy() throws(DatabaseException) override;
+        virtual void        destroy() throws(tt3::db::api::DatabaseException) override;
 
         //////////
         //  tt3::db::api::IUser (properties)
     public:
-        virtual QString     realName() const throws(DatabaseException) override;
-        virtual void        setRealName(const QString & realName) throws(DatabaseException) override;
+        virtual QString     realName() const throws(tt3::db::api::DatabaseException) override;
+        virtual void        setRealName(const QString & realName) throws(tt3::db::api::DatabaseException) override;
         virtual std::optional<tt3::util::TimeSpan>
-                            inactivityTimeout() const throws(DatabaseException) override;
-        virtual void        setInactivityTimeout(const std::optional<tt3::util::TimeSpan> & inactivityTimeout) throws(DatabaseException) override;
+                            inactivityTimeout() const throws(tt3::db::api::DatabaseException) override;
+        virtual void        setInactivityTimeout(const std::optional<tt3::util::TimeSpan> & inactivityTimeout) throws(tt3::db::api::DatabaseException) override;
         virtual std::optional<QLocale>
-                            uiLocale() const throws(DatabaseException) override;
-        virtual void        setUiLocale(const std::optional<QLocale> & uiLocale) throws(DatabaseException) override;
+                            uiLocale() const throws(tt3::db::api::DatabaseException) override;
+        virtual void        setUiLocale(const std::optional<QLocale> & uiLocale) throws(tt3::db::api::DatabaseException) override;
 
         //////////
         //  tt3::db::api::IUser (associations)
     public:
-        virtual tt3::db::api::Accounts  accounts() const throws(DatabaseException) override;
+        virtual tt3::db::api::Accounts  accounts() const throws(tt3::db::api::DatabaseException) override;
 
         //////////
         //  tt3::db::api::IUser  (life cycle)
@@ -62,7 +62,7 @@ namespace tt3::db::xml
         virtual tt3::db::api::IAccount *    createAccount(
             bool enabled, const QStringList & emailAddresses,
             const QString & login, const QString & password,
-            tt3::db::api::Capabilities capabilities) throws(DatabaseException) override;
+            tt3::db::api::Capabilities capabilities) throws(tt3::db::api::DatabaseException) override;
 
         //////////
         //  Implementation
@@ -83,14 +83,14 @@ namespace tt3::db::xml
         virtual void        _serializeProperties(QDomElement & objectElement) override;
         virtual void        _serializeAggregations(QDomElement & parentElement) override;
 
-        virtual void        _deserializeProperties(const QDomElement & objectElement) throws(ParseException) override;
-        virtual void        _deserializeAggregations(const QDomElement & parentElement) override;
+        virtual void        _deserializeProperties(const QDomElement & objectElement) throws(tt3::util::ParseException) override;
+        virtual void        _deserializeAggregations(const QDomElement & parentElement) throws(tt3::util::ParseException) override;
 
         //////////
         //  Validation
     private:
-        virtual void        _validate(QSet<Object*> & validatedObjects) throws(DatabaseException) override;
+        virtual void        _validate(QSet<Object*> & validatedObjects) throws(tt3::db::api::DatabaseException) override;
     };
 }
 
-//  End of tt3-db-api/User.hpp
+//  End of tt3-db-xml/User.hpp

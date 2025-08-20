@@ -128,7 +128,7 @@ void Object::removeReference()
 
 //////////
 //  Implementation helpers
-void Object::_ensureLive() const throws (DatabaseException)
+void Object::_ensureLive() const throws (tt3::db::api::DatabaseException)
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
 
@@ -165,7 +165,7 @@ void Object::_serializeAggregations(QDomElement & /*parentElement*/)
 {   //  Nothing at this level
 }
 
-void Object::_deserializeProperties(const QDomElement & objectElement)  throws(ParseException)
+void Object::_deserializeProperties(const QDomElement & objectElement) throws(tt3::util::ParseException)
 {
     Object::Oid oid = tt3::util::fromString<Object::Oid>(objectElement.attribute("OID", ""));
     if (oid != _oid)
@@ -174,13 +174,13 @@ void Object::_deserializeProperties(const QDomElement & objectElement)  throws(P
     }
 }
 
-void Object::_deserializeAggregations(const QDomElement & /*parentElement*/) throws(ParseException)
+void Object::_deserializeAggregations(const QDomElement & /*parentElement*/) throws(tt3::util::ParseException)
 {   //  Nothing at this level
 }
 
 //////////
 //  Validation
-void Object::_validate(QSet<Object*> & validatedObjects) throws(DatabaseException)
+void Object::_validate(QSet<Object*> & validatedObjects) throws(tt3::db::api::DatabaseException)
 {   //  Only validate each object PNCE
     Q_ASSERT(!validatedObjects.contains(this));
     validatedObjects.insert(this);
