@@ -38,5 +38,6 @@
 #include "tt3-gui/SelectWorkspaceDialog.hpp"
 #include "tt3-gui/LoginDialog.hpp"
 #include "tt3-gui/AboutDialog.hpp"
+#include "tt3-gui/PreferencesDialog.hpp"
 
 //  End of tt3-gui/API.hpp

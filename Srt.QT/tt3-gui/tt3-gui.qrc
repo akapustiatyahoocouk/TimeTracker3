@@ -14,6 +14,8 @@
         <file>Resources/Images/Actions/OkSmall.png</file>
         <file>Resources/Images/Actions/OpenWorkspaceLarge.png</file>
         <file>Resources/Images/Actions/OpenWorkspaceSmall.png</file>
+        <file>Resources/Images/Actions/PreferencesLarge.png</file>
+        <file>Resources/Images/Actions/PreferencesSmall.png</file>
         <file>Resources/Images/Objects/Tt3Large.png</file>
         <file>Resources/Images/Objects/Tt3Small.png</file>
     </qresource>

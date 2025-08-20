@@ -56,6 +56,7 @@
 #include <QFileDialog>
 #include <QGridLayout>
 #include <QIcon>
+#include <QLabel>
 #include <QLibrary>
 #include <QMainWindow>
 #include <QMenu>
@@ -67,10 +68,12 @@
 #include <QPushButton>
 #include <QQueue>
 #include <QSemaphore>
+#include <QStackedLayout>
 #include <QStatusBar>
 #include <QTextEdit>
 #include <QThread>
 #include <QTimer>
+#include <QTreeWidgetItem>
 #include <QVariant>
 #include <QVersionNumber>
 #include <QWidget>

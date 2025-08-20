@@ -16,6 +16,7 @@ SOURCES += \
     LoginDialog.cpp \
     NewWorkspaceDialog.cpp \
     Preferences.cpp \
+    PreferencesDialog.cpp \
     PreferencesEditor.cpp \
     PreferencesRegistry.cpp \
     SelectWorkspaceDialog.cpp \
@@ -32,6 +33,7 @@ HEADERS += \
     LoginDialog.hpp \
     NewWorkspaceDialog.hpp \
     Preferences.hpp \
+    PreferencesDialog.hpp \
     PreferencesEditor.hpp \
     SelectWorkspaceDialog.hpp \
     Skin.hpp
@@ -42,6 +44,7 @@ FORMS += \
     GeneralStartupPreferencesEditor.ui \
     LoginDialog.ui \
     NewWorkspaceDialog.ui \
+    PreferencesDialog.ui \
     SelectWorkspaceDialog.ui
 
 RESOURCES += \

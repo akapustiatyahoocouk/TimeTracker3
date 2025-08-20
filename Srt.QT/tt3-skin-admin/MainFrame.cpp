@@ -376,7 +376,8 @@ void MainFrame::_onActionDestroyWorkspace()
 
 void MainFrame::_onActionPreferences()
 {
-    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+    tt3::gui::PreferencesDialog dlg(this);
+    dlg.exec();
 }
 
 void MainFrame::_onActionHelpContent()
