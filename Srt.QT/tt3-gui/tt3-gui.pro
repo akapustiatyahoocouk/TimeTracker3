@@ -12,6 +12,7 @@ SOURCES += \
     GeneralAppearancePreferencesEditor.cpp \
     GeneralPreferences.cpp \
     GeneralStartupPreferences.cpp \
+    GeneralStartupPreferencesEditor.cpp \
     LoginDialog.cpp \
     NewWorkspaceDialog.cpp \
     Preferences.cpp \
@@ -26,6 +27,7 @@ HEADERS += \
     Components.hpp \
     ErrorDialog.hpp \
     GeneralAppearancePreferencesEditor.hpp \
+    GeneralStartupPreferencesEditor.hpp \
     Linkage.hpp \
     LoginDialog.hpp \
     NewWorkspaceDialog.hpp \
@@ -37,6 +39,7 @@ HEADERS += \
 FORMS += \
     AboutDialog.ui \
     GeneralAppearancePreferencesEditor.ui \
+    GeneralStartupPreferencesEditor.ui \
     LoginDialog.ui \
     NewWorkspaceDialog.ui \
     SelectWorkspaceDialog.ui

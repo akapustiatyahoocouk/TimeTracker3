@@ -65,10 +65,14 @@ Component::Settings::Settings()
             ""),
         lastLogin(
             "LastLogin",
-            "")
+            ""),
+        uiLocale(
+            "UiLocale",
+            QLocale(QLocale::English, QLocale::UnitedKingdom))
 {
     addSetting(&activeSkin);
     addSetting(&lastLogin);
+    addSetting(&uiLocale);
 }
 
 Component::Settings::~Settings()

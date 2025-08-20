@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-gui/API.hpp"
-    using namespace tt3::gui;
+using namespace tt3::gui;
 
 //////////
 //  Singleton
@@ -42,7 +42,7 @@ Preferences * GeneralStartupPreferences::parent() const
 
 PreferencesEditor * GeneralStartupPreferences::createEditor()
 {
-    return nullptr;
+    return new GeneralStartupPreferencesEditor(nullptr);
 }
 
 //  End of tt3-gui/GeneralStartupPreferences.cpp

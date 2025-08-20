@@ -1,5 +1,5 @@
 //
-//  tt3-gui/GeneralAppearancePreferencesEditor.cpp - tt3::gui::GeneralAppearancePreferencesEditor class implementation
+//  tt3-gui/GeneralStartupPreferencesEditor.cpp - tt3::gui::GeneralStartupPreferencesEditor class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -25,11 +25,51 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
         _ui(new Ui::GeneralAppearancePreferencesEditor)
 {
     _ui->setupUi(this);
+
+    //  Fill the language combo box with available locales
+    //  TODO properly - from the set of locales supported by components
+    _locales.append(Component::Settings::instance()->uiLocale);
+
+    for (QLocale locale : _locales)
+    {
+        _ui->languageComboBox->addItem(
+            QLocale::languageToString(locale.language()) +
+            " (" +
+            QLocale::territoryToString(locale.territory()) +
+            ")");
+    }
 }
 
 GeneralAppearancePreferencesEditor::~GeneralAppearancePreferencesEditor()
 {
     delete _ui;
+}
+
+//////////
+//  PreferencesEditor
+Preferences * GeneralAppearancePreferencesEditor::preferences() const
+{
+    return GeneralAppearancePreferences::instance();
+}
+
+void GeneralAppearancePreferencesEditor::loadControlValues()
+{
+    //  TODO implement
+}
+
+void GeneralAppearancePreferencesEditor::saveControlValues()
+{
+    //  TODO implement
+}
+
+void GeneralAppearancePreferencesEditor::resetControlValues()
+{
+    //  TODO implement
+}
+
+bool GeneralAppearancePreferencesEditor::isValid() const
+{
+    return true;
 }
 
 //  End of tt3-gui/GeneralAppearancePreferencesEditor.cpp

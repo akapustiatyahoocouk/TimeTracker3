@@ -38,6 +38,9 @@ namespace tt3::gui
 
             //  The login last used
             tt3::util::Setting<QString> lastLogin;
+
+            //  The preferred UI locale
+            tt3::util::Setting<QLocale> uiLocale;
         };
 
         //////////

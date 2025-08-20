@@ -111,7 +111,7 @@ template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QVersionNumber>(const QV
 
 template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QLocale>(const QLocale & value)
 {
-    return value.name();
+    return (value == QLocale::c()) ? "C" : value.name();
 }
 
 //  tt3::util types

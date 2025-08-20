@@ -42,7 +42,7 @@ Preferences * GeneralAppearancePreferences::parent() const
 
 PreferencesEditor * GeneralAppearancePreferences::createEditor()
 {
-    return nullptr;
+    return new GeneralAppearancePreferencesEditor(nullptr);
 }
 
 //  End of tt3-gui/GeneralAppearancePreferences.cpp

@@ -358,6 +358,11 @@ template <> TT3_UTIL_PUBLIC QLocale tt3::util::fromString<QLocale>(const QString
         result = QLocale(s.mid(scan, 5));
         scan += 2;
     }
+    else if (scan < s.length() && s[scan] == 'C')
+    {   //  C
+        scan++;
+        return QLocale::c();
+    }
     else
     {   //  Invariant
         result = QLocale(QLocale::Language::AnyLanguage, QLocale::Territory::AnyCountry);

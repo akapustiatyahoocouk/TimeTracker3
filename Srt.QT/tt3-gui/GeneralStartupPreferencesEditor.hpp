@@ -1,5 +1,5 @@
 //
-//  tt3-gui/GeneralAppearancePreferencesEditor.hpp - The "/General/Appearance" preferences editor
+//  tt3-gui/GeneralStartupPreferencesEditor.hpp - The "/General/Startup" preferences editor
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -21,19 +21,19 @@
 
 namespace tt3::gui
 {
-    //  The "/General/Appearance" preferences editor
-    namespace Ui { class GeneralAppearancePreferencesEditor; }
+    //  The "/General/Startup" preferences editor
+    namespace Ui { class GeneralStartupPreferencesEditor; }
 
-    class TT3_GUI_PUBLIC GeneralAppearancePreferencesEditor final : public PreferencesEditor
+    class TT3_GUI_PUBLIC GeneralStartupPreferencesEditor final : public PreferencesEditor
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(GeneralAppearancePreferencesEditor)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(GeneralStartupPreferencesEditor)
 
         //////////
         //  Construction/destruction
     public:
-        explicit GeneralAppearancePreferencesEditor(QWidget * parent);
-        virtual ~GeneralAppearancePreferencesEditor();
+        explicit GeneralStartupPreferencesEditor(QWidget * parent);
+        ~GeneralStartupPreferencesEditor();
 
         //////////
         //  PreferencesEditor
@@ -45,16 +45,11 @@ namespace tt3::gui
         virtual bool    isValid() const override;
 
         //////////
-        //  Implementation
-    private:
-        QList<QLocale>  _locales;   //  same order as in combo box
-
-        //////////
         //  Controls
     private:
-        Ui::GeneralAppearancePreferencesEditor *_ui;
+        Ui::GeneralStartupPreferencesEditor *   _ui;
     };
 }
 
 #endif  //  TT3_GUI_PREFERENCES_EDITOR_DEFINED
-//  End of tt3-gui/GeneralAppearancePreferencesEditor.hpp
+//  End of tt3-gui/GeneralStartupPreferencesEditor.hpp

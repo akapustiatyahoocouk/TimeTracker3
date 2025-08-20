@@ -30,6 +30,7 @@
 
 #include "tt3-gui/PreferencesEditor.hpp"
 #include "tt3-gui/GeneralAppearancePreferencesEditor.hpp"
+#include "tt3-gui/GeneralStartupPreferencesEditor.hpp"
 #include "tt3-gui/Preferences.hpp"
 
 #include "tt3-gui/ErrorDialog.hpp"
