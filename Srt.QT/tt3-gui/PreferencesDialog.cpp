@@ -26,6 +26,11 @@ PreferencesDialog::PreferencesDialog(QWidget * parent) throw(int)
 {
     _ui->setupUi(this);
 
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
+
     _noPropertiesLabel = new QLabel("No properties to edit");
     _noPropertiesLabel->setAlignment(Qt::AlignmentFlag::AlignCenter);
     _editorsFrameLayout = new QStackedLayout();
@@ -167,6 +172,23 @@ void PreferencesDialog::_refresh()
         }
     }
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(okEnabled);
+}
+
+void PreferencesDialog::_resetPushNuttonClocked()
+{
+    if (QMessageBox::question(
+            this,
+            "Reset all settings",
+            "Are you sure you want to reset all settings to their default values ?"
+                "\nThe effects will not be permanent until you press 'OK' to close the dialog.",
+            QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+    {   //  Do it!
+        for (PreferencesEditor * editor : _editorsForItems.values())
+        {
+            editor->resetControlValues();
+        }
+        _refresh();
+    }
 }
 
 void PreferencesDialog::_accept()

@@ -81,7 +81,9 @@ namespace
         //  Perform initial login
         tt3::gui::LoginDialog loginDialog(
             tt3::gui::theCurrentSkin->mainWindow(),
-            tt3::gui::Component::Settings::instance()->lastLogin);
+            tt3::gui::Component::Settings::instance()->rememberLastLogin ?
+                tt3::gui::Component::Settings::instance()->lastLogin.value() :
+                "");
         if (loginDialog.exec() != QDialog::DialogCode::Accepted)
         {   //  No need to cleanup - nothing has
             //  chnaged in application's settings
