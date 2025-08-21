@@ -372,7 +372,7 @@ void Database::_save() throws(tt3::util::Exception)
     QFile file(_address->_path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {   //  OOPS!
-        throw tt3::db::api::CustomDatabaseException(file.errorString());
+        throw tt3::db::api::CustomDatabaseException(_address->displayForm() + ": " +  file.errorString());
     }
     QTextStream stream(&file);
     document.save(stream, 4);
@@ -390,7 +390,7 @@ void Database::_load() throws(tt3::util::Exception)
     QFile file(_address->_path);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {   //  OOPS!
-        throw tt3::db::api::CustomDatabaseException(file.errorString());
+        throw tt3::db::api::CustomDatabaseException(_address->displayForm() + ": " + file.errorString());
     }
     if (!document.setContent(&file))
     {   //  OOPS!

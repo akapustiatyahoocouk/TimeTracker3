@@ -90,6 +90,29 @@ namespace
             exit(0);
         }
         tt3::ws::theCurrentCredentials = loginDialog.credentials();
+
+        //  Can we open the last workspace now ?
+        if (tt3::gui::Component::Settings::instance()->loadLastWorkspaceAtStartup)
+        {
+            tt3::ws::WorkspaceAddressesList mru =
+                tt3::ws::Component::Settings::instance()->recentWorkspaces;
+            if (mru.size() != 0)
+            {
+                try
+                {
+                    tt3::ws::WorkspacePtr workspace =
+                        mru[0].workspaceType()->openWorkspace(mru[0]);
+                    if (workspace->canAccess(tt3::ws::theCurrentCredentials))
+                    {
+                        tt3::ws::theCurrentWorkspace.swap(workspace);
+                    }
+                }
+                catch (const tt3::ws::WorkspaceException & ex)
+                {   //  OOPS! Report
+                    tt3::gui::ErrorDialog::show(tt3::gui::theCurrentSkin->mainWindow(), ex);
+                }
+            }
+        }
     }
 
     void cleanup()
