@@ -62,13 +62,15 @@ IMPLEMENT_SINGLETON(Component::Settings)
 Component::Settings::Settings()
     :   activeSkin(
             "ActiveSkin",
-            ""),
+            "",
+            true),
         lastLogin(
             "LastLogin",
             ""),
         uiLocale(
             "UiLocale",
-            QLocale(QLocale::English, QLocale::UnitedKingdom)),
+            QLocale(QLocale::English, QLocale::UnitedKingdom),
+            true),
         loadLastWorkspaceAtStartup(
             "LoadLastWorkspaceAtStartup",
             false),

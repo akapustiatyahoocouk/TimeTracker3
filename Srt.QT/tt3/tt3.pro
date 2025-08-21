@@ -1,11 +1,13 @@
 include(../tt3.pri)
 
 SOURCES += \
+    Application.cpp \
     Component.cpp \
     Main.cpp
 
 HEADERS += \
     API.hpp \
+    Application.hpp \
     Components.hpp
 
 FORMS += \

@@ -17,143 +17,18 @@
 #include "tt3/API.hpp"
 using namespace tt3;
 
-namespace
-{
-    void registerStandardComponents()
-    {   //  Some components form the TT3 skeleton
-        //  and, therefore, are NOT registered by plugins
-        tt3::util::ComponentManager::registerComponent(tt3::Component::instance());
-        tt3::util::ComponentManager::registerComponent(tt3::gui::Component::instance());
-        tt3::util::ComponentManager::registerComponent(tt3::ws::Component::instance());
-        tt3::util::ComponentManager::registerComponent(tt3::db::api::Component::instance());
-        tt3::util::ComponentManager::registerComponent(tt3::util::Component::instance());
-        //  Same for standard Preferences
-        tt3::gui::PreferencesRegistry::registerPreferences(tt3::gui::GeneralPreferences::instance());
-        tt3::gui::PreferencesRegistry::registerPreferences(tt3::gui::GeneralAppearancePreferences::instance());
-        tt3::gui::PreferencesRegistry::registerPreferences(tt3::gui::GeneralStartupPreferences::instance());
-    }
-
-    void selectActiveSkin()
-    {   //  TODO move to tt3::util::SkinManager ?
-        tt3::gui::ISkin * initialSkin =
-            tt3::gui::SkinManager::findSkin(tt3::gui::Component::Settings::instance()->activeSkin);
-        //  Use a default skin ?
-        for (tt3::gui::ISkin * skin : tt3::gui::SkinManager::allSkins())
-        {
-            if (skin->isDefault() && initialSkin == nullptr)
-            {
-                initialSkin = skin;
-                break;
-            }
-        }
-        //  Use any available skin ?
-        for (tt3::gui::ISkin * skin : tt3::gui::SkinManager::allSkins())
-        {
-            if (initialSkin == nullptr)
-            {
-                initialSkin = skin;
-                break;
-            }
-        }
-        //  A skin MUST be selected
-        if (initialSkin == nullptr)
-        {
-            tt3::gui::ErrorDialog::show("No UI skins defined.");
-            QCoreApplication::quit();
-        }
-        tt3::gui::theCurrentSkin = initialSkin;
-        initialSkin->activate();
-    }
-
-    void initialize()
-    {
-        QPixmap pm;
-        pm.load(":/tt3/Resources/Images/Misc/Tt3Large.png");
-        QIcon ic(pm);
-        QGuiApplication::setWindowIcon(ic);
-        QGuiApplication::setApplicationName("TimeTracker3");
-
-        registerStandardComponents();
-        tt3::util::PluginManager::loadPlugins();
-        tt3::util::ComponentManager::loadComponentSettings();
-        selectActiveSkin();
-
-        //  Perform initial login
-        tt3::gui::LoginDialog loginDialog(
-            tt3::gui::theCurrentSkin->mainWindow(),
-            tt3::gui::Component::Settings::instance()->rememberLastLogin ?
-                tt3::gui::Component::Settings::instance()->lastLogin.value() :
-                "");
-        if (loginDialog.exec() != QDialog::DialogCode::Accepted)
-        {   //  No need to cleanup - nothing has
-            //  chnaged in application's settings
-            exit(0);
-        }
-        tt3::ws::theCurrentCredentials = loginDialog.credentials();
-
-        //  Can we open the last workspace now ?
-        if (tt3::gui::Component::Settings::instance()->loadLastWorkspaceAtStartup)
-        {
-            tt3::ws::WorkspaceAddressesList mru =
-                tt3::ws::Component::Settings::instance()->recentWorkspaces;
-            if (mru.size() != 0)
-            {
-                try
-                {
-                    tt3::ws::WorkspacePtr workspace =
-                        mru[0].workspaceType()->openWorkspace(mru[0]);
-                    if (workspace->canAccess(tt3::ws::theCurrentCredentials))
-                    {
-                        tt3::ws::theCurrentWorkspace.swap(workspace);
-                    }
-                }
-                catch (const tt3::ws::WorkspaceException & ex)
-                {   //  OOPS! Report
-                    tt3::gui::ErrorDialog::show(tt3::gui::theCurrentSkin->mainWindow(), ex);
-                }
-            }
-        }
-    }
-
-    void cleanup()
-    {
-        //  TODO if there is a "current activity", record & stop it
-
-        //  TODO if there's a "current" activity, record & syop it
-        //  If there's a "current" workspace, close it
-        tt3::ws::WorkspacePtr currentWorkspace;
-        tt3::ws::theCurrentWorkspace.swap(currentWorkspace);
-        if (currentWorkspace != nullptr)
-        {
-            currentWorkspace->close();
-            //  TODO handle "close" exceptions
-        }
-
-        //  If there's a "current" skin, deactivate it
-        tt3::gui::ISkin * currentSkin = nullptr;
-        tt3::gui::theCurrentSkin.swap(currentSkin);
-        Q_ASSERT(currentSkin != nullptr);
-        currentSkin->deactivate();
-
-        //  Done
-        tt3::util::ComponentManager::saveComponentSettings();
-    }
-}
-
 //////////
 //  TT3 entry point
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-
-    //  Initialize the application
-    initialize();
-
-    //  Go!
+    Application a(argc, argv);
     int exitCode = a.exec();
-
-    //  Cleanup & we're done
-    cleanup();
+    if (a.restartRequired())
+    {   //  The following line does not work in e.g. QT Creator's
+        //  debugger, but after using windeployqt on the .exe AND /DLLS
+        //  the tool will bring in all dependencies from QT distrib
+        QProcess::startDetached(a.arguments()[0], a.arguments().mid(1));
+    }
     return exitCode;
 }
 

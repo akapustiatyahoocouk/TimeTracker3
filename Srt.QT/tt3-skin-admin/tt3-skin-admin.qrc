@@ -24,5 +24,7 @@
         <file>Resources/Images/Actions/HelpSearchSmall.png</file>
         <file>Resources/Images/Actions/PreferencesLarge.png</file>
         <file>Resources/Images/Actions/PreferencesSmall.png</file>
+        <file>Resources/Images/Actions/RestartLarge.png</file>
+        <file>Resources/Images/Actions/RestartSmall.png</file>
     </qresource>
 </RCC>

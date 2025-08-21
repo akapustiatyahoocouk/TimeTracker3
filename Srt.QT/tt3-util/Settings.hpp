@@ -14,19 +14,22 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
+#pragma once
+#include "tt3-util/API.hpp"
 
 namespace tt3::util
 {
     //  A generic "settings" is a single value which is retained between runs
-    class TT3_UTIL_PUBLIC AbstractSetting
+    class TT3_UTIL_PUBLIC AbstractSetting : public QObject
     {
+        Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AbstractSetting)
 
         //////////
         //  Construction/destruction
     public:
-        explicit AbstractSetting(const QString & mnemonic)
-            :   _mnemonic(mnemonic) {}
+        explicit AbstractSetting(const QString & mnemonic, bool changeRequiresRestart)
+            :   _mnemonic(mnemonic), _changeRequiresRestart(changeRequiresRestart) {}
         virtual ~AbstractSetting() = default;
 
         //////////
@@ -34,14 +37,22 @@ namespace tt3::util
     public:
         //  TODO document
         QString         mnemonic() const { return _mnemonic; }
+        bool            changeRequiresRestart() const { return _changeRequiresRestart; }
 
         virtual QString valueString() const = 0;
         virtual void    setValueString(const QString & valueString) = 0;
 
         //////////
+        //  Signals
+    signals:
+        //  Emitted when a value of the setting changes
+        void            valueChanged(AbstractSetting *);
+
+        //////////
         //  Implementation
     private:
         const QString   _mnemonic;
+        const bool      _changeRequiresRestart;
     };
 
     //  A "settings" is a single value which is retained between runs
@@ -53,8 +64,8 @@ namespace tt3::util
         //////////
         //  Construction/destruction
     public:
-        Setting(const QString & mnemonic, const T & defaultValue)
-            :   AbstractSetting(mnemonic),
+        Setting(const QString & mnemonic, const T & defaultValue, bool changeRequiresRestart = false)
+            :   AbstractSetting(mnemonic, changeRequiresRestart),
                 _defaultValue(defaultValue),
                 _value(defaultValue),
                 _valueLoaded(false),
@@ -109,6 +120,7 @@ namespace tt3::util
                 _value = value;
                 _valueLoaded = true;
                 _needsSaving = true;
+                emit valueChanged(this);
             }
         }
 
@@ -152,5 +164,8 @@ namespace tt3::util
         QMap<QString, AbstractSetting*> _settings;
     };
 }
+
+//  Macro needed for MOC-generated .cpp files
+#define TT3_UTIL_SETTINGS_DEFINED
 
 //  End of tt3-util/Settings.cpp

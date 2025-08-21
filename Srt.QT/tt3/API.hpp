@@ -26,6 +26,6 @@
 //////////
 //  tt3 components
 #include "tt3/Components.hpp"
-//  TODO uncomment #include "tt3/MainWindow.hpp"
+#include "tt3/Application.hpp"
 
 //  End of tt3/API.hpp

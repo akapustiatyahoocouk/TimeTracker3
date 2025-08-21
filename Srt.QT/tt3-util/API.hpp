@@ -65,6 +65,7 @@
 #include <QMoveEvent>
 #include <QMutex>
 #include <QMutexLocker>
+#include <QProcess>
 #include <QPushButton>
 #include <QQueue>
 #include <QSemaphore>

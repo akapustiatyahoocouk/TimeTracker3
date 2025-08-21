@@ -17,6 +17,8 @@
 
 namespace tt3::util
 {
+    class TT3_UTIL_PUBLIC Settings;
+
     //////////
     //  A "component".
     //  While a "plugin" is a unit of disctibution (e.g. 1 DLL == 1 plugin),

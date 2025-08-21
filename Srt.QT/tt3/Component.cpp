@@ -1,5 +1,5 @@
 //
-//  tt3/ApplicationComponent.cpp - ApplicationComponent class implementation
+//  tt3/Component.cpp - tt3::Component class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -56,13 +56,7 @@ QString Component::buildNumber() const
 //////////
 //  Component::Settings
 IMPLEMENT_SINGLETON(Component::Settings)
+Component::Settings::Settings() {}
+Component::Settings::~Settings() {}
 
-Component::Settings::Settings()
-{
-}
-
-Component::Settings::~Settings()
-{
-}
-
-//  End of tt3/ApplicationComponent.cpp
+//  End of tt3/Component.cpp

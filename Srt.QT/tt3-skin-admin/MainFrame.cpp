@@ -364,14 +364,19 @@ void MainFrame::_onActionCloseWorkspace()
     }
 }
 
-void MainFrame::_onActionExit()
-{
-    QApplication::exit(0);
-}
-
 void MainFrame::_onActionDestroyWorkspace()
 {
     tt3::gui::ErrorDialog::show(this, "Npt yet implemented");
+}
+
+void MainFrame::_onActionRestart()
+{
+    tt3::gui::ErrorDialog::show(this, "Npt yet implemented");
+}
+
+void MainFrame::_onActionExit()
+{
+    QApplication::exit(0);
 }
 
 void MainFrame::_onActionPreferences()

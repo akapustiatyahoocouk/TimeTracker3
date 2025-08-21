@@ -15,6 +15,8 @@
 //  GNU General Public License for more details.
 //////////
 
+#ifdef TT3_UTIL_SETTINGS_DEFINED
+
 namespace tt3::util
 {
     //  The "TT3 Util" component
@@ -52,4 +54,5 @@ namespace tt3::util
     };
 }
 
+#endif  //  def TT3_UTIL_SETTINGS_DEFINED
 //  End of tt3-util/Components.hpp
