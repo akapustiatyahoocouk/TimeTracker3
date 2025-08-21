@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>272</width>
-    <height>79</height>
+    <width>300</width>
+    <height>107</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,7 +24,17 @@
    <item row="0" column="1">
     <widget class="QComboBox" name="languageComboBox"/>
    </item>
-   <item row="1" column="0" colspan="2">
+   <item row="1" column="0">
+    <widget class="QLabel" name="skinLabel">
+     <property name="text">
+      <string>Skin:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QComboBox" name="skinComboBox"/>
+   </item>
+   <item row="2" column="0" colspan="2">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Orientation::Vertical</enum>
@@ -57,8 +67,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>skinComboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>tt3::gui::GeneralAppearancePreferencesEditor</receiver>
+   <slot>_skinComboBoxCurrentIndexChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>187</x>
+     <y>59</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>149</x>
+     <y>53</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_languageComboBoxCurrentIndexChanged(int)</slot>
+  <slot>_skinComboBoxCurrentIndexChanged(int)</slot>
  </slots>
 </ui>

@@ -73,10 +73,10 @@ Component::Settings::Settings()
             true),
         loadLastWorkspaceAtStartup(
             "LoadLastWorkspaceAtStartup",
-            false),
+            false, true),   //  TODO kill off the3rd parameter
         rememberLastLogin(
             "RememberLastLogin",
-            true),
+            true, true),    //  TODO kill off the3rd parameter
         currentPreferences(
             "CurrentPreferences",
             "")

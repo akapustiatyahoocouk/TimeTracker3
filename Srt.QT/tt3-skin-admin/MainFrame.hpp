@@ -89,6 +89,7 @@ namespace tt3::skin::admin
         void            _onActionRestart();
         void            _onActionExit();
         void            _onActionPreferences();
+        void            _onActionLoginAsDifferentUser();
         void            _onActionHelpContent();
         void            _onActionHelpIndex();
         void            _onActionHelpSearch();

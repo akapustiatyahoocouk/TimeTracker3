@@ -48,6 +48,7 @@ namespace tt3::gui
         //  Implementation
     private:
         QList<QLocale>  _locales;   //  same order as in combo box
+        QList<ISkin*>   _skins;     //  same order as in combo box
 
         //  Helpers
         static QString  _displayName(const QLocale & locale);
@@ -61,6 +62,7 @@ namespace tt3::gui
         //  Signal handlers
     private slots:
         void            _languageComboBoxCurrentIndexChanged(int);
+        void            _skinComboBoxCurrentIndexChanged(int);
     };
 }
 

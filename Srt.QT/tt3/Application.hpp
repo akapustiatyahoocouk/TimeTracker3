@@ -37,24 +37,15 @@ namespace tt3
         //////////
         //  Operations
     public:
-        //  True if, after "exec()", restart is required, false if not
-        bool        restartRequired() const { return _restartRequired; }
 
         //////////
         //  Implementation
     private:
-        bool        _restartRequired = false;
-
         //  Helpers
         void        _registerStandardComponents();
         void        _selectActiveSkin();
         void        _initialize();
         void        _cleanup();
-
-        //////////
-        //  Signal handlers
-    private slots:
-        void        _settingValueChanged(tt3::util::AbstractSetting * setting);
     };
 }
 

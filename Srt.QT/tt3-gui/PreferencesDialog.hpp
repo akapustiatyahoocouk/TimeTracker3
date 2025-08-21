@@ -37,6 +37,7 @@ namespace tt3::gui
         //  Implementation
     private:
         QMap<QTreeWidgetItem*, PreferencesEditor*>  _editorsForItems;
+        bool            _restartRequired = false;
 
         //  Helpers
         static bool     _compare(const Preferences * a, const Preferences * b);
@@ -61,6 +62,7 @@ namespace tt3::gui
         void                _resetPushNuttonClocked();
         void                _accept();
         void                _reject();
+        void                _settingValueChanged(tt3::util::AbstractSetting * setting);
     };
 }
 

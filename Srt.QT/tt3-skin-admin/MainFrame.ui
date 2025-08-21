@@ -61,12 +61,39 @@
      <string>&amp;Options</string>
     </property>
     <addaction name="actionPreferences"/>
+    <addaction name="separator"/>
+    <addaction name="actionLoginAsDifferentUser"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
    </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
    <addaction name="menuOptions"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionNewWorkspace"/>
+   <addaction name="actionOpenWorkspace"/>
+   <addaction name="separator"/>
+   <addaction name="separator"/>
+   <addaction name="actionPreferences"/>
+   <addaction name="actionLoginAsDifferentUser"/>
+   <addaction name="separator"/>
+   <addaction name="actionAbout"/>
+  </widget>
   <action name="actionAbout">
    <property name="icon">
     <iconset resource="tt3-skin-admin.qrc">
@@ -200,6 +227,15 @@
    </property>
    <property name="text">
     <string>Res&amp;tart TimeTracker3</string>
+   </property>
+  </action>
+  <action name="actionLoginAsDifferentUser">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/LoginSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/LoginSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Login as a different user</string>
    </property>
   </action>
  </widget>
@@ -383,6 +419,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionLoginAsDifferentUser</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionLoginAsDifferentUser()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_onActionExit()</slot>
@@ -396,5 +448,6 @@
   <slot>_onActionPreferences()</slot>
   <slot>_onActionAbout()</slot>
   <slot>_onActionRestart()</slot>
+  <slot>_onActionLoginAsDifferentUser()</slot>
  </slots>
 </ui>

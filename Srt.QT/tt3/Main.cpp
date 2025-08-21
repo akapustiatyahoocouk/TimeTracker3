@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 {
     Application a(argc, argv);
     int exitCode = a.exec();
-    if (a.restartRequired())
+    if (exitCode < 0)
     {   //  The following line does not work in e.g. QT Creator's
         //  debugger, but after using windeployqt on the .exe AND /DLLS
         //  the tool will bring in all dependencies from QT distrib

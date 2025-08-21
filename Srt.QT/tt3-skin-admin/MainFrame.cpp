@@ -371,7 +371,7 @@ void MainFrame::_onActionDestroyWorkspace()
 
 void MainFrame::_onActionRestart()
 {
-    tt3::gui::ErrorDialog::show(this, "Npt yet implemented");
+    QApplication::exit(-1);
 }
 
 void MainFrame::_onActionExit()
@@ -383,6 +383,11 @@ void MainFrame::_onActionPreferences()
 {
     tt3::gui::PreferencesDialog dlg(this);
     dlg.exec();
+}
+
+void MainFrame::_onActionLoginAsDifferentUser()
+{
+    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
 }
 
 void MainFrame::_onActionHelpContent()

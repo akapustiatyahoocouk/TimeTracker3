@@ -59,6 +59,19 @@ PreferencesDialog::PreferencesDialog(QWidget * parent) throw(int)
     //  Selest last "current" item
     _loadCurrentPreferences(itemsForPreferences);
 
+    //  Start listening to component settings changes
+    for (tt3::util::IComponent * component : tt3::util::ComponentManager::allComponents())
+    {
+        for (tt3::util::AbstractSetting * setting : component->settings().settings())
+        {
+            connect(setting,
+                    &tt3::util::AbstractSetting::valueChanged,
+                    this,
+                    &PreferencesDialog::_settingValueChanged);
+
+        }
+    }
+
     //  Done
     _refresh();
 }
@@ -176,12 +189,24 @@ void PreferencesDialog::_refresh()
 
 void PreferencesDialog::_resetPushNuttonClocked()
 {
-    if (QMessageBox::question(
+    //  TODO encapsulate the "mb" stuff into tt3::gui::AskYesNoDialog
+    QMessageBox mb(this);
+    mb.setWindowTitle("Reset all settings");
+    mb.setIcon(QMessageBox::Icon::Question);
+    mb.setText("Are you sure you want to reset all settings to their default values ?"
+               "\nThe effects will not be permanent until you press 'OK' to close the dialog.");
+    mb.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    mb.button(QMessageBox::StandardButton::Yes)->setIcon(
+        QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+    mb.button(QMessageBox::StandardButton::No)->setIcon(
+        QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
+    if (/*QMessageBox::question(
             this,
             "Reset all settings",
             "Are you sure you want to reset all settings to their default values ?"
                 "\nThe effects will not be permanent until you press 'OK' to close the dialog.",
-            QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+            QMessageBox::Yes | QMessageBox::No)*/
+        mb.exec() == QMessageBox::StandardButton::Yes)
     {   //  Do it!
         for (PreferencesEditor * editor : _editorsForItems.values())
         {
@@ -200,13 +225,41 @@ void PreferencesDialog::_accept()
     }
     tt3::util::ComponentManager::saveComponentSettings();
     _saveCurrentPreferences();
-    accept();
+    if (_restartRequired)
+    {
+        if (QMessageBox::question(
+                this,
+                "Restart required",
+                "One of the changes you have made to application settings"
+                    "\nwill take place only after the application is restarted."
+                    "\nDo you want to restart TimeTracker3 now ?",
+                QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+        {
+            QApplication::exit(-1);
+        }
+        else
+        {
+            accept();
+        }
+    }
+    else
+    {
+        accept();
+    }
 }
 
 void PreferencesDialog::_reject()
 {
     _saveCurrentPreferences();
     reject();
+}
+
+void PreferencesDialog::_settingValueChanged(tt3::util::AbstractSetting * setting)
+{
+    if (setting->changeRequiresRestart())
+    {
+        _restartRequired = true;
+    }
 }
 
 //  End of tt3-gui/PreferencesDialog.cpp

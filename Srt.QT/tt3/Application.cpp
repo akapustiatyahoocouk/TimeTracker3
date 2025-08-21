@@ -136,21 +136,7 @@ void Application::_initialize()
             }
         }
     }
-
-    //  Start listening to component settings changes
-    for (tt3::util::IComponent * component : tt3::util::ComponentManager::allComponents())
-    {
-        for (tt3::util::AbstractSetting * setting : component->settings().settings())
-        {
-            connect(setting,
-                    &tt3::util::AbstractSetting::valueChanged,
-                    this,
-                    &Application::_settingValueChanged);
-
-        }
-    }
 }
-
 
 void Application::_cleanup()
 {
@@ -174,17 +160,6 @@ void Application::_cleanup()
 
     //  Done
     tt3::util::ComponentManager::saveComponentSettings();
-}
-
-//////////
-//  Signal handlers
-void Application::_settingValueChanged(tt3::util::AbstractSetting * setting)
-{
-    if (setting->changeRequiresRestart())
-    {
-        qDebug() << setting->mnemonic() + " changed";
-        _restartRequired = true;
-    }
 }
 
 //  End of tt3/Application.cpp

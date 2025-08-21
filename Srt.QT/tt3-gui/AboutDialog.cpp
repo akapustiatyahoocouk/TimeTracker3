@@ -26,6 +26,9 @@ AboutDialog::AboutDialog(QWidget * parent)
 {
     _ui->setupUi(this);
 
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+
     _ui->versionLabel->setText(
         "Version " + Component::instance()->version().toString() +
         " (build " + Component::instance()->buildNumber() +

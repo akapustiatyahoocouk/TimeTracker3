@@ -168,7 +168,7 @@ namespace tt3::db::api
         }
     };
 
-    //  Thrown when a workspace service is access-denied
+    //  Thrown when a database service is access-denied
     class TT3_DB_API_PUBLIC AccessDeniedException : public DatabaseException
     {
         //////////

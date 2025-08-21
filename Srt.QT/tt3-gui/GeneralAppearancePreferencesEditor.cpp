@@ -39,6 +39,19 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
         _ui->languageComboBox->addItem(_displayName(locale));
     }
 
+    //  Fill the skin combo box with available skins
+    //  sorted by display name
+    _skins.append(SkinManager::allSkins().values());
+    std::sort(_skins.begin(),
+              _skins.end(),
+              [](auto a, auto b) { return a->displayName() < b->displayName(); });
+
+    for (ISkin * skin : _skins)
+    {
+        _ui->skinComboBox->addItem(skin->displayName());
+    }
+
+
     //  Start off with current values from Settings
     loadControlValues();
 }
@@ -88,6 +101,11 @@ QString GeneralAppearancePreferencesEditor::_displayName(const QLocale & locale)
 //////////
 //  Signal handlers
 void GeneralAppearancePreferencesEditor::_languageComboBoxCurrentIndexChanged(int)
+{
+    emit controlValueChanged();
+}
+
+void GeneralAppearancePreferencesEditor::_skinComboBoxCurrentIndexChanged(int)
 {
     emit controlValueChanged();
 }
