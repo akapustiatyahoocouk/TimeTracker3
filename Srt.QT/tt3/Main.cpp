@@ -20,108 +20,25 @@ using namespace tt3;
 namespace
 {
     void registerStandardComponents()
-    {   //  Sone components form the TT3 skeleton
+    {   //  Some components form the TT3 skeleton
         //  and, therefore, are NOT registered by plugins
-        tt3::util::ComponentRegistry::registerComponent(tt3::Component::instance());
-        tt3::util::ComponentRegistry::registerComponent(tt3::gui::Component::instance());
-        tt3::util::ComponentRegistry::registerComponent(tt3::ws::Component::instance());
-        tt3::util::ComponentRegistry::registerComponent(tt3::db::api::Component::instance());
-        tt3::util::ComponentRegistry::registerComponent(tt3::util::Component::instance());
-
+        tt3::util::ComponentManager::registerComponent(tt3::Component::instance());
+        tt3::util::ComponentManager::registerComponent(tt3::gui::Component::instance());
+        tt3::util::ComponentManager::registerComponent(tt3::ws::Component::instance());
+        tt3::util::ComponentManager::registerComponent(tt3::db::api::Component::instance());
+        tt3::util::ComponentManager::registerComponent(tt3::util::Component::instance());
+        //  Same for standard Preferences
         tt3::gui::PreferencesRegistry::registerPreferences(tt3::gui::GeneralPreferences::instance());
         tt3::gui::PreferencesRegistry::registerPreferences(tt3::gui::GeneralAppearancePreferences::instance());
         tt3::gui::PreferencesRegistry::registerPreferences(tt3::gui::GeneralStartupPreferences::instance());
     }
 
-    void loadSettings()
-    {
-        QDir home = QDir::home();
-        QString iniFileName = home.filePath(".tt3");
-
-        QFile iniFile(iniFileName);
-        if (iniFile.open(QIODevice::ReadOnly))
-        {
-            tt3::util::IComponent * currentComponent = nullptr;
-            QTextStream iniStream(&iniFile);
-            while (!iniStream.atEnd())
-            {
-                QString line = iniStream.readLine();
-                //  Section header ?
-                line  = line .trimmed();
-                if (line.startsWith("[") && line.endsWith("]"))
-                {
-                    int separatorIndex = static_cast<int>(line.indexOf(':'));
-                    if (separatorIndex == -1)
-                    {
-                        currentComponent = nullptr;
-                        continue;
-                    }
-                    try
-                    {
-                        QString componentMnemonic = line.mid(1, separatorIndex - 1);
-                        QVersionNumber componentVersion = tt3::util::fromString<QVersionNumber>(line.mid(separatorIndex + 1, line.length() - separatorIndex - 2));
-                        currentComponent = tt3::util::ComponentRegistry::findComponent(componentMnemonic, componentVersion);
-                        continue;
-                    }
-                    catch (const tt3::util::ParseException &)
-                    {
-                        currentComponent = nullptr;
-                        continue;
-                    }
-                }
-                //  <name> = <value>?
-                int eqIndex = static_cast<int>(line.indexOf('='));
-                if (eqIndex == -1 || currentComponent == nullptr)
-                {
-                    continue;
-                }
-                QString settingName = line.mid(0, eqIndex).trimmed();
-                QString settingValueString = line.mid(eqIndex + 1).trimmed();
-                tt3::util::AbstractSetting * setting = currentComponent->settings().findSetting(settingName);
-                if (setting == nullptr)
-                {
-                    continue;
-                }
-                setting->setValueString(settingValueString);
-            }
-        }
-    }
-
-    void saveSettings()
-    {
-        QDir home = QDir::home();
-        QString iniFileName = home.filePath(".tt3");
-
-        QFile iniFile(iniFileName);
-        if (iniFile.open(QIODevice::WriteOnly))
-        {
-            QTextStream iniStream(&iniFile);
-            for (tt3::util::IComponent * component : tt3::util::ComponentRegistry::allComponents())
-            {
-                iniStream << "["
-                          << component->mnemonic()
-                          << ":"
-                          << tt3::util::toString(component->version())
-                          << "]"
-                          << Qt::endl;
-                for (tt3::util::AbstractSetting * setting : component->settings().settings())
-                {
-                    iniStream << setting->mnemonic()
-                              << "="
-                              << setting->valueString()
-                              << Qt::endl;
-                }
-                iniStream << Qt::endl;
-            }
-        }
-    }
-
     void selectActiveSkin()
-    {
+    {   //  TODO move to tt3::util::SkinManager ?
         tt3::gui::ISkin * initialSkin =
-            tt3::gui::SkinRegistry::findSkin(tt3::gui::Component::Settings::instance()->activeSkin);
+            tt3::gui::SkinManager::findSkin(tt3::gui::Component::Settings::instance()->activeSkin);
         //  Use a default skin ?
-        for (tt3::gui::ISkin * skin : tt3::gui::SkinRegistry::allSkins())
+        for (tt3::gui::ISkin * skin : tt3::gui::SkinManager::allSkins())
         {
             if (skin->isDefault() && initialSkin == nullptr)
             {
@@ -130,7 +47,7 @@ namespace
             }
         }
         //  Use any available skin ?
-        for (tt3::gui::ISkin * skin : tt3::gui::SkinRegistry::allSkins())
+        for (tt3::gui::ISkin * skin : tt3::gui::SkinManager::allSkins())
         {
             if (initialSkin == nullptr)
             {
@@ -158,7 +75,7 @@ namespace
 
         registerStandardComponents();
         tt3::util::PluginManager::loadPlugins();
-        loadSettings();
+        tt3::util::ComponentManager::loadComponentSettings();
         selectActiveSkin();
 
         //  Perform initial login
@@ -194,7 +111,7 @@ namespace
         currentSkin->deactivate();
 
         //  Done
-        saveSettings();
+        tt3::util::ComponentManager::saveComponentSettings();
     }
 }
 

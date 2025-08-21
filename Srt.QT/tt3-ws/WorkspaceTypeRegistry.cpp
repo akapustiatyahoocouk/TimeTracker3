@@ -25,7 +25,7 @@ WorkspaceType * WorkspaceTypeRegistry::findWorkspaceType(const QString & mnemoni
 {   //  TODO synchronize ?
     _collectWorkspaceTypes();
     tt3::db::api::IDatabaseType * databaseType =
-        tt3::db::api::DatabaseTypeRegistry::findDatabaseType(mnemonic);
+        tt3::db::api::DatabaseTypeManager::findDatabaseType(mnemonic);
     return _registry.contains(databaseType) ? _registry[databaseType] : nullptr;
 }
 
@@ -44,7 +44,7 @@ void WorkspaceTypeRegistry::_collectWorkspaceTypes()
     if (_registry.isEmpty())
     {
         for (tt3::db::api::IDatabaseType * databaseType :
-             tt3::db::api::DatabaseTypeRegistry::allDatabaseTypes())
+             tt3::db::api::DatabaseTypeManager::allDatabaseTypes())
         {
             _registry[databaseType] = new WorkspaceType(databaseType);
         }

@@ -89,10 +89,10 @@ namespace tt3::db::api
     };
 
     //////////
-    //  The registry/manager of known database types
-    class TT3_DB_API_PUBLIC DatabaseTypeRegistry final
+    //  The manager of known database types
+    class TT3_DB_API_PUBLIC DatabaseTypeManager final
     {
-        UTILITY_CLASS(DatabaseTypeRegistry)
+        UTILITY_CLASS(DatabaseTypeManager)
 
         //////////
         //  Operations

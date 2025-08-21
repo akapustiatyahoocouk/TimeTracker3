@@ -1,5 +1,5 @@
 //
-//  tt3-gui/SkinRegistry.cpp - tt3::gui::SkinRegistry class implementation
+//  tt3-gui/SkinManager.cpp - tt3::gui::SkinManager class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -17,17 +17,17 @@
 #include "tt3-gui/API.hpp"
 using namespace tt3::gui;
 
-QMap<QString, ISkin*> SkinRegistry::_registry;
+QMap<QString, ISkin*> SkinManager::_registry;
 
 //////////
 //  Operationds
-QSet<ISkin*> SkinRegistry::allSkins()
+QSet<ISkin*> SkinManager::allSkins()
 {   //  TODO synchronize ?
     QList<ISkin*> values = _registry.values();
     return QSet<ISkin*>(values.begin(), values.end());
 }
 
-bool SkinRegistry::registerSkin(ISkin * skin)
+bool SkinManager::registerSkin(ISkin * skin)
 {   //  TODO synchronize ?
     Q_ASSERT(skin != nullptr);
 
@@ -44,10 +44,10 @@ bool SkinRegistry::registerSkin(ISkin * skin)
     }
 }
 
-ISkin * SkinRegistry::findSkin(const QString & mnemonic)
+ISkin * SkinManager::findSkin(const QString & mnemonic)
 {   //  TODO synchronize ?
     QString key = mnemonic;
     return _registry.contains(key) ? _registry[key] : nullptr;
 }
 
-//  End of tt3-gui/SkinRegistry.cpp
+//  End of tt3-gui/SkinManager.cpp

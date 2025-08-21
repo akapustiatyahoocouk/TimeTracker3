@@ -1,5 +1,5 @@
 //
-//  tt3-db-api/DatabaseTypeRegistry.cpp tt3::db::api::DatabaseTypeRegistry class implementation
+//  tt3-db-api/DatabaseTypeManager.cpp tt3::db::api::DatabaseTypeManager class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -17,11 +17,11 @@
 #include "tt3-db-api/API.hpp"
 using namespace tt3::db::api;
 
-QMap<QString, IDatabaseType*> DatabaseTypeRegistry::_registry;
+QMap<QString, IDatabaseType*> DatabaseTypeManager::_registry;
 
 //////////
 //  Operations
-bool DatabaseTypeRegistry::registerDatabaseType(IDatabaseType * databaseType)
+bool DatabaseTypeManager::registerDatabaseType(IDatabaseType * databaseType)
 {   //  TODO synchronize ?
     Q_ASSERT(databaseType != nullptr);
 
@@ -34,15 +34,15 @@ bool DatabaseTypeRegistry::registerDatabaseType(IDatabaseType * databaseType)
     return databaseType == registeredDatabaseType;
 }
 
-IDatabaseType * DatabaseTypeRegistry::findDatabaseType(const QString & mnemonic)
+IDatabaseType * DatabaseTypeManager::findDatabaseType(const QString & mnemonic)
 {   //  TODO synchronize ?
     return _registry.contains(mnemonic) ? _registry[mnemonic] : nullptr;
 }
 
-DatabaseTypes DatabaseTypeRegistry::allDatabaseTypes()
+DatabaseTypes DatabaseTypeManager::allDatabaseTypes()
 {   //  TODO synchronize ?
     QList<IDatabaseType*> values = _registry.values();
     return DatabaseTypes(values.begin(), values.end());
 }
 
-//  End of tt3-db-api/DatabaseTypeRegistry.cpp
+//  End of tt3-db-api/DatabaseTypeManager.cpp

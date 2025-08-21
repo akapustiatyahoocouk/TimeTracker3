@@ -176,7 +176,7 @@ void PreferencesDialog::_accept()
     {
         editor->saveControlValues();
     }
-    //  TODO Can we save all settings to file NOW?
+    tt3::util::ComponentManager::saveComponentSettings();
     _saveCurrentPreferences();
     accept();
 }

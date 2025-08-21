@@ -62,10 +62,10 @@ namespace tt3::gui
     };
 
     //////////
-    //  The registry of known skins
-    class TT3_GUI_PUBLIC SkinRegistry final
+    //  The manager of known skins
+    class TT3_GUI_PUBLIC SkinManager final
     {
-        UTILITY_CLASS(SkinRegistry)
+        UTILITY_CLASS(SkinManager)
 
         //////////
         //  Operationds

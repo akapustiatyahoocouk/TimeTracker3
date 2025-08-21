@@ -20,7 +20,7 @@ SOURCES += \
     PreferencesEditor.cpp \
     PreferencesRegistry.cpp \
     SelectWorkspaceDialog.cpp \
-    SkinRegistry.cpp
+    SkinManager.cpp
 
 HEADERS += \
     API.hpp \

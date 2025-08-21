@@ -46,19 +46,34 @@ namespace tt3::util
     };
 
     //////////
-    //  The registry of known components
-    class TT3_UTIL_PUBLIC ComponentRegistry final
+    //  The manager of known components
+    class TT3_UTIL_PUBLIC ComponentManager final
     {
-        UTILITY_CLASS(ComponentRegistry)
+        UTILITY_CLASS(ComponentManager)
 
         //////////
         //  Operationds
     public:
-        //  TODO document
+        //  Returns the set of all registered components.
         static QSet<IComponent*>    allComponents();
+
+        //  Registers the specified component; returns true
+        //  on success, false on failure.
         static bool                 registerComponent(IComponent * component);
+
+        //  Finds a registered component by mnemonic and version.
         static IComponent *         findComponent(const QString & mnemonic, const QVersionNumber & version);
+
+        //  Finds a registered component by mnemonic; if several versions
+        //  of component with the same mnemonic are registered, returns the
+        //  one with the latest version.
         static IComponent *         findComponent(const QString & mnemonic);    //  finds the latest version
+
+        //  Loads Settings of all registered components from a text configuration file.
+        static void                 loadComponentSettings();
+
+        //  Saves Settings of all registered components to a text configuration file.
+        static void                 saveComponentSettings();
 
         //////////
         //  Implementation

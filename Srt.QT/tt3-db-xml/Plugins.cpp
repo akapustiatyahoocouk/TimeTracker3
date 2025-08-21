@@ -64,8 +64,8 @@ namespace
 
         virtual void            initialize() throws(QException) override
         {
-            tt3::util::ComponentRegistry::registerComponent(Component::instance());
-            tt3::db::api::DatabaseTypeRegistry::registerDatabaseType(DatabaseType::instance());
+            tt3::util::ComponentManager::registerComponent(Component::instance());
+            tt3::db::api::DatabaseTypeManager::registerDatabaseType(DatabaseType::instance());
         }
     };
 }

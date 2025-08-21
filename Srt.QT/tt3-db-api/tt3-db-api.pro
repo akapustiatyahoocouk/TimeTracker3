@@ -8,7 +8,7 @@ SOURCES += \
     ChangeNotifier.cpp \
     Component.cpp \
     Database.cpp \
-    DatabaseTypeRegistry.cpp \
+    DatabaseTypeManager.cpp \
     DefaultValidator.cpp \
     ObjectTypes.cpp
 

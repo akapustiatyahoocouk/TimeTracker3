@@ -5,7 +5,7 @@ DEFINES += TT3_UTIL_LIBRARY
 
 SOURCES += \
     Component.cpp \
-    ComponentRegistry.cpp \
+    ComponentManager.cpp \
     FromString.cpp \
     MessageDigest.cpp \
     Mutex.cpp \
