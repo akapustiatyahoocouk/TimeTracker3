@@ -23,6 +23,8 @@ namespace tt3::ws
     class TT3_WS_PUBLIC WorkspaceAddress;
     class TT3_WS_PUBLIC Workspace;
 
+    class TT3_WS_PUBLIC WorkspaceException;
+
     class TT3_WS_PUBLIC WorkspaceClosedNotification;
 
     using WorkspacePtr = std::shared_ptr<Workspace>;
@@ -31,6 +33,8 @@ namespace tt3::ws
     using WorkspaceAddressesList = QList<WorkspaceAddress>;
 
     //  We can piggyback on some DB API types
+    using ObjectType = tt3::db::api::IObjectType;
+    using ObjectTypes = tt3::db::api::ObjectTypes;
     using Capabilities = tt3::db::api::Capabilities;
 }
 

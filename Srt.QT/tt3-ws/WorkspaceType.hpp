@@ -90,7 +90,7 @@ namespace tt3::ws
         //////////
         //  Operations (workspace)
     public:
-        //  Creates a new workspace of this typre at the specigied
+        //  Creates a new workspace of this type at the specigied
         //  address, with  a single administrator user and account.
         //  Throws WorkspaceException if an error occurs.
         WorkspacePtr        createWorkspace(const WorkspaceAddress & address,
