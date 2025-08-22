@@ -32,12 +32,22 @@ namespace tt3::util
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  The mnemonic identifier of this plugin.
         virtual QString         mnemonic() const = 0;
+
+        //  The user-readanle display name of this plugin.
         virtual QString         displayName() const = 0;
+
+        //  The user-readable description of this plugin.
         virtual QString         desciption() const = 0;
+
+        //  The copyright message of this plugin.
         virtual QString         copyright() const = 0;
+
+        //  The version of this plugin.
         virtual QVersionNumber  version() const = 0;
+
+        //  The build number of this plugin.
         virtual QString         buildNumber() const = 0;
 
         //  Called by plugin manager to initialize this plugin.
@@ -59,9 +69,17 @@ namespace tt3::util
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  Loads available Plugins and initializes them.
+        //  Plugins are loaded from tje .DLLs/.SOs that reside
+        //  in the same directpry as the application executavle.
         static void             loadPlugins();
+
+        //  The set of all discovered Plugins (whether
+        //  successfully iniyialized or not)
         static QSet<IPlugin*>   discoveredPlugins();
+
+        //  The set of all discovered AND successfully
+        //  initialized Plugins.
         static QSet<IPlugin*>   initializedPlugins();
 
         //////////

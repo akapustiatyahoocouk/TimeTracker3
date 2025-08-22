@@ -48,7 +48,8 @@ namespace tt3::util
         bool        operator >  (const TimeSpan & op2) const { return _minutes >  op2._minutes; }
         bool        operator >= (const TimeSpan & op2) const { return _minutes >= op2._minutes; }
 
-        //  TODO document
+        //  Adds/aubtracts the two time spans.  If either
+        //  operand is "uinvalid", the result is "invalid".
         TimeSpan    operator -  () const;
         TimeSpan    operator +  (const TimeSpan & op2) const;
         TimeSpan    operator -  (const TimeSpan & op2) const;
@@ -58,9 +59,15 @@ namespace tt3::util
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  Checks whether this time span is "valid".
         bool        isValid() const { return _minutes != _InvalidMinutes; }
+
+        //  Returns the number of gull hours in this time span.
+        //  If this time span is "invalid", the call is an error.
         int         asHours() const { Q_ASSERT(isValid()); return _minutes / 60; }
+
+        //  Returns the number of minutes in this time span.
+        //  If this time span is "invalid", the call is an error.
         int         asMinutes() const { Q_ASSERT(isValid()); return _minutes; }
 
         //////////

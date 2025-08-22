@@ -19,9 +19,17 @@ namespace tt3::util
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  "Grabs" this synchronization object, waiying
+        //  until it is available for grabbing.
         virtual void        grab() = 0;
+
+        //  "Grabs" this synchronization object, waiying
+        //  until it is available for grabbing OR the specified
+        //  timeout expires.
+        //  Returns true on grab success, false on timeout.
         virtual bool        tryGrab(int timeoutMs) = 0;
+
+        //  "Releases" a grabbed synchronization objecr.
         virtual void        release() = 0;
     };
 
@@ -64,12 +72,19 @@ namespace tt3::util
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  Same as "grab()".
         void                lock();
+
+        //  Same as "tryGrab(timeoutMs)".
         bool                tryLock(int timeoutMs);
+
+        //  Same as "release()".
         void                unlock();
 
+        //  Checks whether this Mutex is locked by the specified thread.
         bool                isLockedBy(QThread * thread);
+
+        //  Checks whether this Mutex is locked by the current thread.
         bool                isLockedByCurrentThread();
 
         //////////

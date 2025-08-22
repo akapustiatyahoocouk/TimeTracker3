@@ -244,9 +244,13 @@ namespace tt3::db::api
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  Thw ibternal name of the object type.
         QString         objectTypeName() const { return _objectTypeName; }
+
+        //  The name of the property.
         QString         propertyName() const { return _propertyName; }
+
+        //  The string representation of the offending property value.
         QString         propertyValueString() const { return _propertyValueString; }
 
         //////////
@@ -307,9 +311,13 @@ namespace tt3::db::api
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  The internal name of the object type.
         QString         objectTypeName() const { return _objectTypeName; }
+
+        //  The name of the property.
         QString         propertyName() const { return _propertyName; }
+
+        //  The string representation of the offending property value.
         QString         propertyValueString() const { return _propertyValueString; }
 
         //////////
@@ -370,9 +378,13 @@ namespace tt3::db::api
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  The internal name of the object type.
         QString         objectTypeName() const { return _objectTypeName; }
+
+        //  The name of the property.
         QString         propertyName() const { return _propertyName; }
+
+        //  The string representation of the offending property value.
         QString         propertyValueString() const { return _propertyValueString; }
 
         //////////

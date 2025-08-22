@@ -74,10 +74,16 @@ namespace tt3::db::api
         //  Operations (reference counting)
         //  All these operations are thread-safe.
     public:
-        //  TODO document
+        //  Returns the current "state" of this databasr address.
         virtual State           state() const = 0;
+
+        //  Returns the current "reference count" of this databasr address.
         virtual int             referenceCount() const = 0;
+
+        //  Increments the "reference count" of this databasr address ny 1.
         virtual void            addReference() = 0;
+
+        //  Decrements the "reference count" of this databasr address ny 1.
         virtual void            removeReference() = 0;
     };
 }

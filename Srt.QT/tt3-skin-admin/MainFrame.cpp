@@ -263,13 +263,13 @@ bool MainFrame::_reconcileCurrntCredentials(const tt3::ws::WorkspacePtr & worksp
         return true;
     }
     //  Ask the user whether to login with different credentials
-    while (QMessageBox::question(
+    while (tt3::gui::AskYesNoDialog::ask(
         this,
         "Access denied",
         "Current credentials do not allow access to\n" +
             workspace->address().displayForm() +
-            "\nDo you want to log in with different credentials ?",
-        QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+            "\nDo you want to log in with different credentials ?" +
+            "") == tt3::gui::AskYesNoDialog::Answer::Yes)
     {
         tt3::gui::LoginDialog dlg(this, "");
         if (dlg.exec() != QDialog::DialogCode::Accepted)

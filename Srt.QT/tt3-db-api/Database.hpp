@@ -31,11 +31,23 @@ namespace tt3::db::api
         //////////
         //  Operations (general)
     public:
-        //  TODO document
+        //  Returns the type of this database.
+        //  Can be safely obtained on both open and closed databases.
         virtual IDatabaseType *     type() const = 0;
+
+        //  Returns the address of this database.
+        //  Can be safely obtained on both open and closed databases.
         virtual IDatabaseAddress *  address() const = 0;
+
+        //  Returns the validator used by this database.
         virtual IValidator *        validator() const = 0;
+
+        //  Checks whether this database is open or closed.
+        //  All database instances start off as open.
         virtual bool                isOpen() const = 0;
+
+        //  Closes this database; jas no effect if already closed.
+        //  Throws DatabaseException if an error occurs.
         virtual void                close() throws(DatabaseException) = 0;
 
         //////////
@@ -67,7 +79,8 @@ namespace tt3::db::api
         //////////
         //  Opertions (life cycle)
     public:
-        //  TODO document
+        //  Creates a new User in this database.
+        //  Throws DatabaseException if an error occurs.
         virtual IUser *     createUser(bool enabled, const QStringList & emailAddresses,
                                 const QString & realName,
                                 const std::optional<tt3::util::TimeSpan> & inactivityTimeout,

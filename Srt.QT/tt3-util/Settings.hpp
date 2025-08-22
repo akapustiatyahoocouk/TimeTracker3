@@ -35,10 +35,15 @@ namespace tt3::util
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  The mnemonic identifier of this Setting.
         QString         mnemonic() const { return _mnemonic; }
+
+        //  True if changes to the value of this Setting
+        //  shall require application restart in order to
+        //  take effect, else false.
         bool            changeRequiresRestart() const { return _changeRequiresRestart; }
 
+        //  Returns/sets the string representation of this Setting' value.
         virtual QString valueString() const = 0;
         virtual void    setValueString(const QString & valueString) = 0;
 

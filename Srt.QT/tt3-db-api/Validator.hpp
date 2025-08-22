@@ -43,8 +43,10 @@ namespace tt3::db::api
             //////////
             //  Operations
         public:
-            //  TODO document
+            //  Checks whether the specified string is a valid e-0maiol address.
             virtual bool    isValidEmailAddress(const QString & emailAddress) = 0;
+
+            //  Checks whether the specified list of strings is a valid e-0maiol addresses list.
             virtual bool    isValidEmailAddresses(const QStringList & emailAddresses)
             {
                 for (QString emailAddress : emailAddresses)
@@ -71,9 +73,13 @@ namespace tt3::db::api
             //////////
             //  Operations
         public:
-            //  TODO document
+            //  Checks whether the specified string is a valid "real name" for a User.
             virtual bool    isValidRealName(const QString & realName) = 0;
+
+            //  Checks whether the specified value is a valid "inactivity timeout" for a User.
             virtual bool    isValidInactivityTimeout(const tt3::util::TimeSpan & inactivityTimeout) = 0;
+
+            //  Checks whether the specified value is a valid "UI locale" for a User.
             virtual bool    isValidUiLocale(const QLocale & uiLocale) = 0;
         };
         virtual IUserValidator *    user() const = 0;
@@ -90,8 +96,10 @@ namespace tt3::db::api
             //////////
             //  Operations
         public:
-            //  TODO document
+            //  Checks whether the specified string is a valid "login" for an Account.
             virtual bool    isValidLogin(const QString & login) = 0;
+
+            //  Checks whether the specified string is a valid "password" for an Account.
             virtual bool    isValidPassword(const QString & password) = 0;
         };
         virtual IAccountValidator * account() const = 0;

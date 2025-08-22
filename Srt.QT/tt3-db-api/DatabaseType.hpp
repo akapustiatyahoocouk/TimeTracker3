@@ -45,9 +45,15 @@ namespace tt3::db::api
         //  The large (32x32) icon representing this database type.
         virtual QIcon       largeIcon() const = 0;
 
-        //  TODO document
+        //  Checks whether this database type is operationsl (i.e.
+        //  can be used) - e.g. a;; required drivers are present, etc.
         virtual bool        isOperational() const = 0;
+
+        //  The short (1 line) status report for this database type.
         virtual QString     shortStatusReport() const = 0;
+
+        //  The longer (mulyi-line) status report for this database
+        //  type with newline '\n' character separating the lines.
         virtual QString     fullStatusReport() const = 0;
 
         //  The validator for databases of this type
@@ -82,9 +88,17 @@ namespace tt3::db::api
         //////////
         //  Operations (databases)
     public:
-        //  TODO document
+        //  Creates a new, initially empty, database at the specified address.
+        //  Throws DatabaseException if an error occurs.
         virtual IDatabase *         createDatabase(IDatabaseAddress * address) throws(DatabaseException) = 0;
+
+        //  Opens an existing database at the specified address.
+        //  Throws DatabaseException if an error occurs.
         virtual IDatabase *         openDatabase(IDatabaseAddress * address) throws(DatabaseException) = 0;
+
+        //  Destroys an existing database at the specified address.
+        //  The database must not currently be in use.
+        //  Throws DatabaseException if an error occurs.
         virtual void                destroyDatabase(IDatabaseAddress * address) throws(DatabaseException) = 0;
     };
 
@@ -97,9 +111,15 @@ namespace tt3::db::api
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  Registers the specified database type; returns
+        //  true on success, false on failure.
         static bool             registerDatabaseType(IDatabaseType * databaseType);
+
+        //  Finds a registered database type by its mnemonic;
+        //  returns nullptr if not found.
         static IDatabaseType *  findDatabaseType(const QString & mnemonic);
+
+        //  Returns the set of all registered database types.
         static DatabaseTypes    allDatabaseTypes();
 
         //////////

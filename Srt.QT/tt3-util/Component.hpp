@@ -35,12 +35,22 @@ namespace tt3::util
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  The mnemonic identifier of this component.
         virtual QString         mnemonic() const = 0;
+
+        //  The user-readable display name of this component.
         virtual QString         displayName() const = 0;
+
+        //  The user-readable description of this component.
         virtual QString         desciption() const = 0;
+
+        //  The copyight message of this component.
         virtual QString         copyright() const = 0;
+
+        //  The version of this component.
         virtual QVersionNumber  version() const = 0;
+
+        //  The build number of this component.
         virtual QString         buildNumber() const = 0;
 
         //  The settings of this component

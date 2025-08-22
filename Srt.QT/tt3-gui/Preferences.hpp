@@ -73,10 +73,18 @@ namespace tt3::gui
         //////////
         //  Operationds
     public:
-        //  TODO document
+        //  The set of all registered Preferemcesm whether
+        //  root, leaf or intermediate.
         static QSet<Preferences*>   allPreferences();
+
+        //  The set of all registered Preferemces that have no parent.
         static QSet<Preferences*>   rootPreferences();
+
+        //  Registers the specified {references (along with its parents).
         static bool                 registerPreferences(Preferences * preferences);
+
+        //  Finds a registered Preferences by its mnemonic; returns
+        //  nullptr if not found.
         static Preferences *        findPreferences(const QString & mnemonic);
 
         //////////

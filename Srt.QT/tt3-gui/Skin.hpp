@@ -54,10 +54,20 @@ namespace tt3::gui
         //////////
         //  Operations (state)
     public:
-        //  TODO document
+        //  Checks whether this skin is "active" (i.e. its UI is visible).
         virtual bool        isActive() const = 0;
+
+        //  "Activates" this skin, showing its UI.
+        //  Gas no effect if this skin is already "active".
         virtual void        activate() = 0;
+
+        //  "Deactivates" this skin, hiding its UI.
+        //  Gas no effect if this skin is already "inactive".
         virtual void        deactivate() = 0;
+
+        //  Returns the main frame" of this skin's UI.
+        //  Returns nullptr is this skin is "inactive" or
+        //  its UI has no "main frame".
         virtual QMainWindow*mainWindow() = 0;
     };
 
@@ -70,9 +80,15 @@ namespace tt3::gui
         //////////
         //  Operationds
     public:
-        //  TODO document
+        //  Returns the set of all registered Skins.
         static QSet<ISkin*> allSkins();
+
+        //  Registers the specified Skin; returns true on success,
+        //  false on failure.
         static bool         registerSkin(ISkin * skin);
+
+        //  Finds a registered Skin by its mnemonic; returns
+        //  nullptr if not found.
         static ISkin *      findSkin(const QString & mnemonic);
 
         //////////
@@ -108,7 +124,7 @@ namespace tt3::gui
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  Swaps the specified Skin with the "current" Skin.
         void        swap(ISkin * & other);
 
         //////////

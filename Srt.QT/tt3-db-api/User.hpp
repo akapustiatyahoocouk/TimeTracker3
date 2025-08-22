@@ -37,25 +37,49 @@ namespace tt3::db::api
         //////////
         //  Operations (properties)
     public:
-        //  TODO document
+        //  Returns the "real name" of this User.
+        //  Throws DatabaseException if an error occurs.
         virtual QString     realName() const throws(DatabaseException) = 0;
+
+        //  Sets the "real name" of this User.
+        //  Throws DatabaseException if an error occurs.
         virtual void        setRealName(const QString & realName) throws(DatabaseException) = 0;
+
+        //  Returns the "inactivity timeout" of this User.
+        //  This is the timeout after which, if the user does nothing,
+        //  the "current" Activity is automatically stopped.
+        //  Throws DatabaseException if an error occurs.
         virtual std::optional<tt3::util::TimeSpan>
                             inactivityTimeout() const throws(DatabaseException) = 0;
+
+        //  Sets the "inactivity timeout" of this User.
+        //  This is the timeout after which, if the user does nothing,
+        //  the "current" Activity is automatically stopped.
+        //  Throws DatabaseException if an error occurs.
         virtual void        setInactivityTimeout(const std::optional<tt3::util::TimeSpan> & inactivityTimeout) throws(DatabaseException) = 0;
+
+        //  Returns the preferred UI locale  of this User.
+        //  Throws DatabaseException if an error occurs.
         virtual std::optional<QLocale>
                             uiLocale() const throws(DatabaseException) = 0;
+
+        //  Sets the preferred UI locale  of this User.
+        //  Throws DatabaseException if an error occurs.
         virtual void        setUiLocale(const std::optional<QLocale> & uiLocale) throws(DatabaseException) = 0;
 
         //////////
         //  Operations (associations)
     public:
-        //  TODO document
+        //  Returns the set of all Accounts of this User.
+        //  Throws DatabaseException if an error occurs.
         virtual Accounts    accounts() const throws(DatabaseException) = 0;
 
         //////////
         //  Operations (life cycle)
     public:
+        //  Creates a new Account for this User.
+        //  All Accounts in a database must have different lohins.
+        //  Throws DatabaseException if an error occurs.
         virtual IAccount *  createAccount(
             bool enabled, const QStringList & emailAddresses,
             const QString & login, const QString & password,

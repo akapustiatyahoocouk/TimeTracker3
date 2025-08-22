@@ -65,7 +65,7 @@ namespace tt3::util
             //  Returns the "final" message digest; "finalise()"s first if necessary.
             virtual QByteArray  digestAsBytes() = 0;
 
-            //  Same as "digest()", but returns a string of [uppercase] hex digits, two per byte.
+            //  Same as "digestAsBytes()", but returns a string of [uppercase] hex digits, two per byte.
             virtual QString     digestAsString();
         };
 
@@ -78,8 +78,10 @@ namespace tt3::util
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  The mnemonic identifier of this message digest method.
         virtual QString         mnemonic() const = 0;
+
+        //  The user-readable display name of this message digest method.
         virtual QString         displayName() const = 0;
 
         //////////

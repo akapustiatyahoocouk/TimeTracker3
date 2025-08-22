@@ -189,24 +189,12 @@ void PreferencesDialog::_refresh()
 
 void PreferencesDialog::_resetPushNuttonClocked()
 {
-    //  TODO encapsulate the "mb" stuff into tt3::gui::AskYesNoDialog
-    QMessageBox mb(this);
-    mb.setWindowTitle("Reset all settings");
-    mb.setIcon(QMessageBox::Icon::Question);
-    mb.setText("Are you sure you want to reset all settings to their default values ?"
-               "\nThe effects will not be permanent until you press 'OK' to close the dialog.");
-    mb.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-    mb.button(QMessageBox::StandardButton::Yes)->setIcon(
-        QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
-    mb.button(QMessageBox::StandardButton::No)->setIcon(
-        QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
-    if (/*QMessageBox::question(
+        if (AskYesNoDialog::ask(
             this,
             "Reset all settings",
             "Are you sure you want to reset all settings to their default values ?"
-                "\nThe effects will not be permanent until you press 'OK' to close the dialog.",
-            QMessageBox::Yes | QMessageBox::No)*/
-        mb.exec() == QMessageBox::StandardButton::Yes)
+                "\nThe effects will not be permanent until you press 'OK' to close the dialog."
+                "") == AskYesNoDialog::Answer::Yes)
     {   //  Do it!
         for (PreferencesEditor * editor : _editorsForItems.values())
         {
@@ -227,13 +215,13 @@ void PreferencesDialog::_accept()
     _saveCurrentPreferences();
     if (_restartRequired)
     {
-        if (QMessageBox::question(
-                this,
-                "Restart required",
-                "One of the changes you have made to application settings"
-                    "\nwill take place only after the application is restarted."
-                    "\nDo you want to restart TimeTracker3 now ?",
-                QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+        if (AskYesNoDialog::ask(
+            this,
+            "Restart required",
+            "One of the changes you have made to application settings"
+                "\nwill take place only after the application is restarted."
+                "\nDo you want to restart TimeTracker3 now ?"
+                "") == AskYesNoDialog::Answer::Yes)
         {
             QApplication::exit(-1);
         }

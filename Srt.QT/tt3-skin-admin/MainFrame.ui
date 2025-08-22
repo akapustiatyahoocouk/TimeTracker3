@@ -100,7 +100,13 @@
      <normaloff>:/tt3-skin-admin/Resources/Images/Actions/AboutSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/AboutSmall.png</iconset>
    </property>
    <property name="text">
-    <string>A&amp;bout</string>
+    <string>A&amp;bout TimeTracker3</string>
+   </property>
+   <property name="iconText">
+    <string>About TimeTracker3</string>
+   </property>
+   <property name="toolTip">
+    <string>About TimeTracker3</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+F1</string>

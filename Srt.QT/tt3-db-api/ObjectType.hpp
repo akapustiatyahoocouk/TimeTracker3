@@ -52,6 +52,7 @@ namespace tt3::db::api
         //////////
         //  Database object types
     public:
+        //  The type of the "User" objects.
         class TT3_DB_API_PUBLIC User final : public virtual IObjectType
         {
             DECLARE_SINGLETON(User)
@@ -71,6 +72,7 @@ namespace tt3::db::api
             const QIcon     _largeIcon;
         };
 
+        //  The type of the "Account" objects.
         class TT3_DB_API_PUBLIC Account final : public virtual IObjectType
         {
             DECLARE_SINGLETON(Account)

@@ -95,10 +95,16 @@ namespace tt3::db::api
         //  Operations (reference counting)
         //  All these operations are thread-safe.
     public:
-        //  TODO document
+        //  The current "state" of this object.
         virtual State           state() const = 0;
+
+        //  The current "reference count" of this object.
         virtual int             referenceCount() const = 0;
+
+        //  Increments the "reference count" of this object by 1.
         virtual void            addReference() = 0;
+
+        //  Decrements the "reference count" of this object by 1.
         virtual void            removeReference() = 0;
     };
 }

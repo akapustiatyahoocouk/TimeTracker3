@@ -33,8 +33,11 @@ namespace tt3::skin::admin
             //////////
             //  Properties
         public:
-            //  TODO document
+            //  The "normal" bounds of the main UI frame
+            //  (i.e. when it is noe minimized or maximized).
             tt3::util::Setting<QRect>   mainFrameBounds;
+
+            //  True if the main UI frame is maximized, false if not.
             tt3::util::Setting<bool>    mainFrameMaximized;
         };
 

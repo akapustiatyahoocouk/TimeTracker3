@@ -14,10 +14,8 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
-#include "tt3-gui/API.hpp"
 
-    namespace tt3::gui
+namespace tt3::gui
 {
     //  The modal "error" dialog
     class TT3_GUI_PUBLIC ErrorDialog final
@@ -27,7 +25,7 @@
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  Shows the error dialog with the specified error message [and parent].
         static void     show(const tt3::util::Exception & ex);
         static void     show(const std::exception & ex);
         static void     show(const QString & errorMessage);

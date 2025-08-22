@@ -42,9 +42,14 @@ namespace tt3::gui
             //  The preferred UI locale
             tt3::util::Setting<QLocale> uiLocale;
 
-            //  TODO document
+            //  True if last used workspace should be loaded on startup.
             tt3::util::Setting<bool>    loadLastWorkspaceAtStartup;
+
+            //  True if the last used login shall be remembered on startup.
             tt3::util::Setting<bool>    rememberLastLogin;
+
+            //  The mnemonic identifier of the Preferences node that  was
+            //  "current" during last activation og yje "Preferences" dialog.
             tt3::util::Setting<QString> currentPreferences;
         };
 

@@ -39,10 +39,19 @@ namespace tt3::ws
         //////////
         //  Operations (general)
     public:
-        //  TODO document
+        //  The type of this Workspace. Can be safely
+        //  obtained for both open and closed workspaces.
         WorkspaceType *     type() const;
+
+        //  The address of this Workspace. Can be safely
+        //  obtained for both open and closed workspaces.
         WorkspaceAddress    address() const;
+
+        //  Checks whether this Workspace is open or closed.
         bool                isOpen();
+
+        //  Closes this Workspace; has no effect ig already closed.
+        //  Throws WorkspaceException if an error occurs.
         void                close() throws(WorkspaceException);
 
         //  The validator for this workspace
@@ -120,7 +129,7 @@ namespace tt3::ws
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  Swaps the specified Workspace with the "current" Workspace.
         void                swap(WorkspacePtr & other);
 
         //////////

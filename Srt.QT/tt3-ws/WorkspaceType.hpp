@@ -49,9 +49,15 @@ namespace tt3::ws
         //  The large (32x32) icon representing this workspace type.
         QIcon       largeIcon() const;
 
-        //  TODO document
+        //  Checks whether this workspace type is "operational"
+        //  (i.e. can be used).
         bool        isOperational() const;
+
+        //  The short (1 line) status report for this workspace type.
         QString     shortStatusReport() const;
+
+        //  The long (multi-line) status report for this workspace type.
+        //  Lines are separated by newline ('\n') character.
         QString     fullStatusReport() const;
 
         //  The validator for workspaces of this type
@@ -84,11 +90,20 @@ namespace tt3::ws
         //////////
         //  Operations (workspace)
     public:
-        //  TODO document
+        //  Creates a new workspace of this typre at the specigied
+        //  address, with  a single administrator user and account.
+        //  Throws WorkspaceException if an error occurs.
         WorkspacePtr        createWorkspace(const WorkspaceAddress & address,
                                      const QString & adminUser,
                                      const QString adminLogin, const QString & adminPassword) throws(WorkspaceException);
+
+        //  Opens an existing workspace at the specified address.
+        //  Throws WorkspaceException if an error occurs.
         WorkspacePtr        openWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
+
+        //  Destroys an existing workspace at the specified address.
+        //  The workspace must not currently be in use.
+        //  Throws WorkspaceException if an error occurs.
         void                destroyWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
 
         //////////

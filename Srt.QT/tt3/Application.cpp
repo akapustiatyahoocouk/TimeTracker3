@@ -93,7 +93,6 @@ void Application::_initialize()
     QIcon ic(pm);
     QGuiApplication::setWindowIcon(ic);
     QGuiApplication::setApplicationName("TimeTracker3");
-    QGuiApplication::setApplicationDisplayName("TimeTracker3");
     QGuiApplication::setApplicationVersion(Component::instance()->version().toString());
 
     _registerStandardComponents();

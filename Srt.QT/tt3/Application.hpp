@@ -31,7 +31,7 @@ namespace tt3
         //////////
         //  QApplication
     public:
-        //  TODO document
+        //  Rund this application's message loop.
         int         exec();
 
         //////////

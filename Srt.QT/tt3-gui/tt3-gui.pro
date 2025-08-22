@@ -5,6 +5,7 @@ DEFINES += TT3_GUI_LIBRARY
 
 SOURCES += \
     AboutDialog.cpp \
+    AskYesNoDialog.cpp \
     Component.cpp \
     CurrentSkin.cpp \
     ErrorDialog.cpp \
@@ -25,6 +26,7 @@ SOURCES += \
 HEADERS += \
     API.hpp \
     AboutDialog.hpp \
+    AskYesNoDialog.hpp \
     Components.hpp \
     ErrorDialog.hpp \
     GeneralAppearancePreferencesEditor.hpp \
