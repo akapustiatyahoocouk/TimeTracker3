@@ -1,6 +1,6 @@
 //
-//  tt3/API.hpp - TT3 master header
-//  TODO add GPLv3 header to EVERY .hpp and .cpp file
+//  tt3/API.hpp - tt3 master header
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //

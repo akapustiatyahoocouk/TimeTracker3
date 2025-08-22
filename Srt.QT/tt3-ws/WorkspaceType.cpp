@@ -118,7 +118,6 @@ WorkspacePtr WorkspaceType::createWorkspace(
             std::optional<tt3::util::TimeSpan>(),
             std::optional<QLocale>());
     //  ...and account...
-    /* TODO kill off ? tt3::db::api::IAccount * account = */
         user->createAccount(
             true,
             QStringList(),
@@ -143,7 +142,7 @@ WorkspacePtr WorkspaceType::openWorkspace(const WorkspaceAddress & address) thro
     return WorkspacePtr(new Workspace(address, databasePtr.release()));
 }
 
-/*  TODO uncommnt
+/*  TODO uncommnt & implement
 void WorkspaceType::destroyWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
 */
 //  End of tt3-ws/WorkspaceType.cpp

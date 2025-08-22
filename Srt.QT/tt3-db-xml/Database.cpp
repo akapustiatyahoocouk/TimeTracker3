@@ -157,12 +157,6 @@ void Database::close() throws(tt3::db::api::DatabaseException)
     //  Destroy all Object instances...
     for (User * user : _users.values())
     {
-        /*  TODO kill off
-        while (user->referenceCount() != 0)
-        {
-            user->removeReference();
-        }
-        */
         user->destroy();    //  also destroys Accounts, Works, etc.
     }
     Q_ASSERT(_users.isEmpty());
@@ -531,13 +525,6 @@ void Database::_LockRefresher::run()
     {
         msleep(WaitChunkMs);
         QDateTime utcNow = QDateTime::currentDateTimeUtc();
-        /*  TODO kill off
-        qDebug() << waitChunkStartedAt
-                 << " -> "
-                 << utcNow
-                 << " = "
-                 << waitChunkStartedAt.secsTo(utcNow);
-        */
         if (waitChunkStartedAt.secsTo(utcNow) < RefreshIntervalMin)
         {   //  Keep waiting
             continue;

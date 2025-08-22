@@ -36,13 +36,18 @@ namespace tt3::ws
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  We can piggyback on some DB API types.
         using Principal = tt3::db::api::IValidator::IPrincipalValidator;
         using User = tt3::db::api::IValidator::IUserValidator;
         using Account = tt3::db::api::IValidator::IAccountValidator;
 
+        //  The validator for Principals.
         Principal * principal() const { return _databaseValidator->principal(); }
+
+        //  The validator for Users.
         User *      user() const { return _databaseValidator->user(); }
+
+        //  The validator for Accounts.
         Account *   account() const { return _databaseValidator->account(); }
 
         //////////

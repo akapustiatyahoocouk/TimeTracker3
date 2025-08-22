@@ -19,7 +19,7 @@ SOURCES += \
     Preferences.cpp \
     PreferencesDialog.cpp \
     PreferencesEditor.cpp \
-    PreferencesRegistry.cpp \
+    PreferencesManager.cpp \
     SelectWorkspaceDialog.cpp \
     SkinManager.cpp
 

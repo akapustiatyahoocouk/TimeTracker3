@@ -38,7 +38,7 @@ PreferencesDialog::PreferencesDialog(QWidget * parent) throw(int)
 
     //  Populate the preferences tree, creating
     //  editors for each Preferences node
-    QList<Preferences*> rootNodes = PreferencesRegistry::rootPreferences().values();
+    QList<Preferences*> rootNodes = PreferencesManager::rootPreferences().values();
     std::sort(rootNodes.begin(), rootNodes.end(), _compare);
     QMap<Preferences*,QTreeWidgetItem*> itemsForPreferences;
     for (Preferences * rootNode : rootNodes)
@@ -137,7 +137,7 @@ void PreferencesDialog::_createEditor(QTreeWidgetItem * item)
 void PreferencesDialog::_loadCurrentPreferences(const QMap<Preferences*,QTreeWidgetItem*> & itemsForPreferences)
 {
     if (Preferences * node =
-            PreferencesRegistry::findPreferences(
+            PreferencesManager::findPreferences(
                 Component::Settings::instance()->currentPreferences))
     {
         if (itemsForPreferences.contains(node))

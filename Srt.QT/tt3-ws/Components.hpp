@@ -33,20 +33,24 @@ namespace tt3::ws
             //////////
             //  Constants
         public:
-            //  TODO document
+            //  The maximum size of the MRU workspaces list.
             static inline const int MaxRecentWorkspaces = 9;
 
             //////////
             //  Properties
         public:
-            //  TODO document
+            //  The addresses of the recently used workspaces, most recent first.
             tt3::util::Setting<WorkspaceAddressesList>  recentWorkspaces;
 
             //////////
             //  Operations
         public:
-            //  TODO document
+            //  Adds the specified entry to the MRU workspaces list.
+            //  Idf the entry is already there, moves it to the top of the list.
             void                addRecentWorkspace(const WorkspaceAddress & workspaceAddress);
+
+            //  Removes the specified entry from the MRU workspaces list.
+            //  If already not there, the call has no effect.
             void                removeRecentWorkspace(const WorkspaceAddress & workspaceAddress);
         };
 

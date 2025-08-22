@@ -33,7 +33,7 @@ SelectWorkspaceDialog::SelectWorkspaceDialog(QWidget * parent)
 
     //  Populate "Workspace type" combo box
     QList<tt3::ws::WorkspaceType*> workspaceTypes =
-        tt3::ws::WorkspaceTypeRegistry::allWorkspaceTypes().values();
+        tt3::ws::WorkspaceTypeManager::allWorkspaceTypes().values();
     std::sort(
         workspaceTypes.begin(),
         workspaceTypes.end(),

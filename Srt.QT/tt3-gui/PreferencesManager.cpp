@@ -1,5 +1,5 @@
 //
-//  tt3-gui/PreferencesRegistry.cpp - tt3::gui::PreferencesRegistry class implementation
+//  tt3-gui/PreferencesManager.cpp - tt3::gui::PreferencesManager class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -17,18 +17,23 @@
 #include "tt3-gui/API.hpp"
 using namespace tt3::gui;
 
-QMap<QString, Preferences*> PreferencesRegistry::_registry;
+tt3::util::Mutex PreferencesManager::_guard;
+QMap<QString, Preferences*> PreferencesManager::_registry;
 
 //////////
 //  Operationds
-QSet<Preferences*> PreferencesRegistry::allPreferences()
-{   //  TODO synchronize ?
+QSet<Preferences*> PreferencesManager::allPreferences()
+{
+    tt3::util::Lock lock(_guard);
+
     QList<Preferences*> values = _registry.values();
     return QSet<Preferences*>(values.begin(), values.end());
 }
 
-QSet<Preferences*> PreferencesRegistry::rootPreferences()
-{   //  TODO synchronize ?
+QSet<Preferences*> PreferencesManager::rootPreferences()
+{
+    tt3::util::Lock lock(_guard);
+
     QList<Preferences*> values = _registry.values();
     QSet<Preferences*> result;
     for (Preferences * preferences : values)
@@ -41,9 +46,11 @@ QSet<Preferences*> PreferencesRegistry::rootPreferences()
     return result;
 }
 
-bool PreferencesRegistry::registerPreferences(Preferences * preferences)
-{   //  TODO synchronize ?
+bool PreferencesManager::registerPreferences(Preferences * preferences)
+{
     Q_ASSERT(preferences != nullptr);
+
+    tt3::util::Lock lock(_guard);
 
     if (preferences->parent() != nullptr &&
         !registerPreferences(preferences->parent()))
@@ -64,10 +71,12 @@ bool PreferencesRegistry::registerPreferences(Preferences * preferences)
     }
 }
 
-Preferences * PreferencesRegistry::findPreferences(const QString & mnemonic)
-{   //  TODO synchronize ?
+Preferences * PreferencesManager::findPreferences(const QString & mnemonic)
+{
+    tt3::util::Lock lock(_guard);
+
     QString key = mnemonic;
     return _registry.contains(key) ? _registry[key] : nullptr;
 }
 
-//  End of tt3-gui/PreferencesRegistry.cpp
+//  End of tt3-gui/PreferencesManager.cpp

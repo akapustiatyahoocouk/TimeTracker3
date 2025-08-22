@@ -17,19 +17,24 @@
 #include "tt3-util/API.hpp"
 using namespace tt3::util;
 
+tt3::util::Mutex ComponentManager::_guard;
 QMap<QString, IComponent*> ComponentManager::_registry;
 
 //////////
 //  Operationds
 QSet<IComponent*> ComponentManager::allComponents()
 {
+    tt3::util::Lock lock(_guard);
+
     QList<IComponent*> values = _registry.values();
     return QSet<IComponent*>(values.begin(), values.end());
 }
 
 bool ComponentManager::registerComponent(IComponent * component)
-{   //  TODO synchronize ?
+{
     Q_ASSERT(component != nullptr);
+
+    tt3::util::Lock lock(_guard);
 
     IComponent * registeredComponent = findComponent(component->mnemonic(), component->version());
     if (registeredComponent != nullptr)
@@ -46,13 +51,17 @@ bool ComponentManager::registerComponent(IComponent * component)
 }
 
 IComponent * ComponentManager::findComponent(const QString & mnemonic, const QVersionNumber & version)
-{   //  TODO synchronize ?
+{
+    tt3::util::Lock lock(_guard);
+
     QString key = mnemonic + "|" + util::toString(version);
     return _registry.contains(key) ? _registry[key] : nullptr;
 }
 
 IComponent * ComponentManager::findComponent(const QString & mnemonic)
-{   //  TODO synchronize ?
+{
+    tt3::util::Lock lock(_guard);
+
     IComponent * result = nullptr;
     for (IComponent * component : _registry.values())
     {
@@ -69,7 +78,9 @@ IComponent * ComponentManager::findComponent(const QString & mnemonic)
 }
 
 void ComponentManager::loadComponentSettings()
-{   //  TODO synchonize ?
+{
+    tt3::util::Lock lock(_guard);
+
     QDir home = QDir::home();
     QString iniFileName = home.filePath(".tt3");
 
@@ -123,7 +134,9 @@ void ComponentManager::loadComponentSettings()
 }
 
 void ComponentManager::saveComponentSettings()
-{   //  TODO synchonize ?
+{
+    tt3::util::Lock lock(_guard);
+
     QDir home = QDir::home();
     QString iniFileName = home.filePath(".tt3");
 

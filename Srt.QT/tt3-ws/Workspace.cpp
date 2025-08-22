@@ -27,12 +27,10 @@ Workspace::Workspace(const WorkspaceAddress & address, tt3::db::api::IDatabase *
     Q_ASSERT(_database != nullptr);
 
     //  Forward database change events
-    //  TODO uncomment & fix the bug
     connect(&_database->changeNotifier(),
             &tt3::db::api::ChangeNotifier::databaseClosed,
             this,
             &Workspace::_onDatabaseClosed);
-    //
 }
 
 Workspace::~Workspace()

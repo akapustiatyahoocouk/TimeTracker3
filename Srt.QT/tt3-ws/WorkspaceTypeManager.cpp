@@ -1,5 +1,5 @@
 //
-//  tt3-ws/WorkspaceTypeRegistry.cpp - tt3::ws::WorkspaceTypeRegistry class implementation
+//  tt3-ws/WorkspaceTypeManager.cpp - tt3::ws::WorkspaceTypeManager class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -17,20 +17,25 @@
 #include "tt3-ws/API.hpp"
 using namespace tt3::ws;
 
-QMap<tt3::db::api::IDatabaseType*, WorkspaceType*> WorkspaceTypeRegistry::_registry;
+tt3::util::Mutex WorkspaceTypeManager::_guard;
+QMap<tt3::db::api::IDatabaseType*, WorkspaceType*> WorkspaceTypeManager::_registry;
 
 //////////
 //  Operations
-WorkspaceType * WorkspaceTypeRegistry::findWorkspaceType(const QString & mnemonic)
-{   //  TODO synchronize ?
+WorkspaceType * WorkspaceTypeManager::findWorkspaceType(const QString & mnemonic)
+{
+    tt3::util::Lock lock(_guard);
+
     _collectWorkspaceTypes();
     tt3::db::api::IDatabaseType * databaseType =
         tt3::db::api::DatabaseTypeManager::findDatabaseType(mnemonic);
     return _registry.contains(databaseType) ? _registry[databaseType] : nullptr;
 }
 
-WorkspaceTypes WorkspaceTypeRegistry::allWorkspaceTypes()
-{   //  TODO synchronize ?
+WorkspaceTypes WorkspaceTypeManager::allWorkspaceTypes()
+{
+    tt3::util::Lock lock(_guard);
+
     _collectWorkspaceTypes();
     QList<WorkspaceType*> values = _registry.values();
     return WorkspaceTypes(values.begin(), values.end());
@@ -38,9 +43,10 @@ WorkspaceTypes WorkspaceTypeRegistry::allWorkspaceTypes()
 
 //////////
 //  Implementation helpers
-void WorkspaceTypeRegistry::_collectWorkspaceTypes()
+void WorkspaceTypeManager::_collectWorkspaceTypes()
 {
-    //  TODO assert synchronized
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+
     if (_registry.isEmpty())
     {
         for (tt3::db::api::IDatabaseType * databaseType :
@@ -51,10 +57,12 @@ void WorkspaceTypeRegistry::_collectWorkspaceTypes()
     }
 }
 
-WorkspaceType * WorkspaceTypeRegistry::_findWorkspaceType(tt3::db::api::IDatabaseType * databaseType)
-{   //  TODO assert synchronized
+WorkspaceType * WorkspaceTypeManager::_findWorkspaceType(tt3::db::api::IDatabaseType * databaseType)
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+
     _collectWorkspaceTypes();
     return _registry.contains(databaseType) ? _registry[databaseType] : nullptr;
 }
 
-//  End of tt3-ws/WorkspaceTypeRegistry.cpp
+//  End of tt3-ws/WorkspaceTypeManager.cpp

@@ -26,7 +26,7 @@ namespace tt3::ws
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkspaceType)
 
-        friend class WorkspaceTypeRegistry;
+        friend class WorkspaceTypeManager;
 
         //////////
         //  Construction/destruction - from friends only
@@ -115,22 +115,28 @@ namespace tt3::ws
 
     //////////
     //  The registry/manager of known workspace types
-    class TT3_WS_PUBLIC WorkspaceTypeRegistry final
+    class TT3_WS_PUBLIC WorkspaceTypeManager final
     {
-        UTILITY_CLASS(WorkspaceTypeRegistry)
+        UTILITY_CLASS(WorkspaceTypeManager)
 
         friend class WorkspaceAddress;
 
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  Finds a known workspace type by mnemonic;
+        //  returns nullptr if mpy fpind.
+        //  This is determined based on registered database types.
         static WorkspaceType *  findWorkspaceType(const QString & mnemonic);
+
+        //  The set of all known workspace types.
+        //  This is determined based on registered database types.
         static WorkspaceTypes   allWorkspaceTypes();
 
         //////////
         //  Implementation
     private:
+        static tt3::util::Mutex _guard;
         static QMap<tt3::db::api::IDatabaseType*, WorkspaceType*>   _registry;
 
         //  Helpers

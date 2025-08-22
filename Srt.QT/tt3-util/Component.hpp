@@ -90,6 +90,7 @@ namespace tt3::util
         //////////
         //  Implementation
     private:
+        static tt3::util::Mutex _guard;
         static QMap<QString, IComponent*>   _registry;    //  key = "mnemonic" + "version"
     };
 }

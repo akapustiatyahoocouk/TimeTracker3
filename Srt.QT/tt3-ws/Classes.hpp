@@ -19,7 +19,7 @@ namespace tt3::ws
 {
     class TT3_WS_PUBLIC Credentials;
     class TT3_WS_PUBLIC WorkspaceType;
-    class TT3_WS_PUBLIC WorkspaceTypeRegistry;
+    class TT3_WS_PUBLIC WorkspaceTypeManager;
     class TT3_WS_PUBLIC WorkspaceAddress;
     class TT3_WS_PUBLIC Workspace;
 

@@ -94,6 +94,7 @@ namespace tt3::gui
         //////////
         //  Implementation
     private:
+        static tt3::util::Mutex _guard;
         static QMap<QString, ISkin*>    _registry;  //  key = mnemonic
     };
 

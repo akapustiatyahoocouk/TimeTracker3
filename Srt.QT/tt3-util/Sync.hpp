@@ -21,16 +21,16 @@ namespace tt3::util
     public:
         //  "Grabs" this synchronization object, waiying
         //  until it is available for grabbing.
-        virtual void        grab() = 0;
+        virtual void    grab() = 0;
 
         //  "Grabs" this synchronization object, waiying
         //  until it is available for grabbing OR the specified
         //  timeout expires.
         //  Returns true on grab success, false on timeout.
-        virtual bool        tryGrab(int timeoutMs) = 0;
+        virtual bool    tryGrab(int timeoutMs) = 0;
 
         //  "Releases" a grabbed synchronization objecr.
-        virtual void        release() = 0;
+        virtual void    release() = 0;
     };
 
     //  A "lock" that "grabs" a synchronisation object in constructor and
@@ -65,37 +65,37 @@ namespace tt3::util
         //////////
         //  SynchronisationObject
     public:
-        virtual void        grab() override { lock(); }
-        virtual bool        tryGrab(int timeoutMs) override { return tryLock(timeoutMs); }
-        virtual void        release() override { unlock(); }
+        virtual void    grab() override { lock(); }
+        virtual bool    tryGrab(int timeoutMs) override { return tryLock(timeoutMs); }
+        virtual void    release() override { unlock(); }
 
         //////////
         //  Operations
     public:
         //  Same as "grab()".
-        void                lock();
+        void            lock();
 
         //  Same as "tryGrab(timeoutMs)".
-        bool                tryLock(int timeoutMs);
+        bool            tryLock(int timeoutMs);
 
         //  Same as "release()".
-        void                unlock();
+        void            unlock();
 
         //  Checks whether this Mutex is locked by the specified thread.
-        bool                isLockedBy(QThread * thread);
+        bool            isLockedBy(QThread * thread);
 
         //  Checks whether this Mutex is locked by the current thread.
-        bool                isLockedByCurrentThread();
+        bool            isLockedByCurrentThread();
 
         //////////
         //  Implementation
     private:
-        QRecursiveMutex     _impl = {};
+        QRecursiveMutex _impl = {};
 
         //  Extended mutex state
-        QMutex              _extendedStateGuard = {};
-        int                 _lockCount = 0;
-        QThread *           _lockingThread = nullptr;
+        QMutex          _extendedStateGuard = {};
+        int             _lockCount = 0;
+        QThread *       _lockingThread = nullptr;
     };
 }
 

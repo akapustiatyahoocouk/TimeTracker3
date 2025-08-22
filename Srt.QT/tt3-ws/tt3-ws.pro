@@ -11,7 +11,7 @@ SOURCES += \
     Workspace.cpp \
     WorkspaceAddress.cpp \
     WorkspaceType.cpp \
-    WorkspaceTypeRegistry.cpp
+    WorkspaceTypeManager.cpp
 
 HEADERS += \
     API.hpp \

@@ -22,7 +22,6 @@ using namespace tt3::gui;
 void ErrorDialog::show(const tt3::util::Exception & ex)
 {
     QMessageBox msgBox;
-    //  TODO use the same technique for all qmessagebox'es
     msgBox.setWindowTitle("ERROR");
     msgBox.setIcon(QMessageBox::Icon::Critical);
     msgBox.setText(ex.errorMessage());

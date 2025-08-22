@@ -66,7 +66,8 @@ namespace tt3::db::api
         //  Construction/destruction/assignment
     public:
         explicit DatabaseInUseException(IDatabaseAddress * databaseAddress)
-            :   _databaseAddress(databaseAddress) { Q_ASSERT(_databaseAddress != nullptr); }
+            :   _databaseTypeDisplayName(databaseAddress->databaseType()->displayName()),
+                _databaseAddressDisplayForm(databaseAddress->displayForm()) {}
 
         //////////
         //  QException
@@ -79,22 +80,27 @@ namespace tt3::db::api
     public:
         virtual QString errorMessage() const override
         {
-            return _databaseAddress->databaseType()->displayName() +
+            return _databaseTypeDisplayName +
                    " "  +
-                   _databaseAddress->displayForm() +
+                   _databaseAddressDisplayForm +
                    " is already in use";
         }
 
         //////////
         //  Operations
     public:
-        //  Returns the address of the database that is already in use
-        IDatabaseAddress *  databaseAddress() const { return _databaseAddress; }
+        //  The user-readable display name of the database type
+        QString         databaseTypeDisplayName() const { return _databaseTypeDisplayName; }
+
+        //  Returns the user-readable display form of the
+        //  address of the database that is already in use
+        QString         databaseAddressDisplayForm() const { return _databaseAddressDisplayForm; }
 
         //////////
         //  Implementayion
     private:
-        IDatabaseAddress *  _databaseAddress;   //  TODO counts as "reference"
+        QString         _databaseTypeDisplayName;
+        QString         _databaseAddressDisplayForm;
     };
 
     //  Thrown when a database is corrupt
@@ -109,7 +115,8 @@ namespace tt3::db::api
         //  Construction/destruction/assignment
     public:
         explicit DatabaseCorruptException(IDatabaseAddress * databaseAddress)
-            :   _databaseAddress(databaseAddress) { Q_ASSERT(_databaseAddress != nullptr); }
+            :   _databaseTypeDisplayName(databaseAddress->databaseType()->displayName()),
+                _databaseAddressDisplayForm(databaseAddress->displayForm()) {}
 
         //////////
         //  QException
@@ -122,22 +129,27 @@ namespace tt3::db::api
     public:
         virtual QString errorMessage() const override
         {
-            return _databaseAddress->databaseType()->displayName() +
+            return _databaseTypeDisplayName +
                    " "  +
-                   _databaseAddress->displayForm() +
+                   _databaseAddressDisplayForm +
                    " is invalid or corrupt";
         }
 
         //////////
         //  Operations
     public:
-        //  Returns the address of the database that is corrupt
-        IDatabaseAddress *  databaseAddress() const { return _databaseAddress; }
+        //  The user-readable display name of the database type
+        QString         databaseTypeDisplayName() const { return _databaseTypeDisplayName; }
+
+        //  Returns the user-readable display form of the
+        //  address of the database that is already in use
+        QString         databaseAddressDisplayForm() const { return _databaseAddressDisplayForm; }
 
         //////////
         //  Implementayion
     private:
-        IDatabaseAddress *  _databaseAddress;   //  TODO counts as "reference"
+        QString     _databaseTypeDisplayName;
+        QString     _databaseAddressDisplayForm;
     };
 
     //  Thrown when a service is called on a closed database.

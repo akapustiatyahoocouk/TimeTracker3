@@ -49,9 +49,9 @@ void Application::_registerStandardComponents()
     tt3::util::ComponentManager::registerComponent(tt3::db::api::Component::instance());
     tt3::util::ComponentManager::registerComponent(tt3::util::Component::instance());
     //  Same for standard Preferences
-    tt3::gui::PreferencesRegistry::registerPreferences(tt3::gui::GeneralPreferences::instance());
-    tt3::gui::PreferencesRegistry::registerPreferences(tt3::gui::GeneralAppearancePreferences::instance());
-    tt3::gui::PreferencesRegistry::registerPreferences(tt3::gui::GeneralStartupPreferences::instance());
+    tt3::gui::PreferencesManager::registerPreferences(tt3::gui::GeneralPreferences::instance());
+    tt3::gui::PreferencesManager::registerPreferences(tt3::gui::GeneralAppearancePreferences::instance());
+    tt3::gui::PreferencesManager::registerPreferences(tt3::gui::GeneralStartupPreferences::instance());
 }
 
 void Application::_selectActiveSkin()
@@ -141,14 +141,27 @@ void Application::_cleanup()
 {
     //  TODO if there is a "current activity", record & stop it
 
-    //  TODO if there's a "current" activity, record & syop it
     //  If there's a "current" workspace, close it
     tt3::ws::WorkspacePtr currentWorkspace;
     tt3::ws::theCurrentWorkspace.swap(currentWorkspace);
     if (currentWorkspace != nullptr)
     {
-        currentWorkspace->close();
-        //  TODO handle "close" exceptions
+        try
+        {
+            currentWorkspace->close();
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            tt3::gui::ErrorDialog::show(ex);
+        }
+        catch (const std::exception & ex)
+        {
+            tt3::gui::ErrorDialog::show(ex);
+        }
+        catch (...)
+        {
+            tt3::gui::ErrorDialog::show();
+        }
     }
 
     //  If there's a "current" skin, deactivate it

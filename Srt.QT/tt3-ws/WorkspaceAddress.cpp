@@ -125,7 +125,7 @@ WorkspaceType * WorkspaceAddress::workspaceType() const
 {   //  TODO synchronize ?
     return (_databaseAddress == nullptr) ?
                 nullptr :
-                WorkspaceTypeRegistry::_findWorkspaceType(_databaseAddress->databaseType());
+                WorkspaceTypeManager::_findWorkspaceType(_databaseAddress->databaseType());
 }
 
 QString WorkspaceAddress::displayForm() const
@@ -376,7 +376,7 @@ template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddress tt3::util::fromString<tt3::w
     }
     //  Resolve mnemonic
     WorkspaceType * workspaceType =
-        WorkspaceTypeRegistry::findWorkspaceType(unescape(chunks[0]));
+        WorkspaceTypeManager::findWorkspaceType(unescape(chunks[0]));
     if (workspaceType == nullptr)
     {   //  OOPS!
         throw tt3::util::ParseException(s, scan);

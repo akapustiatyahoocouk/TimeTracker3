@@ -22,7 +22,7 @@ using namespace tt3::gui;
 QSet<Preferences*> Preferences::children() const
 {
     QSet<Preferences*> result;
-    for (Preferences * p : PreferencesRegistry::allPreferences())
+    for (Preferences * p : PreferencesManager::allPreferences())
     {
         if (p->parent() == this)
         {

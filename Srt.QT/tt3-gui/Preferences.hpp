@@ -51,7 +51,6 @@ namespace tt3::gui
 
         //  The set of immediate child nodes of this
         //  Preferences node.
-        //  TODO create default implementation
         virtual QSet<Preferences*>  children() const;
 
         //  The relative order of this Preferences within its
@@ -65,10 +64,10 @@ namespace tt3::gui
     };
 
     //////////
-    //  The registry of known Preferences
-    class TT3_GUI_PUBLIC PreferencesRegistry final
+    //  The manager of known Preferences
+    class TT3_GUI_PUBLIC PreferencesManager final
     {
-        UTILITY_CLASS(PreferencesRegistry)
+        UTILITY_CLASS(PreferencesManager)
 
         //////////
         //  Operationds
@@ -90,6 +89,7 @@ namespace tt3::gui
         //////////
         //  Implementation
     private:
+        static tt3::util::Mutex _guard;
         static QMap<QString, Preferences*>  _registry;  //  key = mnemonic
     };
 

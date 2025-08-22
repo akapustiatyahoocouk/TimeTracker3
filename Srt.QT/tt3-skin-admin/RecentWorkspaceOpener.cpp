@@ -22,7 +22,7 @@ using namespace tt3::skin::admin;
 RecentWorkspaceOpener::RecentWorkspaceOpener(MainFrame * mainFrame, const tt3::ws::WorkspaceAddress & workspaceAddress)
     :   _mainFrame(mainFrame),
     _workspaceAddress(workspaceAddress)
-{   //  TODO move out-of-line
+{
     Q_ASSERT(_mainFrame != nullptr);
     Q_ASSERT(_workspaceAddress.isValid());
 }

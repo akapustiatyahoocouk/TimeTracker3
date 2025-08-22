@@ -55,7 +55,7 @@ void CurrentSkin::swap(ISkin * & other)
     if (other != _currentSkin)
     {
         std::swap(_currentSkin, other);
-        //  TODO emit a signal
+        //  TODO emit a signal ?
     }
 }
 

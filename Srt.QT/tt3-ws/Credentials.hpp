@@ -55,8 +55,12 @@ namespace tt3::ws
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  Checks whether these Credentials are "valid",
+        //  (i.e. the "login" os not empty.
         bool            isValid() const { return !_login.isEmpty(); }
+
+        //  The login identifier of these Credentials.
+        //  For invalid Credentials this is an empty string.
         QString         login() const { return _login; }
 
         //////////
@@ -88,10 +92,15 @@ namespace tt3::ws
         //////////
         //  Operations
     public:
-        //  TODO document
+        //  Swaps the specified Credentials with the "current" Credentials.
         void                swap(Credentials & other);
 
+        //  Checks whether current Credentials are "valid",
+        //  (i.e. the "login" os not empty.
         bool                isValid() const { return _currentCredentials.isValid(); }
+
+        //  The login identifier of the current Credentials.
+        //  For invalid Credentials this is an empty string.
         QString             login() const { return _currentCredentials.login(); }
 
 

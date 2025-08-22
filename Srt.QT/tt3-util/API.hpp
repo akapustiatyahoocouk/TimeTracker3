@@ -106,7 +106,6 @@
 #include "tt3-util/BlockingQueue.hpp"
 #include "tt3-util/DateTime.hpp"
 
-#include "tt3-util/Collections.hpp"
 #include "tt3-util/ToString.hpp"
 #include "tt3-util/FromString.hpp"
 
@@ -114,7 +113,6 @@
 
 #include "tt3-util/Plugin.hpp"
 #include "tt3-util/Settings.hpp"
-#include "tt3-util/Preferences.hpp"
 #include "tt3-util/Component.hpp"
 
 #include "tt3-util/Components.hpp"
