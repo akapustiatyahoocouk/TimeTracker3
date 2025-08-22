@@ -27,11 +27,9 @@ namespace tt3::gui
     public:
         //  Shows the error dialog with the specified error message [and parent].
         static void     show(const tt3::util::Exception & ex);
-        static void     show(const std::exception & ex);
         static void     show(const QString & errorMessage);
         static void     show();
         static void     show(QWidget * parent, const tt3::util::Exception & ex);
-        static void     show(QWidget * parent, const std::exception & ex);
         static void     show(QWidget * parent, const QString & errorMessage);
         static void     show(QWidget * parent);
     };

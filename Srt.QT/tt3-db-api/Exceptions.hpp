@@ -17,14 +17,13 @@
 
 namespace tt3::db::api
 {
-    //////////
     //  The common base class for all DB API - level exceptions
     class TT3_DB_API_PUBLIC DatabaseException : public tt3::util::Exception
     {
         //////////
         //  Construction/destruction/assignment
     public:
-        DatabaseException() = default;
+        DatabaseException();
     };
 
     //  Thrown when an invalid database address is specified
@@ -37,7 +36,7 @@ namespace tt3::db::api
         //////////
         //  Construction/destruction/assignment
     public:
-        InvalidDatabaseAddressException() = default;
+        InvalidDatabaseAddressException();
 
         //////////
         //  QException
@@ -48,10 +47,7 @@ namespace tt3::db::api
         //////////
         //  tt3::util::Exception
     public:
-        virtual QString errorMessage() const override
-        {
-            return "Invalid database address";
-        }
+        virtual QString errorMessage() const override;
     };
 
     //  Thrown when a single-user database is already in use
@@ -65,9 +61,7 @@ namespace tt3::db::api
         //////////
         //  Construction/destruction/assignment
     public:
-        explicit DatabaseInUseException(IDatabaseAddress * databaseAddress)
-            :   _databaseTypeDisplayName(databaseAddress->databaseType()->displayName()),
-                _databaseAddressDisplayForm(databaseAddress->displayForm()) {}
+        explicit DatabaseInUseException(IDatabaseAddress * databaseAddress);
 
         //////////
         //  QException
@@ -78,13 +72,7 @@ namespace tt3::db::api
         //////////
         //  tt3::util::Exception
     public:
-        virtual QString errorMessage() const override
-        {
-            return _databaseTypeDisplayName +
-                   " "  +
-                   _databaseAddressDisplayForm +
-                   " is already in use";
-        }
+        virtual QString errorMessage() const override;
 
         //////////
         //  Operations
@@ -114,9 +102,7 @@ namespace tt3::db::api
         //////////
         //  Construction/destruction/assignment
     public:
-        explicit DatabaseCorruptException(IDatabaseAddress * databaseAddress)
-            :   _databaseTypeDisplayName(databaseAddress->databaseType()->displayName()),
-                _databaseAddressDisplayForm(databaseAddress->displayForm()) {}
+        explicit DatabaseCorruptException(IDatabaseAddress * databaseAddress);
 
         //////////
         //  QException
@@ -127,13 +113,7 @@ namespace tt3::db::api
         //////////
         //  tt3::util::Exception
     public:
-        virtual QString errorMessage() const override
-        {
-            return _databaseTypeDisplayName +
-                   " "  +
-                   _databaseAddressDisplayForm +
-                   " is invalid or corrupt";
-        }
+        virtual QString errorMessage() const override;
 
         //////////
         //  Operations
@@ -163,7 +143,7 @@ namespace tt3::db::api
         //////////
         //  Construction/destruction/assignment
     public:
-        DatabaseClosedException() = default;
+        DatabaseClosedException();
 
         //////////
         //  QException
@@ -174,10 +154,7 @@ namespace tt3::db::api
         //////////
         //  tt3::util::Exception
     public:
-        virtual QString errorMessage() const override
-        {
-            return "Daabase is closed";
-        }
+        virtual QString errorMessage() const override;
     };
 
     //  Thrown when a database service is access-denied
@@ -191,7 +168,7 @@ namespace tt3::db::api
         //////////
         //  Construction/destruction/assignment
     public:
-        AccessDeniedException() = default;
+        AccessDeniedException();
 
         //////////
         //  QException
@@ -202,10 +179,7 @@ namespace tt3::db::api
         //////////
         //  tt3::util::Exception
     public:
-        virtual QString errorMessage() const override
-        {
-            return "Access denied";
-        }
+        virtual QString errorMessage() const override;
     };
 
     //  Thrown when attempting to assign an invalid value to a property
@@ -220,10 +194,7 @@ namespace tt3::db::api
         //  Construction/destruction/assignment
     public:
         InvalidPropertyValueException(const QString & objectTypeName,
-                                      const QString & propertyName, const QString & propertyValueString)
-            :   _objectTypeName(objectTypeName),
-                _propertyName(propertyName),
-                _propertyValueString(propertyValueString) {}
+                                      const QString & propertyName, const QString & propertyValueString);
         InvalidPropertyValueException(IObjectType * objectType,
                                       const QString & propertyName, const QString & propertyValueString)
             :   Self(objectType->displayName(), propertyName, propertyValueString) {}
@@ -246,12 +217,7 @@ namespace tt3::db::api
         //////////
         //  tt3::util::Exception
     public:
-        virtual QString errorMessage() const override
-        {
-            return "Property '" + _propertyName +
-                   "' of '" + _objectTypeName +
-                   "' cannot be set to '" + _propertyValueString + "'";
-        }
+        virtual QString errorMessage() const override;
 
         //////////
         //  Operations
@@ -286,10 +252,7 @@ namespace tt3::db::api
         //  Construction/destruction/assignment
     public:
         AlreadyExistsException(const QString & objectTypeName,
-                               const QString & propertyName, const QString & propertyValueString)
-            :   _objectTypeName(objectTypeName),
-                _propertyName(propertyName),
-                _propertyValueString(propertyValueString) {}
+                               const QString & propertyName, const QString & propertyValueString);
         AlreadyExistsException(IObjectType * objectType,
                                const QString & propertyName, const QString & propertyValueString)
             :   Self(objectType->displayName(), propertyName, propertyValueString) {}
@@ -312,13 +275,7 @@ namespace tt3::db::api
         //////////
         //  tt3::util::Exception
     public:
-        virtual QString errorMessage() const override
-        {
-            return "The " + _objectTypeName +
-                   " with '" + _propertyName +
-                   "' = '" + _propertyValueString +
-                   "' already exists";
-        }
+        virtual QString errorMessage() const override;
 
         //////////
         //  Operations
@@ -353,10 +310,7 @@ namespace tt3::db::api
         //  Construction/destruction/assignment
     public:
         DoesNotExistException(const QString & objectTypeName,
-                              const QString & propertyName, const QString & propertyValueString)
-            :   _objectTypeName(objectTypeName),
-                _propertyName(propertyName),
-                _propertyValueString(propertyValueString) {}
+                              const QString & propertyName, const QString & propertyValueString);
         DoesNotExistException(IObjectType * objectType,
                               const QString & propertyName, const QString & propertyValueString)
             :   Self(objectType->displayName(), propertyName, propertyValueString) {}
@@ -379,13 +333,7 @@ namespace tt3::db::api
         //////////
         //  tt3::util::Exception
     public:
-        virtual QString errorMessage() const override
-        {
-            return "The " + _objectTypeName +
-                   " with '" + _propertyName +
-                   "' = '" + _propertyValueString +
-                   "' does not exist";
-        }
+        virtual QString errorMessage() const override;
 
         //////////
         //  Operations
@@ -418,7 +366,7 @@ namespace tt3::db::api
         //////////
         //  Construction/destruction/assignment
     public:
-        InstanceDeadException() = default;
+        InstanceDeadException();
 
         //////////
         //  QException
@@ -429,10 +377,7 @@ namespace tt3::db::api
         //////////
         //  tt3::util::Exception
     public:
-        virtual QString errorMessage() const override
-        {
-            return "The instance is dead";
-        }
+        virtual QString errorMessage() const override;
     };
 
     //  Thrown when must carry a custom error message (from OS, etc.)
@@ -446,8 +391,7 @@ namespace tt3::db::api
         //////////
         //  Construction/destruction/assignment
     public:
-        explicit CustomDatabaseException(const QString & errorMessage)
-            :   _errorMessage(errorMessage) {}
+        explicit CustomDatabaseException(const QString & errorMessage);
 
         //////////
         //  QException
@@ -458,10 +402,7 @@ namespace tt3::db::api
         //////////
         //  tt3::util::Exception
     public:
-        virtual QString errorMessage() const override
-        {
-            return _errorMessage;
-        }
+        virtual QString errorMessage() const override;
 
         //////////
         //  Implementation

@@ -17,6 +17,7 @@
 
 namespace tt3::ws
 {
+    //  TODO move implementations to Exceptions.cpp
     //////////
     //  The common base class for all workspace - level exceptions
     class TT3_WS_PUBLIC WorkspaceException : public tt3::util::Exception
@@ -32,9 +33,6 @@ namespace tt3::ws
         //  TODO document and TODO implement
         Q_NORETURN
         static void     translateAndThrow(const tt3::util::Exception & ex) throws(WorkspaceException);
-
-        Q_NORETURN
-        static void     translateAndThrow(const std::exception & ex) throws(WorkspaceException);
     };
 
     //  Thrown when an invalid workspace address is specified

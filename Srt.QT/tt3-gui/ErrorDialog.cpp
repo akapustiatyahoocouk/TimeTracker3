@@ -31,18 +31,6 @@ void ErrorDialog::show(const tt3::util::Exception & ex)
     msgBox.exec();
 }
 
-void ErrorDialog::show(const std::exception & ex)
-{
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("ERROR");
-    msgBox.setIcon(QMessageBox::Icon::Critical);
-    msgBox.setText(ex.what());
-    msgBox.setStandardButtons(QMessageBox::StandardButton::Ok);
-    msgBox.button(QMessageBox::StandardButton::Ok)->setIcon(
-        QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
-    msgBox.exec();
-}
-
 void ErrorDialog::show(const QString & errorMessage)
 {
     QMessageBox msgBox;
@@ -73,18 +61,6 @@ void ErrorDialog::show(QWidget * parent, const tt3::util::Exception & ex)
     msgBox.setWindowTitle("ERROR");
     msgBox.setIcon(QMessageBox::Icon::Critical);
     msgBox.setText(ex.errorMessage());
-    msgBox.setStandardButtons(QMessageBox::StandardButton::Ok);
-    msgBox.button(QMessageBox::StandardButton::Ok)->setIcon(
-        QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
-    msgBox.exec();
-}
-
-void ErrorDialog::show(QWidget * parent, const std::exception & ex)
-{
-    QMessageBox msgBox(parent);
-    msgBox.setWindowTitle("ERROR");
-    msgBox.setIcon(QMessageBox::Icon::Critical);
-    msgBox.setText(ex.what());
     msgBox.setStandardButtons(QMessageBox::StandardButton::Ok);
     msgBox.button(QMessageBox::StandardButton::Ok)->setIcon(
         QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));

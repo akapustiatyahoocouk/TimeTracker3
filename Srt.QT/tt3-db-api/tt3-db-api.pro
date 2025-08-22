@@ -10,6 +10,7 @@ SOURCES += \
     Database.cpp \
     DatabaseTypeManager.cpp \
     DefaultValidator.cpp \
+    Exceptions.cpp \
     ObjectTypes.cpp
 
 HEADERS += \

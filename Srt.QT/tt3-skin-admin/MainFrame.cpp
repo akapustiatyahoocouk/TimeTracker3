@@ -184,16 +184,6 @@ bool MainFrame::_createWorkspace(
         tt3::gui::ErrorDialog::show(this, ex);
         return false;
     }
-    catch (const std::exception & ex)
-    {
-        tt3::gui::ErrorDialog::show(this, ex);
-        return false;
-    }
-    catch (...)
-    {
-        tt3::gui::ErrorDialog::show(this);
-        return false;
-    }
 }
 
 bool MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress)
@@ -237,18 +227,6 @@ bool MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddres
     catch (const tt3::util::Exception & ex)
     {
         tt3::gui::ErrorDialog::show(this, ex);
-        refresh();
-        return false;
-    }
-    catch (const std::exception & ex)
-    {
-        tt3::gui::ErrorDialog::show(this, ex);
-        refresh();
-        return false;
-    }
-    catch (...)
-    {
-        tt3::gui::ErrorDialog::show(this);
         refresh();
         return false;
     }

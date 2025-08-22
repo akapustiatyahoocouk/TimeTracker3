@@ -154,14 +154,6 @@ void Application::_cleanup()
         {
             tt3::gui::ErrorDialog::show(ex);
         }
-        catch (const std::exception & ex)
-        {
-            tt3::gui::ErrorDialog::show(ex);
-        }
-        catch (...)
-        {
-            tt3::gui::ErrorDialog::show();
-        }
     }
 
     //  If there's a "current" skin, deactivate it
