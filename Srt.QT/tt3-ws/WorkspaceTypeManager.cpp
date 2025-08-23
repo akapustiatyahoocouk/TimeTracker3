@@ -18,11 +18,11 @@
 using namespace tt3::ws;
 
 tt3::util::Mutex WorkspaceTypeManager::_guard;
-QMap<tt3::db::api::IDatabaseType*, WorkspaceType*> WorkspaceTypeManager::_registry;
+QMap<tt3::db::api::IDatabaseType*, WorkspaceType> WorkspaceTypeManager::_registry;
 
 //////////
 //  Operations
-WorkspaceType * WorkspaceTypeManager::findWorkspaceType(const QString & mnemonic)
+WorkspaceType WorkspaceTypeManager::findWorkspaceType(const QString & mnemonic)
 {
     tt3::util::Lock lock(_guard);
 
@@ -37,7 +37,7 @@ WorkspaceTypes WorkspaceTypeManager::allWorkspaceTypes()
     tt3::util::Lock lock(_guard);
 
     _collectWorkspaceTypes();
-    QList<WorkspaceType*> values = _registry.values();
+    QList<WorkspaceType> values = _registry.values();
     return WorkspaceTypes(values.begin(), values.end());
 }
 
@@ -52,12 +52,12 @@ void WorkspaceTypeManager::_collectWorkspaceTypes()
         for (tt3::db::api::IDatabaseType * databaseType :
              tt3::db::api::DatabaseTypeManager::allDatabaseTypes())
         {
-            _registry[databaseType] = new WorkspaceType(databaseType);
+            _registry[databaseType] = new WorkspaceTypeImpl(databaseType);
         }
     }
 }
 
-WorkspaceType * WorkspaceTypeManager::_findWorkspaceType(tt3::db::api::IDatabaseType * databaseType)
+WorkspaceType WorkspaceTypeManager::_findWorkspaceType(tt3::db::api::IDatabaseType * databaseType)
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
 

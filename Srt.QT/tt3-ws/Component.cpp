@@ -84,7 +84,7 @@ Component::Settings::~Settings()
 //  Operations
 void Component::Settings::addRecentWorkspace(const WorkspaceAddress & workspaceAddress)
 {
-    if (workspaceAddress.isValid())
+    if (workspaceAddress != nullptr)
     {
         WorkspaceAddressesList mru = recentWorkspaces;
         mru.removeOne(workspaceAddress);
@@ -99,7 +99,7 @@ void Component::Settings::addRecentWorkspace(const WorkspaceAddress & workspaceA
 
 void Component::Settings::removeRecentWorkspace(const WorkspaceAddress & workspaceAddress)
 {
-    if (workspaceAddress.isValid())
+    if (workspaceAddress != nullptr)
     {
         WorkspaceAddressesList mru = recentWorkspaces;
         if (mru.removeOne(workspaceAddress))

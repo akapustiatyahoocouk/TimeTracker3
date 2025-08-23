@@ -19,12 +19,12 @@ using namespace tt3::db::xml;
 
 //////////
 //  Construction/destruction (from DB type only)
-Object::Object(Database * database, Oid oid)
+Object::Object(Database * database, tt3::db::api::Oid oid)
     :   _database(database),
         _oid(oid)
 {
     Q_ASSERT(_database != nullptr);
-    Q_ASSERT(_oid != InvalidOid);
+    Q_ASSERT(_oid != tt3::db::api::InvalidOid);
     Q_ASSERT(_database->isOpen());
 
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
@@ -167,7 +167,7 @@ void Object::_serializeAggregations(QDomElement & /*parentElement*/)
 
 void Object::_deserializeProperties(const QDomElement & objectElement) throws(tt3::util::ParseException)
 {
-    Object::Oid oid = tt3::util::fromString<Object::Oid>(objectElement.attribute("OID", ""));
+    tt3::db::api::Oid oid = tt3::util::fromString<tt3::db::api::Oid>(objectElement.attribute("OID", ""));
     if (oid != _oid)
     {   //  OOPS! Deserialization implemented wrong!
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
@@ -186,7 +186,7 @@ void Object::_validate(QSet<Object*> & validatedObjects) throws(tt3::db::api::Da
     validatedObjects.insert(this);
 
     //  Validate properties
-    if (!_isLive || _oid == Object::InvalidOid)
+    if (!_isLive || _oid == tt3::db::api::InvalidOid)
     {   //  OOPS!
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }

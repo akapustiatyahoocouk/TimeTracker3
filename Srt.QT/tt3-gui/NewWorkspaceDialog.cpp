@@ -32,7 +32,7 @@ NewWorkspaceDialog::NewWorkspaceDialog(QWidget * parent)
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
     //  Populate "Workspace type" combo box
-    QList<tt3::ws::WorkspaceType*> workspaceTypes =
+    QList<tt3::ws::WorkspaceType> workspaceTypes =
         tt3::ws::WorkspaceTypeManager::allWorkspaceTypes().values();
     std::sort(
         workspaceTypes.begin(),
@@ -73,16 +73,16 @@ void NewWorkspaceDialog::_refresh()
         return;
     }
     //  General case
-    tt3::ws::WorkspaceType * workspaceType =
-        _ui->workspaceTypeComboBox->currentData().value<tt3::ws::WorkspaceType*>();
+    tt3::ws::WorkspaceType workspaceType =
+        _ui->workspaceTypeComboBox->currentData().value<tt3::ws::WorkspaceType>();
     Q_ASSERT(workspaceType != nullptr);
     tt3::ws::Validator::User * userValidator = workspaceType->validator()->user();
     tt3::ws::Validator::Account * accountValidator = workspaceType->validator()->account();
 
-    _ui->locationLineEdit->setText(_workspaceAddress.displayForm());
+    _ui->locationLineEdit->setText((_workspaceAddress != nullptr) ? _workspaceAddress->displayForm() : "");
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setEnabled(
-           _workspaceAddress.isValid() &&
+           _workspaceAddress != nullptr &&
             userValidator->isValidRealName(_ui->userNameLineEdit->text()) &&
             accountValidator->isValidLogin(_ui->loginLineEdit->text()) &&
             accountValidator->isValidPassword(_ui->passwordLineEdit->text()) &&
@@ -94,10 +94,10 @@ void NewWorkspaceDialog::_refresh()
 void NewWorkspaceDialog::_workspaceTypeComboBoxCurrentIndexChanged(int)
 {
     Q_ASSERT(_ui->workspaceTypeComboBox->currentIndex() != -1);
-    tt3::ws::WorkspaceType * workspaceType =
-        _ui->workspaceTypeComboBox->currentData().value<tt3::ws::WorkspaceType*>();
+    tt3::ws::WorkspaceType workspaceType =
+        _ui->workspaceTypeComboBox->currentData().value<tt3::ws::WorkspaceType>();
     Q_ASSERT(workspaceType != nullptr);
-    if (_workspaceAddress.isValid() && _workspaceAddress.workspaceType() != workspaceType)
+    if (_workspaceAddress != nullptr && _workspaceAddress->workspaceType() != workspaceType)
     {   //  Need to reset the workspace address
         _workspaceAddress = tt3::ws::WorkspaceAddress();
     }
@@ -107,11 +107,11 @@ void NewWorkspaceDialog::_workspaceTypeComboBoxCurrentIndexChanged(int)
 void NewWorkspaceDialog::_browsePushButtonClicked()
 {
     Q_ASSERT(_ui->workspaceTypeComboBox->currentIndex() != -1);
-    tt3::ws::WorkspaceType * workspaceType =
-        _ui->workspaceTypeComboBox->currentData().value<tt3::ws::WorkspaceType*>();
+    tt3::ws::WorkspaceType workspaceType =
+        _ui->workspaceTypeComboBox->currentData().value<tt3::ws::WorkspaceType>();
     Q_ASSERT(workspaceType != nullptr);
     tt3::ws::WorkspaceAddress workspaceAddress = workspaceType->enterNewWorkspaceAddress(this);
-    if (workspaceAddress.isValid())
+    if (workspaceAddress != nullptr)
     {
         _workspaceAddress = workspaceAddress;
         _refresh();

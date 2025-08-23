@@ -1,5 +1,5 @@
 //
-//  tt3-ws/WorkspaceType.hpp - "Workspace type" ADT
+//  tt3-ws/WorkspaceTypeImpl.hpp - "Workspace type" ADT implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -17,22 +17,22 @@
 
 namespace tt3::ws
 {
-    //////////
     //  A "workspace type" represents a specific storage technology
     //  used to keep data persistent.
     //  The set of available workspace types is generated
     //  automatically based on the available database types.
-    class TT3_WS_PUBLIC WorkspaceType final
+    class TT3_WS_PUBLIC WorkspaceTypeImpl final
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkspaceType)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkspaceTypeImpl)
 
         friend class WorkspaceTypeManager;
+        friend class WorkspaceAddressImpl;
 
         //////////
         //  Construction/destruction - from friends only
     private:
-        explicit WorkspaceType(tt3::db::api::IDatabaseType * databaseType);
-        ~WorkspaceType();
+        explicit WorkspaceTypeImpl(tt3::db::api::IDatabaseType * databaseType);
+        ~WorkspaceTypeImpl();
 
         //////////
         //  Operation (general)
@@ -93,13 +93,13 @@ namespace tt3::ws
         //  Creates a new workspace of this type at the specigied
         //  address, with  a single administrator user and account.
         //  Throws WorkspaceException if an error occurs.
-        WorkspacePtr        createWorkspace(const WorkspaceAddress & address,
+        Workspace           createWorkspace(const WorkspaceAddress & address,
                                      const QString & adminUser,
                                      const QString adminLogin, const QString & adminPassword) throws(WorkspaceException);
 
         //  Opens an existing workspace at the specified address.
         //  Throws WorkspaceException if an error occurs.
-        WorkspacePtr        openWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
+        Workspace           openWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
 
         //  Destroys an existing workspace at the specified address.
         //  The workspace must not currently be in use.
@@ -111,6 +111,13 @@ namespace tt3::ws
     private:
         tt3::db::api::IDatabaseType *const  _databaseType;  //  nullptr == invalid
         const Validator     _validator;
+
+        //  DB -> WS address cache, keys count as "references".
+        mutable tt3::util::Mutex    _addressMapGuard;
+        QMap<tt3::db::api::IDatabaseAddress*,WorkspaceAddressImpl*> _addressMap;
+
+        //  Helpers
+        WorkspaceAddressImpl *  _mapDatabaseAddress(tt3::db::api::IDatabaseAddress * databaseAddress) const;
     };
 
     //////////
@@ -119,7 +126,7 @@ namespace tt3::ws
     {
         UTILITY_CLASS(WorkspaceTypeManager)
 
-        friend class WorkspaceAddress;
+        friend class WorkspaceAddressImpl;
 
         //////////
         //  Operations
@@ -127,7 +134,7 @@ namespace tt3::ws
         //  Finds a known workspace type by mnemonic;
         //  returns nullptr if mpy fpind.
         //  This is determined based on registered database types.
-        static WorkspaceType *  findWorkspaceType(const QString & mnemonic);
+        static WorkspaceType    findWorkspaceType(const QString & mnemonic);
 
         //  The set of all known workspace types.
         //  This is determined based on registered database types.
@@ -137,12 +144,12 @@ namespace tt3::ws
         //  Implementation
     private:
         static tt3::util::Mutex _guard;
-        static QMap<tt3::db::api::IDatabaseType*, WorkspaceType*>   _registry;
+        static QMap<tt3::db::api::IDatabaseType*, WorkspaceType>   _registry;
 
         //  Helpers
         static void             _collectWorkspaceTypes();
-        static WorkspaceType *  _findWorkspaceType(tt3::db::api::IDatabaseType * databaseType);
+        static WorkspaceType    _findWorkspaceType(tt3::db::api::IDatabaseType * databaseType);
     };
 }
 
-//  End of tt3-ws/WorkspaceType.hpp
+//  End of tt3-ws/WorkspaceTypeImpl.hpp

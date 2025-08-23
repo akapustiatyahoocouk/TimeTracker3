@@ -1,5 +1,5 @@
 //
-//  tt3-ws/Workspace.hpp - "Workspace" ADT
+//  tt3-ws/WorkspaceImpl.hpp - "Workspace" ADT implemenyayion
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -22,26 +22,26 @@ namespace tt3::ws
     //////////
     //  A "workspace" is a connection to a
     //  persistent  container of business data.
-    class TT3_WS_PUBLIC Workspace final : public QObject
+    class TT3_WS_PUBLIC WorkspaceImpl final : public QObject
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Workspace)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkspaceImpl)
 
-        friend class WorkspaceType;
+        friend class WorkspaceTypeImpl;
 
         //////////
         //  Construction/destruction - from friends only
     private:
-        Workspace(const WorkspaceAddress & address, tt3::db::api::IDatabase * database);
-    public:
-        ~Workspace();
+        WorkspaceImpl(const WorkspaceAddress & address, tt3::db::api::IDatabase * database);
+    public: //  TOFO make private! See WorkspaceAddressImpl for how to do it
+        virtual ~WorkspaceImpl();
 
         //////////
         //  Operations (general)
     public:
         //  The type of this Workspace. Can be safely
         //  obtained for both open and closed workspaces.
-        WorkspaceType *     type() const;
+        WorkspaceType       type() const;
 
         //  The address of this Workspace. Can be safely
         //  obtained for both open and closed workspaces.
@@ -119,9 +119,9 @@ namespace tt3::ws
         //  IMPORTANT: Changing the "current" workspace does
         //  NOT change its "open/closed" status.
     public:
-        void                operator = (const WorkspacePtr & workspace);
-        Workspace *         operator -> () const;
-                            operator WorkspacePtr() const;
+        void                operator = (const Workspace & workspace);
+        Workspace           operator -> () const;
+                            operator Workspace() const;
 
         bool                operator == (nullptr_t null) const;
         bool                operator != (nullptr_t null) const;
@@ -130,7 +130,7 @@ namespace tt3::ws
         //  Operations
     public:
         //  Swaps the specified Workspace with the "current" Workspace.
-        void                swap(WorkspacePtr & other);
+        void                swap(Workspace & other);
 
         //////////
         //  Signals
@@ -141,7 +141,7 @@ namespace tt3::ws
         //  Implementation
     private:
         static int          _instanceCount; //  ...to disallow a second instance
-        static WorkspacePtr _currentWorkspace;
+        static Workspace    _currentWorkspace;
     };
 
 #if defined(TT3_WS_LIBRARY)
@@ -152,4 +152,4 @@ namespace tt3::ws
 #endif
 }
 
-//  End of tt3-ws/Workspace.hpp
+//  End of tt3-ws/WorkspaceImpl.hpp

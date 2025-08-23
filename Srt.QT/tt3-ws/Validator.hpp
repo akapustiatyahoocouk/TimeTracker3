@@ -24,7 +24,7 @@ namespace tt3::ws
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Validator)
 
-        friend class WorkspaceType;
+        friend class WorkspaceTypeImpl;
 
         //////////
         //  Construction/destruction

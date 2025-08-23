@@ -19,7 +19,7 @@ using namespace tt3::db::xml;
 
 //////////
 //  Construction/destruction (from DB type only)
-User::User(Database * database, Oid oid)
+User::User(Database * database, tt3::db::api::Oid oid)
     :   Principal(database, oid)
 {
     //  Register User with parent
@@ -311,7 +311,7 @@ void User::_deserializeAggregations(const QDomElement & parentElement) throws(tt
     QDomElement accountsElement = _database->_childElement(parentElement, "Accounts");  //  may throw
     for (QDomElement accountElement : _database->_childElements(accountsElement, "Account"))
     {
-        Object::Oid oid = tt3::util::fromString<Object::Oid>(accountElement.attribute("OID", ""));
+        tt3::db::api::Oid oid = tt3::util::fromString<tt3::db::api::Oid>(accountElement.attribute("OID", ""));
         if (_database->_liveObjects.contains(oid))
         {   //  OOPS!
             throw tt3::db::api::DatabaseCorruptException(_database->_address);

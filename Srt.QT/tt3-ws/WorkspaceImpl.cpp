@@ -1,5 +1,5 @@
 //
-//  tt3-ws/Workspace.cpp - tt3::ws::Workspace class implementation
+//  tt3-ws/WorkspaceImpl.cpp - tt3::ws::WorkspaceImpl class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,21 +19,21 @@ using namespace tt3::ws;
 
 //////////
 //  Construction/destruction - from friends only
-Workspace::Workspace(const WorkspaceAddress & address, tt3::db::api::IDatabase * database)
+WorkspaceImpl::WorkspaceImpl(const WorkspaceAddress & address, tt3::db::api::IDatabase * database)
     :   _address(address),
         _database(database)
 {
-    Q_ASSERT(_address.isValid());
+    Q_ASSERT(_address != nullptr);
     Q_ASSERT(_database != nullptr);
 
     //  Forward database change events
     connect(&_database->changeNotifier(),
             &tt3::db::api::ChangeNotifier::databaseClosed,
             this,
-            &Workspace::_onDatabaseClosed);
+            &WorkspaceImpl::_onDatabaseClosed);
 }
 
-Workspace::~Workspace()
+WorkspaceImpl::~WorkspaceImpl()
 {
     try
     {
@@ -47,24 +47,24 @@ Workspace::~Workspace()
 
 //////////
 //  Operations (general)
-WorkspaceType * Workspace::type() const
+WorkspaceType WorkspaceImpl::type() const
 {
-    return _address.workspaceType();
+    return _address->workspaceType();
 }
 
-WorkspaceAddress Workspace::address() const
+WorkspaceAddress WorkspaceImpl::address() const
 {
     return _address;
 }
 
-bool Workspace::isOpen()
+bool WorkspaceImpl::isOpen()
 {
     tt3::util::Lock lock(_guard);
 
     return _database != nullptr;
 }
 
-void Workspace::close() throws(WorkspaceException)
+void WorkspaceImpl::close() throws(WorkspaceException)
 {
     tt3::util::Lock lock(_guard);
 
@@ -86,7 +86,7 @@ void Workspace::close() throws(WorkspaceException)
 
 //////////
 //  Operations (access control)
-bool Workspace::canAccess(const Credentials & credentials) const throws(WorkspaceException)
+bool WorkspaceImpl::canAccess(const Credentials & credentials) const throws(WorkspaceException)
 {
     tt3::util::Lock lock(_guard);
     _ensureOpen();
@@ -96,7 +96,7 @@ bool Workspace::canAccess(const Credentials & credentials) const throws(Workspac
 
 //////////
 //  Implementation helpers
-void Workspace::_ensureOpen() const throws(WorkspaceException)
+void WorkspaceImpl::_ensureOpen() const throws(WorkspaceException)
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
 
@@ -106,7 +106,7 @@ void Workspace::_ensureOpen() const throws(WorkspaceException)
     }
 }
 
-void Workspace::_markClosed()
+void WorkspaceImpl::_markClosed()
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
     Q_ASSERT(_database != nullptr);
@@ -122,10 +122,10 @@ void Workspace::_markClosed()
 
 //////////
 //  Event handlers
-void Workspace::_onDatabaseClosed(tt3::db::api::DatabaseClosedNotification notification)
+void WorkspaceImpl::_onDatabaseClosed(tt3::db::api::DatabaseClosedNotification notification)
 {
     qDebug() << "Workspace::_onDatabaseClosed()";
     Q_ASSERT(notification.database == _database);
 }
 
-//  End of tt3-ws/Workspace.cpp
+//  End of tt3-ws/WorkspaceImpl.cpp

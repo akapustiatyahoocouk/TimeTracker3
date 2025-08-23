@@ -17,8 +17,8 @@
 #include "tt3-ws/API.hpp"
 using namespace tt3::ws;
 
-int CurrentWorkspace::_instanceCount = 0;
-WorkspacePtr CurrentWorkspace::_currentWorkspace = nullptr;
+int         CurrentWorkspace::_instanceCount = 0;
+Workspace   CurrentWorkspace::_currentWorkspace = nullptr;
 
 //////////
 //  Construction/destruction
@@ -36,7 +36,7 @@ CurrentWorkspace::~CurrentWorkspace()
 
 //////////
 //  Operators
-void CurrentWorkspace::operator = (const WorkspacePtr & workspace)
+void CurrentWorkspace::operator = (const Workspace & workspace)
 {
     Q_ASSERT(_instanceCount == 1);
     if (workspace != _currentWorkspace)
@@ -46,33 +46,33 @@ void CurrentWorkspace::operator = (const WorkspacePtr & workspace)
     }
 }
 
-Workspace * CurrentWorkspace::operator -> () const
-{
-    Q_ASSERT(_instanceCount == 1);
-    return _currentWorkspace.get();
-}
-
-CurrentWorkspace::operator WorkspacePtr() const
+Workspace CurrentWorkspace::operator -> () const
 {
     Q_ASSERT(_instanceCount == 1);
     return _currentWorkspace;
 }
 
-bool CurrentWorkspace::operator == (nullptr_t null) const
+CurrentWorkspace::operator Workspace() const
 {
     Q_ASSERT(_instanceCount == 1);
-    return _currentWorkspace.get() == null;
+    return _currentWorkspace;
 }
 
-bool CurrentWorkspace::operator != (nullptr_t null) const
+bool CurrentWorkspace::operator == (nullptr_t /*null*/) const
 {
     Q_ASSERT(_instanceCount == 1);
-    return _currentWorkspace.get() != null;
+    return _currentWorkspace.get() == nullptr;
+}
+
+bool CurrentWorkspace::operator != (nullptr_t /*null*/) const
+{
+    Q_ASSERT(_instanceCount == 1);
+    return _currentWorkspace.get() != nullptr;
 }
 
 //////////
 //  Operations
-void CurrentWorkspace::swap(WorkspacePtr & other)
+void CurrentWorkspace::swap(Workspace & other)
 {
     if (other != _currentWorkspace)
     {

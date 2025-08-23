@@ -89,7 +89,7 @@ void MainFrame::closeEvent(QCloseEvent * event)
 //  Operations
 void MainFrame::refresh()
 {
-    tt3::ws::WorkspacePtr currentWorkspace = tt3::ws::theCurrentWorkspace;
+    tt3::ws::Workspace currentWorkspace = tt3::ws::theCurrentWorkspace;
     //  Frame title
     QString title = "TimeTracker3";
     if (tt3::ws::theCurrentCredentials.isValid())
@@ -101,7 +101,7 @@ void MainFrame::refresh()
     if (currentWorkspace != nullptr)
     {
         title += " - ";
-        title += currentWorkspace->address().displayForm();
+        title += currentWorkspace->address()->displayForm();
     }
     this->setWindowTitle(title);
 
@@ -140,7 +140,7 @@ bool MainFrame::_createWorkspace(
     const QString & adminUser,
     const QString & adminLogin, const QString & adminPassword)
 {
-    Q_ASSERT(workspaceAddress.isValid());
+    Q_ASSERT(workspaceAddress != nullptr);
 
     //  If the workspaceAddress refers to the currently
     //  open workspace, the call is an error
@@ -150,27 +150,27 @@ bool MainFrame::_createWorkspace(
         tt3::gui::ErrorDialog::show(
             this,
             tt3::db::api::AlreadyExistsException(
-                "Workspace", "location", workspaceAddress.displayForm()));
+                "Workspace", "location", workspaceAddress->displayForm()));
         return false;
     }
 
     //  Create & use
     try
     {
-        tt3::ws::WorkspacePtr workspacePtr
+        tt3::ws::Workspace workspace
         {
-            workspaceAddress.workspaceType()->createWorkspace(
+            workspaceAddress->workspaceType()->createWorkspace(
                 workspaceAddress, adminUser, adminLogin, adminPassword)
         };
         //  TODO if there is a "current activity", record & stop it
-        tt3::ws::theCurrentWorkspace.swap(workspacePtr);
+        tt3::ws::theCurrentWorkspace.swap(workspace);
         tt3::ws::Component::Settings::instance()->addRecentWorkspace(workspaceAddress);
         _updateMruWorkspaces();
         //  The previously "current" workspace is closed
         //  when replaced
-        if (workspacePtr != nullptr)
+        if (workspace != nullptr)
         {
-            workspacePtr->close();  //  TODO handle close errors
+            workspace->close();  //  TODO handle close errors
         }
         //  We need to change th "current" credentials to allow access to the new workspace
         tt3::ws::theCurrentCredentials = tt3::ws::Credentials(adminLogin, adminPassword);
@@ -188,7 +188,7 @@ bool MainFrame::_createWorkspace(
 
 bool MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress)
 {
-    Q_ASSERT(workspaceAddress.isValid());
+    Q_ASSERT(workspaceAddress != nullptr);
 
     //  If the workspaceAddress refers to the currently
     //  open workspace, we don't need to re-open
@@ -201,8 +201,8 @@ bool MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddres
     //  Open & use
     try
     {
-        tt3::ws::WorkspacePtr workspace
-            { workspaceAddress.workspaceType()->openWorkspace(workspaceAddress) };
+        tt3::ws::Workspace workspace
+            { workspaceAddress->workspaceType()->openWorkspace(workspaceAddress) };
         //  If the current credentials do not allow access
         //  to the newly open workspace, what do we do?
         if (!_reconcileCurrntCredentials(workspace))
@@ -232,7 +232,7 @@ bool MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddres
     }
 }
 
-bool MainFrame::_reconcileCurrntCredentials(const tt3::ws::WorkspacePtr & workspace)
+bool MainFrame::_reconcileCurrntCredentials(const tt3::ws::Workspace & workspace)
 {
     Q_ASSERT(workspace != nullptr && workspace->isOpen());
 
@@ -245,7 +245,7 @@ bool MainFrame::_reconcileCurrntCredentials(const tt3::ws::WorkspacePtr & worksp
         this,
         "Access denied",
         "Current credentials do not allow access to\n" +
-            workspace->address().displayForm() +
+            workspace->address()->displayForm() +
             "\nDo you want to log in with different credentials ?" +
             "") == tt3::gui::AskYesNoDialog::Answer::Yes)
     {
@@ -285,8 +285,8 @@ void MainFrame::_updateMruWorkspaces()
     {
         tt3::ws::WorkspaceAddress a = mru[i];
         QAction * action = menu->addAction(
-            a.workspaceType()->smallIcon(),
-            "&" + QString(QChar('1' + i)) + " - " + a.displayForm());
+            a->workspaceType()->smallIcon(),
+            "&" + QString(QChar('1' + i)) + " - " + a->displayForm());
         //  Handle "action triggered" signal
         RecentWorkspaceOpener * opener = new RecentWorkspaceOpener(this, a);
         _recentWorkspaceOpeners.append(opener);
@@ -311,9 +311,9 @@ void MainFrame::_onActionNewWorkspace()
     if (dlg.exec() == QDialog::Accepted)
     {
         tt3::ws::WorkspaceAddress workspaceAddress = dlg.selectedWorkspaceAddress();
-        Q_ASSERT(workspaceAddress.isValid());
-        qDebug() << workspaceAddress.displayForm();
-        qDebug() << workspaceAddress.externalForm();
+        Q_ASSERT(workspaceAddress != nullptr);
+        qDebug() << workspaceAddress->displayForm();
+        qDebug() << workspaceAddress->externalForm();
         _createWorkspace(workspaceAddress, dlg.adminUser(), dlg.adminLogin(), dlg.adminPassword());
     }
 }
@@ -324,9 +324,9 @@ void MainFrame::_onActionOpenWorkspace()
     if (dlg.exec() == QDialog::Accepted)
     {
         tt3::ws::WorkspaceAddress workspaceAddress = dlg.selectedWorkspaceAddress();
-        Q_ASSERT(workspaceAddress.isValid());
-        qDebug() << workspaceAddress.displayForm();
-        qDebug() << workspaceAddress.externalForm();
+        Q_ASSERT(workspaceAddress != nullptr);
+        qDebug() << workspaceAddress->displayForm();
+        qDebug() << workspaceAddress->externalForm();
         _openWorkspace(workspaceAddress);
     }
 }
@@ -336,7 +336,7 @@ void MainFrame::_onActionCloseWorkspace()
     if (tt3::ws::theCurrentWorkspace != nullptr)
     {
         tt3::ws::theCurrentWorkspace->close();
-        tt3::ws::WorkspacePtr workspace = nullptr;
+        tt3::ws::Workspace workspace = nullptr;
         tt3::ws::theCurrentWorkspace.swap(workspace);
         refresh();
     }

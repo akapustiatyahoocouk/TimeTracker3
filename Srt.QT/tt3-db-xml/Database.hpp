@@ -81,7 +81,7 @@ namespace tt3::db::xml
         mutable tt3::util::Mutex    _guard; //  for all access synchronization
 
         bool                _needsSaving = false;
-        tt3::db::api::IObject::Oid  _nextUnusedOid = 1;
+        tt3::db::api::Oid   _nextUnusedOid = 1;
 
         //  Primary object caches - these contain all live
         //  objects, either directly (like Users) or indirectly
@@ -89,9 +89,8 @@ namespace tt3::db::xml
         QSet<User*>         _users; //  count as "references"
 
         //  Seconsary caches - these do NOT count as "references"
-        QMap<tt3::db::api::IObject::Oid, Object*>
-                            _liveObjects;   //  All "live" objects
-        QSet<Object*>       _graveyard;     //  All "dead" objects
+        QMap<tt3::db::api::Oid, Object*> _liveObjects;  //  All "live" objects
+        QSet<Object*>       _graveyard;                 //  All "dead" objects
 
         //  Database file locking mechanism
         class TT3_DB_XML_PUBLIC _LockRefresher final : public QThread

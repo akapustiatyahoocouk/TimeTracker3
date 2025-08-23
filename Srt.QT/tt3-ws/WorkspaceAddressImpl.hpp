@@ -1,5 +1,5 @@
 //
-//  tt3-ws/WorkspaceAddress.hpp - "Workspace address" ADT
+//  tt3-ws/WorkspaceAddressImpl.hpp - "Workspace address" ADT implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -18,49 +18,30 @@
 namespace tt3::ws
 {
     //////////
-    //  UA workspace address uniquely specifies the
+    //  A workspace address uniquely specifies the
     //  location of a workspace of a certain type.
     //  In addition, a WorkspaceAddress instance can
     //  be "invalid", i.e. guaranteed not to refer to
     //  any existing workspace.
-    class TT3_WS_PUBLIC WorkspaceAddress final
+    class TT3_WS_PUBLIC WorkspaceAddressImpl final
     {
-        friend class WorkspaceType;
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkspaceAddressImpl)
+
+        friend class WorkspaceTypeImpl;
+        friend std::shared_ptr<WorkspaceAddressImpl>;
 
         //////////
-        //  Construction/destruction/assignment
+        //  Construction/destruction
     private:
-        explicit WorkspaceAddress(tt3::db::api::IDatabaseAddress * databaseAddress);
-    public:
-        WorkspaceAddress();
-        WorkspaceAddress(const WorkspaceAddress & src);
-        WorkspaceAddress(WorkspaceAddress && src);
-        ~WorkspaceAddress();
-
-        WorkspaceAddress &  operator = (const WorkspaceAddress & src);
-        WorkspaceAddress &  operator = (WorkspaceAddress && src);
-
-        //////////
-        //  Operators
-    public:
-        //  Impose equality-by-workspace-location
-        bool            operator == (const WorkspaceAddress & op2) const;
-        bool            operator != (const WorkspaceAddress & op2) const;
-        //  Impose an arbitrary stable ordering
-        bool            operator <  (const WorkspaceAddress & op2) const;
-        bool            operator <= (const WorkspaceAddress & op2) const;
-        bool            operator >  (const WorkspaceAddress & op2) const;
-        bool            operator >= (const WorkspaceAddress & op2) const;
+        WorkspaceAddressImpl(WorkspaceType workspaceType, tt3::db::api::IDatabaseAddress * databaseAddress);
+        ~WorkspaceAddressImpl();
 
         //////////
         //  Operations (general)
     public:
-        //  Checks if this workspace address is valid.
-        bool            isValid() const;
-
         //  The workspace type to which this workspace address belongs
         //  or nullptr is this workspace address is invalid.
-        WorkspaceType * workspaceType() const;
+        WorkspaceType   workspaceType() const;
 
         //  The user-readable form of this workspace address.
         QString         displayForm() const;
@@ -71,7 +52,8 @@ namespace tt3::ws
         //////////
         //  Implementation
     private:
-        tt3::db::api::IDatabaseAddress *    _databaseAddress;   //  nullptr == invalid
+        const WorkspaceType _workspaceType; //  never nullptr
+        tt3::db::api::IDatabaseAddress *const   _databaseAddress;   //  counts as "reference", never nullptr
     };
 }
 
@@ -85,4 +67,4 @@ namespace tt3::util
     template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddressesList fromString<tt3::ws::WorkspaceAddressesList>(const QString & s, int & scan) throws(ParseException);
 }
 
-//  End of tt3-ws/WorkspaceAddress.hpp
+//  End of tt3-ws/WorkspaceAddressImpl.hpp

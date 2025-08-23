@@ -36,9 +36,8 @@ namespace tt3::gui
         //////////
         //  Operations
     public:
-        //  The workspace address selected by the user or an
-        //  invalid workspace address if the user has cancelled
-        //  the dialog.
+        //  The workspace address selected by the user or
+        //  nullptr if the user has cancelled the dialog.
         tt3::ws::WorkspaceAddress   selectedWorkspaceAddress() { return _workspaceAddress; }
 
         //  The chosen administrator user name.

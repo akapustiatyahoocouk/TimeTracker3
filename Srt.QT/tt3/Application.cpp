@@ -122,8 +122,8 @@ void Application::_initialize()
         {
             try
             {
-                tt3::ws::WorkspacePtr workspace =
-                    mru[0].workspaceType()->openWorkspace(mru[0]);
+                tt3::ws::Workspace workspace =
+                    mru[0]->workspaceType()->openWorkspace(mru[0]);
                 if (workspace->canAccess(tt3::ws::theCurrentCredentials))
                 {
                     tt3::ws::theCurrentWorkspace.swap(workspace);
@@ -142,7 +142,7 @@ void Application::_cleanup()
     //  TODO if there is a "current activity", record & stop it
 
     //  If there's a "current" workspace, close it
-    tt3::ws::WorkspacePtr currentWorkspace;
+    tt3::ws::Workspace currentWorkspace;
     tt3::ws::theCurrentWorkspace.swap(currentWorkspace);
     if (currentWorkspace != nullptr)
     {

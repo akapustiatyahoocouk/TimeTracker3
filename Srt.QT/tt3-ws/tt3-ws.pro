@@ -8,9 +8,10 @@ SOURCES += \
     Credentials.cpp \
     CurrentCredentials.cpp \
     CurrentWorkspace.cpp \
-    Workspace.cpp \
-    WorkspaceAddress.cpp \
-    WorkspaceType.cpp \
+    Exceptions.cpp \
+    WorkspaceAddressImpl.cpp \
+    WorkspaceImpl.cpp \
+    WorkspaceTypeImpl.cpp \
     WorkspaceTypeManager.cpp
 
 HEADERS += \
@@ -21,9 +22,10 @@ HEADERS += \
     Exceptions.hpp \
     Linkage.hpp \
     Notifications.hpp \
+    Object.hpp \
     Validator.hpp \
-    Workspace.hpp \
-    WorkspaceAddress.hpp \
-    WorkspaceType.hpp
+    WorkspaceAddressImpl.hpp \
+    WorkspaceImpl.hpp \
+    WorkspaceTypeImpl.hpp
 
 LIBS += -ltt3-db-api -ltt3-util

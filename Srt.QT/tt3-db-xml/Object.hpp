@@ -32,14 +32,14 @@ namespace tt3::db::xml
         //////////
         //  Construction/destruction (from DB type only)
     private:
-        Object(Database * database, Oid oid);
+        Object(Database * database, tt3::db::api::Oid oid);
         virtual ~Object();
 
         //////////
         //  tt3::db::api::IObject (general)
     public:
         virtual Database *  database() const override { return _database; }
-        virtual Oid         oid() const override { return _oid; }
+        virtual tt3::db::api::Oid   oid() const override { return _oid; }
         virtual bool        isLive() const override;
 
         //////////
@@ -54,7 +54,7 @@ namespace tt3::db::xml
         //  Implementation
     private:
         Database *const     _database;
-        const Oid           _oid;
+        const tt3::db::api::Oid _oid;
 
         State               _state = State::New;
         int                 _referenceCount = 0;

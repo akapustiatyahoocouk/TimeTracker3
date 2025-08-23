@@ -21,10 +21,10 @@ using namespace tt3::skin::admin;
 //  Construction/destruction
 RecentWorkspaceOpener::RecentWorkspaceOpener(MainFrame * mainFrame, const tt3::ws::WorkspaceAddress & workspaceAddress)
     :   _mainFrame(mainFrame),
-    _workspaceAddress(workspaceAddress)
+        _workspaceAddress(workspaceAddress)
 {
     Q_ASSERT(_mainFrame != nullptr);
-    Q_ASSERT(_workspaceAddress.isValid());
+    Q_ASSERT(_workspaceAddress != nullptr);
 }
 
 RecentWorkspaceOpener::~RecentWorkspaceOpener()
@@ -41,7 +41,7 @@ void RecentWorkspaceOpener::_onTriggered()
                 _mainFrame,
                 "Failed to open workspace",
                 "Would you like to remove the workspace\n" +
-                    _workspaceAddress.displayForm() +
+                    _workspaceAddress->displayForm() +
                     "\nfrom the recent workspaces list ?" +
                     "") == tt3::gui::AskYesNoDialog::Answer::Yes)
         {   //  Do it!

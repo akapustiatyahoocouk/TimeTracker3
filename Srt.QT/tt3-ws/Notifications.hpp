@@ -25,7 +25,7 @@ namespace tt3::ws
         //////////
         //  Construction/destruction/assignment
     public:
-        ChangeNotification(const WorkspacePtr & workspace)
+        ChangeNotification(const Workspace & workspace)
             :   _workspace(workspace) { Q_ASSERT(_workspace != nullptr); }
         virtual ~ChangeNotification() = default;
         //  Defult copy-constructor and assigmnent are OK
@@ -34,12 +34,12 @@ namespace tt3::ws
         //  Operations
     public:
         //  The workspace where the change has occurred
-        WorkspacePtr    workspace() const { return _workspace; }
+        Workspace       workspace() const { return _workspace; }
 
         //////////
         //  Implementaton
     private:
-        WorkspacePtr    _workspace; //  never nullptr
+        Workspace       _workspace; //  never nullptr
     };
 
     //  Emitted when a workspace is closed
@@ -48,7 +48,7 @@ namespace tt3::ws
         //////////
         //  Construction/destruction/assignment
     public:
-        WorkspaceClosedNotification(const WorkspacePtr & workspace)
+        WorkspaceClosedNotification(const Workspace & workspace)
             :   ChangeNotification(workspace) {}
         //  Defult copy-constructor and assigmnent are OK
     };

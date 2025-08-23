@@ -1,5 +1,5 @@
 //
-//  tt3-ws/API.hpp - tt3-ws master header
+//  tt3-ws/Object.hpp - A generic orkspace onject
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,28 +14,20 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
 
-//////////
-//  Dependencies
-#include "tt3-db-api/API.hpp"
-#include "tt3-util/API.hpp"
+namespace tt3::ws
+{
+    //  A generic workspace object
+    class TT3_WS_PUBLIC ObjectImpl
+    {
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ObjectImpl)
 
-//////////
-//  tt3-ws components
-#include "tt3-ws/Linkage.hpp"
-#include "tt3-ws/Classes.hpp"
-#include "tt3-ws/Components.hpp"
+        //////////
+        //  Construction/destruction
+    private:
+        ObjectImpl();
+        virtual ~ObjectImpl();
+    };
+}
 
-#include "tt3-ws/Credentials.hpp"
-#include "tt3-ws/Validator.hpp"
-#include "tt3-ws/WorkspaceTypeImpl.hpp"
-#include "tt3-ws/WorkspaceAddressImpl.hpp"
-#include "tt3-ws/WorkspaceImpl.hpp"
-
-#include "tt3-ws/Object.hpp"
-
-#include "tt3-ws/Notifications.hpp"
-#include "tt3-ws/Exceptions.hpp"
-
-//  End of tt3-ws/API.hpp
+//  End of tt3-ws/DateTime.hpp

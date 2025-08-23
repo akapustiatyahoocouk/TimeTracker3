@@ -19,7 +19,7 @@ using namespace tt3::db::xml;
 
 //////////
 //  Construction/destruction (from DB type only)
-Principal::Principal(Database * database, Oid oid)
+Principal::Principal(Database * database, tt3::db::api::Oid oid)
     :   Object(database, oid)
 {
 }

@@ -31,7 +31,7 @@ namespace tt3::db::xml
         //////////
         //  Construction/destruction (from DB type only)
     private:
-        User(Database * database, Oid oid);
+        User(Database * database, tt3::db::api::Oid oid);
         virtual ~User();
 
         //////////

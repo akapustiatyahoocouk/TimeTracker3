@@ -404,7 +404,7 @@ void Database::_load() throws(tt3::util::Exception)
     QDomElement usersElement = _childElement(rootElement, "Users");  //  may throw
     for (QDomElement userElement : _childElements(usersElement, "User"))
     {
-        Object::Oid oid = tt3::util::fromString<Object::Oid>(userElement.attribute("OID", ""));
+        tt3::db::api::Oid oid = tt3::util::fromString<tt3::db::api::Oid>(userElement.attribute("OID", ""));
         if (_liveObjects.contains(oid))
         {   //  OOPS!
             throw tt3::db::api::DatabaseCorruptException(_address);

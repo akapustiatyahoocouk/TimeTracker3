@@ -63,7 +63,7 @@ namespace tt3::skin::admin
                               const QString & adminUser,
                               const QString & adminLogin, const QString & adminPassword);
         bool            _openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress);
-        bool            _reconcileCurrntCredentials(const tt3::ws::WorkspacePtr & workspace);
+        bool            _reconcileCurrntCredentials(const tt3::ws::Workspace & workspace);
 
         void            _updateMruWorkspaces();
 

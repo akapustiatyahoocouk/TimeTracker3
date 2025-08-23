@@ -17,25 +17,48 @@
 
 namespace tt3::ws
 {
-    class TT3_WS_PUBLIC Credentials;
-    class TT3_WS_PUBLIC WorkspaceType;
-    class TT3_WS_PUBLIC WorkspaceTypeManager;
-    class TT3_WS_PUBLIC WorkspaceAddress;
-    class TT3_WS_PUBLIC Workspace;
+    class TT3_WS_PUBLIC WorkspaceTypeImpl;
+    class TT3_WS_PUBLIC WorkspaceAddressImpl;
+    class TT3_WS_PUBLIC WorkspaceImpl;
 
+    class TT3_WS_PUBLIC ObjectImpl;
+    class TT3_WS_PUBLIC PrincipalImpl;
+    class TT3_WS_PUBLIC UserImpl;
+    class TT3_WS_PUBLIC AccountImpl;
+
+    //  Opaque pointer-like types (reference counted);
+    //  can all be nullptr
+    using WorkspaceType = WorkspaceTypeImpl*;
+    using WorkspaceAddress = std::shared_ptr<WorkspaceAddressImpl>;
+    using Workspace = std::shared_ptr<WorkspaceImpl>;
+
+    using Object = std::shared_ptr<ObjectImpl>;
+    using Principal = std::shared_ptr<PrincipalImpl>;
+    using User = std::shared_ptr<UserImpl>;
+    using Account = std::shared_ptr<AccountImpl>;
+
+    //  Collections
+    using WorkspaceTypes = QSet<WorkspaceType>;
+    using WorkspaceAddressesList = QList<WorkspaceAddress>;
+
+    using Users = QSet<User>;
+    using Accounts = QSet<Account>;
+
+    //  Exceptins & notifications
     class TT3_WS_PUBLIC WorkspaceException;
-
     class TT3_WS_PUBLIC WorkspaceClosedNotification;
 
-    using WorkspacePtr = std::shared_ptr<Workspace>;
-
-    using WorkspaceTypes = QSet<WorkspaceType*>;
-    using WorkspaceAddressesList = QList<WorkspaceAddress>;
+    //  Helper types
+    class TT3_WS_PUBLIC Credentials;
+    class TT3_WS_PUBLIC WorkspaceTypeManager;
 
     //  We can piggyback on some DB API types
     using ObjectType = tt3::db::api::IObjectType;
     using ObjectTypes = tt3::db::api::ObjectTypes;
     using Capabilities = tt3::db::api::Capabilities;
+
+    using Oid = tt3::db::api::Oid;
+    static inline const Oid InvalidOid = tt3::db::api::InvalidOid;
 }
 
 //  End of tt3-ws/Classes.hpp

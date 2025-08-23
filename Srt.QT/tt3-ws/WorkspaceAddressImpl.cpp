@@ -1,5 +1,5 @@
 //
-//  tt3-ws/WorkspaceAddress.cpp - tt3::ws::WorkspaceAddress class implementation
+//  tt3-ws/WorkspaceAddressImpl.cpp - tt3::ws::WorkspaceAddressImpl class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,127 +19,49 @@ using namespace tt3::ws;
 
 //////////
 //  Construction/destruction/assignment
-WorkspaceAddress::WorkspaceAddress(tt3::db::api::IDatabaseAddress * databaseAddress)
-    :   _databaseAddress(nullptr)
-{   //  TODO synchronize ?
-    _databaseAddress = databaseAddress;
-    if (_databaseAddress != nullptr)
-    {
-        _databaseAddress->addReference();
-    }
-}
-
-WorkspaceAddress::WorkspaceAddress()
-    :   _databaseAddress(nullptr)
+WorkspaceAddressImpl::WorkspaceAddressImpl(WorkspaceType workspaceType, tt3::db::api::IDatabaseAddress * databaseAddress)
+    :   _workspaceType(workspaceType),
+        _databaseAddress(databaseAddress)
 {
+    Q_ASSERT(_workspaceType != nullptr);
+    Q_ASSERT(_databaseAddress != nullptr);
+
+    tt3::util::Lock lock(_workspaceType->_addressMapGuard); //  protect the cache!
+
+    _databaseAddress->addReference();
+    //  Add to the cache kept by WorkspaceType
+    Q_ASSERT(!_workspaceType->_addressMap.contains(_databaseAddress));
+    _workspaceType->_addressMap[_databaseAddress] = this;
+    _databaseAddress->addReference();
 }
 
-WorkspaceAddress::WorkspaceAddress(const WorkspaceAddress & src)
-    :   _databaseAddress(nullptr)
-{   //  TODO synchronize ?
-    _databaseAddress = src._databaseAddress;
-    if (_databaseAddress != nullptr)
-    {
-        _databaseAddress->addReference();
-    }
-}
-
-WorkspaceAddress::WorkspaceAddress(WorkspaceAddress && src)
-    :   _databaseAddress(nullptr)
-{   //  TODO synchronize ?
-    _databaseAddress = src._databaseAddress;
-    src._databaseAddress = nullptr;
-}
-
-WorkspaceAddress::~WorkspaceAddress()
-{   //  TODO synchronize ?
-    if (_databaseAddress != nullptr)
-    {
-        _databaseAddress->removeReference();
-    }
-}
-
-WorkspaceAddress & WorkspaceAddress::operator = (const WorkspaceAddress & src)
+WorkspaceAddressImpl::~WorkspaceAddressImpl()
 {
-    if (this != &src)
-    {   //  TODO synchronize ?
-        if (_databaseAddress != nullptr)
-        {
-            _databaseAddress->removeReference();
-        }
-        _databaseAddress = src._databaseAddress;
-        if (_databaseAddress != nullptr)
-        {
-            _databaseAddress->addReference();
-        }
-    }
-    return *this;
-}
+    tt3::util::Lock lock(_workspaceType->_addressMapGuard); //  protect the cache!
 
-WorkspaceAddress & WorkspaceAddress::operator = (WorkspaceAddress && src)
-{   //  TODO synchronize ?
-    std::swap(_databaseAddress, src._databaseAddress);
-    return *this;
-}
-
-//////////
-//  Operators
-bool WorkspaceAddress::operator == (const WorkspaceAddress & op2) const
-{   //  TODO synchronize ?
-    return _databaseAddress == op2._databaseAddress;
-}
-
-bool WorkspaceAddress::operator != (const WorkspaceAddress & op2) const
-{   //  TODO synchronize ?
-    return _databaseAddress != op2._databaseAddress;
-}
-
-bool WorkspaceAddress::operator <  (const WorkspaceAddress & op2) const
-{   //  TODO synchronize ?
-    return _databaseAddress < op2._databaseAddress;
-}
-
-bool WorkspaceAddress::operator <= (const WorkspaceAddress & op2) const
-{   //  TODO synchronize ?
-    return _databaseAddress == op2._databaseAddress;
-}
-
-bool WorkspaceAddress::operator >  (const WorkspaceAddress & op2) const
-{   //  TODO synchronize ?
-    return _databaseAddress > op2._databaseAddress;
-}
-
-bool WorkspaceAddress::operator >= (const WorkspaceAddress & op2) const
-{   //  TODO synchronize ?
-    return _databaseAddress >= op2._databaseAddress;
+    _databaseAddress->removeReference();
+    //  Remove from the cache kept by WorkspaceType
+    Q_ASSERT(_workspaceType->_addressMap.contains(_databaseAddress) &&
+             _workspaceType->_addressMap[_databaseAddress] == this);
+    _workspaceType->_addressMap.remove(_databaseAddress);
+    _databaseAddress->removeReference();
 }
 
 //////////
 //  Operations (general)
-bool WorkspaceAddress::isValid() const
-{   //  TODO synchronize ?
-    return _databaseAddress != nullptr;
+WorkspaceType WorkspaceAddressImpl::workspaceType() const
+{
+    return _workspaceType;
 }
 
-WorkspaceType * WorkspaceAddress::workspaceType() const
-{   //  TODO synchronize ?
-    return (_databaseAddress == nullptr) ?
-                nullptr :
-                WorkspaceTypeManager::_findWorkspaceType(_databaseAddress->databaseType());
+QString WorkspaceAddressImpl::displayForm() const
+{
+    return _databaseAddress->displayForm();
 }
 
-QString WorkspaceAddress::displayForm() const
-{   //  TODO synchronize ?
-    return (_databaseAddress == nullptr) ?
-                "" :
-                _databaseAddress->displayForm();
-}
-
-QString WorkspaceAddress::externalForm() const
-{   //  TODO synchronize ?
-    return (_databaseAddress == nullptr) ?
-                "" :
-                _databaseAddress->externalForm();
+QString WorkspaceAddressImpl::externalForm() const
+{
+    return _databaseAddress->externalForm();
 }
 
 //////////
@@ -325,12 +247,12 @@ namespace
 
 template <> TT3_WS_PUBLIC QString tt3::util::toString<WorkspaceAddress>(const WorkspaceAddress & value)
 {
-    if (value.isValid())
+    if (value != nullptr)
     {
         return '<' +
-               escape(value.workspaceType()->mnemonic()) +
+               escape(value->workspaceType()->mnemonic()) +
                ',' +
-               escape(value.externalForm()) +
+               escape(value->externalForm()) +
                '>';
     }
     return "<>";
@@ -375,7 +297,7 @@ template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddress tt3::util::fromString<tt3::w
         throw tt3::util::ParseException(s, scan);
     }
     //  Resolve mnemonic
-    WorkspaceType * workspaceType =
+    WorkspaceType workspaceType =
         WorkspaceTypeManager::findWorkspaceType(unescape(chunks[0]));
     if (workspaceType == nullptr)
     {   //  OOPS!
@@ -431,4 +353,4 @@ template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddressesList tt3::util::fromString<
     return result;
 }
 
-//  End of tt3-ws/WorkspaceAddress.cpp
+//  End of tt3-ws/WorkspaceAddressImpl.cpp

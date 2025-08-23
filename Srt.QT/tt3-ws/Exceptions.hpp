@@ -17,7 +17,6 @@
 
 namespace tt3::ws
 {
-    //  TODO move implementations to Exceptions.cpp
     //////////
     //  The common base class for all workspace - level exceptions
     class TT3_WS_PUBLIC WorkspaceException : public tt3::util::Exception
@@ -25,7 +24,7 @@ namespace tt3::ws
         //////////
         //  Construction/destruction/assignment
     public:
-        WorkspaceException() = default;
+        WorkspaceException();
 
         //////////
         //  Operations
@@ -45,7 +44,7 @@ namespace tt3::ws
         //////////
         //  Construction/destruction/assignment
     public:
-        InvalidWorkspaceAddressException() = default;
+        InvalidWorkspaceAddressException();
 
         //////////
         //  QException
@@ -56,10 +55,7 @@ namespace tt3::ws
         //////////
         //  tt3::util::Exception
     public:
-        virtual QString errorMessage() const override
-        {
-            return "Invalid workspace address";
-        }
+        virtual QString errorMessage() const override;
     };
 
     //  Thrown when a single-user workspace is already in use
@@ -73,9 +69,7 @@ namespace tt3::ws
         //////////
         //  Construction/destruction/assignment
     public:
-        explicit WorkspaceInUseException(const WorkspaceAddress & workspaceAddress)
-            :   _workspaceTypeDisplayName(workspaceAddress.workspaceType()->displayName()),
-                _workspaceAddressDisplayForm(workspaceAddress.displayForm()) {}
+        explicit WorkspaceInUseException(const WorkspaceAddress & workspaceAddress);
 
         //////////
         //  QException
@@ -86,13 +80,7 @@ namespace tt3::ws
         //////////
         //  tt3::util::Exception
     public:
-        virtual QString errorMessage() const override
-        {
-            return _workspaceTypeDisplayName +
-                   " "  +
-                   _workspaceAddressDisplayForm +
-                   " is already in use";
-        }
+        virtual QString errorMessage() const override;
 
         //////////
         //  Operations
@@ -122,9 +110,7 @@ namespace tt3::ws
         //////////
         //  Construction/destruction/assignment
     public:
-        explicit WorkspaceCorruptException(const WorkspaceAddress & workspaceAddress)
-            :   _workspaceTypeDisplayName(workspaceAddress.workspaceType()->displayName()),
-                _workspaceAddressDisplayForm(workspaceAddress.displayForm()) {}
+        explicit WorkspaceCorruptException(const WorkspaceAddress & workspaceAddress);
 
         //////////
         //  QException
@@ -135,13 +121,7 @@ namespace tt3::ws
         //////////
         //  tt3::util::Exception
     public:
-        virtual QString errorMessage() const override
-        {
-            return _workspaceTypeDisplayName +
-                   " "  +
-                   _workspaceAddressDisplayForm +
-                   " is invalid or corrupt";
-        }
+        virtual QString errorMessage() const override;
 
         //////////
         //  Operations
@@ -171,7 +151,7 @@ namespace tt3::ws
         //////////
         //  Construction/destruction/assignment
     public:
-        WorkspaceClosedException() = default;
+        WorkspaceClosedException();
 
         //////////
         //  QException
@@ -182,10 +162,7 @@ namespace tt3::ws
         //////////
         //  tt3::util::Exception
     public:
-        virtual QString errorMessage() const override
-        {
-            return "Daabase is closed";
-        }
+        virtual QString errorMessage() const override;
     };
 
     //  Thrown when a workspace service is access-denied
@@ -199,7 +176,7 @@ namespace tt3::ws
         //////////
         //  Construction/destruction/assignment
     public:
-        AccessDeniedException() = default;
+        AccessDeniedException();
 
         //////////
         //  QException
@@ -210,10 +187,7 @@ namespace tt3::ws
         //////////
         //  tt3::util::Exception
     public:
-        virtual QString errorMessage() const override
-        {
-            return "Access denied";
-        }
+        virtual QString errorMessage() const override;
     };
 
     //  Thrown when attempting to assign an invalid value to a property
@@ -228,10 +202,7 @@ namespace tt3::ws
         //  Construction/destruction/assignment
     public:
         InvalidPropertyValueException(const QString & objectTypeName,
-                                      const QString & propertyName, const QString & propertyValueString)
-            :   _objectTypeName(objectTypeName),
-                _propertyName(propertyName),
-                _propertyValueString(propertyValueString) {}
+                                      const QString & propertyName, const QString & propertyValueString);
         InvalidPropertyValueException(ObjectType * objectType,
                                       const QString & propertyName, const QString & propertyValueString)
             :   Self(objectType->displayName(), propertyName, propertyValueString) {}
@@ -254,12 +225,7 @@ namespace tt3::ws
         //////////
         //  tt3::util::Exception
     public:
-        virtual QString errorMessage() const override
-        {
-            return "Property '" + _propertyName +
-                   "' of '" + _objectTypeName +
-                   "' cannot be set to '" + _propertyValueString + "'";
-        }
+        virtual QString errorMessage() const override;
 
         //////////
         //  Operations
@@ -294,10 +260,7 @@ namespace tt3::ws
         //  Construction/destruction/assignment
     public:
         AlreadyExistsException(const QString & objectTypeName,
-                               const QString & propertyName, const QString & propertyValueString)
-            :   _objectTypeName(objectTypeName),
-                _propertyName(propertyName),
-                _propertyValueString(propertyValueString) {}
+                               const QString & propertyName, const QString & propertyValueString);
         AlreadyExistsException(ObjectType * objectType,
                                const QString & propertyName, const QString & propertyValueString)
             :   Self(objectType->displayName(), propertyName, propertyValueString) {}
@@ -320,13 +283,7 @@ namespace tt3::ws
         //////////
         //  tt3::util::Exception
     public:
-        virtual QString errorMessage() const override
-        {
-            return "The " + _objectTypeName +
-                   " with '" + _propertyName +
-                   "' = '" + _propertyValueString +
-                   "' already exists";
-        }
+        virtual QString errorMessage() const override;
 
         //////////
         //  Operations
@@ -361,10 +318,7 @@ namespace tt3::ws
         //  Construction/destruction/assignment
     public:
         DoesNotExistException(const QString & objectTypeName,
-                              const QString & propertyName, const QString & propertyValueString)
-            :   _objectTypeName(objectTypeName),
-                _propertyName(propertyName),
-                _propertyValueString(propertyValueString) {}
+                              const QString & propertyName, const QString & propertyValueString);
         DoesNotExistException(ObjectType * objectType,
                               const QString & propertyName, const QString & propertyValueString)
             :   Self(objectType->displayName(), propertyName, propertyValueString) {}
@@ -387,13 +341,7 @@ namespace tt3::ws
         //////////
         //  tt3::util::Exception
     public:
-        virtual QString errorMessage() const override
-        {
-            return "The " + _objectTypeName +
-                   " with '" + _propertyName +
-                   "' = '" + _propertyValueString +
-                   "' does not exist";
-        }
+        virtual QString errorMessage() const override;
 
         //////////
         //  Operations
@@ -426,7 +374,7 @@ namespace tt3::ws
         //////////
         //  Construction/destruction/assignment
     public:
-        InstanceDeadException() = default;
+        InstanceDeadException();
 
         //////////
         //  QException
@@ -437,10 +385,7 @@ namespace tt3::ws
         //////////
         //  tt3::util::Exception
     public:
-        virtual QString errorMessage() const override
-        {
-            return "The instance is dead";
-        }
+        virtual QString errorMessage() const override;
     };
 
     //  Thrown when must carry a custom error message (from OS, etc.)
@@ -454,8 +399,7 @@ namespace tt3::ws
         //////////
         //  Construction/destruction/assignment
     public:
-        explicit CustomWorkspaceException(const QString & errorMessage)
-            :   _errorMessage(errorMessage) {}
+        explicit CustomWorkspaceException(const QString & errorMessage);
 
         //////////
         //  QException
@@ -466,10 +410,7 @@ namespace tt3::ws
         //////////
         //  tt3::util::Exception
     public:
-        virtual QString errorMessage() const override
-        {
-            return _errorMessage;
-        }
+        virtual QString errorMessage() const override;
 
         //////////
         //  Implementation
