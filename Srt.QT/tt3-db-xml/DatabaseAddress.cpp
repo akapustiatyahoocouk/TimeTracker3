@@ -24,7 +24,7 @@ DatabaseAddress::DatabaseAddress(const QString & path)
 {
 }
 
-DatabaseAddress:: ~DatabaseAddress()
+DatabaseAddress::~DatabaseAddress()
 {
 }
 

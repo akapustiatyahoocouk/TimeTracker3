@@ -69,6 +69,7 @@
 #include <QPushButton>
 #include <QQueue>
 #include <QSemaphore>
+#include <QSharedPointer>
 #include <QStackedLayout>
 #include <QStatusBar>
 #include <QTextEdit>

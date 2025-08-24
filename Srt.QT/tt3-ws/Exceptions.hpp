@@ -61,6 +61,8 @@ namespace tt3::ws
     //  Thrown when a single-user workspace is already in use
     class TT3_WS_PUBLIC WorkspaceInUseException : public WorkspaceException
     {
+        friend class WorkspaceException;
+
         //////////
         //  Types
     public:
@@ -68,6 +70,10 @@ namespace tt3::ws
 
         //////////
         //  Construction/destruction/assignment
+    private:
+        WorkspaceInUseException(
+            const QString & workspaceTypeDisplayName,
+            const QString & workspaceAddressDisplayForm);
     public:
         explicit WorkspaceInUseException(const WorkspaceAddress & workspaceAddress);
 
@@ -102,6 +108,8 @@ namespace tt3::ws
     //  Thrown when a workspace is corrupt
     class TT3_WS_PUBLIC WorkspaceCorruptException : public WorkspaceException
     {
+        friend class WorkspaceException;
+
         //////////
         //  Types
     public:
@@ -109,6 +117,10 @@ namespace tt3::ws
 
         //////////
         //  Construction/destruction/assignment
+    private:
+        WorkspaceCorruptException(
+            const QString & workspaceTypeDisplayName,
+            const QString & workspaceAddressDisplayForm);
     public:
         explicit WorkspaceCorruptException(const WorkspaceAddress & workspaceAddress);
 

@@ -28,12 +28,12 @@ namespace tt3::ws
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkspaceImpl)
 
         friend class WorkspaceTypeImpl;
+        friend std::shared_ptr<WorkspaceImpl>;
 
         //////////
         //  Construction/destruction - from friends only
     private:
         WorkspaceImpl(const WorkspaceAddress & address, tt3::db::api::IDatabase * database);
-    public: //  TOFO make private! See WorkspaceAddressImpl for how to do it
         virtual ~WorkspaceImpl();
 
         //////////

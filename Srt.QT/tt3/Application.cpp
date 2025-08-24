@@ -129,7 +129,7 @@ void Application::_initialize()
                     tt3::ws::theCurrentWorkspace.swap(workspace);
                 }
             }
-            catch (const tt3::ws::WorkspaceException & ex)
+            catch (const tt3::util::Exception & ex)
             {   //  OOPS! Report
                 tt3::gui::ErrorDialog::show(tt3::gui::theCurrentSkin->mainWindow(), ex);
             }

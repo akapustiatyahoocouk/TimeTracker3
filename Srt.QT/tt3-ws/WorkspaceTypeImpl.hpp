@@ -113,11 +113,11 @@ namespace tt3::ws
         const Validator     _validator;
 
         //  DB -> WS address cache, keys count as "references".
-        mutable tt3::util::Mutex    _addressMapGuard;
-        QMap<tt3::db::api::IDatabaseAddress*,WorkspaceAddressImpl*> _addressMap;
+        tt3::util::Mutex    _addressMapGuard;
+        QMap<tt3::db::api::IDatabaseAddress*,WorkspaceAddress>  _addressMap;
 
         //  Helpers
-        WorkspaceAddressImpl *  _mapDatabaseAddress(tt3::db::api::IDatabaseAddress * databaseAddress) const;
+        WorkspaceAddress    _mapDatabaseAddress(tt3::db::api::IDatabaseAddress * databaseAddress);
     };
 
     //////////

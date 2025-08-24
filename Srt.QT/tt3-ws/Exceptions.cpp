@@ -23,9 +23,63 @@ WorkspaceException::WorkspaceException()
 {
 }
 
-//  TODO implement
-//  Q_NORETURN
-//  void WorkspaceException::translateAndThrow(const tt3::util::Exception & ex) throws(WorkspaceException);
+Q_NORETURN
+void WorkspaceException::translateAndThrow(const tt3::util::Exception & ex) throws(WorkspaceException)
+{
+    if (auto exx = dynamic_cast<const tt3::db::api::InvalidDatabaseAddressException*>(&ex))
+    {
+        throw InvalidWorkspaceAddressException();
+    }
+    else if (auto exx = dynamic_cast<const tt3::db::api::DatabaseInUseException*>(&ex))
+    {
+        throw WorkspaceInUseException(
+            exx->databaseTypeDisplayName(),
+            exx->databaseAddressDisplayForm());
+    }
+    else if (auto exx = dynamic_cast<const tt3::db::api::DatabaseCorruptException*>(&ex))
+    {
+        throw WorkspaceCorruptException(
+            exx->databaseTypeDisplayName(),
+            exx->databaseAddressDisplayForm());
+    }
+    else if (auto exx = dynamic_cast<const tt3::db::api::DatabaseClosedException*>(&ex))
+    {
+        throw WorkspaceClosedException();
+    }
+    else if (auto exx = dynamic_cast<const tt3::db::api::AccessDeniedException*>(&ex))
+    {
+        throw AccessDeniedException();
+    }
+    else if (auto exx = dynamic_cast<const tt3::db::api::InvalidPropertyValueException*>(&ex))
+    {
+        throw InvalidPropertyValueException(
+            exx->objectTypeName(),
+            exx->propertyName(),
+            exx->propertyValueString());
+    }
+    else if (auto exx = dynamic_cast<const tt3::db::api::AlreadyExistsException*>(&ex))
+    {
+        throw AlreadyExistsException(
+            exx->objectTypeName(),
+            exx->propertyName(),
+            exx->propertyValueString());
+    }
+    else if (auto exx = dynamic_cast<const tt3::db::api::DoesNotExistException*>(&ex))
+    {
+        throw DoesNotExistException(
+            exx->objectTypeName(),
+            exx->propertyName(),
+            exx->propertyValueString());
+    }
+    else if (auto exx = dynamic_cast<const tt3::db::api::InstanceDeadException*>(&ex))
+    {
+        throw InstanceDeadException();
+    }
+    else
+    {
+        throw CustomWorkspaceException(ex.errorMessage());
+    }
+}
 
 //////////
 //  InvalidWorkspaceAddressException
@@ -40,6 +94,14 @@ QString InvalidWorkspaceAddressException::errorMessage() const
 
 //////////
 //  WorkspaceInUseException
+WorkspaceInUseException::WorkspaceInUseException(
+    const QString & workspaceTypeDisplayName,
+    const QString & workspaceAddressDisplayForm)
+    :   _workspaceTypeDisplayName(workspaceTypeDisplayName),
+        _workspaceAddressDisplayForm(workspaceAddressDisplayForm)
+{
+}
+
 WorkspaceInUseException::WorkspaceInUseException(const WorkspaceAddress & workspaceAddress)
     :   _workspaceTypeDisplayName(workspaceAddress->workspaceType()->displayName()),
         _workspaceAddressDisplayForm(workspaceAddress->displayForm())
@@ -56,6 +118,14 @@ QString WorkspaceInUseException::errorMessage() const
 
 //////////
 //  WorkspaceCorruptException
+WorkspaceCorruptException::WorkspaceCorruptException(
+    const QString & workspaceTypeDisplayName,
+    const QString & workspaceAddressDisplayForm)
+    :   _workspaceTypeDisplayName(workspaceTypeDisplayName),
+        _workspaceAddressDisplayForm(workspaceAddressDisplayForm)
+{
+}
+
 WorkspaceCorruptException::WorkspaceCorruptException(const WorkspaceAddress & workspaceAddress)
     :   _workspaceTypeDisplayName(workspaceAddress->workspaceType()->displayName()),
         _workspaceAddressDisplayForm(workspaceAddress->displayForm())

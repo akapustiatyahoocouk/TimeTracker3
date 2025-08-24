@@ -33,7 +33,7 @@ QString Component::mnemonic() const
 
 QString Component::displayName() const
 {
-    return "TimeTracker3 X<L file database support";
+    return "TimeTracker3 XML file database support";
 }
 
 QString Component::desciption() const

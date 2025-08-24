@@ -74,10 +74,8 @@ WorkspaceAddress WorkspaceTypeImpl::defaultWorkspaceAddress() const
     tt3::db::api::IDatabaseAddress * databaseAddress =
         _databaseType->defaultDatabaseAddress();    //  can return nullptr
     return (databaseAddress != nullptr) ?
-        WorkspaceAddress(
-            _mapDatabaseAddress(databaseAddress),
-            [](WorkspaceAddressImpl * p) { delete p; }) :
-        WorkspaceAddress();
+            const_cast<WorkspaceTypeImpl*>(this)->_mapDatabaseAddress(databaseAddress) :
+            nullptr;
 }
 
 WorkspaceAddress WorkspaceTypeImpl::enterNewWorkspaceAddress(QWidget * parent)
@@ -85,10 +83,8 @@ WorkspaceAddress WorkspaceTypeImpl::enterNewWorkspaceAddress(QWidget * parent)
     tt3::db::api::IDatabaseAddress * databaseAddress =
         _databaseType->enterNewDatabaseAddress(parent); //  can return nullptr
     return (databaseAddress != nullptr) ?
-        WorkspaceAddress(
-            _mapDatabaseAddress(databaseAddress),
-            [](WorkspaceAddressImpl * p) { delete p; }) :
-        WorkspaceAddress();
+            _mapDatabaseAddress(databaseAddress) :
+            nullptr;
 }
 
 WorkspaceAddress WorkspaceTypeImpl::enterExistingWorkspaceAddress(QWidget * parent)
@@ -96,10 +92,8 @@ WorkspaceAddress WorkspaceTypeImpl::enterExistingWorkspaceAddress(QWidget * pare
     tt3::db::api::IDatabaseAddress * databaseAddress =
         _databaseType->enterExistingDatabaseAddress(parent);    //  can return nullptr
     return (databaseAddress != nullptr) ?
-        WorkspaceAddress(
-            _mapDatabaseAddress(databaseAddress),
-            [](WorkspaceAddressImpl * p) { delete p; }) :
-        WorkspaceAddress();
+            _mapDatabaseAddress(databaseAddress) :
+            nullptr;
 }
 
 WorkspaceAddress WorkspaceTypeImpl::parseWorkspaceAddress(const QString & externalForm) throws(WorkspaceException)
@@ -107,10 +101,8 @@ WorkspaceAddress WorkspaceTypeImpl::parseWorkspaceAddress(const QString & extern
     tt3::db::api::IDatabaseAddress * databaseAddress =
         _databaseType->parseDatabaseAddress(externalForm);  //  never nullptr!
     return (databaseAddress != nullptr) ?
-        WorkspaceAddress(
-            _mapDatabaseAddress(databaseAddress),
-            [](WorkspaceAddressImpl * p) { delete p; }) :
-        WorkspaceAddress();
+            _mapDatabaseAddress(databaseAddress) :
+            nullptr;
 }
 
 //////////
@@ -142,9 +134,11 @@ Workspace WorkspaceTypeImpl::createWorkspace(
             adminPassword,
             tt3::db::api::Capabilities::Administrator);
     //  ...and we're done
-    return Workspace(new WorkspaceImpl(address, databasePtr.release()));
-    //  TODO translate & re-throw DatabaseException ?,
-    //  destroyig the newly created database along the way
+    return Workspace(
+            new WorkspaceImpl(address, databasePtr.release()),
+            [](WorkspaceImpl * p) { delete p; });
+    //  TODO translate & re-throw DatabaseException,
+    //  TODO destroyig the newly created database along the way
 }
 
 Workspace WorkspaceTypeImpl::openWorkspace(const WorkspaceAddress & address) throws(WorkspaceException)
@@ -156,16 +150,18 @@ Workspace WorkspaceTypeImpl::openWorkspace(const WorkspaceAddress & address) thr
     std::unique_ptr<tt3::db::api::IDatabase> databasePtr
         { address->_databaseAddress->databaseType()->openDatabase(address->_databaseAddress) };
     //  TODO translate & re-throw DatabaseException ?
-    return Workspace(new WorkspaceImpl(address, databasePtr.release()));
+    return Workspace(
+        new WorkspaceImpl(address, databasePtr.release()),
+        [](WorkspaceImpl * p) { delete p; });
 }
 
-/*  TODO uncommnt & implement
+/*  TODO uncomment & implement
 void WorkspaceType::destroyWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
 */
 
 //////////
 //  Implementation helpers
-WorkspaceAddressImpl * WorkspaceTypeImpl::_mapDatabaseAddress(tt3::db::api::IDatabaseAddress * databaseAddress) const
+WorkspaceAddress WorkspaceTypeImpl::_mapDatabaseAddress(tt3::db::api::IDatabaseAddress * databaseAddress)
 {
     tt3::util::Lock lock(_addressMapGuard); //  protect the cache!
 
@@ -175,7 +171,12 @@ WorkspaceAddressImpl * WorkspaceTypeImpl::_mapDatabaseAddress(tt3::db::api::IDat
     }
     else
     {   //  Need a new mapping (which auto-registers when constructed)
-        return new WorkspaceAddressImpl(const_cast<WorkspaceTypeImpl*>(this), databaseAddress);
+        WorkspaceAddress workspaceAddress
+            { new WorkspaceAddressImpl(this, databaseAddress),
+              [](WorkspaceAddressImpl * p) { delete p; } };
+        _addressMap.insert(databaseAddress, workspaceAddress);
+        //  TODO when do we clear unised _addressMap entries ?
+        return workspaceAddress;
     }
 }
 

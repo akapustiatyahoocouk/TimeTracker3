@@ -43,7 +43,7 @@ namespace tt3::gui
         //////////
         //  Implementation
     private:
-        tt3::ws::WorkspaceAddress   _workspaceAddress;  //  invalid == not selected
+        tt3::ws::WorkspaceAddress   _workspaceAddress = nullptr;  //  nullptr == not selected
 
         //  Helpers
         void            _refresh();

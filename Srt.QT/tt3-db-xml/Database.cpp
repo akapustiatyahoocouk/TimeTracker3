@@ -484,11 +484,6 @@ Database::_LockRefresher::_LockRefresher(Database * database)
             }
             QDateTime lastModifiedAt = fileInfo.lastModified(QTimeZone::UTC);
             QDateTime utcNow = QDateTime::currentDateTimeUtc();
-            qDebug() << lastModifiedAt
-                     << " -> "
-                     << utcNow
-                     << " = "
-                     << lastModifiedAt.secsTo(utcNow);
             if (lastModifiedAt.secsTo(utcNow) < StaleTimeoutMin * 60)
             {   //  OOPS! Lock too young
                 throw tt3::db::api::DatabaseInUseException(_database->_address);

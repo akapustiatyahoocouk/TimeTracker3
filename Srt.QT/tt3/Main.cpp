@@ -22,6 +22,7 @@ using namespace tt3;
 int main(int argc, char *argv[])
 {
     Application a(argc, argv);
+
     int exitCode = a.exec();
     if (exitCode < 0)
     {   //  The following line does not work in e.g. QT Creator's

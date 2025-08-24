@@ -136,7 +136,7 @@ void MainFrame::_savePosition()
 }
 
 bool MainFrame::_createWorkspace(
-    const tt3::ws::WorkspaceAddress & workspaceAddress,
+    tt3::ws::WorkspaceAddress workspaceAddress,
     const QString & adminUser,
     const QString & adminLogin, const QString & adminPassword)
 {
@@ -186,7 +186,7 @@ bool MainFrame::_createWorkspace(
     }
 }
 
-bool MainFrame::_openWorkspace(const tt3::ws::WorkspaceAddress & workspaceAddress)
+bool MainFrame::_openWorkspace(tt3::ws::WorkspaceAddress workspaceAddress)
 {
     Q_ASSERT(workspaceAddress != nullptr);
 
@@ -332,12 +332,12 @@ void MainFrame::_onActionOpenWorkspace()
 }
 
 void MainFrame::_onActionCloseWorkspace()
-{
-    if (tt3::ws::theCurrentWorkspace != nullptr)
+{   //  TODO confirm close TODO based on a tt3::ws::Component::Setting
+    tt3::ws::Workspace workspace = nullptr;
+    tt3::ws::theCurrentWorkspace.swap(workspace);
+    if (workspace != nullptr)
     {
-        tt3::ws::theCurrentWorkspace->close();
-        tt3::ws::Workspace workspace = nullptr;
-        tt3::ws::theCurrentWorkspace.swap(workspace);
+        workspace->close();
         refresh();
     }
 }

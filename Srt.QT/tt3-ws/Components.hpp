@@ -47,11 +47,11 @@ namespace tt3::ws
         public:
             //  Adds the specified entry to the MRU workspaces list.
             //  Idf the entry is already there, moves it to the top of the list.
-            void                addRecentWorkspace(const WorkspaceAddress & workspaceAddress);
+            void                addRecentWorkspace(const WorkspaceAddress workspaceAddress);
 
             //  Removes the specified entry from the MRU workspaces list.
             //  If already not there, the call has no effect.
-            void                removeRecentWorkspace(const WorkspaceAddress & workspaceAddress);
+            void                removeRecentWorkspace(const WorkspaceAddress workspaceAddress);
         };
 
         //////////

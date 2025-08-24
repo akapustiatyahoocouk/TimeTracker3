@@ -86,7 +86,7 @@ void SelectWorkspaceDialog::_workspaceTypeComboBoxCurrentIndexChanged(int)
     Q_ASSERT(workspaceType != nullptr);
     if (_workspaceAddress != nullptr && _workspaceAddress->workspaceType() != workspaceType)
     {   //  Need to reset the workspace address
-        _workspaceAddress = tt3::ws::WorkspaceAddress();
+        _workspaceAddress = nullptr;
     }
     _refresh();
 }

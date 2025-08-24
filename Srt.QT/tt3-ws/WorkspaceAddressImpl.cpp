@@ -26,24 +26,14 @@ WorkspaceAddressImpl::WorkspaceAddressImpl(WorkspaceType workspaceType, tt3::db:
     Q_ASSERT(_workspaceType != nullptr);
     Q_ASSERT(_databaseAddress != nullptr);
 
-    tt3::util::Lock lock(_workspaceType->_addressMapGuard); //  protect the cache!
-
-    _databaseAddress->addReference();
-    //  Add to the cache kept by WorkspaceType
-    Q_ASSERT(!_workspaceType->_addressMap.contains(_databaseAddress));
-    _workspaceType->_addressMap[_databaseAddress] = this;
     _databaseAddress->addReference();
 }
 
 WorkspaceAddressImpl::~WorkspaceAddressImpl()
 {
-    tt3::util::Lock lock(_workspaceType->_addressMapGuard); //  protect the cache!
+    Q_ASSERT(_workspaceType != nullptr);
+    Q_ASSERT(_databaseAddress != nullptr);
 
-    _databaseAddress->removeReference();
-    //  Remove from the cache kept by WorkspaceType
-    Q_ASSERT(_workspaceType->_addressMap.contains(_databaseAddress) &&
-             _workspaceType->_addressMap[_databaseAddress] == this);
-    _workspaceType->_addressMap.remove(_databaseAddress);
     _databaseAddress->removeReference();
 }
 
@@ -331,7 +321,11 @@ template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddressesList tt3::util::fromString<
     {   //  At least 1 item exists
         for (; ; )
         {
-            result.append(fromString<WorkspaceAddress>(s, prescan));    //  may throw
+            WorkspaceAddress workspaceAddress = fromString<WorkspaceAddress>(s, prescan);   //  may throw
+            if (!result.contains(workspaceAddress))
+            {
+                result.append(workspaceAddress);
+            }
             //  More ?
             if (prescan < s.length() && s[prescan] == ',')
             {   //  yes

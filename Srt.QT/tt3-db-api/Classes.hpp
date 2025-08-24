@@ -20,19 +20,23 @@ namespace tt3::db::api
     class TT3_DB_API_PUBLIC IDatabaseType;
     class TT3_DB_API_PUBLIC IDatabaseAddress;
     class TT3_DB_API_PUBLIC IDatabase;
-    class TT3_DB_API_PUBLIC ChangeNotifier;
     class TT3_DB_API_PUBLIC IObject;
     class TT3_DB_API_PUBLIC IPrincipal;
     class TT3_DB_API_PUBLIC IUser;
     class TT3_DB_API_PUBLIC IAccount;
 
+    //  Collections
     using DatabaseTypes = QSet<IDatabaseType*>;
     using DatabaseAddresses= QSet<IDatabaseAddress*>;
     using Objects = QSet<IObject*>;
     using Users = QSet<IUser*>;
     using Accounts = QSet<IAccount*>;
 
+    //  Exceptins & notifications
     class TT3_DB_API_PUBLIC DatabaseException;
+
+    //  Helper types
+    class TT3_DB_API_PUBLIC ChangeNotifier;
 }
 
 //  End of tt3-db-api/Classes.hpp

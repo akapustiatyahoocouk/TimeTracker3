@@ -36,7 +36,7 @@ RecentWorkspaceOpener::~RecentWorkspaceOpener()
 void RecentWorkspaceOpener::_onTriggered()
 {
     if (!_mainFrame->_openWorkspace(_workspaceAddress))
-    {   //  May want to remove this woekspace from the MRU
+    {   //  May want to remove this workspace from the MRU
         if (tt3::gui::AskYesNoDialog::ask(
                 _mainFrame,
                 "Failed to open workspace",
