@@ -37,6 +37,12 @@ namespace tt3::gui
         //  Controls
     private:
         Ui::AboutDialog *   _ui;
+
+        //////////
+        //  Signal handlers
+    private slots:
+        void                _showLicensePushButtonClicked();
+        void                _showConfigurationPushButtonClicked();
     };
 }
 

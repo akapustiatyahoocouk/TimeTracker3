@@ -40,4 +40,16 @@ AboutDialog::~AboutDialog()
     delete _ui;
 }
 
+//////////
+//  Signal handlers
+void AboutDialog::_showLicensePushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+}
+
+void AboutDialog::_showConfigurationPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+}
+
 //  End of tt3-gui/AboutDialog.cpp

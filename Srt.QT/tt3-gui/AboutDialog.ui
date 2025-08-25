@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
-    <height>174</height>
+    <width>359</width>
+    <height>176</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -23,8 +23,34 @@
    <iconset resource="tt3-gui.qrc">
     <normaloff>:/tt3-gui/Resources/Images/Actions/AboutLarge.png</normaloff>:/tt3-gui/Resources/Images/Actions/AboutLarge.png</iconset>
   </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" rowspan="3">
+   <item row="2" column="1" colspan="4">
+    <widget class="QLabel" name="copyrightLabel">
+     <property name="text">
+      <string>Copyright (C) 2026, Andrey Kapustin</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="3">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>31</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="0" rowspan="2">
     <widget class="QLabel" name="pictureLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -46,7 +72,36 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
+   <item row="5" column="2" rowspan="2">
+    <widget class="QPushButton" name="showConfigurationPushButton">
+     <property name="text">
+      <string>Configuration</string>
+     </property>
+     <property name="icon">
+      <iconset resource="tt3-gui.qrc">
+       <normaloff>:/tt3-gui/Resources/Images/Actions/ShowConfigurationSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/ShowConfigurationSmall.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" rowspan="2" colspan="2">
+    <widget class="QPushButton" name="showLicensePushButton">
+     <property name="text">
+      <string>License</string>
+     </property>
+     <property name="icon">
+      <iconset resource="tt3-gui.qrc">
+       <normaloff>:/tt3-gui/Resources/Images/Actions/ShowLicenseSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/ShowLicenseSmall.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="5">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" colspan="4">
     <widget class="QLabel" name="productLabel">
      <property name="text">
       <string>TimeTracker3</string>
@@ -56,27 +111,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QLabel" name="versionLabel">
-     <property name="text">
-      <string>Version X.X.X (build XXX XX XXXX)</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QLabel" name="copyrightLabel">
-     <property name="text">
-      <string>Copyright (C) 2026, Andrey Kapustin</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
+   <item row="3" column="1" colspan="4">
     <widget class="QLabel" name="creditsLabel">
      <property name="text">
       <string>Idea by Yuri Levdik</string>
@@ -86,23 +121,17 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="0" colspan="2">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Orientation::Vertical</enum>
+   <item row="1" column="1" colspan="4">
+    <widget class="QLabel" name="versionLabel">
+     <property name="text">
+      <string>Version X.X.X (build XXX XX XXXX)</string>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Policy::Fixed</enum>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>298</width>
-       <height>8</height>
-      </size>
-     </property>
-    </spacer>
+    </widget>
    </item>
-   <item row="5" column="0" colspan="2">
+   <item row="6" column="4">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
@@ -114,6 +143,10 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>showLicensePushButton</tabstop>
+  <tabstop>showConfigurationPushButton</tabstop>
+ </tabstops>
  <resources>
   <include location="tt3-gui.qrc"/>
  </resources>
@@ -150,5 +183,41 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>showLicensePushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::AboutDialog</receiver>
+   <slot>_showLicensePushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>51</x>
+     <y>161</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>180</x>
+     <y>95</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>showConfigurationPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::AboutDialog</receiver>
+   <slot>_showConfigurationPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>161</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>180</x>
+     <y>95</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>_showLicensePushButtonClicked()</slot>
+  <slot>_showConfigurationPushButtonClicked()</slot>
+ </slots>
 </ui>

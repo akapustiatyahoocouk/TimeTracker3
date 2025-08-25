@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/tt3-util">
+        <file>Resources/Images/Objects/ComponentLarge.png</file>
+        <file>Resources/Images/Objects/ComponentSmall.png</file>
+        <file>Resources/Images/Objects/PluginLarge.png</file>
+        <file>Resources/Images/Objects/PluginSmall.png</file>
+    </qresource>
+</RCC>

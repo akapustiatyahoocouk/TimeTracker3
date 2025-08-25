@@ -31,3 +31,6 @@ HEADERS += \
     Settings.hpp \
     Sync.hpp \
     ToString.hpp
+
+RESOURCES += \
+    tt3-util.qrc

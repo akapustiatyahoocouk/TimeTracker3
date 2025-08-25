@@ -20,5 +20,9 @@
         <file>Resources/Images/Objects/Tt3Small.png</file>
         <file>Resources/Images/Actions/ResetLarge.png</file>
         <file>Resources/Images/Actions/ResetSmall.png</file>
+        <file>Resources/Images/Actions/ShowConfigurationLarge.png</file>
+        <file>Resources/Images/Actions/ShowConfigurationSmall.png</file>
+        <file>Resources/Images/Actions/ShowLicenseLarge.png</file>
+        <file>Resources/Images/Actions/ShowLicenseSmall.png</file>
     </qresource>
 </RCC>

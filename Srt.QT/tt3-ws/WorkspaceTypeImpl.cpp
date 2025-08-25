@@ -116,29 +116,35 @@ Workspace WorkspaceTypeImpl::createWorkspace(
     {   //  OOPS! Can't use this address
         throw InvalidWorkspaceAddressException();
     }
-    std::unique_ptr<tt3::db::api::IDatabase> databasePtr
-        { address->_databaseAddress->databaseType()->createDatabase(address->_databaseAddress) };
-    //  Create admin user...
-    tt3::db::api::IUser * user =
-        databasePtr->createUser(
-            true,
-            QStringList(),
-            adminUser,
-            std::optional<tt3::util::TimeSpan>(),
-            std::optional<QLocale>());
-    //  ...and account...
-        user->createAccount(
-            true,
-            QStringList(),
-            adminLogin,
-            adminPassword,
-            tt3::db::api::Capabilities::Administrator);
-    //  ...and we're done
-    return Workspace(
-            new WorkspaceImpl(address, databasePtr.release()),
-            [](WorkspaceImpl * p) { delete p; });
-    //  TODO translate & re-throw DatabaseException,
-    //  TODO destroyig the newly created database along the way
+    try
+    {
+        std::unique_ptr<tt3::db::api::IDatabase> databasePtr
+            { address->_databaseAddress->databaseType()->createDatabase(address->_databaseAddress) };
+        //  Create admin user...
+        tt3::db::api::IUser * user =
+            databasePtr->createUser(
+                true,
+                QStringList(),
+                adminUser,
+                std::optional<tt3::util::TimeSpan>(),
+                std::optional<QLocale>());
+        //  ...and account...
+            user->createAccount(
+                true,
+                QStringList(),
+                adminLogin,
+                adminPassword,
+                tt3::db::api::Capabilities::Administrator);
+        //  ...and we're done
+        return Workspace(
+                new WorkspaceImpl(address, databasePtr.release()),
+                [](WorkspaceImpl * p) { delete p; });
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        //  TODO destroyig the newly created database along the way
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 Workspace WorkspaceTypeImpl::openWorkspace(const WorkspaceAddress & address) throws(WorkspaceException)
@@ -147,12 +153,18 @@ Workspace WorkspaceTypeImpl::openWorkspace(const WorkspaceAddress & address) thr
     {   //  OOPS! Can't use this address
         throw InvalidWorkspaceAddressException();
     }
-    std::unique_ptr<tt3::db::api::IDatabase> databasePtr
-        { address->_databaseAddress->databaseType()->openDatabase(address->_databaseAddress) };
-    //  TODO translate & re-throw DatabaseException ?
-    return Workspace(
-        new WorkspaceImpl(address, databasePtr.release()),
-        [](WorkspaceImpl * p) { delete p; });
+    try
+    {
+        std::unique_ptr<tt3::db::api::IDatabase> databasePtr
+            { address->_databaseAddress->databaseType()->openDatabase(address->_databaseAddress) };
+        return Workspace(
+            new WorkspaceImpl(address, databasePtr.release()),
+            [](WorkspaceImpl * p) { delete p; });
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 /*  TODO uncomment & implement
@@ -171,9 +183,9 @@ WorkspaceAddress WorkspaceTypeImpl::_mapDatabaseAddress(tt3::db::api::IDatabaseA
     }
     else
     {   //  Need a new mapping (which auto-registers when constructed)
-        WorkspaceAddress workspaceAddress
-            { new WorkspaceAddressImpl(this, databaseAddress),
-              [](WorkspaceAddressImpl * p) { delete p; } };
+        WorkspaceAddress workspaceAddress(
+            new WorkspaceAddressImpl(this, databaseAddress),
+            [](WorkspaceAddressImpl * p) { delete p; });
         _addressMap.insert(databaseAddress, workspaceAddress);
         //  TODO when do we clear unised _addressMap entries ?
         return workspaceAddress;
