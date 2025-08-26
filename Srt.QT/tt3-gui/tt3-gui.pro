@@ -21,6 +21,7 @@ SOURCES += \
     PreferencesEditor.cpp \
     PreferencesManager.cpp \
     SelectWorkspaceDialog.cpp \
+    ShowLicenseDialog.cpp \
     SkinManager.cpp
 
 HEADERS += \
@@ -38,6 +39,7 @@ HEADERS += \
     PreferencesDialog.hpp \
     PreferencesEditor.hpp \
     SelectWorkspaceDialog.hpp \
+    ShowLicenseDialog.hpp \
     Skin.hpp
 
 FORMS += \
@@ -47,7 +49,8 @@ FORMS += \
     LoginDialog.ui \
     NewWorkspaceDialog.ui \
     PreferencesDialog.ui \
-    SelectWorkspaceDialog.ui
+    SelectWorkspaceDialog.ui \
+    ShowLicenseDialog.ui
 
 RESOURCES += \
     tt3-gui.qrc

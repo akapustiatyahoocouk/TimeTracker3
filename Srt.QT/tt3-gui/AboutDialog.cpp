@@ -37,6 +37,7 @@ AboutDialog::AboutDialog(QWidget * parent)
 
 AboutDialog::~AboutDialog()
 {
+    delete _licensesPopupMenu;  //  delete nullptr is safe
     delete _ui;
 }
 
@@ -44,12 +45,71 @@ AboutDialog::~AboutDialog()
 //  Signal handlers
 void AboutDialog::_showLicensePushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    //  Build the list of all applicable licenses - ONCE
+    if (_licenses.isEmpty())
+    {   //  as good a check for "one time" as any - the tt3-gui
+        //  component itself WILL have a license
+        for (tt3::util::IComponent * component : tt3::util::ComponentManager::allComponents())
+        {
+            if (!_licenses.contains(component->license()))
+            {
+                _licenses.append(component->license());
+            }
+        }
+        std::sort(
+            _licenses.begin(),
+            _licenses.end(),
+            [](auto a, auto b) { return a->displayName() < b->displayName(); });
+    }
+
+    //  If there is only ONE license, there's no need to choose
+    if (_licenses.size() == 1)
+    {
+        ShowLicenseDialog dlg(this, _licenses[0]);
+        dlg.exec();
+        return;
+    }
+
+    //  Prepare the popup menu containing all applicable licenses
+    delete _licensesPopupMenu;  //  delete nullptr is safe
+    _licensesPopupMenu = new QMenu(this);
+    for (tt3::util::ILicense * license : _licenses)
+    {
+        QAction * action = new QAction(license->smallIcon(), license->displayName());
+        _licensesPopupMenu->addAction(action);
+        connect(action,
+                &QAction::triggered,
+                this,
+                &AboutDialog::_onShowLicense);
+    }
+
+    //  Go!
+    _licensesPopupMenu->exec(
+        _ui->showLicensePushButton->mapToGlobal(
+            _ui->showLicensePushButton->rect().bottomLeft()));
 }
 
 void AboutDialog::_showConfigurationPushButtonClicked()
 {
     ErrorDialog::show(this, "Not yet implemented");
+}
+
+void AboutDialog::_onShowLicense()
+{
+    QObject * sender = QObject::sender();
+    QList<QAction*> actions = _licensesPopupMenu->actions();
+    for (int i = 0; i < actions.size(); i++)
+    {
+        if (sender == actions[i])
+        {   //  This one!
+            ShowLicenseDialog dlg(this, _licenses[i]);
+            dlg.exec();
+            return;
+        }
+    }
+    //  Fall back to GPLv3
+    ShowLicenseDialog dlg(this, tt3::util::Gpl3Licene::instance());
+    dlg.exec();
 }
 
 //  End of tt3-gui/AboutDialog.cpp

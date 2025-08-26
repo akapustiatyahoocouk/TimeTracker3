@@ -40,5 +40,6 @@
 #include "tt3-gui/LoginDialog.hpp"
 #include "tt3-gui/AboutDialog.hpp"
 #include "tt3-gui/PreferencesDialog.hpp"
+#include "tt3-gui/ShowLicenseDialog.hpp"
 
 //  End of tt3-gui/API.hpp

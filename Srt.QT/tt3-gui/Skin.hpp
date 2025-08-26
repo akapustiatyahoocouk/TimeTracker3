@@ -19,7 +19,7 @@
 
 namespace tt3::gui
 {
-    //  A generic "skin" is a way to preent a GUI
+    //  A generic "skin" is a way to present a GUI
     class TT3_GUI_PUBLIC ISkin
     {
         //////////
@@ -73,7 +73,6 @@ namespace tt3::gui
         virtual QMainWindow*mainWindow() = 0;
     };
 
-    //////////
     //  The manager of known skins
     class TT3_GUI_PUBLIC SkinManager final
     {
@@ -100,7 +99,6 @@ namespace tt3::gui
         static QMap<QString, ISkin*>    _registry;  //  key = mnemonic
     };
 
-    //////////
     //  The accessor for a "currently active" skin.
     //  Only one global static instance of this class
     //  exists, and other instances should NOT be

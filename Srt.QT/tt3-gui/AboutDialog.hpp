@@ -34,15 +34,22 @@ namespace tt3::gui
         virtual ~AboutDialog();
 
         //////////
+        //  Implementation
+    private:
+        QList<tt3::util::ILicense*> _licenses;  //  in display order
+
+        //////////
         //  Controls
     private:
         Ui::AboutDialog *   _ui;
+        QMenu *             _licensesPopupMenu = nullptr;
 
         //////////
         //  Signal handlers
     private slots:
         void                _showLicensePushButtonClicked();
         void                _showConfigurationPushButtonClicked();
+        void                _onShowLicense();
     };
 }
 
