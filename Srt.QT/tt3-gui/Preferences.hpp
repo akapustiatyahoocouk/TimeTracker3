@@ -42,7 +42,8 @@ namespace tt3::gui
         //  The mnemonic identifier of this preferences node
         virtual QString         mnemonic() const = 0;
 
-        //  The user-readable display name of this preferences node
+        //  The user-readable display name of this preferences
+        //  node for the current default locale.
         virtual QString         displayName() const = 0;
 
         //  The immediate parent node of this Preferences
@@ -70,7 +71,7 @@ namespace tt3::gui
         UTILITY_CLASS(PreferencesManager)
 
         //////////
-        //  Operationds
+        //  Operations
     public:
         //  The set of all registered Preferemcesm whether
         //  root, leaf or intermediate.

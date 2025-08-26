@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>396</width>
-    <height>273</height>
+    <height>268</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -54,37 +54,20 @@
      </column>
     </widget>
    </item>
-   <item row="0" column="2">
-    <widget class="QFrame" name="editorsFrame">
-     <property name="frameShape">
-      <enum>QFrame::Shape::StyledPanel</enum>
+   <item row="2" column="2">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
-     <property name="frameShadow">
-      <enum>QFrame::Shadow::Raised</enum>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
      </property>
     </widget>
    </item>
    <item row="1" column="0" colspan="3">
-    <spacer name="verticalSpacer">
+    <widget class="Line" name="line">
      <property name="orientation">
-      <enum>Qt::Orientation::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>8</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="2" column="0">
-    <widget class="QPushButton" name="resetPushButton">
-     <property name="text">
-      <string>Reset all</string>
-     </property>
-     <property name="icon">
-      <iconset resource="tt3-gui.qrc">
-       <normaloff>:/tt3-gui/Resources/Images/Actions/ResetSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/ResetSmall.png</iconset>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
    </item>
@@ -101,13 +84,24 @@
      </property>
     </spacer>
    </item>
-   <item row="2" column="2">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
+   <item row="0" column="2">
+    <widget class="QFrame" name="editorsFrame">
+     <property name="frameShape">
+      <enum>QFrame::Shape::StyledPanel</enum>
      </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Raised</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QPushButton" name="resetPushButton">
+     <property name="text">
+      <string>Reset all</string>
+     </property>
+     <property name="icon">
+      <iconset resource="tt3-gui.qrc">
+       <normaloff>:/tt3-gui/Resources/Images/Actions/ResetSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/ResetSmall.png</iconset>
      </property>
     </widget>
    </item>

@@ -21,7 +21,7 @@ tt3::util::Mutex ComponentManager::_guard;
 QMap<QString, IComponent*> ComponentManager::_registry;
 
 //////////
-//  Operationds
+//  Operations
 QSet<IComponent*> ComponentManager::allComponents()
 {
     tt3::util::Lock lock(_guard);

@@ -29,7 +29,8 @@ namespace tt3::ws
         //////////
         //  Operations
     public:
-        //  TODO document and TODO implement
+        //  Throws WorkspaceException (or a subclass thereof)
+        //  that best represents the specified arbitrary exception
         Q_NORETURN
         static void     translateAndThrow(const tt3::util::Exception & ex) throws(WorkspaceException);
     };

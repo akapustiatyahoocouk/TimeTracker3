@@ -42,7 +42,7 @@ namespace
             return "XML file databases";
         }
 
-        virtual QString         desciption() const override
+        virtual QString         description() const override
         {
             return "Enables storing TimeTracker3 databases as XML files (single-user)";
         }

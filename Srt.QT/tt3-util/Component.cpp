@@ -35,7 +35,7 @@ QString Component::displayName() const
     return "TimeTracker3 utility";
 }
 
-QString Component::desciption() const
+QString Component::description() const
 {
     return "Defines utility services for TimeTracker3";
 }

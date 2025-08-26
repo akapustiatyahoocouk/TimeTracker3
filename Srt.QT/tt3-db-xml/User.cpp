@@ -88,8 +88,7 @@ void User::setRealName(const QString & realName) throws(tt3::db::api::DatabaseEx
     {   //  Make the change...
         _realName = realName;
         _database->_needsSaving = true;
-        //  ...and schedule change notifications
-        //  TODO
+        //  TODO ...and schedule change notifications
     }
 }
 
@@ -120,8 +119,7 @@ void User::setInactivityTimeout(const std::optional<tt3::util::TimeSpan> & inact
     {   //  Make the change...
         _inactivityTimeout = inactivityTimeout;
         _database->_needsSaving = true;
-        //  ...and schedule change notifications
-        //  TODO
+        //  TODO ...and schedule change notifications
     }
 }
 
@@ -152,8 +150,7 @@ void User::setUiLocale(const std::optional<QLocale> & uiLocale) throws(tt3::db::
     {   //  Make the change...
         _uiLocale = uiLocale;
         _database->_needsSaving = true;
-        //  ...and schedule change notifications
-        //  TODO
+        //  TODO ...and schedule change notifications
     }
 }
 
@@ -201,9 +198,9 @@ User::createAccount(
     }
 
     //  Do the work - create & initialize the Account...
-    std::unique_ptr<tt3::util::MessageDigest::Builder> digestBuilder
+    std::unique_ptr<tt3::util::IMessageDigest::Builder> digestBuilder
         { tt3::util::Sha1MessageDigest::instance()->createBuilder() };
-    digestBuilder->digest(password);
+    digestBuilder->digestFragment(password);
     QString passwordHash = digestBuilder->digestAsString();
 
     Account * account = new Account(this, _database->_nextUnusedOid++); //  registers with User
@@ -216,8 +213,7 @@ User::createAccount(
     Q_ASSERT(_accounts.contains(account));
     Q_ASSERT(account->_user == this);
     _database->_needsSaving = true;
-    //  ...schedule change notifications...
-    //  TODO
+    //  TODO ...schedule change notifications...
     //  ...and we're done
     return account;
 }
@@ -344,8 +340,7 @@ void User::_validate(QSet<Object*> & validatedObjects) throws(tt3::db::api::Data
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }
 
-    //  Validate associations
-    //  TODO
+    //  TODO Validate associations
 
     //  Validate aggregations
     for (Account * account : _accounts)

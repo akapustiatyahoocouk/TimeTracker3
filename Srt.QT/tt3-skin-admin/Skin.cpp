@@ -43,7 +43,7 @@ QString Skin::displayName() const
     return "Administrator";
 }
 
-QString Skin::desciption() const
+QString Skin::description() const
 {
     return "Provides full management facilities for TimeTracker3 workspaces";
 }

@@ -7,9 +7,14 @@ SOURCES += \
     Component.cpp \
     ComponentManager.cpp \
     FromString.cpp \
-    MessageDigest.cpp \
+    Gpl3Licene.cpp \
+    IComponent.cpp \
+    ILicense.cpp \
+    IMessageDigest.cpp \
+    IPlugin.cpp \
+    LicenseManager.cpp \
+    MessageDigestManager.cpp \
     Mutex.cpp \
-    Plugin.cpp \
     PluginManager.cpp \
     Settings.cpp \
     Sha1MessageDigest.cpp \
@@ -24,6 +29,7 @@ HEADERS += \
     DateTime.hpp \
     Exceptions.hpp \
     FromString.hpp \
+    License.hpp \
     Linkage.hpp \
     Macros.hpp \
     MessageDigest.hpp \

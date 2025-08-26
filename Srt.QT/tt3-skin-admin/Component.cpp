@@ -35,7 +35,7 @@ QString Component::displayName() const
     return "TimeTracker3 Administrator skin";
 }
 
-QString Component::desciption() const
+QString Component::description() const
 {
     return "Defines GUI Administrator skin for TimeTracker3";
 }

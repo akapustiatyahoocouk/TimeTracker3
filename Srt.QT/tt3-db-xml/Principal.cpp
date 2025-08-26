@@ -47,8 +47,7 @@ void Principal::setEnabled(bool enabled) throws(tt3::db::api::DatabaseException)
     {   //  Make the change...
         _enabled = enabled;
         _database->_needsSaving = true;
-        //  ...and schedule change notifications
-        //  TODO
+        //  TODO ...and schedule change notifications
     }
 }
 
@@ -77,8 +76,7 @@ void Principal::setEmailAddresses(const QStringList & emailAddresses) throws(tt3
     {   //  Make the change...
         _emailAddresses = emailAddresses;
         _database->_needsSaving = true;
-        //  ...and schedule change notifications
-        //  TODO
+        //  TODO ...and schedule change notifications
     }
 }
 

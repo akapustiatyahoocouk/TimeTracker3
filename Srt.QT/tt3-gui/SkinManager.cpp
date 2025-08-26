@@ -21,7 +21,7 @@ tt3::util::Mutex SkinManager::_guard;
 QMap<QString, ISkin*> SkinManager::_registry;
 
 //////////
-//  Operationds
+//  Operations
 QSet<ISkin*> SkinManager::allSkins()
 {
     tt3::util::Lock lock(_guard);

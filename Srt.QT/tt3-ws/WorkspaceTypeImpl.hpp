@@ -118,6 +118,7 @@ namespace tt3::ws
 
         //  Helpers
         WorkspaceAddress    _mapDatabaseAddress(tt3::db::api::IDatabaseAddress * databaseAddress);
+        void                _prunWorkspaceAddresses();
     };
 
     //////////

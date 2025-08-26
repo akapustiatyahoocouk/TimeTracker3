@@ -42,7 +42,7 @@ namespace
             return "Administrator skin";
         }
 
-        virtual QString         desciption() const override
+        virtual QString         description() const override
         {
             return "Enables administrator skin for TimeTracker3";
         }

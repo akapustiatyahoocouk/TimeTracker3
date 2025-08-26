@@ -137,8 +137,7 @@ void Database::close() throws(tt3::db::api::DatabaseException)
         return;
     }
 
-    //  Disconnect all slots from notification signals
-    //  TODO
+    //  TODO Disconnect all slots from notification signals
 
     //  Save ?
     if (_needsSaving)
@@ -197,12 +196,13 @@ tt3::db::api::IAccount * Database::findAccount(const QString & login) const thro
 //  tt3::db::api::IDatabase (access control)
 tt3::db::api::IAccount * Database::tryLogin(const QString & login, const QString & password) const throws(tt3::db::api::DatabaseException)
 {
-    static tt3::util::MessageDigest * sha1 = tt3::util::Sha1MessageDigest::instance();  //  idempotent
+    static tt3::util::IMessageDigest * sha1 = tt3::util::Sha1MessageDigest::instance();  //  idempotent
 
     tt3::util::Lock lock(_guard);
 
-    std::unique_ptr<tt3::util::MessageDigest::Builder> sha1Builder { sha1->createBuilder() };
-    sha1Builder->digest(password);
+    std::unique_ptr<tt3::util::IMessageDigest::Builder> sha1Builder
+        { sha1->createBuilder() };
+    sha1Builder->digestFragment(password);
     QString passwordHash = sha1Builder->digestAsString();
 
     for (User * user : _users)
@@ -274,8 +274,7 @@ tt3::db::api::IUser * Database::createUser(
     //  ...register it...
     Q_ASSERT(_liveObjects.contains(user->_oid));
     _needsSaving = true;
-    //  ...schedule change notifications...
-    //  TODO
+    //  TODO ...schedule change notifications...
     //  ...and we're done
     return user;
 }

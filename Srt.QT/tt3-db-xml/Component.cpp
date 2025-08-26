@@ -36,7 +36,7 @@ QString Component::displayName() const
     return "TimeTracker3 XML file database support";
 }
 
-QString Component::desciption() const
+QString Component::description() const
 {
     return "Enables storing TimeTracker3 databases as XML files (single-user)";
 }

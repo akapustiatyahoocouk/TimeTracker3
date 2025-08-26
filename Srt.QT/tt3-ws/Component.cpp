@@ -43,7 +43,7 @@ QString Component::displayName() const
     return "TimeTracker3 workspace layer";
 }
 
-QString Component::desciption() const
+QString Component::description() const
 {
     return "Defines workspace data access layer for TimeTracker3";
 }

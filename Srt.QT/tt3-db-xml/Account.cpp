@@ -94,8 +94,7 @@ void Account::setLogin(const QString & login) throws(tt3::db::api::DatabaseExcep
     {   //  Make the change...
         _login = login;
         _database->_needsSaving = true;
-        //  ...and schedule change notifications
-        //  TODO
+        //  TODO ...and schedule change notifications
     }
 }
 
@@ -122,9 +121,9 @@ void Account::setPassword(const QString & password) throws(tt3::db::api::Databas
     }
 
     //  Do the work
-    std::unique_ptr<tt3::util::MessageDigest::Builder> digestBuilder
+    std::unique_ptr<tt3::util::IMessageDigest::Builder> digestBuilder
         { tt3::util::Sha1MessageDigest::instance()->createBuilder() };
-    digestBuilder->digest(password);
+    digestBuilder->digestFragment(password);
     QString passwordHash = digestBuilder->digestAsString();
 
     //  Always make the change (we want XML file
@@ -132,8 +131,7 @@ void Account::setPassword(const QString & password) throws(tt3::db::api::Databas
     //  the same as old one)...
     _passwordHash = passwordHash;
     _database->_needsSaving = true;
-    //  ...and schedule change notifications
-    //  TODO
+    //  TODO ...and schedule change notifications
 }
 
 tt3::db::api::Capabilities Account::capabilities() const throws(tt3::db::api::DatabaseException)
@@ -153,8 +151,7 @@ void Account::setCapabilities(tt3::db::api::Capabilities capabilities) throws(tt
     {   //  Make the change...
         _capabilities = capabilities;
         _database->_needsSaving = true;
-        //  ...and schedule change notifications
-        //  TODO
+        //  TODO ...and schedule change notifications
     }
 }
 

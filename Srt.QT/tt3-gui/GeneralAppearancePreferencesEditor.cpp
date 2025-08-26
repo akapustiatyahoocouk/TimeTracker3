@@ -48,7 +48,7 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
 
     for (ISkin * skin : _skins)
     {
-        _ui->skinComboBox->addItem(skin->displayName());
+        _ui->skinComboBox->addItem(skin->smallIcon(), skin->displayName());
     }
 
 

@@ -43,7 +43,7 @@ QString Component::displayName() const
     return "TimeTracker3 database API";
 }
 
-QString Component::desciption() const
+QString Component::description() const
 {
     return "Defines common API for TimeTracker3 databases";
 }

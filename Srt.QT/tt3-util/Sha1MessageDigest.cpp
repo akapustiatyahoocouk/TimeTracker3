@@ -1,5 +1,5 @@
 //
-//  tt3-util/Sha1MessageDigest.cpp - The tt3""util::Sha1MessageDigest class implementation
+//  tt3-util/Sha1MessageDigest.cpp - The tt3::util::Sha1MessageDigest class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -37,7 +37,7 @@ QString Sha1MessageDigest::displayName() const
 
 //////////
 //  MessageDigest
-MessageDigest::Builder * Sha1MessageDigest::createBuilder()
+IMessageDigest::Builder * Sha1MessageDigest::createBuilder()
 {
     return new _Builder();
 }
@@ -53,7 +53,7 @@ Sha1MessageDigest::_Builder::~_Builder()
 {
 }
 
-MessageDigest * Sha1MessageDigest::_Builder::messageDigest() const
+IMessageDigest * Sha1MessageDigest::_Builder::messageDigest() const
 {
     return Sha1MessageDigest::instance();
 }
@@ -74,7 +74,7 @@ void Sha1MessageDigest::_Builder::reset()
     _finalised = false;
 }
 
-void Sha1MessageDigest::_Builder::digest(const void * data, size_t numBytes)
+void Sha1MessageDigest::_Builder::digestFragment(const void * data, size_t numBytes)
 {
     Q_ASSERT(!_finalised);
 

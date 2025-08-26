@@ -38,11 +38,13 @@ namespace tt3::util
         //  The mnemonic identifier of this component.
         virtual QString         mnemonic() const = 0;
 
-        //  The user-readable display name of this component.
+        //  The user-readable display name of this component
+        //  for the current default locale.
         virtual QString         displayName() const = 0;
 
-        //  The user-readable description of this component.
-        virtual QString         desciption() const = 0;
+        //  The short (1 line) user-readable description of
+        //  this component for the current default locale.
+        virtual QString         description() const = 0;
 
         //  The copyight message of this component.
         virtual QString         copyright() const = 0;
@@ -52,6 +54,15 @@ namespace tt3::util
 
         //  The build number of this component.
         virtual QString         buildNumber() const = 0;
+
+        //  The small (16x16) icon representing this component.
+        virtual QIcon       smallIcon() const;
+
+        //  The large (32x32) icon representing this component.
+        virtual QIcon       largeIcon() const;
+
+        //  The license of this component (default GPLv3).
+        virtual tt3::util::ILicense *   license() const;
 
         //  The settings of this component
         virtual Settings &      settings() = 0;
@@ -64,7 +75,7 @@ namespace tt3::util
         UTILITY_CLASS(ComponentManager)
 
         //////////
-        //  Operationds
+        //  Operations
     public:
         //  Returns the set of all registered components.
         static QSet<IComponent*>    allComponents();

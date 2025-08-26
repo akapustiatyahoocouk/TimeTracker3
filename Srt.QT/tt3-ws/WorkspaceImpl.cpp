@@ -76,6 +76,11 @@ void WorkspaceImpl::close() throws(WorkspaceException)
             //  TODO translate & re-throw WorkspaceException
             _markClosed();
         }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Ensure cleanup, translate & re-throw
+            _markClosed();
+            WorkspaceException::translateAndThrow(ex);
+        }
         catch (...)
         {   //  Ensure cleanup on throw
             _markClosed();

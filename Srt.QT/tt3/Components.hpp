@@ -40,7 +40,7 @@ namespace tt3
     public:
         virtual QString         mnemonic() const override;
         virtual QString         displayName() const override;
-        virtual QString         desciption() const override;
+        virtual QString         description() const override;
         virtual QString         copyright() const override;
         virtual QVersionNumber  version() const override;
         virtual QString         buildNumber() const override;

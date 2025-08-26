@@ -31,7 +31,7 @@ namespace tt3::skin::admin
     public:
         virtual QString     mnemonic() const override;
         virtual QString     displayName() const override;
-        virtual QString     desciption() const override;
+        virtual QString     description() const override;
         virtual QIcon       smallIcon() const override;
         virtual QIcon       largeIcon() const override;
         virtual bool        isDefault() const override;

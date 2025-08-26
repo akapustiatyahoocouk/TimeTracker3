@@ -24,9 +24,8 @@ namespace tt3::util
     {
         //////////
         //  This is an interface
-    public:
-        IPlugin() = default;
     protected:
+        IPlugin() = default;
         virtual ~IPlugin() = default;
 
         //////////
@@ -35,11 +34,13 @@ namespace tt3::util
         //  The mnemonic identifier of this plugin.
         virtual QString         mnemonic() const = 0;
 
-        //  The user-readanle display name of this plugin.
+        //  The user-readanle display name of this plugin
+        //  for the current default locale.
         virtual QString         displayName() const = 0;
 
-        //  The user-readable description of this plugin.
-        virtual QString         desciption() const = 0;
+        //  The short (1 line) user-readable description of
+        //  this plugin for the current default locale.
+        virtual QString         description() const = 0;
 
         //  The copyright message of this plugin.
         virtual QString         copyright() const = 0;
@@ -49,6 +50,12 @@ namespace tt3::util
 
         //  The build number of this plugin.
         virtual QString         buildNumber() const = 0;
+
+        //  The small (16x16) icon representing this plugin.
+        virtual QIcon           smallIcon() const;
+
+        //  The large (32x32) icon representing this plugin.
+        virtual QIcon           largeIcon() const;
 
         //  Called by plugin manager to initialize this plugin.
         //  On success, returns normally. On failure throws.

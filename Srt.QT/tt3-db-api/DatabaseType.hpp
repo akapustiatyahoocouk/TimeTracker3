@@ -125,6 +125,7 @@ namespace tt3::db::api
         //////////
         //  Implementation
     private:
+        static tt3::util::Mutex     _guard;
         static QMap<QString, IDatabaseType*>    _registry;  //  key == mnemonic
     };
 }

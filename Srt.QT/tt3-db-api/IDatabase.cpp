@@ -1,5 +1,5 @@
 //
-//  tt3-util/Plugin.cpp - tt3::util::IPlugin class implementation
+//  tt3-db-api/IDatabase.cpp tt3::db::api::IDatabase interface implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,14 +14,18 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#include "tt3-util/API.hpp"
-using namespace tt3::util;
+#include "tt3-db-api/API.hpp"
+using namespace tt3::db::api;
 
 //////////
-//  Operations
-bool IPlugin::isInitialized() const
+//  Operations (access control)
+IAccount * IDatabase::login(const QString & login, const QString & password) const throws(DatabaseException)
 {
-    return PluginManager::_initializedPlugins.contains(const_cast<IPlugin*>(this));
+    if (IAccount * account = tryLogin(login, password))
+    {
+        return account;
+    }
+    throw AccessDeniedException();
 }
 
-//  End of tt3-util/Plugin.cpp
+//  End of tt3-db-api/IDatabase.cpp

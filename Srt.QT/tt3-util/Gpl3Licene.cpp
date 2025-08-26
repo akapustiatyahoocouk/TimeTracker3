@@ -1,0 +1,89 @@
+//
+//  tt3-util/Gpl3Licene.cpp - tt3::util::Gpl3Licene class implementation
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+#include "tt3-util/API.hpp"
+using namespace tt3::util;
+
+bool operator < (const QLocale & a, const QLocale & b)
+{
+    return a.name() < b.name();
+}
+
+//////////
+//  Singleton
+IMPLEMENT_SINGLETON(Gpl3Licene)
+Gpl3Licene::Gpl3Licene() {}
+Gpl3Licene::~Gpl3Licene() {}
+
+//////////
+//  ILicense
+QString Gpl3Licene::mnemonic() const
+{
+    return "GPLv3";
+}
+
+QString Gpl3Licene::displayName() const
+{
+    return "GNU GPL (version 3)";
+}
+
+QString Gpl3Licene::description() const
+{
+    return "GNU General Public License (version 3)";
+}
+
+QString Gpl3Licene::contentAsHtml() const
+{
+    tt3::util::Lock lock(_contentsGuard);
+
+    QLocale defaultLocale;
+    if (_contentsAsHtml.contains(defaultLocale))
+    {
+        return _contentsAsHtml[defaultLocale];
+    }
+    //  We need to look, in order, for 3 resources:
+    //  1.  :/tt3-util/Resources/Licenses/GPLv3_<ll>_<CC>.html
+    //  2.  :/tt3-util/Resources/Licenses/GPLv3_<ll>.html
+    //  3.  :/tt3-util/Resources/Licenses/GPLv3_en.html
+    //  where <ll> and <CC> are the 2-letter codes of the
+    //  language and country of the current default locale
+    QString ll = QLocale::languageToCode(defaultLocale.language());
+    QString cc = QLocale::territoryToCode(defaultLocale.territory());
+    QFile file1(":/tt3-util/Resources/Licenses/GPLv3_" + ll + "_" + cc + ".html");
+    QFile file2(":/tt3-util/Resources/Licenses/GPLv3_" + ll + ".html");
+    QFile file3(":/tt3-util/Resources/Licenses/GPLv3_en.html");
+    QString content;
+    if (file1.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        content = QTextStream(&file1).readAll();
+    }
+    else if (file2.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        content = QTextStream(&file2).readAll();
+    }
+    else if (file2.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        content = QTextStream(&file3).readAll();
+    }
+    else
+    {
+        content = description();
+    }
+    _contentsAsHtml[defaultLocale] = content;
+    return content;
+}
+
+//  End of tt3-util/Gpl3Licene.cpp

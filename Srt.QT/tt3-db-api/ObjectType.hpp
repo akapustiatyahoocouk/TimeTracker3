@@ -34,7 +34,8 @@ namespace tt3::db::api
         //  The mnemonic identifier of this database object type
         virtual QString mnemonic() const = 0;
 
-        //  The user-readable display name of this database object type
+        //  The user-readable display name of this database object
+        //  type for the current default locale.
         virtual QString displayName() const = 0;
 
         //  The small (16x16) icon representing this database object type

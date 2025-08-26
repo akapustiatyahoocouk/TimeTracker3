@@ -33,7 +33,7 @@ QString Component::displayName() const
     return "TimeTracker3 application";
 }
 
-QString Component::desciption() const
+QString Component::description() const
 {
     return "Defines startup and top-level logic of TimeTracker3 application";
 }

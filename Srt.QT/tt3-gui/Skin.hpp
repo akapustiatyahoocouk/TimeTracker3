@@ -35,10 +35,12 @@ namespace tt3::gui
         virtual QString     mnemonic() const = 0;
 
         //  The user-readable display name of this skin
+        //  for the current default locale.
         virtual QString     displayName() const = 0;
 
-        //  The short description of this skin
-        virtual QString     desciption() const = 0;
+        //  The short (1 line) description of this skin
+        //  for the current default locale.
+        virtual QString     description() const = 0;
 
         //  The small (16x16) icon representing this skin.
         virtual QIcon       smallIcon() const = 0;
@@ -78,7 +80,7 @@ namespace tt3::gui
         UTILITY_CLASS(SkinManager)
 
         //////////
-        //  Operationds
+        //  Operations
     public:
         //  Returns the set of all registered Skins.
         static QSet<ISkin*> allSkins();

@@ -28,6 +28,7 @@ WorkspaceTypeImpl::WorkspaceTypeImpl(tt3::db::api::IDatabaseType * databaseType)
 
 WorkspaceTypeImpl::~WorkspaceTypeImpl()
 {
+    _addressMap.clear();
 }
 
 //////////
@@ -182,13 +183,28 @@ WorkspaceAddress WorkspaceTypeImpl::_mapDatabaseAddress(tt3::db::api::IDatabaseA
         return _addressMap[databaseAddress];
     }
     else
-    {   //  Need a new mapping (which auto-registers when constructed)
+    {   //  Need a new mapping (which auto-registers when constructed).
+        //  Note that we're increasing the address cache size, so it is
+        //  prudent that we keep it in check
+        _prunWorkspaceAddresses();
         WorkspaceAddress workspaceAddress(
             new WorkspaceAddressImpl(this, databaseAddress),
             [](WorkspaceAddressImpl * p) { delete p; });
         _addressMap.insert(databaseAddress, workspaceAddress);
         //  TODO when do we clear unised _addressMap entries ?
         return workspaceAddress;
+    }
+}
+
+void WorkspaceTypeImpl::_prunWorkspaceAddresses()
+{
+    for (tt3::db::api::IDatabaseAddress * key : _addressMap.keys())
+    {
+        Q_ASSERT(_addressMap[key].use_count() > 0);
+        if (_addressMap[key].use_count() == 1)
+        {   //  WorkspaceAddress is ONLY referred to by _addressMap
+            _addressMap.remove(key);
+        }
     }
 }
 

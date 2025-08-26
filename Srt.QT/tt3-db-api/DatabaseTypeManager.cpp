@@ -17,13 +17,16 @@
 #include "tt3-db-api/API.hpp"
 using namespace tt3::db::api;
 
+tt3::util::Mutex DatabaseTypeManager::_guard;
 QMap<QString, IDatabaseType*> DatabaseTypeManager::_registry;
 
 //////////
 //  Operations
 bool DatabaseTypeManager::registerDatabaseType(IDatabaseType * databaseType)
-{   //  TODO synchronize ?
+{
     Q_ASSERT(databaseType != nullptr);
+
+    tt3::util::Lock oock(_guard);
 
     IDatabaseType * registeredDatabaseType = findDatabaseType(databaseType->mnemonic());
     if (registeredDatabaseType == nullptr)
@@ -35,12 +38,16 @@ bool DatabaseTypeManager::registerDatabaseType(IDatabaseType * databaseType)
 }
 
 IDatabaseType * DatabaseTypeManager::findDatabaseType(const QString & mnemonic)
-{   //  TODO synchronize ?
+{
+    tt3::util::Lock oock(_guard);
+
     return _registry.contains(mnemonic) ? _registry[mnemonic] : nullptr;
 }
 
 DatabaseTypes DatabaseTypeManager::allDatabaseTypes()
-{   //  TODO synchronize ?
+{
+    tt3::util::Lock oock(_guard);
+
     QList<IDatabaseType*> values = _registry.values();
     return DatabaseTypes(values.begin(), values.end());
 }

@@ -35,7 +35,7 @@ QString Component::displayName() const
     return "TimeTracker3 GUI";
 }
 
-QString Component::desciption() const
+QString Component::description() const
 {
     return "Defines GUI facilities for TimeTracker3";
 }

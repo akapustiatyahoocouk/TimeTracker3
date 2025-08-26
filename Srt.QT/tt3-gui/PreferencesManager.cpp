@@ -21,7 +21,7 @@ tt3::util::Mutex PreferencesManager::_guard;
 QMap<QString, Preferences*> PreferencesManager::_registry;
 
 //////////
-//  Operationds
+//  Operations
 QSet<Preferences*> PreferencesManager::allPreferences()
 {
     tt3::util::Lock lock(_guard);

@@ -170,7 +170,17 @@ bool MainFrame::_createWorkspace(
         //  when replaced
         if (workspace != nullptr)
         {
-            workspace->close();  //  TODO handle close errors
+            try
+            {
+                workspace->close();
+            }
+            catch (const tt3::util::Exception & ex)
+            {   //  OOPS! Close errors, however, don't stop us ay
+                //  this stage - a new workspace has already been
+                //  created & selected as "current"
+                tt3::gui::ErrorDialog::show(this, ex);
+                return false;
+            }
         }
         //  We need to change th "current" credentials to allow access to the new workspace
         tt3::ws::theCurrentCredentials = tt3::ws::Credentials(adminLogin, adminPassword);
@@ -218,7 +228,17 @@ bool MainFrame::_openWorkspace(tt3::ws::WorkspaceAddress workspaceAddress)
         //  when replaced
         if (workspace != nullptr)
         {
-            workspace->close();
+            try
+            {
+                workspace->close();
+            }
+            catch (const tt3::util::Exception & ex)
+            {   //  OOPS! Close errors, however, don't stop us ay
+                //  this stage - a workspace has already been
+                //  opened & selected as "current"
+                tt3::gui::ErrorDialog::show(this, ex);
+                return false;
+            }
         }
         //  Done
         refresh();

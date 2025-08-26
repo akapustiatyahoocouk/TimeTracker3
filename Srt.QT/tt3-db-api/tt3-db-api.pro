@@ -7,10 +7,10 @@ SOURCES += \
     Capabilities.cpp \
     ChangeNotifier.cpp \
     Component.cpp \
-    Database.cpp \
     DatabaseTypeManager.cpp \
     DefaultValidator.cpp \
     Exceptions.cpp \
+    IDatabase.cpp \
     ObjectTypes.cpp
 
 HEADERS += \

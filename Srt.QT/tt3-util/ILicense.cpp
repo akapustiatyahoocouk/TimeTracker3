@@ -1,5 +1,5 @@
 //
-//  tt3-db-api/Database.cpp tt3::db::api::IDatabase class implementation
+//  tt3-util/ILicense.cpp - The tt3::util::ILicense interface implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,18 +14,21 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#include "tt3-db-api/API.hpp"
-using namespace tt3::db::api;
+#include "tt3-util/API.hpp"
+using namespace tt3::util;
 
 //////////
-//  Operations (access control)
-IAccount * IDatabase::login(const QString & login, const QString & password) const throws(DatabaseException)
+//  Operations (properties)
+QIcon ILicense::smallIcon() const
 {
-    if (IAccount * account = tryLogin(login, password))
-    {
-        return account;
-    }
-    throw AccessDeniedException();
+    static QIcon icon(":/tt3-util/Resources/Images/Objects/LicenseSmall.png");
+    return icon;
 }
 
-//  End of tt3-db-api/Database.cpp
+QIcon ILicense::largeIcon() const
+{
+    static QIcon icon(":/tt3-util/Resources/Images/Objects/LicenseLarge.png");
+    return icon;
+}
+
+//  End of tt3-util/ILicense.cpp
