@@ -103,21 +103,27 @@
 #include "tt3-util/Macros.hpp"
 #include "tt3-util/Exceptions.hpp"
 
+//  Platform API
 #include "tt3-util/Sync.hpp"
 #include "tt3-util/BlockingQueue.hpp"
-#include "tt3-util/DateTime.hpp"
 
+//  Data types
+#include "tt3-util/DateTime.hpp"
+#include "tt3-util/Identifiers.hpp"
+
+//  Algorithms
 #include "tt3-util/ToString.hpp"
 #include "tt3-util/FromString.hpp"
 
+//  Stock objects
 #include "tt3-util/MessageDigest.hpp"
 #include "tt3-util/License.hpp"
-
 #include "tt3-util/Plugin.hpp"
 #include "tt3-util/Settings.hpp"
 #include "tt3-util/Component.hpp"
 #include "tt3-util/Subsystem.hpp"
 
+//  Misc
 #include "tt3-util/Components.hpp"
 
 //  End of tt3-util/API.hpp

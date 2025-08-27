@@ -37,7 +37,7 @@ namespace tt3::util
         //  Operations
     public:
         //  The mnemonic identifier of this component.
-        virtual QString         mnemonic() const = 0;
+        virtual Mnemonic        mnemonic() const = 0;
 
         //  The user-readable display name of this component
         //  for the current default locale.
@@ -47,7 +47,8 @@ namespace tt3::util
         //  this component for the current default locale.
         virtual QString         description() const = 0;
 
-        //  The copyight message of this component.
+        //  The copyight message of this component for
+        //  the current default locales.
         virtual QString         copyright() const = 0;
 
         //  The version of this component.

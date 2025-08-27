@@ -32,7 +32,7 @@ namespace tt3::util
         //  Operations
     public:
         //  The mnemonic identifier of this plugin.
-        virtual QString         mnemonic() const = 0;
+        virtual Mnemonic        mnemonic() const = 0;
 
         //  The user-readanle display name of this plugin
         //  for the current default locale.
@@ -42,7 +42,8 @@ namespace tt3::util
         //  this plugin for the current default locale.
         virtual QString         description() const = 0;
 
-        //  The copyright message of this plugin.
+        //  The copyright message of this plugin for the
+        //  current default locale.
         virtual QString         copyright() const = 0;
 
         //  The version of this plugin.

@@ -25,9 +25,9 @@ Sha1MessageDigest::~Sha1MessageDigest() {}
 
 //////////
 //  StockObject
-QString Sha1MessageDigest::mnemonic() const
+Mnemonic Sha1MessageDigest::mnemonic() const
 {
-    return "SHA-1";
+    return M(SHA-1);
 }
 
 QString Sha1MessageDigest::displayName() const

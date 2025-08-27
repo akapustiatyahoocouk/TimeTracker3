@@ -77,7 +77,7 @@ namespace tt3::util
         //  Operations
     public:
         //  The mnemonic identifier of this message digest algorithm.
-        virtual QString         mnemonic() const = 0;
+        virtual Mnemonic        mnemonic() const = 0;
 
         //  The user-readable display name of this message digest
         //  algorithm for the current default locale.
@@ -100,7 +100,7 @@ namespace tt3::util
         //////////
         //  MessageDigest
     public:
-        virtual QString         mnemonic() const override;
+        virtual Mnemonic        mnemonic() const override;
         virtual QString         displayName() const override;
 
         //////////

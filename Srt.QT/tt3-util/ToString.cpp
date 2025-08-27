@@ -120,5 +120,10 @@ template <> TT3_UTIL_PUBLIC QString tt3::util::toString<tt3::util::TimeSpan>(con
     return value.isValid() ? toString(value.asMinutes()) : "?";
 }
 
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<tt3::util::Mnemonic>(const Mnemonic & value)
+{
+    return value.toString();
+}
+
 //  End of tt3-util/ToString.cpp
 

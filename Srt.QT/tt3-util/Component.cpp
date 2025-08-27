@@ -25,9 +25,9 @@ Component::~Component() {}
 
 //////////
 //  IComponent
-QString Component::mnemonic() const
+Mnemonic Component::mnemonic() const
 {
-    return "tt3-util";
+    return M(tt3-util);
 }
 
 QString Component::displayName() const

@@ -12,6 +12,7 @@ SOURCES += \
     IMessageDigest.cpp \
     IPlugin.cpp \
     ISubsystem.cpp \
+    Identifiers.cpp \
     LicenseManager.cpp \
     MessageDigestManager.cpp \
     Mutex.cpp \
@@ -32,6 +33,7 @@ HEADERS += \
     DateTime.hpp \
     Exceptions.hpp \
     FromString.hpp \
+    Identifiers.hpp \
     License.hpp \
     Linkage.hpp \
     Macros.hpp \

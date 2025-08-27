@@ -23,9 +23,9 @@ IMPLEMENT_SINGLETON(StandardSubsystems::Applications)
 StandardSubsystems::Applications::Applications() {}
 StandardSubsystems::Applications::~Applications() {}
 
-QString StandardSubsystems::Applications::mnemonic() const
+Mnemonic StandardSubsystems::Applications::mnemonic() const
 {
-    return "Applications";
+    return M(Applications);
 }
 
 QString StandardSubsystems::Applications::displayName() const
@@ -44,9 +44,9 @@ IMPLEMENT_SINGLETON(StandardSubsystems::Storage)
 StandardSubsystems::Storage::Storage() {}
 StandardSubsystems::Storage::~Storage() {}
 
-QString StandardSubsystems::Storage::mnemonic() const
+Mnemonic StandardSubsystems::Storage::mnemonic() const
 {
-    return "Storage";
+    return M(Storage);
 }
 
 QString StandardSubsystems::Storage::displayName() const
@@ -65,9 +65,9 @@ IMPLEMENT_SINGLETON(StandardSubsystems::Gui)
 StandardSubsystems::Gui::Gui() {}
 StandardSubsystems::Gui::~Gui() {}
 
-QString StandardSubsystems::Gui::mnemonic() const
+Mnemonic StandardSubsystems::Gui::mnemonic() const
 {
-    return "Gui";
+    return M(Gui);
 }
 
 QString StandardSubsystems::Gui::displayName() const
@@ -86,9 +86,9 @@ IMPLEMENT_SINGLETON(StandardSubsystems::Reporting)
 StandardSubsystems::Reporting::Reporting() {}
 StandardSubsystems::Reporting::~Reporting() {}
 
-QString StandardSubsystems::Reporting::mnemonic() const
+Mnemonic StandardSubsystems::Reporting::mnemonic() const
 {
-    return "Reporting";
+    return M(Reporting);
 }
 
 QString StandardSubsystems::Reporting::displayName() const
@@ -107,9 +107,9 @@ IMPLEMENT_SINGLETON(StandardSubsystems::Utility)
 StandardSubsystems::Utility::Utility() {}
 StandardSubsystems::Utility::~Utility() {}
 
-QString StandardSubsystems::Utility::mnemonic() const
+Mnemonic StandardSubsystems::Utility::mnemonic() const
 {
-    return "Utility";
+    return M(Utility);
 }
 
 QString StandardSubsystems::Utility::displayName() const

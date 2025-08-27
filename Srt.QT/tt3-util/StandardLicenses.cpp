@@ -28,9 +28,9 @@ IMPLEMENT_SINGLETON(StandardLicenses::Gpl3)
 StandardLicenses::Gpl3::Gpl3() {}
 StandardLicenses::Gpl3::~Gpl3() {}
 
-QString StandardLicenses::Gpl3::mnemonic() const
+Mnemonic StandardLicenses::Gpl3::mnemonic() const
 {
-    return "GPLv3";
+    return M(GPLv3);
 }
 
 QString StandardLicenses::Gpl3::displayName() const

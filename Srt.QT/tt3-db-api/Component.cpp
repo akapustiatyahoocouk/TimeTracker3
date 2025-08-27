@@ -33,9 +33,9 @@ Component::~Component()
 
 //////////
 //  IComponent
-QString Component::mnemonic() const
+Component::Mnemonic Component::mnemonic() const
 {
-    return "tt3-db-api";
+    return M(tt3-db-api);
 }
 
 QString Component::displayName() const

@@ -57,7 +57,9 @@ namespace tt3::ws
         //////////
         //  IComponent
     public:
-        virtual QString         mnemonic() const override;
+        using Mnemonic = tt3::util::Mnemonic;
+
+        virtual Mnemonic        mnemonic() const override;
         virtual QString         displayName() const override;
         virtual QString         description() const override;
         virtual QString         copyright() const override;

@@ -31,7 +31,7 @@ namespace tt3::util
         //  Operations
     public:
         //  The mnemonic identifier of this license
-        virtual QString     mnemonic() const = 0;
+        virtual Mnemonic    mnemonic() const = 0;
 
         //  The user-readable display name of this license
         //  for the current default locale.
@@ -68,7 +68,7 @@ namespace tt3::util
             //////////
             //  ILicense
         public:
-            virtual QString     mnemonic() const override;
+            virtual Mnemonic    mnemonic() const override;
             virtual QString     displayName() const override;
             virtual QString     description() const override;
             virtual QString     contentAsHtml() const override;

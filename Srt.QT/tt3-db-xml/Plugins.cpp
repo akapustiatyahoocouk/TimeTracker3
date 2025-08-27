@@ -32,9 +32,11 @@ namespace
         //////////
         //  util::IPlugin
     public:
-        virtual QString         mnemonic() const override
+        using Mnemonic = tt3::util::Mnemonic;
+
+        virtual Mnemonic        mnemonic() const override
         {
-            return "tt3-db-xml";
+            return M(tt3-db-xml);
         }
 
         virtual QString         displayName() const override

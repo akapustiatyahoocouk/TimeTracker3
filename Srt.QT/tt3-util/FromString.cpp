@@ -382,4 +382,9 @@ template <> TT3_UTIL_PUBLIC tt3::util::TimeSpan tt3::util::fromString<tt3::util:
     return tt3::util::TimeSpan::minutes(minutes);
 }
 
+template <> TT3_UTIL_PUBLIC tt3::util::Mnemonic tt3::util::fromString<tt3::util::Mnemonic>(const QString & s, int & scan) throws(ParseException)
+{
+    return tt3::util::Mnemonic(fromString<QString>(s, scan));
+}
+
 //  End of tt3-util/FromString.cpp

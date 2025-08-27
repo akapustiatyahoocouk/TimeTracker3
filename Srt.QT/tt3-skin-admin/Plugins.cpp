@@ -32,9 +32,11 @@ namespace
         //////////
         //  util::IPlugin
     public:
-        virtual QString         mnemonic() const override
+        using Mnemonic = tt3::util::Mnemonic;
+
+        virtual Mnemonic        mnemonic() const override
         {
-            return "tt3-skin-admin";
+            return M(tt3-skin-admin);
         }
 
         virtual QString         displayName() const override
