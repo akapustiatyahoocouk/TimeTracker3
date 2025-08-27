@@ -1,0 +1,4 @@
+[Component]
+DisplayName=TimeTracker3 Dienstprogramm
+Description=Definiert die Dienstprogramme für TimeTracker3
+Copyright=Copyright (C) 2026, Andrey Kapustin

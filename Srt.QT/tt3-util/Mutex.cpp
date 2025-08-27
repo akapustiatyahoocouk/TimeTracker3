@@ -45,7 +45,7 @@ void Mutex::unlock()
         }
     }
     else
-    {   //  ...else the current thread has no business "unlock"ing this mutex
+    {   //  ...else the current thread has no business 'unlock'ing this mutex
         Q_ASSERT(false);
     }
 }

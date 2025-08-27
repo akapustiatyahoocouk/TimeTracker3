@@ -1,0 +1,4 @@
+[Component]
+DisplayName=TimeTracker3 утилиты
+Description=Определяет вспомогательные службы для TimeTracker3
+Copyright=Авторское право (C) 2026, Андрей Капустин

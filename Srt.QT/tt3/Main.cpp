@@ -21,16 +21,6 @@ using namespace tt3;
 //  TT3 entry point
 int main(int argc, char *argv[])
 {
-    /*  TODO kill off
-    qDebug() << QLocale(QLocale::Language::English, QLocale::Country::UnitedKingdom).name();
-    qDebug() << QLocale(QLocale::Language::German, QLocale::Country::Germany).name();
-    qDebug() << QLocale(QLocale::Language::Russian, QLocale::Country::Russia).name();
-    */
-    for (QLocale locale : QLocale::matchingLocales(QLocale::AnyLanguage, QLocale::AnyScript, QLocale::AnyCountry))
-    {   //  TODO kill off
-        qDebug() << locale.name();
-    }
-
     Application a(argc, argv);
 
     int exitCode = a.exec();

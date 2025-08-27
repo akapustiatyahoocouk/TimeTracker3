@@ -90,8 +90,10 @@ void FileResourceFactory::_loadResources()
             QLocale::AnyScript,
             QLocale::AnyCountry);
     for (QLocale locale : allLocales)
-    {
-        _loadResourceFile(locale, prefix + "_" + locale.name() + suffix);
+    {   //  There are locales (e.g. "en-Shaw") wjose "name()"
+        //  is the same as that of the proper "en_GB" locale.
+        //  We don't want these duplicates!
+        _loadResourceFile(QLocale(locale.name()), prefix + "_" + locale.name() + suffix);
     }
 }
 
