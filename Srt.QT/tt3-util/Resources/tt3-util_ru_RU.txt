@@ -2,3 +2,26 @@
 DisplayName=TimeTracker3 утилиты
 Description=Определяет вспомогательные службы для TimeTracker3
 Copyright=Авторское право (C) 2026, Андрей Капустин
+
+[StandardSubsystems]
+Applications.DisplayName=Приложения
+Applications.Description=Приложения верхнего уровня, составляющие TimeTracker3
+Storage.DisplayName=Хранилище данных
+Storage.Description=Компоненты, отвечающие за постоянное хранение данных
+Gui.DisplayName=Пользовательский интерфейс
+Gui.Description=Компоненты, составляющие пользовательский интерфейс
+Reporting.DisplayName=Отчётность
+Reporting.Description=Компоненты, обеспечивающие сводки и функции отчётности
+Utility.DisplayName=Утилиты
+Utility.Description=Компоненты утилит и вспомогательные библиотеки
+
+[MessageDigests]
+Sha1.DisplayName=SHA-1
+
+[StandardLicenses]
+GPLv3.DisplayName=GNU GPL (версия 3)
+GPLv3.Description=Стандартная общественная лицензия GNU (версия 3)
+
+[Errors]
+MissingResourceException=Отсутствует ресурс [{1}]{2} в {0}
+ParseException=Ошибка анализа "{0}" в позиции {1}

@@ -2,3 +2,26 @@
 DisplayName=TimeTracker3 utility
 Description=Defines utility services for TimeTracker3
 Copyright=Copyright (C) 2026, Andrey Kapustin
+
+[StandardSubsystems]
+Applications.DisplayName=Applications
+Applications.Description=Top-level applications making up the TimeTracker3
+Storage.DisplayName=Data storage
+Storage.Description=Components responsible for persistent data storage
+Gui.DisplayName=User interface
+Gui.Description=Components making up the user interface
+Reporting.DisplayName=Reporting
+Reporting.Description=Components providing summaries and reporting features
+Utility.DisplayName=Utility
+Utility.Description=Utility components and support libraries
+
+[MessageDigests]
+Sha1.DisplayName=SHA-1
+
+[StandardLicenses]
+GPLv3.DisplayName=GNU GPL (version 3)
+GPLv3.Description=GNU General Public License (version 3)
+
+[Errors]
+MissingResourceException=Missing resource [{1}]{2} in {0}
+ParseException=Error parsing "{0}" at position {1}

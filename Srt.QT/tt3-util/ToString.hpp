@@ -44,6 +44,8 @@ namespace tt3::util
     //  tt3::util types
     template <> TT3_UTIL_PUBLIC QString toString<TimeSpan>(const TimeSpan & value);
     template <> TT3_UTIL_PUBLIC QString toString<Mnemonic>(const Mnemonic & value);
+    template <> TT3_UTIL_PUBLIC QString toString<ResourceSectionId>(const ResourceSectionId & value);
+    template <> TT3_UTIL_PUBLIC QString toString<ResourceId>(const ResourceId & value);
 }
 
 //  End of tt3-util/ToString.hpp

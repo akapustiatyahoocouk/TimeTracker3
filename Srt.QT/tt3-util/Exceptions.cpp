@@ -30,12 +30,9 @@ MissingResourceException::MissingResourceException(
 
 QString MissingResourceException::errorMessage() const
 {
-    return "Missing resource [" +
-           _sectionId +
-           "]" +
-           _resourceId +
-           " in " +
-           _resourceFactoryName;
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(Errors), RID(MissingResourceException),
+                             _resourceFactoryName, _sectionId, _resourceId);
 }
 
 //////////
@@ -48,11 +45,10 @@ ParseException::ParseException(const QString & string, int position)
 
 QString ParseException::errorMessage() const
 {
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
     QString s = (_string.length() < 129) ? _string : _string.left(128) + "...";
-    return "Error parsing \"" +
-           s +
-           "\" at position " +
-           toString(_position);
+    return resources->string(RSID(Errors), RID(ParseException),
+                             _string, _position);
 }
 
 //  End of tt3-util/Exceptions.cpp

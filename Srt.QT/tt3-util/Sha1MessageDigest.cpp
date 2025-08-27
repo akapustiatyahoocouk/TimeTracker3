@@ -32,7 +32,8 @@ Mnemonic Sha1MessageDigest::mnemonic() const
 
 QString Sha1MessageDigest::displayName() const
 {
-    return "SHA-1";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(MessageDigests), RID(Sha1.DisplayName));
 }
 
 //////////

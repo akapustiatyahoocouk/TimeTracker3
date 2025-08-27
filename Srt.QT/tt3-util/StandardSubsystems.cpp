@@ -30,12 +30,14 @@ Mnemonic StandardSubsystems::Applications::mnemonic() const
 
 QString StandardSubsystems::Applications::displayName() const
 {
-    return "Applications";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(StandardSubsystems), RID(Applications.DisplayName));
 }
 
 QString StandardSubsystems::Applications::description() const
 {
-    return "Top-level applications making up the TimeTracker3";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(StandardSubsystems), RID(Applications.Description));
 }
 
 //////////
@@ -51,12 +53,14 @@ Mnemonic StandardSubsystems::Storage::mnemonic() const
 
 QString StandardSubsystems::Storage::displayName() const
 {
-    return "Data storage";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(StandardSubsystems), RID(Storage.DisplayName));
 }
 
 QString StandardSubsystems::Storage::description() const
 {
-    return "Components responsible for persistent data storage";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(StandardSubsystems), RID(Storage.Description));
 }
 
 //////////
@@ -72,12 +76,14 @@ Mnemonic StandardSubsystems::Gui::mnemonic() const
 
 QString StandardSubsystems::Gui::displayName() const
 {
-    return "User interface";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(StandardSubsystems), RID(Gui.DisplayName));
 }
 
 QString StandardSubsystems::Gui::description() const
 {
-    return "Components making up the user interface";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(StandardSubsystems), RID(Gui.Description));
 }
 
 //////////
@@ -93,12 +99,14 @@ Mnemonic StandardSubsystems::Reporting::mnemonic() const
 
 QString StandardSubsystems::Reporting::displayName() const
 {
-    return "Reporting";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(StandardSubsystems), RID(Reporting.DisplayName));
 }
 
 QString StandardSubsystems::Reporting::description() const
 {
-    return "Components providing summaries and reporting features";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(StandardSubsystems), RID(Reporting.Description));
 }
 
 //////////
@@ -114,12 +122,14 @@ Mnemonic StandardSubsystems::Utility::mnemonic() const
 
 QString StandardSubsystems::Utility::displayName() const
 {
-    return "Utility";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(StandardSubsystems), RID(Utility.DisplayName));
 }
 
 QString StandardSubsystems::Utility::description() const
 {
-    return "Utility components and support libraries";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(StandardSubsystems), RID(Utility.Description));
 }
 
 //  End of tt3-util/StandardSubsystems.cpp

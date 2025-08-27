@@ -46,6 +46,8 @@ namespace tt3::util
     //  tt3::util types
     template <> TT3_UTIL_PUBLIC TimeSpan fromString<TimeSpan>(const QString & s, int & scan) throws(ParseException);
     template <> TT3_UTIL_PUBLIC Mnemonic fromString<Mnemonic>(const QString & s, int & scan) throws(ParseException);
+    template <> TT3_UTIL_PUBLIC ResourceSectionId fromString<ResourceSectionId>(const QString & s, int & scan) throws(ParseException);
+    template <> TT3_UTIL_PUBLIC ResourceId fromString<ResourceId>(const QString & s, int & scan) throws(ParseException);
 
     //////////
     //  Parsing helpers

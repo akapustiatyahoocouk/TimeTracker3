@@ -63,6 +63,7 @@ namespace tt3::util
         virtual QString     string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const QStringList & params) const throws(MissingResourceException);
         virtual QString     string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const QString & param1) const throws(MissingResourceException);
         virtual QString     string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const QString & param1, const QString & param2) const throws(MissingResourceException);
+        virtual QString     string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const QString & param1, const QString & param2, const QString & param3) const throws(MissingResourceException);
         //  TODO more ?
 
         template <class P1>
@@ -76,6 +77,13 @@ namespace tt3::util
         {
             return string(sectionId, resourceId,
                           toString(param1), toString(param2));
+        }
+
+        template <class P1, class P2, class P3>
+        QString             string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const P1 & param1, const P2 & param2, const P3 & param3) const throws(MissingResourceException)
+        {
+            return string(sectionId, resourceId,
+                          toString(param1), toString(param2), toString(param3));
         }
         //  TODO more ?
     };
@@ -98,6 +106,8 @@ namespace tt3::util
         //////////
         //  IResourceFactory
     public:
+        using tt3::util::IResourceFactory::string;
+
         virtual QString     name() const override;
         virtual QLocale     baseLocale() const override;
         virtual Locales     supportedLocales() const override;

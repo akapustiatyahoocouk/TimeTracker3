@@ -390,4 +390,14 @@ template <> TT3_UTIL_PUBLIC tt3::util::Mnemonic tt3::util::fromString<tt3::util:
     return tt3::util::Mnemonic(fromString<QString>(s, scan));
 }
 
+template <> TT3_UTIL_PUBLIC tt3::util::ResourceSectionId tt3::util::fromString<tt3::util::ResourceSectionId>(const QString & s, int & scan) throws(ParseException)
+{
+    return tt3::util::ResourceSectionId(fromString<QString>(s, scan));
+}
+
+template <> TT3_UTIL_PUBLIC tt3::util::ResourceId tt3::util::fromString<tt3::util::ResourceId>(const QString & s, int & scan) throws(ParseException)
+{
+    return tt3::util::ResourceId(fromString<QString>(s, scan));
+}
+
 //  End of tt3-util/FromString.cpp

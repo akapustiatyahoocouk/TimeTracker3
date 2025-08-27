@@ -125,5 +125,15 @@ template <> TT3_UTIL_PUBLIC QString tt3::util::toString<tt3::util::Mnemonic>(con
     return value.toString();
 }
 
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<tt3::util::ResourceSectionId>(const ResourceSectionId & value)
+{
+    return value.toString();
+}
+
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<tt3::util::ResourceId>(const ResourceId & value)
+{
+    return value.toString();
+}
+
 //  End of tt3-util/ToString.cpp
 
