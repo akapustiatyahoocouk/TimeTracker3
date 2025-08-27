@@ -25,7 +25,13 @@ namespace tt3::ws
         //////////
         //  Types
     public:
-        //  The "TT3 Workspace" component settings
+        //  The component's resources
+        class TT3_WS_PUBLIC Resources final : public tt3::util::FileResourceFactory
+        {
+            DECLARE_SINGLETON(Resources)
+        };
+
+        //  The component's settings
         class TT3_WS_PUBLIC Settings final : public tt3::util::Settings
         {
             DECLARE_SINGLETON(Settings)
@@ -59,7 +65,6 @@ namespace tt3::ws
     public:
         using Mnemonic = tt3::util::Mnemonic;
         using Subsystem = tt3::util::ISubsystem;
-        using Resources = tt3::util::FileResourceFactory;
 
         virtual Mnemonic        mnemonic() const override;
         virtual QString         displayName() const override;
@@ -68,13 +73,9 @@ namespace tt3::ws
         virtual QVersionNumber  version() const override;
         virtual QString         buildNumber() const override;
         virtual Subsystem *     subsystem() const override;
-        virtual Resources &     resources() override;
-        virtual Settings &      settings() override;
-
-        //////////
-        //  Implementation
-    private:
-        Resources               _resources;
+        virtual Resources *     resources() const override;
+        virtual Settings *      settings() override;
+        virtual const Settings *settings() const override;
     };
 }
 

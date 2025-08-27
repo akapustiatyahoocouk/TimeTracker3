@@ -129,7 +129,7 @@ void ComponentManager::loadComponentSettings()
             }
             QString settingName = line.mid(0, eqIndex).trimmed();
             QString settingValueString = line.mid(eqIndex + 1).trimmed();
-            AbstractSetting * setting = currentComponent->settings().findSetting(settingName);
+            AbstractSetting * setting = currentComponent->settings()->findSetting(settingName);
             if (setting == nullptr)
             {
                 continue;
@@ -158,7 +158,7 @@ void ComponentManager::saveComponentSettings()
                       << toString(component->version())
                       << "]"
                       << Qt::endl;
-            for (AbstractSetting * setting : component->settings().settings())
+            for (AbstractSetting * setting : component->settings()->settings())
             {
                 iniStream << setting->mnemonic()
                 << "="

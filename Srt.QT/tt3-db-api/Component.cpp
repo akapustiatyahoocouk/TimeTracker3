@@ -22,7 +22,6 @@ using namespace tt3::db::api;
 IMPLEMENT_SINGLETON(Component)
 
 Component::Component()
-    :   _resources(":/tt3-db-api/Resources/tt3-db-api.txt")
 {
     qRegisterMetaType<ChangeNotification>();
     qRegisterMetaType<DatabaseClosedNotification>();
@@ -69,15 +68,27 @@ Component::Subsystem * Component::subsystem() const
     return tt3::util::StandardSubsystems::Storage::instance();
 }
 
-Component::Resources & Component::resources()
+Component::Resources * Component::resources() const
 {
-    return _resources;
+    return Resources::instance();
 }
 
-Component::Settings & Component::settings()
+Component::Settings * Component::settings()
 {
-    return *Settings::instance();
+    return Settings::instance();
 }
+
+const Component::Settings * Component::settings() const
+{
+    return Settings::instance();
+}
+
+//////////
+//  Component::Resources
+IMPLEMENT_SINGLETON(Component::Resources)
+Component::Resources::Resources()
+    :   FileResourceFactory(":/tt3-db-api/Resources/tt3-db-api.txt") {}
+Component::Resources::~Resources() {}
 
 //////////
 //  Component::Settings

@@ -20,15 +20,8 @@ using namespace tt3;
 //////////
 //  Singleton
 IMPLEMENT_SINGLETON(Component)
-
-Component::Component()
-    :   _resources(":/tt3/Resources/tt3.txt")
-{
-}
-
-Component::~Component()
-{
-}
+Component::Component() {}
+Component::~Component() {}
 
 //////////
 //  IComponent
@@ -67,15 +60,27 @@ tt3::util::ISubsystem * Component::subsystem() const
     return tt3::util::StandardSubsystems::Applications::instance();
 }
 
-Component::Resources & Component::resources()
+Component::Resources * Component::resources() const
 {
-    return _resources;
+    return Resources::instance();
 }
 
-Component::Settings & Component::settings()
+Component::Settings * Component::settings()
 {
-    return *Settings::instance();
+    return Settings::instance();
 }
+
+const Component::Settings * Component::settings() const
+{
+    return Settings::instance();
+}
+
+//////////
+//  Component::Resources
+IMPLEMENT_SINGLETON(Component::Resources)
+Component::Resources::Resources()
+    :   FileResourceFactory(":/tt3/Resources/tt3.txt") {}
+Component::Resources::~Resources() {}
 
 //////////
 //  Component::Settings

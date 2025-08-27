@@ -22,7 +22,6 @@ using namespace tt3::ws;
 IMPLEMENT_SINGLETON(Component)
 
 Component::Component()
-    :   _resources(":/tt3-ws/Resources/tt3-ws.txt")
 {
     qRegisterMetaType<ChangeNotification>();
     qRegisterMetaType<WorkspaceClosedNotification>();
@@ -69,14 +68,20 @@ tt3::util::ISubsystem * Component::subsystem() const
     return tt3::util::StandardSubsystems::Storage::instance();
 }
 
-Component::Resources & Component::resources()
+Component::Resources * Component::resources() const
 {
-    return _resources;
+    return Resources::instance();
 }
 
-Component::Settings & Component::settings()
+Component::Settings * Component::settings()
 {
-    return *Settings::instance();}
+    return Settings::instance();
+}
+
+const Component::Settings * Component::settings() const
+{
+    return Settings::instance();
+}
 
 //////////
 //  Component::Settings
@@ -93,6 +98,13 @@ Component::Settings::Settings()
 Component::Settings::~Settings()
 {
 }
+
+//////////
+//  Component::Resources
+IMPLEMENT_SINGLETON(Component::Resources)
+Component::Resources::Resources()
+    :   FileResourceFactory(":/tt3-ws/Resources/tt3-ws.txt") {}
+Component::Resources::~Resources() {}
 
 //////////
 //  Operations

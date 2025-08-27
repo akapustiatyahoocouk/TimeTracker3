@@ -31,6 +31,12 @@ bool Settings::addSetting(AbstractSetting * setting)
     return false;
 }
 
+QSet<AbstractSetting*> Settings::settings() const
+{
+    QList<AbstractSetting*> values = _settings.values();
+    return QSet<AbstractSetting*>(values.begin(), values.end());
+}
+
 AbstractSetting * Settings::findSetting(const QString & mnemonic) const
 {
     if (_settings.contains(mnemonic))

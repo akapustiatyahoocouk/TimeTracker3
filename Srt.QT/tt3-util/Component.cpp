@@ -20,15 +20,8 @@ using namespace tt3::util;
 //////////
 //  Singleton
 IMPLEMENT_SINGLETON(Component)
-
-Component::Component()
-    :   _resources(":/tt3-util/Resources/tt3-util.txt")
-{
-}
-
-Component::~Component()
-{
-}
+Component::Component() {}
+Component::~Component() {}
 
 //////////
 //  IComponent
@@ -39,17 +32,20 @@ Mnemonic Component::mnemonic() const
 
 QString Component::displayName() const
 {
-    return _resources.string(RSID(Component), RID(DisplayName));
+    static Resources * resources = Resources::instance();   //  idempotent
+    return resources->string(RSID(Component), RID(DisplayName));
 }
 
 QString Component::description() const
 {
-    return _resources.string(RSID(Component), RID(Description));
+    static Resources * resources = Resources::instance();   //  idempotent
+    return resources->string(RSID(Component), RID(Description));
 }
 
 QString Component::copyright() const
 {
-    return _resources.string(RSID(Component), RID(Copyright));
+    static Resources * resources = Resources::instance();   //  idempotent
+    return resources->string(RSID(Component), RID(Copyright));
 }
 
 QVersionNumber Component::version() const
@@ -62,20 +58,32 @@ QString Component::buildNumber() const
     return __DATE__;
 }
 
-IResourceFactory & Component::resources()
-{
-    return _resources;
-}
-
 ISubsystem * Component::subsystem() const
 {
     return StandardSubsystems::Utility::instance();
 }
 
-Component::Settings & Component::settings()
+Component::Resources * Component::resources() const
 {
-    return *Settings::instance();
+    return Resources::instance();
 }
+
+Component::Settings * Component::settings()
+{
+    return Settings::instance();
+}
+
+const Component::Settings * Component::settings() const
+{
+    return Settings::instance();
+}
+
+//////////
+//  Component::Resources
+IMPLEMENT_SINGLETON(Component::Resources)
+Component::Resources::Resources()
+    :   FileResourceFactory(":/tt3-util/Resources/tt3-util.txt") {}
+Component::Resources::~Resources() {}
 
 //////////
 //  Component::Settings

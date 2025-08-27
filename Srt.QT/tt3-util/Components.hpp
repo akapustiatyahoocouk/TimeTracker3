@@ -28,7 +28,13 @@ namespace tt3::util
         //////////
         //  Types
     public:
-        //  The "TT3 Util" component settings
+        //  The component's resources
+        class TT3_UTIL_PUBLIC Resources final : public tt3::util::FileResourceFactory
+        {
+            DECLARE_SINGLETON(Resources)
+        };
+
+        //  The component's settings
         class TT3_UTIL_PUBLIC Settings final : public tt3::util::Settings
         {
             DECLARE_SINGLETON(Settings)
@@ -48,13 +54,9 @@ namespace tt3::util
         virtual QVersionNumber  version() const override;
         virtual QString         buildNumber() const override;
         virtual ISubsystem *    subsystem() const override;
-        virtual IResourceFactory &  resources() override;
-        virtual Settings &      settings() override;
-
-        //////////
-        //  Implementation
-    private:
-        FileResourceFactory     _resources;
+        virtual Resources *     resources() const override;
+        virtual Settings *      settings() override;
+        virtual const Settings *settings() const override;
     };
 }
 

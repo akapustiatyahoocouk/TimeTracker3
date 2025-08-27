@@ -27,7 +27,7 @@ namespace tt3::util
 
         //////////
         //  Construction/destruction
-    public:
+    protected:
         explicit AbstractSetting(const QString & mnemonic, bool changeRequiresRestart)
             :   _mnemonic(mnemonic), _changeRequiresRestart(changeRequiresRestart) {}
         virtual ~AbstractSetting() = default;
@@ -140,24 +140,28 @@ namespace tt3::util
     };
 
     //////////
-    //  A bunch of related settings
+    //  A bunch of related settings.
+    //  Concrete subclasses will normally be singletons.
     class TT3_UTIL_PUBLIC Settings
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Settings)
 
         //////////
         //  Construction/destruction
-    public:
+    protected:
         Settings() = default;
         virtual ~Settings() = default;
 
         //////////
         //  Operations
     protected:
+        //  A helper service for constructors of
+        //  derived classes to populate the Settings
+        //  with aggregated Setting<?> instances
         bool                addSetting(AbstractSetting * setting);
     public:
-        //  An unordered list of all settings in this bunch
-        QList<AbstractSetting*> settings() const { return _settings.values(); }
+        //  A set of all settings in this bunch
+        QSet<AbstractSetting*>  settings() const;
 
         //  Finds a setting with the specified mnemonic in
         //  this settings; returns nullptr if not found

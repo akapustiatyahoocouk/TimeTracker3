@@ -95,6 +95,8 @@ void FileResourceFactory::_loadResources()
         //  We don't want these duplicates!
         _loadResourceFile(QLocale(locale.name()), prefix + "_" + locale.name() + suffix);
     }
+    //  If _supportedLocales does not include baseLocale()
+    //  we have an error, so TODO assert
 }
 
 void FileResourceFactory::_loadResourceFile(const QLocale & locale, const QString & fileName)

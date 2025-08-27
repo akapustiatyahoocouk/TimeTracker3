@@ -1,7 +1,7 @@
 //
 //  tt3-util/Component.cpp - Component framework
 //
-//  YimeTracker3
+//  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
 //  This program is free software: you can redistribute it and/or modify
@@ -66,12 +66,11 @@ namespace tt3::util
         virtual ISubsystem *    subsystem() const = 0;
 
         //  The resource factory used by this component.
-        //  TODO "const" variant too ?
-        virtual IResourceFactory &  resources() = 0;
+        virtual IResourceFactory *  resources() const = 0;
 
-        //  The settings of this component
-        //  TODO "const" variant too ?
-        virtual Settings &      settings() = 0;
+        //  The settings of this component.
+        virtual Settings *          settings() = 0;
+        virtual const Settings *    settings() const = 0;
     };
 
     //  The manager of known components

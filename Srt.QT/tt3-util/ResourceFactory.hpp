@@ -18,7 +18,9 @@
 namespace tt3::util
 {
     //  A "resource factory" is an agent that provides
-    //  localized variants of the resources it manages
+    //  localized variants of the resources it manages.
+    //  Concrete classes implementing this interface
+    //  will normally be singletons.
     class TT3_UTIL_PUBLIC IResourceFactory
     {
         //////////
@@ -89,7 +91,7 @@ namespace tt3::util
 
         //////////
         //  Construction/destruction
-    public:
+    protected:
         explicit FileResourceFactory(const QString & baseFileName);
         virtual ~FileResourceFactory();
 

@@ -62,7 +62,7 @@ PreferencesDialog::PreferencesDialog(QWidget * parent) throw(int)
     //  Start listening to component settings changes
     for (tt3::util::IComponent * component : tt3::util::ComponentManager::allComponents())
     {
-        for (tt3::util::AbstractSetting * setting : component->settings().settings())
+        for (tt3::util::AbstractSetting * setting : component->settings()->settings())
         {
             connect(setting,
                     &tt3::util::AbstractSetting::valueChanged,
