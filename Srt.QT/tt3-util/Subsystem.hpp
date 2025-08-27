@@ -46,6 +46,10 @@ namespace tt3::util
 
         //  The large (32x32) icon representing this subsystem.
         virtual QIcon       largeIcon() const;
+
+        //  The set of all registered components that belong
+        //  to this subsystem.
+        virtual QSet<IComponent*>   components() const;
     };
 
     //  The standard (predefined) subsystems

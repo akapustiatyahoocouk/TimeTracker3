@@ -24,5 +24,9 @@
         <file>Resources/Images/Actions/ShowConfigurationSmall.png</file>
         <file>Resources/Images/Actions/ShowLicenseLarge.png</file>
         <file>Resources/Images/Actions/ShowLicenseSmall.png</file>
+        <file>Resources/Images/Objects/ComponentLarge.png</file>
+        <file>Resources/Images/Objects/ComponentSmall.png</file>
+        <file>Resources/Images/Objects/SubsystemLarge.png</file>
+        <file>Resources/Images/Objects/SubsystemSmall.png</file>
     </qresource>
 </RCC>

@@ -67,7 +67,7 @@ void MessageDigestManager::_registerStandardMessageDigests()
     Q_ASSERT(_guard.isLockedByCurrentThread());
 
     if (_registry.isEmpty())
-    {
+    {   //  TODO see e.g. SubsystemManager
         registerMessageDigest(Sha1MessageDigest::instance());
     }
 }

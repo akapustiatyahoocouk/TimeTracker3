@@ -21,6 +21,7 @@ SOURCES += \
     PreferencesEditor.cpp \
     PreferencesManager.cpp \
     SelectWorkspaceDialog.cpp \
+    ShowConfigurationDialog.cpp \
     ShowLicenseDialog.cpp \
     SkinManager.cpp
 
@@ -39,6 +40,7 @@ HEADERS += \
     PreferencesDialog.hpp \
     PreferencesEditor.hpp \
     SelectWorkspaceDialog.hpp \
+    ShowConfigurationDialog.hpp \
     ShowLicenseDialog.hpp \
     Skin.hpp
 
@@ -50,6 +52,7 @@ FORMS += \
     NewWorkspaceDialog.ui \
     PreferencesDialog.ui \
     SelectWorkspaceDialog.ui \
+    ShowConfigurationDialog.ui \
     ShowLicenseDialog.ui
 
 RESOURCES += \

@@ -91,7 +91,8 @@ void AboutDialog::_showLicensePushButtonClicked()
 
 void AboutDialog::_showConfigurationPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    ShowConfigurationDialog dlg(this);
+    dlg.exec();
 }
 
 void AboutDialog::_onShowLicense()

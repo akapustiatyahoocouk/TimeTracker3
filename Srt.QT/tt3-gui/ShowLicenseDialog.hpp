@@ -19,7 +19,7 @@
 
 namespace tt3::gui
 {
-    //  The modal "login" dialog
+    //  The modal "show license" dialog
     namespace Ui { class ShowLicenseDialog; }
 
     class TT3_GUI_PUBLIC ShowLicenseDialog final : public QDialog

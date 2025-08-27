@@ -68,11 +68,15 @@ void SubsystemManager::_registerStandardSubsystems()
 
     if (_registry.isEmpty())
     {
-        registerSubsystem(StandardSubsystems::Applications::instance());
-        registerSubsystem(StandardSubsystems::Storage::instance());
-        registerSubsystem(StandardSubsystems::Gui::instance());
-        registerSubsystem(StandardSubsystems::Reporting::instance());
-        registerSubsystem(StandardSubsystems::Utility::instance());
+#define REGISTER(Subsystem)                                         \
+        _registry.insert(                                           \
+            StandardSubsystems::Subsystem::instance()->mnemonic(),  \
+            StandardSubsystems::Subsystem::instance())
+        REGISTER(Applications);
+        REGISTER(Storage);
+        REGISTER(Gui);
+        REGISTER(Reporting);
+        REGISTER(Utility);
     }
 }
 

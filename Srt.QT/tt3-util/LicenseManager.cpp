@@ -68,7 +68,11 @@ void LicenseManager::_registerStandardLicenses()
 
     if (_registry.isEmpty())
     {
-        registerLicense(StandardLicenses::Gpl3::instance());
+#define REGISTER(Subsystem)                                         \
+        _registry.insert(                                           \
+            StandardLicenses::Subsystem::instance()->mnemonic(),    \
+            StandardLicenses::Subsystem::instance())
+        REGISTER(Gpl3);
     }
 }
 

@@ -31,4 +31,17 @@ QIcon ISubsystem::largeIcon() const
     return icon;
 }
 
+QSet<IComponent*> ISubsystem::components() const
+{
+    QSet<IComponent*> result;
+    for (IComponent * component : ComponentManager::allComponents())
+    {
+        if (component->subsystem() == this)
+        {
+            result.insert(component);
+        }
+    }
+    return result;
+}
+
 //  End of tt3-util/ISubsystem.cpp
