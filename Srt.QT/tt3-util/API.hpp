@@ -116,6 +116,7 @@
 #include "tt3-util/Plugin.hpp"
 #include "tt3-util/Settings.hpp"
 #include "tt3-util/Component.hpp"
+#include "tt3-util/Subsystem.hpp"
 
 #include "tt3-util/Components.hpp"
 

@@ -18,6 +18,7 @@
 namespace tt3::util
 {
     class TT3_UTIL_PUBLIC Settings;
+    class TT3_UTIL_PUBLIC ISubsystem;
 
     //////////
     //  A "component".
@@ -56,13 +57,16 @@ namespace tt3::util
         virtual QString         buildNumber() const = 0;
 
         //  The small (16x16) icon representing this component.
-        virtual QIcon       smallIcon() const;
+        virtual QIcon           smallIcon() const;
 
         //  The large (32x32) icon representing this component.
-        virtual QIcon       largeIcon() const;
+        virtual QIcon           largeIcon() const;
 
         //  The license of this component (default GPLv3).
-        virtual tt3::util::ILicense *   license() const;
+        virtual ILicense *      license() const;
+
+        //  The subsystem yo which this component belongs.
+        virtual ISubsystem *    subsystem() const = 0;
 
         //  The settings of this component
         virtual Settings &      settings() = 0;
@@ -78,25 +82,25 @@ namespace tt3::util
         //  Operations
     public:
         //  Returns the set of all registered components.
-        static QSet<IComponent*>    allComponents();
+        static QSet<IComponent*>allComponents();
 
         //  Registers the specified component; returns true
         //  on success, false on failure.
-        static bool                 registerComponent(IComponent * component);
+        static bool             registerComponent(IComponent * component);
 
         //  Finds a registered component by mnemonic and version.
-        static IComponent *         findComponent(const QString & mnemonic, const QVersionNumber & version);
+        static IComponent *     findComponent(const QString & mnemonic, const QVersionNumber & version);
 
         //  Finds a registered component by mnemonic; if several versions
         //  of component with the same mnemonic are registered, returns the
         //  one with the latest version.
-        static IComponent *         findComponent(const QString & mnemonic);    //  finds the latest version
+        static IComponent *     findComponent(const QString & mnemonic);    //  finds the latest version
 
         //  Loads Settings of all registered components from a text configuration file.
-        static void                 loadComponentSettings();
+        static void             loadComponentSettings();
 
         //  Saves Settings of all registered components to a text configuration file.
-        static void                 saveComponentSettings();
+        static void             saveComponentSettings();
 
         //////////
         //  Implementation

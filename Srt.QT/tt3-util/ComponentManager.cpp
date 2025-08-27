@@ -44,6 +44,10 @@ bool ComponentManager::registerComponent(IComponent * component)
     else
     {
         qDebug() << "Registering " << component->displayName();
+        if (!SubsystemManager::registerSubsystem(component->subsystem()))
+        {   //  OOPS! Can't proceed!
+            return false;
+        }
         QString key = component->mnemonic() + "|" + util::toString(component->version());
         _registry[key] = component;
         return true;

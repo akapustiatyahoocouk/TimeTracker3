@@ -7,17 +7,20 @@ SOURCES += \
     Component.cpp \
     ComponentManager.cpp \
     FromString.cpp \
-    Gpl3Licene.cpp \
     IComponent.cpp \
     ILicense.cpp \
     IMessageDigest.cpp \
     IPlugin.cpp \
+    ISubsystem.cpp \
     LicenseManager.cpp \
     MessageDigestManager.cpp \
     Mutex.cpp \
     PluginManager.cpp \
     Settings.cpp \
     Sha1MessageDigest.cpp \
+    StandardLicenses.cpp \
+    StandardSubsystems.cpp \
+    SubsystemManager.cpp \
     TimeSpan.cpp \
     ToString.cpp
 
@@ -35,6 +38,7 @@ HEADERS += \
     MessageDigest.hpp \
     Plugin.hpp \
     Settings.hpp \
+    Subsystem.hpp \
     Sync.hpp \
     ToString.hpp
 

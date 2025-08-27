@@ -63,6 +63,11 @@ QString Component::buildNumber() const
     return __DATE__;
 }
 
+tt3::util::ISubsystem * Component::subsystem() const
+{
+    return tt3::util::StandardSubsystems::Storage::instance();
+}
+
 //////////
 //  Component::Settings
 IMPLEMENT_SINGLETON(Component::Settings)

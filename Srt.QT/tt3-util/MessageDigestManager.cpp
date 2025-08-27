@@ -66,7 +66,10 @@ void MessageDigestManager::_registerStandardMessageDigests()
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
 
-    registerMessageDigest(Sha1MessageDigest::instance());
+    if (_registry.isEmpty())
+    {
+        registerMessageDigest(Sha1MessageDigest::instance());
+    }
 }
 
 //  End of tt3-util/MessageDigestManager.cpp

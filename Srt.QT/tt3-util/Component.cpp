@@ -55,8 +55,13 @@ QString Component::buildNumber() const
     return __DATE__;
 }
 
+ISubsystem * Component::subsystem() const
+{
+    return StandardSubsystems::Utility::instance();
+}
+
 //////////
-//  Component::UtilSettings
+//  Component::Settings
 IMPLEMENT_SINGLETON(Component::Settings)
 Component::Settings::Settings() {}
 Component::Settings::~Settings() {}

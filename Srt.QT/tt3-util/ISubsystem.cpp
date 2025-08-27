@@ -1,5 +1,5 @@
 //
-//  tt3-util/IComponent.cpp - tt3::util::IComponent interface implementation
+//  tt3-util/ISubsystem.cpp - The tt3::util::ISubsystem interface implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,21 +19,16 @@ using namespace tt3::util;
 
 //////////
 //  Operations (properties)
-QIcon IComponent::smallIcon() const
+QIcon ISubsystem::smallIcon() const
 {
-    static QIcon icon(":/tt3-util/Resources/Images/Objects/ComponentSmall.png");
+    static QIcon icon(":/tt3-util/Resources/Images/Objects/SubsystemSmall.png");
     return icon;
 }
 
-QIcon IComponent::largeIcon() const
+QIcon ISubsystem::largeIcon() const
 {
-    static QIcon icon(":/tt3-util/Resources/Images/Objects/ComponentLarge.png");
+    static QIcon icon(":/tt3-util/Resources/Images/Objects/SubsystemLarge.png");
     return icon;
 }
 
-tt3::util::ILicense * IComponent::license() const
-{
-    return StandardLicenses::Gpl3::instance();
-}
-
-//  End of tt3-util/IComponent.cpp
+//  End of tt3-util/ISubsystem.cpp

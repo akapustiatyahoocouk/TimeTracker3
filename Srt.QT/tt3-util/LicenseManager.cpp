@@ -66,7 +66,10 @@ void LicenseManager::_registerStandardLicenses()
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
 
-    registerLicense(Gpl3Licene::instance());
+    if (_registry.isEmpty())
+    {
+        registerLicense(StandardLicenses::Gpl3::instance());
+    }
 }
 
 //  End of tt3-util/MessageDigestManager.cpp

@@ -108,7 +108,7 @@ void AboutDialog::_onShowLicense()
         }
     }
     //  Fall back to GPLv3
-    ShowLicenseDialog dlg(this, tt3::util::Gpl3Licene::instance());
+    ShowLicenseDialog dlg(this, tt3::util::StandardLicenses::Gpl3::instance());
     dlg.exec();
 }
 

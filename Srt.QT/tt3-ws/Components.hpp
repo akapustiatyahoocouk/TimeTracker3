@@ -63,6 +63,7 @@ namespace tt3::ws
         virtual QString         copyright() const override;
         virtual QVersionNumber  version() const override;
         virtual QString         buildNumber() const override;
+        virtual tt3::util::ISubsystem * subsystem() const override;
         virtual Settings &      settings() override { return *Settings::instance(); }
 
         //////////

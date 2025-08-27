@@ -20,7 +20,6 @@ using namespace tt3::db::xml;
 //////////
 //  Singleton
 IMPLEMENT_SINGLETON(Component)
-
 Component::Component() {}
 Component::~Component() {}
 
@@ -54,6 +53,11 @@ QVersionNumber Component::version() const
 QString Component::buildNumber() const
 {
     return __DATE__;
+}
+
+tt3::util::ISubsystem * Component::subsystem() const
+{
+    return tt3::util::StandardSubsystems::Storage::instance();
 }
 
 //////////

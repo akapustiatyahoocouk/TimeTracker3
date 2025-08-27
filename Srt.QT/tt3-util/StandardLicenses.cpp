@@ -1,5 +1,5 @@
 //
-//  tt3-util/Gpl3Licene.cpp - tt3::util::Gpl3Licene class implementation
+//  tt3-util/StandardLicenses.cpp - tt3::util::StandardLicenses class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -23,29 +23,27 @@ bool operator < (const QLocale & a, const QLocale & b)
 }
 
 //////////
-//  Singleton
-IMPLEMENT_SINGLETON(Gpl3Licene)
-Gpl3Licene::Gpl3Licene() {}
-Gpl3Licene::~Gpl3Licene() {}
+//  StandardLicenses::Gpl3
+IMPLEMENT_SINGLETON(StandardLicenses::Gpl3)
+StandardLicenses::Gpl3::Gpl3() {}
+StandardLicenses::Gpl3::~Gpl3() {}
 
-//////////
-//  ILicense
-QString Gpl3Licene::mnemonic() const
+QString StandardLicenses::Gpl3::mnemonic() const
 {
     return "GPLv3";
 }
 
-QString Gpl3Licene::displayName() const
+QString StandardLicenses::Gpl3::displayName() const
 {
     return "GNU GPL (version 3)";
 }
 
-QString Gpl3Licene::description() const
+QString StandardLicenses::Gpl3::description() const
 {
     return "GNU General Public License (version 3)";
 }
 
-QString Gpl3Licene::contentAsHtml() const
+QString StandardLicenses::Gpl3::contentAsHtml() const
 {
     tt3::util::Lock lock(_contentsGuard);
 
@@ -86,4 +84,4 @@ QString Gpl3Licene::contentAsHtml() const
     return content;
 }
 
-//  End of tt3-util/Gpl3Licene.cpp
+//  End of tt3-util/StandardLicenses.cpp

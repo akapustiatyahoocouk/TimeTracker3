@@ -52,23 +52,33 @@ namespace tt3::util
         virtual QString     contentAsHtml() const = 0;
     };
 
-    class TT3_UTIL_PUBLIC Gpl3Licene final : public virtual ILicense
+    //  The standard (predefined) licenses
+    class TT3_UTIL_PUBLIC StandardLicenses final
     {
-        DECLARE_SINGLETON(Gpl3Licene)
+        UTILITY_CLASS(StandardLicenses)
 
         //////////
-        //  ILicense
+        //  Members
     public:
-        virtual QString     mnemonic() const override;
-        virtual QString     displayName() const override;
-        virtual QString     description() const override;
-        virtual QString     contentAsHtml() const override;
+        //  The GPLv3 license
+        class TT3_UTIL_PUBLIC Gpl3 final : public virtual ILicense
+        {
+            DECLARE_SINGLETON(Gpl3)
 
-        //////////
-        //  Implementation
-    private:
-        mutable tt3::util::Mutex        _contentsGuard;
-        mutable QMap<QLocale, QString>  _contentsAsHtml;
+            //////////
+            //  ILicense
+        public:
+            virtual QString     mnemonic() const override;
+            virtual QString     displayName() const override;
+            virtual QString     description() const override;
+            virtual QString     contentAsHtml() const override;
+
+            //////////
+            //  Implementation
+        private:
+            mutable tt3::util::Mutex        _contentsGuard;
+            mutable QMap<QLocale, QString>  _contentsAsHtml;
+        };
     };
 
     //////////
