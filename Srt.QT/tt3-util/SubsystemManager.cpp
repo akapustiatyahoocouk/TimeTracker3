@@ -22,13 +22,13 @@ QMap<QString, ISubsystem*> SubsystemManager::_registry;
 
 //////////
 //  Operations
-QSet<ISubsystem*> SubsystemManager::allSubsystems()
+Subsystems SubsystemManager::allSubsystems()
 {
     tt3::util::Lock lock(_guard);
 
     _registerStandardSubsystems();
     QList<ISubsystem*> values = _registry.values();
-    return QSet<ISubsystem*>(values.begin(), values.end());
+    return Subsystems(values.begin(), values.end());
 }
 
 bool SubsystemManager::registerSubsystem(ISubsystem * subsystem)

@@ -39,6 +39,8 @@ namespace tt3::db::xml
         //  IComponent
     public:
         using Mnemonic = tt3::util::Mnemonic;
+        using Subsystem = tt3::util::ISubsystem;
+        using Resources = tt3::util::FileResourceFactory;
 
         virtual Mnemonic        mnemonic() const override;
         virtual QString         displayName() const override;
@@ -46,12 +48,14 @@ namespace tt3::db::xml
         virtual QString         copyright() const override;
         virtual QVersionNumber  version() const override;
         virtual QString         buildNumber() const override;
-        virtual tt3::util::ISubsystem * subsystem() const override;
+        virtual Subsystem *     subsystem() const override;
+        virtual Resources &     resources() override;
         virtual Settings &      settings() override { return *Settings::instance(); }
 
         //////////
         //  Implementation
     private:
+        Resources               _resources;
     };
 }
 

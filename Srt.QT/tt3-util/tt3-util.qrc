@@ -11,5 +11,6 @@
         <file>Resources/Licenses/GPLv3_de.html</file>
         <file>Resources/Licenses/GPLv3_en.html</file>
         <file>Resources/Licenses/GPLv3_ru.html</file>
+        <file>Resources/tt3-util_en_GB.txt</file>
     </qresource>
 </RCC>

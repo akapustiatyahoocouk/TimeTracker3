@@ -17,9 +17,18 @@
 #include "tt3/API.hpp"
 using namespace tt3;
 
+//////////
+//  Singleton
 IMPLEMENT_SINGLETON(Component)
-Component::Component() {}
-Component::~Component() {}
+
+Component::Component()
+    :   _resources(":/tt3/Resources/tt3.txt")
+{
+}
+
+Component::~Component()
+{
+}
 
 //////////
 //  IComponent
@@ -56,6 +65,16 @@ QString Component::buildNumber() const
 tt3::util::ISubsystem * Component::subsystem() const
 {
     return tt3::util::StandardSubsystems::Applications::instance();
+}
+
+Component::Resources & Component::resources()
+{
+    return _resources;
+}
+
+Component::Settings & Component::settings()
+{
+    return *Settings::instance();
 }
 
 //////////

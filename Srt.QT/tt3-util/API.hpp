@@ -100,8 +100,8 @@
 //////////
 //  tt3-util components
 #include "tt3-util/Linkage.hpp"
+#include "tt3-util/Classes.hpp"
 #include "tt3-util/Macros.hpp"
-#include "tt3-util/Exceptions.hpp"
 
 //  Platform API
 #include "tt3-util/Sync.hpp"
@@ -120,10 +120,12 @@
 #include "tt3-util/License.hpp"
 #include "tt3-util/Plugin.hpp"
 #include "tt3-util/Settings.hpp"
+#include "tt3-util/ResourceFactory.hpp"
 #include "tt3-util/Component.hpp"
 #include "tt3-util/Subsystem.hpp"
 
 //  Misc
 #include "tt3-util/Components.hpp"
+#include "tt3-util/Exceptions.hpp"
 
 //  End of tt3-util/API.hpp

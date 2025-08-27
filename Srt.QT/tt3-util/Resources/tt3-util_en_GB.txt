@@ -1,0 +1,4 @@
+[Component]
+DisplayName=TimeTracker3 utility
+Description=Defines utility services for TimeTracker3
+Copyright=Copyright (C) 2026, Andrey Kapustin

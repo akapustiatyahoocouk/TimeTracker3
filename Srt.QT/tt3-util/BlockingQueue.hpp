@@ -5,7 +5,6 @@
 
 namespace tt3::util
 {
-    //////////
     //  A "blocking inter-thread queue" ADT
     template <class T>
     class BlockingQueue
@@ -21,8 +20,16 @@ namespace tt3::util
         //////////
         //  Operations
     public:
+        //  Adds value to the end of the queue.
         void                enqueue(const T & value);
+
+        //  Removes the value at the start of the queue and returns
+        //  it, idle-waiting until one is actually available.
         T                   dequeue();
+
+        //  Attempts to remove and store the item at the start
+        //  of the queue. On success, stores the value and returns
+        //  true; on timeout returns false.
         bool                tryDequeue(T & value, int timeoutMs);
 
         //////////

@@ -20,8 +20,15 @@ using namespace tt3::util;
 //////////
 //  Singleton
 IMPLEMENT_SINGLETON(Component)
-Component::Component() {}
-Component::~Component() {}
+
+Component::Component()
+    :   _resources(":/tt3-util/Resources/tt3-util.txt")
+{
+}
+
+Component::~Component()
+{
+}
 
 //////////
 //  IComponent
@@ -32,17 +39,17 @@ Mnemonic Component::mnemonic() const
 
 QString Component::displayName() const
 {
-    return "TimeTracker3 utility";
+    return _resources.string(RSID(Component), RID(DisplayName));
 }
 
 QString Component::description() const
 {
-    return "Defines utility services for TimeTracker3";
+    return _resources.string(RSID(Component), RID(Description));
 }
 
 QString Component::copyright() const
 {
-    return "Copyright (C) 2026, Andrey Kapustin";
+    return _resources.string(RSID(Component), RID(Copyright));
 }
 
 QVersionNumber Component::version() const
@@ -55,9 +62,19 @@ QString Component::buildNumber() const
     return __DATE__;
 }
 
+IResourceFactory & Component::resources()
+{
+    return _resources;
+}
+
 ISubsystem * Component::subsystem() const
 {
     return StandardSubsystems::Utility::instance();
+}
+
+Component::Settings & Component::settings()
+{
+    return *Settings::instance();
 }
 
 //////////

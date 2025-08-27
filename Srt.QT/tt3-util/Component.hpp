@@ -17,10 +17,6 @@
 
 namespace tt3::util
 {
-    class TT3_UTIL_PUBLIC Settings;
-    class TT3_UTIL_PUBLIC ISubsystem;
-
-    //////////
     //  A "component".
     //  While a "plugin" is a unit of disctibution (e.g. 1 DLL == 1 plugin),
     //  "components" are architectural elements, so it may be not uncommon
@@ -69,11 +65,15 @@ namespace tt3::util
         //  The subsystem yo which this component belongs.
         virtual ISubsystem *    subsystem() const = 0;
 
+        //  The resource factory used by this component.
+        //  TODO "const" variant too ?
+        virtual IResourceFactory &  resources() = 0;
+
         //  The settings of this component
+        //  TODO "const" variant too ?
         virtual Settings &      settings() = 0;
     };
 
-    //////////
     //  The manager of known components
     class TT3_UTIL_PUBLIC ComponentManager final
     {
@@ -83,25 +83,25 @@ namespace tt3::util
         //  Operations
     public:
         //  Returns the set of all registered components.
-        static QSet<IComponent*>allComponents();
+        static Components   allComponents();
 
         //  Registers the specified component; returns true
         //  on success, false on failure.
-        static bool             registerComponent(IComponent * component);
+        static bool         registerComponent(IComponent * component);
 
         //  Finds a registered component by mnemonic and version.
-        static IComponent *     findComponent(const QString & mnemonic, const QVersionNumber & version);
+        static IComponent * findComponent(const QString & mnemonic, const QVersionNumber & version);
 
         //  Finds a registered component by mnemonic; if several versions
         //  of component with the same mnemonic are registered, returns the
         //  one with the latest version.
-        static IComponent *     findComponent(const QString & mnemonic);    //  finds the latest version
+        static IComponent * findComponent(const QString & mnemonic);    //  finds the latest version
 
         //  Loads Settings of all registered components from a text configuration file.
-        static void             loadComponentSettings();
+        static void         loadComponentSettings();
 
         //  Saves Settings of all registered components to a text configuration file.
-        static void             saveComponentSettings();
+        static void         saveComponentSettings();
 
         //////////
         //  Implementation

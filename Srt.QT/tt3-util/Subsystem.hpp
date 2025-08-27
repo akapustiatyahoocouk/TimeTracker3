@@ -49,7 +49,7 @@ namespace tt3::util
 
         //  The set of all registered components that belong
         //  to this subsystem.
-        virtual QSet<IComponent*>   components() const;
+        virtual Components  components() const;
     };
 
     //  The standard (predefined) subsystems
@@ -135,7 +135,7 @@ namespace tt3::util
         //  Operations
     public:
         //  Returns the set of all registered subsystems.
-        static QSet<ISubsystem*>    allSubsystems();
+        static Subsystems   allSubsystems();
 
         //  Registers the specified Subsystem; returns true
         //  on success, false on failure.

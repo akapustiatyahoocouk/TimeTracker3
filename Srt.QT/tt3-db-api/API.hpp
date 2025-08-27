@@ -21,7 +21,7 @@
 #include "tt3-util/API.hpp"
 
 //////////
-//  db-db-xml components
+//  tt3-db-api components
 #include "tt3-db-api/Linkage.hpp"
 #include "tt3-db-api/Classes.hpp"
 #include "tt3-db-api/Components.hpp"

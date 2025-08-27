@@ -67,8 +67,11 @@ void MessageDigestManager::_registerStandardMessageDigests()
     Q_ASSERT(_guard.isLockedByCurrentThread());
 
     if (_registry.isEmpty())
-    {   //  TODO see e.g. SubsystemManager
-        registerMessageDigest(Sha1MessageDigest::instance());
+    {
+#define REGISTER(Clazz)                                 \
+        _registry.insert(Clazz::instance()->mnemonic(), \
+                         Clazz::instance())
+        REGISTER(Sha1MessageDigest);
     }
 }
 

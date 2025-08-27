@@ -321,13 +321,16 @@ template <> TT3_UTIL_PUBLIC QRect tt3::util::fromString<QRect>(const QString & s
 template <> TT3_UTIL_PUBLIC QVersionNumber tt3::util::fromString<QVersionNumber>(const QString & s, int & scan) throws(ParseException)
 {
     int prescan = scan;
-    int major, minor, micro;
 
-    major = fromString<int>(s,prescan);
+    int major = fromString<int>(s,prescan);
     skipCharacter(s, prescan, '.');
-    minor = fromString<int>(s,prescan);
+    int minor = fromString<int>(s,prescan);
     skipCharacter(s, prescan, '.');
-    micro= fromString<int>(s,prescan);
+    int micro = fromString<int>(s,prescan);
+    if (major < 0 || minor < 0 || micro < 0)
+    {
+        throw ParseException(s, scan);
+    }
 
     scan = prescan;
     return QVersionNumber(major, minor, micro);

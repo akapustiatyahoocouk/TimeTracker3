@@ -18,8 +18,8 @@
 using namespace tt3::util;
 
 QSet<QString>  PluginManager::_processedDlls;
-QSet<IPlugin*> PluginManager::_discoveredPlugins;
-QSet<IPlugin*> PluginManager::_initializedPlugins;
+Plugins PluginManager::_discoveredPlugins;
+Plugins PluginManager::_initializedPlugins;
 
 //////////
 //  Operations
@@ -61,12 +61,12 @@ void PluginManager::loadPlugins()
     }
 }
 
-QSet<IPlugin*> PluginManager::discoveredPlugins()
+Plugins PluginManager::discoveredPlugins()
 {
     return _discoveredPlugins;
 }
 
-QSet<IPlugin*> PluginManager::initializedPlugins()
+Plugins PluginManager::initializedPlugins()
 {
     return _initializedPlugins;
 }
@@ -94,7 +94,7 @@ void PluginManager::_loadPluginsFromLibrary(const QString & fileName)
         return;
     }
     //  Get and register all plugis
-    QSet<IPlugin*> plugins;
+    Plugins plugins;
     (*pluginExportProc)(plugins);
     for (auto plugin : plugins)
     {

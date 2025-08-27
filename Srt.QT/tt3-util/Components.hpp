@@ -15,6 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 
+//  The #ifdef guard is needed for MOC to work properly
 #ifdef TT3_UTIL_SETTINGS_DEFINED
 
 namespace tt3::util
@@ -47,11 +48,13 @@ namespace tt3::util
         virtual QVersionNumber  version() const override;
         virtual QString         buildNumber() const override;
         virtual ISubsystem *    subsystem() const override;
-        virtual Settings &      settings() override { return *Settings::instance(); }
+        virtual IResourceFactory &  resources() override;
+        virtual Settings &      settings() override;
 
         //////////
         //  Implementation
     private:
+        FileResourceFactory     _resources;
     };
 }
 

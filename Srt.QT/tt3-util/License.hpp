@@ -91,7 +91,7 @@ namespace tt3::util
         //  Operations
     public:
         //  Returns the set of all registered licenses.
-        static QSet<ILicense*>  allLicenses();
+        static Licenses     allLicenses();
 
         //  Registers the specified License; returns true
         //  on success, false on failure.

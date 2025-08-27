@@ -31,9 +31,9 @@ QIcon ISubsystem::largeIcon() const
     return icon;
 }
 
-QSet<IComponent*> ISubsystem::components() const
+Components ISubsystem::components() const
 {
-    QSet<IComponent*> result;
+    Components result;
     for (IComponent * component : ComponentManager::allComponents())
     {
         if (component->subsystem() == this)

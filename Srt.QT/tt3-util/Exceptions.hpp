@@ -36,6 +36,90 @@ namespace tt3::util
         //  exception for the current default locale
         virtual QString     errorMessage() const = 0;
     };
+
+    //  Thrown when a requested resource is not available
+    class TT3_UTIL_PUBLIC MissingResourceException : public Exception
+    {
+        using Self = MissingResourceException;
+
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        MissingResourceException(
+            const QString & resourceFactoryName,
+            const ResourceSectionId & sectionId, const ResourceId & resourceId);
+        //  The default copy constructor, assignment operator
+        //  and destructor are all OK.
+
+        //////////
+        //  QException
+    public:
+        void                raise() const override { throw *this; }
+        Self *              clone() const override { return new Self(*this); }
+
+        //////////
+        //  Exception
+    public:
+        virtual QString     errorMessage() const override;
+
+        //////////
+        //  Properties
+    public:
+        //  The name of the resource factory where a resource is missing.
+        QString             resourceFactoryName() const { return _resourceFactoryName; }
+
+        //  The ID of the resource section where the resource is missing.
+        ResourceSectionId   sectionId() const { return _sectionId; }
+
+        //  The ID of the resource that is missing.
+        ResourceId          resourceId() const { return _resourceId; }
+
+        //////////
+        //  Implementation
+    private:
+        QString             _resourceFactoryName;
+        ResourceSectionId   _sectionId;
+        ResourceId          _resourceId;
+    };
+
+    //  Thrown when an attempt to parse a string fails
+    class TT3_UTIL_PUBLIC ParseException : public Exception
+    {
+        using Self = ParseException;
+
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        ParseException(const QString & string, int position);
+        //  The default copy constructor, assignment operator
+        //  and destructor are all OK.
+
+        //////////
+        //  QException
+    public:
+        void                raise() const override { throw *this; }
+        Self *              clone() const override { return new Self(*this); }
+
+        //////////
+        //  Exception
+    public:
+        virtual QString     errorMessage() const override;
+
+        //////////
+        //  Operations
+    public:
+        //  The string which has failed to parse
+        QString             string() const { return _string; }
+
+        //  The position within the parsed string where a parse error occurred
+        int                 position() const { return _position; }
+
+        //////////
+        //  Implementation
+    private:
+        QString             _string;
+        int                 _position;
+    };
 }
 
 //  End of tt3-util/Exceptions.cpp

@@ -17,11 +17,6 @@
 #include "tt3-util/API.hpp"
 using namespace tt3::util;
 
-bool operator < (const QLocale & a, const QLocale & b)
-{
-    return a.name() < b.name();
-}
-
 //////////
 //  StandardLicenses::Gpl3
 IMPLEMENT_SINGLETON(StandardLicenses::Gpl3)

@@ -17,36 +17,6 @@
 
 namespace tt3::util
 {
-    class TT3_UTIL_PUBLIC ParseException : public QException
-    {
-        //////////
-        //  Construction/destruction/assignment
-    public:
-        ParseException(const QString & string, int position)
-            :   _string(string), _position(position) {}
-
-        //////////
-        //  QException
-    public:
-        void                raise() const override { throw *this; }
-        ParseException *    clone() const override { return new ParseException(*this); }
-
-        //////////
-        //  Operations
-    public:
-        //  The string which has failed to parse
-        QString             string() const { return _string; }
-
-        //  The position within the parsed string where a parse error occurred
-        int                 position() const { return _position; }
-
-        //////////
-        //  Implementation
-    private:
-        QString             _string;
-        int                 _position;
-    };
-
     //  Parses a string representction of a value of type T that
     //  starts at position "scan"in "s". Upon success advances "scan" to
     //  just past the parsed portion of "s" and returns the parsed value.

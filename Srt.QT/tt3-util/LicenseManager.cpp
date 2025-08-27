@@ -22,13 +22,13 @@ QMap<QString, ILicense*> LicenseManager::_registry;
 
 //////////
 //  Operations
-QSet<ILicense*> LicenseManager::allLicenses()
+Licenses LicenseManager::allLicenses()
 {
     tt3::util::Lock lock(_guard);
 
     _registerStandardLicenses();
     QList<ILicense*> values = _registry.values();
-    return QSet<ILicense*>(values.begin(), values.end());
+    return Licenses(values.begin(), values.end());
 }
 
 bool LicenseManager::registerLicense(ILicense * license)

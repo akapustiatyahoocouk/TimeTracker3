@@ -22,12 +22,12 @@ QMap<QString, IComponent*> ComponentManager::_registry;
 
 //////////
 //  Operations
-QSet<IComponent*> ComponentManager::allComponents()
+Components ComponentManager::allComponents()
 {
     tt3::util::Lock lock(_guard);
 
     QList<IComponent*> values = _registry.values();
-    return QSet<IComponent*>(values.begin(), values.end());
+    return Components(values.begin(), values.end());
 }
 
 bool ComponentManager::registerComponent(IComponent * component)

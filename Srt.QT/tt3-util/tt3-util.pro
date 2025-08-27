@@ -6,11 +6,14 @@ DEFINES += TT3_UTIL_LIBRARY
 SOURCES += \
     Component.cpp \
     ComponentManager.cpp \
+    Exceptions.cpp \
+    FileResourceFactory.cpp \
     FromString.cpp \
     IComponent.cpp \
     ILicense.cpp \
     IMessageDigest.cpp \
     IPlugin.cpp \
+    IResourceFactory.cpp \
     ISubsystem.cpp \
     Identifiers.cpp \
     LicenseManager.cpp \
@@ -28,6 +31,7 @@ SOURCES += \
 HEADERS += \
     API.hpp \
     BlockingQueue.hpp \
+    Classes.hpp \
     Component.hpp \
     Components.hpp \
     DateTime.hpp \
@@ -39,6 +43,7 @@ HEADERS += \
     Macros.hpp \
     MessageDigest.hpp \
     Plugin.hpp \
+    ResourceFactory.hpp \
     Settings.hpp \
     Subsystem.hpp \
     Sync.hpp \

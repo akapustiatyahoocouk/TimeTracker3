@@ -17,10 +17,6 @@
 
 namespace tt3::util
 {
-//  TODO move to Classes.hpp ?
-    class TT3_UTIL_PUBLIC IMessageDigest;
-    using MessageDigests = QSet<IMessageDigest*>;
-
     //////////
     //  A generic "message digest" - an algorithm that creates a fixed-size
     //  "digest" for an arbitrary size message
@@ -162,7 +158,7 @@ namespace tt3::util
     public:
         //  Returns the set of all registered message
         //  digest algorithms.
-        static QSet<IMessageDigest*>    allMessageDigests();
+        static MessageDigests   allMessageDigests();
 
         //  Registers the specified MessageDigest; returns
         //  true on success, false on failure.

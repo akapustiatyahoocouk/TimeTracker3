@@ -19,7 +19,8 @@ namespace tt3::util
 {
     //////////
     //  An abstract interface to a "plugin" - an agent discovered
-    //  and instantiated at runtime
+    //  and instantiated at runtime.
+    //  TODO require implementing classes to be singltons?
     class TT3_UTIL_PUBLIC IPlugin
     {
         //////////
@@ -80,22 +81,22 @@ namespace tt3::util
         //  Loads available Plugins and initializes them.
         //  Plugins are loaded from tje .DLLs/.SOs that reside
         //  in the same directpry as the application executavle.
-        static void             loadPlugins();
+        static void         loadPlugins();
 
         //  The set of all discovered Plugins (whether
         //  successfully iniyialized or not)
-        static QSet<IPlugin*>   discoveredPlugins();
+        static Plugins      discoveredPlugins();
 
         //  The set of all discovered AND successfully
         //  initialized Plugins.
-        static QSet<IPlugin*>   initializedPlugins();
+        static Plugins      initializedPlugins();
 
         //////////
         //  Implementation
     private:
         static QSet<QString>    _processedDlls;
-        static QSet<IPlugin*>   _discoveredPlugins;
-        static QSet<IPlugin*>   _initializedPlugins;
+        static Plugins      _discoveredPlugins;
+        static Plugins      _initializedPlugins;
 
         //  Helpers
         static void             _loadPluginsFromLibrary(const QString & fileName);
@@ -103,7 +104,7 @@ namespace tt3::util
 
     //////////
     //  Plugin export halpers
-    typedef void (*PluginExportProc)(QSet<IPlugin*> & plugins);
+    typedef void (*PluginExportProc)(Plugins & plugins);
 }
 
 #define BEGIN_PLUGIN_TABLE()                                                \
