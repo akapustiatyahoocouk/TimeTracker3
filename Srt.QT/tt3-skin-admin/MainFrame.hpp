@@ -75,8 +75,11 @@ namespace tt3::skin::admin
         //////////
         //  Controls
     private:
-        Ui::MainFrame * _ui;
-        QTimer          _savePositionTimer;
+        Ui::MainFrame *     _ui;
+        QTimer              _savePositionTimer;
+
+        QStackedLayout *        _manageUsersTabLayout;
+        tt3::gui::UserManager * _userManager;
 
         //////////
         //  Signal handlers

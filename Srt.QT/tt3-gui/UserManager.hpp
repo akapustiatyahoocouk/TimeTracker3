@@ -30,13 +30,32 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        explicit UserManager(QWidget * parent);
+        explicit UserManager(QWidget * parent,
+                             tt3::ws::IWorkspaceProvider * workspaceProvider,
+                             tt3::ws::ICredentialsProvider * credentialsProvider);
         virtual ~UserManager();
+
+        //////////
+        //  Operaions
+    public:
+        void                refresh();
+
+        //////////
+        //  Implementation
+    private:
+        tt3::ws::IWorkspaceProvider *const      _workspaceProvider;
+        tt3::ws::ICredentialsProvider *const    _credentialsProvider;
 
         //////////
         //  Controls
     private:
         Ui::UserManager *   _ui;
+
+        //////////
+        //  Signal handlers
+    private slots:
+        void                _onProvidedWorkspaceChanged(tt3::ws::Workspace before, tt3::ws::Workspace after);
+        void                _onProvidedCredentialsChanged(tt3::ws::Credentials before, tt3::ws::Credentials after);
     };
 }
 

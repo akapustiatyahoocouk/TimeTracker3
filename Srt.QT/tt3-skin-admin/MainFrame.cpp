@@ -29,6 +29,13 @@ MainFrame::MainFrame(QWidget * parent)
     _loadPosition();
     _updateMruWorkspaces();
 
+    //  Create custom controls
+    _manageUsersTabLayout = new QStackedLayout();
+    _userManager = new tt3::gui::UserManager(_ui->manageUsersTab, &tt3::ws::theCurrentWorkspace, &tt3::ws::theCurrentCredentials);
+    _manageUsersTabLayout->addWidget(_userManager);
+    _ui->manageUsersTab->setLayout(_manageUsersTabLayout);
+
+    //  Set up signal handlers
     _savePositionTimer.setSingleShot(true);
     connect(&_savePositionTimer,
             &QTimer::timeout,
@@ -108,7 +115,8 @@ void MainFrame::refresh()
     //  Menu items
     _ui->actionCloseWorkspace->setEnabled(currentWorkspace != nullptr);
 
-    //  TODO controls
+    //  Controls
+    _userManager->refresh();
 }
 
 //////////

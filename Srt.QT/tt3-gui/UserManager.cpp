@@ -20,16 +20,51 @@ using namespace tt3::gui;
 
 //////////
 //  Construction/destruction
-UserManager::UserManager(QWidget * parent)
+UserManager::UserManager(QWidget * parent,
+                         tt3::ws::IWorkspaceProvider * workspaceProvider,
+                         tt3::ws::ICredentialsProvider * credentialsProvider)
     :   QWidget(parent),
+        _workspaceProvider(workspaceProvider),
+        _credentialsProvider(credentialsProvider),
         _ui(new Ui::UserManager)
 {
+    Q_ASSERT(_workspaceProvider != nullptr);
+    Q_ASSERT(_credentialsProvider != nullptr);
+
     _ui->setupUi(this);
+
+    //  Set up provider listeners
+    connect(&_workspaceProvider->providedWorkspaceNotifier(),
+            &tt3::ws::ProvidedWorkspaceNotifier::providedWorkspaceChanged,
+            this,
+            &UserManager::_onProvidedWorkspaceChanged);
+    connect(&_credentialsProvider->providedCredentialsNotifier(),
+            &tt3::ws::ProvidedCredentialsNotifier::providedCredentialsChanged,
+            this,
+            &UserManager::_onProvidedCredentialsChanged);
 }
 
 UserManager::~UserManager()
 {
     delete _ui;
+}
+
+//////////
+//  Operaions
+void UserManager::refresh()
+{
+}
+
+//////////
+//  Signal handlers
+void UserManager::_onProvidedWorkspaceChanged(tt3::ws::Workspace /*before*/, tt3::ws::Workspace /*after*/)
+{
+    refresh();
+}
+
+void UserManager::_onProvidedCredentialsChanged(tt3::ws::Credentials /*before*/, tt3::ws::Credentials /*after*/)
+{
+    refresh();
 }
 
 //  End of tt3-gui/UserManager.cpp
