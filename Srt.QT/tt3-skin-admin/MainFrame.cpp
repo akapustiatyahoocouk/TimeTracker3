@@ -36,12 +36,12 @@ MainFrame::MainFrame(QWidget * parent)
             &MainFrame::_savePositionTimerTimeout);
     _trackPosition = true;
 
-    connect(&tt3::ws::theCurrentWorkspace,
-            &tt3::ws::CurrentWorkspace::currentWorkspaceChanged,
+    connect(&tt3::ws::theCurrentWorkspace.providedWorkspaceNotifier(),
+            &tt3::ws::ProvidedWorkspaceNotifier::providedWorkspaceChanged,
             this,
             &MainFrame::_onCurrentWorkspaceChanged);
-    connect(&tt3::ws::theCurrentCredentials,
-            &tt3::ws::CurrentCredentials::currentCredentialsChanged,
+    connect(&tt3::ws::theCurrentCredentials.providedCredentialsNotifier(),
+            &tt3::ws::ProvidedCredentialsNotifier::providedCredentialsChanged,
             this,
             &MainFrame::_onCurrentCredentialsChanged);
 
@@ -409,17 +409,17 @@ void MainFrame::_onActionAbout()
     dlg.exec();
 }
 
-void MainFrame::_onCurrentWorkspaceChanged()
-{
-    refresh();
-}
-
 void MainFrame::_onWorkspaceClosed(tt3::ws::WorkspaceClosedNotification)
 {
     refresh();
 }
 
-void MainFrame::_onCurrentCredentialsChanged()
+void MainFrame::_onCurrentWorkspaceChanged(tt3::ws::Workspace /*before*/, tt3::ws::Workspace /*after*/)
+{
+    refresh();
+}
+
+void MainFrame::_onCurrentCredentialsChanged(tt3::ws::Credentials /*before*/, tt3::ws::Credentials /*after*/)
 {
     refresh();
 }

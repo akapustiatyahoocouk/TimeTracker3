@@ -16,6 +16,11 @@
 *.config text diff=cpp
 *.settings text diff=cpp
 
+*.pro  text diff=cpp
+*.pri  text diff=cpp
+*.qrc  text diff=cpp
+*.txt  text diff=cpp
+
 # Compiled Object files
 *.slo   binary
 *.lo    binary

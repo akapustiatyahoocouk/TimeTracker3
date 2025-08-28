@@ -17,8 +17,7 @@
 #include "tt3-ws/API.hpp"
 using namespace tt3::ws;
 
-int CurrentCredentials::_instanceCount = 0;
-Credentials CurrentCredentials::_currentCredentials;
+std::atomic<int> CurrentCredentials::_instanceCount = 0;
 
 //////////
 //  Construction/destruction
@@ -38,29 +37,67 @@ CurrentCredentials::~CurrentCredentials()
 //  Operators
 void CurrentCredentials::operator = (const Credentials & credentials)
 {
-    Q_ASSERT(_instanceCount == 1);
-    if (credentials != _currentCredentials)
+    Credentials before, after;
+
+    //  Change is effected i n a "locked" state
     {
-        _currentCredentials = credentials;
-        emit currentCredentialsChanged();
+        tt3::util::Lock lock(_currentCredentialsGuard);
+
+        Q_ASSERT(_instanceCount == 1);
+        if (credentials != _currentCredentials)
+        {
+            before = _currentCredentials;
+            after = credentials;
+            _currentCredentials = credentials;
+        }
+    }
+    //  Notification is issued in a "not locked" state
+    if (before != after)
+    {
+        emit _providedCredentialsNotifier.providedCredentialsChanged(before, after);
     }
 }
 
 CurrentCredentials::operator const Credentials & () const
 {
+    tt3::util::Lock lock(_currentCredentialsGuard);
+
     Q_ASSERT(_instanceCount == 1);
     return _currentCredentials;
 }
 
 //////////
-//  Operations
-void CurrentCredentials::swap(Credentials & other)
+//  ICredentialsProvider
+Credentials CurrentCredentials::providedCredentials() const
 {
-    if (other != _currentCredentials)
-    {
-        std::swap(_currentCredentials, other);
-        emit currentCredentialsChanged();
-    }
+    tt3::util::Lock lock(_currentCredentialsGuard);
+
+    Q_ASSERT(_instanceCount == 1);
+    return _currentCredentials;
+}
+
+ProvidedCredentialsNotifier &
+CurrentCredentials::providedCredentialsNotifier()
+{
+    return _providedCredentialsNotifier;
+}
+
+//////////
+//  Operations
+bool CurrentCredentials::isValid() const
+{
+    tt3::util::Lock lock(_currentCredentialsGuard);
+
+    Q_ASSERT(_instanceCount == 1);
+    return _currentCredentials.isValid();
+}
+
+QString CurrentCredentials::login() const
+{
+    tt3::util::Lock lock(_currentCredentialsGuard);
+
+    Q_ASSERT(_instanceCount == 1);
+    return _currentCredentials.login();
 }
 
 //////////

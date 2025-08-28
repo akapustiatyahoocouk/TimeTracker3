@@ -17,8 +17,7 @@
 #include "tt3-ws/API.hpp"
 using namespace tt3::ws;
 
-int         CurrentWorkspace::_instanceCount = 0;
-Workspace   CurrentWorkspace::_currentWorkspace = nullptr;
+std::atomic<int> CurrentWorkspace::_instanceCount = 0;
 
 //////////
 //  Construction/destruction
@@ -38,46 +37,77 @@ CurrentWorkspace::~CurrentWorkspace()
 //  Operators
 void CurrentWorkspace::operator = (const Workspace & workspace)
 {
+    tt3::util::Lock lock(_currentWorkspaceGuard);
+
     Q_ASSERT(_instanceCount == 1);
     if (workspace != _currentWorkspace)
     {
+        Workspace before = _currentWorkspace;
         _currentWorkspace = workspace;
-        emit currentWorkspaceChanged();
+        emit _providedWorkspaceNotifier.providedWorkspaceChanged(before, workspace);
     }
 }
 
 Workspace CurrentWorkspace::operator -> () const
 {
+    tt3::util::Lock lock(_currentWorkspaceGuard);
+
     Q_ASSERT(_instanceCount == 1);
     return _currentWorkspace;
 }
 
 CurrentWorkspace::operator Workspace() const
 {
+    tt3::util::Lock lock(_currentWorkspaceGuard);
+
     Q_ASSERT(_instanceCount == 1);
     return _currentWorkspace;
 }
 
 bool CurrentWorkspace::operator == (nullptr_t /*null*/) const
 {
+    tt3::util::Lock lock(_currentWorkspaceGuard);
+
     Q_ASSERT(_instanceCount == 1);
     return _currentWorkspace.get() == nullptr;
 }
 
 bool CurrentWorkspace::operator != (nullptr_t /*null*/) const
 {
+    tt3::util::Lock lock(_currentWorkspaceGuard);
+
     Q_ASSERT(_instanceCount == 1);
     return _currentWorkspace.get() != nullptr;
+}
+
+//////////
+//  IWorkspaceProvider
+ProvidedWorkspaceNotifier & CurrentWorkspace::providedWorkspaceNotifier()
+{
+    return _providedWorkspaceNotifier;
 }
 
 //////////
 //  Operations
 void CurrentWorkspace::swap(Workspace & other)
 {
-    if (other != _currentWorkspace)
+    Workspace before, after;
+
+    //  Change is effected in a "locked" state
     {
-        std::swap(_currentWorkspace, other);
-        emit currentWorkspaceChanged();
+        tt3::util::Lock lock(_currentWorkspaceGuard);
+
+        if (other != _currentWorkspace)
+        {
+            before = _currentWorkspace;
+            std::swap(_currentWorkspace, other);
+            after = _currentWorkspace;
+        }
+    }
+    //  Signal is sent in a "not locked" state
+    if (before != after)
+    {
+        emit _providedWorkspaceNotifier.providedWorkspaceChanged(before, after);
     }
 }
 

@@ -95,9 +95,9 @@ namespace tt3::skin::admin
         void            _onActionHelpSearch();
         void            _onActionAbout();
 
-        void            _onCurrentWorkspaceChanged();
         void            _onWorkspaceClosed(tt3::ws::WorkspaceClosedNotification);
-        void            _onCurrentCredentialsChanged();
+        void            _onCurrentWorkspaceChanged(tt3::ws::Workspace before, tt3::ws::Workspace after);
+        void            _onCurrentCredentialsChanged(tt3::ws::Credentials before, tt3::ws::Credentials after);
     };
 
     //  A helper class for opening recent workspaces
