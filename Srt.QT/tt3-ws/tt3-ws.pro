@@ -16,6 +16,7 @@ SOURCES += \
 
 HEADERS += \
     API.hpp \
+    Account.hpp \
     Classes.hpp \
     Components.hpp \
     Credentials.hpp \
@@ -23,6 +24,8 @@ HEADERS += \
     Linkage.hpp \
     Notifications.hpp \
     Object.hpp \
+    Principal.hpp \
+    User.hpp \
     Validator.hpp \
     WorkspaceAddressImpl.hpp \
     WorkspaceImpl.hpp \

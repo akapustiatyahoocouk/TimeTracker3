@@ -59,7 +59,7 @@ namespace tt3::db::api
         //////////
         //  Operations (associations)
     public:
-        //  Returns the yser to whom this account belongs.
+        //  Returns the user to whom this account belongs.
         //  Throws DatabaseException if an error occurs.
         virtual IUser *         user() const throws(DatabaseException) = 0;
     };

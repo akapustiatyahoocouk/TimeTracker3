@@ -136,14 +136,24 @@ Workspace WorkspaceTypeImpl::createWorkspace(
                 adminLogin,
                 adminPassword,
                 tt3::db::api::Capabilities::Administrator);
-        //  ...and we're done
+        /*  NOTE that database change notifications caused
+            by creating admin user and account (above) are
+            NOT forwarded to the Workspace, as the Workspace
+            instance has NOT yet been created.  */
+        //  ...and we're done.
         return Workspace(
                 new WorkspaceImpl(address, databasePtr.release()),
                 [](WorkspaceImpl * p) { delete p; });
     }
     catch (const tt3::util::Exception & ex)
-    {   //  OOPS! Translate & re-throw
-        //  TODO destroyig the newly created database along the way
+    {   //  OOPS! Translate & re-throw, but first...
+        try
+        {   //  ..destroy the newly created database!
+            address->_databaseAddress->databaseType()->destroyDatabase(address->_databaseAddress);
+        }
+        catch (const tt3::util::Exception &)
+        {   //  OOPS! TODO log?
+        }
         WorkspaceException::translateAndThrow(ex);
     }
 }

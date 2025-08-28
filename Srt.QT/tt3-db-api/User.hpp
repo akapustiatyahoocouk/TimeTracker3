@@ -37,35 +37,25 @@ namespace tt3::db::api
         //////////
         //  Operations (properties)
     public:
-        //  Returns the "real name" of this User.
+        using InactivityTimeout = std::optional<tt3::util::TimeSpan>;
+        using UiLocale = std::optional<QLocale>;
+
+        //  Returns/sets the "real name" of this User.
         //  Throws DatabaseException if an error occurs.
         virtual QString     realName() const throws(DatabaseException) = 0;
-
-        //  Sets the "real name" of this User.
-        //  Throws DatabaseException if an error occurs.
         virtual void        setRealName(const QString & realName) throws(DatabaseException) = 0;
 
-        //  Returns the "inactivity timeout" of this User.
+        //  Returns/sets the "inactivity timeout" of this User.
         //  This is the timeout after which, if the user does nothing,
         //  the "current" Activity is automatically stopped.
         //  Throws DatabaseException if an error occurs.
-        virtual std::optional<tt3::util::TimeSpan>
-                            inactivityTimeout() const throws(DatabaseException) = 0;
+        virtual InactivityTimeout   inactivityTimeout() const throws(DatabaseException) = 0;
+        virtual void        setInactivityTimeout(const InactivityTimeout & inactivityTimeout) throws(DatabaseException) = 0;
 
-        //  Sets the "inactivity timeout" of this User.
-        //  This is the timeout after which, if the user does nothing,
-        //  the "current" Activity is automatically stopped.
+        //  Returns/sets the preferred UI locale  of this User.
         //  Throws DatabaseException if an error occurs.
-        virtual void        setInactivityTimeout(const std::optional<tt3::util::TimeSpan> & inactivityTimeout) throws(DatabaseException) = 0;
-
-        //  Returns the preferred UI locale  of this User.
-        //  Throws DatabaseException if an error occurs.
-        virtual std::optional<QLocale>
-                            uiLocale() const throws(DatabaseException) = 0;
-
-        //  Sets the preferred UI locale  of this User.
-        //  Throws DatabaseException if an error occurs.
-        virtual void        setUiLocale(const std::optional<QLocale> & uiLocale) throws(DatabaseException) = 0;
+        virtual UiLocale    uiLocale() const throws(DatabaseException) = 0;
+        virtual void        setUiLocale(const UiLocale & uiLocale) throws(DatabaseException) = 0;
 
         //////////
         //  Operations (associations)
@@ -81,9 +71,9 @@ namespace tt3::db::api
         //  All Accounts in a database must have different lohins.
         //  Throws DatabaseException if an error occurs.
         virtual IAccount *  createAccount(
-            bool enabled, const QStringList & emailAddresses,
-            const QString & login, const QString & password,
-            Capabilities capabilities) throws(DatabaseException) = 0;
+                                bool enabled, const QStringList & emailAddresses,
+                                const QString & login, const QString & password,
+                                Capabilities capabilities) throws(DatabaseException) = 0;
     };
 }
 

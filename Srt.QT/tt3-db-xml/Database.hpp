@@ -90,7 +90,7 @@ namespace tt3::db::xml
 
         //  Seconsary caches - these do NOT count as "references"
         QMap<tt3::db::api::Oid, Object*> _liveObjects;  //  All "live" objects
-        QSet<Object*>       _graveyard;                 //  All "dead" objects
+        QMap<tt3::db::api::Oid, Object*> _graveyard;    //  All "dead" objects
 
         //  Database file locking mechanism
         class TT3_DB_XML_PUBLIC _LockRefresher final : public QThread

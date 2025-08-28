@@ -47,6 +47,9 @@ namespace tt3::ws
     //  Exceptins & notifications
     class TT3_WS_PUBLIC WorkspaceException;
     class TT3_WS_PUBLIC WorkspaceClosedNotification;
+    class TT3_WS_PUBLIC ObjectCreatedNotification;
+    class TT3_WS_PUBLIC ObjectDestroyedNotification;
+    class TT3_WS_PUBLIC ObjectModifiedNotification;
 
     //  Helper types
     class TT3_WS_PUBLIC Credentials;

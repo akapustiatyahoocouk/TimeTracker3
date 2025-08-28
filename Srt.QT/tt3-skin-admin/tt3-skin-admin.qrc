@@ -28,5 +28,7 @@
         <file>Resources/Images/Actions/RestartSmall.png</file>
         <file>Resources/Images/Actions/LoginLarge.png</file>
         <file>Resources/Images/Actions/LoginSmall.png</file>
+        <file>Resources/Images/Objects/UserLarge.png</file>
+        <file>Resources/Images/Objects/UserSmall.png</file>
     </qresource>
 </RCC>

@@ -31,18 +31,7 @@ Account::Account(User * user, tt3::db::api::Oid oid)
 
 Account::~Account()
 {
-    Q_ASSERT((_isLive &&
-              _user->_accounts.contains(this) &&
-              !_database->_graveyard.contains(this)) ||
-             (!_isLive &&
-              _user == nullptr &&
-              _database->_graveyard.contains(this)));
-
-    //  Unregister with parent
-    if (_isLive)
-    {
-        _user->_accounts.remove(this);
-    }
+    Q_ASSERT(_user == nullptr);
 }
 
 //////////

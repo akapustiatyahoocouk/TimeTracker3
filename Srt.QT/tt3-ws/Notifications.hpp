@@ -52,9 +52,95 @@ namespace tt3::ws
             :   ChangeNotification(workspace) {}
         //  Defult copy-constructor and assigmnent are OK
     };
+
+    //  Emitted after a new object is created
+    class TT3_WS_PUBLIC ObjectCreatedNotification : public ChangeNotification
+    {
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        ObjectCreatedNotification(const Workspace & workspace, ObjectType * objectType, const Oid & oid)
+            :   ChangeNotification(workspace), _objectType(objectType), _oid(oid)
+            { Q_ASSERT(_objectType != nullptr && _oid != InvalidOid); }
+        //  Defult copy-constructor and assigmnent are OK
+
+        //////////
+        //  Operations
+    public:
+        //  The type of the created object
+        ObjectType *    objectType() const { return _objectType; }
+
+        //  The OID of the created object
+        Oid             oid() const { return _oid; }
+
+        //////////
+        //  Implementation
+    private:
+        ObjectType *    _objectType;
+        Oid             _oid;
+    };
+
+    //  Emitted after an object is destroyed
+    class TT3_WS_PUBLIC ObjectDestroyedNotification : public ChangeNotification
+    {
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        ObjectDestroyedNotification(const Workspace & workspace, ObjectType * objectType, const Oid & oid)
+            :   ChangeNotification(workspace), _objectType(objectType), _oid(oid)
+            { Q_ASSERT(_objectType != nullptr && _oid != InvalidOid); }
+        //  Defult copy-constructor and assigmnent are OK
+
+        //////////
+        //  Operations
+    public:
+        //  The type of the destroyed object
+        ObjectType *    objectType() const { return _objectType; }
+
+        //  The OID of the destroyed object
+        Oid             oid() const { return _oid; }
+
+        //////////
+        //  Implementation
+    private:
+        ObjectType *    _objectType;
+        Oid             _oid;
+    };
+
+    //  Emitted after an object is modified.
+    //  This includes both changes to object's
+    //  properties and changes to its associations.
+    class TT3_WS_PUBLIC ObjectModifiedNotification : public ChangeNotification
+    {
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        ObjectModifiedNotification(const Workspace & workspace, ObjectType * objectType, const Oid & oid)
+            :   ChangeNotification(workspace), _objectType(objectType), _oid(oid)
+            { Q_ASSERT(_objectType != nullptr && _oid != InvalidOid); }
+        //  Defult copy-constructor and assigmnent are OK
+
+        //////////
+        //  Operations
+    public:
+        //  The type of the modified object
+        ObjectType *    objectType() const { return _objectType; }
+
+        //  The OID of the modified object
+        Oid             oid() const { return _oid; }
+
+        //////////
+        //  Implementation
+    private:
+        ObjectType *    _objectType;
+        Oid             _oid;
+    };
 }
 
 Q_DECLARE_METATYPE(tt3::ws::ChangeNotification)
 Q_DECLARE_METATYPE(tt3::ws::WorkspaceClosedNotification)
+Q_DECLARE_METATYPE(tt3::ws::ObjectCreatedNotification)
+Q_DECLARE_METATYPE(tt3::ws::ObjectDestroyedNotification)
+Q_DECLARE_METATYPE(tt3::ws::ObjectModifiedNotification)
 
 //  End of tt3-ws/Notifications.hpp

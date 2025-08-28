@@ -30,6 +30,7 @@ Object::Object(Database * database, tt3::db::api::Oid oid)
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
 
     Q_ASSERT(!_database->_liveObjects.contains(_oid));
+    Q_ASSERT(!_database->_graveyard.contains(_oid));
     _database->_liveObjects[_oid] = this;
 }
 
@@ -38,11 +39,12 @@ Object::~Object()
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(!_isLive);
     Q_ASSERT(!_database->_liveObjects.contains(_oid));
-    Q_ASSERT(_database->_graveyard.contains(this));
+    Q_ASSERT(_database->_graveyard.contains(_oid) &&
+             _database->_graveyard[_oid] == this);
     Q_ASSERT(_referenceCount == 0);
 
     //  Unregister with parent
-    _database->_graveyard.remove(this);
+    _database->_graveyard.remove(_oid);
 }
 
 //////////
@@ -71,7 +73,12 @@ void Object::addReference()
 {
     tt3::util::Lock lock(_database->_guard);
 
-    Q_ASSERT(_isLive || _database->_graveyard.contains(this));
+    Q_ASSERT((_isLive &&
+              _database->_liveObjects.contains(_oid) &&
+              _database->_liveObjects[_oid] == this) ||
+             (!_isLive &&
+             _database->_graveyard.contains(_oid) &&
+             _database->_graveyard[_oid] == this));
     switch (_state)
     {
         case State::New:
@@ -101,7 +108,12 @@ void Object::removeReference()
 {
     tt3::util::Lock lock(_database->_guard);
 
-    Q_ASSERT(_isLive || _database->_graveyard.contains(this));
+    Q_ASSERT((_isLive &&
+              _database->_liveObjects.contains(_oid) &&
+              _database->_liveObjects[_oid] == this) ||
+             (!_isLive &&
+              _database->_graveyard.contains(_oid) &&
+              _database->_graveyard[_oid] == this));
     switch (_state)
     {
         case State::New:
@@ -147,7 +159,7 @@ void Object::_markDead()
 
     _isLive = false;
     _database->_liveObjects.remove(_oid);
-    _database->_graveyard.insert(this);
+    _database->_graveyard.insert(_oid, this);
     if (_referenceCount == 0)
     {   //  We can recycle
         delete this;
@@ -194,7 +206,7 @@ void Object::_validate(QSet<Object*> & validatedObjects) throws(tt3::db::api::Da
     //  Validate associations
     if (!_database->_liveObjects.contains(_oid) ||
         _database->_liveObjects[_oid] != this ||
-        _database->_graveyard.contains(this))
+        _database->_graveyard.contains(_oid))
     {   //  OOPS! Primary and secondary cached do not match
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }

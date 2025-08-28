@@ -29,19 +29,8 @@ User::User(Database * database, tt3::db::api::Oid oid)
 
 User::~User()
 {
-    Q_ASSERT((_isLive &&
-              _database->_users.contains(this) &&
-              !_database->_graveyard.contains(this)) ||
-             (!_isLive &&
-              !_database->_users.contains(this) &&
-              _database->_graveyard.contains(this)));
+    Q_ASSERT(!_database->_users.contains(this));
     Q_ASSERT(_accounts.isEmpty());
-
-    //  Unregister with parent
-    if (_isLive)
-    {
-        _database->_users.remove(this);
-    }
 }
 
 //////////
@@ -95,8 +84,7 @@ void User::setRealName(const QString & realName) throws(tt3::db::api::DatabaseEx
     }
 }
 
-std::optional<tt3::util::TimeSpan>
-User::inactivityTimeout() const throws(tt3::db::api::DatabaseException)
+User::InactivityTimeout User::inactivityTimeout() const throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -104,7 +92,7 @@ User::inactivityTimeout() const throws(tt3::db::api::DatabaseException)
     return _inactivityTimeout;
 }
 
-void User::setInactivityTimeout(const std::optional<tt3::util::TimeSpan> & inactivityTimeout) throws(tt3::db::api::DatabaseException)
+void User::setInactivityTimeout(const InactivityTimeout & inactivityTimeout) throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -129,8 +117,7 @@ void User::setInactivityTimeout(const std::optional<tt3::util::TimeSpan> & inact
     }
 }
 
-std::optional<QLocale>
-User::uiLocale() const throws(tt3::db::api::DatabaseException)
+User::UiLocale User::uiLocale() const throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -138,7 +125,7 @@ User::uiLocale() const throws(tt3::db::api::DatabaseException)
     return _uiLocale;
 }
 
-void User::setUiLocale(const std::optional<QLocale> & uiLocale) throws(tt3::db::api::DatabaseException)
+void User::setUiLocale(const UiLocale & uiLocale) throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw

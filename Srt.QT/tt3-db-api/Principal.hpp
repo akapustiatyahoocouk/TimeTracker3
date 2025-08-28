@@ -29,24 +29,16 @@ namespace tt3::db::api
         //////////
         //  Operations (properties)
     public:
-        //  Checks whether this Principal is "enabled". "Disabled"
+        //  Checks/sets whether this Principal is "enabled". "Disabled"
         //  Principals do not exist as far as access control is concerned.
         //  Throws DatabaseException if an error occurs.
         virtual bool        enabled() const throws(DatabaseException) = 0;
-
-        //  "Enables" or "disables" this Principal. "Disabled" Principals
-        //  do not exist as far as access control is concerned.
-        //  Throws DatabaseException if an error occurs.
         virtual void        setEnabled(bool enabled) throws(DatabaseException) = 0;
 
-        //  Returns the list of e-mail addresses associated with
+        //  Returns/sets the list of e-mail addresses associated with
         //  this Principal.
         //  Throws DatabaseException if an error occurs.
         virtual QStringList emailAddresses() const throws(DatabaseException) = 0;
-
-        //  Sets the list of e-mail addresses associated with
-        //  this Principal.
-        //  Throws DatabaseException if an error occurs.
         virtual void        setEmailAddresses(const QStringList & emailAddresses) throws(DatabaseException) = 0;
     };
 }

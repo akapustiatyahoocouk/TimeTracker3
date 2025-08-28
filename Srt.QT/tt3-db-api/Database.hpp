@@ -53,13 +53,16 @@ namespace tt3::db::api
         //////////
         //  Operations (associations)
     public:
-        //  The set of all users in this database
+        //  The set of all users in this database.
+        //  Throws DatabaseException if an error occurs.
         virtual Users       users() const throws(DatabaseException) = 0;
 
-        //  The set of all accounts of all users in this database
+        //  The set of all accounts of all users in this database.
+        //  Throws DatabaseException if an error occurs.
         virtual Accounts    accounts() const throws(DatabaseException) = 0;
 
-        //  The account with the specified login
+        //  The account with the specified login.
+        //  Throws DatabaseException if an error occurs.
         virtual IAccount *  findAccount(const QString & login) const throws(DatabaseException) = 0;
 
         //////////

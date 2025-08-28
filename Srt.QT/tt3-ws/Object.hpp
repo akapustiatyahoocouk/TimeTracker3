@@ -1,5 +1,5 @@
 //
-//  tt3-ws/Object.hpp - A generic orkspace onject
+//  tt3-ws/Object.hpp - A generic workspace object
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -25,9 +25,48 @@ namespace tt3::ws
         //////////
         //  Construction/destruction
     private:
-        ObjectImpl();
+        ObjectImpl(Workspace workspace, tt3::db::api::IObject * dataObject);
         virtual ~ObjectImpl();
+
+        //////////
+        //  Operations (general)
+    public:
+        //  The type of this workspace object; can be
+        //  safely obtained for both live and dead objects
+        ObjectType *    type() const;
+
+        //  The workspace where the corresponding object
+        //  resides (if live) or used to reside (if dead).
+        Workspace       workspace() const;
+
+        //  The OID of the corresponding object; can be
+        //  safely obtained for both live and dead objects.
+        Oid             oid() const;
+
+        //  True if this instance represents an existing data
+        //  object residing in a database, else false.
+        bool            isLive() const;
+
+        //////////
+        //  Opertions (life cycle)
+    public:
+        //  Destroys this object, delete-cascading
+        //  as necessary. The instance (and all other
+        //  delete-cascadedinstances) is marked as
+        //  "reoresenting a dead object" and,
+        //  therefore, unusable.
+        //  Throws WorkspaceException if an error occurs.
+        void            destroy(const Credentials & credentials) throws(WorkspaceException);
+
+        //////////
+        //  Implementation
+    private:
+        Workspace       _workspace;
+        tt3::db::api::IObject *const    _dataObject;    //  counts as "refrence"
+
+        //  Helpers
+        void            _ensureLive() const throws(WorkspaceException);
     };
 }
 
-//  End of tt3-ws/DateTime.hpp
+//  End of tt3-ws/Object.hpp

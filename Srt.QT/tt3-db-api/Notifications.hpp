@@ -176,10 +176,10 @@ namespace tt3::db::api
         //  Emitted after a new object is created
         void        objectCreated(ObjectCreatedNotification notification);
 
-        //  Emitted after a new object is destroyed
+        //  Emitted after an object is destroyed
         void        objectDestroyed(ObjectDestroyedNotification notification);
 
-        //  Emitted after a new object is modified
+        //  Emitted after an object is modified
         void        objectModified(ObjectModifiedNotification notification);
 
         //////////

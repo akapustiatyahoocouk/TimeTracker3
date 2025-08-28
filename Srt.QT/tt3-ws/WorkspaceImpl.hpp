@@ -47,6 +47,9 @@ namespace tt3::ws
         //  obtained for both open and closed workspaces.
         WorkspaceAddress    address() const;
 
+        //  The validator for this workspace.
+        Validator *         validator() const { return type()->validator(); }
+
         //  Checks whether this Workspace is open or closed.
         bool                isOpen();
 
@@ -54,29 +57,63 @@ namespace tt3::ws
         //  Throws WorkspaceException if an error occurs.
         void                close() throws(WorkspaceException);
 
-        //  The validator for this workspace
-        Validator *         validator() const { return type()->validator(); }
+        //////////
+        //  Operations (associations)
+    public:
+        //  The set of all users in this workspace.
+        //  Throws WorkspaceException if an error occurs.
+        Users           users(const Credentials & credentials) const throws(WorkspaceException);
+
+        //  The set of all accounts of all users in this workspace.
+        //  Throws WorkspaceException if an error occurs.
+        Accounts        accounts(const Credentials & credentials) const throws(WorkspaceException);
+
+        //  The account with the specified login.
+        //  Throws WorkspaceException if an error occurs.
+        Account         findAccount(const Credentials & credentials, const QString & login) const throws(WorkspaceException);
 
         //////////
         //  Operations (access control)
     public:
         //  Checks whether the specified Credentials allow ANY kind of
         //  access to this woirkspace
+        //  Throws WorkspaceException if an error occurs.
         bool            canAccess(const Credentials & credentials) const throws(WorkspaceException);
 
         //  Returns the capabilities that the specified credentials grant
         //  for thos workspace. If none, returns Capabilities::None.
+        //  Throws WorkspaceException if an error occurs.
         Capabilities    capabilities(const Credentials & credentials) const throws(WorkspaceException);
+
+        //////////
+        //  Opertions (life cycle)
+    public:
+        //  Creates a new User in this database.
+        //  Throws WorkspaceException if an error occurs.
+        User            createUser(bool enabled, const QStringList & emailAddresses,
+                            const QString & realName,
+                            const std::optional<tt3::util::TimeSpan> & inactivityTimeout,
+                            const std::optional<QLocale> & uiLocale) throws(WorkspaceException);
 
         //////////
         //  Signals
     signals:
+        //  Emitted after the workspace is closed.
         void        workspaceClosed(WorkspaceClosedNotification notification);
+
+        //  Emitted after a new object is created
+        void        objectCreared(ObjectCreatedNotification notification);
+
+        //  Emitted after an object is destroyed
+        void        objectDestroyed(ObjectDestroyedNotification notification);
+
+        //  Emitted after an object is modified
+        void        objectModified(ObjectModifiedNotification notification);
 
         //////////
         //  Implementation
     private:
-        mutable tt3::util::Mutex    _guard {};  //  for synchronizing all accesses to workspace
+        mutable tt3::util::Mutex    _guard;     //  for synchronizing all accesses to workspace
 
         const WorkspaceAddress      _address;
         tt3::db::api::IDatabase *   _database;  //  nullptr == workspace closed

@@ -6,18 +6,28 @@
         <file>Resources/Images/Actions/BrowseSmall.png</file>
         <file>Resources/Images/Actions/CancelLarge.png</file>
         <file>Resources/Images/Actions/CancelSmall.png</file>
+        <file>Resources/Images/Actions/CreateAccountLarge.png</file>
+        <file>Resources/Images/Actions/CreateAccountSmall.png</file>
+        <file>Resources/Images/Actions/CreateUserLarge.png</file>
+        <file>Resources/Images/Actions/CreateUserSmall.png</file>
         <file>Resources/Images/Actions/CreateWorkspaceLarge.png</file>
         <file>Resources/Images/Actions/CreateWorkspaceSmall.png</file>
+        <file>Resources/Images/Actions/DestroyAccountLarge.png</file>
+        <file>Resources/Images/Actions/DestroyAccountSmall.png</file>
+        <file>Resources/Images/Actions/DestroyUserLarge.png</file>
+        <file>Resources/Images/Actions/DestroyUserSmall.png</file>
         <file>Resources/Images/Actions/LoginLarge.png</file>
         <file>Resources/Images/Actions/LoginSmall.png</file>
+        <file>Resources/Images/Actions/ModifyAccountLarge.png</file>
+        <file>Resources/Images/Actions/ModifyAccountSmall.png</file>
+        <file>Resources/Images/Actions/ModifyUserLarge.png</file>
+        <file>Resources/Images/Actions/ModifyUserSmall.png</file>
         <file>Resources/Images/Actions/OkLarge.png</file>
         <file>Resources/Images/Actions/OkSmall.png</file>
         <file>Resources/Images/Actions/OpenWorkspaceLarge.png</file>
         <file>Resources/Images/Actions/OpenWorkspaceSmall.png</file>
         <file>Resources/Images/Actions/PreferencesLarge.png</file>
         <file>Resources/Images/Actions/PreferencesSmall.png</file>
-        <file>Resources/Images/Objects/Tt3Large.png</file>
-        <file>Resources/Images/Objects/Tt3Small.png</file>
         <file>Resources/Images/Actions/ResetLarge.png</file>
         <file>Resources/Images/Actions/ResetSmall.png</file>
         <file>Resources/Images/Actions/ShowConfigurationLarge.png</file>
@@ -28,5 +38,7 @@
         <file>Resources/Images/Objects/ComponentSmall.png</file>
         <file>Resources/Images/Objects/SubsystemLarge.png</file>
         <file>Resources/Images/Objects/SubsystemSmall.png</file>
+        <file>Resources/Images/Objects/Tt3Large.png</file>
+        <file>Resources/Images/Objects/Tt3Small.png</file>
     </qresource>
 </RCC>

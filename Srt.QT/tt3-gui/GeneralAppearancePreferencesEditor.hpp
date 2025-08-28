@@ -21,6 +21,8 @@
 
 namespace tt3::gui
 {
+    class TT3_GUI_PUBLIC ISkin;
+
     //  The "/General/Appearance" preferences editor
     namespace Ui { class GeneralAppearancePreferencesEditor; }
 

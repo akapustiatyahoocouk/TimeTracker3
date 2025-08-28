@@ -44,12 +44,10 @@ namespace tt3::db::xml
     public:
         virtual QString     realName() const throws(tt3::db::api::DatabaseException) override;
         virtual void        setRealName(const QString & realName) throws(tt3::db::api::DatabaseException) override;
-        virtual std::optional<tt3::util::TimeSpan>
-                            inactivityTimeout() const throws(tt3::db::api::DatabaseException) override;
-        virtual void        setInactivityTimeout(const std::optional<tt3::util::TimeSpan> & inactivityTimeout) throws(tt3::db::api::DatabaseException) override;
-        virtual std::optional<QLocale>
-                            uiLocale() const throws(tt3::db::api::DatabaseException) override;
-        virtual void        setUiLocale(const std::optional<QLocale> & uiLocale) throws(tt3::db::api::DatabaseException) override;
+        virtual InactivityTimeout inactivityTimeout() const throws(tt3::db::api::DatabaseException) override;
+        virtual void        setInactivityTimeout(const InactivityTimeout & inactivityTimeout) throws(tt3::db::api::DatabaseException) override;
+        virtual UiLocale    uiLocale() const throws(tt3::db::api::DatabaseException) override;
+        virtual void        setUiLocale(const UiLocale & uiLocale) throws(tt3::db::api::DatabaseException) override;
 
         //////////
         //  tt3::db::api::IUser (associations)
