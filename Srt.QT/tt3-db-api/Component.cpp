@@ -25,6 +25,7 @@ Component::Component()
 {
     qRegisterMetaType<ChangeNotification>();
     qRegisterMetaType<DatabaseClosedNotification>();
+    qRegisterMetaType<ObjectCreatedNotification>();
 }
 
 Component::~Component()

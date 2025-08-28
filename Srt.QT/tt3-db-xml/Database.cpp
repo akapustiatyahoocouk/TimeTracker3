@@ -274,7 +274,10 @@ tt3::db::api::IUser * Database::createUser(
     //  ...register it...
     Q_ASSERT(_liveObjects.contains(user->_oid));
     _needsSaving = true;
-    //  TODO ...schedule change notifications...
+    //  ...schedule change notifications...
+    _changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            this, user->type(), user->_oid));
     //  ...and we're done
     return user;
 }

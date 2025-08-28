@@ -95,6 +95,9 @@ namespace tt3::ws
         //  Event handlers
     private slots:
         void                _onDatabaseClosed(tt3::db::api::DatabaseClosedNotification notification);
+        void                _onObjectCreated(tt3::db::api::ObjectCreatedNotification notification);
+        void                _onObjectDestroyed(tt3::db::api::ObjectDestroyedNotification notification);
+        void                _onObjectModified(tt3::db::api::ObjectModifiedNotification notification);
     };
 
     //////////

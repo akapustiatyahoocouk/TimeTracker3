@@ -31,6 +31,18 @@ WorkspaceImpl::WorkspaceImpl(const WorkspaceAddress & address, tt3::db::api::IDa
             &tt3::db::api::ChangeNotifier::databaseClosed,
             this,
             &WorkspaceImpl::_onDatabaseClosed);
+    connect(&_database->changeNotifier(),
+            &tt3::db::api::ChangeNotifier::objectCreated,
+            this,
+            &WorkspaceImpl::_onObjectCreated);
+    connect(&_database->changeNotifier(),
+            &tt3::db::api::ChangeNotifier::objectDestroyed,
+            this,
+            &WorkspaceImpl::_onObjectDestroyed);
+    connect(&_database->changeNotifier(),
+            &tt3::db::api::ChangeNotifier::objectModified,
+            this,
+            &WorkspaceImpl::_onObjectModified);
 }
 
 WorkspaceImpl::~WorkspaceImpl()
@@ -129,7 +141,31 @@ void WorkspaceImpl::_markClosed()
 void WorkspaceImpl::_onDatabaseClosed(tt3::db::api::DatabaseClosedNotification notification)
 {
     qDebug() << "Workspace::_onDatabaseClosed()";
-    Q_ASSERT(notification.database == _database);
+    Q_ASSERT(notification.database() == _database);
+}
+
+void WorkspaceImpl::_onObjectCreated(tt3::db::api::ObjectCreatedNotification notification)
+{
+    qDebug() << "Workspace::_onObjectCreated("
+             << notification.oid()
+             << ")";
+    Q_ASSERT(notification.database() == _database);
+}
+
+void WorkspaceImpl::_onObjectDestroyed(tt3::db::api::ObjectDestroyedNotification notification)
+{
+    qDebug() << "Workspace::_onObjectDestroyed("
+             << notification.oid()
+             << ")";
+    Q_ASSERT(notification.database() == _database);
+}
+
+void WorkspaceImpl::_onObjectModified(tt3::db::api::ObjectModifiedNotification notification)
+{
+    qDebug() << "Workspace::_onObjectModified("
+             << notification.oid()
+             << ")";
+    Q_ASSERT(notification.database() == _database);
 }
 
 //  End of tt3-ws/WorkspaceImpl.cpp

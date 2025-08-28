@@ -26,16 +26,21 @@ namespace tt3::db::api
         //  Construction/destruction/assignment
     protected:
         ChangeNotification(IDatabase * db)
-            :   database(db) { Q_ASSERT(database != nullptr); }
+            :   _database(db) { Q_ASSERT(_database != nullptr); }
+    public:
         virtual ~ChangeNotification() = default;
-
-        //  Defult copy-constructor and assigmnent are OK
+        //  Default copy-constructor and assigmnent are OK
 
         //////////
         //  Properties
     public:
         //  The database where the change has occurred
-        IDatabase *const    database;
+        IDatabase *     database() const { return _database; }
+
+        //////////
+        //  Implementation
+    private:
+        IDatabase *     _database;
     };
 
     //  Issued after a database is closed
@@ -46,8 +51,90 @@ namespace tt3::db::api
     public:
         DatabaseClosedNotification(IDatabase * db)
             :   ChangeNotification(db) {}
+        //  Default copy-constructor and assigmnent are OK
+    };
 
-        //  Defult copy-constructor and assigmnent are OK
+    //  Issued after a new object is created in a database
+    class TT3_DB_API_PUBLIC ObjectCreatedNotification : public ChangeNotification
+    {
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        ObjectCreatedNotification(IDatabase * db, IObjectType * objectType, const Oid & oid)
+            :   ChangeNotification(db), _objectType(objectType), _oid(oid)
+            { Q_ASSERT(_objectType != nullptr && _oid != InvalidOid); }
+        //  Default copy-constructor and assigmnent are OK
+
+        //////////
+        //  Operations
+    public:
+        //  The type of the newly created objecr
+        IObjectType *   objectType() const { return _objectType; }
+
+        //  The OID of the newly created objecr
+        Oid             oid() const { return _oid; }
+
+        //////////
+        //  Implementation
+    private:
+        IObjectType *   _objectType;
+        Oid             _oid;
+    };
+
+    //  Issued after an object is destroyed in a database
+    class TT3_DB_API_PUBLIC ObjectDestroyedNotification : public ChangeNotification
+    {
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        ObjectDestroyedNotification(IDatabase * db, IObjectType * objectType, const Oid & oid)
+            :   ChangeNotification(db), _objectType(objectType), _oid(oid)
+        { Q_ASSERT(_objectType != nullptr && _oid != InvalidOid); }
+        //  Default copy-constructor and assigmnent are OK
+
+        //////////
+        //  Operations
+    public:
+        //  The type of the destroyed objecr
+        IObjectType *   objectType() const { return _objectType; }
+
+        //  The OID of the destroyed objecr
+        Oid             oid() const { return _oid; }
+
+        //////////
+        //  Implementation
+    private:
+        IObjectType *   _objectType;
+        Oid             _oid;
+    };
+
+    //  Issued after an object is modified in a database.
+    //  This includes both modifying object's properties
+    //  and modifying its associations.
+    class TT3_DB_API_PUBLIC ObjectModifiedNotification : public ChangeNotification
+    {
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        ObjectModifiedNotification(IDatabase * db, IObjectType * objectType, const Oid & oid)
+            :   ChangeNotification(db), _objectType(objectType), _oid(oid)
+        { Q_ASSERT(_objectType != nullptr && _oid != InvalidOid); }
+        //  Default copy-constructor and assigmnent are OK
+
+        //////////
+        //  Operations
+    public:
+        //  The type of the modified objecr
+        IObjectType *   objectType() const { return _objectType; }
+
+        //  The OID of the modified objecr
+        Oid             oid() const { return _oid; }
+
+        //////////
+        //  Implementation
+    private:
+        IObjectType *   _objectType;
+        Oid             _oid;
     };
 
     //  A per-database agent that emits change
@@ -83,7 +170,17 @@ namespace tt3::db::api
         //  thus making surthese slots are invoked on
         //  an UI thread.
     signals:
+        //  Emitted after a database is closed
         void        databaseClosed(DatabaseClosedNotification notification);
+
+        //  Emitted after a new object is created
+        void        objectCreated(ObjectCreatedNotification notification);
+
+        //  Emitted after a new object is destroyed
+        void        objectDestroyed(ObjectDestroyedNotification notification);
+
+        //  Emitted after a new object is modified
+        void        objectModified(ObjectModifiedNotification notification);
 
         //////////
         //  Implementation
@@ -124,5 +221,6 @@ namespace tt3::db::api
 
 Q_DECLARE_METATYPE(tt3::db::api::ChangeNotification)
 Q_DECLARE_METATYPE(tt3::db::api::DatabaseClosedNotification)
+Q_DECLARE_METATYPE(tt3::db::api::ObjectCreatedNotification)
 
 //  End of tt3-db-api/Notifications.hpp

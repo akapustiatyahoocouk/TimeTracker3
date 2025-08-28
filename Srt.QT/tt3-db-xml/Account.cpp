@@ -94,7 +94,10 @@ void Account::setLogin(const QString & login) throws(tt3::db::api::DatabaseExcep
     {   //  Make the change...
         _login = login;
         _database->_needsSaving = true;
-        //  TODO ...and schedule change notifications
+        //  ...and schedule change notifications
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
     }
 }
 
@@ -131,7 +134,10 @@ void Account::setPassword(const QString & password) throws(tt3::db::api::Databas
     //  the same as old one)...
     _passwordHash = passwordHash;
     _database->_needsSaving = true;
-    //  TODO ...and schedule change notifications
+    //  ...and schedule change notifications
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
 }
 
 tt3::db::api::Capabilities Account::capabilities() const throws(tt3::db::api::DatabaseException)
@@ -151,7 +157,10 @@ void Account::setCapabilities(tt3::db::api::Capabilities capabilities) throws(tt
     {   //  Make the change...
         _capabilities = capabilities;
         _database->_needsSaving = true;
-        //  TODO ...and schedule change notifications
+        //  ...and schedule change notifications
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
     }
 }
 

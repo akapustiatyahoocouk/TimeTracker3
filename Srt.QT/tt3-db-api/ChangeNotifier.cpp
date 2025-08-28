@@ -22,6 +22,11 @@ using namespace tt3::db::api;
 ChangeNotifier::ChangeNotifier()
     :   _workerThread(this)
 {
+    //  Move signals to this thread to ensure queued
+    //  connections to all slots
+    moveToThread(&_workerThread);
+
+    //  Go!
     _workerThread.start();
 }
 
@@ -48,11 +53,6 @@ void ChangeNotifier::post(ChangeNotification * notification)
 //  ChangeNotifier::_WorkerThread
 void ChangeNotifier::_WorkerThread::run()
 {
-    //  Move signals to this thread to ensure queued
-    //  connections to all slots
-    //  TODO kill off this thread ? _changeNotifier->moveToThread(this);
-    //  TODO all of them ?
-
     //  Go!
     for (; ; )
     {
@@ -68,11 +68,26 @@ void ChangeNotifier::_WorkerThread::run()
             {
                 emit _changeNotifier->databaseClosed(*n);
             }
-            //  TODO emit concrete change notifications as signals
+            else if (ObjectCreatedNotification * n =
+                     dynamic_cast<ObjectCreatedNotification *>(changeNotification))
+            {
+                emit _changeNotifier->objectCreated(*n);
+            }
+            else if (ObjectDestroyedNotification * n =
+                     dynamic_cast<ObjectDestroyedNotification *>(changeNotification))
+            {
+                emit _changeNotifier->objectDestroyed(*n);
+            }
+            else if (ObjectModifiedNotification * n =
+                     dynamic_cast<ObjectModifiedNotification *>(changeNotification))
+            {
+                emit _changeNotifier->objectModified(*n);
+            }
             else
             {
                 Q_ASSERT(false);
             }
+            delete changeNotification;
         }
     }
 }

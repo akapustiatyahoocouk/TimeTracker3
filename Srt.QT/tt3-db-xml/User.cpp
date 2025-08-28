@@ -88,7 +88,10 @@ void User::setRealName(const QString & realName) throws(tt3::db::api::DatabaseEx
     {   //  Make the change...
         _realName = realName;
         _database->_needsSaving = true;
-        //  TODO ...and schedule change notifications
+        //  ...and schedule change notifications
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
     }
 }
 
@@ -119,7 +122,10 @@ void User::setInactivityTimeout(const std::optional<tt3::util::TimeSpan> & inact
     {   //  Make the change...
         _inactivityTimeout = inactivityTimeout;
         _database->_needsSaving = true;
-        //  TODO ...and schedule change notifications
+        //  ...and schedule change notifications
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
     }
 }
 
@@ -150,7 +156,10 @@ void User::setUiLocale(const std::optional<QLocale> & uiLocale) throws(tt3::db::
     {   //  Make the change...
         _uiLocale = uiLocale;
         _database->_needsSaving = true;
-        //  TODO ...and schedule change notifications
+        //  ...and schedule change notifications
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
     }
 }
 
@@ -213,7 +222,13 @@ User::createAccount(
     Q_ASSERT(_accounts.contains(account));
     Q_ASSERT(account->_user == this);
     _database->_needsSaving = true;
-    //  TODO ...schedule change notifications...
+    //  ...schedule change notifications...
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectModifiedNotification(
+            _database, type(), _oid));
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            _database, account->type(), account->_oid));
     //  ...and we're done
     return account;
 }
