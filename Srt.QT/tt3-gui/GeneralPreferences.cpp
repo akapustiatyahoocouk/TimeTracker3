@@ -25,9 +25,9 @@ GeneralPreferences::~GeneralPreferences() {}
 
 //////////
 //  Preferences
-QString GeneralPreferences::mnemonic() const
+GeneralPreferences::Mnemonic GeneralPreferences::mnemonic() const
 {
-    return "/General";
+    return M(/General);
 }
 
 QString GeneralPreferences::displayName() const

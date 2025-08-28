@@ -28,7 +28,7 @@ namespace tt3::util
         //////////
         //  Construction/destruction
     protected:
-        explicit AbstractSetting(const QString & mnemonic, bool changeRequiresRestart)
+        explicit AbstractSetting(const Mnemonic & mnemonic, bool changeRequiresRestart)
             :   _mnemonic(mnemonic), _changeRequiresRestart(changeRequiresRestart) {}
         virtual ~AbstractSetting() = default;
 
@@ -36,7 +36,7 @@ namespace tt3::util
         //  Operations
     public:
         //  The mnemonic identifier of this Setting.
-        QString         mnemonic() const { return _mnemonic; }
+        Mnemonic        mnemonic() const { return _mnemonic; }
 
         //  True if changes to the value of this Setting
         //  shall require application restart in order to
@@ -56,7 +56,7 @@ namespace tt3::util
         //////////
         //  Implementation
     private:
-        const QString   _mnemonic;
+        const Mnemonic  _mnemonic;
         const bool      _changeRequiresRestart;
     };
 
@@ -69,7 +69,7 @@ namespace tt3::util
         //////////
         //  Construction/destruction
     public:
-        Setting(const QString & mnemonic, const T & defaultValue, bool changeRequiresRestart = false)
+        Setting(const Mnemonic & mnemonic, const T & defaultValue, bool changeRequiresRestart = false)
             :   AbstractSetting(mnemonic, changeRequiresRestart),
                 _defaultValue(defaultValue),
                 _value(defaultValue),

@@ -33,8 +33,10 @@ namespace tt3::db::api
         //////////
         //  Operation (general)
     public:
+        using Mnemonic = tt3::util::Mnemonic;
+
         //  The mnemonic identifier of this database type
-        virtual QString     mnemonic() const = 0;
+        virtual Mnemonic    mnemonic() const = 0;
 
         //  The user-readable display name of this database type
         virtual QString     displayName() const = 0;

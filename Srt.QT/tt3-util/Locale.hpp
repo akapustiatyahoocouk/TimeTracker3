@@ -41,4 +41,12 @@ namespace tt3::util
     };
 }
 
+using Locales = QSet<QLocale>;
+
+//  We need to use QLocale as QMap keys
+inline bool operator < (const QLocale & a, const QLocale & b)
+{
+    return a.name() < b.name();
+}
+
 //  End of tt3-util/Locale.hpp

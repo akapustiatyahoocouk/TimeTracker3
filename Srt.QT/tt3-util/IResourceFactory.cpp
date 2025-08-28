@@ -22,7 +22,7 @@ using namespace tt3::util;
 QString IResourceFactory::string(const ResourceSectionId & sectionId,
                                  const ResourceId & resourceId, const QStringList & params) const throws(MissingResourceException)
 {
-    Q_ASSERT(params.size() <= 10);  //  TODO for now
+    Q_ASSERT(params.size() <= 10);  //  ...for now
 
     QString format = string(sectionId, resourceId);
     QString result;

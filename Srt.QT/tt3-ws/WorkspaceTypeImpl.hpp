@@ -37,8 +37,10 @@ namespace tt3::ws
         //////////
         //  Operation (general)
     public:
+        using Mnemonic = tt3::util::Mnemonic;
+
         //  The mnemonic identifier of this workspace type
-        QString     mnemonic() const;
+        Mnemonic    mnemonic() const;
 
         //  The user-readable display name of this workspace type
         QString     displayName() const;

@@ -34,9 +34,9 @@ DatabaseType::~DatabaseType()
 
 //////////
 //  tt3::db::api::IDatabaseType (general)
-QString DatabaseType::mnemonic() const
+DatabaseType::Mnemonic DatabaseType::mnemonic() const
 {
-    return "XmlFile";
+    return M(XmlFile);
 }
 
 QString DatabaseType::displayName() const

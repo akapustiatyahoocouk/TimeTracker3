@@ -31,9 +31,9 @@ ObjectTypes::User::~User()
 {
 }
 
-QString ObjectTypes::User::mnemonic() const
+ObjectTypes::User::Mnemonic ObjectTypes::User::mnemonic() const
 {
-    return "User";
+    return M(User);
 }
 
 QString ObjectTypes::User::displayName() const
@@ -65,9 +65,9 @@ ObjectTypes::Account::~Account()
 {
 }
 
-QString ObjectTypes::Account::mnemonic() const
+ObjectTypes::Account::Mnemonic ObjectTypes::Account::mnemonic() const
 {
-    return "Account";
+    return M(Account);
 }
 
 QString ObjectTypes::Account::displayName() const

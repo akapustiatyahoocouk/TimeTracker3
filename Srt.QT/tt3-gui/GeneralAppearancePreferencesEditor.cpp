@@ -76,7 +76,6 @@ void GeneralAppearancePreferencesEditor::loadControlValues()
 {
     _setSelectedLocale(Component::Settings::instance()->uiLocale);
     _setSelectedSkin(SkinManager::findSkin(Component::Settings::instance()->activeSkin));
-    //  TODO implement
 }
 
 void GeneralAppearancePreferencesEditor::saveControlValues()

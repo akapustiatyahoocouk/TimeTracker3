@@ -39,8 +39,10 @@ namespace tt3::gui
         //////////
         //  Operations
     public:
+        using Mnemonic = tt3::util::Mnemonic;
+
         //  The mnemonic identifier of this preferences node
-        virtual QString         mnemonic() const = 0;
+        virtual Mnemonic        mnemonic() const = 0;
 
         //  The user-readable display name of this preferences
         //  node for the current default locale.
@@ -102,7 +104,7 @@ namespace tt3::gui
         //////////
         //  Preferences
     public:
-        virtual QString         mnemonic() const override;
+        virtual Mnemonic        mnemonic() const override;
         virtual QString         displayName() const override;
         virtual Preferences *   parent() const override;
         virtual int             order() const { return 0; }
@@ -117,7 +119,7 @@ namespace tt3::gui
         //////////
         //  Preferences
     public:
-        virtual QString         mnemonic() const override;
+        virtual Mnemonic        mnemonic() const override;
         virtual QString         displayName() const override;
         virtual Preferences *   parent() const override;
         virtual int             order() const { return 0; }
@@ -132,7 +134,7 @@ namespace tt3::gui
         //////////
         //  Preferences
     public:
-        virtual QString         mnemonic() const override;
+        virtual Mnemonic        mnemonic() const override;
         virtual QString         displayName() const override;
         virtual Preferences *   parent() const override;
         virtual int             order() const { return 10; }

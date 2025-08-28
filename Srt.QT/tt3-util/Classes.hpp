@@ -36,12 +36,4 @@ namespace tt3::util
     class TT3_UTIL_PUBLIC MissingResourceException;
 }
 
-//  TODO move these to Locale???.hpp
-using Locales = QSet<QLocale>;
-
-inline bool operator < (const QLocale & a, const QLocale & b)
-{
-    return a.name() < b.name();
-}
-
 //  End of tt3-util/Classes.hpp

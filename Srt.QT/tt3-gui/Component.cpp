@@ -88,24 +88,24 @@ IMPLEMENT_SINGLETON(Component::Settings)
 
 Component::Settings::Settings()
     :   activeSkin(
-            "ActiveSkin",
+            M(ActiveSkin),
             "",
             true),
         lastLogin(
-            "LastLogin",
+            M(LastLogin),
             ""),
         uiLocale(
-            "UiLocale",
+            M(UiLocale),
             QLocale(QLocale::English, QLocale::UnitedKingdom),
             true),
         loadLastWorkspaceAtStartup(
-            "LoadLastWorkspaceAtStartup",
-            false, true),   //  TODO kill off the3rd parameter
+            M(LoadLastWorkspaceAtStartup),
+            false),
         rememberLastLogin(
-            "RememberLastLogin",
-            true, true),    //  TODO kill off the3rd parameter
+            M(RememberLastLogin),
+            true),
         currentPreferences(
-            "CurrentPreferences",
+            M(CurrentPreferences),
             "")
 {
     addSetting(&activeSkin);

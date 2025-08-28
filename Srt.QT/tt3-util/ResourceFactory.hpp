@@ -64,7 +64,6 @@ namespace tt3::util
         virtual QString     string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const QString & param1) const throws(MissingResourceException);
         virtual QString     string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const QString & param1, const QString & param2) const throws(MissingResourceException);
         virtual QString     string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const QString & param1, const QString & param2, const QString & param3) const throws(MissingResourceException);
-        //  TODO more ?
 
         template <class P1>
         QString             string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const P1 & param1) const throws(MissingResourceException)
@@ -85,7 +84,6 @@ namespace tt3::util
             return string(sectionId, resourceId,
                           toString(param1), toString(param2), toString(param3));
         }
-        //  TODO more ?
     };
 
     //  A resource factory that loads localized resources

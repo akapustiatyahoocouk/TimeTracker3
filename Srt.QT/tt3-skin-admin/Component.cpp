@@ -88,10 +88,10 @@ IMPLEMENT_SINGLETON(Component::Settings)
 
 Component::Settings::Settings()
     :   mainFrameBounds(
-            "MainFrameBounds",
+            M(MainFrameBounds),
             QRect(32, 32, 480, 320)),
         mainFrameMaximized(
-            "MainFrameMaximized",
+            M(MainFrameMaximized),
             false)
 {
     addSetting(&mainFrameBounds);

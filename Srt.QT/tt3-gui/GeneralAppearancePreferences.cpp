@@ -25,9 +25,9 @@ GeneralAppearancePreferences::~GeneralAppearancePreferences() {}
 
 //////////
 //  Preferences
-QString GeneralAppearancePreferences::mnemonic() const
+GeneralAppearancePreferences::Mnemonic GeneralAppearancePreferences::mnemonic() const
 {
-    return parent()->mnemonic() + "/Appearance";
+    return Mnemonic(parent()->mnemonic().toString() + "/Appearance");
 }
 
 QString GeneralAppearancePreferences::displayName() const

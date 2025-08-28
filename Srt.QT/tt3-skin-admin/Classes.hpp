@@ -1,5 +1,5 @@
 //
-//  tt3-skin-admin/API.hpp - tt3-skin-admin master header
+//  tt3-skin-admin/Classes.hpp - forward declarations and typedefs
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,20 +14,10 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
 
-//////////
-//  Dependencies
-#include "tt3-gui/API.hpp"
-#include "tt3-util/API.hpp"
+namespace tt3::skin::admin
+{
+    class TT3_SKIN_ADMIN_PUBLIC MainFrame;
+}
 
-//////////
-//  tt3-skin-admin components
-#include "tt3-skin-admin/Linkage.hpp"
-#include "tt3-skin-admin/Classes.hpp"
-#include "tt3-skin-admin/Components.hpp"
-
-#include "tt3-skin-admin/MainFrame.hpp"
-#include "tt3-skin-admin/Skin.hpp"
-
-//  End of tt3-skin-admin/API.hpp
+//  End of tt3-skin-admin/Classes.hpp

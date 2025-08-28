@@ -33,7 +33,7 @@ WorkspaceTypeImpl::~WorkspaceTypeImpl()
 
 //////////
 //  Operation (general)
-QString WorkspaceTypeImpl::mnemonic() const
+WorkspaceTypeImpl::Mnemonic WorkspaceTypeImpl::mnemonic() const
 {
     return _databaseType->mnemonic();
 }
@@ -191,7 +191,6 @@ WorkspaceAddress WorkspaceTypeImpl::_mapDatabaseAddress(tt3::db::api::IDatabaseA
             new WorkspaceAddressImpl(this, databaseAddress),
             [](WorkspaceAddressImpl * p) { delete p; });
         _addressMap.insert(databaseAddress, workspaceAddress);
-        //  TODO when do we clear unised _addressMap entries ?
         return workspaceAddress;
     }
 }

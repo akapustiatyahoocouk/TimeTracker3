@@ -89,7 +89,7 @@ IMPLEMENT_SINGLETON(Component::Settings)
 
 Component::Settings::Settings()
     :   recentWorkspaces(
-            "RecentWorkspaces",
+            M(RecentWorkspaces),
             WorkspaceAddressesList())
 {
     addSetting(&recentWorkspaces);

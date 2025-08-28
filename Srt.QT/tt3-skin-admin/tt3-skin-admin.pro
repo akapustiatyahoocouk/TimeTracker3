@@ -12,6 +12,7 @@ SOURCES += \
 
 HEADERS += \
     API.hpp \
+    Classes.hpp \
     Components.hpp \
     Linkage.hpp \
     MainFrame.hpp \

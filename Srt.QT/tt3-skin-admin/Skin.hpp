@@ -17,9 +17,6 @@
 
 namespace tt3::skin::admin
 {
-    //  TODO move these to Classes.hpp
-    class TT3_SKIN_ADMIN_PUBLIC MainFrame;
-
     //////////
     //  The "TT3 Administrator skin"
     class TT3_SKIN_ADMIN_PUBLIC Skin final : public virtual tt3::gui::ISkin

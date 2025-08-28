@@ -32,7 +32,7 @@ namespace tt3::db::xml
         //////////
         //  tt3::db::api::IDatabaseType (general)
     public:
-        virtual QString     mnemonic() const override;
+        virtual Mnemonic    mnemonic() const override;
         virtual QString     displayName() const override;
         virtual QIcon       smallIcon() const override;
         virtual QIcon       largeIcon() const override;

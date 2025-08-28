@@ -31,18 +31,20 @@ namespace tt3::db::api
         //////////
         //  Operations
     public:
+        using Mnemonic = tt3::util::Mnemonic;
+
         //  The mnemonic identifier of this database object type
-        virtual QString mnemonic() const = 0;
+        virtual Mnemonic    mnemonic() const = 0;
 
         //  The user-readable display name of this database object
         //  type for the current default locale.
-        virtual QString displayName() const = 0;
+        virtual QString     displayName() const = 0;
 
         //  The small (16x16) icon representing this database object type
-        virtual QIcon   smallIcon() const = 0;
+        virtual QIcon       smallIcon() const = 0;
 
         //  The large (32x32) icon representing this database object type
-        virtual QIcon   largeIcon() const = 0;
+        virtual QIcon       largeIcon() const = 0;
     };
 
     //  Standard database object types
@@ -61,16 +63,16 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual QString mnemonic() const override;
-            virtual QString displayName() const override;
-            virtual QIcon   smallIcon() const override;
-            virtual QIcon   largeIcon() const override;
+            virtual Mnemonic    mnemonic() const override;
+            virtual QString     displayName() const override;
+            virtual QIcon       smallIcon() const override;
+            virtual QIcon       largeIcon() const override;
 
             //////////
             //  Implementation
         private:
-            const QIcon     _smallIcon;
-            const QIcon     _largeIcon;
+            const QIcon         _smallIcon;
+            const QIcon         _largeIcon;
         };
 
         //  The type of the "Account" objects.
@@ -81,16 +83,16 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual QString mnemonic() const override;
-            virtual QString displayName() const override;
-            virtual QIcon   smallIcon() const override;
-            virtual QIcon   largeIcon() const override;
+            virtual Mnemonic    mnemonic() const override;
+            virtual QString     displayName() const override;
+            virtual QIcon       smallIcon() const override;
+            virtual QIcon       largeIcon() const override;
 
             //////////
             //  Implementation
         private:
-            const QIcon     _smallIcon;
-            const QIcon     _largeIcon;
+            const QIcon         _smallIcon;
+            const QIcon         _largeIcon;
         };
     };
 }

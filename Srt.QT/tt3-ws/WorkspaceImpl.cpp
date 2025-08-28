@@ -73,7 +73,6 @@ void WorkspaceImpl::close() throws(WorkspaceException)
         try
         {
             _database->close(); //  may throw
-            //  TODO translate & re-throw WorkspaceException
             _markClosed();
         }
         catch (const tt3::util::Exception & ex)
