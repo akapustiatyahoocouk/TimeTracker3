@@ -99,6 +99,7 @@ void Application::_initialize()
     _registerStandardComponents();
     tt3::util::PluginManager::loadPlugins();
     tt3::util::ComponentManager::loadComponentSettings();
+    QLocale::setDefault(tt3::gui::Component::Settings::instance()->uiLocale);
     _selectActiveSkin();
 
     //  Perform initial login

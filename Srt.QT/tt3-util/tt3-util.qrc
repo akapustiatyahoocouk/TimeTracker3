@@ -14,5 +14,13 @@
         <file>Resources/tt3-util_en_GB.txt</file>
         <file>Resources/tt3-util_de_DE.txt</file>
         <file>Resources/tt3-util_ru_RU.txt</file>
+        <file>Resources/Images/Locales/de_DE_Large.png</file>
+        <file>Resources/Images/Locales/de_DE_Small.png</file>
+        <file>Resources/Images/Locales/en_GB_Large.png</file>
+        <file>Resources/Images/Locales/en_GB_Small.png</file>
+        <file>Resources/Images/Locales/ru_RU_Large.png</file>
+        <file>Resources/Images/Locales/ru_RU_Small.png</file>
+        <file>Resources/Images/Locales/WorldLarge.png</file>
+        <file>Resources/Images/Locales/WorldSmall.png</file>
     </qresource>
 </RCC>

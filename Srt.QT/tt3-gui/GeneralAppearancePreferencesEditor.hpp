@@ -39,19 +39,23 @@ namespace tt3::gui
         //  PreferencesEditor
     public:
         virtual Preferences *   preferences() const override;
-        virtual void    loadControlValues() override;
-        virtual void    saveControlValues() override;
-        virtual void    resetControlValues() override;
-        virtual bool    isValid() const override;
+        virtual void        loadControlValues() override;
+        virtual void        saveControlValues() override;
+        virtual void        resetControlValues() override;
+        virtual bool        isValid() const override;
 
         //////////
         //  Implementation
     private:
-        QList<QLocale>  _locales;   //  same order as in combo box
-        QList<ISkin*>   _skins;     //  same order as in combo box
+        QList<QLocale>      _locales;   //  same order as in combo box
+        QList<ISkin*>       _skins;     //  same order as in combo box
 
         //  Helpers
-        static QString  _displayName(const QLocale & locale);
+        QLocale             _selectedLocale();
+        void                _setSelectedLocale(const QLocale & locale);
+        tt3::gui::ISkin *   _selectedSkin();
+        void                _setSelectedSkin(tt3::gui::ISkin * skin);
+        static QString      _displayName(const QLocale & locale);
 
         //////////
         //  Controls
@@ -61,8 +65,8 @@ namespace tt3::gui
         //////////
         //  Signal handlers
     private slots:
-        void            _languageComboBoxCurrentIndexChanged(int);
-        void            _skinComboBoxCurrentIndexChanged(int);
+        void                _languageComboBoxCurrentIndexChanged(int);
+        void                _skinComboBoxCurrentIndexChanged(int);
     };
 }
 

@@ -106,6 +106,7 @@
 //  Platform API
 #include "tt3-util/Sync.hpp"
 #include "tt3-util/BlockingQueue.hpp"
+#include "tt3-util/Locale.hpp"
 
 //  Data types
 #include "tt3-util/DateTime.hpp"

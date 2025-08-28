@@ -17,6 +17,7 @@ SOURCES += \
     ISubsystem.cpp \
     Identifiers.cpp \
     LicenseManager.cpp \
+    LocaleManager.cpp \
     MessageDigestManager.cpp \
     Mutex.cpp \
     PluginManager.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
     Identifiers.hpp \
     License.hpp \
     Linkage.hpp \
+    Locale.hpp \
     Macros.hpp \
     MessageDigest.hpp \
     Plugin.hpp \

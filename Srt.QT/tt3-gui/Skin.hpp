@@ -31,8 +31,10 @@ namespace tt3::gui
         //////////
         //  Operations (properties)
     public:
+        using Mnemonic = tt3::util::Mnemonic;
+
         //  The mnemonic identifier of this skin
-        virtual QString     mnemonic() const = 0;
+        virtual Mnemonic    mnemonic() const = 0;
 
         //  The user-readable display name of this skin
         //  for the current default locale.

@@ -33,9 +33,9 @@ Skin::~Skin()
 
 //////////
 //  gui::ISkin
-QString Skin::mnemonic() const
+Skin::Mnemonic Skin::mnemonic() const
 {
-    return "Admin";
+    return M(Admin);
 }
 
 QString Skin::displayName() const

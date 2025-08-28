@@ -102,6 +102,14 @@ namespace tt3::util
         //  Saves Settings of all registered components to a text configuration file.
         static void         saveComponentSettings();
 
+        //  Returns the set of all locales supported by at
+        //  least one registered component
+        static Locales      supportedLocales();
+
+        //  Returns the set of all locales supported by
+        //  every registered component
+        static Locales      fullySupportedLocales();
+
         //////////
         //  Implementation
     private:

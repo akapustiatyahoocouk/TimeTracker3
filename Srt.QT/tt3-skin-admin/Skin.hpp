@@ -29,7 +29,7 @@ namespace tt3::skin::admin
         //////////
         //  gui::ISkin (properties)
     public:
-        virtual QString     mnemonic() const override;
+        virtual Mnemonic    mnemonic() const override;
         virtual QString     displayName() const override;
         virtual QString     description() const override;
         virtual QIcon       smallIcon() const override;

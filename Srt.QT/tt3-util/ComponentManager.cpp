@@ -170,4 +170,37 @@ void ComponentManager::saveComponentSettings()
     }
 }
 
+Locales ComponentManager::supportedLocales()
+{
+    tt3::util::Lock lock(_guard);
+
+    Locales result;
+    for (IComponent * component : _registry.values())
+    {
+        result.unite(component->resources()->supportedLocales());
+    }
+    return result;
+}
+
+Locales ComponentManager::fullySupportedLocales()
+{
+    tt3::util::Lock lock(_guard);
+
+    Locales result;
+    bool firstTime = true;
+    for (IComponent * component : _registry.values())
+    {
+        if (firstTime)
+        {
+            result = component->resources()->supportedLocales();
+            firstTime = false;
+        }
+        else
+        {
+            result.intersect(component->resources()->supportedLocales());
+        }
+    }
+    return result;
+}
+
 //  End of tt3-util/ComponentManager.cpp
