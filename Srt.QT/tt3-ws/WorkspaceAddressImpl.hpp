@@ -1,5 +1,5 @@
 //
-//  tt3-ws/WorkspaceAddressImpl.hpp - "Workspace address" ADT implementation
+//  tt3-ws/WorkspaceAddressImpl.hpp - "Workspace address" ADT support
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin

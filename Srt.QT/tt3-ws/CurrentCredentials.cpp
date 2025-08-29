@@ -54,7 +54,7 @@ void CurrentCredentials::operator = (const Credentials & credentials)
     //  Notification is issued in a "not locked" state
     if (before != after)
     {
-        emit _providedCredentialsNotifier.providedCredentialsChanged(before, after);
+        emit changed(before, after);
     }
 }
 
@@ -64,22 +64,6 @@ CurrentCredentials::operator const Credentials & () const
 
     Q_ASSERT(_instanceCount == 1);
     return _currentCredentials;
-}
-
-//////////
-//  ICredentialsProvider
-Credentials CurrentCredentials::providedCredentials() const
-{
-    tt3::util::Lock lock(_currentCredentialsGuard);
-
-    Q_ASSERT(_instanceCount == 1);
-    return _currentCredentials;
-}
-
-ProvidedCredentialsNotifier &
-CurrentCredentials::providedCredentialsNotifier()
-{
-    return _providedCredentialsNotifier;
 }
 
 //////////

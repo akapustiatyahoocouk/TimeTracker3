@@ -31,7 +31,7 @@ MainFrame::MainFrame(QWidget * parent)
 
     //  Create custom controls
     _manageUsersTabLayout = new QStackedLayout();
-    _userManager = new tt3::gui::UserManager(_ui->manageUsersTab, &tt3::ws::theCurrentWorkspace, &tt3::ws::theCurrentCredentials);
+    _userManager = new tt3::gui::UserManager(_ui->manageUsersTab);
     _manageUsersTabLayout->addWidget(_userManager);
     _ui->manageUsersTab->setLayout(_manageUsersTabLayout);
 
@@ -42,12 +42,12 @@ MainFrame::MainFrame(QWidget * parent)
             this,
             &MainFrame::_savePositionTimerTimeout);
 
-    connect(&tt3::ws::theCurrentWorkspace.providedWorkspaceNotifier(),
-            &tt3::ws::ProvidedWorkspaceNotifier::providedWorkspaceChanged,
+    connect(&tt3::ws::theCurrentWorkspace,
+            &tt3::ws::CurrentWorkspace::changed,
             this,
             &MainFrame::_onCurrentWorkspaceChanged);
-    connect(&tt3::ws::theCurrentCredentials.providedCredentialsNotifier(),
-            &tt3::ws::ProvidedCredentialsNotifier::providedCredentialsChanged,
+    connect(&tt3::ws::theCurrentCredentials,
+            &tt3::ws::CurrentCredentials::changed,
             this,
             &MainFrame::_onCurrentCredentialsChanged);
 
@@ -424,11 +424,13 @@ void MainFrame::_onWorkspaceClosed(tt3::ws::WorkspaceClosedNotification)
 
 void MainFrame::_onCurrentWorkspaceChanged(tt3::ws::Workspace /*before*/, tt3::ws::Workspace /*after*/)
 {
+    _userManager->setWorkspace(tt3::ws::theCurrentWorkspace);
     refresh();
 }
 
 void MainFrame::_onCurrentCredentialsChanged(tt3::ws::Credentials /*before*/, tt3::ws::Credentials /*after*/)
 {
+    _userManager->setCredentials(tt3::ws::theCurrentCredentials);
     refresh();
 }
 

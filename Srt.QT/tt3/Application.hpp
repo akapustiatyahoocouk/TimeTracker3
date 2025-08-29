@@ -44,6 +44,7 @@ namespace tt3
         //  Helpers
         void        _registerStandardComponents();
         void        _selectActiveSkin();
+        void        _selectCurrentTheme();
         void        _initialize();
         void        _cleanup();
     };

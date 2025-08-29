@@ -1,5 +1,5 @@
 //
-//  tt3-ws/WorkspaceTypeImpl.hpp - "Workspace type" ADT implementation
+//  tt3-ws/WorkspaceTypeImpl.hpp - "Workspace type" ADT support
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin

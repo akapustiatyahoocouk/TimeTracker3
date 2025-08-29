@@ -1,5 +1,5 @@
 //
-//  tt3-ws/WorkspaceImpl.hpp - "Workspace" ADT implemenyayion
+//  tt3-ws/Workspace.hpp - "Workspace" ADT support
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -147,68 +147,20 @@ namespace tt3::ws
         void                _onObjectModified(tt3::db::api::ObjectModifiedNotification notification);
     };
 
-    //  The agent that emits signals when the workspace
-    //  currently "provided" by a IWorkspaceProvider changes.
-    class TT3_WS_PUBLIC ProvidedWorkspaceNotifier final : public QObject
-    {
-        Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ProvidedWorkspaceNotifier)
-
-        //////////
-        //  Construction/destruction
-    public:
-        ProvidedWorkspaceNotifier() = default;
-        virtual ~ProvidedWorkspaceNotifier() = default;
-
-        //////////
-        //  Signals
-    signals:
-        //  Emitted after a workspace "provided" bu a
-        //  IWorkspaceProvider has changed.
-        void                providedWorkspaceChanged(Workspace before, Workspace after);
-    };
-
-    //  An agent that "provides" a workspace to interested
-    //  clients and notifies them when the "provided"
-    //  workspace has changed
-    class TT3_WS_PUBLIC IWorkspaceProvider
-    {
-        //////////
-        //  This is an interface
-    protected:
-        IWorkspaceProvider() = default;
-        virtual ~IWorkspaceProvider() = default;
-
-        //////////
-        //  Operations
-    public:
-        //  The workspace currently "privided" by his
-        //  provider; can be nullptf if none.
-        virtual Workspace   providedWorkspace() const = 0;
-
-        //////////
-        //  Change notification support
-    public:
-        //  The notifier which emits signals when the
-        //  workspace "provided" by this agent changes.
-        virtual ProvidedWorkspaceNotifier &
-                            providedWorkspaceNotifier() = 0;
-    };
-
     //  The accessor for a "current" workspace pseudo-variable.
     //  Only one global static instance of this class exists,
     //  and other instances should NOT be constructed.
     //  Can be nullptr if there is no "current" workspace.
-    class TT3_WS_PUBLIC CurrentWorkspace final :
-        public virtual IWorkspaceProvider
+    class TT3_WS_PUBLIC CurrentWorkspace final : public QObject
     {
+        Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentWorkspace)
 
         //////////
         //  Construction/destruction
     public:
         CurrentWorkspace();
-        ~CurrentWorkspace();
+        virtual ~CurrentWorkspace();
         \
         //////////
         //  Operators
@@ -223,18 +175,17 @@ namespace tt3::ws
         bool                operator != (nullptr_t null) const;
 
         //////////
-        //  IWorkspaceProvider
-    public:
-        virtual Workspace   providedWorkspace() const override { return operator ->(); }
-        virtual ProvidedWorkspaceNotifier &
-                            providedWorkspaceNotifier() override;
-
-        //////////
         //  Operations
     public:
         //  Swaps the specified Workspace with the "current" Workspace.
-        //  Does not change the "open/closed" status pf either one.
+        //  Does NOT change the "open/closed" status of either one.
         void                swap(Workspace & other);
+
+        //////////
+        //  Signals
+    signals:
+        //  Emitted after the current workspace has changed.
+        void                changed(Workspace before, Workspace after);
 
         //////////
         //  Implementation
@@ -242,8 +193,6 @@ namespace tt3::ws
         static std::atomic<int>     _instanceCount; //  ...to disallow a second instance
         mutable tt3::util::Mutex    _currentWorkspaceGuard;
         Workspace                   _currentWorkspace = nullptr;
-
-        ProvidedWorkspaceNotifier   _providedWorkspaceNotifier;
     };
 
 #if defined(TT3_WS_LIBRARY)
@@ -254,4 +203,4 @@ namespace tt3::ws
 #endif
 }
 
-//  End of tt3-ws/WorkspaceImpl.hpp
+//  End of tt3-ws/Workspace.hpp

@@ -2,6 +2,8 @@
     <qresource prefix="/tt3-gui">
         <file>Resources/Images/Actions/AboutLarge.png</file>
         <file>Resources/Images/Actions/AboutSmall.png</file>
+        <file>Resources/Images/Actions/AddEmailAddressLarge.png</file>
+        <file>Resources/Images/Actions/AddEmailAddressSmall.png</file>
         <file>Resources/Images/Actions/BrowseLarge.png</file>
         <file>Resources/Images/Actions/BrowseSmall.png</file>
         <file>Resources/Images/Actions/CancelLarge.png</file>
@@ -20,6 +22,8 @@
         <file>Resources/Images/Actions/LoginSmall.png</file>
         <file>Resources/Images/Actions/ModifyAccountLarge.png</file>
         <file>Resources/Images/Actions/ModifyAccountSmall.png</file>
+        <file>Resources/Images/Actions/ModifyEmailAddressLarge.png</file>
+        <file>Resources/Images/Actions/ModifyEmailAddressSmall.png</file>
         <file>Resources/Images/Actions/ModifyUserLarge.png</file>
         <file>Resources/Images/Actions/ModifyUserSmall.png</file>
         <file>Resources/Images/Actions/OkLarge.png</file>
@@ -28,19 +32,27 @@
         <file>Resources/Images/Actions/OpenWorkspaceSmall.png</file>
         <file>Resources/Images/Actions/PreferencesLarge.png</file>
         <file>Resources/Images/Actions/PreferencesSmall.png</file>
+        <file>Resources/Images/Actions/RemoveEmailAddressLarge.png</file>
+        <file>Resources/Images/Actions/RemoveEmailAddressSmall.png</file>
         <file>Resources/Images/Actions/ResetLarge.png</file>
         <file>Resources/Images/Actions/ResetSmall.png</file>
         <file>Resources/Images/Actions/ShowConfigurationLarge.png</file>
         <file>Resources/Images/Actions/ShowConfigurationSmall.png</file>
         <file>Resources/Images/Actions/ShowLicenseLarge.png</file>
         <file>Resources/Images/Actions/ShowLicenseSmall.png</file>
+        <file>Resources/Images/Misc/ErrorLarge.png</file>
+        <file>Resources/Images/Misc/ErrorSmall.png</file>
         <file>Resources/Images/Objects/ComponentLarge.png</file>
         <file>Resources/Images/Objects/ComponentSmall.png</file>
         <file>Resources/Images/Objects/SubsystemLarge.png</file>
         <file>Resources/Images/Objects/SubsystemSmall.png</file>
         <file>Resources/Images/Objects/Tt3Large.png</file>
         <file>Resources/Images/Objects/Tt3Small.png</file>
-        <file>Resources/Images/Misc/ErrorLarge.png</file>
-        <file>Resources/Images/Misc/ErrorSmall.png</file>
+        <file>Resources/Images/Misc/DarkThemeLarge.png</file>
+        <file>Resources/Images/Misc/DarkThemeSmall.png</file>
+        <file>Resources/Images/Misc/LightThemeLarge.png</file>
+        <file>Resources/Images/Misc/LightThemeSmall.png</file>
+        <file>Resources/Images/Misc/SystemThemeLarge.png</file>
+        <file>Resources/Images/Misc/SystemThemeSmall.png</file>
     </qresource>
 </RCC>

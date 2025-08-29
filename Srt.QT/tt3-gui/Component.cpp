@@ -91,6 +91,10 @@ Component::Settings::Settings()
             M(ActiveSkin),
             "",
             true),
+        activeTheme(
+            M(ActiveTheme),
+            "",
+            true),
         lastLogin(
             M(LastLogin),
             ""),

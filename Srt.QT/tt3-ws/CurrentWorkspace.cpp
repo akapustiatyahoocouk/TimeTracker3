@@ -37,14 +37,24 @@ CurrentWorkspace::~CurrentWorkspace()
 //  Operators
 void CurrentWorkspace::operator = (const Workspace & workspace)
 {
-    tt3::util::Lock lock(_currentWorkspaceGuard);
+    Workspace before, after;
 
-    Q_ASSERT(_instanceCount == 1);
-    if (workspace != _currentWorkspace)
+    //  Change is effected in a "locked" state
     {
-        Workspace before = _currentWorkspace;
-        _currentWorkspace = workspace;
-        emit _providedWorkspaceNotifier.providedWorkspaceChanged(before, workspace);
+        tt3::util::Lock lock(_currentWorkspaceGuard);
+
+        Q_ASSERT(_instanceCount == 1);
+        if (workspace != _currentWorkspace)
+        {
+            before = _currentWorkspace;
+            _currentWorkspace = workspace;
+            after = _currentWorkspace;
+        }
+    }
+    //  Signal is sent in a "not locked" state
+    if (before != after)
+    {
+        emit changed(before, after);
     }
 }
 
@@ -81,13 +91,6 @@ bool CurrentWorkspace::operator != (nullptr_t /*null*/) const
 }
 
 //////////
-//  IWorkspaceProvider
-ProvidedWorkspaceNotifier & CurrentWorkspace::providedWorkspaceNotifier()
-{
-    return _providedWorkspaceNotifier;
-}
-
-//////////
 //  Operations
 void CurrentWorkspace::swap(Workspace & other)
 {
@@ -107,7 +110,7 @@ void CurrentWorkspace::swap(Workspace & other)
     //  Signal is sent in a "not locked" state
     if (before != after)
     {
-        emit _providedWorkspaceNotifier.providedWorkspaceChanged(before, after);
+        emit changed(before, after);
     }
 }
 

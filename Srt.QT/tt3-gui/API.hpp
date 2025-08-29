@@ -46,6 +46,7 @@
 
 //  Miscellaneous helpers
 #include "tt3-gui/Skin.hpp"
+#include "tt3-gui/Theme.hpp"
 #include "tt3-gui/Preferences.hpp"
 
 //  End of tt3-gui/API.hpp

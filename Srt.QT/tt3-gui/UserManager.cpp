@@ -20,31 +20,18 @@ using namespace tt3::gui;
 
 //////////
 //  Construction/destruction
-UserManager::UserManager(QWidget * parent,
-                         tt3::ws::IWorkspaceProvider * workspaceProvider,
-                         tt3::ws::ICredentialsProvider * credentialsProvider)
+UserManager::UserManager(QWidget * parent)
     :   QWidget(parent),
-        _workspaceProvider(workspaceProvider),
-        _credentialsProvider(credentialsProvider),
+        //  Implementation
+        _workspace(tt3::ws::theCurrentWorkspace),
+        _credentials(tt3::ws::theCurrentCredentials),
+        //  Controls
         _ui(new Ui::UserManager)
 {
-    Q_ASSERT(_workspaceProvider != nullptr);
-    Q_ASSERT(_credentialsProvider != nullptr);
-
     _ui->setupUi(this);
 
-    //  Set up provider listeners
-    connect(&_workspaceProvider->providedWorkspaceNotifier(),
-            &tt3::ws::ProvidedWorkspaceNotifier::providedWorkspaceChanged,
-            this,
-            &UserManager::_onProvidedWorkspaceChanged);
-    connect(&_credentialsProvider->providedCredentialsNotifier(),
-            &tt3::ws::ProvidedCredentialsNotifier::providedCredentialsChanged,
-            this,
-            &UserManager::_onProvidedCredentialsChanged);
-
     //  TODO start listening for change notifications
-    //  on the currently "provided" Workspace
+    //  on the currently "viewed" Workspace
 }
 
 UserManager::~UserManager()
@@ -54,13 +41,38 @@ UserManager::~UserManager()
 
 //////////
 //  Operaions
+tt3::ws::Workspace UserManager::workspace() const
+{
+    return _workspace;
+}
+
+void UserManager::setWorkspace(tt3::ws::Workspace workspace)
+{
+    if (workspace != _workspace)
+    {
+        _workspace = workspace;
+        refresh();
+    }
+}
+
+tt3::ws::Credentials UserManager::credentials() const
+{
+    return _credentials;
+}
+
+void UserManager::setCredentials(const tt3::ws::Credentials & credentials)
+{
+    if (credentials != _credentials)
+    {
+        _credentials = credentials;
+        refresh();
+    }
+}
+
 void UserManager::refresh()
 {
-    tt3::ws::Workspace workspace = _workspaceProvider->providedWorkspace();
-    tt3::ws::Credentials credentials = _credentialsProvider->providedCredentials();
-
-    if (workspace == nullptr || !credentials.isValid() ||
-        !workspace->canAccess(credentials)) //  TODO handle WorkspaceExceptions
+    if (_workspace == nullptr || !_credentials.isValid() ||
+        !_workspace->canAccess(_credentials)) //  TODO handle WorkspaceExceptions
     {   //  Nothing to show...
         _ui->usersTreeWidget->clear();
         //  ...so disable all controls...
@@ -84,12 +96,12 @@ void UserManager::refresh()
 
     //  ...while others are enabled based on current
     //  selection and permissions granted by Credentials
-    _refreshUserItems(workspace, credentials);
+    _refreshUserItems();
 
     tt3::ws::Capabilities capabilities;
     try
     {
-        capabilities = workspace->capabilities(credentials);  //  may throw
+        capabilities = _workspace->capabilities(_credentials);  //  may throw
     }
     catch (const tt3::util::Exception &)
     {   //  OOPS! Suppress, though
@@ -125,18 +137,18 @@ void UserManager::refresh()
 
 //////////
 //  Implementation helpers
-void UserManager::_refreshUserItems(const tt3::ws::Workspace & workspace, const tt3::ws::Credentials & credentials)
+void UserManager::_refreshUserItems()
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
 
-    Q_ASSERT(workspace != nullptr);
-    Q_ASSERT(credentials.isValid());
+    Q_ASSERT(_workspace != nullptr);
+    Q_ASSERT(_credentials.isValid());
 
     //  Which Users currently exist (sorted by real name) ?
     QList<tt3::ws::User> users;
     try
     {
-        users = workspace->users(credentials).values();    //  may throw
+        users = _workspace->users(_credentials).values();    //  may throw
     }
     catch (...)
     {   //  OOPS! Suppress, though
@@ -145,11 +157,11 @@ void UserManager::_refreshUserItems(const tt3::ws::Workspace & workspace, const 
     {
         std::sort(users.begin(),
                   users.end(),
-                  [=](auto a, auto b)
-                    { return a->realName(credentials) < b->realName(credentials); });   //  may throw
+                  [&](auto a, auto b)
+                    { return a->realName(_credentials) < b->realName(_credentials); });   //  may throw
     }
     catch (...)
-    {   //  OOPS! Sort by OID to ensure a stable orderatch (...)
+    {   //  OOPS! Sort by OID to ensure a stable order
         std::sort(users.begin(),
                   users.end(),
                   [](auto a, auto b)
@@ -164,8 +176,8 @@ void UserManager::_refreshUserItems(const tt3::ws::Workspace & workspace, const 
         QTreeWidgetItem * userItem = new QTreeWidgetItem();
         try
         {
-            userItem->setText(0, _userItemText(user, credentials)); //  may throw
-            userItem->setIcon(0, user->type()->smallIcon());        //  nothrow
+            userItem->setText(0, _userItemText(user));      //  may throw
+            userItem->setIcon(0, user->type()->smallIcon());//  nothrow
         }
         catch (const tt3::util::Exception & ex)
         {
@@ -195,8 +207,8 @@ void UserManager::_refreshUserItems(const tt3::ws::Workspace & workspace, const 
         //  ...adjust its text/icon...
         try
         {
-            userItem->setText(0, _userItemText(user, credentials)); //  may throw
-            userItem->setIcon(0, user->type()->smallIcon());        //  nothrow
+            userItem->setText(0, _userItemText(user));      //  may throw
+            userItem->setIcon(0, user->type()->smallIcon());//  nothrow
         }
         catch (const tt3::util::Exception & ex)
         {
@@ -204,23 +216,23 @@ void UserManager::_refreshUserItems(const tt3::ws::Workspace & workspace, const 
             userItem->setIcon(0, errorIcon);
         }
         //  ...and children
-        _refreshAccountItems(userItem, credentials);
+        _refreshAccountItems(userItem);
     }
 }
 
-void UserManager::_refreshAccountItems(QTreeWidgetItem * userItem, const tt3::ws::Credentials & credentials)
+void UserManager::_refreshAccountItems(QTreeWidgetItem * userItem)
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
 
     Q_ASSERT(userItem != nullptr);
-    Q_ASSERT(credentials.isValid());
+    Q_ASSERT(_credentials.isValid());
     tt3::ws::User user = userItem->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::User>();
 
     //  Which Accounts currently exist (sorted by login) ?
     QList<tt3::ws::Account> accounts;
     try
     {
-        accounts = user->accounts(credentials).values();    //  may throw
+        accounts = user->accounts(_credentials).values();    //  may throw
     }
     catch (...)
     {   //  OOPS! Suppress, though
@@ -229,11 +241,11 @@ void UserManager::_refreshAccountItems(QTreeWidgetItem * userItem, const tt3::ws
     {
         std::sort(accounts.begin(),
                   accounts.end(),
-                  [=](auto a, auto b)
-                  { return a->login(credentials) < b->login(credentials); });   //  may throw
+                  [&](auto a, auto b)
+                  { return a->login(_credentials) < b->login(_credentials); });   //  may throw
     }
     catch (...)
-    {   //  OOPS! Sort by OID to ensure a stable orderatch (...)
+    {   //  OOPS! Sort by OID to ensure a stable order
         std::sort(accounts.begin(),
                   accounts.end(),
                   [](auto a, auto b)
@@ -248,8 +260,8 @@ void UserManager::_refreshAccountItems(QTreeWidgetItem * userItem, const tt3::ws
         QTreeWidgetItem * accountItem = new QTreeWidgetItem();
         try
         {
-            accountItem->setText(0, _accountItemText(account, credentials)); //  may throw
-            accountItem->setIcon(0, account->type()->smallIcon());        //  nothrow
+            accountItem->setText(0, _accountItemText(account));     //  may throw
+            accountItem->setIcon(0, account->type()->smallIcon());  //  nothrow
         }
         catch (const tt3::util::Exception & ex)
         {
@@ -278,8 +290,8 @@ void UserManager::_refreshAccountItems(QTreeWidgetItem * userItem, const tt3::ws
         //  ...adjust its text/icon...
         try
         {
-            accountItem->setText(0, _accountItemText(account, credentials));    //  may throw
-            accountItem->setIcon(0, account->type()->smallIcon());              //  nothrow
+            accountItem->setText(0, _accountItemText(account));     //  may throw
+            accountItem->setIcon(0, account->type()->smallIcon());  //  nothrow
         }
         catch (const tt3::util::Exception & ex)
         {
@@ -289,20 +301,20 @@ void UserManager::_refreshAccountItems(QTreeWidgetItem * userItem, const tt3::ws
     }
 }
 
-QString UserManager::_userItemText(tt3::ws::User user, const tt3::ws::Credentials & credentials) throws(tt3::ws::WorkspaceException)
+QString UserManager::_userItemText(tt3::ws::User user) throws(tt3::ws::WorkspaceException)
 {
-    QString result = user->realName(credentials);
-    if (!user->enabled(credentials))
+    QString result = user->realName(_credentials);
+    if (!user->enabled(_credentials))
     {
         result += " [disabled]";
     }
     return result;
 }
 
-QString UserManager::_accountItemText(tt3::ws::Account account, const tt3::ws::Credentials & credentials) throws(tt3::ws::WorkspaceException)
+QString UserManager::_accountItemText(tt3::ws::Account account) throws(tt3::ws::WorkspaceException)
 {
-    QString result = account->login(credentials);
-    if (!account->enabled(credentials))
+    QString result = account->login(_credentials);
+    if (!account->enabled(_credentials))
     {
         result += " [disabled]";
     }
@@ -327,20 +339,6 @@ tt3::ws::Account UserManager::_selectedAccount()
 
 //////////
 //  Signal handlers
-void UserManager::_onProvidedWorkspaceChanged(tt3::ws::Workspace /*before*/, tt3::ws::Workspace /*after*/)
-{
-    //  TODO stop listening for change notifications
-    //  on the "before" Workspace
-    //  TODO start listening for change notifications
-    //  on the "after" Workspace
-    refresh();
-}
-
-void UserManager::_onProvidedCredentialsChanged(tt3::ws::Credentials /*before*/, tt3::ws::Credentials /*after*/)
-{
-    refresh();
-}
-
 void UserManager::_usersTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)
 {
     refresh();

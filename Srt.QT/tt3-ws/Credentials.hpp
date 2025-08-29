@@ -73,79 +73,29 @@ namespace tt3::ws
         QString         _password;  //  always "" if _login == ""
     };
 
-    //  The agent that emits signals when the credentials
-    //  currently "provided" by a ICredentialsProvider changes.
-    class TT3_WS_PUBLIC ProvidedCredentialsNotifier final : public QObject
+    TT3_WS_PUBLIC inline size_t qHash(const tt3::ws::Credentials & key, size_t seed)
     {
-        Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ProvidedCredentialsNotifier)
-
-        //////////
-        //  Construction/destruction
-    public:
-        ProvidedCredentialsNotifier() = default;
-        virtual ~ProvidedCredentialsNotifier() = default;
-
-        //////////
-        //  Signals
-    signals:
-        //  Emitted after a credentials "provided" bu a
-        //  ICredentialsProvider has changed.
-        void                providedCredentialsChanged(Credentials before, Credentials after);
-    };
-
-    //  An agent that "provides" a credentials to interested
-    //  clients and notifies them when the "provided"
-    //  credentials has changed
-    class TT3_WS_PUBLIC ICredentialsProvider
-    {
-        //////////
-        //  This is an interface
-    protected:
-        ICredentialsProvider() = default;
-        virtual ~ICredentialsProvider() = default;
-
-        //////////
-        //  Operations
-    public:
-        //  The credentials currently "provided" by his
-        //  provider; can be nullptf if none.
-        virtual Credentials providedCredentials() const = 0;
-
-        //////////
-        //  Change notification support
-    public:
-        //  The notifier which emits signals when the
-        //  credentials "provided" by this agent changes.
-        virtual ProvidedCredentialsNotifier &
-                            providedCredentialsNotifier() = 0;
-    };
+        return qHash(key.login(), seed);
+    }
 
     //////////
     //  The accessor for a "current" credentials.
-    class TT3_WS_PUBLIC CurrentCredentials final :
-        public virtual ICredentialsProvider
+    class TT3_WS_PUBLIC CurrentCredentials final : public QObject
     {
+        Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentCredentials)
 
         //////////
         //  Construction/destruction
     public:
         CurrentCredentials();
-        ~CurrentCredentials();
+        virtual ~CurrentCredentials();
         \
         //////////
         //  Operators
     public:
         void                operator = (const Credentials & credentials);
                             operator const Credentials &() const;
-
-        //////////
-        //  ICredentialsProvider
-    public:
-        virtual Credentials providedCredentials() const override;
-        virtual ProvidedCredentialsNotifier &
-                            providedCredentialsNotifier() override;
 
         //////////
         //  Operations
@@ -158,6 +108,11 @@ namespace tt3::ws
         //  For invalid Credentials this is an empty string.
         QString             login() const;
 
+        //////////
+        //  Signals
+    signals:
+        //  Emitted after the current credentials have changed.
+        void                changed(Credentials before, Credentials after);
 
         //////////
         //  Implementation
@@ -165,14 +120,7 @@ namespace tt3::ws
         static std::atomic<int>     _instanceCount; //  ...to disallow a second instance
         mutable tt3::util::Mutex    _currentCredentialsGuard;
         Credentials                 _currentCredentials;
-
-        ProvidedCredentialsNotifier _providedCredentialsNotifier;
     };
-
-    TT3_WS_PUBLIC inline size_t qHash(const tt3::ws::Credentials & key, size_t seed)
-    {
-        return qHash(key.login(), seed);
-    }
 
 #if defined(TT3_WS_LIBRARY)
     //  Building tt3-ws

@@ -24,6 +24,7 @@ SOURCES += \
     ShowConfigurationDialog.cpp \
     ShowLicenseDialog.cpp \
     SkinManager.cpp \
+    StandardThemes.cpp \
     UserManager.cpp
 
 HEADERS += \
@@ -44,6 +45,7 @@ HEADERS += \
     ShowConfigurationDialog.hpp \
     ShowLicenseDialog.hpp \
     Skin.hpp \
+    Theme.hpp \
     UserManager.hpp
 
 FORMS += \

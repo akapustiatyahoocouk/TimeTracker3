@@ -17,12 +17,12 @@
 #include "tt3-gui/API.hpp"
 using namespace tt3::gui;
 
-int CurrentSkin::_instanceCount = 0;
-ISkin * CurrentSkin::_currentSkin = nullptr;
+std::atomic<int> CurrentSkin::_instanceCount = 0;
 
 //////////
 //  Construction/destruction
 CurrentSkin::CurrentSkin()
+    :   _currentSkin(nullptr)
 {
     Q_ASSERT(_instanceCount == 0);
     _instanceCount++;
@@ -38,25 +38,49 @@ CurrentSkin::~CurrentSkin()
 //  Operators
 void CurrentSkin::operator = (ISkin * skin)
 {
-    Q_ASSERT(_instanceCount == 1);
-    _currentSkin = skin;
+    ISkin * before = nullptr, * after = nullptr;
+
+    //  Change is effected in a "locked" state
+    {
+        tt3::util::Lock lock(_currentSkinGuard);
+
+        Q_ASSERT(_instanceCount == 1);
+        if (skin != _currentSkin)
+        {
+            before = _currentSkin;
+            _currentSkin = skin;
+            after = _currentSkin;
+        }
+    }
+    //  Signal is sent in a "not locked" state
+    if (before != after)
+    {
+        emit changed(before, after);
+    }
 }
 
 ISkin * CurrentSkin::operator -> () const
 {
+    tt3::util::Lock lock(_currentSkinGuard);
+
     Q_ASSERT(_instanceCount == 1);
     return _currentSkin;
 }
 
-//////////
-//  Operations
-void CurrentSkin::swap(ISkin * & other)
+bool CurrentSkin::operator == (nullptr_t /*null*/) const
 {
-    if (other != _currentSkin)
-    {
-        std::swap(_currentSkin, other);
-        //  TODO emit a signal ?
-    }
+    tt3::util::Lock lock(_currentSkinGuard);
+
+    Q_ASSERT(_instanceCount == 1);
+    return _currentSkin == nullptr;
+}
+
+bool CurrentSkin::operator != (nullptr_t /*null*/) const
+{
+    tt3::util::Lock lock(_currentSkinGuard);
+
+    Q_ASSERT(_instanceCount == 1);
+    return _currentSkin != nullptr;
 }
 
 //////////

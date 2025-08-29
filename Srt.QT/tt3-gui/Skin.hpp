@@ -105,36 +105,41 @@ namespace tt3::gui
     //  Only one global static instance of this class
     //  exists, and other instances should NOT be
     //  constructed.
-    //  Can be nullptr if there is no "current" dlon.
-    class TT3_GUI_PUBLIC CurrentSkin final
+    //  Can be nullptr if there is no "current" skin.
+    class TT3_GUI_PUBLIC CurrentSkin final : public QObject
     {
+        Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentSkin)
 
         //////////
         //  Construction/destruction
     public:
         CurrentSkin();
-        ~CurrentSkin();
+        virtual ~CurrentSkin();
 \
         //////////
         //  Operators
         //  IMPORTANT: Changing the "current" skin does
         //  NOT change its "active" status.
     public:
-        void        operator = (ISkin * skin);
-        ISkin *     operator -> () const;
+        void                operator = (ISkin * skin);
+        ISkin *             operator -> () const;
+
+        bool                operator == (nullptr_t null) const;
+        bool                operator != (nullptr_t null) const;
 
         //////////
-        //  Operations
-    public:
-        //  Swaps the specified Skin with the "current" Skin.
-        void        swap(ISkin * & other);
+        //  Signals
+    signals:
+        //  Emitted after the current skin has changed.
+        void                changed(ISkin * before, ISkin * after);
 
         //////////
         //  Implementation
     private:
-        static int      _instanceCount; //  ...to disallow a second instance
-        static ISkin *  _currentSkin;
+        static std::atomic<int>     _instanceCount; //  ...to disallow a second instance
+        mutable tt3::util::Mutex    _currentSkinGuard;
+        ISkin *                     _currentSkin;
     };
 
 #if defined(TT3_GUI_LIBRARY)

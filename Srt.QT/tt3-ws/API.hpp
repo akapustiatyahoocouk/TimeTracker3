@@ -31,7 +31,7 @@
 #include "tt3-ws/Validator.hpp"
 #include "tt3-ws/WorkspaceTypeImpl.hpp"
 #include "tt3-ws/WorkspaceAddressImpl.hpp"
-#include "tt3-ws/WorkspaceImpl.hpp"
+#include "tt3-ws/Workspace.hpp"
 
 #include "tt3-ws/Object.hpp"
 #include "tt3-ws/Principal.hpp"

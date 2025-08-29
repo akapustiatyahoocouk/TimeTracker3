@@ -86,6 +86,12 @@ void Application::_selectActiveSkin()
     initialSkin->activate();
 }
 
+void Application::_selectCurrentTheme()
+{
+    //  Pick up the system palette
+    tt3::gui::StandardThemes::System::instance();
+}
+
 void Application::_initialize()
 {
     QPixmap pm;
@@ -101,6 +107,7 @@ void Application::_initialize()
     tt3::util::ComponentManager::loadComponentSettings();
     QLocale::setDefault(tt3::gui::Component::Settings::instance()->uiLocale);
     _selectActiveSkin();
+    _selectCurrentTheme();
 
     //  Perform initial login
     tt3::gui::LoginDialog loginDialog(
@@ -158,11 +165,10 @@ void Application::_cleanup()
         }
     }
 
-    //  If there's a "current" skin, deactivate it
-    tt3::gui::ISkin * currentSkin = nullptr;
-    tt3::gui::theCurrentSkin.swap(currentSkin);
-    Q_ASSERT(currentSkin != nullptr);
-    currentSkin->deactivate();
+    //  There MUST be a "current" skin, so deactivate it
+    Q_ASSERT(tt3::gui::theCurrentSkin != nullptr);
+    tt3::gui::theCurrentSkin->deactivate();
+    tt3::gui::theCurrentSkin = nullptr;
 
     //  Done
     tt3::util::ComponentManager::saveComponentSettings();

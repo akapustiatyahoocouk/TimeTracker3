@@ -42,6 +42,9 @@ namespace tt3::gui
             //  The mnemonic of the active skin
             tt3::util::Setting<QString> activeSkin;
 
+            //  The mnemonic of the active theme
+            tt3::util::Setting<QString> activeTheme;
+
             //  The login last used
             tt3::util::Setting<QString> lastLogin;
 

@@ -82,6 +82,10 @@ void GeneralAppearancePreferencesEditor::saveControlValues()
 {
     Component::Settings::instance()->uiLocale = _selectedLocale();
     Component::Settings::instance()->activeSkin = _selectedSkin()->mnemonic().toString();
+    //  TODO we need a tt3::ws::theDefaultLocale pseudo-variable
+    //  that will emit signals when its value changes - listening
+    //  e.g. frames can change text in their UIs to a new "default"
+    QLocale::setDefault(_selectedLocale());
 }
 
 void GeneralAppearancePreferencesEditor::resetControlValues()
