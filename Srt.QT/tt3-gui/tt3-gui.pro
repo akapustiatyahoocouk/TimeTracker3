@@ -7,7 +7,9 @@ SOURCES += \
     AboutDialog.cpp \
     AskYesNoDialog.cpp \
     Component.cpp \
+    CreateUserDialog.cpp \
     CurrentSkin.cpp \
+    CurrentTheme.cpp \
     ErrorDialog.cpp \
     GeneralAppearancePreferences.cpp \
     GeneralAppearancePreferencesEditor.cpp \
@@ -25,6 +27,7 @@ SOURCES += \
     ShowLicenseDialog.cpp \
     SkinManager.cpp \
     StandardThemes.cpp \
+    ThemeManager.cpp \
     UserManager.cpp
 
 HEADERS += \
@@ -32,6 +35,7 @@ HEADERS += \
     AboutDialog.hpp \
     AskYesNoDialog.hpp \
     Components.hpp \
+    CreateUserDialog.hpp \
     ErrorDialog.hpp \
     GeneralAppearancePreferencesEditor.hpp \
     GeneralStartupPreferencesEditor.hpp \
@@ -50,6 +54,7 @@ HEADERS += \
 
 FORMS += \
     AboutDialog.ui \
+    CreateUserDialog.ui \
     GeneralAppearancePreferencesEditor.ui \
     GeneralStartupPreferencesEditor.ui \
     LoginDialog.ui \

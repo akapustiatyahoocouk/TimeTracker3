@@ -43,6 +43,7 @@
 #include "tt3-gui/PreferencesDialog.hpp"
 #include "tt3-gui/ShowLicenseDialog.hpp"
 #include "tt3-gui/ShowConfigurationDialog.hpp"
+#include "tt3-gui/CreateUserDialog.hpp"
 
 //  Miscellaneous helpers
 #include "tt3-gui/Skin.hpp"

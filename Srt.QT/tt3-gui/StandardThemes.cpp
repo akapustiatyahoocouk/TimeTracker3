@@ -68,6 +68,47 @@ IMPLEMENT_SINGLETON(StandardThemes::Light)
 
 StandardThemes::Light::Light()
 {
+    _palette.setColor(QPalette::Window, QColor(192, 192, 255)); // Main window background
+    _palette.setColor(QPalette::WindowText, QColor(0, 0, 0)); // Window text
+    _palette.setColor(QPalette::Base, QColor(224, 224, 255)); // Input widgets background
+    _palette.setColor(QPalette::AlternateBase, QColor(0, 255, 255));
+    _palette.setColor(QPalette::ToolTipBase, QColor(192, 192, 32));
+    _palette.setColor(QPalette::ToolTipText, QColor(0, 0, 64));
+    _palette.setColor(QPalette::Text, QColor(0, 128, 0)); // General text
+
+    _palette.setColor(QPalette::Button, QColor(176, 176, 192)); // Button background
+    _palette.setColor(QPalette::ButtonText, QColor(0, 0, 0)); // Button text
+    _palette.setColor(QPalette::Link, QColor(0, 0, 64));
+    _palette.setColor(QPalette::Highlight, QColor(0, 0, 128));
+    _palette.setColor(QPalette::HighlightedText, QColor(255, 255, 255));
+
+    //_palette.setColor(QPalette::Current, QPalette::Button, QColor(255, 0, 0));
+
+    /*  TODO kill off
+    const QColor darkGray(53, 53, 53);
+    const QColor gray(128, 128, 128);
+    const QColor black(25, 25, 25);
+    const QColor blue(42, 130, 218);
+
+    _palette.setColor(QPalette::Window, darkGray);
+    _palette.setColor(QPalette::WindowText, Qt::white);
+    _palette.setColor(QPalette::Base, black);
+    _palette.setColor(QPalette::AlternateBase, darkGray);
+    _palette.setColor(QPalette::ToolTipBase, blue);
+    _palette.setColor(QPalette::ToolTipText, Qt::white);
+    _palette.setColor(QPalette::Text, Qt::white);
+    _palette.setColor(QPalette::Button, darkGray);
+    _palette.setColor(QPalette::ButtonText, Qt::white);
+    _palette.setColor(QPalette::Link, blue);
+    _palette.setColor(QPalette::Highlight, blue);
+    _palette.setColor(QPalette::HighlightedText, Qt::black);
+
+    _palette.setColor(QPalette::Active, QPalette::Button, gray.darker());
+    _palette.setColor(QPalette::Disabled, QPalette::ButtonText, gray);
+    _palette.setColor(QPalette::Disabled, QPalette::WindowText, gray);
+    _palette.setColor(QPalette::Disabled, QPalette::Text, gray);
+    _palette.setColor(QPalette::Disabled, QPalette::Light, darkGray);
+    */
 }
 
 StandardThemes::Light::~Light()
@@ -134,7 +175,8 @@ StandardThemes::Dark::Dark()
     _palette.setColor(QPalette::Disabled, QPalette::ButtonText, gray);
     _palette.setColor(QPalette::Disabled, QPalette::WindowText, gray);
     _palette.setColor(QPalette::Disabled, QPalette::Text, gray);
-    _palette.setColor(QPalette::Disabled, QPalette::Light, darkGray);}
+    _palette.setColor(QPalette::Disabled, QPalette::Light, darkGray);
+}
 
 StandardThemes::Dark::~Dark()
 {

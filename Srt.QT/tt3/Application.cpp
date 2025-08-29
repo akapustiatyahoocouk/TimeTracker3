@@ -54,8 +54,18 @@ void Application::_registerStandardComponents()
     tt3::gui::PreferencesManager::registerPreferences(tt3::gui::GeneralStartupPreferences::instance());
 }
 
+void Application::_selectActiveTheme()
+{
+    tt3::gui::ITheme * initialTheme =
+        tt3::gui::ThemeManager::findTheme(tt3::gui::Component::Settings::instance()->activeTheme);
+    tt3::gui::theCurrentTheme =
+        (initialTheme != nullptr) ?
+            initialTheme :
+            tt3::gui::StandardThemes::System::instance();
+}
+
 void Application::_selectActiveSkin()
-{   //  TODO move to tt3::util::SkinManager ?
+{
     tt3::gui::ISkin * initialSkin =
         tt3::gui::SkinManager::findSkin(tt3::gui::Component::Settings::instance()->activeSkin);
     //  Use a default skin ?
@@ -86,12 +96,6 @@ void Application::_selectActiveSkin()
     initialSkin->activate();
 }
 
-void Application::_selectCurrentTheme()
-{
-    //  Pick up the system palette
-    tt3::gui::StandardThemes::System::instance();
-}
-
 void Application::_initialize()
 {
     QPixmap pm;
@@ -105,9 +109,9 @@ void Application::_initialize()
     _registerStandardComponents();
     tt3::util::PluginManager::loadPlugins();
     tt3::util::ComponentManager::loadComponentSettings();
-    QLocale::setDefault(tt3::gui::Component::Settings::instance()->uiLocale);
+    QLocale::setDefault(tt3::gui::Component::Settings::instance()->uiLocale);   //  TODO use theCurrentLocale
+    _selectActiveTheme();
     _selectActiveSkin();
-    _selectCurrentTheme();
 
     //  Perform initial login
     tt3::gui::LoginDialog loginDialog(

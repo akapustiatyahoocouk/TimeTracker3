@@ -43,8 +43,8 @@ namespace tt3
     private:
         //  Helpers
         void        _registerStandardComponents();
+        void        _selectActiveTheme();
         void        _selectActiveSkin();
-        void        _selectCurrentTheme();
         void        _initialize();
         void        _cleanup();
     };

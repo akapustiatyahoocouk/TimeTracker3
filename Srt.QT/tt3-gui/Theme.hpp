@@ -159,8 +159,9 @@ namespace tt3::gui
     //  Only one global static instance of this class
     //  exists, and other instances should NOT be
     //  constructed. Cannot be nullptr,
-    class TT3_GUI_PUBLIC CurrentTheme final
+    class TT3_GUI_PUBLIC CurrentTheme final : public QObject
     {
+        Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentTheme)
 
         //////////
@@ -175,9 +176,14 @@ namespace tt3::gui
         void            operator = (ITheme * theme);
         ITheme *        operator -> () const;
 
+        bool            operator == (nullptr_t null) const;
+        bool            operator != (nullptr_t null) const;
+
         //////////
         //  Signals
-    public:
+    signals:
+        //  Emitted after the current theme has changed.
+        void                changed(ITheme * before, ITheme * after);
 
         //////////
         //  Implementation
