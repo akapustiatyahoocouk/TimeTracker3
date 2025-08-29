@@ -346,4 +346,99 @@ void UserManager::_usersTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidge
     refresh();
 }
 
+void UserManager::_usersTreeWidgetCustomContextMenuRequested(QPoint p)
+{
+    //  [re-]create the popup menu
+    _usersTreeContextMenu.reset(new QMenu());
+    QAction * createUserAction =
+        _usersTreeContextMenu->addAction(
+            _ui->createUserPushButton->icon(),
+            _ui->createUserPushButton->text());
+    QAction * modifyUserAction =
+        _usersTreeContextMenu->addAction(
+            _ui->modifyUserPushButton->icon(),
+            _ui->modifyUserPushButton->text());
+    QAction * destroyUserAction =
+        _usersTreeContextMenu->addAction(
+            _ui->destroyUserPushButton->icon(),
+            _ui->destroyUserPushButton->text());
+    _usersTreeContextMenu->addSeparator();
+    QAction * createAccountAction =
+        _usersTreeContextMenu->addAction(
+            _ui->createAccountPushButton->icon(),
+            _ui->createAccountPushButton->text());
+    QAction * modifyAccountAction =
+        _usersTreeContextMenu->addAction(
+            _ui->modifyAccountPushButton->icon(),
+            _ui->modifyAccountPushButton->text());
+    QAction * destroyAccountAction =
+        _usersTreeContextMenu->addAction(
+            _ui->destroyAccountPushButton->icon(),
+            _ui->destroyAccountPushButton->text());
+    //  Adjust menu item states
+    createUserAction->setEnabled(_ui->createUserPushButton->isEnabled());
+    modifyUserAction->setEnabled(_ui->modifyUserPushButton->isEnabled());
+    destroyUserAction->setEnabled(_ui->destroyUserPushButton->isEnabled());
+    createAccountAction->setEnabled(_ui->createAccountPushButton->isEnabled());
+    modifyAccountAction->setEnabled(_ui->modifyAccountPushButton->isEnabled());
+    destroyAccountAction->setEnabled(_ui->destroyAccountPushButton->isEnabled());
+    //  Set up signal handling
+    connect(createUserAction,
+            &QAction::triggered,
+            this,
+            &UserManager::_createUserPushButtonClicked);
+    connect(modifyUserAction,
+            &QAction::triggered,
+            this,
+            &UserManager::_modifyUserPushButtonClicked);
+    connect(destroyUserAction,
+            &QAction::triggered,
+            this,
+            &UserManager::_destroyUserPushButtonClicked);
+    connect(createAccountAction,
+            &QAction::triggered,
+            this,
+            &UserManager::_createAccountPushButtonClicked);
+    connect(modifyAccountAction,
+            &QAction::triggered,
+            this,
+            &UserManager::_modifyAccountPushButtonClicked);
+    connect(destroyAccountAction,
+            &QAction::triggered,
+            this,
+            &UserManager::_destroyAccountPushButtonClicked);
+    //  Go!
+    _usersTreeContextMenu->popup(_ui->usersTreeWidget->mapToGlobal(p));
+}
+
+void UserManager::_createUserPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+}
+
+void UserManager::_modifyUserPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+}
+
+void UserManager::_destroyUserPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+}
+
+void UserManager::_createAccountPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+}
+
+void UserManager::_modifyAccountPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+}
+
+void UserManager::_destroyAccountPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+}
+
 //  End of tt3-gui/UserManager.cpp

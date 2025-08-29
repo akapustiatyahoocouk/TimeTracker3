@@ -58,6 +58,7 @@ namespace tt3::gui
         //  Controls
     private:
         Ui::UserManager *   _ui;
+        std::unique_ptr<QMenu>  _usersTreeContextMenu;
 
         //////////
         //  Signal handlers
@@ -65,6 +66,13 @@ namespace tt3::gui
         void                _onProvidedWorkspaceChanged(tt3::ws::Workspace before, tt3::ws::Workspace after);
         void                _onProvidedCredentialsChanged(tt3::ws::Credentials before, tt3::ws::Credentials after);
         void                _usersTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
+        void                _usersTreeWidgetCustomContextMenuRequested(QPoint);
+        void                _createUserPushButtonClicked();
+        void                _modifyUserPushButtonClicked();
+        void                _destroyUserPushButtonClicked();
+        void                _createAccountPushButtonClicked();
+        void                _modifyAccountPushButtonClicked();
+        void                _destroyAccountPushButtonClicked();
     };
 }
 

@@ -179,6 +179,9 @@
    </item>
    <item row="1" column="0">
     <widget class="QTreeWidget" name="usersTreeWidget">
+     <property name="contextMenuPolicy">
+      <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+     </property>
      <attribute name="headerVisible">
       <bool>false</bool>
      </attribute>
@@ -221,8 +224,127 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>createUserPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::UserManager</receiver>
+   <slot>_createUserPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>337</x>
+     <y>61</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>207</x>
+     <y>147</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modifyUserPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::UserManager</receiver>
+   <slot>_modifyUserPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>337</x>
+     <y>92</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>207</x>
+     <y>147</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>destroyUserPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::UserManager</receiver>
+   <slot>_destroyUserPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>337</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>207</x>
+     <y>147</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>createAccountPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::UserManager</receiver>
+   <slot>_createAccountPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>337</x>
+     <y>161</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>207</x>
+     <y>147</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modifyAccountPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::UserManager</receiver>
+   <slot>_modifyAccountPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>337</x>
+     <y>192</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>207</x>
+     <y>147</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>destroyAccountPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::UserManager</receiver>
+   <slot>_destroyAccountPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>337</x>
+     <y>223</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>207</x>
+     <y>147</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>usersTreeWidget</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>tt3::gui::UserManager</receiver>
+   <slot>_usersTreeWidgetCustomContextMenuRequested(QPoint)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>131</x>
+     <y>167</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>207</x>
+     <y>147</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_usersTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+  <slot>_createUserPushButtonClicked()</slot>
+  <slot>_modifyUserPushButtonClicked()</slot>
+  <slot>_destroyUserPushButtonClicked()</slot>
+  <slot>_createAccountPushButtonClicked()</slot>
+  <slot>_modifyAccountPushButtonClicked()</slot>
+  <slot>_destroyAccountPushButtonClicked()</slot>
+  <slot>_usersTreeWidgetCustomContextMenuRequested(QPoint)</slot>
  </slots>
 </ui>
