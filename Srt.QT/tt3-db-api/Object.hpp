@@ -83,7 +83,7 @@ namespace tt3::db::api
         virtual bool        isLive() const = 0;
 
         //////////
-        //  Opertions (life cycle)
+        //  Operations (life cycle)
     public:
         //  Destroys the corresponding database object,
         //  delete-cascading as necessary. The instance of

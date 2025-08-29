@@ -54,7 +54,6 @@ WorkspaceImpl::~WorkspaceImpl()
     catch (...)
     {   //  OOPS! Suppress TODO but log ?
     }
-    delete _accessCacheKey; //  "delete nullptr" is safe
 }
 
 //////////
@@ -101,13 +100,76 @@ void WorkspaceImpl::close() throws(WorkspaceException)
 }
 
 //////////
+//  Operations (associations)
+Users WorkspaceImpl::users(const Credentials & credentials) const throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw TODO add similar comment to all calls of throwing private methods
+
+    try
+    {
+        Capabilities capabilities = _validateAccessRights(credentials); //  may throw
+        Users result;
+        if ((capabilities & Capabilities::Administrator) != Capabilities::None ||
+            (capabilities & Capabilities::ManageUsers) != Capabilities::None)
+        {   //  The caller can see all users
+            for (tt3::db::api::IUser * dataUser : _database->users())
+            {
+                result.insert(_getProxy(dataUser));
+            }
+        }
+        else
+        {   //  The caller can only see himself
+            tt3::db::api::IAccount * dataAccount =
+                _database->login(credentials._login, credentials._password);
+            tt3::db::api::IUser * dataUser = dataAccount->user();
+            result.insert(_getProxy(dataUser));
+        }
+        return result;
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+//  TODO implement Accounts WorkspaceImpl::accounts(const Credentials & credentials) const throws(WorkspaceException);
+//  TODO implement Account WorkspaceImpl::findAccount(const Credentials & credentials, const QString & login) const throws(WorkspaceException);
+//////////
 //  Operations (access control)
 bool WorkspaceImpl::canAccess(const Credentials & credentials) const throws(WorkspaceException)
 {
     tt3::util::Lock lock(_guard);
     _ensureOpen();
 
-    return _database->tryLogin(credentials.login(), credentials._password) != nullptr;
+    try
+    {
+        _validateAccessRights(credentials); //  may throw
+        return true;
+    }
+    catch (const AccessDeniedException &)
+    {
+        return false;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  ...but let other exceptions through
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+Capabilities WorkspaceImpl::capabilities(const Credentials & credentials) const throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();
+
+    try
+    {
+        return _validateAccessRights(credentials);  //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  ...but let other exceptions through
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 //////////
@@ -125,15 +187,105 @@ void WorkspaceImpl::_ensureOpen() const throws(WorkspaceException)
 void WorkspaceImpl::_markClosed()
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
-    Q_ASSERT(_database != nullptr);
+    Q_ASSERT(_database != nullptr); //  i.e. workspace is "open"
 
     delete _database;
     _database = nullptr;
+    //  Clear caches
+    _goodCredentialsCache.clear();
+    _badCredentialsCache.clear();
+    _proxyCache.clear();
     //  The "database closed" notification fro m the
     //  database will be missed, as database (along with
     //  its change notifier) no longer existsm so we
     //  need to fake a "workspace closed" signal
     //  TODO uncomment & fix the bug emit workspaceClosed(WorkspacePtr(this));
+}
+
+Capabilities WorkspaceImpl::_validateAccessRights(const Credentials & credentials) const throws(WorkspaceException)
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    Q_ASSERT(_database != nullptr); //  i.e. workspace is "open"
+
+    //  Is the answer already known ?
+    if (_goodCredentialsCache.contains(credentials))
+    {
+        return _goodCredentialsCache[credentials];
+    }
+    if (_badCredentialsCache.contains(credentials))
+    {
+        throw AccessDeniedException();
+    }
+    //  We need to query, but keep access cache size in check
+    if (_goodCredentialsCache.size() + _badCredentialsCache.size() > _AccessCacheSizeCap)
+    {
+        _goodCredentialsCache.clear();
+        _badCredentialsCache.clear();
+    }
+    try
+    {
+        tt3::db::api::IAccount * dataAccount =
+            _database->tryLogin(credentials._login, credentials._password); //  may throw
+        if (dataAccount != nullptr)
+        {
+            Capabilities capabilities = dataAccount->capabilities();    //  may throw
+            _goodCredentialsCache.insert(credentials, capabilities);
+            return capabilities;
+        }
+        else
+        {
+            _badCredentialsCache.insert(credentials);
+            throw AccessDeniedException();
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Data layer error
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+User WorkspaceImpl::_getProxy(tt3::db::api::IUser * dataUser) const
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    Q_ASSERT(_database != nullptr); //  i.e. workspace is "open"
+    Q_ASSERT(dataUser != nullptr);
+
+    Oid oid = dataUser->oid();
+    if (_proxyCache.contains(oid))
+    {
+        User user = std::dynamic_pointer_cast<UserImpl>(_proxyCache[oid]);
+        Q_ASSERT(user != nullptr);   //  Objects do not change their types OR reuse OIDs
+        return user;
+    }
+    //  Must create a new proxy
+    Workspace workspace = _address->_workspaceType->_mapWorkspace(const_cast<WorkspaceImpl*>(this));
+    User user(
+        new UserImpl(workspace, dataUser),
+        [](UserImpl * p) { delete p; });
+    _proxyCache.insert(oid, user);
+    return user;
+}
+
+Account WorkspaceImpl::_getProxy(tt3::db::api::IAccount * dataAccount) const
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    Q_ASSERT(_database != nullptr); //  i.e. workspace is "open"
+    Q_ASSERT(dataAccount != nullptr);
+
+    Oid oid = dataAccount->oid();
+    if (_proxyCache.contains(oid))
+    {
+        Account account = std::dynamic_pointer_cast<AccountImpl>(_proxyCache[oid]);
+        Q_ASSERT(account != nullptr);   //  Objects do not change their types OR reuse OIDs
+        return account;
+    }
+    //  Must create a new proxy
+    Workspace workspace = _address->_workspaceType->_mapWorkspace(const_cast<WorkspaceImpl*>(this));
+    Account account(
+        new AccountImpl(workspace, dataAccount),
+        [](AccountImpl * p) { delete p; });
+    _proxyCache.insert(oid, account);
+    return account;
 }
 
 //////////

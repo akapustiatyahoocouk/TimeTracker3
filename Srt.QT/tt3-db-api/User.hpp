@@ -37,9 +37,6 @@ namespace tt3::db::api
         //////////
         //  Operations (properties)
     public:
-        using InactivityTimeout = std::optional<tt3::util::TimeSpan>;
-        using UiLocale = std::optional<QLocale>;
-
         //  Returns/sets the "real name" of this User.
         //  Throws DatabaseException if an error occurs.
         virtual QString     realName() const throws(DatabaseException) = 0;

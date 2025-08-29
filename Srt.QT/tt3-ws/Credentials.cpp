@@ -33,4 +33,37 @@ Credentials::Credentials(const QString & login, const QString & password)
     }
 }
 
+//////////
+//  Operators
+bool Credentials::operator == (const Credentials & op2) const
+{
+    return _login == op2._login && _password == op2._password;
+}
+
+bool Credentials::operator != (const Credentials & op2) const
+{
+    return _login != op2._login || _password != op2._password;
+}
+
+bool Credentials::operator <  (const Credentials & op2) const
+{
+    return (_login < op2._login) ||
+           (_login == op2._login && _password < op2._password);
+}
+
+bool Credentials::operator <= (const Credentials & op2) const
+{
+    return !(*this > op2);
+}
+
+bool Credentials::operator >  (const Credentials & op2) const
+{
+    return op2 < *this;
+}
+
+bool Credentials::operator >= (const Credentials & op2) const
+{
+    return !(*this < op2);
+}
+
 //  End of tt3-ws/Credentials.cpp

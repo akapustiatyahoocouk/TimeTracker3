@@ -22,6 +22,9 @@ namespace tt3::ws
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PrincipalImpl)
 
+        friend class UserImpl;
+        friend class AccountImpl;
+
         //////////
         //  Construction/destruction
     private:
@@ -46,8 +49,12 @@ namespace tt3::ws
         //////////
         //  Implementation
     private:
-        tt3::db::api::IPrincipal *const _dataPrincipal;    //  counts as "refrence"
+        tt3::db::api::IPrincipal *const _dataPrincipal;    //  counts as "reference"
     };
 }
+
+//  Enable objects and object pointers for QVariant
+Q_DECLARE_METATYPE(tt3::ws::PrincipalImpl)
+Q_DECLARE_METATYPE(tt3::ws::Principal)
 
 //  End of tt3-ws/Principal.hpp

@@ -37,6 +37,9 @@ namespace tt3::db::api
 
     //  Helper types
     class TT3_DB_API_PUBLIC ChangeNotifier;
+
+    using InactivityTimeout = std::optional<tt3::util::TimeSpan>;
+    using UiLocale = std::optional<QLocale>;
 }
 
 //  End of tt3-db-api/Classes.hpp

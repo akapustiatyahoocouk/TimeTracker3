@@ -22,6 +22,9 @@ namespace tt3::ws
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(UserImpl)
 
+        friend class WorkspaceImpl;
+        friend std::shared_ptr<UserImpl>;
+
         //////////
         //  Construction/destruction
     private:
@@ -31,9 +34,6 @@ namespace tt3::ws
         //////////
         //  Operations (properties)
     public:
-        using InactivityTimeout = std::optional<tt3::util::TimeSpan>;
-        using UiLocale = std::optional<QLocale>;
-
         //  Returns/sets the "real name" of this User.
         //  Throws WorkspaceException if an error occurs.
         QString             realName(const Credentials & credentials) const throws(WorkspaceException);
@@ -72,8 +72,12 @@ namespace tt3::ws
         //////////
         //  Implementation
     private:
-        tt3::db::api::IUser *const  _dataUser;    //  counts as "refrence"
+        tt3::db::api::IUser *const  _dataUser;    //  counts as "reference"
     };
 }
+
+//  Enable objects and object pointers for QVariant
+Q_DECLARE_METATYPE(tt3::ws::UserImpl)
+Q_DECLARE_METATYPE(tt3::ws::User)
 
 //  End of tt3-ws/User.hpp

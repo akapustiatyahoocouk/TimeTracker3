@@ -4,11 +4,15 @@ TEMPLATE = lib
 DEFINES += TT3_WS_LIBRARY
 
 SOURCES += \
+    AccountImpl.cpp \
     Component.cpp \
     Credentials.cpp \
     CurrentCredentials.cpp \
     CurrentWorkspace.cpp \
     Exceptions.cpp \
+    ObjectImpl.cpp \
+    PrincipalImpl.cpp \
+    UserImpl.cpp \
     WorkspaceAddressImpl.cpp \
     WorkspaceImpl.cpp \
     WorkspaceTypeImpl.cpp \

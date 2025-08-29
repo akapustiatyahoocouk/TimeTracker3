@@ -24,11 +24,14 @@ namespace tt3::ws
     class TT3_WS_PUBLIC Credentials final
     {
         friend class WorkspaceImpl;
+        friend class PrincipalImpl;
+        friend class UserImpl;
+        friend class AccountImpl;
 
         //////////
         //  Constats
     public:
-        //  The invalid credentials
+        //  The invalid credentials (with empty login)
         static const Credentials Invalid;
 
         //////////
@@ -42,15 +45,15 @@ namespace tt3::ws
         //////////
         //  Operators
     public:
-        bool            operator == (const Credentials & op2) const
-        {
-            return _login == op2._login && _password == op2._password;
-        }
+        //  Two credentials are equal if all their details are equal
+        bool            operator == (const Credentials & op2) const;
+        bool            operator != (const Credentials & op2) const;
 
-        bool            operator != (const Credentials & op2) const
-        {
-            return _login != op2._login || _password != op2._password;
-        }
+        //  We want to use Credentials as a QSet/QMap keys
+        bool            operator <  (const Credentials & op2) const;
+        bool            operator <= (const Credentials & op2) const;
+        bool            operator >  (const Credentials & op2) const;
+        bool            operator >= (const Credentials & op2) const;
 
         //////////
         //  Operations
@@ -166,17 +169,17 @@ namespace tt3::ws
         ProvidedCredentialsNotifier _providedCredentialsNotifier;
     };
 
+    TT3_WS_PUBLIC inline size_t qHash(const tt3::ws::Credentials & key, size_t seed)
+    {
+        return qHash(key.login(), seed);
+    }
+
 #if defined(TT3_WS_LIBRARY)
     //  Building tt3-ws
 #else
     //  Building tt3-ws client
     Q_DECL_IMPORT CurrentCredentials theCurrentCredentials;
 #endif
-}
-
-inline size_t qHash(const tt3::ws::Credentials & key, size_t seed)
-{
-    return qHash(key.login(), seed);
 }
 
 //  End of tt3-ws/Credentials.hpp

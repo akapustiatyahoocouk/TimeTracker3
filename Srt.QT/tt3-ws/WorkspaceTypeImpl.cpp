@@ -28,7 +28,8 @@ WorkspaceTypeImpl::WorkspaceTypeImpl(tt3::db::api::IDatabaseType * databaseType)
 
 WorkspaceTypeImpl::~WorkspaceTypeImpl()
 {
-    _addressMap.clear();
+    _workspaceAddressCache.clear();
+    _workspaceCache.clear();
 }
 
 //////////
@@ -127,8 +128,8 @@ Workspace WorkspaceTypeImpl::createWorkspace(
                 true,
                 QStringList(),
                 adminUser,
-                std::optional<tt3::util::TimeSpan>(),
-                std::optional<QLocale>());
+                InactivityTimeout(),
+                UiLocale());
         //  ...and account...
             user->createAccount(
                 true,
@@ -141,9 +142,7 @@ Workspace WorkspaceTypeImpl::createWorkspace(
             NOT forwarded to the Workspace, as the Workspace
             instance has NOT yet been created.  */
         //  ...and we're done.
-        return Workspace(
-                new WorkspaceImpl(address, databasePtr.release()),
-                [](WorkspaceImpl * p) { delete p; });
+        return _mapWorkspace(new WorkspaceImpl(address, databasePtr.release()));
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw, but first...
@@ -168,9 +167,7 @@ Workspace WorkspaceTypeImpl::openWorkspace(const WorkspaceAddress & address) thr
     {
         std::unique_ptr<tt3::db::api::IDatabase> databasePtr
             { address->_databaseAddress->databaseType()->openDatabase(address->_databaseAddress) };
-        return Workspace(
-            new WorkspaceImpl(address, databasePtr.release()),
-            [](WorkspaceImpl * p) { delete p; });
+        return _mapWorkspace(new WorkspaceImpl(address, databasePtr.release()));
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -186,33 +183,70 @@ void WorkspaceType::destroyWorkspace(const WorkspaceAddress & address) throws(Wo
 //  Implementation helpers
 WorkspaceAddress WorkspaceTypeImpl::_mapDatabaseAddress(tt3::db::api::IDatabaseAddress * databaseAddress)
 {
-    tt3::util::Lock lock(_addressMapGuard); //  protect the cache!
+    tt3::util::Lock lock(_cacheGuard);  //  protect the cache!
 
-    if (_addressMap.contains(databaseAddress))
+    if (_workspaceAddressCache.contains(databaseAddress))
     {   //  Already mapped
-        return _addressMap[databaseAddress];
+        return _workspaceAddressCache[databaseAddress];
     }
     else
-    {   //  Need a new mapping (which auto-registers when constructed).
+    {   //  Need a new mapping.
         //  Note that we're increasing the address cache size, so it is
         //  prudent that we keep it in check
-        _prunWorkspaceAddresses();
+        _pruneWorkspaceAddressCache();
         WorkspaceAddress workspaceAddress(
             new WorkspaceAddressImpl(this, databaseAddress),
             [](WorkspaceAddressImpl * p) { delete p; });
-        _addressMap.insert(databaseAddress, workspaceAddress);
+        _workspaceAddressCache.insert(databaseAddress, workspaceAddress);
         return workspaceAddress;
     }
 }
 
-void WorkspaceTypeImpl::_prunWorkspaceAddresses()
+void WorkspaceTypeImpl::_pruneWorkspaceAddressCache()
 {
-    for (tt3::db::api::IDatabaseAddress * key : _addressMap.keys())
+    tt3::util::Lock lock(_cacheGuard);  //  protect the cache!
+
+    for (tt3::db::api::IDatabaseAddress * key : _workspaceAddressCache.keys())
     {
-        Q_ASSERT(_addressMap[key].use_count() > 0);
-        if (_addressMap[key].use_count() == 1)
-        {   //  WorkspaceAddress is ONLY referred to by _addressMap
-            _addressMap.remove(key);
+        Q_ASSERT(_workspaceAddressCache[key].use_count() > 0);
+        if (_workspaceAddressCache[key].use_count() == 1)
+        {   //  WorkspaceAddress is ONLY referred to by _workspaceAddressCache
+            _workspaceAddressCache.remove(key);
+        }
+    }
+}
+
+Workspace WorkspaceTypeImpl::_mapWorkspace(WorkspaceImpl * impl)
+{
+    tt3::util::Lock lock(_cacheGuard);  //  protect the cache!
+
+    if (_workspaceCache.contains(impl))
+    {   //  Already mapped
+        return _workspaceCache[impl];
+    }
+    else
+    {   //  Need a new mapping.
+        //  Note that we're increasing the workspace cache size,
+        //  so it is  prudent that we keep it in check
+        _pruneWorkspaceCache();
+        Workspace workspace(
+            impl,
+            [](WorkspaceImpl * p) { delete p; });
+        _workspaceCache.insert(impl, workspace);
+        return workspace;
+    }
+}
+
+void WorkspaceTypeImpl::_pruneWorkspaceCache()
+{
+    tt3::util::Lock lock(_cacheGuard);  //  protect the cache!
+
+    for (WorkspaceImpl * key : _workspaceCache.keys())
+    {
+        Q_ASSERT(_workspaceCache[key].use_count() > 0);
+        if (_workspaceCache[key].use_count() == 1)
+        {   //  Workspace is ONLY referred to by _workspaceCache
+            _workspaceCache.remove(key);
         }
     }
 }

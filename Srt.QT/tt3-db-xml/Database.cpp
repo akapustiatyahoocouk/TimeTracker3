@@ -26,23 +26,24 @@ Database::Database(DatabaseAddress * address, _Mode mode)
     Q_ASSERT(_address != nullptr);
 
     tt3::util::Lock lock(_guard);
-    //  We need to create a lock before we do anything about the database
-    _lockRefresher = new _LockRefresher(this);
 
-    //  Now for the content
     switch (mode)
     {
         case _Mode::_Create:
+            //  Can't overwrite!
             if (QFile(_address->_path).exists())
             {   //  OOPS!
                 delete _lockRefresher;
                 throw tt3::db::api::AlreadyExistsException(
                     "XML file database", "location", _address->_path);
             }
-            //  Need to save empty DB content
+            //  Need to save empty DB content, but
+            //  obtain the lock first
+            _lockRefresher = new _LockRefresher(this);
             try
             {
                 _save();    //  may throw
+                _lockRefresher->start();
             }
             catch (const tt3::util::Exception & ex)
             {   //  Cleanup & re-throw
@@ -60,10 +61,13 @@ Database::Database(DatabaseAddress * address, _Mode mode)
             }
             break;
         case _Mode::_Open:
-            //  Need to load existing DB content
+            //  Need to load existing DB content, but
+            //  obtain the lock first
+            _lockRefresher = new _LockRefresher(this);
             try
             {
                 _load();    //  may throw
+                _lockRefresher->start();
             }
             catch (const tt3::util::Exception & ex)
             {   //  e.g. ParseException, etc.
@@ -81,17 +85,24 @@ Database::Database(DatabaseAddress * address, _Mode mode)
                 throw tt3::db::api::CustomDatabaseException("Unknown database error");
             }
             break;
+        case _Mode::_Dead:
+            //  We're creating a special "dead" database,
+            //  where "dead" objects are parked until they
+            //  lose their reference counts.
+            //  We don't need a _lockRefresher
+            _lockRefresher = nullptr;
+            break;
         default:
             Q_ASSERT(false);
     }
     Q_ASSERT(!_needsSaving);
-
-    //  Finally, start the lock refresher
-    _lockRefresher->start();
 }
 
 Database::~Database()
 {
+    static Database *const theDeadDatabase =
+        new Database(new DatabaseAddress("?"), Database::_Mode::_Dead);
+
     try
     {
         close();
@@ -112,8 +123,12 @@ Database::~Database()
         {   //  ...but some of them may still have references -
             //  these shall become "orphans" without an associated
             //  database which are deleted when the last reference
-            //  is lost
-            Q_ASSERT(false); //  TODO implement properly
+            //  is lost.
+            //  To achieve this, we move these objects to a hidden
+            //  "dead" database.
+            _graveyard.remove(object->_oid);
+            theDeadDatabase->_graveyard.insert(object->_oid, object);
+            *const_cast<Database**>(&object->_database) = theDeadDatabase;
         }
     }
     Q_ASSERT(_graveyard.isEmpty());
@@ -226,8 +241,8 @@ tt3::db::api::IAccount * Database::tryLogin(const QString & login, const QString
 tt3::db::api::IUser * Database::createUser(
     bool enabled, const QStringList & emailAddresses,
     const QString & realName,
-    const std::optional<tt3::util::TimeSpan> & inactivityTimeout,
-    const std::optional<QLocale> & uiLocale) throws(tt3::db::api::DatabaseException)
+    const tt3::db::api::InactivityTimeout & inactivityTimeout,
+    const tt3::db::api::UiLocale & uiLocale) throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_guard);
     _ensureOpen();  //  may throw

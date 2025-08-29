@@ -29,6 +29,7 @@ namespace tt3::ws
 
         friend class WorkspaceTypeImpl;
         friend std::shared_ptr<WorkspaceAddressImpl>;
+        friend class WorkspaceImpl;
 
         //////////
         //  Construction/destruction

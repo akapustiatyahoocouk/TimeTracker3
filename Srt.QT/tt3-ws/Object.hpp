@@ -22,6 +22,10 @@ namespace tt3::ws
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ObjectImpl)
 
+        friend class PrincipalImpl;
+        friend class UserImpl;
+        friend class AccountImpl;
+
         //////////
         //  Construction/destruction
     private:
@@ -48,7 +52,7 @@ namespace tt3::ws
         bool            isLive() const;
 
         //////////
-        //  Opertions (life cycle)
+        //  Operations (life cycle)
     public:
         //  Destroys this object, delete-cascading
         //  as necessary. The instance (and all other
@@ -61,12 +65,16 @@ namespace tt3::ws
         //////////
         //  Implementation
     private:
-        Workspace       _workspace;
-        tt3::db::api::IObject *const    _dataObject;    //  counts as "refrence"
+        const Workspace _workspace;
+        tt3::db::api::IObject *const    _dataObject;    //  counts as "reference"
 
         //  Helpers
         void            _ensureLive() const throws(WorkspaceException);
     };
 }
+
+//  Enable objects and object pointers for QVariant
+Q_DECLARE_METATYPE(tt3::ws::ObjectImpl)
+Q_DECLARE_METATYPE(tt3::ws::Object)
 
 //  End of tt3-ws/Object.hpp

@@ -61,4 +61,4 @@ FORMS += \
 RESOURCES += \
     tt3-gui.qrc
 
-LIBS += -ltt3-ws -ltt3-util
+LIBS += -ltt3-ws -ltt3-db-api -ltt3-util

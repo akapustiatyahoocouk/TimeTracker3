@@ -22,10 +22,10 @@ using namespace tt3::skin::admin;
 //  Construction/destruction
 MainFrame::MainFrame(QWidget * parent)
     :   QMainWindow(parent),
-        _ui(new Ui::MainFrame),
-        _savePositionTimer()
+        _ui(new Ui::MainFrame)
 {
     _ui->setupUi(this);
+
     _loadPosition();
     _updateMruWorkspaces();
 
@@ -41,7 +41,6 @@ MainFrame::MainFrame(QWidget * parent)
             &QTimer::timeout,
             this,
             &MainFrame::_savePositionTimerTimeout);
-    _trackPosition = true;
 
     connect(&tt3::ws::theCurrentWorkspace.providedWorkspaceNotifier(),
             &tt3::ws::ProvidedWorkspaceNotifier::providedWorkspaceChanged,
@@ -53,6 +52,7 @@ MainFrame::MainFrame(QWidget * parent)
             &MainFrame::_onCurrentCredentialsChanged);
 
     //  Done
+    _trackPosition = true;
     refresh();
 }
 

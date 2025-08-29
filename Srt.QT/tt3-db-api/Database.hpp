@@ -80,14 +80,14 @@ namespace tt3::db::api
         virtual IAccount *  login(const QString & login, const QString & password) const throws(DatabaseException);
 
         //////////
-        //  Opertions (life cycle)
+        //  Operations (life cycle)
     public:
         //  Creates a new User in this database.
         //  Throws DatabaseException if an error occurs.
         virtual IUser *     createUser(bool enabled, const QStringList & emailAddresses,
                                 const QString & realName,
-                                const std::optional<tt3::util::TimeSpan> & inactivityTimeout,
-                                const std::optional<QLocale> & uiLocale) throws(DatabaseException) = 0;
+                                const tt3::db::api::InactivityTimeout & inactivityTimeout,
+                                const tt3::db::api::UiLocale & uiLocale) throws(DatabaseException) = 0;
 
         //////////
         //  Operations (change notification handling)

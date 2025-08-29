@@ -25,6 +25,20 @@ Component::Component()
 {
     qRegisterMetaType<ChangeNotification>();
     qRegisterMetaType<WorkspaceClosedNotification>();
+    qRegisterMetaType<ObjectCreatedNotification>();
+    qRegisterMetaType<ObjectDestroyedNotification>();
+    qRegisterMetaType<ObjectModifiedNotification>();
+
+    //  Enable objects and object pointers for QVariant
+    qRegisterMetaType<ObjectImpl>();
+    qRegisterMetaType<PrincipalImpl>();
+    qRegisterMetaType<UserImpl>();
+    qRegisterMetaType<AccountImpl>();
+
+    qRegisterMetaType<Object>();
+    qRegisterMetaType<Principal>();
+    qRegisterMetaType<User>();
+    qRegisterMetaType<Account>();
 }
 
 Component::~Component()

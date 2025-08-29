@@ -44,10 +44,10 @@ namespace tt3::db::xml
     public:
         virtual QString     realName() const throws(tt3::db::api::DatabaseException) override;
         virtual void        setRealName(const QString & realName) throws(tt3::db::api::DatabaseException) override;
-        virtual InactivityTimeout inactivityTimeout() const throws(tt3::db::api::DatabaseException) override;
-        virtual void        setInactivityTimeout(const InactivityTimeout & inactivityTimeout) throws(tt3::db::api::DatabaseException) override;
-        virtual UiLocale    uiLocale() const throws(tt3::db::api::DatabaseException) override;
-        virtual void        setUiLocale(const UiLocale & uiLocale) throws(tt3::db::api::DatabaseException) override;
+        virtual tt3::db::api::InactivityTimeout inactivityTimeout() const throws(tt3::db::api::DatabaseException) override;
+        virtual void        setInactivityTimeout(const tt3::db::api::InactivityTimeout & inactivityTimeout) throws(tt3::db::api::DatabaseException) override;
+        virtual tt3::db::api::UiLocale  uiLocale() const throws(tt3::db::api::DatabaseException) override;
+        virtual void        setUiLocale(const tt3::db::api::UiLocale & uiLocale) throws(tt3::db::api::DatabaseException) override;
 
         //////////
         //  tt3::db::api::IUser (associations)
@@ -67,8 +67,8 @@ namespace tt3::db::xml
     private:
         //  Properties
         QString             _realName;
-        std::optional<tt3::util::TimeSpan>  _inactivityTimeout;
-        std::optional<QLocale>  _uiLocale;
+        tt3::db::api::InactivityTimeout _inactivityTimeout;
+        tt3::db::api::UiLocale          _uiLocale;
         //  Associations
         Accounts            _accounts;  //  count as "references"
 

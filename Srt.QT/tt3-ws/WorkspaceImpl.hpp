@@ -29,6 +29,11 @@ namespace tt3::ws
         friend class WorkspaceTypeImpl;
         friend std::shared_ptr<WorkspaceImpl>;
 
+        friend class ObjectImpl;
+        friend class PrincipalImpl;
+        friend class UserImpl;
+        friend class AccountImpl;
+
         //////////
         //  Construction/destruction - from friends only
     private:
@@ -80,19 +85,19 @@ namespace tt3::ws
         bool            canAccess(const Credentials & credentials) const throws(WorkspaceException);
 
         //  Returns the capabilities that the specified credentials grant
-        //  for thos workspace. If none, returns Capabilities::None.
+        //  for this workspace. If none, returns Capabilities::None.
         //  Throws WorkspaceException if an error occurs.
         Capabilities    capabilities(const Credentials & credentials) const throws(WorkspaceException);
 
         //////////
-        //  Opertions (life cycle)
+        //  Operations (life cycle)
     public:
         //  Creates a new User in this database.
         //  Throws WorkspaceException if an error occurs.
         User            createUser(bool enabled, const QStringList & emailAddresses,
                             const QString & realName,
-                            const std::optional<tt3::util::TimeSpan> & inactivityTimeout,
-                            const std::optional<QLocale> & uiLocale) throws(WorkspaceException);
+                            const InactivityTimeout & inactivityTimeout,
+                            const UiLocale & uiLocale) throws(WorkspaceException);
 
         //////////
         //  Signals
@@ -117,15 +122,21 @@ namespace tt3::ws
         const WorkspaceAddress      _address;
         tt3::db::api::IDatabase *   _database;  //  nullptr == workspace closed
 
-        //  Acces control "cache" - 1 entry is enough, as workspace
-        //  services will typically be invoked with the same Credentials
-        using CredentialsPtr = Credentials*;
-        mutable CredentialsPtr  _accessCacheKey = nullptr;  //  mullptr == value not cached
-        mutable Capabilities    _accessCacheValue = Capabilities::None;
+        //  Access control "cache"
+        static inline const int _AccessCacheSizeCap = 16;
+        mutable QMap<Credentials, Capabilities> _goodCredentialsCache;
+        mutable QSet<Credentials>               _badCredentialsCache;
+
+        //  Object proxy cache
+        mutable QMap<Oid, Object>   _proxyCache;
 
         //  Helpers
         void                _ensureOpen() const throws(WorkspaceException);
         void                _markClosed();
+        Capabilities        _validateAccessRights(const Credentials & credentials) const throws(WorkspaceException);
+
+        User                _getProxy(tt3::db::api::IUser * dataUser) const;
+        Account             _getProxy(tt3::db::api::IAccount * dataAccount) const;
 
         //////////
         //  Event handlers

@@ -40,5 +40,7 @@
         <file>Resources/Images/Objects/SubsystemSmall.png</file>
         <file>Resources/Images/Objects/Tt3Large.png</file>
         <file>Resources/Images/Objects/Tt3Small.png</file>
+        <file>Resources/Images/Misc/ErrorLarge.png</file>
+        <file>Resources/Images/Misc/ErrorSmall.png</file>
     </qresource>
 </RCC>

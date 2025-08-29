@@ -139,7 +139,7 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QPushButton" name="destroyUserPushButton_3">
+       <widget class="QPushButton" name="destroyUserPushButton">
         <property name="text">
          <string>Destroy user</string>
         </property>
@@ -196,7 +196,7 @@
   <tabstop>usersTreeWidget</tabstop>
   <tabstop>createUserPushButton</tabstop>
   <tabstop>modifyUserPushButton</tabstop>
-  <tabstop>destroyUserPushButton_3</tabstop>
+  <tabstop>destroyUserPushButton</tabstop>
   <tabstop>createAccountPushButton</tabstop>
   <tabstop>modifyAccountPushButton</tabstop>
   <tabstop>destroyAccountPushButton</tabstop>
@@ -204,5 +204,25 @@
  <resources>
   <include location="tt3-gui.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>usersTreeWidget</sender>
+   <signal>currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</signal>
+   <receiver>tt3::gui::UserManager</receiver>
+   <slot>_usersTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>131</x>
+     <y>167</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>207</x>
+     <y>147</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_usersTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+ </slots>
 </ui>

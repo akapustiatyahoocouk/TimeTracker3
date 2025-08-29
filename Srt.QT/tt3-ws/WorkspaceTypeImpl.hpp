@@ -27,6 +27,7 @@ namespace tt3::ws
 
         friend class WorkspaceTypeManager;
         friend class WorkspaceAddressImpl;
+        friend class WorkspaceImpl;
 
         //////////
         //  Construction/destruction - from friends only
@@ -113,14 +114,19 @@ namespace tt3::ws
     private:
         tt3::db::api::IDatabaseType *const  _databaseType;  //  nullptr == invalid
         const Validator     _validator;
+        tt3::util::Mutex    _cacheGuard;    //  used for all caches
 
         //  DB -> WS address cache, keys count as "references".
-        tt3::util::Mutex    _addressMapGuard;
-        QMap<tt3::db::api::IDatabaseAddress*,WorkspaceAddress>  _addressMap;
+        QMap<tt3::db::api::IDatabaseAddress*,WorkspaceAddress>  _workspaceAddressCache;
+
+        //  WS impl -> WS cache
+        QMap<WorkspaceImpl*,Workspace>  _workspaceCache;
 
         //  Helpers
         WorkspaceAddress    _mapDatabaseAddress(tt3::db::api::IDatabaseAddress * databaseAddress);
-        void                _prunWorkspaceAddresses();
+        void                _pruneWorkspaceAddressCache();
+        Workspace           _mapWorkspace(WorkspaceImpl * impl);
+        void                _pruneWorkspaceCache();
     };
 
     //////////

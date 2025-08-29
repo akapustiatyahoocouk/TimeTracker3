@@ -46,6 +46,14 @@ namespace tt3::gui
         tt3::ws::IWorkspaceProvider *const      _workspaceProvider;
         tt3::ws::ICredentialsProvider *const    _credentialsProvider;
 
+        //  Helpers
+        void                _refreshUserItems(const tt3::ws::Workspace & workspace, const tt3::ws::Credentials & credentials);
+        void                _refreshAccountItems(QTreeWidgetItem * userItem, const tt3::ws::Credentials & credentials);
+        static QString      _userItemText(tt3::ws::User user, const tt3::ws::Credentials & credentials) throws(tt3::ws::WorkspaceException);
+        static QString      _accountItemText(tt3::ws::Account account, const tt3::ws::Credentials & credentials) throws(tt3::ws::WorkspaceException);
+        tt3::ws::User       _selectedUser();
+        tt3::ws::Account    _selectedAccount();
+
         //////////
         //  Controls
     private:
@@ -56,6 +64,7 @@ namespace tt3::gui
     private slots:
         void                _onProvidedWorkspaceChanged(tt3::ws::Workspace before, tt3::ws::Workspace after);
         void                _onProvidedCredentialsChanged(tt3::ws::Credentials before, tt3::ws::Credentials after);
+        void                _usersTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
     };
 }
 

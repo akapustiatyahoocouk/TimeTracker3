@@ -22,15 +22,14 @@ namespace tt3::ws
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AccountImpl)
 
+        friend class WorkspaceImpl;
+        friend std::shared_ptr<AccountImpl>;
+
         //////////
         //  Construction/destruction
     private:
         AccountImpl(Workspace workspace, tt3::db::api::IAccount * dataAccount);
         virtual ~AccountImpl();
-
-        //////////
-        //  Operations (properties)
-    public:
 
         //////////
         //  Operations (properties)
@@ -64,8 +63,12 @@ namespace tt3::ws
         //////////
         //  Implementation
     private:
-        tt3::db::api::IAccount *const   _dataAccount;    //  counts as "refrence"
+        tt3::db::api::IAccount *const   _dataAccount;    //  counts as "reference"
     };
 }
+
+//  Enable objects and object pointers for QVariant
+Q_DECLARE_METATYPE(tt3::ws::AccountImpl)
+Q_DECLARE_METATYPE(tt3::ws::Account)
 
 //  End of tt3-ws/Account.hpp

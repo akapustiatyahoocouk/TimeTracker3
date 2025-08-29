@@ -26,7 +26,45 @@ WorkspaceException::WorkspaceException()
 Q_NORETURN
 void WorkspaceException::translateAndThrow(const tt3::util::Exception & ex) throws(WorkspaceException)
 {
-    if (auto exx = dynamic_cast<const tt3::db::api::InvalidDatabaseAddressException*>(&ex))
+    //  Throw workspace exceptions "as is"
+    if (auto exx = dynamic_cast<const InvalidWorkspaceAddressException*>(&ex))
+    {
+        throw *exx;
+    }
+    else if (auto exx = dynamic_cast<const WorkspaceInUseException*>(&ex))
+    {
+        throw *exx;
+    }
+    else if (auto exx = dynamic_cast<const WorkspaceCorruptException*>(&ex))
+    {
+        throw *exx;
+    }
+    else if (auto exx = dynamic_cast<const WorkspaceClosedException*>(&ex))
+    {
+        throw *exx;
+    }
+    else if (auto exx = dynamic_cast<const AccessDeniedException*>(&ex))
+    {
+        throw *exx;
+    }
+    else if (auto exx = dynamic_cast<const InvalidPropertyValueException*>(&ex))
+    {
+        throw *exx;
+    }
+    else if (auto exx = dynamic_cast<const AlreadyExistsException*>(&ex))
+    {
+        throw *exx;
+    }
+    else if (auto exx = dynamic_cast<const DoesNotExistException*>(&ex))
+    {
+        throw *exx;
+    }
+    else if (auto exx = dynamic_cast<const InstanceDeadException*>(&ex))
+    {
+        throw *exx;
+    }
+    //  Translate database exeptions to workspace exceptions
+    else if (auto exx = dynamic_cast<const tt3::db::api::InvalidDatabaseAddressException*>(&ex))
     {
         throw InvalidWorkspaceAddressException();
     }
@@ -75,6 +113,7 @@ void WorkspaceException::translateAndThrow(const tt3::util::Exception & ex) thro
     {
         throw InstanceDeadException();
     }
+    //  Anything else becomes CustomWorkspaceException
     else
     {
         throw CustomWorkspaceException(ex.errorMessage());

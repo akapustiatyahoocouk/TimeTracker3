@@ -84,7 +84,7 @@ void User::setRealName(const QString & realName) throws(tt3::db::api::DatabaseEx
     }
 }
 
-User::InactivityTimeout User::inactivityTimeout() const throws(tt3::db::api::DatabaseException)
+tt3::db::api::InactivityTimeout User::inactivityTimeout() const throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -92,7 +92,7 @@ User::InactivityTimeout User::inactivityTimeout() const throws(tt3::db::api::Dat
     return _inactivityTimeout;
 }
 
-void User::setInactivityTimeout(const InactivityTimeout & inactivityTimeout) throws(tt3::db::api::DatabaseException)
+void User::setInactivityTimeout(const tt3::db::api::InactivityTimeout & inactivityTimeout) throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -117,7 +117,7 @@ void User::setInactivityTimeout(const InactivityTimeout & inactivityTimeout) thr
     }
 }
 
-User::UiLocale User::uiLocale() const throws(tt3::db::api::DatabaseException)
+tt3::db::api::UiLocale User::uiLocale() const throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -125,7 +125,7 @@ User::UiLocale User::uiLocale() const throws(tt3::db::api::DatabaseException)
     return _uiLocale;
 }
 
-void User::setUiLocale(const UiLocale & uiLocale) throws(tt3::db::api::DatabaseException)
+void User::setUiLocale(const tt3::db::api::UiLocale & uiLocale) throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw

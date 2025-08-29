@@ -222,5 +222,7 @@ namespace tt3::db::api
 Q_DECLARE_METATYPE(tt3::db::api::ChangeNotification)
 Q_DECLARE_METATYPE(tt3::db::api::DatabaseClosedNotification)
 Q_DECLARE_METATYPE(tt3::db::api::ObjectCreatedNotification)
+Q_DECLARE_METATYPE(tt3::db::api::ObjectDestroyedNotification)
+Q_DECLARE_METATYPE(tt3::db::api::ObjectModifiedNotification)
 
 //  End of tt3-db-api/Notifications.hpp

@@ -33,7 +33,7 @@ namespace tt3::db::xml
         //////////
         //  Construction/destruction
     private:
-        enum _Mode { _Create, _Open };
+        enum _Mode { _Create, _Open, _Dead };
         Database(DatabaseAddress * address, _Mode mode) throws(tt3::db::api::DatabaseException);
     public:
         virtual ~Database();    //  closes database if still open
@@ -64,8 +64,8 @@ namespace tt3::db::xml
     public:
         virtual tt3::db::api::IUser *   createUser(bool enabled, const QStringList & emailAddresses,
                                     const QString & realName,
-                                    const std::optional<tt3::util::TimeSpan> & inactivityTimeout,
-                                    const std::optional<QLocale> & uiLocale) throws(tt3::db::api::DatabaseException) override;
+                                    const tt3::db::api::InactivityTimeout & inactivityTimeout,
+                                    const tt3::db::api::UiLocale & uiLocale) throws(tt3::db::api::DatabaseException) override;
 
         //////////
         //  tt3::db::api::IDatabase (change notification handling)
