@@ -1,5 +1,5 @@
 //
-//  tt3-gui/ConfirmExitDialog.hpp - The modal "Confirm exit" dialog
+//  tt3-gui/ConfirmRestartDialog.hpp - The modal "Confirm restart" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -20,23 +20,23 @@
 namespace tt3::gui
 {
     //  The modal "Confirm exit" dialog
-    namespace Ui { class ConfirmExitDialog; }
+    namespace Ui { class ConfirmRestartDialog; }
 
-    class TT3_GUI_PUBLIC ConfirmExitDialog final : public QDialog
+    class TT3_GUI_PUBLIC ConfirmRestartDialog final : public QDialog
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmExitDialog)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmRestartDialog)
 
         //////////
         //  Construction/destruction
     public:
-        explicit ConfirmExitDialog(QWidget * parent);
-        virtual ~ConfirmExitDialog();
+        explicit ConfirmRestartDialog(QWidget * parent);
+        virtual ~ConfirmRestartDialog();
 
         //////////
         //  Controls
     private:
-        Ui::ConfirmExitDialog * _ui;
+        Ui::ConfirmRestartDialog *  _ui;
 
         //////////
         //  Signal handlers
@@ -44,5 +44,6 @@ namespace tt3::gui
         void            _accept();
     };
 }
-//  End of tt3-gui/ConfirmExitDialog.hpp
+
+//  End of tt3-gui/ConfirmRestartDialog.hpp
 

@@ -65,6 +65,9 @@ namespace tt3::gui
             //  current workspace.
             tt3::util::Setting<bool>    confirmCloseWorkspace;
 
+            //  True if the user needs to confirm restarting TT3.
+            tt3::util::Setting<bool>    confirmRestart;
+
             //  True if the user needs to confirm exiting TT3.
             tt3::util::Setting<bool>    confirmExit;
         };

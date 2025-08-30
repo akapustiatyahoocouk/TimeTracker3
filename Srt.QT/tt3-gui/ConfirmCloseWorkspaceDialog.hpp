@@ -1,5 +1,5 @@
 //
-//  tt3-gui/ConfirmExitDialog.hpp - The modal "Confirm exit" dialog
+//  tt3-gui/ConfirmCloseWorkspaceDialog.hpp - The modal "Confirm close workspace" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -20,23 +20,23 @@
 namespace tt3::gui
 {
     //  The modal "Confirm exit" dialog
-    namespace Ui { class ConfirmExitDialog; }
+    namespace Ui { class ConfirmCloseWorkspaceDialog; }
 
-    class TT3_GUI_PUBLIC ConfirmExitDialog final : public QDialog
+    class TT3_GUI_PUBLIC ConfirmCloseWorkspaceDialog final : public QDialog
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmExitDialog)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmCloseWorkspaceDialog)
 
         //////////
         //  Construction/destruction
     public:
-        explicit ConfirmExitDialog(QWidget * parent);
-        virtual ~ConfirmExitDialog();
+        explicit ConfirmCloseWorkspaceDialog(QWidget * parent, tt3::ws::Workspace workspace);
+        virtual ~ConfirmCloseWorkspaceDialog();
 
         //////////
         //  Controls
     private:
-        Ui::ConfirmExitDialog * _ui;
+        Ui::ConfirmCloseWorkspaceDialog *   _ui;
 
         //////////
         //  Signal handlers
@@ -44,5 +44,6 @@ namespace tt3::gui
         void            _accept();
     };
 }
-//  End of tt3-gui/ConfirmExitDialog.hpp
+
+//  End of tt3-gui/ConfirmCloseWorkspaceDialog.hpp
 

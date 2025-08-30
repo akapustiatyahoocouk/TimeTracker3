@@ -360,19 +360,39 @@ void MainFrame::_onActionOpenWorkspace()
 }
 
 void MainFrame::_onActionCloseWorkspace()
-{   //  Confirm...
-    if (tt3::ws::theCurrentWorkspace != nullptr &&
-        tt3::gui::Component::Settings::instance()->confirmCloseWorkspace)
-    {
-    }
-    //  ...and close
+{
+    //  Get the "current workspace: out of the way
     tt3::ws::Workspace workspace = nullptr;
     tt3::ws::theCurrentWorkspace.swap(workspace);
-    if (workspace != nullptr)
+    //  So?
+    if (workspace == nullptr)
+    {   //  ..there wasn't one - there's nothing to close
+        return;
+    }
+    //  Confirm...
+    if (workspace != nullptr &&
+        tt3::gui::Component::Settings::instance()->confirmCloseWorkspace)
+    {
+        tt3::gui::ConfirmCloseWorkspaceDialog dlg(this, workspace);
+        if (dlg.exec() != QDialog::DialogCode::Accepted)
+        {   //  ...and the user has said "no" - restore the "current"
+            //  database as it was, and we're done
+            tt3::ws::theCurrentWorkspace.swap(workspace);
+            return;
+        }
+    }
+    //  Either the user has confirmed the close, or
+    //  the confirmation was implicit - either way, close!
+    //  ...and close
+    try
     {
         workspace->close();
-        refresh();
     }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! close() error - report, but stay "closed"
+        tt3::gui::ErrorDialog::show(this, ex);
+    }
+    refresh();
 }
 
 void MainFrame::_onActionDestroyWorkspace()
@@ -382,6 +402,16 @@ void MainFrame::_onActionDestroyWorkspace()
 
 void MainFrame::_onActionRestart()
 {
+    //  Confirm...
+    if (tt3::gui::Component::Settings::instance()->confirmRestart)
+    {
+        tt3::gui::ConfirmRestartDialog dlg(this);
+        if (dlg.exec() != QDialog::DialogCode::Accepted)
+        {
+            return;
+        }
+    }
+    //  ...and restart
     QApplication::exit(-1);
 }
 

@@ -7,7 +7,9 @@ SOURCES += \
     AboutDialog.cpp \
     AskYesNoDialog.cpp \
     Component.cpp \
+    ConfirmCloseWorkspaceDialog.cpp \
     ConfirmExitDialog.cpp \
+    ConfirmRestartDialog.cpp \
     CreateUserDialog.cpp \
     CurrentSkin.cpp \
     CurrentTheme.cpp \
@@ -36,7 +38,9 @@ HEADERS += \
     AboutDialog.hpp \
     AskYesNoDialog.hpp \
     Components.hpp \
+    ConfirmCloseWorkspaceDialog.hpp \
     ConfirmExitDialog.hpp \
+    ConfirmRestartDialog.hpp \
     CreateUserDialog.hpp \
     ErrorDialog.hpp \
     GeneralAppearancePreferencesEditor.hpp \
@@ -56,7 +60,9 @@ HEADERS += \
 
 FORMS += \
     AboutDialog.ui \
+    ConfirmCloseWorkspaceDialog.ui \
     ConfirmExitDialog.ui \
+    ConfirmRestartDialog.ui \
     CreateUserDialog.ui \
     GeneralAppearancePreferencesEditor.ui \
     GeneralStartupPreferencesEditor.ui \

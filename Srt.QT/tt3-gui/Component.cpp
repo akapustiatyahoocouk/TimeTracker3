@@ -87,36 +87,16 @@ Component::Resources::~Resources() {}
 IMPLEMENT_SINGLETON(Component::Settings)
 
 Component::Settings::Settings()
-    :   activeSkin(
-            M(ActiveSkin),
-            M(-),
-            true),
-        activeTheme(
-            M(ActiveTheme),
-            StandardThemes::System::instance()->mnemonic(),
-            true),
-        lastLogin(
-            M(LastLogin),
-            ""),
-        uiLocale(
-            M(UiLocale),
-            QLocale(QLocale::English, QLocale::UnitedKingdom),
-            true),
-        loadLastWorkspaceAtStartup(
-            M(LoadLastWorkspaceAtStartup),
-            false),
-        rememberLastLogin(
-            M(RememberLastLogin),
-            true),
-        currentPreferences(
-            M(CurrentPreferences),
-            M(-)),
-        confirmCloseWorkspace(
-            M(ConfirmCloseWorkspace),
-            true),
-        confirmExit(
-            M(ConfirmExit),
-            true)
+    :   activeSkin(M(ActiveSkin), M(-), true),
+        activeTheme(M(ActiveTheme), StandardThemes::System::instance()->mnemonic(), true),
+        lastLogin(M(LastLogin), ""),
+        uiLocale(M(UiLocale), QLocale(QLocale::English, QLocale::UnitedKingdom), true),
+        loadLastWorkspaceAtStartup(M(LoadLastWorkspaceAtStartup), false),
+        rememberLastLogin(M(RememberLastLogin), true),
+        currentPreferences(M(CurrentPreferences), M(-)),
+        confirmCloseWorkspace(M(ConfirmCloseWorkspace), true),
+        confirmRestart(M(ConfirmRestart), true),
+        confirmExit(M(ConfirmExit), true)
 {
     addSetting(&activeSkin);
     addSetting(&activeTheme);
@@ -126,6 +106,7 @@ Component::Settings::Settings()
     addSetting(&rememberLastLogin);
     addSetting(&currentPreferences);
     addSetting(&confirmCloseWorkspace);
+    addSetting(&confirmRestart);
     addSetting(&confirmExit);
 }
 
