@@ -29,8 +29,8 @@
 
 #include "tt3-ws/Credentials.hpp"
 #include "tt3-ws/Validator.hpp"
-#include "tt3-ws/WorkspaceTypeImpl.hpp"
-#include "tt3-ws/WorkspaceAddressImpl.hpp"
+#include "tt3-ws/WorkspaceType.hpp"
+#include "tt3-ws/WorkspaceAddress.hpp"
 #include "tt3-ws/Workspace.hpp"
 
 #include "tt3-ws/Object.hpp"

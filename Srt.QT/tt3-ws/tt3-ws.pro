@@ -32,7 +32,7 @@ HEADERS += \
     User.hpp \
     Validator.hpp \
     Workspace.hpp \
-    WorkspaceAddressImpl.hpp \
-    WorkspaceTypeImpl.hpp
+    WorkspaceAddress.hpp \
+    WorkspaceType.hpp
 
 LIBS += -ltt3-db-api -ltt3-util

@@ -40,24 +40,13 @@ bool PrincipalImpl::enabled(const Credentials & credentials) const throws(Worksp
 
     try
     {
-        Capabilities capabilities = _workspace->_validateAccessRights(credentials);
-        //  TODO use proper access rights!
-        if ((capabilities & Capabilities::Administrator) != Capabilities::None ||
-            (capabilities & Capabilities::ManageUsers) != Capabilities::None)
-        {   //  The caller can see all users' properties
-            return _dataPrincipal->enabled();   //  may throw
-        }
-        else
-        {   //  The caller can only see himself
-            tt3::db::api::IAccount * clientAccount =
-                _workspace->_database->login(credentials._login, credentials._password);    //  may throw
-            //  TODO ? if (dataAccount->user() == _dataUser)
-            {
-                return _dataPrincipal->enabled();   //  may throw
-            }
-            //  OOPS! The caller is trying to see someone else
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
             throw AccessDeniedException();
         }
+        //  Do the work
+        return _dataPrincipal->enabled();   //  may throw
     }
     catch (const tt3::util::Exception & ex)
     {

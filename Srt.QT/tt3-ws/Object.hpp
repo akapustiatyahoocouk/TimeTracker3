@@ -70,6 +70,11 @@ namespace tt3::ws
 
         //  Helpers
         void            _ensureLive() const throws(WorkspaceException);
+
+        //  Access control
+        virtual bool    _canRead(const Credentials & credentials) const throws(WorkspaceException) = 0;
+        virtual bool    _canModify(const Credentials & credentials) const throws(WorkspaceException) = 0;
+        virtual bool    _canDestroy(const Credentials & credentials) const throws(WorkspaceException) = 0;
     };
 }
 

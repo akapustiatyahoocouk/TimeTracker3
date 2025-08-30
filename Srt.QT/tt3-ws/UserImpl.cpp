@@ -40,23 +40,13 @@ QString UserImpl::realName(const Credentials & credentials) const throws(Workspa
 
     try
     {
-        Capabilities capabilities = _workspace->_validateAccessRights(credentials);
-        if ((capabilities & Capabilities::Administrator) != Capabilities::None ||
-            (capabilities & Capabilities::ManageUsers) != Capabilities::None)
-        {   //  The caller can see all users' properties
-            return _dataUser->realName();   //  may throw
-        }
-        else
-        {   //  The caller can only see himself
-            tt3::db::api::IAccount * clientAccount =
-                _workspace->_database->login(credentials._login, credentials._password);    //  may throw
-            if (clientAccount->user() == _dataUser)
-            {
-                return _dataUser->realName();   //  may throw
-            }
-            //  OOPS! The caller is trying to see someone else
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
             throw AccessDeniedException();
         }
+        //  Do the work
+        return _dataUser->realName();   //  may throw
     }
     catch (const tt3::util::Exception & ex)
     {
@@ -108,6 +98,64 @@ Accounts UserImpl::accounts(const Credentials & credentials) const throws(Worksp
             //  OOPS! The caller is trying to see someone else
             throw AccessDeniedException();
         }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+//////////
+//  Access control
+bool UserImpl::_canRead(const Credentials & credentials) const
+{
+    try
+    {
+        Capabilities capabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        if ((capabilities & Capabilities::Administrator) != Capabilities::None ||
+            (capabilities & Capabilities::ManageUsers) != Capabilities::None)
+        {   //  Can read any user
+            return true;
+        }
+        //  Otherwise user can only read himself
+        tt3::db::api::IAccount * clientAccount =
+            _workspace->_database->tryLogin(credentials._login, credentials._password);    //  may throw
+        return clientAccount != nullptr && clientAccount->user() == _dataUser;
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+bool UserImpl::_canModify(const Credentials & credentials) const
+{
+    try
+    {
+        Capabilities capabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        if ((capabilities & Capabilities::Administrator) != Capabilities::None ||
+            (capabilities & Capabilities::ManageUsers) != Capabilities::None)
+        {   //  Can modify any user
+            return true;
+        }
+        //  Otherwise user can only modify himself
+        tt3::db::api::IAccount * clientAccount =
+            _workspace->_database->tryLogin(credentials._login, credentials._password);    //  may throw
+        return clientAccount != nullptr && clientAccount->user() == _dataUser;
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+bool UserImpl::_canDestroy(const Credentials & credentials) const
+{
+    try
+    {
+        Capabilities capabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        return (capabilities & Capabilities::Administrator) != Capabilities::None ||
+               (capabilities & Capabilities::ManageUsers) != Capabilities::None;
     }
     catch (const tt3::util::Exception & ex)
     {

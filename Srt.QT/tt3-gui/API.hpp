@@ -41,6 +41,7 @@
 //  Dialogs
 #include "tt3-gui/ErrorDialog.hpp"
 #include "tt3-gui/AskYesNoDialog.hpp"
+#include "tt3-gui/ConfirmExitDialog.hpp"
 #include "tt3-gui/NewWorkspaceDialog.hpp"
 #include "tt3-gui/SelectWorkspaceDialog.hpp"
 #include "tt3-gui/LoginDialog.hpp"

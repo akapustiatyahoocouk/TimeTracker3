@@ -73,6 +73,11 @@ namespace tt3::ws
         //  Implementation
     private:
         tt3::db::api::IUser *const  _dataUser;    //  counts as "reference"
+
+        //  Access control
+        virtual bool    _canRead(const Credentials & credentials) const throws(WorkspaceException) override;
+        virtual bool    _canModify(const Credentials & credentials) const throws(WorkspaceException) override;
+        virtual bool    _canDestroy(const Credentials & credentials) const throws(WorkspaceException) override;
     };
 }
 

@@ -360,7 +360,12 @@ void MainFrame::_onActionOpenWorkspace()
 }
 
 void MainFrame::_onActionCloseWorkspace()
-{   //  TODO confirm close TODO based on a tt3::ws::Component::Setting
+{   //  Confirm...
+    if (tt3::ws::theCurrentWorkspace != nullptr &&
+        tt3::gui::Component::Settings::instance()->confirmCloseWorkspace)
+    {
+    }
+    //  ...and close
     tt3::ws::Workspace workspace = nullptr;
     tt3::ws::theCurrentWorkspace.swap(workspace);
     if (workspace != nullptr)
@@ -381,7 +386,16 @@ void MainFrame::_onActionRestart()
 }
 
 void MainFrame::_onActionExit()
-{
+{   //  Confirm...
+    if (tt3::gui::Component::Settings::instance()->confirmExit)
+    {
+        tt3::gui::ConfirmExitDialog dlg(this);
+        if (dlg.exec() != QDialog::DialogCode::Accepted)
+        {
+            return;
+        }
+    }
+    //  ...and exit
     QApplication::exit(0);
 }
 

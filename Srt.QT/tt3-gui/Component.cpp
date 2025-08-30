@@ -110,7 +110,13 @@ Component::Settings::Settings()
             true),
         currentPreferences(
             M(CurrentPreferences),
-            M(-))
+            M(-)),
+        confirmCloseWorkspace(
+            M(ConfirmCloseWorkspace),
+            true),
+        confirmExit(
+            M(ConfirmExit),
+            true)
 {
     addSetting(&activeSkin);
     addSetting(&activeTheme);
@@ -119,6 +125,8 @@ Component::Settings::Settings()
     addSetting(&loadLastWorkspaceAtStartup);
     addSetting(&rememberLastLogin);
     addSetting(&currentPreferences);
+    addSetting(&confirmCloseWorkspace);
+    addSetting(&confirmExit);
 }
 
 Component::Settings::~Settings()

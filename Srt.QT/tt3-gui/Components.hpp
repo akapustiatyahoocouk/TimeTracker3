@@ -60,6 +60,13 @@ namespace tt3::gui
             //  The mnemonic identifier of the Preferences node that  was
             //  "current" during last activation og yje "Preferences" dialog.
             tt3::util::Setting<tt3::util::Mnemonic> currentPreferences;
+
+            //  True if user needs to confirm closing the
+            //  current workspace.
+            tt3::util::Setting<bool>    confirmCloseWorkspace;
+
+            //  True if the user needs to confirm exiting TT3.
+            tt3::util::Setting<bool>    confirmExit;
         };
 
         //////////

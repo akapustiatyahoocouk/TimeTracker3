@@ -73,8 +73,7 @@ namespace tt3::util
             :   AbstractSetting(mnemonic, changeRequiresRestart),
                 _defaultValue(defaultValue),
                 _value(defaultValue),
-                _valueLoaded(false),
-                _needsSaving(false) {}
+                _valueLoaded(false) {}
         ~Setting() = default;
 
         //////////
@@ -124,7 +123,6 @@ namespace tt3::util
             {
                 _value = value;
                 _valueLoaded = true;
-                _needsSaving = true;
                 emit valueChanged(this);
             }
         }
@@ -136,7 +134,6 @@ namespace tt3::util
 
         T               _value;
         bool            _valueLoaded;
-        bool            _needsSaving;
     };
 
     //////////

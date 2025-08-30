@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/tt3-gui">
+        <file>Resources/Dark.qss</file>
         <file>Resources/Images/Actions/AboutLarge.png</file>
         <file>Resources/Images/Actions/AboutSmall.png</file>
         <file>Resources/Images/Actions/AddEmailAddressLarge.png</file>
@@ -8,6 +9,8 @@
         <file>Resources/Images/Actions/BrowseSmall.png</file>
         <file>Resources/Images/Actions/CancelLarge.png</file>
         <file>Resources/Images/Actions/CancelSmall.png</file>
+        <file>Resources/Images/Actions/CloseWorkspaceLarge.png</file>
+        <file>Resources/Images/Actions/CloseWorkspaceSmall.png</file>
         <file>Resources/Images/Actions/CreateAccountLarge.png</file>
         <file>Resources/Images/Actions/CreateAccountSmall.png</file>
         <file>Resources/Images/Actions/CreateUserLarge.png</file>
@@ -18,6 +21,8 @@
         <file>Resources/Images/Actions/DestroyAccountSmall.png</file>
         <file>Resources/Images/Actions/DestroyUserLarge.png</file>
         <file>Resources/Images/Actions/DestroyUserSmall.png</file>
+        <file>Resources/Images/Actions/ExitLarge.png</file>
+        <file>Resources/Images/Actions/ExitSmall.png</file>
         <file>Resources/Images/Actions/LoginLarge.png</file>
         <file>Resources/Images/Actions/LoginSmall.png</file>
         <file>Resources/Images/Actions/ModifyAccountLarge.png</file>
@@ -40,21 +45,20 @@
         <file>Resources/Images/Actions/ShowConfigurationSmall.png</file>
         <file>Resources/Images/Actions/ShowLicenseLarge.png</file>
         <file>Resources/Images/Actions/ShowLicenseSmall.png</file>
+        <file>Resources/Images/Misc/DarkThemeLarge.png</file>
+        <file>Resources/Images/Misc/DarkThemeSmall.png</file>
         <file>Resources/Images/Misc/ErrorLarge.png</file>
         <file>Resources/Images/Misc/ErrorSmall.png</file>
+        <file>Resources/Images/Misc/LightThemeLarge.png</file>
+        <file>Resources/Images/Misc/LightThemeSmall.png</file>
+        <file>Resources/Images/Misc/SystemThemeLarge.png</file>
+        <file>Resources/Images/Misc/SystemThemeSmall.png</file>
         <file>Resources/Images/Objects/ComponentLarge.png</file>
         <file>Resources/Images/Objects/ComponentSmall.png</file>
         <file>Resources/Images/Objects/SubsystemLarge.png</file>
         <file>Resources/Images/Objects/SubsystemSmall.png</file>
         <file>Resources/Images/Objects/Tt3Large.png</file>
         <file>Resources/Images/Objects/Tt3Small.png</file>
-        <file>Resources/Images/Misc/DarkThemeLarge.png</file>
-        <file>Resources/Images/Misc/DarkThemeSmall.png</file>
-        <file>Resources/Images/Misc/LightThemeLarge.png</file>
-        <file>Resources/Images/Misc/LightThemeSmall.png</file>
-        <file>Resources/Images/Misc/SystemThemeLarge.png</file>
-        <file>Resources/Images/Misc/SystemThemeSmall.png</file>
-        <file>Resources/Dark.qss</file>
         <file>Resources/Light.qss</file>
     </qresource>
 </RCC>
