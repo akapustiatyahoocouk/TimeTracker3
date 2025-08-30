@@ -109,7 +109,8 @@ void Application::_initialize()
     _registerStandardComponents();
     tt3::util::PluginManager::loadPlugins();
     tt3::util::ComponentManager::loadComponentSettings();
-    QLocale::setDefault(tt3::gui::Component::Settings::instance()->uiLocale);   //  TODO use theCurrentLocale
+
+    tt3::util::theCurrentLocale = tt3::gui::Component::Settings::instance()->uiLocale;
     _selectActiveTheme();
     _selectActiveSkin();
 

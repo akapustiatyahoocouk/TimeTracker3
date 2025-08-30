@@ -14,6 +14,8 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
+#pragma once
+#include "tt3-util/API.hpp"
 
 namespace tt3::util
 {
@@ -39,14 +41,48 @@ namespace tt3::util
         static QMap<QLocale, QIcon> _smallIcons;
         static QMap<QLocale, QIcon> _largeIcons;
     };
-}
 
-using Locales = QSet<QLocale>;
+    //  The accessor for a "current default" locale.
+    //  Only one global static instance of this class
+    //  exists, and other instances should NOT be
+    //  constructed.
+    //  Acts as a wrapper over QLocale::default().
+    class TT3_UTIL_PUBLIC CurrentLocale final : public QObject
+    {
+        Q_OBJECT
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentLocale)
 
-//  We need to use QLocale as QMap keys
-inline bool operator < (const QLocale & a, const QLocale & b)
-{
-    return a.name() < b.name();
+        //////////
+        //  Construction/destruction
+    public:
+        CurrentLocale();
+        virtual ~CurrentLocale();
+        \
+        //////////
+        //  Operators
+    public:
+        void            operator = (const QLocale & locale);
+                        operator QLocale () const;
+
+        //////////
+        //  Signals
+    signals:
+        //  Emitted after the current locale has changed.
+        void                changed(QLocale before, QLocale after);
+
+        //////////
+        //  Implementation
+    private:
+        static std::atomic<int>     _instanceCount; //  ...to disallow a second instance
+        mutable tt3::util::Mutex    _currentLocaleGuard;
+    };
+
+#if defined(TT3_UTIL_LIBRARY)
+    //  Building tt3-util
+#else
+    //  Building tt3-util client
+    Q_DECL_IMPORT CurrentLocale theCurrentLocale;
+#endif
 }
 
 //  End of tt3-util/Locale.hpp

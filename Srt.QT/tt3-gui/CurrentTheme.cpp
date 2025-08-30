@@ -50,12 +50,12 @@ void CurrentTheme::operator = (ITheme * theme)
             before = _currentTheme;
             _currentTheme = theme;
             after = _currentTheme;
-            QGuiApplication::setPalette(theme->palette());
         }
     }
     //  Signal is sent in a "not locked" state
     if (before != after)
     {
+        ((QApplication*)QApplication::instance())->setStyleSheet(after->css());
         emit changed(before, after);
     }
 }

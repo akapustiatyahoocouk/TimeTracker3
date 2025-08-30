@@ -20,6 +20,7 @@
 *.pri  text diff=cpp
 *.qrc  text diff=cpp
 *.txt  text diff=cpp
+*.css  text diff=cpp
 
 # Compiled Object files
 *.slo   binary

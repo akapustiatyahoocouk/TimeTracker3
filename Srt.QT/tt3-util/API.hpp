@@ -73,6 +73,7 @@
 #include <QSharedPointer>
 #include <QStackedLayout>
 #include <QStatusBar>
+#include <QStyleFactory>
 #include <QTextEdit>
 #include <QThread>
 #include <QTimer>

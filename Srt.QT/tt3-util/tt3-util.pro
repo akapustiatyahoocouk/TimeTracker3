@@ -6,6 +6,7 @@ DEFINES += TT3_UTIL_LIBRARY
 SOURCES += \
     Component.cpp \
     ComponentManager.cpp \
+    CurrentLocale.cpp \
     Exceptions.cpp \
     FileResourceFactory.cpp \
     FromString.cpp \

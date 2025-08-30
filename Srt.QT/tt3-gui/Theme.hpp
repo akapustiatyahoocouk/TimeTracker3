@@ -51,10 +51,11 @@ namespace tt3::gui
         //  The large (32x32) icon representing this theme.
         virtual QIcon       largeIcon() const = 0;
 
-        //  The color palette used by this theme
-        virtual QPalette    palette() const = 0;
+        //  The css used by this theme
+        virtual QString     css() const = 0;
     };
 
+    //  The standard (predefined) themes
     class TT3_GUI_PUBLIC StandardThemes final
     {
         UTILITY_CLASS(StandardThemes)
@@ -75,12 +76,12 @@ namespace tt3::gui
             virtual QString     description() const override;
             virtual QIcon       smallIcon() const override;
             virtual QIcon       largeIcon() const override;
-            virtual QPalette    palette() const override;
+            virtual QString     css() const override;
 
             //////////
             //  Implementation
         private:
-            QPalette            _palette;
+            QString             _css;
         };
 
         //  The "light" theme
@@ -96,12 +97,12 @@ namespace tt3::gui
             virtual QString     description() const override;
             virtual QIcon       smallIcon() const override;
             virtual QIcon       largeIcon() const override;
-            virtual QPalette    palette() const override;
+            virtual QString     css() const override;
 
             //////////
             //  Implementation
         private:
-            QPalette            _palette;
+            QString             _css;
         };
 
         //  The "dark" theme
@@ -117,12 +118,12 @@ namespace tt3::gui
             virtual QString     description() const override;
             virtual QIcon       smallIcon() const override;
             virtual QIcon       largeIcon() const override;
-            virtual QPalette    palette() const override;
+            virtual QString     css() const override;
 
             //////////
             //  Implementation
         private:
-            QPalette            _palette;
+            QString             _css;
         };
     };
 

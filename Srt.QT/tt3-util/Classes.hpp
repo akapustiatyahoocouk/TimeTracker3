@@ -36,4 +36,12 @@ namespace tt3::util
     class TT3_UTIL_PUBLIC MissingResourceException;
 }
 
+using Locales = QSet<QLocale>;
+
+//  We need to use QLocale as QMap keys
+inline bool operator < (const QLocale & a, const QLocale & b)
+{
+    return a.name() < b.name();
+}
+
 //  End of tt3-util/Classes.hpp

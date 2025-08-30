@@ -54,5 +54,7 @@
         <file>Resources/Images/Misc/LightThemeSmall.png</file>
         <file>Resources/Images/Misc/SystemThemeLarge.png</file>
         <file>Resources/Images/Misc/SystemThemeSmall.png</file>
+        <file>Resources/Dark.qss</file>
+        <file>Resources/Light.qss</file>
     </qresource>
 </RCC>
