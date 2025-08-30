@@ -93,7 +93,7 @@ Component::Settings::Settings()
             true),
         activeTheme(
             M(ActiveTheme),
-            "",
+            StandardThemes::System::instance()->mnemonic().toString(),
             true),
         lastLogin(
             M(LastLogin),
@@ -113,6 +113,7 @@ Component::Settings::Settings()
             "")
 {
     addSetting(&activeSkin);
+    addSetting(&activeTheme);
     addSetting(&lastLogin);
     addSetting(&uiLocale);
     addSetting(&loadLastWorkspaceAtStartup);

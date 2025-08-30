@@ -18,6 +18,11 @@
 #include "ui_GeneralAppearancePreferencesEditor.h"
 using namespace tt3::gui;
 
+namespace tt3::gui
+{
+    extern CurrentTheme theCurrentTheme;
+}
+
 //////////
 //  Construction/destruction
 GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *parent)
@@ -56,6 +61,18 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
         _ui->skinComboBox->addItem(skin->smallIcon(), skin->displayName());
     }
 
+    //  Fill the theme combo box with available themes
+    //  sorted by display name
+    _themes.append(ThemeManager::allThemes().values());
+    std::sort(_themes.begin(),
+              _themes.end(),
+              [](auto a, auto b) { return a->displayName() < b->displayName(); });
+
+    for (ITheme * theme : _themes)
+    {
+        _ui->themeComboBox->addItem(theme->smallIcon(), theme->displayName());
+    }
+
     //  Start off with current values from Settings
     loadControlValues();
 }
@@ -76,22 +93,23 @@ void GeneralAppearancePreferencesEditor::loadControlValues()
 {
     _setSelectedLocale(Component::Settings::instance()->uiLocale);
     _setSelectedSkin(SkinManager::findSkin(Component::Settings::instance()->activeSkin));
+    _setSelectedTheme(ThemeManager::findTheme(Component::Settings::instance()->activeTheme));
 }
 
 void GeneralAppearancePreferencesEditor::saveControlValues()
 {
     Component::Settings::instance()->uiLocale = _selectedLocale();
     Component::Settings::instance()->activeSkin = _selectedSkin()->mnemonic().toString();
-    //  TODO we need a tt3::ws::theDefaultLocale pseudo-variable
-    //  that will emit signals when its value changes - listening
-    //  e.g. frames can change text in their UIs to a new "default"
-    QLocale::setDefault(_selectedLocale());
+    Component::Settings::instance()->activeTheme = _selectedTheme()->mnemonic().toString();
+    tt3::util::theCurrentLocale = _selectedLocale();
+    theCurrentTheme = _selectedTheme();
 }
 
 void GeneralAppearancePreferencesEditor::resetControlValues()
 {
     _setSelectedLocale(Component::Settings::instance()->uiLocale.defaultValue());
     _setSelectedSkin(SkinManager::findSkin(Component::Settings::instance()->activeSkin.defaultValue()));
+    _setSelectedTheme(ThemeManager::findTheme(Component::Settings::instance()->activeTheme.defaultValue()));
 }
 
 bool GeneralAppearancePreferencesEditor::isValid() const
@@ -140,6 +158,25 @@ void GeneralAppearancePreferencesEditor::_setSelectedSkin(tt3::gui::ISkin * skin
     }
 }
 
+tt3::gui::ITheme * GeneralAppearancePreferencesEditor::_selectedTheme()
+{
+    qsizetype n = _ui->themeComboBox->currentIndex();
+    Q_ASSERT(n >= 0 && n < _themes.size());
+    return _themes[n];
+}
+
+void GeneralAppearancePreferencesEditor::_setSelectedTheme(tt3::gui::ITheme * theme)
+{
+    for (int n = 0; n < _themes.size(); n++)
+    {
+        if (_themes[n] == theme)
+        {
+            _ui->themeComboBox->setCurrentIndex(n);
+            break;
+        }
+    }
+}
+
 QString GeneralAppearancePreferencesEditor::_displayName(const QLocale & locale)
 {
     return QLocale::languageToString(locale.language()) +
@@ -156,6 +193,11 @@ void GeneralAppearancePreferencesEditor::_languageComboBoxCurrentIndexChanged(in
 }
 
 void GeneralAppearancePreferencesEditor::_skinComboBoxCurrentIndexChanged(int)
+{
+    emit controlValueChanged();
+}
+
+void GeneralAppearancePreferencesEditor::_themeComboBoxCurrentIndexChanged(int)
 {
     emit controlValueChanged();
 }

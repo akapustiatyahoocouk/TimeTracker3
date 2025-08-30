@@ -26,6 +26,7 @@ QSet<ITheme*> ThemeManager::allThemes()
 {
     tt3::util::Lock lock(_guard);
 
+    _registerStandardThemes();
     QList<ITheme*> values = _registry.values();
     return QSet<ITheme*>(values.begin(), values.end());
 }
@@ -36,6 +37,7 @@ bool ThemeManager::registerTheme(ITheme * theme)
 
     Q_ASSERT(theme != nullptr);
 
+    _registerStandardThemes();
     ITheme * registeredTheme = findTheme(theme->mnemonic());
     if (registeredTheme != nullptr)
     {
@@ -53,8 +55,27 @@ ITheme * ThemeManager::findTheme(const QString & mnemonic)
 {
     tt3::util::Lock lock(_guard);
 
+    _registerStandardThemes();
     QString key = mnemonic;
     return _registry.contains(key) ? _registry[key] : nullptr;
+}
+
+//////////
+//  Implementation helpers
+void ThemeManager::_registerStandardThemes()
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+
+    if (_registry.isEmpty())
+    {
+#define REGISTER(Subsystem)                                     \
+        _registry.insert(                                       \
+            StandardThemes::Subsystem::instance()->mnemonic(),  \
+            StandardThemes::Subsystem::instance())
+        REGISTER(System);
+        REGISTER(Light);
+        REGISTER(Dark);
+    }
 }
 
 //  End of tt3-gui/ThemeManager.cpp

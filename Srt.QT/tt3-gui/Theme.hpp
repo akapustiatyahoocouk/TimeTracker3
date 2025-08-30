@@ -153,7 +153,7 @@ namespace tt3::gui
         static QMap<QString, ITheme*>   _registry;  //  key = mnemonic
 
         //  Helpers
-        void                _registerStandardThemes();
+        static void         _registerStandardThemes();
     };
 
     //  The accessor for a "currently active" theme.

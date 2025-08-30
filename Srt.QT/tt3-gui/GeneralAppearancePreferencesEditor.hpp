@@ -22,6 +22,7 @@
 namespace tt3::gui
 {
     class TT3_GUI_PUBLIC ISkin;
+    class TT3_GUI_PUBLIC ITheme;
 
     //  The "/General/Appearance" preferences editor
     namespace Ui { class GeneralAppearancePreferencesEditor; }
@@ -51,12 +52,15 @@ namespace tt3::gui
     private:
         QList<QLocale>      _locales;   //  same order as in combo box
         QList<ISkin*>       _skins;     //  same order as in combo box
+        QList<ITheme*>      _themes;    //  same order as in combo box
 
         //  Helpers
         QLocale             _selectedLocale();
         void                _setSelectedLocale(const QLocale & locale);
         tt3::gui::ISkin *   _selectedSkin();
         void                _setSelectedSkin(tt3::gui::ISkin * skin);
+        tt3::gui::ITheme *  _selectedTheme();
+        void                _setSelectedTheme(tt3::gui::ITheme * theme);
         static QString      _displayName(const QLocale & locale);
 
         //////////
@@ -69,6 +73,7 @@ namespace tt3::gui
     private slots:
         void                _languageComboBoxCurrentIndexChanged(int);
         void                _skinComboBoxCurrentIndexChanged(int);
+        void                _themeComboBoxCurrentIndexChanged(int);
     };
 }
 

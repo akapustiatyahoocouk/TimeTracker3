@@ -26,6 +26,11 @@
 #include "tt3-gui/Linkage.hpp"
 #include "tt3-gui/Components.hpp"
 
+//  Miscellaneous helpers
+#include "tt3-gui/Skin.hpp"
+#include "tt3-gui/Theme.hpp"
+#include "tt3-gui/Preferences.hpp"
+
 //  Controls
 #include "tt3-gui/PreferencesEditor.hpp"
 #include "tt3-gui/GeneralAppearancePreferencesEditor.hpp"
@@ -44,10 +49,5 @@
 #include "tt3-gui/ShowLicenseDialog.hpp"
 #include "tt3-gui/ShowConfigurationDialog.hpp"
 #include "tt3-gui/CreateUserDialog.hpp"
-
-//  Miscellaneous helpers
-#include "tt3-gui/Skin.hpp"
-#include "tt3-gui/Theme.hpp"
-#include "tt3-gui/Preferences.hpp"
 
 //  End of tt3-gui/API.hpp
