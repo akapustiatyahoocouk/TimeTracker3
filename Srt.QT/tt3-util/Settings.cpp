@@ -37,13 +37,9 @@ QSet<AbstractSetting*> Settings::settings() const
     return QSet<AbstractSetting*>(values.begin(), values.end());
 }
 
-AbstractSetting * Settings::findSetting(const QString & mnemonic) const
+AbstractSetting * Settings::findSetting(const Mnemonic & mnemonic) const
 {
-    if (_settings.contains(mnemonic))
-    {
-        return _settings[mnemonic];
-    }
-    return nullptr;
+    return _settings.contains(mnemonic) ? _settings[mnemonic] : nullptr;
 }
 
 //  End of tt3-util/Settings.cpp

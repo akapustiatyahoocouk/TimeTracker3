@@ -144,13 +144,13 @@ namespace tt3::gui
 
         //  Finds a registered theme by its mnemonic; returns
         //  nullptr if not found.
-        static ITheme *     findTheme(const QString & mnemonic);
+        static ITheme *     findTheme(const tt3::util::Mnemonic & mnemonic);
 
         //////////
         //  Implementation
     private:
         static tt3::util::Mutex _guard;
-        static QMap<QString, ITheme*>   _registry;  //  key = mnemonic
+        static QMap<tt3::util::Mnemonic, ITheme*>   _registry;
 
         //  Helpers
         static void         _registerStandardThemes();

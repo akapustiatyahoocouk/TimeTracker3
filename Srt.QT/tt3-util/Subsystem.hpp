@@ -143,13 +143,13 @@ namespace tt3::util
 
         //  Finds a registered Subsystem by its mnemonic;
         //  returns nullptr if not found.
-        static ISubsystem * findSubsystem(const QString & mnemonic);
+        static ISubsystem * findSubsystem(const Mnemonic & mnemonic);
 
         //////////
         //  Implementation
     private:
-        static tt3::util::Mutex _guard;
-        static QMap<QString, ISubsystem*>   _registry;  //  key = mnemonic
+        static Mutex        _guard;
+        static QMap<Mnemonic, ISubsystem*>  _registry;
 
         //  Helpers
         static void         _registerStandardSubsystems();

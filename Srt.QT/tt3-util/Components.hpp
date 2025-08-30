@@ -29,7 +29,7 @@ namespace tt3::util
         //  Types
     public:
         //  The component's resources
-        class TT3_UTIL_PUBLIC Resources final : public tt3::util::FileResourceFactory
+        class TT3_UTIL_PUBLIC Resources final : public FileResourceFactory
         {
             DECLARE_SINGLETON(Resources)
         };

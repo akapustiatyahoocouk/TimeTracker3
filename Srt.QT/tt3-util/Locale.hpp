@@ -37,7 +37,7 @@ namespace tt3::util
         //////////
         //  Implementation
     private:
-        static tt3::util::Mutex     _guard;
+        static Mutex        _guard;
         static QMap<QLocale, QIcon> _smallIcons;
         static QMap<QLocale, QIcon> _largeIcons;
     };

@@ -143,7 +143,7 @@ namespace tt3::ws
         //  Finds a known workspace type by mnemonic;
         //  returns nullptr if mpy fpind.
         //  This is determined based on registered database types.
-        static WorkspaceType    findWorkspaceType(const QString & mnemonic);
+        static WorkspaceType    findWorkspaceType(const tt3::util::Mnemonic & mnemonic);
 
         //  The set of all known workspace types.
         //  This is determined based on registered database types.

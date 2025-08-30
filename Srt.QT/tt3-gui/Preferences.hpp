@@ -87,13 +87,13 @@ namespace tt3::gui
 
         //  Finds a registered Preferences by its mnemonic; returns
         //  nullptr if not found.
-        static Preferences *        findPreferences(const QString & mnemonic);
+        static Preferences *        findPreferences(const tt3::util::Mnemonic & mnemonic);
 
         //////////
         //  Implementation
     private:
         static tt3::util::Mutex _guard;
-        static QMap<QString, Preferences*>  _registry;  //  key = mnemonic
+        static QMap<tt3::util::Mnemonic, Preferences*>  _registry;
     };
 
     //  The "/General" preferences

@@ -18,7 +18,7 @@
 using namespace tt3::gui;
 
 tt3::util::Mutex ThemeManager::_guard;
-QMap<QString, ITheme*> ThemeManager::_registry;
+QMap<tt3::util::Mnemonic, ITheme*> ThemeManager::_registry;
 
 //////////
 //  Operations
@@ -38,26 +38,20 @@ bool ThemeManager::registerTheme(ITheme * theme)
     Q_ASSERT(theme != nullptr);
 
     _registerStandardThemes();
-    ITheme * registeredTheme = findTheme(theme->mnemonic());
-    if (registeredTheme != nullptr)
+    if (ITheme * registeredTheme = findTheme(theme->mnemonic()))
     {
         return theme == registeredTheme;
     }
-    else
-    {
-        QString key = theme->mnemonic();
-        _registry[key] = theme;
-        return true;
-    }
+    _registry[theme->mnemonic()] = theme;
+    return true;
 }
 
-ITheme * ThemeManager::findTheme(const QString & mnemonic)
+ITheme * ThemeManager::findTheme(const tt3::util::Mnemonic & mnemonic)
 {
     tt3::util::Lock lock(_guard);
 
     _registerStandardThemes();
-    QString key = mnemonic;
-    return _registry.contains(key) ? _registry[key] : nullptr;
+    return _registry.contains(mnemonic) ? _registry[mnemonic] : nullptr;
 }
 
 //////////

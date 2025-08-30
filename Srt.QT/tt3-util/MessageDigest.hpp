@@ -166,13 +166,13 @@ namespace tt3::util
 
         //  Finds a registered message digest algorithm by its
         //  mnemonic; returns nullptr if not found.
-        static IMessageDigest * findMessageDigest(const QString & mnemonic);
+        static IMessageDigest * findMessageDigest(const Mnemonic & mnemonic);
 
         //////////
         //  Implementation
     private:
-        static tt3::util::Mutex _guard;
-        static QMap<QString, IMessageDigest*>   _registry;  //  key = mnemonic
+        static Mutex        _guard;
+        static QMap<Mnemonic, IMessageDigest*>  _registry;
 
         //  Helpers
         static void         _registerStandardMessageDigests();

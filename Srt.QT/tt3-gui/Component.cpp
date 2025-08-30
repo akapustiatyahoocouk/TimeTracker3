@@ -89,11 +89,11 @@ IMPLEMENT_SINGLETON(Component::Settings)
 Component::Settings::Settings()
     :   activeSkin(
             M(ActiveSkin),
-            "",
+            M(-),
             true),
         activeTheme(
             M(ActiveTheme),
-            StandardThemes::System::instance()->mnemonic().toString(),
+            StandardThemes::System::instance()->mnemonic(),
             true),
         lastLogin(
             M(LastLogin),
@@ -110,7 +110,7 @@ Component::Settings::Settings()
             true),
         currentPreferences(
             M(CurrentPreferences),
-            "")
+            M(-))
 {
     addSetting(&activeSkin);
     addSetting(&activeTheme);

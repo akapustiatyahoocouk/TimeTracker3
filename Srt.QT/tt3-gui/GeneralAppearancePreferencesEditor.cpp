@@ -99,8 +99,8 @@ void GeneralAppearancePreferencesEditor::loadControlValues()
 void GeneralAppearancePreferencesEditor::saveControlValues()
 {
     Component::Settings::instance()->uiLocale = _selectedLocale();
-    Component::Settings::instance()->activeSkin = _selectedSkin()->mnemonic().toString();
-    Component::Settings::instance()->activeTheme = _selectedTheme()->mnemonic().toString();
+    Component::Settings::instance()->activeSkin = _selectedSkin()->mnemonic();
+    Component::Settings::instance()->activeTheme = _selectedTheme()->mnemonic();
     tt3::util::theCurrentLocale = _selectedLocale();
     theCurrentTheme = _selectedTheme();
 }

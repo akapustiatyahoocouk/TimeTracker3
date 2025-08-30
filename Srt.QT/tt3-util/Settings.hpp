@@ -165,12 +165,12 @@ namespace tt3::util
 
         //  Finds a setting with the specified mnemonic in
         //  this settings; returns nullptr if not found
-        AbstractSetting *   findSetting(const QString & mnemonic) const;
+        AbstractSetting *   findSetting(const Mnemonic & mnemonic) const;
 
         //////////
         //  Implementation
     private:
-        QMap<QString, AbstractSetting*> _settings;
+        QMap<Mnemonic, AbstractSetting*>    _settings;
     };
 }
 

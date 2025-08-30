@@ -18,7 +18,7 @@
 using namespace tt3::gui;
 
 tt3::util::Mutex SkinManager::_guard;
-QMap<QString, ISkin*> SkinManager::_registry;
+QMap<tt3::util::Mnemonic, ISkin*> SkinManager::_registry;
 
 //////////
 //  Operations
@@ -36,25 +36,19 @@ bool SkinManager::registerSkin(ISkin * skin)
 
     Q_ASSERT(skin != nullptr);
 
-    ISkin * registeredSkin = findSkin(skin->mnemonic());
-    if (registeredSkin != nullptr)
+    if (ISkin * registeredSkin = findSkin(skin->mnemonic()))
     {
         return skin == registeredSkin;
     }
-    else
-    {
-        QString key = skin->mnemonic();
-        _registry[key] = skin;
-        return true;
-    }
+    _registry[skin->mnemonic()] = skin;
+    return true;
 }
 
-ISkin * SkinManager::findSkin(const QString & mnemonic)
+ISkin * SkinManager::findSkin(const tt3::util::Mnemonic & mnemonic)
 {
     tt3::util::Lock lock(_guard);
 
-    QString key = mnemonic;
-    return _registry.contains(key) ? _registry[key] : nullptr;
+    return _registry.contains(mnemonic) ? _registry[mnemonic] : nullptr;
 }
 
 //  End of tt3-gui/SkinManager.cpp

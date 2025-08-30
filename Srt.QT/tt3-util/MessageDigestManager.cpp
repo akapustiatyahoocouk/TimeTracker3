@@ -17,14 +17,14 @@
 #include "tt3-util/API.hpp"
 using namespace tt3::util;
 
-tt3::util::Mutex MessageDigestManager::_guard;
-QMap<QString, IMessageDigest*> MessageDigestManager::_registry;
+Mutex MessageDigestManager::_guard;
+QMap<Mnemonic, IMessageDigest*> MessageDigestManager::_registry;
 
 //////////
 //  Operations
 QSet<IMessageDigest*> MessageDigestManager::allMessageDigests()
 {
-    tt3::util::Lock lock(_guard);
+    Lock lock(_guard);
 
     _registerStandardMessageDigests();
     QList<IMessageDigest*> values = _registry.values();
@@ -35,29 +35,23 @@ bool MessageDigestManager::registerMessageDigest(IMessageDigest * messageDigest)
 {
     Q_ASSERT(messageDigest != nullptr);
 
-    tt3::util::Lock lock(_guard);
+    Lock lock(_guard);
 
     _registerStandardMessageDigests();
-    IMessageDigest * registeredMessageDigest = findMessageDigest(messageDigest->mnemonic());
-    if (registeredMessageDigest != nullptr)
+    if (IMessageDigest * registeredMessageDigest = findMessageDigest(messageDigest->mnemonic()))
     {
         return messageDigest == registeredMessageDigest;
     }
-    else
-    {
-        QString key = messageDigest->mnemonic();
-        _registry[key] = messageDigest;
-        return true;
-    }
+    _registry[messageDigest->mnemonic()] = messageDigest;
+    return true;
 }
 
-IMessageDigest * MessageDigestManager::findMessageDigest(const QString & mnemonic)
+IMessageDigest * MessageDigestManager::findMessageDigest(const Mnemonic & mnemonic)
 {
-    tt3::util::Lock lock(_guard);
+    Lock lock(_guard);
 
     _registerStandardMessageDigests();
-    QString key = mnemonic;
-    return _registry.contains(key) ? _registry[key] : nullptr;
+    return _registry.contains(mnemonic) ? _registry[mnemonic] : nullptr;
 }
 
 //////////

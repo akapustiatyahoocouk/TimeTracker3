@@ -92,13 +92,13 @@ namespace tt3::gui
 
         //  Finds a registered Skin by its mnemonic; returns
         //  nullptr if not found.
-        static ISkin *      findSkin(const QString & mnemonic);
+        static ISkin *      findSkin(const tt3::util::Mnemonic & mnemonic);
 
         //////////
         //  Implementation
     private:
         static tt3::util::Mutex _guard;
-        static QMap<QString, ISkin*>    _registry;  //  key = mnemonic
+        static QMap<tt3::util::Mnemonic, ISkin*>    _registry;
     };
 
     //  The accessor for a "currently active" skin.

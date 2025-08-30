@@ -31,7 +31,7 @@ QIcon IComponent::largeIcon() const
     return icon;
 }
 
-tt3::util::ILicense * IComponent::license() const
+ILicense * IComponent::license() const
 {
     return StandardLicenses::Gpl3::instance();
 }

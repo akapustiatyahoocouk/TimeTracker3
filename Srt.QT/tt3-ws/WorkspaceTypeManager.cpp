@@ -22,7 +22,7 @@ QMap<tt3::db::api::IDatabaseType*, WorkspaceType> WorkspaceTypeManager::_registr
 
 //////////
 //  Operations
-WorkspaceType WorkspaceTypeManager::findWorkspaceType(const QString & mnemonic)
+WorkspaceType WorkspaceTypeManager::findWorkspaceType(const tt3::util::Mnemonic & mnemonic)
 {
     tt3::util::Lock lock(_guard);
 

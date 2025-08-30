@@ -17,7 +17,7 @@
 #include "tt3-util/API.hpp"
 using namespace tt3::util;
 
-tt3::util::Mutex     LocaleManager::_guard;
+Mutex                LocaleManager::_guard;
 QMap<QLocale, QIcon> LocaleManager::_smallIcons;
 QMap<QLocale, QIcon> LocaleManager::_largeIcons;
 
@@ -25,7 +25,7 @@ QMap<QLocale, QIcon> LocaleManager::_largeIcons;
 //  Operations
 QIcon LocaleManager::smallIcon(const QLocale & locale)
 {
-    tt3::util::Lock lock(_guard);
+    Lock lock(_guard);
 
     if (!_smallIcons.contains(locale))
     {
@@ -46,7 +46,7 @@ QIcon LocaleManager::smallIcon(const QLocale & locale)
 
 QIcon LocaleManager::largeIcon(const QLocale & locale)
 {
-    tt3::util::Lock lock(_guard);
+    Lock lock(_guard);
 
     if (!_largeIcons.contains(locale))
     {

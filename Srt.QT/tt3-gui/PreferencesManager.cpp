@@ -18,7 +18,7 @@
 using namespace tt3::gui;
 
 tt3::util::Mutex PreferencesManager::_guard;
-QMap<QString, Preferences*> PreferencesManager::_registry;
+QMap<tt3::util::Mnemonic, Preferences*> PreferencesManager::_registry;
 
 //////////
 //  Operations
@@ -58,25 +58,19 @@ bool PreferencesManager::registerPreferences(Preferences * preferences)
         return false;
     }
 
-    Preferences * registeredPreferences = findPreferences(preferences->mnemonic());
-    if (registeredPreferences != nullptr)
+    if (Preferences * registeredPreferences = findPreferences(preferences->mnemonic()))
     {
         return preferences == registeredPreferences;
     }
-    else
-    {
-        QString key = preferences->mnemonic();
-        _registry[key] = preferences;
-        return true;
-    }
+    _registry[preferences->mnemonic()] = preferences;
+    return true;
 }
 
-Preferences * PreferencesManager::findPreferences(const QString & mnemonic)
+Preferences * PreferencesManager::findPreferences(const tt3::util::Mnemonic & mnemonic)
 {
     tt3::util::Lock lock(_guard);
 
-    QString key = mnemonic;
-    return _registry.contains(key) ? _registry[key] : nullptr;
+    return _registry.contains(mnemonic) ? _registry[mnemonic] : nullptr;
 }
 
 //  End of tt3-gui/PreferencesManager.cpp

@@ -42,7 +42,7 @@ QString StandardLicenses::Gpl3::description() const
 
 QString StandardLicenses::Gpl3::contentAsHtml() const
 {
-    tt3::util::Lock lock(_contentsGuard);
+    Lock lock(_contentsGuard);
 
     QLocale defaultLocale;
     if (_contentsAsHtml.contains(defaultLocale))

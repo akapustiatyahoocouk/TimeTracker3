@@ -76,7 +76,7 @@ namespace tt3::util
             //////////
             //  Implementation
         private:
-            mutable tt3::util::Mutex        _contentsGuard;
+            mutable Mutex       _contentsGuard;
             mutable QMap<QLocale, QString>  _contentsAsHtml;
         };
     };
@@ -99,13 +99,13 @@ namespace tt3::util
 
         //  Finds a registered License by its mnemonic;
         //  returns nullptr if not found.
-        static ILicense *   findLicense(const QString & mnemonic);
+        static ILicense *   findLicense(const Mnemonic & mnemonic);
 
         //////////
         //  Implementation
     private:
-        static tt3::util::Mutex _guard;
-        static QMap<QString, ILicense*> _registry;  //  key = mnemonic
+        static Mutex        _guard;
+        static QMap<Mnemonic, ILicense*>    _registry;
 
         //  Helpers
         static void         _registerStandardLicenses();

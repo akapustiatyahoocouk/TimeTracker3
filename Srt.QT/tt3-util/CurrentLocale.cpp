@@ -41,7 +41,7 @@ void CurrentLocale::operator = (const QLocale & locale)
 
     //  Change is effected in a "locked" state
     {
-        tt3::util::Lock lock(_currentLocaleGuard);
+        Lock lock(_currentLocaleGuard);
 
         Q_ASSERT(_instanceCount == 1);
         QLocale defaultLocale;
@@ -61,7 +61,7 @@ void CurrentLocale::operator = (const QLocale & locale)
 
 CurrentLocale::operator QLocale () const
 {
-    tt3::util::Lock lock(_currentLocaleGuard);
+    Lock lock(_currentLocaleGuard);
     return QLocale();
 }
 

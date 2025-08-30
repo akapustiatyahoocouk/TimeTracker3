@@ -20,7 +20,7 @@ namespace tt3::util
     //  A "mnemonic" is a read-only string that uniquely
     //  identifies a stock object within a set
     //  of similar objects
-    class TT3_UTIL_PUBLIC Mnemonic final : public QString
+    class TT3_UTIL_PUBLIC Mnemonic final
     {
         //////////
         //  Constants
@@ -31,31 +31,40 @@ namespace tt3::util
         //////////
         //  Construction/destruction/assignment
     public:
-        Mnemonic() : QString() {}
-        explicit Mnemonic(const QString & s) : QString(s) {}
+        Mnemonic() : _impl() {}
+        explicit Mnemonic(const QString & s) : _impl(s) {}
         //  The default copy constructor, assignment operator
         //  and destructor are all OK
 
         //////////
         //  Operators
     public:
-        bool        operator == (const Mnemonic & op2) const { return this->toString() == op2.toString(); }
-        bool        operator != (const Mnemonic & op2) const { return this->toString() == op2.toString(); }
-        bool        operator <  (const Mnemonic & op2) const { return this->toString() == op2.toString(); }
-        bool        operator <= (const Mnemonic & op2) const { return this->toString() == op2.toString(); }
-        bool        operator >  (const Mnemonic & op2) const { return this->toString() == op2.toString(); }
-        bool        operator >= (const Mnemonic & op2) const { return this->toString() == op2.toString(); }
+        bool        operator == (const Mnemonic & op2) const { return _impl == op2._impl; }
+        bool        operator != (const Mnemonic & op2) const { return _impl != op2._impl; }
+        bool        operator <  (const Mnemonic & op2) const { return _impl <  op2._impl; }
+        bool        operator <= (const Mnemonic & op2) const { return _impl <= op2._impl; }
+        bool        operator >  (const Mnemonic & op2) const { return _impl >  op2._impl; }
+        bool        operator >= (const Mnemonic & op2) const { return _impl >= op2._impl; }
+
+        //  Extends this Mnemonic with a suffix and returns
+        //  the resultibg extended mnemonic
+        Mnemonic    operator + (const QString & suffix) const { return Mnemonic(_impl + suffix); }
 
         //////////
         //  Operations
     public:
         //  Returns the value of this mnemonic as a string.
-        QString     toString() const { return *this; }
+        QString     toString() const { return _impl; }
+
+        //////////
+        //  Implementation
+    private:
+        QString     _impl;
     };
 
     //  An identifier of a section within a
     //  resource factory's set of provided resources
-    class TT3_UTIL_PUBLIC ResourceSectionId final : public QString
+    class TT3_UTIL_PUBLIC ResourceSectionId final
     {
         //////////
         //  Constants
@@ -66,31 +75,36 @@ namespace tt3::util
         //////////
         //  Construction/destruction/assignment
     public:
-        ResourceSectionId() : QString() {}
-        explicit ResourceSectionId(const QString & s) : QString(s) {}
+        ResourceSectionId() : _impl() {}
+        explicit ResourceSectionId(const QString & s) : _impl(s) {}
         //  The default copy constructor, assignment operator
         //  and destructor are all OK
 
         //////////
         //  Operators
     public:
-        bool        operator == (const Mnemonic & op2) const { return this->toString() == op2.toString(); }
-        bool        operator != (const Mnemonic & op2) const { return this->toString() == op2.toString(); }
-        bool        operator <  (const Mnemonic & op2) const { return this->toString() == op2.toString(); }
-        bool        operator <= (const Mnemonic & op2) const { return this->toString() == op2.toString(); }
-        bool        operator >  (const Mnemonic & op2) const { return this->toString() == op2.toString(); }
-        bool        operator >= (const Mnemonic & op2) const { return this->toString() == op2.toString(); }
+        bool        operator == (const ResourceSectionId & op2) const { return _impl == op2._impl; }
+        bool        operator != (const ResourceSectionId & op2) const { return _impl != op2._impl; }
+        bool        operator <  (const ResourceSectionId & op2) const { return _impl <  op2._impl; }
+        bool        operator <= (const ResourceSectionId & op2) const { return _impl <= op2._impl; }
+        bool        operator >  (const ResourceSectionId & op2) const { return _impl >  op2._impl; }
+        bool        operator >= (const ResourceSectionId & op2) const { return _impl >= op2._impl; }
 
         //////////
         //  Operations
     public:
-        //  Returns the value of this mnemonic as a string.
-        QString     toString() const { return *this; }
+        //  Returns the value of this resource section ID as a string.
+        QString     toString() const { return _impl; }
+
+        //////////
+        //  Implementation
+    private:
+        QString     _impl;
     };
 
     //  An identifier of a resource within a
     //  resource section's set of provided resources
-    class TT3_UTIL_PUBLIC ResourceId final : public QString
+    class TT3_UTIL_PUBLIC ResourceId final
     {
         //////////
         //  Constants
@@ -101,26 +115,31 @@ namespace tt3::util
         //////////
         //  Construction/destruction/assignment
     public:
-        ResourceId() : QString() {}
-        explicit ResourceId(const QString & s) : QString(s) {}
+        ResourceId() : _impl() {}
+        explicit ResourceId(const QString & s) : _impl(s) {}
         //  The default copy constructor, assignment operator
         //  and destructor are all OK
 
         //////////
         //  Operators
     public:
-        bool        operator == (const Mnemonic & op2) const { return this->toString() == op2.toString(); }
-        bool        operator != (const Mnemonic & op2) const { return this->toString() == op2.toString(); }
-        bool        operator <  (const Mnemonic & op2) const { return this->toString() == op2.toString(); }
-        bool        operator <= (const Mnemonic & op2) const { return this->toString() == op2.toString(); }
-        bool        operator >  (const Mnemonic & op2) const { return this->toString() == op2.toString(); }
-        bool        operator >= (const Mnemonic & op2) const { return this->toString() == op2.toString(); }
+        bool        operator == (const ResourceId & op2) const { return _impl == op2._impl; }
+        bool        operator != (const ResourceId & op2) const { return _impl != op2._impl; }
+        bool        operator <  (const ResourceId & op2) const { return _impl <  op2._impl; }
+        bool        operator <= (const ResourceId & op2) const { return _impl <= op2._impl; }
+        bool        operator >  (const ResourceId & op2) const { return _impl >  op2._impl; }
+        bool        operator >= (const ResourceId & op2) const { return _impl >= op2._impl; }
 
         //////////
         //  Operations
     public:
-        //  Returns the value of this mnemonic as a string.
-        QString     toString() const { return *this; }
+        //  Returns the value of this resource ID as a string.
+        QString     toString() const { return _impl; }
+
+        //////////
+        //  Implementation
+    private:
+        QString     _impl;
     };
 }
 

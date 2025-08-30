@@ -18,7 +18,7 @@
 using namespace tt3::db::api;
 
 tt3::util::Mutex DatabaseTypeManager::_guard;
-QMap<QString, IDatabaseType*> DatabaseTypeManager::_registry;
+QMap<tt3::util::Mnemonic, IDatabaseType*> DatabaseTypeManager::_registry;
 
 //////////
 //  Operations
@@ -26,18 +26,17 @@ bool DatabaseTypeManager::registerDatabaseType(IDatabaseType * databaseType)
 {
     Q_ASSERT(databaseType != nullptr);
 
-    tt3::util::Lock oock(_guard);
+    tt3::util::Lock lock(_guard);
 
-    IDatabaseType * registeredDatabaseType = findDatabaseType(databaseType->mnemonic());
-    if (registeredDatabaseType == nullptr)
+    if (IDatabaseType * registeredDatabaseType = findDatabaseType(databaseType->mnemonic()))
     {
-        _registry[databaseType->mnemonic()] = databaseType;
-        return true;
+        return databaseType == registeredDatabaseType;
     }
-    return databaseType == registeredDatabaseType;
+    _registry[databaseType->mnemonic()] = databaseType;
+    return true;
 }
 
-IDatabaseType * DatabaseTypeManager::findDatabaseType(const QString & mnemonic)
+IDatabaseType * DatabaseTypeManager::findDatabaseType(const tt3::util::Mnemonic & mnemonic)
 {
     tt3::util::Lock oock(_guard);
 

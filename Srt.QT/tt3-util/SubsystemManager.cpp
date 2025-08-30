@@ -17,14 +17,14 @@
 #include "tt3-util/API.hpp"
 using namespace tt3::util;
 
-tt3::util::Mutex SubsystemManager::_guard;
-QMap<QString, ISubsystem*> SubsystemManager::_registry;
+Mutex SubsystemManager::_guard;
+QMap<Mnemonic, ISubsystem*> SubsystemManager::_registry;
 
 //////////
 //  Operations
 Subsystems SubsystemManager::allSubsystems()
 {
-    tt3::util::Lock lock(_guard);
+    Lock lock(_guard);
 
     _registerStandardSubsystems();
     QList<ISubsystem*> values = _registry.values();
@@ -35,29 +35,23 @@ bool SubsystemManager::registerSubsystem(ISubsystem * subsystem)
 {
     Q_ASSERT(subsystem != nullptr);
 
-    tt3::util::Lock lock(_guard);
+    Lock lock(_guard);
 
     _registerStandardSubsystems();
-    ISubsystem * registeredSubsystem = findSubsystem(subsystem->mnemonic());
-    if (registeredSubsystem != nullptr)
+    if (ISubsystem * registeredSubsystem = findSubsystem(subsystem->mnemonic()))
     {
         return subsystem == registeredSubsystem;
     }
-    else
-    {
-        QString key = subsystem->mnemonic();
-        _registry[key] = subsystem;
-        return true;
-    }
+    _registry[subsystem->mnemonic()] = subsystem;
+    return true;
 }
 
-ISubsystem * SubsystemManager::findSubsystem(const QString & mnemonic)
+ISubsystem * SubsystemManager::findSubsystem(const Mnemonic & mnemonic)
 {
-    tt3::util::Lock lock(_guard);
+    Lock lock(_guard);
 
     _registerStandardSubsystems();
-    QString key = mnemonic;
-    return _registry.contains(key) ? _registry[key] : nullptr;
+    return _registry.contains(mnemonic) ? _registry[mnemonic] : nullptr;
 }
 
 //////////

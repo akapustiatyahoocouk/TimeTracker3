@@ -62,6 +62,9 @@ void Application::_selectActiveTheme()
         (initialTheme != nullptr) ?
             initialTheme :
             tt3::gui::StandardThemes::System::instance();
+    //  If the theme was selected "by default", update the settings
+    tt3::gui::Component::Settings::instance()->activeTheme =
+        tt3::gui::theCurrentTheme->mnemonic();
 }
 
 void Application::_selectActiveSkin()
@@ -94,6 +97,8 @@ void Application::_selectActiveSkin()
     }
     tt3::gui::theCurrentSkin = initialSkin;
     initialSkin->activate();
+    //  If the skin was selected "by default", update the settings
+    tt3::gui::Component::Settings::instance()->activeSkin = initialSkin->mnemonic();
 }
 
 void Application::_initialize()

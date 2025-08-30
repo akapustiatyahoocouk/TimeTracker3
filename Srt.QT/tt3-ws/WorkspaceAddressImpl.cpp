@@ -240,7 +240,7 @@ template <> TT3_WS_PUBLIC QString tt3::util::toString<WorkspaceAddress>(const Wo
     if (value != nullptr)
     {
         return '<' +
-               escape(value->workspaceType()->mnemonic()) +
+               escape(value->workspaceType()->mnemonic().toString()) +
                ',' +
                escape(value->externalForm()) +
                '>';
@@ -288,7 +288,8 @@ template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddress tt3::util::fromString<tt3::w
     }
     //  Resolve mnemonic
     WorkspaceType workspaceType =
-        WorkspaceTypeManager::findWorkspaceType(unescape(chunks[0]));
+        WorkspaceTypeManager::findWorkspaceType(
+            tt3::util::Mnemonic(unescape(chunks[0])));
     if (workspaceType == nullptr)
     {   //  OOPS!
         throw tt3::util::ParseException(s, scan);

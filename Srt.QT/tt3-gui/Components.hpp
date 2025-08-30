@@ -40,10 +40,10 @@ namespace tt3::gui
             //  Properties
         public:
             //  The mnemonic of the active skin
-            tt3::util::Setting<QString> activeSkin;
+            tt3::util::Setting<tt3::util::Mnemonic> activeSkin;
 
             //  The mnemonic of the active theme
-            tt3::util::Setting<QString> activeTheme;
+            tt3::util::Setting<tt3::util::Mnemonic> activeTheme;
 
             //  The login last used
             tt3::util::Setting<QString> lastLogin;
@@ -59,7 +59,7 @@ namespace tt3::gui
 
             //  The mnemonic identifier of the Preferences node that  was
             //  "current" during last activation og yje "Preferences" dialog.
-            tt3::util::Setting<QString> currentPreferences;
+            tt3::util::Setting<tt3::util::Mnemonic> currentPreferences;
         };
 
         //////////

@@ -119,7 +119,7 @@ namespace tt3::db::api
 
         //  Finds a registered database type by its mnemonic;
         //  returns nullptr if not found.
-        static IDatabaseType *  findDatabaseType(const QString & mnemonic);
+        static IDatabaseType *  findDatabaseType(const tt3::util::Mnemonic & mnemonic);
 
         //  Returns the set of all registered database types.
         static DatabaseTypes    allDatabaseTypes();
@@ -128,7 +128,7 @@ namespace tt3::db::api
         //  Implementation
     private:
         static tt3::util::Mutex     _guard;
-        static QMap<QString, IDatabaseType*>    _registry;  //  key == mnemonic
+        static QMap<tt3::util::Mnemonic, IDatabaseType*>    _registry;  //  key == mnemonic
     };
 }
 

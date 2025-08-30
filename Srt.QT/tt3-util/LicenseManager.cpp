@@ -17,8 +17,8 @@
 #include "tt3-util/API.hpp"
 using namespace tt3::util;
 
-tt3::util::Mutex LicenseManager::_guard;
-QMap<QString, ILicense*> LicenseManager::_registry;
+Mutex LicenseManager::_guard;
+QMap<Mnemonic, ILicense*> LicenseManager::_registry;
 
 //////////
 //  Operations
@@ -38,26 +38,20 @@ bool LicenseManager::registerLicense(ILicense * license)
     tt3::util::Lock lock(_guard);
 
     _registerStandardLicenses();
-    ILicense * registeredLicense = findLicense(license->mnemonic());
-    if (registeredLicense != nullptr)
+    if (ILicense * registeredLicense = findLicense(license->mnemonic()))
     {
         return license == registeredLicense;
     }
-    else
-    {
-        QString key = license->mnemonic();
-        _registry[key] = license;
-        return true;
-    }
+    _registry[license->mnemonic()] = license;
+    return true;
 }
 
-ILicense * LicenseManager::findLicense(const QString & mnemonic)
+ILicense * LicenseManager::findLicense(const Mnemonic & mnemonic)
 {
-    tt3::util::Lock lock(_guard);
+    Lock lock(_guard);
 
     _registerStandardLicenses();
-    QString key = mnemonic;
-    return _registry.contains(key) ? _registry[key] : nullptr;
+    return _registry.contains(mnemonic) ? _registry[mnemonic] : nullptr;
 }
 
 //////////

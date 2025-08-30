@@ -89,12 +89,12 @@ namespace tt3::util
         static bool         registerComponent(IComponent * component);
 
         //  Finds a registered component by mnemonic and version.
-        static IComponent * findComponent(const QString & mnemonic, const QVersionNumber & version);
+        static IComponent * findComponent(const Mnemonic & mnemonic, const QVersionNumber & version);
 
         //  Finds a registered component by mnemonic; if several versions
         //  of component with the same mnemonic are registered, returns the
         //  one with the latest version.
-        static IComponent * findComponent(const QString & mnemonic);    //  finds the latest version
+        static IComponent * findComponent(const Mnemonic & mnemonic);    //  finds the latest version
 
         //  Loads Settings of all registered components from a text configuration file.
         static void         loadComponentSettings();
@@ -113,8 +113,8 @@ namespace tt3::util
         //////////
         //  Implementation
     private:
-        static tt3::util::Mutex _guard;
-        static QMap<QString, IComponent*>   _registry;    //  key = "mnemonic" + "version"
+        static Mutex        _guard;
+        static QMap<Mnemonic, IComponent*>   _registry;    //  key = "mnemonic" + "version"
     };
 }
 
