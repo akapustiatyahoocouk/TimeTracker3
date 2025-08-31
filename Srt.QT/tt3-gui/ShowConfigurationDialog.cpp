@@ -65,6 +65,13 @@ ShowConfigurationDialog::~ShowConfigurationDialog()
 }
 
 //////////
+//  Operations
+void ShowConfigurationDialog::doModal()
+{
+    exec();
+}
+
+//////////
 //  Implementation helpers
 void ShowConfigurationDialog::_refresh()
 {
@@ -156,7 +163,7 @@ void ShowConfigurationDialog::_showLicensePushButtonClicked()
         tt3::util::IComponent * component =
             item->data(0, Qt::ItemDataRole::UserRole).value<tt3::util::IComponent*>();
         ShowLicenseDialog dlg(this, component->license());
-        dlg.exec();
+        dlg.doModal();
     }
 }
 

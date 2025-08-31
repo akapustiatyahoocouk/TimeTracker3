@@ -60,6 +60,13 @@ SelectWorkspaceDialog::~SelectWorkspaceDialog()
 }
 
 //////////
+//  Operations
+SelectWorkspaceDialog::Result SelectWorkspaceDialog::doModal()
+{
+    return Result(this->exec());
+}
+
+//////////
 //  Implementation helpers
 void SelectWorkspaceDialog::_refresh()
 {
@@ -104,5 +111,16 @@ void SelectWorkspaceDialog::_browsePushButtonClicked()
         _refresh();
     }
 }
+
+void SelectWorkspaceDialog::_accept()
+{
+    done(int(Result::Ok));
+}
+
+void SelectWorkspaceDialog::_reject()
+{
+    done(int(Result::Cancel));
+}
+
 
 //  End of tt3-gui/SelectWorkspaceDialog.cpp

@@ -22,10 +22,16 @@ namespace tt3::gui
     //  The modal "Open workspace" dialog
     namespace Ui { class SelectWorkspaceDialog; }
 
-    class TT3_GUI_PUBLIC SelectWorkspaceDialog final : public QDialog
+    class TT3_GUI_PUBLIC SelectWorkspaceDialog final : private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(SelectWorkspaceDialog)
+
+        //////////
+        //  Types
+    public:
+        //  The dialog result after a modal invocation
+        enum class Result { Ok, Cancel };
 
         //////////
         //  Construction/destruction
@@ -36,6 +42,9 @@ namespace tt3::gui
         //////////
         //  Operations
     public:
+        //  Runs the dialog modally, returning user's choice
+        Result          doModal();
+
         //  The workspace address selected by the user or
         //  nullptr if the user has cancelled the dialog.
         tt3::ws::WorkspaceAddress   selectedWorkspaceAddress() { return _workspaceAddress; }
@@ -58,6 +67,8 @@ namespace tt3::gui
     private slots:
         void            _workspaceTypeComboBoxCurrentIndexChanged(int);
         void            _browsePushButtonClicked();
+        void            _accept();
+        void            _reject();
     };
 }
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>457</width>
-    <height>131</height>
+    <height>132</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -115,7 +115,7 @@
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
    <receiver>tt3::gui::SelectWorkspaceDialog</receiver>
-   <slot>accept()</slot>
+   <slot>_accept()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>297</x>
@@ -131,7 +131,7 @@
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
    <receiver>tt3::gui::SelectWorkspaceDialog</receiver>
-   <slot>reject()</slot>
+   <slot>_reject()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>297</x>
@@ -147,5 +147,7 @@
  <slots>
   <slot>_workspaceTypeComboBoxCurrentIndexChanged(int)</slot>
   <slot>_browsePushButtonClicked()</slot>
+  <slot>_accept()</slot>
+  <slot>_reject()</slot>
  </slots>
 </ui>

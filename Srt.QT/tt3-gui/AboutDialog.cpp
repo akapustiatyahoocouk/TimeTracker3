@@ -45,6 +45,13 @@ AboutDialog::~AboutDialog()
 }
 
 //////////
+//  Operations
+void AboutDialog::doModal()
+{
+    exec();
+}
+
+    //////////
 //  Signal handlers
 void AboutDialog::_showLicensePushButtonClicked()
 {
@@ -69,7 +76,7 @@ void AboutDialog::_showLicensePushButtonClicked()
     if (_licenses.size() == 1)
     {
         ShowLicenseDialog dlg(this, _licenses[0]);
-        dlg.exec();
+        dlg.doModal();
         return;
     }
 
@@ -80,10 +87,12 @@ void AboutDialog::_showLicensePushButtonClicked()
     {
         QAction * action = new QAction(license->smallIcon(), license->displayName());
         _licensesPopupMenu->addAction(action);
+        //  We need to connect() by name (old-style)
+        //  because we privately inherit from QDialog
         connect(action,
-                &QAction::triggered,
+                SIGNAL(triggered()),
                 this,
-                &AboutDialog::_onShowLicense);
+                SLOT(_onShowLicense()));
     }
 
     //  Go!
@@ -95,7 +104,7 @@ void AboutDialog::_showLicensePushButtonClicked()
 void AboutDialog::_showConfigurationPushButtonClicked()
 {
     ShowConfigurationDialog dlg(this);
-    dlg.exec();
+    dlg.doModal();
 }
 
 void AboutDialog::_onShowLicense()
@@ -107,13 +116,13 @@ void AboutDialog::_onShowLicense()
         if (sender == actions[i])
         {   //  This one!
             ShowLicenseDialog dlg(this, _licenses[i]);
-            dlg.exec();
+            dlg.doModal();
             return;
         }
     }
     //  Fall back to GPLv3
     ShowLicenseDialog dlg(this, tt3::util::StandardLicenses::Gpl3::instance());
-    dlg.exec();
+    dlg.doModal();
 }
 
 //  End of tt3-gui/AboutDialog.cpp

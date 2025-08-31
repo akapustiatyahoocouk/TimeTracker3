@@ -38,4 +38,11 @@ ShowLicenseDialog::~ShowLicenseDialog()
     delete _ui;
 }
 
+//////////
+//  Operations
+void ShowLicenseDialog::doModal()
+{
+    exec();
+}
+
 //  End of tt3-gui/ShowLicenseDialog.cpp

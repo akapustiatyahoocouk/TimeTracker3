@@ -60,6 +60,13 @@ NewWorkspaceDialog::~NewWorkspaceDialog()
 }
 
 //////////
+//  Operations
+NewWorkspaceDialog::Result NewWorkspaceDialog::doModal()
+{
+    return Result(this->exec());
+}
+
+//////////
 //  Implementation helpers
 void NewWorkspaceDialog::_refresh()
 {
@@ -139,6 +146,16 @@ void NewWorkspaceDialog::_passwordLineEditTextChanged(QString)
 void NewWorkspaceDialog::_confirmPasswordLineEditTextChanged(QString)
 {
     _refresh();
+}
+
+void NewWorkspaceDialog::_accept()
+{
+    done(int(Result::Ok));
+}
+
+void NewWorkspaceDialog::_reject()
+{
+    done(int(Result::Cancel));
 }
 
 //  End of tt3-gui/NewWorkspaceDialog.cpp

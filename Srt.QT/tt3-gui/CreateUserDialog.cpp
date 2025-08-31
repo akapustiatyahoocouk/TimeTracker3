@@ -32,4 +32,26 @@ CreateUserDialog::~CreateUserDialog()
     delete _ui;
 }
 
+//////////
+//  Operations
+CreateUserDialog::Result CreateUserDialog::doModal()
+{
+    return Result(this->exec());
+}
+
+//////////
+//  Signal handlers
+void CreateUserDialog::_accept()
+{
+    done(int(Result::Ok));
+}
+
+void CreateUserDialog::_reject()
+{
+    done(int(Result::Cancel));
+}
+
+//  End of tt3-gui/CreateUserDialog.cpp
+
+
 //  End of tt3-gui/CreateUserDialog.cpp

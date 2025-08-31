@@ -269,27 +269,25 @@ bool MainFrame::_reconcileCurrntCredentials(const tt3::ws::Workspace & workspace
         return true;
     }
     //  Ask the user whether to login with different credentials
-    while (tt3::gui::AskYesNoDialog::ask(
-        this,
-        "Access denied",
-        "Current credentials do not allow access to\n" +
-            workspace->address()->displayForm() +
-            "\nDo you want to log in with different credentials ?" +
-            "") == tt3::gui::AskYesNoDialog::Answer::Yes)
+    for (; ; )
     {
-        tt3::gui::LoginDialog dlg(this, "");
-        if (dlg.exec() != QDialog::DialogCode::Accepted)
+        tt3::gui::ChooseReloginDialog dlg(this, workspace->address());
+        if (dlg.doModal() != tt3::gui::ChooseReloginDialog::Result::Yes)
+        {   //  OOPS! The user does NOT want to re-login
+            return false;
+        }
+        //  The user DOES choose to re-login
+        tt3::gui::LoginDialog dlg1(this, "");
+        if (dlg1.doModal() != tt3::gui::LoginDialog::Result::Ok)
         {   //  The user has cancelled the re-login
             return false;
         }
-        if (workspace->canAccess(dlg.credentials()))
+        if (workspace->canAccess(dlg1.credentials()))
         {   //  Access OK
-            tt3::ws::theCurrentCredentials = dlg.credentials();
+            tt3::ws::theCurrentCredentials = dlg1.credentials();
             return true;
         }
     }
-    //  OOPS! The user does NOT want to re-login
-    return false;
 }
 
 void MainFrame::_updateMruWorkspaces()
@@ -336,12 +334,10 @@ void MainFrame::_savePositionTimerTimeout()
 void MainFrame::_onActionNewWorkspace()
 {
     tt3::gui::NewWorkspaceDialog dlg(this);
-    if (dlg.exec() == QDialog::Accepted)
+    if (dlg.doModal() == tt3::gui::NewWorkspaceDialog::Result::Ok)
     {
         tt3::ws::WorkspaceAddress workspaceAddress = dlg.selectedWorkspaceAddress();
         Q_ASSERT(workspaceAddress != nullptr);
-        qDebug() << workspaceAddress->displayForm();
-        qDebug() << workspaceAddress->externalForm();
         _createWorkspace(workspaceAddress, dlg.adminUser(), dlg.adminLogin(), dlg.adminPassword());
     }
 }
@@ -349,12 +345,10 @@ void MainFrame::_onActionNewWorkspace()
 void MainFrame::_onActionOpenWorkspace()
 {
     tt3::gui::SelectWorkspaceDialog dlg(this);
-    if (dlg.exec() == QDialog::Accepted)
+    if (dlg.doModal() == tt3::gui::SelectWorkspaceDialog::Result::Ok)
     {
         tt3::ws::WorkspaceAddress workspaceAddress = dlg.selectedWorkspaceAddress();
         Q_ASSERT(workspaceAddress != nullptr);
-        qDebug() << workspaceAddress->displayForm();
-        qDebug() << workspaceAddress->externalForm();
         _openWorkspace(workspaceAddress);
     }
 }
@@ -374,7 +368,7 @@ void MainFrame::_onActionCloseWorkspace()
         tt3::gui::Component::Settings::instance()->confirmCloseWorkspace)
     {
         tt3::gui::ConfirmCloseWorkspaceDialog dlg(this, workspace);
-        if (dlg.exec() != QDialog::DialogCode::Accepted)
+        if (dlg.doModal() != tt3::gui::ConfirmCloseWorkspaceDialog::Result::Yes)
         {   //  ...and the user has said "no" - restore the "current"
             //  database as it was, and we're done
             tt3::ws::theCurrentWorkspace.swap(workspace);
@@ -406,7 +400,7 @@ void MainFrame::_onActionRestart()
     if (tt3::gui::Component::Settings::instance()->confirmRestart)
     {
         tt3::gui::ConfirmRestartDialog dlg(this);
-        if (dlg.exec() != QDialog::DialogCode::Accepted)
+        if (dlg.doModal() != tt3::gui::ConfirmRestartDialog::Result::Yes)
         {
             return;
         }
@@ -420,7 +414,7 @@ void MainFrame::_onActionExit()
     if (tt3::gui::Component::Settings::instance()->confirmExit)
     {
         tt3::gui::ConfirmExitDialog dlg(this);
-        if (dlg.exec() != QDialog::DialogCode::Accepted)
+        if (dlg.doModal() != tt3::gui::ConfirmExitDialog::Result::Yes)
         {
             return;
         }
@@ -432,7 +426,7 @@ void MainFrame::_onActionExit()
 void MainFrame::_onActionPreferences()
 {
     tt3::gui::PreferencesDialog dlg(this);
-    dlg.exec();
+    dlg.doModal();
 }
 
 void MainFrame::_onActionLoginAsDifferentUser()
@@ -458,7 +452,7 @@ void MainFrame::_onActionHelpSearch()
 void MainFrame::_onActionAbout()
 {
     tt3::gui::AboutDialog dlg(this);
-    dlg.exec();
+    dlg.doModal();
 }
 
 void MainFrame::_onWorkspaceClosed(tt3::ws::WorkspaceClosedNotification)

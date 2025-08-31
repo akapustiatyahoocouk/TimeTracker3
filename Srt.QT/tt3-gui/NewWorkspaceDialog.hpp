@@ -22,10 +22,16 @@ namespace tt3::gui
     //  The modal "New workspace" dialog
     namespace Ui { class NewWorkspaceDialog; }
 
-    class TT3_GUI_PUBLIC NewWorkspaceDialog final : public QDialog
+    class TT3_GUI_PUBLIC NewWorkspaceDialog final : private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(NewWorkspaceDialog)
+
+        //////////
+        //  Types
+    public:
+        //  The dialog result after a modal invocation
+        enum class Result { Ok, Cancel };
 
         //////////
         //  Construction/destruction
@@ -36,6 +42,9 @@ namespace tt3::gui
         //////////
         //  Operations
     public:
+        //  Runs the dialog modally, returning user's choice
+        Result          doModal();
+
         //  The workspace address selected by the user or
         //  nullptr if the user has cancelled the dialog.
         tt3::ws::WorkspaceAddress   selectedWorkspaceAddress() { return _workspaceAddress; }
@@ -74,6 +83,8 @@ namespace tt3::gui
         void            _loginLineEditTextChanged(QString);
         void            _passwordLineEditTextChanged(QString);
         void            _confirmPasswordLineEditTextChanged(QString);
+        void            _accept();
+        void            _reject();
     };
 }
 

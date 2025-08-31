@@ -52,6 +52,13 @@ LoginDialog::~LoginDialog()
 }
 
 //////////
+//  Operations
+LoginDialog::Result LoginDialog::doModal()
+{
+    return Result(this->exec());
+}
+
+//////////
 //  Implementation helpers
 void LoginDialog::_refresh()
 {
@@ -78,7 +85,12 @@ void LoginDialog::_accept()
             _ui->loginLineEdit->text(),
             _ui->passwordLineEdit->text());
     Component::Settings::instance()->lastLogin = _ui->loginLineEdit->text();
-    accept();
+    done(int(Result::Ok));
+}
+
+void LoginDialog::_reject()
+{
+    done(int(Result::Cancel));
 }
 
 //  End of tt3-gui/LoginDialog.cpp

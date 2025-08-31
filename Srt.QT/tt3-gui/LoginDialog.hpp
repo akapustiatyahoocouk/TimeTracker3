@@ -22,10 +22,16 @@ namespace tt3::gui
     //  The modal "login" dialog
     namespace Ui { class LoginDialog; }
 
-    class TT3_GUI_PUBLIC LoginDialog final : public QDialog
+    class TT3_GUI_PUBLIC LoginDialog final : private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(LoginDialog)
+
+        //////////
+        //  Types
+    public:
+        //  The dialog result after a modal invocation
+        enum class Result { Ok, Cancel };
 
         //////////
         //  Construction/destruction
@@ -36,6 +42,9 @@ namespace tt3::gui
         //////////
         //  Operations
     public:
+        //  Runs the dialog modally, returning user's choice
+        Result                  doModal();
+
         //  The credentials entered by the user
         tt3::ws::Credentials    credentials() const { return _credentials; }
 
@@ -45,19 +54,20 @@ namespace tt3::gui
         tt3::ws::Credentials    _credentials;
 
         //  Helpers
-        void            _refresh();
+        void                    _refresh();
 
         //////////
         //  Controls
     private:
-        Ui::LoginDialog *   _ui;
+        Ui::LoginDialog *       _ui;
 
         //////////
         //  Event handlers
     private slots:
-        void            _loginLineEditTextChanged(QString);
-        void            _passwordLineEditTextChanged(QString);
-        void            _accept();
+        void                    _loginLineEditTextChanged(QString);
+        void                    _passwordLineEditTextChanged(QString);
+        void                    _accept();
+        void                    _reject();
     };
 }
 

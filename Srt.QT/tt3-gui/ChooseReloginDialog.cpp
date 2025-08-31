@@ -1,5 +1,5 @@
 //
-//  tt3-gui/ConfirmCloseWorkspaceDialog.cpp - tt3::gui::ConfirmCloseWorkspaceDialog class implementation
+//  tt3-gui/ChooseReloginDialog.cpp - tt3::gui::ChooseReloginDialog class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,14 +15,14 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-gui/API.hpp"
-#include "ui_ConfirmCloseWorkspaceDialog.h"
+#include "ui_ChooseReloginDialog.h"
 using namespace tt3::gui;
 
 //////////
 //  Construction/destruction
-ConfirmCloseWorkspaceDialog::ConfirmCloseWorkspaceDialog(QWidget *parent, tt3::ws::Workspace workspace)
+ChooseReloginDialog::ChooseReloginDialog(QWidget * parent, tt3::ws::WorkspaceAddress address)
     :   QDialog(parent),
-        _ui(new Ui::ConfirmCloseWorkspaceDialog)
+        _ui(new Ui::ChooseReloginDialog)
 {
     _ui->setupUi(this);
 
@@ -31,40 +31,32 @@ ConfirmCloseWorkspaceDialog::ConfirmCloseWorkspaceDialog(QWidget *parent, tt3::w
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::No)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    _ui->assumeYesCheckBox->setChecked(
-        !Component::Settings::instance()->confirmCloseWorkspace);
-
-    Q_ASSERT(workspace != nullptr);
-    _ui->promptLabel2->setText(
-        (workspace != nullptr) ?
-            (workspace->address()->displayForm() + " ?"):
-            "?");   //  be defensive in release mode
+    _ui->promptLabel2->setText(address->displayForm());
 }
 
-ConfirmCloseWorkspaceDialog::~ConfirmCloseWorkspaceDialog()
+ChooseReloginDialog::~ChooseReloginDialog()
 {
     delete _ui;
 }
 
 //////////
 //  Operations
-ConfirmCloseWorkspaceDialog::Result ConfirmCloseWorkspaceDialog::doModal()
+ChooseReloginDialog::Result ChooseReloginDialog::doModal()
 {
     return Result(this->exec());
 }
 
 //////////
 //  Signal handlers
-void ConfirmCloseWorkspaceDialog::_accept()
+void ChooseReloginDialog::_accept()
 {
-    Component::Settings::instance()->confirmCloseWorkspace =
-        !_ui->assumeYesCheckBox->isChecked();
     done(int(Result::Yes));
 }
 
-void ConfirmCloseWorkspaceDialog::_reject()
+void ChooseReloginDialog::_reject()
 {
     done(int(Result::No));
 }
 
-//  End of tt3-gui/ConfirmCloseWorkspaceDialog.cpp
+
+//  End of tt3-gui/ChooseReloginDialog.cpp

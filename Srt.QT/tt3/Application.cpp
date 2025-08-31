@@ -126,7 +126,7 @@ void Application::_initialize()
         tt3::gui::Component::Settings::instance()->rememberLastLogin ?
             tt3::gui::Component::Settings::instance()->lastLogin.value() :
             "");
-    if (loginDialog.exec() != QDialog::DialogCode::Accepted)
+    if (loginDialog.doModal() != tt3::gui::LoginDialog::Result::Ok)
     {   //  No need to cleanup - nothing has
         //  chnaged in application's settings
         ::exit(0);

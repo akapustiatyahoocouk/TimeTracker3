@@ -1,70 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>tt3::gui::ConfirmCloseWorkspaceDialog</class>
- <widget class="QDialog" name="tt3::gui::ConfirmCloseWorkspaceDialog">
+ <class>tt3::gui::ChooseReloginDialog</class>
+ <widget class="QDialog" name="tt3::gui::ChooseReloginDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>523</width>
-    <height>148</height>
+    <width>385</width>
+    <height>142</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Close workspace</string>
+   <string>Access denied</string>
   </property>
   <property name="windowIcon">
    <iconset resource="tt3-gui.qrc">
-    <normaloff>:/tt3-gui/Resources/Images/Actions/CloseWorkspaceLarge.png</normaloff>:/tt3-gui/Resources/Images/Actions/CloseWorkspaceLarge.png</iconset>
+    <normaloff>:/tt3-gui/Resources/Images/Actions/LoginLarge.png</normaloff>:/tt3-gui/Resources/Images/Actions/LoginLarge.png</iconset>
   </property>
   <property name="modal">
    <bool>true</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="4" column="1">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::StandardButton::No|QDialogButtonBox::StandardButton::Yes</set>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QCheckBox" name="assumeYesCheckBox">
+   <item row="0" column="0" rowspan="3">
+    <widget class="QLabel" name="imageLabel">
      <property name="text">
-      <string>Do not request this confirmation again (assume the answer is yes)</string>
+      <string/>
      </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QLabel" name="promptLabel2">
-     <property name="text">
-      <string>&lt;WORKSPACE&gt; ?</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
+     <property name="pixmap">
+      <pixmap resource="tt3-gui.qrc">:/tt3-gui/Resources/Images/Actions/LoginLarge.png</pixmap>
      </property>
     </widget>
    </item>
    <item row="0" column="1">
     <widget class="QLabel" name="promptLabel1">
      <property name="text">
-      <string>Are you sure you really want to close the workspace</string>
+      <string>Current credentials do not allow access to</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
    </item>
-   <item row="0" column="0" rowspan="2">
-    <widget class="QLabel" name="imageLabel">
+   <item row="1" column="1">
+    <widget class="QLabel" name="promptLabel2">
      <property name="text">
-      <string/>
+      <string>&lt;WORKSPACE&gt;</string>
      </property>
-     <property name="pixmap">
-      <pixmap resource="tt3-gui.qrc">:/tt3-gui/Resources/Images/Actions/CloseWorkspaceLarge.png</pixmap>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLabel" name="promptLabel3">
+     <property name="text">
+      <string>Do you want to log in with different credentials ?</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
    </item>
@@ -72,6 +65,16 @@
     <widget class="Line" name="line">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="2">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::No|QDialogButtonBox::StandardButton::Yes</set>
      </property>
     </widget>
    </item>
@@ -84,7 +87,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>tt3::gui::ConfirmCloseWorkspaceDialog</receiver>
+   <receiver>tt3::gui::ChooseReloginDialog</receiver>
    <slot>_accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -100,7 +103,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>tt3::gui::ConfirmCloseWorkspaceDialog</receiver>
+   <receiver>tt3::gui::ChooseReloginDialog</receiver>
    <slot>_reject()</slot>
    <hints>
     <hint type="sourcelabel">

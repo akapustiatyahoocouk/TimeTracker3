@@ -168,22 +168,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>tt3::gui::AboutDialog</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>showLicensePushButton</sender>
    <signal>clicked()</signal>
    <receiver>tt3::gui::AboutDialog</receiver>
@@ -212,6 +196,22 @@
     <hint type="destinationlabel">
      <x>180</x>
      <y>95</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>tt3::gui::AboutDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>307</x>
+     <y>150</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>87</y>
     </hint>
    </hints>
   </connection>

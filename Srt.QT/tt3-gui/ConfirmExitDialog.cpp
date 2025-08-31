@@ -41,12 +41,24 @@ ConfirmExitDialog::~ConfirmExitDialog()
 }
 
 //////////
+//  Operations
+ConfirmExitDialog::Result ConfirmExitDialog::doModal()
+{
+    return Result(this->exec());
+}
+
+//////////
 //  Signal handlers
 void ConfirmExitDialog::_accept()
 {
     Component::Settings::instance()->confirmExit =
         !_ui->assumeYesCheckBox->isChecked();
-    accept();
+    done(int(Result::Yes));
+}
+
+void ConfirmExitDialog::_reject()
+{
+    done(int(Result::No));
 }
 
 //  End of tt3-gui/ConfirmExitDialog.cpp

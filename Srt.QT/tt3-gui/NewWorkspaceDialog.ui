@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>457</width>
-    <height>201</height>
+    <height>202</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -148,7 +148,7 @@
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
    <receiver>tt3::gui::NewWorkspaceDialog</receiver>
-   <slot>accept()</slot>
+   <slot>_accept()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>248</x>
@@ -164,7 +164,7 @@
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
    <receiver>tt3::gui::NewWorkspaceDialog</receiver>
-   <slot>reject()</slot>
+   <slot>_reject()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>316</x>
@@ -280,5 +280,7 @@
   <slot>_loginLineEditTextChanged(QString)</slot>
   <slot>_passwordLineEditTextChanged(QString)</slot>
   <slot>_confirmPasswordLineEditTextChanged(QString)</slot>
+  <slot>_accept()</slot>
+  <slot>_reject()</slot>
  </slots>
 </ui>

@@ -25,16 +25,28 @@ namespace tt3::gui
     //  The modal "Preferences" dialog
     namespace Ui { class PreferencesDialog; }
 
-    class TT3_GUI_PUBLIC PreferencesDialog final : public QDialog
+    class TT3_GUI_PUBLIC PreferencesDialog final : private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PreferencesDialog)
+
+        //////////
+        //  Types
+    public:
+        //  The dialog result after a modal invocation
+        enum class Result { Ok, Cancel };
 
         //////////
         //  Construction/destruction
     public:
         explicit PreferencesDialog(QWidget * parent);
         ~PreferencesDialog();
+
+        //////////
+        //  Operations
+    public:
+        //  Runs the dialog modally, returning user's choice
+        Result          doModal();
 
         //////////
         //  Implementation
@@ -66,7 +78,7 @@ namespace tt3::gui
         void                _resetAllPushNuttonClicked();
         void                _accept();
         void                _reject();
-        void                _settingValueChanged(tt3::util::AbstractSetting * setting);
+        void                _settingValueChanged();
     };
 }
 

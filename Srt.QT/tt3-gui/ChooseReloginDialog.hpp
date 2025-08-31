@@ -1,5 +1,5 @@
 //
-//  tt3-gui/CreateUserDialog.hpp - The modal "Create user" dialog
+//  tt3-gui/ChooseReloginDialog.hpp - The modal "Choose re-login option" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,25 +19,25 @@
 
 namespace tt3::gui
 {
-    //  The modal "Create user" dialog
-    namespace Ui { class CreateUserDialog; }
+    //  The modal "Choose re-login option" dialog
+    namespace Ui { class ChooseReloginDialog; }
 
-    class TT3_GUI_PUBLIC CreateUserDialog final : private QDialog
+    class TT3_GUI_PUBLIC ChooseReloginDialog final : private QDialog
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CreateUserDialog)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ChooseReloginDialog)
 
         //////////
         //  Types
     public:
         //  The dialog result after a modal invocation
-        enum class Result { Ok, Cancel };
+        enum class Result { Yes, No };
 
         //////////
         //  Construction/destruction
     public:
-        explicit CreateUserDialog(QWidget * parent);
-        virtual ~CreateUserDialog();
+        ChooseReloginDialog(QWidget * parent, tt3::ws::WorkspaceAddress address);
+        virtual ~ChooseReloginDialog();
 
         //////////
         //  Operations
@@ -48,7 +48,7 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::CreateUserDialog *  _ui;
+        Ui::ChooseReloginDialog *   _ui;
 
         //////////
         //  Signal handlers
@@ -58,5 +58,5 @@ namespace tt3::gui
     };
 }
 
-//  End of tt3-gui/CreateUserDialog.hpp
+//  End of tt3-gui/ChooseReloginDialog.hpp
 

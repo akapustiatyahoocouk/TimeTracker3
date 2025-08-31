@@ -51,7 +51,7 @@ namespace tt3::util
         //  Signals
     signals:
         //  Emitted when a value of the setting changes
-        void            valueChanged(AbstractSetting *);
+        void            valueChanged();
 
         //////////
         //  Implementation
@@ -123,7 +123,7 @@ namespace tt3::util
             {
                 _value = value;
                 _valueLoaded = true;
-                emit valueChanged(this);
+                emit valueChanged();
             }
         }
 

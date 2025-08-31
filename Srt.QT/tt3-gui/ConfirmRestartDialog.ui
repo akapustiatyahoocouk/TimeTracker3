@@ -88,7 +88,7 @@
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
    <receiver>tt3::gui::ConfirmRestartDialog</receiver>
-   <slot>reject()</slot>
+   <slot>_reject()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>316</x>
@@ -103,5 +103,6 @@
  </connections>
  <slots>
   <slot>_accept()</slot>
+  <slot>_reject()</slot>
  </slots>
 </ui>

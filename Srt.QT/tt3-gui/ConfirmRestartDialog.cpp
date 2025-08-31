@@ -41,12 +41,24 @@ ConfirmRestartDialog::~ConfirmRestartDialog()
 }
 
 //////////
+//  Operations
+ConfirmRestartDialog::Result ConfirmRestartDialog::doModal()
+{
+    return Result(this->exec());
+}
+
+//////////
 //  Signal handlers
 void ConfirmRestartDialog::_accept()
 {
     Component::Settings::instance()->confirmRestart =
         !_ui->assumeYesCheckBox->isChecked();
-    accept();
+    done(int(Result::Yes));
+}
+
+void ConfirmRestartDialog::_reject()
+{
+    done(int(Result::No));
 }
 
 //  End of tt3-gui/ConfirmRestartDialog.cpp

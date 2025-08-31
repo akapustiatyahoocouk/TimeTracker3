@@ -22,7 +22,7 @@ namespace tt3::gui
     //  The modal "show configuration" dialog
     namespace Ui { class ShowConfigurationDialog; }
 
-    class TT3_GUI_PUBLIC ShowConfigurationDialog final : public QDialog
+    class TT3_GUI_PUBLIC ShowConfigurationDialog final : private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ShowConfigurationDialog)
@@ -32,6 +32,12 @@ namespace tt3::gui
     public:
         explicit ShowConfigurationDialog(QWidget * parent);
         virtual ~ShowConfigurationDialog();
+
+        //////////
+        //  Operations
+    public:
+        //  Runs the dialog modally
+        void            doModal();
 
         //////////
         //  Implementation

@@ -64,11 +64,16 @@ PreferencesDialog::PreferencesDialog(QWidget * parent) throw(int)
     {
         for (tt3::util::AbstractSetting * setting : component->settings()->settings())
         {
+            /*  TODO kill off
             connect(setting,
                     &tt3::util::AbstractSetting::valueChanged,
-                    this,
+                    (QDialog*)this,
                     &PreferencesDialog::_settingValueChanged);
-
+            */
+            connect(setting,
+                    SIGNAL(valueChanged()),
+                    this,
+                    SLOT(_settingValueChanged()));
         }
     }
 
@@ -80,6 +85,13 @@ PreferencesDialog::~PreferencesDialog()
 {
     delete _editorsFrameLayout;
     delete _ui;
+}
+
+//////////
+//  Operations
+PreferencesDialog::Result PreferencesDialog::doModal()
+{
+    return Result(this->exec());
 }
 
 //////////
@@ -127,10 +139,18 @@ void PreferencesDialog::_createEditor(QTreeWidgetItem * item)
         editor->setParent(_ui->editorsFrame);
         _editorsForItems[item] = editor;
         //  Set up signal listeners
+        //  We need to connect() by name (old-style)
+        //  because we privately inherit from QDialog
+        /*  TODO kill off
         connect(editor,
                 &PreferencesEditor::controlValueChanged,
                 this,
                 &PreferencesDialog::_refresh);
+        */
+        connect(editor,
+                SIGNAL(controlValueChanged()),
+                this,
+                SLOT(_refresh()));
     }
 }
 
@@ -246,26 +266,31 @@ void PreferencesDialog::_accept()
         }
         else
         {
-            accept();
+            done(int(Result::Ok));
         }
     }
     else
     {
-        accept();
+        done(int(Result::Ok));
     }
 }
 
 void PreferencesDialog::_reject()
 {
     _saveCurrentPreferences();
-    reject();
+    done(int(Result::Cancel));
 }
 
-void PreferencesDialog::_settingValueChanged(tt3::util::AbstractSetting * setting)
+void PreferencesDialog::_settingValueChanged()
 {
-    if (setting->changeRequiresRestart())
+    QObject * sender = this->sender();
+    if (tt3::util::AbstractSetting * setting =
+        qobject_cast<tt3::util::AbstractSetting*>(sender))
     {
-        _restartRequired = true;
+        if (setting->changeRequiresRestart())
+        {
+            _restartRequired = true;
+        }
     }
 }
 

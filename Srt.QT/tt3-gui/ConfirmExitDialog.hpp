@@ -22,16 +22,28 @@ namespace tt3::gui
     //  The modal "Confirm exit" dialog
     namespace Ui { class ConfirmExitDialog; }
 
-    class TT3_GUI_PUBLIC ConfirmExitDialog final : public QDialog
+    class TT3_GUI_PUBLIC ConfirmExitDialog final : private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmExitDialog)
+
+        //////////
+        //  Types
+    public:
+        //  The dialog result after a modal invocation
+        enum class Result { Yes, No };
 
         //////////
         //  Construction/destruction
     public:
         explicit ConfirmExitDialog(QWidget * parent);
         virtual ~ConfirmExitDialog();
+
+        //////////
+        //  Operations
+    public:
+        //  Runs the dialog modally, returning user's choice
+        Result          doModal();
 
         //////////
         //  Controls
@@ -42,6 +54,7 @@ namespace tt3::gui
         //  Signal handlers
     private slots:
         void            _accept();
+        void            _reject();
     };
 }
 //  End of tt3-gui/ConfirmExitDialog.hpp

@@ -22,7 +22,7 @@ namespace tt3::gui
     //  The modal "About" dialog
     namespace Ui { class AboutDialog; }
 
-    class TT3_GUI_PUBLIC AboutDialog final : public QDialog
+    class TT3_GUI_PUBLIC AboutDialog final : private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AboutDialog)
@@ -32,6 +32,12 @@ namespace tt3::gui
     public:
         explicit AboutDialog(QWidget * parent);
         virtual ~AboutDialog();
+
+        //////////
+        //  Operations
+    public:
+        //  Runs the dialog modally
+        void                doModal();
 
         //////////
         //  Implementation

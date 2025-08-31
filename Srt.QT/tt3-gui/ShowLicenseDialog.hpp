@@ -22,7 +22,7 @@ namespace tt3::gui
     //  The modal "show license" dialog
     namespace Ui { class ShowLicenseDialog; }
 
-    class TT3_GUI_PUBLIC ShowLicenseDialog final : public QDialog
+    class TT3_GUI_PUBLIC ShowLicenseDialog final : private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ShowLicenseDialog)
@@ -32,6 +32,12 @@ namespace tt3::gui
     public:
         ShowLicenseDialog(QWidget * parent, tt3::util::ILicense * license);
         virtual ~ShowLicenseDialog();
+
+        //////////
+        //  Operations
+    public:
+        //  Runs the dialog modally
+        void                doModal();
 
         //////////
         //  Controls

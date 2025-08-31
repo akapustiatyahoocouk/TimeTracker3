@@ -18,6 +18,7 @@
 namespace tt3::gui
 {
     //  The modal "zes/mp" dialog
+    //  TODO kill off this class!
     class TT3_GUI_PUBLIC AskYesNoDialog final
     {
         UTILITY_CLASS(AskYesNoDialog)
