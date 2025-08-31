@@ -22,6 +22,7 @@ SOURCES += \
     MessageDigestManager.cpp \
     Mutex.cpp \
     PluginManager.cpp \
+    ProductInformation.cpp \
     Settings.cpp \
     Sha1MessageDigest.cpp \
     StandardLicenses.cpp \
@@ -46,6 +47,7 @@ HEADERS += \
     Macros.hpp \
     MessageDigest.hpp \
     Plugin.hpp \
+    ProductInformation.hpp \
     ResourceFactory.hpp \
     Settings.hpp \
     Subsystem.hpp \

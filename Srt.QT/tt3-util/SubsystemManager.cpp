@@ -17,17 +17,34 @@
 #include "tt3-util/API.hpp"
 using namespace tt3::util;
 
-Mutex SubsystemManager::_guard;
-QMap<Mnemonic, ISubsystem*> SubsystemManager::_registry;
+struct SubsystemManager::_Impl
+{
+    _Impl()
+    {
+#define REGISTER(Subsystem)                     \
+        registry.insert(                        \
+            Subsystem::instance()->mnemonic(),  \
+            Subsystem::instance())
+
+        REGISTER(StandardSubsystems::Applications);
+        REGISTER(StandardSubsystems::Storage);
+        REGISTER(StandardSubsystems::Gui);
+        REGISTER(StandardSubsystems::Reporting);
+        REGISTER(StandardSubsystems::Utility);
+    }
+
+    Mutex                       guard;
+    QMap<Mnemonic, ISubsystem*> registry;
+};
 
 //////////
 //  Operations
 Subsystems SubsystemManager::allSubsystems()
 {
-    Lock lock(_guard);
+    _Impl * impl = _impl();
+    Lock lock(impl->guard);
 
-    _registerStandardSubsystems();
-    QList<ISubsystem*> values = _registry.values();
+    QList<ISubsystem*> values = impl->registry.values();
     return Subsystems(values.begin(), values.end());
 }
 
@@ -35,43 +52,31 @@ bool SubsystemManager::registerSubsystem(ISubsystem * subsystem)
 {
     Q_ASSERT(subsystem != nullptr);
 
-    Lock lock(_guard);
+    _Impl * impl = _impl();
+    Lock lock(impl->guard);
 
-    _registerStandardSubsystems();
-    if (ISubsystem * registeredSubsystem = findSubsystem(subsystem->mnemonic()))
+    if (impl->registry.contains(subsystem->mnemonic()))
     {
-        return subsystem == registeredSubsystem;
+        return subsystem == impl->registry[subsystem->mnemonic()];
     }
-    _registry[subsystem->mnemonic()] = subsystem;
+    impl->registry[subsystem->mnemonic()] = subsystem;
     return true;
 }
 
 ISubsystem * SubsystemManager::findSubsystem(const Mnemonic & mnemonic)
 {
-    Lock lock(_guard);
+    _Impl * impl = _impl();
+    Lock lock(impl->guard);
 
-    _registerStandardSubsystems();
-    return _registry.contains(mnemonic) ? _registry[mnemonic] : nullptr;
+    return impl->registry.contains(mnemonic) ? impl->registry[mnemonic] : nullptr;
 }
 
 //////////
 //  Implementation helpers
-void SubsystemManager::_registerStandardSubsystems()
+SubsystemManager::_Impl * SubsystemManager::_impl()
 {
-    Q_ASSERT(_guard.isLockedByCurrentThread());
-
-    if (_registry.isEmpty())
-    {
-#define REGISTER(Subsystem)                                         \
-        _registry.insert(                                           \
-            StandardSubsystems::Subsystem::instance()->mnemonic(),  \
-            StandardSubsystems::Subsystem::instance())
-        REGISTER(Applications);
-        REGISTER(Storage);
-        REGISTER(Gui);
-        REGISTER(Reporting);
-        REGISTER(Utility);
-    }
+    static _Impl impl;
+    return &impl;
 }
 
 //  End of tt3-util/MessageDigestManager.cpp

@@ -31,9 +31,4 @@ QIcon IPlugin::largeIcon() const
     return icon;
 }
 
-bool IPlugin::isInitialized() const
-{
-    return PluginManager::_initializedPlugins.contains(const_cast<IPlugin*>(this));
-}
-
 //  End of tt3-util/IPlugin.cpp

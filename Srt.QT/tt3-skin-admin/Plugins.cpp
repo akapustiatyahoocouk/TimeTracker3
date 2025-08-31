@@ -61,7 +61,7 @@ namespace
 
         virtual QString         buildNumber() const override
         {
-            return __DATE__;
+            return tt3::util::ProductInformation::applicationBuildNumber();
         }
 
         virtual void            initialize() throws(QException) override

@@ -92,11 +92,10 @@ namespace tt3::gui
         //////////
         //  Implementation
     private:
-        static tt3::util::Mutex _guard;
-        static QMap<tt3::util::Mnemonic, Preferences*>  _registry;
+        struct _Impl;
 
         //  Helpers
-        static void             _registerStandardPreferences();
+        static _Impl *          _impl();
     };
 
     //  The "/General" preferences

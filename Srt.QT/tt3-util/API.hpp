@@ -128,6 +128,7 @@
 #include "tt3-util/Subsystem.hpp"
 
 //  Misc
+#include "tt3-util/ProductInformation.hpp"
 #include "tt3-util/Components.hpp"
 #include "tt3-util/Exceptions.hpp"
 

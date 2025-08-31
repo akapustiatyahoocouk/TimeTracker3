@@ -17,59 +17,64 @@
 #include "tt3-gui/API.hpp"
 using namespace tt3::gui;
 
-tt3::util::Mutex ThemeManager::_guard;
-QMap<tt3::util::Mnemonic, ITheme*> ThemeManager::_registry;
+struct ThemeManager::_Impl
+{
+    _Impl()
+    {
+#define REGISTER(Subsystem)                     \
+        registry.insert(                        \
+            Subsystem::instance()->mnemonic(),  \
+            Subsystem::instance())
+
+        REGISTER(StandardThemes::System);
+        REGISTER(StandardThemes::Light);
+        REGISTER(StandardThemes::Dark);
+    }
+
+    tt3::util::Mutex                    guard;
+    QMap<tt3::util::Mnemonic, ITheme*>  registry;
+};
 
 //////////
 //  Operations
 QSet<ITheme*> ThemeManager::allThemes()
 {
-    tt3::util::Lock lock(_guard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
 
-    _registerStandardThemes();
-    QList<ITheme*> values = _registry.values();
+    QList<ITheme*> values = impl->registry.values();
     return QSet<ITheme*>(values.begin(), values.end());
 }
 
 bool ThemeManager::registerTheme(ITheme * theme)
 {
-    tt3::util::Lock lock(_guard);
-
     Q_ASSERT(theme != nullptr);
 
-    _registerStandardThemes();
-    if (ITheme * registeredTheme = findTheme(theme->mnemonic()))
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
+
+    if (impl->registry.contains(theme->mnemonic()))
     {
-        return theme == registeredTheme;
+        return theme == impl->registry[theme->mnemonic()];
     }
-    _registry[theme->mnemonic()] = theme;
+    impl->registry[theme->mnemonic()] = theme;
     return true;
 }
 
 ITheme * ThemeManager::findTheme(const tt3::util::Mnemonic & mnemonic)
 {
-    tt3::util::Lock lock(_guard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
 
-    _registerStandardThemes();
-    return _registry.contains(mnemonic) ? _registry[mnemonic] : nullptr;
+    return impl->registry.contains(mnemonic) ? impl->registry[mnemonic] : nullptr;
 }
 
 //////////
 //  Implementation helpers
-void ThemeManager::_registerStandardThemes()
+ThemeManager::_Impl * ThemeManager::_impl()
 {
-    Q_ASSERT(_guard.isLockedByCurrentThread());
-
-    if (_registry.isEmpty())
-    {
-#define REGISTER(Subsystem)                                     \
-        _registry.insert(                                       \
-            StandardThemes::Subsystem::instance()->mnemonic(),  \
-            StandardThemes::Subsystem::instance())
-        REGISTER(System);
-        REGISTER(Light);
-        REGISTER(Dark);
-    }
+    static _Impl impl;
+    return &impl;
 }
 
 //  End of tt3-gui/ThemeManager.cpp

@@ -97,8 +97,10 @@ namespace tt3::gui
         //////////
         //  Implementation
     private:
-        static tt3::util::Mutex _guard;
-        static QMap<tt3::util::Mnemonic, ISkin*>    _registry;
+        struct _Impl;
+
+        //  Helpers
+        static _Impl *      _impl();
     };
 
     //  The accessor for a "currently active" skin.

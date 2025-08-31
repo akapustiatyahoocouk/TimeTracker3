@@ -113,8 +113,10 @@ namespace tt3::util
         //////////
         //  Implementation
     private:
-        static Mutex        _guard;
-        static QMap<Mnemonic, IComponent*>   _registry;    //  key = "mnemonic" + "version"
+        struct _Impl;
+
+        //  Helpers
+        static _Impl *      _impl();
     };
 }
 

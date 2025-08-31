@@ -94,11 +94,10 @@ namespace tt3::util
         //////////
         //  Implementation
     private:
-        static QSet<QString>    _processedDlls;
-        static Plugins      _discoveredPlugins;
-        static Plugins      _initializedPlugins;
+        struct _Impl;
 
         //  Helpers
+        static _Impl *          _impl();
         static void             _loadPluginsFromLibrary(const QString & fileName);
     };
 

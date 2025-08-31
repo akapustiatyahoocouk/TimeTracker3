@@ -17,16 +17,20 @@
 #include "tt3-util/API.hpp"
 using namespace tt3::util;
 
-Mutex ComponentManager::_guard;
-QMap<Mnemonic, IComponent*> ComponentManager::_registry;
+struct ComponentManager::_Impl
+{
+    Mutex                       guard;
+    QMap<Mnemonic, IComponent*> registry;
+};
 
 //////////
 //  Operations
 Components ComponentManager::allComponents()
 {
-    Lock lock(_guard);
+    _Impl * impl = _impl();
+    Lock lock(impl->guard);
 
-    QList<IComponent*> values = _registry.values();
+    QList<IComponent*> values = impl->registry.values();
     return Components(values.begin(), values.end());
 }
 
@@ -34,38 +38,38 @@ bool ComponentManager::registerComponent(IComponent * component)
 {
     Q_ASSERT(component != nullptr);
 
-    Lock lock(_guard);
+    _Impl * impl = _impl();
+    Lock lock(impl->guard);
 
     if (IComponent * registeredComponent = findComponent(component->mnemonic(), component->version()))
     {
         return component == registeredComponent;
     }
-    qDebug() << "Registering " << component->displayName();
-    /*  TODO kill off? Change ...Managers to singletons?
     if (!SubsystemManager::registerSubsystem(component->subsystem()))
     {   //  OOPS! Can't proceed!
         return false;
     }
-    */
     Mnemonic key = component->mnemonic() + "|" + util::toString(component->version());
-    _registry[key] = component;
+    impl->registry[key] = component;
     return true;
 }
 
 IComponent * ComponentManager::findComponent(const tt3::util::Mnemonic & mnemonic, const QVersionNumber & version)
 {
-    Lock lock(_guard);
+    _Impl * impl = _impl();
+    Lock lock(impl->guard);
 
-    Mnemonic key = mnemonic + "|" + util::toString(version);
-    return _registry.contains(key) ? _registry[key] : nullptr;
+    Mnemonic key = mnemonic + "|" + toString(version);
+    return impl->registry.contains(key) ? impl->registry[key] : nullptr;
 }
 
 IComponent * ComponentManager::findComponent(const Mnemonic & mnemonic)
 {
-    Lock lock(_guard);
+    _Impl * impl = _impl();
+    Lock lock(impl->guard);
 
     IComponent * result = nullptr;
-    for (IComponent * component : _registry.values())
+    for (IComponent * component : impl->registry.values())
     {
         if (component->mnemonic() == mnemonic)
         {
@@ -81,7 +85,8 @@ IComponent * ComponentManager::findComponent(const Mnemonic & mnemonic)
 
 void ComponentManager::loadComponentSettings()
 {
-    Lock lock(_guard);
+    _Impl * impl = _impl();
+    Lock lock(impl->guard);
 
     QDir home = QDir::home();
     QString iniFileName = home.filePath(".tt3");
@@ -108,7 +113,7 @@ void ComponentManager::loadComponentSettings()
                 {
                     Mnemonic componentMnemonic(line.mid(1, separatorIndex - 1));
                     QVersionNumber componentVersion(fromString<QVersionNumber>(line.mid(separatorIndex + 1, line.length() - separatorIndex - 2)));
-                    currentComponent = ComponentManager::findComponent(componentMnemonic, componentVersion);
+                    currentComponent = findComponent(componentMnemonic, componentVersion);
                     continue;
                 }
                 catch (const ParseException &)
@@ -135,7 +140,8 @@ void ComponentManager::loadComponentSettings()
 
 void ComponentManager::saveComponentSettings()
 {
-    Lock lock(_guard);
+    _Impl * impl = _impl();
+    Lock lock(impl->guard);
 
     QDir home = QDir::home();
     QString iniFileName = home.filePath(".tt3");
@@ -167,10 +173,11 @@ void ComponentManager::saveComponentSettings()
 
 Locales ComponentManager::supportedLocales()
 {
-    tt3::util::Lock lock(_guard);
+    _Impl * impl = _impl();
+    Lock lock(impl->guard);
 
     Locales result;
-    for (IComponent * component : _registry.values())
+    for (IComponent * component : impl->registry.values())
     {
         result.unite(component->resources()->supportedLocales());
     }
@@ -179,11 +186,12 @@ Locales ComponentManager::supportedLocales()
 
 Locales ComponentManager::fullySupportedLocales()
 {
-    tt3::util::Lock lock(_guard);
+    _Impl * impl = _impl();
+    Lock lock(impl->guard);
 
     Locales result;
     bool firstTime = true;
-    for (IComponent * component : _registry.values())
+    for (IComponent * component : impl->registry.values())
     {
         if (firstTime)
         {
@@ -196,6 +204,15 @@ Locales ComponentManager::fullySupportedLocales()
         }
     }
     return result;
+}
+
+//////////
+//  Implementation helpers
+ComponentManager::_Impl * ComponentManager::_impl()
+{
+    static _Impl impl;
+
+    return &impl;
 }
 
 //  End of tt3-util/ComponentManager.cpp

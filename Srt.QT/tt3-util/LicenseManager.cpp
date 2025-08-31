@@ -17,17 +17,30 @@
 #include "tt3-util/API.hpp"
 using namespace tt3::util;
 
-Mutex LicenseManager::_guard;
-QMap<Mnemonic, ILicense*> LicenseManager::_registry;
+struct LicenseManager::_Impl
+{
+    _Impl()
+    {
+#define REGISTER(License)                   \
+        registry.insert(                    \
+            License::instance()->mnemonic(),\
+            License::instance())
+
+        REGISTER(StandardLicenses::Gpl3);
+    }
+
+    Mutex                       guard;
+    QMap<Mnemonic, ILicense*>   registry;
+};
 
 //////////
 //  Operations
 Licenses LicenseManager::allLicenses()
 {
-    tt3::util::Lock lock(_guard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
 
-    _registerStandardLicenses();
-    QList<ILicense*> values = _registry.values();
+    QList<ILicense*> values = impl->registry.values();
     return Licenses(values.begin(), values.end());
 }
 
@@ -35,39 +48,31 @@ bool LicenseManager::registerLicense(ILicense * license)
 {
     Q_ASSERT(license != nullptr);
 
-    tt3::util::Lock lock(_guard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
 
-    _registerStandardLicenses();
-    if (ILicense * registeredLicense = findLicense(license->mnemonic()))
+    if (impl->registry.contains(license->mnemonic()))
     {
-        return license == registeredLicense;
+        return license == impl->registry[license->mnemonic()];
     }
-    _registry[license->mnemonic()] = license;
+    impl->registry[license->mnemonic()] = license;
     return true;
 }
 
 ILicense * LicenseManager::findLicense(const Mnemonic & mnemonic)
 {
-    Lock lock(_guard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
 
-    _registerStandardLicenses();
-    return _registry.contains(mnemonic) ? _registry[mnemonic] : nullptr;
+    return impl->registry.contains(mnemonic) ? impl->registry[mnemonic] : nullptr;
 }
 
 //////////
 //  Implementation helpers
-void LicenseManager::_registerStandardLicenses()
+LicenseManager::_Impl * LicenseManager::_impl()
 {
-    Q_ASSERT(_guard.isLockedByCurrentThread());
-
-    if (_registry.isEmpty())
-    {
-#define REGISTER(Subsystem)                                         \
-        _registry.insert(                                           \
-            StandardLicenses::Subsystem::instance()->mnemonic(),    \
-            StandardLicenses::Subsystem::instance())
-        REGISTER(Gpl3);
-    }
+    static _Impl impl;
+    return &impl;
 }
 
 //  End of tt3-util/MessageDigestManager.cpp

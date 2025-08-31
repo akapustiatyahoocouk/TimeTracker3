@@ -51,17 +51,17 @@ namespace
 
         virtual QString         copyright() const override
         {
-            return "Copyright (C) 2026, Andrey Kapustin";
+            return tt3::util::ProductInformation::applicationCopyright();
         }
 
         virtual QVersionNumber  version() const override
         {
-            return QVersionNumber(1, 0, 0);
+            return tt3::util::ProductInformation::applicationVersion();
         }
 
         virtual QString         buildNumber() const override
         {
-            return __DATE__;
+            return tt3::util::ProductInformation::applicationBuildNumber();
         }
 
         virtual void            initialize() throws(QException) override

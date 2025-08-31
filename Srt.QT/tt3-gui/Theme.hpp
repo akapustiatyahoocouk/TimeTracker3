@@ -149,11 +149,10 @@ namespace tt3::gui
         //////////
         //  Implementation
     private:
-        static tt3::util::Mutex _guard;
-        static QMap<tt3::util::Mnemonic, ITheme*>   _registry;
+        struct _Impl;
 
         //  Helpers
-        static void         _registerStandardThemes();
+        static _Impl *      _impl();
     };
 
     //  The accessor for a "currently active" theme.

@@ -17,38 +17,52 @@
 #include "tt3-gui/API.hpp"
 using namespace tt3::gui;
 
-tt3::util::Mutex SkinManager::_guard;
-QMap<tt3::util::Mnemonic, ISkin*> SkinManager::_registry;
+struct SkinManager::_Impl
+{
+    tt3::util::Mutex                    guard;
+    QMap<tt3::util::Mnemonic, ISkin*>   registry;
+};
 
 //////////
 //  Operations
 QSet<ISkin*> SkinManager::allSkins()
 {
-    tt3::util::Lock lock(_guard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
 
-    QList<ISkin*> values = _registry.values();
+    QList<ISkin*> values = impl->registry.values();
     return QSet<ISkin*>(values.begin(), values.end());
 }
 
 bool SkinManager::registerSkin(ISkin * skin)
 {
-    tt3::util::Lock lock(_guard);
-
     Q_ASSERT(skin != nullptr);
 
-    if (ISkin * registeredSkin = findSkin(skin->mnemonic()))
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
+
+    if (impl->registry.contains(skin->mnemonic()))
     {
-        return skin == registeredSkin;
+        return skin == impl->registry[skin->mnemonic()];
     }
-    _registry[skin->mnemonic()] = skin;
+    impl->registry[skin->mnemonic()] = skin;
     return true;
 }
 
 ISkin * SkinManager::findSkin(const tt3::util::Mnemonic & mnemonic)
 {
-    tt3::util::Lock lock(_guard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
 
-    return _registry.contains(mnemonic) ? _registry[mnemonic] : nullptr;
+    return impl->registry.contains(mnemonic) ? impl->registry[mnemonic] : nullptr;
+}
+
+//////////
+//  Implementation helpers
+SkinManager::_Impl * SkinManager::_impl()
+{
+    static _Impl impl;
+    return &impl;
 }
 
 //  End of tt3-gui/SkinManager.cpp

@@ -104,11 +104,10 @@ namespace tt3::util
         //////////
         //  Implementation
     private:
-        static Mutex        _guard;
-        static QMap<Mnemonic, ILicense*>    _registry;
+        struct _Impl;
 
         //  Helpers
-        static void         _registerStandardLicenses();
+        static _Impl *      _impl();
     };
 }
 

@@ -64,17 +64,17 @@ QString Component::description() const
 
 QString Component::copyright() const
 {
-    return "Copyright (C) 2026, Andrey Kapustin";
+    return tt3::util::ProductInformation::applicationCopyright();
 }
 
 QVersionNumber Component::version() const
 {
-    return QVersionNumber(1, 0, 0);
+    return tt3::util::ProductInformation::applicationVersion();
 }
 
 QString Component::buildNumber() const
 {
-    return __DATE__;
+    return tt3::util::ProductInformation::applicationBuildNumber();
 }
 
 tt3::util::ISubsystem * Component::subsystem() const

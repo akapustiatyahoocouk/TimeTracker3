@@ -171,11 +171,10 @@ namespace tt3::util
         //////////
         //  Implementation
     private:
-        static Mutex        _guard;
-        static QMap<Mnemonic, IMessageDigest*>  _registry;
+        struct _Impl;
 
         //  Helpers
-        static void         _registerStandardMessageDigests();
+        static _Impl *      _impl();
     };
 }
 

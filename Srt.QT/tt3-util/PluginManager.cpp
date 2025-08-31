@@ -17,18 +17,21 @@
 #include "tt3-util/API.hpp"
 using namespace tt3::util;
 
-QSet<QString>  PluginManager::_processedDlls;
-Plugins PluginManager::_discoveredPlugins;
-Plugins PluginManager::_initializedPlugins;
+struct PluginManager::_Impl
+{
+    QSet<QString>   processedDlls;
+    Plugins         discoveredPlugins;
+    Plugins         initializedPlugins;
+};
 
 //////////
 //  Operations
 void PluginManager::loadPlugins()
 {
+    _Impl * impl = _impl();
+
     QString startupDirectory = QCoreApplication::applicationDirPath();
     QString exeFile = QCoreApplication::applicationFilePath();
-    qDebug() << startupDirectory;
-    qDebug() << exeFile;
     //  Discover plugins
     for (const auto & ei : QDir(startupDirectory).entryInfoList())
     {
@@ -43,14 +46,14 @@ void PluginManager::loadPlugins()
     for (bool keepGoing = true; keepGoing; )
     {
         keepGoing = false;
-        for (auto plugin : _discoveredPlugins)
+        for (auto plugin : impl->discoveredPlugins)
         {
-            if (!_initializedPlugins.contains(plugin))
+            if (!impl->initializedPlugins.contains(plugin))
             {
                 try
                 {
                     plugin->initialize();
-                    _initializedPlugins.insert(plugin);
+                    impl->initializedPlugins.insert(plugin);
                     keepGoing = true;
                 }
                 catch (...)
@@ -63,23 +66,31 @@ void PluginManager::loadPlugins()
 
 Plugins PluginManager::discoveredPlugins()
 {
-    return _discoveredPlugins;
+    return _impl()->discoveredPlugins;
 }
 
 Plugins PluginManager::initializedPlugins()
 {
-    return _initializedPlugins;
+    return _impl()->initializedPlugins;
 }
 
 //////////
 //  Implementation helpers
+PluginManager::_Impl * PluginManager::_impl()
+{
+    static _Impl impl;
+    return &impl;
+}
+
 void PluginManager::_loadPluginsFromLibrary(const QString & fileName)
 {
-    if (_processedDlls.contains(fileName))
+    _Impl * impl = _impl();
+
+    if (impl->processedDlls.contains(fileName))
     {   //  Already processed
         return;
     }
-    _processedDlls.insert(fileName);
+    impl->processedDlls.insert(fileName);
     //  Load file as a library
     QLibrary library(fileName);
     if (!library.load())
@@ -90,7 +101,8 @@ void PluginManager::_loadPluginsFromLibrary(const QString & fileName)
     PluginExportProc pluginExportProc =
         reinterpret_cast<PluginExportProc>(library.resolve("PluginProvider"));
     if (pluginExportProc == nullptr)
-    {
+    {   //  No point in keeping this library loaded
+        library.unload();
         return;
     }
     //  Get and register all plugis
@@ -98,8 +110,15 @@ void PluginManager::_loadPluginsFromLibrary(const QString & fileName)
     (*pluginExportProc)(plugins);
     for (auto plugin : plugins)
     {
-        _discoveredPlugins.insert(plugin);
+        impl->discoveredPlugins.insert(plugin);
     }
+}
+
+//////////
+//  MUST BE IN THIS FILE!!!
+bool IPlugin::isInitialized() const
+{
+    return PluginManager::_impl()->initializedPlugins.contains(const_cast<IPlugin*>(this));
 }
 
 //  End of tt3-util/PluginManager.cpp

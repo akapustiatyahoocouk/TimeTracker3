@@ -44,18 +44,17 @@ QString Component::description() const
 
 QString Component::copyright() const
 {
-    static Resources * resources = Resources::instance();   //  idempotent
-    return resources->string(RSID(Component), RID(Copyright));
+    return ProductInformation::applicationCopyright();
 }
 
 QVersionNumber Component::version() const
 {
-    return QVersionNumber(1, 0, 0);
+    return tt3::util::ProductInformation::applicationVersion();
 }
 
 QString Component::buildNumber() const
 {
-    return __DATE__;
+    return tt3::util::ProductInformation::applicationBuildNumber();
 }
 
 ISubsystem * Component::subsystem() const

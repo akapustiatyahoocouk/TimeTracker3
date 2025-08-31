@@ -29,10 +29,13 @@ AboutDialog::AboutDialog(QWidget * parent)
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
 
+    _ui->productLabel->setText(tt3::util::ProductInformation::applicationDisplayName());
     _ui->versionLabel->setText(
-        "Version " + Component::instance()->version().toString() +
-        " (build " + Component::instance()->buildNumber() +
+        "Version " + tt3::util::ProductInformation::applicationVersion().toString() +
+        " (build " + tt3::util::ProductInformation::applicationBuildNumber() +
         ")");
+    _ui->copyrightLabel->setText(tt3::util::ProductInformation::applicationCopyright());
+    _ui->creditsLabel->setText(tt3::util::ProductInformation::credits());
 }
 
 AboutDialog::~AboutDialog()

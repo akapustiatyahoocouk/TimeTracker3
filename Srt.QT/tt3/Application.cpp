@@ -22,6 +22,11 @@ using namespace tt3;
 Application::Application(int &argc, char **argv)
     :   QApplication(argc, argv)
 {
+    setApplicationName(tt3::util::ProductInformation::applicationName());
+    setApplicationVersion(tt3::util::ProductInformation::applicationVersion().toString());
+    setApplicationDisplayName(tt3::util::ProductInformation::applicationDisplayName());
+    setOrganizationName(tt3::util::ProductInformation::organizationName());
+    setOrganizationDomain(tt3::util::ProductInformation::organizationDomain());
 }
 
 Application::~Application()

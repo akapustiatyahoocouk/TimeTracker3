@@ -17,17 +17,30 @@
 #include "tt3-util/API.hpp"
 using namespace tt3::util;
 
-Mutex MessageDigestManager::_guard;
-QMap<Mnemonic, IMessageDigest*> MessageDigestManager::_registry;
+struct MessageDigestManager::_Impl
+{
+    _Impl()
+    {
+#define REGISTER(Clazz)                     \
+        registry.insert(                    \
+            Clazz::instance()->mnemonic(),  \
+            Clazz::instance())
+
+        REGISTER(Sha1MessageDigest);
+    }
+
+    Mutex                           guard;
+    QMap<Mnemonic, IMessageDigest*> registry;
+};
 
 //////////
 //  Operations
 QSet<IMessageDigest*> MessageDigestManager::allMessageDigests()
 {
-    Lock lock(_guard);
+    _Impl * impl = _impl();
+    Lock lock(impl->guard);
 
-    _registerStandardMessageDigests();
-    QList<IMessageDigest*> values = _registry.values();
+    QList<IMessageDigest*> values = impl->registry.values();
     return QSet<IMessageDigest*>(values.begin(), values.end());
 }
 
@@ -35,38 +48,31 @@ bool MessageDigestManager::registerMessageDigest(IMessageDigest * messageDigest)
 {
     Q_ASSERT(messageDigest != nullptr);
 
-    Lock lock(_guard);
+    _Impl * impl = _impl();
+    Lock lock(impl->guard);
 
-    _registerStandardMessageDigests();
-    if (IMessageDigest * registeredMessageDigest = findMessageDigest(messageDigest->mnemonic()))
+    if (impl->registry.contains(messageDigest->mnemonic()))
     {
-        return messageDigest == registeredMessageDigest;
+        return messageDigest == impl->registry[messageDigest->mnemonic()];
     }
-    _registry[messageDigest->mnemonic()] = messageDigest;
+    impl->registry[messageDigest->mnemonic()] = messageDigest;
     return true;
 }
 
 IMessageDigest * MessageDigestManager::findMessageDigest(const Mnemonic & mnemonic)
 {
-    Lock lock(_guard);
+    _Impl * impl = _impl();
+    Lock lock(impl->guard);
 
-    _registerStandardMessageDigests();
-    return _registry.contains(mnemonic) ? _registry[mnemonic] : nullptr;
+    return impl->registry.contains(mnemonic) ? impl->registry[mnemonic] : nullptr;
 }
 
 //////////
 //  Implementation helpers
-void MessageDigestManager::_registerStandardMessageDigests()
+MessageDigestManager::_Impl * MessageDigestManager::_impl()
 {
-    Q_ASSERT(_guard.isLockedByCurrentThread());
-
-    if (_registry.isEmpty())
-    {
-#define REGISTER(Clazz)                                 \
-        _registry.insert(Clazz::instance()->mnemonic(), \
-                         Clazz::instance())
-        REGISTER(Sha1MessageDigest);
-    }
+    static _Impl impl;
+    return &impl;
 }
 
 //  End of tt3-util/MessageDigestManager.cpp
