@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>152</height>
+    <width>499</width>
+    <height>309</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,23 +20,155 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <widget class="QDialogButtonBox" name="buttonBox">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>100</y>
-     <width>341</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Orientation::Horizontal</enum>
-   </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
-   </property>
-  </widget>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <widget class="QLabel" name="realNameLabel">
+     <property name="text">
+      <string>User name:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" colspan="3">
+    <widget class="QLineEdit" name="userNameLineEdit"/>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="emailAddressesLabel">
+     <property name="text">
+      <string>E-mail addresses:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" colspan="3">
+    <widget class="QWidget" name="emailAddressesWidget" native="true">
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <property name="spacing">
+       <number>4</number>
+      </property>
+      <item row="0" column="0" rowspan="3">
+       <widget class="QListWidget" name="listWidget"/>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="addEmailAddressPushButton">
+        <property name="text">
+         <string>Add</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/AddEmailAddressSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/AddEmailAddressSmall.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="modifyEmailAddressPushButton">
+        <property name="text">
+         <string>Modify</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/ModifyEmailAddressSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/ModifyEmailAddressSmall.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="removeEmailAddressPushButton">
+        <property name="text">
+         <string>Remove</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/RemoveEmailAddressSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/RemoveEmailAddressSmall.png</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="inactivityTimeoutLabel">
+     <property name="text">
+      <string>Current activity:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QCheckBox" name="inactivityTimeoutCheckBox">
+     <property name="text">
+      <string>stop if unattended for</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QComboBox" name="hoursComboBox"/>
+   </item>
+   <item row="2" column="3">
+    <widget class="QComboBox" name="minutesComboBox"/>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="uiLocaleLabel">
+     <property name="text">
+      <string>UI language:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="4">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0" colspan="4">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1" colspan="3">
+    <widget class="QCheckBox" name="enabledCheckBox">
+     <property name="text">
+      <string>User is enabled</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1" colspan="3">
+    <widget class="QComboBox" name="uiLocaleComboBox"/>
+   </item>
+  </layout>
  </widget>
+ <tabstops>
+  <tabstop>userNameLineEdit</tabstop>
+  <tabstop>listWidget</tabstop>
+  <tabstop>addEmailAddressPushButton</tabstop>
+  <tabstop>modifyEmailAddressPushButton</tabstop>
+  <tabstop>removeEmailAddressPushButton</tabstop>
+  <tabstop>inactivityTimeoutCheckBox</tabstop>
+  <tabstop>hoursComboBox</tabstop>
+  <tabstop>minutesComboBox</tabstop>
+  <tabstop>uiLocaleComboBox</tabstop>
+  <tabstop>enabledCheckBox</tabstop>
+ </tabstops>
  <resources>
   <include location="tt3-gui.qrc"/>
  </resources>

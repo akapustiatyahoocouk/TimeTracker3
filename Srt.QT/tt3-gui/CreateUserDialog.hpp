@@ -36,14 +36,32 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        explicit CreateUserDialog(QWidget * parent);
+        CreateUserDialog(QWidget * parent,
+                         tt3::ws::Workspace workspace, const tt3::ws::Credentials & credentials );
         virtual ~CreateUserDialog();
 
         //////////
         //  Operations
     public:
         //  Runs the dialog modally, returning user's choice
-        Result          doModal();
+        Result              doModal();
+
+        //  The newly created user (on Ok) or nullptr
+        //  if the dialog was cancelled
+        tt3::ws::User   createdUser() const { return _createdUser; }
+
+        //////////
+        //  Implementation
+    private:
+        tt3::ws::Workspace  _workspace;
+        const tt3::ws::Credentials  _credentials;
+        QList<QLocale>      _locales;   //  parallel to combo box items
+
+        tt3::ws::User       _createdUser;
+
+        //  Helpers
+        static QString      _displayName(const QLocale & locale);
+        void                _refresh();
 
         //////////
         //  Controls

@@ -329,6 +329,19 @@ tt3::ws::User UserManager::_selectedUser()
                nullptr;
 }
 
+void UserManager::_setSelectedUser(tt3::ws::User user)
+{
+    for (int i = 0; i < _ui->usersTreeWidget->topLevelItemCount(); i++)
+    {
+        QTreeWidgetItem * userItem = _ui->usersTreeWidget->topLevelItem(i);
+        if (user == userItem->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::User>())
+        {   //  This one!
+            _ui->usersTreeWidget->setCurrentItem(userItem);
+            break;
+        }
+    }
+}
+
 tt3::ws::Account UserManager::_selectedAccount()
 {
     QTreeWidgetItem * item = _ui->usersTreeWidget->currentItem();
@@ -411,7 +424,12 @@ void UserManager::_usersTreeWidgetCustomContextMenuRequested(QPoint p)
 
 void UserManager::_createUserPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    CreateUserDialog dlg(this, _workspace, _credentials);
+    if (dlg.doModal() == CreateUserDialog::Result::Ok)
+    {   //  User created
+        refresh();
+        _setSelectedUser(dlg.createdUser());
+    }
 }
 
 void UserManager::_modifyUserPushButtonClicked()

@@ -61,7 +61,6 @@ namespace tt3::gui
         void                _setSelectedSkin(tt3::gui::ISkin * skin);
         tt3::gui::ITheme *  _selectedTheme();
         void                _setSelectedTheme(tt3::gui::ITheme * theme);
-        static QString      _displayName(const QLocale & locale);
 
         //////////
         //  Controls

@@ -17,52 +17,73 @@
 #include "tt3-util/API.hpp"
 using namespace tt3::util;
 
-Mutex                LocaleManager::_guard;
-QMap<QLocale, QIcon> LocaleManager::_smallIcons;
-QMap<QLocale, QIcon> LocaleManager::_largeIcons;
+struct LocaleManager::_Impl
+{
+    Mutex                guard;
+    QMap<QLocale, QIcon> smallIcons;
+    QMap<QLocale, QIcon> largeIcons;
+};
 
 //////////
 //  Operations
 QIcon LocaleManager::smallIcon(const QLocale & locale)
 {
-    Lock lock(_guard);
+    _Impl * impl = _impl();
+    Lock lock(impl->guard);
 
-    if (!_smallIcons.contains(locale))
+    if (!impl->smallIcons.contains(locale))
     {
         QFile file(":/tt3-util/Resources/Images/Locales/" + locale.name() + "_Small.png");
         if (file.exists())
         {
             QIcon icon(file.fileName());
-            _smallIcons[locale] = icon;
+            impl->smallIcons[locale] = icon;
         }
         else
         {
             QIcon icon(":/tt3-util/Resources/Images/Locales/WorldSmall.png");
-            _smallIcons[locale] = icon;
+            impl->smallIcons[locale] = icon;
         }
     }
-    return _smallIcons[locale];
+    return impl->smallIcons[locale];
 }
 
 QIcon LocaleManager::largeIcon(const QLocale & locale)
 {
-    Lock lock(_guard);
+    _Impl * impl = _impl();
+    Lock lock(impl->guard);
 
-    if (!_largeIcons.contains(locale))
+    if (!impl->largeIcons.contains(locale))
     {
         QFile file(":/tt3-util/Resources/Images/Locales/" + locale.name() + "_Large.png");
         if (file.exists())
         {
             QIcon icon(file.fileName());
-            _largeIcons[locale] = icon;
+            impl->largeIcons[locale] = icon;
         }
         else
         {
             QIcon icon(":/tt3-util/Resources/Images/Locales/WorldLarge.png");
-            _largeIcons[locale] = icon;
+            impl->largeIcons[locale] = icon;
         }
     }
-    return _largeIcons[locale];
+    return impl->largeIcons[locale];
+}
+
+QString LocaleManager::displayName(const QLocale & locale)
+{
+    return QLocale::languageToString(locale.language()) +
+           " (" +
+           QLocale::territoryToString(locale.territory()) +
+           ")";
+}
+
+//////////
+//  Implementation helpers
+LocaleManager::_Impl * LocaleManager::_impl()
+{
+    static _Impl impl;
+    return &impl;
 }
 
 //  End of tt3-util/LocaleManager.cpp

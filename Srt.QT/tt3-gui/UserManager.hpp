@@ -65,6 +65,7 @@ namespace tt3::gui
         QString             _userItemText(tt3::ws::User user) throws(tt3::ws::WorkspaceException);
         QString             _accountItemText(tt3::ws::Account account) throws(tt3::ws::WorkspaceException);
         tt3::ws::User       _selectedUser();
+        void                _setSelectedUser(tt3::ws::User user);
         tt3::ws::Account    _selectedAccount();
 
         //////////

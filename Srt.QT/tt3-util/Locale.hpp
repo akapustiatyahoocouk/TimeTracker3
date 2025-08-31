@@ -34,12 +34,16 @@ namespace tt3::util
         //  Returns the large (32x32) icon representing the specified locale.
         static QIcon        largeIcon(const QLocale & locale);
 
+        //  Returns the user-readable display name of the specified locale.
+        static QString      displayName(const QLocale & locale);
+
         //////////
         //  Implementation
     private:
-        static Mutex        _guard;
-        static QMap<QLocale, QIcon> _smallIcons;
-        static QMap<QLocale, QIcon> _largeIcons;
+        struct _Impl;
+
+        //  Helpers
+        static _Impl *      _impl();
     };
 
     //  The accessor for a "current default" locale.

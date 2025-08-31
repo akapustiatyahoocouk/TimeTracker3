@@ -40,13 +40,13 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
     }
     std::sort(_locales.begin(),
               _locales.end(),
-              [](auto a, auto b) { return _displayName(a) < _displayName(b); });
+              [](auto a, auto b) { return a.name() < b.name(); });
 
     for (QLocale locale : _locales)
     {
         _ui->languageComboBox->addItem(
             tt3::util::LocaleManager::smallIcon(locale),
-            _displayName(locale));
+            tt3::util::LocaleManager::displayName(locale));
     }
 
     //  Fill the skin combo box with available skins
@@ -176,14 +176,6 @@ void GeneralAppearancePreferencesEditor::_setSelectedTheme(tt3::gui::ITheme * th
             break;
         }
     }
-}
-
-QString GeneralAppearancePreferencesEditor::_displayName(const QLocale & locale)
-{
-    return QLocale::languageToString(locale.language()) +
-           " (" +
-           QLocale::territoryToString(locale.territory()) +
-           ")";
 }
 
 //////////
