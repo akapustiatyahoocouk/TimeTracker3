@@ -35,6 +35,7 @@
 #include "tt3-gui/PreferencesEditor.hpp"
 #include "tt3-gui/GeneralAppearancePreferencesEditor.hpp"
 #include "tt3-gui/GeneralStartupPreferencesEditor.hpp"
+#include "tt3-gui/GeneralDialogsPreferencesEditor.hpp"
 
 #include "tt3-gui/UserManager.hpp"
 

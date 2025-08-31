@@ -26,6 +26,7 @@ QSet<Preferences*> PreferencesManager::allPreferences()
 {
     tt3::util::Lock lock(_guard);
 
+    _registerStandardPreferences();
     QList<Preferences*> values = _registry.values();
     return QSet<Preferences*>(values.begin(), values.end());
 }
@@ -34,6 +35,7 @@ QSet<Preferences*> PreferencesManager::rootPreferences()
 {
     tt3::util::Lock lock(_guard);
 
+    _registerStandardPreferences();
     QList<Preferences*> values = _registry.values();
     QSet<Preferences*> result;
     for (Preferences * preferences : values)
@@ -52,6 +54,7 @@ bool PreferencesManager::registerPreferences(Preferences * preferences)
 
     tt3::util::Lock lock(_guard);
 
+    _registerStandardPreferences();
     if (preferences->parent() != nullptr &&
         !registerPreferences(preferences->parent()))
     {   //  OOPS! No parent - no children
@@ -70,7 +73,27 @@ Preferences * PreferencesManager::findPreferences(const tt3::util::Mnemonic & mn
 {
     tt3::util::Lock lock(_guard);
 
+    _registerStandardPreferences();
     return _registry.contains(mnemonic) ? _registry[mnemonic] : nullptr;
+}
+
+//////////
+//  Implementation helpers
+void PreferencesManager::_registerStandardPreferences()
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+
+    if (_registry.isEmpty())
+    {
+#define REGISTER(Preferences)                       \
+        _registry.insert(                           \
+            Preferences::instance()->mnemonic(),    \
+            Preferences::instance())
+        REGISTER(GeneralPreferences);
+        REGISTER(GeneralAppearancePreferences);
+        REGISTER(GeneralStartupPreferences);
+        REGISTER(GeneralDialogsPreferences);
+    }
 }
 
 //  End of tt3-gui/PreferencesManager.cpp

@@ -16,6 +16,8 @@ SOURCES += \
     ErrorDialog.cpp \
     GeneralAppearancePreferences.cpp \
     GeneralAppearancePreferencesEditor.cpp \
+    GeneralDialogsPreferences.cpp \
+    GeneralDialogsPreferencesEditor.cpp \
     GeneralPreferences.cpp \
     GeneralStartupPreferences.cpp \
     GeneralStartupPreferencesEditor.cpp \
@@ -44,6 +46,7 @@ HEADERS += \
     CreateUserDialog.hpp \
     ErrorDialog.hpp \
     GeneralAppearancePreferencesEditor.hpp \
+    GeneralDialogsPreferencesEditor.hpp \
     GeneralStartupPreferencesEditor.hpp \
     Linkage.hpp \
     LoginDialog.hpp \
@@ -65,6 +68,7 @@ FORMS += \
     ConfirmRestartDialog.ui \
     CreateUserDialog.ui \
     GeneralAppearancePreferencesEditor.ui \
+    GeneralDialogsPreferencesEditor.ui \
     GeneralStartupPreferencesEditor.ui \
     LoginDialog.ui \
     NewWorkspaceDialog.ui \

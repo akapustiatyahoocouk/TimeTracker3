@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>396</width>
+    <width>475</width>
     <height>268</height>
    </rect>
   </property>
@@ -18,7 +18,25 @@
     <normaloff>:/tt3-gui/Resources/Images/Actions/PreferencesLarge.png</normaloff>:/tt3-gui/Resources/Images/Actions/PreferencesLarge.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" colspan="2">
+   <item row="2" column="0">
+    <widget class="QPushButton" name="resetPushButton">
+     <property name="text">
+      <string>Reset</string>
+     </property>
+     <property name="icon">
+      <iconset resource="tt3-gui.qrc">
+       <normaloff>:/tt3-gui/Resources/Images/Actions/ResetSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/ResetSmall.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="4">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="3">
     <widget class="QTreeWidget" name="preferencesTreeWidget">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -54,7 +72,7 @@
      </column>
     </widget>
    </item>
-   <item row="2" column="2">
+   <item row="2" column="3">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
@@ -64,14 +82,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="3">
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
+   <item row="2" column="2">
     <spacer name="horizontalSpacer">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
@@ -84,7 +95,7 @@
      </property>
     </spacer>
    </item>
-   <item row="0" column="2">
+   <item row="0" column="3">
     <widget class="QFrame" name="editorsFrame">
      <property name="frameShape">
       <enum>QFrame::Shape::StyledPanel</enum>
@@ -94,8 +105,8 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QPushButton" name="resetPushButton">
+   <item row="2" column="1">
+    <widget class="QPushButton" name="resetAllPushButton">
      <property name="text">
       <string>Reset all</string>
      </property>
@@ -163,7 +174,7 @@
    <sender>resetPushButton</sender>
    <signal>clicked()</signal>
    <receiver>tt3::gui::PreferencesDialog</receiver>
-   <slot>_resetPushNuttonClocked()</slot>
+   <slot>_resetPushNuttonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>59</x>
@@ -175,11 +186,28 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>resetAllPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::PreferencesDialog</receiver>
+   <slot>_resetAllPushNuttonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>150</x>
+     <y>242</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>237</x>
+     <y>133</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_preferencesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
   <slot>_accept()</slot>
   <slot>_reject()</slot>
-  <slot>_resetPushNuttonClocked()</slot>
+  <slot>_resetPushNuttonClicked()</slot>
+  <slot>_resetAllPushNuttonClicked()</slot>
  </slots>
 </ui>

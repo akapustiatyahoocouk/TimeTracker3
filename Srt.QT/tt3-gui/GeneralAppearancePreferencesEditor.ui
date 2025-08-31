@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
-    <height>107</height>
+    <width>266</width>
+    <height>145</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,6 +34,16 @@
    <item row="1" column="1">
     <widget class="QComboBox" name="skinComboBox"/>
    </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="themeLabel">
+     <property name="text">
+      <string>Theme:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="themeComboBox"/>
+   </item>
    <item row="3" column="0" colspan="2">
     <spacer name="verticalSpacer">
      <property name="orientation">
@@ -46,16 +56,6 @@
       </size>
      </property>
     </spacer>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="themeLabel">
-     <property name="text">
-      <string>Theme:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QComboBox" name="themeComboBox"/>
    </item>
   </layout>
  </widget>

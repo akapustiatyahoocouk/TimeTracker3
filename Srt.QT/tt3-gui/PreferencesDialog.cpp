@@ -167,10 +167,12 @@ void PreferencesDialog::_preferencesTreeWidgetCurrentItemChanged(QTreeWidgetItem
     if (_editorsForItems.contains(item))
     {
         _editorsFrameLayout->setCurrentWidget(_editorsForItems[item]);
+        _ui->resetPushButton->setEnabled(true);
     }
     else
     {
         _editorsFrameLayout->setCurrentWidget(_noPropertiesLabel);
+        _ui->resetPushButton->setEnabled(false);
     }
 }
 
@@ -187,14 +189,32 @@ void PreferencesDialog::_refresh()
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(okEnabled);
 }
 
-void PreferencesDialog::_resetPushNuttonClocked()
+void PreferencesDialog::_resetPushNuttonClicked()
 {
-        if (AskYesNoDialog::ask(
+    if (AskYesNoDialog::ask(
+        this,
+        "Reset page settings",
+        "Are you sure you want to reset page settings to their default values ?"
+            "\nThe effects will not be permanent until you press 'OK' to close the dialog."
+            "") == AskYesNoDialog::Answer::Yes)
+    {   //  Do it!
+        QTreeWidgetItem * item = _ui->preferencesTreeWidget->currentItem();
+        if (_editorsForItems.contains(item))
+        {
+            _editorsForItems[item]->resetControlValues();
+        }
+        _refresh();
+    }
+}
+
+void PreferencesDialog::_resetAllPushNuttonClicked()
+{
+    if (AskYesNoDialog::ask(
             this,
             "Reset all settings",
             "Are you sure you want to reset all settings to their default values ?"
-                "\nThe effects will not be permanent until you press 'OK' to close the dialog."
-                "") == AskYesNoDialog::Answer::Yes)
+            "\nThe effects will not be permanent until you press 'OK' to close the dialog."
+            "") == AskYesNoDialog::Answer::Yes)
     {   //  Do it!
         for (PreferencesEditor * editor : _editorsForItems.values())
         {
@@ -203,7 +223,6 @@ void PreferencesDialog::_resetPushNuttonClocked()
         _refresh();
     }
 }
-
 void PreferencesDialog::_accept()
 {
     //  Apply all changes to all settings

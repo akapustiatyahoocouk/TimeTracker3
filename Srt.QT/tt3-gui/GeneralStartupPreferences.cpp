@@ -27,7 +27,7 @@ GeneralStartupPreferences::~GeneralStartupPreferences() {}
 //  Preferences
 GeneralStartupPreferences::Mnemonic GeneralStartupPreferences::mnemonic() const
 {
-    return Mnemonic(parent()->mnemonic().toString() + "/Startup");
+    return parent()->mnemonic() + "/Startup";
 }
 
 QString GeneralStartupPreferences::displayName() const

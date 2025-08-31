@@ -37,7 +37,7 @@ ConfirmCloseWorkspaceDialog::ConfirmCloseWorkspaceDialog(QWidget *parent, tt3::w
     Q_ASSERT(workspace != nullptr);
     _ui->promptLabel2->setText(
         (workspace != nullptr) ?
-            workspace->address()->displayForm() :
+            (workspace->address()->displayForm() + " ?"):
             "?");   //  be defensive in release mode
 }
 

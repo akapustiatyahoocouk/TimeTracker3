@@ -1,5 +1,5 @@
 //
-//  tt3-gui/GeneralAppearancePreferences.cpp - tt3::gui::GeneralAppearancePreferences class implementation
+//  tt3-gui/GeneralDialogsPreferences.cpp - tt3::gui::GeneralDialogsPreferences class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,30 +19,30 @@ using namespace tt3::gui;
 
 //////////
 //  Singleton
-IMPLEMENT_SINGLETON(GeneralAppearancePreferences)
-GeneralAppearancePreferences::GeneralAppearancePreferences() {}
-GeneralAppearancePreferences::~GeneralAppearancePreferences() {}
+IMPLEMENT_SINGLETON(GeneralDialogsPreferences)
+GeneralDialogsPreferences::GeneralDialogsPreferences() {}
+GeneralDialogsPreferences::~GeneralDialogsPreferences() {}
 
 //////////
 //  Preferences
-GeneralAppearancePreferences::Mnemonic GeneralAppearancePreferences::mnemonic() const
+GeneralDialogsPreferences::Mnemonic GeneralDialogsPreferences::mnemonic() const
 {
-    return parent()->mnemonic() + "/Appearance";
+    return parent()->mnemonic() + "/Dialogs";
 }
 
-QString GeneralAppearancePreferences::displayName() const
+QString GeneralDialogsPreferences::displayName() const
 {
-    return "Appearance";
+    return "Dialogs";
 }
 
-Preferences * GeneralAppearancePreferences::parent() const
+Preferences * GeneralDialogsPreferences::parent() const
 {
     return GeneralPreferences::instance();
 }
 
-PreferencesEditor * GeneralAppearancePreferences::createEditor()
+PreferencesEditor * GeneralDialogsPreferences::createEditor()
 {
-    return new GeneralAppearancePreferencesEditor(nullptr);
+    return new GeneralDialogsPreferencesEditor(nullptr);
 }
 
-//  End of tt3-gui/GeneralAppearancePreferences.cpp
+//  End of tt3-gui/GeneralDialogsPreferences.cpp

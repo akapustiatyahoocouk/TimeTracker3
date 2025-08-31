@@ -62,7 +62,8 @@ namespace tt3::gui
     private slots:
         void                _preferencesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
         void                _refresh();
-        void                _resetPushNuttonClocked();
+        void                _resetPushNuttonClicked();
+        void                _resetAllPushNuttonClicked();
         void                _accept();
         void                _reject();
         void                _settingValueChanged(tt3::util::AbstractSetting * setting);

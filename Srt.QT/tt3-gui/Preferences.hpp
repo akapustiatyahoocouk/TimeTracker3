@@ -94,6 +94,9 @@ namespace tt3::gui
     private:
         static tt3::util::Mutex _guard;
         static QMap<tt3::util::Mnemonic, Preferences*>  _registry;
+
+        //  Helpers
+        static void             _registerStandardPreferences();
     };
 
     //  The "/General" preferences
@@ -138,6 +141,21 @@ namespace tt3::gui
         virtual QString         displayName() const override;
         virtual Preferences *   parent() const override;
         virtual int             order() const { return 10; }
+        virtual PreferencesEditor * createEditor() override;
+    };
+
+    //  The "/General/Dialogs" preferences
+    class TT3_GUI_PUBLIC GeneralDialogsPreferences final : public Preferences
+    {
+        DECLARE_SINGLETON(GeneralDialogsPreferences)
+
+        //////////
+        //  Preferences
+    public:
+        virtual Mnemonic        mnemonic() const override;
+        virtual QString         displayName() const override;
+        virtual Preferences *   parent() const override;
+        virtual int             order() const { return 5; }
         virtual PreferencesEditor * createEditor() override;
     };
 }

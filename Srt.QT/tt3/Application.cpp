@@ -48,10 +48,6 @@ void Application::_registerStandardComponents()
     tt3::util::ComponentManager::registerComponent(tt3::ws::Component::instance());
     tt3::util::ComponentManager::registerComponent(tt3::db::api::Component::instance());
     tt3::util::ComponentManager::registerComponent(tt3::util::Component::instance());
-    //  Same for standard Preferences
-    tt3::gui::PreferencesManager::registerPreferences(tt3::gui::GeneralPreferences::instance());
-    tt3::gui::PreferencesManager::registerPreferences(tt3::gui::GeneralAppearancePreferences::instance());
-    tt3::gui::PreferencesManager::registerPreferences(tt3::gui::GeneralStartupPreferences::instance());
 }
 
 void Application::_selectActiveTheme()

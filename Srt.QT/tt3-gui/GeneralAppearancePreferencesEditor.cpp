@@ -115,7 +115,8 @@ void GeneralAppearancePreferencesEditor::resetControlValues()
 bool GeneralAppearancePreferencesEditor::isValid() const
 {
     return _ui->languageComboBox->currentIndex() != -1 &&
-           _ui->skinComboBox->currentIndex() != -1;
+           _ui->skinComboBox->currentIndex() != -1 &&
+           _ui->themeComboBox->currentIndex() != -1;
 }
 
 //////////
