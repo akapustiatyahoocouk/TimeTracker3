@@ -108,7 +108,7 @@ QMenu::item:selected {
 	border-right-color:qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:0 rgba(253,156,113,255), stop:1 rgba(205,90,46, 255));
 	border-left-color:qlineargradient(spread:pad, x1:1, y1:0.5, x2:0, y2:0.5, stop:0 rgba(253,156,113,255), stop:1 rgba(205,90,46, 255));
 }
-QPlainTextEdit, QTextEdit, QTreeWidget {
+QPlainTextEdit, QTextEdit, QTreeWidget, QListWidget {
 	border: 1px solid transparent;
 	color:rgb(17,17,17);
 	selection-background-color:rgb(236,116,64);

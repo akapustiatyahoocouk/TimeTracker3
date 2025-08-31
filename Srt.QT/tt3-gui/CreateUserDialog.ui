@@ -29,7 +29,7 @@
     </widget>
    </item>
    <item row="0" column="1" colspan="3">
-    <widget class="QLineEdit" name="userNameLineEdit"/>
+    <widget class="QLineEdit" name="realNameLineEdit"/>
    </item>
    <item row="1" column="0">
     <widget class="QLabel" name="emailAddressesLabel">
@@ -60,7 +60,7 @@
        <number>4</number>
       </property>
       <item row="0" column="0" rowspan="3">
-       <widget class="QListWidget" name="listWidget"/>
+       <widget class="QListWidget" name="emailAddressesListWidget"/>
       </item>
       <item row="0" column="1">
        <widget class="QPushButton" name="addEmailAddressPushButton">
@@ -158,8 +158,8 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>userNameLineEdit</tabstop>
-  <tabstop>listWidget</tabstop>
+  <tabstop>realNameLineEdit</tabstop>
+  <tabstop>emailAddressesListWidget</tabstop>
   <tabstop>addEmailAddressPushButton</tabstop>
   <tabstop>modifyEmailAddressPushButton</tabstop>
   <tabstop>removeEmailAddressPushButton</tabstop>
@@ -205,9 +205,94 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>realNameLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::CreateUserDialog</receiver>
+   <slot>_realNameLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>310</x>
+     <y>24</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>inactivityTimeoutCheckBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>tt3::gui::CreateUserDialog</receiver>
+   <slot>_inactivityTimeoutCheckBoxStateChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>219</x>
+     <y>169</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hoursComboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>tt3::gui::CreateUserDialog</receiver>
+   <slot>_hoursComboBoxCurrentIndexChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>355</x>
+     <y>169</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>minutesComboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>tt3::gui::CreateUserDialog</receiver>
+   <slot>_minutesComboBoxCurrentIndexChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>446</x>
+     <y>169</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>uiLocaleComboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>tt3::gui::CreateUserDialog</receiver>
+   <slot>_uiLocaleComboBoxCurrentIndexChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>310</x>
+     <y>204</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_accept()</slot>
   <slot>_reject()</slot>
+  <slot>_realNameLineEditTextChanged(QString)</slot>
+  <slot>_inactivityTimeoutCheckBoxStateChanged(int)</slot>
+  <slot>_hoursComboBoxCurrentIndexChanged(int)</slot>
+  <slot>_minutesComboBoxCurrentIndexChanged(int)</slot>
+  <slot>_uiLocaleComboBoxCurrentIndexChanged(int)</slot>
  </slots>
 </ui>

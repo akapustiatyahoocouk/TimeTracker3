@@ -23,8 +23,11 @@ using namespace tt3::gui;
 CreateUserDialog::CreateUserDialog(QWidget * parent,
                                    tt3::ws::Workspace workspace, const tt3::ws::Credentials & credentials )
     :   QDialog(parent),
+        //  Implementation
         _workspace(workspace),
         _credentials(credentials),
+        _validator(workspace->validator()->user()),
+        //  Controls
         _ui(new Ui::CreateUserDialog)
 {
     _ui->setupUi(this);
@@ -88,12 +91,70 @@ QString CreateUserDialog::_displayName(const QLocale & locale)
            ")";
 }
 
+QStringList CreateUserDialog::_selectedEmailAddresses()
+{
+    QStringList result;
+    for (int i = 0; i < _ui->emailAddressesListWidget->count(); i++)
+    {
+        result.append(_ui->emailAddressesListWidget->item(i)->text());
+    }
+    return result;
+}
+
+tt3::ws::InactivityTimeout CreateUserDialog::_selectedInactivityTimeout()
+{
+    if (_ui->inactivityTimeoutCheckBox->isChecked())
+    {
+        int h = _ui->hoursComboBox->currentData().value<int>();
+        int m = _ui->minutesComboBox->currentData().value<int>();
+        return tt3::util::TimeSpan::hours(h) + tt3::util::TimeSpan::minutes(m);
+    }
+    return tt3::ws::InactivityTimeout();
+}
+
+tt3::ws::UiLocale CreateUserDialog::_selectedUiLocale()
+{
+    return (_ui->uiLocaleComboBox->currentIndex() == 0) ?
+                tt3::ws::UiLocale() :
+                tt3::ws::UiLocale(_locales[_ui->uiLocaleComboBox->currentIndex()]);
+}
+
 void CreateUserDialog::_refresh()
 {
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(
+        _validator->isValidRealName(_ui->realNameLineEdit->text()) &&
+        _validator->isValidInactivityTimeout(_selectedInactivityTimeout()) &&
+        _validator->isValidEmailAddresses(_selectedEmailAddresses()) &&
+        _validator->isValidUiLocale(_selectedUiLocale()));
 }
 
 //////////
 //  Signal handlers
+void CreateUserDialog::_realNameLineEditTextChanged(QString)
+{
+    _refresh();
+}
+
+void CreateUserDialog::_inactivityTimeoutCheckBoxStateChanged(int)
+{
+    _refresh();
+}
+
+void CreateUserDialog::_hoursComboBoxCurrentIndexChanged(int)
+{
+    _refresh();
+}
+
+void CreateUserDialog::_minutesComboBoxCurrentIndexChanged(int)
+{
+    _refresh();
+}
+
+void CreateUserDialog::_uiLocaleComboBoxCurrentIndexChanged(int)
+{
+    _refresh();
+}
+
 void CreateUserDialog::_accept()
 {
     done(int(Result::Ok));

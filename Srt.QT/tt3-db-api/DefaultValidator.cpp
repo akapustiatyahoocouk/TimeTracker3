@@ -80,7 +80,7 @@ bool DefaultValidator::_UserValidator::isValidEmailAddress(const QString & email
     return _isValidEmailAddress(emailAddress);
 }
 
-bool DefaultValidator::_UserValidator::isValidUiLocale(const QLocale & /*uiLocale*/)
+bool DefaultValidator::_UserValidator::isValidUiLocale(const UiLocale & /*uiLocale*/)
 {
     return true;
 }
@@ -90,12 +90,15 @@ bool DefaultValidator::_UserValidator::isValidRealName(const QString & realName)
     return _isValidName(realName, 127);
 }
 
-bool DefaultValidator::_UserValidator::isValidInactivityTimeout(const tt3::util::TimeSpan & inactivityTimeout)
+bool DefaultValidator::_UserValidator::isValidInactivityTimeout(const InactivityTimeout & inactivityTimeout)
 {
     static tt3::util::TimeSpan Min = tt3::util::TimeSpan::minutes(5);
     static tt3::util::TimeSpan Max = tt3::util::TimeSpan::hours(24);
 
-    return inactivityTimeout >= Min && inactivityTimeout <= Max;
+    return (!inactivityTimeout.has_value() ||
+            (inactivityTimeout.value().isValid() &&
+             inactivityTimeout.value() >= Min &&
+             inactivityTimeout.value() <= Max));
 }
 
 //////////

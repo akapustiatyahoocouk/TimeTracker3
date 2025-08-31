@@ -56,11 +56,15 @@ namespace tt3::gui
         tt3::ws::Workspace  _workspace;
         const tt3::ws::Credentials  _credentials;
         QList<QLocale>      _locales;   //  parallel to combo box items
+        tt3::ws::Validator::User *const _validator;
 
         tt3::ws::User       _createdUser;
 
         //  Helpers
         static QString      _displayName(const QLocale & locale);
+        QStringList         _selectedEmailAddresses();
+        tt3::ws::InactivityTimeout  _selectedInactivityTimeout();
+        tt3::ws::UiLocale   _selectedUiLocale();
         void                _refresh();
 
         //////////
@@ -71,6 +75,11 @@ namespace tt3::gui
         //////////
         //  Signal handlers
     private slots:
+        void            _realNameLineEditTextChanged(QString);
+        void            _inactivityTimeoutCheckBoxStateChanged(int);
+        void            _hoursComboBoxCurrentIndexChanged(int);
+        void            _minutesComboBoxCurrentIndexChanged(int);
+        void            _uiLocaleComboBoxCurrentIndexChanged(int);
         void            _accept();
         void            _reject();
     };

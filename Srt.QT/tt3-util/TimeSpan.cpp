@@ -26,8 +26,8 @@ const TimeSpan TimeSpan::Invalid;
 TimeSpan TimeSpan::hours(int h)
 {
     int m = h * 60;
-    if (m / 60 == h)
-    {
+    if (m / 60 != h)
+    {   //  OOPS! Overfolow!
         m = _InvalidMinutes;
     }
     return TimeSpan(m);
@@ -46,11 +46,36 @@ TimeSpan TimeSpan::operator -  () const
     return TimeSpan(-_minutes); //  -INT_MAX == INT_MAX
 }
 
-/*  TODO implement
-TimeSpan TimeSpan::operator +  (const TimeSpan & op2) const;
-TimeSpan TimeSpan::operator -  (const TimeSpan & op2) const;
-TimeSpan & TimeSpan::operator += (const TimeSpan & op2);
-TimeSpan & TimeSpan::operator -= (const TimeSpan & op2);
-*/
+TimeSpan TimeSpan::operator +  (const TimeSpan & op2) const
+{
+    if (!this->isValid() || !op2.isValid())
+    {   //  OOPS! Can't!
+        return Invalid;
+    }
+    int m = _minutes + op2._minutes;
+    if ((_minutes >= 0 && op2._minutes >= 0 && m < 0) ||
+        (_minutes < 0 && op2._minutes < 0 && m >= 0))
+    {   //  OOPS! Overflow!
+        return Invalid;
+    }
+    return TimeSpan::minutes(m);
+}
+
+TimeSpan TimeSpan::operator -  (const TimeSpan & op2) const
+{
+    return *this + (-op2);
+}
+
+TimeSpan & TimeSpan::operator += (const TimeSpan & op2)
+{
+    *this = *this + op2;
+    return *this;
+}
+
+TimeSpan & TimeSpan::operator -= (const TimeSpan & op2)
+{
+    *this = *this - op2;
+    return *this;
+}
 
 //  End of tt3-util/TimeSpan.cpp

@@ -77,10 +77,10 @@ namespace tt3::db::api
             virtual bool    isValidRealName(const QString & realName) = 0;
 
             //  Checks whether the specified value is a valid "inactivity timeout" for a User.
-            virtual bool    isValidInactivityTimeout(const tt3::util::TimeSpan & inactivityTimeout) = 0;
+            virtual bool    isValidInactivityTimeout(const InactivityTimeout & inactivityTimeout) = 0;
 
             //  Checks whether the specified value is a valid "UI locale" for a User.
-            virtual bool    isValidUiLocale(const QLocale & uiLocale) = 0;
+            virtual bool    isValidUiLocale(const UiLocale & uiLocale) = 0;
         };
         virtual IUserValidator *    user() const = 0;
 
@@ -150,8 +150,8 @@ namespace tt3::db::api
             //  IUserValidator
         public:
             virtual bool    isValidRealName(const QString & realName) override;
-            virtual bool    isValidInactivityTimeout(const tt3::util::TimeSpan & inactivityTimeout) override;
-            virtual bool    isValidUiLocale(const QLocale & uiLocale) override;
+            virtual bool    isValidInactivityTimeout(const InactivityTimeout & inactivityTimeout) override;
+            virtual bool    isValidUiLocale(const UiLocale & uiLocale) override;
         };
 
         class TT3_DB_API_PUBLIC _AccountValidator final : public virtual IAccountValidator
