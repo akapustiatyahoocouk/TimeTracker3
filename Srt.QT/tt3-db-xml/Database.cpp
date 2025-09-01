@@ -434,7 +434,7 @@ void Database::_load() throws(tt3::util::Exception)
     for (QDomElement userElement : _childElements(usersElement, "User"))
     {
         tt3::db::api::Oid oid = tt3::util::fromString<tt3::db::api::Oid>(userElement.attribute("OID", ""));
-        if (_liveObjects.contains(oid))
+        if (!oid.isValid() || _liveObjects.contains(oid))
         {   //  OOPS!
             throw tt3::db::api::DatabaseCorruptException(_address);
         }

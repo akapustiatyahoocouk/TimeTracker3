@@ -310,7 +310,7 @@ void User::_deserializeAggregations(const QDomElement & parentElement) throws(tt
     for (QDomElement accountElement : _database->_childElements(accountsElement, "Account"))
     {
         tt3::db::api::Oid oid = tt3::util::fromString<tt3::db::api::Oid>(accountElement.attribute("OID", ""));
-        if (_database->_liveObjects.contains(oid))
+        if (!oid.isValid() || _database->_liveObjects.contains(oid))
         {   //  OOPS!
             throw tt3::db::api::DatabaseCorruptException(_database->_address);
         }

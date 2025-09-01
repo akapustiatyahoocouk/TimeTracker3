@@ -78,6 +78,7 @@ PreferencesDialog::PreferencesDialog(QWidget * parent) throw(int)
     }
 
     //  Done
+    adjustSize();
     _refresh();
 }
 
@@ -243,7 +244,7 @@ void PreferencesDialog::_resetAllPushNuttonClicked()
         _refresh();
     }
 }
-void PreferencesDialog::_accept()
+void PreferencesDialog::accept()
 {
     //  Apply all changes to all settings
     for (PreferencesEditor * editor : _editorsForItems.values())
@@ -275,7 +276,7 @@ void PreferencesDialog::_accept()
     }
 }
 
-void PreferencesDialog::_reject()
+void PreferencesDialog::reject()
 {
     _saveCurrentPreferences();
     done(int(Result::Cancel));

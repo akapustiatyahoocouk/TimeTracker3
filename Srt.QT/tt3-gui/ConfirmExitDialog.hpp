@@ -53,8 +53,8 @@ namespace tt3::gui
         //////////
         //  Signal handlers
     private slots:
-        void            _accept();
-        void            _reject();
+        void            accept() override;
+        void            reject() override;
     };
 }
 //  End of tt3-gui/ConfirmExitDialog.hpp

@@ -148,7 +148,7 @@
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
    <receiver>tt3::gui::NewWorkspaceDialog</receiver>
-   <slot>_accept()</slot>
+   <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>248</x>
@@ -164,7 +164,7 @@
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
    <receiver>tt3::gui::NewWorkspaceDialog</receiver>
-   <slot>_reject()</slot>
+   <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>316</x>
@@ -280,7 +280,5 @@
   <slot>_loginLineEditTextChanged(QString)</slot>
   <slot>_passwordLineEditTextChanged(QString)</slot>
   <slot>_confirmPasswordLineEditTextChanged(QString)</slot>
-  <slot>_accept()</slot>
-  <slot>_reject()</slot>
  </slots>
 </ui>

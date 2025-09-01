@@ -177,7 +177,7 @@
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
    <receiver>tt3::gui::CreateUserDialog</receiver>
-   <slot>_accept()</slot>
+   <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>248</x>
@@ -193,7 +193,7 @@
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
    <receiver>tt3::gui::CreateUserDialog</receiver>
-   <slot>_reject()</slot>
+   <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>316</x>
@@ -287,8 +287,6 @@
   </connection>
  </connections>
  <slots>
-  <slot>_accept()</slot>
-  <slot>_reject()</slot>
   <slot>_realNameLineEditTextChanged(QString)</slot>
   <slot>_inactivityTimeoutCheckBoxStateChanged(int)</slot>
   <slot>_hoursComboBoxCurrentIndexChanged(int)</slot>

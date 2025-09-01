@@ -43,6 +43,7 @@ LoginDialog::LoginDialog(QWidget * parent, const QString & login)
     this->setWindowFlags(flags);
 
     //  Done
+    adjustSize();
     _refresh();
 }
 
@@ -78,7 +79,7 @@ void LoginDialog::_passwordLineEditTextChanged(QString)
     _refresh();
 }
 
-void LoginDialog::_accept()
+void LoginDialog::accept()
 {
     _credentials =
         tt3::ws::Credentials(
@@ -88,7 +89,7 @@ void LoginDialog::_accept()
     done(int(Result::Ok));
 }
 
-void LoginDialog::_reject()
+void LoginDialog::reject()
 {
     done(int(Result::Cancel));
 }

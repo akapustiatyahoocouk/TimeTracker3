@@ -124,6 +124,8 @@ namespace tt3::util
         void            _loadResourceFile(const QLocale & locale, const QString & fileName);
         static QString  _key(const QLocale & locale, const ResourceSectionId & sectionId, const ResourceId & resourceId);
         static QString  _key(const ResourceSectionId & sectionId, const ResourceId & resourceId);
+        static int      _xdigit(const QChar & c);
+        static QString  _unescape(const QString & s) throws(tt3::util::ParseException);
     };
 }
 

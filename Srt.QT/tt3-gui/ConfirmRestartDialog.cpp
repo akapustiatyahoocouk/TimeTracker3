@@ -33,6 +33,9 @@ ConfirmRestartDialog::ConfirmRestartDialog(QWidget * parent)
 
     _ui->assumeYesCheckBox->setChecked(
         !Component::Settings::instance()->confirmRestart);
+
+    //  Done
+    adjustSize();
 }
 
 ConfirmRestartDialog::~ConfirmRestartDialog()
@@ -49,14 +52,14 @@ ConfirmRestartDialog::Result ConfirmRestartDialog::doModal()
 
 //////////
 //  Signal handlers
-void ConfirmRestartDialog::_accept()
+void ConfirmRestartDialog::accept()
 {
     Component::Settings::instance()->confirmRestart =
         !_ui->assumeYesCheckBox->isChecked();
     done(int(Result::Yes));
 }
 
-void ConfirmRestartDialog::_reject()
+void ConfirmRestartDialog::reject()
 {
     done(int(Result::No));
 }

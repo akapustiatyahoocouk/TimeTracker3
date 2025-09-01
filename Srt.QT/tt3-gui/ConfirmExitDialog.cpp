@@ -33,6 +33,9 @@ ConfirmExitDialog::ConfirmExitDialog(QWidget * parent)
 
     _ui->assumeYesCheckBox->setChecked(
         !Component::Settings::instance()->confirmExit);
+
+    //  Done
+    adjustSize();
 }
 
 ConfirmExitDialog::~ConfirmExitDialog()
@@ -49,14 +52,14 @@ ConfirmExitDialog::Result ConfirmExitDialog::doModal()
 
 //////////
 //  Signal handlers
-void ConfirmExitDialog::_accept()
+void ConfirmExitDialog::accept()
 {
     Component::Settings::instance()->confirmExit =
         !_ui->assumeYesCheckBox->isChecked();
     done(int(Result::Yes));
 }
 
-void ConfirmExitDialog::_reject()
+void ConfirmExitDialog::reject()
 {
     done(int(Result::No));
 }

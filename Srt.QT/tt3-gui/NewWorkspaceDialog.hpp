@@ -83,8 +83,8 @@ namespace tt3::gui
         void            _loginLineEditTextChanged(QString);
         void            _passwordLineEditTextChanged(QString);
         void            _confirmPasswordLineEditTextChanged(QString);
-        void            _accept();
-        void            _reject();
+        void            accept() override;
+        void            reject() override;
     };
 }
 

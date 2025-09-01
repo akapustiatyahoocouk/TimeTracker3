@@ -36,6 +36,7 @@ namespace tt3::db::api
     class TT3_DB_API_PUBLIC DatabaseException;
 
     //  Helper types
+    class TT3_DB_API_PUBLIC Oid;
     class TT3_DB_API_PUBLIC ChangeNotifier;
 
     using InactivityTimeout = std::optional<tt3::util::TimeSpan>;

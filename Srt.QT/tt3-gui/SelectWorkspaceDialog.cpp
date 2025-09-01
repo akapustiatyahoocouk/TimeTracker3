@@ -51,6 +51,7 @@ SelectWorkspaceDialog::SelectWorkspaceDialog(QWidget * parent)
     }
 
     //  Done
+    adjustSize();
     _refresh();
 }
 
@@ -112,12 +113,12 @@ void SelectWorkspaceDialog::_browsePushButtonClicked()
     }
 }
 
-void SelectWorkspaceDialog::_accept()
+void SelectWorkspaceDialog::accept()
 {
     done(int(Result::Ok));
 }
 
-void SelectWorkspaceDialog::_reject()
+void SelectWorkspaceDialog::reject()
 {
     done(int(Result::Cancel));
 }

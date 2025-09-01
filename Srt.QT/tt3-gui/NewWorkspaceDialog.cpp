@@ -51,6 +51,7 @@ NewWorkspaceDialog::NewWorkspaceDialog(QWidget * parent)
     }
 
     //  Done
+    adjustSize();
     _refresh();
 }
 
@@ -148,12 +149,12 @@ void NewWorkspaceDialog::_confirmPasswordLineEditTextChanged(QString)
     _refresh();
 }
 
-void NewWorkspaceDialog::_accept()
+void NewWorkspaceDialog::accept()
 {
     done(int(Result::Ok));
 }
 
-void NewWorkspaceDialog::_reject()
+void NewWorkspaceDialog::reject()
 {
     done(int(Result::Cancel));
 }

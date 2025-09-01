@@ -17,6 +17,16 @@
 #include "tt3-db-api/API.hpp"
 using namespace tt3::db::api;
 
+namespace
+{
+    bool isHexDigit(QChar c)
+    {
+        return (c >= '0' && c <= '9') ||
+               (c >= 'a' && c <= 'f') ||
+               (c >= 'A' && c <= 'F');
+    }
+}
+
 //////////
 //  Constants
 const Oid Oid::Invalid;
@@ -39,7 +49,7 @@ Oid Oid::createRandom()
 //  Formatting and parsing
 template <> TT3_DB_API_PUBLIC QString tt3::util::toString<tt3::db::api::Oid>(const tt3::db::api::Oid & value)
 {
-    return value.toString();
+    return value._impl.toString();
 }
 
 template <> TT3_DB_API_PUBLIC tt3::db::api::Oid tt3::util::fromString<tt3::db::api::Oid>(const QString & s, int & scan) throws(tt3::util::ParseException)
@@ -48,14 +58,57 @@ template <> TT3_DB_API_PUBLIC tt3::db::api::Oid tt3::util::fromString<tt3::db::a
     {
         throw tt3::util::ParseException(s, scan);
     }
-    //  For now we disallow parsing invalid OIDs
-    QUuid uuid(s.mid(scan, 38));
-    if (uuid.isNull())
+    if (s[scan] == '{' &&
+        isHexDigit(s[scan + 1]) &&
+        isHexDigit(s[scan + 2]) &&
+        isHexDigit(s[scan + 3]) &&
+        isHexDigit(s[scan + 4]) &&
+        isHexDigit(s[scan + 5]) &&
+        isHexDigit(s[scan + 6]) &&
+        isHexDigit(s[scan + 7]) &&
+        isHexDigit(s[scan + 8]) &&
+        s[scan + 9] == '-' &&
+        isHexDigit(s[scan + 10]) &&
+        isHexDigit(s[scan + 11]) &&
+        isHexDigit(s[scan + 12]) &&
+        isHexDigit(s[scan + 13]) &&
+        s[scan + 14] == '-' &&
+        isHexDigit(s[scan + 15]) &&
+        isHexDigit(s[scan + 16]) &&
+        isHexDigit(s[scan + 17]) &&
+        isHexDigit(s[scan + 18]) &&
+        s[scan + 19] == '-' &&
+        isHexDigit(s[scan + 20]) &&
+        isHexDigit(s[scan + 21]) &&
+        isHexDigit(s[scan + 22]) &&
+        isHexDigit(s[scan + 23]) &&
+        s[scan + 24] == '-' &&
+        isHexDigit(s[scan + 25]) &&
+        isHexDigit(s[scan + 26]) &&
+        isHexDigit(s[scan + 27]) &&
+        isHexDigit(s[scan + 28]) &&
+        isHexDigit(s[scan + 29]) &&
+        isHexDigit(s[scan + 20]) &&
+        isHexDigit(s[scan + 31]) &&
+        isHexDigit(s[scan + 32]) &&
+        isHexDigit(s[scan + 33]) &&
+        isHexDigit(s[scan + 34]) &&
+        isHexDigit(s[scan + 35]) &&
+        isHexDigit(s[scan + 36]) &&
+        s[scan + 37] == '}')
     {
-        throw tt3::util::ParseException(s, scan);
+        QUuid uuid(s.mid(scan, 38));
+        scan += 38;
+        return Oid(uuid);
     }
-    scan += 38;
-    return Oid(uuid);
+    throw tt3::util::ParseException(s, scan);
+}
+
+//////////
+//  Alforithms
+TT3_DB_API_PUBLIC size_t tt3::db::api::qHash(const Oid & key, size_t seed)
+{
+    return qHash(key._impl, seed);
 }
 
 //  End of tt3-db-api/Oid.cpp

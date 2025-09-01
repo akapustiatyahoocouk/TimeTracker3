@@ -129,10 +129,18 @@ void FileResourceFactory::_loadResourceFile(const QLocale & locale, const QStrin
             {
                 continue;
             }
-            QString resourceName = line.left(eqIndex).trimmed();
-            QString resourceValue = line.mid(eqIndex + 1).trimmed();
-            QString key = _key(locale, ResourceSectionId(sectionName), ResourceId(resourceName));
-            _stringResources[key] = resourceValue;
+            try
+            {
+                QString resourceName = line.left(eqIndex).trimmed();
+                QString resourceValue = _unescape(line.mid(eqIndex + 1).trimmed());
+                QString key = _key(locale, ResourceSectionId(sectionName), ResourceId(resourceName));
+                _stringResources[key] = resourceValue;
+            }
+            catch (const tt3::util::ParseException & ex)
+            {   //  OOPS! _unescape() failed!
+                qDebug() << ex.errorMessage();
+                throw;  //  TODO for now...
+            }
         }
     }
 }
@@ -149,6 +157,122 @@ QString FileResourceFactory::_key(const QLocale & locale, const ResourceSectionI
 QString FileResourceFactory::_key(const ResourceSectionId & sectionId, const ResourceId & resourceId)
 {
     return _key(QLocale(), sectionId, resourceId);
+}
+
+int FileResourceFactory::_xdigit(const QChar & c)
+{
+    if (c >= '0' && c <= '9')
+    {
+        return c.unicode() - '0';
+    }
+    else if (c >= 'a' && c <= 'f')
+    {
+        return c.unicode() - 'a' + 10;
+    }
+    else if (c >= 'A' && c <= 'F')
+    {
+        return c.unicode() - 'A' + 10;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+QString FileResourceFactory::_unescape(const QString & s) throws(tt3::util::ParseException)
+{
+    QString result;
+    for (int i = 0; i < s.length(); )
+    {
+        if (s[i] != '\\')
+        {   //  A literal character
+            result += s[i];
+            i++;
+            continue;
+        }
+        //  We have ab escape sequence. Skip '\'
+        i++;
+        if (i >= s.length())
+        {   //  OOPS! Missing!
+            throw tt3::util::ParseException(s, i);
+        }
+        //  Special character ?
+        if (s[i] == 'a')
+        {   //  \a
+            result += '\a';
+            i++;
+        }
+        else if (s[i] == 'b')
+        {   //  \b
+            result += '\b';
+            i++;
+        }
+        else if (s[i] == 'f')
+        {   //  \f
+            result += '\f';
+            i++;
+        }
+        else if (s[i] == 'n')
+        {   //  \n
+            result += '\n';
+            i++;
+        }
+        else if (s[i] == 'r')
+        {   //  \r
+            result += '\r';
+            i++;
+        }
+        else if (s[i] == 't')
+        {   //  \t
+            result += '\t';
+            i++;
+        }
+        else if (s[i] == 'v')
+        {   //  \a
+            result += '\v';
+            i++;
+        }
+        //  Numeric escape ?
+        else if (s[i] == 'x')
+        {   //  \xXX
+            i++;
+            if (i + 1 < s.length() &&
+                _xdigit(s[i]) != -1 && _xdigit(s[i + 1]) != -1)
+            {
+                result += QChar(_xdigit(s[i]) * 16 +
+                                _xdigit(s[i + 1]));
+                i += 2;
+            }
+            else
+            {   //  OOPS! Invalid hex escape!
+                throw tt3::util::ParseException(s, i);
+            }
+        }
+        else if (s[i] == 'u')
+        {   //  \uXXXX
+            i++;
+            if (i + 3 < s.length() &&
+                _xdigit(s[i]) != -1 && _xdigit(s[i + 1]) != -1 &&
+                _xdigit(s[i + 2]) != -1 && _xdigit(s[i + 3]) != -1)
+            {
+                result += QChar(_xdigit(s[i]) * 4096 +
+                                _xdigit(s[i + 1]) * 256 +
+                                _xdigit(s[i + 2]) * 16 +
+                                _xdigit(s[i + 3]));
+                i += 4;
+            }
+            else
+            {   //  OOPS! Invalid hex escape!
+                throw tt3::util::ParseException(s, i);
+            }
+        }
+        //  Literal escape
+        else
+        {
+            result += s[i++];
+        }
+    }
+    return result;
 }
 
 //  End of tt3-util/FileResourceFactory.cpp

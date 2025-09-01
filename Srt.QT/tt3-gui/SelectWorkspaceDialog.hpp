@@ -67,8 +67,8 @@ namespace tt3::gui
     private slots:
         void            _workspaceTypeComboBoxCurrentIndexChanged(int);
         void            _browsePushButtonClicked();
-        void            _accept();
-        void            _reject();
+        void            accept() override;
+        void            reject() override;
     };
 }
 

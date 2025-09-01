@@ -31,6 +31,9 @@ ShowLicenseDialog::ShowLicenseDialog(QWidget * parent, tt3::util::ILicense * lic
     this->setWindowTitle(license->displayName());
     this->setWindowIcon(license->largeIcon());
     _ui->contentTextEdit->setHtml(license->contentAsHtml());
+
+    //  Done
+    adjustSize();
 }
 
 ShowLicenseDialog::~ShowLicenseDialog()

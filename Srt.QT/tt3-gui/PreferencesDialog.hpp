@@ -76,8 +76,8 @@ namespace tt3::gui
         void                _refresh();
         void                _resetPushNuttonClicked();
         void                _resetAllPushNuttonClicked();
-        void                _accept();
-        void                _reject();
+        void                accept() override;
+        void                reject() override;
         void                _settingValueChanged();
     };
 }

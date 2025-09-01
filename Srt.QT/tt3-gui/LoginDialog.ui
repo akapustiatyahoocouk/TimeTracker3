@@ -80,7 +80,7 @@
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
    <receiver>tt3::gui::LoginDialog</receiver>
-   <slot>_accept()</slot>
+   <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>248</x>
@@ -144,6 +144,5 @@
  <slots>
   <slot>_loginLineEditTextChanged(QString)</slot>
   <slot>_passwordLineEditTextChanged(QString)</slot>
-  <slot>_accept()</slot>
  </slots>
 </ui>

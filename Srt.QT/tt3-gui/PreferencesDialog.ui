@@ -126,7 +126,7 @@
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
    <receiver>tt3::gui::PreferencesDialog</receiver>
-   <slot>_accept()</slot>
+   <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>248</x>
@@ -142,7 +142,7 @@
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
    <receiver>tt3::gui::PreferencesDialog</receiver>
-   <slot>_reject()</slot>
+   <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>316</x>
@@ -205,8 +205,6 @@
  </connections>
  <slots>
   <slot>_preferencesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
-  <slot>_accept()</slot>
-  <slot>_reject()</slot>
   <slot>_resetPushNuttonClicked()</slot>
   <slot>_resetAllPushNuttonClicked()</slot>
  </slots>

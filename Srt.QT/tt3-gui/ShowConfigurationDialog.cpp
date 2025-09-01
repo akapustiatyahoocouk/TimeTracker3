@@ -56,6 +56,9 @@ ShowConfigurationDialog::ShowConfigurationDialog(QWidget * parent)
         }
     }
     _ui->componentsTreeWidget->expandAll();
+
+    //  Done
+    adjustSize();
     _refresh();
 }
 

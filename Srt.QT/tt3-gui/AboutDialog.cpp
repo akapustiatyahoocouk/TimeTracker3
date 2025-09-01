@@ -36,6 +36,9 @@ AboutDialog::AboutDialog(QWidget * parent)
         ")");
     _ui->copyrightLabel->setText(tt3::util::ProductInformation::applicationCopyright());
     _ui->creditsLabel->setText(tt3::util::ProductInformation::credits());
+
+    //  Done
+    adjustSize();
 }
 
 AboutDialog::~AboutDialog()

@@ -66,6 +66,7 @@ CreateUserDialog::CreateUserDialog(QWidget * parent,
     _locales.insert(0, QLocale());  //  ...to make combo box and QList indexes match
 
     //  Done
+    adjustSize();
     _refresh();
 }
 
@@ -157,7 +158,7 @@ void CreateUserDialog::_uiLocaleComboBoxCurrentIndexChanged(int)
     _refresh();
 }
 
-void CreateUserDialog::_accept()
+void CreateUserDialog::accept()
 {
     try
     {
@@ -176,7 +177,7 @@ void CreateUserDialog::_accept()
     }
 }
 
-void CreateUserDialog::_reject()
+void CreateUserDialog::reject()
 {
     done(int(Result::Cancel));
 }

@@ -39,6 +39,9 @@ ConfirmCloseWorkspaceDialog::ConfirmCloseWorkspaceDialog(QWidget *parent, tt3::w
         (workspace != nullptr) ?
             (workspace->address()->displayForm() + " ?"):
             "?");   //  be defensive in release mode
+
+    //  Done
+    adjustSize();
 }
 
 ConfirmCloseWorkspaceDialog::~ConfirmCloseWorkspaceDialog()
@@ -55,14 +58,14 @@ ConfirmCloseWorkspaceDialog::Result ConfirmCloseWorkspaceDialog::doModal()
 
 //////////
 //  Signal handlers
-void ConfirmCloseWorkspaceDialog::_accept()
+void ConfirmCloseWorkspaceDialog::accept()
 {
     Component::Settings::instance()->confirmCloseWorkspace =
         !_ui->assumeYesCheckBox->isChecked();
     done(int(Result::Yes));
 }
 
-void ConfirmCloseWorkspaceDialog::_reject()
+void ConfirmCloseWorkspaceDialog::reject()
 {
     done(int(Result::No));
 }

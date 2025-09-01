@@ -66,8 +66,8 @@ namespace tt3::gui
     private slots:
         void                    _loginLineEditTextChanged(QString);
         void                    _passwordLineEditTextChanged(QString);
-        void                    _accept();
-        void                    _reject();
+        void                    accept() override;
+        void                    reject() override;
     };
 }
 

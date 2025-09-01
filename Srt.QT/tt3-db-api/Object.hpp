@@ -15,8 +15,19 @@
 //  GNU General Public License for more details.
 //////////
 
+//////////
+//  Formatting and parsing
+namespace tt3::util
+{   //  Uses {00000000-0000-0000-0000-000000000000} braded format.
+    //  Formats as uppercase, parses upper- or lowercase.
+    template <> TT3_DB_API_PUBLIC QString toString<tt3::db::api::Oid>(const tt3::db::api::Oid & value);
+    template <> TT3_DB_API_PUBLIC tt3::db::api::Oid fromString<tt3::db::api::Oid>(const QString & s, int & scan) throws(tt3::util::ParseException);
+}
+
 namespace tt3::db::api
 {
+    TT3_DB_API_PUBLIC size_t qHash(const Oid & key, size_t seed = 0);
+
     //  The OID; unique per database.
     //  Are based on UUIDs, wich is required for e.g.
     //  merging two databases
@@ -28,9 +39,13 @@ namespace tt3::db::api
         //  The special "invalid" OID
         static const Oid    Invalid;
 
+        friend TT3_DB_API_PUBLIC QString tt3::util::toString<Oid>(const Oid & value);
+        friend TT3_DB_API_PUBLIC Oid tt3::util::fromString<Oid>(const QString & s, int & scan) throws(tt3::util::ParseException);
+        friend TT3_DB_API_PUBLIC size_t qHash(const Oid & key, size_t seed);
+
         //////////
         //  Construction
-    public:
+    private:
         explicit Oid(const QUuid & impl) : _impl(impl) {}
 
     public:
@@ -60,14 +75,6 @@ namespace tt3::db::api
         //  Checks whether this is a "valid" OID
         bool                isValid() const { return _impl != Invalid._impl; }
 
-        //  Returns the string representation of this OID
-        //  in {00000000-0000-0000-0000-000000000000} form;
-        //  hex digits are always uppercase.
-        QString             toString() const { return _impl.toString().toUpper(); }
-
-        //  Returns the hash code for this OID.
-        size_t              hashCode() const { return qHash(_impl); }
-
         //  Generates a highly likely random Oid.
         //  Never generates an "invalid" Oid.
         static Oid          createRandom();
@@ -77,11 +84,6 @@ namespace tt3::db::api
     private:
         QUuid               _impl;
     };
-
-    inline size_t qHash(const Oid & key, size_t seed = 0)
-    {
-        return key.hashCode() + seed;
-    }
 
     //  A generic object that resides, or used to reside,
     //  in a database. Database object instances are managed
@@ -170,14 +172,6 @@ namespace tt3::db::api
         //  Decrements the "reference count" of this object by 1.
         virtual void            removeReference() = 0;
     };
-}
-
-//////////
-//  Formatting and parsing
-namespace tt3::util
-{
-    template <> TT3_DB_API_PUBLIC QString toString<tt3::db::api::Oid>(const tt3::db::api::Oid & value);
-    template <> TT3_DB_API_PUBLIC tt3::db::api::Oid fromString<tt3::db::api::Oid>(const QString & s, int & scan) throws(tt3::util::ParseException);
 }
 
 //  End of tt3-db-api/Object.hpp

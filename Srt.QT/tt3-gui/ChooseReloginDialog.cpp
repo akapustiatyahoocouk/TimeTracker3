@@ -32,6 +32,9 @@ ChooseReloginDialog::ChooseReloginDialog(QWidget * parent, tt3::ws::WorkspaceAdd
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
     _ui->promptLabel2->setText(address->displayForm());
+
+    //  Done
+    adjustSize();
 }
 
 ChooseReloginDialog::~ChooseReloginDialog()
@@ -48,12 +51,12 @@ ChooseReloginDialog::Result ChooseReloginDialog::doModal()
 
 //////////
 //  Signal handlers
-void ChooseReloginDialog::_accept()
+void ChooseReloginDialog::accept()
 {
     done(int(Result::Yes));
 }
 
-void ChooseReloginDialog::_reject()
+void ChooseReloginDialog::reject()
 {
     done(int(Result::No));
 }
