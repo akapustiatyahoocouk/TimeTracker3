@@ -54,5 +54,6 @@
 #include "tt3-gui/ShowLicenseDialog.hpp"
 #include "tt3-gui/ShowConfigurationDialog.hpp"
 #include "tt3-gui/CreateUserDialog.hpp"
+#include "tt3-gui/ModifyUserDialog.hpp"
 
 //  End of tt3-gui/API.hpp

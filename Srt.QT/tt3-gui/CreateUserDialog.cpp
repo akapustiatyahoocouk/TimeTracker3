@@ -30,6 +30,9 @@ CreateUserDialog::CreateUserDialog(QWidget * parent,
         //  Controls
         _ui(new Ui::CreateUserDialog)
 {
+    Q_ASSERT(_workspace != nullptr);
+    Q_ASSERT(_credentials.isValid());
+
     _ui->setupUi(this);
 
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->

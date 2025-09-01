@@ -269,6 +269,17 @@ QString InstanceDeadException::errorMessage() const
 }
 
 //////////
+//  AccessWouldBeLostException
+AccessWouldBeLostException::AccessWouldBeLostException()
+{
+}
+
+QString AccessWouldBeLostException::errorMessage() const
+{
+    return "Access would be lost";
+}
+
+//////////
 //  CustomWorkspaceException
 CustomWorkspaceException::CustomWorkspaceException(const QString & errorMessage)
         :   _errorMessage(errorMessage)

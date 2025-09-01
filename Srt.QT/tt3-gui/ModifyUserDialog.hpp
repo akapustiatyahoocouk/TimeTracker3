@@ -1,5 +1,5 @@
 //
-//  tt3-gui/CreateUserDialog.hpp - The modal "Create user" dialog
+//  tt3-gui/ModifyUserDialog.hpp - The modal "Modify user" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -20,12 +20,12 @@
 namespace tt3::gui
 {
     //  The modal "Create user" dialog
-    namespace Ui { class CreateUserDialog; }
+    namespace Ui { class ModifyUserDialog; }
 
-    class TT3_GUI_PUBLIC CreateUserDialog final : private QDialog
+    class TT3_GUI_PUBLIC ModifyUserDialog final : public QDialog
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CreateUserDialog)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ModifyUserDialog)
 
         //////////
         //  Types
@@ -35,10 +35,13 @@ namespace tt3::gui
 
         //////////
         //  Construction/destruction
+
     public:
-        CreateUserDialog(QWidget * parent,
-                         tt3::ws::Workspace workspace, const tt3::ws::Credentials & credentials);
-        virtual ~CreateUserDialog();
+        ModifyUserDialog(QWidget * parent,
+                         tt3::ws::User user,
+                         const tt3::ws::Credentials & credentials)
+            throws(tt3::ws::WorkspaceClosedException);
+        virtual ~ModifyUserDialog();
 
         //////////
         //  Operations
@@ -46,31 +49,28 @@ namespace tt3::gui
         //  Runs the dialog modally, returning user's choice
         Result              doModal();
 
-        //  The newly created user (on Ok) or nullptr
-        //  if the dialog was cancelled
-        tt3::ws::User       createdUser() const { return _createdUser; }
-
         //////////
         //  Implementation
     private:
-        tt3::ws::Workspace  _workspace;
+        tt3::ws::User       _user;
         const tt3::ws::Credentials  _credentials;
         QList<QLocale>      _locales;   //  parallel to combo box items
         tt3::ws::Validator::User *const _validator;
 
-        tt3::ws::User       _createdUser;
-
         //  Helpers
         static QString      _displayName(const QLocale & locale);
         QStringList         _selectedEmailAddresses();
+        void                _setSelectedEmailAddresses(const QStringList & emailAddresses);
         tt3::ws::InactivityTimeout  _selectedInactivityTimeout();
+        void                _setSelectedInactivityTimeout(const tt3::ws::InactivityTimeout & inactivityTimeout);
         tt3::ws::UiLocale   _selectedUiLocale();
+        void                _setSelectedUiLocale(const tt3::ws::UiLocale & uiLocale);
         void                _refresh();
 
         //////////
         //  Controls
     private:
-        Ui::CreateUserDialog *  _ui;
+        Ui::ModifyUserDialog *  _ui;
 
         //////////
         //  Signal handlers
@@ -85,5 +85,5 @@ namespace tt3::gui
     };
 }
 
-//  End of tt3-gui/CreateUserDialog.hpp
+//  End of tt3-gui/ModifyUserDialog.hpp
 

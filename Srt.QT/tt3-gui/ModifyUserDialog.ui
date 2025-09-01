@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>tt3::gui::ModifyUserDialog</class>
+ <widget class="QDialog" name="tt3::gui::ModifyUserDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>499</width>
+    <height>309</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Modify user</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="tt3-gui.qrc">
+    <normaloff>:/tt3-gui/Resources/Images/Actions/ModifyUserLarge.png</normaloff>:/tt3-gui/Resources/Images/Actions/ModifyUserLarge.png</iconset>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <widget class="QLabel" name="realNameLabel">
+     <property name="text">
+      <string>User name:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" colspan="3">
+    <widget class="QLineEdit" name="realNameLineEdit"/>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="emailAddressesLabel">
+     <property name="text">
+      <string>E-mail addresses:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" colspan="3">
+    <widget class="QWidget" name="emailAddressesWidget" native="true">
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <property name="spacing">
+       <number>4</number>
+      </property>
+      <item row="0" column="0" rowspan="3">
+       <widget class="QListWidget" name="emailAddressesListWidget"/>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="addEmailAddressPushButton">
+        <property name="text">
+         <string>Add</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/AddEmailAddressSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/AddEmailAddressSmall.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="modifyEmailAddressPushButton">
+        <property name="text">
+         <string>Modify</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/ModifyEmailAddressSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/ModifyEmailAddressSmall.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="removeEmailAddressPushButton">
+        <property name="text">
+         <string>Remove</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/RemoveEmailAddressSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/RemoveEmailAddressSmall.png</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="inactivityTimeoutLabel">
+     <property name="text">
+      <string>Current activity:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QCheckBox" name="inactivityTimeoutCheckBox">
+     <property name="text">
+      <string>stop if unattended for</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QComboBox" name="hoursComboBox"/>
+   </item>
+   <item row="2" column="3">
+    <widget class="QComboBox" name="minutesComboBox"/>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="uiLocaleLabel">
+     <property name="text">
+      <string>UI language:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1" colspan="3">
+    <widget class="QComboBox" name="uiLocaleComboBox"/>
+   </item>
+   <item row="4" column="1" colspan="3">
+    <widget class="QCheckBox" name="enabledCheckBox">
+     <property name="text">
+      <string>User is enabled</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="4">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0" colspan="4">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="tt3-gui.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>realNameLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::ModifyUserDialog</receiver>
+   <slot>_realNameLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>310</x>
+     <y>24</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>inactivityTimeoutCheckBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>tt3::gui::ModifyUserDialog</receiver>
+   <slot>_inactivityTimeoutCheckBoxStateChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>219</x>
+     <y>169</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hoursComboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>tt3::gui::ModifyUserDialog</receiver>
+   <slot>_hoursComboBoxCurrentIndexChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>355</x>
+     <y>169</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>minutesComboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>tt3::gui::ModifyUserDialog</receiver>
+   <slot>_minutesComboBoxCurrentIndexChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>446</x>
+     <y>169</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>uiLocaleComboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>tt3::gui::ModifyUserDialog</receiver>
+   <slot>_uiLocaleComboBoxCurrentIndexChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>310</x>
+     <y>204</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>tt3::gui::ModifyUserDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>249</x>
+     <y>283</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>tt3::gui::ModifyUserDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>249</x>
+     <y>283</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_realNameLineEditTextChanged(QString)</slot>
+  <slot>_inactivityTimeoutCheckBoxStateChanged(int)</slot>
+  <slot>_hoursComboBoxCurrentIndexChanged(int)</slot>
+  <slot>_uiLocaleComboBoxCurrentIndexChanged(int)</slot>
+  <slot>_minutesComboBoxCurrentIndexChanged(int)</slot>
+ </slots>
+</ui>

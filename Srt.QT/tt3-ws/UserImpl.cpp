@@ -54,13 +54,110 @@ QString UserImpl::realName(const Credentials & credentials) const throws(Workspa
     }
 }
 
-/*  TODO uncomment & implement
-void UserImpl::setRealName(const Credentials & credentials, const QString & realName) throws(WorkspaceException);
-InactivityTimeout UserImpl::inactivityTimeout(const Credentials & credentials) const throws(WorkspaceException);
-void UserImpl::setInactivityTimeout(const Credentials & credentials, const InactivityTimeout & inactivityTimeout) throws(WorkspaceException);
-UiLocale UserImpl::uiLocale(const Credentials & credentials) const throws(WorkspaceException);
-void UserImpl::setUiLocale(const Credentials & credentials, const UiLocale & uiLocale) throws(WorkspaceException);
-*/
+void UserImpl::setRealName(const Credentials & credentials, const QString & realName) throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _dataUser->setRealName(realName);    //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+InactivityTimeout UserImpl::inactivityTimeout(const Credentials & credentials) const throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _dataUser->inactivityTimeout();  //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+void UserImpl::setInactivityTimeout(const Credentials & credentials, const InactivityTimeout & inactivityTimeout) throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _dataUser->setInactivityTimeout(inactivityTimeout);  //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+UiLocale UserImpl::uiLocale(const Credentials & credentials) const throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _dataUser->uiLocale();   //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+void UserImpl::setUiLocale(const Credentials & credentials, const UiLocale & uiLocale) throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _dataUser->setUiLocale(uiLocale);    //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
 
 //////////
 //  Operations (associations)

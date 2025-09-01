@@ -434,7 +434,16 @@ void UserManager::_createUserPushButtonClicked()
 
 void UserManager::_modifyUserPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    tt3::ws::User user = _selectedUser();
+    if (user != nullptr)
+    {
+        ModifyUserDialog dlg(this, user, _credentials);
+        if (dlg.doModal() == ModifyUserDialog::Result::Ok)
+        {   //  User modified - its position in the users tree may have changed
+            refresh();
+            _setSelectedUser(user);
+        }
+    }
 }
 
 void UserManager::_destroyUserPushButtonClicked()

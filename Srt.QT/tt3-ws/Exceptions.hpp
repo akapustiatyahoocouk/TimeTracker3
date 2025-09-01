@@ -401,6 +401,32 @@ namespace tt3::ws
         virtual QString errorMessage() const override;
     };
 
+    //  Thrown when attempting to leave workspace without
+    //  an enbled administrator user+account
+    class TT3_WS_PUBLIC AccessWouldBeLostException : public WorkspaceException
+    {
+        //////////
+        //  Types
+    public:
+        using Self = AccessWouldBeLostException;
+
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        AccessWouldBeLostException();
+
+        //////////
+        //  QException
+    public:
+        virtual Self *  clone() const { return new Self(*this); }
+        virtual void    raise() const { throw *this; }
+
+        //////////
+        //  tt3::util::Exception
+    public:
+        virtual QString errorMessage() const override;
+    };
+
     //  Thrown when must carry a custom error message (from OS, etc.)
     class TT3_WS_PUBLIC CustomWorkspaceException : public WorkspaceException
     {
