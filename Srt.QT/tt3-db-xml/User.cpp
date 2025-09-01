@@ -199,7 +199,7 @@ User::createAccount(
     digestBuilder->digestFragment(password);
     QString passwordHash = digestBuilder->digestAsString();
 
-    Account * account = new Account(this, _database->_nextUnusedOid++); //  registers with User
+    Account * account = new Account(this, _database->_generateOid()); //  registers with User
     account->_enabled = enabled;
     account->_emailAddresses = emailAddresses;
     account->_login = login;

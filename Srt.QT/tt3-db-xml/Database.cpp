@@ -262,16 +262,14 @@ tt3::db::api::IUser * Database::createUser(
             "realName",
             realName);
     }
-    if (inactivityTimeout.has_value() &&
-        !_validator->user()->isValidInactivityTimeout(inactivityTimeout.value()))
+    if (!_validator->user()->isValidInactivityTimeout(inactivityTimeout))
     {
         throw tt3::db::api::InvalidPropertyValueException(
             tt3::db::api::ObjectTypes::User::instance(),
             "inactivityTimeout",
             inactivityTimeout.value());
     }
-    if (uiLocale.has_value() &&
-        !_validator->user()->isValidUiLocale(uiLocale.value()))
+    if (!_validator->user()->isValidUiLocale(uiLocale))
     {
         throw tt3::db::api::InvalidPropertyValueException(
             tt3::db::api::ObjectTypes::User::instance(),
@@ -280,7 +278,7 @@ tt3::db::api::IUser * Database::createUser(
     }
 
     //  Do the work - create & initialize the User...
-    User * user = new User(this, _nextUnusedOid++); //  registers with Database
+    User * user = new User(this, _generateOid()); //  registers with Database
     user->_enabled = enabled;
     user->_emailAddresses = emailAddresses;
     user->_realName = realName;
@@ -327,6 +325,20 @@ void Database::_markClosed()
         //  TODO keep? kill? _changeNotifier.post(new tt3::db::api::DatabaseClosedNotification(this));
         tt3::db::api::DatabaseClosedNotification n(this);
         _changeNotifier.databaseClosed(n);
+    }
+}
+
+tt3::db::api::Oid Database::_generateOid()
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+
+    for (; ; )
+    {
+        tt3::db::api::Oid oid = tt3::db::api::Oid::createRandom();
+        if (!_liveObjects.contains(oid) && !_graveyard.contains(oid))
+        {
+            return oid;
+        }
     }
 }
 

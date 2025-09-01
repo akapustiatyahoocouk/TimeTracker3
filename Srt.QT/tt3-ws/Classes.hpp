@@ -61,7 +61,6 @@ namespace tt3::ws
     using Capabilities = tt3::db::api::Capabilities;
 
     using Oid = tt3::db::api::Oid;
-    static inline const Oid InvalidOid = tt3::db::api::InvalidOid;
 
     using InactivityTimeout = tt3::db::api::InactivityTimeout;
     using UiLocale = tt3::db::api::UiLocale;

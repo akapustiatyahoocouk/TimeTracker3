@@ -62,7 +62,7 @@ namespace tt3::db::api
     public:
         ObjectCreatedNotification(IDatabase * db, IObjectType * objectType, const Oid & oid)
             :   ChangeNotification(db), _objectType(objectType), _oid(oid)
-            { Q_ASSERT(_objectType != nullptr && _oid != InvalidOid); }
+            { Q_ASSERT(_objectType != nullptr && _oid != Oid::Invalid); }
         //  Default copy-constructor and assigmnent are OK
 
         //////////
@@ -89,7 +89,7 @@ namespace tt3::db::api
     public:
         ObjectDestroyedNotification(IDatabase * db, IObjectType * objectType, const Oid & oid)
             :   ChangeNotification(db), _objectType(objectType), _oid(oid)
-        { Q_ASSERT(_objectType != nullptr && _oid != InvalidOid); }
+        { Q_ASSERT(_objectType != nullptr && _oid != Oid::Invalid); }
         //  Default copy-constructor and assigmnent are OK
 
         //////////
@@ -118,7 +118,7 @@ namespace tt3::db::api
     public:
         ObjectModifiedNotification(IDatabase * db, IObjectType * objectType, const Oid & oid)
             :   ChangeNotification(db), _objectType(objectType), _oid(oid)
-        { Q_ASSERT(_objectType != nullptr && _oid != InvalidOid); }
+        { Q_ASSERT(_objectType != nullptr && _oid != Oid::Invalid); }
         //  Default copy-constructor and assigmnent are OK
 
         //////////

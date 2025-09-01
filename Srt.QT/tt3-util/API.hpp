@@ -78,6 +78,7 @@
 #include <QThread>
 #include <QTimer>
 #include <QTreeWidgetItem>
+#include <QUuid>
 #include <QVariant>
 #include <QVersionNumber>
 #include <QWidget>

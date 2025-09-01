@@ -61,7 +61,7 @@ namespace tt3::ws
     public:
         ObjectCreatedNotification(const Workspace & workspace, ObjectType * objectType, const Oid & oid)
             :   ChangeNotification(workspace), _objectType(objectType), _oid(oid)
-            { Q_ASSERT(_objectType != nullptr && _oid != InvalidOid); }
+            { Q_ASSERT(_objectType != nullptr && _oid != Oid::Invalid); }
         //  Defult copy-constructor and assigmnent are OK
 
         //////////
@@ -88,7 +88,7 @@ namespace tt3::ws
     public:
         ObjectDestroyedNotification(const Workspace & workspace, ObjectType * objectType, const Oid & oid)
             :   ChangeNotification(workspace), _objectType(objectType), _oid(oid)
-            { Q_ASSERT(_objectType != nullptr && _oid != InvalidOid); }
+            { Q_ASSERT(_objectType != nullptr && _oid != Oid::Invalid); }
         //  Defult copy-constructor and assigmnent are OK
 
         //////////
@@ -117,7 +117,7 @@ namespace tt3::ws
     public:
         ObjectModifiedNotification(const Workspace & workspace, ObjectType * objectType, const Oid & oid)
             :   ChangeNotification(workspace), _objectType(objectType), _oid(oid)
-            { Q_ASSERT(_objectType != nullptr && _oid != InvalidOid); }
+            { Q_ASSERT(_objectType != nullptr && _oid != Oid::Invalid); }
         //  Defult copy-constructor and assigmnent are OK
 
         //////////

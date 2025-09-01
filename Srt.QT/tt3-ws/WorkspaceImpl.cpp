@@ -173,6 +173,39 @@ Capabilities WorkspaceImpl::capabilities(const Credentials & credentials) const 
 }
 
 //////////
+//  Operations (life cycle)
+User WorkspaceImpl::createUser(
+    const Credentials & credentials,
+    bool enabled, const QStringList & emailAddresses,
+    const QString & realName,
+    const InactivityTimeout & inactivityTimeout,
+    const UiLocale & uiLocale) throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();
+
+    try
+    {
+        //  Check access rights
+        Capabilities capabilities = _validateAccessRights(credentials); //  may throw
+        if ((capabilities & Capabilities::Administrator) == Capabilities::None &&
+            (capabilities & Capabilities::ManageUsers) == Capabilities::None)
+        {   //  OOPS! Can't!
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        tt3::db::api::IUser * dataUser =
+            _database->createUser(enabled, emailAddresses,
+                                  realName, inactivityTimeout, uiLocale);
+        return _getProxy(dataUser);;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  ...but let other exceptions through
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+//////////
 //  Implementation helpers
 void WorkspaceImpl::_ensureOpen() const throws(WorkspaceException)
 {
@@ -299,7 +332,7 @@ void WorkspaceImpl::_onDatabaseClosed(tt3::db::api::DatabaseClosedNotification n
 void WorkspaceImpl::_onObjectCreated(tt3::db::api::ObjectCreatedNotification notification)
 {
     qDebug() << "Workspace::_onObjectCreated("
-             << notification.oid()
+             << notification.oid().toString()
              << ")";
     Q_ASSERT(notification.database() == _database);
 }
@@ -307,7 +340,7 @@ void WorkspaceImpl::_onObjectCreated(tt3::db::api::ObjectCreatedNotification not
 void WorkspaceImpl::_onObjectDestroyed(tt3::db::api::ObjectDestroyedNotification notification)
 {
     qDebug() << "Workspace::_onObjectDestroyed("
-             << notification.oid()
+             << notification.oid().toString()
              << ")";
     Q_ASSERT(notification.database() == _database);
 }
@@ -315,7 +348,7 @@ void WorkspaceImpl::_onObjectDestroyed(tt3::db::api::ObjectDestroyedNotification
 void WorkspaceImpl::_onObjectModified(tt3::db::api::ObjectModifiedNotification notification)
 {
     qDebug() << "Workspace::_onObjectModified("
-             << notification.oid()
+             << notification.oid().toString()
              << ")";
     Q_ASSERT(notification.database() == _database);
 }

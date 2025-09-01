@@ -81,7 +81,6 @@ namespace tt3::db::xml
         mutable tt3::util::Mutex    _guard; //  for all access synchronization
 
         bool                _needsSaving = false;
-        tt3::db::api::Oid   _nextUnusedOid = 1;
 
         //  Primary object caches - these contain all live
         //  objects, either directly (like Users) or indirectly
@@ -133,6 +132,7 @@ namespace tt3::db::xml
         //  Helpers
         void            _ensureOpen() const throws (tt3::db::api::DatabaseException);
         void            _markClosed();
+        tt3::db::api::Oid   _generateOid();
         Account *       _findAccount(const QString & login) const;
 
         //  Serialization

@@ -24,7 +24,7 @@ Object::Object(Database * database, tt3::db::api::Oid oid)
         _oid(oid)
 {
     Q_ASSERT(_database != nullptr);
-    Q_ASSERT(_oid != tt3::db::api::InvalidOid);
+    Q_ASSERT(_oid != tt3::db::api::Oid::Invalid);
     Q_ASSERT(_database->isOpen());
 
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
@@ -198,7 +198,7 @@ void Object::_validate(QSet<Object*> & validatedObjects) throws(tt3::db::api::Da
     validatedObjects.insert(this);
 
     //  Validate properties
-    if (!_isLive || _oid == tt3::db::api::InvalidOid)
+    if (!_isLive || _oid == tt3::db::api::Oid::Invalid)
     {   //  OOPS!
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }

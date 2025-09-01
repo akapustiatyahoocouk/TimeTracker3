@@ -121,6 +121,8 @@ tt3::ws::UiLocale CreateUserDialog::_selectedUiLocale()
 
 void CreateUserDialog::_refresh()
 {
+    _ui->hoursComboBox->setEnabled(_ui->inactivityTimeoutCheckBox->isChecked());
+    _ui->minutesComboBox->setEnabled(_ui->inactivityTimeoutCheckBox->isChecked());
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(
         _validator->isValidRealName(_ui->realNameLineEdit->text()) &&
         _validator->isValidInactivityTimeout(_selectedInactivityTimeout()) &&
@@ -157,15 +159,26 @@ void CreateUserDialog::_uiLocaleComboBoxCurrentIndexChanged(int)
 
 void CreateUserDialog::_accept()
 {
-    done(int(Result::Ok));
+    try
+    {
+        _createdUser = _workspace->createUser(
+            _credentials,
+            _ui->enabledCheckBox->isChecked(),
+            _selectedEmailAddresses(),
+            _ui->realNameLineEdit->text(),
+            _selectedInactivityTimeout(),
+            _selectedUiLocale());
+        done(int(Result::Ok));
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        ErrorDialog::show(this, ex);
+    }
 }
 
 void CreateUserDialog::_reject()
 {
     done(int(Result::Cancel));
 }
-
-//  End of tt3-gui/CreateUserDialog.cpp
-
 
 //  End of tt3-gui/CreateUserDialog.cpp

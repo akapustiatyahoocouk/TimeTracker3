@@ -94,7 +94,8 @@ namespace tt3::ws
     public:
         //  Creates a new User in this database.
         //  Throws WorkspaceException if an error occurs.
-        User            createUser(bool enabled, const QStringList & emailAddresses,
+        User            createUser(const Credentials & credentials,
+                            bool enabled, const QStringList & emailAddresses,
                             const QString & realName,
                             const InactivityTimeout & inactivityTimeout,
                             const UiLocale & uiLocale) throws(WorkspaceException);

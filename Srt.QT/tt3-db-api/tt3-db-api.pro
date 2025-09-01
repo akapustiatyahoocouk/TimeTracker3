@@ -11,7 +11,8 @@ SOURCES += \
     DefaultValidator.cpp \
     Exceptions.cpp \
     IDatabase.cpp \
-    ObjectTypes.cpp
+    ObjectTypes.cpp \
+    Oid.cpp
 
 HEADERS += \
     API.hpp \
