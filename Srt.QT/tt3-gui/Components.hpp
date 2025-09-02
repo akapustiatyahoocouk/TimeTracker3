@@ -61,6 +61,9 @@ namespace tt3::gui
             //  "current" during last activation og yje "Preferences" dialog.
             tt3::util::Setting<tt3::util::Mnemonic> currentPreferences;
 
+            //////////
+            //  Properties (user confirmations)
+        public:
             //  True if user needs to confirm closing the
             //  current workspace.
             tt3::util::Setting<bool>    confirmCloseWorkspace;

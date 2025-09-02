@@ -14,6 +14,7 @@ SOURCES += \
     CreateUserDialog.cpp \
     CurrentSkin.cpp \
     CurrentTheme.cpp \
+    EditStringDialog.cpp \
     ErrorDialog.cpp \
     GeneralAppearancePreferences.cpp \
     GeneralAppearancePreferencesEditor.cpp \
@@ -47,6 +48,7 @@ HEADERS += \
     ConfirmExitDialog.hpp \
     ConfirmRestartDialog.hpp \
     CreateUserDialog.hpp \
+    EditStringDialog.hpp \
     ErrorDialog.hpp \
     GeneralAppearancePreferencesEditor.hpp \
     GeneralDialogsPreferencesEditor.hpp \
@@ -72,6 +74,7 @@ FORMS += \
     ConfirmExitDialog.ui \
     ConfirmRestartDialog.ui \
     CreateUserDialog.ui \
+    EditStringDialog.ui \
     GeneralAppearancePreferencesEditor.ui \
     GeneralDialogsPreferencesEditor.ui \
     GeneralStartupPreferencesEditor.ui \

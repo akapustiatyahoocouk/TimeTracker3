@@ -47,8 +47,8 @@ bool DefaultValidator::_isValidEmailAddress(const QString & emailAddress)
     static const std::wregex pattern(L"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
 
     std::wcmatch match;
-    const wchar_t * wc = emailAddress.toStdWString().c_str();
-    return std::regex_match(wc, match, pattern);
+    std::wstring ws = emailAddress.toStdWString();
+    return std::regex_match(ws.c_str(), match, pattern);
 }
 
 bool DefaultValidator::_isValidName(const QString & name, int maxLength)

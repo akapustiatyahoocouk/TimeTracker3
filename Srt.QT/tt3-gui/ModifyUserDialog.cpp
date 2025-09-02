@@ -124,6 +124,25 @@ void ModifyUserDialog::_setSelectedEmailAddresses(const QStringList & emailAddre
     _refresh();
 }
 
+QString ModifyUserDialog::_selectedEmailAddress()
+{
+    int n = _ui->emailAddressesListWidget->currentRow();
+    return (n != -1) ?
+                _ui->emailAddressesListWidget->item(n)->text() :
+                "";
+}
+
+void ModifyUserDialog::_setSelectedEmailAddress(const QString & emailAddress)
+{
+    for (int i = 0; i < _ui->emailAddressesListWidget->count(); i++)
+    {
+        if (emailAddress == _ui->emailAddressesListWidget->item(i)->text())
+        {
+            _ui->emailAddressesListWidget->setCurrentRow(i);
+            break;
+        }
+    }
+}
 
 tt3::ws::InactivityTimeout ModifyUserDialog::_selectedInactivityTimeout()
 {
@@ -194,6 +213,8 @@ void ModifyUserDialog::_setSelectedUiLocale(const tt3::ws::UiLocale & uiLocale)
 
 void ModifyUserDialog::_refresh()
 {
+    _ui->modifyEmailAddressPushButton->setEnabled(!_selectedEmailAddress().isEmpty());
+    _ui->removeEmailAddressPushButton->setEnabled(!_selectedEmailAddress().isEmpty());
     _ui->hoursComboBox->setEnabled(_ui->inactivityTimeoutCheckBox->isChecked());
     _ui->minutesComboBox->setEnabled(_ui->inactivityTimeoutCheckBox->isChecked());
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(
@@ -208,6 +229,61 @@ void ModifyUserDialog::_refresh()
 void ModifyUserDialog::_realNameLineEditTextChanged(QString)
 {
     _refresh();
+}
+
+void ModifyUserDialog::_emailAddressesListWidgetCurrentRowChanged(int)
+{
+    _refresh();
+}
+
+void ModifyUserDialog::_addEmailAddressPushButtonClicked()
+{
+    EditStringDialog dlg(
+        this,
+        QIcon(":/tt3-gui/Resources/Images/Actions/AddEmailAddressLarge.png"),
+        "Add e-mail address",
+        "Enter the e-mail address",
+        "",
+        [&](auto a) { return _validator->isValidEmailAddress(a); });
+    if (dlg.doModal() == EditStringDialog::Result::Ok)
+    {
+        QStringList emailAddresses = _selectedEmailAddresses();
+        emailAddresses.removeOne(dlg.editedValue());    //  in case it's already there
+        emailAddresses.append(dlg.editedValue());
+        emailAddresses.sort();
+        _setSelectedEmailAddresses(emailAddresses);
+        _setSelectedEmailAddress(dlg.editedValue());
+        _refresh();
+    }
+}
+
+void ModifyUserDialog::_modifyEmailAddressPushButtonClicked()
+{
+    QString oldEmailAddress = _selectedEmailAddress();
+    if (!oldEmailAddress.isEmpty())
+    {
+        EditStringDialog dlg(
+            this,
+            QIcon(":/tt3-gui/Resources/Images/Actions/ModifyEmailAddressLarge.png"),
+            "Modify e-mail address",
+            "Enter the e-mail address",
+            oldEmailAddress,
+            [&](auto a) { return _validator->isValidEmailAddress(a); });
+        if (dlg.doModal() == EditStringDialog::Result::Ok)
+        {
+            QStringList emailAddresses = _selectedEmailAddresses();
+            emailAddresses.removeOne(oldEmailAddress);
+            emailAddresses.append(dlg.editedValue());
+            emailAddresses.sort();
+            _setSelectedEmailAddresses(emailAddresses);
+            _setSelectedEmailAddress(dlg.editedValue());
+            _refresh();
+        }
+    }
+}
+
+void ModifyUserDialog::_removeEmailAddressPushButtonClicked()
+{
 }
 
 void ModifyUserDialog::_inactivityTimeoutCheckBoxStateChanged(int)

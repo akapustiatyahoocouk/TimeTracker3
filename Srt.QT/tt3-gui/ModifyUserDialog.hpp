@@ -22,7 +22,7 @@ namespace tt3::gui
     //  The modal "Create user" dialog
     namespace Ui { class ModifyUserDialog; }
 
-    class TT3_GUI_PUBLIC ModifyUserDialog final : public QDialog
+    class TT3_GUI_PUBLIC ModifyUserDialog final : private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ModifyUserDialog)
@@ -35,7 +35,6 @@ namespace tt3::gui
 
         //////////
         //  Construction/destruction
-
     public:
         ModifyUserDialog(QWidget * parent,
                          tt3::ws::User user,
@@ -61,6 +60,8 @@ namespace tt3::gui
         static QString      _displayName(const QLocale & locale);
         QStringList         _selectedEmailAddresses();
         void                _setSelectedEmailAddresses(const QStringList & emailAddresses);
+        QString             _selectedEmailAddress();
+        void                _setSelectedEmailAddress(const QString & emailAddress);
         tt3::ws::InactivityTimeout  _selectedInactivityTimeout();
         void                _setSelectedInactivityTimeout(const tt3::ws::InactivityTimeout & inactivityTimeout);
         tt3::ws::UiLocale   _selectedUiLocale();
@@ -76,6 +77,10 @@ namespace tt3::gui
         //  Signal handlers
     private slots:
         void            _realNameLineEditTextChanged(QString);
+        void            _emailAddressesListWidgetCurrentRowChanged(int);
+        void            _addEmailAddressPushButtonClicked();
+        void            _modifyEmailAddressPushButtonClicked();
+        void            _removeEmailAddressPushButtonClicked();
         void            _inactivityTimeoutCheckBoxStateChanged(int);
         void            _hoursComboBoxCurrentIndexChanged(int);
         void            _minutesComboBoxCurrentIndexChanged(int);

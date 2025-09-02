@@ -46,6 +46,7 @@
 #include "tt3-gui/ConfirmCloseWorkspaceDialog.hpp"
 #include "tt3-gui/ConfirmRestartDialog.hpp"
 #include "tt3-gui/ChooseReloginDialog.hpp"
+#include "tt3-gui/EditStringDialog.hpp"
 #include "tt3-gui/NewWorkspaceDialog.hpp"
 #include "tt3-gui/SelectWorkspaceDialog.hpp"
 #include "tt3-gui/LoginDialog.hpp"

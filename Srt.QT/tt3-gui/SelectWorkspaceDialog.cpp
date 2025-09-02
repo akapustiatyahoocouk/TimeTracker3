@@ -40,8 +40,7 @@ SelectWorkspaceDialog::SelectWorkspaceDialog(QWidget * parent)
         [](auto& a, auto& b)
         {
             return a->displayName() < b->displayName(); // Example: ascending order
-        }
-        );
+        });
     for (auto workspaceType : workspaceTypes)
     {
         _ui->workspaceTypeComboBox->addItem(
