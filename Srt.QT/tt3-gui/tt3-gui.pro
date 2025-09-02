@@ -64,6 +64,7 @@ FORMS += \
     AskYesNoDialog.ui \
     CreateUserDialog.ui \
     EditStringDialog.ui \
+    ErrorDialog.ui \
     GeneralAppearancePreferencesEditor.ui \
     GeneralDialogsPreferencesEditor.ui \
     GeneralStartupPreferencesEditor.ui \

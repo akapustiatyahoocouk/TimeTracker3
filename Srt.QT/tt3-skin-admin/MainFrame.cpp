@@ -391,7 +391,7 @@ void MainFrame::_onActionCloseWorkspace()
 
 void MainFrame::_onActionDestroyWorkspace()
 {
-    tt3::gui::ErrorDialog::show(this, "Npt yet implemented");
+    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
 }
 
 void MainFrame::_onActionRestart()

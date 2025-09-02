@@ -160,6 +160,7 @@ void Object::_markDead()
     _isLive = false;
     _database->_liveObjects.remove(_oid);
     _database->_graveyard.insert(_oid, this);
+    _database->_needsSaving = true;
     if (_referenceCount == 0)
     {   //  We can recycle
         delete this;

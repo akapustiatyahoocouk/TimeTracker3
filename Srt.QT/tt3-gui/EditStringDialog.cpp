@@ -18,6 +18,8 @@
 #include "ui_EditStringDialog.h"
 using namespace tt3::gui;
 
+//////////
+//  Construction/destruction
 EditStringDialog::EditStringDialog(QWidget * parent,
                                    const QIcon & icon, const QString & title, const QString & prompt,
                                    const QString & initialValue, Validator validator)

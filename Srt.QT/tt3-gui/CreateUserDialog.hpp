@@ -63,6 +63,9 @@ namespace tt3::gui
         //  Helpers
         static QString      _displayName(const QLocale & locale);
         QStringList         _selectedEmailAddresses();
+        void                _setSelectedEmailAddresses(const QStringList & emailAddresses);
+        QString             _selectedEmailAddress();
+        void                _setSelectedEmailAddress(const QString & emailAddress);
         tt3::ws::InactivityTimeout  _selectedInactivityTimeout();
         tt3::ws::UiLocale   _selectedUiLocale();
         void                _refresh();
@@ -76,6 +79,10 @@ namespace tt3::gui
         //  Signal handlers
     private slots:
         void            _realNameLineEditTextChanged(QString);
+        void            _emailAddressesListWidgetCurrentRowChanged(int);
+        void            _addEmailAddressPushButtonClicked();
+        void            _modifyEmailAddressPushButtonClicked();
+        void            _removeEmailAddressPushButtonClicked();
         void            _inactivityTimeoutCheckBoxStateChanged(int);
         void            _hoursComboBoxCurrentIndexChanged(int);
         void            _minutesComboBoxCurrentIndexChanged(int);

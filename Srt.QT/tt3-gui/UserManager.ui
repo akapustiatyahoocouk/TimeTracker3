@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>416</width>
-    <height>296</height>
+    <height>334</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,38 +29,19 @@
    <property name="spacing">
     <number>4</number>
    </property>
-   <item row="0" column="0" colspan="2">
-    <widget class="QWidget" name="filterWidget" native="true">
-     <layout class="QFormLayout" name="formLayout">
-      <property name="horizontalSpacing">
-       <number>4</number>
+   <item row="1" column="0">
+    <widget class="QTreeWidget" name="usersTreeWidget">
+     <property name="contextMenuPolicy">
+      <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+     </property>
+     <attribute name="headerVisible">
+      <bool>false</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string notr="true">1</string>
       </property>
-      <property name="verticalSpacing">
-       <number>4</number>
-      </property>
-      <property name="leftMargin">
-       <number>4</number>
-      </property>
-      <property name="topMargin">
-       <number>4</number>
-      </property>
-      <property name="rightMargin">
-       <number>4</number>
-      </property>
-      <property name="bottomMargin">
-       <number>4</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QLabel" name="filterLabel">
-        <property name="text">
-         <string>Filter:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="filterLineEdit"/>
-      </item>
-     </layout>
+     </column>
     </widget>
    </item>
    <item row="1" column="1">
@@ -177,19 +158,66 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QTreeWidget" name="usersTreeWidget">
-     <property name="contextMenuPolicy">
-      <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
-     </property>
-     <attribute name="headerVisible">
-      <bool>false</bool>
-     </attribute>
-     <column>
-      <property name="text">
-       <string notr="true">1</string>
+   <item row="0" column="0" colspan="2">
+    <widget class="QWidget" name="filterWidget" native="true">
+     <layout class="QFormLayout" name="formLayout">
+      <property name="horizontalSpacing">
+       <number>4</number>
       </property>
-     </column>
+      <property name="verticalSpacing">
+       <number>4</number>
+      </property>
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="filterLabel">
+        <property name="text">
+         <string>Filter:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="filterLineEdit"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QWidget" name="optionsWidget" native="true">
+     <layout class="QGridLayout" name="gridLayout_3">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <property name="spacing">
+       <number>4</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="hideDisabledCheckBox">
+        <property name="text">
+         <string>Hide disabled users and accounts</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>

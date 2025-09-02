@@ -104,7 +104,7 @@
    <item row="0" column="1" colspan="4">
     <widget class="QLabel" name="productLabel">
      <property name="text">
-      <string>&lt;NME&gt;</string>
+      <string>&lt;NAME&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignmentFlag::AlignCenter</set>

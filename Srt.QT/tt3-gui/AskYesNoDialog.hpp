@@ -153,6 +153,26 @@ namespace tt3::gui
     public:
         explicit RestartRequiredDialog(::QWidget * parent);
     };
+
+    //  The modal "confirm User destruction" dialog
+    class TT3_GUI_PUBLIC ConfirmDestroyUserDialog : public AskYesNoDialog
+    {
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmDestroyUserDialog)
+
+        //////////
+        //  Construction/destruction
+    public:
+        ConfirmDestroyUserDialog(::QWidget * parent,
+                                 tt3::ws::User user,
+                                 const tt3::ws::Credentials & credentials)
+            throws(tt3::ws::WorkspaceClosedException);
+
+        //////////
+        //  Implementation
+    private:
+        static QString      _prompt(tt3::ws::User user,
+                                    const tt3::ws::Credentials & credentials) throws(tt3::ws::WorkspaceClosedException);
+    };
 }
 
 //  End of tt3-gui/AskYesNoDialog.hpp

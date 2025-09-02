@@ -285,6 +285,70 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>emailAddressesListWidget</sender>
+   <signal>currentRowChanged(int)</signal>
+   <receiver>tt3::gui::CreateUserDialog</receiver>
+   <slot>_emailAddressesListWidgetCurrentRowChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>264</x>
+     <y>96</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>addEmailAddressPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::CreateUserDialog</receiver>
+   <slot>_addEmailAddressPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>440</x>
+     <y>64</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modifyEmailAddressPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::CreateUserDialog</receiver>
+   <slot>_modifyEmailAddressPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>440</x>
+     <y>96</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>removeEmailAddressPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::CreateUserDialog</receiver>
+   <slot>_removeEmailAddressPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>440</x>
+     <y>128</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>154</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_realNameLineEditTextChanged(QString)</slot>
@@ -292,5 +356,9 @@
   <slot>_hoursComboBoxCurrentIndexChanged(int)</slot>
   <slot>_minutesComboBoxCurrentIndexChanged(int)</slot>
   <slot>_uiLocaleComboBoxCurrentIndexChanged(int)</slot>
+  <slot>_emailAddressesListWidgetCurrentRowChanged(int)</slot>
+  <slot>_addEmailAddressPushButtonClicked()</slot>
+  <slot>_modifyEmailAddressPushButtonClicked()</slot>
+  <slot>_removeEmailAddressPushButtonClicked()</slot>
  </slots>
 </ui>

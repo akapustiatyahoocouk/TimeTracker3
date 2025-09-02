@@ -59,7 +59,20 @@ bool ObjectImpl::isLive() const
 
 //////////
 //  Operations (life cycle)
-//  TODO implement void ObjectImpl::destroy(const Credentials & credentials) throws(WorkspaceException);
+void ObjectImpl::destroy(const Credentials & credentials) throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();
+
+    try
+    {
+        _dataObject->destroy(); //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
 
 //////////
 //  Implementation helpers

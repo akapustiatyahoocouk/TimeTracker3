@@ -437,18 +437,43 @@ void UserManager::_modifyUserPushButtonClicked()
     tt3::ws::User user = _selectedUser();
     if (user != nullptr)
     {
-        ModifyUserDialog dlg(this, user, _credentials);
-        if (dlg.doModal() == ModifyUserDialog::Result::Ok)
-        {   //  User modified - its position in the users tree may have changed
+        try
+        {
+            ModifyUserDialog dlg(this, user, _credentials); //  may throw
+            if (dlg.doModal() == ModifyUserDialog::Result::Ok)
+            {   //  User modified - its position in the users tree may have changed
+                refresh();
+                _setSelectedUser(user);
+            }
+        }
+        catch (tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
             refresh();
-            _setSelectedUser(user);
         }
     }
 }
 
 void UserManager::_destroyUserPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    tt3::ws::User user = _selectedUser();
+    if (user != nullptr)
+    {
+        try
+        {
+            ConfirmDestroyUserDialog dlg(this, user, _credentials);
+            if (dlg.doModal() == ConfirmDestroyUserDialog::Result::Yes)
+            {   //  Do it!
+                user->destroy(_credentials);
+                refresh();
+            }
+        }
+        catch (tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
+            refresh();
+        }
+    }
 }
 
 void UserManager::_createAccountPushButtonClicked()

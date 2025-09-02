@@ -108,9 +108,9 @@ void Application::_initialize()
     pm.load(":/tt3/Resources/Images/Misc/Tt3Large.png");
     QIcon ic(pm);
     QGuiApplication::setWindowIcon(ic);
-    QGuiApplication::setApplicationName(tt3::util::ProductInformation::applicationName());
-    QGuiApplication::setApplicationVersion(tt3::util::ProductInformation::applicationVersion().toString());
-    QGuiApplication::setApplicationDisplayName(tt3::util::ProductInformation::applicationDisplayName());
+    //QGuiApplication::setApplicationName(tt3::util::ProductInformation::applicationName());
+    //QGuiApplication::setApplicationVersion(tt3::util::ProductInformation::applicationVersion().toString());
+    //QGuiApplication::setApplicationDisplayName(tt3::util::ProductInformation::applicationDisplayName());
 
     _registerStandardComponents();
     tt3::util::PluginManager::loadPlugins();

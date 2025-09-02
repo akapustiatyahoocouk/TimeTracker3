@@ -1,5 +1,5 @@
 //
-//  tt3-gui/ErrorDialog.hpp - the modal "error" dialog
+//  tt3-gui/ErrorDialog.hpp - The modal "error" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,25 +14,44 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
+#pragma once
+#include "tt3-gui/API.hpp"
 
 namespace tt3::gui
 {
     //  The modal "error" dialog
-    class TT3_GUI_PUBLIC ErrorDialog final
+    namespace Ui { class ErrorDialog; }
+
+    class TT3_GUI_PUBLIC ErrorDialog : private QDialog
     {
-        UTILITY_CLASS(ErrorDialog)
+        Q_OBJECT
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ErrorDialog)
+
+        //////////
+        //  Construction/destruction
+    public:
+        ErrorDialog(QWidget * parent, const QString & errorMessage);
+        ErrorDialog(QWidget * parent, const tt3::util::Exception & ex);
+        virtual ~ErrorDialog();
 
         //////////
         //  Operations
     public:
+        //  Runs the dialog modally
+        void                doModal();
+
         //  Shows the error dialog with the specified error message [and parent].
-        static void     show(const tt3::util::Exception & ex);
-        static void     show(const QString & errorMessage);
-        static void     show();
-        static void     show(QWidget * parent, const tt3::util::Exception & ex);
-        static void     show(QWidget * parent, const QString & errorMessage);
-        static void     show(QWidget * parent);
+        static void         show(const tt3::util::Exception & ex);
+        static void         show(const QString & errorMessage);
+        static void         show(QWidget * parent, const tt3::util::Exception & ex);
+        static void         show(QWidget * parent, const QString & errorMessage);
+
+        //////////
+        //  Controls
+    private:
+        Ui::ErrorDialog *   _ui;
     };
 }
 
 //  End of tt3-gui/ErrorDialog.hpp
+
