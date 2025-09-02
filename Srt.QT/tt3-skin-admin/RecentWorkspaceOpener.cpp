@@ -37,13 +37,8 @@ void RecentWorkspaceOpener::_onTriggered()
 {
     if (!_mainFrame->_openWorkspace(_workspaceAddress))
     {   //  May want to remove this workspace from the MRU
-        if (tt3::gui::AskYesNoDialog::ask(
-                _mainFrame,
-                "Failed to open workspace",
-                "Would you like to remove the workspace\n" +
-                    _workspaceAddress->displayForm() +
-                    "\nfrom the recent workspaces list ?" +
-                    "") == tt3::gui::AskYesNoDialog::Answer::Yes)
+        tt3::gui::ConfirmForgetWorkspaceDialog dlg(_mainFrame, _workspaceAddress);
+        if (dlg.doModal() == tt3::gui::ConfirmForgetWorkspaceDialog::Result::Yes)
         {   //  Do it!
             tt3::ws::Component::Settings::instance()->removeRecentWorkspace(_workspaceAddress);
             MainFrame * mainFrame = _mainFrame;

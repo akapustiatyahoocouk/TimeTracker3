@@ -367,7 +367,7 @@ void MainFrame::_onActionCloseWorkspace()
     if (workspace != nullptr &&
         tt3::gui::Component::Settings::instance()->confirmCloseWorkspace)
     {
-        tt3::gui::ConfirmCloseWorkspaceDialog dlg(this, workspace);
+        tt3::gui::ConfirmCloseWorkspaceDialog dlg(this, workspace->address());
         if (dlg.doModal() != tt3::gui::ConfirmCloseWorkspaceDialog::Result::Yes)
         {   //  ...and the user has said "no" - restore the "current"
             //  database as it was, and we're done

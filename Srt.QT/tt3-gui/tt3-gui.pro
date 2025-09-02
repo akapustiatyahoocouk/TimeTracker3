@@ -6,11 +6,7 @@ DEFINES += TT3_GUI_LIBRARY
 SOURCES += \
     AboutDialog.cpp \
     AskYesNoDialog.cpp \
-    ChooseReloginDialog.cpp \
     Component.cpp \
-    ConfirmCloseWorkspaceDialog.cpp \
-    ConfirmExitDialog.cpp \
-    ConfirmRestartDialog.cpp \
     CreateUserDialog.cpp \
     CurrentSkin.cpp \
     CurrentTheme.cpp \
@@ -42,11 +38,7 @@ HEADERS += \
     API.hpp \
     AboutDialog.hpp \
     AskYesNoDialog.hpp \
-    ChooseReloginDialog.hpp \
     Components.hpp \
-    ConfirmCloseWorkspaceDialog.hpp \
-    ConfirmExitDialog.hpp \
-    ConfirmRestartDialog.hpp \
     CreateUserDialog.hpp \
     EditStringDialog.hpp \
     ErrorDialog.hpp \
@@ -69,10 +61,7 @@ HEADERS += \
 
 FORMS += \
     AboutDialog.ui \
-    ChooseReloginDialog.ui \
-    ConfirmCloseWorkspaceDialog.ui \
-    ConfirmExitDialog.ui \
-    ConfirmRestartDialog.ui \
+    AskYesNoDialog.ui \
     CreateUserDialog.ui \
     EditStringDialog.ui \
     GeneralAppearancePreferencesEditor.ui \

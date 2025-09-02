@@ -1,5 +1,5 @@
 //
-//  tt3-gui/EditStringDialog.cpp - tt3::gui::EditStringDialog class implementation
+//  tt3-gui/EditStringDialog.cpp - tt3::gui::EditStringDialog class implementation (+specializations)
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -84,6 +84,32 @@ void EditStringDialog::accept()
 void EditStringDialog::reject()
 {
     done(int(Result::Cancel));
+}
+
+//////////
+//  AddEmailAddressDialog
+AddEmailAddressDialog::AddEmailAddressDialog(::QWidget * parent, Validator validator)
+    :   EditStringDialog(parent,
+                         QIcon(":/tt3-gui/Resources/Images/Actions/AddEmailAddressLarge.png"),
+                         "Add e-mail address",
+                         "Enter the e-mail address",
+                         "",
+                         validator)
+{
+    Q_ASSERT(validator != nullptr);
+}
+
+//////////
+//  ModifyEmailAddressDialog
+ModifyEmailAddressDialog::ModifyEmailAddressDialog(::QWidget * parent, const QString & value, Validator validator)
+    :   EditStringDialog(parent,
+                       QIcon(":/tt3-gui/Resources/Images/Actions/AddEmailAddressLarge.png"),
+                       "Modify e-mail address",
+                       "Enter the e-mail address",
+                       value,
+                       validator)
+{
+    Q_ASSERT(validator != nullptr);
 }
 
 //  End of tt3-gui/EditStringDialog.cpp

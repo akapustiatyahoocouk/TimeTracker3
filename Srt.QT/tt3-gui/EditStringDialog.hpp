@@ -39,9 +39,9 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        explicit EditStringDialog(QWidget * parent,
-                                  const QIcon & icon, const QString & title, const QString & prompt,
-                                  const QString & initialValue, Validator validator = nullptr);
+        EditStringDialog(QWidget * parent,
+                         const QIcon & icon, const QString & title, const QString & prompt,
+                         const QString & initialValue, Validator validator = nullptr);
         virtual ~EditStringDialog();
 
         //////////
@@ -73,6 +73,28 @@ namespace tt3::gui
         void            _lineEditTextChanged(QString);
         void            accept() override;
         void            reject() override;
+    };
+
+    //  The "Add e-mail address" modal dialog
+    class TT3_GUI_PUBLIC AddEmailAddressDialog final : public EditStringDialog
+    {
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AddEmailAddressDialog)
+
+        //////////
+        //  Construction/destruction
+    public:
+        AddEmailAddressDialog(::QWidget * parent, Validator validator);
+    };
+
+    //  The "Modify e-mail address" modal dialog
+    class TT3_GUI_PUBLIC ModifyEmailAddressDialog final : public EditStringDialog
+    {
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ModifyEmailAddressDialog)
+
+        //////////
+        //  Construction/destruction
+    public:
+        ModifyEmailAddressDialog(::QWidget * parent, const QString & value, Validator validator);
     };
 }
 

@@ -238,14 +238,10 @@ void ModifyUserDialog::_emailAddressesListWidgetCurrentRowChanged(int)
 
 void ModifyUserDialog::_addEmailAddressPushButtonClicked()
 {
-    EditStringDialog dlg(
+    AddEmailAddressDialog dlg(
         this,
-        QIcon(":/tt3-gui/Resources/Images/Actions/AddEmailAddressLarge.png"),
-        "Add e-mail address",
-        "Enter the e-mail address",
-        "",
         [&](auto a) { return _validator->isValidEmailAddress(a); });
-    if (dlg.doModal() == EditStringDialog::Result::Ok)
+    if (dlg.doModal() == AddEmailAddressDialog::Result::Ok)
     {
         QStringList emailAddresses = _selectedEmailAddresses();
         emailAddresses.removeOne(dlg.editedValue());    //  in case it's already there
@@ -262,14 +258,11 @@ void ModifyUserDialog::_modifyEmailAddressPushButtonClicked()
     QString oldEmailAddress = _selectedEmailAddress();
     if (!oldEmailAddress.isEmpty())
     {
-        EditStringDialog dlg(
+        ModifyEmailAddressDialog dlg(
             this,
-            QIcon(":/tt3-gui/Resources/Images/Actions/ModifyEmailAddressLarge.png"),
-            "Modify e-mail address",
-            "Enter the e-mail address",
             oldEmailAddress,
             [&](auto a) { return _validator->isValidEmailAddress(a); });
-        if (dlg.doModal() == EditStringDialog::Result::Ok)
+        if (dlg.doModal() == ModifyEmailAddressDialog::Result::Ok)
         {
             QStringList emailAddresses = _selectedEmailAddresses();
             emailAddresses.removeOne(oldEmailAddress);
@@ -284,6 +277,15 @@ void ModifyUserDialog::_modifyEmailAddressPushButtonClicked()
 
 void ModifyUserDialog::_removeEmailAddressPushButtonClicked()
 {
+    QString emailAddress = _selectedEmailAddress();
+    if (!emailAddress.isEmpty())
+    {
+        QStringList emailAddresses = _selectedEmailAddresses();
+        emailAddresses.removeOne(emailAddress);
+        //  No need to sort() - sorted already
+        _setSelectedEmailAddresses(emailAddresses);
+        _refresh();
+    }
 }
 
 void ModifyUserDialog::_inactivityTimeoutCheckBoxStateChanged(int)

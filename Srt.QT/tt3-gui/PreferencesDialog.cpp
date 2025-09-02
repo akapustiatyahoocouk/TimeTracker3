@@ -212,12 +212,8 @@ void PreferencesDialog::_refresh()
 
 void PreferencesDialog::_resetPushNuttonClicked()
 {
-    if (AskYesNoDialog::ask(
-        this,
-        "Reset page settings",
-        "Are you sure you want to reset page settings to their default values ?"
-            "\nThe effects will not be permanent until you press 'OK' to close the dialog."
-            "") == AskYesNoDialog::Answer::Yes)
+    ConfirmResetPageSettingsDialog dlg(this);
+    if (dlg.doModal() == ConfirmResetPageSettingsDialog::Result::Yes)
     {   //  Do it!
         QTreeWidgetItem * item = _ui->preferencesTreeWidget->currentItem();
         if (_editorsForItems.contains(item))
@@ -230,12 +226,8 @@ void PreferencesDialog::_resetPushNuttonClicked()
 
 void PreferencesDialog::_resetAllPushNuttonClicked()
 {
-    if (AskYesNoDialog::ask(
-            this,
-            "Reset all settings",
-            "Are you sure you want to reset all settings to their default values ?"
-            "\nThe effects will not be permanent until you press 'OK' to close the dialog."
-            "") == AskYesNoDialog::Answer::Yes)
+    ConfirmResetAllSettingsDialog dlg(this);
+    if (dlg.doModal() == ConfirmResetAllSettingsDialog::Result::Yes)
     {   //  Do it!
         for (PreferencesEditor * editor : _editorsForItems.values())
         {
@@ -255,13 +247,8 @@ void PreferencesDialog::accept()
     _saveCurrentPreferences();
     if (_restartRequired)
     {
-        if (AskYesNoDialog::ask(
-            this,
-            "Restart required",
-            "One of the changes you have made to application settings"
-                "\nwill take place only after the application is restarted."
-                "\nDo you want to restart TimeTracker3 now ?"
-                "") == AskYesNoDialog::Answer::Yes)
+        RestartRequiredDialog dlg(this);
+        if (dlg.doModal() == RestartRequiredDialog::Result::Yes)
         {
             QApplication::exit(-1);
         }
