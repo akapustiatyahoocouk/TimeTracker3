@@ -203,14 +203,47 @@ Accounts UserImpl::accounts(const Credentials & credentials) const throws(Worksp
 }
 
 //////////
-//  Access control
+//  Operations (life cycle)
+Account UserImpl::createAccount(
+    const Credentials & credentials,
+    bool enabled, const QStringList & emailAddresses,
+    const QString & login, const QString & password,
+    Capabilities capabilities) throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();
+
+    try
+    {
+        //  Check access rights
+        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        if ((clientCapabilities & Capabilities::Administrator) == Capabilities::None &&
+            (clientCapabilities & Capabilities::ManageUsers) == Capabilities::None)
+        {   //  OOPS! Can't!
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        tt3::db::api::IAccount * dataAccount =
+            _dataUser->createAccount(
+                enabled, emailAddresses,
+                login, password, capabilities);
+        return _workspace->_getProxy(dataAccount);;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  ...but let other exceptions through
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+//////////
+//  Implementation (Access control)
 bool UserImpl::_canRead(const Credentials & credentials) const
 {
     try
     {
-        Capabilities capabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        if ((capabilities & Capabilities::Administrator) != Capabilities::None ||
-            (capabilities & Capabilities::ManageUsers) != Capabilities::None)
+        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        if ((clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
+            (clientCapabilities & Capabilities::ManageUsers) != Capabilities::None)
         {   //  Can read any user
             return true;
         }
@@ -229,9 +262,9 @@ bool UserImpl::_canModify(const Credentials & credentials) const
 {
     try
     {
-        Capabilities capabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        if ((capabilities & Capabilities::Administrator) != Capabilities::None ||
-            (capabilities & Capabilities::ManageUsers) != Capabilities::None)
+        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        if ((clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
+            (clientCapabilities & Capabilities::ManageUsers) != Capabilities::None)
         {   //  Can modify any user
             return true;
         }
@@ -250,9 +283,9 @@ bool UserImpl::_canDestroy(const Credentials & credentials) const
 {
     try
     {
-        Capabilities capabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        return (capabilities & Capabilities::Administrator) != Capabilities::None ||
-               (capabilities & Capabilities::ManageUsers) != Capabilities::None;
+        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        return (clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
+               (clientCapabilities & Capabilities::ManageUsers) != Capabilities::None;
     }
     catch (const tt3::util::Exception & ex)
     {

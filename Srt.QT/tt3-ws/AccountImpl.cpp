@@ -63,14 +63,14 @@ void setCapabilities(const Credentials & credentials, Capabilities capabilities)
 */
 
 //////////
-//  Access control
+//  Implementation (Access control)
 bool AccountImpl::_canRead(const Credentials & credentials) const throws(WorkspaceException)
 {
     try
     {
-        Capabilities capabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        if ((capabilities & Capabilities::Administrator) != Capabilities::None ||
-            (capabilities & Capabilities::ManageUsers) != Capabilities::None)
+        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        if ((clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
+            (clientCapabilities & Capabilities::ManageUsers) != Capabilities::None)
         {   //  Can read any accounts
             return true;
         }
@@ -89,9 +89,9 @@ bool AccountImpl::_canModify(const Credentials & credentials) const throws(Works
 {
     try
     {
-        Capabilities capabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        if ((capabilities & Capabilities::Administrator) != Capabilities::None ||
-            (capabilities & Capabilities::ManageUsers) != Capabilities::None)
+        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        if ((clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
+            (clientCapabilities & Capabilities::ManageUsers) != Capabilities::None)
         {   //  Can modify any accounts
             return true;
         }
@@ -110,9 +110,9 @@ bool AccountImpl::_canDestroy(const Credentials & credentials) const throws(Work
 {
     try
     {
-        Capabilities capabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        return (capabilities & Capabilities::Administrator) != Capabilities::None ||
-               (capabilities & Capabilities::ManageUsers) != Capabilities::None;
+        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        return (clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
+               (clientCapabilities & Capabilities::ManageUsers) != Capabilities::None;
     }
     catch (const tt3::util::Exception & ex)
     {

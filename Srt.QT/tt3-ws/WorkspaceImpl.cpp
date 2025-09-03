@@ -108,10 +108,10 @@ Users WorkspaceImpl::users(const Credentials & credentials) const throws(Workspa
 
     try
     {
-        Capabilities capabilities = _validateAccessRights(credentials); //  may throw
+        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
         Users result;
-        if ((capabilities & Capabilities::Administrator) != Capabilities::None ||
-            (capabilities & Capabilities::ManageUsers) != Capabilities::None)
+        if ((clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
+            (clientCapabilities & Capabilities::ManageUsers) != Capabilities::None)
         {   //  The caller can see all users
             for (tt3::db::api::IUser * dataUser : _database->users())
             {
@@ -187,16 +187,17 @@ User WorkspaceImpl::createUser(
     try
     {
         //  Check access rights
-        Capabilities capabilities = _validateAccessRights(credentials); //  may throw
-        if ((capabilities & Capabilities::Administrator) == Capabilities::None &&
-            (capabilities & Capabilities::ManageUsers) == Capabilities::None)
+        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+        if ((clientCapabilities & Capabilities::Administrator) == Capabilities::None &&
+            (clientCapabilities & Capabilities::ManageUsers) == Capabilities::None)
         {   //  OOPS! Can't!
             throw AccessDeniedException();
         }
         //  Do the work
         tt3::db::api::IUser * dataUser =
-            _database->createUser(enabled, emailAddresses,
-                                  realName, inactivityTimeout, uiLocale);
+            _database->createUser(
+                enabled, emailAddresses,
+                realName, inactivityTimeout, uiLocale);
         return _getProxy(dataUser);;
     }
     catch (const tt3::util::Exception & ex)

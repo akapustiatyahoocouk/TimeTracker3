@@ -266,6 +266,7 @@ void ModifyUserDialog::_modifyEmailAddressPushButtonClicked()
         {
             QStringList emailAddresses = _selectedEmailAddresses();
             emailAddresses.removeOne(oldEmailAddress);
+            emailAddresses.removeOne(dlg.editedValue());
             emailAddresses.append(dlg.editedValue());
             emailAddresses.sort();
             _setSelectedEmailAddresses(emailAddresses);

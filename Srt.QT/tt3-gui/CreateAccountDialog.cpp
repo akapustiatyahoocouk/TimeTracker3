@@ -1,5 +1,5 @@
 //
-//  tt3-gui/CreateUserDialog.cpp - tt3::gui::CreateUserDialog class implementation
+//  tt3-gui/CreateAccountDialog.cpp - tt3::gui::CreateAccountDialog class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,22 +15,22 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-gui/API.hpp"
-#include "ui_CreateUserDialog.h"
+#include "ui_CreateAccountDialog.h"
 using namespace tt3::gui;
 
 //////////
 //  Construction/destruction
-CreateUserDialog::CreateUserDialog(QWidget * parent,
-                                   tt3::ws::Workspace workspace, const tt3::ws::Credentials & credentials )
+CreateAccountDialog::CreateAccountDialog(QWidget * parent,
+                                         tt3::ws::User user, const tt3::ws::Credentials & credentials)
     :   QDialog(parent),
         //  Implementation
-        _workspace(workspace),
+        _user(user),
         _credentials(credentials),
-        _validator(workspace->validator()->user()),
+        _validator(user->workspace()->validator()->account()),
         //  Controls
-        _ui(new Ui::CreateUserDialog)
+        _ui(new Ui::CreateAccountDialog)
 {
-    Q_ASSERT(_workspace != nullptr);
+    Q_ASSERT(_user != nullptr);
     Q_ASSERT(_credentials.isValid());
 
     _ui->setupUi(this);
@@ -40,62 +40,26 @@ CreateUserDialog::CreateUserDialog(QWidget * parent,
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    //  Fill "hours" amd "minutes" combo boxes
-    for (int h = 0; h < 12; h++)
-    {
-        _ui->hoursComboBox->addItem(tt3::util::toString(h) + " hrs", QVariant::fromValue(h));
-    }
-    for (int m = 0; m < 60; m += 15)
-    {
-        _ui->minutesComboBox->addItem(tt3::util::toString(m) + " min", QVariant::fromValue(m));
-    }
-
-    //  Fill "UI locale" combo box
-    _ui->uiLocaleComboBox->addItem("- (system default)");
-    for (QLocale locale : tt3::util::ComponentManager::supportedLocales())
-    {
-        _locales.append(locale);
-    }
-    std::sort(_locales.begin(),
-              _locales.end(),
-              [](auto a, auto b) { return _displayName(a) < _displayName(b); });
-
-    for (QLocale locale : _locales)
-    {
-        _ui->uiLocaleComboBox->addItem(
-            tt3::util::LocaleManager::smallIcon(locale),
-            tt3::util::LocaleManager::displayName(locale));
-    }
-    _locales.insert(0, QLocale());  //  ...to make combo box and QList indexes match
-
     //  Done
     adjustSize();
     _refresh();
 }
 
-CreateUserDialog::~CreateUserDialog()
+CreateAccountDialog::~CreateAccountDialog()
 {
     delete _ui;
 }
 
 //////////
 //  Operations
-CreateUserDialog::Result CreateUserDialog::doModal()
+CreateAccountDialog::Result CreateAccountDialog::doModal()
 {
     return Result(this->exec());
 }
 
 //////////
 //  Implementation helpers
-QString CreateUserDialog::_displayName(const QLocale & locale)
-{
-    return QLocale::languageToString(locale.language()) +
-           " (" +
-           QLocale::territoryToString(locale.territory()) +
-           ")";
-}
-
-QStringList CreateUserDialog::_selectedEmailAddresses()
+QStringList CreateAccountDialog::_selectedEmailAddresses()
 {
     QStringList result;
     for (int i = 0; i < _ui->emailAddressesListWidget->count(); i++)
@@ -105,7 +69,7 @@ QStringList CreateUserDialog::_selectedEmailAddresses()
     return result;
 }
 
-void CreateUserDialog::_setSelectedEmailAddresses(const QStringList & emailAddresses)
+void CreateAccountDialog::_setSelectedEmailAddresses(const QStringList & emailAddresses)
 {
     _ui->emailAddressesListWidget->clear();
     for (QString emailAddress : emailAddresses)
@@ -115,15 +79,15 @@ void CreateUserDialog::_setSelectedEmailAddresses(const QStringList & emailAddre
     _refresh();
 }
 
-QString CreateUserDialog::_selectedEmailAddress()
+QString CreateAccountDialog::_selectedEmailAddress()
 {
     int n = _ui->emailAddressesListWidget->currentRow();
     return (n != -1) ?
-                _ui->emailAddressesListWidget->item(n)->text() :
-                "";
+               _ui->emailAddressesListWidget->item(n)->text() :
+               "";
 }
 
-void CreateUserDialog::_setSelectedEmailAddress(const QString & emailAddress)
+void CreateAccountDialog::_setSelectedEmailAddress(const QString & emailAddress)
 {
     for (int i = 0; i < _ui->emailAddressesListWidget->count(); i++)
     {
@@ -135,50 +99,93 @@ void CreateUserDialog::_setSelectedEmailAddress(const QString & emailAddress)
     }
 }
 
-tt3::ws::InactivityTimeout CreateUserDialog::_selectedInactivityTimeout()
+tt3::ws::Capabilities CreateAccountDialog::_selectedCapabilities()
 {
-    if (_ui->inactivityTimeoutCheckBox->isChecked())
+    tt3::ws::Capabilities result = tt3::ws::Capabilities::None;
+    if (_ui->administratorCheckBox->isChecked())
     {
-        int h = _ui->hoursComboBox->currentData().value<int>();
-        int m = _ui->minutesComboBox->currentData().value<int>();
-        return tt3::util::TimeSpan::hours(h) + tt3::util::TimeSpan::minutes(m);
+        result |= tt3::ws::Capabilities::Administrator;
     }
-    return tt3::ws::InactivityTimeout();
+    if (_ui->manageUsersCheckBox->isChecked())
+    {
+        result |= tt3::ws::Capabilities::ManageUsers;
+    }
+    if (_ui->manageActivityTypesCheckBox->isChecked())
+    {
+        result |= tt3::ws::Capabilities::ManageActivityTypes;
+    }
+    if (_ui->manageBeneficiariesCheckBox->isChecked())
+    {
+        result |= tt3::ws::Capabilities::ManageBeheficiaries;
+    }
+    if (_ui->manageWorkloadsCheckBox->isChecked())
+    {
+        result |= tt3::ws::Capabilities::ManageWorkloads;
+    }
+    if (_ui->managePublicActivitiesCheckBox->isChecked())
+    {
+        result |= tt3::ws::Capabilities::ManagePublicActivities;
+    }
+    if (_ui->managePublicTasksCheckBox->isChecked())
+    {
+        result |= tt3::ws::Capabilities::ManagePublicTasks;
+    }
+    if (_ui->managePrivateActivitiesCheckBox->isChecked())
+    {
+        result |= tt3::ws::Capabilities::ManagePrivateActivities;
+    }
+    if (_ui->managePrivateTasksCheckBox->isChecked())
+    {
+        result |= tt3::ws::Capabilities::ManagePrivateTasks;
+    }
+    if (_ui->logWorkCheckBox->isChecked())
+    {
+        result |= tt3::ws::Capabilities::LogWork;
+    }
+    if (_ui->logEventsCheckBox->isChecked())
+    {
+        result |= tt3::ws::Capabilities::LogEvents;
+    }
+    if (_ui->generateReportsCheckBox->isChecked())
+    {
+        result |= tt3::ws::Capabilities::GenerateReports;
+    }
+    if (_ui->backupAndRestoreCheckBox->isChecked())
+    {
+        result |= tt3::ws::Capabilities::BackupAndRestore;
+    }
+    return result;
 }
 
-tt3::ws::UiLocale CreateUserDialog::_selectedUiLocale()
-{
-    return (_ui->uiLocaleComboBox->currentIndex() == 0) ?
-                tt3::ws::UiLocale() :
-                tt3::ws::UiLocale(_locales[_ui->uiLocaleComboBox->currentIndex()]);
-}
-
-void CreateUserDialog::_refresh()
+void CreateAccountDialog::_refresh()
 {
     _ui->modifyEmailAddressPushButton->setEnabled(!_selectedEmailAddress().isEmpty());
     _ui->removeEmailAddressPushButton->setEnabled(!_selectedEmailAddress().isEmpty());
-    _ui->hoursComboBox->setEnabled(_ui->inactivityTimeoutCheckBox->isChecked());
-    _ui->minutesComboBox->setEnabled(_ui->inactivityTimeoutCheckBox->isChecked());
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(
-        _validator->isValidRealName(_ui->realNameLineEdit->text()) &&
-        _validator->isValidInactivityTimeout(_selectedInactivityTimeout()) &&
-        _validator->isValidEmailAddresses(_selectedEmailAddresses()) &&
-        _validator->isValidUiLocale(_selectedUiLocale()));
+        _validator->isValidLogin(_ui->loginLineEdit->text()) &&
+        _validator->isValidPassword(_ui->passwordLineEdit->text()) &&
+        _ui->passwordLineEdit->text() == _ui->confirmPasswordLineEdit->text() &&
+        _validator->isValidEmailAddresses(_selectedEmailAddresses()));
 }
 
 //////////
 //  Signal handlers
-void CreateUserDialog::_realNameLineEditTextChanged(QString)
+void CreateAccountDialog::_loginLineEditTextChanged(QString)
 {
     _refresh();
 }
 
-void CreateUserDialog::_emailAddressesListWidgetCurrentRowChanged(int)
+void CreateAccountDialog::_passwordLineEditTextChanged(QString)
 {
     _refresh();
 }
 
-void CreateUserDialog::_addEmailAddressPushButtonClicked()
+void CreateAccountDialog::_emailAddressesListWidgetCurrentRowChanged(int)
+{
+    _refresh();
+}
+
+void CreateAccountDialog::_addEmailAddressPushButtonClicked()
 {
     AddEmailAddressDialog dlg(
         this,
@@ -195,7 +202,7 @@ void CreateUserDialog::_addEmailAddressPushButtonClicked()
     }
 }
 
-void CreateUserDialog::_modifyEmailAddressPushButtonClicked()
+void CreateAccountDialog::_modifyEmailAddressPushButtonClicked()
 {
     QString oldEmailAddress = _selectedEmailAddress();
     if (!oldEmailAddress.isEmpty())
@@ -218,7 +225,7 @@ void CreateUserDialog::_modifyEmailAddressPushButtonClicked()
     }
 }
 
-void CreateUserDialog::_removeEmailAddressPushButtonClicked()
+void CreateAccountDialog::_removeEmailAddressPushButtonClicked()
 {
     QString emailAddress = _selectedEmailAddress();
     if (!emailAddress.isEmpty())
@@ -231,37 +238,17 @@ void CreateUserDialog::_removeEmailAddressPushButtonClicked()
     }
 }
 
-void CreateUserDialog::_inactivityTimeoutCheckBoxStateChanged(int)
-{
-    _refresh();
-}
-
-void CreateUserDialog::_hoursComboBoxCurrentIndexChanged(int)
-{
-    _refresh();
-}
-
-void CreateUserDialog::_minutesComboBoxCurrentIndexChanged(int)
-{
-    _refresh();
-}
-
-void CreateUserDialog::_uiLocaleComboBoxCurrentIndexChanged(int)
-{
-    _refresh();
-}
-
-void CreateUserDialog::accept()
+void CreateAccountDialog::accept()
 {
     try
     {
-        _createdUser = _workspace->createUser(
+        _createdAccount = _user->createAccount(
             _credentials,
             _ui->enabledCheckBox->isChecked(),
             _selectedEmailAddresses(),
-            _ui->realNameLineEdit->text(),
-            _selectedInactivityTimeout(),
-            _selectedUiLocale());
+            _ui->loginLineEdit->text(),
+            _ui->passwordLineEdit->text(),
+            _selectedCapabilities());
         done(int(Result::Ok));
     }
     catch (const tt3::util::Exception & ex)
@@ -270,9 +257,9 @@ void CreateUserDialog::accept()
     }
 }
 
-void CreateUserDialog::reject()
+void CreateAccountDialog::reject()
 {
     done(int(Result::Cancel));
 }
 
-//  End of tt3-gui/CreateUserDialog.cpp
+//  End of tt3-gui/CreateAccountDialog.cpp

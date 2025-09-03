@@ -66,6 +66,12 @@ void ObjectImpl::destroy(const Credentials & credentials) throws(WorkspaceExcept
 
     try
     {
+        //  Validate access rights
+        if (!_canDestroy(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
         _dataObject->destroy(); //  may throw
     }
     catch (const tt3::util::Exception & ex)

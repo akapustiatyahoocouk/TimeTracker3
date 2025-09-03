@@ -64,7 +64,7 @@ namespace tt3::ws
         //  Creates a new Account for this User.
         //  All Accounts in a database must have different lohins.
         //  Throws WorkspaceException if an error occurs.
-        Account             createAccount(
+        Account             createAccount(const Credentials & credentials,
                                 bool enabled, const QStringList & emailAddresses,
                                 const QString & login, const QString & password,
                                 Capabilities capabilities) throws(WorkspaceException);

@@ -337,7 +337,7 @@ void UserManager::_setSelectedUser(tt3::ws::User user)
         if (user == userItem->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::User>())
         {   //  This one!
             _ui->usersTreeWidget->setCurrentItem(userItem);
-            break;
+            return;
         }
     }
 }
@@ -348,6 +348,23 @@ tt3::ws::Account UserManager::_selectedAccount()
     return (item != nullptr && item->parent() != nullptr) ?
                item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::Account>() :
                nullptr;
+}
+
+void UserManager::_setSelectedAccount(tt3::ws::Account account)
+{
+    for (int i = 0; i < _ui->usersTreeWidget->topLevelItemCount(); i++)
+    {
+        QTreeWidgetItem * userItem = _ui->usersTreeWidget->topLevelItem(i);
+        for (int j = 0; j < userItem->childCount(); j++)
+        {
+            QTreeWidgetItem * accountItem = userItem->child(j);
+            if (account == accountItem->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::Account>())
+            {   //  This one!
+                _ui->usersTreeWidget->setCurrentItem(accountItem);
+                return;
+            }
+        }
+    }
 }
 
 //////////
@@ -461,10 +478,10 @@ void UserManager::_destroyUserPushButtonClicked()
     {
         try
         {
-            ConfirmDestroyUserDialog dlg(this, user, _credentials);
+            ConfirmDestroyUserDialog dlg(this, user, _credentials); //  may throw
             if (dlg.doModal() == ConfirmDestroyUserDialog::Result::Yes)
             {   //  Do it!
-                user->destroy(_credentials);
+                user->destroy(_credentials);    //  may throw
                 refresh();
             }
         }
@@ -478,7 +495,16 @@ void UserManager::_destroyUserPushButtonClicked()
 
 void UserManager::_createAccountPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    tt3::ws::User user = _selectedUser();
+    if (user != nullptr)
+    {
+        CreateAccountDialog dlg(this, user, _credentials);
+        if (dlg.doModal() == CreateAccountDialog::Result::Ok)
+        {   //  Account created
+            refresh();
+            _setSelectedAccount(dlg.createdAccount());
+        }
+    }
 }
 
 void UserManager::_modifyAccountPushButtonClicked()

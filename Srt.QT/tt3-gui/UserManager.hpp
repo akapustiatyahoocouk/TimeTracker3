@@ -67,6 +67,7 @@ namespace tt3::gui
         tt3::ws::User       _selectedUser();
         void                _setSelectedUser(tt3::ws::User user);
         tt3::ws::Account    _selectedAccount();
+        void                _setSelectedAccount(tt3::ws::Account account);
 
         //////////
         //  Controls
