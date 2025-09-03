@@ -225,6 +225,7 @@ bool MainFrame::_openWorkspace(tt3::ws::WorkspaceAddress workspaceAddress)
         //  to the newly open workspace, what do we do?
         if (!_reconcileCurrntCredentials(workspace))
         {   //  No reconciliation - stop opening the workspace
+            workspace->close();
             return false;
         }
         //  TODO if there is a "current activity", record & stop it

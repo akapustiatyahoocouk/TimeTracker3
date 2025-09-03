@@ -21,6 +21,7 @@ SOURCES += \
     GeneralStartupPreferences.cpp \
     GeneralStartupPreferencesEditor.cpp \
     LoginDialog.cpp \
+    ModifyAccountDialog.cpp \
     ModifyUserDialog.cpp \
     NewWorkspaceDialog.cpp \
     Preferences.cpp \
@@ -49,6 +50,7 @@ HEADERS += \
     GeneralStartupPreferencesEditor.hpp \
     Linkage.hpp \
     LoginDialog.hpp \
+    ModifyAccountDialog.hpp \
     ModifyUserDialog.hpp \
     NewWorkspaceDialog.hpp \
     Preferences.hpp \
@@ -72,6 +74,7 @@ FORMS += \
     GeneralDialogsPreferencesEditor.ui \
     GeneralStartupPreferencesEditor.ui \
     LoginDialog.ui \
+    ModifyAccountDialog.ui \
     ModifyUserDialog.ui \
     NewWorkspaceDialog.ui \
     PreferencesDialog.ui \

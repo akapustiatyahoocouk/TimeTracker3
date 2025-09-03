@@ -230,7 +230,7 @@ Account UserImpl::createAccount(
         return _workspace->_getProxy(dataAccount);;
     }
     catch (const tt3::util::Exception & ex)
-    {   //  ...but let other exceptions through
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }

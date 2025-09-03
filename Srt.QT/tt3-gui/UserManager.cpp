@@ -108,6 +108,20 @@ void UserManager::refresh()
         capabilities = tt3::ws::Capabilities::None;
     }
 
+    tt3::ws::Account clientAccount;
+    tt3::ws::User clientUser;
+    try
+    {
+        clientAccount = _workspace->tryLogin(_credentials);;
+        if (clientAccount != nullptr)
+        {
+            clientUser = clientAccount->user(_credentials);
+        }
+    }
+    catch (const tt3::util::Exception &)
+    {   //  OOPS! Suppress, though
+    }
+
     tt3::ws::User selectedUser = _selectedUser();
     tt3::ws::Account selectedAccount = _selectedAccount();
     _ui->createUserPushButton->setEnabled(
@@ -115,7 +129,8 @@ void UserManager::refresh()
         (capabilities & tt3::ws::Capabilities::ManageUsers) != tt3::ws::Capabilities::None);
     _ui->modifyUserPushButton->setEnabled(
         ((capabilities & tt3::ws::Capabilities::Administrator) != tt3::ws::Capabilities::None ||
-         (capabilities & tt3::ws::Capabilities::ManageUsers) != tt3::ws::Capabilities::None) &&
+         (capabilities & tt3::ws::Capabilities::ManageUsers) != tt3::ws::Capabilities::None ||
+         clientUser == selectedUser) &&
         selectedUser != nullptr);
     _ui->destroyUserPushButton->setEnabled(
         ((capabilities & tt3::ws::Capabilities::Administrator) != tt3::ws::Capabilities::None ||
@@ -127,7 +142,8 @@ void UserManager::refresh()
         selectedUser != nullptr);
     _ui->modifyAccountPushButton->setEnabled(
         ((capabilities & tt3::ws::Capabilities::Administrator) != tt3::ws::Capabilities::None ||
-         (capabilities & tt3::ws::Capabilities::ManageUsers) != tt3::ws::Capabilities::None) &&
+         (capabilities & tt3::ws::Capabilities::ManageUsers) != tt3::ws::Capabilities::None ||
+         clientAccount == selectedAccount) &&
         selectedAccount != nullptr);
     _ui->destroyAccountPushButton->setEnabled(
         ((capabilities & tt3::ws::Capabilities::Administrator) != tt3::ws::Capabilities::None ||
@@ -509,7 +525,24 @@ void UserManager::_createAccountPushButtonClicked()
 
 void UserManager::_modifyAccountPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    tt3::ws::Account account = _selectedAccount();
+    if (account != nullptr)
+    {
+        try
+        {
+            ModifyAccountDialog dlg(this, account, _credentials); //  may throw
+            if (dlg.doModal() == ModifyAccountDialog::Result::Ok)
+            {   //  User modified - its position in the users tree may have changed
+                refresh();
+                _setSelectedAccount(account);
+            }
+        }
+        catch (tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
+            refresh();
+        }
+    }
 }
 
 void UserManager::_destroyAccountPushButtonClicked()

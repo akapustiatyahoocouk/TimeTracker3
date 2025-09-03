@@ -89,6 +89,11 @@ namespace tt3::ws
         //  Throws WorkspaceException if an error occurs.
         Capabilities    capabilities(const Credentials & credentials) const throws(WorkspaceException);
 
+        //  If there exists an a) enabled account b) of an
+        //  enabled user c) with the spcified credentials,
+        //  returns it; otherwise returns nullptr.
+        Account         tryLogin(const Credentials & credentials) const throws(WorkspaceException);
+
         //////////
         //  Operations (life cycle)
     public:

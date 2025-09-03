@@ -54,13 +54,162 @@ QString AccountImpl::login(const Credentials & credentials) const throws(Workspa
     }
 }
 
-/*  TODO uncomment & implement
-void AccountImpl::setLogin(const Credentials & credentials, const QString & login) throws(WorkspaceException);
-QString AccountImpl::passwordHash(const Credentials & credentials) const throws(WorkspaceException);
-void AccountImpl::setPassword(const Credentials & credentials, const QString & password) throws(WorkspaceException);
-Capabilities AccountImpl::capabilities(const Credentials & credentials) const throws(WorkspaceException);
-void setCapabilities(const Credentials & credentials, Capabilities capabilities) throws(WorkspaceException);
-*/
+void AccountImpl::setLogin(const Credentials & credentials, const QString & login) throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights.
+        //  Note that a user CANNOT modify their own login!
+        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        if ((clientCapabilities & Capabilities::Administrator) == Capabilities::None &&
+            (clientCapabilities & Capabilities::ManageUsers) == Capabilities::None)
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _dataAccount->setLogin(login);   //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+QString AccountImpl::passwordHash(const Credentials & credentials) const throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _dataAccount->passwordHash();    //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+void AccountImpl::setPassword(const Credentials & credentials, const QString & password) throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataAccount->setPassword(password); //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+Capabilities AccountImpl::capabilities(const Credentials & credentials) const throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _dataAccount->capabilities();    //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+void AccountImpl::setCapabilities(const Credentials & credentials, Capabilities capabilities) throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights.
+        //  Note that a user CANNOT modify their own capabilities...
+        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        if ((clientCapabilities & Capabilities::Administrator) == Capabilities::None &&
+            (clientCapabilities & Capabilities::ManageUsers) == Capabilities::None)
+        {
+            throw AccessDeniedException();
+        }
+        //  ...or leave workspace without an enabled admin user+account
+        if ((capabilities & Capabilities::Administrator) == Capabilities::None)
+        {
+            bool hasEnabledAdminAccount = false;
+            for (tt3::db::api::IUser * someDataUser : _dataPrincipal->database()->users())
+            {
+                for (tt3::db::api::IAccount * someDataAccount : someDataUser->accounts())
+                {
+                    if (someDataUser->enabled() &&
+                        someDataAccount->enabled() &&
+                        someDataAccount != this->_dataAccount &&
+                        (someDataAccount->capabilities() & Capabilities::Administrator) != Capabilities::None)
+                    {
+                        hasEnabledAdminAccount = true;
+                    }
+                }
+            }
+            if (!hasEnabledAdminAccount)
+            {
+                throw AccessWouldBeLostException();
+            }
+        }
+
+        //  Do the work
+        return _dataAccount->setCapabilities(capabilities); //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+//////////
+//  Operations (associations)
+User AccountImpl::user(const Credentials & credentials) const throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _workspace->_getProxy(_dataAccount->user()); //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
 
 //////////
 //  Implementation (Access control)

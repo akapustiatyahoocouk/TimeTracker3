@@ -82,7 +82,6 @@ void PrincipalImpl::setEnabled(const Credentials & credentials, bool enabled) th
                     {
                         hasEnabledAdminAccount = true;
                     }
-
                 }
             }
             if (!hasEnabledAdminAccount)

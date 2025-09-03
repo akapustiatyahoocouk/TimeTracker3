@@ -140,8 +140,7 @@ ChooseReloginDialog::ChooseReloginDialog(
           "Access denied",
           "Current credentials do not allow access to\n" +
               workspaceAddress->displayForm() +
-              "\nDo you want to log in with different credentials ?",
-          &Component::Settings::instance()->confirmCloseWorkspace)
+              "\nDo you want to log in with different credentials ?")
 {
 }
 

@@ -53,5 +53,6 @@
 #include "tt3-gui/CreateUserDialog.hpp"
 #include "tt3-gui/ModifyUserDialog.hpp"
 #include "tt3-gui/CreateAccountDialog.hpp"
+#include "tt3-gui/ModifyAccountDialog.hpp"
 
 //  End of tt3-gui/API.hpp

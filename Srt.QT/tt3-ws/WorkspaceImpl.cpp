@@ -167,7 +167,26 @@ Capabilities WorkspaceImpl::capabilities(const Credentials & credentials) const 
         return _validateAccessRights(credentials);  //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {   //  ...but let other exceptions through
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+Account WorkspaceImpl::tryLogin(const Credentials & credentials) const throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();
+
+    try
+    {
+        tt3::db::api::IAccount * dataAccount =
+            _database->tryLogin(credentials._login, credentials._password);
+        return (dataAccount != nullptr) ?
+                    _getProxy(dataAccount) :
+                   Account();
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -201,7 +220,7 @@ User WorkspaceImpl::createUser(
         return _getProxy(dataUser);;
     }
     catch (const tt3::util::Exception & ex)
-    {   //  ...but let other exceptions through
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
