@@ -173,6 +173,20 @@ namespace tt3::gui
         static QString      _prompt(tt3::ws::User user,
                                     const tt3::ws::Credentials & credentials) throws(tt3::ws::WorkspaceClosedException);
     };
+
+    //  The modal "confirm Account destruction" dialog
+    class TT3_GUI_PUBLIC ConfirmDestroyAccountDialog : public AskYesNoDialog
+    {
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmDestroyAccountDialog)
+
+        //////////
+        //  Construction/destruction
+    public:
+        ConfirmDestroyAccountDialog(::QWidget * parent,
+                                    tt3::ws::Account account,
+                                    const tt3::ws::Credentials & credentials)
+            throws(tt3::ws::WorkspaceClosedException);
+    };
 }
 
 //  End of tt3-gui/AskYesNoDialog.hpp

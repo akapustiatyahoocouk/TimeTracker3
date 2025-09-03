@@ -206,4 +206,23 @@ QString ConfirmDestroyUserDialog::_prompt(tt3::ws::User user,
     return result;
 }
 
+//////////
+//  ConfirmDestroyAccountDialog
+ConfirmDestroyAccountDialog::ConfirmDestroyAccountDialog(
+    ::QWidget * parent,
+    tt3::ws::Account account,
+    const tt3::ws::Credentials & credentials)
+    throws(tt3::ws::WorkspaceClosedException)
+    :   AskYesNoDialog(
+          parent,
+          QIcon(":/tt3-gui/Resources/Images/Actions/DestroyAccountLarge.png"),
+          "Destroy account",
+          "Are you sure you want to destroy account \n" +
+              account->login(credentials) +
+              " of " +
+              account->user(credentials)->realName(credentials) +
+              " ?")
+{
+}
+
 //  End of tt3-gui/AskYesNoDialog.cpp

@@ -63,6 +63,15 @@ namespace tt3::ws
         void            destroy(const Credentials & credentials) throws(WorkspaceException);
 
         //////////
+        //  Operations (access control)
+    public:
+        //  Checks whether the specifid credentials allow the
+        //  corresponding operations to be performed on this object
+        bool            canRead(const Credentials & credentials) const throws(WorkspaceException);
+        bool            canModify(const Credentials & credentials) const throws(WorkspaceException);
+        bool            canDestroy(const Credentials & credentials) const throws(WorkspaceException);
+
+        //////////
         //  Implementation
     private:
         const Workspace _workspace;

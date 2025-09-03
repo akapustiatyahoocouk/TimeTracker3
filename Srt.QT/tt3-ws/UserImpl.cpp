@@ -239,6 +239,8 @@ Account UserImpl::createAccount(
 //  Implementation (Access control)
 bool UserImpl::_canRead(const Credentials & credentials) const
 {
+    Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
+
     try
     {
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
@@ -252,6 +254,10 @@ bool UserImpl::_canRead(const Credentials & credentials) const
             _workspace->_database->tryLogin(credentials._login, credentials._password);    //  may throw
         return clientAccount != nullptr && clientAccount->user() == _dataUser;
     }
+    catch (const AccessDeniedException &)
+    {   //  This is a special case!
+        return false;
+    }
     catch (const tt3::util::Exception & ex)
     {
         WorkspaceException::translateAndThrow(ex);
@@ -260,6 +266,8 @@ bool UserImpl::_canRead(const Credentials & credentials) const
 
 bool UserImpl::_canModify(const Credentials & credentials) const
 {
+    Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
+
     try
     {
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
@@ -273,6 +281,10 @@ bool UserImpl::_canModify(const Credentials & credentials) const
             _workspace->_database->tryLogin(credentials._login, credentials._password);    //  may throw
         return clientAccount != nullptr && clientAccount->user() == _dataUser;
     }
+    catch (const AccessDeniedException &)
+    {   //  This is a special case!
+        return false;
+    }
     catch (const tt3::util::Exception & ex)
     {
         WorkspaceException::translateAndThrow(ex);
@@ -281,11 +293,17 @@ bool UserImpl::_canModify(const Credentials & credentials) const
 
 bool UserImpl::_canDestroy(const Credentials & credentials) const
 {
+    Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
+
     try
     {
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         return (clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
                (clientCapabilities & Capabilities::ManageUsers) != Capabilities::None;
+    }
+    catch (const AccessDeniedException &)
+    {   //  This is a special case!
+        return false;
     }
     catch (const tt3::util::Exception & ex)
     {

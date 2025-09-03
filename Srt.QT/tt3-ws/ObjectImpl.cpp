@@ -81,6 +81,32 @@ void ObjectImpl::destroy(const Credentials & credentials) throws(WorkspaceExcept
 }
 
 //////////
+//  Operations (access control)
+bool ObjectImpl::canRead(const Credentials & credentials) const throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();
+
+    return _canRead(credentials);
+}
+
+bool ObjectImpl::canModify(const Credentials & credentials) const throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();
+
+    return _canModify(credentials);
+}
+
+bool ObjectImpl::canDestroy(const Credentials & credentials) const throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();
+
+    return _canDestroy(credentials);
+}
+
+//////////
 //  Implementation helpers
 void ObjectImpl::_ensureLive() const throws(WorkspaceException)
 {

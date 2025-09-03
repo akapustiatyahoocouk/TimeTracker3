@@ -172,6 +172,41 @@ Capabilities WorkspaceImpl::capabilities(const Credentials & credentials) const 
     }
 }
 
+bool WorkspaceImpl::grantsCapability(const Credentials & credentials, Capabilities requiredCapability) const throws(WorkspaceException)
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();
+
+    try
+    {
+        Q_ASSERT(requiredCapability == Capabilities::Administrator ||
+                 requiredCapability == Capabilities::ManageUsers ||
+                 requiredCapability == Capabilities::ManageActivityTypes ||
+                 requiredCapability == Capabilities::ManageBeheficiaries ||
+                 requiredCapability == Capabilities::ManageWorkloads ||
+                 requiredCapability == Capabilities::ManagePublicActivities ||
+                 requiredCapability == Capabilities::ManagePublicTasks ||
+                 requiredCapability == Capabilities::ManagePrivateActivities ||
+                 requiredCapability == Capabilities::ManagePrivateTasks ||
+                 requiredCapability == Capabilities::LogWork ||
+                 requiredCapability == Capabilities::LogEvents ||
+                 requiredCapability == Capabilities::GenerateReports ||
+                 requiredCapability == Capabilities::BackupAndRestore);
+
+        //  Do the work; be defensive in release mode
+        Capabilities c = _validateAccessRights(credentials);  //  may throw
+        return (c & requiredCapability) == requiredCapability;
+    }
+    catch (const AccessDeniedException &)
+    {   //  This is a special case
+        return false;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
 Account WorkspaceImpl::tryLogin(const Credentials & credentials) const throws(WorkspaceException)
 {
     tt3::util::Lock lock(_guard);

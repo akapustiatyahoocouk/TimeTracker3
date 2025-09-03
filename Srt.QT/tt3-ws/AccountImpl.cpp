@@ -215,6 +215,8 @@ User AccountImpl::user(const Credentials & credentials) const throws(WorkspaceEx
 //  Implementation (Access control)
 bool AccountImpl::_canRead(const Credentials & credentials) const throws(WorkspaceException)
 {
+    Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
+
     try
     {
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
@@ -228,6 +230,10 @@ bool AccountImpl::_canRead(const Credentials & credentials) const throws(Workspa
             _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
         return clientAccount != nullptr && clientAccount->user() == _dataAccount->user();
     }
+    catch (const AccessDeniedException &)
+    {   //  This is a special case!
+        return false;
+    }
     catch (const tt3::util::Exception & ex)
     {
         WorkspaceException::translateAndThrow(ex);
@@ -236,6 +242,8 @@ bool AccountImpl::_canRead(const Credentials & credentials) const throws(Workspa
 
 bool AccountImpl::_canModify(const Credentials & credentials) const throws(WorkspaceException)
 {
+    Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
+
     try
     {
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
@@ -249,6 +257,10 @@ bool AccountImpl::_canModify(const Credentials & credentials) const throws(Works
             _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
         return clientAccount != nullptr && clientAccount->user() == _dataAccount->user();
     }
+    catch (const AccessDeniedException &)
+    {   //  This is a special case!
+        return false;
+    }
     catch (const tt3::util::Exception & ex)
     {
         WorkspaceException::translateAndThrow(ex);
@@ -257,11 +269,17 @@ bool AccountImpl::_canModify(const Credentials & credentials) const throws(Works
 
 bool AccountImpl::_canDestroy(const Credentials & credentials) const throws(WorkspaceException)
 {
+    Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
+
     try
     {
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         return (clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
                (clientCapabilities & Capabilities::ManageUsers) != Capabilities::None;
+    }
+    catch (const AccessDeniedException &)
+    {   //  This is a special case!
+        return false;
     }
     catch (const tt3::util::Exception & ex)
     {

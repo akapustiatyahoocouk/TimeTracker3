@@ -98,57 +98,27 @@ void UserManager::refresh()
     //  selection and permissions granted by Credentials
     _refreshUserItems();
 
-    tt3::ws::Capabilities capabilities;
-    try
-    {
-        capabilities = _workspace->capabilities(_credentials);  //  may throw
-    }
-    catch (const tt3::util::Exception &)
-    {   //  OOPS! Suppress, though
-        capabilities = tt3::ws::Capabilities::None;
-    }
-
-    tt3::ws::Account clientAccount;
-    tt3::ws::User clientUser;
-    try
-    {
-        clientAccount = _workspace->tryLogin(_credentials);;
-        if (clientAccount != nullptr)
-        {
-            clientUser = clientAccount->user(_credentials);
-        }
-    }
-    catch (const tt3::util::Exception &)
-    {   //  OOPS! Suppress, though
-    }
-
     tt3::ws::User selectedUser = _selectedUser();
     tt3::ws::Account selectedAccount = _selectedAccount();
     _ui->createUserPushButton->setEnabled(
-        (capabilities & tt3::ws::Capabilities::Administrator) != tt3::ws::Capabilities::None ||
-        (capabilities & tt3::ws::Capabilities::ManageUsers) != tt3::ws::Capabilities::None);
+        _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
+        _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageUsers));
     _ui->modifyUserPushButton->setEnabled(
-        ((capabilities & tt3::ws::Capabilities::Administrator) != tt3::ws::Capabilities::None ||
-         (capabilities & tt3::ws::Capabilities::ManageUsers) != tt3::ws::Capabilities::None ||
-         clientUser == selectedUser) &&
-        selectedUser != nullptr);
+        selectedUser != nullptr &&
+        selectedUser->canModify(_credentials));
     _ui->destroyUserPushButton->setEnabled(
-        ((capabilities & tt3::ws::Capabilities::Administrator) != tt3::ws::Capabilities::None ||
-         (capabilities & tt3::ws::Capabilities::ManageUsers) != tt3::ws::Capabilities::None) &&
-        selectedUser != nullptr);
+        selectedUser != nullptr &&
+        selectedUser->canDestroy(_credentials));
     _ui->createAccountPushButton->setEnabled(
-        ((capabilities & tt3::ws::Capabilities::Administrator) != tt3::ws::Capabilities::None ||
-         (capabilities & tt3::ws::Capabilities::ManageUsers) != tt3::ws::Capabilities::None) &&
+        (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
+         _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageUsers)) &&
         selectedUser != nullptr);
     _ui->modifyAccountPushButton->setEnabled(
-        ((capabilities & tt3::ws::Capabilities::Administrator) != tt3::ws::Capabilities::None ||
-         (capabilities & tt3::ws::Capabilities::ManageUsers) != tt3::ws::Capabilities::None ||
-         clientAccount == selectedAccount) &&
-        selectedAccount != nullptr);
+        selectedAccount != nullptr &&
+        selectedAccount->canModify(_credentials));
     _ui->destroyAccountPushButton->setEnabled(
-        ((capabilities & tt3::ws::Capabilities::Administrator) != tt3::ws::Capabilities::None ||
-         (capabilities & tt3::ws::Capabilities::ManageUsers) != tt3::ws::Capabilities::None) &&
-        selectedAccount != nullptr);
+        selectedAccount != nullptr &&
+        selectedAccount->canDestroy(_credentials));
 }
 
 //////////
@@ -547,7 +517,24 @@ void UserManager::_modifyAccountPushButtonClicked()
 
 void UserManager::_destroyAccountPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    tt3::ws::Account account = _selectedAccount();
+    if (account != nullptr)
+    {
+        try
+        {
+            ConfirmDestroyAccountDialog dlg(this, account, _credentials); //  may throw
+            if (dlg.doModal() == ConfirmDestroyAccountDialog::Result::Yes)
+            {   //  Do it!
+                account->destroy(_credentials);    //  may throw
+                refresh();
+            }
+        }
+        catch (tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
+            refresh();
+        }
+    }
 }
 
 //  End of tt3-gui/UserManager.cpp

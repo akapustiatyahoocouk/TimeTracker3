@@ -148,6 +148,10 @@ void Application::_initialize()
                 {
                     tt3::ws::theCurrentWorkspace.swap(workspace);
                 }
+                else
+                {
+                    workspace->close();
+                }
             }
             catch (const tt3::util::Exception & ex)
             {   //  OOPS! Report

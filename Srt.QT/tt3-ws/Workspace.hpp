@@ -89,6 +89,12 @@ namespace tt3::ws
         //  Throws WorkspaceException if an error occurs.
         Capabilities    capabilities(const Credentials & credentials) const throws(WorkspaceException);
 
+        //  Checks if the specified credentials grant all of the
+        //  the specified capability within this workspace.
+        //  IMPORTANT: Only a single capability flag can be checked
+        //  for, not a combination of them
+        bool            grantsCapability(const Credentials & credentials, Capabilities requiredCapability) const throws(WorkspaceException);
+
         //  If there exists an a) enabled account b) of an
         //  enabled user c) with the spcified credentials,
         //  returns it; otherwise returns nullptr.
