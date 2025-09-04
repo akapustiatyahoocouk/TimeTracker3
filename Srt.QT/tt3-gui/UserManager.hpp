@@ -101,9 +101,13 @@ namespace tt3::gui
             QBrush              brush;          //  for User tree items' text
         };
 
-        _WorkspaceModel     _createWorkspaceModel(tt3::ws::Workspace workspace, const tt3::ws::Credentials & credentials);
-        _UserModel          _createUserModel(tt3::ws::User user, const tt3::ws::Credentials & credentials);
-        _AccountModel       _createAccountModel(tt3::ws::Account account, const tt3::ws::Credentials & credentials);
+        _WorkspaceModel     _createWorkspaceModel();
+        _UserModel          _createUserModel(tt3::ws::User user);
+        _AccountModel       _createAccountModel(tt3::ws::Account account);
+        void                _removeDisabledItems(_WorkspaceModel workspaceModel);
+        void                _removeDisabledItems(_UserModel userModel);
+        void                _filterItems(_WorkspaceModel workspaceModel);
+        void                _filterItems(_UserModel userModel);
 
         //  Helpers
         void                _refreshUserItems(_WorkspaceModel workspaceModel);
@@ -134,6 +138,9 @@ namespace tt3::gui
         void                _createAccountPushButtonClicked();
         void                _modifyAccountPushButtonClicked();
         void                _destroyAccountPushButtonClicked();
+        void                _showDisabledCheckBoxToggled(bool);
+        void                _viewOptionSettingValueChanged();
+        void                _filterLineEditTextChanged(QString);
     };
 }
 

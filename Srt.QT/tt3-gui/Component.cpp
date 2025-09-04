@@ -94,9 +94,12 @@ Component::Settings::Settings()
         loadLastWorkspaceAtStartup(M(LoadLastWorkspaceAtStartup), false),
         rememberLastLogin(M(RememberLastLogin), true),
         currentPreferences(M(CurrentPreferences), M(-)),
+        //  Properties (user confirmations)
         confirmCloseWorkspace(M(ConfirmCloseWorkspace), true),
         confirmRestart(M(ConfirmRestart), true),
-        confirmExit(M(ConfirmExit), true)
+        confirmExit(M(ConfirmExit), true),
+        //  Properties (view configurations)
+        showHiddenUsersAndAccounts(M(ShowHiddenUsersAndAccounts), true)
 {
     addSetting(&activeSkin);
     addSetting(&activeTheme);
@@ -105,9 +108,12 @@ Component::Settings::Settings()
     addSetting(&loadLastWorkspaceAtStartup);
     addSetting(&rememberLastLogin);
     addSetting(&currentPreferences);
+    //  Properties (user confirmations)
     addSetting(&confirmCloseWorkspace);
     addSetting(&confirmRestart);
     addSetting(&confirmExit);
+    //  Properties (view configurations)
+    addSetting(&showHiddenUsersAndAccounts);
 }
 
 Component::Settings::~Settings()

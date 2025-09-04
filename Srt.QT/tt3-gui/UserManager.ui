@@ -211,9 +211,9 @@
        <number>4</number>
       </property>
       <item row="0" column="0">
-       <widget class="QCheckBox" name="hideDisabledCheckBox">
+       <widget class="QCheckBox" name="showDisabledCheckBox">
         <property name="text">
-         <string>Hide disabled users and accounts</string>
+         <string>Show disabled users and accounts</string>
         </property>
        </widget>
       </item>
@@ -364,6 +364,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>showDisabledCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>tt3::gui::UserManager</receiver>
+   <slot>_showDisabledCheckBoxToggled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>207</x>
+     <y>312</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>207</x>
+     <y>166</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filterLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::UserManager</receiver>
+   <slot>_filterLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>227</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>207</x>
+     <y>166</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_usersTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
@@ -374,5 +406,7 @@
   <slot>_modifyAccountPushButtonClicked()</slot>
   <slot>_destroyAccountPushButtonClicked()</slot>
   <slot>_usersTreeWidgetCustomContextMenuRequested(QPoint)</slot>
+  <slot>_showDisabledCheckBoxToggled(bool)</slot>
+  <slot>_filterLineEditTextChanged(QString)</slot>
  </slots>
 </ui>

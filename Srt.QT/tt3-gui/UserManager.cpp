@@ -44,6 +44,13 @@ UserManager::UserManager(QWidget * parent)
             &UserManager::_currentThemeChanged,
             Qt::ConnectionType::QueuedConnection);
 
+    //  View options changes should cause a refresh
+    connect(&Component::Settings::instance()->showHiddenUsersAndAccounts,
+            &tt3::util::AbstractSetting::valueChanged,
+            this,
+            &UserManager::_viewOptionSettingValueChanged,
+            Qt::ConnectionType::QueuedConnection);
+
     //  TODO start listening for change notifications
     //  on the currently "viewed" Workspace
 }
@@ -85,6 +92,14 @@ void UserManager::setCredentials(const tt3::ws::Credentials & credentials)
 
 void UserManager::refresh()
 {
+    //  We don't want a refresh() to trigger a recursive refresh()!
+    static bool refreshUnderway = false;
+    if (refreshUnderway)
+    {   //  Don't recurse!
+        return;
+    }
+    refreshUnderway = true;
+
     if (_workspace == nullptr || !_credentials.isValid() ||
         !_workspace->canAccess(_credentials)) //  TODO handle WorkspaceExceptions
     {   //  Nothing to show...
@@ -99,19 +114,35 @@ void UserManager::refresh()
         _ui->createAccountPushButton->setEnabled(false);
         _ui->modifyAccountPushButton->setEnabled(false);
         _ui->destroyAccountPushButton->setEnabled(false);
+        _ui->showDisabledCheckBox->setEnabled(false);
         //  ...and we're done
+        refreshUnderway = false;
         return;
     }
 
     //  Otherwise some controls are always enabled...
     _ui->filterLabel->setEnabled(true);
     _ui->filterLineEdit->setEnabled(true);
-    _ui->usersTreeWidget->setEnabled(true);
+        _ui->usersTreeWidget->setEnabled(true);
+        _ui->showDisabledCheckBox->setEnabled(true);
 
     //  ...while others are enabled based on current
     //  selection and permissions granted by Credentials
-    _WorkspaceModel workspaceModel = _createWorkspaceModel(_workspace, _credentials);
+    _WorkspaceModel workspaceModel = _createWorkspaceModel();
+    if (!Component::Settings::instance()->showHiddenUsersAndAccounts)
+    {
+        _removeDisabledItems(workspaceModel);
+    }
+    if (!_ui->filterLineEdit->text().trimmed().isEmpty())
+    {
+        _filterItems(workspaceModel);
+    }
     _refreshUserItems(workspaceModel);
+    if (!_ui->filterLineEdit->text().trimmed().isEmpty())
+    {   //  Filtered - show all
+        _ui->usersTreeWidget->expandAll();
+    }
+
 
     tt3::ws::User selectedUser = _selectedUser();
     tt3::ws::Account selectedAccount = _selectedAccount();
@@ -134,19 +165,23 @@ void UserManager::refresh()
     _ui->destroyAccountPushButton->setEnabled(
         selectedAccount != nullptr &&
         selectedAccount->canDestroy(_credentials));
+
+    _ui->showDisabledCheckBox->setChecked(
+        Component::Settings::instance()->showHiddenUsersAndAccounts);
+
+    refreshUnderway = false;
 }
 
 //////////
 //  View model
-UserManager::_WorkspaceModel UserManager::_createWorkspaceModel(
-    tt3::ws::Workspace workspace, const tt3::ws::Credentials & credentials)
+UserManager::_WorkspaceModel UserManager::_createWorkspaceModel()
 {
     _WorkspaceModel workspaceModel { new _WorkspaceModelImpl() };
     try
     {
-        for (tt3::ws::User user : workspace->users(credentials))    //  may throw
+        for (tt3::ws::User user : _workspace->users(_credentials))    //  may throw
         {
-            workspaceModel->userModels.append(_createUserModel(user, credentials));
+            workspaceModel->userModels.append(_createUserModel(user));
         }
         std::sort(workspaceModel->userModels.begin(),
                   workspaceModel->userModels.end(),
@@ -160,16 +195,15 @@ UserManager::_WorkspaceModel UserManager::_createWorkspaceModel(
     return workspaceModel;
 }
 
-UserManager::_UserModel UserManager::_createUserModel(
-    tt3::ws::User user, const tt3::ws::Credentials & credentials)
+UserManager::_UserModel UserManager::_createUserModel(tt3::ws::User user)
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
 
     _UserModel userModel { new _UserModelImpl(user) };
     try
     {
-        userModel->text = user->realName(credentials);
-        if (!user->enabled(credentials))
+        userModel->text = user->realName(_credentials);
+        if (!user->enabled(_credentials))
         {
             userModel->text += " [disabled]";
             userModel->brush = _decorations.disabledItemForeground;
@@ -190,9 +224,9 @@ UserManager::_UserModel UserManager::_createUserModel(
     }
     try
     {
-        for (tt3::ws::Account account : user->accounts(credentials))    //  may throw
+        for (tt3::ws::Account account : user->accounts(_credentials))    //  may throw
         {
-            userModel->accountModels.append(_createAccountModel(account, credentials));
+            userModel->accountModels.append(_createAccountModel(account));
         }
         std::sort(userModel->accountModels.begin(),
                   userModel->accountModels.end(),
@@ -206,16 +240,15 @@ UserManager::_UserModel UserManager::_createUserModel(
     return userModel;
 }
 
-UserManager::_AccountModel UserManager::_createAccountModel(
-    tt3::ws::Account account, const tt3::ws::Credentials & credentials)
+UserManager::_AccountModel UserManager::_createAccountModel(tt3::ws::Account account)
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
 
     _AccountModel accountModel { new _AccountModelImpl(account) };
     try
     {
-        accountModel->text = account->login(credentials);
-        if (!account->enabled(credentials))
+        accountModel->text = account->login(_credentials);
+        if (!account->enabled(_credentials))
         {
             accountModel->text += " [disabled]";
             accountModel->brush = _decorations.disabledItemForeground;
@@ -235,6 +268,99 @@ UserManager::_AccountModel UserManager::_createAccountModel(
         accountModel->brush = _decorations.errorItemForeground;
     }
     return accountModel;
+}
+
+void UserManager::_removeDisabledItems(_WorkspaceModel workspaceModel)
+{
+    for (qsizetype i = workspaceModel->userModels.size() - 1; i >= 0; i--)
+    {
+        _UserModel userModel = workspaceModel->userModels[i];
+        _removeDisabledItems(userModel);
+        //  If this user is disabled...
+        try
+        {
+            if (!userModel->user->enabled(_credentials))    //  may throw
+            {
+                if (userModel->accountModels.isEmpty())
+                {   //  ...and has no accounts models - delete it
+                    workspaceModel->userModels.removeAt(i);
+                }
+                //  ...else it has account models - keep it
+            }
+            //  ...else keep this user item
+        }
+        catch (...)
+        {   //  OOPS! TODO log?
+        }
+    }
+}
+
+void UserManager::_removeDisabledItems(_UserModel userModel)
+{
+    for (qsizetype i = userModel->accountModels.size() - 1; i >= 0; i--)
+    {
+        try
+        {
+            if (!userModel->accountModels[i]->account->enabled(_credentials))   //  may throw
+            {   //  We don't want this account item
+                userModel->accountModels.removeAt(i);
+            }
+        }
+        catch (...)
+        {   //  OOPS! TODO log?
+        }
+    }
+}
+
+void UserManager::_filterItems(_WorkspaceModel workspaceModel)
+{
+    QString filter = _ui->filterLineEdit->text().trimmed();
+    Q_ASSERT(!filter.isEmpty());
+
+    for (qsizetype i = workspaceModel->userModels.size() - 1; i >= 0; i--)
+    {
+        _UserModel userModel = workspaceModel->userModels[i];
+        _filterItems(userModel);
+        if (userModel->text.indexOf(filter, 0, Qt::CaseInsensitive) != -1)
+        {   //  Item matches the filter - mark it as a match
+            userModel->brush = _decorations.filterMatchItemForeground;
+            userModel->font = _decorations.itemEmphasisFont;
+        }
+        else if (userModel->accountModels.isEmpty())
+        {   //  Item does not match the filter and has no children - remove it
+            workspaceModel->userModels.removeAt(i);
+        }
+        else
+        {   //  Item does not match the filter but has children - show as doisabled
+            workspaceModel->userModels[i]->brush = _decorations.disabledItemForeground;
+        }
+    }
+}
+
+void UserManager::_filterItems(_UserModel userModel)
+{
+    QString filter = _ui->filterLineEdit->text().trimmed();
+    Q_ASSERT(!filter.isEmpty());
+
+    for (qsizetype i = userModel->accountModels.size() - 1; i >= 0; i--)
+    {
+        try
+        {
+            _AccountModel accountModel = userModel->accountModels[i];
+            if (accountModel->text.indexOf(filter, 0, Qt::CaseInsensitive) != -1)
+            {   //  Item matches the filter - mark it as a match
+                accountModel->brush = _decorations.filterMatchItemForeground;
+                accountModel->font = _decorations.itemEmphasisFont;
+            }
+            else
+            {   //  Item does not match he filter - remove it
+                userModel->accountModels.removeAt(i);
+            }
+        }
+        catch (...)
+        {   //  OOPS! TODO log?
+        }
+    }
 }
 
 //////////
@@ -551,6 +677,23 @@ void UserManager::_destroyAccountPushButtonClicked()
             refresh();
         }
     }
+}
+
+void UserManager::_showDisabledCheckBoxToggled(bool)
+{
+    Component::Settings::instance()->showHiddenUsersAndAccounts =
+        _ui->showDisabledCheckBox->isChecked();
+    refresh();
+}
+
+void UserManager::_viewOptionSettingValueChanged()
+{
+    refresh();
+}
+
+void UserManager::_filterLineEditTextChanged(QString)
+{
+    refresh();
 }
 
 //  End of tt3-gui/UserManager.cpp

@@ -73,6 +73,11 @@ namespace tt3::gui
 
             //  True if the user needs to confirm exiting TT3.
             tt3::util::Setting<bool>    confirmExit;
+
+            //////////
+            //  Properties (view configurations)
+        public:
+            tt3::util::Setting<bool>    showHiddenUsersAndAccounts;
         };
 
         //////////

@@ -88,7 +88,7 @@ void MainFrame::resizeEvent(QResizeEvent * event)
 
 void MainFrame::closeEvent(QCloseEvent * event)
 {
-    event->accept();
+    event->ignore();
     _onActionExit();
 }
 
