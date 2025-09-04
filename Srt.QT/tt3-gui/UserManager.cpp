@@ -18,6 +18,11 @@
 #include "ui_UserManager.h"
 using namespace tt3::gui;
 
+namespace tt3::gui
+{
+    extern CurrentTheme theCurrentTheme;
+}
+
 //////////
 //  Construction/destruction
 UserManager::UserManager(QWidget * parent)
@@ -29,6 +34,15 @@ UserManager::UserManager(QWidget * parent)
         _ui(new Ui::UserManager)
 {
     _ui->setupUi(this);
+
+    _decorations = TreeWidgetDecorations(_ui->usersTreeWidget); //  TODO also on theCurrentTheme change!
+
+    //  Theme change means widget decorations change
+    connect(&theCurrentTheme,
+            &CurrentTheme::changed,
+            this,
+            &UserManager::_currentThemeChanged,
+            Qt::ConnectionType::QueuedConnection);
 
     //  TODO start listening for change notifications
     //  on the currently "viewed" Workspace
@@ -96,7 +110,8 @@ void UserManager::refresh()
 
     //  ...while others are enabled based on current
     //  selection and permissions granted by Credentials
-    _refreshUserItems();
+    _WorkspaceModel workspaceModel = _createWorkspaceModel(_workspace, _credentials);
+    _refreshUserItems(workspaceModel);
 
     tt3::ws::User selectedUser = _selectedUser();
     tt3::ws::Account selectedAccount = _selectedAccount();
@@ -122,58 +137,127 @@ void UserManager::refresh()
 }
 
 //////////
-//  Implementation helpers
-void UserManager::_refreshUserItems()
+//  View model
+UserManager::_WorkspaceModel UserManager::_createWorkspaceModel(
+    tt3::ws::Workspace workspace, const tt3::ws::Credentials & credentials)
+{
+    _WorkspaceModel workspaceModel { new _WorkspaceModelImpl() };
+    try
+    {
+        for (tt3::ws::User user : workspace->users(credentials))    //  may throw
+        {
+            workspaceModel->userModels.append(_createUserModel(user, credentials));
+        }
+        std::sort(workspaceModel->userModels.begin(),
+                  workspaceModel->userModels.end(),
+                  [&](auto a, auto b)
+                  { return a->text < b->text; });
+    }
+    catch (...)
+    {
+        workspaceModel->userModels.clear();
+    }
+    return workspaceModel;
+}
+
+UserManager::_UserModel UserManager::_createUserModel(
+    tt3::ws::User user, const tt3::ws::Credentials & credentials)
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
 
+    _UserModel userModel { new _UserModelImpl(user) };
+    try
+    {
+        userModel->text = user->realName(credentials);
+        if (!user->enabled(credentials))
+        {
+            userModel->text += " [disabled]";
+            userModel->brush = _decorations.disabledItemForeground;
+        }
+        else
+        {
+            userModel->brush = _decorations.itemForeground;
+        }
+        userModel->icon = user->type()->smallIcon();
+        userModel->font = _decorations.itemFont;
+    }
+    catch (tt3::util::Exception & ex)
+    {
+        userModel->text = ex.errorMessage();
+        userModel->icon = errorIcon;
+        userModel->font = _decorations.itemFont;
+        userModel->brush = _decorations.errorItemForeground;
+    }
+    try
+    {
+        for (tt3::ws::Account account : user->accounts(credentials))    //  may throw
+        {
+            userModel->accountModels.append(_createAccountModel(account, credentials));
+        }
+        std::sort(userModel->accountModels.begin(),
+                  userModel->accountModels.end(),
+                  [&](auto a, auto b)
+                  { return a->text < b->text; });
+    }
+    catch (...)
+    {
+        userModel->accountModels.clear();
+    }
+    return userModel;
+}
+
+UserManager::_AccountModel UserManager::_createAccountModel(
+    tt3::ws::Account account, const tt3::ws::Credentials & credentials)
+{
+    static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+
+    _AccountModel accountModel { new _AccountModelImpl(account) };
+    try
+    {
+        accountModel->text = account->login(credentials);
+        if (!account->enabled(credentials))
+        {
+            accountModel->text += " [disabled]";
+            accountModel->brush = _decorations.disabledItemForeground;
+        }
+        else
+        {
+            accountModel->brush = _decorations.itemForeground;
+        }
+        accountModel->icon = account->type()->smallIcon();
+        accountModel->font = _decorations.itemFont;
+    }
+    catch (tt3::util::Exception & ex)
+    {
+        accountModel->text = ex.errorMessage();
+        accountModel->icon = errorIcon;
+        accountModel->font = _decorations.itemFont;
+        accountModel->brush = _decorations.errorItemForeground;
+    }
+    return accountModel;
+}
+
+//////////
+//  Implementation helpers
+void UserManager::_refreshUserItems(_WorkspaceModel workspaceModel)
+{
     Q_ASSERT(_workspace != nullptr);
     Q_ASSERT(_credentials.isValid());
 
-    //  Which Users currently exist (sorted by real name) ?
-    QList<tt3::ws::User> users;
-    try
-    {
-        users = _workspace->users(_credentials).values();    //  may throw
-    }
-    catch (...)
-    {   //  OOPS! Suppress, though
-    }
-    try
-    {
-        std::sort(users.begin(),
-                  users.end(),
-                  [&](auto a, auto b)
-                    { return a->realName(_credentials) < b->realName(_credentials); });   //  may throw
-    }
-    catch (...)
-    {   //  OOPS! Sort by OID to ensure a stable order
-        std::sort(users.begin(),
-                  users.end(),
-                  [](auto a, auto b)
-                    { return a->oid() < b->oid(); });
-    }
-
     //  Make sure the "users" tree contains
     //  a proper number of root (User) items...
-    while (_ui->usersTreeWidget->topLevelItemCount() < users.size())
+    while (_ui->usersTreeWidget->topLevelItemCount() < workspaceModel->userModels.size())
     {   //  Too few root (User) items
-        tt3::ws::User user = users[_ui->usersTreeWidget->topLevelItemCount()];
+        _UserModel userModel = workspaceModel->userModels[_ui->usersTreeWidget->topLevelItemCount()];
         QTreeWidgetItem * userItem = new QTreeWidgetItem();
-        try
-        {
-            userItem->setText(0, _userItemText(user));      //  may throw
-            userItem->setIcon(0, user->type()->smallIcon());//  nothrow
-        }
-        catch (const tt3::util::Exception & ex)
-        {
-            userItem->setText(0, ex.errorMessage());
-            userItem->setIcon(0, errorIcon);
-        }
+        userItem->setText(0, userModel->text);
+        userItem->setIcon(0, userModel->icon);
+        userItem->setForeground(0, userModel->brush);
+        userItem->setFont(0, userModel->font);
+        userItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(userModel->user));
         _ui->usersTreeWidget->addTopLevelItem(userItem);
-        userItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(user));
     }
-    while (_ui->usersTreeWidget->topLevelItemCount() > users.size())
+    while (_ui->usersTreeWidget->topLevelItemCount() > workspaceModel->userModels.size())
     {   //  Too many root (User) items
         delete _ui->usersTreeWidget->takeTopLevelItem(
             _ui->usersTreeWidget->topLevelItemCount() - 1);
@@ -181,130 +265,55 @@ void UserManager::_refreshUserItems()
 
     //  ...and that each top-level item represents
     //  a proper User and has proper children
-    for (int i = 0; i < users.size(); i++)
+    for (int i = 0; i < workspaceModel->userModels.size(); i++)
     {
         QTreeWidgetItem * userItem = _ui->usersTreeWidget->topLevelItem(i);
-        tt3::ws::User user = userItem->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::User>();
-        if (user != users[i])
-        {   //  Replace tree item data...
-            user = users[i];
-            userItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(user));
-        }
-        //  ...adjust its text/icon...
-        try
-        {
-            userItem->setText(0, _userItemText(user));      //  may throw
-            userItem->setIcon(0, user->type()->smallIcon());//  nothrow
-        }
-        catch (const tt3::util::Exception & ex)
-        {
-            userItem->setText(0, ex.errorMessage());
-            userItem->setIcon(0, errorIcon);
-        }
+        _UserModel userModel = workspaceModel->userModels[i];
+        userItem->setText(0, userModel->text);
+        userItem->setIcon(0, userModel->icon);
+        userItem->setForeground(0, userModel->brush);
+        userItem->setFont(0, userModel->font);
+        userItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(userModel->user));
         //  ...and children
-        _refreshAccountItems(userItem);
+        _refreshAccountItems(userItem, userModel);
     }
 }
 
-void UserManager::_refreshAccountItems(QTreeWidgetItem * userItem)
+void UserManager::_refreshAccountItems(QTreeWidgetItem * userItem, _UserModel userModel)
 {
-    static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
-
     Q_ASSERT(userItem != nullptr);
     Q_ASSERT(_credentials.isValid());
-    tt3::ws::User user = userItem->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::User>();
-
-    //  Which Accounts currently exist (sorted by login) ?
-    QList<tt3::ws::Account> accounts;
-    try
-    {
-        accounts = user->accounts(_credentials).values();    //  may throw
-    }
-    catch (...)
-    {   //  OOPS! Suppress, though
-    }
-    try
-    {
-        std::sort(accounts.begin(),
-                  accounts.end(),
-                  [&](auto a, auto b)
-                  { return a->login(_credentials) < b->login(_credentials); });   //  may throw
-    }
-    catch (...)
-    {   //  OOPS! Sort by OID to ensure a stable order
-        std::sort(accounts.begin(),
-                  accounts.end(),
-                  [](auto a, auto b)
-                  { return a->oid() < b->oid(); });
-    }
 
     //  Make sure the "users" tree contains
     //  a proper number of leaf (Account) items...
-    while (userItem->childCount() < accounts.size())
+    while (userItem->childCount() < userModel->accountModels.size())
     {   //  Too few leaf (Account) items
-        tt3::ws::Account account = accounts[userItem->childCount()];
+        _AccountModel accountModel = userModel->accountModels[userItem->childCount()];
         QTreeWidgetItem * accountItem = new QTreeWidgetItem();
-        try
-        {
-            accountItem->setText(0, _accountItemText(account));     //  may throw
-            accountItem->setIcon(0, account->type()->smallIcon());  //  nothrow
-        }
-        catch (const tt3::util::Exception & ex)
-        {
-            accountItem->setText(0, ex.errorMessage());
-            accountItem->setIcon(0, errorIcon);
-        }
+        accountItem->setText(0, accountModel->text);
+        accountItem->setIcon(0, accountModel->icon);
+        accountItem->setForeground(0, accountModel->brush);
+        accountItem->setFont(0, accountModel->font);
+        accountItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(accountModel->account));
         userItem->addChild(accountItem);
-        accountItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(account));
     }
-    while (userItem->childCount() > accounts.size())
+    while (userItem->childCount() > userModel->accountModels.size())
     {   //  Too many leaf (Account) items
         delete userItem->takeChild(userItem->childCount() - 1);
     }
 
     //  ...and that each leaf item represents
     //  a proper Account and has proper children
-    for (int i = 0; i < accounts.size(); i++)
+    for (int i = 0; i < userModel->accountModels.size(); i++)
     {
         QTreeWidgetItem * accountItem = userItem->child(i);
-        tt3::ws::Account account = accountItem->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::Account>();
-        if (account != accounts[i])
-        {   //  Replace tree item data...
-            account = accounts[i];
-            accountItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(account));
-        }
-        //  ...adjust its text/icon...
-        try
-        {
-            accountItem->setText(0, _accountItemText(account));     //  may throw
-            accountItem->setIcon(0, account->type()->smallIcon());  //  nothrow
-        }
-        catch (const tt3::util::Exception & ex)
-        {
-            accountItem->setText(0, ex.errorMessage());
-            accountItem->setIcon(0, errorIcon);
-        }
+        _AccountModel accountModel = userModel->accountModels[i];
+        accountItem->setText(0, accountModel->text);
+        accountItem->setIcon(0, accountModel->icon);
+        accountItem->setForeground(0, accountModel->brush);
+        accountItem->setFont(0, accountModel->font);
+        accountItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(accountModel->account));
     }
-}
-
-QString UserManager::_userItemText(tt3::ws::User user) throws(tt3::ws::WorkspaceException)
-{
-    QString result = user->realName(_credentials);
-    if (!user->enabled(_credentials))
-    {
-        result += " [disabled]";
-    }
-    return result;
-}
-
-QString UserManager::_accountItemText(tt3::ws::Account account) throws(tt3::ws::WorkspaceException)
-{
-    QString result = account->login(_credentials);
-    if (!account->enabled(_credentials))
-    {
-        result += " [disabled]";
-    }
-    return result;
 }
 
 tt3::ws::User UserManager::_selectedUser()
@@ -312,7 +321,7 @@ tt3::ws::User UserManager::_selectedUser()
     QTreeWidgetItem * item = _ui->usersTreeWidget->currentItem();
     return (item != nullptr && item->parent() == nullptr) ?
                 item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::User>() :
-               nullptr;
+                nullptr;
 }
 
 void UserManager::_setSelectedUser(tt3::ws::User user)
@@ -355,6 +364,13 @@ void UserManager::_setSelectedAccount(tt3::ws::Account account)
 
 //////////
 //  Signal handlers
+void UserManager::_currentThemeChanged(ITheme *, ITheme *)
+{
+    _ui->usersTreeWidget->clear();
+    _decorations = TreeWidgetDecorations(_ui->usersTreeWidget); //  TODO also on theCurrentTheme change!
+    refresh();
+}
+
 void UserManager::_usersTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)
 {
     refresh();

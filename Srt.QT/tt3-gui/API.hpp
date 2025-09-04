@@ -32,6 +32,7 @@
 #include "tt3-gui/Preferences.hpp"
 
 //  Controls
+#include "tt3-gui/WidgetDecorations.hpp"
 #include "tt3-gui/PreferencesEditor.hpp"
 #include "tt3-gui/GeneralAppearancePreferencesEditor.hpp"
 #include "tt3-gui/GeneralStartupPreferencesEditor.hpp"

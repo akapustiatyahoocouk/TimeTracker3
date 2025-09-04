@@ -111,7 +111,7 @@ QMenu::item:selected {
 QPlainTextEdit, QTextEdit, QTreeWidget, QListWidget {
 	border: 1px solid transparent;
 	color:rgb(17,17,17);
-	selection-background-color:rgb(236,116,64);
+    selection-background-color:rgb(236,116,64);
     background-color: #FFFFFF;
 }
 QProgressBar {

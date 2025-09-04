@@ -56,14 +56,58 @@ namespace tt3::gui
         //////////
         //  Implementation
     private:
-        tt3::ws::Workspace  _workspace;
+        tt3::ws::Workspace      _workspace;
         tt3::ws::Credentials    _credentials;
 
+        //  View model
+        struct _WorkspaceModelImpl;
+        struct _UserModelImpl;
+        struct _AccountModelImpl;
+
+        using _WorkspaceModel = std::shared_ptr<_WorkspaceModelImpl>;
+        using _UserModel = std::shared_ptr<_UserModelImpl>;
+        using _AccountModel = std::shared_ptr<_AccountModelImpl>;
+
+        using _UserModels = QList<_UserModel>;
+        using _AccountModels = QList<_AccountModel>;
+
+        struct _WorkspaceModelImpl
+        {
+            //  Aggregations
+            _UserModels         userModels;     //  ordered by text
+        };
+
+        struct _UserModelImpl
+        {
+            _UserModelImpl(tt3::ws::User u) : user(u) {}
+            //  Properties
+            tt3::ws::User       user;           //  represented by this model
+            QString             text;           //  for User tree items
+            QIcon               icon;           //  for User tree items
+            QFont               font;           //  for User tree items
+            QBrush              brush;          //  for User tree items' text
+            //  Aggregations
+            _AccountModels      accountModels;  //  ordered by text
+        };
+
+        struct _AccountModelImpl
+        {
+            _AccountModelImpl(tt3::ws::Account a) : account(a) {}
+            //  Properties
+            tt3::ws::Account    account;        //  represented by this model
+            QString             text;           //  for Account tree items
+            QIcon               icon;           //  for Account tree items
+            QFont               font;           //  for Account tree items
+            QBrush              brush;          //  for User tree items' text
+        };
+
+        _WorkspaceModel     _createWorkspaceModel(tt3::ws::Workspace workspace, const tt3::ws::Credentials & credentials);
+        _UserModel          _createUserModel(tt3::ws::User user, const tt3::ws::Credentials & credentials);
+        _AccountModel       _createAccountModel(tt3::ws::Account account, const tt3::ws::Credentials & credentials);
+
         //  Helpers
-        void                _refreshUserItems();
-        void                _refreshAccountItems(QTreeWidgetItem * userItem);
-        QString             _userItemText(tt3::ws::User user) throws(tt3::ws::WorkspaceException);
-        QString             _accountItemText(tt3::ws::Account account) throws(tt3::ws::WorkspaceException);
+        void                _refreshUserItems(_WorkspaceModel workspaceModel);
+        void                _refreshAccountItems(QTreeWidgetItem * userItem, _UserModel userModel);
         tt3::ws::User       _selectedUser();
         void                _setSelectedUser(tt3::ws::User user);
         tt3::ws::Account    _selectedAccount();
@@ -75,9 +119,13 @@ namespace tt3::gui
         Ui::UserManager *   _ui;
         std::unique_ptr<QMenu>  _usersTreeContextMenu;
 
+        //  Drawing resources
+        TreeWidgetDecorations   _decorations;
+
         //////////
         //  Signal handlers
     private slots:
+        void                _currentThemeChanged(ITheme *, ITheme *);
         void                _usersTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
         void                _usersTreeWidgetCustomContextMenuRequested(QPoint);
         void                _createUserPushButtonClicked();

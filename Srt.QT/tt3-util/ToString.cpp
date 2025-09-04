@@ -114,6 +114,29 @@ template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QLocale>(const QLocale &
     return (value == QLocale::c()) ? "C" : value.name();
 }
 
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QColor>(const QColor & value)
+{
+    if (value.isValid())
+    {
+        if (value.alpha() == 0)
+        {   //  transparent
+            return "transparent";
+        }
+        else if (value.alpha() == 255)
+        {   //  opaque
+            return value.name(QColor::NameFormat::HexRgb);
+        }
+        else
+        {   //  semi-transparent
+            return value.name(QColor::NameFormat::HexArgb);
+        }
+    }
+    else
+    {
+        return "invalid";
+    }
+}
+
 //  tt3::util types
 template <> TT3_UTIL_PUBLIC QString tt3::util::toString<tt3::util::TimeSpan>(const TimeSpan & value)
 {

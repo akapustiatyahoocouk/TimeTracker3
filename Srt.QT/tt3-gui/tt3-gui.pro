@@ -34,6 +34,7 @@ SOURCES += \
     SkinManager.cpp \
     StandardThemes.cpp \
     ThemeManager.cpp \
+    TreeWidgetDecorations.cpp \
     UserManager.cpp
 
 HEADERS += \
@@ -61,7 +62,8 @@ HEADERS += \
     ShowLicenseDialog.hpp \
     Skin.hpp \
     Theme.hpp \
-    UserManager.hpp
+    UserManager.hpp \
+    WidgetDecorations.hpp
 
 FORMS += \
     AboutDialog.ui \

@@ -338,7 +338,7 @@ template <> TT3_UTIL_PUBLIC QVersionNumber tt3::util::fromString<QVersionNumber>
 
 template <> TT3_UTIL_PUBLIC QLocale tt3::util::fromString<QLocale>(const QString & s, int & scan) throws(ParseException)
 {
-    if (scan > s.length())
+    if (scan < 0 || scan > s.length())
     {
         throw ParseException(s, scan);
     }
@@ -371,6 +371,73 @@ template <> TT3_UTIL_PUBLIC QLocale tt3::util::fromString<QLocale>(const QString
         result = QLocale(QLocale::Language::AnyLanguage, QLocale::Territory::AnyCountry);
     }
     return result;
+}
+
+template <> TT3_UTIL_PUBLIC QColor tt3::util::fromString<QColor>(const QString & s, int & scan) throws(ParseException)
+{
+    static QRegularExpression hexArgbRegex("#[0-9a-fA-F]{8}");
+    static QRegularExpression hexRgbRegex("#[0-9a-fA-F]{6}");
+    static QRegularExpression rgbRegex("rgb\\s*\\(\\s*([0-9]{1,3})\\s*,\\s*([0-9]{1,3})\\s*,\\s*([0-9]{1,3})\\s*\\)");
+    static QRegularExpression rgbaRegex("rgb\\s*\\(\\s*([0-9]{1,3})\\s*,\\s*([0-9]{1,3})\\s*,\\s*([0-9]{1,3})\\s*,\\s*([0-9]{1,3})\\s*\\)");
+
+    if (scan < 0 || scan > s.length())
+    {
+        throw ParseException(s, scan);
+    }
+
+    if (s.mid(scan).startsWith("transparent"))
+    {
+        scan += 11;
+        return QColor(0, 0, 0, 0);
+    }
+    if (s.mid(scan).startsWith("invalid"))
+    {
+        scan += 7;
+        return QColor();
+    }
+    if (scan + 9 <= s.length() &&
+        hexArgbRegex.match(s.mid(scan, 9)).hasMatch())
+    {
+        QColor c = QColor(s.mid(scan, 9));
+        scan += 9;
+        return c;
+    }
+    if (scan + 7 <= s.length() &&
+        hexRgbRegex.match(s.mid(scan, 7)).hasMatch())
+    {
+        QColor c = QColor(s.mid(scan, 7));
+        scan += 7;
+        return c;
+    }
+
+    QRegularExpressionMatch rgbMatch = rgbRegex.match(s.mid(scan));
+    if (rgbMatch.hasMatch())
+    {
+        int r = fromString<int>(rgbMatch.captured(1).trimmed(), 0);
+        int g = fromString<int>(rgbMatch.captured(2).trimmed(), 0);
+        int b = fromString<int>(rgbMatch.captured(3).trimmed(), 0);
+        if (r <= 255 && g <= 255 && b <= 255)
+        {
+            scan += int(rgbMatch.capturedLength());
+            return QColor(r, g, b);
+        }
+    }
+    QRegularExpressionMatch rgbaMatch = rgbaRegex.match(s.mid(scan));
+    if (rgbaMatch.hasMatch())
+    {
+        int r = fromString<int>(rgbaMatch.captured(1).trimmed(), 0);
+        int g = fromString<int>(rgbaMatch.captured(2).trimmed(), 0);
+        int b = fromString<int>(rgbaMatch.captured(3).trimmed(), 0);
+        int a = fromString<int>(rgbaMatch.captured(4).trimmed(), 0);
+        if (r <= 255 && g <= 255 && b <= 255 && a <= 255)
+        {
+            scan += int(rgbaMatch.capturedLength());
+            return QColor(r, g, b, a);
+        }
+    }
+
+    //  Done
+    throw ParseException(s, scan);
 }
 
 //  tt3::util types
