@@ -118,7 +118,7 @@ namespace tt3::ws
         void        workspaceClosed(WorkspaceClosedNotification notification);
 
         //  Emitted after a new object is created
-        void        objectCreared(ObjectCreatedNotification notification);
+        void        objectCreated(ObjectCreatedNotification notification);
 
         //  Emitted after an object is destroyed
         void        objectDestroyed(ObjectDestroyedNotification notification);

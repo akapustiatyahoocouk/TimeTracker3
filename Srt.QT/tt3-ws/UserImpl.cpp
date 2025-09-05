@@ -311,4 +311,34 @@ bool UserImpl::_canDestroy(const Credentials & credentials) const
     }
 }
 
+bool UserImpl::_destroyingLosesAccess() const throws(WorkspaceException)
+{
+    Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
+
+    try
+    {
+        //  If there is another enabled user...
+        for (tt3::db::api::IUser * aDataUser : _workspace->_database->users())
+        {
+            if (aDataUser->enabled() && aDataUser != _dataUser)
+            {   //  ...with an enabled admin account...
+                for (tt3::db::api::IAccount * aDataAccount : aDataUser->accounts())
+                {
+                    if (aDataAccount->enabled() &&
+                        (aDataAccount->capabilities() & Capabilities::Administrator) != Capabilities::None)
+                    {   //  ...then we CAN destroy this User
+                        return false;
+                    }
+                }
+            }
+        }
+        //  Otherwise we're stuck with this User
+        return true;
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
 //  End of tt3-ws/UserImpl.cpp

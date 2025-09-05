@@ -35,7 +35,7 @@ UserManager::UserManager(QWidget * parent)
 {
     _ui->setupUi(this);
 
-    _decorations = TreeWidgetDecorations(_ui->usersTreeWidget); //  TODO also on theCurrentTheme change!
+    _decorations = TreeWidgetDecorations(_ui->usersTreeWidget);
 
     //  Theme change means widget decorations change
     connect(&theCurrentTheme,
@@ -51,12 +51,21 @@ UserManager::UserManager(QWidget * parent)
             &UserManager::_viewOptionSettingValueChanged,
             Qt::ConnectionType::QueuedConnection);
 
-    //  TODO start listening for change notifications
+    //  Must listen to delayed refresh requests
+    connect(this,
+            &UserManager::refreshRequested,
+            this,
+            &UserManager::_refreshRequested,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Start listening for change notifications
     //  on the currently "viewed" Workspace
+    _startListeningToWorkspaceChanges();
 }
 
 UserManager::~UserManager()
 {
+    _stopListeningToWorkspaceChanges();
     delete _ui;
 }
 
@@ -71,8 +80,10 @@ void UserManager::setWorkspace(tt3::ws::Workspace workspace)
 {
     if (workspace != _workspace)
     {
+        _stopListeningToWorkspaceChanges();
         _workspace = workspace;
-        refresh();
+        _startListeningToWorkspaceChanges();
+        requestRefresh();
     }
 }
 
@@ -86,7 +97,7 @@ void UserManager::setCredentials(const tt3::ws::Credentials & credentials)
     if (credentials != _credentials)
     {
         _credentials = credentials;
-        refresh();
+       requestRefresh();
     }
 }
 
@@ -101,6 +112,7 @@ void UserManager::refresh()
     refreshUnderway = true;
 
     if (_workspace == nullptr || !_credentials.isValid() ||
+        !_workspace->isOpen() ||
         !_workspace->canAccess(_credentials)) //  TODO handle WorkspaceExceptions
     {   //  Nothing to show...
         _ui->usersTreeWidget->clear();
@@ -170,6 +182,11 @@ void UserManager::refresh()
         Component::Settings::instance()->showHiddenUsersAndAccounts);
 
     refreshUnderway = false;
+}
+
+void UserManager::requestRefresh()
+{
+    emit refreshRequested();
 }
 
 //////////
@@ -324,7 +341,6 @@ void UserManager::_filterItems(_WorkspaceModel workspaceModel)
         if (userModel->text.indexOf(filter, 0, Qt::CaseInsensitive) != -1)
         {   //  Item matches the filter - mark it as a match
             userModel->brush = _decorations.filterMatchItemForeground;
-            userModel->font = _decorations.itemEmphasisFont;
         }
         else if (userModel->accountModels.isEmpty())
         {   //  Item does not match the filter and has no children - remove it
@@ -350,7 +366,6 @@ void UserManager::_filterItems(_UserModel userModel)
             if (accountModel->text.indexOf(filter, 0, Qt::CaseInsensitive) != -1)
             {   //  Item matches the filter - mark it as a match
                 accountModel->brush = _decorations.filterMatchItemForeground;
-                accountModel->font = _decorations.itemEmphasisFont;
             }
             else
             {   //  Item does not match he filter - remove it
@@ -488,18 +503,68 @@ void UserManager::_setSelectedAccount(tt3::ws::Account account)
     }
 }
 
+void UserManager::_startListeningToWorkspaceChanges()
+{
+    if (_workspace != nullptr)
+    {
+        connect(_workspace.get(),
+                &tt3::ws::WorkspaceImpl::workspaceClosed,
+                this,
+                &UserManager::_workspaceClosed,
+                Qt::ConnectionType::QueuedConnection);
+        connect(_workspace.get(),
+                &tt3::ws::WorkspaceImpl::objectCreated,
+                this,
+                &UserManager::_objectCreated,
+                Qt::ConnectionType::QueuedConnection);
+        connect(_workspace.get(),
+                &tt3::ws::WorkspaceImpl::objectDestroyed,
+                this,
+                &UserManager::_objectDestroyed,
+                Qt::ConnectionType::QueuedConnection);
+        connect(_workspace.get(),
+                &tt3::ws::WorkspaceImpl::objectModified,
+                this,
+                &UserManager::_objectModified,
+                Qt::ConnectionType::QueuedConnection);
+    }
+}
+
+void UserManager::_stopListeningToWorkspaceChanges()
+{
+    if (_workspace != nullptr)
+    {
+        disconnect(_workspace.get(),
+                   &tt3::ws::WorkspaceImpl::workspaceClosed,
+                   this,
+                   &UserManager::_workspaceClosed);
+        disconnect(_workspace.get(),
+                   &tt3::ws::WorkspaceImpl::objectCreated,
+                   this,
+                   &UserManager::_objectCreated);
+        disconnect(_workspace.get(),
+                   &tt3::ws::WorkspaceImpl::objectDestroyed,
+                   this,
+                   &UserManager::_objectDestroyed);
+        disconnect(_workspace.get(),
+                   &tt3::ws::WorkspaceImpl::objectModified,
+                   this,
+                   &UserManager::_objectModified);
+    }
+}
+
 //////////
 //  Signal handlers
 void UserManager::_currentThemeChanged(ITheme *, ITheme *)
 {
     _ui->usersTreeWidget->clear();
-    _decorations = TreeWidgetDecorations(_ui->usersTreeWidget); //  TODO also on theCurrentTheme change!
-    refresh();
+    _decorations = TreeWidgetDecorations(_ui->usersTreeWidget);
+   requestRefresh();
 }
 
 void UserManager::_usersTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)
 {
-    refresh();
+   requestRefresh();
 }
 
 void UserManager::_usersTreeWidgetCustomContextMenuRequested(QPoint p)
@@ -572,7 +637,7 @@ void UserManager::_createUserPushButtonClicked()
     CreateUserDialog dlg(this, _workspace, _credentials);
     if (dlg.doModal() == CreateUserDialog::Result::Ok)
     {   //  User created
-        refresh();
+        refresh();  //  must refresh NOW
         _setSelectedUser(dlg.createdUser());
     }
 }
@@ -587,14 +652,14 @@ void UserManager::_modifyUserPushButtonClicked()
             ModifyUserDialog dlg(this, user, _credentials); //  may throw
             if (dlg.doModal() == ModifyUserDialog::Result::Ok)
             {   //  User modified - its position in the users tree may have changed
-                refresh();
+                refresh();  //  must refresh NOW
                 _setSelectedUser(user);
             }
         }
         catch (tt3::util::Exception & ex)
         {
             ErrorDialog::show(this, ex);
-            refresh();
+            requestRefresh();
         }
     }
 }
@@ -610,13 +675,13 @@ void UserManager::_destroyUserPushButtonClicked()
             if (dlg.doModal() == ConfirmDestroyUserDialog::Result::Yes)
             {   //  Do it!
                 user->destroy(_credentials);    //  may throw
-                refresh();
+                requestRefresh();
             }
         }
         catch (tt3::util::Exception & ex)
         {
             ErrorDialog::show(this, ex);
-            refresh();
+           requestRefresh();
         }
     }
 }
@@ -629,7 +694,7 @@ void UserManager::_createAccountPushButtonClicked()
         CreateAccountDialog dlg(this, user, _credentials);
         if (dlg.doModal() == CreateAccountDialog::Result::Ok)
         {   //  Account created
-            refresh();
+            refresh();  //  must refresh NOW
             _setSelectedAccount(dlg.createdAccount());
         }
     }
@@ -645,14 +710,14 @@ void UserManager::_modifyAccountPushButtonClicked()
             ModifyAccountDialog dlg(this, account, _credentials); //  may throw
             if (dlg.doModal() == ModifyAccountDialog::Result::Ok)
             {   //  User modified - its position in the users tree may have changed
-                refresh();
+                refresh();  //  must refresh NOW
                 _setSelectedAccount(account);
             }
         }
         catch (tt3::util::Exception & ex)
         {
             ErrorDialog::show(this, ex);
-            refresh();
+           requestRefresh();
         }
     }
 }
@@ -668,13 +733,13 @@ void UserManager::_destroyAccountPushButtonClicked()
             if (dlg.doModal() == ConfirmDestroyAccountDialog::Result::Yes)
             {   //  Do it!
                 account->destroy(_credentials);    //  may throw
-                refresh();
+                requestRefresh();
             }
         }
         catch (tt3::util::Exception & ex)
         {
             ErrorDialog::show(this, ex);
-            refresh();
+           requestRefresh();
         }
     }
 }
@@ -683,15 +748,40 @@ void UserManager::_showDisabledCheckBoxToggled(bool)
 {
     Component::Settings::instance()->showHiddenUsersAndAccounts =
         _ui->showDisabledCheckBox->isChecked();
-    refresh();
+   requestRefresh();
 }
 
 void UserManager::_viewOptionSettingValueChanged()
 {
-    refresh();
+   requestRefresh();
 }
 
 void UserManager::_filterLineEditTextChanged(QString)
+{
+   requestRefresh();
+}
+
+void UserManager::_workspaceClosed(tt3::ws::WorkspaceClosedNotification /*notification*/)
+{
+   requestRefresh();
+}
+
+void UserManager::_objectCreated(tt3::ws::ObjectCreatedNotification /*notification*/)
+{
+   requestRefresh();
+}
+
+void UserManager::_objectDestroyed(tt3::ws::ObjectDestroyedNotification /*notification*/)
+{
+   requestRefresh();
+}
+
+void UserManager::_objectModified(tt3::ws::ObjectModifiedNotification /*notification*/)
+{
+   requestRefresh();
+}
+
+void UserManager::_refreshRequested()
 {
     refresh();
 }

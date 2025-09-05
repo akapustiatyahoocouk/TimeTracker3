@@ -78,6 +78,7 @@ namespace tt3::ws
         virtual bool    _canRead(const Credentials & credentials) const throws(WorkspaceException) override;
         virtual bool    _canModify(const Credentials & credentials) const throws(WorkspaceException) override;
         virtual bool    _canDestroy(const Credentials & credentials) const throws(WorkspaceException) override;
+        virtual bool    _destroyingLosesAccess() const throws(WorkspaceException) override;
     };
 }
 

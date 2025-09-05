@@ -382,6 +382,10 @@ void WorkspaceImpl::_onDatabaseClosed(tt3::db::api::DatabaseClosedNotification n
 {
     qDebug() << "Workspace::_onDatabaseClosed()";
     Q_ASSERT(notification.database() == _database);
+    //  Translate & re-issue
+    emit workspaceClosed(
+        WorkspaceClosedNotification(
+            _address->_workspaceType->_mapWorkspace(this)));
 }
 
 void WorkspaceImpl::_onObjectCreated(tt3::db::api::ObjectCreatedNotification notification)
@@ -390,6 +394,20 @@ void WorkspaceImpl::_onObjectCreated(tt3::db::api::ObjectCreatedNotification not
              << tt3::util::toString(notification.oid())
              << ")";
     Q_ASSERT(notification.database() == _database);
+    //  Any change to users/accounts must drop the access rights cache
+    if (notification.objectType() == ObjectTypes::User::instance() ||
+        notification.objectType() == ObjectTypes::Account::instance())
+    {
+        tt3::util::Lock lock(_guard);
+        _goodCredentialsCache.clear();
+        _badCredentialsCache.clear();
+    }
+    //  Translate & re-issue
+    emit objectCreated(
+        ObjectCreatedNotification(
+            _address->_workspaceType->_mapWorkspace(this),
+            notification.objectType(),
+            notification.oid()));
 }
 
 void WorkspaceImpl::_onObjectDestroyed(tt3::db::api::ObjectDestroyedNotification notification)
@@ -398,6 +416,25 @@ void WorkspaceImpl::_onObjectDestroyed(tt3::db::api::ObjectDestroyedNotification
              << tt3::util::toString(notification.oid())
              << ")";
     Q_ASSERT(notification.database() == _database);
+    //  Any change to users/accounts must drop the access rights cache
+    if (notification.objectType() == ObjectTypes::User::instance() ||
+        notification.objectType() == ObjectTypes::Account::instance())
+    {
+        tt3::util::Lock lock(_guard);
+        _goodCredentialsCache.clear();
+        _badCredentialsCache.clear();
+    }
+    //  There's no need to cache destroyed objects
+    {
+        tt3::util::Lock lock(_guard);
+        _proxyCache.remove(notification.oid());
+    }
+    //  Translate & re-issue
+    emit objectDestroyed(
+        ObjectDestroyedNotification(
+            _address->_workspaceType->_mapWorkspace(this),
+            notification.objectType(),
+            notification.oid()));
 }
 
 void WorkspaceImpl::_onObjectModified(tt3::db::api::ObjectModifiedNotification notification)
@@ -406,6 +443,20 @@ void WorkspaceImpl::_onObjectModified(tt3::db::api::ObjectModifiedNotification n
              << tt3::util::toString(notification.oid())
              << ")";
     Q_ASSERT(notification.database() == _database);
+    //  Any change to users/accounts must drop the access rights cache
+    if (notification.objectType() == ObjectTypes::User::instance() ||
+        notification.objectType() == ObjectTypes::Account::instance())
+    {
+        tt3::util::Lock lock(_guard);
+        _goodCredentialsCache.clear();
+        _badCredentialsCache.clear();
+    }
+    //  Translate & re-issue
+    emit objectModified(
+        ObjectModifiedNotification(
+            _address->_workspaceType->_mapWorkspace(this),
+            notification.objectType(),
+            notification.oid()));
 }
 
 //  End of tt3-ws/WorkspaceImpl.cpp

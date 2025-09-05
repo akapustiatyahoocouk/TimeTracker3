@@ -64,12 +64,6 @@ PreferencesDialog::PreferencesDialog(QWidget * parent) throw(int)
     {
         for (tt3::util::AbstractSetting * setting : component->settings()->settings())
         {
-            /*  TODO kill off
-            connect(setting,
-                    &tt3::util::AbstractSetting::valueChanged,
-                    (QDialog*)this,
-                    &PreferencesDialog::_settingValueChanged);
-            */
             connect(setting,
                     SIGNAL(valueChanged()),
                     this,
@@ -142,12 +136,6 @@ void PreferencesDialog::_createEditor(QTreeWidgetItem * item)
         //  Set up signal listeners
         //  We need to connect() by name (old-style)
         //  because we privately inherit from QDialog
-        /*  TODO kill off
-        connect(editor,
-                &PreferencesEditor::controlValueChanged,
-                this,
-                &PreferencesDialog::_refresh);
-        */
         connect(editor,
                 SIGNAL(controlValueChanged()),
                 this,

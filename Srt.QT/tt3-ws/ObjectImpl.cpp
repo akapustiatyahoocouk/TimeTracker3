@@ -71,6 +71,10 @@ void ObjectImpl::destroy(const Credentials & credentials) throws(WorkspaceExcept
         {
             throw AccessDeniedException();
         }
+        if (_destroyingLosesAccess())
+        {
+            throw AccessWouldBeLostException();
+        }
         //  Do the work
         _dataObject->destroy(); //  may throw
     }

@@ -53,6 +53,16 @@ namespace tt3::gui
         //  Refreshes the content of this widget
         void                refresh();
 
+        //  Requests that refresh() br called as soon as
+        //  practicable on this widget's event loop thread
+        void                requestRefresh();
+
+        //////////
+        //  Signals
+    signals:
+        //  Emitted when this widget needs to refresh()
+        void                refreshRequested();
+
         //////////
         //  Implementation
     private:
@@ -116,6 +126,8 @@ namespace tt3::gui
         void                _setSelectedUser(tt3::ws::User user);
         tt3::ws::Account    _selectedAccount();
         void                _setSelectedAccount(tt3::ws::Account account);
+        void                _startListeningToWorkspaceChanges();
+        void                _stopListeningToWorkspaceChanges();
 
         //////////
         //  Controls
@@ -141,6 +153,11 @@ namespace tt3::gui
         void                _showDisabledCheckBoxToggled(bool);
         void                _viewOptionSettingValueChanged();
         void                _filterLineEditTextChanged(QString);
+        void                _workspaceClosed(tt3::ws::WorkspaceClosedNotification notification);
+        void                _objectCreated(tt3::ws::ObjectCreatedNotification notification);
+        void                _objectDestroyed(tt3::ws::ObjectDestroyedNotification notification);
+        void                _objectModified(tt3::ws::ObjectModifiedNotification notification);
+        void                _refreshRequested();
     };
 }
 

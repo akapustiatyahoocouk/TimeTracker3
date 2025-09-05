@@ -157,23 +157,10 @@ void AccountImpl::setCapabilities(const Credentials & credentials, Capabilities 
             throw AccessDeniedException();
         }
         //  ...or leave workspace without an enabled admin user+account
-        if ((capabilities & Capabilities::Administrator) == Capabilities::None)
-        {
-            bool hasEnabledAdminAccount = false;
-            for (tt3::db::api::IUser * someDataUser : _dataPrincipal->database()->users())
-            {
-                for (tt3::db::api::IAccount * someDataAccount : someDataUser->accounts())
-                {
-                    if (someDataUser->enabled() &&
-                        someDataAccount->enabled() &&
-                        someDataAccount != this->_dataAccount &&
-                        (someDataAccount->capabilities() & Capabilities::Administrator) != Capabilities::None)
-                    {
-                        hasEnabledAdminAccount = true;
-                    }
-                }
-            }
-            if (!hasEnabledAdminAccount)
+        if ((_dataAccount->capabilities() & Capabilities::Administrator) != Capabilities::None &&
+            (capabilities & Capabilities::Administrator) == Capabilities::None)
+        {   //  This account is losing its Administrator capability
+            if (_destroyingLosesAccess())
             {
                 throw AccessWouldBeLostException();
             }
@@ -280,6 +267,37 @@ bool AccountImpl::_canDestroy(const Credentials & credentials) const throws(Work
     catch (const AccessDeniedException &)
     {   //  This is a special case!
         return false;
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+bool AccountImpl::_destroyingLosesAccess() const throws(WorkspaceException)
+{
+    Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
+
+    try
+    {
+        //  If there is an enabled user...
+        for (tt3::db::api::IUser * aDataUser : _workspace->_database->users())
+        {
+            if (aDataUser->enabled())
+            {   //  ...with an enabled admin account other than this one...
+                for (tt3::db::api::IAccount * aDataAccount : aDataUser->accounts())
+                {
+                    if (aDataAccount != _dataAccount &&
+                        aDataAccount->enabled() &&
+                        (aDataAccount->capabilities() & Capabilities::Administrator) != Capabilities::None)
+                    {   //  ...then we CAN destroy this Account
+                        return false;
+                    }
+                }
+            }
+        }
+        //  Otherwise we're stuck with this User
+        return true;
     }
     catch (const tt3::util::Exception & ex)
     {

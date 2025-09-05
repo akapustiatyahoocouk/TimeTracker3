@@ -59,7 +59,7 @@ ModifyAccountDialog::ModifyAccountDialog(
     //  and e-mail addresses
     if ((clientCapabilities & tt3::ws::Capabilities::Administrator) == tt3::ws::Capabilities::None &&
         (clientCapabilities & tt3::ws::Capabilities::Administrator) == tt3::ws::Capabilities::None)
-    {   //  TODO test this!!!
+    {
         _ui->loginLineEdit->setEnabled(false);
         _ui->capabilitiesGroupBox->setEnabled(false);
         _ui->enabledCheckBox->setEnabled(false);

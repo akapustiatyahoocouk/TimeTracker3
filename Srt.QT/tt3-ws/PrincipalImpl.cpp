@@ -66,25 +66,12 @@ void PrincipalImpl::setEnabled(const Credentials & credentials, bool enabled) th
         {
             throw AccessDeniedException();
         }
-        //  When disabling a user will leave workspace
+        //  When disabling a princilap will leave workspace
         //  without an enabled admin account, don't do it
         if (_dataPrincipal->enabled() && !enabled)
-        {
-            bool hasEnabledAdminAccount = false;
-            for (tt3::db::api::IUser * someDataUser : _dataPrincipal->database()->users())
-            {
-                for (tt3::db::api::IAccount * someDataAccount : someDataUser->accounts())
-                {
-                    if (someDataUser->enabled() &&
-                        someDataAccount->enabled() &&
-                        someDataUser != _dataPrincipal &&
-                        someDataAccount != _dataPrincipal)
-                    {
-                        hasEnabledAdminAccount = true;
-                    }
-                }
-            }
-            if (!hasEnabledAdminAccount)
+        {   //  The disabled principal is as good as nonexistent for
+            //  access control purposes, so we can use the same check
+            if (_destroyingLosesAccess())
             {
                 throw AccessWouldBeLostException();
             }
