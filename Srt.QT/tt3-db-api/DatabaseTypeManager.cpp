@@ -17,8 +17,11 @@
 #include "tt3-db-api/API.hpp"
 using namespace tt3::db::api;
 
-tt3::util::Mutex DatabaseTypeManager::_guard;
-QMap<tt3::util::Mnemonic, IDatabaseType*> DatabaseTypeManager::_registry;
+struct DatabaseTypeManager::_Impl
+{
+    tt3::util::Mutex                            guard;
+    QMap<tt3::util::Mnemonic, IDatabaseType*>   registry;
+};
 
 //////////
 //  Operations
@@ -26,29 +29,40 @@ bool DatabaseTypeManager::registerDatabaseType(IDatabaseType * databaseType)
 {
     Q_ASSERT(databaseType != nullptr);
 
-    tt3::util::Lock lock(_guard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
 
-    if (IDatabaseType * registeredDatabaseType = findDatabaseType(databaseType->mnemonic()))
+    if (impl->registry.contains(databaseType->mnemonic()))
     {
-        return databaseType == registeredDatabaseType;
+        return databaseType == impl->registry[databaseType->mnemonic()];
     }
-    _registry[databaseType->mnemonic()] = databaseType;
+    impl->registry[databaseType->mnemonic()] = databaseType;
     return true;
 }
 
 IDatabaseType * DatabaseTypeManager::findDatabaseType(const tt3::util::Mnemonic & mnemonic)
 {
-    tt3::util::Lock oock(_guard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
 
-    return _registry.contains(mnemonic) ? _registry[mnemonic] : nullptr;
+    return impl->registry.contains(mnemonic) ? impl->registry[mnemonic] : nullptr;
 }
 
 DatabaseTypes DatabaseTypeManager::allDatabaseTypes()
 {
-    tt3::util::Lock oock(_guard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
 
-    QList<IDatabaseType*> values = _registry.values();
+    QList<IDatabaseType*> values = impl->registry.values();
     return DatabaseTypes(values.begin(), values.end());
+}
+
+//////////
+//  Implementation helpers
+DatabaseTypeManager::_Impl * DatabaseTypeManager::_impl()
+{
+    static _Impl impl;
+    return &impl;
 }
 
 //  End of tt3-db-api/DatabaseTypeManager.cpp

@@ -155,12 +155,11 @@ namespace tt3::ws
         //////////
         //  Implementation
     private:
-        static tt3::util::Mutex _guard;
-        static QMap<tt3::db::api::IDatabaseType*, WorkspaceType>   _registry;
+        struct _Impl;
 
         //  Helpers
-        static void             _collectWorkspaceTypes();
-        static WorkspaceType    _findWorkspaceType(tt3::db::api::IDatabaseType * databaseType);
+        static _Impl *          _impl();
+        //  TODO kill off static WorkspaceType    _findWorkspaceType(tt3::db::api::IDatabaseType * databaseType);
     };
 }
 

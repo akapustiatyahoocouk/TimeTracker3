@@ -99,8 +99,8 @@ namespace tt3::db::xml
             //////////
             //  Constants
         public:
-            static inline int   RefreshIntervalMin = 1;
-            static inline int   StaleTimeoutMin = 5;
+            static const inline int RefreshIntervalMin = 1;
+            static const inline int StaleTimeoutMin = 5;
 
             //////////
             //  Construction/destruction

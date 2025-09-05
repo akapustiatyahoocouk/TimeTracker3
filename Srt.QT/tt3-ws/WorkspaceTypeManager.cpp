@@ -17,52 +17,58 @@
 #include "tt3-ws/API.hpp"
 using namespace tt3::ws;
 
-tt3::util::Mutex WorkspaceTypeManager::_guard;
-QMap<tt3::db::api::IDatabaseType*, WorkspaceType> WorkspaceTypeManager::_registry;
+struct WorkspaceTypeManager::_Impl
+{
+    _Impl()
+    {
+        for (tt3::db::api::IDatabaseType * databaseType :
+             tt3::db::api::DatabaseTypeManager::allDatabaseTypes())
+        {
+            registry[databaseType] = new WorkspaceTypeImpl(databaseType);
+        }
+    }
+
+    tt3::util::Mutex                                    guard;
+    QMap<tt3::db::api::IDatabaseType*, WorkspaceType>   registry;
+};
 
 //////////
 //  Operations
 WorkspaceType WorkspaceTypeManager::findWorkspaceType(const tt3::util::Mnemonic & mnemonic)
 {
-    tt3::util::Lock lock(_guard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
 
-    _collectWorkspaceTypes();
     tt3::db::api::IDatabaseType * databaseType =
         tt3::db::api::DatabaseTypeManager::findDatabaseType(mnemonic);
-    return _registry.contains(databaseType) ? _registry[databaseType] : nullptr;
+    return impl->registry.contains(databaseType) ? impl->registry[databaseType] : nullptr;
 }
 
 WorkspaceTypes WorkspaceTypeManager::allWorkspaceTypes()
 {
-    tt3::util::Lock lock(_guard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
 
-    _collectWorkspaceTypes();
-    QList<WorkspaceType> values = _registry.values();
+    QList<WorkspaceType> values = impl->registry.values();
     return WorkspaceTypes(values.begin(), values.end());
 }
 
 //////////
 //  Implementation helpers
-void WorkspaceTypeManager::_collectWorkspaceTypes()
+WorkspaceTypeManager::_Impl * WorkspaceTypeManager::_impl()
 {
-    Q_ASSERT(_guard.isLockedByCurrentThread());
-
-    if (_registry.isEmpty())
-    {
-        for (tt3::db::api::IDatabaseType * databaseType :
-             tt3::db::api::DatabaseTypeManager::allDatabaseTypes())
-        {
-            _registry[databaseType] = new WorkspaceTypeImpl(databaseType);
-        }
-    }
+    static _Impl impl;
+    return &impl;
 }
 
+/*  TODO kill off
 WorkspaceType WorkspaceTypeManager::_findWorkspaceType(tt3::db::api::IDatabaseType * databaseType)
 {
-    Q_ASSERT(_guard.isLockedByCurrentThread());
+    _Impl * impl = _impl();
+    Q_ASSERT(impl->guard.isLockedByCurrentThread());
 
-    _collectWorkspaceTypes();
-    return _registry.contains(databaseType) ? _registry[databaseType] : nullptr;
+    return impl->registry.contains(databaseType) ? impl->registry[databaseType] : nullptr;
 }
+*/
 
 //  End of tt3-ws/WorkspaceTypeManager.cpp
