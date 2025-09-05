@@ -482,7 +482,36 @@ void MainFrame::_onActionPreferences()
 
 void MainFrame::_onActionLoginAsDifferentUser()
 {
-    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+    tt3::gui::LoginDialog dlg(this, "");
+    if (dlg.doModal() == tt3::gui::LoginDialog::Result::Ok)
+    {
+        tt3::ws::Credentials credentials = dlg.credentials();
+        try
+        {
+            if (tt3::ws::theCurrentWorkspace == nullptr ||
+                tt3::ws::theCurrentWorkspace->canAccess(credentials))   //  may throw
+            {   //  Login is fine
+                tt3::ws::theCurrentCredentials = credentials;
+            }
+            else
+            {   //  OOPS! Do we close the current workspace? Or ignore login attempt?
+                tt3::gui::ConfirmDropWorkspaceDialog dlg1(this, tt3::ws::theCurrentWorkspace->address());
+                if (dlg1.doModal() == tt3::gui::ConfirmDropWorkspaceDialog::Result::Yes)
+                {   //  Yes - close the current workspace and keep the new credentials
+                    tt3::ws::Workspace workspace = nullptr;
+                    tt3::ws::theCurrentWorkspace.swap(workspace);
+                    workspace->close(); //  may throw
+                    tt3::ws::theCurrentCredentials = credentials;
+                }
+                //  else forget about the re-login and keep the workspace open
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            tt3::gui::ErrorDialog::show(this, ex);
+        }
+        refresh();
+    }
 }
 
 void MainFrame::_onActionHelpContent()

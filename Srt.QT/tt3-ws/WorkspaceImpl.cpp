@@ -411,7 +411,7 @@ void WorkspaceImpl::_onObjectCreated(tt3::db::api::ObjectCreatedNotification not
              << tt3::util::toString(notification.oid())
              << ")";
     Q_ASSERT(notification.database() == _database ||
-             _database == nullptr);
+             _database == nullptr); //  workspace is closed, but DB notifications were queued
     //  Any change to users/accounts must drop the access rights cache
     if (notification.objectType() == ObjectTypes::User::instance() ||
         notification.objectType() == ObjectTypes::Account::instance())
@@ -434,7 +434,7 @@ void WorkspaceImpl::_onObjectDestroyed(tt3::db::api::ObjectDestroyedNotification
              << tt3::util::toString(notification.oid())
              << ")";
     Q_ASSERT(notification.database() == _database ||
-             _database == nullptr);
+             _database == nullptr); //  workspace is closed, but DB notifications were queued
     //  Any change to users/accounts must drop the access rights cache
     if (notification.objectType() == ObjectTypes::User::instance() ||
         notification.objectType() == ObjectTypes::Account::instance())
@@ -462,7 +462,7 @@ void WorkspaceImpl::_onObjectModified(tt3::db::api::ObjectModifiedNotification n
              << tt3::util::toString(notification.oid())
              << ")";
     Q_ASSERT(notification.database() == _database ||
-             _database == nullptr);
+             _database == nullptr); //  workspace is closed, but DB notifications were queued
     //  Any change to users/accounts must drop the access rights cache
     if (notification.objectType() == ObjectTypes::User::instance() ||
         notification.objectType() == ObjectTypes::Account::instance())

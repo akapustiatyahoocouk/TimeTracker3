@@ -107,6 +107,20 @@ ConfirmCloseWorkspaceDialog::ConfirmCloseWorkspaceDialog(
 }
 
 //////////
+//  ConfirmDropWorkspaceDialog
+ConfirmDropWorkspaceDialog::ConfirmDropWorkspaceDialog(
+    ::QWidget * parent, tt3::ws::WorkspaceAddress workspaceAddress)
+    :   AskYesNoDialog(
+          parent,
+          QIcon(":/tt3-gui/Resources/Images/Actions/LoginLarge.png"),
+          "Drop workspace",
+          "Your new credentials do not permit access to\n" +
+              workspaceAddress->displayForm() +
+              "\nWould you like to close the workspace ?")
+{
+}
+
+//////////
 //  ConfirmDestroyWorkspaceDialog
 ConfirmDestroyWorkspaceDialog::ConfirmDestroyWorkspaceDialog(
     ::QWidget * parent, tt3::ws::WorkspaceAddress workspaceAddress)

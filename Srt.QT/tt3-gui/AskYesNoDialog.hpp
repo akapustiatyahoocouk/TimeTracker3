@@ -88,6 +88,17 @@ namespace tt3::gui
         ConfirmCloseWorkspaceDialog(::QWidget * parent, tt3::ws::WorkspaceAddress workspaceAddress);
     };
 
+    //  The modal "confirm closing workspace after relogin" dialog
+    class TT3_GUI_PUBLIC ConfirmDropWorkspaceDialog : public AskYesNoDialog
+    {
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmDropWorkspaceDialog)
+
+        //////////
+        //  Construction/destruction
+    public:
+        ConfirmDropWorkspaceDialog(::QWidget * parent, tt3::ws::WorkspaceAddress workspaceAddress);
+    };
+
     //  The modal "confirm workspace destruction" dialog
     class TT3_GUI_PUBLIC ConfirmDestroyWorkspaceDialog : public AskYesNoDialog
     {
