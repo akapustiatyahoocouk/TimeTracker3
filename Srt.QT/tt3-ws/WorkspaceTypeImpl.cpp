@@ -120,11 +120,11 @@ Workspace WorkspaceTypeImpl::createWorkspace(
     }
     try
     {
-        std::unique_ptr<tt3::db::api::IDatabase> databasePtr
+        std::unique_ptr<tt3::db::api::IDatabase> database
             { address->_databaseAddress->databaseType()->createDatabase(address->_databaseAddress) };
         //  Create admin user...
         tt3::db::api::IUser * user =
-            databasePtr->createUser(
+            database->createUser(
                 true,
                 QStringList(),
                 adminUser,
@@ -142,7 +142,7 @@ Workspace WorkspaceTypeImpl::createWorkspace(
             NOT forwarded to the Workspace, as the Workspace
             instance has NOT yet been created.  */
         //  ...and we're done.
-        return _mapWorkspace(new WorkspaceImpl(address, databasePtr.release()));
+        return _mapWorkspace(new WorkspaceImpl(address, database.release()));
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw, but first...
@@ -165,9 +165,9 @@ Workspace WorkspaceTypeImpl::openWorkspace(const WorkspaceAddress & address) thr
     }
     try
     {
-        std::unique_ptr<tt3::db::api::IDatabase> databasePtr
+        std::unique_ptr<tt3::db::api::IDatabase> database
             { address->_databaseAddress->databaseType()->openDatabase(address->_databaseAddress) };
-        return _mapWorkspace(new WorkspaceImpl(address, databasePtr.release()));
+        return _mapWorkspace(new WorkspaceImpl(address, database.release()));
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -175,9 +175,34 @@ Workspace WorkspaceTypeImpl::openWorkspace(const WorkspaceAddress & address) thr
     }
 }
 
-/*  TODO uncomment & implement
-void WorkspaceType::destroyWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
-*/
+void WorkspaceTypeImpl::destroyWorkspace(
+    const Credentials & credentials, const WorkspaceAddress & address)
+    throws(WorkspaceException)
+{
+    if (address == nullptr || address->workspaceType() != this)
+    {   //  OOPS! Can't use this address
+        throw InvalidWorkspaceAddressException();
+    }
+    try
+    {
+        //  We need to open the database to verify
+        //  the admin credentials for it
+        std::unique_ptr<tt3::db::api::IDatabase> database
+            { address->_databaseAddress->databaseType()->openDatabase(address->_databaseAddress) };
+        tt3::db::api::IAccount * account = database->login(credentials._login, credentials._password);
+        if ((account->capabilities() & Capabilities::Administrator) == Capabilities::None)
+        {   //  OOPS! Not allowed!
+            throw AccessDeniedException();
+        }
+        //  Now we can close the database and destroy it immediately
+        database->close();
+        address->_databaseAddress->databaseType()->destroyDatabase(address->_databaseAddress);
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
 
 //////////
 //  Implementation helpers

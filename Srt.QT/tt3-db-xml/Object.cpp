@@ -161,8 +161,13 @@ void Object::_markDead()
     _database->_liveObjects.remove(_oid);
     _database->_graveyard.insert(_oid, this);
     _database->_needsSaving = true;
+    //  Schedule change notifications
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectDestroyedNotification(
+            _database, type(), _oid));
+    //  Can we recycle now ?
     if (_referenceCount == 0)
-    {   //  We can recycle
+    {   //  Yes!
         delete this;
     }
 }

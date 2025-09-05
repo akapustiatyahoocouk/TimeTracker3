@@ -147,9 +147,28 @@
     <property name="title">
      <string>&amp;Edit</string>
     </property>
+    <addaction name="actionManageUsers"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="title">
+     <string>&amp;Tools</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuReports">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="title">
+     <string>&amp;Reports</string>
+    </property>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuTools"/>
+   <addaction name="menuReports"/>
    <addaction name="menuOptions"/>
    <addaction name="menuHelp"/>
   </widget>
@@ -173,6 +192,7 @@
    <addaction name="actionOpenWorkspace"/>
    <addaction name="separator"/>
    <addaction name="separator"/>
+   <addaction name="actionManageUsers"/>
    <addaction name="actionPreferences"/>
    <addaction name="actionLoginAsDifferentUser"/>
    <addaction name="separator"/>
@@ -326,6 +346,15 @@
    </property>
    <property name="text">
     <string>&amp;Login as a different user</string>
+   </property>
+  </action>
+  <action name="actionManageUsers">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/ManageUsersSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/ManageUsersSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>Manage &amp;users</string>
    </property>
   </action>
  </widget>
@@ -525,6 +554,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionManageUsers</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManageUsers()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>207</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_onActionExit()</slot>
@@ -539,5 +584,6 @@
   <slot>_onActionAbout()</slot>
   <slot>_onActionRestart()</slot>
   <slot>_onActionLoginAsDifferentUser()</slot>
+  <slot>_onActionManageUsers()</slot>
  </slots>
 </ui>

@@ -62,5 +62,9 @@
         <file>Resources/Light.qss</file>
         <file>Resources/Images/Actions/RestartLarge.png</file>
         <file>Resources/Images/Actions/RestartSmall.png</file>
+        <file>Resources/Images/Actions/ManageUsersLarge.png</file>
+        <file>Resources/Images/Actions/ManageUsersSmall.png</file>
+        <file>Resources/Images/Actions/DestroyWorkspaceLarge.png</file>
+        <file>Resources/Images/Actions/DestroyWorkspaceSmall.png</file>
     </qresource>
 </RCC>

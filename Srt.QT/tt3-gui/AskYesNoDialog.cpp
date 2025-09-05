@@ -107,6 +107,20 @@ ConfirmCloseWorkspaceDialog::ConfirmCloseWorkspaceDialog(
 }
 
 //////////
+//  ConfirmDestroyWorkspaceDialog
+ConfirmDestroyWorkspaceDialog::ConfirmDestroyWorkspaceDialog(
+    ::QWidget * parent, tt3::ws::WorkspaceAddress workspaceAddress)
+    :   AskYesNoDialog(
+          parent,
+          QIcon(":/tt3-gui/Resources/Images/Actions/DestroyWorkspaceLarge.png"),
+          "Destroy workspace",
+          "Are you sure you really want to destroy the workspace\n" +
+              workspaceAddress->displayForm() + " ?\n" +
+              "IMPORTANT: YOU WILL NOT BE ABLE TO UNDO THIS ACTION LATER!")
+{
+}
+
+//////////
 //  ConfirmRestartDialog
 ConfirmRestartDialog::ConfirmRestartDialog(::QWidget * parent)
     :   AskYesNoDialog(

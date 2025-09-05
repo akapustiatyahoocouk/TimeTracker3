@@ -161,7 +161,7 @@ tt3::db::api::IDatabase * DatabaseType::openDatabase(tt3::db::api::IDatabaseAddr
 {
     if (DatabaseAddress * xmlDatabaseAddress =
         dynamic_cast<DatabaseAddress*>(address))
-    {   //  Address is of a proper type
+    {   //  Address is of a proper type.
         return new Database(xmlDatabaseAddress, Database::_Mode::_Open);
     }
     throw tt3::db::api::InvalidDatabaseAddressException();
@@ -172,7 +172,17 @@ void DatabaseType::destroyDatabase(tt3::db::api::IDatabaseAddress * address) thr
     if (DatabaseAddress * xmlDatabaseAddress =
         dynamic_cast<DatabaseAddress*>(address))
     {   //  Address is of a proper type
-        throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+        //  Must validate the database file existence and its
+        //  contents - the best way is to open it for a moment
+        std::unique_ptr<Database> database
+            { new Database(xmlDatabaseAddress, Database::_Mode::_Open) };
+        database->close();
+        QFile file(xmlDatabaseAddress->_path);
+        if (!file.remove())
+        {   //  OOPS!
+            throw tt3::db::api::CustomDatabaseException(file.errorString());
+        }
+        return;
     }
     throw tt3::db::api::InvalidDatabaseAddressException();
 }

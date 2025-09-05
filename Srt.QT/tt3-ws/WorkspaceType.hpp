@@ -107,7 +107,10 @@ namespace tt3::ws
         //  Destroys an existing workspace at the specified address.
         //  The workspace must not currently be in use.
         //  Throws WorkspaceException if an error occurs.
-        void                destroyWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
+        //  IMPORTANT: The specified credentials must permit Administrator
+        //  access to the workspace in question, or the workspace destruction
+        //  will fail wth an AccessDeniedException!
+        void                destroyWorkspace(const Credentials & credentials, const WorkspaceAddress & address) throws(WorkspaceException);
 
         //////////
         //  Implementation

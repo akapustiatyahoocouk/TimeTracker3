@@ -114,6 +114,7 @@ void MainFrame::refresh()
 
     //  Menu items
     _ui->actionCloseWorkspace->setEnabled(currentWorkspace != nullptr);
+    _ui->actionManageUsers->setEnabled(currentWorkspace != nullptr);
 
     //  Controls
     _userManager->refresh();
@@ -291,6 +292,35 @@ bool MainFrame::_reconcileCurrntCredentials(const tt3::ws::Workspace & workspace
     }
 }
 
+void MainFrame::_destroyWorkspace(tt3::ws::WorkspaceAddress workspaceAddress)
+{
+    Q_ASSERT(workspaceAddress != nullptr);
+
+    //  If the workspaceAddress refers to the currently
+    //  open workspace, we can't destroy it
+    if (tt3::ws::theCurrentWorkspace != nullptr &&
+        tt3::ws::theCurrentWorkspace->address() == workspaceAddress)
+    {
+        tt3::gui::ErrorDialog::show(
+            this,
+            "Cannot destroy workspace\n" +
+                workspaceAddress->displayForm() +
+                "\n because it is currently in use");
+        return;
+    }
+
+    //  Do the work
+    try
+    {
+        workspaceAddress->workspaceType()->destroyWorkspace(tt3::ws::theCurrentCredentials, workspaceAddress);
+        //  No need to refreh()!
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        tt3::gui::ErrorDialog::show(this, ex);
+    }
+}
+
 void MainFrame::_updateMruWorkspaces()
 {
     QMenu * menu = _ui->actionRecentWorkspaces->menu();
@@ -392,7 +422,18 @@ void MainFrame::_onActionCloseWorkspace()
 
 void MainFrame::_onActionDestroyWorkspace()
 {
-    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+    tt3::gui::SelectWorkspaceDialog dlg(this);
+    if (dlg.doModal() == tt3::gui::SelectWorkspaceDialog::Result::Ok)
+    {
+        tt3::ws::WorkspaceAddress workspaceAddress = dlg.selectedWorkspaceAddress();
+        Q_ASSERT(workspaceAddress != nullptr);
+        //  Always confirm!
+        tt3::gui::ConfirmDestroyWorkspaceDialog dlg(this, workspaceAddress);
+        if (dlg.doModal() == tt3::gui::ConfirmDestroyWorkspaceDialog::Result::Yes)
+        {   //  Do it!
+            _destroyWorkspace(workspaceAddress);
+        }
+    }
 }
 
 void MainFrame::_onActionRestart()
@@ -422,6 +463,15 @@ void MainFrame::_onActionExit()
     }
     //  ...and exit
     QApplication::exit(0);
+}
+
+void MainFrame::_onActionManageUsers()
+{
+    tt3::gui::ManageUsersDialog dlg(
+        this,
+        tt3::ws::theCurrentWorkspace,
+        tt3::ws::theCurrentCredentials);
+    dlg.doModal();
 }
 
 void MainFrame::_onActionPreferences()

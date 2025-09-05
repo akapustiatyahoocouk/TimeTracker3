@@ -64,6 +64,7 @@ namespace tt3::skin::admin
                               const QString & adminLogin, const QString & adminPassword);
         bool            _openWorkspace(tt3::ws::WorkspaceAddress workspaceAddress);
         bool            _reconcileCurrntCredentials(const tt3::ws::Workspace & workspace);
+        void            _destroyWorkspace(tt3::ws::WorkspaceAddress workspaceAddress);
 
         void            _updateMruWorkspaces();
 
@@ -77,8 +78,8 @@ namespace tt3::skin::admin
     private:
         Ui::MainFrame *     _ui;
         QTimer              _savePositionTimer;
-        //  Custom controls for the tabbed pane in the middle
-        //  are created dynamically
+        //  Custom controls for the tabbed pane
+        //  in the middle are created dynamically
         QStackedLayout *        _manageUsersTabLayout = nullptr;
         tt3::gui::UserManager * _userManager = nullptr;
 
@@ -92,6 +93,7 @@ namespace tt3::skin::admin
         void            _onActionDestroyWorkspace();
         void            _onActionRestart();
         void            _onActionExit();
+        void            _onActionManageUsers();
         void            _onActionPreferences();
         void            _onActionLoginAsDifferentUser();
         void            _onActionHelpContent();
