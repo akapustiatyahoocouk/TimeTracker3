@@ -19,7 +19,9 @@ using namespace tt3::db::xml;
 
 //////////
 //  Construction/destruction (from DB type only)
-Account::Account(User * user, tt3::db::api::Oid oid)
+Account::Account(
+    User * user,
+    tt3::db::api::Oid oid)
     :   Principal(user->_database, oid)
 {
     //  Register with parent
@@ -36,7 +38,8 @@ Account::~Account()
 
 //////////
 //  tt3::db::api::IObject (life cycle)
-void Account::destroy() throws(tt3::db::api::DatabaseException)
+void Account::destroy(
+    ) throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -47,7 +50,9 @@ void Account::destroy() throws(tt3::db::api::DatabaseException)
 
 //////////
 //  tt3::db::api::IAccount (properties)
-QString Account::login() const throws(tt3::db::api::DatabaseException)
+auto Account::login(
+    ) const throws(tt3::db::api::DatabaseException)
+    -> QString
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -55,7 +60,9 @@ QString Account::login() const throws(tt3::db::api::DatabaseException)
     return _login;
 }
 
-void Account::setLogin(const QString & login) throws(tt3::db::api::DatabaseException)
+void Account::setLogin(
+        const QString & login
+    ) throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -90,7 +97,9 @@ void Account::setLogin(const QString & login) throws(tt3::db::api::DatabaseExcep
     }
 }
 
-QString Account::passwordHash() const throws(tt3::db::api::DatabaseException)
+auto Account::passwordHash(
+    ) const throws(tt3::db::api::DatabaseException)
+    -> QString
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -98,7 +107,9 @@ QString Account::passwordHash() const throws(tt3::db::api::DatabaseException)
     return _passwordHash;
 }
 
-void Account::setPassword(const QString & password) throws(tt3::db::api::DatabaseException)
+void Account::setPassword(
+        const QString & password
+    ) throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -129,7 +140,9 @@ void Account::setPassword(const QString & password) throws(tt3::db::api::Databas
                 _database, type(), _oid));
 }
 
-tt3::db::api::Capabilities Account::capabilities() const throws(tt3::db::api::DatabaseException)
+auto Account::capabilities(
+    ) const throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::Capabilities
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -137,7 +150,9 @@ tt3::db::api::Capabilities Account::capabilities() const throws(tt3::db::api::Da
     return _capabilities;
 }
 
-void Account::setCapabilities(tt3::db::api::Capabilities capabilities) throws(tt3::db::api::DatabaseException)
+void Account::setCapabilities(
+        tt3::db::api::Capabilities capabilities
+    ) throws(tt3::db::api::DatabaseException)
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -155,12 +170,28 @@ void Account::setCapabilities(tt3::db::api::Capabilities capabilities) throws(tt
 
 //////////
 //  tt3::db::api::IAccount (associations)
-tt3::db::api::IUser * Account::user() const throws(tt3::db::api::DatabaseException)
+auto Account::user(
+    ) const throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::IUser *
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
 
     return _user;
+}
+
+auto Account::quickPickList(
+    ) const throws(tt3::db::api::DatabaseException)
+    -> QList<tt3::db::api::IActivity*>
+{
+    throw new tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+void Account::setQuickPickList(
+        const QList<tt3::db::api::IActivity*> & /*quickPickList*/
+    ) const throws(tt3::db::api::DatabaseException)
+{
+    throw new tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
 //////////

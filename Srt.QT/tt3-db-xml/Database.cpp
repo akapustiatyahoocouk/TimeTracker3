@@ -207,9 +207,58 @@ tt3::db::api::IAccount * Database::findAccount(const QString & login) const thro
     return _findAccount(login);
 }
 
+tt3::db::api::ActivityTypes Database::activityTypes() const throws(tt3::db::api::DatabaseException)
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+tt3::db::api::PublicActivities Database::publicActivities() const throws(tt3::db::api::DatabaseException)
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+tt3::db::api::PublicActivities Database::publicActivitiesAndTasks() const throws(tt3::db::api::DatabaseException)
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+tt3::db::api::PublicTasks Database::publicTasks() const throws(tt3::db::api::DatabaseException)
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+tt3::db::api::PublicTasks Database::rootPublicTasks() const throws(tt3::db::api::DatabaseException)
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+tt3::db::api::Projects Database::projects() const throws(tt3::db::api::DatabaseException)
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+tt3::db::api::Projects Database::rootProjects() const throws(tt3::db::api::DatabaseException)
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+tt3::db::api::WorkStreams Database::workStreams() const throws(tt3::db::api::DatabaseException)
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+tt3::db::api::Beneficiaries Database::beneficiaries() const throws(tt3::db::api::DatabaseException)
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
 //////////
 //  tt3::db::api::IDatabase (access control)
-tt3::db::api::IAccount * Database::tryLogin(const QString & login, const QString & password) const throws(tt3::db::api::DatabaseException)
+auto Database::tryLogin(
+        const QString & login,
+        const QString & password
+    ) const throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::IAccount *
 {
     static tt3::util::IMessageDigest * sha1 = tt3::util::Sha1MessageDigest::instance();  //  idempotent
 
@@ -236,13 +285,29 @@ tt3::db::api::IAccount * Database::tryLogin(const QString & login, const QString
     return nullptr;
 }
 
+auto Database::login(
+        const QString & login,
+        const QString & password
+    ) const throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::IAccount *
+{
+    if (tt3::db::api::IAccount * account = tryLogin(login, password))
+    {
+        return account;
+    }
+    throw tt3::db::api::AccessDeniedException();
+}
+
 //////////
 //  tt3::db::api::IDatabase (life cycle)
-tt3::db::api::IUser * Database::createUser(
-    bool enabled, const QStringList & emailAddresses,
-    const QString & realName,
-    const tt3::db::api::InactivityTimeout & inactivityTimeout,
-    const tt3::db::api::UiLocale & uiLocale) throws(tt3::db::api::DatabaseException)
+auto Database::createUser(
+        bool enabled,
+        const QStringList & emailAddresses,
+        const QString & realName,
+        const tt3::db::api::InactivityTimeout & inactivityTimeout,
+        const tt3::db::api::UiLocale & uiLocale
+    ) throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::IUser *
 {
     tt3::util::Lock lock(_guard);
     _ensureOpen();  //  may throw
@@ -293,6 +358,76 @@ tt3::db::api::IUser * Database::createUser(
             this, user->type(), user->_oid));
     //  ...and we're done
     return user;
+}
+
+auto Database::createActivityType(
+        const QString & /*displayName*/,
+        const QString & /*description*/
+    ) throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::IActivityType *
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+auto Database::createPublicActivity(
+        const QString & /*displayName*/,
+        const QString & /*description*/,
+        const tt3::db::api::InactivityTimeout & /*timeout*/,
+        bool /*requireCommentOnStart*/,
+        bool /*requireCommentOnFinish*/,
+        bool /*fullScreenReminder*/,
+        tt3::db::api::IActivityType * /*activityType*/,
+        tt3::db::api::IWorkload * /*workload*/
+    ) throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::IPublicActivity *
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+auto Database::createPublicTask(
+        const QString & /*displayName*/,
+        const QString & /*description*/,
+        const tt3::db::api::InactivityTimeout & /*timeout*/,
+        bool /*requireCommentOnStart*/,
+        bool /*requireCommentOnFinish*/,
+        bool /*fullScreenReminder*/,
+        tt3::db::api::IActivityType * /*activityType*/,
+        tt3::db::api::IWorkload * /*workload*/,
+        bool /*completed*/,
+        bool /*requireCommentOnCompletion*/
+    ) throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::IPublicTask *
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+auto Database::createProject(
+        const QString & /*displayName*/,
+        const QString & /*description*/,
+        const tt3::db::api::Beneficiaries & /*beneficiaries*/
+    ) throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::IProject *
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+auto Database::createWorkStream(
+        const QString & /*displayName*/,
+        const QString & /*description*/,
+        const tt3::db::api::Beneficiaries & /*beneficiaries*/
+    ) throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::IWorkStream *
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+auto Database::createBeneficiary(
+        const QString & /*displayName*/,
+        const QString & /*description*/
+    ) throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::IBeneficiary *
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
 //////////

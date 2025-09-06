@@ -442,9 +442,11 @@ void WorkspaceImpl::_onObjectDestroyed(tt3::db::api::ObjectDestroyedNotification
         tt3::util::Lock lock(_guard);
         _goodCredentialsCache.clear();
         _badCredentialsCache.clear();
+        //  There's no need to cache destroyed objects
+        _proxyCache.remove(notification.oid());
     }
-    //  There's no need to cache destroyed objects
-    {
+    else
+    {   //  There's no need to cache destroyed objects
         tt3::util::Lock lock(_guard);
         _proxyCache.remove(notification.oid());
     }

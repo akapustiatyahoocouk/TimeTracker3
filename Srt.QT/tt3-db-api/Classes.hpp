@@ -24,6 +24,19 @@ namespace tt3::db::api
     class TT3_DB_API_PUBLIC IPrincipal;
     class TT3_DB_API_PUBLIC IUser;
     class TT3_DB_API_PUBLIC IAccount;
+    class TT3_DB_API_PUBLIC IActivityType;
+    class TT3_DB_API_PUBLIC IActivity;
+    class TT3_DB_API_PUBLIC IPublicActivity;
+    class TT3_DB_API_PUBLIC IPrivateActivity;
+    class TT3_DB_API_PUBLIC ITask;
+    class TT3_DB_API_PUBLIC IPublicTask;
+    class TT3_DB_API_PUBLIC IPrivateTask;
+    class TT3_DB_API_PUBLIC IWork;
+    class TT3_DB_API_PUBLIC IEvent;
+    class TT3_DB_API_PUBLIC IWorkload;
+    class TT3_DB_API_PUBLIC IProject;
+    class TT3_DB_API_PUBLIC IWorkStream;
+    class TT3_DB_API_PUBLIC IBeneficiary;
 
     //  Collections
     using DatabaseTypes = QSet<IDatabaseType*>;
@@ -31,6 +44,18 @@ namespace tt3::db::api
     using Objects = QSet<IObject*>;
     using Users = QSet<IUser*>;
     using Accounts = QSet<IAccount*>;
+    using ActivityTypes = QSet<IActivityType*>;
+    using Activities = QSet<IActivity*>;
+    using PublicActivities = QSet<IPublicActivity*>;
+    using PublicTasks = QSet<IPublicTask*>;
+    using PrivateActivities = QSet<IPrivateActivity*>;
+    using PrivateTasks = QSet<IPrivateTask*>;
+    using Works = QSet<IWork*>;
+    using Events = QSet<IEvent*>;
+    using Workloads = QSet<IWorkload*>;
+    using Projects = QSet<IProject*>;
+    using WorkStreams = QSet<IWorkStream*>;
+    using Beneficiaries = QSet<IBeneficiary*>;
 
     //  Exceptins & notifications
     class TT3_DB_API_PUBLIC DatabaseException;

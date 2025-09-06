@@ -19,7 +19,7 @@ using namespace tt3;
 
 //////////
 //  Construction/destruction
-Application::Application(int &argc, char **argv)
+Application::Application(int & argc, char ** argv)
     :   QApplication(argc, argv)
 {
     setApplicationName(tt3::util::ProductInformation::applicationName());

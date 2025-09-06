@@ -20,16 +20,8 @@ using namespace tt3::db::api;
 //////////
 //  ObjectTypes::User
 IMPLEMENT_SINGLETON(ObjectTypes::User)
-
-ObjectTypes::User::User()
-    :   _smallIcon(":/tt3-db-api/Resources/Images/Objects/UserSmall.png"),
-        _largeIcon(":/tt3-db-api/Resources/Images/Objects/UserLarge.png")
-{
-}
-
-ObjectTypes::User::~User()
-{
-}
+ObjectTypes::User::User() {}
+ObjectTypes::User::~User() {}
 
 ObjectTypes::User::Mnemonic ObjectTypes::User::mnemonic() const
 {
@@ -43,27 +35,21 @@ QString ObjectTypes::User::displayName() const
 
 QIcon ObjectTypes::User::smallIcon() const
 {
-    return _smallIcon;
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/UserSmall.png");
+    return icon;
 }
 
 QIcon ObjectTypes::User::largeIcon() const
 {
-    return _largeIcon;
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/UserLarge.png");
+    return icon;
 }
 
 //////////
 //  ObjectTypes::Account
 IMPLEMENT_SINGLETON(ObjectTypes::Account)
-
-ObjectTypes::Account::Account()
-    :   _smallIcon(":/tt3-db-api/Resources/Images/Objects/AccountSmall.png"),
-        _largeIcon(":/tt3-db-api/Resources/Images/Objects/AccountLarge.png")
-{
-}
-
-ObjectTypes::Account::~Account()
-{
-}
+ObjectTypes::Account::Account() {}
+ObjectTypes::Account::~Account() {}
 
 ObjectTypes::Account::Mnemonic ObjectTypes::Account::mnemonic() const
 {
@@ -77,12 +63,294 @@ QString ObjectTypes::Account::displayName() const
 
 QIcon ObjectTypes::Account::smallIcon() const
 {
-    return _smallIcon;
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/AccountSmall.png");
+    return icon;
 }
 
 QIcon ObjectTypes::Account::largeIcon() const
 {
-    return _largeIcon;
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/AccountLarge.png");
+    return icon;
+}
+
+//////////
+//  ObjectTypes::ActivityType
+IMPLEMENT_SINGLETON(ObjectTypes::ActivityType)
+ObjectTypes::ActivityType::ActivityType() {}
+ObjectTypes::ActivityType::~ActivityType() {}
+
+ObjectTypes::ActivityType::Mnemonic ObjectTypes::ActivityType::mnemonic() const
+{
+    return M(ActivityType);
+}
+
+QString ObjectTypes::ActivityType::displayName() const
+{
+    return "Activity type";
+}
+
+QIcon ObjectTypes::ActivityType::smallIcon() const
+{
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/ActivityTypeSmall.png");
+    return icon;
+}
+
+QIcon ObjectTypes::ActivityType::largeIcon() const
+{
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/ActivityTypeLarge.png");
+    return icon;
+}
+
+//////////
+//  ObjectTypes::PublicActivity
+IMPLEMENT_SINGLETON(ObjectTypes::PublicActivity)
+ObjectTypes::PublicActivity::PublicActivity() {}
+ObjectTypes::PublicActivity::~PublicActivity() {}
+
+ObjectTypes::PublicActivity::Mnemonic ObjectTypes::PublicActivity::mnemonic() const
+{
+    return M(PublicActivity);
+}
+
+QString ObjectTypes::PublicActivity::displayName() const
+{
+    return "Public activity";
+}
+
+QIcon ObjectTypes::PublicActivity::smallIcon() const
+{
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/PublicActivitySmall.png");
+    return icon;
+}
+
+QIcon ObjectTypes::PublicActivity::largeIcon() const
+{
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/PublicActivityLarge.png");
+    return icon;
+}
+
+//////////
+//  ObjectTypes::PublicTask
+IMPLEMENT_SINGLETON(ObjectTypes::PublicTask)
+ObjectTypes::PublicTask::PublicTask() {}
+ObjectTypes::PublicTask::~PublicTask() {}
+
+ObjectTypes::PublicTask::Mnemonic ObjectTypes::PublicTask::mnemonic() const
+{
+    return M(PublicTask);
+}
+
+QString ObjectTypes::PublicTask::displayName() const
+{
+    return "Public task";
+}
+
+QIcon ObjectTypes::PublicTask::smallIcon() const
+{
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/PublicTaskSmall.png");
+    return icon;
+}
+
+QIcon ObjectTypes::PublicTask::largeIcon() const
+{
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/PublicTaskLarge.png");
+    return icon;
+}
+
+//////////
+//  ObjectTypes::PrivateActivity
+IMPLEMENT_SINGLETON(ObjectTypes::PrivateActivity)
+ObjectTypes::PrivateActivity::PrivateActivity() {}
+ObjectTypes::PrivateActivity::~PrivateActivity() {}
+
+ObjectTypes::PrivateActivity::Mnemonic ObjectTypes::PrivateActivity::mnemonic() const
+{
+    return M(PrivateActivity);
+}
+
+QString ObjectTypes::PrivateActivity::displayName() const
+{
+    return "Private activity";
+}
+
+QIcon ObjectTypes::PrivateActivity::smallIcon() const
+{
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/PrivateActivitySmall.png");
+    return icon;
+}
+
+QIcon ObjectTypes::PrivateActivity::largeIcon() const
+{
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/PrivateActivityLarge.png");
+    return icon;
+}
+
+//////////
+//  ObjectTypes::PrivateTask
+IMPLEMENT_SINGLETON(ObjectTypes::PrivateTask)
+ObjectTypes::PrivateTask::PrivateTask() {}
+ObjectTypes::PrivateTask::~PrivateTask() {}
+
+ObjectTypes::PrivateTask::Mnemonic ObjectTypes::PrivateTask::mnemonic() const
+{
+    return M(PrivateTask);
+}
+
+QString ObjectTypes::PrivateTask::displayName() const
+{
+    return "Private task";
+}
+
+QIcon ObjectTypes::PrivateTask::smallIcon() const
+{
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/PrivateTaskSmall.png");
+    return icon;
+}
+
+QIcon ObjectTypes::PrivateTask::largeIcon() const
+{
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/PrivateTaskLarge.png");
+    return icon;
+}
+
+//////////
+//  ObjectTypes::Work
+IMPLEMENT_SINGLETON(ObjectTypes::Work)
+ObjectTypes::Work::Work() {}
+ObjectTypes::Work::~Work() {}
+
+ObjectTypes::Work::Mnemonic ObjectTypes::Work::mnemonic() const
+{
+    return M(Work);
+}
+
+QString ObjectTypes::Work::displayName() const
+{
+    return "Work";
+}
+
+QIcon ObjectTypes::Work::smallIcon() const
+{
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/WorkSmall.png");
+    return icon;
+}
+
+QIcon ObjectTypes::Work::largeIcon() const
+{
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/WorkLarge.png");
+    return icon;
+}
+
+//////////
+//  ObjectTypes::Event
+IMPLEMENT_SINGLETON(ObjectTypes::Event)
+ObjectTypes::Event::Event() {}
+ObjectTypes::Event::~Event() {}
+
+ObjectTypes::Event::Mnemonic ObjectTypes::Event::mnemonic() const
+{
+    return M(Event);
+}
+
+QString ObjectTypes::Event::displayName() const
+{
+    return "Event";
+}
+
+QIcon ObjectTypes::Event::smallIcon() const
+{
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/EventSmall.png");
+    return icon;
+}
+
+QIcon ObjectTypes::Event::largeIcon() const
+{
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/EventLarge.png");
+    return icon;
+}
+
+//////////
+//  ObjectTypes::Project
+IMPLEMENT_SINGLETON(ObjectTypes::Project)
+ObjectTypes::Project::Project() {}
+ObjectTypes::Project::~Project() {}
+
+ObjectTypes::Project::Mnemonic ObjectTypes::Project::mnemonic() const
+{
+    return M(Project);
+}
+
+QString ObjectTypes::Project::displayName() const
+{
+    return "Project";
+}
+
+QIcon ObjectTypes::Project::smallIcon() const
+{
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/ProjectSmall.png");
+    return icon;
+}
+
+QIcon ObjectTypes::Project::largeIcon() const
+{
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/ProjectLarge.png");
+    return icon;
+}
+
+//////////
+//  ObjectTypes::WorkStream
+IMPLEMENT_SINGLETON(ObjectTypes::WorkStream)
+ObjectTypes::WorkStream::WorkStream() {}
+ObjectTypes::WorkStream::~WorkStream() {}
+
+ObjectTypes::WorkStream::Mnemonic ObjectTypes::WorkStream::mnemonic() const
+{
+    return M(WorkStream);
+}
+
+QString ObjectTypes::WorkStream::displayName() const
+{
+    return "Work stream";
+}
+
+QIcon ObjectTypes::WorkStream::smallIcon() const
+{
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/WorkStreamSmall.png");
+    return icon;
+}
+
+QIcon ObjectTypes::WorkStream::largeIcon() const
+{
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/WorkStreamLarge.png");
+    return icon;
+}
+
+//////////
+//  ObjectTypes::Beneficiary
+IMPLEMENT_SINGLETON(ObjectTypes::Beneficiary)
+ObjectTypes::Beneficiary::Beneficiary() {}
+ObjectTypes::Beneficiary::~Beneficiary() {}
+
+ObjectTypes::Beneficiary::Mnemonic ObjectTypes::Beneficiary::mnemonic() const
+{
+    return M(Beneficiary);
+}
+
+QString ObjectTypes::Beneficiary::displayName() const
+{
+    return "Beneficiary";
+}
+
+QIcon ObjectTypes::Beneficiary::smallIcon() const
+{
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/BeneficiarySmall.png");
+    return icon;
+}
+
+QIcon ObjectTypes::Beneficiary::largeIcon() const
+{
+    static QIcon icon(":/tt3-db-api/Resources/Images/Objects/BeneficiaryLarge.png");
+    return icon;
 }
 
 //  End of tt3-db-api/ObjectTypes.cpp

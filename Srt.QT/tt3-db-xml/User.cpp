@@ -152,11 +152,14 @@ void User::setUiLocale(const tt3::db::api::UiLocale & uiLocale) throws(tt3::db::
 
 //////////
 //  tt3::db::api::IUser  (life cycle)
-tt3::db::api::IAccount *
-User::createAccount(
-    bool enabled, const QStringList & emailAddresses,
-    const QString & login, const QString & password,
-    tt3::db::api::Capabilities capabilities) throws(tt3::db::api::DatabaseException)
+auto User::createAccount(
+        bool enabled,
+        const QStringList & emailAddresses,
+        const QString & login,
+        const QString & password,
+        tt3::db::api::Capabilities capabilities
+    ) throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::IAccount *
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -220,14 +223,138 @@ User::createAccount(
     return account;
 }
 
+auto User::createPrivateActivity(
+        const QString & /*displayName*/,
+        const QString & /*description*/,
+        const tt3::db::api::InactivityTimeout & /*timeout*/,
+        bool /*requireCommentOnStart*/,
+        bool /*requireCommentOnFinish*/,
+        bool /*fullScreenReminder*/,
+        tt3::db::api::IActivityType * /*activityType*/,
+        tt3::db::api::IWorkload * /*workload*/
+    ) throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::IPrivateActivity *
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+auto User::createPrivateTask(
+        const QString & /*displayName*/,
+        const QString & /*description*/,
+        const tt3::db::api::InactivityTimeout & /*timeout*/,
+        bool /*requireCommentOnStart*/,
+        bool /*requireCommentOnFinish*/,
+        bool /*fullScreenReminder*/,
+        tt3::db::api::IActivityType * /*activityType*/,
+        tt3::db::api::IWorkload * /*workload*/,
+        bool /*completed*/,
+        bool /*requireCommentOnCompletion*/
+    ) throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::IPrivateTask *
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+auto User::createWork(
+        const QDateTime & /*startedAt*/,
+        const QDateTime & /*finishedAt*/,
+        tt3::db::api::IActivity * /*activity*/
+    ) throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::IWork *
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+auto User::createEvent(
+        const QDateTime & /*occurredAt*/,
+        const QString & /*simmary*/,
+        tt3::db::api::IActivity * /*activity*/
+    ) throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::IEvent *
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
 //////////
 //  tt3::db::api::IUser (associations)
-tt3::db::api::Accounts User::accounts() const throws(tt3::db::api::DatabaseException)
+auto User::accounts(
+    ) const throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::Accounts
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
 
     return tt3::db::api::Accounts(_accounts.begin(), _accounts.end());
+}
+
+auto User::privateActivities(
+    ) const throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::PrivateActivities
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+auto User::privateActivitiesAndTasks(
+    ) const throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::PrivateActivities
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+auto User::privateTasks(
+    ) const throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::PrivateTasks
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+auto User::rootPrivateTasks(
+    ) const throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::PrivateTasks
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+auto User::permittedWorkloads(
+    ) const throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::Workloads
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+void User::setPermittedWorkloads(
+    const tt3::db::api::Workloads & /*workloads*/
+    ) throws(tt3::db::api::DatabaseException)
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+void User::addPermittedWorkload(
+    tt3::db::api::IWorkload * /*workload*/
+    ) throws(tt3::db::api::DatabaseException)
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+void User::removePermittedWorkload(
+    tt3::db::api::IWorkload * /*workload*/
+    ) throws(tt3::db::api::DatabaseException)
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+auto User::works(
+    ) const throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::Works
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+}
+
+auto User::events(
+    ) const throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::Events
+{
+    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
 //////////

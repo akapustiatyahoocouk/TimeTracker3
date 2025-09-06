@@ -25,7 +25,7 @@ namespace tt3
         //////////
         //  Construction/destruction
     public:
-        Application(int &argc, char **argv);
+        Application(int & argc, char ** argv);
         virtual ~Application();
 
         //////////

@@ -61,6 +61,42 @@ namespace tt3::db::api
         //  Throws DatabaseException if an error occurs.
         virtual Accounts    accounts() const throws(DatabaseException) = 0;
 
+        //  The set of all private activities of this User
+        //  which are not also tasks.
+        //  Throws DatabaseException if an error occurs.
+        virtual PrivateActivities   privateActivities() const throws(DatabaseException) = 0;
+
+        //  The set of all private activities of this User
+        //  which are also tasks.
+        //  Throws DatabaseException if an error occurs.
+        virtual PrivateActivities   privateActivitiesAndTasks() const throws(DatabaseException) = 0;
+
+        //  The set of all/root private tasks of this User.
+        //  Throws DatabaseException if an error occurs.
+        virtual PrivateTasks    privateTasks() const throws(DatabaseException) = 0;
+        virtual PrivateTasks    rootPrivateTasks() const throws(DatabaseException) = 0;
+
+        //  Returns/sets the set of all Workload permitted for
+        //  this User.
+        //  Throws DatabaseException if an error occurs.
+        virtual Workloads   permittedWorkloads() const throws(DatabaseException) = 0;
+        virtual void        setPermittedWorkloads(const Workloads & workloads) throws(DatabaseException) = 0;
+
+        //  Adds/removes the specified Workload to/from the
+        //  set of Workloads permitted to this User;
+        //  has no effect if already there/not there.
+        //  Throws DatabaseException if an error occurs.
+        virtual void        addPermittedWorkload(IWorkload * workload) throws(DatabaseException) = 0;
+        virtual void        removePermittedWorkload(IWorkload * workload) throws(DatabaseException) = 0;
+
+        //  Returns the set of all Works logged by this User.
+        //  Throws DatabaseException if an error occurs.
+        virtual Works       works() const throws(DatabaseException) = 0;
+
+        //  Returns the set of all Events logged by this User.
+        //  Throws DatabaseException if an error occurs.
+        virtual Events      events() const throws(DatabaseException) = 0;
+
         //////////
         //  Operations (life cycle)
     public:
@@ -71,6 +107,46 @@ namespace tt3::db::api
                                 bool enabled, const QStringList & emailAddresses,
                                 const QString & login, const QString & password,
                                 Capabilities capabilities) throws(DatabaseException) = 0;
+
+        //  Creates a new PrivateActivity for this User.
+        //  The activity type can be nullptr.
+        //  Throws DatabaseException if an error occurs.
+        virtual IPrivateActivity *  createPrivateActivity(
+                                const QString & displayName,
+                                const QString & description,
+                                const InactivityTimeout & timeout,
+                                bool requireCommentOnStart,
+                                bool requireCommentOnFinish,
+                                bool fullScreenReminder,
+                                IActivityType * type,
+                                tt3::db::api::IWorkload * workload) throws(DatabaseException) = 0;
+
+        //  Creates a new root PrivateTask for this User.
+        //  The activity type can be nullptr.
+        //  Throws DatabaseException if an error occurs.
+        virtual IPrivateTask *  createPrivateTask(
+            const QString & displayName,
+            const QString & description,
+            const InactivityTimeout & timeout,
+            bool requireCommentOnStart,
+            bool requireCommentOnFinish,
+            bool fullScreenReminder,
+            IActivityType * activityType,
+            IWorkload * workload,
+            bool completed,
+            bool requireCommentOnCompletion) throws(DatabaseException) = 0;
+
+        //  Creates a new unit of Work for this User against
+        //  the specified activity.
+        //  Throws DatabaseException if an error occurs.
+        virtual IWork *     createWork(const QDateTime & startedAt, const QDateTime & finishedAt,
+                                  IActivity * activity) throws(DatabaseException) = 0;
+
+        //  Creates a new Event for this User against
+        //  the specified activity (which can be nullptr is none).
+        //  Throws DatabaseException if an error occurs.
+        virtual IEvent *    createEvent(const QDateTime & occurredAt, const QString & simmary,
+                                  IActivity * activity) throws(DatabaseException) = 0;
     };
 }
 

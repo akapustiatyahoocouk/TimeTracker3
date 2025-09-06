@@ -10,27 +10,39 @@ SOURCES += \
     DatabaseTypeManager.cpp \
     DefaultValidator.cpp \
     Exceptions.cpp \
-    IDatabase.cpp \
     ObjectTypes.cpp \
     Oid.cpp
 
 HEADERS += \
     API.hpp \
     Account.hpp \
+    Activity.hpp \
+    ActivityType.hpp \
+    Beneficiary.hpp \
     Capabilities.hpp \
     Classes.hpp \
     Components.hpp \
     Database.hpp \
     DatabaseAddress.hpp \
     DatabaseType.hpp \
+    Event.hpp \
     Exceptions.hpp \
     Linkage.hpp \
     Notifications.hpp \
     Object.hpp \
     ObjectType.hpp \
     Principal.hpp \
+    PrivateActivity.hpp \
+    PrivateTask.hpp \
+    Project.hpp \
+    PublicActivity.hpp \
+    PublicTask.hpp \
+    Task.hpp \
     User.hpp \
-    Validator.hpp
+    Validator.hpp \
+    Work.hpp \
+    WorkStream.hpp \
+    Workload.hpp
 
 LIBS += -ltt3-util
 

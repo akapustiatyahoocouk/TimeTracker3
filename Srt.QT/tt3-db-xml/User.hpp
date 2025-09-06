@@ -52,15 +52,87 @@ namespace tt3::db::xml
         //////////
         //  tt3::db::api::IUser (associations)
     public:
-        virtual tt3::db::api::Accounts  accounts() const throws(tt3::db::api::DatabaseException) override;
+        virtual auto    accounts(
+                            ) const throws(tt3::db::api::DatabaseException)
+                            -> tt3::db::api::Accounts override;
+        virtual auto    privateActivities(
+                            ) const throws(tt3::db::api::DatabaseException)
+                            -> tt3::db::api::PrivateActivities override;
+        virtual auto    privateActivitiesAndTasks(
+                            ) const throws(tt3::db::api::DatabaseException)
+                            -> tt3::db::api::PrivateActivities override;
+        virtual auto    privateTasks(
+                            ) const throws(tt3::db::api::DatabaseException)
+                            -> tt3::db::api::PrivateTasks override;
+        virtual auto    rootPrivateTasks(
+                            ) const throws(tt3::db::api::DatabaseException)
+                            -> tt3::db::api::PrivateTasks override;
+        virtual auto    permittedWorkloads(
+                            ) const throws(tt3::db::api::DatabaseException)
+                            -> tt3::db::api::Workloads override;
+        virtual void    setPermittedWorkloads(
+                                const tt3::db::api::Workloads & workloads
+                            ) throws(tt3::db::api::DatabaseException) override;
+        virtual void    addPermittedWorkload(
+                                tt3::db::api::IWorkload * workload
+                            ) throws(tt3::db::api::DatabaseException) override;
+        virtual void    removePermittedWorkload(
+                                tt3::db::api::IWorkload * workload
+                            ) throws(tt3::db::api::DatabaseException) override;
+        virtual auto    works(
+                            ) const throws(tt3::db::api::DatabaseException)
+                            -> tt3::db::api::Works override;
+        virtual auto    events(
+                            ) const throws(tt3::db::api::DatabaseException)
+                            -> tt3::db::api::Events override;
 
         //////////
         //  tt3::db::api::IUser  (life cycle)
     public:
-        virtual tt3::db::api::IAccount *    createAccount(
-            bool enabled, const QStringList & emailAddresses,
-            const QString & login, const QString & password,
-            tt3::db::api::Capabilities capabilities) throws(tt3::db::api::DatabaseException) override;
+        virtual auto    createAccount(
+                                bool enabled,
+                                const QStringList & emailAddresses,
+                                const QString & login,
+                                const QString & password,
+                                tt3::db::api::Capabilities capabilities
+                            ) throws(tt3::db::api::DatabaseException)
+                            -> tt3::db::api::IAccount * override;
+        virtual auto    createPrivateActivity(
+                                const QString & displayName,
+                                const QString & description,
+                                const tt3::db::api::InactivityTimeout & timeout,
+                                bool requireCommentOnStart,
+                                bool requireCommentOnFinish,
+                                bool fullScreenReminder,
+                                tt3::db::api::IActivityType * activityType,
+                                tt3::db::api::IWorkload * workload
+                            ) throws(tt3::db::api::DatabaseException)
+                            -> tt3::db::api::IPrivateActivity * override;
+        virtual auto    createPrivateTask(
+                                const QString & displayName,
+                                const QString & description,
+                                const tt3::db::api::InactivityTimeout & timeout,
+                                bool requireCommentOnStart,
+                                bool requireCommentOnFinish,
+                                bool fullScreenReminder,
+                                tt3::db::api::IActivityType * activityType,
+                                tt3::db::api::IWorkload * workload,
+                                bool completed,
+                                bool requireCommentOnCompletion
+                           ) throws(tt3::db::api::DatabaseException)
+                            -> tt3::db::api::IPrivateTask * override;
+        virtual auto    createWork(
+                                const QDateTime & startedAt,
+                                const QDateTime & finishedAt,
+                                tt3::db::api::IActivity * activity
+                            ) throws(tt3::db::api::DatabaseException)
+                            -> tt3::db::api::IWork * override;
+        virtual auto    createEvent(
+                                const QDateTime & occurredAt,
+                                const QString & simmary,
+                                tt3::db::api::IActivity * activity
+                            ) throws(tt3::db::api::DatabaseException)
+                            -> tt3::db::api::IEvent * override;
 
         //////////
         //  Implementation

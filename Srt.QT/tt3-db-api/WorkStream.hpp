@@ -1,5 +1,5 @@
 //
-//  tt3-db-api/IDatabase.cpp tt3::db::api::IDatabase interface implementation
+//  tt3-db-api/WorkStream.hpp - a workload that has no completion status
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,18 +14,26 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#include "tt3-db-api/API.hpp"
-using namespace tt3::db::api;
 
-//////////
-//  Operations (access control)
-IAccount * IDatabase::login(const QString & login, const QString & password) const throws(DatabaseException)
+namespace tt3::db::api
 {
-    if (IAccount * account = tryLogin(login, password))
+    //  A workload that has no completion status
+    class TT3_DB_API_PUBLIC IWorkStream : public virtual IWorkload
     {
-        return account;
-    }
-    throw AccessDeniedException();
+        //////////
+        //  This is an interface
+    protected:
+        IWorkStream() = default;
+        virtual ~IWorkStream() = default;
+
+        //////////
+        //  IObject
+    public:
+        virtual IObjectType *   type() const override
+        {
+            return ObjectTypes::WorkStream::instance();
+        }
+    };
 }
 
-//  End of tt3-db-api/IDatabase.cpp
+//  End of tt3-db-api/WorkStream.hpp
