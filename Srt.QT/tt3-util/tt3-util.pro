@@ -33,7 +33,6 @@ SOURCES += \
 
 HEADERS += \
     API.hpp \
-    BlockingQueue.hpp \
     Classes.hpp \
     Component.hpp \
     Components.hpp \

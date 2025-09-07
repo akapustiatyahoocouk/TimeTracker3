@@ -20,7 +20,7 @@ using namespace tt3::util;
 //////////
 //  Operations
 QString IResourceFactory::string(const ResourceSectionId & sectionId,
-                                 const ResourceId & resourceId, const QStringList & params) const throws(MissingResourceException)
+                                 const ResourceId & resourceId, const QStringList & params) const
 {
     Q_ASSERT(params.size() <= 10);  //  ...for now
 
@@ -62,21 +62,21 @@ QString IResourceFactory::string(const ResourceSectionId & sectionId,
 }
 
 QString IResourceFactory::string(const ResourceSectionId & sectionId, const ResourceId & resourceId,
-                                 const QString & param1) const throws(MissingResourceException)
+                                 const QString & param1) const
 {
     return string(sectionId, resourceId,
                   QStringList{param1});
 }
 
 QString IResourceFactory::string(const ResourceSectionId & sectionId, const ResourceId & resourceId,
-                                 const QString & param1, const QString & param2) const throws(MissingResourceException)
+                                 const QString & param1, const QString & param2) const
 {
     return string(sectionId, resourceId,
                   QStringList{param1, param2});
 }
 
 QString IResourceFactory::string(const ResourceSectionId & sectionId, const ResourceId & resourceId,
-                                 const QString & param1, const QString & param2, const QString & param3) const throws(MissingResourceException)
+                                 const QString & param1, const QString & param2, const QString & param3) const
 {
     return string(sectionId, resourceId,
                   QStringList{param1, param2, param3});

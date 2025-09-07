@@ -18,7 +18,8 @@
 namespace tt3::db::api
 {
     //  An activity type
-    class TT3_DB_API_PUBLIC IActivityType : public virtual IObject
+    class TT3_DB_API_PUBLIC IActivityType :
+        public virtual IObject
     {
         //////////
         //  This is an interface
@@ -29,7 +30,8 @@ namespace tt3::db::api
         //////////
         //  IObject
     public:
-        virtual IObjectType *   type() const override
+        virtual auto    type() const
+                            -> IObjectType * override
         {
             return ObjectTypes::ActivityType::instance();
         }
@@ -40,21 +42,36 @@ namespace tt3::db::api
         //  Returns/sets the user-readable display name of
         //  this activity type.
         //  Throws DatabaseException if an error occurs.
-        virtual QString         displayName() const throws(DatabaseException) = 0;
-        virtual void            setDisplayName(const QString & displayName) throws(DatabaseException) = 0;
+        virtual auto    displayName(
+                            ) const
+                            throws(DatabaseException)
+                            -> QString = 0;
+        virtual void    setDisplayName(
+                                const QString & displayName
+                            )
+                            throws(DatabaseException) = 0;
 
         //  Returns/sets the multi-line description of this activity
         //  type, with lines separated by a newline character '\n'.
         //  Throws DatabaseException if an error occurs.
-        virtual QString         description() const throws(DatabaseException) = 0;
-        virtual void            setDescription(const QString & description) throws(DatabaseException) = 0;
+        virtual auto    description(
+                            ) const
+                            throws(DatabaseException)
+                            -> QString = 0;
+        virtual void    setDescription(
+                                const QString & description
+                            )
+                            throws(DatabaseException) = 0;
 
         //////////
         //  Operations (associations)
     public:
         //  The set of all activities assigned to this activity type.
         //  Throws DatabaseException if an error occurs.
-        virtual Activities      activities() const throws(DatabaseException) = 0;
+        virtual auto    activities(
+                            ) const
+                            throws(DatabaseException)
+                            -> Activities = 0;
     };
 }
 

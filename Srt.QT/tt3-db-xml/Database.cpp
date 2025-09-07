@@ -24,6 +24,7 @@ Database::Database(DatabaseAddress * address, _Mode mode)
         _validator(tt3::db::api::DefaultValidator::instance())
 {
     Q_ASSERT(_address != nullptr);
+    _address->addReference();
 
     tt3::util::Lock lock(_guard);
 
@@ -103,6 +104,7 @@ Database::~Database()
     static Database *const theDeadDatabase =
         new Database(new DatabaseAddress("?"), Database::_Mode::_Dead);
 
+    //  Close if still open
     try
     {
         close();
@@ -110,28 +112,34 @@ Database::~Database()
     catch (...)
     {   //  OOPS! TODO log?
     }
+
     //  All Objects should be in graveyard by now
-    tt3::util::Lock lock(_guard);
-    Q_ASSERT(_liveObjects.isEmpty());
-    for (Object * object : _graveyard.values())
     {
-        if (object->_referenceCount == 0)
+        tt3::util::Lock lock(_guard);
+        Q_ASSERT(_liveObjects.isEmpty());
+        for (Object * object : _graveyard.values())
         {
-            delete object;
+            if (object->_referenceCount == 0)
+            {
+                delete object;
+            }
+            else
+            {   //  ...but some of them may still have references -
+                //  these shall become "orphans" without an associated
+                //  database which are deleted when the last reference
+                //  is lost.
+                //  To achieve this, we move these objects to a hidden
+                //  "dead" database.
+                _graveyard.remove(object->_oid);
+                theDeadDatabase->_graveyard.insert(object->_oid, object);
+                *const_cast<Database**>(&object->_database) = theDeadDatabase;
+            }
         }
-        else
-        {   //  ...but some of them may still have references -
-            //  these shall become "orphans" without an associated
-            //  database which are deleted when the last reference
-            //  is lost.
-            //  To achieve this, we move these objects to a hidden
-            //  "dead" database.
-            _graveyard.remove(object->_oid);
-            theDeadDatabase->_graveyard.insert(object->_oid, object);
-            *const_cast<Database**>(&object->_database) = theDeadDatabase;
-        }
+        Q_ASSERT(_graveyard.isEmpty());
     }
-    Q_ASSERT(_graveyard.isEmpty());
+
+    //  We're done
+    _address->removeReference();
 }
 
 //////////
@@ -181,14 +189,20 @@ void Database::close() throws(tt3::db::api::DatabaseException)
 
 //////////
 //  tt3::db::api::IDatabase (associations)
-tt3::db::api::Users Database::users() const throws(tt3::db::api::DatabaseException)
+auto Database::users(
+    ) const
+    throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::Users
 {
     tt3::util::Lock lock(_guard);
 
     return tt3::db::api::Users(_users.cbegin(), _users.cend());
 }
 
-tt3::db::api::Accounts Database::accounts() const throws(tt3::db::api::DatabaseException)
+auto Database::accounts(
+    )
+    const throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::Accounts
 {
     tt3::util::Lock lock(_guard);
 
@@ -200,16 +214,25 @@ tt3::db::api::Accounts Database::accounts() const throws(tt3::db::api::DatabaseE
     return result;
 }
 
-tt3::db::api::IAccount * Database::findAccount(const QString & login) const throws(tt3::db::api::DatabaseException)
+auto Database::findAccount(
+        const QString & login
+    ) const
+    throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::IAccount *
 {
     tt3::util::Lock lock(_guard);
 
     return _findAccount(login);
 }
 
-tt3::db::api::ActivityTypes Database::activityTypes() const throws(tt3::db::api::DatabaseException)
+auto Database::activityTypes(
+    ) const
+    throws(tt3::db::api::DatabaseException)
+    -> tt3::db::api::ActivityTypes
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    tt3::util::Lock lock(_guard);
+
+    return tt3::db::api::ActivityTypes(_activityTypes.cbegin(), _activityTypes.cend());
 }
 
 tt3::db::api::PublicActivities Database::publicActivities() const throws(tt3::db::api::DatabaseException)
@@ -526,6 +549,18 @@ void Database::_save() throws(tt3::util::Exception)
         user->_serializeAggregations(userElement);
     }
 
+    //  Serialize activity types
+    QDomElement activityTypesElement = document.createElement("ActivityTypes");
+    rootElement.appendChild(activityTypesElement);
+    for (ActivityType * activityType : _activityTypes)
+    {   //  TODO try to sort by OID to reduce changes
+        QDomElement activityTypeElement = document.createElement("ActivityType");
+        activityTypesElement.appendChild(activityTypeElement);
+        //  Serialize activity type features
+        activityType->_serializeProperties(activityTypeElement);
+        activityType->_serializeAggregations(activityTypeElement);
+    }
+
     //  Save DOM
     QFile file(_address->_path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -576,6 +611,20 @@ void Database::_load() throws(tt3::util::Exception)
         User * user = new User(this, oid);
         user->_deserializeProperties(userElement);
         user->_deserializeAggregations(userElement);
+    }
+
+    //  Process activity types
+    QDomElement activityTypesElement = _childElement(rootElement, "ActivityTypes");  //  may throw
+    for (QDomElement activityTypeElement : _childElements(activityTypesElement, "ActivityType"))
+    {
+        tt3::db::api::Oid oid = tt3::util::fromString<tt3::db::api::Oid>(activityTypeElement.attribute("OID", ""));
+        if (!oid.isValid() || _liveObjects.contains(oid))
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_address);
+        }
+        ActivityType * activityType = new ActivityType(this, oid);
+        activityType->_deserializeProperties(activityTypeElement);
+        activityType->_deserializeAggregations(activityTypeElement);
     }
 
     //  Done loading - make sure we're consistent

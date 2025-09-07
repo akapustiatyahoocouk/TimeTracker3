@@ -18,7 +18,8 @@
 namespace tt3::ws
 {
     //  A named user
-    class TT3_WS_PUBLIC UserImpl : public PrincipalImpl
+    class TT3_WS_PUBLIC UserImpl final :
+        public PrincipalImpl
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(UserImpl)
 
@@ -26,7 +27,7 @@ namespace tt3::ws
         friend std::shared_ptr<UserImpl>;
 
         //////////
-        //  Construction/destruction
+        //  Construction/destruction - from friends only
     private:
         UserImpl(Workspace workspace, tt3::db::api::IUser * dataUser);
         virtual ~UserImpl();
@@ -74,11 +75,18 @@ namespace tt3::ws
     private:
         tt3::db::api::IUser *const  _dataUser;    //  counts as "reference"
 
-        //  Access control
-        virtual bool    _canRead(const Credentials & credentials) const throws(WorkspaceException) override;
-        virtual bool    _canModify(const Credentials & credentials) const throws(WorkspaceException) override;
-        virtual bool    _canDestroy(const Credentials & credentials) const throws(WorkspaceException) override;
-        virtual bool    _destroyingLosesAccess() const throws(WorkspaceException) override;
+        //  Access control - throw WorkspaceException in DB error
+        virtual bool    _canRead(
+                                const Credentials & credentials
+                            ) const override;
+        virtual bool    _canModify(
+                                const Credentials & credentials
+                            ) const override;
+        virtual bool    _canDestroy(
+                                const Credentials & credentials
+                            ) const override;
+        virtual bool    _destroyingLosesAccess(
+                            ) const override;
     };
 }
 

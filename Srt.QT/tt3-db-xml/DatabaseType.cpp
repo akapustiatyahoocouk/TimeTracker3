@@ -22,9 +22,7 @@ using namespace tt3::db::xml;
 IMPLEMENT_SINGLETON(DatabaseType)
 
 DatabaseType::DatabaseType()
-    :   _smallIcon(":/tt3-db-xml/Resources/Images/Objects/XmlDatabaseTypeSmall.png"),
-        _largeIcon(":/tt3-db-xml/Resources/Images/Objects/XmlDatabaseTypeLarge.png"),
-        _validator(tt3::db::api::DefaultValidator::instance())
+    :   _validator(tt3::db::api::DefaultValidator::instance())
 {
 }
 
@@ -34,7 +32,7 @@ DatabaseType::~DatabaseType()
 
 //////////
 //  tt3::db::api::IDatabaseType (general)
-DatabaseType::Mnemonic DatabaseType::mnemonic() const
+tt3::util::Mnemonic DatabaseType::mnemonic() const
 {
     return M(XmlFile);
 }
@@ -46,12 +44,14 @@ QString DatabaseType::displayName() const
 
 QIcon DatabaseType::smallIcon() const
 {
-    return _smallIcon;
+    static const QIcon icon(":/tt3-db-xml/Resources/Images/Objects/XmlDatabaseTypeSmall.png");
+    return icon;
 }
 
 QIcon DatabaseType::largeIcon() const
 {
-    return _largeIcon;
+    static const QIcon icon(":/tt3-db-xml/Resources/Images/Objects/XmlDatabaseTypeLarge.png");
+    return icon;
 }
 
 bool DatabaseType::isOperational() const

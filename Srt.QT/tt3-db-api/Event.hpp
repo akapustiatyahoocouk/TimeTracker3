@@ -29,7 +29,8 @@ namespace tt3::db::api
         //////////
         //  IObject
     public:
-        virtual IObjectType *   type() const override
+        virtual auto    type() const
+                            -> IObjectType * override
         {
             return ObjectTypes::Event::instance();
         }
@@ -39,23 +40,31 @@ namespace tt3::db::api
     public:
         //  Returns the UTC date+time when this event was logged.
         //  Throws DatabaseException if an error occurs.
-        virtual QDateTime       occurredAt() const throws(DatabaseException) = 0;
+        virtual auto    occurredAt() const
+                            throws(DatabaseException)
+                            -> QDateTime = 0;
 
         //  The summary of this event, as entered by the user.
         //  Throws DatabaseException if an error occurs.
-        virtual QString         summary() const throws(DatabaseException) = 0;
+        virtual auto    summary() const
+                            throws(DatabaseException)
+                            -> QString = 0;
 
         //////////
         //  Operations (associations)
     public:
         //  Returns the User who has logged this event.
         //  Throws DatabaseException if an error occurs.
-        virtual IUser *         user() const throws(DatabaseException) = 0;
+        virtual auto    user() const
+                            throws(DatabaseException)
+                            -> IUser * = 0;
 
         //  Returns the Activity against which this event was logged;
         //  nullptr if none.
         //  Throws DatabaseException if an error occurs.
-        virtual IActivity *     activity() const throws(DatabaseException) = 0;
+        virtual auto    activity() const
+                            throws(DatabaseException)
+                            -> IActivity * = 0;
     };
 }
 

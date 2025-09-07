@@ -25,24 +25,39 @@ DefaultValidator::~DefaultValidator() {}
 
 //////////
 //  IValidator
-IValidator::IPrincipalValidator * DefaultValidator::principal() const
+auto DefaultValidator::principal(
+    ) const
+    -> IValidator::IPrincipalValidator *
 {
     return _PrincipalValidator::instance();
 }
 
-IValidator::IUserValidator * DefaultValidator::user() const
+auto DefaultValidator::user(
+    ) const
+    -> IValidator::IUserValidator *
 {
     return _UserValidator::instance();
 }
 
-IValidator::IAccountValidator * DefaultValidator::account() const
+auto DefaultValidator::account(
+    ) const
+    -> IValidator::IAccountValidator *
 {
     return _AccountValidator::instance();
 }
 
+auto DefaultValidator::activityType(
+    ) const
+    -> IValidator::IActivityTypeValidator *
+{
+    return _ActivityTypeValidator::instance();
+}
+
 //////////
 //  Implementation helpers
-bool DefaultValidator::_isValidEmailAddress(const QString & emailAddress)
+bool DefaultValidator::_isValidEmailAddress(
+        const QString & emailAddress
+    )
 {
     static const std::wregex pattern(L"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
 
@@ -51,11 +66,45 @@ bool DefaultValidator::_isValidEmailAddress(const QString & emailAddress)
     return std::regex_match(ws.c_str(), match, pattern);
 }
 
-bool DefaultValidator::_isValidName(const QString & name, int maxLength)
+bool DefaultValidator::_isValidName(
+        const QString & name,
+        int maxLength
+    )
 {
-    return name.length() > 0 &&
-           name.length() <= maxLength &&
-           name.length() == name.trimmed().length();
+    if (name.length() == 0 ||
+        name.length() > maxLength ||
+        name.length() != name.trimmed().length())
+    {   //  OOPS! No good!
+        return false;
+    }
+    for (QChar c : name)
+    {
+        if (c < '\x20' || c == '\x7F')
+        {   //  OOPS! No good!
+            return false;
+        }
+    }
+    return true;
+}
+
+bool DefaultValidator::_isValidDescription(
+        const QString & description,
+        int maxLength
+    )
+{
+    if (description.length() > maxLength)
+    {   //  OOPS! No good!
+        return false;
+    }
+    for (QChar c : description)
+    {
+        if ((c < '\x20' && c != '\n' && c != '\t') ||
+            c == '\x7F')
+        {   //  OOPS! No good!
+            return false;
+        }
+    }
+    return true;
 }
 
 //////////
@@ -120,6 +169,26 @@ bool DefaultValidator::_AccountValidator::isValidLogin(const QString & login)
 bool DefaultValidator::_AccountValidator::isValidPassword(const QString & /*password*/)
 {
     return true;
+}
+
+//////////
+//  DefaultValidator::_ActivityTypeValidator
+IMPLEMENT_SINGLETON(DefaultValidator::_ActivityTypeValidator)
+DefaultValidator::_ActivityTypeValidator::_ActivityTypeValidator() {}
+DefaultValidator::_ActivityTypeValidator::~_ActivityTypeValidator() {}
+
+bool DefaultValidator::_ActivityTypeValidator::isValidDisplayName(
+        const QString & displayName
+    )
+{
+    return _isValidName(displayName, 255);
+}
+
+bool DefaultValidator::_ActivityTypeValidator::isValidDescription(
+        const QString & description
+    )
+{
+    return _isValidDescription(description, 32767);
 }
 
 //  End of tt3-db-api/DefaultValidator.cpp

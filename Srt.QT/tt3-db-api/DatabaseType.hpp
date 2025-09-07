@@ -33,75 +33,108 @@ namespace tt3::db::api
         //////////
         //  Operation (general)
     public:
-        using Mnemonic = tt3::util::Mnemonic;
-
         //  The mnemonic identifier of this database type
-        virtual Mnemonic    mnemonic() const = 0;
+        virtual auto    mnemonic(
+                            ) const
+                            -> tt3::util::Mnemonic = 0;
 
         //  The user-readable display name of this database type
-        virtual QString     displayName() const = 0;
+        virtual auto    displayName(
+                            ) const
+                            -> QString = 0;
 
         //  The small (16x16) icon representing this database type.
-        virtual QIcon       smallIcon() const = 0;
+        virtual auto    smallIcon(
+                            ) const
+                            -> QIcon = 0;
 
         //  The large (32x32) icon representing this database type.
-        virtual QIcon       largeIcon() const = 0;
+        virtual auto    largeIcon(
+                            ) const
+                            -> QIcon = 0;
 
         //  Checks whether this database type is operationsl (i.e.
         //  can be used) - e.g. a;; required drivers are present, etc.
-        virtual bool        isOperational() const = 0;
+        virtual bool    isOperational() const = 0;
 
         //  The short (1 line) status report for this database type.
-        virtual QString     shortStatusReport() const = 0;
+        virtual auto    shortStatusReport(
+                            ) const
+                            -> QString = 0;
 
         //  The longer (mulyi-line) status report for this database
         //  type with newline '\n' character separating the lines.
-        virtual QString     fullStatusReport() const = 0;
+        virtual auto    fullStatusReport(
+                            ) const
+                            -> QString = 0;
 
         //  The validator for databases of this type
-        virtual IValidator *validator() const = 0;
+        virtual auto    validator(
+                            ) const
+                            -> IValidator * = 0;
 
         //////////
         //  Operations (address handling)
     public:
         //  If this dataase type has a concept of a "default" database,
         //  returns its address; otherwise returns nullptr.
-        virtual IDatabaseAddress *  defaultDatabaseAddress() const = 0;
+        virtual auto    defaultDatabaseAddress(
+                            ) const
+                            -> IDatabaseAddress * = 0;
 
         //  Prompts the user to interactively specify an address for a new
         //  database of this type, using the specified widget as a parent
         //  for all modal dialogs that may be involved in address choosing.
         //  Returns the database address chosen by the user or nullptr if
         //  the user has chosen to cancel the dialog.
-        virtual IDatabaseAddress *  enterNewDatabaseAddress(QWidget * parent) = 0;
+        virtual auto    enterNewDatabaseAddress(
+                                QWidget * parent
+                            ) -> IDatabaseAddress * = 0;
 
         //  Prompts the user to interactively specify an address of an existing
         //  database of this type, using the specified widget as a parent
         //  for all modal dialogs that may be involved in address choosing.
         //  Returns the database address chosen by the user or nullptr if
         //  the user has chosen to cancel the dialog.
-        virtual IDatabaseAddress *  enterExistingDatabaseAddress(QWidget * parent) = 0;
+        virtual auto    enterExistingDatabaseAddress(
+                                QWidget * parent
+                            ) -> IDatabaseAddress * = 0;
 
         //  Parses an external form of a database address of this type.
         //  Returns the parsed database address or throws DatabaseException if
         //  the address parsing fails for some reason
-        virtual IDatabaseAddress *  parseDatabaseAddress(const QString & externalForm) throws(DatabaseException) = 0;
+        virtual auto    parseDatabaseAddress(
+                                const QString & externalForm
+                            )
+                            throws(DatabaseException)
+                            -> IDatabaseAddress * = 0;
 
         //////////
         //  Operations (databases)
     public:
         //  Creates a new, initially empty, database at the specified address.
         //  Throws DatabaseException if an error occurs.
-        virtual IDatabase *         createDatabase(IDatabaseAddress * address) throws(DatabaseException) = 0;
+        virtual auto    createDatabase(
+                                IDatabaseAddress * address
+                            )
+                            throws(DatabaseException)
+                            -> IDatabase * = 0;
 
         //  Opens an existing database at the specified address.
         //  Throws DatabaseException if an error occurs.
-        virtual IDatabase *         openDatabase(IDatabaseAddress * address) throws(DatabaseException) = 0;
+        virtual auto    openDatabase(
+                                IDatabaseAddress * address
+                            )
+                            throws(DatabaseException)
+                            -> IDatabase * = 0;
 
         //  Destroys an existing database at the specified address.
         //  The database must not currently be in use.
         //  Throws DatabaseException if an error occurs.
-        virtual void                destroyDatabase(IDatabaseAddress * address) throws(DatabaseException) = 0;
+        virtual void    destroyDatabase(
+                                IDatabaseAddress * address
+                            )
+                            throws(DatabaseException) = 0;
     };
 
     //////////
@@ -115,14 +148,20 @@ namespace tt3::db::api
     public:
         //  Registers the specified database type; returns
         //  true on success, false on failure.
-        static bool             registerDatabaseType(IDatabaseType * databaseType);
+        static bool     registerDatabaseType(
+                                IDatabaseType * databaseType
+                            );
 
         //  Finds a registered database type by its mnemonic;
         //  returns nullptr if not found.
-        static IDatabaseType *  findDatabaseType(const tt3::util::Mnemonic & mnemonic);
+        static auto     findDatabaseType(
+                                const tt3::util::Mnemonic & mnemonic
+                            )
+                            -> IDatabaseType *;
 
         //  Returns the set of all registered database types.
-        static DatabaseTypes    allDatabaseTypes();
+        static auto     allDatabaseTypes()
+                            -> DatabaseTypes;
 
         //////////
         //  Implementation
@@ -130,7 +169,7 @@ namespace tt3::db::api
         struct _Impl;
 
         //  Helpers
-        static _Impl *          _impl();
+        static _Impl *  _impl();
     };
 }
 

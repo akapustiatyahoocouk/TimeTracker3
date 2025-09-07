@@ -27,19 +27,19 @@ WorkspaceImpl::WorkspaceImpl(const WorkspaceAddress & address, tt3::db::api::IDa
     Q_ASSERT(_database != nullptr);
 
     //  Forward database change events
-    connect(&_database->changeNotifier(),
+    connect(_database->changeNotifier(),
             &tt3::db::api::ChangeNotifier::databaseClosed,
             this,
             &WorkspaceImpl::_onDatabaseClosed);
-    connect(&_database->changeNotifier(),
+    connect(_database->changeNotifier(),
             &tt3::db::api::ChangeNotifier::objectCreated,
             this,
             &WorkspaceImpl::_onObjectCreated);
-    connect(&_database->changeNotifier(),
+    connect(_database->changeNotifier(),
             &tt3::db::api::ChangeNotifier::objectDestroyed,
             this,
             &WorkspaceImpl::_onObjectDestroyed);
-    connect(&_database->changeNotifier(),
+    connect(_database->changeNotifier(),
             &tt3::db::api::ChangeNotifier::objectModified,
             this,
             &WorkspaceImpl::_onObjectModified);
@@ -63,12 +63,13 @@ WorkspaceType WorkspaceImpl::type() const
     return _address->workspaceType();
 }
 
-WorkspaceAddress WorkspaceImpl::address() const
+auto WorkspaceImpl::address(
+    ) const -> WorkspaceAddress
 {
     return _address;
 }
 
-bool WorkspaceImpl::isOpen()
+bool WorkspaceImpl::isOpen() const
 {
     tt3::util::Lock lock(_guard);
 
@@ -135,6 +136,7 @@ Users WorkspaceImpl::users(const Credentials & credentials) const throws(Workspa
 
 //  TODO implement Accounts WorkspaceImpl::accounts(const Credentials & credentials) const throws(WorkspaceException);
 //  TODO implement Account WorkspaceImpl::findAccount(const Credentials & credentials, const QString & login) const throws(WorkspaceException);
+//  TODO implement ActivityTypes WorkspaceImpl::activityTypes(const Credentials & credentials) const throws(WorkspaceException);
 //////////
 //  Operations (access control)
 bool WorkspaceImpl::canAccess(const Credentials & credentials) const throws(WorkspaceException)
@@ -376,6 +378,28 @@ Account WorkspaceImpl::_getProxy(tt3::db::api::IAccount * dataAccount) const
     return account;
 }
 
+ActivityType WorkspaceImpl::_getProxy(tt3::db::api::IActivityType * dataActivityType) const
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    Q_ASSERT(_database != nullptr); //  i.e. workspace is "open"
+    Q_ASSERT(dataActivityType != nullptr);
+
+    Oid oid = dataActivityType->oid();
+    if (_proxyCache.contains(oid))
+    {
+        ActivityType activityType = std::dynamic_pointer_cast<ActivityTypeImpl>(_proxyCache[oid]);
+        Q_ASSERT(activityType != nullptr);   //  Objects do not change their types OR reuse OIDs
+        return activityType;
+    }
+    //  Must create a new proxy
+    Workspace workspace = _address->_workspaceType->_mapWorkspace(const_cast<WorkspaceImpl*>(this));
+    ActivityType activityType(
+        new ActivityTypeImpl(workspace, dataActivityType),
+        [](ActivityTypeImpl * p) { delete p; });
+    _proxyCache.insert(oid, activityType);
+    return activityType;
+}
+
 //////////
 //  Event handlers
 void WorkspaceImpl::_onDatabaseClosed(tt3::db::api::DatabaseClosedNotification notification)
@@ -383,19 +407,19 @@ void WorkspaceImpl::_onDatabaseClosed(tt3::db::api::DatabaseClosedNotification n
     qDebug() << "Workspace::_onDatabaseClosed()";
     Q_ASSERT(notification.database() == _database);
     //  Stop listening to database notifications
-    disconnect(&_database->changeNotifier(),
+    disconnect(_database->changeNotifier(),
                &tt3::db::api::ChangeNotifier::databaseClosed,
                this,
                &WorkspaceImpl::_onDatabaseClosed);
-    disconnect(&_database->changeNotifier(),
+    disconnect(_database->changeNotifier(),
                &tt3::db::api::ChangeNotifier::objectCreated,
                this,
                &WorkspaceImpl::_onObjectCreated);
-    disconnect(&_database->changeNotifier(),
+    disconnect(_database->changeNotifier(),
                &tt3::db::api::ChangeNotifier::objectDestroyed,
                this,
                &WorkspaceImpl::_onObjectDestroyed);
-    disconnect(&_database->changeNotifier(),
+    disconnect(_database->changeNotifier(),
                &tt3::db::api::ChangeNotifier::objectModified,
                this,
                &WorkspaceImpl::_onObjectModified);

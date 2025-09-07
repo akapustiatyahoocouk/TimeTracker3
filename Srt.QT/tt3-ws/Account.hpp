@@ -17,8 +17,9 @@
 
 namespace tt3::ws
 {
-    //  A login account
-    class TT3_WS_PUBLIC AccountImpl : public PrincipalImpl
+    /// A login account.
+    class TT3_WS_PUBLIC AccountImpl final :
+        public PrincipalImpl
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AccountImpl)
 
@@ -26,7 +27,7 @@ namespace tt3::ws
         friend std::shared_ptr<AccountImpl>;
 
         //////////
-        //  Construction/destruction
+        //  Construction/destruction - from friends only
     private:
         AccountImpl(Workspace workspace, tt3::db::api::IAccount * dataAccount);
         virtual ~AccountImpl();
@@ -56,20 +57,33 @@ namespace tt3::ws
         //////////
         //  Operations (associations)
     public:
-        //  Returns the user to whom this account belongs.
-        //  Throws WorkspaceException if an error occurs.
-        User            user(const Credentials & credentials) const throws(WorkspaceException);
+        /// Returns the user to whom this account belongs.
+        ///
+        /// @return
+        ///     Returns the user to whom this account belongs.
+        /// @exception WorkspaceException
+        ///     If an error occurs.
+        auto        user(
+                            const Credentials & credentials
+                        ) const -> User;
 
         //////////
         //  Implementation
     private:
         tt3::db::api::IAccount *const   _dataAccount;    //  counts as "reference"
 
-        //  Access control
-        virtual bool    _canRead(const Credentials & credentials) const throws(WorkspaceException) override;
-        virtual bool    _canModify(const Credentials & credentials) const throws(WorkspaceException) override;
-        virtual bool    _canDestroy(const Credentials & credentials) const throws(WorkspaceException) override;
-        virtual bool    _destroyingLosesAccess() const throws(WorkspaceException) override;
+        //  Access control - throw WorkspaceException in DB error
+        virtual bool    _canRead(
+                                const Credentials & credentials
+                            ) const override;
+        virtual bool    _canModify(
+                                const Credentials & credentials
+                            ) const override;
+        virtual bool    _canDestroy(
+                                const Credentials & credentials
+                            ) const override;
+        virtual bool    _destroyingLosesAccess(
+                            ) const override;
     };
 }
 

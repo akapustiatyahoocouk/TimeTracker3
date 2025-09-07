@@ -29,7 +29,8 @@ namespace tt3::db::api
         //////////
         //  IObject
     public:
-        virtual IObjectType *   type() const override
+        virtual auto    type() const
+                            -> IObjectType * override
         {
             return ObjectTypes::PrivateActivity::instance();
         }
@@ -39,7 +40,9 @@ namespace tt3::db::api
     public:
         //  The owner of this private activity; never nullptr.
         //  Throws DatabaseException if an error occurs.
-        virtual IUser *     owner() const throws(DatabaseException) = 0;
+        virtual auto    owner() const
+                            throws(DatabaseException)
+                            -> IUser * = 0;
     };
 }
 

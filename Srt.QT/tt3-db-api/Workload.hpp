@@ -32,45 +32,83 @@ namespace tt3::db::api
         //  Returns/sets the user-readable display name of
         //  this Workload.
         //  Throws DatabaseException if an error occurs.
-        virtual QString         displayName() const throws(DatabaseException) = 0;
-        virtual void            setDisplayName(const QString & displayName) throws(DatabaseException) = 0;
+        virtual auto    displayName(
+                            ) const
+                            throws(DatabaseException)
+                            -> QString = 0;
+        virtual void    setDisplayName(
+                                const QString & displayName
+                            )
+                            throws(DatabaseException) = 0;
 
         //  Returns/sets the multi-line description of this Workload,
         //  with lines separated by a newline character '\n'.
         //  Throws DatabaseException if an error occurs.
-        virtual QString         description() const throws(DatabaseException) = 0;
-        virtual void            setDescription(const QString & description) throws(DatabaseException) = 0;
+        virtual auto    description(
+                            ) const
+                            throws(DatabaseException)
+                            -> QString = 0;
+        virtual void    setDescription(
+                                const QString & description
+                            )
+                            throws(DatabaseException) = 0;
 
         //////////
         //  Operations (associations)
     public:
         //  Returns the set of Activities associated with this Workload.
         //  Throws DatabaseException if an error occurs.
-        virtual Activities      contributingActivities() const throws(DatabaseException) = 0;
+        virtual auto    contributingActivities(
+                            ) const
+                            throws(DatabaseException)
+                            -> Activities = 0;
 
         //  Returns/sets the Beneficiaries of this Workload.
         //  Throws DatabaseException if an error occurs.
-        virtual Beneficiaries   beneficiaries() const throws(DatabaseException) = 0;
-        virtual void            setBeneficiaries(const Beneficiaries & beneficiaries) throws(DatabaseException) = 0;
+        virtual auto    beneficiaries(
+                            ) const
+                            throws(DatabaseException)
+                            -> Beneficiaries = 0;
+        virtual void    setBeneficiaries(
+                                const Beneficiaries & beneficiaries
+                            )
+                            throws(DatabaseException) = 0;
 
         //  Adds/removes the specified Beneficiary to/from the
         //  set of Beneficiaries associated with this Workload;
         //  has no effect if already there/not there.
         //  Throws DatabaseException if an error occurs.
-        virtual void            addBeneficiary(IBeneficiary * beneficiary) throws(DatabaseException) = 0;
-        virtual void            removeBeneficiary(IBeneficiary * beneficiary) throws(DatabaseException) = 0;
+        virtual void    addBeneficiary(
+                                IBeneficiary * beneficiary
+                            )
+                            throws(DatabaseException) = 0;
+        virtual void    removeBeneficiary(
+                                IBeneficiary * beneficiary
+                            )
+                            throws(DatabaseException) = 0;
 
         //  Returns/sets the Users assigned to this  Workload.
         //  Throws DatabaseException if an error occurs.
-        virtual Users           assignedUsers() const throws(DatabaseException) = 0;
-        virtual void            setAssignedUsers(const Users & users) throws(DatabaseException) = 0;
+        virtual auto    assignedUsers(
+                            ) const
+                            throws(DatabaseException)
+                            -> Users = 0;
+        virtual void    setAssignedUsers(
+                                const Users & users
+                            ) throws(DatabaseException) = 0;
 
         //  Adds/removes the specified User to/from the
         //  set of Users assigned to this Workload;
         //  has no effect if already there/not there.
         //  Throws DatabaseException if an error occurs.
-        virtual void            addAssignedUser(IUser * user) throws(DatabaseException) = 0;
-        virtual void            removeAssignedUser(IUser * user) throws(DatabaseException) = 0;
+        virtual void    addAssignedUser(
+                                IUser * user
+                            )
+                            throws(DatabaseException) = 0;
+        virtual void    removeAssignedUser(
+                                IUser * user
+                            )
+                            throws(DatabaseException) = 0;
     };
 }
 

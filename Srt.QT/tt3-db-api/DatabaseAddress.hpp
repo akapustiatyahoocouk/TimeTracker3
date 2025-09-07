@@ -62,29 +62,37 @@ namespace tt3::db::api
         //  Operations (general)
     public:
         //  The database type to which this database address belongs.
-        virtual IDatabaseType * databaseType() const = 0;
+        virtual auto    databaseType(
+                            ) const
+                            -> IDatabaseType * = 0;
 
         //  The user-readable form of this database address.
-        virtual QString         displayForm() const = 0;
+        virtual auto    displayForm(
+                            ) const
+                            -> QString = 0;
 
         //  The external (re-parsable) form of this database address.
-        virtual QString         externalForm() const = 0;
+        virtual auto    externalForm(
+                            ) const
+                            -> QString = 0;
 
         //////////
         //  Operations (reference counting)
         //  All these operations are thread-safe.
     public:
         //  Returns the current "state" of this databasr address.
-        virtual State           state() const = 0;
+        virtual auto    state(
+                            ) const
+                            -> State = 0;
 
         //  Returns the current "reference count" of this databasr address.
-        virtual int             referenceCount() const = 0;
+        virtual int     referenceCount() const = 0;
 
         //  Increments the "reference count" of this databasr address ny 1.
-        virtual void            addReference() = 0;
+        virtual void    addReference() = 0;
 
         //  Decrements the "reference count" of this databasr address ny 1.
-        virtual void            removeReference() = 0;
+        virtual void    removeReference() = 0;
     };
 }
 

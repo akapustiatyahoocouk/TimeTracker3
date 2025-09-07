@@ -21,7 +21,7 @@ namespace tt3::util
 {   //  Uses {00000000-0000-0000-0000-000000000000} braded format.
     //  Formats as uppercase, parses upper- or lowercase.
     template <> TT3_DB_API_PUBLIC QString toString<tt3::db::api::Oid>(const tt3::db::api::Oid & value);
-    template <> TT3_DB_API_PUBLIC tt3::db::api::Oid fromString<tt3::db::api::Oid>(const QString & s, int & scan) throws(tt3::util::ParseException);
+    template <> TT3_DB_API_PUBLIC tt3::db::api::Oid fromString<tt3::db::api::Oid>(const QString & s, qsizetype & scan) throws(tt3::util::ParseException);
 }
 
 namespace tt3::db::api
@@ -40,7 +40,7 @@ namespace tt3::db::api
         static const Oid    Invalid;
 
         friend TT3_DB_API_PUBLIC QString tt3::util::toString<Oid>(const Oid & value);
-        friend TT3_DB_API_PUBLIC Oid tt3::util::fromString<Oid>(const QString & s, int & scan) throws(tt3::util::ParseException);
+        friend TT3_DB_API_PUBLIC Oid tt3::util::fromString<Oid>(const QString & s, qsizetype & scan) throws(tt3::util::ParseException);
         friend TT3_DB_API_PUBLIC size_t qHash(const Oid & key, size_t seed);
 
         //////////
@@ -132,19 +132,21 @@ namespace tt3::db::api
     public:
         //  The type of this database object; can be
         //  safely obtained for both live and dead objects
-        virtual IObjectType *   type() const = 0;
+        virtual auto    type() const
+                            -> IObjectType * = 0;
 
         //  The database where the corresponding data object
         //  resides (if live) or used to reside (if dead).
-        virtual IDatabase * database() const = 0;
+        virtual auto    database() const
+                            -> IDatabase * = 0;
 
         //  The OID of the corresponding data object; can be
         //  safely obtained for both live and dead objects.
-        virtual Oid         oid() const = 0;
+        virtual Oid     oid() const = 0;
 
         //  True if this instance represents an existing data
         //  object residing in a database, else false.
-        virtual bool        isLive() const = 0;
+        virtual bool    isLive() const = 0;
 
         //////////
         //  Operations (life cycle)
@@ -152,25 +154,26 @@ namespace tt3::db::api
         //  Destroys the corresponding database object,
         //  delete-cascading as necessary. The instance of
         //  the IObject - implementing class remains
-        //  in existence, but is marked as "reoresenting
+        //  in existence, but is marked as "representing
         //  a dead object" and, therefore, unusable.
-        virtual void        destroy() throws(DatabaseException) = 0;
+        virtual void    destroy()
+                            throws(DatabaseException) = 0;
 
         //////////
         //  Operations (reference counting)
         //  All these operations are thread-safe.
     public:
         //  The current "state" of this object.
-        virtual State           state() const = 0;
+        virtual State   state() const = 0;
 
         //  The current "reference count" of this object.
-        virtual int             referenceCount() const = 0;
+        virtual int     referenceCount() const = 0;
 
         //  Increments the "reference count" of this object by 1.
-        virtual void            addReference() = 0;
+        virtual void    addReference() = 0;
 
         //  Decrements the "reference count" of this object by 1.
-        virtual void            removeReference() = 0;
+        virtual void    removeReference() = 0;
     };
 }
 

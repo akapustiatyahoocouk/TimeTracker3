@@ -29,11 +29,12 @@ namespace tt3::db::api
         //////////
         //  IObject
     public:
-        virtual IObjectType *   type() const override
+        virtual auto    type() const
+                            -> IObjectType * override
         {
             return ObjectTypes::PublicActivity::instance();
         }
     };
 }
 
-//  End of tt3-db-api/Activity.hpp
+//  End of tt3-db-api/PublicActivity.hpp

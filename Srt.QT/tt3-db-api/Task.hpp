@@ -31,14 +31,22 @@ namespace tt3::db::api
     public:
         //  The cmpletion status of this task.
         //  Throws DatabaseException if an error occurs.
-        virtual bool        completed() const throws(DatabaseException) = 0;
-        virtual void        setCompleted(bool completed) throws(DatabaseException) = 0;
+        virtual bool    completed() const
+                            throws(DatabaseException) = 0;
+        virtual void    setCompleted(
+                                bool completed
+                            ) throws(DatabaseException) = 0;
 
         //  True if user must enter a comment when completing this
         //  task; this comment will be recorded as an event.
         //  Throws DatabaseException if an error occurs.
-        virtual bool            requireCommentOnCompletion() const throws(DatabaseException) = 0;
-        virtual void            setRequireCommentOnCompletion(bool requireCommentOnCompletion) throws(DatabaseException) = 0;
+        virtual bool    requireCommentOnCompletion(
+                            ) const
+                            throws(DatabaseException) = 0;
+        virtual void    setRequireCommentOnCompletion(
+                                bool requireCommentOnCompletion
+                            )
+                            throws(DatabaseException) = 0;
     };
 }
 

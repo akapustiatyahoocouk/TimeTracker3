@@ -138,28 +138,38 @@ namespace tt3::db::xml
         //  Implementation
     private:
         //  Properties
-        QString             _realName;
+        QString         _realName;
         tt3::db::api::InactivityTimeout _inactivityTimeout;
         tt3::db::api::UiLocale          _uiLocale;
         //  Associations
-        Accounts            _accounts;  //  count as "references"
+        Accounts        _accounts;  //  count as "references"
 
         //  Helpers
-        virtual void        _markDead() override;
+        virtual void    _markDead() override;
 
         //////////
         //  Serialization
     private:
-        virtual void        _serializeProperties(QDomElement & objectElement) override;
-        virtual void        _serializeAggregations(QDomElement & parentElement) override;
+        virtual void    _serializeProperties(
+                                QDomElement & objectElement
+                            ) override;
+        virtual void    _serializeAggregations(
+                                QDomElement & parentElement
+                            ) override;
 
-        virtual void        _deserializeProperties(const QDomElement & objectElement) throws(tt3::util::ParseException) override;
-        virtual void        _deserializeAggregations(const QDomElement & parentElement) throws(tt3::util::ParseException) override;
+        virtual void    _deserializeProperties(
+                                const QDomElement & objectElement
+                            ) throws(tt3::util::ParseException) override;
+        virtual void    _deserializeAggregations(
+                                const QDomElement & parentElement
+                            ) throws(tt3::util::ParseException) override;
 
         //////////
         //  Validation
     private:
-        virtual void        _validate(QSet<Object*> & validatedObjects) throws(tt3::db::api::DatabaseException) override;
+        virtual void    _validate(
+                                QSet<Object*> & validatedObjects) throws(tt3::db::api::DatabaseException
+                            ) override;
     };
 }
 

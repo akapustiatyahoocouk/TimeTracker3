@@ -20,42 +20,60 @@ namespace tt3::util
     //  Parses a string representction of a value of type T that
     //  starts at position "scan"in "s". Upon success advances "scan" to
     //  just past the parsed portion of "s" and returns the parsed value.
-    //  Upon faulure throws "ParseException" without advancing "scan",
+    //  Throws ParseException if a parse error occurs (without advancing "scan"),
+
+    /// Parses a value from the portion of a string.
+    /// Upon success, consumes as much of the string as possible.
+    ///
+    /// @param s
+    ///     The string to parse a portion of.
+    /// @param scan
+    ///     The current scan position; advanced past the parsed
+    ///     portion of the string upon success, left intact
+    ///     upon failure.
+    /// @return
+    ///     The parsed value.
+    /// @exception ParseException
+    ///     If the parsing fails.
+    ///
     template <class T>
-    T fromString(const QString & s, int & scan) throws(ParseException) = delete;
+    T fromString(
+            const QString & s,
+            qsizetype & scan
+        ) = delete;
 
     //  C++ types
-    template <> TT3_UTIL_PUBLIC bool fromString<bool>(const QString & s, int & scan) throws(ParseException);
-    template <> TT3_UTIL_PUBLIC char fromString<char>(const QString & s, int & scan) throws(ParseException);
-    template <> TT3_UTIL_PUBLIC signed char fromString<signed char>(const QString & s, int & scan) throws(ParseException);
-    template <> TT3_UTIL_PUBLIC unsigned char fromString<unsigned char>(const QString & s, int & scan) throws(ParseException);
-    template <> TT3_UTIL_PUBLIC signed int fromString<signed int>(const QString & s, int & scan) throws(ParseException);
-    template <> TT3_UTIL_PUBLIC unsigned int fromString<unsigned int>(const QString & s, int & scan) throws(ParseException);
-    template <> TT3_UTIL_PUBLIC signed long fromString<signed long>(const QString & s, int & scan) throws(ParseException);
-    template <> TT3_UTIL_PUBLIC unsigned long fromString<unsigned long>(const QString & s, int & scan) throws(ParseException);
-    template <> TT3_UTIL_PUBLIC signed long long fromString<signed long long>(const QString & s, int & scan) throws(ParseException);
-    template <> TT3_UTIL_PUBLIC unsigned long long fromString<unsigned long long>(const QString & s, int & scan) throws(ParseException);
+    template <> TT3_UTIL_PUBLIC bool fromString<bool>(const QString & s, qsizetype & scan);
+    template <> TT3_UTIL_PUBLIC char fromString<char>(const QString & s, qsizetype & scan);
+    template <> TT3_UTIL_PUBLIC signed char fromString<signed char>(const QString & s, qsizetype & scan);
+    template <> TT3_UTIL_PUBLIC unsigned char fromString<unsigned char>(const QString & s, qsizetype & scan);
+    template <> TT3_UTIL_PUBLIC signed int fromString<signed int>(const QString & s, qsizetype & scan);
+    template <> TT3_UTIL_PUBLIC unsigned int fromString<unsigned int>(const QString & s, qsizetype & scan);
+    template <> TT3_UTIL_PUBLIC signed long fromString<signed long>(const QString & s, qsizetype & scan);
+    template <> TT3_UTIL_PUBLIC unsigned long fromString<unsigned long>(const QString & s, qsizetype & scan);
+    template <> TT3_UTIL_PUBLIC signed long long fromString<signed long long>(const QString & s, qsizetype & scan);
+    template <> TT3_UTIL_PUBLIC unsigned long long fromString<unsigned long long>(const QString & s, qsizetype & scan);
 
     //  QT types
-    template <> TT3_UTIL_PUBLIC QChar fromString<QChar>(const QString & s, int & scan) throws(ParseException);
-    template <> TT3_UTIL_PUBLIC QString fromString<QString>(const QString & s, int & scan) throws(ParseException);
-    template <> TT3_UTIL_PUBLIC QRect fromString<QRect>(const QString & s, int & scan) throws(ParseException);
-    template <> TT3_UTIL_PUBLIC QVersionNumber fromString<QVersionNumber>(const QString & s, int & scan) throws(ParseException);
-    template <> TT3_UTIL_PUBLIC QLocale fromString<QLocale>(const QString & s, int & scan) throws(ParseException);
-    template <> TT3_UTIL_PUBLIC QColor fromString<QColor>(const QString & s, int & scan) throws(ParseException);
+    template <> TT3_UTIL_PUBLIC QChar fromString<QChar>(const QString & s, qsizetype & scan);
+    template <> TT3_UTIL_PUBLIC QString fromString<QString>(const QString & s, qsizetype & scan);
+    template <> TT3_UTIL_PUBLIC QRect fromString<QRect>(const QString & s, qsizetype & scan);
+    template <> TT3_UTIL_PUBLIC QVersionNumber fromString<QVersionNumber>(const QString & s, qsizetype & scan);
+    template <> TT3_UTIL_PUBLIC QLocale fromString<QLocale>(const QString & s, qsizetype & scan);
+    template <> TT3_UTIL_PUBLIC QColor fromString<QColor>(const QString & s, qsizetype & scan);
 
     //  tt3::util types
-    template <> TT3_UTIL_PUBLIC TimeSpan fromString<TimeSpan>(const QString & s, int & scan) throws(ParseException);
-    template <> TT3_UTIL_PUBLIC Mnemonic fromString<Mnemonic>(const QString & s, int & scan) throws(ParseException);
-    template <> TT3_UTIL_PUBLIC ResourceSectionId fromString<ResourceSectionId>(const QString & s, int & scan) throws(ParseException);
-    template <> TT3_UTIL_PUBLIC ResourceId fromString<ResourceId>(const QString & s, int & scan) throws(ParseException);
+    template <> TT3_UTIL_PUBLIC TimeSpan fromString<TimeSpan>(const QString & s, qsizetype & scan);
+    template <> TT3_UTIL_PUBLIC Mnemonic fromString<Mnemonic>(const QString & s, qsizetype & scan);
+    template <> TT3_UTIL_PUBLIC ResourceSectionId fromString<ResourceSectionId>(const QString & s, qsizetype & scan);
+    template <> TT3_UTIL_PUBLIC ResourceId fromString<ResourceId>(const QString & s, qsizetype & scan);
 
     //////////
     //  Parsing helpers
 
     //  Yields "defaultValue" if the parsing fails.
     template <class T>
-    T fromString(const QString & s, int & scan, const T & defaultValue)
+    T fromString(const QString & s, qsizetype & scan, const T & defaultValue)
     {
         try
         {
@@ -73,7 +91,7 @@ namespace tt3::util
     {
         try
         {
-            int scan = 0;
+            qsizetype scan = 0;
             T result = fromString<T>(s, scan);
             return (scan == s.length()) ? result : defaultValue;
         }

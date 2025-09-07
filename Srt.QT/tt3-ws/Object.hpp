@@ -17,7 +17,7 @@
 
 namespace tt3::ws
 {
-    //  A generic workspace object
+    /// A generic workspace object.
     class TT3_WS_PUBLIC ObjectImpl
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ObjectImpl)
@@ -25,9 +25,10 @@ namespace tt3::ws
         friend class PrincipalImpl;
         friend class UserImpl;
         friend class AccountImpl;
+        friend class ActivityTypeImpl;
 
         //////////
-        //  Construction/destruction
+        //  Construction/destruction - from frinds only
     private:
         ObjectImpl(Workspace workspace, tt3::db::api::IObject * dataObject);
         virtual ~ObjectImpl();
@@ -35,21 +36,32 @@ namespace tt3::ws
         //////////
         //  Operations (general)
     public:
-        //  The type of this workspace object; can be
-        //  safely obtained for both live and dead objects
-        ObjectType *    type() const;
+        /// Returns the type of this workspace object.
+        /// Can be safely obtained for both live and dead objects.
+        ///
+        /// @return
+        ///     The type of this workspace object
+        auto        type(
+                        ) const -> ObjectType *;
 
-        //  The workspace where the corresponding object
-        //  resides (if live) or used to reside (if dead).
-        Workspace       workspace() const;
+        /// Returns the workspace where the corresponding object
+        /// resides (if live) or used to reside (if dead).
+        ///
+        /// @return
+        ///     The workspace where this object resides or used to reside.
+        auto        workspace(
+                        ) const -> Workspace;
 
-        //  The OID of the corresponding object; can be
-        //  safely obtained for both live and dead objects.
-        Oid             oid() const;
+        /// Returns the OID of the corresponding object.
+        /// Can be safely obtained for both live and dead objects.
+        ///
+        /// @return
+        ///     The OID of the corresponding object
+        Oid         oid() const;
 
-        //  True if this instance represents an existing data
-        //  object residing in a database, else false.
-        bool            isLive() const;
+        /// True if this instance represents an existing data
+        /// object residing in a database, else false.
+        bool        isLive() const;
 
         //////////
         //  Operations (life cycle)
@@ -60,16 +72,24 @@ namespace tt3::ws
         //  "reoresenting a dead object" and,
         //  therefore, unusable.
         //  Throws WorkspaceException if an error occurs.
-        void            destroy(const Credentials & credentials) throws(WorkspaceException);
+        void        destroy(
+                            const Credentials & credentials
+                        ) throws(WorkspaceException);
 
         //////////
         //  Operations (access control)
     public:
         //  Checks whether the specifid credentials allow the
         //  corresponding operations to be performed on this object
-        bool            canRead(const Credentials & credentials) const throws(WorkspaceException);
-        bool            canModify(const Credentials & credentials) const throws(WorkspaceException);
-        bool            canDestroy(const Credentials & credentials) const throws(WorkspaceException);
+        bool        canRead(
+                            const Credentials & credentials
+                        ) const throws(WorkspaceException);
+        bool        canModify(
+                            const Credentials & credentials
+                        ) const throws(WorkspaceException);
+        bool        canDestroy(
+                            const Credentials & credentials
+                        ) const throws(WorkspaceException);
 
         //////////
         //  Implementation
@@ -80,11 +100,18 @@ namespace tt3::ws
         //  Helpers
         void            _ensureLive() const throws(WorkspaceException);
 
-        //  Access control
-        virtual bool    _canRead(const Credentials & credentials) const throws(WorkspaceException) = 0;
-        virtual bool    _canModify(const Credentials & credentials) const throws(WorkspaceException) = 0;
-        virtual bool    _canDestroy(const Credentials & credentials) const throws(WorkspaceException) = 0;
-        virtual bool    _destroyingLosesAccess() const throws(WorkspaceException) { return false; }
+        //  Access control - throw WorkspaceException in DB error
+        virtual bool    _canRead(
+                                const Credentials & credentials
+                            ) const = 0;
+        virtual bool    _canModify(
+                                const Credentials & credentials
+                            ) const = 0;
+        virtual bool    _canDestroy(
+                                const Credentials & credentials
+                            ) const = 0;
+        virtual bool    _destroyingLosesAccess(
+                            ) const { return false; }
     };
 }
 

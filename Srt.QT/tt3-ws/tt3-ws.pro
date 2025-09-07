@@ -5,6 +5,7 @@ DEFINES += TT3_WS_LIBRARY
 
 SOURCES += \
     AccountImpl.cpp \
+    ActivityTypeImpl.cpp \
     Component.cpp \
     Credentials.cpp \
     CurrentCredentials.cpp \
@@ -21,6 +22,7 @@ SOURCES += \
 HEADERS += \
     API.hpp \
     Account.hpp \
+    ActivityType.hpp \
     Classes.hpp \
     Components.hpp \
     Credentials.hpp \

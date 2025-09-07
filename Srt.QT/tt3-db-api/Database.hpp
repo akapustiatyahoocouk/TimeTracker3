@@ -33,69 +33,110 @@ namespace tt3::db::api
     public:
         //  Returns the type of this database.
         //  Can be safely obtained on both open and closed databases.
-        virtual IDatabaseType *     type() const = 0;
+        virtual auto    type() const
+                            -> IDatabaseType * = 0;
 
         //  Returns the address of this database.
         //  Can be safely obtained on both open and closed databases.
-        virtual IDatabaseAddress *  address() const = 0;
+        virtual auto    address() const
+                            -> IDatabaseAddress * = 0;
 
         //  Returns the validator used by this database.
-        virtual IValidator *        validator() const = 0;
+        virtual auto    validator() const
+                            -> IValidator * = 0;
 
         //  Checks whether this database is open or closed.
         //  All database instances start off as open.
-        virtual bool                isOpen() const = 0;
+        virtual bool    isOpen() const = 0;
 
         //  Closes this database; jas no effect if already closed.
         //  Throws DatabaseException if an error occurs.
-        virtual void                close() throws(DatabaseException) = 0;
+        virtual void    close()
+                            throws(DatabaseException) = 0;
 
         //////////
         //  Operations (associations)
     public:
         //  The set of all users in this database.
         //  Throws DatabaseException if an error occurs.
-        virtual Users           users() const throws(DatabaseException) = 0;
+        virtual auto    users(
+                            ) const
+                            throws(DatabaseException)
+                            -> Users = 0;
 
         //  The set of all accounts of all users in this database.
         //  Throws DatabaseException if an error occurs.
-        virtual Accounts        accounts() const throws(DatabaseException) = 0;
+        virtual auto    accounts(
+                            ) const
+                            throws(DatabaseException)
+                            -> Accounts = 0;
 
         //  The account with the specified login.
         //  Throws DatabaseException if an error occurs.
-        virtual IAccount *      findAccount(const QString & login) const throws(DatabaseException) = 0;
+        virtual auto    findAccount(
+                                const QString & login
+                            ) const
+                            throws(DatabaseException)
+                            -> IAccount * = 0;
 
         //  The set of all activity types in this database.
         //  Throws DatabaseException if an error occurs.
-        virtual ActivityTypes   activityTypes() const throws(DatabaseException) = 0;
+        virtual auto    activityTypes(
+                            ) const
+                            throws(DatabaseException)
+                            -> ActivityTypes = 0;
 
         //  The set of all public activities in this database
         //  which are not also tasks.
         //  Throws DatabaseException if an error occurs.
-        virtual PublicActivities    publicActivities() const throws(DatabaseException) = 0;
+        virtual auto    publicActivities(
+                            ) const
+                            throws(DatabaseException)
+                            -> PublicActivities = 0;
 
         //  The set of all public activities in this database
         //  which are also tasks.
         //  Throws DatabaseException if an error occurs.
-        virtual PublicActivities    publicActivitiesAndTasks() const throws(DatabaseException) = 0;
+        virtual auto    publicActivitiesAndTasks(
+                            ) const
+                            throws(DatabaseException)
+                            -> PublicActivities = 0;
 
         //  The set of all/root public tasks in this database.
         //  Throws DatabaseException if an error occurs.
-        virtual PublicTasks     publicTasks() const throws(DatabaseException) = 0;
-        virtual PublicTasks     rootPublicTasks() const throws(DatabaseException) = 0;
+        virtual auto    publicTasks(
+                            ) const
+                            throws(DatabaseException)
+                            -> PublicTasks = 0;
+        virtual auto    rootPublicTasks(
+                            ) const
+                            throws(DatabaseException)
+                            -> PublicTasks = 0;
 
         //  The set of all/root Projects in this database.
         //  Throws DatabaseException if an error occurs.
-        virtual Projects        projects() const throws(DatabaseException) = 0;
-        virtual Projects        rootProjects() const throws(DatabaseException) = 0;
+        virtual auto    projects(
+                            ) const
+                            throws(DatabaseException)
+                            -> Projects = 0;
+        virtual auto    rootProjects(
+                            ) const
+                            throws(DatabaseException)
+                            -> Projects = 0;
 
         //  The set of all WorkStreams in this database.
         //  Throws DatabaseException if an error occurs.
-        virtual WorkStreams     workStreams() const throws(DatabaseException) = 0;
+        virtual auto    workStreams(
+                            ) const
+                            throws(DatabaseException)
+                            -> WorkStreams = 0;
 
         //  The set of Beneficiaries in this database.
         //  Throws DatabaseException if an error occurs.
-        virtual Beneficiaries   beneficiaries() const throws(DatabaseException) = 0;
+        virtual auto    beneficiaries(
+                            ) const
+                            throws(DatabaseException)
+                            -> Beneficiaries = 0;
 
         //////////
         //  Operations (access control)
@@ -103,83 +144,117 @@ namespace tt3::db::api
         //  If there exists an a) enabled account b) of an
         //  enabled user c) with the spcified login and
         //  password, returns it; otherwise returns nullptr.
-        virtual IAccount *      tryLogin(const QString & login, const QString & password) const throws(DatabaseException) = 0;
+        virtual auto    tryLogin(
+                                const QString & login,
+                                const QString & password
+                            ) const
+                            throws(DatabaseException)
+                            -> IAccount * = 0;
 
         //  If there exists an a) enabled account b) of an
         //  enabled user c) with the spcified login and
         //  password, returns it; otherwise throws an
         //  AccessDeniedException.
-        virtual IAccount *      login(const QString & login, const QString & password) const throws(DatabaseException) = 0;
+        virtual auto    login(
+                                const QString & login,
+                                const QString & password
+                            ) const
+                            throws(DatabaseException)
+                        -> IAccount * = 0;
 
         //////////
         //  Operations (life cycle)
     public:
         //  Creates a new User in this database.
         //  Throws DatabaseException if an error occurs.
-        virtual IUser *         createUser(bool enabled, const QStringList & emailAddresses,
-                                    const QString & realName,
-                                    const tt3::db::api::InactivityTimeout & inactivityTimeout,
-                                    const tt3::db::api::UiLocale & uiLocale) throws(DatabaseException) = 0;
+        virtual auto    createUser(
+                                bool enabled,
+                                const QStringList & emailAddresses,
+                                const QString & realName,
+                                const tt3::db::api::InactivityTimeout & inactivityTimeout,
+                                const tt3::db::api::UiLocale & uiLocale
+                            )
+                            throws(DatabaseException)
+                            -> IUser * = 0;
 
         //  Creates a new ActivityType in this database.
         //  Throws DatabaseException if an error occurs.
-        virtual IActivityType * createActivityType(
-                                    const QString & displayName,
-                                    const QString & description) throws(DatabaseException) = 0;
+        virtual auto    createActivityType(
+                                const QString & displayName,
+                                const QString & description
+                            )
+                            throws(DatabaseException)
+                            -> IActivityType * = 0;
 
         //  Creates a new PublicActivity in this database.
         //  The activity type can be nullptr.
         //  Throws DatabaseException if an error occurs.
-        virtual IPublicActivity *   createPublicActivity(
-                                    const QString & displayName,
-                                    const QString & description,
-                                    const InactivityTimeout & timeout,
-                                    bool requireCommentOnStart,
-                                    bool requireCommentOnFinish,
-                                    bool fullScreenReminder,
-                                    IActivityType * activityType,
-                                    IWorkload * workload) throws(DatabaseException) = 0;
+        virtual auto    createPublicActivity(
+                                const QString & displayName,
+                                const QString & description,
+                                const InactivityTimeout & timeout,
+                                bool requireCommentOnStart,
+                                bool requireCommentOnFinish,
+                                bool fullScreenReminder,
+                                IActivityType * activityType,
+                                IWorkload * workload
+                            )
+                            throws(DatabaseException)
+                            -> IPublicActivity * = 0;
 
         //  Creates a new root PublicTask in this database.
         //  The activity type can be nullptr.
         //  Throws DatabaseException if an error occurs.
-        virtual IPublicTask *   createPublicTask(
-                                    const QString & displayName,
-                                    const QString & description,
-                                    const InactivityTimeout & timeout,
-                                    bool requireCommentOnStart,
-                                    bool requireCommentOnFinish,
-                                    bool fullScreenReminder,
-                                    IActivityType * activityType,
-                                    IWorkload * workload,
-                                    bool completed,
-                                    bool requireCommentOnCompletion) throws(DatabaseException) = 0;
+        virtual auto    createPublicTask(
+                                const QString & displayName,
+                                const QString & description,
+                                const InactivityTimeout & timeout,
+                                bool requireCommentOnStart,
+                                bool requireCommentOnFinish,
+                                bool fullScreenReminder,
+                                IActivityType * activityType,
+                                IWorkload * workload,
+                                bool completed,
+                                bool requireCommentOnCompletion
+                            )
+                            throws(DatabaseException)
+                            -> IPublicTask * = 0;
 
         //  Creates a new root project in this database.
         //  Throws DatabaseException if an error occurs.
-        virtual IProject *      createProject(
-                                    const QString & displayName,
-                                    const QString & description,
-                                    const Beneficiaries & beneficiaries) throws(DatabaseException) = 0;
+        virtual auto    createProject(
+                                const QString & displayName,
+                                const QString & description,
+                                const Beneficiaries & beneficiaries
+                            )
+                            throws(DatabaseException)
+                            -> IProject * = 0;
 
         //  Creates a new work stream in this database.
         //  Throws DatabaseException if an error occurs.
-        virtual IWorkStream *   createWorkStream(
-                                    const QString & displayName,
-                                    const QString & description,
-                                    const Beneficiaries & beneficiaries) throws(DatabaseException) = 0;
+        virtual auto    createWorkStream(
+                                const QString & displayName,
+                                const QString & description,
+                                const Beneficiaries & beneficiaries
+                            )
+                            throws(DatabaseException)
+                            -> IWorkStream * = 0;
 
         //  Creates a new Beneficiary in this database.
         //  Throws DatabaseException if an error occurs.
-        virtual IBeneficiary *  createBeneficiary(
-                                    const QString & displayName,
-                                    const QString & description) throws(DatabaseException) = 0;
+        virtual auto    createBeneficiary(
+                                const QString & displayName,
+                                const QString & description
+                            )
+                            throws(DatabaseException)
+                            -> IBeneficiary * = 0;
 
         //////////
         //  Operations (change notification handling)
     public:
         //  The change notifier used by this database
-        virtual ChangeNotifier &changeNotifier() = 0;
+        virtual auto    changeNotifier(
+                            ) -> ChangeNotifier * = 0;
     };
 }
 

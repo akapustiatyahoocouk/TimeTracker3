@@ -29,7 +29,9 @@ namespace tt3::db::api
         //////////
         //  IObject
     public:
-        virtual IObjectType *   type() const override
+        virtual auto    type(
+                            ) const
+                            -> IObjectType * override
         {
             return ObjectTypes::Work::instance();
         }
@@ -40,19 +42,31 @@ namespace tt3::db::api
         //  Returns the UTC date+time when this unit of work
         //  was started/finished.
         //  Throws DatabaseException if an error occurs.
-        virtual QDateTime       startedAt() const throws(DatabaseException) = 0;
-        virtual QDateTime       finishedAt() const throws(DatabaseException) = 0;
+        virtual auto    startedAt(
+                            ) const
+                            throws(DatabaseException)
+                            -> QDateTime = 0;
+        virtual auto    finishedAt(
+                            ) const
+                            throws(DatabaseException)
+                            -> QDateTime = 0;
 
         //////////
         //  Operations (associations)
     public:
         //  Returns the User who has logged this unit of work.
         //  Throws DatabaseException if an error occurs.
-        virtual IUser *         user() const throws(DatabaseException) = 0;
+        virtual auto    user(
+                            ) const
+                            throws(DatabaseException)
+                            -> IUser * = 0;
 
         //  Returns the Activity against which this unit of work was logged.
         //  Throws DatabaseException if an error occurs.
-        virtual IActivity *     activity() const throws(DatabaseException) = 0;
+        virtual auto    activity(
+                            ) const
+                            throws(DatabaseException)
+                            -> IActivity * = 0;
     };
 }
 

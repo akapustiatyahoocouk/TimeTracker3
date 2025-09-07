@@ -33,44 +33,70 @@ namespace tt3::util
         //  Operations
     public:
         //  The mnemonic identifier of this component.
-        virtual Mnemonic        mnemonic() const = 0;
+        virtual auto    mnemonic(
+                            ) const
+                            -> Mnemonic = 0;
 
         //  The user-readable display name of this component
         //  for the current default locale.
-        virtual QString         displayName() const = 0;
+        virtual auto    displayName(
+                            ) const
+                            -> QString = 0;
 
         //  The short (1 line) user-readable description of
         //  this component for the current default locale.
-        virtual QString         description() const = 0;
+        virtual auto    description(
+                            ) const
+                            -> QString = 0;
 
         //  The copyight message of this component for
         //  the current default locales.
-        virtual QString         copyright() const = 0;
+        virtual auto    copyright(
+                            ) const
+                            -> QString = 0;
 
         //  The version of this component.
-        virtual QVersionNumber  version() const = 0;
+        virtual auto    version(
+                            ) const
+                            -> QVersionNumber = 0;
 
         //  The build number of this component.
-        virtual QString         buildNumber() const = 0;
+        virtual auto    buildNumber(
+                            ) const
+                            -> QString = 0;
 
         //  The small (16x16) icon representing this component.
-        virtual QIcon           smallIcon() const;
+        virtual auto    smallIcon(
+                            ) const
+                            -> QIcon;
 
         //  The large (32x32) icon representing this component.
-        virtual QIcon           largeIcon() const;
+        virtual auto    largeIcon(
+                            ) const
+                            -> QIcon;
 
         //  The license of this component (default GPLv3).
-        virtual ILicense *      license() const;
+        virtual auto    license(
+                            ) const
+                            -> ILicense *;
 
         //  The subsystem yo which this component belongs.
-        virtual ISubsystem *    subsystem() const = 0;
+        virtual auto    subsystem(
+                            ) const
+                            -> ISubsystem * = 0;
 
         //  The resource factory used by this component.
-        virtual IResourceFactory *  resources() const = 0;
+        virtual auto    resources(
+                            ) const
+                            -> IResourceFactory * = 0;
 
         //  The settings of this component.
-        virtual Settings *          settings() = 0;
-        virtual const Settings *    settings() const = 0;
+        virtual auto    settings(
+                            )
+                            -> Settings * = 0;
+        virtual auto    settings(
+                            ) const
+                            -> const Settings * = 0;
     };
 
     //  The manager of known components
@@ -82,33 +108,43 @@ namespace tt3::util
         //  Operations
     public:
         //  Returns the set of all registered components.
-        static Components   allComponents();
+        static auto     allComponents()
+                            -> Components;
 
         //  Registers the specified component; returns true
         //  on success, false on failure.
-        static bool         registerComponent(IComponent * component);
+        static bool     registerComponent(
+                                IComponent * component
+                            );
 
         //  Finds a registered component by mnemonic and version.
-        static IComponent * findComponent(const Mnemonic & mnemonic, const QVersionNumber & version);
+        static auto     findComponent(
+                                const Mnemonic & mnemonic,
+                                const QVersionNumber & version
+                            )
+                            -> IComponent *;
 
         //  Finds a registered component by mnemonic; if several versions
         //  of component with the same mnemonic are registered, returns the
         //  one with the latest version.
-        static IComponent * findComponent(const Mnemonic & mnemonic);    //  finds the latest version
+        static auto     findComponent(
+                                const Mnemonic & mnemonic
+                            )
+                            -> IComponent *;
 
         //  Loads Settings of all registered components from a text configuration file.
-        static void         loadComponentSettings();
+        static void     loadComponentSettings();
 
         //  Saves Settings of all registered components to a text configuration file.
-        static void         saveComponentSettings();
+        static void     saveComponentSettings();
 
         //  Returns the set of all locales supported by at
         //  least one registered component
-        static Locales      supportedLocales();
+        static Locales  supportedLocales();
 
         //  Returns the set of all locales supported by
         //  every registered component
-        static Locales      fullySupportedLocales();
+        static Locales  fullySupportedLocales();
 
         //////////
         //  Implementation
@@ -116,7 +152,7 @@ namespace tt3::util
         struct _Impl;
 
         //  Helpers
-        static _Impl *      _impl();
+        static _Impl *  _impl();
     };
 }
 

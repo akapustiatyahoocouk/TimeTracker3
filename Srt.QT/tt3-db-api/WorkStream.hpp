@@ -29,7 +29,8 @@ namespace tt3::db::api
         //////////
         //  IObject
     public:
-        virtual IObjectType *   type() const override
+        virtual auto    type() const
+                            -> IObjectType * override
         {
             return ObjectTypes::WorkStream::instance();
         }

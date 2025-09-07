@@ -31,7 +31,8 @@ namespace tt3::db::api
         //////////
         //  IObject
     public:
-        virtual IObjectType *   type() const override
+        virtual auto    type() const
+                            -> IObjectType * override
         {
             return ObjectTypes::PrivateTask::instance();
         }
@@ -43,12 +44,21 @@ namespace tt3::db::api
         //  Setting a parent to nullptr makes this a root private task.
         //  Attempting to create parenthood loops is an error.
         //  Throws DatabaseException if an error occurs.
-        virtual IPrivateTask *  parent() const throws(DatabaseException) = 0;
-        virtual void            setParent(IPrivateTask * parent) throws(DatabaseException) = 0;
+        virtual auto    parent(
+                            ) const
+                            throws(DatabaseException)
+                            -> IPrivateTask * = 0;
+        virtual void    setParent(
+                                IPrivateTask * parent
+                            )
+                            throws(DatabaseException) = 0;
 
         //  Returns the set of immediate children of this private task.
         //  Throws DatabaseException if an error occurs.
-        virtual PrivateTasks    children() const throws(DatabaseException) = 0;
+        virtual auto    children(
+                            ) const
+                            throws(DatabaseException)
+                            -> PrivateTasks = 0;
 
         //////////
         //  Operations (life cycle)
@@ -56,17 +66,20 @@ namespace tt3::db::api
         //  Creates a new child PrivateTask under this one.
         //  The activity type can be nullptr.
         //  Throws DatabaseException if an error occurs.
-        virtual IPrivateTask *  createChild(
-                                    const QString & displayName,
-                                    const QString & description,
-                                    const InactivityTimeout & timeout,
-                                    bool requireCommentOnStart,
-                                    bool requireCommentOnFinish,
-                                    bool fullScreenReminder,
-                                    IActivityType * activityType,
-                                    IWorkload * workload,
-                                    bool completed,
-                                    bool requireCommentOnCompletion) throws(DatabaseException) = 0;
+        virtual auto    createChild(
+                                const QString & displayName,
+                                const QString & description,
+                                const InactivityTimeout & timeout,
+                                bool requireCommentOnStart,
+                                bool requireCommentOnFinish,
+                                bool fullScreenReminder,
+                                IActivityType * activityType,
+                                IWorkload * workload,
+                                bool completed,
+                                bool requireCommentOnCompletion
+                            )
+                            throws(DatabaseException)
+                            -> IPrivateTask * = 0;
     };
 }
 

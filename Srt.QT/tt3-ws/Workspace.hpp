@@ -45,36 +45,65 @@ namespace tt3::ws
     public:
         //  The type of this Workspace. Can be safely
         //  obtained for both open and closed workspaces.
-        WorkspaceType       type() const;
+        auto        type(
+                        ) const -> WorkspaceType;
 
         //  The address of this Workspace. Can be safely
         //  obtained for both open and closed workspaces.
-        WorkspaceAddress    address() const;
+        auto        address(
+                        ) const -> WorkspaceAddress;
 
         //  The validator for this workspace.
-        Validator *         validator() const { return type()->validator(); }
+        auto        validator(
+                        ) const -> Validator *
+        {
+            return type()->validator();
+        }
 
         //  Checks whether this Workspace is open or closed.
-        bool                isOpen();
+        bool        isOpen() const;
 
-        //  Closes this Workspace; has no effect ig already closed.
-        //  Throws WorkspaceException if an error occurs.
-        void                close() throws(WorkspaceException);
+        /// Closes this Workspace; has no effect if already closed.
+        ///
+        /// @exception WorkspaceException
+        ///     If an error occurs.
+        void        close();
 
         //////////
         //  Operations (associations)
     public:
         //  The set of all users in this workspace.
         //  Throws WorkspaceException if an error occurs.
-        Users           users(const Credentials & credentials) const throws(WorkspaceException);
+        auto        users(
+                            const Credentials & credentials
+                        ) const
+                        throws(WorkspaceException)
+                        -> Users;
 
         //  The set of all accounts of all users in this workspace.
         //  Throws WorkspaceException if an error occurs.
-        Accounts        accounts(const Credentials & credentials) const throws(WorkspaceException);
+        auto        accounts(
+                            const Credentials & credentials
+                        ) const
+                        throws(WorkspaceException)
+                        -> Accounts;
 
         //  The account with the specified login.
         //  Throws WorkspaceException if an error occurs.
-        Account         findAccount(const Credentials & credentials, const QString & login) const throws(WorkspaceException);
+        auto        findAccount(
+                            const Credentials & credentials,
+                            const QString & login
+                        ) const
+                        throws(WorkspaceException)
+                        -> Account;
+
+        //  The set of all activity types in this workspace.
+        //  Throws WorkspaceException if an error occurs.
+        auto        activityTypes(
+                            const Credentials & credentials
+                        ) const
+                        throws(WorkspaceException)
+                        -> ActivityTypes;
 
         //////////
         //  Operations (access control)
@@ -82,49 +111,77 @@ namespace tt3::ws
         //  Checks whether the specified Credentials allow ANY kind of
         //  access to this woirkspace
         //  Throws WorkspaceException if an error occurs.
-        bool            canAccess(const Credentials & credentials) const throws(WorkspaceException);
+        bool        canAccess(
+                            const Credentials & credentials
+                        ) const
+                        throws(WorkspaceException);
 
         //  Returns the capabilities that the specified credentials grant
         //  for this workspace. If none, returns Capabilities::None.
         //  Throws WorkspaceException if an error occurs.
-        Capabilities    capabilities(const Credentials & credentials) const throws(WorkspaceException);
+        auto        capabilities(
+                            const Credentials & credentials
+                        ) const
+                        throws(WorkspaceException)
+                        -> Capabilities;
 
         //  Checks if the specified credentials grant all of the
         //  the specified capability within this workspace.
         //  IMPORTANT: Only a single capability flag can be checked
         //  for, not a combination of them
-        bool            grantsCapability(const Credentials & credentials, Capabilities requiredCapability) const throws(WorkspaceException);
+        bool        grantsCapability(
+                            const Credentials & credentials,
+                            Capabilities requiredCapability
+                        ) const
+                        throws(WorkspaceException);
 
         //  If there exists an a) enabled account b) of an
         //  enabled user c) with the spcified credentials,
         //  returns it; otherwise returns nullptr.
-        Account         tryLogin(const Credentials & credentials) const throws(WorkspaceException);
+        auto        tryLogin(
+                            const Credentials & credentials
+                        ) const
+                        throws(WorkspaceException)
+                        -> Account;
 
         //////////
         //  Operations (life cycle)
     public:
         //  Creates a new User in this database.
         //  Throws WorkspaceException if an error occurs.
-        User            createUser(const Credentials & credentials,
-                            bool enabled, const QStringList & emailAddresses,
+        auto        createUser(
+                            const Credentials & credentials,
+                            bool enabled,
+                            const QStringList & emailAddresses,
                             const QString & realName,
                             const InactivityTimeout & inactivityTimeout,
-                            const UiLocale & uiLocale) throws(WorkspaceException);
+                            const UiLocale & uiLocale
+                        )
+                        throws(WorkspaceException)
+                        -> User;
 
         //////////
         //  Signals
     signals:
         //  Emitted after the workspace is closed.
-        void        workspaceClosed(WorkspaceClosedNotification notification);
+        void        workspaceClosed(
+                            WorkspaceClosedNotification notification
+                        );
 
         //  Emitted after a new object is created
-        void        objectCreated(ObjectCreatedNotification notification);
+        void        objectCreated(
+                            ObjectCreatedNotification notification
+                        );
 
         //  Emitted after an object is destroyed
-        void        objectDestroyed(ObjectDestroyedNotification notification);
+        void        objectDestroyed(
+                            ObjectDestroyedNotification notification
+                        );
 
         //  Emitted after an object is modified
-        void        objectModified(ObjectModifiedNotification notification);
+        void        objectModified(
+                            ObjectModifiedNotification notification
+                        );
 
         //////////
         //  Implementation
@@ -143,20 +200,42 @@ namespace tt3::ws
         mutable QMap<Oid, Object>   _proxyCache;
 
         //  Helpers
-        void                _ensureOpen() const throws(WorkspaceException);
-        void                _markClosed();
-        Capabilities        _validateAccessRights(const Credentials & credentials) const throws(WorkspaceException);
+        void        _ensureOpen() const throws(WorkspaceException);
+        void        _markClosed();
+        auto        _validateAccessRights(
+                            const Credentials & credentials
+                        ) const
+                        throws(WorkspaceException)
+                        -> Capabilities;
 
-        User                _getProxy(tt3::db::api::IUser * dataUser) const;
-        Account             _getProxy(tt3::db::api::IAccount * dataAccount) const;
+        auto        _getProxy(
+                            tt3::db::api::IUser * dataUser
+                        ) const
+                        -> User;
+        auto        _getProxy(
+                            tt3::db::api::IAccount * dataAccount
+                        ) const
+                        -> Account;
+        auto        _getProxy(
+                            tt3::db::api::IActivityType * dataActivityType
+                            ) const
+                        -> ActivityType;
 
         //////////
         //  Event handlers
     private slots:
-        void                _onDatabaseClosed(tt3::db::api::DatabaseClosedNotification notification);
-        void                _onObjectCreated(tt3::db::api::ObjectCreatedNotification notification);
-        void                _onObjectDestroyed(tt3::db::api::ObjectDestroyedNotification notification);
-        void                _onObjectModified(tt3::db::api::ObjectModifiedNotification notification);
+        void        _onDatabaseClosed(
+                            tt3::db::api::DatabaseClosedNotification notification
+                        );
+        void        _onObjectCreated(
+                            tt3::db::api::ObjectCreatedNotification notification
+                        );
+        void        _onObjectDestroyed(
+                            tt3::db::api::ObjectDestroyedNotification notification
+                        );
+        void        _onObjectModified(
+                            tt3::db::api::ObjectModifiedNotification notification
+                        );
     };
 
     //  The accessor for a "current" workspace pseudo-variable.
@@ -179,32 +258,34 @@ namespace tt3::ws
         //  IMPORTANT: Changing the "current" workspace does
         //  NOT change its "open/closed" status.
     public:
-        void                operator = (const Workspace & workspace);
-        Workspace           operator -> () const;
-                            operator Workspace() const;
+        void        operator = (const Workspace & workspace);
+        Workspace   operator -> () const;
+                    operator Workspace() const;
 
-        bool                operator == (nullptr_t null) const;
-        bool                operator != (nullptr_t null) const;
+        bool        operator == (nullptr_t null) const;
+        bool        operator != (nullptr_t null) const;
 
         //////////
         //  Operations
     public:
         //  Swaps the specified Workspace with the "current" Workspace.
         //  Does NOT change the "open/closed" status of either one.
-        void                swap(Workspace & other);
+        void        swap(Workspace & other);
 
         //////////
         //  Signals
     signals:
         //  Emitted after the current workspace has changed.
-        void                changed(Workspace before, Workspace after);
+        void        changed(Workspace before, Workspace after);
 
         //////////
         //  Implementation
     private:
         static std::atomic<int>     _instanceCount; //  ...to disallow a second instance
-        mutable tt3::util::Mutex    _currentWorkspaceGuard;
-        Workspace                   _currentWorkspace = nullptr;
+        struct _Impl;
+
+        //  Helpers
+        static _Impl *  _impl();
     };
 
 #if defined(TT3_WS_LIBRARY)

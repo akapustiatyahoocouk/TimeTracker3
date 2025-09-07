@@ -29,7 +29,8 @@ namespace tt3::db::api
         //////////
         //  IObject
     public:
-        virtual IObjectType *   type() const override
+        virtual auto    type() const
+                            -> IObjectType * override
         {
             return ObjectTypes::Project::instance();
         }
@@ -39,8 +40,8 @@ namespace tt3::db::api
     public:
         //  Returns/sets the completion status of this Project.
         //  Throws DatabaseException if an error occurs.
-        virtual bool        completed() const throws(DatabaseException) = 0;
-        virtual void        setCompleted(bool completed) throws(DatabaseException) = 0;
+        virtual bool    completed() const throws(DatabaseException) = 0;
+        virtual void    setCompleted(bool completed) throws(DatabaseException) = 0;
 
         //////////
         //  Operations (associations)
@@ -49,22 +50,34 @@ namespace tt3::db::api
         //  Project; nullptr == none.
         //  Attempting to create parenthood loops is an error.
         //  Throws DatabaseException if an error occurs.
-        virtual IProject *  parent() const throws(DatabaseException) = 0;
-        virtual void        setParent(IProject * parent) throws(DatabaseException) = 0;
+        virtual auto    parent(
+                            ) const
+                            throws(DatabaseException)
+                            -> IProject * = 0;
+        virtual void    setParent(
+                                IProject * parent
+                            )
+                            throws(DatabaseException) = 0;
 
         //  Returns the set of immediate children of this Project.
         //  Throws DatabaseException if an error occurs.
-        virtual Projects    children() const throws(DatabaseException) = 0;
+        virtual auto    children(
+                            ) const
+                            throws(DatabaseException)
+                            -> Projects = 0;
 
         //////////
         //  Operations (life cycle)
     public:
         //  Creates a new child project under this project.
         //  Throws DatabaseException if an error occurs.
-        virtual IProject *  createChild(
-            const QString & displayName,
-            const QString & description,
-            const Beneficiaries & beneficiaries) throws(DatabaseException) = 0;
+        virtual auto    createChild(
+                                const QString & displayName,
+                                const QString & description,
+                                const Beneficiaries & beneficiaries
+                        )
+                        throws(DatabaseException)
+                        -> IProject * = 0;
     };
 }
 

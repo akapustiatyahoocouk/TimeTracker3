@@ -29,6 +29,7 @@ namespace tt3::db::xml
         friend class Principal;
         friend class User;
         friend class Account;
+        friend class ActivityType;
 
         //////////
         //  Construction/destruction
@@ -50,10 +51,23 @@ namespace tt3::db::xml
         //////////
         //  tt3::db::api::IDatabase (associations)
     public:
-        virtual tt3::db::api::Users     users() const throws(tt3::db::api::DatabaseException) override;
-        virtual tt3::db::api::Accounts          accounts() const throws(tt3::db::api::DatabaseException) override;
-        virtual tt3::db::api::IAccount *        findAccount(const QString & login) const throws(tt3::db::api::DatabaseException) override;
-        virtual tt3::db::api::ActivityTypes     activityTypes() const throws(tt3::db::api::DatabaseException) override;
+        virtual auto    users(
+                            ) const
+                            throws(tt3::db::api::DatabaseException)
+                            -> tt3::db::api::Users override;
+        virtual auto    accounts(
+                            ) const
+                            throws(tt3::db::api::DatabaseException)
+                            -> tt3::db::api::Accounts override;
+        virtual auto    findAccount(
+                                const QString & login
+                            ) const
+                            throws(tt3::db::api::DatabaseException)
+                            -> tt3::db::api::IAccount * override;
+        virtual auto    activityTypes(
+                            ) const
+                            throws(tt3::db::api::DatabaseException)
+                            -> tt3::db::api::ActivityTypes override;
         virtual tt3::db::api::PublicActivities  publicActivities() const throws(tt3::db::api::DatabaseException) override;
         virtual tt3::db::api::PublicActivities  publicActivitiesAndTasks() const throws(tt3::db::api::DatabaseException) override;
         virtual tt3::db::api::PublicTasks       publicTasks() const throws(tt3::db::api::DatabaseException) override;
@@ -138,22 +152,25 @@ namespace tt3::db::xml
         //////////
         //  tt3::db::api::IDatabase (change notification handling)
     public:
-        virtual tt3::db::api::ChangeNotifier &  changeNotifier() override { return _changeNotifier; }
+        virtual auto    changeNotifier(
+                            ) -> tt3::db::api::ChangeNotifier * override
+        {
+            return &_changeNotifier;
+        }
 
         //////////
         //  Implementation
     private:
-        DatabaseAddress *const  _address;
+        DatabaseAddress *const          _address;   //  counts as a "reference"
         tt3::db::api::IValidator *const _validator;
-
-        mutable tt3::util::Mutex    _guard; //  for all access synchronization
-
-        bool                _needsSaving = false;
+        mutable tt3::util::Mutex        _guard; //  for all access synchronization
+        bool                            _needsSaving = false;
 
         //  Primary object caches - these contain all live
         //  objects, either directly (like Users) or indirectly
         //  (like Accounts, accessible through Users).
-        QSet<User*>         _users; //  count as "references"
+        Users           _users;         //  count as "references"
+        ActivityTypes   _activityTypes; //  count as "references"
 
         //  Seconsary caches - these do NOT count as "references"
         QMap<tt3::db::api::Oid, Object*> _liveObjects;  //  All "live" objects
@@ -198,19 +215,19 @@ namespace tt3::db::xml
         tt3::db::api::ChangeNotifier    _changeNotifier;
 
         //  Helpers
-        void            _ensureOpen() const throws (tt3::db::api::DatabaseException);
-        void            _markClosed();
+        void                _ensureOpen() const throws (tt3::db::api::DatabaseException);
+        void                _markClosed();
         tt3::db::api::Oid   _generateOid();
-        Account *       _findAccount(const QString & login) const;
+        Account *           _findAccount(const QString & login) const;
 
         //  Serialization
-        void            _save() throws(tt3::util::Exception);
-        void            _load() throws(tt3::util::Exception);
+        void                _save() throws(tt3::util::Exception);
+        void                _load() throws(tt3::util::Exception);
         QList<QDomElement>  _childElements(const QDomElement & parentElement, const QString & tagName);
         QDomElement         _childElement(const QDomElement & parentElement, const QString & tagName) throws(tt3::db::api::DatabaseException);
 
         //  Validation
-        void            _validate() throws(tt3::db::api::DatabaseException);
+        void                _validate() throws(tt3::db::api::DatabaseException);
     };
 }
 

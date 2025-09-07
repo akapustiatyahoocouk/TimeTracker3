@@ -18,7 +18,7 @@
 
 namespace
 {
-    void skipCharacter(const QString & s, int & scan, QChar c) throws(tt3::util::ParseException)
+    void skipCharacter(const QString & s, qsizetype & scan, QChar c)
     {
         if (scan < s.length() && s[scan] == c)
         {
@@ -32,7 +32,7 @@ namespace
 }
 
 //  C++ types
-template <> TT3_UTIL_PUBLIC bool tt3::util::fromString<bool>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC bool tt3::util::fromString<bool>(const QString & s, qsizetype & scan)
 {
     if (scan < 0)
     {
@@ -111,7 +111,7 @@ template <> TT3_UTIL_PUBLIC bool tt3::util::fromString<bool>(const QString & s, 
     throw ParseException(s, scan);
 }
 
-template <> TT3_UTIL_PUBLIC char tt3::util::fromString<char>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC char tt3::util::fromString<char>(const QString & s, qsizetype & scan)
 {
     if (scan >= 0 && scan < s.length() && static_cast<char>(s[scan].unicode()) == s[scan])
     {
@@ -120,9 +120,9 @@ template <> TT3_UTIL_PUBLIC char tt3::util::fromString<char>(const QString & s, 
     throw ParseException(s, scan);
 }
 
-template <> TT3_UTIL_PUBLIC signed char tt3::util::fromString<signed char>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC signed char tt3::util::fromString<signed char>(const QString & s, qsizetype & scan)
 {
-    int prescan = scan;
+    qsizetype prescan = scan;
     signed long long temp = fromString<signed long long>(s, prescan);
     if (static_cast<signed char>(temp) == temp)
     {
@@ -132,9 +132,9 @@ template <> TT3_UTIL_PUBLIC signed char tt3::util::fromString<signed char>(const
     throw ParseException(s, scan);
 }
 
-template <> TT3_UTIL_PUBLIC unsigned char tt3::util::fromString<unsigned char>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC unsigned char tt3::util::fromString<unsigned char>(const QString & s, qsizetype & scan)
 {
-    int prescan = scan;
+    qsizetype prescan = scan;
     unsigned long long temp = fromString<unsigned long long>(s, prescan);
     if (static_cast<unsigned char>(temp) == temp)
     {
@@ -144,9 +144,9 @@ template <> TT3_UTIL_PUBLIC unsigned char tt3::util::fromString<unsigned char>(c
     throw ParseException(s, scan);
 }
 
-template <> TT3_UTIL_PUBLIC signed short tt3::util::fromString<signed short>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC signed short tt3::util::fromString<signed short>(const QString & s, qsizetype & scan)
 {
-    int prescan = scan;
+    qsizetype prescan = scan;
     signed long long temp = fromString<signed long long>(s, prescan);
     if (static_cast<signed short>(temp) == temp)
     {
@@ -156,9 +156,9 @@ template <> TT3_UTIL_PUBLIC signed short tt3::util::fromString<signed short>(con
     throw ParseException(s, scan);
 }
 
-template <> TT3_UTIL_PUBLIC unsigned short tt3::util::fromString<unsigned short>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC unsigned short tt3::util::fromString<unsigned short>(const QString & s, qsizetype & scan)
 {
-    int prescan = scan;
+    qsizetype prescan = scan;
     unsigned long long temp = fromString<unsigned long long>(s, prescan);
     if (static_cast<unsigned short>(temp) == temp)
     {
@@ -168,9 +168,9 @@ template <> TT3_UTIL_PUBLIC unsigned short tt3::util::fromString<unsigned short>
     throw ParseException(s, scan);
 }
 
-template <> TT3_UTIL_PUBLIC signed int tt3::util::fromString<signed int>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC signed int tt3::util::fromString<signed int>(const QString & s, qsizetype & scan)
 {
-    int prescan = scan;
+    qsizetype prescan = scan;
     signed long long temp = fromString<signed long long>(s, prescan);
     if (static_cast<signed int>(temp) == temp)
     {
@@ -180,9 +180,9 @@ template <> TT3_UTIL_PUBLIC signed int tt3::util::fromString<signed int>(const Q
     throw ParseException(s, scan);
 }
 
-template <> TT3_UTIL_PUBLIC unsigned int tt3::util::fromString<unsigned int>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC unsigned int tt3::util::fromString<unsigned int>(const QString & s, qsizetype & scan)
 {
-    int prescan = scan;
+    qsizetype prescan = scan;
     unsigned long long temp = fromString<unsigned long long>(s, prescan);
     if (static_cast<unsigned int>(temp) == temp)
     {
@@ -192,9 +192,9 @@ template <> TT3_UTIL_PUBLIC unsigned int tt3::util::fromString<unsigned int>(con
     throw ParseException(s, scan);
 }
 
-template <> TT3_UTIL_PUBLIC signed long tt3::util::fromString<signed long>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC signed long tt3::util::fromString<signed long>(const QString & s, qsizetype & scan)
 {
-    int prescan = scan;
+    qsizetype prescan = scan;
     signed long long temp = fromString<signed long long>(s, prescan);
     if (static_cast<signed long>(temp) == temp)
     {
@@ -204,9 +204,9 @@ template <> TT3_UTIL_PUBLIC signed long tt3::util::fromString<signed long>(const
     throw ParseException(s, scan);
 }
 
-template <> TT3_UTIL_PUBLIC unsigned long tt3::util::fromString<unsigned long>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC unsigned long tt3::util::fromString<unsigned long>(const QString & s, qsizetype & scan)
 {
-    int prescan = scan;
+    qsizetype prescan = scan;
     unsigned long long temp = fromString<unsigned long long>(s, prescan);
     if (static_cast<unsigned long>(temp) == temp)
     {
@@ -216,13 +216,13 @@ template <> TT3_UTIL_PUBLIC unsigned long tt3::util::fromString<unsigned long>(c
     throw ParseException(s, scan);
 }
 
-template <> TT3_UTIL_PUBLIC signed long long tt3::util::fromString<signed long long>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC signed long long tt3::util::fromString<signed long long>(const QString & s, qsizetype & scan)
 {
     if (scan < 0)
     {
         throw ParseException(s, scan);
     }
-    int prescan = scan;
+    qsizetype prescan = scan;
     bool negative = false;
     if (prescan < s.length() && s[prescan] == '-')
     {
@@ -247,15 +247,15 @@ template <> TT3_UTIL_PUBLIC signed long long tt3::util::fromString<signed long l
     return result;
 }
 
-template <> TT3_UTIL_PUBLIC unsigned long long tt3::util::fromString<unsigned long long>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC unsigned long long tt3::util::fromString<unsigned long long>(const QString & s, qsizetype & scan)
 {
     if (scan < 0)
     {
         throw ParseException(s, scan);
     }
     unsigned long long temp = 0;
-    int numDigits = 0;
-    int prescan = scan;
+    qsizetype numDigits = 0;
+    qsizetype prescan = scan;
     while (prescan < s.length() && s[prescan] >= '0' && s[prescan] <= '9')
     {
         int digit = s[prescan].unicode() - '0';
@@ -277,7 +277,7 @@ template <> TT3_UTIL_PUBLIC unsigned long long tt3::util::fromString<unsigned lo
 }
 
 //  QT types
-template <> TT3_UTIL_PUBLIC QChar tt3::util::fromString<QChar>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC QChar tt3::util::fromString<QChar>(const QString & s, qsizetype & scan)
 {
     if (scan >= 0 && scan < s.length())
     {
@@ -286,7 +286,7 @@ template <> TT3_UTIL_PUBLIC QChar tt3::util::fromString<QChar>(const QString & s
     throw ParseException(s, scan);
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::fromString<QString>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC QString tt3::util::fromString<QString>(const QString & s, qsizetype & scan)
 {
     if (scan >= 0 && scan <= s.length())
     {
@@ -297,9 +297,9 @@ template <> TT3_UTIL_PUBLIC QString tt3::util::fromString<QString>(const QString
     throw ParseException(s, scan);
 }
 
-template <> TT3_UTIL_PUBLIC QRect tt3::util::fromString<QRect>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC QRect tt3::util::fromString<QRect>(const QString & s, qsizetype & scan)
 {
-    int prescan = scan;
+    qsizetype prescan = scan;
     int x1, x2, y1, y2;
 
     skipCharacter(s, prescan, '(');
@@ -318,9 +318,9 @@ template <> TT3_UTIL_PUBLIC QRect tt3::util::fromString<QRect>(const QString & s
     return QRect(x1, y1, x2 - x1, y2 - y1);
 }
 
-template <> TT3_UTIL_PUBLIC QVersionNumber tt3::util::fromString<QVersionNumber>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC QVersionNumber tt3::util::fromString<QVersionNumber>(const QString & s, qsizetype & scan)
 {
-    int prescan = scan;
+    qsizetype prescan = scan;
 
     int major = fromString<int>(s,prescan);
     skipCharacter(s, prescan, '.');
@@ -336,7 +336,7 @@ template <> TT3_UTIL_PUBLIC QVersionNumber tt3::util::fromString<QVersionNumber>
     return QVersionNumber(major, minor, micro);
 }
 
-template <> TT3_UTIL_PUBLIC QLocale tt3::util::fromString<QLocale>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC QLocale tt3::util::fromString<QLocale>(const QString & s, qsizetype & scan)
 {
     if (scan < 0 || scan > s.length())
     {
@@ -373,7 +373,7 @@ template <> TT3_UTIL_PUBLIC QLocale tt3::util::fromString<QLocale>(const QString
     return result;
 }
 
-template <> TT3_UTIL_PUBLIC QColor tt3::util::fromString<QColor>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC QColor tt3::util::fromString<QColor>(const QString & s, qsizetype & scan)
 {
     static QRegularExpression hexArgbRegex("#[0-9a-fA-F]{8}");
     static QRegularExpression hexRgbRegex("#[0-9a-fA-F]{6}");
@@ -441,7 +441,7 @@ template <> TT3_UTIL_PUBLIC QColor tt3::util::fromString<QColor>(const QString &
 }
 
 //  tt3::util types
-template <> TT3_UTIL_PUBLIC tt3::util::TimeSpan tt3::util::fromString<tt3::util::TimeSpan>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC tt3::util::TimeSpan tt3::util::fromString<tt3::util::TimeSpan>(const QString & s, qsizetype & scan)
 {
     if (scan < s.length() && s[scan] == '?')
     {
@@ -452,17 +452,17 @@ template <> TT3_UTIL_PUBLIC tt3::util::TimeSpan tt3::util::fromString<tt3::util:
     return tt3::util::TimeSpan::minutes(minutes);
 }
 
-template <> TT3_UTIL_PUBLIC tt3::util::Mnemonic tt3::util::fromString<tt3::util::Mnemonic>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC tt3::util::Mnemonic tt3::util::fromString<tt3::util::Mnemonic>(const QString & s, qsizetype & scan)
 {
     return tt3::util::Mnemonic(fromString<QString>(s, scan));
 }
 
-template <> TT3_UTIL_PUBLIC tt3::util::ResourceSectionId tt3::util::fromString<tt3::util::ResourceSectionId>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC tt3::util::ResourceSectionId tt3::util::fromString<tt3::util::ResourceSectionId>(const QString & s, qsizetype & scan)
 {
     return tt3::util::ResourceSectionId(fromString<QString>(s, scan));
 }
 
-template <> TT3_UTIL_PUBLIC tt3::util::ResourceId tt3::util::fromString<tt3::util::ResourceId>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_UTIL_PUBLIC tt3::util::ResourceId tt3::util::fromString<tt3::util::ResourceId>(const QString & s, qsizetype & scan)
 {
     return tt3::util::ResourceId(fromString<QString>(s, scan));
 }

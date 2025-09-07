@@ -51,7 +51,9 @@ namespace tt3::util
         //  C++ - staly escapes (e.g. '\n', etc.) in resource strings
         //  (but not the section?resource IDs!) are recognized and
         //  replaced with the corresponding control characters.
-        virtual QString     string(const ResourceSectionId & sectionId, const ResourceId & resourceId) const throws(MissingResourceException) = 0;
+        //  Throws MissingResourceException (or a subclass thereof)
+        //  if an error occurs.
+        virtual QString     string(const ResourceSectionId & sectionId, const ResourceId & resourceId) const = 0;
 
         //  Returns the string resource with the specified section
         //  ID and resource ID for the current default locale.
@@ -60,26 +62,28 @@ namespace tt3::util
         //      with the corresponding parameter.
         //  *   The escape sequences {{ and }} become single
         //      characters { and }.
-        virtual QString     string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const QStringList & params) const throws(MissingResourceException);
-        virtual QString     string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const QString & param1) const throws(MissingResourceException);
-        virtual QString     string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const QString & param1, const QString & param2) const throws(MissingResourceException);
-        virtual QString     string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const QString & param1, const QString & param2, const QString & param3) const throws(MissingResourceException);
+        //  Throws MissingResourceException (or a subclass thereof)
+        //  if an error occurs.
+        virtual QString     string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const QStringList & params) const;
+        virtual QString     string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const QString & param1) const;
+        virtual QString     string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const QString & param1, const QString & param2) const;
+        virtual QString     string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const QString & param1, const QString & param2, const QString & param3) const;
 
         template <class P1>
-        QString             string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const P1 & param1) const throws(MissingResourceException)
+        QString             string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const P1 & param1) const
         {
             return string(sectionId, resourceId, toString(param1));
         }
 
         template <class P1, class P2>
-        QString             string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const P1 & param1, const P2 & param2) const throws(MissingResourceException)
+        QString             string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const P1 & param1, const P2 & param2) const
         {
             return string(sectionId, resourceId,
                           toString(param1), toString(param2));
         }
 
         template <class P1, class P2, class P3>
-        QString             string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const P1 & param1, const P2 & param2, const P3 & param3) const throws(MissingResourceException)
+        QString             string(const ResourceSectionId & sectionId, const ResourceId & resourceId, const P1 & param1, const P2 & param2, const P3 & param3) const
         {
             return string(sectionId, resourceId,
                           toString(param1), toString(param2), toString(param3));
@@ -98,7 +102,19 @@ namespace tt3::util
         //////////
         //  Construction/destruction
     protected:
-        explicit FileResourceFactory(const QString & baseFileName);
+        /// @brief
+        ///     The class constructor.
+        /// @param baseFileName
+        ///     The "base" name of the resource file.
+        ///     Locale-specific variants will be constructed automatically
+        ///     by appending the language and countrycodes to the base file
+        ///     name just before the extension (e.g. "x.txt" becomes e.g.
+        explicit FileResourceFactory(
+                const QString & baseFileName
+            );
+
+        /// @brief
+        ///     The class destructor.
         virtual ~FileResourceFactory();
 
         //////////
@@ -109,7 +125,7 @@ namespace tt3::util
         virtual QString     name() const override;
         virtual QLocale     baseLocale() const override;
         virtual Locales     supportedLocales() const override;
-        virtual QString     string(const ResourceSectionId & sectionId, const ResourceId & resourceId) const throws(MissingResourceException) override;
+        virtual QString     string(const ResourceSectionId & sectionId, const ResourceId & resourceId) const override;
 
         //////////
         //  Implementation
@@ -125,7 +141,7 @@ namespace tt3::util
         static QString  _key(const QLocale & locale, const ResourceSectionId & sectionId, const ResourceId & resourceId);
         static QString  _key(const ResourceSectionId & sectionId, const ResourceId & resourceId);
         static int      _xdigit(const QChar & c);
-        static QString  _unescape(const QString & s) throws(tt3::util::ParseException);
+        static QString  _unescape(const QString & s);   //  throws ParseException on error
     };
 }
 

@@ -469,7 +469,8 @@ void User::_validate(QSet<Object*> & validatedObjects) throws(tt3::db::api::Data
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }
 
-    //  TODO Validate associations
+    //  Validate associations
+    //  TODO
 
     //  Validate aggregations
     for (Account * account : _accounts)

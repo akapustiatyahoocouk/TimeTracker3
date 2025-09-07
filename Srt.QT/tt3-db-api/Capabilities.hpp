@@ -39,23 +39,35 @@ namespace tt3::db::api
         All = 0x1FFF
     };
 
-    TT3_DB_API_PUBLIC inline Capabilities operator & (Capabilities a, Capabilities b)
+    TT3_DB_API_PUBLIC inline auto operator & (
+            Capabilities a,
+            Capabilities b
+        ) -> Capabilities
     {
         return Capabilities(int(a) & int(b));
     }
 
-    TT3_DB_API_PUBLIC inline Capabilities operator | (Capabilities a, Capabilities b)
+    TT3_DB_API_PUBLIC inline auto operator | (
+            Capabilities a,
+            Capabilities b
+        ) -> Capabilities
     {
         return Capabilities(int(a) | int(b));
     }
 
-    TT3_DB_API_PUBLIC inline Capabilities & operator &= (Capabilities & a, Capabilities b)
+    TT3_DB_API_PUBLIC inline auto operator &= (
+            Capabilities & a,
+            Capabilities b
+        ) -> Capabilities &
     {
         a = Capabilities(int(a) & int(b));
         return a;
     }
 
-    TT3_DB_API_PUBLIC inline Capabilities & operator |= (Capabilities & a, Capabilities b)
+    TT3_DB_API_PUBLIC inline auto operator |= (
+            Capabilities & a,
+            Capabilities b
+        ) -> Capabilities &
     {
         a = Capabilities(int(a) | int(b));
         return a;
@@ -65,9 +77,17 @@ namespace tt3::db::api
 //  Formatting/parsing
 namespace tt3::util
 {
-    template <> TT3_DB_API_PUBLIC QString toString<tt3::db::api::Capabilities>(const tt3::db::api::Capabilities & value);
+    template <> TT3_DB_API_PUBLIC
+    auto toString<tt3::db::api::Capabilities>(
+            const tt3::db::api::Capabilities & value
+        ) -> QString;
 
-    template <> TT3_DB_API_PUBLIC tt3::db::api::Capabilities fromString<tt3::db::api::Capabilities>(const QString & s, int & scan) throws(ParseException);
+    template <> TT3_DB_API_PUBLIC
+    auto fromString<tt3::db::api::Capabilities>(
+            const QString & s,
+            qsizetype & scan
+        ) throws(ParseException)
+        -> tt3::db::api::Capabilities;
 }
 
 //  End of tt3-db-api/Capabilities.hpp

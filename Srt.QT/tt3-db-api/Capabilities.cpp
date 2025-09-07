@@ -44,7 +44,10 @@ namespace
     const char Separator = '+';
 }
 
-template <> TT3_DB_API_PUBLIC QString tt3::util::toString<Capabilities>(const Capabilities & value)
+template <> TT3_DB_API_PUBLIC
+auto tt3::util::toString<Capabilities>(
+        const Capabilities & value
+    ) -> QString
 {
     QString result;
     for (size_t i = 0; i < sizeof(capabilityNames) / sizeof(capabilityNames[0]); i++)
@@ -61,14 +64,20 @@ template <> TT3_DB_API_PUBLIC QString tt3::util::toString<Capabilities>(const Ca
     return result;
 }
 
-template <> TT3_DB_API_PUBLIC Capabilities tt3::util::fromString<Capabilities>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_DB_API_PUBLIC
+auto tt3::util::fromString<Capabilities>(
+        const QString & s,
+        qsizetype & scan
+    )
+    throws(ParseException)
+    -> Capabilities
 {
     Capabilities result = Capabilities::None;
     if (scan >= s.length())
     {
         return result;
     }
-    int prescan = scan;
+    qsizetype prescan = scan;
     bool separatorConsumed = false;
     for (; ; )
     {

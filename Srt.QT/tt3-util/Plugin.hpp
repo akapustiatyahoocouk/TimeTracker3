@@ -60,8 +60,9 @@ namespace tt3::util
         virtual QIcon           largeIcon() const;
 
         //  Called by plugin manager to initialize this plugin.
-        //  On success, returns normally. On failure throws.
-        virtual void            initialize() throws(QException) = 0;
+        //  On success, returns normally.
+        //  Throws Exception (or a subclass thereof) if an error occurs.
+        virtual void            initialize() = 0;
 
         //  True if plugin was successfully initialized, else false
         bool                    isInitialized() const;

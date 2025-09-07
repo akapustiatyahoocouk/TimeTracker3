@@ -5,6 +5,7 @@ DEFINES += TT3_DB_XML_LIBRARY
 
 SOURCES += \
     Account.cpp \
+    ActivityType.cpp \
     Component.cpp \
     Database.cpp \
     DatabaseAddress.cpp \
@@ -17,6 +18,7 @@ SOURCES += \
 HEADERS += \
     API.hpp \
     Account.hpp \
+    ActivityType.hpp \
     Classes.hpp \
     Components.hpp \
     Database.hpp \

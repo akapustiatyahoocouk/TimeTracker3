@@ -35,5 +35,6 @@
 #include "tt3-db-xml/Principal.hpp"
 #include "tt3-db-xml/User.hpp"
 #include "tt3-db-xml/Account.hpp"
+#include "tt3-db-xml/ActivityType.hpp"
 
 //  End of tt3-db-xml/API.hpp

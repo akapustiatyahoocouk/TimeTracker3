@@ -37,6 +37,7 @@
 #include "tt3-ws/Principal.hpp"
 #include "tt3-ws/User.hpp"
 #include "tt3-ws/Account.hpp"
+#include "tt3-ws/ActivityType.hpp"
 
 #include "tt3-ws/Notifications.hpp"
 #include "tt3-ws/Exceptions.hpp"

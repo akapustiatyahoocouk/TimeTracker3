@@ -18,7 +18,8 @@
 namespace tt3::db::api
 {
     //  The "TT3 DB API" component
-    class TT3_DB_API_PUBLIC Component final : public virtual tt3::util::IComponent
+    class TT3_DB_API_PUBLIC Component final :
+        public virtual tt3::util::IComponent
     {
         DECLARE_SINGLETON(Component)
 
@@ -26,37 +27,42 @@ namespace tt3::db::api
         //  Types
     public:
         //  The component's resources
-        class TT3_DB_API_PUBLIC Resources final : public tt3::util::FileResourceFactory
+        class TT3_DB_API_PUBLIC Resources final :
+            public tt3::util::FileResourceFactory
         {
             DECLARE_SINGLETON(Resources)
         };
 
         //  The component's settings
-        class TT3_DB_API_PUBLIC Settings final : public tt3::util::Settings
+        class TT3_DB_API_PUBLIC Settings final :
+            public tt3::util::Settings
         {
             DECLARE_SINGLETON(Settings)
-
-            //////////
-            //  Properties
-        public:
         };
 
         //////////
         //  IComponent
     public:
-        using Mnemonic = tt3::util::Mnemonic;
-        using Subsystem = tt3::util::ISubsystem;
-
-        virtual Mnemonic        mnemonic() const override;
-        virtual QString         displayName() const override;
-        virtual QString         description() const override;
-        virtual QString         copyright() const override;
-        virtual QVersionNumber  version() const override;
-        virtual QString         buildNumber() const override;
-        virtual Subsystem *     subsystem() const override;
-        virtual Resources *     resources() const override;
-        virtual Settings *      settings() override;
-        virtual const Settings *settings() const override;
+        virtual auto    mnemonic(
+                            ) const -> tt3::util::Mnemonic override;
+        virtual auto    displayName(
+                            ) const -> QString override;
+        virtual auto    description(
+                            ) const -> QString override;
+        virtual auto    copyright(
+                            ) const -> QString override;
+        virtual auto    version(
+                            ) const -> QVersionNumber override;
+        virtual auto    buildNumber(
+                            ) const -> QString override;
+        virtual auto    subsystem(
+                            ) const -> tt3::util::ISubsystem * override;
+        virtual auto    resources(
+                            ) const -> Resources * override;
+        virtual auto    settings(
+                            ) -> Settings * override;
+        virtual auto    settings(
+                            ) const -> const Settings * override;
     };
 }
 

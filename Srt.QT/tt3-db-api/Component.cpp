@@ -36,7 +36,7 @@ Component::~Component()
 
 //////////
 //  IComponent
-Component::Mnemonic Component::mnemonic() const
+tt3::util::Mnemonic Component::mnemonic() const
 {
     return M(tt3-db-api);
 }
@@ -66,7 +66,7 @@ QString Component::buildNumber() const
     return tt3::util::ProductInformation::applicationBuildNumber();
 }
 
-Component::Subsystem * Component::subsystem() const
+tt3::util::ISubsystem * Component::subsystem() const
 {
     return tt3::util::StandardSubsystems::Storage::instance();
 }

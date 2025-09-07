@@ -31,20 +31,19 @@ namespace tt3::db::api
         //////////
         //  Operations
     public:
-        using Mnemonic = tt3::util::Mnemonic;
-
         //  The mnemonic identifier of this database object type
-        virtual Mnemonic    mnemonic() const = 0;
+        virtual auto    mnemonic() const
+                            -> tt3::util::Mnemonic = 0;
 
         //  The user-readable display name of this database object
         //  type for the current default locale.
-        virtual QString     displayName() const = 0;
+        virtual QString displayName() const = 0;
 
         //  The small (16x16) icon representing this database object type
-        virtual QIcon       smallIcon() const = 0;
+        virtual QIcon   smallIcon() const = 0;
 
         //  The large (32x32) icon representing this database object type
-        virtual QIcon       largeIcon() const = 0;
+        virtual QIcon   largeIcon() const = 0;
     };
 
     //  Standard database object types
@@ -63,10 +62,11 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual Mnemonic    mnemonic() const override;
-            virtual QString     displayName() const override;
-            virtual QIcon       smallIcon() const override;
-            virtual QIcon       largeIcon() const override;
+            virtual auto    mnemonic() const
+                                -> tt3::util::Mnemonic override;
+            virtual QString displayName() const override;
+            virtual QIcon   smallIcon() const override;
+            virtual QIcon   largeIcon() const override;
         };
 
         //  The type of the "Account" objects.
@@ -77,10 +77,11 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual Mnemonic    mnemonic() const override;
-            virtual QString     displayName() const override;
-            virtual QIcon       smallIcon() const override;
-            virtual QIcon       largeIcon() const override;
+            virtual auto    mnemonic() const
+                                -> tt3::util::Mnemonic override;
+            virtual QString displayName() const override;
+            virtual QIcon   smallIcon() const override;
+            virtual QIcon   largeIcon() const override;
         };
 
         //  The type of the "ActivityType" objects.
@@ -91,10 +92,11 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual Mnemonic    mnemonic() const override;
-            virtual QString     displayName() const override;
-            virtual QIcon       smallIcon() const override;
-            virtual QIcon       largeIcon() const override;
+            virtual auto    mnemonic() const
+                                -> tt3::util::Mnemonic override;
+            virtual QString displayName() const override;
+            virtual QIcon   smallIcon() const override;
+            virtual QIcon   largeIcon() const override;
         };
 
         //  The type of the "PublicActivity" objects.
@@ -105,10 +107,11 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual Mnemonic    mnemonic() const override;
-            virtual QString     displayName() const override;
-            virtual QIcon       smallIcon() const override;
-            virtual QIcon       largeIcon() const override;
+            virtual auto    mnemonic() const
+                                -> tt3::util::Mnemonic override;
+            virtual QString displayName() const override;
+            virtual QIcon   smallIcon() const override;
+            virtual QIcon   largeIcon() const override;
         };
 
         //  The type of the "PublicTask" objects.
@@ -119,10 +122,11 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual Mnemonic    mnemonic() const override;
-            virtual QString     displayName() const override;
-            virtual QIcon       smallIcon() const override;
-            virtual QIcon       largeIcon() const override;
+            virtual auto    mnemonic() const
+                                -> tt3::util::Mnemonic override;
+            virtual QString displayName() const override;
+            virtual QIcon   smallIcon() const override;
+            virtual QIcon   largeIcon() const override;
         };
 
         //  The type of the "PrivateActivity" objects.
@@ -133,10 +137,11 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual Mnemonic    mnemonic() const override;
-            virtual QString     displayName() const override;
-            virtual QIcon       smallIcon() const override;
-            virtual QIcon       largeIcon() const override;
+            virtual auto    mnemonic() const
+                                -> tt3::util::Mnemonic override;
+            virtual QString displayName() const override;
+            virtual QIcon   smallIcon() const override;
+            virtual QIcon   largeIcon() const override;
         };
 
         //  The type of the "PrivateTask" objects.
@@ -147,10 +152,11 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual Mnemonic    mnemonic() const override;
-            virtual QString     displayName() const override;
-            virtual QIcon       smallIcon() const override;
-            virtual QIcon       largeIcon() const override;
+            virtual auto    mnemonic() const
+                                -> tt3::util::Mnemonic override;
+            virtual QString displayName() const override;
+            virtual QIcon   smallIcon() const override;
+            virtual QIcon   largeIcon() const override;
         };
 
         //  The type of the "Work" objects.
@@ -161,10 +167,11 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual Mnemonic    mnemonic() const override;
-            virtual QString     displayName() const override;
-            virtual QIcon       smallIcon() const override;
-            virtual QIcon       largeIcon() const override;
+            virtual auto    mnemonic() const
+                                -> tt3::util::Mnemonic override;
+            virtual QString displayName() const override;
+            virtual QIcon   smallIcon() const override;
+            virtual QIcon   largeIcon() const override;
         };
 
         //  The type of the "Event" objects.
@@ -175,10 +182,11 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual Mnemonic    mnemonic() const override;
-            virtual QString     displayName() const override;
-            virtual QIcon       smallIcon() const override;
-            virtual QIcon       largeIcon() const override;
+            virtual auto    mnemonic() const
+                                -> tt3::util::Mnemonic override;
+            virtual QString displayName() const override;
+            virtual QIcon   smallIcon() const override;
+            virtual QIcon   largeIcon() const override;
         };
 
         //  The type of the "Project" objects.
@@ -189,24 +197,27 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual Mnemonic    mnemonic() const override;
-            virtual QString     displayName() const override;
-            virtual QIcon       smallIcon() const override;
-            virtual QIcon       largeIcon() const override;
+            virtual auto    mnemonic() const
+                                -> tt3::util::Mnemonic override;
+            virtual QString displayName() const override;
+            virtual QIcon   smallIcon() const override;
+            virtual QIcon   largeIcon() const override;
         };
 
         //  The type of the "WorkStream" objects.
-        class TT3_DB_API_PUBLIC WorkStream final : public virtual IObjectType
+        class TT3_DB_API_PUBLIC WorkStream final :
+        public virtual IObjectType
         {
             DECLARE_SINGLETON(WorkStream)
 
             //////////
             //  IObjectType
         public:
-            virtual Mnemonic    mnemonic() const override;
-            virtual QString     displayName() const override;
-            virtual QIcon       smallIcon() const override;
-            virtual QIcon       largeIcon() const override;
+            virtual auto    mnemonic() const
+                                -> tt3::util::Mnemonic override;
+            virtual QString displayName() const override;
+            virtual QIcon   smallIcon() const override;
+            virtual QIcon   largeIcon() const override;
         };
 
         //  The type of the "Beneficiary" objects.
@@ -217,10 +228,11 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual Mnemonic    mnemonic() const override;
-            virtual QString     displayName() const override;
-            virtual QIcon       smallIcon() const override;
-            virtual QIcon       largeIcon() const override;
+            virtual auto    mnemonic() const
+                                -> tt3::util::Mnemonic override;
+            virtual QString displayName() const override;
+            virtual QIcon   smallIcon() const override;
+            virtual QIcon   largeIcon() const override;
         };
     };
 }

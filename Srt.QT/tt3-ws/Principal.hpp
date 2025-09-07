@@ -26,7 +26,7 @@ namespace tt3::ws
         friend class AccountImpl;
 
         //////////
-        //  Construction/destruction
+        //  Construction/destruction - from friends only
     private:
         PrincipalImpl(Workspace workspace, tt3::db::api::IPrincipal * dataPrincipal);
         virtual ~PrincipalImpl();

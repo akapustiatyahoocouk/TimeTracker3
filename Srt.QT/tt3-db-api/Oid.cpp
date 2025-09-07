@@ -52,7 +52,7 @@ template <> TT3_DB_API_PUBLIC QString tt3::util::toString<tt3::db::api::Oid>(con
     return value._impl.toString().toUpper();
 }
 
-template <> TT3_DB_API_PUBLIC tt3::db::api::Oid tt3::util::fromString<tt3::db::api::Oid>(const QString & s, int & scan) throws(tt3::util::ParseException)
+template <> TT3_DB_API_PUBLIC tt3::db::api::Oid tt3::util::fromString<tt3::db::api::Oid>(const QString & s, qsizetype & scan) throws(tt3::util::ParseException)
 {
     if (scan < 0 || scan + 38 > s.length())
     {

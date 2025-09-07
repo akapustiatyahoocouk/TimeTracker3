@@ -264,14 +264,14 @@ template <> TT3_WS_PUBLIC QString tt3::util::toString<WorkspaceAddressesList>(co
     return result;
 }
 
-template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddress tt3::util::fromString<tt3::ws::WorkspaceAddress>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddress tt3::util::fromString<tt3::ws::WorkspaceAddress>(const QString & s, qsizetype & scan) throws(ParseException)
 {
     //  Skip '<'
     if (scan >= s.length() || s[scan] != '<')
     {
         throw tt3::util::ParseException(s, scan);
     }
-    int prescan;
+    qsizetype prescan;
     //  Find '>'
     for (prescan = scan + 1; prescan < s.length() && s[prescan] != '>'; prescan++)
     {   //  All work done in the loop header
@@ -308,14 +308,14 @@ template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddress tt3::util::fromString<tt3::w
     }
 }
 
-template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddressesList tt3::util::fromString<tt3::ws::WorkspaceAddressesList>(const QString & s, int & scan) throws(ParseException)
+template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddressesList tt3::util::fromString<tt3::ws::WorkspaceAddressesList>(const QString & s, qsizetype & scan) throws(ParseException)
 {
     //  Skip '['
     if (scan >= s.length() || s[scan] != '[')
     {
         throw tt3::util::ParseException(s, scan);
     }
-    int prescan = scan + 1;
+    qsizetype prescan = scan + 1;
     //  Parse list items
     WorkspaceAddressesList result;
     if (prescan < s.length() && s[prescan] != ']')

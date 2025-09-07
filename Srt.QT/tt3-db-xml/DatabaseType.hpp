@@ -32,35 +32,64 @@ namespace tt3::db::xml
         //////////
         //  tt3::db::api::IDatabaseType (general)
     public:
-        virtual Mnemonic    mnemonic() const override;
-        virtual QString     displayName() const override;
-        virtual QIcon       smallIcon() const override;
-        virtual QIcon       largeIcon() const override;
-        virtual bool        isOperational() const override;
-        virtual QString     shortStatusReport() const override;
-        virtual QString     fullStatusReport() const override;
-        virtual tt3::db::api::IValidator *  validator() const override;
+        virtual auto    mnemonic(
+                            ) const
+                            ->tt3::util::Mnemonic override;
+        virtual auto    displayName(
+                            ) const
+                            -> QString override;
+        virtual auto    smallIcon(
+                            ) const
+                            -> QIcon override;
+        virtual auto    largeIcon(
+                            ) const
+                            -> QIcon override;
+        virtual bool    isOperational() const override;
+        virtual auto    shortStatusReport(
+                            ) const
+                            -> QString override;
+        virtual auto    fullStatusReport(
+                            ) const
+                            -> QString override;
+        virtual auto    validator(
+                            ) const
+                            -> tt3::db::api::IValidator * override;
 
         //////////
         //  tt3::db::api::IDatabaseType (address handling)
     public:
-        virtual tt3::db::api::IDatabaseAddress *  defaultDatabaseAddress() const override;
-        virtual tt3::db::api::IDatabaseAddress *  enterNewDatabaseAddress(QWidget * parent) override;
-        virtual tt3::db::api::IDatabaseAddress *  enterExistingDatabaseAddress(QWidget * parent) override;
-        virtual tt3::db::api::IDatabaseAddress *  parseDatabaseAddress(const QString & externalForm) throws(tt3::db::api::DatabaseException) override;
+        virtual auto    defaultDatabaseAddress(
+                            ) const
+                            -> tt3::db::api::IDatabaseAddress * override;
+        virtual auto    enterNewDatabaseAddress(
+                                QWidget * parent
+                            ) -> tt3::db::api::IDatabaseAddress * override;
+        virtual auto    enterExistingDatabaseAddress(
+                                QWidget * parent
+                            ) -> tt3::db::api::IDatabaseAddress * override;
+        virtual auto    parseDatabaseAddress(
+                                const QString & externalForm
+                            ) throws(tt3::db::api::DatabaseException)
+                            -> tt3::db::api::IDatabaseAddress * override;
 
         //////////
         //  tt3::db::api::IDatabaseType (databases)
     public:
-        virtual tt3::db::api::IDatabase *   createDatabase(tt3::db::api::IDatabaseAddress * address) throws(tt3::db::api::DatabaseException) override;
-        virtual tt3::db::api::IDatabase *   openDatabase(tt3::db::api::IDatabaseAddress * address) throws(tt3::db::api::DatabaseException) override;
-        virtual void        destroyDatabase(tt3::db::api::IDatabaseAddress * address) throws(tt3::db::api::DatabaseException) override;
+        virtual auto    createDatabase(
+                                tt3::db::api::IDatabaseAddress * address
+                            ) throws(tt3::db::api::DatabaseException)
+                            -> tt3::db::api::IDatabase * override;
+        virtual auto    openDatabase(
+                                tt3::db::api::IDatabaseAddress * address
+                            ) throws(tt3::db::api::DatabaseException)
+                            -> tt3::db::api::IDatabase * override;
+        virtual void    destroyDatabase(
+                                tt3::db::api::IDatabaseAddress * address
+                            ) throws(tt3::db::api::DatabaseException) override;
 
         //////////
         //  Implementation
     private:
-        const QIcon         _smallIcon;
-        const QIcon         _largeIcon;
         tt3::db::api::IValidator *const _validator;
 
         //  Cache of known database addresses

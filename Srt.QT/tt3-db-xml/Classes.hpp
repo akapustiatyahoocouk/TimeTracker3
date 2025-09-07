@@ -24,9 +24,13 @@ namespace tt3::db::xml
     class TT3_DB_XML_PUBLIC Principal;
     class TT3_DB_XML_PUBLIC User;
     class TT3_DB_XML_PUBLIC Account;
+    class TT3_DB_XML_PUBLIC ActivityType;
+    class TT3_DB_XML_PUBLIC Activity;
 
     using Users = QSet<User*>;
     using Accounts = QSet<Account*>;
+    using ActivityTypes = QSet<ActivityType*>;
+    using Activities = QSet<Activity*>;
 }
 
 //  End of tt3-db-xml/Classes.hpp

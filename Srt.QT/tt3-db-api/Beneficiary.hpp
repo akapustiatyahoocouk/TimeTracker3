@@ -18,7 +18,8 @@
 namespace tt3::db::api
 {
     //  A beneficiary
-    class TT3_DB_API_PUBLIC IBeneficiary : public virtual IObject
+    class TT3_DB_API_PUBLIC IBeneficiary :
+        public virtual IObject
     {
         //////////
         //  This is an interface
@@ -29,7 +30,8 @@ namespace tt3::db::api
         //////////
         //  IObject
     public:
-        virtual IObjectType *   type() const override
+        virtual auto    type() const
+                            -> IObjectType * override
         {
             return ObjectTypes::Beneficiary::instance();
         }
@@ -40,15 +42,27 @@ namespace tt3::db::api
         //  Returns/sets the user-readable display name of
         //  this beneficiary.
         //  Throws DatabaseException if an error occurs.
-        virtual QString         displayName() const throws(DatabaseException) = 0;
-        virtual void            setDisplayName(const QString & displayName) throws(DatabaseException) = 0;
+        virtual auto    displayName(
+                            ) const
+                            throws(DatabaseException)
+                            -> QString = 0;
+        virtual void    setDisplayName(
+                                const QString & displayName
+                            )
+                            throws(DatabaseException) = 0;
 
         //  Returns/sets the multi-line description of this
         //  beneficiary, with lines separated by a newline
         //  character '\n'.
         //  Throws DatabaseException if an error occurs.
-        virtual QString         description() const throws(DatabaseException) = 0;
-        virtual void            setDescription(const QString & description) throws(DatabaseException) = 0;
+        virtual auto    description(
+                            ) const
+                            throws(DatabaseException)
+                            -> QString = 0;
+        virtual void    setDescription(
+                                const QString & description
+                            )
+                            throws(DatabaseException) = 0;
 
         //////////
         //  Operations (associations)
@@ -56,15 +70,27 @@ namespace tt3::db::api
         //  Returns/sets the set of all workloads associated with
         //  this beneficiary.
         //  Throws DatabaseException if an error occurs.
-        virtual Workloads       workloads() const throws(DatabaseException) = 0;
-        virtual void            setWorkloads(const Workloads & workloads) throws(DatabaseException) = 0;
+        virtual auto    workloads(
+                            ) const
+                            throws(DatabaseException)
+                            -> Workloads = 0;
+        virtual void    setWorkloads(
+                                const Workloads & workloads
+                            )
+                            throws(DatabaseException) = 0;
 
         //  Adds/removes the specified Workload to/from the
         //  set of Workloads associated with this Beneficiary;
         //  has no effect if already there/not there.
         //  Throws DatabaseException if an error occurs.
-        virtual void            addWorkload(IWorkload * workload) throws(DatabaseException) = 0;
-        virtual void            removeWorkload(IWorkload * workload) throws(DatabaseException) = 0;
+        virtual void    addWorkload(
+                                IWorkload * workload
+                            )
+                            throws(DatabaseException) = 0;
+        virtual void    removeWorkload(
+                                IWorkload * workload
+                            )
+                            throws(DatabaseException) = 0;
     };
 }
 

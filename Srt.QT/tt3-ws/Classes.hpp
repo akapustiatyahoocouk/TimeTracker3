@@ -25,6 +25,8 @@ namespace tt3::ws
     class TT3_WS_PUBLIC PrincipalImpl;
     class TT3_WS_PUBLIC UserImpl;
     class TT3_WS_PUBLIC AccountImpl;
+    class TT3_WS_PUBLIC ActivityTypeImpl;
+    class TT3_WS_PUBLIC ActivityImpl;
 
     //  Opaque pointer-like types (reference counted);
     //  can all be nullptr
@@ -36,6 +38,8 @@ namespace tt3::ws
     using Principal = std::shared_ptr<PrincipalImpl>;
     using User = std::shared_ptr<UserImpl>;
     using Account = std::shared_ptr<AccountImpl>;
+    using ActivityType = std::shared_ptr<ActivityTypeImpl>;
+    using Activity = std::shared_ptr<ActivityImpl>;
 
     //  Collections
     using WorkspaceTypes = QSet<WorkspaceType>;
@@ -43,6 +47,8 @@ namespace tt3::ws
 
     using Users = QSet<User>;
     using Accounts = QSet<Account>;
+    using ActivityTypes = QSet<ActivityType>;
+    using Activities = QSet<Activity>;
 
     //  Exceptins & notifications
     class TT3_WS_PUBLIC WorkspaceException;

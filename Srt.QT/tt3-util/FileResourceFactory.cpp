@@ -47,7 +47,7 @@ Locales FileResourceFactory::supportedLocales() const
     return _supportedLocales;
 }
 
-QString FileResourceFactory::string(const ResourceSectionId & sectionId, const ResourceId & resourceId) const throws(MissingResourceException)
+QString FileResourceFactory::string(const ResourceSectionId & sectionId, const ResourceId & resourceId) const
 {
     const_cast<FileResourceFactory*>(this)->_loadResources();
     //  Do we have a mapping for the current default locale ?
@@ -179,7 +179,7 @@ int FileResourceFactory::_xdigit(const QChar & c)
     }
 }
 
-QString FileResourceFactory::_unescape(const QString & s) throws(tt3::util::ParseException)
+QString FileResourceFactory::_unescape(const QString & s)
 {
     QString result;
     for (int i = 0; i < s.length(); )

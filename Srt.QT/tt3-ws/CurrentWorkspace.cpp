@@ -19,6 +19,12 @@ using namespace tt3::ws;
 
 std::atomic<int> CurrentWorkspace::_instanceCount = 0;
 
+struct CurrentWorkspace::_Impl
+{
+    tt3::util::Mutex    guard;
+    Workspace           workspace = nullptr;
+};
+
 //////////
 //  Construction/destruction
 CurrentWorkspace::CurrentWorkspace()
@@ -41,14 +47,15 @@ void CurrentWorkspace::operator = (const Workspace & workspace)
 
     //  Change is effected in a "locked" state
     {
-        tt3::util::Lock lock(_currentWorkspaceGuard);
+        _Impl * impl = _impl();
+        tt3::util::Lock lock(impl->guard);
 
         Q_ASSERT(_instanceCount == 1);
-        if (workspace != _currentWorkspace)
+        if (workspace != impl->workspace)
         {
-            before = _currentWorkspace;
-            _currentWorkspace = workspace;
-            after = _currentWorkspace;
+            before = impl->workspace;
+            impl->workspace = workspace;
+            after = impl->workspace;
         }
     }
     //  Signal is sent in a "not locked" state
@@ -60,34 +67,38 @@ void CurrentWorkspace::operator = (const Workspace & workspace)
 
 Workspace CurrentWorkspace::operator -> () const
 {
-    tt3::util::Lock lock(_currentWorkspaceGuard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
 
     Q_ASSERT(_instanceCount == 1);
-    return _currentWorkspace;
+    return impl->workspace;
 }
 
 CurrentWorkspace::operator Workspace() const
 {
-    tt3::util::Lock lock(_currentWorkspaceGuard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
 
     Q_ASSERT(_instanceCount == 1);
-    return _currentWorkspace;
+    return impl->workspace;
 }
 
 bool CurrentWorkspace::operator == (nullptr_t /*null*/) const
 {
-    tt3::util::Lock lock(_currentWorkspaceGuard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
 
     Q_ASSERT(_instanceCount == 1);
-    return _currentWorkspace.get() == nullptr;
+    return impl->workspace.get() == nullptr;
 }
 
 bool CurrentWorkspace::operator != (nullptr_t /*null*/) const
 {
-    tt3::util::Lock lock(_currentWorkspaceGuard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
 
     Q_ASSERT(_instanceCount == 1);
-    return _currentWorkspace.get() != nullptr;
+    return impl->workspace.get() != nullptr;
 }
 
 //////////
@@ -98,13 +109,14 @@ void CurrentWorkspace::swap(Workspace & other)
 
     //  Change is effected in a "locked" state
     {
-        tt3::util::Lock lock(_currentWorkspaceGuard);
+        _Impl * impl = _impl();
+        tt3::util::Lock lock(impl->guard);
 
-        if (other != _currentWorkspace)
+        if (other != impl->workspace)
         {
-            before = _currentWorkspace;
-            std::swap(_currentWorkspace, other);
-            after = _currentWorkspace;
+            before = impl->workspace;
+            std::swap(impl->workspace, other);
+            after = impl->workspace;
         }
     }
     //  Signal is sent in a "not locked" state
@@ -112,6 +124,15 @@ void CurrentWorkspace::swap(Workspace & other)
     {
         emit changed(before, after);
     }
+}
+
+//////////
+//  Implementation helpers
+auto CurrentWorkspace::_impl()
+    -> CurrentWorkspace::_Impl *
+{
+    static _Impl impl;
+    return &impl;
 }
 
 //////////

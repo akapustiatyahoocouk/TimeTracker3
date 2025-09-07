@@ -18,7 +18,8 @@
 namespace tt3::db::api
 {
     //  A login account
-    class TT3_DB_API_PUBLIC IAccount : public virtual IPrincipal
+    class TT3_DB_API_PUBLIC IAccount :
+        public virtual IPrincipal
     {
         //////////
         //  This is an interface
@@ -29,7 +30,8 @@ namespace tt3::db::api
         //////////
         //  IObject
     public:
-        virtual IObjectType *   type() const override
+        virtual auto    type() const
+                            -> IObjectType * override
         {
             return ObjectTypes::Account::instance();
         }
@@ -39,42 +41,47 @@ namespace tt3::db::api
     public:
         //  Returns/sets the login identifier of this account.
         //  Throws DatabaseException if an error occurs.
-        virtual auto    login(
-                            ) const throws(DatabaseException)
+        virtual auto    login() const
+                            throws(DatabaseException)
                             -> QString = 0;
         virtual void    setLogin(
                                 const QString & login
-                            ) throws(DatabaseException) = 0;
+                            )
+                            throws(DatabaseException) = 0;
 
         //  Returns the SHA-1 hash of rhis account's password
         //  as an uppercase hexstring.
         //  Throws DatabaseException if an error occurs.
         virtual auto    passwordHash(
-                            ) const throws(DatabaseException)
+                            ) const
+                            throws(DatabaseException)
                             -> QString = 0;
 
         //  Sets the password of this account.
         //  Throws DatabaseException if an error occurs.
         virtual void    setPassword(
                                 const QString & password
-                            ) throws(DatabaseException) = 0;
+                            )
+                            throws(DatabaseException) = 0;
 
         //  Returns/sets the capabilities of this account.
         //  Throws DatabaseException if an error occurs.
         virtual auto    capabilities(
-                            ) const throws(DatabaseException)
+                            ) const
+                            throws(DatabaseException)
                             -> Capabilities = 0;
         virtual void    setCapabilities(
                                 Capabilities capabilities
-                            ) throws(DatabaseException) = 0;
+                            )
+                            throws(DatabaseException) = 0;
 
         //////////
         //  Operations (associations)
     public:
         //  Returns the user to whom this account belongs.
         //  Throws DatabaseException if an error occurs.
-        virtual auto    user(
-                            ) const throws(DatabaseException)
+        virtual auto    user() const
+                            throws(DatabaseException)
                             -> IUser * = 0;
 
         //  Returns/sets the lick of "quick pick" activities
@@ -85,7 +92,8 @@ namespace tt3::db::api
                             -> QList<IActivity*> = 0;
         virtual void    setQuickPickList(
                                 const QList<IActivity*> & quickPickList
-                            ) const throws(DatabaseException) = 0;
+                            ) const
+                            throws(DatabaseException) = 0;
     };
 }
 

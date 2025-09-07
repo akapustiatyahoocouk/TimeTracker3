@@ -90,7 +90,10 @@ namespace tt3::util
         //////////
         //  Construction/destruction/assignment
     public:
-        ParseException(const QString & string, int position);
+        ParseException(
+                const QString & string,
+                qsizetype position
+            );
         //  The default copy constructor, assignment operator
         //  and destructor are all OK.
 
@@ -103,7 +106,7 @@ namespace tt3::util
         //////////
         //  Exception
     public:
-        virtual QString     errorMessage() const override;
+        virtual QString errorMessage() const override;
 
         //////////
         //  Operations
@@ -112,13 +115,13 @@ namespace tt3::util
         QString             string() const { return _string; }
 
         //  The position within the parsed string where a parse error occurred
-        int                 position() const { return _position; }
+        qsizetype           position() const { return _position; }
 
         //////////
         //  Implementation
     private:
         QString             _string;
-        int                 _position;
+        qsizetype           _position;
     };
 }
 

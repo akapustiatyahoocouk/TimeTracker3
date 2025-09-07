@@ -20,8 +20,9 @@ using namespace tt3::util;
 //////////
 //  MissingResourceException
 MissingResourceException::MissingResourceException(
-    const QString & resourceFactoryName,
-    const ResourceSectionId & sectionId, const ResourceId & resourceId)
+        const QString & resourceFactoryName,
+        const ResourceSectionId & sectionId, const ResourceId & resourceId
+    )
     :   _resourceFactoryName(resourceFactoryName),
         _sectionId(sectionId),
         _resourceId(resourceId)
@@ -37,7 +38,10 @@ QString MissingResourceException::errorMessage() const
 
 //////////
 //  ParseException
-ParseException::ParseException(const QString & string, int position)
+ParseException::ParseException(
+        const QString & string,
+        qsizetype position
+    )
     :   _string(string),
         _position(position)
 {

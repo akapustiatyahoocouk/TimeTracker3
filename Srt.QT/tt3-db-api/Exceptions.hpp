@@ -128,8 +128,8 @@ namespace tt3::db::api
         //////////
         //  Implementayion
     private:
-        QString     _databaseTypeDisplayName;
-        QString     _databaseAddressDisplayForm;
+        QString         _databaseTypeDisplayName;
+        QString         _databaseAddressDisplayForm;
     };
 
     //  Thrown when a service is called on a closed database.
