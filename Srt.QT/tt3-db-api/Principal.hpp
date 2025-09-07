@@ -29,28 +29,51 @@ namespace tt3::db::api
         //////////
         //  Operations (properties)
     public:
-        //  Checks/sets whether this Principal is "enabled". "Disabled"
-        //  Principals do not exist as far as access control is concerned.
-        //  Throws DatabaseException if an error occurs.
+        /// @brief
+        ///     Checks whether this Principal is "enabled".
+        /// @details
+        ///     "Disabled" Principals do not exist as far as
+        ///     access control is concerned.
+        /// @return
+        ///     True if this Principal is "enabled", false if "disabled".
+        /// @exception DatabaseException
+        ///     If an error occurs.
         virtual bool    enabled(
-                            ) const
-                            throws(DatabaseException) = 0;
+                            ) const = 0;
+
+        /// @brief
+        ///     Enables or disabled this Principal.
+        /// @details
+        ///     "Disabled" Principals do not exist as far as
+        ///     access control is concerned.
+        /// @param enabled
+        ///     True to mark this Principal "enabled", false for "disabled".
+        /// @exception DatabaseException
+        ///     If an error occurs.
         virtual void    setEnabled(
                                 bool enabled
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
-        //  Returns/sets the list of e-mail addresses associated with
-        //  this Principal.
-        //  Throws DatabaseException if an error occurs.
+        /// @brief
+        ///     Returns the list of e-mail addresses associated with
+        ///     this Principal.
+        /// @return
+        ///     The list of e-mail addresses of this Principal.
+        /// @exception DatabaseException
+        ///     If an error occurs.
         virtual auto    emailAddresses(
-                            ) const
-                            throws(DatabaseException)
-                            -> QStringList = 0;
+                            ) const -> QStringList = 0;
+
+        /// @brief
+        ///     Sets the list of e-mail addresses associated with
+        ///     this Principal.
+        /// @param emailAddresses
+        ///     The new list of e-mail addresses for this Principal.
+        /// @exception DatabaseException
+        ///     If an error occurs.
         virtual void    setEmailAddresses(
                                 const QStringList & emailAddresses
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
     };
 }
 

@@ -40,16 +40,7 @@
     Clazz * Clazz::instance()                           \
     {                                                   \
         static Clazz * theInstance = new Clazz();       \
-        return theInstance;                            \
+        return theInstance;                             \
     }
-
-//  A helper macro to document exceptions thrown by a method or function
-#if defined(_MSC_VER)
-    //  MSVC at least allows the syntax (with a warning!)
-    #define throws(...) throw(__VA_ARGS__)
-    #pragma warning(disable:5040)   //  dynamic exception specifications are valid only in C++14 and earlier; treating as noexcept(false)
-#else
-    #define throws(E,...) noexcept(false)
-#endif
 
 //  End of tt3-util/Macros.cpp

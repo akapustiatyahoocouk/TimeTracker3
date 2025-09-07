@@ -86,8 +86,7 @@ namespace tt3::util
     auto fromString<tt3::db::api::Capabilities>(
             const QString & s,
             qsizetype & scan
-        ) throws(ParseException)
-        -> tt3::db::api::Capabilities;
+        ) -> tt3::db::api::Capabilities;
 }
 
 //  End of tt3-db-api/Capabilities.hpp

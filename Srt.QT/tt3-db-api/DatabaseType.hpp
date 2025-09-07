@@ -100,41 +100,55 @@ namespace tt3::db::api
                                 QWidget * parent
                             ) -> IDatabaseAddress * = 0;
 
-        //  Parses an external form of a database address of this type.
-        //  Returns the parsed database address or throws DatabaseException if
-        //  the address parsing fails for some reason
+        /// Parses an external form of a database address of this type.
+        ///
+        /// @param externalForm
+        ///     The external form of a database address of this type.
+        /// @return
+        ///     The parsed database address.
+        /// @exception DatabaseException
+        ///     If the address parsing fails.
         virtual auto    parseDatabaseAddress(
                                 const QString & externalForm
-                            )
-                            throws(DatabaseException)
-                            -> IDatabaseAddress * = 0;
+                            ) -> IDatabaseAddress * = 0;
 
         //////////
         //  Operations (databases)
     public:
-        //  Creates a new, initially empty, database at the specified address.
-        //  Throws DatabaseException if an error occurs.
+        /// Creates a new, initially empty, database at the specified address.
+        ///
+        /// @param address
+        ///     The address to create a new database at.
+        /// @return
+        ///     The newly created database (initially empty).
+        /// @exception DatabaseException
+        ///     If an error occurs.
         virtual auto    createDatabase(
                                 IDatabaseAddress * address
-                            )
-                            throws(DatabaseException)
-                            -> IDatabase * = 0;
+                            ) -> IDatabase * = 0;
 
-        //  Opens an existing database at the specified address.
-        //  Throws DatabaseException if an error occurs.
+        /// Opens an existing database at the specified address.
+        ///
+        /// @param address
+        ///     The address to open an existing database at.
+        /// @return
+        ///     The newly opened database.
+        /// @exception DatabaseException
+        ///     If an error occurs.
         virtual auto    openDatabase(
                                 IDatabaseAddress * address
-                            )
-                            throws(DatabaseException)
-                            -> IDatabase * = 0;
+                            ) -> IDatabase * = 0;
 
-        //  Destroys an existing database at the specified address.
-        //  The database must not currently be in use.
-        //  Throws DatabaseException if an error occurs.
+        /// Destroys an existing database at the specified address.
+        /// The database must not currently be in use.
+        ///
+        /// @param address
+        ///     The address to destroy an existing database at.
+        /// @exception DatabaseException
+        ///     If an error occurs.
         virtual void    destroyDatabase(
                                 IDatabaseAddress * address
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
     };
 
     //////////

@@ -18,10 +18,18 @@
 //////////
 //  Formatting and parsing
 namespace tt3::util
-{   //  Uses {00000000-0000-0000-0000-000000000000} braded format.
+{   //  Uses {00000000-0000-0000-0000-000000000000} braced format.
     //  Formats as uppercase, parses upper- or lowercase.
-    template <> TT3_DB_API_PUBLIC QString toString<tt3::db::api::Oid>(const tt3::db::api::Oid & value);
-    template <> TT3_DB_API_PUBLIC tt3::db::api::Oid fromString<tt3::db::api::Oid>(const QString & s, qsizetype & scan) throws(tt3::util::ParseException);
+    template <> TT3_DB_API_PUBLIC
+    auto toString<tt3::db::api::Oid>(
+            const tt3::db::api::Oid & value
+        ) -> QString;
+
+    template <> TT3_DB_API_PUBLIC
+    auto fromString<tt3::db::api::Oid>(
+            const QString & s,
+            qsizetype & scan
+        ) -> tt3::db::api::Oid;
 }
 
 namespace tt3::db::api
@@ -40,7 +48,7 @@ namespace tt3::db::api
         static const Oid    Invalid;
 
         friend TT3_DB_API_PUBLIC QString tt3::util::toString<Oid>(const Oid & value);
-        friend TT3_DB_API_PUBLIC Oid tt3::util::fromString<Oid>(const QString & s, qsizetype & scan) throws(tt3::util::ParseException);
+        friend TT3_DB_API_PUBLIC Oid tt3::util::fromString<Oid>(const QString & s, qsizetype & scan);
         friend TT3_DB_API_PUBLIC size_t qHash(const Oid & key, size_t seed);
 
         //////////
@@ -151,13 +159,16 @@ namespace tt3::db::api
         //////////
         //  Operations (life cycle)
     public:
-        //  Destroys the corresponding database object,
-        //  delete-cascading as necessary. The instance of
-        //  the IObject - implementing class remains
-        //  in existence, but is marked as "representing
-        //  a dead object" and, therefore, unusable.
-        virtual void    destroy()
-                            throws(DatabaseException) = 0;
+        /// @brief
+        ///     Destroys the corresponding database object.
+        /// @details
+        ///     Delete-cascades as necessary. The instance of
+        ///     the IObject - implementing class remains
+        ///     in existence, but is marked as "representing
+        ///     a dead object" and, therefore, unusable.
+        /// @exception DatabaseException
+        ///     If an error occurs.
+        virtual void    destroy() = 0;
 
         //////////
         //  Operations (reference counting)
