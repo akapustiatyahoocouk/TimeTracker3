@@ -38,8 +38,7 @@ Account::~Account()
 
 //////////
 //  tt3::db::api::IObject (life cycle)
-void Account::destroy(
-    ) throws(tt3::db::api::DatabaseException)
+void Account::destroy()
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -51,8 +50,7 @@ void Account::destroy(
 //////////
 //  tt3::db::api::IAccount (properties)
 auto Account::login(
-    ) const throws(tt3::db::api::DatabaseException)
-    -> QString
+    ) const -> QString
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -62,7 +60,7 @@ auto Account::login(
 
 void Account::setLogin(
         const QString & login
-    ) throws(tt3::db::api::DatabaseException)
+    )
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -98,8 +96,7 @@ void Account::setLogin(
 }
 
 auto Account::passwordHash(
-    ) const throws(tt3::db::api::DatabaseException)
-    -> QString
+    ) const -> QString
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -109,7 +106,7 @@ auto Account::passwordHash(
 
 void Account::setPassword(
         const QString & password
-    ) throws(tt3::db::api::DatabaseException)
+    )
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -141,8 +138,7 @@ void Account::setPassword(
 }
 
 auto Account::capabilities(
-    ) const throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::Capabilities
+    ) const -> tt3::db::api::Capabilities
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -152,7 +148,7 @@ auto Account::capabilities(
 
 void Account::setCapabilities(
         tt3::db::api::Capabilities capabilities
-    ) throws(tt3::db::api::DatabaseException)
+    )
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -171,8 +167,7 @@ void Account::setCapabilities(
 //////////
 //  tt3::db::api::IAccount (associations)
 auto Account::user(
-    ) const throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::IUser *
+    ) const -> tt3::db::api::IUser *
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -181,15 +176,14 @@ auto Account::user(
 }
 
 auto Account::quickPickList(
-    ) const throws(tt3::db::api::DatabaseException)
-    -> QList<tt3::db::api::IActivity*>
+    ) const -> QList<tt3::db::api::IActivity*>
 {
     throw new tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
 void Account::setQuickPickList(
         const QList<tt3::db::api::IActivity*> & /*quickPickList*/
-    ) const throws(tt3::db::api::DatabaseException)
+    )
 {
     throw new tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
@@ -215,7 +209,9 @@ void Account::_markDead()
 
 //////////
 //  Serialization
-void Account::_serializeProperties(QDomElement & objectElement)
+void Account::_serializeProperties(
+        QDomElement & objectElement
+    )
 {
     Principal::_serializeProperties(objectElement);
     objectElement.setAttribute("Login", _login);
@@ -223,12 +219,16 @@ void Account::_serializeProperties(QDomElement & objectElement)
     objectElement.setAttribute("Capabilities", tt3::util::toString(_capabilities));
 }
 
-void Account::_serializeAggregations(QDomElement & parentElement)
+void Account::_serializeAggregations(
+        QDomElement & parentElement
+    )
 {
     Principal::_serializeAggregations(parentElement);
 }
 
-void Account::_deserializeProperties(const QDomElement & objectElement) throws(tt3::util::ParseException)
+void Account::_deserializeProperties(
+        const QDomElement & objectElement
+    )
 {
     Principal::_deserializeProperties(objectElement);
 
@@ -237,14 +237,18 @@ void Account::_deserializeProperties(const QDomElement & objectElement) throws(t
     _capabilities = tt3::util::fromString<tt3::db::api::Capabilities>(objectElement.attribute("Capabilities"));
 }
 
-void Account::_deserializeAggregations(const QDomElement & parentElement) throws(tt3::util::ParseException)
+void Account::_deserializeAggregations(
+        const QDomElement & parentElement
+    )
 {
     Principal::_deserializeAggregations(parentElement);
 }
 
 //////////
 //  Validation
-void Account::_validate(QSet<Object*> & validatedObjects) throws(tt3::db::api::DatabaseException)
+void Account::_validate(
+        QSet<Object*> & validatedObjects
+    )
 {
     Principal::_validate(validatedObjects);
 

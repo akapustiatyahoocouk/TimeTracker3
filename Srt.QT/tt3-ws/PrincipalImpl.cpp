@@ -33,7 +33,9 @@ PrincipalImpl::~PrincipalImpl()
 
 //////////
 //  Operations (properties)
-bool PrincipalImpl::enabled(const Credentials & credentials) const throws(WorkspaceException)
+bool PrincipalImpl::enabled(
+        const Credentials & credentials
+    ) const
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
@@ -54,7 +56,10 @@ bool PrincipalImpl::enabled(const Credentials & credentials) const throws(Worksp
     }
 }
 
-void PrincipalImpl::setEnabled(const Credentials & credentials, bool enabled) throws(WorkspaceException)
+void PrincipalImpl::setEnabled(
+        const Credentials & credentials,
+        bool enabled
+    )
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
@@ -85,7 +90,9 @@ void PrincipalImpl::setEnabled(const Credentials & credentials, bool enabled) th
     }
 }
 
-QStringList PrincipalImpl::emailAddresses(const Credentials & credentials) const throws(WorkspaceException)
+auto PrincipalImpl::emailAddresses(
+        const Credentials & credentials
+    ) const -> QStringList
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
@@ -106,7 +113,10 @@ QStringList PrincipalImpl::emailAddresses(const Credentials & credentials) const
     }
 }
 
-void PrincipalImpl::setEmailAddresses(const Credentials & credentials, const QStringList & emailAddresses) throws(WorkspaceException)
+void PrincipalImpl::setEmailAddresses(
+        const Credentials & credentials,
+        const QStringList & emailAddresses
+    )
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw

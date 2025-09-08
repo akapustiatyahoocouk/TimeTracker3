@@ -61,11 +61,27 @@ namespace tt3::ws
 //  Formatting/parsing
 namespace tt3::util
 {
-    template <> TT3_WS_PUBLIC QString toString<tt3::ws::WorkspaceAddress>(const tt3::ws::WorkspaceAddress & value);
-    template <> TT3_WS_PUBLIC QString toString<tt3::ws::WorkspaceAddressesList>(const tt3::ws::WorkspaceAddressesList & value);
+    template <> TT3_WS_PUBLIC
+    auto toString<tt3::ws::WorkspaceAddress>(
+            const tt3::ws::WorkspaceAddress & value
+        ) -> QString;
 
-    template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddress fromString<tt3::ws::WorkspaceAddress>(const QString & s, qsizetype & scan) throws(ParseException);
-    template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddressesList fromString<tt3::ws::WorkspaceAddressesList>(const QString & s, qsizetype & scan) throws(ParseException);
+    template <> TT3_WS_PUBLIC
+    auto toString<tt3::ws::WorkspaceAddressesList>(
+            const tt3::ws::WorkspaceAddressesList & value
+        ) -> QString;
+
+    template <> TT3_WS_PUBLIC
+    auto fromString<tt3::ws::WorkspaceAddress>(
+            const QString & s,
+            qsizetype & scan
+        ) -> tt3::ws::WorkspaceAddress;
+
+    template <> TT3_WS_PUBLIC
+    auto fromString<tt3::ws::WorkspaceAddressesList>(
+            const QString & s,
+            qsizetype & scan
+        ) -> tt3::ws::WorkspaceAddressesList;
 }
 
 //  End of tt3-ws/WorkspaceAddressImpl.hpp

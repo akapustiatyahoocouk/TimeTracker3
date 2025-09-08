@@ -68,9 +68,7 @@ template <> TT3_DB_API_PUBLIC
 auto tt3::util::fromString<Capabilities>(
         const QString & s,
         qsizetype & scan
-    )
-    throws(ParseException)
-    -> Capabilities
+    ) -> Capabilities
 {
     Capabilities result = Capabilities::None;
     if (scan >= s.length())

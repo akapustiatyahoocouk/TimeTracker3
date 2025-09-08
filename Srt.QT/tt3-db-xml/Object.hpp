@@ -57,27 +57,33 @@ namespace tt3::db::xml
         Database *const     _database;
         const tt3::db::api::Oid _oid;
 
-        State               _state = State::New;
-        int                 _referenceCount = 0;
-        bool                _isLive = true;
+        State           _state = State::New;
+        int             _referenceCount = 0;
+        bool            _isLive = true;
 
         //  Helpers
-        void                _ensureLive() const throws (tt3::db::api::DatabaseException);
-        virtual void        _markDead();
+        void            _ensureLive() const;    //  throws tt3::db::api::DatabaseException
+        virtual void    _markDead();
 
         //////////
         //  Serialization
     private:
-        virtual void        _serializeProperties(QDomElement & objectElement);
-        virtual void        _serializeAggregations(QDomElement & parentElement);
+        virtual void    _serializeProperties(QDomElement & objectElement);
+        virtual void    _serializeAggregations(QDomElement & parentElement);
 
-        virtual void        _deserializeProperties(const QDomElement & objectElement) throws(tt3::util::ParseException);
-        virtual void        _deserializeAggregations(const QDomElement & parentElement) throws(tt3::util::ParseException);
+        virtual void    _deserializeProperties(
+                                const QDomElement & objectElement
+                            );  //  throws tt3::util::ParseException
+        virtual void    _deserializeAggregations(
+                                const QDomElement & parentElement
+                            );  //  throws tt3::util::ParseException
 
         //////////
         //  Validation
     private:
-        virtual void        _validate(QSet<Object*> & validatedObjects) throws(tt3::db::api::DatabaseException);
+        virtual void    _validate(
+                                QSet<Object*> & validatedObjects
+                            );  //  throws tt3::db::api::DatabaseException
     };
 }
 

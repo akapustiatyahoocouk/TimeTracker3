@@ -29,10 +29,14 @@ namespace tt3::ws
         //////////
         //  Operations
     public:
-        //  Throws WorkspaceException (or a subclass thereof)
-        //  that best represents the specified arbitrary exception
+        /// @brief
+        ///     Throws WorkspaceException (or a subclass thereof)
+        ///     that best represents the specified arbitrary exception
+        /// \exception WorkspaceException
+        ///     Always.
         Q_NORETURN
-        static void     translateAndThrow(const tt3::util::Exception & ex) throws(WorkspaceException);
+        static void     translateAndThrow(
+                            const tt3::util::Exception & ex);
     };
 
     //  Thrown when an invalid workspace address is specified

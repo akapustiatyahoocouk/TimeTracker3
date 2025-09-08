@@ -159,14 +159,14 @@ namespace tt3::db::api
         //////////
         //  Operations (life cycle)
     public:
-        /// @brief
+        /// \brief
         ///     Destroys the corresponding database object.
-        /// @details
+        /// \details
         ///     Delete-cascades as necessary. The instance of
         ///     the IObject - implementing class remains
         ///     in existence, but is marked as "representing
         ///     a dead object" and, therefore, unusable.
-        /// @exception DatabaseException
+        /// \exception DatabaseException
         ///     If an error occurs.
         virtual void    destroy() = 0;
 

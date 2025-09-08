@@ -40,32 +40,74 @@ namespace tt3::db::api
         //////////
         //  Operations (associations)
     public:
-        //  Returns/sets the immediate parent of this private task; nullptr if none.
-        //  Setting a parent to nullptr makes this a root private task.
-        //  Attempting to create parenthood loops is an error.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the immediate parent of this private task.
+        /// \return
+        ///     The immediate parent of this private task; nullptr == none.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    parent(
-                            ) const
-                            throws(DatabaseException)
-                            -> IPrivateTask * = 0;
+                            ) const -> IPrivateTask * = 0;
+
+        /// \brief
+        ///     Sets the immediate parent of this private task; nullptr if none.
+        /// \details
+        ///     Setting a parent to nullptr makes this a root private task.
+        ///     Attempting to create parenthood loops is an error.
+        /// \param parent
+        ///     The new immediate parent of this private task; nullptr == none.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setParent(
                                 IPrivateTask * parent
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
-        //  Returns the set of immediate children of this private task.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the set of immediate children of this private task.
+        /// \return
+        ///     The set of immediate children of this private task.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    children(
-                            ) const
-                            throws(DatabaseException)
-                            -> PrivateTasks = 0;
+                            ) const -> PrivateTasks = 0;
 
         //////////
         //  Operations (life cycle)
     public:
-        //  Creates a new child PrivateTask under this one.
-        //  The activity type can be nullptr.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Creates a new child PrivateTask under this one.
+        /// \param displayName
+        ///     The short (1 line) user-readable display name
+        ///     for the new PrivateTask.
+        /// \param description
+        ///     The multi-line user-readable description for the new
+        ///     PrivateTask; with lines separated by a newline '\\n' character.
+        /// \param timeout
+        ///     The user-does-nothing timeout for the new PrivateTask;
+        ///     absent == none.
+        /// \param requireCommentOnStart
+        ///     True if the newly created PrivateTask small require the
+        ///     user to enter a comment when it is started.
+        /// \param requireCommentOnFinish
+        ///     True if the newly created PrivateTask small require the
+        ///     user to enter a comment when it is started.
+        /// \param fullScreenReminder
+        ///     True if a full-screen reminder shall be displayed while the
+        ///     newly created PrivateTask is underway.
+        /// \param activityType
+        ///     The type for the new PrivateTask; nullptr == don't assign.
+        /// \param workload
+        ///     The Workload for the new v; nullptr == don't assign.
+        /// \param completed
+        ///     True if the PrivateTask shall initially be marked as
+        ///     "completed", false if not.
+        /// \param requireCommentOnCompletion
+        ///     True if the newly created PrivateTask small require the
+        ///     user to enter a comment when marking it as "completed".
+        /// \return
+        ///     The newly created PrivateTask.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    createChild(
                                 const QString & displayName,
                                 const QString & description,
@@ -77,9 +119,7 @@ namespace tt3::db::api
                                 IWorkload * workload,
                                 bool completed,
                                 bool requireCommentOnCompletion
-                            )
-                            throws(DatabaseException)
-                            -> IPrivateTask * = 0;
+                            ) -> IPrivateTask * = 0;
     };
 }
 

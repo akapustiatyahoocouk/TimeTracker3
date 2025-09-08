@@ -37,9 +37,7 @@ ActivityType::~ActivityType()
 
 //////////
 //  tt3::db::api::IObject (life cycle)
-void ActivityType::destroy(
-    )
-    throws(tt3::db::api::DatabaseException)
+void ActivityType::destroy()
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
@@ -47,9 +45,7 @@ void ActivityType::destroy(
 //////////
 //  tt3::db::api::IActivityType (properties)
 auto ActivityType::displayName(
-    ) const
-    throws(tt3::db::api::DatabaseException)
-    -> QString
+    ) const -> QString
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
@@ -57,15 +53,12 @@ auto ActivityType::displayName(
 void ActivityType::setDisplayName(
         const QString & /*displayName*/
     )
-    throws(tt3::db::api::DatabaseException)
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
 auto ActivityType::description(
-    ) const
-    throws(tt3::db::api::DatabaseException)
-    -> QString
+    ) const -> QString
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
@@ -73,7 +66,6 @@ auto ActivityType::description(
 void ActivityType::setDescription(
         const QString & /*description*/
     )
-    throws(tt3::db::api::DatabaseException)
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
@@ -81,9 +73,7 @@ void ActivityType::setDescription(
 //////////
 //  tt3::db::api::IActivityType (associations)
 auto ActivityType::activities(
-    ) const
-    throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::Activities
+    ) const -> tt3::db::api::Activities
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
@@ -108,7 +98,9 @@ void ActivityType::_markDead()
 
 //////////
 //  Serialization
-void ActivityType::_serializeProperties(QDomElement & objectElement)
+void ActivityType::_serializeProperties(
+        QDomElement & objectElement
+    )
 {
     Object::_serializeProperties(objectElement);
 
@@ -116,12 +108,16 @@ void ActivityType::_serializeProperties(QDomElement & objectElement)
     objectElement.setAttribute("Description", _description);
 }
 
-void ActivityType::_serializeAggregations(QDomElement & parentElement)
+void ActivityType::_serializeAggregations(
+        QDomElement & parentElement
+    )
 {
     Object::_serializeAggregations(parentElement);
 }
 
-void ActivityType::_deserializeProperties(const QDomElement & objectElement) throws(tt3::util::ParseException)
+void ActivityType::_deserializeProperties(
+        const QDomElement & objectElement
+    )
 {
     Object::_deserializeProperties(objectElement);
 
@@ -129,14 +125,18 @@ void ActivityType::_deserializeProperties(const QDomElement & objectElement) thr
     _description = objectElement.attribute("Description");
 }
 
-void ActivityType::_deserializeAggregations(const QDomElement & parentElement) throws(tt3::util::ParseException)
+void ActivityType::_deserializeAggregations(
+        const QDomElement & parentElement
+    )
 {
     Object::_deserializeAggregations(parentElement);
 }
 
 //////////
 //  Validation
-void ActivityType::_validate(QSet<Object*> & validatedObjects) throws(tt3::db::api::DatabaseException)
+void ActivityType::_validate(
+        QSet<Object*> & validatedObjects
+    )
 {
     Object::_validate(validatedObjects);
 

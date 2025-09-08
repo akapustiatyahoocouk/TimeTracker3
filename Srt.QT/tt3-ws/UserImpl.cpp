@@ -33,7 +33,9 @@ UserImpl::~UserImpl()
 
 //////////
 //  Operations (properties)
-QString UserImpl::realName(const Credentials & credentials) const throws(WorkspaceException)
+auto UserImpl::realName(
+        const Credentials & credentials
+    ) const -> QString
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
@@ -54,7 +56,10 @@ QString UserImpl::realName(const Credentials & credentials) const throws(Workspa
     }
 }
 
-void UserImpl::setRealName(const Credentials & credentials, const QString & realName) throws(WorkspaceException)
+void UserImpl::setRealName(
+        const Credentials & credentials,
+        const QString & realName
+    )
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
@@ -75,7 +80,9 @@ void UserImpl::setRealName(const Credentials & credentials, const QString & real
     }
 }
 
-InactivityTimeout UserImpl::inactivityTimeout(const Credentials & credentials) const throws(WorkspaceException)
+auto UserImpl::inactivityTimeout(
+        const Credentials & credentials
+    ) const -> InactivityTimeout
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
@@ -96,7 +103,10 @@ InactivityTimeout UserImpl::inactivityTimeout(const Credentials & credentials) c
     }
 }
 
-void UserImpl::setInactivityTimeout(const Credentials & credentials, const InactivityTimeout & inactivityTimeout) throws(WorkspaceException)
+void UserImpl::setInactivityTimeout(
+        const Credentials & credentials,
+        const InactivityTimeout & inactivityTimeout
+    )
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
@@ -117,7 +127,9 @@ void UserImpl::setInactivityTimeout(const Credentials & credentials, const Inact
     }
 }
 
-UiLocale UserImpl::uiLocale(const Credentials & credentials) const throws(WorkspaceException)
+auto UserImpl::uiLocale(
+        const Credentials & credentials
+    ) const -> UiLocale
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
@@ -138,7 +150,10 @@ UiLocale UserImpl::uiLocale(const Credentials & credentials) const throws(Worksp
     }
 }
 
-void UserImpl::setUiLocale(const Credentials & credentials, const UiLocale & uiLocale) throws(WorkspaceException)
+void UserImpl::setUiLocale(
+        const Credentials & credentials,
+        const UiLocale & uiLocale
+    )
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
@@ -161,7 +176,9 @@ void UserImpl::setUiLocale(const Credentials & credentials, const UiLocale & uiL
 
 //////////
 //  Operations (associations)
-Accounts UserImpl::accounts(const Credentials & credentials) const throws(WorkspaceException)
+auto UserImpl::accounts(
+        const Credentials & credentials
+    ) const -> Accounts
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
@@ -204,11 +221,14 @@ Accounts UserImpl::accounts(const Credentials & credentials) const throws(Worksp
 
 //////////
 //  Operations (life cycle)
-Account UserImpl::createAccount(
-    const Credentials & credentials,
-    bool enabled, const QStringList & emailAddresses,
-    const QString & login, const QString & password,
-    Capabilities capabilities) throws(WorkspaceException)
+auto UserImpl::createAccount(
+        const Credentials & credentials,
+        bool enabled,
+        const QStringList & emailAddresses,
+        const QString & login,
+        const QString & password,
+        Capabilities capabilities
+    ) -> Account
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();
@@ -237,7 +257,9 @@ Account UserImpl::createAccount(
 
 //////////
 //  Implementation (Access control)
-bool UserImpl::_canRead(const Credentials & credentials) const
+bool UserImpl::_canRead(
+        const Credentials & credentials
+    ) const
 {
     Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
 
@@ -264,7 +286,9 @@ bool UserImpl::_canRead(const Credentials & credentials) const
     }
 }
 
-bool UserImpl::_canModify(const Credentials & credentials) const
+bool UserImpl::_canModify(
+        const Credentials & credentials
+    ) const
 {
     Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
 
@@ -291,7 +315,9 @@ bool UserImpl::_canModify(const Credentials & credentials) const
     }
 }
 
-bool UserImpl::_canDestroy(const Credentials & credentials) const
+bool UserImpl::_canDestroy(
+        const Credentials & credentials
+    ) const
 {
     Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
 
@@ -311,7 +337,8 @@ bool UserImpl::_canDestroy(const Credentials & credentials) const
     }
 }
 
-bool UserImpl::_destroyingLosesAccess() const throws(WorkspaceException)
+bool UserImpl::_destroyingLosesAccess(
+    ) const
 {
     Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
 

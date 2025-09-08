@@ -17,7 +17,8 @@
 
 namespace tt3::db::api
 {
-    //  A login account
+    /// \class IAccount
+    ///     A login account.
     class TT3_DB_API_PUBLIC IAccount :
         public virtual IPrincipal
     {
@@ -39,61 +40,104 @@ namespace tt3::db::api
         //////////
         //  Operations (properties)
     public:
-        //  Returns/sets the login identifier of this account.
-        //  Throws DatabaseException if an error occurs.
-        virtual auto    login() const
-                            throws(DatabaseException)
-                            -> QString = 0;
+        /// \brief
+        ///     Returns the login identifier of this account.
+        /// \return
+        ///     The login identifier of this account.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        virtual auto    login(
+                            ) const -> QString = 0;
+
+        /// \brief
+        ///     Sets the login identifier of this account.
+        /// \param login
+        ///     The new login identifier for this account.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setLogin(
                                 const QString & login
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
-        //  Returns the SHA-1 hash of rhis account's password
-        //  as an uppercase hexstring.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the SHA-1 hash of rhis account's password.
+        /// \return
+        ///     The SHA-1 hash of rhis account's password
+        ///     as an uppercase hexstring.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    passwordHash(
-                            ) const
-                            throws(DatabaseException)
-                            -> QString = 0;
+                            ) const -> QString = 0;
 
-        //  Sets the password of this account.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Sets the password of this account.
+        /// \param password
+        ///     The new password for this Account.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setPassword(
                                 const QString & password
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
-        //  Returns/sets the capabilities of this account.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the capabilities of this account.
+        /// \return
+        ///     The capabilities of this account.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    capabilities(
-                            ) const
-                            throws(DatabaseException)
-                            -> Capabilities = 0;
+                            ) const -> Capabilities = 0;
+
+        /// \brief
+        ///     Sets the capabilities of this account.
+        /// \param capabilities
+        ///     The new capabilities for this account.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setCapabilities(
                                 Capabilities capabilities
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
         //////////
         //  Operations (associations)
     public:
-        //  Returns the user to whom this account belongs.
-        //  Throws DatabaseException if an error occurs.
-        virtual auto    user() const
-                            throws(DatabaseException)
-                            -> IUser * = 0;
+        /// \brief
+        ///     Returns the user to whom this account belongs.
+        /// \return
+        ///     The user to whom this account belongs.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        virtual auto    user(
+                            ) const -> IUser * = 0;
 
-        //  Returns/sets the lick of "quick pick" activities
-        //  associated with this account.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the list of "quick pick" activities
+        ///     associated with this account.
+        /// \brief
+        ///     This is the list of activities that can be quickly
+        ///     chosen via the UI.
+        /// \return
+        ///     The list of "quick pick" activities
+        ///     associated with this account.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    quickPickList(
-                            ) const throws(DatabaseException)
-                            -> QList<IActivity*> = 0;
+                            ) const -> QList<IActivity*> = 0;
+
+        /// \brief
+        ///     Sets the list of "quick pick" activities
+        ///     associated with this account.
+        /// \brief
+        ///     This is the list of activities that can be quickly
+        ///     chosen via the UI.
+        /// \param quickPickList
+        ///     The new list of "quick pick" activities
+        ///     associated with this account.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setQuickPickList(
                                 const QList<IActivity*> & quickPickList
-                            ) const
-                            throws(DatabaseException) = 0;
+                            ) = 0;
     };
 }
 

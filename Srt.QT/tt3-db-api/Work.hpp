@@ -39,34 +39,48 @@ namespace tt3::db::api
         //////////
         //  Operations (properties)
     public:
-        //  Returns the UTC date+time when this unit of work
-        //  was started/finished.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the UTC date+time when this unit of work
+        ///     was started.
+        /// \return
+        ///     The UTC date+time when this unit of work
+        ///     was started.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    startedAt(
-                            ) const
-                            throws(DatabaseException)
-                            -> QDateTime = 0;
+                            ) const -> QDateTime = 0;
+
+        /// \brief
+        ///     Returns the UTC date+time when this unit of work
+        ///     was finished.
+        /// \return
+        ///     The UTC date+time when this unit of work
+        ///     was finisheds.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    finishedAt(
-                            ) const
-                            throws(DatabaseException)
-                            -> QDateTime = 0;
+                            ) const -> QDateTime = 0;
 
         //////////
         //  Operations (associations)
     public:
-        //  Returns the User who has logged this unit of work.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the User who has logged this unit of work.
+        /// \return
+        ///     The User who has logged this unit of work.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    user(
-                            ) const
-                            throws(DatabaseException)
-                            -> IUser * = 0;
+                            ) const -> IUser * = 0;
 
-        //  Returns the Activity against which this unit of work was logged.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the Activity against which this unit of work was logged.
+        /// \return
+        ///     The Activity against which this unit of work was logged.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    activity(
-                            ) const
-                            throws(DatabaseException)
-                            -> IActivity * = 0;
+                            ) const -> IActivity * = 0;
     };
 }
 

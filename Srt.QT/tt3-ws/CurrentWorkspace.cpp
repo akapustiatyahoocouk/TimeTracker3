@@ -17,10 +17,9 @@
 #include "tt3-ws/API.hpp"
 using namespace tt3::ws;
 
-std::atomic<int> CurrentWorkspace::_instanceCount = 0;
-
 struct CurrentWorkspace::_Impl
 {
+    std::atomic<int>    instanceCount = 0;  //  ...to disallow a second instance
     tt3::util::Mutex    guard;
     Workspace           workspace = nullptr;
 };
@@ -29,14 +28,16 @@ struct CurrentWorkspace::_Impl
 //  Construction/destruction
 CurrentWorkspace::CurrentWorkspace()
 {
-    Q_ASSERT(_instanceCount == 0);
-    _instanceCount++;
+    _Impl * impl = _impl();
+    Q_ASSERT(impl->instanceCount == 0);
+    impl->instanceCount++;
 }
 
 CurrentWorkspace::~CurrentWorkspace()
 {
-    Q_ASSERT(_instanceCount == 1);
-    _instanceCount--;
+    _Impl * impl = _impl();
+    Q_ASSERT(impl->instanceCount == 1);
+    impl->instanceCount--;
 }
 
 //////////
@@ -50,7 +51,7 @@ void CurrentWorkspace::operator = (const Workspace & workspace)
         _Impl * impl = _impl();
         tt3::util::Lock lock(impl->guard);
 
-        Q_ASSERT(_instanceCount == 1);
+        Q_ASSERT(impl->instanceCount == 1);
         if (workspace != impl->workspace)
         {
             before = impl->workspace;
@@ -70,7 +71,7 @@ Workspace CurrentWorkspace::operator -> () const
     _Impl * impl = _impl();
     tt3::util::Lock lock(impl->guard);
 
-    Q_ASSERT(_instanceCount == 1);
+    Q_ASSERT(impl->instanceCount == 1);
     return impl->workspace;
 }
 
@@ -79,7 +80,7 @@ CurrentWorkspace::operator Workspace() const
     _Impl * impl = _impl();
     tt3::util::Lock lock(impl->guard);
 
-    Q_ASSERT(_instanceCount == 1);
+    Q_ASSERT(impl->instanceCount == 1);
     return impl->workspace;
 }
 
@@ -88,7 +89,7 @@ bool CurrentWorkspace::operator == (nullptr_t /*null*/) const
     _Impl * impl = _impl();
     tt3::util::Lock lock(impl->guard);
 
-    Q_ASSERT(_instanceCount == 1);
+    Q_ASSERT(impl->instanceCount == 1);
     return impl->workspace.get() == nullptr;
 }
 
@@ -97,7 +98,7 @@ bool CurrentWorkspace::operator != (nullptr_t /*null*/) const
     _Impl * impl = _impl();
     tt3::util::Lock lock(impl->guard);
 
-    Q_ASSERT(_instanceCount == 1);
+    Q_ASSERT(impl->instanceCount == 1);
     return impl->workspace.get() != nullptr;
 }
 
@@ -112,6 +113,7 @@ void CurrentWorkspace::swap(Workspace & other)
         _Impl * impl = _impl();
         tt3::util::Lock lock(impl->guard);
 
+        Q_ASSERT(impl->instanceCount == 1);
         if (other != impl->workspace)
         {
             before = impl->workspace;

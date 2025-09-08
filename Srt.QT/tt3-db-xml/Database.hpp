@@ -35,47 +35,65 @@ namespace tt3::db::xml
         //  Construction/destruction
     private:
         enum _Mode { _Create, _Open, _Dead };
-        Database(DatabaseAddress * address, _Mode mode) throws(tt3::db::api::DatabaseException);
+        Database(
+                DatabaseAddress * address,
+                _Mode mode);    //  throws tt3::db::api::DatabaseException
     public:
         virtual ~Database();    //  closes database if still open
 
         //////////
         //  tt3::db::api::IDatabase (general)
     public:
-        virtual DatabaseType *      type() const override { return DatabaseType::instance(); }
-        virtual DatabaseAddress *   address() const override { return _address; }
-        virtual tt3::db::api::IValidator *  validator() const override { return _validator; }
-        virtual bool                isOpen() const override;
-        virtual void                close() throws(tt3::db::api::DatabaseException) override;
+        virtual auto    type(
+                ) const -> DatabaseType * override
+        {
+            return DatabaseType::instance();
+        }
+
+        virtual auto    address(
+            ) const -> DatabaseAddress * override
+        {
+            return _address;
+        }
+
+        virtual auto    validator(
+                            ) const -> tt3::db::api::IValidator * override
+        {
+            return _validator;
+        }
+
+        virtual bool    isOpen() const override;
+
+        virtual void    close() override;
 
         //////////
         //  tt3::db::api::IDatabase (associations)
     public:
         virtual auto    users(
-                            ) const
-                            throws(tt3::db::api::DatabaseException)
-                            -> tt3::db::api::Users override;
+                            ) const -> tt3::db::api::Users override;
         virtual auto    accounts(
-                            ) const
-                            throws(tt3::db::api::DatabaseException)
-                            -> tt3::db::api::Accounts override;
+                            ) const -> tt3::db::api::Accounts override;
         virtual auto    findAccount(
                                 const QString & login
-                            ) const
-                            throws(tt3::db::api::DatabaseException)
-                            -> tt3::db::api::IAccount * override;
+                            ) const -> tt3::db::api::IAccount * override;
         virtual auto    activityTypes(
-                            ) const
-                            throws(tt3::db::api::DatabaseException)
-                            -> tt3::db::api::ActivityTypes override;
-        virtual tt3::db::api::PublicActivities  publicActivities() const throws(tt3::db::api::DatabaseException) override;
-        virtual tt3::db::api::PublicActivities  publicActivitiesAndTasks() const throws(tt3::db::api::DatabaseException) override;
-        virtual tt3::db::api::PublicTasks       publicTasks() const throws(tt3::db::api::DatabaseException) override;
-        virtual tt3::db::api::PublicTasks       rootPublicTasks() const throws(tt3::db::api::DatabaseException) override;
-        virtual tt3::db::api::Projects          projects() const throws(tt3::db::api::DatabaseException) override;
-        virtual tt3::db::api::Projects          rootProjects() const throws(tt3::db::api::DatabaseException) override;
-        virtual tt3::db::api::WorkStreams       workStreams() const throws(tt3::db::api::DatabaseException) override;
-        virtual tt3::db::api::Beneficiaries     beneficiaries() const throws(tt3::db::api::DatabaseException) override;
+                            ) const -> tt3::db::api::ActivityTypes override;
+        virtual auto    publicActivities(
+                            ) const -> tt3::db::api::PublicActivities;
+        virtual auto    publicActivitiesAndTasks(
+                            ) const -> tt3::db::api::PublicActivities;
+        virtual auto    publicTasks(
+                            ) const -> tt3::db::api::PublicTasks;
+        virtual auto    rootPublicTasks(
+                            ) const -> tt3::db::api::PublicTasks;
+        virtual auto    projects(
+                            ) const -> tt3::db::api::Projects;
+        virtual auto    rootProjects(
+                            ) const -> tt3::db::api::Projects;
+        virtual auto    workStreams(
+                            ) const -> tt3::db::api::WorkStreams;
+        virtual auto    beneficiaries(
+                            ) const -> tt3::db::api::Beneficiaries;
 
         //////////
         //  tt3::db::api::IDatabase (access control)
@@ -83,13 +101,11 @@ namespace tt3::db::xml
         virtual auto    tryLogin(
                                 const QString & login,
                                 const QString & password
-                            ) const throws(tt3::db::api::DatabaseException)
-                            -> tt3::db::api::IAccount * override;
+                            ) const -> tt3::db::api::IAccount * override;
         virtual auto    login(
                                 const QString & login,
                                 const QString & password
-                            ) const throws(tt3::db::api::DatabaseException)
-                            -> tt3::db::api::IAccount * override;
+                            ) const -> tt3::db::api::IAccount * override;
 
         //////////
         //  tt3::db::api::IDatabase (life cycle)
@@ -100,13 +116,11 @@ namespace tt3::db::xml
                                 const QString & realName,
                                 const tt3::db::api::InactivityTimeout & inactivityTimeout,
                                 const tt3::db::api::UiLocale & uiLocale
-                            ) throws(tt3::db::api::DatabaseException)
-                            -> tt3::db::api::IUser * override;
+                            ) -> tt3::db::api::IUser * override;
         virtual auto    createActivityType(
                                 const QString & displayName,
                                 const QString & description
-                            ) throws(tt3::db::api::DatabaseException)
-                            -> tt3::db::api::IActivityType * override;
+                            ) -> tt3::db::api::IActivityType * override;
         virtual auto    createPublicActivity(
                                 const QString & displayName,
                                 const QString & description,
@@ -116,8 +130,7 @@ namespace tt3::db::xml
                                 bool fullScreenReminder,
                                 tt3::db::api::IActivityType * activityType,
                                 tt3::db::api::IWorkload * workload
-                            ) throws(tt3::db::api::DatabaseException)
-                            -> tt3::db::api::IPublicActivity * override;
+                            ) -> tt3::db::api::IPublicActivity * override;
         virtual auto    createPublicTask(
                                 const QString & displayName,
                                 const QString & description,
@@ -129,25 +142,21 @@ namespace tt3::db::xml
                                 tt3::db::api::IWorkload * workload,
                                 bool completed,
                                 bool requireCommentOnCompletion
-                            ) throws(tt3::db::api::DatabaseException)
-                            -> tt3::db::api::IPublicTask * override;
+                            ) -> tt3::db::api::IPublicTask * override;
         virtual auto    createProject(
                                 const QString & displayName,
                                 const QString & description,
                                 const tt3::db::api::Beneficiaries & beneficiaries
-                            ) throws(tt3::db::api::DatabaseException)
-                            -> tt3::db::api::IProject * override;
+                            ) -> tt3::db::api::IProject * override;
         virtual auto    createWorkStream(
                                 const QString & displayName,
                                 const QString & description,
                                 const tt3::db::api::Beneficiaries & beneficiaries
-                            ) throws(tt3::db::api::DatabaseException)
-                            -> tt3::db::api::IWorkStream * override;
+                            ) -> tt3::db::api::IWorkStream * override;
         virtual auto    createBeneficiary(
                                 const QString & displayName,
                                 const QString & description
-                            ) throws(tt3::db::api::DatabaseException)
-                            -> tt3::db::api::IBeneficiary * override;
+                            ) -> tt3::db::api::IBeneficiary * override;
 
         //////////
         //  tt3::db::api::IDatabase (change notification handling)
@@ -215,19 +224,25 @@ namespace tt3::db::xml
         tt3::db::api::ChangeNotifier    _changeNotifier;
 
         //  Helpers
-        void                _ensureOpen() const throws (tt3::db::api::DatabaseException);
+        void                _ensureOpen() const;    //  throws tt3::db::api::DatabaseException
         void                _markClosed();
         tt3::db::api::Oid   _generateOid();
         Account *           _findAccount(const QString & login) const;
 
         //  Serialization
-        void                _save() throws(tt3::util::Exception);
-        void                _load() throws(tt3::util::Exception);
-        QList<QDomElement>  _childElements(const QDomElement & parentElement, const QString & tagName);
-        QDomElement         _childElement(const QDomElement & parentElement, const QString & tagName) throws(tt3::db::api::DatabaseException);
+        void            _save();    //  throws tt3::util::Exception
+        void            _load();    //  throws tt3::util::Exception
+        auto            _childElements(
+                                const QDomElement & parentElement,
+                                const QString & tagName
+                            ) -> QList<QDomElement>;
+        auto            _childElement(  //  throws tt3::db::api::DatabaseException
+                                const QDomElement & parentElement,
+                                const QString & tagName
+                            ) -> QDomElement;
 
         //  Validation
-        void                _validate() throws(tt3::db::api::DatabaseException);
+        void            _validate();    //  throwstt3::db::api::DatabaseException
     };
 }
 

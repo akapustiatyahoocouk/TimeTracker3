@@ -151,7 +151,7 @@ bool Database::isOpen() const
     return _lockRefresher != nullptr;
 }
 
-void Database::close() throws(tt3::db::api::DatabaseException)
+void Database::close()
 {
     tt3::util::Lock lock(_guard);
 
@@ -190,9 +190,7 @@ void Database::close() throws(tt3::db::api::DatabaseException)
 //////////
 //  tt3::db::api::IDatabase (associations)
 auto Database::users(
-    ) const
-    throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::Users
+    ) const -> tt3::db::api::Users
 {
     tt3::util::Lock lock(_guard);
 
@@ -200,9 +198,7 @@ auto Database::users(
 }
 
 auto Database::accounts(
-    )
-    const throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::Accounts
+    ) const -> tt3::db::api::Accounts
 {
     tt3::util::Lock lock(_guard);
 
@@ -216,9 +212,7 @@ auto Database::accounts(
 
 auto Database::findAccount(
         const QString & login
-    ) const
-    throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::IAccount *
+    ) const -> tt3::db::api::IAccount *
 {
     tt3::util::Lock lock(_guard);
 
@@ -226,51 +220,57 @@ auto Database::findAccount(
 }
 
 auto Database::activityTypes(
-    ) const
-    throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::ActivityTypes
+    ) const -> tt3::db::api::ActivityTypes
 {
     tt3::util::Lock lock(_guard);
 
     return tt3::db::api::ActivityTypes(_activityTypes.cbegin(), _activityTypes.cend());
 }
 
-tt3::db::api::PublicActivities Database::publicActivities() const throws(tt3::db::api::DatabaseException)
+auto Database::publicActivities(
+    ) const -> tt3::db::api::PublicActivities
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
-tt3::db::api::PublicActivities Database::publicActivitiesAndTasks() const throws(tt3::db::api::DatabaseException)
+auto Database::publicActivitiesAndTasks(
+    ) const -> tt3::db::api::PublicActivities
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
-tt3::db::api::PublicTasks Database::publicTasks() const throws(tt3::db::api::DatabaseException)
+auto Database::publicTasks(
+    ) const -> tt3::db::api::PublicTasks
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
-tt3::db::api::PublicTasks Database::rootPublicTasks() const throws(tt3::db::api::DatabaseException)
+auto Database::rootPublicTasks(
+    ) const -> tt3::db::api::PublicTasks
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
-tt3::db::api::Projects Database::projects() const throws(tt3::db::api::DatabaseException)
+auto Database::projects(
+    ) const -> tt3::db::api::Projects
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
-tt3::db::api::Projects Database::rootProjects() const throws(tt3::db::api::DatabaseException)
+auto Database::rootProjects(
+    ) const -> tt3::db::api::Projects
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
-tt3::db::api::WorkStreams Database::workStreams() const throws(tt3::db::api::DatabaseException)
+auto Database::workStreams(
+    ) const -> tt3::db::api::WorkStreams
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
-tt3::db::api::Beneficiaries Database::beneficiaries() const throws(tt3::db::api::DatabaseException)
+auto Database::beneficiaries(
+    ) const -> tt3::db::api::Beneficiaries
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
@@ -280,8 +280,7 @@ tt3::db::api::Beneficiaries Database::beneficiaries() const throws(tt3::db::api:
 auto Database::tryLogin(
         const QString & login,
         const QString & password
-    ) const throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::IAccount *
+    ) const -> tt3::db::api::IAccount *
 {
     static tt3::util::IMessageDigest * sha1 = tt3::util::Sha1MessageDigest::instance();  //  idempotent
 
@@ -311,8 +310,7 @@ auto Database::tryLogin(
 auto Database::login(
         const QString & login,
         const QString & password
-    ) const throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::IAccount *
+    ) const -> tt3::db::api::IAccount *
 {
     if (tt3::db::api::IAccount * account = tryLogin(login, password))
     {
@@ -329,8 +327,7 @@ auto Database::createUser(
         const QString & realName,
         const tt3::db::api::InactivityTimeout & inactivityTimeout,
         const tt3::db::api::UiLocale & uiLocale
-    ) throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::IUser *
+    ) -> tt3::db::api::IUser *
 {
     tt3::util::Lock lock(_guard);
     _ensureOpen();  //  may throw
@@ -386,8 +383,7 @@ auto Database::createUser(
 auto Database::createActivityType(
         const QString & /*displayName*/,
         const QString & /*description*/
-    ) throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::IActivityType *
+    ) -> tt3::db::api::IActivityType *
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
@@ -401,8 +397,7 @@ auto Database::createPublicActivity(
         bool /*fullScreenReminder*/,
         tt3::db::api::IActivityType * /*activityType*/,
         tt3::db::api::IWorkload * /*workload*/
-    ) throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::IPublicActivity *
+    ) -> tt3::db::api::IPublicActivity *
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
@@ -418,8 +413,7 @@ auto Database::createPublicTask(
         tt3::db::api::IWorkload * /*workload*/,
         bool /*completed*/,
         bool /*requireCommentOnCompletion*/
-    ) throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::IPublicTask *
+    ) -> tt3::db::api::IPublicTask *
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
@@ -428,8 +422,7 @@ auto Database::createProject(
         const QString & /*displayName*/,
         const QString & /*description*/,
         const tt3::db::api::Beneficiaries & /*beneficiaries*/
-    ) throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::IProject *
+    ) -> tt3::db::api::IProject *
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
@@ -438,8 +431,7 @@ auto Database::createWorkStream(
         const QString & /*displayName*/,
         const QString & /*description*/,
         const tt3::db::api::Beneficiaries & /*beneficiaries*/
-    ) throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::IWorkStream *
+    ) -> tt3::db::api::IWorkStream *
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
@@ -447,8 +439,7 @@ auto Database::createWorkStream(
 auto Database::createBeneficiary(
         const QString & /*displayName*/,
         const QString & /*description*/
-    ) throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::IBeneficiary *
+    ) -> tt3::db::api::IBeneficiary *
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
@@ -520,7 +511,7 @@ Account * Database::_findAccount(const QString & login) const
 
 //////////
 //  Serialization
-void Database::_save() throws(tt3::util::Exception)
+void Database::_save()
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
     _ensureOpen();
@@ -573,7 +564,7 @@ void Database::_save() throws(tt3::util::Exception)
     _needsSaving = false;
 }
 
-void Database::_load() throws(tt3::util::Exception)
+void Database::_load()
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
     _ensureOpen();
@@ -650,7 +641,10 @@ QList<QDomElement> Database::_childElements(const QDomElement & parentElement, c
     return result;
 }
 
-QDomElement Database::_childElement(const QDomElement & parentElement, const QString & tagName) throws(tt3::db::api::DatabaseException)
+auto Database::_childElement(
+        const QDomElement & parentElement,
+        const QString & tagName
+    ) -> QDomElement
 {
     QList<QDomElement> children = _childElements(parentElement, tagName);
     if (children.size() != 1)
@@ -662,7 +656,7 @@ QDomElement Database::_childElement(const QDomElement & parentElement, const QSt
 
 //////////
 //  Validation
-void Database::_validate() throws(tt3::db::api::DatabaseException)
+void Database::_validate()
 {
     QSet<Object*> validatedObjects;
 

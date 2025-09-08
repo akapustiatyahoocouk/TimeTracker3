@@ -102,11 +102,11 @@ namespace tt3::db::api
 
         /// Parses an external form of a database address of this type.
         ///
-        /// @param externalForm
+        /// \param externalForm
         ///     The external form of a database address of this type.
-        /// @return
+        /// \return
         ///     The parsed database address.
-        /// @exception DatabaseException
+        /// \exception DatabaseException
         ///     If the address parsing fails.
         virtual auto    parseDatabaseAddress(
                                 const QString & externalForm
@@ -117,11 +117,11 @@ namespace tt3::db::api
     public:
         /// Creates a new, initially empty, database at the specified address.
         ///
-        /// @param address
+        /// \param address
         ///     The address to create a new database at.
-        /// @return
+        /// \return
         ///     The newly created database (initially empty).
-        /// @exception DatabaseException
+        /// \exception DatabaseException
         ///     If an error occurs.
         virtual auto    createDatabase(
                                 IDatabaseAddress * address
@@ -129,11 +129,11 @@ namespace tt3::db::api
 
         /// Opens an existing database at the specified address.
         ///
-        /// @param address
+        /// \param address
         ///     The address to open an existing database at.
-        /// @return
+        /// \return
         ///     The newly opened database.
-        /// @exception DatabaseException
+        /// \exception DatabaseException
         ///     If an error occurs.
         virtual auto    openDatabase(
                                 IDatabaseAddress * address
@@ -142,9 +142,9 @@ namespace tt3::db::api
         /// Destroys an existing database at the specified address.
         /// The database must not currently be in use.
         ///
-        /// @param address
+        /// \param address
         ///     The address to destroy an existing database at.
-        /// @exception DatabaseException
+        /// \exception DatabaseException
         ///     If an error occurs.
         virtual void    destroyDatabase(
                                 IDatabaseAddress * address

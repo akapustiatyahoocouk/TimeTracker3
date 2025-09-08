@@ -40,42 +40,37 @@ namespace tt3::db::xml
         //  tt3::db::api::IObject (life cycle)
     public:
         virtual void    destroy(
-                            ) throws(tt3::db::api::DatabaseException) override;
+                            ) override;
 
         //////////
         //  tt3::db::api::IAccount (properties)
     public:
         virtual auto    login(
-                            ) const throws(tt3::db::api::DatabaseException)
-                            -> QString override;
+                            ) const -> QString override;
         virtual void    setLogin(
-                                const QString & login) throws(tt3::db::api::DatabaseException
+                                const QString & login
                             ) override;
         virtual auto    passwordHash(
-                            ) const throws(tt3::db::api::DatabaseException)
-                            -> QString override;
+                            ) const -> QString override;
         virtual void    setPassword(
                                 const QString & password
-                            ) throws(tt3::db::api::DatabaseException) override;
+                            ) override;
         virtual auto    capabilities(
-                            ) const throws(tt3::db::api::DatabaseException)
-                            -> tt3::db::api::Capabilities override;
+                            ) const -> tt3::db::api::Capabilities override;
         virtual void    setCapabilities(
                                 tt3::db::api::Capabilities capabilities
-                            ) throws(tt3::db::api::DatabaseException) override;
+                            ) override;
 
         //////////
         //  tt3::db::api::IAccount (associations)
     public:
         virtual auto    user(
-                            ) const throws(tt3::db::api::DatabaseException)
-                            -> tt3::db::api::IUser * override;
+                            ) const -> tt3::db::api::IUser * override;
         virtual auto    quickPickList(
-                            ) const throws(tt3::db::api::DatabaseException)
-                            -> QList<tt3::db::api::IActivity*> override;
+                            ) const -> QList<tt3::db::api::IActivity*> override;
         virtual void    setQuickPickList(
                                 const QList<tt3::db::api::IActivity*> & quickPickList
-                            ) const throws(tt3::db::api::DatabaseException) override;
+                            ) override;
 
         //////////
         //  Implementation
@@ -102,15 +97,17 @@ namespace tt3::db::xml
 
         virtual void    _deserializeProperties(
                                 const QDomElement & objectElement
-                            ) throws(tt3::util::ParseException) override;
+                            ) override; //  throws tt3::util::ParseException
         virtual void    _deserializeAggregations(
                                 const QDomElement & parentElement
-                            ) throws(tt3::util::ParseException) override;
+                            ) override; //  throws tt3::util::ParseException
 
         //////////
         //  Validation
     private:
-        virtual void    _validate(QSet<Object*> & validatedObjects) throws(tt3::db::api::DatabaseException) override;
+        virtual void    _validate(
+                                QSet<Object*> & validatedObjects
+                             ) override; //  throws tt3::db::api::DatabaseException
     };
 }
 

@@ -140,7 +140,7 @@ void Object::removeReference()
 
 //////////
 //  Implementation helpers
-void Object::_ensureLive() const throws (tt3::db::api::DatabaseException)
+void Object::_ensureLive() const
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
 
@@ -174,16 +174,22 @@ void Object::_markDead()
 
 //////////
 //  Serialization
-void Object::_serializeProperties(QDomElement & objectElement)
+void Object::_serializeProperties(
+        QDomElement & objectElement
+    )
 {
     objectElement.setAttribute("OID", tt3::util::toString(_oid));
 }
 
-void Object::_serializeAggregations(QDomElement & /*parentElement*/)
+void Object::_serializeAggregations(
+        QDomElement & /*parentElement*/
+    )
 {   //  Nothing at this level
 }
 
-void Object::_deserializeProperties(const QDomElement & objectElement) throws(tt3::util::ParseException)
+void Object::_deserializeProperties(
+        const QDomElement & objectElement
+    )
 {
     tt3::db::api::Oid oid = tt3::util::fromString<tt3::db::api::Oid>(objectElement.attribute("OID", ""));
     if (oid != _oid)
@@ -192,14 +198,18 @@ void Object::_deserializeProperties(const QDomElement & objectElement) throws(tt
     }
 }
 
-void Object::_deserializeAggregations(const QDomElement & /*parentElement*/) throws(tt3::util::ParseException)
+void Object::_deserializeAggregations(
+        const QDomElement & /*parentElement*/
+    )
 {   //  Nothing at this level
 }
 
 //////////
 //  Validation
-void Object::_validate(QSet<Object*> & validatedObjects) throws(tt3::db::api::DatabaseException)
-{   //  Only validate each object PNCE
+void Object::_validate(
+        QSet<Object*> & validatedObjects
+    )
+{   //  Only validate each object ONCE
     Q_ASSERT(!validatedObjects.contains(this));
     validatedObjects.insert(this);
 

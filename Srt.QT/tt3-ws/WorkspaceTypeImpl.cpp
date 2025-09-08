@@ -34,7 +34,8 @@ WorkspaceTypeImpl::~WorkspaceTypeImpl()
 
 //////////
 //  Operation (general)
-WorkspaceTypeImpl::Mnemonic WorkspaceTypeImpl::mnemonic() const
+auto WorkspaceTypeImpl::mnemonic(
+    ) const -> tt3::util::Mnemonic
 {
     return _databaseType->mnemonic();
 }
@@ -71,7 +72,8 @@ QString WorkspaceTypeImpl::fullStatusReport() const
 
 //////////
 //  Operations (address handling)
-WorkspaceAddress WorkspaceTypeImpl::defaultWorkspaceAddress() const
+auto WorkspaceTypeImpl::defaultWorkspaceAddress(
+    ) const -> WorkspaceAddress
 {
     tt3::db::api::IDatabaseAddress * databaseAddress =
         _databaseType->defaultDatabaseAddress();    //  can return nullptr
@@ -80,7 +82,9 @@ WorkspaceAddress WorkspaceTypeImpl::defaultWorkspaceAddress() const
             nullptr;
 }
 
-WorkspaceAddress WorkspaceTypeImpl::enterNewWorkspaceAddress(QWidget * parent)
+auto WorkspaceTypeImpl::enterNewWorkspaceAddress(
+        QWidget * parent
+    ) -> WorkspaceAddress
 {
     tt3::db::api::IDatabaseAddress * databaseAddress =
         _databaseType->enterNewDatabaseAddress(parent); //  can return nullptr
@@ -89,7 +93,9 @@ WorkspaceAddress WorkspaceTypeImpl::enterNewWorkspaceAddress(QWidget * parent)
             nullptr;
 }
 
-WorkspaceAddress WorkspaceTypeImpl::enterExistingWorkspaceAddress(QWidget * parent)
+auto WorkspaceTypeImpl::enterExistingWorkspaceAddress(
+        QWidget * parent
+    ) -> WorkspaceAddress
 {
     tt3::db::api::IDatabaseAddress * databaseAddress =
         _databaseType->enterExistingDatabaseAddress(parent);    //  can return nullptr
@@ -98,7 +104,9 @@ WorkspaceAddress WorkspaceTypeImpl::enterExistingWorkspaceAddress(QWidget * pare
             nullptr;
 }
 
-WorkspaceAddress WorkspaceTypeImpl::parseWorkspaceAddress(const QString & externalForm) throws(WorkspaceException)
+auto WorkspaceTypeImpl::parseWorkspaceAddress(
+        const QString & externalForm
+    ) -> WorkspaceAddress
 {
     tt3::db::api::IDatabaseAddress * databaseAddress =
         _databaseType->parseDatabaseAddress(externalForm);  //  never nullptr!
@@ -109,10 +117,12 @@ WorkspaceAddress WorkspaceTypeImpl::parseWorkspaceAddress(const QString & extern
 
 //////////
 //  Operations (workspace)
-Workspace WorkspaceTypeImpl::createWorkspace(
-    const WorkspaceAddress & address,
-    const QString & adminUser,
-    const QString adminLogin, const QString & adminPassword) throws(WorkspaceException)
+auto WorkspaceTypeImpl::createWorkspace(
+        const WorkspaceAddress & address,
+        const QString & adminUser,
+        const QString & adminLogin,
+        const QString & adminPassword
+    ) -> Workspace
 {
     if (address == nullptr || address->workspaceType() != this)
     {   //  OOPS! Can't use this address
@@ -157,7 +167,9 @@ Workspace WorkspaceTypeImpl::createWorkspace(
     }
 }
 
-Workspace WorkspaceTypeImpl::openWorkspace(const WorkspaceAddress & address) throws(WorkspaceException)
+auto WorkspaceTypeImpl::openWorkspace(
+        const WorkspaceAddress & address
+    ) -> Workspace
 {
     if (address == nullptr || address->workspaceType() != this)
     {   //  OOPS! Can't use this address
@@ -176,8 +188,9 @@ Workspace WorkspaceTypeImpl::openWorkspace(const WorkspaceAddress & address) thr
 }
 
 void WorkspaceTypeImpl::destroyWorkspace(
-    const Credentials & credentials, const WorkspaceAddress & address)
-    throws(WorkspaceException)
+        const Credentials & credentials,
+        const WorkspaceAddress & address
+    )
 {
     if (address == nullptr || address->workspaceType() != this)
     {   //  OOPS! Can't use this address

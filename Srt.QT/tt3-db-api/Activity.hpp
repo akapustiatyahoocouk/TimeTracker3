@@ -30,110 +30,205 @@ namespace tt3::db::api
         //////////
         //  Operations (properties)
     public:
-        //  Returns/sets the user-readable display name of
-        //  this activity.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the user-readable display name of this activity.
+        /// \return
+        ///     The user-readable display name of this activity.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    displayName(
-                            ) const
-                            throws(DatabaseException)
-                            -> QString = 0;
+                            ) const -> QString = 0;
+
+        /// \brief
+        ///     Sets the user-readable display name of this activity.
+        /// \param displayName
+        ///     The new user-readable display name for this activity.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setDisplayName(
                                 const QString & displayName
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
-        //  Returns/sets the multi-line description of this activity,
-        //  with lines separated by a newline character '\n'.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the multi-line description of this activity.
+        /// \return
+        ///     The multi-line description of this activity,
+        ///     with lines separated by a newline character '\n'.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    description(
-                            ) const
-                            throws(DatabaseException)
-                            -> QString = 0;
+                            ) const -> QString = 0;
+
+        /// \brief
+        ///     Sets the multi-line description of this activity.
+        /// \param description
+        ///     The new multi-line description for this activity,
+        ///     with lines separated by a newline character '\n'.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setDescription(
                                 const QString & description
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
-        //  The optional timeout after which the activity stops
-        //  automatically if the user does nothing at all
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the timeout after which the activity
+        ///     stops automatically if the user does nothing at all.
+        /// \return
+        ///     The timeout after which the activity stops
+        ///     automatically if the user does nothing at
+        ///     all; absent == none.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    timeout(
-                            ) const
-                            throws(DatabaseException)
-                            -> InactivityTimeout = 0;
+                            ) const -> InactivityTimeout = 0;
+
+        /// \brief
+        ///     Sets the timeout after which the activity
+        ///     stops automatically if the user does nothing at all.
+        /// \paeam timeout
+        ///     The new timeout after which the activity stops
+        ///     automatically if the user does nothing at
+        ///     all; absent == none.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setTimeout(
                                 const InactivityTimeout & timeout
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
-        //  True if user must enter a comment when starting this
-        //  activity; this comment will be recorded as an event.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Checks if user must enter a comment when starting this
+        ///     activity.
+        /// \return
+        ///     True if user must enter a comment when starting this
+        ///     activity (this comment will be recorded as an event),
+        ///     false if not.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual bool    requireCommentOnStart(
-                            ) const
-                            throws(DatabaseException) = 0;
+                            ) const = 0;
+
+        /// \brief
+        ///     Specifies whether user must enter a comment when
+        ///     starting this activity.
+        /// \param requireCommentOnStart
+        ///     True if user must enter a comment when starting this
+        ///     activity (this comment will be recorded as an event),
+        ///     false if not.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setRequireCommentOnStart(
                                 bool requireCommentOnStart
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
-        //  True if user must enter a comment when finishing this
-        //  activity; this comment will be recorded as an event.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Checks if user must enter a comment when finishing
+        ///     this activity.
+        /// \return
+        ///     True if user must enter a comment when finishing this
+        ///     activity (this comment will be recorded as an event),
+        ///     false if not.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual bool    requireCommentOnFinish(
-                            ) const throws(DatabaseException) = 0;
+                            ) const = 0;
+
+        /// \brief
+        ///     Specifies if user must enter a comment when finishing
+        ///     this activity.
+        /// \param requireCommentOnFinish
+        ///     True if user must enter a comment when finishing this
+        ///     activity (this comment will be recorded as an event),
+        ///     false if not.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setRequireCommentOnFinish(
                                 bool requireCommentOnFinish
-                            ) throws(DatabaseException) = 0;
+                            ) = 0;
 
-        //  True if a full-screen reminder shall be displayed while
-        //  this activity is being performed.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Checks if a full-screen reminder shall be displayed while
+        ///     this activity is being performed.
+        /// \return
+        ///     True if a full-screen reminder shall be displayed while
+        ///     this activity is being performed, else false.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual bool    fullScreenReminder(
-                            ) const
-                            throws(DatabaseException) = 0;
+                            ) const = 0;
+        /// \brief
+        ///     Specifies if a full-screen reminder shall be displayed while
+        ///     this activity is being performed.
+        /// \param fullScreenReminder
+        ///     True if a full-screen reminder shall be displayed while
+        ///     this activity is being performed, else false.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setFullScreenReminder(
                                 bool fullScreenReminder
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
         //////////
         //  Operations (associations)
     public:
-        //  The type of this Activity, null if not assigned.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the type of this Activity.
+        /// \return
+        ///     The type of this Activity, null == not assigned.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    activityType(
-                            ) const
-                            throws(DatabaseException)
-                            -> IActivityType * = 0;
+                            ) const -> IActivityType * = 0;
+
+        /// \brief
+        ///     Sets the type of this Activity.
+        /// \param activityType
+        ///     The new type for this Activity, null == not assigned.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setActivityType(
                                 IActivityType * activityType
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
-        //  Returns/sets the Workload with which this Activity
-        //  is associated; nullptr == none.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the Workload with which this Activity
+        ///     is associated.
+        /// \return
+        ///     The Workload with which this Activity
+        ///     is associated; nullptr == none.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    workload(
-                            ) const
-                            throws(DatabaseException)
-                            -> IWorkload * = 0;
+                            ) const -> IWorkload * = 0;
+
+        /// \brief
+        ///     Sets the Workload with which this Activity
+        ///     is associated.
+        /// \param workload
+        ///     The Workload with which this Activity is to be
+        ///     associated; nullptr == none.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setWorkload(
                                 IWorkload * workload
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
-        //  Returns the set of all Works logged against this Activity.
-        //  Throws DatabaseException if an error occurs.
-        virtual auto    works() const
-                            throws(DatabaseException)
-                            -> Works = 0;
+        /// \brief
+        ///     Returns the set of all Works logged against this Activity.
+        /// \return
+        ///     The set of all Works logged against this Activity.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        virtual auto    works(
+                            ) const -> Works = 0;
 
-        //  Returns the set of all Events logged against this Activity.
-        //  Throws DatabaseException if an error occurs.
-        virtual auto    events() const
-                            throws(DatabaseException)
-                            -> Events = 0;
+        /// \brief
+        ///     Returns the set of all Events logged against this Activity.
+        /// \return
+        ///     The set of all Events logged against this Activity.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        virtual auto    events(
+                            ) const -> Events = 0;
     };
 }
 

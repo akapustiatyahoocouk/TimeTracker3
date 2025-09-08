@@ -35,33 +35,94 @@ namespace tt3::ws
         //////////
         //  Operations (properties)
     public:
-        //  Returns/sets the login identifier of this account.
-        //  Throws WorkspaceException if an error occurs.
-        QString         login(const Credentials & credentials) const throws(WorkspaceException);
-        void            setLogin(const Credentials & credentials, const QString & login) throws(WorkspaceException);
+        /// \brief
+        ///     Returns the login identifier of this account.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The login identifier of this account.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        login(
+                            const Credentials & credentials
+                        ) const -> QString;
 
-        //  Returns the SHA-1 hash of rhis account's password
-        //  as an uppercase hexstring.
-        //  Throws WorkspaceException if an error occurs.
-        QString         passwordHash(const Credentials & credentials) const throws(WorkspaceException);
+        /// \brief
+        ///     Sets the login identifier of this account.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param login
+        ///     The new login identifier for this account.
+        ///     All Accounts in a Workspace must have different
+        ///     login identifiers.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        setLogin(
+                            const Credentials & credentials,
+                            const QString & login
+                        );
 
-        //  Sets the password of this account.
-        //  Throws WorkspaceException if an error occurs.
-        void            setPassword(const Credentials & credentials, const QString & password) throws(WorkspaceException);
+        /// \brief
+        ///     Returns the SHA-1 hash of this account's password.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The SHA-1 hash of this account's password
+        ///     as an uppercase hexstring.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        passwordHash(
+                            const Credentials & credentials
+                        ) const -> QString;
 
-        //  Returns/sets the capabilities of this account.
-        //  Throws WorkspaceException if an error occurs.
-        Capabilities    capabilities(const Credentials & credentials) const throws(WorkspaceException);
-        void            setCapabilities(const Credentials & credentials, Capabilities capabilities) throws(WorkspaceException);
+        /// \brief
+        ///     Sets the password of this account.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param password
+        ///     The new password for this Account.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        setPassword(
+                            const Credentials & credentials,
+                            const QString & password
+                        );
+
+        /// \brief
+        ///     Returns the capabilities of this account.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The capabilities of this account.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        capabilities(
+                            const Credentials & credentials
+                        ) const -> Capabilities;
+
+        /// \brief
+        ///     Sets the capabilities of this account.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param capabilities
+        ///     The new capabilities for this account.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        setCapabilities(
+                            const Credentials & credentials,
+                            Capabilities capabilities
+                        );
 
         //////////
         //  Operations (associations)
     public:
-        /// Returns the user to whom this account belongs.
-        ///
-        /// @return
+        /// \brief
         ///     Returns the user to whom this account belongs.
-        /// @exception WorkspaceException
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The user to whom this account belongs.
+        /// \exception WorkspaceException
         ///     If an error occurs.
         auto        user(
                             const Credentials & credentials
@@ -72,14 +133,14 @@ namespace tt3::ws
     private:
         tt3::db::api::IAccount *const   _dataAccount;    //  counts as "reference"
 
-        //  Access control - throw WorkspaceException in DB error
-        virtual bool    _canRead(
+        //  Access control
+        virtual bool    _canRead(       //  throws WorkspaceException
                                 const Credentials & credentials
                             ) const override;
-        virtual bool    _canModify(
+        virtual bool    _canModify(     //  throws WorkspaceException
                                 const Credentials & credentials
                             ) const override;
-        virtual bool    _canDestroy(
+        virtual bool    _canDestroy(    //  throws WorkspaceException
                                 const Credentials & credentials
                             ) const override;
         virtual bool    _destroyingLosesAccess(

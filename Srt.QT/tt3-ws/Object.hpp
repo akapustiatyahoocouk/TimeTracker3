@@ -39,7 +39,7 @@ namespace tt3::ws
         /// Returns the type of this workspace object.
         /// Can be safely obtained for both live and dead objects.
         ///
-        /// @return
+        /// \return
         ///     The type of this workspace object
         auto        type(
                         ) const -> ObjectType *;
@@ -47,7 +47,7 @@ namespace tt3::ws
         /// Returns the workspace where the corresponding object
         /// resides (if live) or used to reside (if dead).
         ///
-        /// @return
+        /// \return
         ///     The workspace where this object resides or used to reside.
         auto        workspace(
                         ) const -> Workspace;
@@ -55,7 +55,7 @@ namespace tt3::ws
         /// Returns the OID of the corresponding object.
         /// Can be safely obtained for both live and dead objects.
         ///
-        /// @return
+        /// \return
         ///     The OID of the corresponding object
         Oid         oid() const;
 
@@ -66,30 +66,71 @@ namespace tt3::ws
         //////////
         //  Operations (life cycle)
     public:
-        //  Destroys this object, delete-cascading
-        //  as necessary. The instance (and all other
-        //  delete-cascadedinstances) is marked as
-        //  "reoresenting a dead object" and,
-        //  therefore, unusable.
-        //  Throws WorkspaceException if an error occurs.
+        /// \brief
+        ///     Destroys this object, delete-cascading
+        ///     as necessary.
+        /// \details
+        ///     The instance (and all other delete-cascaded
+        ///     instances) is marked as "reoresenting a dead
+        ///     object" and, therefore, unusable.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
         void        destroy(
                             const Credentials & credentials
-                        ) throws(WorkspaceException);
+                        );
 
         //////////
         //  Operations (access control)
     public:
-        //  Checks whether the specifid credentials allow the
-        //  corresponding operations to be performed on this object
+        /// \brief
+        ///     Checks whether the specifid credentials allow the
+        ///     "read" operations to be performed on this object.
+        /// \details
+        ///     These are operations that examine the object's state.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     True the specifid credentials allow the "read"
+        ///     operations to be performed on this object, else false.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
         bool        canRead(
                             const Credentials & credentials
-                        ) const throws(WorkspaceException);
+                        ) const;
+
+        /// \brief
+        ///     Checks whether the specifid credentials allow the
+        ///     "modify" operations to be performed on this object.
+        /// \details
+        ///     These are operations that modify the object's state.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     True the specifid credentials allow the "modify"
+        ///     operations to be performed on this object, else false.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
         bool        canModify(
                             const Credentials & credentials
-                        ) const throws(WorkspaceException);
+                        ) const;
+
+        /// \brief
+        ///     Checks whether the specifid credentials allow the
+        ///     "destroy" operations to be performed on this object.
+        /// \details
+        ///     These are operations that destroy the object.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     True the specifid credentials allow the "destroy"
+        ///     operations to be performed on this object, else false.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
         bool        canDestroy(
                             const Credentials & credentials
-                        ) const throws(WorkspaceException);
+                        ) const;
 
         //////////
         //  Implementation
@@ -98,16 +139,17 @@ namespace tt3::ws
         tt3::db::api::IObject *const    _dataObject;    //  counts as "reference"
 
         //  Helpers
-        void            _ensureLive() const throws(WorkspaceException);
+        void            _ensureLive(    //  throws WorkspaceException
+                            ) const;
 
-        //  Access control - throw WorkspaceException in DB error
-        virtual bool    _canRead(
+        //  Access control
+        virtual bool    _canRead(       //  throws WorkspaceException
                                 const Credentials & credentials
                             ) const = 0;
-        virtual bool    _canModify(
+        virtual bool    _canModify(     //  throws WorkspaceException
                                 const Credentials & credentials
                             ) const = 0;
-        virtual bool    _canDestroy(
+        virtual bool    _canDestroy(    //  throws WorkspaceException
                                 const Credentials & credentials
                             ) const = 0;
         virtual bool    _destroyingLosesAccess(

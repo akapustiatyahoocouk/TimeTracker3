@@ -76,7 +76,7 @@ bool WorkspaceImpl::isOpen() const
     return _database != nullptr;
 }
 
-void WorkspaceImpl::close() throws(WorkspaceException)
+void WorkspaceImpl::close()
 {
     tt3::util::Lock lock(_guard);
 
@@ -102,7 +102,9 @@ void WorkspaceImpl::close() throws(WorkspaceException)
 
 //////////
 //  Operations (associations)
-Users WorkspaceImpl::users(const Credentials & credentials) const throws(WorkspaceException)
+auto WorkspaceImpl::users(
+        const Credentials & credentials
+    ) const -> Users
 {
     tt3::util::Lock lock(_guard);
     _ensureOpen();  //  may throw TODO add similar comment to all calls of throwing private methods
@@ -139,7 +141,9 @@ Users WorkspaceImpl::users(const Credentials & credentials) const throws(Workspa
 //  TODO implement ActivityTypes WorkspaceImpl::activityTypes(const Credentials & credentials) const throws(WorkspaceException);
 //////////
 //  Operations (access control)
-bool WorkspaceImpl::canAccess(const Credentials & credentials) const throws(WorkspaceException)
+bool WorkspaceImpl::canAccess(
+        const Credentials & credentials
+    ) const
 {
     tt3::util::Lock lock(_guard);
     _ensureOpen();
@@ -159,7 +163,9 @@ bool WorkspaceImpl::canAccess(const Credentials & credentials) const throws(Work
     }
 }
 
-Capabilities WorkspaceImpl::capabilities(const Credentials & credentials) const throws(WorkspaceException)
+auto WorkspaceImpl::capabilities(
+        const Credentials & credentials
+    ) const -> Capabilities
 {
     tt3::util::Lock lock(_guard);
     _ensureOpen();
@@ -174,7 +180,10 @@ Capabilities WorkspaceImpl::capabilities(const Credentials & credentials) const 
     }
 }
 
-bool WorkspaceImpl::grantsCapability(const Credentials & credentials, Capabilities requiredCapability) const throws(WorkspaceException)
+bool WorkspaceImpl::grantsCapability(
+        const Credentials & credentials,
+        Capabilities requiredCapability
+    ) const
 {
     tt3::util::Lock lock(_guard);
     _ensureOpen();
@@ -209,7 +218,9 @@ bool WorkspaceImpl::grantsCapability(const Credentials & credentials, Capabiliti
     }
 }
 
-Account WorkspaceImpl::tryLogin(const Credentials & credentials) const throws(WorkspaceException)
+auto WorkspaceImpl::tryLogin(
+        const Credentials & credentials
+    ) const -> Account
 {
     tt3::util::Lock lock(_guard);
     _ensureOpen();
@@ -230,12 +241,14 @@ Account WorkspaceImpl::tryLogin(const Credentials & credentials) const throws(Wo
 
 //////////
 //  Operations (life cycle)
-User WorkspaceImpl::createUser(
-    const Credentials & credentials,
-    bool enabled, const QStringList & emailAddresses,
-    const QString & realName,
-    const InactivityTimeout & inactivityTimeout,
-    const UiLocale & uiLocale) throws(WorkspaceException)
+auto WorkspaceImpl::createUser(
+        const Credentials & credentials,
+        bool enabled,
+        const QStringList & emailAddresses,
+        const QString & realName,
+        const InactivityTimeout & inactivityTimeout,
+        const UiLocale & uiLocale
+    ) -> User
 {
     tt3::util::Lock lock(_guard);
     _ensureOpen();
@@ -264,7 +277,7 @@ User WorkspaceImpl::createUser(
 
 //////////
 //  Implementation helpers
-void WorkspaceImpl::_ensureOpen() const throws(WorkspaceException)
+void WorkspaceImpl::_ensureOpen() const
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
 
@@ -292,7 +305,9 @@ void WorkspaceImpl::_markClosed()
     //  TODO uncomment & fix the bug emit workspaceClosed(WorkspacePtr(this));
 }
 
-Capabilities WorkspaceImpl::_validateAccessRights(const Credentials & credentials) const throws(WorkspaceException)
+auto WorkspaceImpl::_validateAccessRights(
+        const Credentials & credentials
+    ) const -> Capabilities
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
     Q_ASSERT(_database != nullptr); //  i.e. workspace is "open"

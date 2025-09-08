@@ -39,58 +39,97 @@ namespace tt3::db::api
         //////////
         //  Operations (properties)
     public:
-        //  Returns/sets the user-readable display name of
-        //  this beneficiary.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the user-readable display name of this beneficiary.
+        /// \return
+        ///     The user-readable display name of this beneficiary.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    displayName(
-                            ) const
-                            throws(DatabaseException)
-                            -> QString = 0;
+                            ) const -> QString = 0;
+
+        /// \brief
+        ///     Sets the user-readable display name of this beneficiary.
+        /// \param displayName
+        ///     The new user-readable display name for this beneficiary.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setDisplayName(
                                 const QString & displayName
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
-        //  Returns/sets the multi-line description of this
-        //  beneficiary, with lines separated by a newline
-        //  character '\n'.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the multi-line description of this Beneficiary.
+        /// \return
+        ///     The multi-line description of this Beneficiary, with
+        ///     lines separated by a newline character '\n'.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    description(
-                            ) const
-                            throws(DatabaseException)
-                            -> QString = 0;
+                            ) const -> QString = 0;
+
+        /// \brief
+        ///     Sets the multi-line description of this Beneficiary.
+        /// \param description
+        ///     The new multi-line description of this Beneficiary, with
+        ///     lines separated by a newline character '\n'.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setDescription(
                                 const QString & description
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
         //////////
         //  Operations (associations)
     public:
-        //  Returns/sets the set of all workloads associated with
-        //  this beneficiary.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the set of all workloads associated with
+        ///     this Beneficiary.
+        /// \return
+        ///     The set of all workloads associated with
+        ///     this Beneficiary.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    workloads(
-                            ) const
-                            throws(DatabaseException)
-                            -> Workloads = 0;
+                            ) const -> Workloads = 0;
+
+        /// \brief
+        ///     Sets the set of all workloads associated with
+        ///     this Beneficiary.
+        /// \param workloads
+        ///     The new set of all workloads to associate with
+        ///     this Beneficiary.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setWorkloads(
                                 const Workloads & workloads
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
-        //  Adds/removes the specified Workload to/from the
-        //  set of Workloads associated with this Beneficiary;
-        //  has no effect if already there/not there.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Adds the specified Workload to the set of
+        ///     Workloads associated with this Beneficiary;
+        /// \details
+        ///     Has no effect if already there.
+        /// \param workload
+        ///     The workload to add.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    addWorkload(
                                 IWorkload * workload
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
+
+        /// \brief
+        ///     Removes the specified Workload from the set of
+        ///     Workloads associated with this Beneficiary;
+        /// \details
+        ///     Has no effect if already not there.
+        /// \param workload
+        ///     The workload to remove.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    removeWorkload(
                                 IWorkload * workload
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
     };
 }
 

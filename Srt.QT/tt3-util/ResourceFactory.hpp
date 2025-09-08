@@ -102,9 +102,9 @@ namespace tt3::util
         //////////
         //  Construction/destruction
     protected:
-        /// @brief
+        /// \brief
         ///     The class constructor.
-        /// @param baseFileName
+        /// \param baseFileName
         ///     The "base" name of the resource file.
         ///     Locale-specific variants will be constructed automatically
         ///     by appending the language and countrycodes to the base file
@@ -113,7 +113,7 @@ namespace tt3::util
                 const QString & baseFileName
             );
 
-        /// @brief
+        /// \brief
         ///     The class destructor.
         virtual ~FileResourceFactory();
 

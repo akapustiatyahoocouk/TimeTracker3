@@ -18,7 +18,8 @@
 namespace tt3::ws
 {
     //  A generic access control principal
-    class TT3_WS_PUBLIC PrincipalImpl : public ObjectImpl
+    class TT3_WS_PUBLIC PrincipalImpl :
+        public ObjectImpl
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PrincipalImpl)
 
@@ -34,17 +35,67 @@ namespace tt3::ws
         //////////
         //  Operations (properties)
     public:
-        //  Checks/sets whether this Principal is "enabled". "Disabled"
-        //  Principals do not exist as far as access control is concerned.
-        //  Throws WorkspaceException if an error occurs.
-        bool            enabled(const Credentials & credentials) const throws(WorkspaceException);
-        void            setEnabled(const Credentials & credentials, bool enabled) throws(WorkspaceException);
+        /// \brief
+        ///     Checks whether this Principal is "enabled".
+        /// \details
+        ///     "Disabled" Principals do not exist as far as
+        ///     access control is concerned.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     True if this Principal is "enabled", false
+        ///     if "disabled".
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        bool        enabled(
+                            const Credentials & credentials
+                        ) const;
 
-        //  Returns/sets the list of e-mail addresses
-        //  associated with this Principal.
-        //  Throws WorkspaceException if an error occurs.
-        QStringList     emailAddresses(const Credentials & credentials) const throws(WorkspaceException);
-        void            setEmailAddresses(const Credentials & credentials, const QStringList & emailAddresses) throws(WorkspaceException);
+        /// \brief
+        ///     Enables or disables this Principal is "enabled".
+        /// \details
+        ///     "Disabled" Principals do not exist as far as
+        ///     access control is concerned.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param enabled
+        ///     True to make this Principal "enabled", false
+        ///     to make it "disabled".
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        setEnabled(
+                            const Credentials & credentials,
+                            bool enabled
+                        );
+
+        /// \brief
+        ///     Returns the list of e-mail addresses
+        ///     associated with this Principal.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The list of e-mail addresses associated
+        ///     with this Principal.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        emailAddresses(
+                            const Credentials & credentials
+                        ) const -> QStringList;
+
+        /// \brief
+        ///     Sets the list of e-mail addresses
+        ///     associated with this Principal.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param emailAddresses
+        ///     The new list of e-mail addresses to associate
+        ///     with this Principal.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        setEmailAddresses(
+                            const Credentials & credentials,
+                            const QStringList & emailAddresses
+                        );
 
         //////////
         //  Implementation

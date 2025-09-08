@@ -38,38 +38,55 @@ namespace tt3::ws
         //////////
         //  Operation (general)
     public:
-        using Mnemonic = tt3::util::Mnemonic;
-
         //  The mnemonic identifier of this workspace type
-        Mnemonic    mnemonic() const;
+        auto        mnemonic(
+                        ) const -> tt3::util::Mnemonic;
 
         //  The user-readable display name of this workspace type
-        QString     displayName() const;
+        auto        displayName(
+                        ) const -> QString;
 
         //  The small (16x16) icon representing this workspace type.
-        QIcon       smallIcon() const;
+        auto        smallIcon(
+                        ) const -> QIcon;
 
         //  The large (32x32) icon representing this workspace type.
-        QIcon       largeIcon() const;
+        auto        largeIcon(
+                        ) const -> QIcon;
 
         //  Checks whether this workspace type is "operational"
         //  (i.e. can be used).
-        bool        isOperational() const;
+        bool        isOperational(
+                        ) const;
 
         //  The short (1 line) status report for this workspace type.
-        QString     shortStatusReport() const;
+        auto        shortStatusReport(
+                        ) const -> QString;
 
         //  The long (multi-line) status report for this workspace type.
         //  Lines are separated by newline ('\n') character.
-        QString     fullStatusReport() const;
+        auto        fullStatusReport(
+                        ) const -> QString;
 
         //  The validator for workspaces of this type
-        Validator * validator() const { return const_cast<Validator*>(&_validator); }
+        auto        validator(
+                        ) const -> Validator *
+        {
+            return const_cast<Validator*>(&_validator);
+        }
 
         //////////
         //  Operations (address handling)
     public:
-        WorkspaceAddress    defaultWorkspaceAddress() const;
+        /// \brief
+        ///     If this workspace type has a concept of a "default"
+        ///     workspace, returns its address, else returns nullptr.
+        /// \return
+        ///     The address of the "default" workspace of this type;
+        ///     nullptr if this workspace type has no concept of
+        ///     a "default" workspace.
+        auto        defaultWorkspaceAddress(
+                        ) const -> WorkspaceAddress;
 
         //  Prompts the user to interactively specify an address for a new
         //  workspace of this type, using the specified widget as a parent
@@ -85,32 +102,75 @@ namespace tt3::ws
         //  workspace address if the user has chosen to cancel the dialog.
         WorkspaceAddress    enterExistingWorkspaceAddress(QWidget * parent);
 
-        //  Parses an external form of a workspace address of this type.
-        //  Returns the parsed workspace address or throws WorkspaceException if
-        //  the address parsing fails for some reason
-        WorkspaceAddress    parseWorkspaceAddress(const QString & externalForm) throws(WorkspaceException);
+        /// \brief
+        ///     Parses an external form of a workspace address of this type.
+        /// \param externalForm
+        ///     An external form of a workspace address of this type.
+        /// \return
+        ///     The parsed workspace address.
+        /// \exception WorkspaceException
+        ///     If address parsing fails for some reason.
+        auto        parseWorkspaceAddress(
+                            const QString & externalForm
+                        ) -> WorkspaceAddress;
 
         //////////
         //  Operations (workspace)
     public:
-        //  Creates a new workspace of this type at the specigied
-        //  address, with  a single administrator user and account.
-        //  Throws WorkspaceException if an error occurs.
-        Workspace           createWorkspace(const WorkspaceAddress & address,
-                                     const QString & adminUser,
-                                     const QString adminLogin, const QString & adminPassword) throws(WorkspaceException);
+        /// \brief
+        ///     Creates a new workspace of this type at the specified address.
+        /// \details
+        ///     The newly created Worspace has a single administrator user
+        ///     and account.
+        /// \param address
+        ///     The address for the new Workspace; must be of this type.
+        /// \param adminUser
+        ///     The "real name" for the admin User for the new Workspace.
+        /// \param adminLogin
+        ///     The login for the admin Account for the new Workspace.
+        /// \param adminPassword
+        ///     The password for the admin Account for the new Workspace.
+        /// \return
+        ///     The newly created Workspace.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        createWorkspace(
+                            const WorkspaceAddress & address,
+                            const QString & adminUser,
+                            const QString & adminLogin,
+                            const QString & adminPassword
+                        ) -> Workspace;
 
-        //  Opens an existing workspace at the specified address.
-        //  Throws WorkspaceException if an error occurs.
-        Workspace           openWorkspace(const WorkspaceAddress & address) throws(WorkspaceException);
+        /// \brief
+        ///     Opens an existing workspace at the specified address.
+        /// \param address
+        ///     The address of an existing Workspace; must be of this type.
+        /// \return
+        ///     The newly open Workspace.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        openWorkspace(
+                            const WorkspaceAddress & address
+                        ) -> Workspace;
 
-        //  Destroys an existing workspace at the specified address.
-        //  The workspace must not currently be in use.
-        //  Throws WorkspaceException if an error occurs.
-        //  IMPORTANT: The specified credentials must permit Administrator
-        //  access to the workspace in question, or the workspace destruction
-        //  will fail wth an AccessDeniedException!
-        void                destroyWorkspace(const Credentials & credentials, const WorkspaceAddress & address) throws(WorkspaceException);
+        /// \brief
+        ///     Destroys an existing workspace at the specified address.
+        /// \details
+        ///     The workspace must not currently be in use.
+        ///     IMPORTANT: The specified credentials must permit Administrator
+        ///     access to the workspace in question, or the workspace destruction
+        ///     will fail wth an AccessDeniedException!
+        /// \param credentials
+        ///     The credentials that must grant an Administrator capability
+        ///     for the destroyed Workspace (or else its destruction will fail).
+        /// \param address
+        ///     The address of an existing Workspace; must be of this type.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        destroyWorkspace(
+                            const Credentials & credentials,
+                            const WorkspaceAddress & address
+                        );
 
         //////////
         //  Implementation

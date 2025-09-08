@@ -37,9 +37,7 @@ ActivityTypeImpl::~ActivityTypeImpl()
 //  Operations (properties)
 auto ActivityTypeImpl::displayName(
         const Credentials & /*credentials*/
-    ) const
-    throws(WorkspaceException)
-    -> QString
+    ) const -> QString
 {
     throw CustomWorkspaceException("Not yet implemented");
 }
@@ -48,16 +46,13 @@ void ActivityTypeImpl::setDisplayName(
         const Credentials & /*credentials*/,
         const QString & /*displayName*/
     )
-    throws(WorkspaceException)
 {
     throw CustomWorkspaceException("Not yet implemented");
 }
 
 auto ActivityTypeImpl::description(
         const Credentials & /*credentials*/
-    ) const
-    throws(WorkspaceException)
-    -> QString
+    ) const -> QString
 {
     throw CustomWorkspaceException("Not yet implemented");
 }
@@ -66,7 +61,6 @@ void ActivityTypeImpl::setDescription(
         const Credentials & /*credentials*/,
         const QString & /*description*/
     )
-    throws(WorkspaceException)
 {
     throw CustomWorkspaceException("Not yet implemented");
 }
@@ -75,9 +69,7 @@ void ActivityTypeImpl::setDescription(
 //  Operations (associations)
 auto ActivityTypeImpl::activities(
         const Credentials & /*credentials*/
-    ) const
-    throws(WorkspaceException)
-    -> Activities
+    ) const -> Activities
 {
     throw CustomWorkspaceException("Not yet implemented");
 }
@@ -87,7 +79,6 @@ auto ActivityTypeImpl::activities(
 bool ActivityTypeImpl::_canRead(
         const Credentials & /*credentials*/
     ) const
-    throws(WorkspaceException)
 {
     throw CustomWorkspaceException("Not yet implemented");
 }
@@ -95,7 +86,6 @@ bool ActivityTypeImpl::_canRead(
 bool ActivityTypeImpl::_canModify(
         const Credentials & /*credentials*/
     ) const
-    throws(WorkspaceException)
 {
     throw CustomWorkspaceException("Not yet implemented");
 }
@@ -103,7 +93,6 @@ bool ActivityTypeImpl::_canModify(
 bool ActivityTypeImpl::_canDestroy(
         const Credentials & /*credentials*/
     ) const
-    throws(WorkspaceException)
 {
     throw CustomWorkspaceException("Not yet implemented");
 }

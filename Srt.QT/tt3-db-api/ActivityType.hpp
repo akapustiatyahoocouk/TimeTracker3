@@ -39,39 +39,59 @@ namespace tt3::db::api
         //////////
         //  Operations (properties)
     public:
-        //  Returns/sets the user-readable display name of
-        //  this activity type.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the user-readable display name of
+        ///     this activity type.
+        /// \return
+        ///     The user-readable display name of this activity type.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    displayName(
-                            ) const
-                            throws(DatabaseException)
-                            -> QString = 0;
+                            ) const -> QString = 0;
+
+        /// \brief
+        ///     Sets the user-readable display name of
+        ///     this activity type.
+        /// \param displayName
+        ///     The new user-readable display name for this activity type.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setDisplayName(
                                 const QString & displayName
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
-        //  Returns/sets the multi-line description of this activity
-        //  type, with lines separated by a newline character '\n'.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the multi-line description of this activity type.
+        /// \return
+        ///     The multi-line description of this activity type,
+        ///     with lines separated by a newline character '\\n'.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    description(
-                            ) const
-                            throws(DatabaseException)
-                            -> QString = 0;
+                            ) const -> QString = 0;
+
+        /// \brief
+        ///     Sets the multi-line description of this activity type.
+        /// \param description
+        ///     The new multi-line description for this activity type,
+        ///     with lines separated by a newline character '\\n'.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setDescription(
                                 const QString & description
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
         //////////
         //  Operations (associations)
     public:
-        //  The set of all activities assigned to this activity type.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the set of all activities assigned to this activity type.
+        /// \return
+        ///     The set of all activities assigned to this activity type.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    activities(
-                            ) const
-                            throws(DatabaseException)
-                            -> Activities = 0;
+                            ) const -> Activities = 0;
     };
 }
 

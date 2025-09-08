@@ -65,90 +65,152 @@ namespace tt3::ws
 
         /// Closes this Workspace; has no effect if already closed.
         ///
-        /// @exception WorkspaceException
+        /// \exception WorkspaceException
         ///     If an error occurs.
         void        close();
 
         //////////
         //  Operations (associations)
     public:
-        //  The set of all users in this workspace.
-        //  Throws WorkspaceException if an error occurs.
+        /// \brief
+        ///     Returns the set of all users in this workspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all users in this workspace.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
         auto        users(
                             const Credentials & credentials
-                        ) const
-                        throws(WorkspaceException)
-                        -> Users;
+                        ) const -> Users;
 
-        //  The set of all accounts of all users in this workspace.
-        //  Throws WorkspaceException if an error occurs.
+        /// \brief
+        ///     Returns the set of all accounts of all users in this workspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all accounts of all users in this workspace.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
         auto        accounts(
                             const Credentials & credentials
-                        ) const
-                        throws(WorkspaceException)
-                        -> Accounts;
+                        ) const -> Accounts;
 
-        //  The account with the specified login.
-        //  Throws WorkspaceException if an error occurs.
+        /// \brief
+        ///     Finds the account with the specified login.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param login
+        ///     The login to look for.
+        /// \return
+        ///     The account with the specified login or
+        ///     nullptr if not found.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
         auto        findAccount(
                             const Credentials & credentials,
                             const QString & login
-                        ) const
-                        throws(WorkspaceException)
-                        -> Account;
+                        ) const -> Account;
 
-        //  The set of all activity types in this workspace.
-        //  Throws WorkspaceException if an error occurs.
+        /// \brief
+        ///     Returns the set of all activity types in this workspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all activity types in this workspace.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
         auto        activityTypes(
                             const Credentials & credentials
-                        ) const
-                        throws(WorkspaceException)
-                        -> ActivityTypes;
+                        ) const -> ActivityTypes;
 
         //////////
         //  Operations (access control)
     public:
-        //  Checks whether the specified Credentials allow ANY kind of
-        //  access to this woirkspace
-        //  Throws WorkspaceException if an error occurs.
+        /// \brief
+        ///     Checks whether the specified Credentials allow ANY kind of
+        ///     access to this woirkspace.
+        /// \param credentials
+        ///     The credentials to validate.
+        /// \return
+        ///     True if the specified Credentials allow ANY kind of
+        ///     access to this woirkspace, else false.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
         bool        canAccess(
                             const Credentials & credentials
-                        ) const
-                        throws(WorkspaceException);
+                        ) const;
 
-        //  Returns the capabilities that the specified credentials grant
-        //  for this workspace. If none, returns Capabilities::None.
-        //  Throws WorkspaceException if an error occurs.
+        /// \brief
+        ///     Returns the capabilities that the specified credentials grant
+        ///     for this workspace.
+        /// \param credentials
+        ///     The credentials to validate.
+        /// \return
+        ///     The capabilities that the specified credentials grant
+        ///     for this workspace. If none, returns Capabilities::None.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
         auto        capabilities(
                             const Credentials & credentials
-                        ) const
-                        throws(WorkspaceException)
-                        -> Capabilities;
+                        ) const -> Capabilities;
 
-        //  Checks if the specified credentials grant all of the
-        //  the specified capability within this workspace.
-        //  IMPORTANT: Only a single capability flag can be checked
-        //  for, not a combination of them
+        /// \brief
+        ///     Checks if the specified credentials grant
+        ///     the specified capability within this workspace.
+        /// \details
+        ///     IMPORTANT: Only a single capability flag can be checked
+        //      for, not a combination of them
+        /// \param credentials
+        ///     The credentials to check.
+        /// \param requiredCapability
+        ///     The required capability.
+        /// \return
+        ///     True if the specified credentials grant the specified
+        ///     capability within this workspace, false if not.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
         bool        grantsCapability(
                             const Credentials & credentials,
                             Capabilities requiredCapability
-                        ) const
-                        throws(WorkspaceException);
+                        ) const;
 
-        //  If there exists an a) enabled account b) of an
-        //  enabled user c) with the spcified credentials,
-        //  returns it; otherwise returns nullptr.
+        /// \brief
+        ///     If there exists an a) enabled account b) of an
+        ///     enabled user c) with the spcified credentials,
+        ///     returns it; otherwise returns nullptr.
+        /// \param credentials
+        ///     The credentials to perform the check for.
+        /// \return
+        ///     The enabled Account of an enabled User which matches
+        ///     the specified Credentials; nullptr if not found.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
         auto        tryLogin(
                             const Credentials & credentials
-                        ) const
-                        throws(WorkspaceException)
-                        -> Account;
+                        ) const -> Account;
 
         //////////
         //  Operations (life cycle)
     public:
-        //  Creates a new User in this database.
-        //  Throws WorkspaceException if an error occurs.
+        /// \brief
+        ///     Creates a new User in this workspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param enabled
+        ///     True to create initially enabled User, false for disabled.
+        /// \param emailAddresses
+        ///     The list of e-mail addresses for the new User.
+        /// \param realName
+        ///     The "real name" for the new User.
+        /// \param inactivityTimeout
+        ///     The inactivity timeout for the new User; absent == default.
+        /// \param uiLocale
+        ///     The preferred UI locale for the new User; absent == default.
+        /// \return
+        ///     The newly created User.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
         auto        createUser(
                             const Credentials & credentials,
                             bool enabled,
@@ -156,29 +218,44 @@ namespace tt3::ws
                             const QString & realName,
                             const InactivityTimeout & inactivityTimeout,
                             const UiLocale & uiLocale
-                        )
-                        throws(WorkspaceException)
-                        -> User;
+                        ) -> User;
 
         //////////
         //  Signals
+        //  Clients are encourated to use "queued" connections.
     signals:
-        //  Emitted after the workspace is closed.
+        /// \brief
+        ///     Emitted after the workspace is closed.
+        /// \param notification
+        ///     The object specifying the source and details
+        ///     of the changes made to a Workspace.
         void        workspaceClosed(
                             WorkspaceClosedNotification notification
                         );
 
-        //  Emitted after a new object is created
+        /// \brief
+        ///     Emitted after a new object is created
+        /// \param notification
+        ///     The object specifying the source and details
+        ///     of the changes made to a Workspace.
         void        objectCreated(
                             ObjectCreatedNotification notification
                         );
 
-        //  Emitted after an object is destroyed
+        /// \brief
+        ///     Emitted after an object is destroyed
+        /// \param notification
+        ///     The object specifying the source and details
+        ///     of the changes made to a Workspace.
         void        objectDestroyed(
                             ObjectDestroyedNotification notification
                         );
 
-        //  Emitted after an object is modified
+        /// \brief
+        ///     Emitted after an object is modified
+        /// \param notification
+        ///     The object specifying the source and details
+        ///     of the changes made to a Workspace.
         void        objectModified(
                             ObjectModifiedNotification notification
                         );
@@ -200,26 +277,21 @@ namespace tt3::ws
         mutable QMap<Oid, Object>   _proxyCache;
 
         //  Helpers
-        void        _ensureOpen() const throws(WorkspaceException);
+        void        _ensureOpen() const;    //  throws WorkspaceException
         void        _markClosed();
-        auto        _validateAccessRights(
+        auto        _validateAccessRights(  //  throws WorkspaceException
                             const Credentials & credentials
-                        ) const
-                        throws(WorkspaceException)
-                        -> Capabilities;
+                        ) const -> Capabilities;
 
-        auto        _getProxy(
+        auto        _getProxy(  //  throws WorkspaceException
                             tt3::db::api::IUser * dataUser
-                        ) const
-                        -> User;
-        auto        _getProxy(
+                        ) const -> User;
+        auto        _getProxy(  //  throws WorkspaceException
                             tt3::db::api::IAccount * dataAccount
-                        ) const
-                        -> Account;
-        auto        _getProxy(
+                        ) const -> Account;
+        auto        _getProxy(  //  throws WorkspaceException
                             tt3::db::api::IActivityType * dataActivityType
-                            ) const
-                        -> ActivityType;
+                        ) const -> ActivityType;
 
         //////////
         //  Event handlers
@@ -274,14 +346,19 @@ namespace tt3::ws
 
         //////////
         //  Signals
+        //  Clients are encourated to use "queued" connections.
     signals:
-        //  Emitted after the current workspace has changed.
+        /// \brief
+        ///     Emitted after the current workspace has changed.
+        /// \param before
+        ///     The workspace "current" before the change, nullptr == none.
+        /// \param after
+        ///     The workspace "current" after the change, nullptr == none.
         void        changed(Workspace before, Workspace after);
 
         //////////
         //  Implementation
     private:
-        static std::atomic<int>     _instanceCount; //  ...to disallow a second instance
         struct _Impl;
 
         //  Helpers

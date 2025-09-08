@@ -35,54 +35,145 @@ namespace tt3::ws
         //////////
         //  Operations (properties)
     public:
-        //  Returns/sets the "real name" of this User.
-        //  Throws WorkspaceException if an error occurs.
-        QString             realName(const Credentials & credentials) const throws(WorkspaceException);
-        void                setRealName(const Credentials & credentials, const QString & realName) throws(WorkspaceException);
+        /// \brief
+        ///     Returns the "real name" of this User.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The "real name" of this User.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        realName(
+                            const Credentials & credentials
+                        ) const -> QString;
 
-        //  Returns/sets the "inactivity timeout" of this User.
-        //  This is the timeout after which, if the user does nothing,
-        //  the "current" Activity is automatically stopped.
-        //  Throws WorkspaceException if an error occurs.
-        InactivityTimeout   inactivityTimeout(const Credentials & credentials) const throws(WorkspaceException);
-        void                setInactivityTimeout(const Credentials & credentials, const InactivityTimeout & inactivityTimeout) throws(WorkspaceException);
+        /// \brief
+        ///     Sets the "real name" of this User.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param realName
+        ///     The new "real name" for this User.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        setRealName(
+                            const Credentials & credentials,
+                            const QString & realName
+                        );
 
-        //  Returns/sets the preferred UI locale  of this User.
-        //  Throws WorkspaceException if an error occurs.
-        UiLocale            uiLocale(const Credentials & credentials) const throws(WorkspaceException);
-        void                setUiLocale(const Credentials & credentials, const UiLocale & uiLocale) throws(WorkspaceException);
+        /// \brief
+        ///     Returns the "inactivity timeout" of this User.
+        /// \details
+        ///     This is the timeout after which, if the user does nothing,
+        ///     the "current" Activity is automatically stopped.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The "inactivity timeout" of this User; absent == none.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        inactivityTimeout(
+                            const Credentials & credentials
+                        ) const -> InactivityTimeout;
+
+        /// \brief
+        ///     Sets the "inactivity timeout" of this User.
+        /// \details
+        ///     This is the timeout after which, if the user does nothing,
+        ///     the "current" Activity is automatically stopped.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param inactivityTimeout
+        ///     The new "inactivity timeout" for this User; absent == none.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        setInactivityTimeout(
+                            const Credentials & credentials,
+                            const InactivityTimeout & inactivityTimeout
+                        );
+
+        /// \brief
+        ///     Returns the preferred UI locale  of this User.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The preferred UI locale  of this User; absent == use system.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        uiLocale(
+                            const Credentials & credentials
+                        ) const -> UiLocale;
+
+        /// \brief
+        ///     Sets the preferred UI locale  of this User.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param uiLocale
+        ///     The new preferred UI locale  of this User; absent == use system.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        setUiLocale(
+                            const Credentials & credentials,
+                            const UiLocale & uiLocale
+                        );
 
         //////////
         //  Operations (associations)
     public:
-        //  Returns the set of all Accounts of this User.
-        //  Throws WorkspaceException if an error occurs.
-        Accounts            accounts(const Credentials & credentials) const throws(WorkspaceException);
+        /// \brief
+        ///     Returns the set of all Accounts of this User.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all Accounts of this User.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        accounts(
+                            const Credentials & credentials
+                        ) const -> Accounts;
 
         //////////
         //  Operations (life cycle)
     public:
-        //  Creates a new Account for this User.
-        //  All Accounts in a database must have different lohins.
-        //  Throws WorkspaceException if an error occurs.
-        Account             createAccount(const Credentials & credentials,
-                                bool enabled, const QStringList & emailAddresses,
-                                const QString & login, const QString & password,
-                                Capabilities capabilities) throws(WorkspaceException);
+        /// \brief
+        ///     Creates a new Account for this User.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param enabled
+        ///     True if the new Account shall be created as "enabled",
+        ///     false for "disabled".
+        /// \param emailAddresses
+        ///     The list of e-mail addresses for the new Account.
+        /// \param login
+        ///     The login identifier for the new Account.
+        ///     All Accounts in a database must have different lohins.
+        /// \param password
+        ///     The password for the new Account.
+        /// \param capabilities
+        ///     The capabilities for the new Account.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        createAccount(
+                            const Credentials & credentials,
+                            bool enabled,
+                            const QStringList & emailAddresses,
+                            const QString & login,
+                            const QString & password,
+                            Capabilities capabilities
+                        ) -> Account;
 
         //////////
         //  Implementation
     private:
         tt3::db::api::IUser *const  _dataUser;    //  counts as "reference"
 
-        //  Access control - throw WorkspaceException in DB error
-        virtual bool    _canRead(
+        //  Access control
+        virtual bool    _canRead(       //  throws WorkspaceException
                                 const Credentials & credentials
                             ) const override;
-        virtual bool    _canModify(
+        virtual bool    _canModify(     //  throws WorkspaceException
                                 const Credentials & credentials
                             ) const override;
-        virtual bool    _canDestroy(
+        virtual bool    _canDestroy(    //  throws WorkspaceException
                                 const Credentials & credentials
                             ) const override;
         virtual bool    _destroyingLosesAccess(

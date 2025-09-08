@@ -59,7 +59,9 @@ bool ObjectImpl::isLive() const
 
 //////////
 //  Operations (life cycle)
-void ObjectImpl::destroy(const Credentials & credentials) throws(WorkspaceException)
+void ObjectImpl::destroy(
+        const Credentials & credentials
+    )
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();
@@ -86,7 +88,9 @@ void ObjectImpl::destroy(const Credentials & credentials) throws(WorkspaceExcept
 
 //////////
 //  Operations (access control)
-bool ObjectImpl::canRead(const Credentials & credentials) const throws(WorkspaceException)
+bool ObjectImpl::canRead(
+        const Credentials & credentials
+    ) const
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();
@@ -94,7 +98,9 @@ bool ObjectImpl::canRead(const Credentials & credentials) const throws(Workspace
     return _canRead(credentials);
 }
 
-bool ObjectImpl::canModify(const Credentials & credentials) const throws(WorkspaceException)
+bool ObjectImpl::canModify(
+        const Credentials & credentials
+    ) const
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();
@@ -102,7 +108,9 @@ bool ObjectImpl::canModify(const Credentials & credentials) const throws(Workspa
     return _canModify(credentials);
 }
 
-bool ObjectImpl::canDestroy(const Credentials & credentials) const throws(WorkspaceException)
+bool ObjectImpl::canDestroy(
+        const Credentials & credentials
+    ) const
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();
@@ -112,7 +120,8 @@ bool ObjectImpl::canDestroy(const Credentials & credentials) const throws(Worksp
 
 //////////
 //  Implementation helpers
-void ObjectImpl::_ensureLive() const throws(WorkspaceException)
+void ObjectImpl::_ensureLive(
+    ) const
 {
     Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
 

@@ -38,134 +38,249 @@ namespace tt3::db::api
         //////////
         //  Operations (properties)
     public:
-        //  Returns/sets the "real name" of this User.
-        //  Throws DatabaseException if an error occurs.
-        virtual QString realName() const
-                            throws(DatabaseException) = 0;
+        /// \brief
+        ///     Returns the "real name" of this User.
+        /// \return
+        ///     The "real name" of this User.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        virtual QString realName(
+                            ) const = 0;
+
+        /// \brief
+        ///     sETS the "real name" of this User.
+        /// \param realName
+        ///     The new "real name" for this User.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setRealName(
                                 const QString & realName
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
-        //  Returns/sets the "inactivity timeout" of this User.
-        //  This is the timeout after which, if the user does nothing,
-        //  the "current" Activity is automatically stopped.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the "inactivity timeout" of this User.
+        /// \details
+        //      This is the timeout after which, if the user does nothing,
+        //      the "current" Activity is automatically stopped.
+        /// \return
+        ///     The "inactivity timeout" of this User; absent == none.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    inactivityTimeout(
-                            ) const
-                            throws(DatabaseException)
-                            -> InactivityTimeout = 0;
+                            ) const -> InactivityTimeout = 0;
+
+        /// \brief
+        ///     Sets the "inactivity timeout" of this User.
+        /// \details
+        //      This is the timeout after which, if the user does nothing,
+        //      the "current" Activity is automatically stopped.
+        /// \param inactivityTimeout
+        ///     The new "inactivity timeout" for this User; absent == none.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setInactivityTimeout(
                                 const InactivityTimeout & inactivityTimeout
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
-        //  Returns/sets the preferred UI locale  of this User.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the preferred UI locale  of this User.
+        /// \return
+        ///     The preferred UI locale  of this User; absent == default.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    uiLocale(
-                            ) const
-                            throws(DatabaseException)
-                            -> UiLocale = 0;
+                            ) const -> UiLocale = 0;
+
+        /// \brief
+        ///     Sets the preferred UI locale  of this User.
+        /// \param uiLocale
+        ///     The new preferred UI locale  for this User; absent == default.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setUiLocale(
                                 const UiLocale & uiLocale
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
         //////////
         //  Operations (associations)
     public:
-        //  Returns the set of all Accounts of this User.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the set of all Accounts of this User.
+        /// \return
+        ///     The set of all Accounts of this User.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    accounts(
-                            ) const
-                            throws(DatabaseException)
-                            -> Accounts = 0;
+                            ) const -> Accounts = 0;
 
-        //  The set of all private activities of this User
-        //  which are not also tasks.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the set of all private activities of this User
+        ///     which are not also tasks.
+        /// \return
+        ///     The set of all private activities of this User
+        ///     which are not also tasks.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    privateActivities(
-                            ) const
-                            throws(DatabaseException)
-                            -> PrivateActivities = 0;
+                            ) const -> PrivateActivities = 0;
 
-        //  The set of all private activities of this User
-        //  which are also tasks.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the set of all private activities of this User,
+        ///     including those which are also tasks.
+        /// \return
+        ///     The set of all private activities of this User,
+        ///     including those which are also tasks.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    privateActivitiesAndTasks(
-                            ) const
-                            throws(DatabaseException)
-                            -> PrivateActivities = 0;
+                            ) const -> PrivateActivities = 0;
 
-        //  The set of all/root private tasks of this User.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the set of all private tasks of this User.
+        /// \return
+        ///     The set of all private tasks of this User.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    privateTasks(
-                            ) const
-                            throws(DatabaseException)
-                            -> PrivateTasks = 0;
-        virtual auto    rootPrivateTasks(
-                            ) const
-                            throws(DatabaseException)
-                            -> PrivateTasks = 0;
+                            ) const -> PrivateTasks = 0;
 
-        //  Returns/sets the set of all Workload permitted for
-        //  this User.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the set of root private tasks of this User.
+        /// \return
+        ///     The set of root private tasks of this User.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        virtual auto    rootPrivateTasks(
+                            ) const -> PrivateTasks = 0;
+
+        /// \brief
+        ///     Returns the set of all Workload permitted for
+        ///     this User.
+        /// \return
+        ///     The set of all Workload permitted for
+        ///     this User.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    permittedWorkloads(
-                            ) const
-                            throws(DatabaseException)
-                            -> Workloads = 0;
+                            ) const -> Workloads = 0;
+
+        /// \brief
+        ///     Sets the set of all Workload permitted for
+        ///     this User.
+        /// \paeam workloads
+        ///     The new set of all Workload permitted for
+        ///     this User.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setPermittedWorkloads(
                                 const Workloads & workloads
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
-        //  Adds/removes the specified Workload to/from the
-        //  set of Workloads permitted to this User;
-        //  has no effect if already there/not there.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Adds the specified Workload to the
+        ///     set of Workloads permitted to this User.
+        /// \details
+        ///     The call has no effect if already there.
+        /// \param workload
+        ///     The workload to add.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    addPermittedWorkload(
                                 IWorkload * workload
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
+
+        /// \brief
+        ///     Removes the specified Workload from the
+        ///     set of Workloads permitted to this User.
+        /// \details
+        ///     The call has no effect if already not there.
+        /// \param workload
+        ///     The workload to remove.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    removePermittedWorkload(
                                 IWorkload * workload
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
-        //  Returns the set of all Works logged by this User.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the set of all Works logged by this User.
+        /// \return
+        ///     The set of all Works logged by this User.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    works(
-                            ) const
-                            throws(DatabaseException)
-                            -> Works = 0;
+                            ) const -> Works = 0;
 
-        //  Returns the set of all Events logged by this User.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the set of all Events logged by this User.
+        /// \return
+        ///     The set of all Events logged by this User.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    events(
-                            ) const
-                            throws(DatabaseException)
-                            -> Events = 0;
+                            ) const -> Events = 0;
 
         //////////
         //  Operations (life cycle)
     public:
-        //  Creates a new Account for this User.
-        //  All Accounts in a database must have different lohins.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Creates a new Account for this User.
+        /// \param enabled
+        ///     True if the new Account shall be created as "enabled",
+        ///     false for "disabled".
+        /// \param emailAddresses
+        ///     The list of e-mail addresses for the new Account.
+        /// \param login
+        ///     The login identifier for the new Account.
+        ///     All Accounts in a database must have different lohins.
+        /// \param password
+        ///     The password for the new Account.
+        /// \param capabilities
+        ///     The capabilities for the new Account.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    createAccount(
                                 bool enabled,
                                 const QStringList & emailAddresses,
                                 const QString & login,
                                 const QString & password,
                                 Capabilities capabilities
-                            )
-                            throws(DatabaseException)
-                            -> IAccount * = 0;
+                            ) -> IAccount * = 0;
 
-        //  Creates a new PrivateActivity for this User.
-        //  The activity type can be nullptr.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Creates a new PrivateActivity for this User.
+        /// \param displayName
+        ///     The short (1 line) user-readable display name
+        ///     for the new PrivateActivity.
+        /// \param description
+        ///     The multi-line user-readable description for the new
+        ///     PrivateActivity; with lines separated by a newline '\\n' character.
+        /// \param timeout
+        ///     The user-does-nothing timeout for the new PrivateActivity;
+        ///     absent == none.
+        /// \param requireCommentOnStart
+        ///     True if the newly created PrivateActivity small require the
+        ///     user to enter a comment when it is started.
+        /// \param requireCommentOnFinish
+        ///     True if the newly created PrivateActivity small require the
+        ///     user to enter a comment when it is started.
+        /// \param fullScreenReminder
+        ///     True if a full-screen reminder shall be displayed while the
+        ///     newly created PrivateActivity is underway.
+        /// \param activityType
+        ///     The type for the new PrivateActivity; nullptr == don't assign.
+        /// \param workload
+        ///     The Workload for the new PrivateActivity; nullptr == don't assign.
+        /// \param completed
+        ///     True if the PublicTask shall initially be marked as
+        ///     "completed", false if not.
+        /// \param requireCommentOnCompletion
+        ///     True if the newly created PublicTask small require the
+        ///     user to enter a comment when marking it as "completed".
+        /// \return
+        ///     The newly created PrivateActivity.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    createPrivateActivity(
                                 const QString & displayName,
                                 const QString & description,
@@ -175,13 +290,43 @@ namespace tt3::db::api
                                 bool fullScreenReminder,
                                 IActivityType * type,
                                 tt3::db::api::IWorkload * workload
-                            )
-                            throws(DatabaseException)
-                            -> IPrivateActivity * = 0;
+                            ) -> IPrivateActivity * = 0;
 
-        //  Creates a new root PrivateTask for this User.
-        //  The activity type can be nullptr.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Creates a new root PrivateTask in this database
+        ///     (that is, a PrivateTask that has no parent).
+        /// \param displayName
+        ///     The short (1 line) user-readable display name
+        ///     for the new PrivateTask.
+        /// \param description
+        ///     The multi-line user-readable description for the new
+        ///     PrivateTask; with lines separated by a newline '\\n' character.
+        /// \param timeout
+        ///     The user-does-nothing timeout for the new PrivateTask;
+        ///     absent == none.
+        /// \param requireCommentOnStart
+        ///     True if the newly created PrivateTask small require the
+        ///     user to enter a comment when it is started.
+        /// \param requireCommentOnFinish
+        ///     True if the newly created PrivateTask small require the
+        ///     user to enter a comment when it is started.
+        /// \param fullScreenReminder
+        ///     True if a full-screen reminder shall be displayed while the
+        ///     newly created PrivateTask is underway.
+        /// \param activityType
+        ///     The type for the new PrivateTask; nullptr == don't assign.
+        /// \param workload
+        ///     The Workload for the new PrivateTask; nullptr == don't assign.
+        /// \param completed
+        ///     True if the PrivateTask shall initially be marked as
+        ///     "completed", false if not.
+        /// \param requireCommentOnCompletion
+        ///     True if the newly created PrivateTask small require the
+        ///     user to enter a comment when marking it as "completed".
+        /// \return
+        ///     The newly created PrivateTask.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    createPrivateTask(
                                 const QString & displayName,
                                 const QString & description,
@@ -193,31 +338,42 @@ namespace tt3::db::api
                                 IWorkload * workload,
                                 bool completed,
                                 bool requireCommentOnCompletion
-                            )
-                            throws(DatabaseException)
-                            -> IPrivateTask * = 0;
+                            ) -> IPrivateTask * = 0;
 
-        //  Creates a new unit of Work for this User against
-        //  the specified activity.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Creates a new unit of Work for this User against
+        ///     the specified activity.
+        /// \param startedAt
+        ///     The UTC date+time when this unit of work has started.
+        /// \param finishedAt
+        ///     The UTC date+time when this unit of work has finished.
+        /// \param activity
+        ///     The activity associated with this unit of work;
+        ///     cann0t be nullptr.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    createWork(
                                 const QDateTime & startedAt,
                                 const QDateTime & finishedAt,
                                 IActivity * activity
-                            )
-                            throws(DatabaseException)
-                            -> IWork * = 0;
+                            ) -> IWork * = 0;
 
-        //  Creates a new Event for this User against
-        //  the specified activity (which can be nullptr is none).
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Creates a new Event for this User against
+        ///     the specified activity.
+        /// \param occurredAt
+        ///     TheUTC date+time when the event has occurred.
+        /// \param summary
+        ///     The brief 1-line summary for the new Event.
+        /// \param activity
+        ///     The activity associated with the new Event; nullptr == none.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    createEvent(
                                 const QDateTime & occurredAt,
-                                const QString & simmary,
+                                const QString & summary,
                                 IActivity * activity
-                            )
-                            throws(DatabaseException)
-                            -> IEvent * = 0;
+                            ) -> IEvent * = 0;
     };
 }
 

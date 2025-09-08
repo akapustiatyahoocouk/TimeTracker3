@@ -29,47 +29,47 @@ namespace tt3::db::api
         //////////
         //  Operations (properties)
     public:
-        /// @brief
+        /// \brief
         ///     Checks whether this Principal is "enabled".
-        /// @details
+        /// \details
         ///     "Disabled" Principals do not exist as far as
         ///     access control is concerned.
-        /// @return
+        /// \return
         ///     True if this Principal is "enabled", false if "disabled".
-        /// @exception DatabaseException
+        /// \exception DatabaseException
         ///     If an error occurs.
         virtual bool    enabled(
                             ) const = 0;
 
-        /// @brief
+        /// \brief
         ///     Enables or disabled this Principal.
-        /// @details
+        /// \details
         ///     "Disabled" Principals do not exist as far as
         ///     access control is concerned.
-        /// @param enabled
+        /// \param enabled
         ///     True to mark this Principal "enabled", false for "disabled".
-        /// @exception DatabaseException
+        /// \exception DatabaseException
         ///     If an error occurs.
         virtual void    setEnabled(
                                 bool enabled
                             ) = 0;
 
-        /// @brief
+        /// \brief
         ///     Returns the list of e-mail addresses associated with
         ///     this Principal.
-        /// @return
+        /// \return
         ///     The list of e-mail addresses of this Principal.
-        /// @exception DatabaseException
+        /// \exception DatabaseException
         ///     If an error occurs.
         virtual auto    emailAddresses(
                             ) const -> QStringList = 0;
 
-        /// @brief
+        /// \brief
         ///     Sets the list of e-mail addresses associated with
         ///     this Principal.
-        /// @param emailAddresses
+        /// \param emailAddresses
         ///     The new list of e-mail addresses for this Principal.
-        /// @exception DatabaseException
+        /// \exception DatabaseException
         ///     If an error occurs.
         virtual void    setEmailAddresses(
                                 const QStringList & emailAddresses

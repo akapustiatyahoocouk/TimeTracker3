@@ -25,15 +25,15 @@ namespace tt3::util
     /// Parses a value from the portion of a string.
     /// Upon success, consumes as much of the string as possible.
     ///
-    /// @param s
+    /// \param s
     ///     The string to parse a portion of.
-    /// @param scan
+    /// \param scan
     ///     The current scan position; advanced past the parsed
     ///     portion of the string upon success, left intact
     ///     upon failure.
-    /// @return
+    /// \return
     ///     The parsed value.
-    /// @exception ParseException
+    /// \exception ParseException
     ///     If the parsing fails.
     ///
     template <class T>

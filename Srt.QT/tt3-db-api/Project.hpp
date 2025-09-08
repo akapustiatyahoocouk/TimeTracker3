@@ -38,46 +38,80 @@ namespace tt3::db::api
         //////////
         //  Operations (properties)
     public:
-        //  Returns/sets the completion status of this Project.
-        //  Throws DatabaseException if an error occurs.
-        virtual bool    completed() const throws(DatabaseException) = 0;
-        virtual void    setCompleted(bool completed) throws(DatabaseException) = 0;
+        /// \brief
+        ///     Returns the completion status of this Project.
+        /// \return
+        ///     The completion status of this Project.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        virtual bool    completed(
+                            ) const = 0;
+
+        /// \brief
+        ///     Sets the completion status of this Project.
+        /// \param completed
+        ///     The new completion status for this Project.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        virtual void    setCompleted(
+                                bool completed
+                            ) = 0;
 
         //////////
         //  Operations (associations)
     public:
-        //  Returns/sets the immediate parent of this
-        //  Project; nullptr == none.
-        //  Attempting to create parenthood loops is an error.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the immediate parent of this Project.
+        /// \return
+        ///     The immediate parent of this Project, nullptr == none.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    parent(
-                            ) const
-                            throws(DatabaseException)
-                            -> IProject * = 0;
+                            ) const -> IProject * = 0;
+        /// \brief
+        ///     Sets the immediate parent of this Project.
+        /// \details
+        ///     Attempting to create parenthood loops is an error.
+        /// \param parent
+        ///     The new immediate parent of this Project, nullptr == none.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual void    setParent(
                                 IProject * parent
-                            )
-                            throws(DatabaseException) = 0;
+                            ) = 0;
 
-        //  Returns the set of immediate children of this Project.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Returns the set of immediate children of this Project.
+        /// \return
+        ///     The set of immediate children of this Project.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    children(
-                            ) const
-                            throws(DatabaseException)
-                            -> Projects = 0;
+                            ) const -> Projects = 0;
 
         //////////
         //  Operations (life cycle)
     public:
-        //  Creates a new child project under this project.
-        //  Throws DatabaseException if an error occurs.
+        /// \brief
+        ///     Creates a new child project under this project.
+        /// \param displayName
+        ///     The short (1 line) user-readable display name
+        ///     for the new Project.
+        /// \param description
+        ///     The multi-line user-readable description for the new
+        ///     Project; with lines separated by a newline '\\n' character.
+        /// \param beneficiaries
+        ///     The set of Beneficiaries to associate with the newly
+        ///     created Project (can be empty).
+        /// \return
+        ///     The newly created Project.
+        /// \exception DatabaseException
+        ///     If an error occurs.
         virtual auto    createChild(
                                 const QString & displayName,
                                 const QString & description,
                                 const Beneficiaries & beneficiaries
-                        )
-                        throws(DatabaseException)
-                        -> IProject * = 0;
+                        ) -> IProject * = 0;
     };
 }
 

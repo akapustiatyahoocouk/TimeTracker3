@@ -138,8 +138,8 @@ namespace
         }
     }
 
-    QString unescape(const QString & s) throws(tt3::util::ParseException)
-    {
+    QString unescape(const QString & s)
+    {   //   throws tt3::util::ParseException
         QString result;
         for (int i = 0; i < s.length(); )
         {
@@ -235,7 +235,10 @@ namespace
     }
 }
 
-template <> TT3_WS_PUBLIC QString tt3::util::toString<WorkspaceAddress>(const WorkspaceAddress & value)
+template <> TT3_WS_PUBLIC
+auto tt3::util::toString<WorkspaceAddress>(
+        const WorkspaceAddress & value
+    ) -> QString
 {
     if (value != nullptr)
     {
@@ -248,7 +251,10 @@ template <> TT3_WS_PUBLIC QString tt3::util::toString<WorkspaceAddress>(const Wo
     return "<>";
 }
 
-template <> TT3_WS_PUBLIC QString tt3::util::toString<WorkspaceAddressesList>(const tt3::ws::WorkspaceAddressesList & value)
+template <> TT3_WS_PUBLIC
+auto tt3::util::toString<WorkspaceAddressesList>(
+        const tt3::ws::WorkspaceAddressesList & value
+    ) -> QString
 {
     QString result;
     result += '[';
@@ -264,7 +270,11 @@ template <> TT3_WS_PUBLIC QString tt3::util::toString<WorkspaceAddressesList>(co
     return result;
 }
 
-template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddress tt3::util::fromString<tt3::ws::WorkspaceAddress>(const QString & s, qsizetype & scan) throws(ParseException)
+template <> TT3_WS_PUBLIC
+auto tt3::util::fromString<tt3::ws::WorkspaceAddress>(
+            const QString & s,
+            qsizetype & scan
+        ) -> tt3::ws::WorkspaceAddress
 {
     //  Skip '<'
     if (scan >= s.length() || s[scan] != '<')
@@ -289,7 +299,7 @@ template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddress tt3::util::fromString<tt3::w
     //  Resolve mnemonic
     WorkspaceType workspaceType =
         WorkspaceTypeManager::findWorkspaceType(
-            tt3::util::Mnemonic(unescape(chunks[0])));
+            tt3::util::Mnemonic(unescape(chunks[0])));  //  may throw
     if (workspaceType == nullptr)
     {   //  OOPS!
         throw tt3::util::ParseException(s, scan);
@@ -308,7 +318,11 @@ template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddress tt3::util::fromString<tt3::w
     }
 }
 
-template <> TT3_WS_PUBLIC tt3::ws::WorkspaceAddressesList tt3::util::fromString<tt3::ws::WorkspaceAddressesList>(const QString & s, qsizetype & scan) throws(ParseException)
+template <> TT3_WS_PUBLIC
+auto tt3::util::fromString<tt3::ws::WorkspaceAddressesList>(
+        const QString & s,
+        qsizetype & scan
+    ) -> tt3::ws::WorkspaceAddressesList
 {
     //  Skip '['
     if (scan >= s.length() || s[scan] != '[')

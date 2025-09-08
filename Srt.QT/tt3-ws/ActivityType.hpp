@@ -38,59 +38,87 @@ namespace tt3::ws
         //////////
         //  Operations (properties)
     public:
-        //  Returns/sets the user-readable display name of
-        //  this activity type.
-        //  Throws WorkspaceException if an error occurs.
+        /// \brief
+        ///     Returns the user-readable display name of this activity type.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The user-readable display name of this activity type.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
         auto        displayName(
                             const Credentials & credentials
-                        ) const
-                        throws(WorkspaceException)
-                        -> QString;
+                        ) const -> QString;
+
+        /// \brief
+        ///     Sets the user-readable display name of this activity type.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param displayName
+        ///     The new user-readable display name for this activity type.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
         void        setDisplayName(
                             const Credentials & credentials,
                             const QString & displayName
-                        )
-                        throws(WorkspaceException);
+                        );
 
 
-        //  Returns/sets the multi-line description of this activity
-        //  type, with lines separated by a newline character '\n'.
-        //  Throws WorkspaceException if an error occurs.
+        /// \brief
+        ///     Returns the multi-line description of this activity type.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The multi-line description of this activity
+        ///     type, with lines separated by a newline character '\n'.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
         auto        description(
                             const Credentials & credentials
-                        ) const
-                        throws(WorkspaceException)
-                        -> QString;
+                        ) const -> QString;
+
+        /// \brief
+        ///     Returns the multi-line description of this activity type.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param description
+        ///     The new multi-line description for this activity
+        ///     type, with lines separated by a newline character '\n'.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
         void        setDescription(
                             const Credentials & credentials,
                             const QString & description
-                        )
-                        throws(WorkspaceException);
+                        );
 
         //////////
         //  Operations (associations)
     public:
-        //  The set of all activities assigned to this activity type.
-        //  Throws WorkspaceException if an error occurs.
+        /// \brief
+        ///     Returns the set of all activities assigned to this activity type.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all activities assigned to this activity type.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
         auto        activities(
                             const Credentials & credentials
-                        ) const
-                        throws(WorkspaceException)
-                        -> Activities;
+                        ) const -> Activities;
 
         //////////
         //  Implementation
     private:
         tt3::db::api::IActivityType *const  _dataActivityType;    //  counts as "reference"
 
-        //  Access control - throw WorkspaceException in DB error
-        virtual bool    _canRead(
+        //  Access control
+        virtual bool    _canRead(       //  throws WorkspaceException
                                 const Credentials & credentials
                             ) const override;
-        virtual bool    _canModify(
+        virtual bool    _canModify(     //  throws WorkspaceException
                                 const Credentials & credentials
                             ) const override;
-        virtual bool    _canDestroy(
+        virtual bool    _canDestroy(    //  throws WorkspaceException
                                 const Credentials & credentials
                             ) const override;
     };

@@ -38,10 +38,16 @@ namespace tt3::db::xml
         //////////
         //  tt3::db::api::IPrincipal (general)
     public:
-        virtual bool        enabled() const throws(tt3::db::api::DatabaseException) override;
-        virtual void        setEnabled(bool enabled) throws(tt3::db::api::DatabaseException) override;
-        virtual QStringList emailAddresses() const throws(tt3::db::api::DatabaseException) override;
-        virtual void        setEmailAddresses(const QStringList & emailAddresses) throws(tt3::db::api::DatabaseException) override;
+        virtual bool    enabled(
+                            ) const override;
+        virtual void    setEnabled(
+                                bool enabled
+                            ) override;
+        virtual auto    emailAddresses(
+                            ) const -> QStringList override;
+        virtual void    setEmailAddresses(
+                                const QStringList & emailAddresses
+                            ) override;
 
         //////////
         //  Implementation
@@ -55,16 +61,26 @@ namespace tt3::db::xml
         //////////
         //  Serialization
     private:
-        virtual void        _serializeProperties(QDomElement & objectElement) override;
-        virtual void        _serializeAggregations(QDomElement & parentElement);
+        virtual void    _serializeProperties(
+                                QDomElement & objectElement
+                            ) override;
+        virtual void    _serializeAggregations(
+                                QDomElement & parentElement
+                            ) override;
 
-        virtual void        _deserializeProperties(const QDomElement & objectElement) throws(tt3::util::ParseException) override;
-        virtual void        _deserializeAggregations(const QDomElement & parentElement) throws(tt3::util::ParseException) override;
+        virtual void    _deserializeProperties(
+                                const QDomElement & objectElement
+                            ) override; //  throws tt3::util::ParseException) overrid
+        virtual void    _deserializeAggregations(
+                                const QDomElement & parentElement
+                            ) override; //  throws tt3::util::ParseException) overrid
 
         //////////
         //  Validation
     private:
-        virtual void        _validate(QSet<Object*> & validatedObjects) throws(tt3::db::api::DatabaseException) override;
+        virtual void    _validate(
+                                QSet<Object*> & validatedObjects
+                            ) override; //  throws tt3::db::api::DatabaseException) overrid
     };
 }
 

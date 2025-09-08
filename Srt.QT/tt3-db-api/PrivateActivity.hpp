@@ -38,11 +38,14 @@ namespace tt3::db::api
         //////////
         //  Operations (associations)
     public:
-        //  The owner of this private activity; never nullptr.
-        //  Throws DatabaseException if an error occurs.
-        virtual auto    owner() const
-                            throws(DatabaseException)
-                            -> IUser * = 0;
+        /// \brief
+        ///     Returns the owner of this private activity.
+        /// \return
+        ///     The owner of this private activity; never nullptr.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        virtual auto    owner(
+                            ) const -> IUser * = 0;
     };
 }
 

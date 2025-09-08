@@ -33,7 +33,9 @@ AccountImpl::~AccountImpl()
 
 //////////
 //  Operations (properties)
-QString AccountImpl::login(const Credentials & credentials) const throws(WorkspaceException)
+auto AccountImpl::login(
+        const Credentials & credentials
+    ) const -> QString
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
@@ -41,7 +43,7 @@ QString AccountImpl::login(const Credentials & credentials) const throws(Workspa
     try
     {
         //  Validate access rights
-        if (!_canRead(credentials))
+        if (!_canRead(credentials)) //  may throw
         {
             throw AccessDeniedException();
         }
@@ -54,7 +56,10 @@ QString AccountImpl::login(const Credentials & credentials) const throws(Workspa
     }
 }
 
-void AccountImpl::setLogin(const Credentials & credentials, const QString & login) throws(WorkspaceException)
+void AccountImpl::setLogin(
+        const Credentials & credentials,
+        const QString & login
+    )
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
@@ -78,7 +83,9 @@ void AccountImpl::setLogin(const Credentials & credentials, const QString & logi
     }
 }
 
-QString AccountImpl::passwordHash(const Credentials & credentials) const throws(WorkspaceException)
+auto AccountImpl::passwordHash(
+        const Credentials & credentials
+    ) const -> QString
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
@@ -86,7 +93,7 @@ QString AccountImpl::passwordHash(const Credentials & credentials) const throws(
     try
     {
         //  Validate access rights
-        if (!_canRead(credentials))
+        if (!_canRead(credentials)) //  may throw
         {
             throw AccessDeniedException();
         }
@@ -99,7 +106,10 @@ QString AccountImpl::passwordHash(const Credentials & credentials) const throws(
     }
 }
 
-void AccountImpl::setPassword(const Credentials & credentials, const QString & password) throws(WorkspaceException)
+void AccountImpl::setPassword(
+        const Credentials & credentials,
+        const QString & password
+    )
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
@@ -107,7 +117,7 @@ void AccountImpl::setPassword(const Credentials & credentials, const QString & p
     try
     {
         //  Validate access rights
-        if (!_canModify(credentials))
+        if (!_canModify(credentials))   //  may throw
         {
             throw AccessDeniedException();
         }
@@ -120,7 +130,9 @@ void AccountImpl::setPassword(const Credentials & credentials, const QString & p
     }
 }
 
-Capabilities AccountImpl::capabilities(const Credentials & credentials) const throws(WorkspaceException)
+auto AccountImpl::capabilities(
+        const Credentials & credentials
+    ) const -> Capabilities
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
@@ -128,7 +140,7 @@ Capabilities AccountImpl::capabilities(const Credentials & credentials) const th
     try
     {
         //  Validate access rights
-        if (!_canRead(credentials))
+        if (!_canRead(credentials)) //  may throw
         {
             throw AccessDeniedException();
         }
@@ -141,7 +153,10 @@ Capabilities AccountImpl::capabilities(const Credentials & credentials) const th
     }
 }
 
-void AccountImpl::setCapabilities(const Credentials & credentials, Capabilities capabilities) throws(WorkspaceException)
+void AccountImpl::setCapabilities(
+        const Credentials & credentials,
+        Capabilities capabilities
+    )
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
@@ -177,7 +192,9 @@ void AccountImpl::setCapabilities(const Credentials & credentials, Capabilities 
 
 //////////
 //  Operations (associations)
-User AccountImpl::user(const Credentials & credentials) const throws(WorkspaceException)
+auto AccountImpl::user(
+        const Credentials & credentials
+    ) const -> User
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
@@ -185,7 +202,7 @@ User AccountImpl::user(const Credentials & credentials) const throws(WorkspaceEx
     try
     {
         //  Validate access rights
-        if (!_canRead(credentials))
+        if (!_canRead(credentials)) //  may throw
         {
             throw AccessDeniedException();
         }
@@ -200,7 +217,9 @@ User AccountImpl::user(const Credentials & credentials) const throws(WorkspaceEx
 
 //////////
 //  Implementation (Access control)
-bool AccountImpl::_canRead(const Credentials & credentials) const throws(WorkspaceException)
+bool AccountImpl::_canRead(
+        const Credentials & credentials
+    ) const
 {
     Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
 
@@ -227,7 +246,9 @@ bool AccountImpl::_canRead(const Credentials & credentials) const throws(Workspa
     }
 }
 
-bool AccountImpl::_canModify(const Credentials & credentials) const throws(WorkspaceException)
+bool AccountImpl::_canModify(
+        const Credentials & credentials
+    ) const
 {
     Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
 
@@ -254,7 +275,9 @@ bool AccountImpl::_canModify(const Credentials & credentials) const throws(Works
     }
 }
 
-bool AccountImpl::_canDestroy(const Credentials & credentials) const throws(WorkspaceException)
+bool AccountImpl::_canDestroy(
+        const Credentials & credentials
+    ) const
 {
     Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
 
@@ -274,7 +297,8 @@ bool AccountImpl::_canDestroy(const Credentials & credentials) const throws(Work
     }
 }
 
-bool AccountImpl::_destroyingLosesAccess() const throws(WorkspaceException)
+bool AccountImpl::_destroyingLosesAccess(
+    ) const
 {
     Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
 

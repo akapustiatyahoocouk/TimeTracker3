@@ -59,8 +59,7 @@ namespace tt3::db::xml
         //  tt3::db::api::IDatabaseType (address handling)
     public:
         virtual auto    defaultDatabaseAddress(
-                            ) const
-                            -> tt3::db::api::IDatabaseAddress * override;
+                            ) const -> tt3::db::api::IDatabaseAddress * override;
         virtual auto    enterNewDatabaseAddress(
                                 QWidget * parent
                             ) -> tt3::db::api::IDatabaseAddress * override;
@@ -69,23 +68,20 @@ namespace tt3::db::xml
                             ) -> tt3::db::api::IDatabaseAddress * override;
         virtual auto    parseDatabaseAddress(
                                 const QString & externalForm
-                            ) throws(tt3::db::api::DatabaseException)
-                            -> tt3::db::api::IDatabaseAddress * override;
+                            ) -> tt3::db::api::IDatabaseAddress * override;
 
         //////////
         //  tt3::db::api::IDatabaseType (databases)
     public:
         virtual auto    createDatabase(
                                 tt3::db::api::IDatabaseAddress * address
-                            ) throws(tt3::db::api::DatabaseException)
-                            -> tt3::db::api::IDatabase * override;
+                            ) -> tt3::db::api::IDatabase * override;
         virtual auto    openDatabase(
                                 tt3::db::api::IDatabaseAddress * address
-                            ) throws(tt3::db::api::DatabaseException)
-                            -> tt3::db::api::IDatabase * override;
+                            ) -> tt3::db::api::IDatabase * override;
         virtual void    destroyDatabase(
                                 tt3::db::api::IDatabaseAddress * address
-                            ) throws(tt3::db::api::DatabaseException) override;
+                            ) override;
 
         //////////
         //  Implementation

@@ -47,12 +47,19 @@ Oid Oid::createRandom()
 
 //////////
 //  Formatting and parsing
-template <> TT3_DB_API_PUBLIC QString tt3::util::toString<tt3::db::api::Oid>(const tt3::db::api::Oid & value)
+template <> TT3_DB_API_PUBLIC
+auto tt3::util::toString<tt3::db::api::Oid>(
+        const tt3::db::api::Oid & value
+    ) -> QString
 {
     return value._impl.toString().toUpper();
 }
 
-template <> TT3_DB_API_PUBLIC tt3::db::api::Oid tt3::util::fromString<tt3::db::api::Oid>(const QString & s, qsizetype & scan) throws(tt3::util::ParseException)
+template <> TT3_DB_API_PUBLIC
+auto tt3::util::fromString<tt3::db::api::Oid>(
+        const QString & s,
+        qsizetype & scan
+    ) -> tt3::db::api::Oid
 {
     if (scan < 0 || scan + 38 > s.length())
     {

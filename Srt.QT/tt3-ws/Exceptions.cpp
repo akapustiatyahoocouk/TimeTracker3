@@ -24,7 +24,9 @@ WorkspaceException::WorkspaceException()
 }
 
 Q_NORETURN
-void WorkspaceException::translateAndThrow(const tt3::util::Exception & ex) throws(WorkspaceException)
+void WorkspaceException::translateAndThrow(
+        const tt3::util::Exception & ex
+    )
 {
     //  Throw workspace exceptions "as is"
     if (auto exx = dynamic_cast<const WorkspaceException*>(&ex))
@@ -102,14 +104,17 @@ QString InvalidWorkspaceAddressException::errorMessage() const
 //////////
 //  WorkspaceInUseException
 WorkspaceInUseException::WorkspaceInUseException(
-    const QString & workspaceTypeDisplayName,
-    const QString & workspaceAddressDisplayForm)
+        const QString & workspaceTypeDisplayName,
+        const QString & workspaceAddressDisplayForm
+    )
     :   _workspaceTypeDisplayName(workspaceTypeDisplayName),
         _workspaceAddressDisplayForm(workspaceAddressDisplayForm)
 {
 }
 
-WorkspaceInUseException::WorkspaceInUseException(const WorkspaceAddress & workspaceAddress)
+WorkspaceInUseException::WorkspaceInUseException(
+        const WorkspaceAddress & workspaceAddress
+    )
     :   _workspaceTypeDisplayName(workspaceAddress->workspaceType()->displayName()),
         _workspaceAddressDisplayForm(workspaceAddress->displayForm())
 {
@@ -126,14 +131,17 @@ QString WorkspaceInUseException::errorMessage() const
 //////////
 //  WorkspaceCorruptException
 WorkspaceCorruptException::WorkspaceCorruptException(
-    const QString & workspaceTypeDisplayName,
-    const QString & workspaceAddressDisplayForm)
+        const QString & workspaceTypeDisplayName,
+        const QString & workspaceAddressDisplayForm
+    )
     :   _workspaceTypeDisplayName(workspaceTypeDisplayName),
         _workspaceAddressDisplayForm(workspaceAddressDisplayForm)
 {
 }
 
-WorkspaceCorruptException::WorkspaceCorruptException(const WorkspaceAddress & workspaceAddress)
+WorkspaceCorruptException::WorkspaceCorruptException(
+        const WorkspaceAddress & workspaceAddress
+    )
     :   _workspaceTypeDisplayName(workspaceAddress->workspaceType()->displayName()),
         _workspaceAddressDisplayForm(workspaceAddress->displayForm())
 {
@@ -172,8 +180,10 @@ QString AccessDeniedException::errorMessage() const
 //////////
 //  InvalidPropertyValueException
 InvalidPropertyValueException::InvalidPropertyValueException(
-    const QString & objectTypeName,
-    const QString & propertyName, const QString & propertyValueString)
+        const QString & objectTypeName,
+        const QString & propertyName,
+        const QString & propertyValueString
+    )
     :   _objectTypeName(objectTypeName),
         _propertyName(propertyName),
         _propertyValueString(propertyValueString)
@@ -190,8 +200,10 @@ QString InvalidPropertyValueException::errorMessage() const
 //////////
 //  AlreadyExistsException
 AlreadyExistsException::AlreadyExistsException(
-    const QString & objectTypeName,
-    const QString & propertyName, const QString & propertyValueString)
+        const QString & objectTypeName,
+        const QString & propertyName,
+        const QString & propertyValueString
+    )
     :   _objectTypeName(objectTypeName),
         _propertyName(propertyName),
         _propertyValueString(propertyValueString)
@@ -209,8 +221,10 @@ QString AlreadyExistsException::errorMessage() const
 //////////
 //  DoesNotExistException
 DoesNotExistException::DoesNotExistException(
-    const QString & objectTypeName,
-    const QString & propertyName, const QString & propertyValueString)
+        const QString & objectTypeName,
+        const QString & propertyName,
+        const QString & propertyValueString
+    )
     :   _objectTypeName(objectTypeName),
         _propertyName(propertyName),
         _propertyValueString(propertyValueString)
@@ -249,8 +263,10 @@ QString AccessWouldBeLostException::errorMessage() const
 
 //////////
 //  CustomWorkspaceException
-CustomWorkspaceException::CustomWorkspaceException(const QString & errorMessage)
-        :   _errorMessage(errorMessage)
+CustomWorkspaceException::CustomWorkspaceException(
+        const QString & errorMessage
+    )
+    :   _errorMessage(errorMessage)
 {
 }
 

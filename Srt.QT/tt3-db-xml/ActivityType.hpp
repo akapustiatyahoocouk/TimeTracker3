@@ -40,36 +40,27 @@ namespace tt3::db::xml
         //  tt3::db::api::IObject (life cycle)
     public:
         virtual void    destroy(
-            )
-            throws(tt3::db::api::DatabaseException) override;
+                            ) override;
 
         //////////
         //  tt3::db::api::IActivityType (properties)
     public:
         virtual auto    displayName(
-                            ) const
-                            throws(tt3::db::api::DatabaseException)
-                            -> QString override;
+                            ) const -> QString override;
         virtual void    setDisplayName(
                              const QString & displayName
-                            )
-                            throws(tt3::db::api::DatabaseException) override;
+                            ) override;
         virtual auto    description(
-                            ) const
-                            throws(tt3::db::api::DatabaseException)
-                            -> QString override;
+                            ) const -> QString override;
         virtual void    setDescription(
                                 const QString & description
-                            )
-                            throws(tt3::db::api::DatabaseException) override;
+                            ) override;
 
         //////////
         //  tt3::db::api::IActivityType (associations)
     public:
         virtual auto    activities(
-                            ) const
-                            throws(tt3::db::api::DatabaseException)
-                            -> tt3::db::api::Activities override;
+                            ) const -> tt3::db::api::Activities override;
 
         //////////
         //  Implementation
@@ -95,17 +86,17 @@ namespace tt3::db::xml
 
         virtual void    _deserializeProperties(
                                 const QDomElement & objectElement
-                            ) throws(tt3::util::ParseException) override;
+                            ) override; //  throws tt3::util::ParseException
         virtual void    _deserializeAggregations(
                                 const QDomElement & parentElement
-                            ) throws(tt3::util::ParseException) override;
+                            ) override; //  throws tt3::util::ParseException
 
         //////////
         //  Validation
     private:
         virtual void    _validate(
-                                QSet<Object*> & validatedObjects)
-                            throws(tt3::db::api::DatabaseException) override;
+                                QSet<Object*> & validatedObjects
+                            ) override; //  throws(tt3::db::api::DatabaseException
     };
 }
 

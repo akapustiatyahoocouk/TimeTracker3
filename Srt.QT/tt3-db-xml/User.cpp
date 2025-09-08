@@ -35,7 +35,7 @@ User::~User()
 
 //////////
 //  tt3::db::api::IObject (life cycle)
-void User::destroy() throws(tt3::db::api::DatabaseException)
+void User::destroy()
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -52,7 +52,8 @@ void User::destroy() throws(tt3::db::api::DatabaseException)
 
 //////////
 //  tt3::db::api::IUser (properties)
-QString User::realName() const throws(tt3::db::api::DatabaseException)
+auto User::realName(
+    ) const -> QString
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -60,7 +61,9 @@ QString User::realName() const throws(tt3::db::api::DatabaseException)
     return _realName;
 }
 
-void User::setRealName(const QString & realName) throws(tt3::db::api::DatabaseException)
+void User::setRealName(
+        const QString & realName
+    )
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -84,7 +87,8 @@ void User::setRealName(const QString & realName) throws(tt3::db::api::DatabaseEx
     }
 }
 
-tt3::db::api::InactivityTimeout User::inactivityTimeout() const throws(tt3::db::api::DatabaseException)
+auto User::inactivityTimeout(
+    ) const -> tt3::db::api::InactivityTimeout
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -92,7 +96,9 @@ tt3::db::api::InactivityTimeout User::inactivityTimeout() const throws(tt3::db::
     return _inactivityTimeout;
 }
 
-void User::setInactivityTimeout(const tt3::db::api::InactivityTimeout & inactivityTimeout) throws(tt3::db::api::DatabaseException)
+void User::setInactivityTimeout(
+        const tt3::db::api::InactivityTimeout & inactivityTimeout
+    )
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -117,7 +123,8 @@ void User::setInactivityTimeout(const tt3::db::api::InactivityTimeout & inactivi
     }
 }
 
-tt3::db::api::UiLocale User::uiLocale() const throws(tt3::db::api::DatabaseException)
+auto User::uiLocale(
+    ) const -> tt3::db::api::UiLocale
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -125,7 +132,9 @@ tt3::db::api::UiLocale User::uiLocale() const throws(tt3::db::api::DatabaseExcep
     return _uiLocale;
 }
 
-void User::setUiLocale(const tt3::db::api::UiLocale & uiLocale) throws(tt3::db::api::DatabaseException)
+void User::setUiLocale(
+        const tt3::db::api::UiLocale & uiLocale
+    )
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -158,8 +167,7 @@ auto User::createAccount(
         const QString & login,
         const QString & password,
         tt3::db::api::Capabilities capabilities
-    ) throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::IAccount *
+    ) -> tt3::db::api::IAccount *
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -232,8 +240,7 @@ auto User::createPrivateActivity(
         bool /*fullScreenReminder*/,
         tt3::db::api::IActivityType * /*activityType*/,
         tt3::db::api::IWorkload * /*workload*/
-    ) throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::IPrivateActivity *
+    ) -> tt3::db::api::IPrivateActivity *
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
@@ -249,8 +256,7 @@ auto User::createPrivateTask(
         tt3::db::api::IWorkload * /*workload*/,
         bool /*completed*/,
         bool /*requireCommentOnCompletion*/
-    ) throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::IPrivateTask *
+    ) -> tt3::db::api::IPrivateTask *
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
@@ -259,18 +265,16 @@ auto User::createWork(
         const QDateTime & /*startedAt*/,
         const QDateTime & /*finishedAt*/,
         tt3::db::api::IActivity * /*activity*/
-    ) throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::IWork *
+    ) -> tt3::db::api::IWork *
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
 auto User::createEvent(
         const QDateTime & /*occurredAt*/,
-        const QString & /*simmary*/,
+        const QString & /*summary*/,
         tt3::db::api::IActivity * /*activity*/
-    ) throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::IEvent *
+    ) -> tt3::db::api::IEvent *
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
@@ -278,8 +282,7 @@ auto User::createEvent(
 //////////
 //  tt3::db::api::IUser (associations)
 auto User::accounts(
-    ) const throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::Accounts
+    ) const -> tt3::db::api::Accounts
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -288,71 +291,64 @@ auto User::accounts(
 }
 
 auto User::privateActivities(
-    ) const throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::PrivateActivities
+    ) const -> tt3::db::api::PrivateActivities
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
 auto User::privateActivitiesAndTasks(
-    ) const throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::PrivateActivities
+    ) const -> tt3::db::api::PrivateActivities
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
 auto User::privateTasks(
-    ) const throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::PrivateTasks
+    ) const -> tt3::db::api::PrivateTasks
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
 auto User::rootPrivateTasks(
-    ) const throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::PrivateTasks
+    ) const -> tt3::db::api::PrivateTasks
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
 auto User::permittedWorkloads(
-    ) const throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::Workloads
+    ) const -> tt3::db::api::Workloads
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
 void User::setPermittedWorkloads(
-    const tt3::db::api::Workloads & /*workloads*/
-    ) throws(tt3::db::api::DatabaseException)
+        const tt3::db::api::Workloads & /*workloads*/
+    )
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
 void User::addPermittedWorkload(
-    tt3::db::api::IWorkload * /*workload*/
-    ) throws(tt3::db::api::DatabaseException)
+        tt3::db::api::IWorkload * /*workload*/
+    )
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
 void User::removePermittedWorkload(
-    tt3::db::api::IWorkload * /*workload*/
-    ) throws(tt3::db::api::DatabaseException)
+        tt3::db::api::IWorkload * /*workload*/
+    )
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
 auto User::works(
-    ) const throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::Works
+    ) const -> tt3::db::api::Works
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
 
 auto User::events(
-    ) const throws(tt3::db::api::DatabaseException)
-    -> tt3::db::api::Events
+    ) const -> tt3::db::api::Events
 {
     throw tt3::db::api::CustomDatabaseException("Not yet implemented");
 }
@@ -377,7 +373,9 @@ void User::_markDead()
 
 //////////
 //  Serialization
-void User::_serializeProperties(QDomElement & objectElement)
+void User::_serializeProperties(
+        QDomElement & objectElement
+    )
 {
     Principal::_serializeProperties(objectElement);
 
@@ -392,7 +390,9 @@ void User::_serializeProperties(QDomElement & objectElement)
     }
 }
 
-void User::_serializeAggregations(QDomElement & parentElement)
+void User::_serializeAggregations(
+        QDomElement & parentElement
+    )
 {
     Principal::_serializeAggregations(parentElement);
 
@@ -409,7 +409,9 @@ void User::_serializeAggregations(QDomElement & parentElement)
     }
 }
 
-void User::_deserializeProperties(const QDomElement & objectElement) throws(tt3::util::ParseException)
+void User::_deserializeProperties(
+        const QDomElement & objectElement
+    )
 {
     Principal::_deserializeProperties(objectElement);
 
@@ -428,7 +430,9 @@ void User::_deserializeProperties(const QDomElement & objectElement) throws(tt3:
     }
 }
 
-void User::_deserializeAggregations(const QDomElement & parentElement) throws(tt3::util::ParseException)
+void User::_deserializeAggregations(
+        const QDomElement & parentElement
+    )
 {
     Principal::_deserializeAggregations(parentElement);
 
@@ -449,7 +453,9 @@ void User::_deserializeAggregations(const QDomElement & parentElement) throws(tt
 
 //////////
 //  Validation
-void User::_validate(QSet<Object*> & validatedObjects) throws(tt3::db::api::DatabaseException)
+void User::_validate(
+        QSet<Object*> & validatedObjects
+    )
 {
     Principal::_validate(validatedObjects);
 
