@@ -64,7 +64,7 @@ namespace
             return tt3::util::ProductInformation::applicationBuildNumber();
         }
 
-        virtual void            initialize() throws(QException) override
+        virtual void            initialize() override
         {
             tt3::util::ComponentManager::registerComponent(Component::instance());
             tt3::gui::SkinManager::registerSkin(Skin::instance());

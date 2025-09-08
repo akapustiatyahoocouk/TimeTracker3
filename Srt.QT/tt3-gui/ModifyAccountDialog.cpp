@@ -23,8 +23,8 @@ using namespace tt3::gui;
 ModifyAccountDialog::ModifyAccountDialog(
         QWidget * parent,
         tt3::ws::Account account,
-        const tt3::ws::Credentials & credentials)
-    throws(tt3::ws::WorkspaceClosedException)
+        const tt3::ws::Credentials & credentials
+    )
     :   QDialog(parent),
         //  Implementation
         _account(account),

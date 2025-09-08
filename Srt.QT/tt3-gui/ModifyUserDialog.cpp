@@ -20,10 +20,11 @@ using namespace tt3::gui;
 
 //////////
 //  Construction/destruction
-ModifyUserDialog::ModifyUserDialog(QWidget *parent,
-                                   tt3::ws::User user,
-                                   const tt3::ws::Credentials & credentials)
-    throws(tt3::ws::WorkspaceClosedException)
+ModifyUserDialog::ModifyUserDialog(
+        QWidget * parent,
+        tt3::ws::User user,
+        const tt3::ws::Credentials & credentials
+    )
     :   QDialog(parent),
         //  Implementation
         _user(user),

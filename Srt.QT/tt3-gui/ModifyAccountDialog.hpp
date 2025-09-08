@@ -19,9 +19,11 @@
 
 namespace tt3::gui
 {
-    //  The modal "Create user" dialog
     namespace Ui { class ModifyAccountDialog; }
 
+    /// \class ModifyAccountDialog "tt3-gui/API.hpp"
+    /// \brief
+    ///     The modal "Modify account" dialog
     class TT3_GUI_PUBLIC ModifyAccountDialog final : private QDialog
     {
         Q_OBJECT
@@ -30,22 +32,43 @@ namespace tt3::gui
         //////////
         //  Types
     public:
-        //  The dialog result after a modal invocation
-        enum class Result { Ok, Cancel };
+        /// The dialog result after a modal invocation
+        enum class Result
+        {
+            Ok,     ///< The user has confirmed and saved the changes.
+            Cancel  ///< The user has cancelled the dialog.
+        };
 
         //////////
         //  Construction/destruction
     public:
-        ModifyAccountDialog(QWidget * parent,
-                            tt3::ws::Account account,
-                            const tt3::ws::Credentials & credentials)
-            throws(tt3::ws::WorkspaceClosedException);
+        /// \brief
+        ///     Constructs the dialog.
+        /// @param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// @param account
+        ///     The account to modify.
+        /// @param credentials
+        ///     The credentials to use for accessing Account's data.
+        /// @exception WorkspaceException
+        ///     If an error occurs retrieving Account details.
+        ModifyAccountDialog(
+                QWidget * parent,
+                tt3::ws::Account account,
+                const tt3::ws::Credentials & credentials
+            );
+
+        /// \brief
+        ///     The class destructor.
         virtual ~ModifyAccountDialog();
 
         //////////
         //  Operations
     public:
-        //  Runs the dialog modally, returning user's choice
+        /// \brief
+        ///     Runs the dialog modally.
+        /// @return
+        ///     The dialog result; Ok means "changes saved".
         Result              doModal();
 
         //////////

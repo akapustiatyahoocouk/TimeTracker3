@@ -19,9 +19,11 @@
 
 namespace tt3::gui
 {
-    //  The modal "Create user" dialog
     namespace Ui { class ModifyUserDialog; }
 
+    /// \class ModifyUserDialog "tt3-gui/API.hpp"
+    /// \brief
+    ///     The modal "Modify user" dialog
     class TT3_GUI_PUBLIC ModifyUserDialog final : private QDialog
     {
         Q_OBJECT
@@ -30,22 +32,43 @@ namespace tt3::gui
         //////////
         //  Types
     public:
-        //  The dialog result after a modal invocation
-        enum class Result { Ok, Cancel };
+        /// The dialog result after a modal invocation
+        enum class Result
+        {
+            Ok,     ///< The user has confirmed and saved the changes.
+            Cancel  ///< The user has cancelled the dialog.
+        };
 
         //////////
         //  Construction/destruction
     public:
-        ModifyUserDialog(QWidget * parent,
-                         tt3::ws::User user,
-                         const tt3::ws::Credentials & credentials)
-            throws(tt3::ws::WorkspaceClosedException);
+        /// \brief
+        ///     Constructs the dialog.
+        /// @param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// @param user
+        ///     The user to modify.
+        /// @param credentials
+        ///     The credentials to use for accessing User's data.
+        /// @exception WorkspaceException
+        ///     If an error occurs retrieving User details.
+        ModifyUserDialog(
+                QWidget * parent,
+                tt3::ws::User user,
+                const tt3::ws::Credentials & credentials
+            );
+
+        /// \brief
+        ///     The class destructor.
         virtual ~ModifyUserDialog();
 
         //////////
         //  Operations
     public:
-        //  Runs the dialog modally, returning user's choice
+        /// \brief
+        ///     Runs the dialog modally.
+        /// @return
+        ///     The dialog result; Ok means "changes saved".
         Result              doModal();
 
         //////////

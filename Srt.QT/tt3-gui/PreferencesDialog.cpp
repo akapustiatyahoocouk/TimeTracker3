@@ -20,7 +20,9 @@ using namespace tt3::gui;
 
 //////////
 //  Construction/destruction
-PreferencesDialog::PreferencesDialog(QWidget * parent) throw(int)
+PreferencesDialog::PreferencesDialog(
+        QWidget * parent
+    )
     :   QDialog(parent),
         _ui(new Ui::PreferencesDialog)
 {

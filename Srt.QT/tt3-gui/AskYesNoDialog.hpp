@@ -22,6 +22,10 @@ namespace tt3::gui
     //  The modal "yes/no" dialog
     namespace Ui { class AskYesNoDialog; }
 
+    /// \class AskYesNoDialog "tt3-gui/API.hpp"
+    /// \brief
+    ///     The modal Yes/No dialog asking the user
+    ///     to make a choice.
     class TT3_GUI_PUBLIC AskYesNoDialog : private QDialog
     {
         Q_OBJECT
@@ -30,8 +34,13 @@ namespace tt3::gui
         //////////
         //  Types
     public:
-        //  The dialog result after a modal invocation
-        enum class Result { Yes, No };
+        /// \brief
+        ///     The dialog result after a modal invocation
+        enum class Result
+        {
+            Yes,    ///< The user has chosen a Yes option.
+            No      ///< The user has chosen a No option.
+        };
 
         //////////
         //  Construction/destruction
@@ -176,7 +185,9 @@ namespace tt3::gui
         explicit RestartRequiredDialog(::QWidget * parent);
     };
 
-    //  The modal "confirm User destruction" dialog
+    /// \class ConfirmDestroyUserDialog "tt3-gui/API.hpp"
+    /// \brief
+    ///     The modal "confirm User destruction" dialog.
     class TT3_GUI_PUBLIC ConfirmDestroyUserDialog : public AskYesNoDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmDestroyUserDialog)
@@ -184,19 +195,34 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        ConfirmDestroyUserDialog(::QWidget * parent,
-                                 tt3::ws::User user,
-                                 const tt3::ws::Credentials & credentials)
-            throws(tt3::ws::WorkspaceClosedException);
+        /// @brief
+        ///     Constructs the dialog.
+        /// @param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// @param user
+        ///     The user whose destruction is to be confirmed.
+        /// @param credentials
+        ///     The credentials to use for accessing User's data.
+        /// @exception WorkspaceException
+        ///     If an error occurs retrieving User details.
+        ConfirmDestroyUserDialog(
+                ::QWidget * parent,
+                tt3::ws::User user,
+                const tt3::ws::Credentials & credentials
+            );
 
         //////////
         //  Implementation
     private:
-        static QString      _prompt(tt3::ws::User user,
-                                    const tt3::ws::Credentials & credentials) throws(tt3::ws::WorkspaceClosedException);
+        //  Helpers
+        static auto     _prompt(tt3::ws::User user,
+                                const tt3::ws::Credentials & credentials
+                            ) -> QString;
     };
 
-    //  The modal "confirm Account destruction" dialog
+    /// \class ConfirmDestroyAccountDialog "tt3-gui/API.hpp"
+    /// \brief
+    ///     The modal "confirm Account destruction" dialog
     class TT3_GUI_PUBLIC ConfirmDestroyAccountDialog : public AskYesNoDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmDestroyAccountDialog)
@@ -204,10 +230,21 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        ConfirmDestroyAccountDialog(::QWidget * parent,
-                                    tt3::ws::Account account,
-                                    const tt3::ws::Credentials & credentials)
-            throws(tt3::ws::WorkspaceClosedException);
+        /// \brief
+        ///     Constructs the dialog.
+        /// @param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// @param account
+        ///     The account whose destruction is to be confirmed.
+        /// @param credentials
+        ///     The credentials to use for accessing Account's data.
+        /// @exception WorkspaceException
+        ///     If an error occurs retrieving Account details.
+        ConfirmDestroyAccountDialog(
+                ::QWidget * parent,
+                tt3::ws::Account account,
+                const tt3::ws::Credentials & credentials
+            );
     };
 }
 

@@ -214,18 +214,20 @@ RestartRequiredDialog::RestartRequiredDialog(::QWidget * parent)
 ConfirmDestroyUserDialog::ConfirmDestroyUserDialog(
         ::QWidget * parent,
         tt3::ws::User user,
-        const tt3::ws::Credentials & credentials)
-    throws(tt3::ws::WorkspaceClosedException)
+        const tt3::ws::Credentials & credentials
+    )
     :   AskYesNoDialog(
-          parent,
-          QIcon(":/tt3-gui/Resources/Images/Actions/DestroyUserLarge.png"),
-          "Destroy user",
-          _prompt(user, credentials))
+            parent,
+            QIcon(":/tt3-gui/Resources/Images/Actions/DestroyUserLarge.png"),
+            "Destroy user",
+            _prompt(user, credentials))
 {
 }
 
-QString ConfirmDestroyUserDialog::_prompt(tt3::ws::User user,
-                                          const tt3::ws::Credentials & credentials) throws(tt3::ws::WorkspaceClosedException)
+auto ConfirmDestroyUserDialog::_prompt(
+        tt3::ws::User user,
+        const tt3::ws::Credentials & credentials
+    ) -> QString
 {
     QString result =
         "Are you sure you want to destroy user \n" +
@@ -237,19 +239,19 @@ QString ConfirmDestroyUserDialog::_prompt(tt3::ws::User user,
 //////////
 //  ConfirmDestroyAccountDialog
 ConfirmDestroyAccountDialog::ConfirmDestroyAccountDialog(
-    ::QWidget * parent,
-    tt3::ws::Account account,
-    const tt3::ws::Credentials & credentials)
-    throws(tt3::ws::WorkspaceClosedException)
+        ::QWidget * parent,
+        tt3::ws::Account account,
+        const tt3::ws::Credentials & credentials
+    )
     :   AskYesNoDialog(
-          parent,
-          QIcon(":/tt3-gui/Resources/Images/Actions/DestroyAccountLarge.png"),
-          "Destroy account",
-          "Are you sure you want to destroy account \n" +
-              account->login(credentials) +
-              " of " +
-              account->user(credentials)->realName(credentials) +
-              " ?")
+            parent,
+            QIcon(":/tt3-gui/Resources/Images/Actions/DestroyAccountLarge.png"),
+            "Destroy account",
+            "Are you sure you want to destroy account \n" +
+                account->login(credentials) +
+                " of " +
+                account->user(credentials)->realName(credentials) +
+                " ?")
 {
 }
 
