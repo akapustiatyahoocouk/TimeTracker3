@@ -17,7 +17,8 @@
 
 namespace tt3::db::api
 {
-    //  A workload that has no completion status
+    /// \class IWorkStream "tt3-db-api/API.hpp"
+    /// \brief A workload that has no completion status.
     class TT3_DB_API_PUBLIC IWorkStream : public virtual IWorkload
     {
         //////////

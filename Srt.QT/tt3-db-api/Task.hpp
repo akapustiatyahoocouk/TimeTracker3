@@ -17,7 +17,8 @@
 
 namespace tt3::db::api
 {
-    //  A generic task
+    /// \class ITask "tt3-db-api/API.hpp"
+    /// \brief A generic task.
     class TT3_DB_API_PUBLIC ITask : public virtual IActivity
     {
         //////////

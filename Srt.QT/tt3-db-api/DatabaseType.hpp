@@ -17,11 +17,13 @@
 
 namespace tt3::db::api
 {
-    //////////
-    //  A "database type" represents a specific storage technology
-    //  used to keep data persistent.
-    //  Concrete database types will normally be singletons
-    //  registered by plugins.
+    /// \class IDatabaseType "tt3-db-api/API.hpp"
+    /// \brief
+    ///     Represents a specific storage technology
+    ///     used to keep data persistent.
+    /// \details
+    ///     Concrete database types will normally be singletons
+    ///     registered by plugins.
     class TT3_DB_API_PUBLIC IDatabaseType
     {
         //////////

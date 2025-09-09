@@ -17,7 +17,8 @@
 
 namespace tt3::db::api
 {
-    //  ApPrivate task
+    /// \class IPrivateTask "tt3-db-api/API.hpp"
+    /// \brief A private task.
     class TT3_DB_API_PUBLIC IPrivateTask :
         public virtual IPrivateActivity,
         public virtual ITask

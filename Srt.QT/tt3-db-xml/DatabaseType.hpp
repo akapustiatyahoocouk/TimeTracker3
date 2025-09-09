@@ -28,6 +28,7 @@ namespace tt3::db::xml
         DECLARE_SINGLETON(DatabaseType)
 
         friend class DatabaseAddress;
+        friend class Database;
 
         //////////
         //  tt3::db::api::IDatabaseType (general)
@@ -92,6 +93,11 @@ namespace tt3::db::xml
         tt3::util::Mutex    _databaseAddressesGuard;
         QMap<QString, DatabaseAddress*> _databaseAddresses; //  key == full path
         //  TODO how do we recycled Old DatabaseAddress instances ? Queue of Olds ?
+
+        //  The "dead" database, which adopts all still-referenced
+        //  objects from the deleted Database instances
+        DatabaseAddress *const  _deadDatabaseAddress;
+        Database *const         _deadDatabase;
     };
 }
 

@@ -34,5 +34,7 @@
         <file>Resources/Images/Actions/StopSmall.png</file>
         <file>Resources/Images/Actions/ManageUsersLarge.png</file>
         <file>Resources/Images/Actions/ManageUsersSmall.png</file>
+        <file>Resources/Images/Objects/ActivityTypeLarge.png</file>
+        <file>Resources/Images/Objects/ActivityTypeSmall.png</file>
     </qresource>
 </RCC>

@@ -17,7 +17,8 @@
 
 namespace tt3::db::api
 {
-    //  A user
+    /// \class IUser "tt3-db-api/API.hpp"
+    /// \brief A user.
     class TT3_DB_API_PUBLIC IUser : public virtual IPrincipal
     {
         //////////
@@ -167,7 +168,7 @@ namespace tt3::db::api
         /// \brief
         ///     Sets the set of all Workload permitted for
         ///     this User.
-        /// \paeam workloads
+        /// \param workloads
         ///     The new set of all Workload permitted for
         ///     this User.
         /// \exception DatabaseException
@@ -271,12 +272,6 @@ namespace tt3::db::api
         ///     The type for the new PrivateActivity; nullptr == don't assign.
         /// \param workload
         ///     The Workload for the new PrivateActivity; nullptr == don't assign.
-        /// \param completed
-        ///     True if the PublicTask shall initially be marked as
-        ///     "completed", false if not.
-        /// \param requireCommentOnCompletion
-        ///     True if the newly created PublicTask small require the
-        ///     user to enter a comment when marking it as "completed".
         /// \return
         ///     The newly created PrivateActivity.
         /// \exception DatabaseException
@@ -288,7 +283,7 @@ namespace tt3::db::api
                                 bool requireCommentOnStart,
                                 bool requireCommentOnFinish,
                                 bool fullScreenReminder,
-                                IActivityType * type,
+                                IActivityType * activityType,
                                 tt3::db::api::IWorkload * workload
                             ) -> IPrivateActivity * = 0;
 

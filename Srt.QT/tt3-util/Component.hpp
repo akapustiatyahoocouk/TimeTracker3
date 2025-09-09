@@ -17,10 +17,13 @@
 
 namespace tt3::util
 {
-    //  A "component".
-    //  While a "plugin" is a unit of disctibution (e.g. 1 DLL == 1 plugin),
-    //  "components" are architectural elements, so it may be not uncommon
-    //  for a single plugin to define (and register) several components.
+    /// \class IComponent API.hpp "tt3-util/API.hpp"
+    /// \brief A component making up the TT3 architecture.
+    /// \details
+    ///     While a "plugin" is a unit of disctibution
+    ///     1 DLL == 1 plugin), "components" are architectural
+    ///     elements, so it may be not uncommon for a single
+    ///     plugin to define (and register) several components.
     class TT3_UTIL_PUBLIC IComponent
     {
         //////////
@@ -32,74 +35,113 @@ namespace tt3::util
         //////////
         //  Operations
     public:
-        //  The mnemonic identifier of this component.
+        /// \brief
+        ///     Returns the mnemonic identifier of this component.
+        /// \details
+        ///     All components in a TT3 installation must have
+        ///     different "mnemonics", which are not localizable.
+        /// \return
+        ///     The mnemonic identifier of this component.
         virtual auto    mnemonic(
-                            ) const
-                            -> Mnemonic = 0;
+                            ) const -> Mnemonic = 0;
 
-        //  The user-readable display name of this component
-        //  for the current default locale.
+        /// \brief
+        ///     Returns the user-readable display name of this component.
+        /// \return
+        ///     The user-readable display name of this component
+        ///     for the current default locale.
         virtual auto    displayName(
-                            ) const
-                            -> QString = 0;
+                            ) const -> QString = 0;
 
-        //  The short (1 line) user-readable description of
-        //  this component for the current default locale.
+        /// \brief
+        ///     Returns the short (1 line) user-readable description
+        ///     of this component.
+        /// \return
+        ///     The short (1 line) user-readable description of
+        ///     this component for the current default locale.
         virtual auto    description(
-                            ) const
-                            -> QString = 0;
+                            ) const -> QString = 0;
 
-        //  The copyight message of this component for
-        //  the current default locales.
+        /// \brief
+        ///     Returns the copyight message of this component.
+        /// \return
+        ///     The copyight message of this component for
+        ///     the current default locales.
         virtual auto    copyright(
-                            ) const
-                            -> QString = 0;
+                            ) const -> QString = 0;
 
-        //  The version of this component.
+        /// \brief
+        ///     Returns the version of this component.
+        /// \return
+        ///     The version of this component.
         virtual auto    version(
-                            ) const
-                            -> QVersionNumber = 0;
+                            ) const -> QVersionNumber = 0;
 
-        //  The build number of this component.
+        /// \brief
+        ///     Returns the build number of this component.
+        /// \return
+        ///     The build number of this component.
         virtual auto    buildNumber(
-                            ) const
-                            -> QString = 0;
+                            ) const -> QString = 0;
 
-        //  The small (16x16) icon representing this component.
+        /// \brief
+        ///     Returns the small (16x16) icon representing this component.
+        /// \return
+        ///     The small (16x16) icon representing this component.
         virtual auto    smallIcon(
-                            ) const
-                            -> QIcon;
+                            ) const -> QIcon;
 
-        //  The large (32x32) icon representing this component.
+        /// \brief
+        ///     Returns the large (32x32) icon representing this component.
+        /// \return
+        ///     The large (32x32) icon representing this component.
         virtual auto    largeIcon(
-                            ) const
-                            -> QIcon;
+                            ) const -> QIcon;
 
-        //  The license of this component (default GPLv3).
+        /// \brief
+        ///     Returns the license of this component.
+        /// \details
+        ///     The default implementation always returns GPLv3.
+        /// \return
+        ///     The license of this component.
         virtual auto    license(
-                            ) const
-                            -> ILicense *;
+                            ) const -> ILicense *;
 
-        //  The subsystem yo which this component belongs.
+        /// \brief
+        ///     Returns the subsystem yo which this component belongs.
+        /// \return
+        ///     The subsystem yo which this component belongs.
         virtual auto    subsystem(
-                            ) const
-                            -> ISubsystem * = 0;
+                            ) const -> ISubsystem * = 0;
 
-        //  The resource factory used by this component.
+        /// \brief
+        ///     Returns the resource factory used by this component.
+        /// \details
+        ///     Normally each Component will have its own decicated
+        ///     resource factory; however, several tightly coupled
+        ///     components may choose to share the same resource factory.
+        /// \return
+        ///     The resource factory used by this component.
         virtual auto    resources(
-                            ) const
-                            -> IResourceFactory * = 0;
+                            ) const -> IResourceFactory * = 0;
 
-        //  The settings of this component.
+        /// \brief
+        ///     Returns the settings of this component.
+        /// \return
+        ///     The settings of this component.
         virtual auto    settings(
-                            )
-                            -> Settings * = 0;
+                            ) -> Settings * = 0;
+
+        /// \brief
+        ///     Returns the settings of this component.
+        /// \return
+        ///     The settings of this component.
         virtual auto    settings(
-                            ) const
-                            -> const Settings * = 0;
+                            ) const -> const Settings * = 0;
     };
 
-    //  The manager of known components
+    /// \class ComponentManager API.hpp "tt3-util/API.hpp"
+    /// \brief The manager of known components.
     class TT3_UTIL_PUBLIC ComponentManager final
     {
         UTILITY_CLASS(ComponentManager)
@@ -107,43 +149,88 @@ namespace tt3::util
         //////////
         //  Operations
     public:
-        //  Returns the set of all registered components.
+        /// \brief
+        ///     Returns the set of all registered components.
+        /// \return
+        ///     Returns the set of all registered components.
         static auto     allComponents()
                             -> Components;
 
-        //  Registers the specified component; returns true
-        //  on success, false on failure.
+        /// \brief
+        ///     Registers the specified component.
+        /// \details
+        ///     Registering an already-registered component
+        ///     does nothing and returns true (success).
+        /// \param component
+        ///     The component to register.
+        /// \return
+        ///     True on success, false on failure.
         static bool     registerComponent(
                                 IComponent * component
                             );
 
-        //  Finds a registered component by mnemonic and version.
+        /// \brief
+        ///     Finds a registered component by mnemonic and version.
+        /// \param mnemonic
+        ///     The component mnemonic to look for.
+        /// \param version
+        ///     The component version to look for.
+        /// \return
+        ///     The registered component with the required mnemonic
+        ///     and version or nullptr if not found.
         static auto     findComponent(
                                 const Mnemonic & mnemonic,
                                 const QVersionNumber & version
-                            )
-                            -> IComponent *;
+                            ) -> IComponent *;
 
-        //  Finds a registered component by mnemonic; if several versions
-        //  of component with the same mnemonic are registered, returns the
-        //  one with the latest version.
+        /// \brief
+        ///     Finds a registered component by mnemonic.
+        /// \details
+        ///     If several versions of component with the same
+        ///     mnemonic are registered, finds the one with the
+        ///     latest version.
+        /// \param mnemonic
+        ///     The component mnemonic to look for.
+        /// \return
+        ///     The latest available version of a registered component
+        ///     with the required mnemonic or nullptr if none found.
         static auto     findComponent(
                                 const Mnemonic & mnemonic
-                            )
-                            -> IComponent *;
+                            ) -> IComponent *;
 
-        //  Loads Settings of all registered components from a text configuration file.
+        /// \brief
+        ///     Loads Settings of all registered components from
+        ///     an application-wide text configuration file.
+        /// \details
+        ///     This file is a hidden file located in the user's
+        ///     home directory.
+        ///     Any settings not explicitly present in the configuration
+        ///     file retain their default values.
         static void     loadComponentSettings();
 
-        //  Saves Settings of all registered components to a text configuration file.
+        /// \brief
+        ///     Saves Settings of all registered components to
+        ///     an application-wide text configuration file.
+        /// \details
+        ///     This file is a hidden file located in the user's
+        ///     home directory.
         static void     saveComponentSettings();
 
-        //  Returns the set of all locales supported by at
-        //  least one registered component
+        /// \brief
+        ///     Returns the set of all locales supported by at
+        ///     least one registered component
+        /// \return
+        ///     The set of all locales supported by at
+        ///     least one registered component
         static Locales  supportedLocales();
 
-        //  Returns the set of all locales supported by
-        //  every registered component
+        /// \brief
+        ///     Returns the set of all locales supported by
+        ///     every registered component
+        /// \return
+        ///     The set of all locales supported by
+        ///     every registered component.
+        ///     NOTE, that this set may be empty.
         static Locales  fullySupportedLocales();
 
         //////////

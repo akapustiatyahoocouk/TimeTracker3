@@ -39,7 +39,7 @@
     <item row="1" column="0">
      <widget class="QTabWidget" name="managersTabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="manageUsersTab">
        <attribute name="icon">
@@ -48,6 +48,15 @@
        </attribute>
        <attribute name="title">
         <string>Users</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="manageActivityTypesTab">
+       <attribute name="icon">
+        <iconset resource="tt3-skin-admin.qrc">
+         <normaloff>:/tt3-skin-admin/Resources/Images/Objects/ActivityTypeSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/ActivityTypeSmall.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Activity types</string>
        </attribute>
       </widget>
      </widget>
@@ -148,6 +157,7 @@
      <string>&amp;Edit</string>
     </property>
     <addaction name="actionManageUsers"/>
+    <addaction name="actionManageActivityTypes"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="enabled">
@@ -355,6 +365,15 @@
    </property>
    <property name="text">
     <string>Manage &amp;users</string>
+   </property>
+  </action>
+  <action name="actionManageActivityTypes">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Objects/ActivityTypeSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/ActivityTypeSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>Manage activity &amp;types</string>
    </property>
   </action>
  </widget>

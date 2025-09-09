@@ -17,7 +17,6 @@
 
 namespace tt3::db::api
 {
-    //////////
     //  A "database address" represents a location of a speific
     //  database of a given type. Database address instances are
     //  managed by their corresponding database type.

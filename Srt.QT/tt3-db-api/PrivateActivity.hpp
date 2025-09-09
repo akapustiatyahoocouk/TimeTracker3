@@ -17,7 +17,8 @@
 
 namespace tt3::db::api
 {
-    //  A private  activity
+    /// \class IPrivateActivity "tt3-db-api/API.hpp"
+    /// \brief A private  activity
     class TT3_DB_API_PUBLIC IPrivateActivity : public virtual IActivity
     {
         //////////

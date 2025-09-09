@@ -22,8 +22,14 @@ using namespace tt3::db::xml;
 IMPLEMENT_SINGLETON(DatabaseType)
 
 DatabaseType::DatabaseType()
-    :   _validator(tt3::db::api::DefaultValidator::instance())
+    :   _validator(tt3::db::api::DefaultValidator::instance()),
+        //  "Dead" database
+        _deadDatabaseAddress(new DatabaseAddress("?")),
+        _deadDatabase(new Database(_deadDatabaseAddress, Database::_Mode::_Dead))
 {
+    _databaseAddresses.insert(
+        _deadDatabaseAddress->_path,
+        _deadDatabaseAddress);
 }
 
 DatabaseType::~DatabaseType()

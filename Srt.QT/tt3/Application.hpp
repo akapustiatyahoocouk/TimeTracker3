@@ -17,7 +17,8 @@
 
 namespace tt3
 {
-    //  The "TT3 application"
+    /// \class Application API.hpp "tt3/API.hpp"
+    /// \brief The TimeTracker3 application.
     class Application final : public QApplication
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Application)
@@ -31,12 +32,12 @@ namespace tt3
         //////////
         //  QApplication
     public:
-        //  Rund this application's message loop.
+        /// \brief
+        ///     Runs this application's message loop.
+        /// \return
+        ///     The application exit code.
+        ///     Negative exit code means "restart TT3".
         int         exec();
-
-        //////////
-        //  Operations
-    public:
 
         //////////
         //  Implementation

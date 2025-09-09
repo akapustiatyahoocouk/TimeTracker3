@@ -17,7 +17,8 @@
 
 namespace tt3::db::api
 {
-    //  A generic activity
+    /// \class IActivity "tt3-db-api/API.hpp"
+    /// \brief A generic activity.
     class TT3_DB_API_PUBLIC IActivity :
         public virtual IObject
     {
@@ -85,7 +86,7 @@ namespace tt3::db::api
         /// \brief
         ///     Sets the timeout after which the activity
         ///     stops automatically if the user does nothing at all.
-        /// \paeam timeout
+        /// \param timeout
         ///     The new timeout after which the activity stops
         ///     automatically if the user does nothing at
         ///     all; absent == none.

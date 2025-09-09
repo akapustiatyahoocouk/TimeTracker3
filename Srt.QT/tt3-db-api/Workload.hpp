@@ -17,7 +17,8 @@
 
 namespace tt3::db::api
 {
-    //  A workload that can be contributed to
+    /// \class IWorkload "tt3-db-api/API.hpp"
+    /// \brief A workload that can be contributed to.
     class TT3_DB_API_PUBLIC IWorkload : public virtual IObject
     {
         //////////

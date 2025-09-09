@@ -17,7 +17,8 @@
 
 namespace tt3::db::api
 {
-    //  A beneficiary
+    /// \class IBeneficiary "tt3-db-api/API.hpp"
+    /// \brief A beneficiary.
     class TT3_DB_API_PUBLIC IBeneficiary :
         public virtual IObject
     {

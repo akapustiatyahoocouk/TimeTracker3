@@ -25,52 +25,62 @@ Component::~Component() {}
 
 //////////
 //  IComponent
-Component::Mnemonic Component::mnemonic() const
+auto Component::mnemonic(
+    ) const -> tt3::util::Mnemonic
 {
     return M(tt3);
 }
 
-QString Component::displayName() const
+auto Component::displayName(
+    ) const -> QString
 {
     return "TimeTracker3 application";
 }
 
-QString Component::description() const
+auto Component::description(
+    ) const -> QString
 {
     return "Defines startup and top-level logic of TimeTracker3 application";
 }
 
-QString Component::copyright() const
+auto Component::copyright(
+    ) const -> QString
 {
     return tt3::util::ProductInformation::applicationCopyright();
 }
 
-QVersionNumber Component::version() const
+auto Component::version(
+    ) const -> QVersionNumber
 {
     return tt3::util::ProductInformation::applicationVersion();
 }
 
-QString Component::buildNumber() const
+auto Component::buildNumber(
+    ) const -> QString
 {
     return tt3::util::ProductInformation::applicationBuildNumber();
 }
 
-tt3::util::ISubsystem * Component::subsystem() const
+auto Component::subsystem(
+    ) const -> tt3::util::ISubsystem *
 {
     return tt3::util::StandardSubsystems::Applications::instance();
 }
 
-Component::Resources * Component::resources() const
+auto Component::resources(
+    ) const -> Component::Resources *
 {
     return Resources::instance();
 }
 
-Component::Settings * Component::settings()
+auto Component::settings(
+    ) -> Component::Settings *
 {
     return Settings::instance();
 }
 
-const Component::Settings * Component::settings() const
+auto Component::settings(
+    ) const -> const Component::Settings *
 {
     return Settings::instance();
 }

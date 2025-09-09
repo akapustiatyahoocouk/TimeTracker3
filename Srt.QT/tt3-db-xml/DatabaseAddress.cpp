@@ -158,8 +158,8 @@ void DatabaseAddress::_assertState()
     switch (_state)
     {
         case State::New:
-            Q_ASSERT(databaseType->_databaseAddresses.contains(_path) &&
-                     databaseType->_databaseAddresses[_path] == this);
+            Q_ASSERT(databaseType->_databaseAddresses.contains(_path));
+            Q_ASSERT(databaseType->_databaseAddresses[_path] == this);
             Q_ASSERT(_referenceCount == 0);
             break;
         case State::Managed:

@@ -24,7 +24,11 @@ Database::Database(DatabaseAddress * address, _Mode mode)
         _validator(tt3::db::api::DefaultValidator::instance())
 {
     Q_ASSERT(_address != nullptr);
-    _address->addReference();
+    if (mode != _Mode::_Dead)
+    {   //  ...because the DatabaseType holds that reference
+        //  TODO this is UGLY!!!
+        _address->addReference();
+    }
 
     tt3::util::Lock lock(_guard);
 
@@ -101,9 +105,6 @@ Database::Database(DatabaseAddress * address, _Mode mode)
 
 Database::~Database()
 {
-    static Database *const theDeadDatabase =
-        new Database(new DatabaseAddress("?"), Database::_Mode::_Dead);
-
     //  Close if still open
     try
     {
@@ -130,9 +131,10 @@ Database::~Database()
                 //  is lost.
                 //  To achieve this, we move these objects to a hidden
                 //  "dead" database.
+                Database * deadDatabase = DatabaseType::instance()->_deadDatabase;
                 _graveyard.remove(object->_oid);
-                theDeadDatabase->_graveyard.insert(object->_oid, object);
-                *const_cast<Database**>(&object->_database) = theDeadDatabase;
+                deadDatabase->_graveyard.insert(object->_oid, object);
+                *const_cast<Database**>(&object->_database) = deadDatabase;
             }
         }
         Q_ASSERT(_graveyard.isEmpty());

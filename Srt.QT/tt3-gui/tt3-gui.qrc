@@ -66,5 +66,13 @@
         <file>Resources/Images/Actions/ManageUsersSmall.png</file>
         <file>Resources/Images/Actions/DestroyWorkspaceLarge.png</file>
         <file>Resources/Images/Actions/DestroyWorkspaceSmall.png</file>
+        <file>Resources/Images/Objects/ActivityTypeLarge.png</file>
+        <file>Resources/Images/Objects/ActivityTypeSmall.png</file>
+        <file>Resources/Images/Actions/CreateActivityTypeLarge.png</file>
+        <file>Resources/Images/Actions/CreateActivityTypeSmall.png</file>
+        <file>Resources/Images/Actions/DestroyActivityTypeLarge.png</file>
+        <file>Resources/Images/Actions/DestroyActivityTypeSmall.png</file>
+        <file>Resources/Images/Actions/ModifyActivityTypeLarge.png</file>
+        <file>Resources/Images/Actions/ModifyActivityTypeSmall.png</file>
     </qresource>
 </RCC>
