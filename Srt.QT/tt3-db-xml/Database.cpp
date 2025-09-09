@@ -232,49 +232,49 @@ auto Database::activityTypes(
 auto Database::publicActivities(
     ) const -> tt3::db::api::PublicActivities
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto Database::publicActivitiesAndTasks(
     ) const -> tt3::db::api::PublicActivities
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto Database::publicTasks(
     ) const -> tt3::db::api::PublicTasks
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto Database::rootPublicTasks(
     ) const -> tt3::db::api::PublicTasks
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto Database::projects(
     ) const -> tt3::db::api::Projects
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto Database::rootProjects(
     ) const -> tt3::db::api::Projects
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto Database::workStreams(
     ) const -> tt3::db::api::WorkStreams
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto Database::beneficiaries(
     ) const -> tt3::db::api::Beneficiaries
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 //////////
@@ -387,7 +387,7 @@ auto Database::createActivityType(
         const QString & /*description*/
     ) -> tt3::db::api::IActivityType *
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto Database::createPublicActivity(
@@ -401,7 +401,7 @@ auto Database::createPublicActivity(
         tt3::db::api::IWorkload * /*workload*/
     ) -> tt3::db::api::IPublicActivity *
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto Database::createPublicTask(
@@ -417,7 +417,7 @@ auto Database::createPublicTask(
         bool /*requireCommentOnCompletion*/
     ) -> tt3::db::api::IPublicTask *
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto Database::createProject(
@@ -426,7 +426,7 @@ auto Database::createProject(
         const tt3::db::api::Beneficiaries & /*beneficiaries*/
     ) -> tt3::db::api::IProject *
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto Database::createWorkStream(
@@ -435,7 +435,7 @@ auto Database::createWorkStream(
         const tt3::db::api::Beneficiaries & /*beneficiaries*/
     ) -> tt3::db::api::IWorkStream *
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto Database::createBeneficiary(
@@ -443,7 +443,7 @@ auto Database::createBeneficiary(
         const QString & /*description*/
     ) -> tt3::db::api::IBeneficiary *
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 //////////

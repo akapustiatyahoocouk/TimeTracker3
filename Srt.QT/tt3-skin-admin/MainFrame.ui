@@ -201,8 +201,9 @@
    <addaction name="actionNewWorkspace"/>
    <addaction name="actionOpenWorkspace"/>
    <addaction name="separator"/>
-   <addaction name="separator"/>
    <addaction name="actionManageUsers"/>
+   <addaction name="actionManageActivityTypes"/>
+   <addaction name="separator"/>
    <addaction name="actionPreferences"/>
    <addaction name="actionLoginAsDifferentUser"/>
    <addaction name="separator"/>
@@ -589,6 +590,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionManageActivityTypes</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManageActivityTypes()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>207</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_onActionExit()</slot>
@@ -604,5 +621,6 @@
   <slot>_onActionRestart()</slot>
   <slot>_onActionLoginAsDifferentUser()</slot>
   <slot>_onActionManageUsers()</slot>
+  <slot>_onActionManageActivityTypes()</slot>
  </slots>
 </ui>

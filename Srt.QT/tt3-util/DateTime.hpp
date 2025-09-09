@@ -17,13 +17,15 @@
 
 namespace tt3::util
 {
-    //  A time interval
+    /// \class TimeSpan tt3-util/API.hpp "tt3-util/API.hpp"
+    /// \brief A time interval.
     class TT3_UTIL_PUBLIC TimeSpan
     {
         //////////
         //  Constants
     public:
-        //  The invalid time span
+        /// \brief
+        ///     The "invalid" time span.
         static const TimeSpan Invalid;
 
         //////////
@@ -31,49 +33,180 @@ namespace tt3::util
     private:
         explicit TimeSpan(int minutes) : _minutes(minutes) {}
     public:
+        /// \brief
+        ///     Constructs an "invalid" time span.
         TimeSpan() : _minutes(_InvalidMinutes) {}
 
+        /// \brief
+        ///     Constructs a time span from the number of hours.
+        /// \param h
+        ///     The number of hours.
+        /// \return
+        ///     The time span covering the specified number of
+        ///     hours, or an "invalid" time span if overflow occurs.
         static TimeSpan hours(int h);
+
+        /// \brief
+        ///     Constructs a time span from the number of minutes.
+        /// \param m
+        ///     The number of minutes.
+        /// \return
+        ///     The time span covering the specified number of
+        ///     minutes, or an "invalid" time span if overflow occurs.
         static TimeSpan minutes(int m);
 
         //////////
         //  Operators
     public:
-        //  An invalid time span compares "less than"
-        //  any valid time span
+        /// \brief
+        ///     Compares two time spans for equality.
+        /// \param op2
+        ///     The 2nd operand of comparison.
+        /// \return
+        ///     True if *this and op2 represent the same time
+        ///     span, else false. An "invalid" time span compares
+        ///     equal to another "invalid" time span and nor equal
+        ///     to any valid time span.
         bool        operator == (const TimeSpan & op2) const { return _minutes == op2._minutes; }
+
+        /// \brief
+        ///     Compares two time spans for inequality.
+        /// \param op2
+        ///     The 2nd operand of comparison.
+        /// \return
+        ///     False if *this and op2 represent the same time
+        ///     span, else true. An "invalid" time span compares
+        ///     equal to another "invalid" time span and nor equal
+        ///     to any valid time span.
         bool        operator != (const TimeSpan & op2) const { return _minutes != op2._minutes; }
+
+        /// \brief
+        ///     Compares two time spans for order.
+        /// \param op2
+        ///     The 2nd operand of comparison.
+        /// \return
+        ///     True if *this is algebraically "less than" op2,
+        ///     else false. An "invalid" time span compares
+        ///     equal to another "invalid" time span and less than
+        ///     any valid time span.
         bool        operator <  (const TimeSpan & op2) const { return _minutes <  op2._minutes; }
+
+        /// \brief
+        ///     Compares two time spans for order.
+        /// \param op2
+        ///     The 2nd operand of comparison.
+        /// \return
+        ///     True if *this is algebraically "less than or equal to"
+        ///     op2, else false. An "invalid" time span compares
+        ///     equal to another "invalid" time span and less than
+        ///     any valid time span.
         bool        operator <= (const TimeSpan & op2) const { return _minutes <= op2._minutes; }
+
+        /// \brief
+        ///     Compares two time spans for order.
+        /// \param op2
+        ///     The 2nd operand of comparison.
+        /// \return
+        ///     True if *this is algebraically "greater than" op2,
+        ///     else false. An "invalid" time span compares
+        ///     equal to another "invalid" time span and less than
+        ///     any valid time span.
         bool        operator >  (const TimeSpan & op2) const { return _minutes >  op2._minutes; }
+
+        /// \brief
+        ///     Compares two time spans for order.
+        /// \param op2
+        ///     The 2nd operand of comparison.
+        /// \return
+        ///     True if *this is algebraically "greater than or
+        ///     equal to" op2, else false. An "invalid" time span
+        ///     compares equal to another "invalid" time span and
+        ///     less than any valid time span.
         bool        operator >= (const TimeSpan & op2) const { return _minutes >= op2._minutes; }
 
-        //  Adds/aubtracts the two time spans.  If either
-        //  operand is "uinvalid", the result is "invalid".
+        /// \brief
+        ///     Negates a time span.
+        /// \return
+        ///     The time span with an opposite sign and same
+        ///     magnitude as this one; "invalid" if this time
+        ///     span is "invalid".
         TimeSpan    operator -  () const;
+
+        /// \brief
+        ///     Adds two time spans.
+        /// \param op2
+        ///     The 2nd operand of the addition.
+        /// \return
+        ///     The time span with the magnitude determined by
+        ///     addition of magnitudes of two operands; "invalid"
+        ///     time span if either opoerand is "invalid" or
+        ///     an overfolow occurs.
         TimeSpan    operator +  (const TimeSpan & op2) const;
+
+        /// \brief
+        ///     Subtracts two time spans.
+        /// \param op2
+        ///     The 2nd operand of the subtraction.
+        /// \return
+        ///     The time span with the magnitude determined by
+        ///     subtraction of magnitudes of two operands; "invalid"
+        ///     time span if either opoerand is "invalid" or
+        ///     an overfolow occurs.
         TimeSpan    operator -  (const TimeSpan & op2) const;
+
+        /// \brief
+        ///     Adds a time span to this one.
+        /// \param op2
+        ///     The 2nd operand of the addition.
+        /// \return
+        ///     The reference to this operand.
+        ///     The magnitude of this operand is determined by
+        ///     addition of magnitudes of two operands; "invalid"
+        ///     time span if either opoerand is "invalid" or
+        ///     an overfolow occurs.
         TimeSpan &  operator += (const TimeSpan & op2);
+
+        /// \brief
+        ///     Subtracts a time span from this one.
+        /// \param op2
+        ///     The 2nd operand of the subtraction.
+        /// \return
+        ///     The reference to this operand.
+        ///     The magnitude of this operand is determined by
+        ///     subtraction of magnitudes of two operands; "invalid"
+        ///     time span if either opoerand is "invalid" or
+        ///     an overfolow occurs.
         TimeSpan &  operator -= (const TimeSpan & op2);
 
         //////////
         //  Operations
     public:
-        //  Checks whether this time span is "valid".
+        /// \brief
+        ///     Checks whether this time span is "valid".
+        /// \return
+        ///     True if this time span is "valid", else false.
         bool        isValid() const { return _minutes != _InvalidMinutes; }
 
-        //  Returns the number of gull hours in this time span.
-        //  If this time span is "invalid", the call is an error.
+        /// \brief
+        ///     Returns the number of full hours in this time span.
+        /// \details
+        ///     If this time span is "invalid", the call is an error.
+        /// \return
+        ///     The number of full hours in this time span.
         int         asHours() const { Q_ASSERT(isValid()); return _minutes / 60; }
 
-        //  Returns the number of minutes in this time span.
-        //  If this time span is "invalid", the call is an error.
+        /// \brief
+        ///     Returns the number of full minutes in this time span.
+        /// \details
+        ///     If this time span is "invalid", the call is an error.
+        /// \return
+        ///     The number of full minutes in this time span.
         int         asMinutes() const { Q_ASSERT(isValid()); return _minutes; }
 
         //////////
         //  Implementation
     private:
-        static const int _InvalidMinutes = INT_MIN;
+        static inline const int _InvalidMinutes = INT_MIN;
         int         _minutes;
     };
 }

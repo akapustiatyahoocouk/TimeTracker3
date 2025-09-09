@@ -39,7 +39,7 @@ ActivityType::~ActivityType()
 //  tt3::db::api::IObject (life cycle)
 void ActivityType::destroy()
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 //////////
@@ -47,27 +47,27 @@ void ActivityType::destroy()
 auto ActivityType::displayName(
     ) const -> QString
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 void ActivityType::setDisplayName(
         const QString & /*displayName*/
     )
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto ActivityType::description(
     ) const -> QString
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 void ActivityType::setDescription(
         const QString & /*description*/
     )
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 //////////
@@ -75,7 +75,7 @@ void ActivityType::setDescription(
 auto ActivityType::activities(
     ) const -> tt3::db::api::Activities
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 //////////

@@ -45,11 +45,13 @@ MainFrame::MainFrame(QWidget * parent)
     connect(&tt3::ws::theCurrentWorkspace,
             &tt3::ws::CurrentWorkspace::changed,
             this,
-            &MainFrame::_onCurrentWorkspaceChanged);
+            &MainFrame::_onCurrentWorkspaceChanged,
+            Qt::ConnectionType::QueuedConnection);
     connect(&tt3::ws::theCurrentCredentials,
             &tt3::ws::CurrentCredentials::changed,
             this,
-            &MainFrame::_onCurrentCredentialsChanged);
+            &MainFrame::_onCurrentCredentialsChanged,
+            Qt::ConnectionType::QueuedConnection);
 
     //  Done
     _trackPosition = true;
@@ -115,6 +117,7 @@ void MainFrame::refresh()
     //  Menu items
     _ui->actionCloseWorkspace->setEnabled(currentWorkspace != nullptr);
     _ui->actionManageUsers->setEnabled(currentWorkspace != nullptr);
+    _ui->actionManageActivityTypes->setEnabled(currentWorkspace != nullptr);
 
     //  Controls
     _userManager->refresh();
@@ -472,6 +475,11 @@ void MainFrame::_onActionManageUsers()
         tt3::ws::theCurrentWorkspace,
         tt3::ws::theCurrentCredentials);
     dlg.doModal();
+}
+
+void MainFrame::_onActionManageActivityTypes()
+{
+    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
 }
 
 void MainFrame::_onActionPreferences()

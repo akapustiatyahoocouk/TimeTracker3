@@ -242,7 +242,7 @@ auto User::createPrivateActivity(
         tt3::db::api::IWorkload * /*workload*/
     ) -> tt3::db::api::IPrivateActivity *
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto User::createPrivateTask(
@@ -258,7 +258,7 @@ auto User::createPrivateTask(
         bool /*requireCommentOnCompletion*/
     ) -> tt3::db::api::IPrivateTask *
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto User::createWork(
@@ -267,7 +267,7 @@ auto User::createWork(
         tt3::db::api::IActivity * /*activity*/
     ) -> tt3::db::api::IWork *
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto User::createEvent(
@@ -276,7 +276,7 @@ auto User::createEvent(
         tt3::db::api::IActivity * /*activity*/
     ) -> tt3::db::api::IEvent *
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 //////////
@@ -293,64 +293,64 @@ auto User::accounts(
 auto User::privateActivities(
     ) const -> tt3::db::api::PrivateActivities
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto User::privateActivitiesAndTasks(
     ) const -> tt3::db::api::PrivateActivities
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto User::privateTasks(
     ) const -> tt3::db::api::PrivateTasks
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto User::rootPrivateTasks(
     ) const -> tt3::db::api::PrivateTasks
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto User::permittedWorkloads(
     ) const -> tt3::db::api::Workloads
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 void User::setPermittedWorkloads(
         const tt3::db::api::Workloads & /*workloads*/
     )
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 void User::addPermittedWorkload(
         tt3::db::api::IWorkload * /*workload*/
     )
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 void User::removePermittedWorkload(
         tt3::db::api::IWorkload * /*workload*/
     )
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto User::works(
     ) const -> tt3::db::api::Works
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto User::events(
     ) const -> tt3::db::api::Events
 {
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 //////////

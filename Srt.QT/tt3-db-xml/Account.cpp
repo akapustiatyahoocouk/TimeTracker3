@@ -178,14 +178,14 @@ auto Account::user(
 auto Account::quickPickList(
     ) const -> QList<tt3::db::api::IActivity*>
 {
-    throw new tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 void Account::setQuickPickList(
         const QList<tt3::db::api::IActivity*> & /*quickPickList*/
     )
 {
-    throw new tt3::db::api::CustomDatabaseException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 //////////

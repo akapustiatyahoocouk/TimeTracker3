@@ -39,7 +39,7 @@ auto ActivityTypeImpl::displayName(
         const Credentials & /*credentials*/
     ) const -> QString
 {
-    throw CustomWorkspaceException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 void ActivityTypeImpl::setDisplayName(
@@ -47,14 +47,14 @@ void ActivityTypeImpl::setDisplayName(
         const QString & /*displayName*/
     )
 {
-    throw CustomWorkspaceException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 auto ActivityTypeImpl::description(
         const Credentials & /*credentials*/
     ) const -> QString
 {
-    throw CustomWorkspaceException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 void ActivityTypeImpl::setDescription(
@@ -62,7 +62,7 @@ void ActivityTypeImpl::setDescription(
         const QString & /*description*/
     )
 {
-    throw CustomWorkspaceException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 //////////
@@ -71,7 +71,7 @@ auto ActivityTypeImpl::activities(
         const Credentials & /*credentials*/
     ) const -> Activities
 {
-    throw CustomWorkspaceException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 //////////
@@ -80,21 +80,21 @@ bool ActivityTypeImpl::_canRead(
         const Credentials & /*credentials*/
     ) const
 {
-    throw CustomWorkspaceException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 bool ActivityTypeImpl::_canModify(
         const Credentials & /*credentials*/
     ) const
 {
-    throw CustomWorkspaceException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 bool ActivityTypeImpl::_canDestroy(
         const Credentials & /*credentials*/
     ) const
 {
-    throw CustomWorkspaceException("Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 //  End of tt3-ws/ActivityTypeImpl.cpp

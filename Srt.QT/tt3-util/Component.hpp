@@ -17,7 +17,7 @@
 
 namespace tt3::util
 {
-    /// \class IComponent API.hpp "tt3-util/API.hpp"
+    /// \class IComponent tt3-util/API.hpp "tt3-util/API.hpp"
     /// \brief A component making up the TT3 architecture.
     /// \details
     ///     While a "plugin" is a unit of disctibution
@@ -140,7 +140,7 @@ namespace tt3::util
                             ) const -> const Settings * = 0;
     };
 
-    /// \class ComponentManager API.hpp "tt3-util/API.hpp"
+    /// \class ComponentManager tt3-util/API.hpp "tt3-util/API.hpp"
     /// \brief The manager of known components.
     class TT3_UTIL_PUBLIC ComponentManager final
     {

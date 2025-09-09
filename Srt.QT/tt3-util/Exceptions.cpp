@@ -55,4 +55,23 @@ QString ParseException::errorMessage() const
                              _string, _position);
 }
 
+//////////
+//  NotImplementedError
+NotImplementedError::NotImplementedError()
+{
+#if defined(Q_OS_WINDOWS)
+    __debugbreak();
+#elif defined(Q_OS_LINUX) || defined(Q_OS_UNIX)
+    raise(SIGTRAP)
+#else
+    #error Unsupported host OS
+#endif
+}
+
+auto NotImplementedError::errorMessage(
+    ) const -> QString
+{
+    return "Not yet implemented";
+}
+
 //  End of tt3-util/Exceptions.cpp
