@@ -189,6 +189,14 @@ void Database::close()
     _markClosed();
 }
 
+void Database::refresh()
+{
+    tt3::util::Lock lock(_guard);
+
+    _ensureOpen();  //  may throw
+    //  ...otherwise an all-in-RAM database performs no caching
+}
+
 //////////
 //  tt3::db::api::IDatabase (associations)
 auto Database::users(

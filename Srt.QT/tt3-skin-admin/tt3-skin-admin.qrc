@@ -36,5 +36,7 @@
         <file>Resources/Images/Actions/ManageUsersSmall.png</file>
         <file>Resources/Images/Objects/ActivityTypeLarge.png</file>
         <file>Resources/Images/Objects/ActivityTypeSmall.png</file>
+        <file>Resources/Images/Actions/RefreshLarge.png</file>
+        <file>Resources/Images/Actions/RefreshSmall.png</file>
     </qresource>
 </RCC>

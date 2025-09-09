@@ -45,26 +45,14 @@ namespace tt3::db::xml
         //  tt3::db::api::IDatabase (general)
     public:
         virtual auto    type(
-                ) const -> DatabaseType * override
-        {
-            return DatabaseType::instance();
-        }
-
+                ) const -> DatabaseType * override { return DatabaseType::instance(); }
         virtual auto    address(
-            ) const -> DatabaseAddress * override
-        {
-            return _address;
-        }
-
+                            ) const -> DatabaseAddress * override { return _address; }
         virtual auto    validator(
-                            ) const -> tt3::db::api::IValidator * override
-        {
-            return _validator;
-        }
-
+                            ) const -> tt3::db::api::IValidator * { return _validator; }
         virtual bool    isOpen() const override;
-
         virtual void    close() override;
+        virtual void    refresh() override;
 
         //////////
         //  tt3::db::api::IDatabase (associations)

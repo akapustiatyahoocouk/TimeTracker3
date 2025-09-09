@@ -100,6 +100,31 @@ void WorkspaceImpl::close()
     }
 }
 
+void WorkspaceImpl::refresh()
+{
+    tt3::util::Lock lock(_guard);
+
+    try
+    {
+        _ensureOpen();
+        _database->refresh();
+        //  Any proxy referring to a "dead" DB Ibject
+        //  we don't need in the proxy cache - no DB
+        //  query will ever return one of those
+        for (Oid oid : _proxyCache.keys())
+        {
+            if (!_proxyCache[oid]->_dataObject->isLive())
+            {
+                _proxyCache.remove(oid);
+            }
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
 //////////
 //  Operations (associations)
 auto WorkspaceImpl::users(

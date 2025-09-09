@@ -69,6 +69,15 @@ namespace tt3::ws
         ///     If an error occurs.
         void        close();
 
+        /// \brief
+        ///     If the Workspace performs any sort of cacing
+        ///     internally, drops all caches so that all
+        ///     subsequent accesses reflect the actual
+        ///     persistent data in the underlying database.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        refresh();
+
         //////////
         //  Operations (associations)
     public:

@@ -72,6 +72,15 @@ namespace tt3::db::api
         ///     If an error occurs.
         virtual void    close() = 0;
 
+        /// \brief
+        ///     If the Database performs any sort of cacing
+        ///     internally, drops all caches so that all
+        ///     subsequent accesses reflect the actual
+        ///     persistent data in the underlying database.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        virtual void    refresh() = 0;
+
         //////////
         //  Operations (associations)
     public:

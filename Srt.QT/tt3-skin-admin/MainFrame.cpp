@@ -116,8 +116,10 @@ void MainFrame::refresh()
 
     //  Menu items
     _ui->actionCloseWorkspace->setEnabled(currentWorkspace != nullptr);
+    _ui->menuEdit->setEnabled(currentWorkspace != nullptr);
     _ui->actionManageUsers->setEnabled(currentWorkspace != nullptr);
     _ui->actionManageActivityTypes->setEnabled(currentWorkspace != nullptr);
+    _ui->actionRefresh->setEnabled(currentWorkspace != nullptr);
 
     //  Controls
     _userManager->refresh();
@@ -469,7 +471,7 @@ void MainFrame::_onActionExit()
 }
 
 void MainFrame::_onActionManageUsers()
-{
+{   //  TODO switch toi "Users" tab instead
     tt3::gui::ManageUsersDialog dlg(
         this,
         tt3::ws::theCurrentWorkspace,
@@ -478,8 +480,23 @@ void MainFrame::_onActionManageUsers()
 }
 
 void MainFrame::_onActionManageActivityTypes()
-{
+{   //  TODO switch toi "Activity types" tab instead
     tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+}
+
+void MainFrame::_onActionRefresh()
+{
+    if (tt3::ws::theCurrentWorkspace != nullptr)
+    {
+        try
+        {
+            tt3::ws::theCurrentWorkspace->refresh();
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            tt3::gui::ErrorDialog::show(this, ex);
+        }
+    }
 }
 
 void MainFrame::_onActionPreferences()

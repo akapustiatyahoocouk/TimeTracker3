@@ -22,6 +22,7 @@ namespace tt3::ws
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ObjectImpl)
 
+        friend class WorkspaceImpl;
         friend class PrincipalImpl;
         friend class UserImpl;
         friend class AccountImpl;
