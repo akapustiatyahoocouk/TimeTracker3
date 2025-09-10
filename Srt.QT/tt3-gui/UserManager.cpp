@@ -347,7 +347,7 @@ void UserManager::_filterItems(_WorkspaceModel workspaceModel)
             workspaceModel->userModels.removeAt(i);
         }
         else
-        {   //  Item does not match the filter but has children - show as doisabled
+        {   //  Item does not match the filter but has children - show as disabled
             workspaceModel->userModels[i]->brush = _decorations.disabledItemForeground;
         }
     }

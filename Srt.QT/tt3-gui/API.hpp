@@ -39,6 +39,7 @@
 #include "tt3-gui/GeneralDialogsPreferencesEditor.hpp"
 
 #include "tt3-gui/UserManager.hpp"
+#include "tt3-gui/ActivityTypeManager.hpp"
 
 //  Dialogs
 #include "tt3-gui/ErrorDialog.hpp"

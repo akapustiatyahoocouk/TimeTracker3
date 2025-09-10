@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>415</width>
+    <width>527</width>
     <height>272</height>
    </rect>
   </property>
@@ -113,7 +113,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>415</width>
+     <width>527</width>
      <height>25</height>
     </rect>
    </property>
@@ -148,9 +148,9 @@
     <property name="title">
      <string>&amp;Options</string>
     </property>
-    <addaction name="actionPreferences"/>
-    <addaction name="separator"/>
     <addaction name="actionLoginAsDifferentUser"/>
+    <addaction name="separator"/>
+    <addaction name="actionPreferences"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">

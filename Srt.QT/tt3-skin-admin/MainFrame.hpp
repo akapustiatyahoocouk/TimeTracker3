@@ -78,10 +78,14 @@ namespace tt3::skin::admin
     private:
         Ui::MainFrame *     _ui;
         QTimer              _savePositionTimer;
+
         //  Custom controls for the tabbed pane
         //  in the middle are created dynamically
         QStackedLayout *        _manageUsersTabLayout = nullptr;
         tt3::gui::UserManager * _userManager = nullptr;
+
+        QStackedLayout *        _manageActivityTypesTabLayout = nullptr;
+        tt3::gui::ActivityTypeManager * _activityTypeManager = nullptr;
 
         //////////
         //  Signal handlers

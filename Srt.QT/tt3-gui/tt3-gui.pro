@@ -5,6 +5,7 @@ DEFINES += TT3_GUI_LIBRARY
 
 SOURCES += \
     AboutDialog.cpp \
+    ActivityTypeManager.cpp \
     AskYesNoDialog.cpp \
     Component.cpp \
     CreateAccountDialog.cpp \
@@ -41,6 +42,7 @@ SOURCES += \
 HEADERS += \
     API.hpp \
     AboutDialog.hpp \
+    ActivityTypeManager.hpp \
     AskYesNoDialog.hpp \
     Components.hpp \
     CreateAccountDialog.hpp \
@@ -69,6 +71,7 @@ HEADERS += \
 
 FORMS += \
     AboutDialog.ui \
+    ActivityTypeManager.ui \
     AskYesNoDialog.ui \
     CreateAccountDialog.ui \
     CreateUserDialog.ui \

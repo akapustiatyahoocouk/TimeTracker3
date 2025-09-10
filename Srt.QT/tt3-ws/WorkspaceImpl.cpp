@@ -108,13 +108,16 @@ void WorkspaceImpl::refresh()
     {
         _ensureOpen();
         _database->refresh();
-        //  Any proxy referring to a "dead" DB Ibject
-        //  we don't need in the proxy cache - no DB
-        //  query will ever return one of those
+        //  1.  Any proxy referring to a "dead" DB Object
+        //      we don't need in the proxy cache - no DB
+        //      query will ever return one of those,
+        //  2.  Any proxy referred to ONLY from the proxy
+        //      cache can be dropped.
         for (Oid oid : _proxyCache.keys())
         {
-            if (!_proxyCache[oid]->_dataObject->isLive())
-            {
+            if (!_proxyCache[oid]->_dataObject->isLive() ||
+                _proxyCache[oid].use_count() == 1)
+            {   //  Removal is safe - we're iterating over keys() snapshot
                 _proxyCache.remove(oid);
             }
         }
@@ -163,7 +166,31 @@ auto WorkspaceImpl::users(
 
 //  TODO implement Accounts WorkspaceImpl::accounts(const Credentials & credentials) const throws(WorkspaceException);
 //  TODO implement Account WorkspaceImpl::findAccount(const Credentials & credentials, const QString & login) const throws(WorkspaceException);
-//  TODO implement ActivityTypes WorkspaceImpl::activityTypes(const Credentials & credentials) const throws(WorkspaceException);
+
+auto WorkspaceImpl::activityTypes(
+        const Credentials & credentials
+    ) const -> ActivityTypes
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+
+    try
+    {
+        _validateAccessRights(credentials);
+        //  The caller can see all activity types
+        ActivityTypes result;
+        for (tt3::db::api::IActivityType * dataActivityType : _database->activityTypes())
+        {
+            result.insert(_getProxy(dataActivityType));
+        }
+        return result;
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
 //////////
 //  Operations (access control)
 bool WorkspaceImpl::canAccess(
