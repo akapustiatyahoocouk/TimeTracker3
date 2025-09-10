@@ -54,7 +54,7 @@ QString DatabaseInUseException::errorMessage() const
 //////////
 //  DatabaseCorruptException
 DatabaseCorruptException::DatabaseCorruptException(
-    IDatabaseAddress * databaseAddress)
+        IDatabaseAddress * databaseAddress)
     :   _databaseTypeDisplayName(databaseAddress->databaseType()->displayName()),
         _databaseAddressDisplayForm(databaseAddress->displayForm())
 {

@@ -165,7 +165,7 @@ namespace tt3::db::xml
         //  Validation
     private:
         virtual void    _validate(  //  throws tt3::db::api::DatabaseException
-                                QSet<Object*> & validatedObjects
+                                Objects & validatedObjects
                             ) override;
     };
 }

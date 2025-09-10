@@ -59,12 +59,14 @@ QString ParseException::errorMessage() const
 //  NotImplementedError
 NotImplementedError::NotImplementedError()
 {
-#if defined(Q_OS_WINDOWS)
-    __debugbreak();
-#elif defined(Q_OS_LINUX) || defined(Q_OS_UNIX)
-    raise(SIGTRAP)
-#else
-    #error Unsupported host OS
+#ifdef Q_DEBUG
+    #if defined(Q_OS_WINDOWS)
+        __debugbreak();
+    #elif defined(Q_OS_LINUX) || defined(Q_OS_UNIX)
+        raise(SIGTRAP)
+    #else
+        #error Unsupported host OS
+    #endif
 #endif
 }
 

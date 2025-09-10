@@ -171,8 +171,9 @@ void Database::close()
         {
             _save();    //  may throw!
         }
-        catch (...)
+        catch (const tt3::util::Exception & ex)
         {   //  Cleanup & re-throw
+            qDebug() << ex.errorMessage();
             _markClosed();
             throw;
         }
@@ -183,7 +184,12 @@ void Database::close()
     {
         user->destroy();    //  also destroys Accounts, Works, etc.
     }
+    for (ActivityType * activityType : _activityTypes.values())
+    {
+        activityType->destroy();
+    }
     Q_ASSERT(_users.isEmpty());
+    Q_ASSERT(_activityTypes.isEmpty());
 
     //  Done
     _markClosed();
@@ -379,8 +385,6 @@ auto Database::createUser(
     user->_realName = realName;
     user->_inactivityTimeout = inactivityTimeout;
     user->_uiLocale = uiLocale;
-    //  ...register it...
-    Q_ASSERT(_liveObjects.contains(user->_oid));
     _needsSaving = true;
     //  ...schedule change notifications...
     _changeNotifier.post(
@@ -391,11 +395,49 @@ auto Database::createUser(
 }
 
 auto Database::createActivityType(
-        const QString & /*displayName*/,
-        const QString & /*description*/
+        const QString & displayName,
+        const QString & description
     ) -> tt3::db::api::IActivityType *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+
+    //  Validate parameters
+    if (!_validator->activityType()->isValidDisplayName(displayName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::ActivityType::instance(),
+            "displayName",
+            displayName);
+    }
+    if (!_validator->activityType()->isValidDescription(description))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::ActivityType::instance(),
+            "description",
+            description);
+    }
+
+    //  Display names must be unique
+    if (_findActivityType(displayName) != nullptr)
+    {   //  OOPS!
+        throw tt3::db::api::AlreadyExistsException(
+            tt3::db::api::ObjectTypes::ActivityType::instance(),
+            "displayName",
+            displayName);
+    }
+
+    //  Do the work - create & initialize the ActivityType...
+    ActivityType * activityType = new ActivityType(this, _generateOid()); //  registers with Database
+    activityType->_displayName = displayName;
+    activityType->_description = description;
+    _needsSaving = true;
+    //  ...schedule change notifications...
+    _changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            this, activityType->type(), activityType->_oid));
+    //  ...and we're done
+    return activityType;
 }
 
 auto Database::createPublicActivity(
@@ -518,6 +560,22 @@ Account * Database::_findAccount(const QString & login) const
     }
     return nullptr;
 }
+
+ActivityType * Database::_findActivityType(const QString & displayName) const
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    _ensureOpen();
+
+    for (ActivityType * activityType : _activityTypes)
+    {
+        if (activityType->_displayName == displayName)
+        {
+            return activityType;
+        }
+    }
+    return nullptr;
+}
+
 
 //////////
 //  Serialization
@@ -668,12 +726,17 @@ auto Database::_childElement(
 //  Validation
 void Database::_validate()
 {
-    QSet<Object*> validatedObjects;
+    Objects validatedObjects;
 
     //  Validate users (+ accounts, etc.)
     for (User * user : _users)
     {
         user->_validate(validatedObjects);
+    }
+    //  Validate activity types
+    for (ActivityType * activityType : _activityTypes)
+    {
+        activityType->_validate(validatedObjects);
     }
 
     //  Final checks

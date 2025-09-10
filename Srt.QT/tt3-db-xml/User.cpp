@@ -216,9 +216,6 @@ auto User::createAccount(
     account->_login = login;
     account->_passwordHash = passwordHash;
     account->_capabilities = capabilities & tt3::db::api::Capabilities::All;
-    //  ...register it...
-    Q_ASSERT(_accounts.contains(account));
-    Q_ASSERT(account->_user == this);
     _database->_needsSaving = true;
     //  ...schedule change notifications...
     _database->_changeNotifier.post(
@@ -454,7 +451,7 @@ void User::_deserializeAggregations(
 //////////
 //  Validation
 void User::_validate(
-        QSet<Object*> & validatedObjects
+        Objects & validatedObjects
     )
 {
     Principal::_validate(validatedObjects);

@@ -387,14 +387,12 @@ void ActivityTypeManager::_activityTypesTreeWidgetCustomContextMenuRequested(QPo
 
 void ActivityTypeManager::_createActivityTypePushButtonClicked()
 {
-    /*  TODO implement
-    CreateUserDialog dlg(this, _workspace, _credentials);
-    if (dlg.doModal() == CreateUserDialog::Result::Ok)
-    {   //  User created
+    CreateActivityTypeDialog dlg(this, _workspace, _credentials);
+    if (dlg.doModal() == CreateActivityTypeDialog::Result::Ok)
+    {   //  ActivityType created
         refresh();  //  must refresh NOW
-        _setSelectedUser(dlg.createdUser());
+        _setSelectedActivityType(dlg.createdActivityType());
     }
-    */
 }
 
 void ActivityTypeManager::_modifyActivityTypePushButtonClicked()

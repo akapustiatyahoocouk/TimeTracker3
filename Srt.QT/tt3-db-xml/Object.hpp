@@ -82,7 +82,7 @@ namespace tt3::db::xml
         //  Validation
     private:
         virtual void    _validate(
-                                QSet<Object*> & validatedObjects
+                                Objects & validatedObjects
                             );  //  throws tt3::db::api::DatabaseException
     };
 }

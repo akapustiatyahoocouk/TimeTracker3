@@ -39,7 +39,15 @@ ActivityType::~ActivityType()
 //  tt3::db::api::IObject (life cycle)
 void ActivityType::destroy()
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+
+    //  Dis-associate from other objects
+    //  TODO properly
+    Q_ASSERT(_activities.isEmpty());
+
+    //  This object is now "dead"
+    _markDead();
 }
 
 //////////
@@ -47,7 +55,10 @@ void ActivityType::destroy()
 auto ActivityType::displayName(
     ) const -> QString
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+
+    return _displayName;
 }
 
 void ActivityType::setDisplayName(
@@ -60,7 +71,10 @@ void ActivityType::setDisplayName(
 auto ActivityType::description(
     ) const -> QString
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+
+    return _description;
 }
 
 void ActivityType::setDescription(
@@ -135,7 +149,7 @@ void ActivityType::_deserializeAggregations(
 //////////
 //  Validation
 void ActivityType::_validate(
-        QSet<Object*> & validatedObjects
+        Objects & validatedObjects
     )
 {
     Object::_validate(validatedObjects);

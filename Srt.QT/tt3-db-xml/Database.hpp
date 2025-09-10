@@ -216,6 +216,7 @@ namespace tt3::db::xml
         void                _markClosed();
         tt3::db::api::Oid   _generateOid();
         Account *           _findAccount(const QString & login) const;
+        ActivityType *      _findActivityType(const QString & displayName) const;
 
         //  Serialization
         void            _save();    //  throws tt3::util::Exception

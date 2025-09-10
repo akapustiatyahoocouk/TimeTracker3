@@ -327,6 +327,35 @@ auto WorkspaceImpl::createUser(
     }
 }
 
+auto WorkspaceImpl::createActivityType(
+        const Credentials & credentials,
+        const QString & displayName,
+        const QString & description
+    ) -> ActivityType
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();
+
+    try
+    {
+        //  Check access rights
+        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+        if ((clientCapabilities & Capabilities::Administrator) == Capabilities::None &&
+            (clientCapabilities & Capabilities::ManageActivityTypes) == Capabilities::None)
+        {   //  OOPS! Can't!
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        tt3::db::api::IActivityType * dataActivityType =
+            _database->createActivityType(displayName, description);
+        return _getProxy(dataActivityType);;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
 //////////
 //  Implementation helpers
 void WorkspaceImpl::_ensureOpen() const

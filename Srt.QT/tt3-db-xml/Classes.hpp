@@ -28,6 +28,7 @@ namespace tt3::db::xml
     class TT3_DB_XML_PUBLIC ActivityType;
     class TT3_DB_XML_PUBLIC Activity;
 
+    using Objects = QSet<Object*>;
     using Users = QSet<User*>;
     using Accounts = QSet<Account*>;
     using ActivityTypes = QSet<ActivityType*>;

@@ -40,6 +40,7 @@ namespace tt3::ws
         using Principal = tt3::db::api::IValidator::IPrincipalValidator;
         using User = tt3::db::api::IValidator::IUserValidator;
         using Account = tt3::db::api::IValidator::IAccountValidator;
+        using ActivityType = tt3::db::api::IValidator::IActivityTypeValidator;
 
         //  The validator for Principals.
         Principal * principal() const { return _databaseValidator->principal(); }
@@ -49,6 +50,9 @@ namespace tt3::ws
 
         //  The validator for Accounts.
         Account *   account() const { return _databaseValidator->account(); }
+
+        //  The validator for ActivityTypes.
+        ActivityType *  activityType() const { return _databaseValidator->activityType(); }
 
         //////////
         //  Implementation

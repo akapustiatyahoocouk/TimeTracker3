@@ -207,7 +207,7 @@ void Object::_deserializeAggregations(
 //////////
 //  Validation
 void Object::_validate(
-        QSet<Object*> & validatedObjects
+        Objects & validatedObjects
     )
 {   //  Only validate each object ONCE
     Q_ASSERT(!validatedObjects.contains(this));

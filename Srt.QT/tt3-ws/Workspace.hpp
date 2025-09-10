@@ -33,6 +33,7 @@ namespace tt3::ws
         friend class PrincipalImpl;
         friend class UserImpl;
         friend class AccountImpl;
+        friend class ActivityTypeImpl;
 
         //////////
         //  Construction/destruction - from friends only
@@ -228,6 +229,26 @@ namespace tt3::ws
                             const InactivityTimeout & inactivityTimeout,
                             const UiLocale & uiLocale
                         ) -> User;
+
+        /// \brief
+        ///     Creates a new ActivityType in this workspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param displayName
+        ///     The short (1 line) user-readable display name
+        ///     for the new ActivityType.
+        /// \param description
+        ///     The multi-line user-readable description for the new
+        ///     ActivityType; with lines separated by a newline '\n' character.
+        /// \return
+        ///     The newly created ActivityType.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        createActivityType(
+                        const Credentials & credentials,
+                        const QString & displayName,
+                        const QString & description
+            ) -> ActivityType;
 
         //////////
         //  Signals

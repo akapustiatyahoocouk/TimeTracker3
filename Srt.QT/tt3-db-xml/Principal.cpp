@@ -147,7 +147,7 @@ void Principal::_deserializeAggregations(
 //////////
 //  Validation
 void Principal::_validate(
-        QSet<Object*> & validatedObjects
+        Objects & validatedObjects
     )
 {
     Object::_validate(validatedObjects);

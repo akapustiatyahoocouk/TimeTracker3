@@ -36,10 +36,26 @@ ActivityTypeImpl::~ActivityTypeImpl()
 //////////
 //  Operations (properties)
 auto ActivityTypeImpl::displayName(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const -> QString
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _dataActivityType->displayName();   //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void ActivityTypeImpl::setDisplayName(
@@ -51,10 +67,26 @@ void ActivityTypeImpl::setDisplayName(
 }
 
 auto ActivityTypeImpl::description(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const -> QString
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _dataActivityType->description();   //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void ActivityTypeImpl::setDescription(
@@ -77,24 +109,69 @@ auto ActivityTypeImpl::activities(
 //////////
 //  Implementation - Access control
 bool ActivityTypeImpl::_canRead(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const
 {
-    throw tt3::util::NotImplementedError();
+    Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
+
+    try
+    {
+        _workspace->_validateAccessRights(credentials); //  may throw
+        //  Anyone authorized to access workspace can see all activity types
+        return true;
+    }
+    catch (const AccessDeniedException &)
+    {   //  This is a special case!
+        return false;
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 bool ActivityTypeImpl::_canModify(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const
 {
-    throw tt3::util::NotImplementedError();
+    Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
+
+    try
+    {
+        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        if ((clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
+            (clientCapabilities & Capabilities::ManageActivityTypes) != Capabilities::None)
+        {   //  Can modify any activoty type
+            return true;
+        }
+        return false;
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 bool ActivityTypeImpl::_canDestroy(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const
 {
-    throw tt3::util::NotImplementedError();
+    Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
+
+    try
+    {
+        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        if ((clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
+            (clientCapabilities & Capabilities::ManageActivityTypes) != Capabilities::None)
+        {   //  Can destroy any activoty type
+            return true;
+        }
+        return false;
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 //  End of tt3-ws/ActivityTypeImpl.cpp

@@ -35,7 +35,6 @@ namespace tt3::gui
 
         //////////
         //  Construction/destruction
-
     public:
         CreateAccountDialog(QWidget * parent,
                             tt3::ws::User user, const tt3::ws::Credentials & credentials);

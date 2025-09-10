@@ -9,6 +9,7 @@ SOURCES += \
     AskYesNoDialog.cpp \
     Component.cpp \
     CreateAccountDialog.cpp \
+    CreateActivityTypeDialog.cpp \
     CreateUserDialog.cpp \
     CurrentSkin.cpp \
     CurrentTheme.cpp \
@@ -46,6 +47,7 @@ HEADERS += \
     AskYesNoDialog.hpp \
     Components.hpp \
     CreateAccountDialog.hpp \
+    CreateActivityTypeDialog.hpp \
     CreateUserDialog.hpp \
     EditStringDialog.hpp \
     ErrorDialog.hpp \
@@ -74,6 +76,7 @@ FORMS += \
     ActivityTypeManager.ui \
     AskYesNoDialog.ui \
     CreateAccountDialog.ui \
+    CreateActivityTypeDialog.ui \
     CreateUserDialog.ui \
     EditStringDialog.ui \
     ErrorDialog.ui \

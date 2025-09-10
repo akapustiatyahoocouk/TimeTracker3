@@ -36,8 +36,10 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        CreateUserDialog(QWidget * parent,
-                         tt3::ws::Workspace workspace, const tt3::ws::Credentials & credentials);
+        CreateUserDialog(
+                QWidget * parent,
+                tt3::ws::Workspace workspace,
+                const tt3::ws::Credentials & credentials);
         virtual ~CreateUserDialog();
 
         //////////
