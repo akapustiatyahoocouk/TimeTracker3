@@ -42,9 +42,17 @@ void Account::destroy()
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 
     //  This object is now "dead"
     _markDead();
+
+    //  ...and we're done
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 }
 
 //////////
@@ -54,6 +62,9 @@ auto Account::login(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 
     return _login;
 }
@@ -64,6 +75,9 @@ void Account::setLogin(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 
     //  Validate parameters
     if (!_database->_validator->account()->isValidLogin(login))
@@ -88,10 +102,14 @@ void Account::setLogin(
     {   //  Make the change...
         _login = login;
         _database->_needsSaving = true;
-        //  ...and schedule change notifications
+        //  ...schedule change notifications...
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
     }
 }
 
@@ -100,6 +118,9 @@ auto Account::passwordHash(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 
     return _passwordHash;
 }
@@ -110,6 +131,9 @@ void Account::setPassword(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 
     //  Validate parameters
     if (!_database->_validator->account()->isValidPassword(password))
@@ -131,10 +155,14 @@ void Account::setPassword(
     //  the same as old one)...
     _passwordHash = passwordHash;
     _database->_needsSaving = true;
-    //  ...and schedule change notifications
+    //  ...schedule change notifications...
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
+    //  ...and we're done
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 }
 
 auto Account::capabilities(
@@ -142,6 +170,9 @@ auto Account::capabilities(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 
     return _capabilities;
 }
@@ -152,15 +183,22 @@ void Account::setCapabilities(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 
     if (capabilities != _capabilities)
     {   //  Make the change...
         _capabilities = capabilities;
         _database->_needsSaving = true;
-        //  ...and schedule change notifications
+        //  ...schedule change notifications...
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
     }
 }
 
@@ -171,6 +209,9 @@ auto Account::user(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 
     return _user;
 }

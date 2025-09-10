@@ -39,6 +39,9 @@ void User::destroy()
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 
     //  Aggregated objects
     for (Account * account : _accounts.values())
@@ -48,6 +51,11 @@ void User::destroy()
 
     //  This object is now "dead"
     _markDead();
+
+    //  ...and we're done
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 }
 
 //////////
@@ -57,6 +65,9 @@ auto User::realName(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 
     return _realName;
 }
@@ -67,6 +78,9 @@ void User::setRealName(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 
     //  Validate parameters
     if (!_database->_validator->user()->isValidRealName(realName))
@@ -80,10 +94,14 @@ void User::setRealName(
     {   //  Make the change...
         _realName = realName;
         _database->_needsSaving = true;
-        //  ...and schedule change notifications
+        //  ...schedule change notifications....
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
     }
 }
 
@@ -92,6 +110,9 @@ auto User::inactivityTimeout(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 
     return _inactivityTimeout;
 }
@@ -102,6 +123,9 @@ void User::setInactivityTimeout(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 
     //  Validate parameters
     if (inactivityTimeout.has_value() &&
@@ -116,10 +140,14 @@ void User::setInactivityTimeout(
     {   //  Make the change...
         _inactivityTimeout = inactivityTimeout;
         _database->_needsSaving = true;
-        //  ...and schedule change notifications
+        //  ...schedule change notifications...
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
     }
 }
 
@@ -128,6 +156,9 @@ auto User::uiLocale(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 
     return _uiLocale;
 }
@@ -138,6 +169,9 @@ void User::setUiLocale(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 
     //  Validate parameters
     if (uiLocale.has_value() &&
@@ -152,10 +186,14 @@ void User::setUiLocale(
     {   //  Make the change...
         _uiLocale = uiLocale;
         _database->_needsSaving = true;
-        //  ...and schedule change notifications
+        //  ...schedule change notifications...
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
     }
 }
 
@@ -171,6 +209,9 @@ auto User::createAccount(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 
     //  Validate parameters
     if (!_database->_validator->principal()->isValidEmailAddresses(emailAddresses))
@@ -225,6 +266,9 @@ auto User::createAccount(
         new tt3::db::api::ObjectCreatedNotification(
             _database, account->type(), account->_oid));
     //  ...and we're done
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
     return account;
 }
 

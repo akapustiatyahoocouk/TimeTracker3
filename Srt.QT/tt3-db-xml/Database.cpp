@@ -200,6 +200,9 @@ void Database::refresh()
     tt3::util::Lock lock(_guard);
 
     _ensureOpen();  //  may throw
+#ifdef Q_DEBUG  //  TODO add as pre/post condition to all public XML DB methods!
+    _validate();    //  may throw
+#endif
     //  ...otherwise an all-in-RAM database performs no caching
 }
 
@@ -209,6 +212,10 @@ auto Database::users(
     ) const -> tt3::db::api::Users
 {
     tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
 
     return tt3::db::api::Users(_users.cbegin(), _users.cend());
 }
@@ -217,6 +224,10 @@ auto Database::accounts(
     ) const -> tt3::db::api::Accounts
 {
     tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
 
     tt3::db::api::Accounts result;
     for (User * user : _users)
@@ -231,6 +242,10 @@ auto Database::findAccount(
     ) const -> tt3::db::api::IAccount *
 {
     tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
 
     return _findAccount(login);
 }
@@ -239,6 +254,10 @@ auto Database::activityTypes(
     ) const -> tt3::db::api::ActivityTypes
 {
     tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
 
     return tt3::db::api::ActivityTypes(_activityTypes.cbegin(), _activityTypes.cend());
 }
@@ -301,6 +320,10 @@ auto Database::tryLogin(
     static tt3::util::IMessageDigest * sha1 = tt3::util::Sha1MessageDigest::instance();  //  idempotent
 
     tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
 
     std::unique_ptr<tt3::util::IMessageDigest::Builder> sha1Builder
         { sha1->createBuilder() };
@@ -347,6 +370,9 @@ auto Database::createUser(
 {
     tt3::util::Lock lock(_guard);
     _ensureOpen();  //  may throw
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
 
     //  Validate parameters
     if (!_validator->principal()->isValidEmailAddresses(emailAddresses))
@@ -391,6 +417,9 @@ auto Database::createUser(
         new tt3::db::api::ObjectCreatedNotification(
             this, user->type(), user->_oid));
     //  ...and we're done
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
     return user;
 }
 
@@ -401,6 +430,9 @@ auto Database::createActivityType(
 {
     tt3::util::Lock lock(_guard);
     _ensureOpen();  //  may throw
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
 
     //  Validate parameters
     if (!_validator->activityType()->isValidDisplayName(displayName))
@@ -437,6 +469,9 @@ auto Database::createActivityType(
         new tt3::db::api::ObjectCreatedNotification(
             this, activityType->type(), activityType->_oid));
     //  ...and we're done
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
     return activityType;
 }
 
@@ -546,7 +581,7 @@ tt3::db::api::Oid Database::_generateOid()
 Account * Database::_findAccount(const QString & login) const
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
-    _ensureOpen();
+    _ensureOpen();  //  may throw
 
     for (User * user : _users)
     {
@@ -564,7 +599,7 @@ Account * Database::_findAccount(const QString & login) const
 ActivityType * Database::_findActivityType(const QString & displayName) const
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
-    _ensureOpen();
+    _ensureOpen();  //  may throw
 
     for (ActivityType * activityType : _activityTypes)
     {
@@ -582,10 +617,10 @@ ActivityType * Database::_findActivityType(const QString & displayName) const
 void Database::_save()
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
-    _ensureOpen();
+    _ensureOpen();  //  may throw
 
     //  Make sure we're consistent
-    _validate();
+    _validate();    //  may throw
 
     //  Create DOM document with a root node
     QDomDocument document;
@@ -635,7 +670,7 @@ void Database::_save()
 void Database::_load()
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
-    _ensureOpen();
+    _ensureOpen();  //  may throw
 
     //  Load XML DOM
     QDomDocument document;
@@ -687,7 +722,7 @@ void Database::_load()
     }
 
     //  Done loading - make sure we're consistent
-    _validate();
+    _validate();    //  may throw
 }
 
 QList<QDomElement> Database::_childElements(const QDomElement & parentElement, const QString & tagName)

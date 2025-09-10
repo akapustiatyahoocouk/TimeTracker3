@@ -191,7 +191,7 @@ ActivityTypeManager::_ActivityTypeModel ActivityTypeManager::_createActivityType
         activityTypeModel->font = _decorations.itemFont;
         activityTypeModel->tooltip = activityType->description(_credentials).trimmed();
     }
-    catch (tt3::util::Exception & ex)
+    catch (const tt3::util::Exception & ex)
     {
         activityTypeModel->text = ex.errorMessage();
         activityTypeModel->icon = errorIcon;
@@ -397,50 +397,46 @@ void ActivityTypeManager::_createActivityTypePushButtonClicked()
 
 void ActivityTypeManager::_modifyActivityTypePushButtonClicked()
 {
-    /*  TODO implement
-    tt3::ws::User user = _selectedUser();
-    if (user != nullptr)
+    tt3::ws::ActivityType activityType = _selectedActivityType();
+    if (activityType != nullptr)
     {
         try
         {
-            ModifyUserDialog dlg(this, user, _credentials); //  may throw
-            if (dlg.doModal() == ModifyUserDialog::Result::Ok)
-            {   //  User modified - its position in the users tree may have changed
+            ModifyActivityTypeDialog dlg(this, activityType, _credentials); //  may throw
+            if (dlg.doModal() == ModifyActivityTypeDialog::Result::Ok)
+            {   //  ActivityType modified - its position in the activity types tree may have changed
                 refresh();  //  must refresh NOW
-                _setSelectedUser(user);
+                _setSelectedActivityType(activityType);
             }
         }
-        catch (tt3::util::Exception & ex)
+        catch (const tt3::util::Exception & ex)
         {
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
     }
-    */
 }
 
 void ActivityTypeManager::_destroyActivityTypePushButtonClicked()
 {
-    /*  TODO implement
-    tt3::ws::User user = _selectedUser();
-    if (user != nullptr)
+    tt3::ws::ActivityType activityType = _selectedActivityType();
+    if (activityType != nullptr)
     {
         try
         {
-            ConfirmDestroyUserDialog dlg(this, user, _credentials); //  may throw
-            if (dlg.doModal() == ConfirmDestroyUserDialog::Result::Yes)
+            ConfirmDestroyActivityTypeDialog dlg(this, activityType, _credentials); //  may throw
+            if (dlg.doModal() == ConfirmDestroyActivityTypeDialog::Result::Yes)
             {   //  Do it!
-                user->destroy(_credentials);    //  may throw
+                activityType->destroy(_credentials);    //  may throw
                 requestRefresh();
             }
         }
-        catch (tt3::util::Exception & ex)
+        catch (const tt3::util::Exception & ex)
         {
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
     }
-    */
 }
 
 void ActivityTypeManager::_filterLineEditTextChanged(QString)

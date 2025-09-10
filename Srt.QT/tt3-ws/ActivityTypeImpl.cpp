@@ -59,11 +59,27 @@ auto ActivityTypeImpl::displayName(
 }
 
 void ActivityTypeImpl::setDisplayName(
-        const Credentials & /*credentials*/,
-        const QString & /*displayName*/
+        const Credentials & credentials,
+        const QString & displayName
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataActivityType->setDisplayName(displayName); //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 auto ActivityTypeImpl::description(
@@ -90,11 +106,27 @@ auto ActivityTypeImpl::description(
 }
 
 void ActivityTypeImpl::setDescription(
-        const Credentials & /*credentials*/,
-        const QString & /*description*/
+        const Credentials & credentials,
+        const QString & description
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataActivityType->setDescription(description); //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 //////////

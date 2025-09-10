@@ -25,6 +25,7 @@ SOURCES += \
     LoginDialog.cpp \
     ManageUsersDialog.cpp \
     ModifyAccountDialog.cpp \
+    ModifyActivityTypeDialog.cpp \
     ModifyUserDialog.cpp \
     NewWorkspaceDialog.cpp \
     Preferences.cpp \
@@ -58,6 +59,7 @@ HEADERS += \
     LoginDialog.hpp \
     ManageUsersDialog.hpp \
     ModifyAccountDialog.hpp \
+    ModifyActivityTypeDialog.hpp \
     ModifyUserDialog.hpp \
     NewWorkspaceDialog.hpp \
     Preferences.hpp \
@@ -86,6 +88,7 @@ FORMS += \
     LoginDialog.ui \
     ManageUsersDialog.ui \
     ModifyAccountDialog.ui \
+    ModifyActivityTypeDialog.ui \
     ModifyUserDialog.ui \
     NewWorkspaceDialog.ui \
     PreferencesDialog.ui \

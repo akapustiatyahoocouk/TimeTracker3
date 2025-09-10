@@ -76,7 +76,8 @@ namespace tt3::gui
 
     //  The modal "confirm workspace removal from
     //  MRU workspaces list" dialog
-    class TT3_GUI_PUBLIC ConfirmForgetWorkspaceDialog : public AskYesNoDialog
+    class TT3_GUI_PUBLIC ConfirmForgetWorkspaceDialog final :
+        public AskYesNoDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmForgetWorkspaceDialog)
 
@@ -87,7 +88,8 @@ namespace tt3::gui
     };
 
     //  The modal "confirm workspace closing" dialog
-    class TT3_GUI_PUBLIC ConfirmCloseWorkspaceDialog : public AskYesNoDialog
+    class TT3_GUI_PUBLIC ConfirmCloseWorkspaceDialog final :
+        public AskYesNoDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmCloseWorkspaceDialog)
 
@@ -98,7 +100,8 @@ namespace tt3::gui
     };
 
     //  The modal "confirm closing workspace after relogin" dialog
-    class TT3_GUI_PUBLIC ConfirmDropWorkspaceDialog : public AskYesNoDialog
+    class TT3_GUI_PUBLIC ConfirmDropWorkspaceDialog final :
+        public AskYesNoDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmDropWorkspaceDialog)
 
@@ -109,7 +112,8 @@ namespace tt3::gui
     };
 
     //  The modal "confirm workspace destruction" dialog
-    class TT3_GUI_PUBLIC ConfirmDestroyWorkspaceDialog : public AskYesNoDialog
+    class TT3_GUI_PUBLIC ConfirmDestroyWorkspaceDialog final :
+        public AskYesNoDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmDestroyWorkspaceDialog)
 
@@ -120,7 +124,8 @@ namespace tt3::gui
     };
 
     //  The modal "confirm restarting TT3" dialog
-    class TT3_GUI_PUBLIC ConfirmRestartDialog : public AskYesNoDialog
+    class TT3_GUI_PUBLIC ConfirmRestartDialog final :
+        public AskYesNoDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmRestartDialog)
 
@@ -131,7 +136,8 @@ namespace tt3::gui
     };
 
     //  The modal "confirm exiting TT3" dialog
-    class TT3_GUI_PUBLIC ConfirmExitDialog : public AskYesNoDialog
+    class TT3_GUI_PUBLIC ConfirmExitDialog final :
+        public AskYesNoDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmExitDialog)
 
@@ -142,7 +148,8 @@ namespace tt3::gui
     };
 
     //  The modal "relogin to access workspace" dialog
-    class TT3_GUI_PUBLIC ChooseReloginDialog : public AskYesNoDialog
+    class TT3_GUI_PUBLIC ChooseReloginDialog final :
+        public AskYesNoDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ChooseReloginDialog)
 
@@ -153,7 +160,8 @@ namespace tt3::gui
     };
 
     //  The modal "confirm resetting page settings" dialog
-    class TT3_GUI_PUBLIC ConfirmResetPageSettingsDialog : public AskYesNoDialog
+    class TT3_GUI_PUBLIC ConfirmResetPageSettingsDialog final :
+        public AskYesNoDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmResetPageSettingsDialog)
 
@@ -164,7 +172,8 @@ namespace tt3::gui
     };
 
     //  The modal "confirm resetting all settings" dialog
-    class TT3_GUI_PUBLIC ConfirmResetAllSettingsDialog : public AskYesNoDialog
+    class TT3_GUI_PUBLIC ConfirmResetAllSettingsDialog final :
+        public AskYesNoDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmResetAllSettingsDialog)
 
@@ -175,7 +184,8 @@ namespace tt3::gui
     };
 
     //  The modal "restart required" dialog
-    class TT3_GUI_PUBLIC RestartRequiredDialog : public AskYesNoDialog
+    class TT3_GUI_PUBLIC RestartRequiredDialog final :
+        public AskYesNoDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(RestartRequiredDialog)
 
@@ -188,7 +198,8 @@ namespace tt3::gui
     /// \class ConfirmDestroyUserDialog "tt3-gui/API.hpp"
     /// \brief
     ///     The modal "confirm User destruction" dialog.
-    class TT3_GUI_PUBLIC ConfirmDestroyUserDialog : public AskYesNoDialog
+    class TT3_GUI_PUBLIC ConfirmDestroyUserDialog final :
+        public AskYesNoDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmDestroyUserDialog)
 
@@ -223,7 +234,8 @@ namespace tt3::gui
     /// \class ConfirmDestroyAccountDialog "tt3-gui/API.hpp"
     /// \brief
     ///     The modal "confirm Account destruction" dialog
-    class TT3_GUI_PUBLIC ConfirmDestroyAccountDialog : public AskYesNoDialog
+    class TT3_GUI_PUBLIC ConfirmDestroyAccountDialog final :
+        public AskYesNoDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmDestroyAccountDialog)
 
@@ -246,7 +258,35 @@ namespace tt3::gui
                 const tt3::ws::Credentials & credentials
             );
     };
-}
+
+    /// \class ConfirmDestroyActivityTypeDialog "tt3-gui/API.hpp"
+    /// \brief
+    ///     The modal "confirm ActivityType destruction" dialog
+    class TT3_GUI_PUBLIC ConfirmDestroyActivityTypeDialog final :
+        public AskYesNoDialog
+    {
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmDestroyActivityTypeDialog)
+
+        //////////
+        //  Construction/destruction
+    public:
+        /// \brief
+        ///     Constructs the dialog.
+        /// @param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// @param activityType
+        ///     The activity type whose destruction is to be confirmed.
+        /// @param credentials
+        ///     The credentials to use for accessing ActivityType's data.
+        /// @exception WorkspaceException
+        ///     If an error occurs retrieving ActivityType details.
+        ConfirmDestroyActivityTypeDialog(
+                ::QWidget * parent,
+                tt3::ws::ActivityType activityType,
+                const tt3::ws::Credentials & credentials
+            );
+    };
+    }
 
 //  End of tt3-gui/AskYesNoDialog.hpp
 

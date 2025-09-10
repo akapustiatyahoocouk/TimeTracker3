@@ -255,4 +255,21 @@ ConfirmDestroyAccountDialog::ConfirmDestroyAccountDialog(
 {
 }
 
+//////////
+//  ConfirmDestroyActivityTypeDialog
+ConfirmDestroyActivityTypeDialog::ConfirmDestroyActivityTypeDialog(
+        ::QWidget * parent,
+        tt3::ws::ActivityType activityType,
+        const tt3::ws::Credentials & credentials
+    )
+    :   AskYesNoDialog(
+          parent,
+          QIcon(":/tt3-gui/Resources/Images/Actions/DestroyActivityTypeLarge.png"),
+          "Destroy activity type",
+          "Are you sure you want to destroy activity type \n" +
+              activityType->displayName(credentials) +
+              " ?")
+{
+}
+
 //  End of tt3-gui/AskYesNoDialog.cpp

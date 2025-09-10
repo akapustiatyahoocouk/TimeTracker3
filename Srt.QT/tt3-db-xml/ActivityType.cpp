@@ -41,6 +41,9 @@ void ActivityType::destroy()
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 
     //  Dis-associate from other objects
     //  TODO properly
@@ -48,6 +51,11 @@ void ActivityType::destroy()
 
     //  This object is now "dead"
     _markDead();
+
+    //  ...and we're done
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 }
 
 //////////
@@ -57,15 +65,51 @@ auto ActivityType::displayName(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 
     return _displayName;
 }
 
 void ActivityType::setDisplayName(
-        const QString & /*displayName*/
+        const QString & displayName
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (!_database->_validator->activityType()->isValidDisplayName(displayName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "displayName",
+            displayName);
+    }
+    if (displayName != _displayName)
+    {   //  Make the change (but no duplication)...
+        if (_database->_findActivityType(displayName) != nullptr)
+        {
+            throw tt3::db::api::AlreadyExistsException(
+                type(),
+                "displayName",
+                displayName);
+        }
+        _displayName = displayName;
+        _database->_needsSaving = true;
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 auto ActivityType::description(
@@ -73,15 +117,44 @@ auto ActivityType::description(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
 
     return _description;
 }
 
 void ActivityType::setDescription(
-        const QString & /*description*/
+        const QString & description
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (!_database->_validator->activityType()->isValidDescription(description))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "description",
+            description);
+    }
+    if (description != _description)
+    {   //  Make the change...
+        _description = description;
+        _database->_needsSaving = true;
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 //////////

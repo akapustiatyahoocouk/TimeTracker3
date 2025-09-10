@@ -232,7 +232,7 @@ UserManager::_UserModel UserManager::_createUserModel(tt3::ws::User user)
         userModel->icon = user->type()->smallIcon();
         userModel->font = _decorations.itemFont;
     }
-    catch (tt3::util::Exception & ex)
+    catch (const tt3::util::Exception & ex)
     {
         userModel->text = ex.errorMessage();
         userModel->icon = errorIcon;
@@ -277,7 +277,7 @@ UserManager::_AccountModel UserManager::_createAccountModel(tt3::ws::Account acc
         accountModel->icon = account->type()->smallIcon();
         accountModel->font = _decorations.itemFont;
     }
-    catch (tt3::util::Exception & ex)
+    catch (const tt3::util::Exception & ex)
     {
         accountModel->text = ex.errorMessage();
         accountModel->icon = errorIcon;
@@ -656,7 +656,7 @@ void UserManager::_modifyUserPushButtonClicked()
                 _setSelectedUser(user);
             }
         }
-        catch (tt3::util::Exception & ex)
+        catch (const tt3::util::Exception & ex)
         {
             ErrorDialog::show(this, ex);
             requestRefresh();
@@ -678,7 +678,7 @@ void UserManager::_destroyUserPushButtonClicked()
                 requestRefresh();
             }
         }
-        catch (tt3::util::Exception & ex)
+        catch (const tt3::util::Exception & ex)
         {
             ErrorDialog::show(this, ex);
            requestRefresh();
@@ -714,7 +714,7 @@ void UserManager::_modifyAccountPushButtonClicked()
                 _setSelectedAccount(account);
             }
         }
-        catch (tt3::util::Exception & ex)
+        catch (const tt3::util::Exception & ex)
         {
             ErrorDialog::show(this, ex);
            requestRefresh();
@@ -736,7 +736,7 @@ void UserManager::_destroyAccountPushButtonClicked()
                 requestRefresh();
             }
         }
-        catch (tt3::util::Exception & ex)
+        catch (const tt3::util::Exception & ex)
         {
             ErrorDialog::show(this, ex);
            requestRefresh();
