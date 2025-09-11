@@ -151,6 +151,17 @@ void Object::_ensureLive() const
     }
 }
 
+void Object::_ensureLiveAndWritable() const
+{
+    Q_ASSERT(_database->_guard.isLockedByCurrentThread());
+
+    _database->_ensureOpenAndWritable();
+    if (!_isLive)
+    {
+        throw tt3::db::api::InstanceDeadException();
+    }
+}
+
 void Object::_markDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
@@ -160,7 +171,7 @@ void Object::_markDead()
     _isLive = false;
     _database->_liveObjects.remove(_oid);
     _database->_graveyard.insert(_oid, this);
-    _database->_needsSaving = true;
+    _database->_markModified();
     //  Schedule change notifications
     _database->_changeNotifier.post(
         new tt3::db::api::ObjectDestroyedNotification(

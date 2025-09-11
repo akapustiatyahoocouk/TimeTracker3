@@ -64,6 +64,10 @@ namespace tt3::ws
         //  Checks whether this Workspace is open or closed.
         bool        isOpen() const;
 
+        //  Checks whether this Workspace is (open or closed.)or used
+        //  to be, while open) read-only.
+        bool        isReadOnly() const;
+
         /// Closes this Workspace; has no effect if already closed.
         ///
         /// \exception WorkspaceException
@@ -296,7 +300,9 @@ namespace tt3::ws
         mutable tt3::util::Mutex    _guard;     //  for synchronizing all accesses to workspace
 
         const WorkspaceAddress      _address;
-        tt3::db::api::IDatabase *   _database;  //  nullptr == workspace closed
+        tt3::db::api::IDatabase *const _database;   //  never nullptr
+        bool                        _isOpen = true; //  all Workspaces start off as "open"
+        const bool                  _isReadOnly;
 
         //  Access control "cache"
         static inline const int _AccessCacheSizeCap = 16;

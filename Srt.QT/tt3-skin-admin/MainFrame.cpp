@@ -477,7 +477,7 @@ void MainFrame::_onActionExit()
 }
 
 void MainFrame::_onActionManageUsers()
-{   //  TODO switch toi "Users" tab instead
+{   //  TODO switch to "Users" tab instead
     tt3::gui::ManageUsersDialog dlg(
         this,
         tt3::ws::theCurrentWorkspace,
@@ -486,8 +486,12 @@ void MainFrame::_onActionManageUsers()
 }
 
 void MainFrame::_onActionManageActivityTypes()
-{   //  TODO switch toi "Activity types" tab instead
-    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+{   //  TODO switch to "Activity types" tab instead
+    tt3::gui::ManageActivityTypesDialog dlg(
+        this,
+        tt3::ws::theCurrentWorkspace,
+        tt3::ws::theCurrentCredentials);
+    dlg.doModal();
 }
 
 void MainFrame::_onActionRefresh()

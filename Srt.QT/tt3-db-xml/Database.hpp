@@ -34,10 +34,11 @@ namespace tt3::db::xml
         //////////
         //  Construction/destruction
     private:
-        enum _Mode { _Create, _Open, _Dead };
+        enum _OpenMode { _Create, _Open, _Dead };
         Database(
                 DatabaseAddress * address,
-                _Mode mode);    //  throws tt3::db::api::DatabaseException
+                _OpenMode openMode
+            );  //  throws tt3::db::api::DatabaseException
     public:
         virtual ~Database();    //  closes database if still open
 
@@ -45,12 +46,13 @@ namespace tt3::db::xml
         //  tt3::db::api::IDatabase (general)
     public:
         virtual auto    type(
-                ) const -> DatabaseType * override { return DatabaseType::instance(); }
+                            ) const -> DatabaseType * override;
         virtual auto    address(
-                            ) const -> DatabaseAddress * override { return _address; }
+                            ) const -> DatabaseAddress * override;
         virtual auto    validator(
-                            ) const -> tt3::db::api::IValidator * { return _validator; }
+                            ) const -> tt3::db::api::IValidator * override;
         virtual bool    isOpen() const override;
+        virtual bool    isReadOnly() const override;
         virtual void    close() override;
         virtual void    refresh() override;
 
@@ -161,7 +163,9 @@ namespace tt3::db::xml
         DatabaseAddress *const          _address;   //  counts as a "reference"
         tt3::db::api::IValidator *const _validator;
         mutable tt3::util::Mutex        _guard; //  for all access synchronization
-        bool                            _needsSaving = false;
+        bool            _needsSaving = false;
+        bool            _isOpen = true;
+        const bool      _isReadOnly = false;
 
         //  Primary object caches - these contain all live
         //  objects, either directly (like Users) or indirectly
@@ -213,6 +217,8 @@ namespace tt3::db::xml
 
         //  Helpers
         void                _ensureOpen() const;    //  throws tt3::db::api::DatabaseException
+        void                _ensureOpenAndWritable() const; //  throws tt3::db::api::DatabaseException
+        void                _markModified();
         void                _markClosed();
         tt3::db::api::Oid   _generateOid();
         Account *           _findAccount(const QString & login) const;

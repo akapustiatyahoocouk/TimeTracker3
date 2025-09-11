@@ -74,5 +74,7 @@
         <file>Resources/Images/Actions/DestroyActivityTypeSmall.png</file>
         <file>Resources/Images/Actions/ModifyActivityTypeLarge.png</file>
         <file>Resources/Images/Actions/ModifyActivityTypeSmall.png</file>
+        <file>Resources/Images/Objects/UserLarge.png</file>
+        <file>Resources/Images/Objects/UserSmall.png</file>
     </qresource>
 </RCC>

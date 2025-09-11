@@ -41,7 +41,7 @@ Account::~Account()
 void Account::destroy()
 {
     tt3::util::Lock lock(_database->_guard);
-    _ensureLive();  //  may throw
+    _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
 #endif
@@ -62,9 +62,7 @@ auto Account::login(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
+    //  We assume database is consistent since last change
 
     return _login;
 }
@@ -74,7 +72,7 @@ void Account::setLogin(
     )
 {
     tt3::util::Lock lock(_database->_guard);
-    _ensureLive();  //  may throw
+    _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
 #endif
@@ -101,7 +99,7 @@ void Account::setLogin(
     if (login != _login)
     {   //  Make the change...
         _login = login;
-        _database->_needsSaving = true;
+        _database->_markModified();
         //  ...schedule change notifications...
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
@@ -118,9 +116,7 @@ auto Account::passwordHash(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
+    //  We assume database is consistent since last change
 
     return _passwordHash;
 }
@@ -130,7 +126,7 @@ void Account::setPassword(
     )
 {
     tt3::util::Lock lock(_database->_guard);
-    _ensureLive();  //  may throw
+    _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
 #endif
@@ -154,11 +150,11 @@ void Account::setPassword(
     //  to STILL be saved even if new password is
     //  the same as old one)...
     _passwordHash = passwordHash;
-    _database->_needsSaving = true;
+    _database->_markModified();
     //  ...schedule change notifications...
-        _database->_changeNotifier.post(
-            new tt3::db::api::ObjectModifiedNotification(
-                _database, type(), _oid));
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectModifiedNotification(
+            _database, type(), _oid));
     //  ...and we're done
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -170,9 +166,7 @@ auto Account::capabilities(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
+    //  We assume database is consistent since last change
 
     return _capabilities;
 }
@@ -182,7 +176,7 @@ void Account::setCapabilities(
     )
 {
     tt3::util::Lock lock(_database->_guard);
-    _ensureLive();  //  may throw
+    _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
 #endif
@@ -190,7 +184,7 @@ void Account::setCapabilities(
     if (capabilities != _capabilities)
     {   //  Make the change...
         _capabilities = capabilities;
-        _database->_needsSaving = true;
+        _database->_markModified();
         //  ...schedule change notifications...
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
@@ -209,9 +203,7 @@ auto Account::user(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
+    //  We assume database is consistent since last change
 
     return _user;
 }

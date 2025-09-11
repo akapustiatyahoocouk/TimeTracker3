@@ -67,6 +67,15 @@ namespace tt3::db::api
         virtual bool    isOpen() const = 0;
 
         /// \brief
+        ///     Checks whether this database is read-only.
+        /// \details
+        ///     Can be safely obtained on both open and closed databases.
+        /// \return
+        ///     True if this database is read-only, false if
+        ///     it can be modified.
+        virtual bool    isReadOnly() const = 0;
+
+        /// \brief
         ///     Closes this database; has no effect if already closed.
         /// \exception DatabaseException
         ///     If an error occurs.

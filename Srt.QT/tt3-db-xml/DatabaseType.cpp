@@ -25,7 +25,7 @@ DatabaseType::DatabaseType()
     :   _validator(tt3::db::api::DefaultValidator::instance()),
         //  "Dead" database
         _deadDatabaseAddress(new DatabaseAddress("?")),
-        _deadDatabase(new Database(_deadDatabaseAddress, Database::_Mode::_Dead))
+        _deadDatabase(new Database(_deadDatabaseAddress, Database::_OpenMode::_Dead))
 {
     _databaseAddresses.insert(
         _deadDatabaseAddress->_path,
@@ -170,7 +170,7 @@ auto DatabaseType::createDatabase(
     if (DatabaseAddress * xmlDatabaseAddress =
         dynamic_cast<DatabaseAddress*>(address))
     {   //  Address is of a proper type
-        return new Database(xmlDatabaseAddress, Database::_Mode::_Create);
+        return new Database(xmlDatabaseAddress, Database::_OpenMode::_Create);
     }
     throw tt3::db::api::InvalidDatabaseAddressException();
 }
@@ -182,7 +182,7 @@ auto DatabaseType::openDatabase(
     if (DatabaseAddress * xmlDatabaseAddress =
         dynamic_cast<DatabaseAddress*>(address))
     {   //  Address is of a proper type.
-        return new Database(xmlDatabaseAddress, Database::_Mode::_Open);
+        return new Database(xmlDatabaseAddress, Database::_OpenMode::_Open);
     }
     throw tt3::db::api::InvalidDatabaseAddressException();
 }
@@ -197,7 +197,7 @@ void DatabaseType::destroyDatabase(
         //  Must validate the database file existence and its
         //  contents - the best way is to open it for a moment
         std::unique_ptr<Database> database
-            { new Database(xmlDatabaseAddress, Database::_Mode::_Open) };
+            { new Database(xmlDatabaseAddress, Database::_OpenMode::_Open) };
         database->close();
         QFile file(xmlDatabaseAddress->_path);
         if (!file.remove())

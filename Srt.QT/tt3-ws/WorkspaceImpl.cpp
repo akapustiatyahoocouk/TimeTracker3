@@ -19,9 +19,12 @@ using namespace tt3::ws;
 
 //////////
 //  Construction/destruction - from friends only
-WorkspaceImpl::WorkspaceImpl(const WorkspaceAddress & address, tt3::db::api::IDatabase * database)
+WorkspaceImpl::WorkspaceImpl(
+        const WorkspaceAddress & address,
+        tt3::db::api::IDatabase * database)
     :   _address(address),
-        _database(database)
+        _database(database),
+        _isReadOnly(database->isReadOnly())
 {
     Q_ASSERT(_address != nullptr);
     Q_ASSERT(_database != nullptr);
@@ -54,18 +57,19 @@ WorkspaceImpl::~WorkspaceImpl()
     catch (...)
     {   //  OOPS! Suppress TODO but log ?
     }
+    delete _database;
 }
 
 //////////
 //  Operations (general)
 WorkspaceType WorkspaceImpl::type() const
-{
+{   //  No need to synchronize
     return _address->workspaceType();
 }
 
 auto WorkspaceImpl::address(
     ) const -> WorkspaceAddress
-{
+{   //  No need to synchronize
     return _address;
 }
 
@@ -73,14 +77,19 @@ bool WorkspaceImpl::isOpen() const
 {
     tt3::util::Lock lock(_guard);
 
-    return _database != nullptr;
+    return _isOpen;
+}
+
+bool WorkspaceImpl::isReadOnly() const
+{   //  No need to synchronize
+    return _isReadOnly;
 }
 
 void WorkspaceImpl::close()
 {
     tt3::util::Lock lock(_guard);
 
-    if (_database != nullptr)
+    if (_isOpen)
     {
         try
         {
@@ -362,19 +371,21 @@ void WorkspaceImpl::_ensureOpen() const
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
 
-    if (_database == nullptr)
+    if (!_isOpen)
     {
         throw WorkspaceClosedException();
     }
+    //  If the underlying Database is read-only, a
+    //  DatabaseException will be thrown when an attempt
+    //  is made to modify it, and will be translated to
+    //  a WorkspaceException and re-thrown.
 }
 
 void WorkspaceImpl::_markClosed()
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
-    Q_ASSERT(_database != nullptr); //  i.e. workspace is "open"
 
-    delete _database;
-    _database = nullptr;
+    _isOpen = false;
     //  Clear caches
     _goodCredentialsCache.clear();
     _badCredentialsCache.clear();
@@ -391,7 +402,7 @@ auto WorkspaceImpl::_validateAccessRights(
     ) const -> Capabilities
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
-    Q_ASSERT(_database != nullptr); //  i.e. workspace is "open"
+    Q_ASSERT(_isOpen);
 
     //  Is the answer already known ?
     if (_goodCredentialsCache.contains(credentials))
@@ -433,7 +444,7 @@ auto WorkspaceImpl::_validateAccessRights(
 User WorkspaceImpl::_getProxy(tt3::db::api::IUser * dataUser) const
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
-    Q_ASSERT(_database != nullptr); //  i.e. workspace is "open"
+    Q_ASSERT(_isOpen);
     Q_ASSERT(dataUser != nullptr);
 
     Oid oid = dataUser->oid();
@@ -455,7 +466,7 @@ User WorkspaceImpl::_getProxy(tt3::db::api::IUser * dataUser) const
 Account WorkspaceImpl::_getProxy(tt3::db::api::IAccount * dataAccount) const
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
-    Q_ASSERT(_database != nullptr); //  i.e. workspace is "open"
+    Q_ASSERT(_isOpen);
     Q_ASSERT(dataAccount != nullptr);
 
     Oid oid = dataAccount->oid();
@@ -477,7 +488,7 @@ Account WorkspaceImpl::_getProxy(tt3::db::api::IAccount * dataAccount) const
 ActivityType WorkspaceImpl::_getProxy(tt3::db::api::IActivityType * dataActivityType) const
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
-    Q_ASSERT(_database != nullptr); //  i.e. workspace is "open"
+    Q_ASSERT(_isOpen);
     Q_ASSERT(dataActivityType != nullptr);
 
     Oid oid = dataActivityType->oid();
@@ -530,8 +541,7 @@ void WorkspaceImpl::_onObjectCreated(tt3::db::api::ObjectCreatedNotification not
     qDebug() << "Workspace::_onObjectCreated("
              << tt3::util::toString(notification.oid())
              << ")";
-    Q_ASSERT(notification.database() == _database ||
-             _database == nullptr); //  workspace is closed, but DB notifications were queued
+    Q_ASSERT(notification.database() == _database);
     //  Any change to users/accounts must drop the access rights cache
     if (notification.objectType() == ObjectTypes::User::instance() ||
         notification.objectType() == ObjectTypes::Account::instance())
@@ -553,8 +563,7 @@ void WorkspaceImpl::_onObjectDestroyed(tt3::db::api::ObjectDestroyedNotification
     qDebug() << "Workspace::_onObjectDestroyed("
              << tt3::util::toString(notification.oid())
              << ")";
-    Q_ASSERT(notification.database() == _database ||
-             _database == nullptr); //  workspace is closed, but DB notifications were queued
+    Q_ASSERT(notification.database() == _database);
     //  Any change to users/accounts must drop the access rights cache
     if (notification.objectType() == ObjectTypes::User::instance() ||
         notification.objectType() == ObjectTypes::Account::instance())
@@ -583,8 +592,7 @@ void WorkspaceImpl::_onObjectModified(tt3::db::api::ObjectModifiedNotification n
     qDebug() << "Workspace::_onObjectModified("
              << tt3::util::toString(notification.oid())
              << ")";
-    Q_ASSERT(notification.database() == _database ||
-             _database == nullptr); //  workspace is closed, but DB notifications were queued
+    Q_ASSERT(notification.database() == _database);
     //  Any change to users/accounts must drop the access rights cache
     if (notification.objectType() == ObjectTypes::User::instance() ||
         notification.objectType() == ObjectTypes::Account::instance())

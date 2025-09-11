@@ -40,7 +40,7 @@ ActivityType::~ActivityType()
 void ActivityType::destroy()
 {
     tt3::util::Lock lock(_database->_guard);
-    _ensureLive();  //  may throw
+    _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
 #endif
@@ -65,9 +65,7 @@ auto ActivityType::displayName(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
+    //  We assume database is consistent since last change
 
     return _displayName;
 }
@@ -77,7 +75,7 @@ void ActivityType::setDisplayName(
     )
 {
     tt3::util::Lock lock(_database->_guard);
-    _ensureLive();  //  may throw
+    _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
 #endif
@@ -100,7 +98,7 @@ void ActivityType::setDisplayName(
                 displayName);
         }
         _displayName = displayName;
-        _database->_needsSaving = true;
+        _database->_markModified();
         //  ...schedule change notifications...
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
@@ -117,9 +115,7 @@ auto ActivityType::description(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
+    //  We assume database is consistent since last change
 
     return _description;
 }
@@ -129,7 +125,7 @@ void ActivityType::setDescription(
     )
 {
     tt3::util::Lock lock(_database->_guard);
-    _ensureLive();  //  may throw
+    _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
 #endif
@@ -145,7 +141,7 @@ void ActivityType::setDescription(
     if (description != _description)
     {   //  Make the change...
         _description = description;
-        _database->_needsSaving = true;
+        _database->_markModified();
         //  ...schedule change notifications...
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(

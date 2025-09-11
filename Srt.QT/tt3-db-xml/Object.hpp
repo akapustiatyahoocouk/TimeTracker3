@@ -63,6 +63,7 @@ namespace tt3::db::xml
 
         //  Helpers
         void            _ensureLive() const;    //  throws tt3::db::api::DatabaseException
+        void            _ensureLiveAndWritable() const;    //  throws tt3::db::api::DatabaseException
         virtual void    _markDead();
 
         //////////

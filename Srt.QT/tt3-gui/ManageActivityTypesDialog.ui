@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>tt3::gui::ManageUsersDialog</class>
- <widget class="QDialog" name="tt3::gui::ManageUsersDialog">
+ <class>tt3::gui::ManageActivityTypesDialog</class>
+ <widget class="QDialog" name="tt3::gui::ManageActivityTypesDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>189</width>
-    <height>147</height>
+    <width>209</width>
+    <height>144</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Manage users</string>
+   <string>Manage activity types</string>
   </property>
   <property name="windowIcon">
    <iconset resource="tt3-gui.qrc">
-    <normaloff>:/tt3-gui/Resources/Images/Objects/UserLarge.png</normaloff>:/tt3-gui/Resources/Images/Objects/UserLarge.png</iconset>
-  </property>
-  <property name="modal">
-   <bool>true</bool>
+    <normaloff>:/tt3-gui/Resources/Images/Objects/ActivityTypeLarge.png</normaloff>:/tt3-gui/Resources/Images/Objects/ActivityTypeLarge.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -50,7 +47,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>tt3::gui::ManageUsersDialog</receiver>
+   <receiver>tt3::gui::ManageActivityTypesDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -66,7 +63,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>tt3::gui::ManageUsersDialog</receiver>
+   <receiver>tt3::gui::ManageActivityTypesDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

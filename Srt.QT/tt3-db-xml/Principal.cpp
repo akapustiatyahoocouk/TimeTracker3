@@ -35,9 +35,7 @@ bool Principal::enabled(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
+    //  We assume database is consistent since last change
 
     return _enabled;
 }
@@ -47,7 +45,7 @@ void Principal::setEnabled(
     )
 {
     tt3::util::Lock lock(_database->_guard);
-    _ensureLive();  //  may throw
+    _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
 #endif
@@ -55,7 +53,7 @@ void Principal::setEnabled(
     if (enabled != _enabled)
     {   //  Make the change...
         _enabled = enabled;
-        _database->_needsSaving = true;
+        _database->_markModified();
         //  ...schedule change notifications...
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
@@ -72,9 +70,7 @@ auto Principal::emailAddresses(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
+    //  We assume database is consistent since last change
 
     return _emailAddresses;
 }
@@ -84,7 +80,7 @@ void Principal::setEmailAddresses(
     )
 {
     tt3::util::Lock lock(_database->_guard);
-    _ensureLive();  //  may throw
+    _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
 #endif
@@ -100,7 +96,7 @@ void Principal::setEmailAddresses(
     if (emailAddresses != _emailAddresses)
     {   //  Make the change...
         _emailAddresses = emailAddresses;
-        _database->_needsSaving = true;
+        _database->_markModified();
         //  ...schedule change notifications...
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(

@@ -34,7 +34,8 @@ namespace tt3::gui
     public:
         ManageUsersDialog(QWidget * parent,
                           tt3::ws::Workspace workspace,
-                          const tt3::ws::Credentials & credentials);
+                          const tt3::ws::Credentials & credentials
+                        );
         virtual ~ManageUsersDialog();
 
         //////////

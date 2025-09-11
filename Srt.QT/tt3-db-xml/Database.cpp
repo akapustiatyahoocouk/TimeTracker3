@@ -19,12 +19,14 @@ using namespace tt3::db::xml;
 
 //////////
 //  Construction/destruction
-Database::Database(DatabaseAddress * address, _Mode mode)
+Database::Database(
+        DatabaseAddress * address,
+        _OpenMode openMode)
     :   _address(address),
         _validator(tt3::db::api::DefaultValidator::instance())
 {
     Q_ASSERT(_address != nullptr);
-    if (mode != _Mode::_Dead)
+    if (openMode != _OpenMode::_Dead)
     {   //  ...because the DatabaseType holds that reference
         //  TODO this is UGLY!!!
         _address->addReference();
@@ -32,21 +34,20 @@ Database::Database(DatabaseAddress * address, _Mode mode)
 
     tt3::util::Lock lock(_guard);
 
-    switch (mode)
+    switch (openMode)
     {
-        case _Mode::_Create:
+        case _OpenMode::_Create:
             //  Can't overwrite!
             if (QFile(_address->_path).exists())
             {   //  OOPS!
-                delete _lockRefresher;
                 throw tt3::db::api::AlreadyExistsException(
                     "XML file database", "location", _address->_path);
             }
             //  Need to save empty DB content, but
             //  obtain the lock first
-            _lockRefresher = new _LockRefresher(this);
             try
             {
+                _lockRefresher = new _LockRefresher(this);  //  may throw
                 _save();    //  may throw
                 _lockRefresher->start();
             }
@@ -59,18 +60,13 @@ Database::Database(DatabaseAddress * address, _Mode mode)
                 }
                 throw tt3::db::api::CustomDatabaseException(ex.errorMessage());
             }
-            catch (...)
-            {   //  Cleanup & re-throw
-                delete _lockRefresher;
-                throw tt3::db::api::CustomDatabaseException("Unknown database error");
-            }
             break;
-        case _Mode::_Open:
+        case _OpenMode::_Open:
             //  Need to load existing DB content, but
             //  obtain the lock first
-            _lockRefresher = new _LockRefresher(this);
             try
             {
+                _lockRefresher = new _LockRefresher(this);  //  may throw
                 _load();    //  may throw
                 _lockRefresher->start();
             }
@@ -84,18 +80,13 @@ Database::Database(DatabaseAddress * address, _Mode mode)
                 }
                 throw tt3::db::api::CustomDatabaseException(ex.errorMessage());
             }
-            catch (...)
-            {   //  Cleanup & re-throw
-                delete _lockRefresher;
-                throw tt3::db::api::CustomDatabaseException("Unknown database error");
-            }
             break;
-        case _Mode::_Dead:
+        case _OpenMode::_Dead:
             //  We're creating a special "dead" database,
             //  where "dead" objects are parked until they
             //  lose their reference counts.
             //  We don't need a _lockRefresher
-            _lockRefresher = nullptr;
+            Q_ASSERT(_lockRefresher == nullptr);
             break;
         default:
             Q_ASSERT(false);
@@ -146,18 +137,41 @@ Database::~Database()
 
 //////////
 //  tt3::db::api::IDatabase (general)
+auto Database::type(
+    ) const -> DatabaseType *
+{   //  No need to synchronize
+    return DatabaseType::instance();
+}
+
+auto Database::address(
+    ) const -> DatabaseAddress *
+{   //  No need to synchronize
+    return _address;
+}
+
+auto Database::validator(
+    ) const -> tt3::db::api::IValidator *
+{   //  No need to synchronize
+    return _validator;
+}
+
 bool Database::isOpen() const
 {
     tt3::util::Lock lock(_guard);
 
-    return _lockRefresher != nullptr;
+    return _isOpen;
+}
+
+bool Database::isReadOnly() const
+{   //  No need to synchronize
+    return _isReadOnly;
 }
 
 void Database::close()
 {
     tt3::util::Lock lock(_guard);
 
-    if (_lockRefresher == nullptr)
+    if (!_isOpen)
     {   //  Already closed
         return;
     }
@@ -213,9 +227,7 @@ auto Database::users(
 {
     tt3::util::Lock lock(_guard);
     _ensureOpen();  //  may throw
-#ifdef Q_DEBUG
-    _validate();    //  may throw
-#endif
+    //  We assume database is consistent since last change
 
     return tt3::db::api::Users(_users.cbegin(), _users.cend());
 }
@@ -225,9 +237,7 @@ auto Database::accounts(
 {
     tt3::util::Lock lock(_guard);
     _ensureOpen();  //  may throw
-#ifdef Q_DEBUG
-    _validate();    //  may throw
-#endif
+    //  We assume database is consistent since last change
 
     tt3::db::api::Accounts result;
     for (User * user : _users)
@@ -243,9 +253,7 @@ auto Database::findAccount(
 {
     tt3::util::Lock lock(_guard);
     _ensureOpen();  //  may throw
-#ifdef Q_DEBUG
-    _validate();    //  may throw
-#endif
+    //  We assume database is consistent since last change
 
     return _findAccount(login);
 }
@@ -255,9 +263,7 @@ auto Database::activityTypes(
 {
     tt3::util::Lock lock(_guard);
     _ensureOpen();  //  may throw
-#ifdef Q_DEBUG
-    _validate();    //  may throw
-#endif
+    //  We assume database is consistent since last change
 
     return tt3::db::api::ActivityTypes(_activityTypes.cbegin(), _activityTypes.cend());
 }
@@ -321,9 +327,7 @@ auto Database::tryLogin(
 
     tt3::util::Lock lock(_guard);
     _ensureOpen();  //  may throw
-#ifdef Q_DEBUG
-    _validate();    //  may throw
-#endif
+    //  We assume database is consistent since last change
 
     std::unique_ptr<tt3::util::IMessageDigest::Builder> sha1Builder
         { sha1->createBuilder() };
@@ -369,7 +373,7 @@ auto Database::createUser(
     ) -> tt3::db::api::IUser *
 {
     tt3::util::Lock lock(_guard);
-    _ensureOpen();  //  may throw
+    _ensureOpenAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _validate();    //  may throw
 #endif
@@ -411,7 +415,7 @@ auto Database::createUser(
     user->_realName = realName;
     user->_inactivityTimeout = inactivityTimeout;
     user->_uiLocale = uiLocale;
-    _needsSaving = true;
+    _markModified();
     //  ...schedule change notifications...
     _changeNotifier.post(
         new tt3::db::api::ObjectCreatedNotification(
@@ -429,7 +433,7 @@ auto Database::createActivityType(
     ) -> tt3::db::api::IActivityType *
 {
     tt3::util::Lock lock(_guard);
-    _ensureOpen();  //  may throw
+    _ensureOpenAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _validate();    //  may throw
 #endif
@@ -463,7 +467,7 @@ auto Database::createActivityType(
     ActivityType * activityType = new ActivityType(this, _generateOid()); //  registers with Database
     activityType->_displayName = displayName;
     activityType->_description = description;
-    _needsSaving = true;
+    _markModified();
     //  ...schedule change notifications...
     _changeNotifier.post(
         new tt3::db::api::ObjectCreatedNotification(
@@ -537,10 +541,29 @@ void Database::_ensureOpen() const
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
 
-    if (_lockRefresher == nullptr)
+    if (!_isOpen)
     {   //  OOPS!
         throw tt3::db::api::DatabaseClosedException();
     }
+}
+
+void Database::_ensureOpenAndWritable() const
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+
+    if (!_isOpen)
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseClosedException();
+    }
+    //  TODO and writable!
+}
+
+void Database::_markModified()
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+
+    _needsSaving = true;
+    //  TODO save periodically
 }
 
 void Database::_markClosed()

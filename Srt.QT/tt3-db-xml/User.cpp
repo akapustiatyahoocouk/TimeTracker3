@@ -38,7 +38,7 @@ User::~User()
 void User::destroy()
 {
     tt3::util::Lock lock(_database->_guard);
-    _ensureLive();  //  may throw
+    _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
 #endif
@@ -65,9 +65,7 @@ auto User::realName(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
+    //  We assume database is consistent since last change
 
     return _realName;
 }
@@ -77,7 +75,7 @@ void User::setRealName(
     )
 {
     tt3::util::Lock lock(_database->_guard);
-    _ensureLive();  //  may throw
+    _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
 #endif
@@ -93,7 +91,7 @@ void User::setRealName(
     if (realName != _realName)
     {   //  Make the change...
         _realName = realName;
-        _database->_needsSaving = true;
+        _database->_markModified();
         //  ...schedule change notifications....
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
@@ -110,9 +108,7 @@ auto User::inactivityTimeout(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
+    //  We assume database is consistent since last change
 
     return _inactivityTimeout;
 }
@@ -122,7 +118,7 @@ void User::setInactivityTimeout(
     )
 {
     tt3::util::Lock lock(_database->_guard);
-    _ensureLive();  //  may throw
+    _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
 #endif
@@ -139,7 +135,7 @@ void User::setInactivityTimeout(
     if (inactivityTimeout != _inactivityTimeout)
     {   //  Make the change...
         _inactivityTimeout = inactivityTimeout;
-        _database->_needsSaving = true;
+        _database->_markModified();
         //  ...schedule change notifications...
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
@@ -156,9 +152,7 @@ auto User::uiLocale(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
+    //  We assume database is consistent since last change
 
     return _uiLocale;
 }
@@ -168,7 +162,7 @@ void User::setUiLocale(
     )
 {
     tt3::util::Lock lock(_database->_guard);
-    _ensureLive();  //  may throw
+    _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
 #endif
@@ -185,7 +179,7 @@ void User::setUiLocale(
     if (uiLocale != _uiLocale)
     {   //  Make the change...
         _uiLocale = uiLocale;
-        _database->_needsSaving = true;
+        _database->_markModified();
         //  ...schedule change notifications...
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
@@ -208,7 +202,7 @@ auto User::createAccount(
     ) -> tt3::db::api::IAccount *
 {
     tt3::util::Lock lock(_database->_guard);
-    _ensureLive();  //  may throw
+    _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
 #endif
@@ -257,7 +251,7 @@ auto User::createAccount(
     account->_login = login;
     account->_passwordHash = passwordHash;
     account->_capabilities = capabilities & tt3::db::api::Capabilities::All;
-    _database->_needsSaving = true;
+    _database->_markModified();
     //  ...schedule change notifications...
     _database->_changeNotifier.post(
         new tt3::db::api::ObjectModifiedNotification(
@@ -327,6 +321,7 @@ auto User::accounts(
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
 
     return tt3::db::api::Accounts(_accounts.begin(), _accounts.end());
 }

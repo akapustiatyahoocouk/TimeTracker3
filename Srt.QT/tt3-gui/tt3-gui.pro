@@ -23,6 +23,7 @@ SOURCES += \
     GeneralStartupPreferences.cpp \
     GeneralStartupPreferencesEditor.cpp \
     LoginDialog.cpp \
+    ManageActivityTypesDialog.cpp \
     ManageUsersDialog.cpp \
     ModifyAccountDialog.cpp \
     ModifyActivityTypeDialog.cpp \
@@ -57,6 +58,7 @@ HEADERS += \
     GeneralStartupPreferencesEditor.hpp \
     Linkage.hpp \
     LoginDialog.hpp \
+    ManageActivityTypesDialog.hpp \
     ManageUsersDialog.hpp \
     ModifyAccountDialog.hpp \
     ModifyActivityTypeDialog.hpp \
@@ -86,6 +88,7 @@ FORMS += \
     GeneralDialogsPreferencesEditor.ui \
     GeneralStartupPreferencesEditor.ui \
     LoginDialog.ui \
+    ManageActivityTypesDialog.ui \
     ManageUsersDialog.ui \
     ModifyAccountDialog.ui \
     ModifyActivityTypeDialog.ui \

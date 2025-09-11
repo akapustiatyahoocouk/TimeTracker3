@@ -60,5 +60,6 @@
 #include "tt3-gui/ModifyActivityTypeDialog.hpp"
 
 #include "tt3-gui/ManageUsersDialog.hpp"
+#include "tt3-gui/ManageActivityTypesDialog.hpp"
 
 //  End of tt3-gui/API.hpp

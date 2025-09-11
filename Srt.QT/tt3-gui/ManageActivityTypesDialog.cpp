@@ -1,5 +1,5 @@
 //
-//  tt3-gui/ManageUsersDialog.cpp - tt3::gui::ManageUsersDialog class implementation
+//  tt3-gui/ManageActivityTypesDialog.cpp - tt3::gui::ManageActivityTypesDialog class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,17 +15,17 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-gui/API.hpp"
-#include "ui_ManageUsersDialog.h"
+#include "ui_ManageactivityTypesDialog.h"
 using namespace tt3::gui;
 
 //////////
 //  Construction/destruction
-ManageUsersDialog::ManageUsersDialog(
+ManageActivityTypesDialog::ManageActivityTypesDialog(
         QWidget * parent,
         tt3::ws::Workspace workspace,
         const tt3::ws::Credentials & credentials
     ) : QDialog(parent),
-        _ui(new Ui::ManageUsersDialog)
+        _ui(new Ui::ManageActivityTypesDialog)
 {
     Q_ASSERT(workspace != nullptr);
     Q_ASSERT(credentials.isValid());
@@ -37,25 +37,25 @@ ManageUsersDialog::ManageUsersDialog(
 
     //  Create dynamic controls
     _managerPanelLayout = new QStackedLayout();
-    _userManager = new tt3::gui::UserManager(_ui->managerPanel);
-    _managerPanelLayout->addWidget(_userManager);
+    _activityTypeManager = new tt3::gui::ActivityTypeManager(_ui->managerPanel);
+    _managerPanelLayout->addWidget(_activityTypeManager);
     _ui->managerPanel->setLayout(_managerPanelLayout);
 
     //  Done
     adjustSize();
-    _userManager->refresh();
+    _activityTypeManager->refresh();
 }
 
-ManageUsersDialog::~ManageUsersDialog()
+ManageActivityTypesDialog::~ManageActivityTypesDialog()
 {
     delete _ui;
 }
 
 //////////
 //  Operations
-void ManageUsersDialog::doModal()
+void ManageActivityTypesDialog::doModal()
 {
     exec();
 }
 
-//  End of tt3-gui/ManageUsersDialog.cpp
+//  End of tt3-gui/ManageActivityTypesDialog.cpp
