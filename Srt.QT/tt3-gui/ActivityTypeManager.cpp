@@ -96,6 +96,9 @@ void ActivityTypeManager::setCredentials(const tt3::ws::Credentials & credential
 
 void ActivityTypeManager::refresh()
 {
+    static const QIcon viewActivityTypeIcon(":/tt3-gui/Resources/Images/Actions/ViewActivityTypeLarge.png");
+    static const QIcon modifyActivityTypeIcon(":/tt3-gui/Resources/Images/Actions/ModifyActivityTypeLarge.png");
+
     //  We don't want a refresh() to trigger a recursive refresh()!
     static bool refreshUnderway = false;
     if (refreshUnderway)
@@ -135,20 +138,32 @@ void ActivityTypeManager::refresh()
     }
     _refreshActivityTypeItems(workspaceModel);
 
-
     tt3::ws::ActivityType selectedActivityType = _selectedActivityType();
+    bool readOnly = _workspace->isReadOnly();
     _ui->createActivityTypePushButton->setEnabled(
-        !_workspace->isReadOnly() &&
+        !readOnly &&
         _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
         _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageActivityTypes));
     _ui->modifyActivityTypePushButton->setEnabled(
-        !_workspace->isReadOnly() &&
-        selectedActivityType != nullptr &&
-        selectedActivityType->canModify(_credentials));
+        selectedActivityType != nullptr);
     _ui->destroyActivityTypePushButton->setEnabled(
-        !_workspace->isReadOnly() &&
+        !readOnly &&
         selectedActivityType != nullptr &&
         selectedActivityType->canDestroy(_credentials));
+
+    //  Some buttons need to be adjusted for ReadOnoly mode
+    if (selectedActivityType != nullptr &&
+        !selectedActivityType->workspace()->isReadOnly() &&
+        selectedActivityType->canModify(_credentials))
+    {   //  RW
+        _ui->modifyActivityTypePushButton->setIcon(modifyActivityTypeIcon);
+        _ui->modifyActivityTypePushButton->setText("Modify activity type");
+    }
+    else
+    {   //  RO
+        _ui->modifyActivityTypePushButton->setIcon(viewActivityTypeIcon);
+        _ui->modifyActivityTypePushButton->setText("View activity type");
+    }
 
     refreshUnderway = false;
 }

@@ -103,6 +103,11 @@ void UserManager::setCredentials(const tt3::ws::Credentials & credentials)
 
 void UserManager::refresh()
 {
+    static const QIcon viewUserIcon(":/tt3-gui/Resources/Images/Actions/ViewUserLarge.png");
+    static const QIcon modifyUserIcon(":/tt3-gui/Resources/Images/Actions/ModifyUserLarge.png");
+    static const QIcon viewAccountIcon(":/tt3-gui/Resources/Images/Actions/ViewAccountLarge.png");
+    static const QIcon modifyAccountIcon(":/tt3-gui/Resources/Images/Actions/ModifyAccountLarge.png");
+
     //  We don't want a refresh() to trigger a recursive refresh()!
     static bool refreshUnderway = false;
     if (refreshUnderway)
@@ -155,22 +160,22 @@ void UserManager::refresh()
         _ui->usersTreeWidget->expandAll();
     }
 
-
     tt3::ws::User selectedUser = _selectedUser();
     tt3::ws::Account selectedAccount = _selectedAccount();
+    bool readOnly = _workspace->isReadOnly();
     _ui->createUserPushButton->setEnabled(
-        !_workspace->isReadOnly() &&
+        !readOnly &&
         _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
         _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageUsers));
     _ui->modifyUserPushButton->setEnabled(
         selectedUser != nullptr &&
         selectedUser->canModify(_credentials));
     _ui->destroyUserPushButton->setEnabled(
-        !_workspace->isReadOnly() &&
+        !readOnly &&
         selectedUser != nullptr &&
         selectedUser->canDestroy(_credentials));
     _ui->createAccountPushButton->setEnabled(
-        !_workspace->isReadOnly() &&
+        !readOnly &&
         (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
          _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageUsers)) &&
         selectedUser != nullptr);
@@ -178,12 +183,38 @@ void UserManager::refresh()
         selectedAccount != nullptr &&
         selectedAccount->canModify(_credentials));
     _ui->destroyAccountPushButton->setEnabled(
-        !_workspace->isReadOnly() &&
+        !readOnly &&
         selectedAccount != nullptr &&
         selectedAccount->canDestroy(_credentials));
 
     _ui->showDisabledCheckBox->setChecked(
         Component::Settings::instance()->showHiddenUsersAndAccounts);
+
+    //  Some buttons need to be adjusted for ReadOnoly mode
+    if (selectedUser != nullptr &&
+        !selectedUser->workspace()->isReadOnly() &&
+        selectedUser->canModify(_credentials))
+    {   //  RW
+        _ui->modifyUserPushButton->setIcon(modifyUserIcon);
+        _ui->modifyUserPushButton->setText("Modify user");
+    }
+    else
+    {   //  RO
+        _ui->modifyUserPushButton->setIcon(viewUserIcon);
+        _ui->modifyUserPushButton->setText("View user");
+    }
+    if (selectedAccount != nullptr &&
+        !selectedAccount->workspace()->isReadOnly() &&
+        selectedAccount->canModify(_credentials))
+    {   //  RW
+        _ui->modifyAccountPushButton->setIcon(modifyAccountIcon);
+        _ui->modifyAccountPushButton->setText("Modify account");
+    }
+    else
+    {   //  RO
+        _ui->modifyAccountPushButton->setIcon(viewAccountIcon);
+        _ui->modifyAccountPushButton->setText("View account");
+    }
 
     refreshUnderway = false;
 }

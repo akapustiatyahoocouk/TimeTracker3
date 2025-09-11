@@ -77,6 +77,7 @@ namespace tt3::gui
         tt3::ws::Account        _account;
         tt3::ws::Credentials    _credentials;
         tt3::ws::Validator::Account  *const _validator;
+        const bool              _readOnly;
 
         QString             _oldPasswordHash;   //  used to determine if password was changed
 

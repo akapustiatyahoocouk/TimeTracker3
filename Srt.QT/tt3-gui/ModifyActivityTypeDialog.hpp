@@ -75,6 +75,7 @@ namespace tt3::gui
         tt3::ws::ActivityType   _activityType;
         const tt3::ws::Credentials  _credentials;
         tt3::ws::Validator::ActivityType *const _validator;
+        const bool      _readOnly;
 
         //  Helpers
         void            _refresh();

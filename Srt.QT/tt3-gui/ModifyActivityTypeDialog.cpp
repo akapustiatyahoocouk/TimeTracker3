@@ -24,12 +24,14 @@ ModifyActivityTypeDialog::ModifyActivityTypeDialog(
         QWidget * parent,
         tt3::ws::ActivityType activityType,
         const tt3::ws::Credentials & credentials
-    )
-    :   QDialog(parent),
+    ) : QDialog(parent),
         //  Implementation
         _activityType(activityType),
         _credentials(credentials),
         _validator(activityType->workspace()->validator()->activityType()),
+        _readOnly(activityType == nullptr ||
+                  !activityType->canModify(credentials) ||  //  may throw
+                  activityType->workspace()->isReadOnly()),
         //  Controls
         _ui(new Ui::ModifyActivityTypeDialog)
 {
@@ -46,6 +48,15 @@ ModifyActivityTypeDialog::ModifyActivityTypeDialog(
     //  Set initial control values (may throw)
     _ui->displayNameLineEdit->setText(_activityType->displayName(_credentials));
     _ui->descriptionTextEdit->setPlainText(_activityType->description(_credentials));
+
+    //  Adjust for "view only" mode
+    if (_readOnly)
+    {
+        this->setWindowTitle("View activity type");
+        this->setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewActivityTypeLarge.png"));
+        _ui->displayNameLineEdit->setReadOnly(true);
+        _ui->descriptionTextEdit->setReadOnly(true);
+    }
 
     //  Done
     adjustSize();
@@ -69,6 +80,7 @@ ModifyActivityTypeDialog::Result ModifyActivityTypeDialog::doModal()
 void ModifyActivityTypeDialog::_refresh()
 {
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(
+        !_readOnly &&
         _validator->isValidDisplayName(_ui->displayNameLineEdit->text()) &&
         _validator->isValidDescription(_ui->descriptionTextEdit->toPlainText()));
 }

@@ -50,15 +50,16 @@ MainFrame::MainFrame(QWidget * parent)
     connect(&tt3::ws::theCurrentWorkspace,
             &tt3::ws::CurrentWorkspace::changed,
             this,
-            &MainFrame::_onCurrentWorkspaceChanged,
+            &MainFrame::_currentWorkspaceChanged,
             Qt::ConnectionType::QueuedConnection);
     connect(&tt3::ws::theCurrentCredentials,
             &tt3::ws::CurrentCredentials::changed,
             this,
-            &MainFrame::_onCurrentCredentialsChanged,
+            &MainFrame::_currentCredentialsChanged,
             Qt::ConnectionType::QueuedConnection);
 
     //  Done
+    _ui->managersTabWidget->setCurrentIndex(Component::Settings::instance()->mainFrameCurrentTab);
     _trackPosition = true;
     refresh();
 }
@@ -577,23 +578,32 @@ void MainFrame::_onActionAbout()
     dlg.doModal();
 }
 
-void MainFrame::_onWorkspaceClosed(tt3::ws::WorkspaceClosedNotification)
+void MainFrame::_workspaceClosed(tt3::ws::WorkspaceClosedNotification)
 {
     refresh();
 }
 
-void MainFrame::_onCurrentWorkspaceChanged(tt3::ws::Workspace /*before*/, tt3::ws::Workspace /*after*/)
+void MainFrame::_currentWorkspaceChanged(tt3::ws::Workspace /*before*/, tt3::ws::Workspace /*after*/)
 {
     _userManager->setWorkspace(tt3::ws::theCurrentWorkspace);
     _activityTypeManager->setWorkspace(tt3::ws::theCurrentWorkspace);
     refresh();
 }
 
-void MainFrame::_onCurrentCredentialsChanged(tt3::ws::Credentials /*before*/, tt3::ws::Credentials /*after*/)
+void MainFrame::_currentCredentialsChanged(tt3::ws::Credentials /*before*/, tt3::ws::Credentials /*after*/)
 {
     _userManager->setCredentials(tt3::ws::theCurrentCredentials);
     _activityTypeManager->setCredentials(tt3::ws::theCurrentCredentials);
     refresh();
+}
+
+void MainFrame::_managersTabWidgetCurrentChanged(int)
+{
+    if (_trackPosition)
+    {   //  i.e. constructor has finished
+        refresh();
+        Component::Settings::instance()->mainFrameCurrentTab = _ui->managersTabWidget->currentIndex();
+    }
 }
 
 //  End of tt3-skin-admin/MainFrame.cpp

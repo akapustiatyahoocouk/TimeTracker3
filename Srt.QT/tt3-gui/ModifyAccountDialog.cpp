@@ -24,12 +24,14 @@ ModifyAccountDialog::ModifyAccountDialog(
         QWidget * parent,
         tt3::ws::Account account,
         const tt3::ws::Credentials & credentials
-    )
-    :   QDialog(parent),
+    ) : QDialog(parent),
         //  Implementation
         _account(account),
         _credentials(credentials),
         _validator(account->workspace()->validator()->account()),
+        _readOnly(account == nullptr ||
+                  !account->canModify(credentials) ||  //  may throw
+                  account->workspace()->isReadOnly()),
         _oldPasswordHash(account->passwordHash(credentials)),
         //  Controls
         _ui(new Ui::ModifyAccountDialog)
@@ -60,7 +62,19 @@ ModifyAccountDialog::ModifyAccountDialog(
     if ((clientCapabilities & tt3::ws::Capabilities::Administrator) == tt3::ws::Capabilities::None &&
         (clientCapabilities & tt3::ws::Capabilities::Administrator) == tt3::ws::Capabilities::None)
     {
-        _ui->loginLineEdit->setEnabled(false);
+        _ui->loginLineEdit->setReadOnly(true);
+        _ui->capabilitiesGroupBox->setEnabled(false);
+        _ui->enabledCheckBox->setEnabled(false);
+    }
+
+    //  Adjust for "view only" mode
+    if (_readOnly)
+    {
+        this->setWindowTitle("View account");
+        this->setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewAccountLarge.png"));
+        _ui->loginLineEdit->setReadOnly(true);
+        _ui->passwordLineEdit->setReadOnly(true);
+        _ui->confirmPasswordLineEdit->setReadOnly(true);
         _ui->capabilitiesGroupBox->setEnabled(false);
         _ui->enabledCheckBox->setEnabled(false);
     }
@@ -214,9 +228,16 @@ void ModifyAccountDialog::_setSelectedCapabilities(tt3::ws::Capabilities capabil
 
 void ModifyAccountDialog::_refresh()
 {
-    _ui->modifyEmailAddressPushButton->setEnabled(!_selectedEmailAddress().isEmpty());
-    _ui->removeEmailAddressPushButton->setEnabled(!_selectedEmailAddress().isEmpty());
+    _ui->addEmailAddressPushButton->setEnabled(
+        !_readOnly);
+    _ui->modifyEmailAddressPushButton->setEnabled(
+        !_readOnly &&
+        !_selectedEmailAddress().isEmpty());
+    _ui->removeEmailAddressPushButton->setEnabled(
+        !_readOnly &&
+        !_selectedEmailAddress().isEmpty());
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(
+        !_readOnly &&
         _validator->isValidLogin(_ui->loginLineEdit->text()) &&
         _validator->isValidPassword(_ui->passwordLineEdit->text()) &&
         _ui->passwordLineEdit->text() == _ui->confirmPasswordLineEdit->text() &&

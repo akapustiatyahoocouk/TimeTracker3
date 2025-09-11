@@ -638,6 +638,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>managersTabWidget</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_managersTabWidgetCurrentChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>263</x>
+     <y>189</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_onActionExit()</slot>
@@ -655,5 +671,6 @@
   <slot>_onActionManageUsers()</slot>
   <slot>_onActionManageActivityTypes()</slot>
   <slot>_onActionRefresh()</slot>
+  <slot>_managersTabWidgetCurrentChanged(int)</slot>
  </slots>
 </ui>

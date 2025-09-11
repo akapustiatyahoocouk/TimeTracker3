@@ -76,5 +76,11 @@
         <file>Resources/Images/Actions/ModifyActivityTypeSmall.png</file>
         <file>Resources/Images/Objects/UserLarge.png</file>
         <file>Resources/Images/Objects/UserSmall.png</file>
+        <file>Resources/Images/Actions/ViewActivityTypeLarge.png</file>
+        <file>Resources/Images/Actions/ViewActivityTypeSmall.png</file>
+        <file>Resources/Images/Actions/ViewAccountLarge.png</file>
+        <file>Resources/Images/Actions/ViewAccountSmall.png</file>
+        <file>Resources/Images/Actions/ViewUserLarge.png</file>
+        <file>Resources/Images/Actions/ViewUserSmall.png</file>
     </qresource>
 </RCC>

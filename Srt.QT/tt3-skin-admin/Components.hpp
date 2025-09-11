@@ -45,6 +45,10 @@ namespace tt3::skin::admin
 
             //  True if the main UI frame is maximized, false if not.
             tt3::util::Setting<bool>    mainFrameMaximized;
+
+            /// \brief
+            ///     The current tab within the MainFrame.
+            tt3::util::Setting<int>     mainFrameCurrentTab;
         };
 
         //////////

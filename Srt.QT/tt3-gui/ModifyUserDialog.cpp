@@ -24,12 +24,14 @@ ModifyUserDialog::ModifyUserDialog(
         QWidget * parent,
         tt3::ws::User user,
         const tt3::ws::Credentials & credentials
-    )
-    :   QDialog(parent),
+    ) : QDialog(parent),
         //  Implementation
         _user(user),
         _credentials(credentials),
         _validator(user->workspace()->validator()->user()),
+        _readOnly(user == nullptr ||
+                  !user->canModify(credentials) ||  //  may throw
+                  user->workspace()->isReadOnly()),
         //  Controls
         _ui(new Ui::ModifyUserDialog)
 {
@@ -77,6 +79,16 @@ ModifyUserDialog::ModifyUserDialog(
     _setSelectedInactivityTimeout(_user->inactivityTimeout(_credentials));
     _setSelectedUiLocale(_user->uiLocale(_credentials));
     _ui->enabledCheckBox->setChecked(_user->enabled(_credentials));
+
+    //  Adjust for "view only" mode
+    if (_readOnly)
+    {
+        this->setWindowTitle("View user");
+        this->setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewUserLarge.png"));
+        _ui->realNameLineEdit->setReadOnly(true);
+        _ui->inactivityTimeoutCheckBox->setEnabled(false);
+        _ui->enabledCheckBox->setEnabled(false);
+    }
 
     //  Done
     adjustSize();
@@ -214,11 +226,24 @@ void ModifyUserDialog::_setSelectedUiLocale(const tt3::ws::UiLocale & uiLocale)
 
 void ModifyUserDialog::_refresh()
 {
-    _ui->modifyEmailAddressPushButton->setEnabled(!_selectedEmailAddress().isEmpty());
-    _ui->removeEmailAddressPushButton->setEnabled(!_selectedEmailAddress().isEmpty());
-    _ui->hoursComboBox->setEnabled(_ui->inactivityTimeoutCheckBox->isChecked());
-    _ui->minutesComboBox->setEnabled(_ui->inactivityTimeoutCheckBox->isChecked());
+    _ui->addEmailAddressPushButton->setEnabled(
+        !_readOnly);
+    _ui->modifyEmailAddressPushButton->setEnabled(
+        !_readOnly &&
+        !_selectedEmailAddress().isEmpty());
+    _ui->removeEmailAddressPushButton->setEnabled(
+        !_readOnly &&
+        !_selectedEmailAddress().isEmpty());
+    _ui->hoursComboBox->setEnabled(
+        !_readOnly &&
+        _ui->inactivityTimeoutCheckBox->isChecked());
+    _ui->minutesComboBox->setEnabled(
+        !_readOnly &&
+        _ui->inactivityTimeoutCheckBox->isChecked());
+    _ui->uiLocaleComboBox->setEnabled(
+        !_readOnly);
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(
+        !_readOnly &&
         _validator->isValidRealName(_ui->realNameLineEdit->text()) &&
         _validator->isValidInactivityTimeout(_selectedInactivityTimeout()) &&
         _validator->isValidEmailAddresses(_selectedEmailAddresses()) &&

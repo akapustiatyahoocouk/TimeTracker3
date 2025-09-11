@@ -75,9 +75,10 @@ namespace tt3::gui
         //  Implementation
     private:
         tt3::ws::User       _user;
-        const tt3::ws::Credentials  _credentials;
-        QList<QLocale>      _locales;   //  parallel to combo box items
+        const tt3::ws::Credentials      _credentials;
         tt3::ws::Validator::User *const _validator;
+        const bool          _readOnly;
+        QList<QLocale>      _locales;   //  parallel to combo box items
 
         //  Helpers
         static QString      _displayName(const QLocale & locale);
