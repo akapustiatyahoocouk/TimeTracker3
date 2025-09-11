@@ -143,7 +143,7 @@ void Application::_initialize()
             try
             {
                 tt3::ws::Workspace workspace =
-                    mru[0]->workspaceType()->openWorkspace(mru[0]);
+                    mru[0]->workspaceType()->openWorkspace(mru[0], tt3::ws::OpenMode::Default);
                 if (workspace->canAccess(tt3::ws::theCurrentCredentials))
                 {
                     tt3::ws::theCurrentWorkspace.swap(workspace);

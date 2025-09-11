@@ -19,7 +19,11 @@
 
 namespace tt3::gui
 {
-    //  The modal "Open workspace" dialog
+    //  The modal "Open workspace" dialog.
+    //  TODO add controls to select an "open mode"
+    //  (ReadOnly, ReadWrite or Default). NOTE that
+    //  open mode selection controls must be hidden
+    //  when e.g. selecting a workspace to destroy.
     namespace Ui { class SelectWorkspaceDialog; }
 
     class TT3_GUI_PUBLIC SelectWorkspaceDialog final : private QDialog

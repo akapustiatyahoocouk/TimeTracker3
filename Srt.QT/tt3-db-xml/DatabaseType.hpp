@@ -78,7 +78,8 @@ namespace tt3::db::xml
                                 tt3::db::api::IDatabaseAddress * address
                             ) -> tt3::db::api::IDatabase * override;
         virtual auto    openDatabase(
-                                tt3::db::api::IDatabaseAddress * address
+                                tt3::db::api::IDatabaseAddress * address,
+                                tt3::db::api::OpenMode openMode
                             ) -> tt3::db::api::IDatabase * override;
         virtual void    destroyDatabase(
                                 tt3::db::api::IDatabaseAddress * address

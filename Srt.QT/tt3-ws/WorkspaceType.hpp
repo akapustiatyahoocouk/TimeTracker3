@@ -42,7 +42,7 @@ namespace tt3::ws
         auto        mnemonic(
                         ) const -> tt3::util::Mnemonic;
 
-        //  The user-readable display name of this workspace type
+        //  The user-readable display name of this workspace type.
         auto        displayName(
                         ) const -> QString;
 
@@ -145,12 +145,15 @@ namespace tt3::ws
         ///     Opens an existing workspace at the specified address.
         /// \param address
         ///     The address of an existing Workspace; must be of this type.
+        /// \param openMode
+        ///     The workspace open mode.
         /// \return
         ///     The newly open Workspace.
         /// \exception WorkspaceException
         ///     If an error occurs.
         auto        openWorkspace(
-                            const WorkspaceAddress & address
+                            const WorkspaceAddress & address,
+                            OpenMode openMode
                         ) -> Workspace;
 
         /// \brief

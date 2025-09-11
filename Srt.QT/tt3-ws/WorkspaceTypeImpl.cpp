@@ -168,7 +168,8 @@ auto WorkspaceTypeImpl::createWorkspace(
 }
 
 auto WorkspaceTypeImpl::openWorkspace(
-        const WorkspaceAddress & address
+        const WorkspaceAddress & address,
+        OpenMode openMode
     ) -> Workspace
 {
     if (address == nullptr || address->workspaceType() != this)
@@ -178,7 +179,7 @@ auto WorkspaceTypeImpl::openWorkspace(
     try
     {
         std::unique_ptr<tt3::db::api::IDatabase> database
-            { address->_databaseAddress->databaseType()->openDatabase(address->_databaseAddress) };
+            { address->_databaseAddress->databaseType()->openDatabase(address->_databaseAddress, openMode) };
         return _mapWorkspace(new WorkspaceImpl(address, database.release()));
     }
     catch (const tt3::util::Exception & ex)
@@ -201,7 +202,7 @@ void WorkspaceTypeImpl::destroyWorkspace(
         //  We need to open the database to verify
         //  the admin credentials for it
         std::unique_ptr<tt3::db::api::IDatabase> database
-            { address->_databaseAddress->databaseType()->openDatabase(address->_databaseAddress) };
+            { address->_databaseAddress->databaseType()->openDatabase(address->_databaseAddress, OpenMode::ReadWrite) };
         tt3::db::api::IAccount * account = database->login(credentials._login, credentials._password);
         if ((account->capabilities() & Capabilities::Administrator) == Capabilities::None)
         {   //  OOPS! Not allowed!

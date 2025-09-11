@@ -116,6 +116,10 @@ void MainFrame::refresh()
     {
         title += " - ";
         title += currentWorkspace->address()->displayForm();
+        if (currentWorkspace->isReadOnly())
+        {
+            title += " [read-only]";
+        }
     }
     this->setWindowTitle(title);
 
@@ -216,7 +220,10 @@ bool MainFrame::_createWorkspace(
     }
 }
 
-bool MainFrame::_openWorkspace(tt3::ws::WorkspaceAddress workspaceAddress)
+bool MainFrame::_openWorkspace(
+        tt3::ws::WorkspaceAddress workspaceAddress,
+        tt3::ws::OpenMode openMode
+    )
 {
     Q_ASSERT(workspaceAddress != nullptr);
 
@@ -232,7 +239,7 @@ bool MainFrame::_openWorkspace(tt3::ws::WorkspaceAddress workspaceAddress)
     try
     {
         tt3::ws::Workspace workspace
-            { workspaceAddress->workspaceType()->openWorkspace(workspaceAddress) };
+            { workspaceAddress->workspaceType()->openWorkspace(workspaceAddress, openMode) };
         //  If the current credentials do not allow access
         //  to the newly open workspace, what do we do?
         if (!_reconcileCurrntCredentials(workspace))
@@ -391,7 +398,7 @@ void MainFrame::_onActionOpenWorkspace()
     {
         tt3::ws::WorkspaceAddress workspaceAddress = dlg.selectedWorkspaceAddress();
         Q_ASSERT(workspaceAddress != nullptr);
-        _openWorkspace(workspaceAddress);
+        _openWorkspace(workspaceAddress, tt3::ws::OpenMode::Default);
     }
 }
 

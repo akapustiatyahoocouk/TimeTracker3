@@ -35,7 +35,7 @@ RecentWorkspaceOpener::~RecentWorkspaceOpener()
 //  Eveht handlers
 void RecentWorkspaceOpener::_onTriggered()
 {
-    if (!_mainFrame->_openWorkspace(_workspaceAddress))
+    if (!_mainFrame->_openWorkspace(_workspaceAddress, tt3::ws::OpenMode::Default))
     {   //  May want to remove this workspace from the MRU
         tt3::gui::ConfirmForgetWorkspaceDialog dlg(_mainFrame, _workspaceAddress);
         if (dlg.doModal() == tt3::gui::ConfirmForgetWorkspaceDialog::Result::Yes)

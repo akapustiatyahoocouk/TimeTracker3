@@ -62,7 +62,9 @@ namespace tt3::skin::admin
         bool            _createWorkspace(tt3::ws::WorkspaceAddress workspaceAddress,
                               const QString & adminUser,
                               const QString & adminLogin, const QString & adminPassword);
-        bool            _openWorkspace(tt3::ws::WorkspaceAddress workspaceAddress);
+        bool            _openWorkspace(
+                                tt3::ws::WorkspaceAddress workspaceAddress,
+                                tt3::ws::OpenMode openMode);
         bool            _reconcileCurrntCredentials(const tt3::ws::Workspace & workspace);
         void            _destroyWorkspace(tt3::ws::WorkspaceAddress workspaceAddress);
 

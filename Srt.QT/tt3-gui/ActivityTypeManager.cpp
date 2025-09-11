@@ -138,12 +138,15 @@ void ActivityTypeManager::refresh()
 
     tt3::ws::ActivityType selectedActivityType = _selectedActivityType();
     _ui->createActivityTypePushButton->setEnabled(
+        !_workspace->isReadOnly() &&
         _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
         _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageActivityTypes));
     _ui->modifyActivityTypePushButton->setEnabled(
+        !_workspace->isReadOnly() &&
         selectedActivityType != nullptr &&
         selectedActivityType->canModify(_credentials));
     _ui->destroyActivityTypePushButton->setEnabled(
+        !_workspace->isReadOnly() &&
         selectedActivityType != nullptr &&
         selectedActivityType->canDestroy(_credentials));
 

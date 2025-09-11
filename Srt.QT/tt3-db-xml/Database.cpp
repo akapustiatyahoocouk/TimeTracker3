@@ -23,7 +23,10 @@ Database::Database(
         DatabaseAddress * address,
         _OpenMode openMode)
     :   _address(address),
-        _validator(tt3::db::api::DefaultValidator::instance())
+        _validator(tt3::db::api::DefaultValidator::instance()),
+        _needsSaving(false),
+        _isOpen(true),
+        _isReadOnly(openMode == _OpenMode::_OpenReadOnly)
 {
     Q_ASSERT(_address != nullptr);
     if (openMode != _OpenMode::_Dead)
@@ -61,7 +64,24 @@ Database::Database(
                 throw tt3::db::api::CustomDatabaseException(ex.errorMessage());
             }
             break;
-        case _OpenMode::_Open:
+        case _OpenMode::_OpenReadOnly:
+            //  Load database contents - no need for the DB lock
+            try
+            {
+                Q_ASSERT(_lockRefresher == nullptr);
+                _load();    //  may throw
+            }
+            catch (const tt3::util::Exception & ex)
+            {   //  e.g. ParseException, etc.
+                //  Cleanup & re-throw
+                if (dynamic_cast<const tt3::db::api::DatabaseException*>(&ex) != nullptr)
+                {   //  Can re-throw "as is"
+                    throw;
+                }
+                throw tt3::db::api::CustomDatabaseException(ex.errorMessage());
+            }
+            break;
+        case _OpenMode::_OpenReadWrite:
             //  Need to load existing DB content, but
             //  obtain the lock first
             try
@@ -194,6 +214,10 @@ void Database::close()
     }
 
     //  Destroy all Object instances...
+    //  (we pretend to be read/wrote for the duration -
+    //  these changes will never be saved)
+    bool wasReadOnly = _isReadOnly;
+    _isReadOnly = false;
     for (User * user : _users.values())
     {
         user->destroy();    //  also destroys Accounts, Works, etc.
@@ -204,6 +228,7 @@ void Database::close()
     }
     Q_ASSERT(_users.isEmpty());
     Q_ASSERT(_activityTypes.isEmpty());
+    _isReadOnly = wasReadOnly;
 
     //  Done
     _markClosed();
@@ -555,7 +580,10 @@ void Database::_ensureOpenAndWritable() const
     {   //  OOPS!
         throw tt3::db::api::DatabaseClosedException();
     }
-    //  TODO and writable!
+    if (_isReadOnly)
+    {   //  OOPS!
+        throw tt3::db::api::AccessDeniedException();
+    }
 }
 
 void Database::_markModified()

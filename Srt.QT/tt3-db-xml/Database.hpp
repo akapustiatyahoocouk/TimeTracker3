@@ -34,7 +34,13 @@ namespace tt3::db::xml
         //////////
         //  Construction/destruction
     private:
-        enum _OpenMode { _Create, _Open, _Dead };
+        enum _OpenMode
+        {
+            _Create,
+            _OpenReadOnly,
+            _OpenReadWrite,
+            _Dead
+        };
         Database(
                 DatabaseAddress * address,
                 _OpenMode openMode
@@ -163,9 +169,9 @@ namespace tt3::db::xml
         DatabaseAddress *const          _address;   //  counts as a "reference"
         tt3::db::api::IValidator *const _validator;
         mutable tt3::util::Mutex        _guard; //  for all access synchronization
-        bool            _needsSaving = false;
-        bool            _isOpen = true;
-        const bool      _isReadOnly = false;
+        bool            _needsSaving;
+        bool            _isOpen;
+        bool            _isReadOnly;    //  not "const" - will be faked as "false" during close()
 
         //  Primary object caches - these contain all live
         //  objects, either directly (like Users) or indirectly

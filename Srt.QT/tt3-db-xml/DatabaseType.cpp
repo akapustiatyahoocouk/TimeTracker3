@@ -176,13 +176,33 @@ auto DatabaseType::createDatabase(
 }
 
 auto DatabaseType::openDatabase(
-        tt3::db::api::IDatabaseAddress * address
+        tt3::db::api::IDatabaseAddress * address,
+        tt3::db::api::OpenMode openMode
     ) -> tt3::db::api::IDatabase *
 {
     if (DatabaseAddress * xmlDatabaseAddress =
         dynamic_cast<DatabaseAddress*>(address))
     {   //  Address is of a proper type.
-        return new Database(xmlDatabaseAddress, Database::_OpenMode::_Open);
+        switch (openMode)
+        {
+            case tt3::db::api::OpenMode::ReadOnly:
+                return new Database(xmlDatabaseAddress,
+                                    Database::_OpenMode::_OpenReadOnly);
+            case tt3::db::api::OpenMode::ReadWrite:
+                return new Database(xmlDatabaseAddress,
+                                    Database::_OpenMode::_OpenReadWrite);
+            case tt3::db::api::OpenMode::Default:
+            default:    //  be defensive!
+                QFileInfo fileInfo(xmlDatabaseAddress->_path);
+                if (fileInfo.isFile() && !fileInfo.isWritable())
+                {
+                    return new Database(xmlDatabaseAddress,
+                                        Database::_OpenMode::_OpenReadOnly);
+                }
+                //  Fall back to read/write
+                return new Database(xmlDatabaseAddress,
+                                    Database::_OpenMode::_OpenReadWrite);
+        }
     }
     throw tt3::db::api::InvalidDatabaseAddressException();
 }
@@ -197,7 +217,7 @@ void DatabaseType::destroyDatabase(
         //  Must validate the database file existence and its
         //  contents - the best way is to open it for a moment
         std::unique_ptr<Database> database
-            { new Database(xmlDatabaseAddress, Database::_OpenMode::_Open) };
+            { new Database(xmlDatabaseAddress, Database::_OpenMode::_OpenReadWrite) };
         database->close();
         QFile file(xmlDatabaseAddress->_path);
         if (!file.remove())

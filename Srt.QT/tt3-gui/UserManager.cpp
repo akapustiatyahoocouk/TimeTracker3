@@ -159,15 +159,18 @@ void UserManager::refresh()
     tt3::ws::User selectedUser = _selectedUser();
     tt3::ws::Account selectedAccount = _selectedAccount();
     _ui->createUserPushButton->setEnabled(
+        !_workspace->isReadOnly() &&
         _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
         _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageUsers));
     _ui->modifyUserPushButton->setEnabled(
         selectedUser != nullptr &&
         selectedUser->canModify(_credentials));
     _ui->destroyUserPushButton->setEnabled(
+        !_workspace->isReadOnly() &&
         selectedUser != nullptr &&
         selectedUser->canDestroy(_credentials));
     _ui->createAccountPushButton->setEnabled(
+        !_workspace->isReadOnly() &&
         (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
          _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageUsers)) &&
         selectedUser != nullptr);
@@ -175,6 +178,7 @@ void UserManager::refresh()
         selectedAccount != nullptr &&
         selectedAccount->canModify(_credentials));
     _ui->destroyAccountPushButton->setEnabled(
+        !_workspace->isReadOnly() &&
         selectedAccount != nullptr &&
         selectedAccount->canDestroy(_credentials));
 

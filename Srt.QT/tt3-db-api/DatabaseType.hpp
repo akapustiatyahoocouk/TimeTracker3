@@ -17,6 +17,15 @@
 
 namespace tt3::db::api
 {
+    /// \brief
+    ///     The database open mode
+    enum class OpenMode
+    {
+        ReadOnly,   ///< Open as read-only, even when writable.
+        ReadWrite,  ///< Open as writable, fail if read-only.
+        Default     ///< Open as read/write is possible, as read-only if not.
+    };
+
     /// \class IDatabaseType "tt3-db-api/API.hpp"
     /// \brief
     ///     Represents a specific storage technology
@@ -133,12 +142,15 @@ namespace tt3::db::api
         ///
         /// \param address
         ///     The address to open an existing database at.
+        /// \param openMode
+        ///     The database open mode.
         /// \return
         ///     The newly opened database.
         /// \exception DatabaseException
         ///     If an error occurs.
         virtual auto    openDatabase(
-                                IDatabaseAddress * address
+                                IDatabaseAddress * address,
+                                OpenMode openMode
                             ) -> IDatabase * = 0;
 
         /// Destroys an existing database at the specified address.

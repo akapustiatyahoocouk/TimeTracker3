@@ -62,6 +62,7 @@ namespace tt3::ws
     class TT3_WS_PUBLIC WorkspaceTypeManager;
 
     //  We can piggyback on some DB API types
+    using OpenMode = tt3::db::api::OpenMode;
     using ObjectType = tt3::db::api::IObjectType;
     using ObjectTypes = tt3::db::api::ObjectTypes;
     using Capabilities = tt3::db::api::Capabilities;
