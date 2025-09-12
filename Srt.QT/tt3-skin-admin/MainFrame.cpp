@@ -394,12 +394,15 @@ void MainFrame::_onActionNewWorkspace()
 
 void MainFrame::_onActionOpenWorkspace()
 {
-    tt3::gui::SelectWorkspaceDialog dlg(this);
+    tt3::gui::SelectWorkspaceDialog dlg(
+        this,
+        tt3::gui::SelectWorkspaceDialog::OptionalControls::OpenModeSelection);
     if (dlg.doModal() == tt3::gui::SelectWorkspaceDialog::Result::Ok)
     {
         tt3::ws::WorkspaceAddress workspaceAddress = dlg.selectedWorkspaceAddress();
+        tt3::ws::OpenMode openMode = dlg.selectedOpenMode();
         Q_ASSERT(workspaceAddress != nullptr);
-        _openWorkspace(workspaceAddress, tt3::ws::OpenMode::Default);
+        _openWorkspace(workspaceAddress, openMode);
     }
 }
 
@@ -441,7 +444,9 @@ void MainFrame::_onActionCloseWorkspace()
 
 void MainFrame::_onActionDestroyWorkspace()
 {
-    tt3::gui::SelectWorkspaceDialog dlg(this);
+    tt3::gui::SelectWorkspaceDialog dlg(
+        this,
+        tt3::gui::SelectWorkspaceDialog::OptionalControls::None);
     if (dlg.doModal() == tt3::gui::SelectWorkspaceDialog::Result::Ok)
     {
         tt3::ws::WorkspaceAddress workspaceAddress = dlg.selectedWorkspaceAddress();

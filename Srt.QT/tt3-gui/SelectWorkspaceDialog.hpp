@@ -34,13 +34,23 @@ namespace tt3::gui
         //////////
         //  Types
     public:
+        /// \brief
+        ///     Specifies which optional controls to show.
+        enum OptionalControls
+        {
+            None,               ///< Show none of the optional controls.
+            OpenModeSelection   ///< Show optional controls for open mode selection.
+        };
+
         //  The dialog result after a modal invocation
         enum class Result { Ok, Cancel };
 
         //////////
         //  Construction/destruction
     public:
-        explicit SelectWorkspaceDialog(QWidget * parent);
+        SelectWorkspaceDialog(
+                QWidget * parent,
+                OptionalControls optionalControls);
         virtual ~SelectWorkspaceDialog();
 
         //////////
@@ -53,10 +63,14 @@ namespace tt3::gui
         //  nullptr if the user has cancelled the dialog.
         tt3::ws::WorkspaceAddress   selectedWorkspaceAddress() { return _workspaceAddress; }
 
+        //  The workspace open mode selected by the user.
+        tt3::ws::OpenMode           selectedOpenMode() { return _openMode; }
+
         //////////
         //  Implementation
     private:
         tt3::ws::WorkspaceAddress   _workspaceAddress = nullptr;  //  nullptr == not selected
+        tt3::ws::OpenMode           _openMode = tt3::ws::OpenMode::Default;
 
         //  Helpers
         void            _refresh();

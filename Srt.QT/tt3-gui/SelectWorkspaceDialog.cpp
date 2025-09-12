@@ -20,8 +20,10 @@ using namespace tt3::gui;
 
 //////////
 //  Construction/destruction
-SelectWorkspaceDialog::SelectWorkspaceDialog(QWidget * parent)
-    :   QDialog(parent),
+SelectWorkspaceDialog::SelectWorkspaceDialog(
+        QWidget * parent,
+        OptionalControls optionalControls
+    ) : QDialog(parent),
         _ui(new Ui::SelectWorkspaceDialog)
 {
     _ui->setupUi(this);
@@ -49,6 +51,12 @@ SelectWorkspaceDialog::SelectWorkspaceDialog(QWidget * parent)
             QVariant::fromValue(workspaceType));
     }
 
+    //  Hide optional controls if necessary
+    if (optionalControls != OptionalControls::OpenModeSelection)
+    {
+        _ui->openAsLabel->setVisible(false);
+        _ui->openAsPanel->setVisible(false);
+    }
     //  Done
     adjustSize();
     _refresh();
@@ -114,6 +122,18 @@ void SelectWorkspaceDialog::_browsePushButtonClicked()
 
 void SelectWorkspaceDialog::accept()
 {
+    if (_ui->openAsReadOnlyRadioButton->isChecked())
+    {
+        _openMode = tt3::ws::OpenMode::ReadOnly;
+    }
+    else if (_ui->openAsReadWriteRadioButton->isChecked())
+    {
+        _openMode = tt3::ws::OpenMode::ReadWrite;
+    }
+    else
+    {
+        _openMode = tt3::ws::OpenMode::Default;
+    }
     done(int(Result::Ok));
 }
 

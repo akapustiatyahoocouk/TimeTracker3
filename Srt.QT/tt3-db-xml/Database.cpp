@@ -86,6 +86,11 @@ Database::Database(
             //  obtain the lock first
             try
             {
+                QFileInfo fileInfo(address->_path);
+                if (fileInfo.isFile() && !fileInfo.isWritable())
+                {
+                    throw tt3::db::api::AccessDeniedException();
+                }
                 _lockRefresher = new _LockRefresher(this);  //  may throw
                 _load();    //  may throw
                 _lockRefresher->start();
@@ -201,6 +206,7 @@ void Database::close()
     //  Save ?
     if (_needsSaving)
     {
+        _needsSaving = false;
         try
         {
             _save();    //  may throw!
@@ -613,6 +619,7 @@ void Database::_markClosed()
         tt3::db::api::DatabaseClosedNotification n(this);
         _changeNotifier.databaseClosed(n);
     }
+    _isOpen = false;
 }
 
 tt3::db::api::Oid Database::_generateOid()

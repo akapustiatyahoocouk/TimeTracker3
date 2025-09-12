@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>457</width>
-    <height>132</height>
+    <width>455</width>
+    <height>186</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,36 +28,15 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0" colspan="3">
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="locationLineEdit">
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0" colspan="3">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="0">
     <widget class="QLabel" name="workspaceTypeLabel">
      <property name="text">
       <string>Workspace type:</string>
      </property>
     </widget>
+   </item>
+   <item row="0" column="1" colspan="2">
+    <widget class="QComboBox" name="workspaceTypeComboBox"/>
    </item>
    <item row="1" column="2">
     <widget class="QPushButton" name="browsePushButton">
@@ -70,11 +49,77 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="1" colspan="2">
-    <widget class="QComboBox" name="workspaceTypeComboBox"/>
+   <item row="4" column="0" colspan="3">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="locationLineEdit">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="3">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="openAsLabel">
+     <property name="text">
+      <string>Open as:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1" colspan="2">
+    <widget class="QWidget" name="openAsPanel" native="true">
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="openAsDefaultRadioButton">
+        <property name="text">
+         <string>Default</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QRadioButton" name="openAsReadOnlyRadioButton">
+        <property name="text">
+         <string>Read Only</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QRadioButton" name="openAsReadWriteRadioButton">
+        <property name="text">
+         <string>Read/Write</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>workspaceTypeComboBox</tabstop>
+  <tabstop>locationLineEdit</tabstop>
+  <tabstop>browsePushButton</tabstop>
+  <tabstop>openAsDefaultRadioButton</tabstop>
+  <tabstop>openAsReadOnlyRadioButton</tabstop>
+  <tabstop>openAsReadWriteRadioButton</tabstop>
+ </tabstops>
  <resources>
   <include location="tt3-gui.qrc"/>
  </resources>
