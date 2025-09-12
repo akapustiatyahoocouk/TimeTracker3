@@ -17,7 +17,7 @@
 
 namespace tt3::db::api
 {
-    /// \class IWork "tt3-db-api/API.hpp"
+    /// \class IWork tt3-db-api/API.hpp
     /// \brief A recorded unit of work.
     class TT3_DB_API_PUBLIC IWork : public virtual IObject
     {

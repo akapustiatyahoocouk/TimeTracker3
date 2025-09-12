@@ -17,7 +17,7 @@
 
 namespace tt3::util
 {
-    /// \class Mnemonic tt3-util/API.hpp "tt3-util/API.hpp"
+    /// \class Mnemonic tt3-util/API.hpp
     /// \brief
     ///     A "mnemonic" is a read-only string that uniquely
     //      identifies a stock object within a set of similar objects
@@ -123,7 +123,7 @@ namespace tt3::util
         QString     _impl;
     };
 
-    /// \class ResourceSectionId tt3-util/API.hpp "tt3-util/API.hpp"
+    /// \class ResourceSectionId tt3-util/API.hpp
     /// \brief
     ///     An identifier of a section within a
     ///     resource factory's set of provided resources
@@ -224,7 +224,7 @@ namespace tt3::util
         QString     _impl;
     };
 
-    /// \class ResourceId tt3-util/API.hpp "tt3-util/API.hpp"
+    /// \class ResourceId tt3-util/API.hpp
     /// \brief
     ///     An identifier of a resource within a
     ///     resource section's set of provided resources

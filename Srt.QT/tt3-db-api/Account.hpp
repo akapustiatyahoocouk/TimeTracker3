@@ -17,7 +17,7 @@
 
 namespace tt3::db::api
 {
-    /// \class IAccount "tt3-db-api/API.hpp"
+    /// \class IAccount tt3-db-api/API.hpp
     /// \brief A login account.
     class TT3_DB_API_PUBLIC IAccount :
         public virtual IPrincipal

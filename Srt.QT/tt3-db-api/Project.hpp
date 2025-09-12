@@ -17,7 +17,7 @@
 
 namespace tt3::db::api
 {
-    /// \class IProject "tt3-db-api/API.hpp"
+    /// \class IProject tt3-db-api/API.hpp
     /// \brief A workload that has a completion status.
     class TT3_DB_API_PUBLIC IProject : public virtual IWorkload
     {

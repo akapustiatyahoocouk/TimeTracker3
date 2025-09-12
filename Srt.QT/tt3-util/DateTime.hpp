@@ -17,7 +17,7 @@
 
 namespace tt3::util
 {
-    /// \class TimeSpan tt3-util/API.hpp "tt3-util/API.hpp"
+    /// \class TimeSpan tt3-util/API.hpp
     /// \brief A time interval.
     class TT3_UTIL_PUBLIC TimeSpan
     {

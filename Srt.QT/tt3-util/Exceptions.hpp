@@ -20,7 +20,7 @@ namespace tt3::util
     /// The common base class for all tt3-specific throwable objects.
     using Throwable = QException;
 
-    /// \class Exception tt3-util/API.hpp "tt3-util/API.hpp"
+    /// \class Exception tt3-util/API.hpp
     /// \brief The common base class for all tt3-specific exceptions.
     /// \details
     ///     These are throwables intended to be caught; they will
@@ -64,7 +64,7 @@ namespace tt3::util
                             ) const -> QString = 0;
     };
 
-    /// \class MissingResourceException tt3-util/API.hpp "tt3-util/API.hpp"
+    /// \class MissingResourceException tt3-util/API.hpp
     /// \brief Thrown when a requested resource is not available.
     class TT3_UTIL_PUBLIC MissingResourceException : public Exception
     {
@@ -197,7 +197,7 @@ namespace tt3::util
         qsizetype       _position;
     };
 
-    /// \class Error tt3-util/API.hpp "tt3-util/API.hpp"
+    /// \class Error tt3-util/API.hpp
     /// \brief The common base class for all tt3-specific errors.
     /// \details
     ///     These are throwables NOT intended to be caught; they will
@@ -241,7 +241,7 @@ namespace tt3::util
                             ) const -> QString = 0;
     };
 
-    /// \class ProgramError tt3-util/API.hpp "tt3-util/API.hpp"
+    /// \class ProgramError tt3-util/API.hpp
     /// \brief The common base class for all program errors.
     /// \details
     ///     These are errors that indicate the need to fix an
@@ -258,7 +258,7 @@ namespace tt3::util
         ProgramError() = default;
     };
 
-    /// \class SystemError tt3-util/API.hpp "tt3-util/API.hpp"
+    /// \class SystemError tt3-util/API.hpp
     /// \brief The common base class for all program errors.
     /// \details
     ///     These are errors that indicate an unusual condition
@@ -275,7 +275,7 @@ namespace tt3::util
         SystemError() = default;
     };
 
-    /// \class NotImplementedError tt3-util/API.hpp "tt3-util/API.hpp"
+    /// \class NotImplementedError tt3-util/API.hpp
     /// \brief Thrown when a feature is not implemented.
     class TT3_UTIL_PUBLIC NotImplementedError : public ProgramError
     {

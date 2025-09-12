@@ -17,7 +17,7 @@
 
 namespace tt3::db::api
 {
-    /// \class IDatabase "tt3-db-api/API.hpp"
+    /// \class IDatabase tt3-db-api/API.hpp
     /// \brief Represents an open connection
     ///        to a persistent data container.
     class TT3_DB_API_PUBLIC IDatabase

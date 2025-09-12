@@ -17,7 +17,7 @@
 
 namespace tt3::db::api
 {
-    /// \class IUser "tt3-db-api/API.hpp"
+    /// \class IUser tt3-db-api/API.hpp
     /// \brief A user.
     class TT3_DB_API_PUBLIC IUser : public virtual IPrincipal
     {

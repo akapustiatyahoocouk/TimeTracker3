@@ -17,7 +17,7 @@
 
 namespace tt3::db::api
 {
-    /// \class IPrincipal "tt3-db-api/API.hpp"
+    /// \class IPrincipal tt3-db-api/API.hpp
     /// \brief A generic access control principal.
     class TT3_DB_API_PUBLIC IPrincipal : public virtual IObject
     {

@@ -17,7 +17,7 @@
 
 namespace tt3::db::api
 {
-    /// \class IActivityType "tt3-db-api/API.hpp"
+    /// \class IActivityType tt3-db-api/API.hpp
     /// \brief An activity type.
     class TT3_DB_API_PUBLIC IActivityType :
         public virtual IObject

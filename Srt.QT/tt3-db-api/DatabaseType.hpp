@@ -26,7 +26,7 @@ namespace tt3::db::api
         Default     ///< Open as read/write is possible, as read-only if not.
     };
 
-    /// \class IDatabaseType "tt3-db-api/API.hpp"
+    /// \class IDatabaseType tt3-db-api/API.hpp
     /// \brief
     ///     Represents a specific storage technology
     ///     used to keep data persistent.

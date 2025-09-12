@@ -17,16 +17,20 @@
 
 namespace tt3::db::api
 {
-    //  The common base class for all DB API - level exceptions
+    /// \class DatabaseException tt3-db-api/API.hpp
+    /// \brief The common base class for all DB API - level exceptions.
     class TT3_DB_API_PUBLIC DatabaseException : public tt3::util::Exception
     {
         //////////
         //  Construction/destruction/assignment
     public:
+        /// \brief
+        ///     Constructs the exception.
         DatabaseException();
     };
 
-    //  Thrown when an invalid database address is specified
+    /// \class InvalidDatabaseAddressException tt3-db-api/API.hpp
+    /// \brief Thrown when an invalid database address is specified.
     class TT3_DB_API_PUBLIC InvalidDatabaseAddressException : public DatabaseException
     {
         //////////
@@ -50,7 +54,8 @@ namespace tt3::db::api
         virtual QString errorMessage() const override;
     };
 
-    //  Thrown when a single-user database is already in use
+    /// \class DatabaseInUseException tt3-db-api/API.hpp
+    /// \brief Thrown when a single-user database is already in use.
     class TT3_DB_API_PUBLIC DatabaseInUseException : public DatabaseException
     {
         //////////
@@ -61,7 +66,13 @@ namespace tt3::db::api
         //////////
         //  Construction/destruction/assignment
     public:
-        explicit DatabaseInUseException(IDatabaseAddress * databaseAddress);
+        /// \brief
+        ///     Constructs the exception.
+        /// \param databaseAddress
+        ///     The address of the offending database.
+        explicit DatabaseInUseException(
+                IDatabaseAddress * databaseAddress
+            );
 
         //////////
         //  QException
@@ -77,11 +88,18 @@ namespace tt3::db::api
         //////////
         //  Operations
     public:
-        //  The user-readable display name of the database type
+        /// \brief
+        ///     Returns the user-readable display name of the database type.
+        /// \return
+        ///     The user-readable display name of the database type.
         QString         databaseTypeDisplayName() const { return _databaseTypeDisplayName; }
 
-        //  Returns the user-readable display form of the
-        //  address of the database that is already in use
+        /// \brief
+        ///     Returns the user-readable display form of the
+        ///     address of the database that is already in use.
+        /// \return
+        ///     The user-readable display form of the
+        ///     address of the database that is already in use.
         QString         databaseAddressDisplayForm() const { return _databaseAddressDisplayForm; }
 
         //////////
@@ -91,7 +109,8 @@ namespace tt3::db::api
         QString         _databaseAddressDisplayForm;
     };
 
-    //  Thrown when a database is corrupt
+    /// \class DatabaseCorruptException tt3-db-api/API.hpp
+    /// \brief Thrown when a database is corrupt.
     class TT3_DB_API_PUBLIC DatabaseCorruptException : public DatabaseException
     {
         //////////
@@ -102,7 +121,13 @@ namespace tt3::db::api
         //////////
         //  Construction/destruction/assignment
     public:
-        explicit DatabaseCorruptException(IDatabaseAddress * databaseAddress);
+        /// \brief
+        ///     Constructs the exception.
+        /// \param databaseAddress
+        ///     The address of the offending database.
+        explicit DatabaseCorruptException(
+                IDatabaseAddress * databaseAddress
+            );
 
         //////////
         //  QException
@@ -118,11 +143,18 @@ namespace tt3::db::api
         //////////
         //  Operations
     public:
-        //  The user-readable display name of the database type
+        /// \brief
+        ///     Returns the user-readable display name of the database type.
+        /// \return
+        ///     The user-readable display name of the database type.
         QString         databaseTypeDisplayName() const { return _databaseTypeDisplayName; }
 
-        //  Returns the user-readable display form of the
-        //  address of the database that is already in use
+        /// \brief
+        ///     Returns the user-readable display form of the.
+        ///     address of the database that is corrupt.
+        /// \return
+        ///     The user-readable display form of the.
+        ///     address of the database that is corrupt.
         QString         databaseAddressDisplayForm() const { return _databaseAddressDisplayForm; }
 
         //////////
@@ -132,7 +164,8 @@ namespace tt3::db::api
         QString         _databaseAddressDisplayForm;
     };
 
-    //  Thrown when a service is called on a closed database.
+    /// \class DatabaseClosedException tt3-db-api/API.hpp
+    /// \brief Thrown when a service is called on a closed database.
     class TT3_DB_API_PUBLIC DatabaseClosedException : public DatabaseException
     {
         //////////
@@ -143,6 +176,8 @@ namespace tt3::db::api
         //////////
         //  Construction/destruction/assignment
     public:
+        /// \brief
+        ///     Constructs the exception.
         DatabaseClosedException();
 
         //////////
@@ -157,7 +192,8 @@ namespace tt3::db::api
         virtual QString errorMessage() const override;
     };
 
-    //  Thrown when a database service is access-denied
+    /// \class AccessDeniedException tt3-db-api/API.hpp
+    /// \class Thrown when a database service is access-denied
     class TT3_DB_API_PUBLIC AccessDeniedException : public DatabaseException
     {
         //////////
@@ -168,6 +204,8 @@ namespace tt3::db::api
         //////////
         //  Construction/destruction/assignment
     public:
+        /// \brief
+        ///     Constructs the exception.
         AccessDeniedException();
 
         //////////
@@ -182,7 +220,8 @@ namespace tt3::db::api
         virtual QString errorMessage() const override;
     };
 
-    //  Thrown when attempting to assign an invalid value to a property
+    /// \class InvalidPropertyValueException tt3-db-api/API.hpp
+    /// \brief Thrown when attempting to assign an invalid value to a property.
     class TT3_DB_API_PUBLIC InvalidPropertyValueException : public DatabaseException
     {
         //////////
@@ -193,20 +232,63 @@ namespace tt3::db::api
         //////////
         //  Construction/destruction/assignment
     public:
-        InvalidPropertyValueException(const QString & objectTypeName,
-                                      const QString & propertyName, const QString & propertyValueString);
-        InvalidPropertyValueException(IObjectType * objectType,
-                                      const QString & propertyName, const QString & propertyValueString)
-            :   Self(objectType->displayName(), propertyName, propertyValueString) {}
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectTypeName
+        ///     The name of the object's type.
+        /// \param propertyName
+        ///     The name of the object's property.
+        /// \param propertyValueString
+        ///     The string representation of the offending property value.
+        InvalidPropertyValueException(
+                const QString & objectTypeName,
+                const QString & propertyName,
+                const QString & propertyValueString
+            );
 
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectType
+        ///     The object's type.
+        /// \param propertyName
+        ///     The name of the object's property.
+        /// \param propertyValueString
+        ///     The string representation of the offending property value.
+        InvalidPropertyValueException(
+                IObjectType * objectType,
+                const QString & propertyName,
+                const QString & propertyValueString
+            ) : Self(objectType->displayName(), propertyName, propertyValueString) {}
+
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectTypeName
+        ///     The name of the object's type.
+        /// \param propertyName
+        ///     The name of the object's property.
+        /// \param propertyValue
+        ///     The offending property value.
         template <class T>
-        InvalidPropertyValueException(IObjectType * objectType,
-                                      const QString & propertyName, const T & propertyValue)
-            :   Self(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
+        InvalidPropertyValueException(
+                const QString & objectTypeName,
+                const QString & propertyName,
+                const T & propertyValue
+            ) : Self(objectTypeName, propertyName, tt3::util::toString(propertyValue)) {}
+
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectType
+        ///     The object's type.
+        /// \param propertyName
+        ///     The name of the object's property.
+        /// \param propertyValue
+        ///     The offending property value.
         template <class T>
-        InvalidPropertyValueException(const QString & objectTypeName,
-                                      const QString & propertyName, const T & propertyValue)
-            :   Self(objectTypeName, propertyName, tt3::util::toString(propertyValue)) {}
+        InvalidPropertyValueException(
+            IObjectType * objectType,
+            const QString & propertyName,
+            const T & propertyValue
+            ) : Self(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
 
         //////////
         //  QException
@@ -222,13 +304,22 @@ namespace tt3::db::api
         //////////
         //  Operations
     public:
-        //  Thw ibternal name of the object type.
+        /// \brief
+        ///     Returns the internal name of the object type.
+        /// \return
+        ///     The internal name of the object type.
         QString         objectTypeName() const { return _objectTypeName; }
 
-        //  The name of the property.
+        /// \brief
+        ///     Returns the name of the property.
+        /// \return
+        ///     The name of the property.
         QString         propertyName() const { return _propertyName; }
 
-        //  The string representation of the offending property value.
+        /// \brief
+        ///     Returns the string representation of the offending property value.
+        /// \return
+        ///     The string representation of the offending property value.
         QString         propertyValueString() const { return _propertyValueString; }
 
         //////////
@@ -239,8 +330,10 @@ namespace tt3::db::api
         QString         _propertyValueString;
     };
 
-    //  Thrown when an object with the specified property value,
-    //  which is supposed to be unique, already exists
+    /// \class AlreadyExistsException tt3-db-api/API.hpp
+    /// \brief
+    ///     Thrown when an object with the specified property value,
+    ///     which is supposed to be unique, already exists.
     class TT3_DB_API_PUBLIC AlreadyExistsException : public DatabaseException
     {
         //////////
@@ -251,20 +344,63 @@ namespace tt3::db::api
         //////////
         //  Construction/destruction/assignment
     public:
-        AlreadyExistsException(const QString & objectTypeName,
-                               const QString & propertyName, const QString & propertyValueString);
-        AlreadyExistsException(IObjectType * objectType,
-                               const QString & propertyName, const QString & propertyValueString)
-            :   Self(objectType->displayName(), propertyName, propertyValueString) {}
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectTypeName
+        ///     The name of the object's type.
+        /// \param propertyName
+        ///     The name of the object's property.
+        /// \param propertyValueString
+        ///     The string representation of the offending property value.
+        AlreadyExistsException(
+                const QString & objectTypeName,
+                const QString & propertyName,
+                const QString & propertyValueString
+            );
 
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectType
+        ///     The object's type.
+        /// \param propertyName
+        ///     The name of the object's property.
+        /// \param propertyValueString
+        ///     The string representation of the offending property value.
+        AlreadyExistsException(
+                IObjectType * objectType,
+                const QString & propertyName,
+                const QString & propertyValueString
+            ) : Self(objectType->displayName(), propertyName, propertyValueString) {}
+
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectTypeName
+        ///     The name of the object's type.
+        /// \param propertyName
+        ///     The name of the object's property.
+        /// \param propertyValue
+        ///     The offending property value.
         template <class T>
-        AlreadyExistsException(IObjectType * objectType,
-                              const QString & propertyName, const T & propertyValue)
-            :   Self(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
+        AlreadyExistsException(
+                const QString & objectTypeName,
+                const QString & propertyName,
+                const T & propertyValue
+            ) : Self(objectTypeName, propertyName, tt3::util::toString(propertyValue)) {}
+
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectType
+        ///     The object's type.
+        /// \param propertyName
+        ///     The name of the object's property.
+        /// \param propertyValue
+        ///     The offending property value.
         template <class T>
-        AlreadyExistsException(const QString & objectTypeName,
-                               const QString & propertyName, const T & propertyValue)
-            :   Self(objectTypeName, propertyName, tt3::util::toString(propertyValue)) {}
+        AlreadyExistsException(
+                IObjectType * objectType,
+                const QString & propertyName,
+                const T & propertyValue
+            ) : Self(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
 
         //////////
         //  QException
@@ -280,13 +416,22 @@ namespace tt3::db::api
         //////////
         //  Operations
     public:
-        //  The internal name of the object type.
+        /// \brief
+        ///     Returns the internal name of the object type.
+        /// \return
+        ///     The internal name of the object type.
         QString         objectTypeName() const { return _objectTypeName; }
 
-        //  The name of the property.
+        /// \brief
+        ///     Returns the name of the property.
+        /// \return
+        ///     The name of the property.
         QString         propertyName() const { return _propertyName; }
 
-        //  The string representation of the offending property value.
+        /// \brief
+        ///     Returns the string representation of the offending property value.
+        /// \return
+        ///     The string representation of the offending property value.
         QString         propertyValueString() const { return _propertyValueString; }
 
         //////////
@@ -297,8 +442,10 @@ namespace tt3::db::api
         QString         _propertyValueString;
     };
 
-    //  Thrown when an object with the specified property value,
-    //  which is supposed to exist, does not.
+    /// \class DoesNotExistException tt3-db-api/API.hpp
+    /// \brief
+    ///     Thrown when an object with the specified property value,
+    ///     which is supposed to exist, does not.
     class TT3_DB_API_PUBLIC DoesNotExistException : public DatabaseException
     {
         //////////
@@ -309,20 +456,63 @@ namespace tt3::db::api
         //////////
         //  Construction/destruction/assignment
     public:
-        DoesNotExistException(const QString & objectTypeName,
-                              const QString & propertyName, const QString & propertyValueString);
-        DoesNotExistException(IObjectType * objectType,
-                              const QString & propertyName, const QString & propertyValueString)
-            :   Self(objectType->displayName(), propertyName, propertyValueString) {}
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectTypeName
+        ///     The name of the object's type.
+        /// \param propertyName
+        ///     The name of the object's property.
+        /// \param propertyValueString
+        ///     The string representation of the offending property value.
+        DoesNotExistException(
+                const QString & objectTypeName,
+                const QString & propertyName,
+                const QString & propertyValueString
+            );
 
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectType
+        ///     The object's type.
+        /// \param propertyName
+        ///     The name of the object's property.
+        /// \param propertyValueString
+        ///     The string representation of the offending property value.
+        DoesNotExistException(
+                IObjectType * objectType,
+                const QString & propertyName,
+                const QString & propertyValueString
+            ) : Self(objectType->displayName(), propertyName, propertyValueString) {}
+
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectTypeName
+        ///     The name of the object's type.
+        /// \param propertyName
+        ///     The name of the object's property.
+        /// \param propertyValue
+        ///     The offending property value.
         template <class T>
-        DoesNotExistException(IObjectType * objectType,
-                              const QString & propertyName, const T & propertyValue)
-            :   Self(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
+        DoesNotExistException(
+                const QString & objectTypeName,
+                const QString & propertyName,
+                const T & propertyValue
+            ) : Self(objectTypeName, propertyName, tt3::util::toString(propertyValue)) {}
+
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectType
+        ///     The object's type.
+        /// \param propertyName
+        ///     The name of the object's property.
+        /// \param propertyValue
+        ///     The offending property value.
         template <class T>
-        DoesNotExistException(const QString & objectTypeName,
-                              const QString & propertyName, const T & propertyValue)
-            :   Self(objectTypeName, propertyName, tt3::util::toString(propertyValue)) {}
+        DoesNotExistException(
+                IObjectType * objectType,
+                const QString & propertyName,
+                const T & propertyValue
+            ) : Self(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
 
         //////////
         //  QException
@@ -338,13 +528,22 @@ namespace tt3::db::api
         //////////
         //  Operations
     public:
-        //  The internal name of the object type.
+        /// \brief
+        ///     Returns the internal name of the object type.
+        /// \return
+        ///     The internal name of the object type.
         QString         objectTypeName() const { return _objectTypeName; }
 
-        //  The name of the property.
+        /// \brief
+        ///     Returns the name of the property.
+        /// \return
+        ///     The name of the property.
         QString         propertyName() const { return _propertyName; }
 
-        //  The string representation of the offending property value.
+        /// \brief
+        ///     Returns the string representation of the offending property value.
+        /// \return
+        ///     The string representation of the offending property value.
         QString         propertyValueString() const { return _propertyValueString; }
 
         //////////
@@ -355,7 +554,8 @@ namespace tt3::db::api
         QString         _propertyValueString;
     };
 
-    //  Thrown when attempting to access a "dead" instance
+    /// \class InstanceDeadException tt3-db-api/API.hpp
+    /// \brief Thrown when attempting to access a "dead" instance.
     class TT3_DB_API_PUBLIC InstanceDeadException : public DatabaseException
     {
         //////////
@@ -366,6 +566,8 @@ namespace tt3::db::api
         //////////
         //  Construction/destruction/assignment
     public:
+        /// \brief
+        ///     Constructs the exception.
         InstanceDeadException();
 
         //////////
@@ -380,7 +582,8 @@ namespace tt3::db::api
         virtual QString errorMessage() const override;
     };
 
-    //  Thrown when must carry a custom error message (from OS, etc.)
+    /// \class CustomDatabaseException tt3-db-api/API.hpp
+    /// \brief Thrown when must carry a custom error message (from OS, etc.)
     class TT3_DB_API_PUBLIC CustomDatabaseException : public DatabaseException
     {
         //////////
@@ -391,7 +594,13 @@ namespace tt3::db::api
         //////////
         //  Construction/destruction/assignment
     public:
-        explicit CustomDatabaseException(const QString & errorMessage);
+        /// \brief
+        ///     Constructs the exception.
+        /// \param CustomDatabaseException
+        ///     The custom error message.
+        explicit CustomDatabaseException(
+                const QString & cerrorMessage
+            );
 
         //////////
         //  QException
