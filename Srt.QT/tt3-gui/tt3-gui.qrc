@@ -82,5 +82,11 @@
         <file>Resources/Images/Actions/ViewAccountSmall.png</file>
         <file>Resources/Images/Actions/ViewUserLarge.png</file>
         <file>Resources/Images/Actions/ViewUserSmall.png</file>
+        <file>Resources/Images/Objects/BeneficiaryLarge.png</file>
+        <file>Resources/Images/Objects/BeneficiarySmall.png</file>
+        <file>Resources/Images/Objects/ProjectLarge.png</file>
+        <file>Resources/Images/Objects/ProjectSmall.png</file>
+        <file>Resources/Images/Objects/WorkStreamLarge.png</file>
+        <file>Resources/Images/Objects/WorkStreamSmall.png</file>
     </qresource>
 </RCC>

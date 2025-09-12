@@ -5,6 +5,7 @@ DEFINES += TT3_DB_XML_LIBRARY
 
 SOURCES += \
     Account.cpp \
+    Activity.cpp \
     ActivityType.cpp \
     Component.cpp \
     Database.cpp \
@@ -13,11 +14,13 @@ SOURCES += \
     Object.cpp \
     Plugins.cpp \
     Principal.cpp \
+    PublicActivity.cpp \
     User.cpp
 
 HEADERS += \
     API.hpp \
     Account.hpp \
+    Activity.hpp \
     ActivityType.hpp \
     Classes.hpp \
     Components.hpp \
@@ -27,6 +30,7 @@ HEADERS += \
     Linkage.hpp \
     Object.hpp \
     Principal.hpp \
+    PublicActivity.hpp \
     User.hpp
 
 LIBS += -ltt3-db-api -ltt3-util

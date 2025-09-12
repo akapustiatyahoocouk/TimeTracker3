@@ -30,6 +30,8 @@ namespace tt3::db::xml
         friend class User;
         friend class Account;
         friend class ActivityType;
+        friend class Activity;
+        friend class PublicActivity;
 
         //////////
         //  Construction/destruction
@@ -176,8 +178,9 @@ namespace tt3::db::xml
         //  Primary object caches - these contain all live
         //  objects, either directly (like Users) or indirectly
         //  (like Accounts, accessible through Users).
-        Users           _users;         //  count as "references"
-        ActivityTypes   _activityTypes; //  count as "references"
+        Users               _users;             //  count as "references"
+        ActivityTypes       _activityTypes;     //  count as "references"
+        PublicActivities    _publicActivities;  //  count as "references"
 
         //  Seconsary caches - these do NOT count as "references"
         QMap<tt3::db::api::Oid, Object*> _liveObjects;  //  All "live" objects

@@ -29,6 +29,8 @@ namespace tt3::db::xml
         friend class User;
         friend class Account;
         friend class ActivityType;
+        friend class Activity;
+        friend class PublicActivity;
 
         //////////
         //  Construction/destruction (from DB type only)

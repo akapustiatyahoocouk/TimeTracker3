@@ -17,9 +17,11 @@
 
 namespace tt3::db::api
 {
-    //  An agent that, for a givel database [typr]
-    //  can decide whether a specific value is valid
-    //  for a s[ecific property of a specific object
+    /// \class IValidator tt3-db-api/API.hpp
+    /// \brief
+    ///     An agent that, for a givel database [type]
+    ///     can decide whether a specific value is valid
+    ///     for a specific property of a specific object.
     class TT3_DB_API_PUBLIC IValidator
     {
         //////////
@@ -29,9 +31,10 @@ namespace tt3::db::api
         virtual ~IValidator() = default;
 
         //////////
-        //  Operations
+        //  Validators
     public:
-        //  The validator for a Principal
+        /// \class IPrincipalValidator tt3-db-api/API.hpp
+        /// \brief The validator for a Principal.
         class TT3_DB_API_PUBLIC IPrincipalValidator
         {
             //////////
@@ -43,12 +46,26 @@ namespace tt3::db::api
             //////////
             //  Operations
         public:
-            //  Checks whether the specified string is a valid e-0maiol address.
+            /// \brief
+            ///     Checks whether the specified string is a valid
+            ///     e-mail address.
+            /// \param emailAddress
+            ///     The string to check.
+            /// \return
+            ///     True if the specified string is a valid e-mail
+            ///     address, else false.
             virtual bool    isValidEmailAddress(
                                     const QString & emailAddress
                                 ) = 0;
 
-            //  Checks whether the specified list of strings is a valid e-0maiol addresses list.
+            /// \brief
+            ///     Checks whether the specified list of strings
+            ///     is a valid e-mail addresses list.
+            /// \param emailAddresses
+            ///     The list of strings to check.
+            /// \return
+            ///     True if the specified list of strings is a
+            ///     valid e-mail addresses list, else false.
             virtual bool    isValidEmailAddresses(
                                     const QStringList & emailAddresses
                                 )
@@ -63,11 +80,16 @@ namespace tt3::db::api
                 return QSet<QString>(emailAddresses.begin(), emailAddresses.end()).size() == emailAddresses.size();
             }
         };
+        /// \brief
+        ///     Returns the validator for Principals.
+        /// \return
+        ///     The validator for Principals.
         virtual auto    principal(
                             ) const
                             -> IPrincipalValidator * = 0;
 
-        //  The validator for a User
+        /// \class IUserValidator tt3-db-api/API.hpp
+        /// \brief The validator for a User.
         class TT3_DB_API_PUBLIC IUserValidator : public virtual IPrincipalValidator
         {
             //////////
@@ -79,26 +101,52 @@ namespace tt3::db::api
             //////////
             //  Operations
         public:
-            //  Checks whether the specified string is a valid "real name" for a User.
+            /// \brief
+            ///     Checks whether the specified string is a
+            ///     valid "real name" for a User.
+            /// \param realName
+            ///     The string to check.
+            /// \return
+            ///     True the specified string is a valid
+            ///     "real name" for a User, else false.
             virtual bool    isValidRealName(
                                     const QString & realName
                                 ) = 0;
 
-            //  Checks whether the specified value is a valid "inactivity timeout" for a User.
+            /// \brief
+            ///     Checks whether the specified value is a valid
+            ///     "inactivity timeout" for a User.
+            /// \param inactivityTimeout
+            ///     The value to check.
+            /// \return
+            ///     True if the specified value is a valid "inactivity
+            ///     timeout" for a User, else false.
             virtual bool    isValidInactivityTimeout(
                                     const InactivityTimeout & inactivityTimeout
                                 ) = 0;
 
-            //  Checks whether the specified value is a valid "UI locale" for a User.
+            /// \brief
+            ///     Checks whether the specified value is a valid "UI locale"
+            ///     for a User.
+            /// \param uiLocale
+            ///     The value to check.
+            /// \return
+            ///     True if the specified value is a valid "UI locale"
+            ///     for a User, else false.
             virtual bool    isValidUiLocale(
                                     const UiLocale & uiLocale
                                 ) = 0;
         };
+        /// \brief
+        ///     Returns the validator for Users.
+        /// \return
+        ///     The validator for Users.
         virtual auto    user(
                             ) const
                             -> IUserValidator * = 0;
 
-        //  The validator for an Account
+        /// \class IAccountValidator tt3-db-api/API.hpp
+        /// \brief The validator for an Account.
         class TT3_DB_API_PUBLIC IAccountValidator : public virtual IPrincipalValidator
         {
             //////////
@@ -110,21 +158,40 @@ namespace tt3::db::api
             //////////
             //  Operations
         public:
-            //  Checks whether the specified string is a valid "login" for an Account.
+            /// \brief
+            ///     Checks whether the specified string is a valid
+            ///     "login" for an Account.
+            /// \param login
+            ///     The string to check.
+            /// \return
+            ///     True if the specified string is a valid "login"
+            ///     for an Account, else false.
             virtual bool    isValidLogin(
                                     const QString & login
                                 ) = 0;
 
-            //  Checks whether the specified string is a valid "password" for an Account.
+            /// \brief
+            ///     Checks whether the specified string is a valid
+            ///     "password" for an Account.
+            /// \param password
+            ///     The string to check.
+            /// \return
+            ///     True if the specified string is a valid "password"
+            ///     for an Account, else false.
             virtual bool    isValidPassword(
                                     const QString & password
                                 ) = 0;
         };
+        /// \brief
+        ///     Returns the validator for Accounts.
+        /// \return
+        ///     The validator for Accounts.
         virtual auto    account(
                             ) const
                             -> IAccountValidator * = 0;
 
-        //  The validator for an ActivityType
+        /// \class IActivityTypeValidator tt3-db-api/API.hpp
+        /// \brief The validator for an ActivityType.
         class TT3_DB_API_PUBLIC IActivityTypeValidator
         {
             //////////
@@ -136,21 +203,115 @@ namespace tt3::db::api
             //////////
             //  Operations
         public:
-            //  Checks whether the specified string is a valid
-            //  "display name" for an ActivityType.
+            /// \brief
+            ///     Checks whether the specified string is a valid
+            ///     "display name" for an ActivityType.
+            /// \param displayName
+            ///     The string to check.
+            /// \return
+            ///     True if the specified string is a valid
+            ///     "display name" for an ActivityType, else false.
             virtual bool    isValidDisplayName(
-                                    const QString & login
+                                    const QString & displayName
                                 ) = 0;
 
-            //  Checks whether the specified string is a valid
-            //  "description" for an ActivityType.
+            /// \brief
+            ///     Checks whether the specified string is a valid
+            ///     "description" for an ActivityType.
+            /// \param description
+            ///     The string to check.
+            /// \return
+            ///     True if the specified string is a valid
+            ///     "description" for an ActivityType, else false.
             virtual bool    isValidDescription(
                                     const QString & description
                                 ) = 0;
         };
+        /// \brief
+        ///     Returns the validator for ActivityTypes.
+        /// \return
+        ///     The validator for ActivityTypes.
         virtual auto    activityType(
                             ) const
                             -> IActivityTypeValidator * = 0;
+
+        /// \class IActivityValidator tt3-db-api/API.hpp
+        /// \brief The validator for an Activity.
+        class TT3_DB_API_PUBLIC IActivityValidator
+        {
+            //////////
+            //  This is an interface
+        protected:
+            IActivityValidator() = default;
+            virtual ~IActivityValidator() = default;
+
+            //////////
+            //  Operations
+        public:
+            /// \brief
+            ///     Checks whether the specified string is a valid
+            ///     "display name" for an Activity.
+            /// \param displayName
+            ///     The string to check.
+            /// \return
+            ///     True if the specified string is a valid
+            ///     "display name" for an Activity.
+            virtual bool    isValidDisplayName(
+                                    const QString & displayName
+                                ) = 0;
+
+            /// \brief
+            ///     Checks whether the specified string is a valid
+            ///     "description" for an Activity.
+            /// \param description
+            ///     The string to check.
+            /// \return
+            ///     True if the specified string is a valid
+            ///     "description" for an Activity.
+            virtual bool    isValidDescription(
+                                    const QString & description
+                                ) = 0;
+
+            /// \brief
+            ///     Checks whether the specified value is a valid
+            ///     "timeout" for an Activity.
+            /// \param timeout
+            ///     The value to check.
+            /// \return
+            ///     True the specified value is a valid "timeout"
+            ///     for an Activity, else false.
+            virtual bool    isValidTimeout(
+                                    const InactivityTimeout & timeout
+                                ) = 0;
+        };
+        /// \brief
+        ///     Returns the validator for Activities.
+        /// \return
+        ///     The validator for Activities.
+        virtual auto    activity(
+                            ) const -> IActivityValidator * = 0;
+
+        /// \class IPublicActivityValidator tt3-db-api/API.hpp
+        /// \brief The validator for a Public Activity.
+        class TT3_DB_API_PUBLIC IPublicActivityValidator
+            :   public virtual IActivityValidator
+        {
+            //////////
+            //  This is an interface
+        protected:
+            IPublicActivityValidator() = default;
+            virtual ~IPublicActivityValidator() = default;
+
+            //////////
+            //  Operations
+        public:
+        };
+        /// \brief
+        ///     Returns the validator for PublicActivities.
+        /// \return
+        ///     The validator for PublicActivities.
+        virtual auto    publicActivity(
+            ) const -> IPublicActivityValidator * = 0;
     };
 
     //  The "default" validator, normally suitable
@@ -164,17 +325,17 @@ namespace tt3::db::api
         //  IValidator
     public:
         virtual auto    principal(
-                            ) const
-                        -> IPrincipalValidator * override;
+                            ) const -> IPrincipalValidator * override;
         virtual auto    user(
-                            ) const
-                            -> IUserValidator * override;
+                            ) const -> IUserValidator * override;
         virtual auto    account(
-                            ) const
-                            -> IAccountValidator * override;
+                            ) const -> IAccountValidator * override;
         virtual auto    activityType(
-                            ) const
-                            -> IActivityTypeValidator * override;
+                            ) const -> IActivityTypeValidator * override;
+        virtual auto    activity(
+                            ) const -> IActivityValidator * override;
+        virtual auto    publicActivity(
+                            ) const -> IPublicActivityValidator * override;
 
         //////////
         //  Implementatiob
@@ -264,10 +425,48 @@ namespace tt3::db::api
             //  IActivityTypeValidator
         public:
             virtual bool    isValidDisplayName(
-                                    const QString & login
+                                    const QString & displayName
                                 ) override;
             virtual bool    isValidDescription(
                                     const QString & description
+                                ) override;
+        };
+
+        class TT3_DB_API_PUBLIC _ActivityValidator final
+            :   public virtual IActivityValidator
+        {
+            DECLARE_SINGLETON(_ActivityValidator)
+
+            //////////
+            //  IActivityValidator
+        public:
+            virtual bool    isValidDisplayName(
+                                    const QString & displayName
+                                ) override;
+            virtual bool    isValidDescription(
+                                    const QString & description
+                                ) override;
+            virtual bool    isValidTimeout(
+                                    const InactivityTimeout & timeout
+                                ) override;
+        };
+
+        class TT3_DB_API_PUBLIC _PublicActivityValidator final
+            :   public virtual IPublicActivityValidator
+        {
+            DECLARE_SINGLETON(_PublicActivityValidator)
+
+            //////////
+            //  IActivityValidator
+        public:
+            virtual bool    isValidDisplayName(
+                                    const QString & displayName
+                                ) override;
+            virtual bool    isValidDescription(
+                                    const QString & description
+                                ) override;
+            virtual bool    isValidTimeout(
+                                    const InactivityTimeout & timeout
                                 ) override;
         };
     };

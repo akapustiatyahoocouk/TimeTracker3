@@ -1,4 +1,5 @@
-//
+//ina
+
 //  tt3-db-api/DefaultValidator.cpp tt3::db::api::DefaultValidator class implementation
 //
 //  TimeTracker3
@@ -26,31 +27,39 @@ DefaultValidator::~DefaultValidator() {}
 //////////
 //  IValidator
 auto DefaultValidator::principal(
-    ) const
-    -> IValidator::IPrincipalValidator *
+    ) const -> IValidator::IPrincipalValidator *
 {
     return _PrincipalValidator::instance();
 }
 
 auto DefaultValidator::user(
-    ) const
-    -> IValidator::IUserValidator *
+    ) const -> IValidator::IUserValidator *
 {
     return _UserValidator::instance();
 }
 
 auto DefaultValidator::account(
-    ) const
-    -> IValidator::IAccountValidator *
+    ) const -> IValidator::IAccountValidator *
 {
     return _AccountValidator::instance();
 }
 
 auto DefaultValidator::activityType(
-    ) const
-    -> IValidator::IActivityTypeValidator *
+    ) const -> IValidator::IActivityTypeValidator *
 {
     return _ActivityTypeValidator::instance();
+}
+
+auto DefaultValidator::activity(
+    ) const -> IValidator::IActivityValidator *
+{
+    return _ActivityValidator::instance();
+}
+
+auto DefaultValidator::publicActivity(
+    ) const -> IValidator::IPublicActivityValidator *
+{
+    return _PublicActivityValidator::instance();
 }
 
 //////////
@@ -189,6 +198,62 @@ bool DefaultValidator::_ActivityTypeValidator::isValidDescription(
     )
 {
     return _isValidDescription(description, 32767);
+}
+
+//////////
+//  DefaultValidator::_ActivityValidator
+IMPLEMENT_SINGLETON(DefaultValidator::_ActivityValidator)
+DefaultValidator::_ActivityValidator::_ActivityValidator() {}
+DefaultValidator::_ActivityValidator::~_ActivityValidator() {}
+
+bool DefaultValidator::_ActivityValidator::isValidDisplayName(
+        const QString & displayName
+    )
+{
+    return _isValidName(displayName, 255);
+}
+
+bool DefaultValidator::_ActivityValidator::isValidDescription(
+        const QString & description
+    )
+{
+    return _isValidDescription(description, 32767);
+}
+
+bool DefaultValidator::_ActivityValidator::isValidTimeout(const InactivityTimeout & timeout)
+{
+    static tt3::util::TimeSpan Min = tt3::util::TimeSpan::minutes(5);
+    static tt3::util::TimeSpan Max = tt3::util::TimeSpan::hours(24);
+
+    return (!timeout.has_value() ||
+            (timeout.value().isValid() &&
+             timeout.value() >= Min &&
+             timeout.value() <= Max));
+}
+
+//////////
+//  DefaultValidator::_PublicActivityValidator
+IMPLEMENT_SINGLETON(DefaultValidator::_PublicActivityValidator)
+DefaultValidator::_PublicActivityValidator::_PublicActivityValidator() {}
+DefaultValidator::_PublicActivityValidator::~_PublicActivityValidator() {}
+
+bool DefaultValidator::_PublicActivityValidator::isValidDisplayName(
+        const QString & displayName
+    )
+{
+    return _ActivityValidator::instance()->isValidDisplayName(displayName);
+}
+
+bool DefaultValidator::_PublicActivityValidator::isValidDescription(
+        const QString & description
+    )
+{
+    return _ActivityValidator::instance()->isValidDescription(description);
+}
+
+bool DefaultValidator::_PublicActivityValidator::isValidTimeout(const InactivityTimeout & timeout)
+{
+    return _ActivityValidator::instance()->isValidTimeout(timeout);
 }
 
 //  End of tt3-db-api/DefaultValidator.cpp

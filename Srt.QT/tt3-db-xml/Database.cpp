@@ -232,8 +232,13 @@ void Database::close()
     {
         activityType->destroy();
     }
+    for (PublicActivity * publicActivity : _publicActivities.values())
+    {
+        publicActivity->destroy();
+    }
     Q_ASSERT(_users.isEmpty());
     Q_ASSERT(_activityTypes.isEmpty());
+    Q_ASSERT(_publicActivities.isEmpty());
     _isReadOnly = wasReadOnly;
 
     //  Done
@@ -302,7 +307,11 @@ auto Database::activityTypes(
 auto Database::publicActivities(
     ) const -> tt3::db::api::PublicActivities
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+    //  We assume database is consistent since last change
+
+    return tt3::db::api::PublicActivities(_publicActivities.cbegin(), _publicActivities.cend());
 }
 
 auto Database::publicActivitiesAndTasks(
@@ -713,6 +722,18 @@ void Database::_save()
         activityType->_serializeAggregations(activityTypeElement);
     }
 
+    //  Serialize public activities
+    QDomElement publicActivitiesElement = document.createElement("PublicActivities");
+    rootElement.appendChild(publicActivitiesElement);
+    for (PublicActivity * publicActivity : _publicActivities)
+    {   //  TODO try to sort by OID to reduce changes
+        QDomElement publicActivityElement = document.createElement("PublicActivity");
+        publicActivitiesElement.appendChild(publicActivityElement);
+        //  Serialize public activity features
+        publicActivity->_serializeProperties(publicActivityElement);
+        publicActivity->_serializeAggregations(publicActivityElement);
+    }
+
     //  Save DOM
     QFile file(_address->_path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -779,6 +800,20 @@ void Database::_load()
         activityType->_deserializeAggregations(activityTypeElement);
     }
 
+    //  Process public activities
+    QDomElement publicActivitiesElement = _childElement(rootElement, "PublicfActivities");  //  may throw
+    for (QDomElement publicActivityElement : _childElements(publicActivitiesElement, "PublicActivity"))
+    {
+        tt3::db::api::Oid oid = tt3::util::fromString<tt3::db::api::Oid>(publicActivityElement.attribute("OID", ""));
+        if (!oid.isValid() || _liveObjects.contains(oid))
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_address);
+        }
+        PublicActivity * publicActivity = new PublicActivity(this, oid);
+        publicActivity->_deserializeProperties(publicActivityElement);
+        publicActivity->_deserializeAggregations(publicActivityElement);
+    }
+
     //  Done loading - make sure we're consistent
     _validate();    //  may throw
 }
@@ -821,15 +856,17 @@ void Database::_validate()
 {
     Objects validatedObjects;
 
-    //  Validate users (+ accounts, etc.)
     for (User * user : _users)
     {
         user->_validate(validatedObjects);
     }
-    //  Validate activity types
     for (ActivityType * activityType : _activityTypes)
     {
         activityType->_validate(validatedObjects);
+    }
+    for (PublicActivity * publicActivity : _publicActivities)
+    {
+        publicActivity->_validate(validatedObjects);
     }
 
     //  Final checks

@@ -233,6 +233,18 @@ void ActivityType::_validate(
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }
 
+    //  Validate associations
+    for (Activity * activity : _activities)
+    {
+        if (activity == nullptr ||
+            activity->_database != this->_database ||
+            !activity->_isLive ||
+            activity->_activityType != this)
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
+    }
+
     //  Validate aggregations
 }
 

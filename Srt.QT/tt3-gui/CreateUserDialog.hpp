@@ -89,6 +89,7 @@ namespace tt3::gui
         void            _hoursComboBoxCurrentIndexChanged(int);
         void            _minutesComboBoxCurrentIndexChanged(int);
         void            _uiLocaleComboBoxCurrentIndexChanged(int);
+        void            _workingOnPushButtonClicked();
         void            accept() override;
         void            reject() override;
     };

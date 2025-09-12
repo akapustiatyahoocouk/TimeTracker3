@@ -193,7 +193,7 @@ namespace tt3::db::api
     };
 
     /// \class AccessDeniedException tt3-db-api/API.hpp
-    /// \class Thrown when a database service is access-denied
+    /// \brief Thrown when a database service is access-denied
     class TT3_DB_API_PUBLIC AccessDeniedException : public DatabaseException
     {
         //////////

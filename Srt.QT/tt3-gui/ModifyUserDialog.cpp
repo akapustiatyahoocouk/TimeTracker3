@@ -88,6 +88,7 @@ ModifyUserDialog::ModifyUserDialog(
         _ui->realNameLineEdit->setReadOnly(true);
         _ui->inactivityTimeoutCheckBox->setEnabled(false);
         _ui->enabledCheckBox->setEnabled(false);
+        _ui->workingOnPushButton->setEnabled(false);
     }
 
     //  Done
@@ -333,6 +334,11 @@ void ModifyUserDialog::_minutesComboBoxCurrentIndexChanged(int)
 void ModifyUserDialog::_uiLocaleComboBoxCurrentIndexChanged(int)
 {
     _refresh();
+}
+
+void ModifyUserDialog::_workingOnPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
 }
 
 void ModifyUserDialog::accept()

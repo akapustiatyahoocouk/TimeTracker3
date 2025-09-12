@@ -251,6 +251,11 @@ void CreateUserDialog::_uiLocaleComboBoxCurrentIndexChanged(int)
     _refresh();
 }
 
+void CreateUserDialog::_workingOnPushButtonClicked()
+{
+    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+}
+
 void CreateUserDialog::accept()
 {
     try

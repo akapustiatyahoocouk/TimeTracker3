@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>499</width>
-    <height>309</height>
+    <width>496</width>
+    <height>345</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,6 +21,36 @@
    <bool>true</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
+   <item row="3" column="1" colspan="3">
+    <widget class="QComboBox" name="uiLocaleComboBox"/>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="uiLocaleLabel">
+     <property name="text">
+      <string>UI language:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1" colspan="3">
+    <widget class="QCheckBox" name="enabledCheckBox">
+     <property name="text">
+      <string>User is enabled</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QComboBox" name="hoursComboBox"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="inactivityTimeoutLabel">
+     <property name="text">
+      <string>Current activity:</string>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="0">
     <widget class="QLabel" name="realNameLabel">
      <property name="text">
@@ -28,8 +58,15 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="1" colspan="3">
-    <widget class="QLineEdit" name="realNameLineEdit"/>
+   <item row="2" column="3">
+    <widget class="QComboBox" name="minutesComboBox"/>
+   </item>
+   <item row="6" column="0" colspan="4">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
    </item>
    <item row="1" column="0">
     <widget class="QLabel" name="emailAddressesLabel">
@@ -38,6 +75,16 @@
      </property>
      <property name="alignment">
       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" colspan="3">
+    <widget class="QLineEdit" name="realNameLineEdit"/>
+   </item>
+   <item row="2" column="1">
+    <widget class="QCheckBox" name="inactivityTimeoutCheckBox">
+     <property name="text">
+      <string>stop if unattended for</string>
      </property>
     </widget>
    </item>
@@ -98,41 +145,7 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="inactivityTimeoutLabel">
-     <property name="text">
-      <string>Current activity:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QCheckBox" name="inactivityTimeoutCheckBox">
-     <property name="text">
-      <string>stop if unattended for</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="2">
-    <widget class="QComboBox" name="hoursComboBox"/>
-   </item>
-   <item row="2" column="3">
-    <widget class="QComboBox" name="minutesComboBox"/>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="uiLocaleLabel">
-     <property name="text">
-      <string>UI language:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0" colspan="4">
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="0" colspan="4">
+   <item row="7" column="0" colspan="4">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
@@ -142,18 +155,30 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="1" colspan="3">
-    <widget class="QCheckBox" name="enabledCheckBox">
+   <item row="4" column="0">
+    <widget class="QLabel" name="workingOnLabel">
      <property name="text">
-      <string>User is enabled</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
+      <string>Working on:</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="1" colspan="3">
-    <widget class="QComboBox" name="uiLocaleComboBox"/>
+   <item row="4" column="1" colspan="2">
+    <widget class="QLabel" name="workingOnListLabel">
+     <property name="text">
+      <string>-</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="3">
+    <widget class="QPushButton" name="workingOnPushButton">
+     <property name="text">
+      <string>Select</string>
+     </property>
+     <property name="icon">
+      <iconset resource="tt3-gui.qrc">
+       <normaloff>:/tt3-gui/Resources/Images/Objects/WorkStreamSmall.png</normaloff>:/tt3-gui/Resources/Images/Objects/WorkStreamSmall.png</iconset>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -167,6 +192,7 @@
   <tabstop>hoursComboBox</tabstop>
   <tabstop>minutesComboBox</tabstop>
   <tabstop>uiLocaleComboBox</tabstop>
+  <tabstop>workingOnPushButton</tabstop>
   <tabstop>enabledCheckBox</tabstop>
  </tabstops>
  <resources>
@@ -349,6 +375,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>workingOnPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::CreateUserDialog</receiver>
+   <slot>_workingOnPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>443</x>
+     <y>241</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>247</x>
+     <y>172</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_realNameLineEditTextChanged(QString)</slot>
@@ -360,5 +402,6 @@
   <slot>_addEmailAddressPushButtonClicked()</slot>
   <slot>_modifyEmailAddressPushButtonClicked()</slot>
   <slot>_removeEmailAddressPushButtonClicked()</slot>
+  <slot>_workingOnPushButtonClicked()</slot>
  </slots>
 </ui>

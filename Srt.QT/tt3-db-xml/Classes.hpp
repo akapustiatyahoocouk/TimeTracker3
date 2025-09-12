@@ -27,12 +27,32 @@ namespace tt3::db::xml
     class TT3_DB_XML_PUBLIC Account;
     class TT3_DB_XML_PUBLIC ActivityType;
     class TT3_DB_XML_PUBLIC Activity;
+    class TT3_DB_XML_PUBLIC PublicActivity;
+    class TT3_DB_XML_PUBLIC PublicTask;
+    class TT3_DB_XML_PUBLIC PrivateActivity;
+    class TT3_DB_XML_PUBLIC PrivateTask;
+    class TT3_DB_XML_PUBLIC Work;
+    class TT3_DB_XML_PUBLIC Event;
+    class TT3_DB_XML_PUBLIC Workload;
+    class TT3_DB_XML_PUBLIC Project;
+    class TT3_DB_XML_PUBLIC WorkStream;
+    class TT3_DB_XML_PUBLIC Beneficiary;
 
     using Objects = QSet<Object*>;
     using Users = QSet<User*>;
     using Accounts = QSet<Account*>;
     using ActivityTypes = QSet<ActivityType*>;
     using Activities = QSet<Activity*>;
+    using PublicActivities = QSet<PublicActivity*>;
+    using PublicTasks = QSet<PublicTask*>;
+    using PrivateActivities = QSet<PrivateActivity*>;
+    using PrivateTasks = QSet<PrivateTask*>;
+    using Works = QSet<Work*>;
+    using Events = QSet<Event*>;
+    using Workloads = QSet<Workload*>;
+    using Projects = QSet<Project*>;
+    using WorkStreams = QSet<WorkStream*>;
+    using Beneficiaries = QSet<Beneficiary*>;
 }
 
 //  End of tt3-db-xml/Classes.hpp
