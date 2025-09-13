@@ -1,5 +1,5 @@
 //
-//  tt3-gui/ShowLicenseDialog.hpp - The modal "show license" dialog
+//  tt3-gui/PublicActivityManager.hpp - The Public Activity Manager widget
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,33 +19,26 @@
 
 namespace tt3::gui
 {
-    //  The modal "show license" dialog
-    namespace Ui { class ShowLicenseDialog; }
+    namespace Ui { class PublicActivityManager; }
 
-    class TT3_GUI_PUBLIC ShowLicenseDialog final
-        :   private QDialog
+    class TT3_GUI_PUBLIC PublicActivityManager final
+        :   public QWidget
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ShowLicenseDialog)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PublicActivityManager)
 
         //////////
         //  Construction/destruction
     public:
-        ShowLicenseDialog(QWidget * parent, tt3::util::ILicense * license);
-        virtual ~ShowLicenseDialog();
-
-        //////////
-        //  Operations
-    public:
-        //  Runs the dialog modally
-        void                doModal();
+        explicit PublicActivityManager(QWidget * parent);
+        virtual ~PublicActivityManager();
 
         //////////
         //  Controls
     private:
-        Ui::ShowLicenseDialog * _ui;
+        Ui::PublicActivityManager * _ui;
     };
 }
 
-//  End of tt3-gui/ShowLicenseDialog.hpp
+//  End of tt3-gui/PublicActivityManager.hpp
 

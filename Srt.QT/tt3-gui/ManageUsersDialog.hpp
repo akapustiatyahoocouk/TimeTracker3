@@ -24,7 +24,8 @@ namespace tt3::gui
     //  The modal "Create user" dialog
     namespace Ui { class ManageUsersDialog; }
 
-    class TT3_GUI_PUBLIC ManageUsersDialog final : private QDialog
+    class TT3_GUI_PUBLIC ManageUsersDialog final
+        :   private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ManageUsersDialog)

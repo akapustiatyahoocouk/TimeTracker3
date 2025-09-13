@@ -13,22 +13,38 @@
         <file>Resources/Images/Actions/CloseWorkspaceSmall.png</file>
         <file>Resources/Images/Actions/CreateAccountLarge.png</file>
         <file>Resources/Images/Actions/CreateAccountSmall.png</file>
+        <file>Resources/Images/Actions/CreateActivityTypeLarge.png</file>
+        <file>Resources/Images/Actions/CreateActivityTypeSmall.png</file>
+        <file>Resources/Images/Actions/CreatePublicActivityLarge.png</file>
+        <file>Resources/Images/Actions/CreatePublicActivitySmall.png</file>
         <file>Resources/Images/Actions/CreateUserLarge.png</file>
         <file>Resources/Images/Actions/CreateUserSmall.png</file>
         <file>Resources/Images/Actions/CreateWorkspaceLarge.png</file>
         <file>Resources/Images/Actions/CreateWorkspaceSmall.png</file>
         <file>Resources/Images/Actions/DestroyAccountLarge.png</file>
         <file>Resources/Images/Actions/DestroyAccountSmall.png</file>
+        <file>Resources/Images/Actions/DestroyActivityTypeLarge.png</file>
+        <file>Resources/Images/Actions/DestroyActivityTypeSmall.png</file>
+        <file>Resources/Images/Actions/DestroyPublicActivityLarge.png</file>
+        <file>Resources/Images/Actions/DestroyPublicActivitySmall.png</file>
         <file>Resources/Images/Actions/DestroyUserLarge.png</file>
         <file>Resources/Images/Actions/DestroyUserSmall.png</file>
+        <file>Resources/Images/Actions/DestroyWorkspaceLarge.png</file>
+        <file>Resources/Images/Actions/DestroyWorkspaceSmall.png</file>
         <file>Resources/Images/Actions/ExitLarge.png</file>
         <file>Resources/Images/Actions/ExitSmall.png</file>
         <file>Resources/Images/Actions/LoginLarge.png</file>
         <file>Resources/Images/Actions/LoginSmall.png</file>
+        <file>Resources/Images/Actions/ManageUsersLarge.png</file>
+        <file>Resources/Images/Actions/ManageUsersSmall.png</file>
         <file>Resources/Images/Actions/ModifyAccountLarge.png</file>
         <file>Resources/Images/Actions/ModifyAccountSmall.png</file>
+        <file>Resources/Images/Actions/ModifyActivityTypeLarge.png</file>
+        <file>Resources/Images/Actions/ModifyActivityTypeSmall.png</file>
         <file>Resources/Images/Actions/ModifyEmailAddressLarge.png</file>
         <file>Resources/Images/Actions/ModifyEmailAddressSmall.png</file>
+        <file>Resources/Images/Actions/ModifyPublicActivityLarge.png</file>
+        <file>Resources/Images/Actions/ModifyPublicActivitySmall.png</file>
         <file>Resources/Images/Actions/ModifyUserLarge.png</file>
         <file>Resources/Images/Actions/ModifyUserSmall.png</file>
         <file>Resources/Images/Actions/OkLarge.png</file>
@@ -41,10 +57,20 @@
         <file>Resources/Images/Actions/RemoveEmailAddressSmall.png</file>
         <file>Resources/Images/Actions/ResetLarge.png</file>
         <file>Resources/Images/Actions/ResetSmall.png</file>
+        <file>Resources/Images/Actions/RestartLarge.png</file>
+        <file>Resources/Images/Actions/RestartSmall.png</file>
         <file>Resources/Images/Actions/ShowConfigurationLarge.png</file>
         <file>Resources/Images/Actions/ShowConfigurationSmall.png</file>
         <file>Resources/Images/Actions/ShowLicenseLarge.png</file>
         <file>Resources/Images/Actions/ShowLicenseSmall.png</file>
+        <file>Resources/Images/Actions/ViewAccountLarge.png</file>
+        <file>Resources/Images/Actions/ViewAccountSmall.png</file>
+        <file>Resources/Images/Actions/ViewActivityTypeLarge.png</file>
+        <file>Resources/Images/Actions/ViewActivityTypeSmall.png</file>
+        <file>Resources/Images/Actions/ViewPublicActivityLarge.png</file>
+        <file>Resources/Images/Actions/ViewPublicActivitySmall.png</file>
+        <file>Resources/Images/Actions/ViewUserLarge.png</file>
+        <file>Resources/Images/Actions/ViewUserSmall.png</file>
         <file>Resources/Images/Misc/DarkThemeLarge.png</file>
         <file>Resources/Images/Misc/DarkThemeSmall.png</file>
         <file>Resources/Images/Misc/ErrorLarge.png</file>
@@ -53,40 +79,30 @@
         <file>Resources/Images/Misc/LightThemeSmall.png</file>
         <file>Resources/Images/Misc/SystemThemeLarge.png</file>
         <file>Resources/Images/Misc/SystemThemeSmall.png</file>
+        <file>Resources/Images/Objects/ActivityTypeLarge.png</file>
+        <file>Resources/Images/Objects/ActivityTypeSmall.png</file>
+        <file>Resources/Images/Objects/BeneficiaryLarge.png</file>
+        <file>Resources/Images/Objects/BeneficiarySmall.png</file>
         <file>Resources/Images/Objects/ComponentLarge.png</file>
         <file>Resources/Images/Objects/ComponentSmall.png</file>
+        <file>Resources/Images/Objects/PrivateActivityLarge.png</file>
+        <file>Resources/Images/Objects/PrivateActivitySmall.png</file>
+        <file>Resources/Images/Objects/PrivateTaskLarge.png</file>
+        <file>Resources/Images/Objects/PrivateTaskSmall.png</file>
+        <file>Resources/Images/Objects/ProjectLarge.png</file>
+        <file>Resources/Images/Objects/ProjectSmall.png</file>
+        <file>Resources/Images/Objects/PublicActivityLarge.png</file>
+        <file>Resources/Images/Objects/PublicActivitySmall.png</file>
+        <file>Resources/Images/Objects/PublicTaskLarge.png</file>
+        <file>Resources/Images/Objects/PublicTaskSmall.png</file>
         <file>Resources/Images/Objects/SubsystemLarge.png</file>
         <file>Resources/Images/Objects/SubsystemSmall.png</file>
         <file>Resources/Images/Objects/Tt3Large.png</file>
         <file>Resources/Images/Objects/Tt3Small.png</file>
-        <file>Resources/Light.qss</file>
-        <file>Resources/Images/Actions/RestartLarge.png</file>
-        <file>Resources/Images/Actions/RestartSmall.png</file>
-        <file>Resources/Images/Actions/ManageUsersLarge.png</file>
-        <file>Resources/Images/Actions/ManageUsersSmall.png</file>
-        <file>Resources/Images/Actions/DestroyWorkspaceLarge.png</file>
-        <file>Resources/Images/Actions/DestroyWorkspaceSmall.png</file>
-        <file>Resources/Images/Objects/ActivityTypeLarge.png</file>
-        <file>Resources/Images/Objects/ActivityTypeSmall.png</file>
-        <file>Resources/Images/Actions/CreateActivityTypeLarge.png</file>
-        <file>Resources/Images/Actions/CreateActivityTypeSmall.png</file>
-        <file>Resources/Images/Actions/DestroyActivityTypeLarge.png</file>
-        <file>Resources/Images/Actions/DestroyActivityTypeSmall.png</file>
-        <file>Resources/Images/Actions/ModifyActivityTypeLarge.png</file>
-        <file>Resources/Images/Actions/ModifyActivityTypeSmall.png</file>
         <file>Resources/Images/Objects/UserLarge.png</file>
         <file>Resources/Images/Objects/UserSmall.png</file>
-        <file>Resources/Images/Actions/ViewActivityTypeLarge.png</file>
-        <file>Resources/Images/Actions/ViewActivityTypeSmall.png</file>
-        <file>Resources/Images/Actions/ViewAccountLarge.png</file>
-        <file>Resources/Images/Actions/ViewAccountSmall.png</file>
-        <file>Resources/Images/Actions/ViewUserLarge.png</file>
-        <file>Resources/Images/Actions/ViewUserSmall.png</file>
-        <file>Resources/Images/Objects/BeneficiaryLarge.png</file>
-        <file>Resources/Images/Objects/BeneficiarySmall.png</file>
-        <file>Resources/Images/Objects/ProjectLarge.png</file>
-        <file>Resources/Images/Objects/ProjectSmall.png</file>
         <file>Resources/Images/Objects/WorkStreamLarge.png</file>
         <file>Resources/Images/Objects/WorkStreamSmall.png</file>
+        <file>Resources/Light.qss</file>
     </qresource>
 </RCC>

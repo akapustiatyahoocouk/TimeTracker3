@@ -22,7 +22,8 @@ namespace tt3::gui
     //  The Activity Type Manager widget
     namespace Ui { class ActivityTypeManager; }
 
-    class TT3_GUI_PUBLIC ActivityTypeManager final : public QWidget
+    class TT3_GUI_PUBLIC ActivityTypeManager final
+        :   public QWidget
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ActivityTypeManager)

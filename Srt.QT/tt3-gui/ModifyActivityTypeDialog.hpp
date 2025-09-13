@@ -22,10 +22,9 @@ namespace tt3::gui
     namespace Ui { class ModifyActivityTypeDialog; }
 
     /// \class ModifyActivityTypeDialog "tt3-gui/API.hpp"
-    /// \brief
-    ///     The modal "Modify activity type" dialog
-    class TT3_GUI_PUBLIC ModifyActivityTypeDialog final :
-        public QDialog
+    /// \brief The modal "Modify activity type" dialog.
+    class TT3_GUI_PUBLIC ModifyActivityTypeDialog final
+        :   private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ModifyActivityTypeDialog)

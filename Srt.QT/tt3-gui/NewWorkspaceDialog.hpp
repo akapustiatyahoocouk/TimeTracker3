@@ -22,7 +22,8 @@ namespace tt3::gui
     //  The modal "New workspace" dialog
     namespace Ui { class NewWorkspaceDialog; }
 
-    class TT3_GUI_PUBLIC NewWorkspaceDialog final : private QDialog
+    class TT3_GUI_PUBLIC NewWorkspaceDialog final
+        :   private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(NewWorkspaceDialog)

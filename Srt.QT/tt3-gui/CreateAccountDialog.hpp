@@ -23,7 +23,8 @@ namespace tt3::gui
 
     /// \class CreateAccountDialog tt3-gui/API.hpp
     /// \brief The modal "Create account" dialog.
-    class TT3_GUI_PUBLIC CreateAccountDialog final : private QDialog
+    class TT3_GUI_PUBLIC CreateAccountDialog final
+        :   private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CreateAccountDialog)

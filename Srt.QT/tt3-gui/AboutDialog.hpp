@@ -19,10 +19,12 @@
 
 namespace tt3::gui
 {
-    //  The modal "About" dialog
     namespace Ui { class AboutDialog; }
 
-    class TT3_GUI_PUBLIC AboutDialog final : private QDialog
+    /// \class AboutDialog tt3-gui/API.hpp
+    /// \brief The modal "About" dialog.
+    class TT3_GUI_PUBLIC AboutDialog final
+        :   private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AboutDialog)
@@ -30,14 +32,22 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
         explicit AboutDialog(QWidget * parent);
+
+        /// \brief
+        ///     The class destructor.
         virtual ~AboutDialog();
 
         //////////
         //  Operations
     public:
-        //  Runs the dialog modally
-        void                doModal();
+        /// \brief
+        ///     Runs the dialog modally
+        void            doModal();
 
         //////////
         //  Implementation
@@ -48,14 +58,14 @@ namespace tt3::gui
         //  Controls
     private:
         Ui::AboutDialog *   _ui;
-        QMenu *             _licensesPopupMenu = nullptr;
+        QMenu *         _licensesPopupMenu = nullptr;
 
         //////////
         //  Signal handlers
     private slots:
-        void                _showLicensePushButtonClicked();
-        void                _showConfigurationPushButtonClicked();
-        void                _onShowLicense();
+        void            _showLicensePushButtonClicked();
+        void            _showConfigurationPushButtonClicked();
+        void            _onShowLicense();
     };
 }
 

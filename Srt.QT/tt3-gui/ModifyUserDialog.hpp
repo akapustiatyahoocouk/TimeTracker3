@@ -24,7 +24,8 @@ namespace tt3::gui
     /// \class ModifyUserDialog "tt3-gui/API.hpp"
     /// \brief
     ///     The modal "Modify user" dialog
-    class TT3_GUI_PUBLIC ModifyUserDialog final : private QDialog
+    class TT3_GUI_PUBLIC ModifyUserDialog final
+        :   private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ModifyUserDialog)

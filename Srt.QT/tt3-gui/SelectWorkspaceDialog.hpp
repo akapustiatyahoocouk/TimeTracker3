@@ -26,7 +26,8 @@ namespace tt3::gui
     //  when e.g. selecting a workspace to destroy.
     namespace Ui { class SelectWorkspaceDialog; }
 
-    class TT3_GUI_PUBLIC SelectWorkspaceDialog final : private QDialog
+    class TT3_GUI_PUBLIC SelectWorkspaceDialog final
+        :   private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(SelectWorkspaceDialog)

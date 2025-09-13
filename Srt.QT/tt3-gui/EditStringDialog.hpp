@@ -22,7 +22,8 @@ namespace tt3::gui
     //  The modal "Edit string" dialog
     namespace Ui { class EditStringDialog; }
 
-    class TT3_GUI_PUBLIC EditStringDialog : private QDialog
+    class TT3_GUI_PUBLIC EditStringDialog
+        :   private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(EditStringDialog)

@@ -25,7 +25,8 @@ namespace tt3::gui
     //  The modal "Preferences" dialog
     namespace Ui { class PreferencesDialog; }
 
-    class TT3_GUI_PUBLIC PreferencesDialog final : private QDialog
+    class TT3_GUI_PUBLIC PreferencesDialog final
+        :   private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PreferencesDialog)

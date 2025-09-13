@@ -85,7 +85,8 @@ namespace tt3::db::api
             virtual QIcon   largeIcon() const override;
         };
 
-        //  The type of the "Account" objects.
+        /// \class Account tt3-db-api/API.hpp
+        /// \brief The type of the "Account" objects.
         class TT3_DB_API_PUBLIC Account final : public virtual IObjectType
         {
             DECLARE_SINGLETON(Account)
@@ -100,7 +101,8 @@ namespace tt3::db::api
             virtual QIcon   largeIcon() const override;
         };
 
-        //  The type of the "ActivityType" objects.
+        /// \class ActivityType tt3-db-api/API.hpp
+        /// \brief The type of the "ActivityType" objects.
         class TT3_DB_API_PUBLIC ActivityType final : public virtual IObjectType
         {
             DECLARE_SINGLETON(ActivityType)

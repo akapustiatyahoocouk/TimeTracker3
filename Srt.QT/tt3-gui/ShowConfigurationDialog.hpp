@@ -22,7 +22,8 @@ namespace tt3::gui
     //  The modal "show configuration" dialog
     namespace Ui { class ShowConfigurationDialog; }
 
-    class TT3_GUI_PUBLIC ShowConfigurationDialog final : private QDialog
+    class TT3_GUI_PUBLIC ShowConfigurationDialog final
+        :   private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ShowConfigurationDialog)

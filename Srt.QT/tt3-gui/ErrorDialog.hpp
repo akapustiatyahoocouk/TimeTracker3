@@ -22,7 +22,8 @@ namespace tt3::gui
     //  The modal "error" dialog
     namespace Ui { class ErrorDialog; }
 
-    class TT3_GUI_PUBLIC ErrorDialog : private QDialog
+    class TT3_GUI_PUBLIC ErrorDialog
+        :   private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ErrorDialog)

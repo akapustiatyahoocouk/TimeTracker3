@@ -33,6 +33,7 @@ SOURCES += \
     PreferencesDialog.cpp \
     PreferencesEditor.cpp \
     PreferencesManager.cpp \
+    PublicActivityManager.cpp \
     SelectWorkspaceDialog.cpp \
     ShowConfigurationDialog.cpp \
     ShowLicenseDialog.cpp \
@@ -67,6 +68,7 @@ HEADERS += \
     Preferences.hpp \
     PreferencesDialog.hpp \
     PreferencesEditor.hpp \
+    PublicActivityManager.hpp \
     SelectWorkspaceDialog.hpp \
     ShowConfigurationDialog.hpp \
     ShowLicenseDialog.hpp \
@@ -95,6 +97,7 @@ FORMS += \
     ModifyUserDialog.ui \
     NewWorkspaceDialog.ui \
     PreferencesDialog.ui \
+    PublicActivityManager.ui \
     SelectWorkspaceDialog.ui \
     ShowConfigurationDialog.ui \
     ShowLicenseDialog.ui \

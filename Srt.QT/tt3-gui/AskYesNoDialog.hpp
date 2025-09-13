@@ -26,7 +26,8 @@ namespace tt3::gui
     /// \brief
     ///     The modal Yes/No dialog asking the user
     ///     to make a choice.
-    class TT3_GUI_PUBLIC AskYesNoDialog : private QDialog
+    class TT3_GUI_PUBLIC AskYesNoDialog
+        :   private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AskYesNoDialog)
@@ -45,15 +46,40 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        AskYesNoDialog(QWidget * parent, const QIcon & icon,
-                       const QString & title, const QString & prompt,
-                       tt3::util::Setting<bool> * confirmActionSetting = nullptr);
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// \param icon
+        ///     The dialog icon.
+        /// \param title
+        ///     The dialog title.
+        /// \param prompt
+        ///     The dialog prompt; can be long or contain
+        ///     multiple '\\n' - separated lines.
+        /// \param confirmActionSetting
+        ///     The persistent setting backing up the user's choice
+        ///     to automaticaly assume a "Yes" answer for all
+        ///     subsequent invocations of the dialog; nullptr == none.
+        AskYesNoDialog(
+                QWidget * parent,
+                const QIcon & icon,
+                const QString & title,
+                const QString & prompt,
+                tt3::util::Setting<bool> * confirmActionSetting = nullptr
+            );
+
+        /// \brief
+        ///     The class destructor.
         virtual ~AskYesNoDialog();
 
         //////////
         //  Operations
     public:
-        //  Runs the dialog modally, returning user's choice
+        /// \brief
+        ///     Runs the dialog modally.
+        ///\return
+        ///     The user's choice.
         Result          doModal();
 
         //////////
@@ -70,12 +96,14 @@ namespace tt3::gui
         //////////
         //  Signal handlers
     private slots:
-        void            accept() override;
-        void            reject() override;
+        virtual void    accept() override;
+        virtual void    reject() override;
     };
 
-    //  The modal "confirm workspace removal from
-    //  MRU workspaces list" dialog
+    /// \class ConfirmForgetWorkspaceDialog tt3-gui/API.hpp
+    /// \brief
+    ///     The modal "confirm workspace removal from
+    ///     MRU workspaces list" dialog.
     class TT3_GUI_PUBLIC ConfirmForgetWorkspaceDialog final :
         public AskYesNoDialog
     {
@@ -84,10 +112,20 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        ConfirmForgetWorkspaceDialog(::QWidget * parent, tt3::ws::WorkspaceAddress workspaceAddress);
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// \param workspaceAddress
+        ///     The address of the Workspace being removed.
+        ConfirmForgetWorkspaceDialog(
+                ::QWidget * parent,
+                tt3::ws::WorkspaceAddress workspaceAddress
+            );
     };
 
-    //  The modal "confirm workspace closing" dialog
+    /// \class ConfirmCloseWorkspaceDialog tt3-gui/API.hpp
+    /// \brief The modal "confirm workspace closing" dialog.
     class TT3_GUI_PUBLIC ConfirmCloseWorkspaceDialog final :
         public AskYesNoDialog
     {
@@ -96,10 +134,20 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        ConfirmCloseWorkspaceDialog(::QWidget * parent, tt3::ws::WorkspaceAddress workspaceAddress);
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// \param workspaceAddress
+        ///     The address of the Workspace being closed.
+        ConfirmCloseWorkspaceDialog(
+                ::QWidget * parent,
+                tt3::ws::WorkspaceAddress workspaceAddress
+            );
     };
 
-    //  The modal "confirm closing workspace after relogin" dialog
+    /// \class ConfirmDropWorkspaceDialog tt3-gui/API.hpp
+    /// \brief The modal "confirm closing workspace after relogin" dialog.
     class TT3_GUI_PUBLIC ConfirmDropWorkspaceDialog final :
         public AskYesNoDialog
     {
@@ -108,10 +156,20 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        ConfirmDropWorkspaceDialog(::QWidget * parent, tt3::ws::WorkspaceAddress workspaceAddress);
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// \param workspaceAddress
+        ///     The address of the Workspace being dropped due to re-login.
+        ConfirmDropWorkspaceDialog(
+                ::QWidget * parent,
+                tt3::ws::WorkspaceAddress workspaceAddress
+            );
     };
 
-    //  The modal "confirm workspace destruction" dialog
+    /// \class ConfirmDestroyWorkspaceDialog tt3-gui/API.hpp
+    /// \brief The modal "confirm workspace destruction" dialog
     class TT3_GUI_PUBLIC ConfirmDestroyWorkspaceDialog final :
         public AskYesNoDialog
     {
@@ -120,10 +178,20 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        ConfirmDestroyWorkspaceDialog(::QWidget * parent, tt3::ws::WorkspaceAddress workspaceAddress);
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// \param workspaceAddress
+        ///     The address of the Workspace being destroyed.
+        ConfirmDestroyWorkspaceDialog(
+                ::QWidget * parent,
+                tt3::ws::WorkspaceAddress workspaceAddress
+            );
     };
 
-    //  The modal "confirm restarting TT3" dialog
+    /// \class ConfirmRestartDialog tt3-gui/API.hpp
+    /// \brief The modal "confirm restarting TT3" dialog.
     class TT3_GUI_PUBLIC ConfirmRestartDialog final :
         public AskYesNoDialog
     {
@@ -132,10 +200,17 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        explicit ConfirmRestartDialog(::QWidget * parent);
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        explicit ConfirmRestartDialog(
+                ::QWidget * parent
+            );
     };
 
-    //  The modal "confirm exiting TT3" dialog
+    /// \class ConfirmExitDialog tt3-gui/API.hpp
+    /// \brief The modal "confirm exiting TT3" dialog.
     class TT3_GUI_PUBLIC ConfirmExitDialog final :
         public AskYesNoDialog
     {
@@ -144,10 +219,17 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        explicit ConfirmExitDialog(::QWidget * parent);
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        explicit ConfirmExitDialog(
+                ::QWidget * parent
+            );
     };
 
-    //  The modal "relogin to access workspace" dialog
+    /// \class ChooseReloginDialog tt3-gui/API.hpp
+    /// \brief The modal "relogin to access workspace" dialog.
     class TT3_GUI_PUBLIC ChooseReloginDialog final :
         public AskYesNoDialog
     {
@@ -156,10 +238,20 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        ChooseReloginDialog(::QWidget * parent, tt3::ws::WorkspaceAddress workspaceAddress);
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// \param workspaceAddress
+        ///     The address of the workspace in question.
+        ChooseReloginDialog(
+                ::QWidget * parent,
+                tt3::ws::WorkspaceAddress workspaceAddress
+            );
     };
 
-    //  The modal "confirm resetting page settings" dialog
+    /// \class ConfirmResetPageSettingsDialog tt3-gui/API.hpp
+    /// \brief The modal "confirm resetting page settings" dialog.
     class TT3_GUI_PUBLIC ConfirmResetPageSettingsDialog final :
         public AskYesNoDialog
     {
@@ -168,10 +260,17 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        explicit ConfirmResetPageSettingsDialog(::QWidget * parent);
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        explicit ConfirmResetPageSettingsDialog(
+                ::QWidget * parent
+            );
     };
 
-    //  The modal "confirm resetting all settings" dialog
+    /// \class ConfirmResetAllSettingsDialog tt3-gui/API.hpp
+    /// \brief The modal "confirm resetting all settings" dialog.
     class TT3_GUI_PUBLIC ConfirmResetAllSettingsDialog final :
         public AskYesNoDialog
     {
@@ -180,10 +279,17 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        explicit ConfirmResetAllSettingsDialog(::QWidget * parent);
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        explicit ConfirmResetAllSettingsDialog(
+                ::QWidget * parent
+            );
     };
 
-    //  The modal "restart required" dialog
+    /// \class RestartRequiredDialog tt3-gui/API.hpp
+    /// \brief The modal "restart required" dialog.
     class TT3_GUI_PUBLIC RestartRequiredDialog final :
         public AskYesNoDialog
     {
@@ -192,12 +298,15 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
         explicit RestartRequiredDialog(::QWidget * parent);
     };
 
-    /// \class ConfirmDestroyUserDialog "tt3-gui/API.hpp"
-    /// \brief
-    ///     The modal "confirm User destruction" dialog.
+    /// \class ConfirmDestroyUserDialog tt3-gui/API.hpp
+    /// \brief The modal "confirm User destruction" dialog.
     class TT3_GUI_PUBLIC ConfirmDestroyUserDialog final :
         public AskYesNoDialog
     {
@@ -231,9 +340,8 @@ namespace tt3::gui
                             ) -> QString;
     };
 
-    /// \class ConfirmDestroyAccountDialog "tt3-gui/API.hpp"
-    /// \brief
-    ///     The modal "confirm Account destruction" dialog
+    /// \class ConfirmDestroyAccountDialog tt3-gui/API.hpp
+    /// \brief The modal "confirm Account destruction" dialog.
     class TT3_GUI_PUBLIC ConfirmDestroyAccountDialog final :
         public AskYesNoDialog
     {
@@ -259,9 +367,8 @@ namespace tt3::gui
             );
     };
 
-    /// \class ConfirmDestroyActivityTypeDialog "tt3-gui/API.hpp"
-    /// \brief
-    ///     The modal "confirm ActivityType destruction" dialog
+    /// \class ConfirmDestroyActivityTypeDialog tt3-gui/API.hpp
+    /// \brief The modal "confirm ActivityType destruction" dialog.
     class TT3_GUI_PUBLIC ConfirmDestroyActivityTypeDialog final :
         public AskYesNoDialog
     {
@@ -286,7 +393,7 @@ namespace tt3::gui
                 const tt3::ws::Credentials & credentials
             );
     };
-    }
+}
 
 //  End of tt3-gui/AskYesNoDialog.hpp
 
