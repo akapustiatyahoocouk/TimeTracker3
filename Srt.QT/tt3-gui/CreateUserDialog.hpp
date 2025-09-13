@@ -19,9 +19,10 @@
 
 namespace tt3::gui
 {
-    //  The modal "Create user" dialog
     namespace Ui { class CreateUserDialog; }
 
+    /// \class CreateUserDialog tt3-gui/API.hpp
+    /// \brief The modal "Create user" dialog
     class TT3_GUI_PUBLIC CreateUserDialog final : private QDialog
     {
         Q_OBJECT
@@ -30,26 +31,51 @@ namespace tt3::gui
         //////////
         //  Types
     public:
-        //  The dialog result after a modal invocation
-        enum class Result { Ok, Cancel };
+        /// \brief
+        ///     The dialog result after a modal invocation.
+        enum class Result
+        {
+            Ok,     ///< Changes confirme; User has been created.
+            Cancel  ///< The dialog has been cancelled.
+        };
 
         //////////
         //  Construction/destruction
     public:
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// \param workspace
+        ///     The workspace to create a new User in.
+        /// \param credentials
+        ///     The credentials to use for data access.
+        /// \exception WorkspaceException
+        ///     If a data access error occurs.
         CreateUserDialog(
                 QWidget * parent,
                 tt3::ws::Workspace workspace,
-                const tt3::ws::Credentials & credentials);
+                const tt3::ws::Credentials & credentials
+            );
+
+        /// \brief
+        ///     The class destructor.
         virtual ~CreateUserDialog();
 
         //////////
         //  Operations
     public:
-        //  Runs the dialog modally, returning user's choice
+        /// \brief
+        ///     Runs the dialog modally.
+        /// \return
+        ///     The user's choice; on OK a new User has been created.
         Result              doModal();
 
-        //  The newly created user (on Ok) or nullptr
-        //  if the dialog was cancelled
+        /// \brief
+        ///     Returns the newly created user.
+        /// \return
+        ///     The newly created user (on Ok) or nullptr
+        ///     if the dialog was cancelled.
         tt3::ws::User       createdUser() const { return _createdUser; }
 
         //////////

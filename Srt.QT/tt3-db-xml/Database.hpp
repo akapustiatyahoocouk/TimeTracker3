@@ -180,7 +180,7 @@ namespace tt3::db::xml
         //  (like Accounts, accessible through Users).
         Users               _users;             //  count as "references"
         ActivityTypes       _activityTypes;     //  count as "references"
-        PublicActivities    _publicActivities;  //  count as "references"
+        PublicActivities    _publicActivities;  //  BUT NOT TASKS! count as "references"
 
         //  Seconsary caches - these do NOT count as "references"
         QMap<tt3::db::api::Oid, Object*> _liveObjects;  //  All "live" objects
@@ -232,6 +232,7 @@ namespace tt3::db::xml
         tt3::db::api::Oid   _generateOid();
         Account *           _findAccount(const QString & login) const;
         ActivityType *      _findActivityType(const QString & displayName) const;
+        PublicActivity *    _findPublicActivity(const QString & displayName) const;
 
         //  Serialization
         void            _save();    //  throws tt3::util::Exception

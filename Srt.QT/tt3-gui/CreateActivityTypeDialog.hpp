@@ -49,6 +49,8 @@ namespace tt3::gui
         ///     The workspace to create a new activity type in.
         /// \param credentials
         ///     The credentials to use for workspace access.
+        /// \exception WorkspaceException
+        ///     If a data access error occurs.
         CreateActivityTypeDialog(
                 QWidget * parent,
                 tt3::ws::Workspace workspace,

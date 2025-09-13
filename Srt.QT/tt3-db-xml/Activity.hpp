@@ -25,6 +25,7 @@ namespace tt3::db::xml
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Activity)
 
+        friend class Database;
         friend class ActivityType;
         friend class PublicActivity;
 
@@ -94,7 +95,7 @@ namespace tt3::db::xml
         tt3::db::api::InactivityTimeout _timeout;
         bool            _requireCommentOnStart = false;
         bool            _requireCommentOnFinish = false;
-        bool            _fullScreenRemonder = false;
+        bool            _fullScreenReminder = false;
 
         //  Associations
         ActivityType *  _activityType = nullptr;

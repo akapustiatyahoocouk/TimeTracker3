@@ -515,6 +515,10 @@ void User::_validate(
     //  TODO
 
     //  Validate aggregations
+    if (!_database->_users.contains(this))
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseCorruptException(_database->_address);
+    }
     for (Account * account : _accounts)
     {
         if (account == nullptr || !account->_isLive ||

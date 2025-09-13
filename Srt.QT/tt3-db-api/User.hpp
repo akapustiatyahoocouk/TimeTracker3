@@ -116,10 +116,10 @@ namespace tt3::db::api
 
         /// \brief
         ///     Returns the set of all private activities of this User
-        ///     which are not also tasks.
+        ///     which are NOT also tasks.
         /// \return
         ///     The set of all private activities of this User
-        ///     which are not also tasks.
+        ///     which are NOT also tasks.
         /// \exception DatabaseException
         ///     If an error occurs.
         virtual auto    privateActivities(

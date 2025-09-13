@@ -165,8 +165,8 @@ namespace tt3::db::api
                             ) = 0;
     };
 
-    //////////
-    //  The manager of known database types
+    /// \class DatabaseTypeManager tt3-db-api/API.hpp
+    /// \brief The manager of known database types.
     class TT3_DB_API_PUBLIC DatabaseTypeManager final
     {
         UTILITY_CLASS(DatabaseTypeManager)
@@ -174,20 +174,35 @@ namespace tt3::db::api
         //////////
         //  Operations
     public:
-        //  Registers the specified database type; returns
-        //  true on success, false on failure.
+        /// \brief
+        ///     Registers the specified database type; returns
+        ///     true on success, false on failure.
+        /// \param databaseType
+        ///     The database type to register.
+        /// \return
+        ///     True on success, false on failure.
+        ///     Repeated registration of the same database type
+        ///     is considered as a "success".
         static bool     registerDatabaseType(
                                 IDatabaseType * databaseType
                             );
 
-        //  Finds a registered database type by its mnemonic;
-        //  returns nullptr if not found.
+        /// \brief
+        ///     Finds a registered database type by its mnemonic.
+        /// \param mnemonic
+        ///     The mnemonic to look for.
+        /// \return
+        ///     The registered database type with the required
+        ///     mnemonic; nullptr if not found.
         static auto     findDatabaseType(
                                 const tt3::util::Mnemonic & mnemonic
                             )
                             -> IDatabaseType *;
 
-        //  Returns the set of all registered database types.
+        /// \brief
+        ///     Returns the set of all registered database types.
+        /// \return
+        ///     Rhe set of all registered database types.
         static auto     allDatabaseTypes()
                             -> DatabaseTypes;
 

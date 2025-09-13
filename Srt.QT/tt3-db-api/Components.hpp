@@ -17,7 +17,8 @@
 
 namespace tt3::db::api
 {
-    //  The "TT3 DB API" component
+    /// \class Component tt3-db-api/API.hpp
+    /// \brief The "TT3 DB API" component.
     class TT3_DB_API_PUBLIC Component final :
         public virtual tt3::util::IComponent
     {
@@ -26,16 +27,18 @@ namespace tt3::db::api
         //////////
         //  Types
     public:
-        //  The component's resources
-        class TT3_DB_API_PUBLIC Resources final :
-            public tt3::util::FileResourceFactory
+        /// \class Resources tt3-db-api/API.hpp
+        /// \brief The component's resources.
+        class TT3_DB_API_PUBLIC Resources final
+            :   public tt3::util::FileResourceFactory
         {
             DECLARE_SINGLETON(Resources)
         };
 
-        //  The component's settings
-        class TT3_DB_API_PUBLIC Settings final :
-            public tt3::util::Settings
+        /// \class Settings tt3-db-api/API.hpp
+        /// \brief The component's settings.
+        class TT3_DB_API_PUBLIC Settings final
+            :   public tt3::util::Settings
         {
             DECLARE_SINGLETON(Settings)
         };

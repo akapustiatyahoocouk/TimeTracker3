@@ -36,15 +36,19 @@ namespace tt3::db::api
 {
     TT3_DB_API_PUBLIC size_t qHash(const Oid & key, size_t seed = 0);
 
-    //  The OID; unique per database.
-    //  Are based on UUIDs, wich is required for e.g.
-    //  merging two databases
+    /// \class Oid tt3-db-api/API.hpp
+    /// \brief
+    ///      The OID; unique per database.
+    /// \details
+    ///     OIDsre based on UUIDs, wich is required for e.g.
+    ///     merging two databases
     class TT3_DB_API_PUBLIC Oid final
     {
         //////////
         //  Constants
     public:
-        //  The special "invalid" OID
+        /// \brief
+        ///     The special "invalid" OID.
         static const Oid    Invalid;
 
         friend TT3_DB_API_PUBLIC QString tt3::util::toString<Oid>(const Oid & value);
@@ -57,11 +61,18 @@ namespace tt3::db::api
         explicit Oid(const QUuid & impl) : _impl(impl) {}
 
     public:
-        //  Constructs an "invalid" OID
+        /// \brief
+        ///     Constructs an "invalid" OID.
         Oid() = default;
 
-        //  Parses a OID string in the same form as returned
-        //  by toString(); accepts both upper- and lower-case
+        /// \brief
+        ///     Parses a OID string in the same form as returned
+        ///     by toString(); accepts both upper- and lower-case.
+        /// \details
+        ///     If the parsed string is not a valid OID, the result is
+        ///     an "invalid" OID.
+        /// \param oidString
+        ///     The OID string to parse.
         explicit Oid(const QString & oidString) : _impl(oidString) {}
 
         //  The default copy constructor, destructor
@@ -70,86 +81,162 @@ namespace tt3::db::api
         //////////
         //  Operators
     public:
-        bool                operator == (const Oid & op2) const { return _impl == op2._impl; }
-        bool                operator != (const Oid & op2) const { return _impl != op2._impl; }
-        bool                operator <  (const Oid & op2) const { return _impl <  op2._impl; }
-        bool                operator <= (const Oid & op2) const { return _impl <= op2._impl; }
-        bool                operator >  (const Oid & op2) const { return _impl >  op2._impl; }
-        bool                operator >= (const Oid & op2) const { return _impl >= op2._impl; }
+        /// \brief
+        ///     Compares two OIDs for equality.
+        /// \param op2
+        ///     The 2nd OID to compare this one to.
+        /// \return
+        ///     True if the two OIDs are equal, else false.
+        bool            operator == (const Oid & op2) const { return _impl == op2._impl; }
+
+        /// \brief
+        ///     Compares two OIDs for inequality.
+        /// \param op2
+        ///     The 2nd OID to compare this one to.
+        /// \return
+        ///     False if the two OIDs are equal, else true.
+        bool            operator != (const Oid & op2) const { return _impl != op2._impl; }
+
+        /// \brief
+        ///     Compares two OIDs for order.
+        /// \param op2
+        ///     The 2nd OID to compare this one to.
+        /// \return
+        ///     True if the first OID is numerically
+        ///     "less than" the 2nd OID, else false.
+        bool            operator <  (const Oid & op2) const { return _impl <  op2._impl; }
+
+        /// \brief
+        ///     Compares two OIDs for order.
+        /// \param op2
+        ///     The 2nd OID to compare this one to.
+        /// \return
+        ///     True if the first OID is numerically
+        ///     "less than or equal to" the 2nd OID, else false.
+        bool            operator <= (const Oid & op2) const { return _impl <= op2._impl; }
+
+        /// \brief
+        ///     Compares two OIDs for order.
+        /// \param op2
+        ///     The 2nd OID to compare this one to.
+        /// \return
+        ///     True if the first OID is numerically
+        ///     "greater than" the 2nd OID, else false.
+        bool            operator >  (const Oid & op2) const { return _impl >  op2._impl; }
+
+        /// \brief
+        ///     Compares two OIDs for order.
+        /// \param op2
+        ///     The 2nd OID to compare this one to.
+        /// \return
+        ///     True if the first OID is numerically
+        ///     "greater than or equal to" the 2nd OID, else false.
+        bool            operator >= (const Oid & op2) const { return _impl >= op2._impl; }
 
         //////////
         //  Operations
     public:
-        //  Checks whether this is a "valid" OID
-        bool                isValid() const { return _impl != Invalid._impl; }
+        /// \brief
+        ///     Checks whether this is a "valid" OID.
+        /// \return
+        ///     True if this is a "valid" OID, else false.
+        bool            isValid() const { return _impl != Invalid._impl; }
 
-        //  Generates a highly likely random Oid.
-        //  Never generates an "invalid" Oid.
-        static Oid          createRandom();
+        /// \brief
+        ///     Generates a highly likely random Oid.
+        /// \details
+        ///     Never generates an "invalid" Oid.
+        /// \return
+        ///     The newly generated random OID.
+        static Oid      createRandom();
 
         //////////
         //  Implementation
     private:
-        QUuid               _impl;
+        QUuid           _impl;
     };
 
-    //  A generic object that resides, or used to reside,
-    //  in a database. Database object instances are managed
-    //  by their corresponding database.
-    //  An instance of a IObject has an associated
-    //  reference count. Depending on it, that instance can be
-    //  in one of the following states:
-    //  *   New - the instance has just been created; its
-    //      reference count is 0. New instances are not
-    //      recycled.
-    //  *   Managed - a New instance becomes Managed when its
-    //      reference count goes from 0 to 1 for the first
-    //      time. Managed instances are not recycled.
-    //  *   Old - a Managed instance becodes Old when its
-    //      reference count changes from 1 to 0. Old instances
-    //      can be recycled by the database they belong
-    //      to. Changing their reference count from 0 to 1
-    //      again makes them Managed again.
-    //  Normallty, an IDatabase - implementing classwill act as
-    //  a cache for the real data kepy in the persistent storage,
-    //  At any time only the part of that data can be represented
-    //  by a corresponding IObject instance.
-    //  IMPORTANT: The implementation ensures that no two live
-    //  instanes of a derived class refer to the same database
-    //  object.
+    /// \class IObject tt3-db-api/API.hpp
+    /// \brief A generic object that resides, or used to reside, in a database.
+    /// \details
+    ///     Database object instances are managed
+    ///     by their corresponding database.
+    ///     An instance of a IObject has an associated
+    ///     reference count. Depending on it, that instance can be
+    ///     in one of the following states:
+    ///     -   New - the instance has just been created; its
+    ///         reference count is 0. New instances are not
+    ///         recycled.
+    ///     -   Managed - a New instance becomes Managed when its
+    ///         reference count goes from 0 to 1 for the first
+    ///         time. Managed instances are not recycled.
+    ///     -   Old - a Managed instance becodes Old when its
+    ///         reference count changes from 1 to 0. Old instances
+    ///         can be recycled by the database they belong
+    ///         to. Changing their reference count from 0 to 1
+    ///         again makes them Managed again.
+    ///
+    ///     Normallty, an IDatabase - implementing classwill act as
+    ///     a cache for the real data kepy in the persistent storage,
+    ///     At any time only the part of that data can be represented
+    ///     by a corresponding IObject instance.
+    ///     IMPORTANT: The implementation ensures that no two live
+    ///     instanes of a derived class refer to the same database
+    ///     object.
     class TT3_DB_API_PUBLIC IObject
     {
         //////////
         //  Types
     public:
+        /// \brief
+        ///     The possible object's states.
         enum class State
         {
-            New,
-            Managed,
-            Old
+            New,    ///< The instance is not YET reference-counted.
+            Managed,///< The instance if reference-counted.
+            Old     ///< The instance's reference count has dropped to zero.
         };
 
         //////////
         //  This is an interface
     protected:
+        /// \brief
+        ///     The default [interface] constructor.
         IObject() = default;
+
+        /// \brief
+        ///     The default [interface] destructor.
         virtual ~IObject() = default;
 
         //////////
         //  Operations (general)
     public:
-        //  The type of this database object; can be
-        //  safely obtained for both live and dead objects
-        virtual auto    type() const
-                            -> IObjectType * = 0;
+        /// \brief
+        ///     Returns the type of this database object.
+        /// \details
+        ///     Can be safely obtained for both live and dead objects.
+        /// \return
+        ///     The type of this database object.
+        virtual auto    type(
+                            ) const -> IObjectType * = 0;
 
-        //  The database where the corresponding data object
-        //  resides (if live) or used to reside (if dead).
+        /// \brief
+        ///     Returns he database where the corresponding data
+        ///     object resides (if live) or used to reside (if dead).
+        /// \details
+        ///     Can be safely obtained for both live and dead objects.
+        /// \return
+        ///     The database where the corresponding data object
+        ///     resides (if live) or used to reside (if dead).
         virtual auto    database() const
                             -> IDatabase * = 0;
 
-        //  The OID of the corresponding data object; can be
-        //  safely obtained for both live and dead objects.
+        /// \brief
+        ///     Returns the OID of the corresponding data object.
+        /// \details
+        ///     Can be safely obtained for both live and dead objects.
+        /// \return
+        ///     The OID of the corresponding data object.
         virtual Oid     oid() const = 0;
 
         //  True if this instance represents an existing data
@@ -174,16 +261,24 @@ namespace tt3::db::api
         //  Operations (reference counting)
         //  All these operations are thread-safe.
     public:
-        //  The current "state" of this object.
+        /// \brief
+        ///     Returns the current "state" of this object.
+        /// \return
+        ///     The current "state" of this object.
         virtual State   state() const = 0;
 
-        //  The current "reference count" of this object.
+        /// \brief
+        ///     Returns the current "reference count" of this object.
+        /// \return
+        ///     The current "reference count" of this object.
         virtual int     referenceCount() const = 0;
 
-        //  Increments the "reference count" of this object by 1.
+        /// \brief
+        ///     Increments the "reference count" of this object by 1.
         virtual void    addReference() = 0;
 
-        //  Decrements the "reference count" of this object by 1.
+        /// \brief
+        ///     Decrements the "reference count" of this object by 1.
         virtual void    removeReference() = 0;
     };
 }

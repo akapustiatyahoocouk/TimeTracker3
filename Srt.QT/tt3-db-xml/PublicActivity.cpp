@@ -119,6 +119,17 @@ void PublicActivity::_validate(
     )
 {
     Activity::_validate(validatedObjects);
+
+    //  Validate properties
+
+    //  Validate associations
+    //  TODO
+
+    //  Validate aggregations
+    if (!_database->_publicActivities.contains(this))
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseCorruptException(_database->_address);
+    }
 }
 
 //  End of tt3-db-xml/User.cpp

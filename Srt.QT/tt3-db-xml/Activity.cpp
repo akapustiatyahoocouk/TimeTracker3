@@ -166,7 +166,7 @@ void Activity::_serializeProperties(
     }
     objectElement.setAttribute("RequireCommentOnStart", tt3::util::toString(_requireCommentOnStart));
     objectElement.setAttribute("RequireCommentOnFinish", tt3::util::toString(_requireCommentOnFinish));
-    objectElement.setAttribute("FullScreenRemonder", tt3::util::toString(_fullScreenRemonder));
+    objectElement.setAttribute("FullScreenReminder", tt3::util::toString(_fullScreenReminder));
 }
 
 void Activity::_serializeAggregations(
@@ -192,7 +192,7 @@ void Activity::_deserializeProperties(
     }
     _requireCommentOnStart = tt3::util::fromString<bool>(objectElement.attribute("RequireCommentOnStart"));
     _requireCommentOnFinish = tt3::util::fromString<bool>(objectElement.attribute("RequireCommentOnFinish"));
-    _fullScreenRemonder = tt3::util::fromString<bool>(objectElement.attribute("FullScreenRemonder"));
+    _fullScreenReminder = tt3::util::fromString<bool>(objectElement.attribute("FullScreenReminder"));
 
 
     throw tt3::util::NotImplementedError();

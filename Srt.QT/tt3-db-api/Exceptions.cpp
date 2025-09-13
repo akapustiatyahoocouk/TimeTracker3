@@ -167,6 +167,19 @@ QString InstanceDeadException::errorMessage() const
 }
 
 //////////
+//  IncompatibleInstanceException
+IncompatibleInstanceException::IncompatibleInstanceException(
+    const QString & objectTypeName
+    ) : _objectTypeName(objectTypeName)
+{
+}
+
+QString IncompatibleInstanceException::errorMessage() const
+{
+    return "Incompatible " + _objectTypeName;
+}
+
+//////////
 //  CustomDatabaseException
 CustomDatabaseException::CustomDatabaseException(const QString & errorMessage)
     :   _errorMessage(errorMessage)
@@ -177,6 +190,5 @@ QString CustomDatabaseException::errorMessage() const
 {
     return _errorMessage;
 }
-
 
 //  End of tt3-db-api/Exceptions.cpp

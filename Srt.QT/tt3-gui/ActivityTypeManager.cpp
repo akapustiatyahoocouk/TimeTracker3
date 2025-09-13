@@ -405,11 +405,18 @@ void ActivityTypeManager::_activityTypesTreeWidgetCustomContextMenuRequested(QPo
 
 void ActivityTypeManager::_createActivityTypePushButtonClicked()
 {
-    CreateActivityTypeDialog dlg(this, _workspace, _credentials);
-    if (dlg.doModal() == CreateActivityTypeDialog::Result::Ok)
-    {   //  ActivityType created
-        refresh();  //  must refresh NOW
-        _setSelectedActivityType(dlg.createdActivityType());
+    try
+    {
+        CreateActivityTypeDialog dlg(this, _workspace, _credentials);   //  may throw
+        if (dlg.doModal() == CreateActivityTypeDialog::Result::Ok)
+        {   //  ActivityType created
+            refresh();  //  must refresh NOW
+            _setSelectedActivityType(dlg.createdActivityType());
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        tt3::gui::ErrorDialog::show(this, ex);
     }
 }
 

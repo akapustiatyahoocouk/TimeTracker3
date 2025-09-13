@@ -431,6 +431,61 @@ namespace tt3::ws
         virtual QString errorMessage() const override;
     };
 
+    /// \class IncompatibleInstanceException tt3-ws/API.hpp
+    /// \brief Thrown when passing an incompatible instance to a service..
+    class TT3_WS_PUBLIC IncompatibleInstanceException
+        :   public WorkspaceException
+    {
+        //////////
+        //  Types
+    public:
+        using Self = IncompatibleInstanceException;
+
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectTypeName
+        ///     The name of the incompatible instance' type.
+        explicit IncompatibleInstanceException(
+                const QString & objectTypeName
+            );
+
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectType
+        ///     The incompatible instance' type.
+        explicit IncompatibleInstanceException(
+                ObjectType * objectType
+            ) : Self(objectType->displayName()) {}
+
+        //////////
+        //  QException
+    public:
+        virtual Self *  clone() const { return new Self(*this); }
+        virtual void    raise() const { throw *this; }
+
+        //////////
+        //  tt3::util::Exception
+    public:
+        virtual QString errorMessage() const override;
+
+        //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Returns the internal name of the object type.
+        /// \return
+        ///     The internal name of the object type.
+        QString         objectTypeName() const { return _objectTypeName; }
+
+        //////////
+        //  Implementation
+    private:
+        QString         _objectTypeName;
+    };
+
     //  Thrown when must carry a custom error message (from OS, etc.)
     class TT3_WS_PUBLIC CustomWorkspaceException : public WorkspaceException
     {

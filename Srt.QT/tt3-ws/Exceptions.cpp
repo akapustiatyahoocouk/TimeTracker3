@@ -83,6 +83,10 @@ void WorkspaceException::translateAndThrow(
     {
         throw InstanceDeadException();
     }
+    else if (auto exx = dynamic_cast<const tt3::db::api::IncompatibleInstanceException*>(&ex))
+    {
+        throw IncompatibleInstanceException(exx->objectTypeName());
+    }
     //  Anything else becomes CustomWorkspaceException
     else
     {
@@ -259,6 +263,19 @@ AccessWouldBeLostException::AccessWouldBeLostException()
 QString AccessWouldBeLostException::errorMessage() const
 {
     return "Access would be lost";
+}
+
+//////////
+//  IncompatibleInstanceException
+IncompatibleInstanceException::IncompatibleInstanceException(
+        const QString & objectTypeName
+    ) : _objectTypeName(objectTypeName)
+{
+}
+
+QString IncompatibleInstanceException::errorMessage() const
+{
+    return "Incompatible " + _objectTypeName;
 }
 
 //////////

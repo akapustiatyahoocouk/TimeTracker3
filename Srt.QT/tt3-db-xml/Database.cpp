@@ -520,17 +520,104 @@ auto Database::createActivityType(
 }
 
 auto Database::createPublicActivity(
-        const QString & /*displayName*/,
-        const QString & /*description*/,
-        const tt3::db::api::InactivityTimeout & /*timeout*/,
-        bool /*requireCommentOnStart*/,
-        bool /*requireCommentOnFinish*/,
-        bool /*fullScreenReminder*/,
-        tt3::db::api::IActivityType * /*activityType*/,
-        tt3::db::api::IWorkload * /*workload*/
+        const QString & displayName,
+        const QString & description,
+        const tt3::db::api::InactivityTimeout & timeout,
+        bool requireCommentOnStart,
+        bool requireCommentOnFinish,
+        bool fullScreenReminder,
+        tt3::db::api::IActivityType * activityType,
+        tt3::db::api::IWorkload * workload
     ) -> tt3::db::api::IPublicActivity *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_guard);
+    _ensureOpenAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
+
+    //  Validate parameters
+    if (!_validator->publicActivity()->isValidDisplayName(displayName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PublicActivity::instance(),
+            "displayName",
+            displayName);
+    }
+    if (!_validator->publicActivity()->isValidDescription(description))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PublicActivity::instance(),
+            "description",
+            description);
+    }
+    if (timeout.has_value() &&
+        !_validator->publicActivity()->isValidTimeout(timeout))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PublicActivity::instance(),
+            "timeout",
+            timeout.value());
+    }
+    ActivityType * xmlActivityType = nullptr;
+    if (activityType != nullptr)
+    {
+        xmlActivityType = dynamic_cast<ActivityType*>(activityType);
+        if (xmlActivityType == nullptr ||
+            xmlActivityType->_database != this ||
+            !xmlActivityType->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(
+                    tt3::db::api::ObjectTypes::ActivityType::instance());
+        }
+    }
+    if (workload != nullptr)
+    {
+        Q_ASSERT(false);    //  TODO validate workload similarly to activityType
+    }
+
+    //  Display names must be unique
+    if (_findPublicActivity(displayName) != nullptr)
+    {   //  OOPS!
+        throw tt3::db::api::AlreadyExistsException(
+            tt3::db::api::ObjectTypes::PublicActivity::instance(),
+            "displayName",
+            displayName);
+    }
+
+    //  Do the work - create & initialize the PublicActivity...
+    PublicActivity * publicActivity = new PublicActivity(this, _generateOid()); //  registers with Database
+    publicActivity->_displayName = displayName;
+    publicActivity->_description = description;
+    publicActivity->_timeout = timeout;
+    publicActivity->_requireCommentOnStart = requireCommentOnStart;
+    publicActivity->_requireCommentOnFinish = requireCommentOnFinish;
+    publicActivity->_fullScreenReminder = fullScreenReminder;
+    if (xmlActivityType != nullptr)
+    {   //  Link with ActivityType
+        publicActivity->_activityType = xmlActivityType;
+        xmlActivityType->_activities.insert(publicActivity);
+        xmlActivityType->addReference();
+        publicActivity->addReference();
+    }
+    Q_ASSERT(workload == nullptr);   // TODO Link with Workload
+    _markModified();
+    //  ...schedule change notifications...
+    _changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            this, publicActivity->type(), publicActivity->_oid));
+    if (xmlActivityType != nullptr)
+    {
+        _changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                this, xmlActivityType->type(), xmlActivityType->_oid));
+    }
+    //  TODO same notification for associated Workload
+    //  ...and we're done
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
+    return publicActivity;
 }
 
 auto Database::createPublicTask(
@@ -673,6 +760,23 @@ ActivityType * Database::_findActivityType(const QString & displayName) const
         if (activityType->_displayName == displayName)
         {
             return activityType;
+        }
+    }
+    return nullptr;
+}
+
+auto Database::_findPublicActivity(
+        const QString & displayName
+    ) const -> PublicActivity *
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    _ensureOpen();  //  may throw
+
+    for (PublicActivity * publicActivity : _publicActivities)
+    {
+        if (publicActivity->_displayName == displayName)
+        {
+            return publicActivity;
         }
     }
     return nullptr;
@@ -858,14 +962,29 @@ void Database::_validate()
 
     for (User * user : _users)
     {
+        if (user == nullptr || !user->_isLive ||
+            user->_database != this)
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(this->_address);
+        }
         user->_validate(validatedObjects);
     }
     for (ActivityType * activityType : _activityTypes)
     {
+        if (activityType == nullptr || !activityType->_isLive ||
+            activityType->_database != this)
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(this->_address);
+        }
         activityType->_validate(validatedObjects);
     }
     for (PublicActivity * publicActivity : _publicActivities)
     {
+        if (publicActivity == nullptr || !publicActivity->_isLive ||
+            publicActivity->_database != this)
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(this->_address);
+        }
         publicActivity->_validate(validatedObjects);
     }
 

@@ -669,11 +669,18 @@ void UserManager::_usersTreeWidgetCustomContextMenuRequested(QPoint p)
 
 void UserManager::_createUserPushButtonClicked()
 {
-    CreateUserDialog dlg(this, _workspace, _credentials);
-    if (dlg.doModal() == CreateUserDialog::Result::Ok)
-    {   //  User created
-        refresh();  //  must refresh NOW
-        _setSelectedUser(dlg.createdUser());
+    try
+    {
+        CreateUserDialog dlg(this, _workspace, _credentials);   //  may throw
+        if (dlg.doModal() == CreateUserDialog::Result::Ok)
+        {   //  User created
+            refresh();  //  must refresh NOW
+            _setSelectedUser(dlg.createdUser());
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        tt3::gui::ErrorDialog::show(this, ex);
     }
 }
 
@@ -726,11 +733,18 @@ void UserManager::_createAccountPushButtonClicked()
     tt3::ws::User user = _selectedUser();
     if (user != nullptr)
     {
-        CreateAccountDialog dlg(this, user, _credentials);
-        if (dlg.doModal() == CreateAccountDialog::Result::Ok)
-        {   //  Account created
-            refresh();  //  must refresh NOW
-            _setSelectedAccount(dlg.createdAccount());
+        try
+        {
+            CreateAccountDialog dlg(this, user, _credentials);  //  may throw
+            if (dlg.doModal() == CreateAccountDialog::Result::Ok)
+            {   //  Account created
+                refresh();  //  must refresh NOW
+                _setSelectedAccount(dlg.createdAccount());
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            tt3::gui::ErrorDialog::show(this, ex);
         }
     }
 }

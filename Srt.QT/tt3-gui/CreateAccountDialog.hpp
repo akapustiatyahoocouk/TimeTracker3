@@ -19,9 +19,10 @@
 
 namespace tt3::gui
 {
-    //  The modal "Create account" dialog
     namespace Ui { class CreateAccountDialog; }
 
+    /// \class CreateAccountDialog tt3-gui/API.hpp
+    /// \brief The modal "Create account" dialog.
     class TT3_GUI_PUBLIC CreateAccountDialog final : private QDialog
     {
         Q_OBJECT
@@ -30,24 +31,51 @@ namespace tt3::gui
         //////////
         //  Types
     public:
-        //  The dialog result after a modal invocation
-        enum class Result { Ok, Cancel };
+        /// \brief
+        ///     The dialog result after a modal invocation
+        enum class Result
+        {
+            Ok,     ///< Changes confirmed; the Account has been created.
+            Cancel  ///< The user has cancelled the dialog.
+        };
 
         //////////
         //  Construction/destruction
     public:
-        CreateAccountDialog(QWidget * parent,
-                            tt3::ws::User user, const tt3::ws::Credentials & credentials);
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// \param user
+        ///     The User to create a new Account for.
+        /// \param credentials
+        ///     The credentials to use for data access.
+        /// \exception WorkspaceException
+        ///     If a data access error occurs.
+        CreateAccountDialog(
+                QWidget * parent,
+                tt3::ws::User user,
+                const tt3::ws::Credentials & credentials
+            );
+
+        /// \brief
+        ///     The class destructor.
         virtual ~CreateAccountDialog();
 
         //////////
         //  Operations
     public:
-        //  Runs the dialog modally, returning user's choice
+        /// \brief
+        ///     Runs the dialog modally.
+        /// \return
+        ///     The user's choice; on OK the new Account has been created.
         Result                  doModal();
 
-        //  The newly created account (on Ok) or nullptr
-        //  if the dialog was cancelled
+        /// \brief
+        ///     Returns the newly created Account.
+        /// \return
+        ///     The newly created account (on Ok) or nullptr
+        ///     if the dialog was cancelled.
         tt3::ws::Account        createdAccount() const { return _createdAccount; }
 
         //////////

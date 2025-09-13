@@ -17,9 +17,12 @@
 
 namespace tt3::db::api
 {
-    //  Represents a type of a database object.
-    //  All predefined database object types are
-    //  singletons defined in ObjectTypes.
+    /// \class IObjectType tt3-db-api/API.hpp
+    /// \brief
+    ///     Represents a type of a database object.
+    /// \details
+    ///     All predefined database object types are
+    ///     singletons defined in ObjectTypes.
     class TT3_DB_API_PUBLIC IObjectType
     {
         //////////
@@ -31,22 +34,35 @@ namespace tt3::db::api
         //////////
         //  Operations
     public:
-        //  The mnemonic identifier of this database object type
+        /// \brief
+        ///     Returns the mnemonic identifier of this database object type.
+        /// \return
+        ///     The mnemonic identifier of this database object type.
         virtual auto    mnemonic() const
                             -> tt3::util::Mnemonic = 0;
 
-        //  The user-readable display name of this database object
-        //  type for the current default locale.
+        /// \brief
+        ///     Returns the user-readable display name of this database
+        ///     object type for the current default locale.
+        /// \return
+        ///     The user-readable display name of this database object type.
         virtual QString displayName() const = 0;
 
-        //  The small (16x16) icon representing this database object type
+        /// \brief
+        ///     Returns the small (16x16) icon representing this database object type.
+        /// \return
+        ///     The small (16x16) icon representing this database object type.
         virtual QIcon   smallIcon() const = 0;
 
-        //  The large (32x32) icon representing this database object type
+        /// \brief
+        ///     Returns the large (32x32) icon representing this database object type.
+        /// \return
+        ///     The large (32x32) icon representing this database object type.
         virtual QIcon   largeIcon() const = 0;
     };
 
-    //  Standard database object types
+    /// \class ObjectTypes tt3-db-api/API.hpp
+    /// \brief Standard database object types.
     class TT3_DB_API_PUBLIC ObjectTypes final
     {
         UTILITY_CLASS(ObjectTypes)

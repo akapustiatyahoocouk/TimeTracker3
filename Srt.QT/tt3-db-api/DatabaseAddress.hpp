@@ -17,38 +17,45 @@
 
 namespace tt3::db::api
 {
-    //  A "database address" represents a location of a speific
-    //  database of a given type. Database address instances are
-    //  managed by their corresponding database type.
-    //  An instance of a IDatabaseAddress has an associated
-    //  reference count. Depending on it, that instance can be
-    //  in one of the following states:
-    //  *   New - the instance has just been created; its
-    //      reference count is 0. New instances are not
-    //      recycled.
-    //  *   Managed - a New instance becomes Managed when its
-    //      reference count goes from 0 to 1 for the first
-    //      time. Managed instances are not recycled.
-    //  *   Old - a Managed instance becodes Old when its
-    //      reference count changes from 1 to 0. Old instances
-    //      can be recycled by the database type they belong
-    //      to. Changing their reference count from 0 to 1
-    //      again makes them Managed again.
-    //  IMPORTANT: The implementation ensures that no two
-    //  instanes of a derived class refer to the same database;
-    //  therefore, to compare two database addresses for equality
-    //  it is sufficient to compare the pointers to the two
-    //  instances.
+    /// \class IDatabaseAddress tt3-db-api/API.hpp
+    /// \brief
+    ///     A "database address" represents a location of a speific
+    ///     database of a given type.
+    /// \details
+    ///     Database address instances are
+    ///     managed by their corresponding database type.
+    ///     An instance of a IDatabaseAddress has an associated
+    ///     reference count. Depending on it, that instance can be
+    ///     in one of the following states:
+    ///     -   New - the instance has just been created; its
+    ///         reference count is 0. New instances are not
+    ///         recycled.
+    ///     -   Managed - a New instance becomes Managed when its
+    ///         reference count goes from 0 to 1 for the first
+    ///         time. Managed instances are not recycled.
+    ///     -   Old - a Managed instance becodes Old when its
+    ///         reference count changes from 1 to 0. Old instances
+    ///         can be recycled by the database type they belong
+    ///         to. Changing their reference count from 0 to 1
+    ///         again makes them Managed again.
+    ///
+    ///     IMPORTANT: The implementation ensures that no two
+    ///     instances of a derived class refer to the same database;
+    ///     therefore, to compare two database addresses for equality
+    ///     it is sufficient to compare the pointers to the two
+    ///     instances.
     class TT3_DB_API_PUBLIC IDatabaseAddress
     {
         //////////
         //  Types
     public:
+        /// \brief
+        ///     The possible states of a database address instance.
         enum class State
         {
-            New,
-            Managed,
-            Old
+            New,    ///< The instance is not YET reference-counted.
+            Managed,///< The instance is reference-counted.
+            Old     ///< The instance's reference count has dropped to zero.
         };
 
         //////////
@@ -60,17 +67,31 @@ namespace tt3::db::api
         //////////
         //  Operations (general)
     public:
-        //  The database type to which this database address belongs.
+        /// \brief
+        ///     Returns the database type to which this
+        ///     database address belongs.
+        /// \return
+        ///     The database type to which this database
+        ///     address belongs.
         virtual auto    databaseType(
                             ) const
                             -> IDatabaseType * = 0;
 
-        //  The user-readable form of this database address.
+        /// \brief
+        ///     Returns the user-readable form of this
+        ///     database address.
+        /// \return
+        ///     The user-readable form of this database address.
         virtual auto    displayForm(
                             ) const
                             -> QString = 0;
 
-        //  The external (re-parsable) form of this database address.
+        /// \brief
+        ///     Returns the external (re-parsable) form of this
+        ///     database address.
+        /// \return
+        ///     The external (re-parsable) form of this database
+        ///     address.
         virtual auto    externalForm(
                             ) const
                             -> QString = 0;
@@ -79,18 +100,26 @@ namespace tt3::db::api
         //  Operations (reference counting)
         //  All these operations are thread-safe.
     public:
-        //  Returns the current "state" of this databasr address.
+        /// \brief
+        ///     Returns the current "state" of this databasreaddress.
+        /// \return
+        ///     The current "state" of this database address.
         virtual auto    state(
                             ) const
                             -> State = 0;
 
-        //  Returns the current "reference count" of this databasr address.
+        /// \brief
+        ///     Returns the current "reference count" of this database address.
+        /// \return
+        ///     The current "reference count" of this database address.
         virtual int     referenceCount() const = 0;
 
-        //  Increments the "reference count" of this databasr address ny 1.
+        /// \brief
+        ///     Increments the "reference count" of this database address ny 1.
         virtual void    addReference() = 0;
 
-        //  Decrements the "reference count" of this databasr address ny 1.
+        /// \brief
+        ///     Decrements the "reference count" of this database address ny 1.
         virtual void    removeReference() = 0;
     };
 }

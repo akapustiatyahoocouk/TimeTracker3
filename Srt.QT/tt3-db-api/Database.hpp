@@ -133,10 +133,10 @@ namespace tt3::db::api
 
         /// \brief
         ///     Returns the set of all public activities in this
-        ///     database which are not also tasks.
+        ///     database which are NOT also tasks.
         /// \return
         ///     The set of all public activities in this
-        ///     database which are not also tasks.
+        ///     database which are MOT also tasks.
         /// \exception DatabaseException
         ///     If an error occurs.
         virtual auto    publicActivities(

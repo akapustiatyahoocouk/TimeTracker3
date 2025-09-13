@@ -314,10 +314,12 @@ namespace tt3::db::api
             ) const -> IPublicActivityValidator * = 0;
     };
 
-    //  The "default" validator, normally suitable
-    //  for all database [types]
-    class TT3_DB_API_PUBLIC DefaultValidator final :
-        public virtual IValidator
+    /// \class DefaultValidator tt3-db-api/API.hpp
+    /// \brief
+    ///     The "default" validator, normally suitable
+    ///     for all database [types].
+    class TT3_DB_API_PUBLIC DefaultValidator final
+        :   public virtual IValidator
     {
         DECLARE_SINGLETON(DefaultValidator)
 
