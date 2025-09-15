@@ -34,6 +34,8 @@ namespace tt3::ws
         friend class UserImpl;
         friend class AccountImpl;
         friend class ActivityTypeImpl;
+        friend class ActivityImpl;
+        friend class PublicActivityImpl;
 
         //////////
         //  Construction/destruction - from friends only
@@ -137,6 +139,18 @@ namespace tt3::ws
         auto        activityTypes(
                             const Credentials & credentials
                         ) const -> ActivityTypes;
+
+        /// \brief
+        ///     Returns the set of all public activities in this workspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all public activities in this workspace.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        publicActivities(
+                            const Credentials & credentials
+                        ) const -> PublicActivities;
 
         //////////
         //  Operations (access control)
@@ -328,6 +342,9 @@ namespace tt3::ws
         auto        _getProxy(  //  throws WorkspaceException
                             tt3::db::api::IActivityType * dataActivityType
                         ) const -> ActivityType;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IPublicActivity * dataPublicActivity
+                        ) const -> PublicActivity;
 
         //////////
         //  Event handlers

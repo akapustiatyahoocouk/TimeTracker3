@@ -200,6 +200,30 @@ auto WorkspaceImpl::activityTypes(
     }
 }
 
+auto WorkspaceImpl::publicActivities(
+        const Credentials & credentials
+    ) const -> PublicActivities
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+
+    try
+    {
+        _validateAccessRights(credentials);
+        //  The caller can see all public activities
+        PublicActivities result;
+        for (tt3::db::api::IPublicActivity * dataPublicActivity : _database->publicActivities())
+        {
+            result.insert(_getProxy(dataPublicActivity));
+        }
+        return result;
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
 //////////
 //  Operations (access control)
 bool WorkspaceImpl::canAccess(
@@ -505,6 +529,28 @@ ActivityType WorkspaceImpl::_getProxy(tt3::db::api::IActivityType * dataActivity
         [](ActivityTypeImpl * p) { delete p; });
     _proxyCache.insert(oid, activityType);
     return activityType;
+}
+
+PublicActivity WorkspaceImpl::_getProxy(tt3::db::api::IPublicActivity * dataPublicActivity) const
+{   //  TODO what if it's a PublicTask???
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    Q_ASSERT(_isOpen);
+    Q_ASSERT(dataPublicActivity != nullptr);
+
+    Oid oid = dataPublicActivity->oid();
+    if (_proxyCache.contains(oid))
+    {
+        PublicActivity publicActivity = std::dynamic_pointer_cast<PublicActivityImpl>(_proxyCache[oid]);
+        Q_ASSERT(publicActivity != nullptr);   //  Objects do not change their types OR reuse OIDs
+        return publicActivity;
+    }
+    //  Must create a new proxy
+    Workspace workspace = _address->_workspaceType->_mapWorkspace(const_cast<WorkspaceImpl*>(this));
+    PublicActivity publicActivity(
+        new PublicActivityImpl(workspace, dataPublicActivity),
+        [](PublicActivityImpl * p) { delete p; });
+    _proxyCache.insert(oid, publicActivity);
+    return publicActivity;
 }
 
 //////////

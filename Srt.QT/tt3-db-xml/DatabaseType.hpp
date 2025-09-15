@@ -17,11 +17,12 @@
 
 namespace tt3::db::xml
 {
-    //////////
-    //  A "database type" that stores the entire
-    //  database in an XML file. Only one connection
-    //  to sucj a "database" is permitted at any
-    //  iven time.
+    /// \class DatabaseType tt3-db-xml/API.hpp
+    /// \brief
+    ///     A "database type" that stores the entire
+    ///     database in an XML file. Only one connection
+    ///     to such a "database" is permitted at any
+    ///     given time.
     class TT3_DB_XML_PUBLIC DatabaseType final
         :   public virtual tt3::db::api::IDatabaseType
     {

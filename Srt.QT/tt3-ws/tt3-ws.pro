@@ -5,6 +5,7 @@ DEFINES += TT3_WS_LIBRARY
 
 SOURCES += \
     AccountImpl.cpp \
+    ActivityImpl.cpp \
     ActivityTypeImpl.cpp \
     Component.cpp \
     Credentials.cpp \
@@ -13,6 +14,7 @@ SOURCES += \
     Exceptions.cpp \
     ObjectImpl.cpp \
     PrincipalImpl.cpp \
+    PublicActivityImpl.cpp \
     UserImpl.cpp \
     WorkspaceAddressImpl.cpp \
     WorkspaceImpl.cpp \
@@ -22,6 +24,7 @@ SOURCES += \
 HEADERS += \
     API.hpp \
     Account.hpp \
+    Activity.hpp \
     ActivityType.hpp \
     Classes.hpp \
     Components.hpp \
@@ -31,6 +34,7 @@ HEADERS += \
     Notifications.hpp \
     Object.hpp \
     Principal.hpp \
+    PublicActivity.hpp \
     User.hpp \
     Validator.hpp \
     Workspace.hpp \

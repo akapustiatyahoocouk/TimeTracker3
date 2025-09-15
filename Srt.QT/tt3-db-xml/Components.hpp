@@ -17,28 +17,28 @@
 
 namespace tt3::db::xml
 {
-    //  The "TT3 XML file database" component
-    class TT3_DB_XML_PUBLIC Component final : public virtual tt3::util::IComponent
+    /// \class Component tt3-db-xml/API.hpp
+    /// \brief The "TT3 XML file database" component.
+    class TT3_DB_XML_PUBLIC Component final
+        :   public virtual tt3::util::IComponent
     {
         DECLARE_SINGLETON(Component)
 
         //////////
         //  Types
     public:
-        //  The component's resources
+        /// \class Resources tt3-db-xml/API.hpp
+        /// \brief The component's resources.
         class TT3_DB_XML_PUBLIC Resources final : public tt3::util::FileResourceFactory
         {
             DECLARE_SINGLETON(Resources)
         };
 
-        //  The component's settings
+        /// \class Settings tt3-db-xml/API.hpp
+        /// \brief The component's settings.
         class TT3_DB_XML_PUBLIC Settings final : public tt3::util::Settings
         {
             DECLARE_SINGLETON(Settings)
-
-            //////////
-            //  Properties
-        public:
         };
 
         //////////

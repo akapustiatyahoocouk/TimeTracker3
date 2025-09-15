@@ -27,6 +27,16 @@ namespace tt3::ws
     class TT3_WS_PUBLIC AccountImpl;
     class TT3_WS_PUBLIC ActivityTypeImpl;
     class TT3_WS_PUBLIC ActivityImpl;
+    class TT3_WS_PUBLIC PublicActivityImpl;
+    class TT3_WS_PUBLIC PrivateActivityImpl;
+    class TT3_WS_PUBLIC TaskImpl;
+    class TT3_WS_PUBLIC PublicTaskImpl;
+    class TT3_WS_PUBLIC PrivateTaskImpl;
+    class TT3_WS_PUBLIC WorkImpl;
+    class TT3_WS_PUBLIC EventImpl;
+    class TT3_WS_PUBLIC WorkloadImpl;
+    class TT3_WS_PUBLIC ProjectImpl;
+    class TT3_WS_PUBLIC WorkStreamImpl;
 
     //  Opaque pointer-like types (reference counted);
     //  can all be nullptr
@@ -40,6 +50,16 @@ namespace tt3::ws
     using Account = std::shared_ptr<AccountImpl>;
     using ActivityType = std::shared_ptr<ActivityTypeImpl>;
     using Activity = std::shared_ptr<ActivityImpl>;
+    using PublicActivity = std::shared_ptr<PublicActivityImpl>;
+    using PrivateActivity = std::shared_ptr<PrivateActivityImpl>;
+    using Task = std::shared_ptr<TaskImpl>;
+    using PublicTask = std::shared_ptr<PublicTaskImpl>;
+    using PrivateTask = std::shared_ptr<PrivateTaskImpl>;
+    using Work = std::shared_ptr<WorkImpl>;
+    using Event = std::shared_ptr<EventImpl>;
+    using Workload = std::shared_ptr<WorkloadImpl>;
+    using Project = std::shared_ptr<ProjectImpl>;
+    using WorkStream = std::shared_ptr<WorkStreamImpl>;
 
     //  Collections
     using WorkspaceTypes = QSet<WorkspaceType>;
@@ -49,6 +69,16 @@ namespace tt3::ws
     using Accounts = QSet<Account>;
     using ActivityTypes = QSet<ActivityType>;
     using Activities = QSet<Activity>;
+    using PublicActivities = QSet<PublicActivity>;
+    using PrivateActivities = QSet<PrivateActivity>;
+    using Tasks = QSet<Task>;
+    using PublicTasks = QSet<PublicTask>;
+    using PrivateTasks = QSet<PrivateTask>;
+    using Works = QSet<Work>;
+    using Events = QSet<Event>;
+    using Workloads = QSet<Workload>;
+    using Projects = QSet<Project>;
+    using WorkStreams = QSet<WorkStream>;
 
     //  Exceptins & notifications
     class TT3_WS_PUBLIC WorkspaceException;

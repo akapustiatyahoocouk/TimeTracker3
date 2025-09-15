@@ -17,8 +17,8 @@
 
 namespace tt3::db::xml
 {
-    //////////
-    //  A generic access control principal
+    /// \class Principal tt3-db-xml/API.hpp
+    /// \brief A generic access control principal in an XML file database.
     class TT3_DB_XML_PUBLIC Principal
         :   public Object,
             public virtual tt3::db::api::IPrincipal

@@ -17,9 +17,8 @@
 
 namespace tt3::db::xml
 {
-    //////////
-    //  An address og an "XML fle database"is its full
-    //  canonical path.
+    /// \class DatabaseAddress tt3-db-xml/API.hpp
+    /// \brief An address og an "XML fle database"is its full canonical path.
     class TT3_DB_XML_PUBLIC DatabaseAddress final
         :   public virtual tt3::db::api::IDatabaseAddress
     {
@@ -37,28 +36,29 @@ namespace tt3::db::xml
         //////////
         //  tt3::db::api::IDatabaseAddress (general)
     public:
-        virtual tt3::db::api::IDatabaseType *   databaseType() const override;
-        virtual QString         displayForm() const override;
-        virtual QString         externalForm() const override;
+        virtual auto    databaseType(
+                            ) const -> tt3::db::api::IDatabaseType * override;
+        virtual QString displayForm() const override;
+        virtual QString externalForm() const override;
 
         //////////
         //  tt3::db::api::IDatabaseAddress (reference counting)
     public:
-        virtual State           state() const override;
-        virtual int             referenceCount() const override;
-        virtual void            addReference() override;
-        virtual void            removeReference() override;
+        virtual State   state() const override;
+        virtual int     referenceCount() const override;
+        virtual void    addReference() override;
+        virtual void    removeReference() override;
 
         //////////
         //  Implementation
     private:
-        QString                 _path;  //  always full path
-        State                   _state = State::New;
-        int                     _referenceCount = 0;
+        QString         _path;  //  always full path
+        State           _state = State::New;
+        int             _referenceCount = 0;
 
         //  Helpers
 #ifdef QT_DEBUG
-        void                    _assertState();
+        void            _assertState();
 #endif
     };
 }

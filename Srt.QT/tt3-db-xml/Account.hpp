@@ -17,8 +17,8 @@
 
 namespace tt3::db::xml
 {
-    //////////
-    //  A login account
+    /// \class Account tt3-db-xml/API.hpp
+    /// \brief A login account in an XML file database.
     class TT3_DB_XML_PUBLIC Account final
         :   public Principal,
             public virtual tt3::db::api::IAccount

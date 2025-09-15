@@ -103,13 +103,17 @@ AddEmailAddressDialog::AddEmailAddressDialog(::QWidget * parent, Validator valid
 
 //////////
 //  ModifyEmailAddressDialog
-ModifyEmailAddressDialog::ModifyEmailAddressDialog(::QWidget * parent, const QString & value, Validator validator)
-    :   EditStringDialog(parent,
-                       QIcon(":/tt3-gui/Resources/Images/Actions/AddEmailAddressLarge.png"),
-                       "Modify e-mail address",
-                       "Enter the e-mail address",
-                       value,
-                       validator)
+ModifyEmailAddressDialog::ModifyEmailAddressDialog(
+        ::QWidget * parent,
+        const QString & initialValue,
+        Validator validator
+    ) : EditStringDialog(
+            parent,
+            QIcon(":/tt3-gui/Resources/Images/Actions/AddEmailAddressLarge.png"),
+            "Modify e-mail address",
+            "Enter the e-mail address",
+            initialValue,
+            validator)
 {
     Q_ASSERT(validator != nullptr);
 }

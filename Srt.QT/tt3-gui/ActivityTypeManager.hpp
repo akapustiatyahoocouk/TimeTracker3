@@ -19,9 +19,10 @@
 
 namespace tt3::gui
 {
-    //  The Activity Type Manager widget
     namespace Ui { class ActivityTypeManager; }
 
+    /// \class ActivityTypeManager tt3-gui/API.hpp
+    /// \brief The Activity Type Manager widget.
     class TT3_GUI_PUBLIC ActivityTypeManager final
         :   public QWidget
     {
@@ -31,38 +32,76 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        explicit ActivityTypeManager(QWidget * parent);
+        /// \brief
+        ///     Constructs the widget.
+        /// \param parent
+        ///     The parent for the widget; nullptr == none.
+        explicit ActivityTypeManager(
+                QWidget * parent
+            );
+
+        /// \brief
+        ///     The class destructor.
         virtual ~ActivityTypeManager();
 
         //////////
         //  Operaions
     public:
-        //  Returns/sets the workspace currently viewed
-        //  in this widget; nullptr == none.
-        //  Starts off with the "current" workspace
-        //  when the widget is constructed.
-        tt3::ws::Workspace  workspace() const;
-        void                setWorkspace(tt3::ws::Workspace workspace);
+        /// \brief
+        ///     Returns the workspace currently viewed in this widget.
+        /// \details
+        ///     Starts off with the "current" workspace
+        ///     when the widget is constructed.
+        /// \return
+        ///     The workspace currently viewed in this widget; nullptr == none.
+        auto        workspace(
+                        ) const -> tt3::ws::Workspace;
 
-        //  Returns/sets the credentials used by this
-        //  widget to display the workspace.
-        //  Starts off with the "current" credentials
-        //  when the widget is constructed.
-        tt3::ws::Credentials credentials() const;
-        void                setCredentials(const tt3::ws::Credentials & credentials);
+        /// \brief
+        ///     Sets the workspace currently viewed in this widget.
+        /// \param workspace
+        ///     The workspace to be viewed in this widget; nullptr == none.
+        void        setWorkspace(
+                            tt3::ws::Workspace workspace
+                        );
 
-        //  Refreshes the content of this widget
-        void                refresh();
+        /// \brief
+        ///     Returns the credentials used by this widget to
+        ///     display the workspace.
+        /// \details
+        ///     Starts off with the "current" credentials
+        ///     when the widget is constructed.
+        /// \return
+        ///     The credentials used by this widget to display
+        ///     the workspace.
+        auto        credentials(
+                        ) const -> tt3::ws::Credentials;
 
-        //  Requests that refresh() br called as soon as
-        //  practicable on this widget's event loop thread
-        void                requestRefresh();
+        /// \brief
+        ///     Sets the credentials used by this widget to
+        ///     display the workspace.
+        /// \param credentials
+        ///     The credentials to be used by this widget to
+        ///     display the workspace.
+        void        setCredentials(
+                            const tt3::ws::Credentials & credentials
+                        );
+
+        /// \brief
+        ///     Refreshes the content of this widget.
+        void        refresh();
+
+        /// \brief
+        ///     Requests that refresh() br called as soon as
+        ///     practicable on this widget's event loop thread.
+        void        requestRefresh();
 
         //////////
         //  Signals
     signals:
-        //  Emitted when this widget needs to refresh()
-        void                refreshRequested();
+        /// \brief
+        ///     Emitted when this widget needs to refresh().
+        void        refreshRequested();
 
         //////////
         //  Implementation
@@ -97,16 +136,20 @@ namespace tt3::gui
             QString             tooltip;        //  for ActivityType tree items' text
         };
 
-        _WorkspaceModel     _createWorkspaceModel();
-        _ActivityTypeModel  _createActivityTypeModel(tt3::ws::ActivityType activityType);
-        void                _filterItems(_WorkspaceModel workspaceModel);
+        auto        _createWorkspaceModel(
+                        ) -> _WorkspaceModel;
+        auto        _createActivityTypeModel(
+                            tt3::ws::ActivityType activityType
+                        ) -> _ActivityTypeModel;
+        void        _filterItems(_WorkspaceModel workspaceModel);
 
         //  Helpers
-        void                _refreshActivityTypeItems(_WorkspaceModel workspaceModel);
-        tt3::ws::ActivityType   _selectedActivityType();
-        void                _setSelectedActivityType(tt3::ws::ActivityType activityType);
-        void                _startListeningToWorkspaceChanges();
-        void                _stopListeningToWorkspaceChanges();
+        void        _refreshActivityTypeItems(_WorkspaceModel workspaceModel);
+        auto        _selectedActivityType(
+                        ) -> tt3::ws::ActivityType;
+        void        _setSelectedActivityType(tt3::ws::ActivityType activityType);
+        void        _startListeningToWorkspaceChanges();
+        void        _stopListeningToWorkspaceChanges();
 
         //////////
         //  Controls
@@ -120,18 +163,18 @@ namespace tt3::gui
         //////////
         //  Signal handlers
     private slots:
-        void                _currentThemeChanged(ITheme *, ITheme *);
-        void                _activityTypesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
-        void                _activityTypesTreeWidgetCustomContextMenuRequested(QPoint);
-        void                _createActivityTypePushButtonClicked();
-        void                _modifyActivityTypePushButtonClicked();
-        void                _destroyActivityTypePushButtonClicked();
-        void                _filterLineEditTextChanged(QString);
-        void                _workspaceClosed(tt3::ws::WorkspaceClosedNotification notification);
-        void                _objectCreated(tt3::ws::ObjectCreatedNotification notification);
-        void                _objectDestroyed(tt3::ws::ObjectDestroyedNotification notification);
-        void                _objectModified(tt3::ws::ObjectModifiedNotification notification);
-        void                _refreshRequested();
+        void        _currentThemeChanged(ITheme *, ITheme *);
+        void        _activityTypesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
+        void        _activityTypesTreeWidgetCustomContextMenuRequested(QPoint);
+        void        _createActivityTypePushButtonClicked();
+        void        _modifyActivityTypePushButtonClicked();
+        void        _destroyActivityTypePushButtonClicked();
+        void        _filterLineEditTextChanged(QString);
+        void        _workspaceClosed(tt3::ws::WorkspaceClosedNotification notification);
+        void        _objectCreated(tt3::ws::ObjectCreatedNotification notification);
+        void        _objectDestroyed(tt3::ws::ObjectDestroyedNotification notification);
+        void        _objectModified(tt3::ws::ObjectModifiedNotification notification);
+        void        _refreshRequested();
     };
 }
 

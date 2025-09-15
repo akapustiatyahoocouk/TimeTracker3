@@ -17,8 +17,8 @@
 
 namespace tt3::db::xml
 {
-    //////////
-    //  A single-user database stored in an XML file
+    /// \class Database tt3-db-xml/API.hpp
+    /// \brief A single-user database stored in an XML file.
     class TT3_DB_XML_PUBLIC Database final
         :   public virtual tt3::db::api::IDatabase
     {

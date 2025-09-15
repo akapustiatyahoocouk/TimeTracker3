@@ -19,9 +19,10 @@
 
 namespace tt3::gui
 {
-    //  The modal "Edit string" dialog
     namespace Ui { class EditStringDialog; }
 
+    /// \class EditStringDialog tt3-gui/API.hpp
+    /// \brief The modal "Edit string" dialog.
     class TT3_GUI_PUBLIC EditStringDialog
         :   private QDialog
     {
@@ -31,37 +32,71 @@ namespace tt3::gui
         //////////
         //  Types
     public:
-        //  The dialog result after a modal invocation
-        enum class Result { Ok, Cancel };
+        /// \brief
+        ///     The dialog result after a modal invocation
+        enum class Result
+        {
+            Ok,     ///< The user has confirmed the changes.
+            Cancel  ///< The user has cancelled the dialog.
+        };
 
-        //  The validator is a string predicate
+        /// \brief
+        ///     The validator is a string predicate.
         using Validator = std::function<bool(QString)>;
 
         //////////
         //  Construction/destruction
     public:
-        EditStringDialog(QWidget * parent,
-                         const QIcon & icon, const QString & title, const QString & prompt,
-                         const QString & initialValue, Validator validator = nullptr);
+        /// \brief
+        ///     Constructs the dialog
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// \param icon
+        ///     The dialog icon.
+        /// \param title
+        ///     The dialog title.
+        /// \param prompt
+        ///     The dialog prompt.
+        /// \param initialValue
+        ///     The initial edited value.
+        /// \param validator
+        ///     The value validator, nullptr == none.
+        EditStringDialog(
+                QWidget * parent,
+                const QIcon & icon,
+                const QString & title,
+                const QString & prompt,
+                const QString & initialValue,
+                Validator validator = nullptr
+            );
+
+        /// \brief
+        ///     The class destructor.
         virtual ~EditStringDialog();
 
         //////////
         //  Operations
     public:
-        //  Runs the dialog modally, returning user's choice
-        Result              doModal();
+        /// \brief
+        ///     Runs the dialog modally.
+        /// \return
+        ///     The user's choice
+        Result          doModal();
 
-        //  The string as modified by the user
-        QString             editedValue() const { return _editedValue; }
+        /// \brief
+        ///     Returns the string as modified by the user.
+        /// \return
+        ///     The string as modified by the user.
+        QString         editedValue() const { return _editedValue; }
 
         //////////
         //  Implementation
     private:
-        Validator           _validator;
-        QString             _editedValue;
+        Validator       _validator;
+        QString         _editedValue;
 
         //  Helpers
-        void                _refresh();
+        void            _refresh();
 
         //////////
         //  Controls
@@ -72,11 +107,12 @@ namespace tt3::gui
         //  Signal handlers
     private slots:
         void            _lineEditTextChanged(QString);
-        void            accept() override;
-        void            reject() override;
+        virtual void    accept() override;
+        virtual void    reject() override;
     };
 
-    //  The "Add e-mail address" modal dialog
+    /// \class AddEmailAddressDialog tt3-gui/API.hpp
+    /// \brief The "Add e-mail address" modal dialog.
     class TT3_GUI_PUBLIC AddEmailAddressDialog final : public EditStringDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AddEmailAddressDialog)
@@ -84,10 +120,20 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        AddEmailAddressDialog(::QWidget * parent, Validator validator);
+        /// \brief
+        ///     Constructs the dialog
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// \param validator
+        ///     The value validator, nullptr == none.
+        AddEmailAddressDialog(
+                ::QWidget * parent,
+                Validator validator
+            );
     };
 
-    //  The "Modify e-mail address" modal dialog
+    /// \class ModifyEmailAddressDialog tt3-gui/API.hpp
+    /// \brief The "Modify e-mail address" modal dialog.
     class TT3_GUI_PUBLIC ModifyEmailAddressDialog final : public EditStringDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ModifyEmailAddressDialog)
@@ -95,7 +141,19 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        ModifyEmailAddressDialog(::QWidget * parent, const QString & value, Validator validator);
+        /// \brief
+        ///     Constructs the dialog
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// \param initialValue
+        ///     The initial edited value.
+        /// \param validator
+        ///     The value validator, cannot be nullptr.
+        ModifyEmailAddressDialog(
+                ::QWidget * parent,
+                const QString & initialValue,
+                Validator validator
+            );
     };
 }
 

@@ -17,8 +17,8 @@
 
 namespace tt3::db::xml
 {
-    //////////
-    //  A named user
+    /// \class User tt3-db-xml/API.hpp
+    /// \brief A named user in an XML file database.
     class TT3_DB_XML_PUBLIC User final
         :   public Principal,
             public virtual tt3::db::api::IUser

@@ -17,8 +17,8 @@
 
 namespace tt3::db::xml
 {
-    //////////
-    //  An activity type
+    /// \class ActivityType tt3-db-xml/API.hpp
+    /// \brief An activity type in an XML database.
     class TT3_DB_XML_PUBLIC ActivityType final
         :   public Object,
             public virtual tt3::db::api::IActivityType

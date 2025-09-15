@@ -44,26 +44,19 @@ namespace tt3
         //////////
         //  IComponent
     public:
-        virtual auto    mnemonic(
-                            ) const -> tt3::util::Mnemonic override;
-        virtual auto    displayName(
-                            ) const -> QString override;
-        virtual auto    description(
-                            ) const -> QString override;
-        virtual auto    copyright(
-                            ) const -> QString override;
-        virtual auto    version(
-                            ) const -> QVersionNumber override;
-        virtual auto    buildNumber(
-                            ) const -> QString override;
-        virtual auto    subsystem(
-                            ) const -> tt3::util::ISubsystem * override;
-        virtual auto    resources(
-                            ) const -> Resources * override;
-        virtual auto    settings(
-                            ) -> Settings * override;
-        virtual auto    settings(
-                            ) const -> const Settings * override;
+        using Mnemonic = tt3::util::Mnemonic;
+        using Subsystem = tt3::util::ISubsystem;
+
+        virtual Mnemonic        mnemonic() const override;
+        virtual QString         displayName() const override;
+        virtual QString         description() const override;
+        virtual QString         copyright() const override;
+        virtual QVersionNumber  version() const override;
+        virtual QString         buildNumber() const override;
+        virtual Subsystem *     subsystem() const override;
+        virtual Resources *     resources() const override;
+        virtual Settings *      settings() override;
+        virtual const Settings *settings() const override;
     };
 }
 

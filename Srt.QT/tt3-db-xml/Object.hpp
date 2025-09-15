@@ -17,8 +17,8 @@
 
 namespace tt3::db::xml
 {
-    //////////
-    //  A generic object in an XML file database
+    /// \class Object tt3-db-xml/API.hpp
+    /// \brief A generic object in an XML file database.
     class TT3_DB_XML_PUBLIC Object
         :   public virtual tt3::db::api::IObject
     {

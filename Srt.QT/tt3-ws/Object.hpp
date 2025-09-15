@@ -27,6 +27,8 @@ namespace tt3::ws
         friend class UserImpl;
         friend class AccountImpl;
         friend class ActivityTypeImpl;
+        friend class ActivityImpl;
+        friend class PublicActivityImpl;
 
         //////////
         //  Construction/destruction - from frinds only

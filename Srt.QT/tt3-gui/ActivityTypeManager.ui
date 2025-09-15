@@ -154,6 +154,13 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>filterLineEdit</tabstop>
+  <tabstop>activityTypesTreeWidget</tabstop>
+  <tabstop>createActivityTypePushButton</tabstop>
+  <tabstop>modifyActivityTypePushButton</tabstop>
+  <tabstop>destroyActivityTypePushButton</tabstop>
+ </tabstops>
  <resources>
   <include location="tt3-gui.qrc"/>
  </resources>
