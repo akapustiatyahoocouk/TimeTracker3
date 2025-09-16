@@ -40,23 +40,29 @@ namespace tt3::ws
         //////////
         //  Construction/destruction - from friends only
     private:
-        WorkspaceImpl(const WorkspaceAddress & address, tt3::db::api::IDatabase * database);
-        virtual ~WorkspaceImpl();
+        WorkspaceImpl(
+                WorkspaceAddress address,
+                tt3::db::api::IDatabase * database
+            );
+        ~WorkspaceImpl();
 
         //////////
         //  Operations (general)
     public:
         //  The type of this Workspace. Can be safely
         //  obtained for both open and closed workspaces.
+        //  TODO convert to const property
         auto        type(
                         ) const -> WorkspaceType;
 
         //  The address of this Workspace. Can be safely
         //  obtained for both open and closed workspaces.
+        //  TODO convert to const property
         auto        address(
                         ) const -> WorkspaceAddress;
 
         //  The validator for this workspace.
+        //  TODO convert to const property
         auto        validator(
                         ) const -> Validator *
         {
@@ -267,6 +273,48 @@ namespace tt3::ws
                         const QString & displayName,
                         const QString & description
             ) -> ActivityType;
+
+        /// \brief
+        ///     Creates a new PublicActivity in this database.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param displayName
+        ///     The short (1 line) user-readable display name
+        ///     for the new PublicActivity.
+        /// \param description
+        ///     The multi-line user-readable description for the new
+        ///     PublicActivity; with lines separated by a newline '\\n' character.
+        /// \param timeout
+        ///     The user-does-nothing timeout for the new PublicActivity;
+        ///     absent == none.
+        /// \param requireCommentOnStart
+        ///     True if the newly created PublicActivity small require the
+        ///     user to enter a comment when it is started.
+        /// \param requireCommentOnFinish
+        ///     True if the newly created PublicActivifinishedty small require the
+        ///     user to enter a comment when it is started.
+        /// \param fullScreenReminder
+        ///     True if a full-screen reminder shall be displayed while the
+        ///     newly created PublicActivity is underway.
+        /// \param activityType
+        ///     The type for the new PublicActivity; nullptr == don't assign.
+        /// \param workload
+        ///     The Workload for the new PublicActivity; nullptr == don't assign.
+        /// \return
+        ///     The newly created PublicActivity.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        auto        createPublicActivity(
+                            const Credentials & credentials,
+                            const QString & displayName,
+                            const QString & description,
+                            const InactivityTimeout & timeout,
+                            bool requireCommentOnStart,
+                            bool requireCommentOnFinish,
+                            bool fullScreenReminder,
+                            ActivityType activityType,
+                            Workload workload
+            ) -> PublicActivity;
 
         //////////
         //  Signals

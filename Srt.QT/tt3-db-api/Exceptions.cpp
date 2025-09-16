@@ -64,7 +64,7 @@ DatabaseCorruptException::DatabaseCorruptException(
     #elif defined(Q_OS_LINUX) || defined(Q_OS_UNIX)
         raise(SIGTRAP)
     #else
-    #error Unsupported host OS
+        #error Unsupported host OS
     #endif
 #endif
 }

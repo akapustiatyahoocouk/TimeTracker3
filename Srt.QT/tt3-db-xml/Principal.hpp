@@ -52,6 +52,7 @@ namespace tt3::db::xml
         //////////
         //  Implementation
     private:
+        //  Properties
         bool            _enabled = true;
         QStringList     _emailAddresses {};
 
@@ -65,15 +66,21 @@ namespace tt3::db::xml
                                 QDomElement & objectElement
                             ) override;
         virtual void    _serializeAggregations(
-                                QDomElement & parentElement
+                                QDomElement & objectElement
+                            ) override;
+        virtual void    _serializeAssociations(
+                                QDomElement & objectElement
                             ) override;
 
         virtual void    _deserializeProperties(
                                 const QDomElement & objectElement
                             ) override; //  throws tt3::util::ParseException) overrid
         virtual void    _deserializeAggregations(
-                                const QDomElement & parentElement
+                                const QDomElement & objectElement
                             ) override; //  throws tt3::util::ParseException) overrid
+        virtual void    _deserializeAssociations(
+                                const QDomElement & objectElement
+                            ) override;  //  throws tt3::util::ParseException
 
         //////////
         //  Validation

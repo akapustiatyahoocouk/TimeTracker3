@@ -14,6 +14,21 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
+   <property name="leftMargin">
+    <number>4</number>
+   </property>
+   <property name="topMargin">
+    <number>4</number>
+   </property>
+   <property name="rightMargin">
+    <number>4</number>
+   </property>
+   <property name="bottomMargin">
+    <number>4</number>
+   </property>
+   <property name="spacing">
+    <number>4</number>
+   </property>
    <item row="0" column="0" colspan="2">
     <widget class="QWidget" name="filterWidget" native="true">
      <layout class="QFormLayout" name="formLayout">
@@ -149,5 +164,110 @@
  <resources>
   <include location="tt3-gui.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>publicActivitiesTreeWidget</sender>
+   <signal>currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</signal>
+   <receiver>tt3::gui::PublicActivityManager</receiver>
+   <slot>_publicActivitiesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>134</x>
+     <y>148</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>230</x>
+     <y>128</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>publicActivitiesTreeWidget</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>tt3::gui::PublicActivityManager</receiver>
+   <slot>_publicActivitiesTreeWidgetCustomContextMenuRequested(QPoint)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>134</x>
+     <y>148</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>230</x>
+     <y>128</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>createPublicActivityPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::PublicActivityManager</receiver>
+   <slot>_createPublicActivityPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>362</x>
+     <y>61</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>230</x>
+     <y>128</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modifyPublicActivityPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::PublicActivityManager</receiver>
+   <slot>_modifyPublicActivityPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>362</x>
+     <y>92</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>230</x>
+     <y>128</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>destroyPublicActivityPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::PublicActivityManager</receiver>
+   <slot>_destroyPublicActivityPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>362</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>230</x>
+     <y>128</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filterLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::PublicActivityManager</receiver>
+   <slot>_filterLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>250</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>230</x>
+     <y>128</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_publicActivitiesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+  <slot>_publicActivitiesTreeWidgetCustomContextMenuRequested(QPoint)</slot>
+  <slot>_createPublicActivityPushButtonClicked()</slot>
+  <slot>_modifyPublicActivityPushButtonClicked()</slot>
+  <slot>_destroyPublicActivityPushButtonClicked()</slot>
+  <slot>_filterLineEditTextChanged(QString)</slot>
+ </slots>
 </ui>

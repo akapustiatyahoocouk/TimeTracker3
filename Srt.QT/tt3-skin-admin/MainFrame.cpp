@@ -40,6 +40,11 @@ MainFrame::MainFrame(QWidget * parent)
     _manageActivityTypesTabLayout->addWidget(_activityTypeManager);
     _ui->manageActivityTypesTab->setLayout(_manageActivityTypesTabLayout);
 
+    _managePublicActivitiesTabLayout = new QStackedLayout();
+    _publicActivityManager = new tt3::gui::PublicActivityManager(_ui->managePublicActivitiesTab);
+    _managePublicActivitiesTabLayout->addWidget(_publicActivityManager);
+    _ui->managePublicActivitiesTab->setLayout(_managePublicActivitiesTabLayout);
+
     //  Set up signal handlers
     _savePositionTimer.setSingleShot(true);
     connect(&_savePositionTimer,
@@ -129,11 +134,13 @@ void MainFrame::refresh()
     _ui->menuEdit->setEnabled(currentWorkspace != nullptr);
     _ui->actionManageUsers->setEnabled(currentWorkspace != nullptr);
     _ui->actionManageActivityTypes->setEnabled(currentWorkspace != nullptr);
+    _ui->actionManagePublicActivities->setEnabled(currentWorkspace != nullptr);
     _ui->actionRefresh->setEnabled(currentWorkspace != nullptr);
 
     //  Controls
     _userManager->refresh();
     _activityTypeManager->refresh();
+    _publicActivityManager->refresh();
 }
 
 //////////
@@ -592,6 +599,7 @@ void MainFrame::_currentWorkspaceChanged(tt3::ws::Workspace /*before*/, tt3::ws:
 {
     _userManager->setWorkspace(tt3::ws::theCurrentWorkspace);
     _activityTypeManager->setWorkspace(tt3::ws::theCurrentWorkspace);
+    _publicActivityManager->setWorkspace(tt3::ws::theCurrentWorkspace);
     refresh();
 }
 
@@ -599,6 +607,7 @@ void MainFrame::_currentCredentialsChanged(tt3::ws::Credentials /*before*/, tt3:
 {
     _userManager->setCredentials(tt3::ws::theCurrentCredentials);
     _activityTypeManager->setCredentials(tt3::ws::theCurrentCredentials);
+    _publicActivityManager->setCredentials(tt3::ws::theCurrentCredentials);
     refresh();
 }
 

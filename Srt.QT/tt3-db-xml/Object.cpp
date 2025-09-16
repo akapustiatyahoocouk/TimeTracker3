@@ -198,6 +198,12 @@ void Object::_serializeAggregations(
 {   //  Nothing at this level
 }
 
+void Object::_serializeAssociations(
+        QDomElement & /*objectElement*/
+    )
+{   //  Nothing at this level
+}
+
 void Object::_deserializeProperties(
         const QDomElement & objectElement
     )
@@ -207,10 +213,19 @@ void Object::_deserializeProperties(
     {   //  OOPS! Deserialization implemented wrong!
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }
+    //  Add entry to "deserializatio map" - we'll need
+    //  it when deserializing associations
+    _database->_deserializationMap.insert(this, objectElement);
 }
 
 void Object::_deserializeAggregations(
         const QDomElement & /*parentElement*/
+    )
+{   //  Nothing at this level
+}
+
+void Object::_deserializeAssociations(
+        const QDomElement & /*objectElement*/
     )
 {   //  Nothing at this level
 }

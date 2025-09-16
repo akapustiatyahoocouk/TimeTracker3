@@ -312,7 +312,7 @@ auto tt3::util::fromString<tt3::ws::WorkspaceAddress>(
         scan = prescan + 1;
         return address;
     }
-    catch (...)
+    catch (const tt3::util::Exception &)
     {   //  OOPS! Must translate
         throw tt3::util::ParseException(s, scan);
     }

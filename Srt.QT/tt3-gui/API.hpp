@@ -59,6 +59,7 @@
 #include "tt3-gui/ModifyAccountDialog.hpp"
 #include "tt3-gui/CreateActivityTypeDialog.hpp"
 #include "tt3-gui/ModifyActivityTypeDialog.hpp"
+#include "tt3-gui/CreatePublicActivityDialog.hpp"
 
 #include "tt3-gui/ManageUsersDialog.hpp"
 #include "tt3-gui/ManageActivityTypesDialog.hpp"

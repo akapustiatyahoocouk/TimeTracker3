@@ -203,24 +203,6 @@ namespace tt3::db::api
                                 IWorkload * workload
                             ) = 0;
 
-        /// \brief
-        ///     Returns the set of all Works logged by this User.
-        /// \return
-        ///     The set of all Works logged by this User.
-        /// \exception DatabaseException
-        ///     If an error occurs.
-        virtual auto    works(
-                            ) const -> Works = 0;
-
-        /// \brief
-        ///     Returns the set of all Events logged by this User.
-        /// \return
-        ///     The set of all Events logged by this User.
-        /// \exception DatabaseException
-        ///     If an error occurs.
-        virtual auto    events(
-                            ) const -> Events = 0;
-
         //////////
         //  Operations (life cycle)
     public:
@@ -334,41 +316,6 @@ namespace tt3::db::api
                                 bool completed,
                                 bool requireCommentOnCompletion
                             ) -> IPrivateTask * = 0;
-
-        /// \brief
-        ///     Creates a new unit of Work for this User against
-        ///     the specified activity.
-        /// \param startedAt
-        ///     The UTC date+time when this unit of work has started.
-        /// \param finishedAt
-        ///     The UTC date+time when this unit of work has finished.
-        /// \param activity
-        ///     The activity associated with this unit of work;
-        ///     cann0t be nullptr.
-        /// \exception DatabaseException
-        ///     If an error occurs.
-        virtual auto    createWork(
-                                const QDateTime & startedAt,
-                                const QDateTime & finishedAt,
-                                IActivity * activity
-                            ) -> IWork * = 0;
-
-        /// \brief
-        ///     Creates a new Event for this User against
-        ///     the specified activity.
-        /// \param occurredAt
-        ///     TheUTC date+time when the event has occurred.
-        /// \param summary
-        ///     The brief 1-line summary for the new Event.
-        /// \param activity
-        ///     The activity associated with the new Event; nullptr == none.
-        /// \exception DatabaseException
-        ///     If an error occurs.
-        virtual auto    createEvent(
-                                const QDateTime & occurredAt,
-                                const QString & summary,
-                                IActivity * activity
-                            ) -> IEvent * = 0;
     };
 }
 

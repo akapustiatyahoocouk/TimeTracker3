@@ -96,12 +96,11 @@ namespace tt3::db::xml
         bool            _requireCommentOnStart = false;
         bool            _requireCommentOnFinish = false;
         bool            _fullScreenReminder = false;
-
         //  Associations
-        ActivityType *  _activityType = nullptr;
-        Workload *      _workload = nullptr;
-        Works           _works;
-        Events          _events;
+        ActivityType *  _activityType = nullptr;//  counts as "references" unless nullptr
+        Workload *      _workload = nullptr;    //  counts as "references" uness nullptr
+        Works           _works;     //  count as "references"
+        Events          _events;    //  count as "references"
 
         //////////
         //  Serialization
@@ -110,15 +109,21 @@ namespace tt3::db::xml
                                 QDomElement & objectElement
                             ) override;
         virtual void    _serializeAggregations(
-                                QDomElement & parentElement
+                                QDomElement & objectElement
+                            ) override;
+        virtual void    _serializeAssociations(
+                                QDomElement & objectElement
                             ) override;
 
         virtual void    _deserializeProperties(
                                 const QDomElement & objectElement
                             ) override; //  throws tt3::util::ParseException) overrid
         virtual void    _deserializeAggregations(
-                                const QDomElement & parentElement
+                                const QDomElement & objectElement
                             ) override; //  throws tt3::util::ParseException) overrid
+        virtual void    _deserializeAssociations(
+                                const QDomElement & objectElement
+                            ) override;  //  throws tt3::util::ParseException
 
         //////////
         //  Validation

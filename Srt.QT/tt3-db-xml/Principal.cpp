@@ -134,10 +134,17 @@ void Principal::_serializeProperties(
 }
 
 void Principal::_serializeAggregations(
-        QDomElement & parentElement
+        QDomElement & objectElement
     )
 {
-    Object::_serializeAggregations(parentElement);
+    Object::_serializeAggregations(objectElement);
+}
+
+void Principal::_serializeAssociations(
+        QDomElement & objectElement
+    )
+{
+    Object::_serializeAssociations(objectElement);
 }
 
 void Principal::_deserializeProperties(
@@ -154,10 +161,17 @@ void Principal::_deserializeProperties(
 }
 
 void Principal::_deserializeAggregations(
-        const QDomElement & parentElement
+        const QDomElement & objectElement
     )
 {
-    Object::_deserializeAggregations(parentElement);
+    Object::_deserializeAggregations(objectElement);
+}
+
+void Principal::_deserializeAssociations(
+        const QDomElement & objectElement
+    )
+{
+    Object::_deserializeAssociations(objectElement);
 }
 
 //////////

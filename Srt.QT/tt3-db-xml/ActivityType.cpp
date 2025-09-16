@@ -192,10 +192,19 @@ void ActivityType::_serializeProperties(
 }
 
 void ActivityType::_serializeAggregations(
-        QDomElement & parentElement
+        QDomElement & objectElement
     )
 {
-    Object::_serializeAggregations(parentElement);
+    Object::_serializeAggregations(objectElement);
+}
+
+void ActivityType::_serializeAssociations(
+        QDomElement & objectElement
+    )
+{
+    Object::_serializeAssociations(objectElement);
+
+    //  TODO Activities      _activities;    //  count as "reference"s
 }
 
 void ActivityType::_deserializeProperties(
@@ -209,10 +218,19 @@ void ActivityType::_deserializeProperties(
 }
 
 void ActivityType::_deserializeAggregations(
-        const QDomElement & parentElement
+        const QDomElement & objectElement
     )
 {
-    Object::_deserializeAggregations(parentElement);
+    Object::_deserializeAggregations(objectElement);
+}
+
+void ActivityType::_deserializeAssociations(
+        const QDomElement & objectElement
+    )
+{
+    Object::_deserializeAssociations(objectElement);
+
+    //  TODO Activities      _activities;    //  count as "reference"s
 }
 
 //////////

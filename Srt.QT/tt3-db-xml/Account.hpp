@@ -71,7 +71,24 @@ namespace tt3::db::xml
         virtual void    setQuickPickList(
                                 const QList<tt3::db::api::IActivity*> & quickPickList
                             ) override;
+        virtual auto    works(
+                            ) const -> tt3::db::api::Works override;
+        virtual auto    events(
+                            ) const -> tt3::db::api::Events override;
 
+        //////////
+        //  tt3::db::api::IAccount (life cycle)
+    public:
+        virtual auto    createWork(
+                                const QDateTime & startedAt,
+                                const QDateTime & finishedAt,
+                                tt3::db::api::IActivity * activity
+                            ) -> tt3::db::api::IWork * override;
+        virtual auto    createEvent(
+                                const QDateTime & occurredAt,
+                                const QString & summary,
+                                tt3::db::api::IActivity * activity
+                            ) -> tt3::db::api::IEvent * override;
         //////////
         //  Implementation
     private:
@@ -79,8 +96,12 @@ namespace tt3::db::xml
         QString         _login;
         QString         _passwordHash;  //  SHA-1 uppercase hexstring
         tt3::db::api::Capabilities  _capabilities;
+        //  Aggregations
+        Works           _works;         //  count as "reference"
+        Events          _events;        //  count as "reference"
         //  Associations
-        User *          _user;  //  counts as "reference"
+        User *          _user;          //  counts as "reference"
+        QList<Activity*>_quickPickList; //  count as "reference"
 
         //  Helpers
         virtual void    _markDead() override;
@@ -92,15 +113,21 @@ namespace tt3::db::xml
                                 QDomElement & objectElement
                             ) override;
         virtual void    _serializeAggregations(
-                                QDomElement & parentElement
+                                QDomElement & objectElement
+                            ) override;
+        virtual void    _serializeAssociations(
+                                QDomElement & objectElement
                             ) override;
 
         virtual void    _deserializeProperties(
                                 const QDomElement & objectElement
                             ) override; //  throws tt3::util::ParseException
         virtual void    _deserializeAggregations(
-                                const QDomElement & parentElement
+                                const QDomElement & objectElement
                             ) override; //  throws tt3::util::ParseException
+        virtual void    _deserializeAssociations(
+                                const QDomElement & objectElement
+                            ) override;  //  throws tt3::util::ParseException
 
         //////////
         //  Validation

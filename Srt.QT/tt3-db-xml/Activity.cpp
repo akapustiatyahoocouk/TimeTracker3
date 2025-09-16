@@ -35,7 +35,11 @@ Activity::~Activity()
 auto Activity::displayName(
     ) const -> QString
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _displayName;
 }
 
 void Activity::setDisplayName(
@@ -48,7 +52,11 @@ void Activity::setDisplayName(
 auto Activity::description(
     ) const -> QString
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _description;
 }
 
 void Activity::setDescription(
@@ -61,7 +69,11 @@ void Activity::setDescription(
 auto Activity::timeout(
     ) const -> tt3::db::api::InactivityTimeout
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _timeout;
 }
 
 void Activity::setTimeout(
@@ -74,7 +86,11 @@ void Activity::setTimeout(
 bool Activity::requireCommentOnStart(
     ) const
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _requireCommentOnStart;
 }
 
 void Activity::setRequireCommentOnStart(
@@ -87,7 +103,11 @@ void Activity::setRequireCommentOnStart(
 bool Activity::requireCommentOnFinish(
     ) const
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _requireCommentOnFinish;
 }
 
 void Activity::setRequireCommentOnFinish(
@@ -100,7 +120,11 @@ void Activity::setRequireCommentOnFinish(
 bool Activity::fullScreenReminder(
     ) const
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _fullScreenReminder;
 }
 
 void Activity::setFullScreenReminder(
@@ -115,7 +139,11 @@ void Activity::setFullScreenReminder(
 auto Activity::activityType(
     ) const -> tt3::db::api::IActivityType *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _activityType;
 }
 
 void Activity::setActivityType(
@@ -128,7 +156,11 @@ void Activity::setActivityType(
 auto Activity::workload(
     ) const -> tt3::db::api::IWorkload *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _workload;
 }
 
 void Activity::setWorkload(
@@ -170,10 +202,22 @@ void Activity::_serializeProperties(
 }
 
 void Activity::_serializeAggregations(
-        QDomElement & parentElement
+        QDomElement & objectElement
     )
 {
-    Object::_serializeAggregations(parentElement);
+    Object::_serializeAggregations(objectElement);
+}
+
+void Activity::_serializeAssociations(
+        QDomElement & objectElement
+    )
+{
+    Object::_serializeAssociations(objectElement);
+
+    //  TODO    ActivityType *  _activityType = nullptr;//  counts as "references" unless nullptr
+    //  TODO    Workload *      _workload = nullptr;    //  counts as "references" uness nullptr
+    //  TODO    Works           _works;     //  count as "references"
+    //  TODO    Events          _events;    //  count as "references"
 }
 
 void Activity::_deserializeProperties(
@@ -193,16 +237,25 @@ void Activity::_deserializeProperties(
     _requireCommentOnStart = tt3::util::fromString<bool>(objectElement.attribute("RequireCommentOnStart"));
     _requireCommentOnFinish = tt3::util::fromString<bool>(objectElement.attribute("RequireCommentOnFinish"));
     _fullScreenReminder = tt3::util::fromString<bool>(objectElement.attribute("FullScreenReminder"));
-
-
-    throw tt3::util::NotImplementedError();
 }
 
 void Activity::_deserializeAggregations(
-        const QDomElement & parentElement
+        const QDomElement & objectElement
     )
 {
-    Object::_deserializeAggregations(parentElement);
+    Object::_deserializeAggregations(objectElement);
+}
+
+void Activity::_deserializeAssociations(
+        const QDomElement & objectElement
+    )
+{
+    Object::_deserializeAssociations(objectElement);
+
+    //  TODO    ActivityType *  _activityType = nullptr;//  counts as "references" unless nullptr
+    //  TODO    Workload *      _workload = nullptr;    //  counts as "references" uness nullptr
+    //  TODO    Works           _works;     //  count as "references"
+    //  TODO    Events          _events;    //  count as "references"
 }
 
 //////////
@@ -238,7 +291,16 @@ void Activity::_validate(
             throw tt3::db::api::DatabaseCorruptException(_database->_address);
         }
     }
-    //  TODO
+    if (_workload != nullptr)
+    {
+        if (_workload->_database != this->_database ||
+            !_workload->_isLive ||
+            !_workload->_contributingActivities.contains(this))
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
+    }
+    //  TODO works, events
 
     //  Validate aggregations
 }

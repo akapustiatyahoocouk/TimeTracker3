@@ -52,15 +52,21 @@ namespace tt3::db::xml
                                 QDomElement & objectElement
                             ) override;
         virtual void    _serializeAggregations(
-                                QDomElement & parentElement
+                                QDomElement & objectElement
                         ) override;
+        virtual void    _serializeAssociations(
+                                QDomElement & objectElement
+                            ) override;
 
         virtual void    _deserializeProperties(
                                 const QDomElement & objectElement
                             ) override; //  throws tt3::util::ParseException)
         virtual void    _deserializeAggregations(
-                                const QDomElement & parentElement
+                                const QDomElement & objectElement
                             ) override; //  throws tt3::util::ParseException)
+        virtual void    _deserializeAssociations(
+                                const QDomElement & objectElement
+                            ) override;  //  throws tt3::util::ParseException
 
         //////////
         //  Validation

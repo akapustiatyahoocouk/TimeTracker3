@@ -31,7 +31,8 @@ HEADERS += \
     Object.hpp \
     Principal.hpp \
     PublicActivity.hpp \
-    User.hpp
+    User.hpp \
+    Workload.hpp
 
 LIBS += -ltt3-db-api -ltt3-util
 

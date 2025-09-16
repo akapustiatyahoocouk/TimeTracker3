@@ -19,9 +19,10 @@
 
 namespace tt3::gui
 {
-    //  The modal "error" dialog
     namespace Ui { class ErrorDialog; }
 
+    /// \class ErrorDialog tt3-gui/API.hpp
+    /// \brief The modal "error" dialog.
     class TT3_GUI_PUBLIC ErrorDialog
         :   private QDialog
     {
@@ -31,21 +32,76 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        ErrorDialog(QWidget * parent, const QString & errorMessage);
-        ErrorDialog(QWidget * parent, const tt3::util::Exception & ex);
+        /// \brief
+        ///     Constructs the dialog
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// \param errorMessage
+        ///     The error message to display.
+        ErrorDialog(
+                QWidget * parent,
+                const QString & errorMessage
+            );
+
+        /// \brief
+        ///     Constructs the dialog
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// \param ex
+        ///     The exception whose error message to display.
+        ErrorDialog(
+                QWidget * parent,
+                const tt3::util::Exception & ex
+            );
+
+        /// \brief
+        ///     The class destructor.
         virtual ~ErrorDialog();
 
         //////////
         //  Operations
     public:
-        //  Runs the dialog modally
-        void                doModal();
+        /// \brief
+        ///     Runs the dialog modally.
+        void            doModal();
 
-        //  Shows the error dialog with the specified error message [and parent].
-        static void         show(const tt3::util::Exception & ex);
-        static void         show(const QString & errorMessage);
-        static void         show(QWidget * parent, const tt3::util::Exception & ex);
-        static void         show(QWidget * parent, const QString & errorMessage);
+        /// \brief
+        ///     Shows the error dialog with the specified error message and no parent.
+        /// \param ex
+        ///     The exception whose error message to display.
+        static void     show(
+                                const tt3::util::Exception & ex
+                            );
+
+        /// \brief
+        ///     Shows the error dialog with the specified error message and no parent.
+        /// \param errorMessage
+        ///     The error message to display.
+        static void     show(
+                                const QString & errorMessage
+                            );
+
+        /// \brief
+        ///     Shows the error dialog with the specified error message and parent.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// \param ex
+        ///     The exception whose error message to display.
+        static void     show(
+                                QWidget * parent,
+                                const tt3::util::Exception & ex
+                            );
+
+        /// \brief
+        ///     Shows the error dialog with the specified error message and parent.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// \param errorMessage
+        ///     The error message to display.
+        static void     show(
+                                QWidget * parent,
+                                const QString & errorMessage
+                            );
 
         //////////
         //  Controls

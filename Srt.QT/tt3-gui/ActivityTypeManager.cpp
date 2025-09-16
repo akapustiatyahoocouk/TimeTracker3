@@ -142,8 +142,8 @@ void ActivityTypeManager::refresh()
     bool readOnly = _workspace->isReadOnly();
     _ui->createActivityTypePushButton->setEnabled(
         !readOnly &&
-        _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
-        _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageActivityTypes));
+        (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
+         _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageActivityTypes)));
     _ui->modifyActivityTypePushButton->setEnabled(
         selectedActivityType != nullptr);
     _ui->destroyActivityTypePushButton->setEnabled(
@@ -189,7 +189,7 @@ ActivityTypeManager::_WorkspaceModel ActivityTypeManager::_createWorkspaceModel(
                   [&](auto a, auto b)
                     { return a->text < b->text; });
     }
-    catch (...)
+    catch (const tt3::util::Exception &)
     {
         workspaceModel->activityTypeModels.clear();
     }

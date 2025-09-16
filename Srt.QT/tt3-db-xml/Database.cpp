@@ -126,7 +126,7 @@ Database::~Database()
     {
         close();
     }
-    catch (...)
+    catch (const tt3::util::Exception &)
     {   //  OOPS! TODO log?
     }
 
@@ -812,6 +812,7 @@ void Database::_save()
         //  Serialize user features
         user->_serializeProperties(userElement);
         user->_serializeAggregations(userElement);
+        user->_serializeAssociations(userElement);
     }
 
     //  Serialize activity types
@@ -824,6 +825,7 @@ void Database::_save()
         //  Serialize activity type features
         activityType->_serializeProperties(activityTypeElement);
         activityType->_serializeAggregations(activityTypeElement);
+        activityType->_serializeAssociations(activityTypeElement);
     }
 
     //  Serialize public activities
@@ -836,6 +838,7 @@ void Database::_save()
         //  Serialize public activity features
         publicActivity->_serializeProperties(publicActivityElement);
         publicActivity->_serializeAggregations(publicActivityElement);
+        publicActivity->_serializeAssociations(publicActivityElement);
     }
 
     //  Save DOM
@@ -855,6 +858,7 @@ void Database::_load()
     Q_ASSERT(_guard.isLockedByCurrentThread());
     _ensureOpen();  //  may throw
 
+    _deserializationMap.clear();
     //  Load XML DOM
     QDomDocument document;
     QFile file(_address->_path);
@@ -905,7 +909,7 @@ void Database::_load()
     }
 
     //  Process public activities
-    QDomElement publicActivitiesElement = _childElement(rootElement, "PublicfActivities");  //  may throw
+    QDomElement publicActivitiesElement = _childElement(rootElement, "PublicActivities");  //  may throw
     for (QDomElement publicActivityElement : _childElements(publicActivitiesElement, "PublicActivity"))
     {
         tt3::db::api::Oid oid = tt3::util::fromString<tt3::db::api::Oid>(publicActivityElement.attribute("OID", ""));
@@ -918,11 +922,22 @@ void Database::_load()
         publicActivity->_deserializeAggregations(publicActivityElement);
     }
 
+    //  Now we can do the asociations
+    Q_ASSERT(_liveObjects.size() == _deserializationMap.size());
+    for (Object * object : _deserializationMap.keys())
+    {
+        object->_deserializeAssociations(_deserializationMap[object]);
+    }
+
     //  Done loading - make sure we're consistent
+    _deserializationMap.clear();
     _validate();    //  may throw
 }
 
-QList<QDomElement> Database::_childElements(const QDomElement & parentElement, const QString & tagName)
+QList<QDomElement> Database::_childElements(
+        const QDomElement & parentElement,
+        const QString & tagName
+    )
 {
     QList<QDomElement> result;
     for (QDomNode childNode = parentElement.firstChild();

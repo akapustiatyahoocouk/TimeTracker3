@@ -83,10 +83,6 @@ namespace tt3::db::xml
         virtual void    removePermittedWorkload(
                                 tt3::db::api::IWorkload * workload
                             ) override;
-        virtual auto    works(
-                            ) const -> tt3::db::api::Works override;
-        virtual auto    events(
-                            ) const -> tt3::db::api::Events override;
 
         //////////
         //  tt3::db::api::IUser  (life cycle)
@@ -120,16 +116,6 @@ namespace tt3::db::xml
                                 bool completed,
                                 bool requireCommentOnCompletion
                            ) -> tt3::db::api::IPrivateTask * override;
-        virtual auto    createWork(
-                                const QDateTime & startedAt,
-                                const QDateTime & finishedAt,
-                                tt3::db::api::IActivity * activity
-                            ) -> tt3::db::api::IWork * override;
-        virtual auto    createEvent(
-                                const QDateTime & occurredAt,
-                                const QString & summary,
-                                tt3::db::api::IActivity * activity
-                            ) -> tt3::db::api::IEvent * override;
 
         //////////
         //  Implementation
@@ -138,8 +124,10 @@ namespace tt3::db::xml
         QString         _realName;
         tt3::db::api::InactivityTimeout _inactivityTimeout;
         tt3::db::api::UiLocale          _uiLocale;
+        //  Aggregations
+        Accounts        _accounts;          //  count as "references"
         //  Associations
-        Accounts        _accounts;  //  count as "references"
+        Workloads       _permittedWorkloads;//  count as "references"
 
         //  Helpers
         virtual void    _markDead() override;
@@ -151,15 +139,21 @@ namespace tt3::db::xml
                                 QDomElement & objectElement
                             ) override;
         virtual void    _serializeAggregations(
-                                QDomElement & parentElement
+                                QDomElement & objectElement
+                            ) override;
+        virtual void    _serializeAssociations(
+                                QDomElement & objectElement
                             ) override;
 
         virtual void    _deserializeProperties(
                                 const QDomElement & objectElement
                             ) override; //  throws tt3::util::ParseException)
         virtual void    _deserializeAggregations(
-                                const QDomElement & parentElement
+                                const QDomElement & objectElement
                             ) override; //  throws tt3::util::ParseException)
+        virtual void    _deserializeAssociations(
+                                const QDomElement & objectElement
+                            ) override;  //  throws tt3::util::ParseException
 
         //////////
         //  Validation

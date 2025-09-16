@@ -71,14 +71,24 @@ namespace tt3::db::xml
         //////////
         //  Serialization
     private:
-        virtual void    _serializeProperties(QDomElement & objectElement);
-        virtual void    _serializeAggregations(QDomElement & parentElement);
+        virtual void    _serializeProperties(
+                                QDomElement & objectElement
+                            );
+        virtual void    _serializeAggregations(
+                                QDomElement & objectElement
+                            );
+        virtual void    _serializeAssociations(
+                                QDomElement & objectElement
+                            );
 
         virtual void    _deserializeProperties(
                                 const QDomElement & objectElement
                             );  //  throws tt3::util::ParseException
         virtual void    _deserializeAggregations(
-                                const QDomElement & parentElement
+                                const QDomElement & objectElement
+                            );  //  throws tt3::util::ParseException
+        virtual void    _deserializeAssociations(
+                                const QDomElement & objectElement
                             );  //  throws tt3::util::ParseException
 
         //////////

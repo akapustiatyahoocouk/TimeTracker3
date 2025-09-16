@@ -37,6 +37,7 @@ HEADERS += \
     PublicActivity.hpp \
     User.hpp \
     Validator.hpp \
+    Workload.hpp \
     Workspace.hpp \
     WorkspaceAddress.hpp \
     WorkspaceType.hpp

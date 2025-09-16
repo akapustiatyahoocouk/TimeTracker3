@@ -78,7 +78,7 @@ namespace tt3::ws
                         ) const -> QString;
 
         /// \brief
-        ///     Returns the multi-line description of this activity type.
+        ///     Sets the multi-line description of this activity type.
         /// \param credentials
         ///     The credentials of the service caller.
         /// \param description

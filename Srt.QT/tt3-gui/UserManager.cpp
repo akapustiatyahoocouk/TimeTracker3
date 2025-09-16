@@ -165,8 +165,8 @@ void UserManager::refresh()
     bool readOnly = _workspace->isReadOnly();
     _ui->createUserPushButton->setEnabled(
         !readOnly &&
-        _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
-        _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageUsers));
+        (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
+         _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageUsers)));
     _ui->modifyUserPushButton->setEnabled(
         selectedUser != nullptr &&
         selectedUser->canModify(_credentials));
@@ -240,7 +240,7 @@ UserManager::_WorkspaceModel UserManager::_createWorkspaceModel()
                   [&](auto a, auto b)
                   { return a->text < b->text; });
     }
-    catch (...)
+    catch (const tt3::util::Exception &)
     {
         workspaceModel->userModels.clear();
     }
@@ -285,7 +285,7 @@ UserManager::_UserModel UserManager::_createUserModel(tt3::ws::User user)
                   [&](auto a, auto b)
                   { return a->text < b->text; });
     }
-    catch (...)
+    catch (const tt3::util::Exception &)
     {
         userModel->accountModels.clear();
     }
@@ -341,7 +341,7 @@ void UserManager::_removeDisabledItems(_WorkspaceModel workspaceModel)
             }
             //  ...else keep this user item
         }
-        catch (...)
+        catch (const tt3::util::Exception &)
         {   //  OOPS! TODO log?
         }
     }
@@ -358,7 +358,7 @@ void UserManager::_removeDisabledItems(_UserModel userModel)
                 userModel->accountModels.removeAt(i);
             }
         }
-        catch (...)
+        catch (const tt3::util::Exception &)
         {   //  OOPS! TODO log?
         }
     }
@@ -407,7 +407,7 @@ void UserManager::_filterItems(_UserModel userModel)
                 userModel->accountModels.removeAt(i);
             }
         }
-        catch (...)
+        catch (const tt3::util::Exception &)
         {   //  OOPS! TODO log?
         }
     }

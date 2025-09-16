@@ -17,66 +17,84 @@
 
 namespace tt3::gui
 {
-    //  The "TT3 Gui" component
-    class TT3_GUI_PUBLIC Component final : public virtual tt3::util::IComponent
+    /// \class Component tt3-gui/API.hpp
+    /// \brief The "TT3 Gui" component.
+    class TT3_GUI_PUBLIC Component final
+        :   public virtual tt3::util::IComponent
     {
         DECLARE_SINGLETON(Component)
 
         //////////
         //  Types
     public:
-        //  The component's resources
-        class TT3_GUI_PUBLIC Resources final : public tt3::util::FileResourceFactory
+        /// \class Resources tt3-gui/API.hpp
+        /// \brief The component's resources.
+        class TT3_GUI_PUBLIC Resources final
+            :   public tt3::util::FileResourceFactory
         {
             DECLARE_SINGLETON(Resources)
         };
 
-        //  The component's settings
-        class TT3_GUI_PUBLIC Settings final : public tt3::util::Settings
+        /// \class Settings tt3-gui/API.hpp
+        /// \brief The component's settings.
+        class TT3_GUI_PUBLIC Settings final
+            :   public tt3::util::Settings
         {
             DECLARE_SINGLETON(Settings)
 
             //////////
             //  Properties
         public:
-            //  The mnemonic of the active skin
+            /// \brief
+            ///     The mnemonic of the active skin.
             tt3::util::Setting<tt3::util::Mnemonic> activeSkin;
 
-            //  The mnemonic of the active theme
+            /// \brief
+            ///     The mnemonic of the active theme.
             tt3::util::Setting<tt3::util::Mnemonic> activeTheme;
 
-            //  The login last used
+            /// \brief
+            ///     The login last used.
             tt3::util::Setting<QString> lastLogin;
 
-            //  The preferred UI locale
+            /// \brief
+            ///     The preferred UI locale.
             tt3::util::Setting<QLocale> uiLocale;
 
-            //  True if last used workspace should be loaded on startup.
+            /// \brief
+            ///     True if last used workspace should be loaded on startup.
             tt3::util::Setting<bool>    loadLastWorkspaceAtStartup;
 
-            //  True if the last used login shall be remembered on startup.
+            /// \brief
+            ///     True if the last used login shall be remembered on startup.
             tt3::util::Setting<bool>    rememberLastLogin;
 
-            //  The mnemonic identifier of the Preferences node that  was
-            //  "current" during last activation og yje "Preferences" dialog.
+            /// \brief
+            ///     The mnemonic identifier of the Preferences node that was
+            ///     "current" during last activation of the "Preferences" dialog.
             tt3::util::Setting<tt3::util::Mnemonic> currentPreferences;
 
             //////////
             //  Properties (user confirmations)
         public:
-            //  True if user needs to confirm closing the
-            //  current workspace.
+            /// \brief
+            ///     True if user needs to confirm closing the current workspace.
             tt3::util::Setting<bool>    confirmCloseWorkspace;
 
-            //  True if the user needs to confirm restarting TT3.
+            /// \brief
+            ///     True if the user needs to confirm restarting TT3.
             tt3::util::Setting<bool>    confirmRestart;
 
-            //  True if the user needs to confirm exiting TT3.
+            /// \brief
+            ///     True if the user needs to confirm exiting TT3.
             tt3::util::Setting<bool>    confirmExit;
 
             //////////
             //  Properties (view configurations)
         public:
+            /// \brief
+            ///     True if the User Manager widget shall display disabled
+            ///     Users and Accounts (false to hide them).
             tt3::util::Setting<bool>    showHiddenUsersAndAccounts;
         };
 

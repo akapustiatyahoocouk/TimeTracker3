@@ -21,9 +21,10 @@ namespace tt3::skin::admin
 {
     class TT3_SKIN_ADMIN_PUBLIC RecentWorkspaceOpener;
 
-    //  Main frame of the admin skin
     namespace Ui { class MainFrame; }
 
+    /// \class MainFrame tt3-skin-admin/API.hpp
+    /// \brief Main frame of the admin skin.
     class TT3_SKIN_ADMIN_PUBLIC MainFrame : public QMainWindow
     {
         Q_OBJECT
@@ -34,7 +35,16 @@ namespace tt3::skin::admin
         //////////
         //  Construction
     public:
-        explicit MainFrame(QWidget * parent = nullptr);
+        /// \brief
+        ///     Constrctrs the frame.
+        /// \param parent
+        ///     The parent for the frame, nullptr == none.
+        explicit MainFrame(
+                QWidget * parent = nullptr
+            );
+
+        /// \brief
+        ///     The class destructor.
         virtual ~MainFrame();
 
         //////////
@@ -47,7 +57,8 @@ namespace tt3::skin::admin
         //////////
         //  Operations
     public:
-        //  Refreshes this main frame and controls within
+        /// \brief
+        ///     Refreshes this main frame and controls within
         void            refresh();
 
         //////////
@@ -88,6 +99,9 @@ namespace tt3::skin::admin
 
         QStackedLayout *        _manageActivityTypesTabLayout = nullptr;
         tt3::gui::ActivityTypeManager * _activityTypeManager = nullptr;
+
+        QStackedLayout *        _managePublicActivitiesTabLayout = nullptr;
+        tt3::gui::PublicActivityManager *   _publicActivityManager = nullptr;
 
         //////////
         //  Signal handlers

@@ -246,6 +246,8 @@ namespace tt3::db::xml
                                 const QString & tagName
                             ) -> QDomElement;
 
+        QMap<Object*, QDomElement>  _deserializationMap;    //  object -> DOM element from which it came
+
         //  Validation
         void            _validate();    //  throwstt3::db::api::DatabaseException
     };

@@ -192,6 +192,69 @@ void User::setUiLocale(
 }
 
 //////////
+//  tt3::db::api::IUser (associations)
+auto User::accounts(
+    ) const -> tt3::db::api::Accounts
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return tt3::db::api::Accounts(_accounts.begin(), _accounts.end());
+}
+
+auto User::privateActivities(
+    ) const -> tt3::db::api::PrivateActivities
+{
+    throw tt3::util::NotImplementedError();
+}
+
+auto User::privateActivitiesAndTasks(
+    ) const -> tt3::db::api::PrivateActivities
+{
+    throw tt3::util::NotImplementedError();
+}
+
+auto User::privateTasks(
+    ) const -> tt3::db::api::PrivateTasks
+{
+    throw tt3::util::NotImplementedError();
+}
+
+auto User::rootPrivateTasks(
+    ) const -> tt3::db::api::PrivateTasks
+{
+    throw tt3::util::NotImplementedError();
+}
+
+auto User::permittedWorkloads(
+    ) const -> tt3::db::api::Workloads
+{
+    throw tt3::util::NotImplementedError();
+}
+
+void User::setPermittedWorkloads(
+    const tt3::db::api::Workloads & /*workloads*/
+    )
+{
+    throw tt3::util::NotImplementedError();
+}
+
+void User::addPermittedWorkload(
+    tt3::db::api::IWorkload * /*workload*/
+    )
+{
+    throw tt3::util::NotImplementedError();
+}
+
+void User::removePermittedWorkload(
+    tt3::db::api::IWorkload * /*workload*/
+    )
+{
+    throw tt3::util::NotImplementedError();
+}
+
+//////////
 //  tt3::db::api::IUser  (life cycle)
 auto User::createAccount(
         bool enabled,
@@ -296,99 +359,6 @@ auto User::createPrivateTask(
     throw tt3::util::NotImplementedError();
 }
 
-auto User::createWork(
-        const QDateTime & /*startedAt*/,
-        const QDateTime & /*finishedAt*/,
-        tt3::db::api::IActivity * /*activity*/
-    ) -> tt3::db::api::IWork *
-{
-    throw tt3::util::NotImplementedError();
-}
-
-auto User::createEvent(
-        const QDateTime & /*occurredAt*/,
-        const QString & /*summary*/,
-        tt3::db::api::IActivity * /*activity*/
-    ) -> tt3::db::api::IEvent *
-{
-    throw tt3::util::NotImplementedError();
-}
-
-//////////
-//  tt3::db::api::IUser (associations)
-auto User::accounts(
-    ) const -> tt3::db::api::Accounts
-{
-    tt3::util::Lock lock(_database->_guard);
-    _ensureLive();  //  may throw
-    //  We assume database is consistent since last change
-
-    return tt3::db::api::Accounts(_accounts.begin(), _accounts.end());
-}
-
-auto User::privateActivities(
-    ) const -> tt3::db::api::PrivateActivities
-{
-    throw tt3::util::NotImplementedError();
-}
-
-auto User::privateActivitiesAndTasks(
-    ) const -> tt3::db::api::PrivateActivities
-{
-    throw tt3::util::NotImplementedError();
-}
-
-auto User::privateTasks(
-    ) const -> tt3::db::api::PrivateTasks
-{
-    throw tt3::util::NotImplementedError();
-}
-
-auto User::rootPrivateTasks(
-    ) const -> tt3::db::api::PrivateTasks
-{
-    throw tt3::util::NotImplementedError();
-}
-
-auto User::permittedWorkloads(
-    ) const -> tt3::db::api::Workloads
-{
-    throw tt3::util::NotImplementedError();
-}
-
-void User::setPermittedWorkloads(
-        const tt3::db::api::Workloads & /*workloads*/
-    )
-{
-    throw tt3::util::NotImplementedError();
-}
-
-void User::addPermittedWorkload(
-        tt3::db::api::IWorkload * /*workload*/
-    )
-{
-    throw tt3::util::NotImplementedError();
-}
-
-void User::removePermittedWorkload(
-        tt3::db::api::IWorkload * /*workload*/
-    )
-{
-    throw tt3::util::NotImplementedError();
-}
-
-auto User::works(
-    ) const -> tt3::db::api::Works
-{
-    throw tt3::util::NotImplementedError();
-}
-
-auto User::events(
-    ) const -> tt3::db::api::Events
-{
-    throw tt3::util::NotImplementedError();
-}
-
 //////////
 //  Implementation helpers
 void User::_markDead()
@@ -427,22 +397,32 @@ void User::_serializeProperties(
 }
 
 void User::_serializeAggregations(
-        QDomElement & parentElement
+        QDomElement & objectElement
     )
 {
-    Principal::_serializeAggregations(parentElement);
+    Principal::_serializeAggregations(objectElement);
 
     //  Do the accounts
-    QDomElement accountsElement = parentElement.ownerDocument().createElement("Accounts");
-    parentElement.appendChild(accountsElement);
+    QDomElement accountsElement = objectElement.ownerDocument().createElement("Accounts");
+    objectElement.appendChild(accountsElement);
     for (Account * account : _accounts)
     {   //  TODO try to sort by OID to reduce changes
-        QDomElement accountElement = parentElement.ownerDocument().createElement("Account");
+        QDomElement accountElement = objectElement.ownerDocument().createElement("Account");
         accountsElement.appendChild(accountElement);
         //  Serialize user features
         account->_serializeProperties(accountElement);
         account->_serializeAggregations(accountElement);
+        account->_serializeAssociations(accountElement);
     }
+}
+
+void User::_serializeAssociations(
+        QDomElement & objectElement
+    )
+{
+    Principal::_serializeProperties(objectElement);
+
+    //  TODO    Workloads       _permittedWorkloads;//  count as "references"
 }
 
 void User::_deserializeProperties(
@@ -467,13 +447,13 @@ void User::_deserializeProperties(
 }
 
 void User::_deserializeAggregations(
-        const QDomElement & parentElement
+        const QDomElement & objectElement
     )
 {
-    Principal::_deserializeAggregations(parentElement);
+    Principal::_deserializeAggregations(objectElement);
 
     //  Do the accounts
-    QDomElement accountsElement = _database->_childElement(parentElement, "Accounts");  //  may throw
+    QDomElement accountsElement = _database->_childElement(objectElement, "Accounts");  //  may throw
     for (QDomElement accountElement : _database->_childElements(accountsElement, "Account"))
     {
         tt3::db::api::Oid oid = tt3::util::fromString<tt3::db::api::Oid>(accountElement.attribute("OID", ""));
@@ -485,6 +465,15 @@ void User::_deserializeAggregations(
         account->_deserializeProperties(accountElement);
         account->_deserializeAggregations(accountElement);
     }
+}
+
+void User::_deserializeAssociations(
+        const QDomElement & objectElement
+    )
+{
+    Principal::_deserializeProperties(objectElement);
+
+    //  TODO    Workloads       _permittedWorkloads;//  count as "references"
 }
 
 //////////
@@ -512,6 +501,15 @@ void User::_validate(
     }
 
     //  Validate associations
+    for (Workload * workload : _permittedWorkloads)
+    {
+        if (workload == nullptr ||
+            workload->_database != this->_database || !workload->_isLive ||
+            !workload->_assignedUsers.contains(this))
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
+    }
     //  TODO
 
     //  Validate aggregations

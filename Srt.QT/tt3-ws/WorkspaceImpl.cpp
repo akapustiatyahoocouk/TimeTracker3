@@ -20,7 +20,7 @@ using namespace tt3::ws;
 //////////
 //  Construction/destruction - from friends only
 WorkspaceImpl::WorkspaceImpl(
-        const WorkspaceAddress & address,
+        WorkspaceAddress address,
         tt3::db::api::IDatabase * database)
     :   _address(address),
         _database(database),
@@ -54,7 +54,7 @@ WorkspaceImpl::~WorkspaceImpl()
     {
         close();
     }
-    catch (...)
+    catch (const tt3::util::Exception &)
     {   //  OOPS! Suppress TODO but log ?
     }
     delete _database;
@@ -382,6 +382,49 @@ auto WorkspaceImpl::createActivityType(
         tt3::db::api::IActivityType * dataActivityType =
             _database->createActivityType(displayName, description);
         return _getProxy(dataActivityType);;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+auto WorkspaceImpl::createPublicActivity(
+        const Credentials & credentials,
+        const QString & displayName,
+        const QString & description,
+        const InactivityTimeout & timeout,
+        bool requireCommentOnStart,
+        bool requireCommentOnFinish,
+        bool fullScreenReminder,
+        ActivityType activityType,
+        Workload workload
+    ) -> PublicActivity
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();
+
+    try
+    {
+        //  Check access rights
+        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+        if ((clientCapabilities & Capabilities::Administrator) == Capabilities::None &&
+            (clientCapabilities & Capabilities::ManagePublicActivities) == Capabilities::None)
+        {   //  OOPS! Can't!
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        tt3::db::api::IPublicActivity * dataPublicActivity =
+            _database->createPublicActivity(
+                displayName,
+                description,
+                timeout,
+                requireCommentOnStart,
+                requireCommentOnFinish,
+                fullScreenReminder,
+                (activityType != nullptr) ? activityType->_dataActivityType : nullptr,
+                (workload != nullptr) ? workload->_dataWorkload : nullptr);
+        return _getProxy(dataPublicActivity);;
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw

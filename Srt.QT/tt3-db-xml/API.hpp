@@ -39,4 +39,6 @@
 #include "tt3-db-xml/Activity.hpp"
 #include "tt3-db-xml/PublicActivity.hpp"
 
+#include "tt3-db-xml/Workload.hpp"
+
 //  End of tt3-db-xml/API.hpp

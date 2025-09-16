@@ -36,10 +36,26 @@ ActivityImpl::~ActivityImpl()
 //////////
 //  Operations (properties)
 auto ActivityImpl::displayName(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const -> QString
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _dataActivity->displayName();   //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void ActivityImpl::setDisplayName(
@@ -51,10 +67,26 @@ void ActivityImpl::setDisplayName(
 }
 
 auto ActivityImpl::description(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const -> QString
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _dataActivity->description();    //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void ActivityImpl::setDescription(
@@ -66,10 +98,26 @@ void ActivityImpl::setDescription(
 }
 
 auto ActivityImpl::timeout(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const -> InactivityTimeout
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _dataActivity->timeout();   //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void ActivityImpl::setTimeout(
@@ -81,10 +129,26 @@ void ActivityImpl::setTimeout(
 }
 
 bool ActivityImpl::requireCommentOnStart(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _dataActivity->requireCommentOnStart();   //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void ActivityImpl::setRequireCommentOnStart(
@@ -96,10 +160,26 @@ void ActivityImpl::setRequireCommentOnStart(
 }
 
 bool ActivityImpl::requireCommentOnFinish(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _dataActivity->requireCommentOnFinish();   //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void ActivityImpl::setRequireCommentOnFinish(
@@ -111,10 +191,26 @@ void ActivityImpl::setRequireCommentOnFinish(
 }
 
 bool ActivityImpl::fullScreenReminder(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _dataActivity->fullScreenReminder();   //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void ActivityImpl::setFullScreenReminder(

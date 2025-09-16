@@ -90,10 +90,17 @@ void PublicActivity::_serializeProperties(
 }
 
 void PublicActivity::_serializeAggregations(
-        QDomElement & parentElement
+        QDomElement & objectElement
     )
 {
-    Activity::_serializeAggregations(parentElement);
+    Activity::_serializeAggregations(objectElement);
+}
+
+void PublicActivity::_serializeAssociations(
+        QDomElement & objectElement
+    )
+{
+    Activity::_serializeAssociations(objectElement);
 }
 
 void PublicActivity::_deserializeProperties(
@@ -101,15 +108,20 @@ void PublicActivity::_deserializeProperties(
     )
 {
     Activity::_deserializeProperties(objectElement);
-
 }
 
 void PublicActivity::_deserializeAggregations(
-        const QDomElement & parentElement
+        const QDomElement & objectElement
     )
 {
-    Activity::_deserializeAggregations(parentElement);
+    Activity::_deserializeAggregations(objectElement);
+}
 
+void PublicActivity::_deserializeAssociations(
+        const QDomElement & objectElement
+    )
+{
+    Activity::_deserializeAssociations(objectElement);
 }
 
 //////////

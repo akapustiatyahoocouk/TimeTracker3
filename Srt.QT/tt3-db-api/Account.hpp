@@ -138,6 +138,62 @@ namespace tt3::db::api
         virtual void    setQuickPickList(
                                 const QList<IActivity*> & quickPickList
                             ) = 0;
+
+        /// \brief
+        ///     Returns the set of all Works logged by this Account.
+        /// \return
+        ///     The set of all Works logged by this Account.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        virtual auto    works(
+                            ) const -> Works = 0;
+
+        /// \brief
+        ///     Returns the set of all Events logged by this Account.
+        /// \return
+        ///     The set of all Events logged by this Account.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        virtual auto    events(
+                            ) const -> Events = 0;
+
+        //////////
+        //  Operations (life cycle)
+    public:
+        /// \brief
+        ///     Creates a new unit of Work for this Account against
+        ///     the specified activity.
+        /// \param startedAt
+        ///     The UTC date+time when this unit of work has started.
+        /// \param finishedAt
+        ///     The UTC date+time when this unit of work has finished.
+        /// \param activity
+        ///     The activity associated with this unit of work;
+        ///     cann0t be nullptr.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        virtual auto    createWork(
+                                const QDateTime & startedAt,
+                                const QDateTime & finishedAt,
+                                IActivity * activity
+                            ) -> IWork * = 0;
+
+        /// \brief
+        ///     Creates a new Event for this Account against
+        ///     the specified activity.
+        /// \param occurredAt
+        ///     TheUTC date+time when the event has occurred.
+        /// \param summary
+        ///     The brief 1-line summary for the new Event.
+        /// \param activity
+        ///     The activity associated with the new Event; nullptr == none.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        virtual auto    createEvent(
+                                const QDateTime & occurredAt,
+                                const QString & summary,
+                                IActivity * activity
+                            ) -> IEvent * = 0;
     };
 }
 

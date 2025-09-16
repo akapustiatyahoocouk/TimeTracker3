@@ -39,7 +39,7 @@
     <item row="1" column="0">
      <widget class="QTabWidget" name="managersTabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="manageUsersTab">
        <attribute name="icon">
@@ -57,6 +57,15 @@
        </attribute>
        <attribute name="title">
         <string>Activity types</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="managePublicActivitiesTab">
+       <attribute name="icon">
+        <iconset resource="tt3-skin-admin.qrc">
+         <normaloff>:/tt3-skin-admin/Resources/Images/Objects/PublicActivitySmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/PublicActivitySmall.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Public activities</string>
        </attribute>
       </widget>
      </widget>
@@ -158,6 +167,7 @@
     </property>
     <addaction name="actionManageUsers"/>
     <addaction name="actionManageActivityTypes"/>
+    <addaction name="actionManagePublicActivities"/>
     <addaction name="separator"/>
     <addaction name="actionRefresh"/>
    </widget>
@@ -191,6 +201,12 @@
    <property name="movable">
     <bool>false</bool>
    </property>
+   <property name="iconSize">
+    <size>
+     <width>18</width>
+     <height>18</height>
+    </size>
+   </property>
    <property name="floatable">
     <bool>false</bool>
    </property>
@@ -205,6 +221,7 @@
    <addaction name="separator"/>
    <addaction name="actionManageUsers"/>
    <addaction name="actionManageActivityTypes"/>
+   <addaction name="actionManagePublicActivities"/>
    <addaction name="separator"/>
    <addaction name="actionRefresh"/>
    <addaction name="separator"/>
@@ -391,6 +408,15 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionManagePublicActivities">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Objects/PublicActivitySmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/PublicActivitySmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>Manage public &amp;activities</string>
    </property>
   </action>
  </widget>

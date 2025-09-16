@@ -38,5 +38,13 @@
         <file>Resources/Images/Objects/ActivityTypeSmall.png</file>
         <file>Resources/Images/Actions/RefreshLarge.png</file>
         <file>Resources/Images/Actions/RefreshSmall.png</file>
+        <file>Resources/Images/Objects/PrivateActivityLarge.png</file>
+        <file>Resources/Images/Objects/PrivateActivitySmall.png</file>
+        <file>Resources/Images/Objects/PrivateTaskLarge.png</file>
+        <file>Resources/Images/Objects/PrivateTaskSmall.png</file>
+        <file>Resources/Images/Objects/PublicActivityLarge.png</file>
+        <file>Resources/Images/Objects/PublicActivitySmall.png</file>
+        <file>Resources/Images/Objects/PublicTaskLarge.png</file>
+        <file>Resources/Images/Objects/PublicTaskSmall.png</file>
     </qresource>
 </RCC>

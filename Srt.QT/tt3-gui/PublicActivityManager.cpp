@@ -144,8 +144,8 @@ void PublicActivityManager::refresh()
     bool readOnly = _workspace->isReadOnly();
     _ui->createPublicActivityPushButton->setEnabled(
         !readOnly &&
-            _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
-        _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManagePublicActivities));
+        (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
+         _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManagePublicActivities)));
     _ui->modifyPublicActivityPushButton->setEnabled(
         selectedPublicActivity != nullptr);
     _ui->destroyPublicActivityPushButton->setEnabled(
@@ -192,7 +192,7 @@ auto PublicActivityManager::_createWorkspaceModel(
                   [&](auto a, auto b)
                   { return a->text < b->text; });
     }
-    catch (...)
+    catch (const tt3::util::Exception &)
     {
         workspaceModel->publicActivityModels.clear();
     }
@@ -412,7 +412,6 @@ void PublicActivityManager::_publicActivitiesTreeWidgetCustomContextMenuRequeste
 
 void PublicActivityManager::_createPublicActivityPushButtonClicked()
 {
-    /*  TODO uncomment
     try
     {
         CreatePublicActivityDialog dlg(this, _workspace, _credentials);   //  may throw
@@ -426,7 +425,6 @@ void PublicActivityManager::_createPublicActivityPushButtonClicked()
     {
         tt3::gui::ErrorDialog::show(this, ex);
     }
-    */
 }
 
 void PublicActivityManager::_modifyPublicActivityPushButtonClicked()

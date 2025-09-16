@@ -221,6 +221,38 @@ void Account::setQuickPickList(
     throw tt3::util::NotImplementedError();
 }
 
+auto Account::works(
+    ) const -> tt3::db::api::Works
+{
+    throw tt3::util::NotImplementedError();
+}
+
+auto Account::events(
+    ) const -> tt3::db::api::Events
+{
+    throw tt3::util::NotImplementedError();
+}
+
+//////////
+//  tt3::db::api::IAccount (life cycle)
+auto Account::createWork(
+    const QDateTime & /*startedAt*/,
+    const QDateTime & /*finishedAt*/,
+    tt3::db::api::IActivity * /*activity*/
+    ) -> tt3::db::api::IWork *
+{
+    throw tt3::util::NotImplementedError();
+}
+
+auto Account::createEvent(
+    const QDateTime & /*occurredAt*/,
+    const QString & /*summary*/,
+    tt3::db::api::IActivity * /*activity*/
+    ) -> tt3::db::api::IEvent *
+{
+    throw tt3::util::NotImplementedError();
+}
+
 //////////
 //  Implementation helpers
 void Account::_markDead()
@@ -253,10 +285,22 @@ void Account::_serializeProperties(
 }
 
 void Account::_serializeAggregations(
-        QDomElement & parentElement
+        QDomElement & objectElement
     )
 {
-    Principal::_serializeAggregations(parentElement);
+    Principal::_serializeAggregations(objectElement);
+
+    //  TODO Works           _works;         //  count as "reference"
+    //  TODO Events          _events;        //  count as "reference"
+}
+
+void Account::_serializeAssociations(
+        QDomElement & objectElement
+    )
+{
+    Principal::_serializeAssociations(objectElement);
+
+    //  TODO QList<Activity*>_quickPickList;
 }
 
 void Account::_deserializeProperties(
@@ -271,10 +315,22 @@ void Account::_deserializeProperties(
 }
 
 void Account::_deserializeAggregations(
-        const QDomElement & parentElement
+        const QDomElement & objectElement
     )
 {
-    Principal::_deserializeAggregations(parentElement);
+    Principal::_deserializeAggregations(objectElement);
+
+    //  TODO Works           _works;         //  count as "reference"
+    //  TODO Events          _events;        //  count as "reference"
+}
+
+void Account::_deserializeAssociations(
+        const QDomElement & objectElement
+    )
+{
+    Principal::_deserializeAssociations(objectElement);
+
+    //  TODO QList<Activity*>_quickPickList;
 }
 
 //////////
@@ -297,6 +353,15 @@ void Account::_validate(
         !_user->_accounts.contains(this))
     {   //  OOPS!
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
+    }
+    for (Activity * activity : _quickPickList)
+    {
+        if (activity == nullptr ||
+            activity->_database != this->_database || !activity->_isLive)
+        {   //  OOPS! We don't check for a back link - the
+            //  "quick pick list" is a uni-directional association
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
     }
 
     //  Validate aggregations

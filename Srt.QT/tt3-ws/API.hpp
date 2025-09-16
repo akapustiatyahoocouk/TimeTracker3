@@ -41,6 +41,8 @@
 #include "tt3-ws/Activity.hpp"
 #include "tt3-ws/PublicActivity.hpp"
 
+#include "tt3-ws/Workload.hpp"
+
 #include "tt3-ws/Notifications.hpp"
 #include "tt3-ws/Exceptions.hpp"
 

@@ -24,8 +24,7 @@ CreateActivityTypeDialog::CreateActivityTypeDialog(
         QWidget * parent,
         tt3::ws::Workspace workspace,
         const tt3::ws::Credentials & credentials
-    )
-    :   QDialog(parent),
+    ) : QDialog(parent),
         //  Implementation
         _workspace(workspace),
         _credentials(credentials),

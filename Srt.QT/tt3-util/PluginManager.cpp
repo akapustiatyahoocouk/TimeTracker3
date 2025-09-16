@@ -56,7 +56,7 @@ void PluginManager::loadPlugins()
                     impl->initializedPlugins.insert(plugin);
                     keepGoing = true;
                 }
-                catch (...)
+                catch (const tt3::util::Exception &)
                 {   //  OOPS! Plugin initialization failed. Maybe, next round ?
                 }
             }

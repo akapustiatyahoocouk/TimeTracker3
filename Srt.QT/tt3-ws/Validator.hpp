@@ -17,9 +17,11 @@
 
 namespace tt3::ws
 {
-    //  An agent that, for a given workspace [type]
-    //  can decide whether a specific value is valid
-    //  for a specific property of a specific object
+    /// \class Validator tt3-ws/API.hpp
+    /// \brief
+    ///     An agent that, for a given workspace [type]
+    ///     can decide whether a specific value is valid
+    ///     for a specific property of a specific object.
     class TT3_WS_PUBLIC Validator final
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Validator)
@@ -29,30 +31,61 @@ namespace tt3::ws
         //////////
         //  Construction/destruction
     private:
-        explicit Validator(tt3::db::api::IValidator * databaseValidator)
-            :   _databaseValidator(databaseValidator) { Q_ASSERT(_databaseValidator != nullptr); }
+        explicit Validator(
+                tt3::db::api::IValidator * databaseValidator
+            ) : _databaseValidator(databaseValidator)
+        {
+            Q_ASSERT(_databaseValidator != nullptr);
+        }
         ~Validator() = default;
 
         //////////
         //  Operations
+        //  TODO convert these into const properties!
     public:
         //  We can piggyback on some DB API types.
         using Principal = tt3::db::api::IValidator::IPrincipalValidator;
         using User = tt3::db::api::IValidator::IUserValidator;
         using Account = tt3::db::api::IValidator::IAccountValidator;
         using ActivityType = tt3::db::api::IValidator::IActivityTypeValidator;
+        using Activity = tt3::db::api::IValidator::IActivityValidator;
+        using PublicActivity = tt3::db::api::IValidator::IPublicActivityValidator;
 
-        //  The validator for Principals.
+        /// \brief
+        ///     Returns the validator for Principals.
+        /// \return
+        ///     The validator for Principals.
         Principal * principal() const { return _databaseValidator->principal(); }
 
-        //  The validator for Users.
+        /// \brief
+        ///     Returns the validator for Users.
+        /// \return
+        ///     The validator for Users.
         User *      user() const { return _databaseValidator->user(); }
 
-        //  The validator for Accounts.
+        /// \brief
+        ///     Returns the validator for Accounts.
+        /// \return
+        ///     The validator for Accounts.
         Account *   account() const { return _databaseValidator->account(); }
 
-        //  The validator for ActivityTypes.
+        /// \brief
+        ///     Returns the validator for ActivityTypes.
+        /// \return
+        ///     The validator for ActivityTypes.
         ActivityType *  activityType() const { return _databaseValidator->activityType(); }
+
+        /// \brief
+        ///     Returns the validator for Activities.
+        /// \return
+        ///     The validator for Activities.
+        Activity *      activity() const { return _databaseValidator->activity(); }
+
+        /// \brief
+        ///     Returns the validator for PublicActivities.
+        /// \return
+        ///     The validator for PublicActivities.
+        PublicActivity *publicActivity() const { return _databaseValidator->publicActivity(); }
 
         //////////
         //  Implementation
