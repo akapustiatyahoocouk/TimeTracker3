@@ -93,6 +93,12 @@ CreatePublicActivityDialog::Result CreatePublicActivityDialog::doModal()
 
 //////////
 //  Implementation helpers
+auto CreatePublicActivityDialog::_selectedActivityType(
+    ) -> tt3::ws::ActivityType
+{
+    return _ui->activityTypeComboBox->currentData().value<tt3::ws::ActivityType>();
+}
+
 auto CreatePublicActivityDialog::_selectedTimeout(
     ) -> tt3::ws::InactivityTimeout
 {
@@ -164,8 +170,8 @@ void CreatePublicActivityDialog::accept()
             _ui->requireCommentOnStartCheckBox->isChecked(),
             _ui->requireCommentOnFinishCheckBox->isChecked(),
             _ui->fullScreenReminderCheckBox->isChecked(),
-            _activityType,
-            _workload);
+            _selectedActivityType(),
+            _selectedWorkload);
         done(int(Result::Ok));
     }
     catch (const tt3::util::Exception & ex)
