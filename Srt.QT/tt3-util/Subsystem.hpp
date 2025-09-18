@@ -61,7 +61,8 @@ namespace tt3::util
         //  Members
     public:
         //  The "Applications" subsystems (i.e. .EXE files)
-        class TT3_UTIL_PUBLIC Applications final : public virtual ISubsystem
+        class TT3_UTIL_PUBLIC Applications final
+            :   public virtual ISubsystem
         {
             DECLARE_SINGLETON(Applications);
 
@@ -74,7 +75,8 @@ namespace tt3::util
         };
 
         //  The "Storage" subsystems (data storage)
-        class TT3_UTIL_PUBLIC Storage final : public virtual ISubsystem
+        class TT3_UTIL_PUBLIC Storage final
+            :   public virtual ISubsystem
         {
             DECLARE_SINGLETON(Storage);
 
@@ -87,7 +89,8 @@ namespace tt3::util
         };
 
         //  The "GUI" subsystems (user interface)
-        class TT3_UTIL_PUBLIC Gui final : public virtual ISubsystem
+        class TT3_UTIL_PUBLIC Gui final
+            :   public virtual ISubsystem
         {
             DECLARE_SINGLETON(Gui);
 
@@ -100,7 +103,8 @@ namespace tt3::util
         };
 
         //  The "Reporting" subsystems (quick/full reports)
-        class TT3_UTIL_PUBLIC Reporting final : public virtual ISubsystem
+        class TT3_UTIL_PUBLIC Reporting final
+            :   public virtual ISubsystem
         {
             DECLARE_SINGLETON(Reporting);
 
@@ -113,7 +117,8 @@ namespace tt3::util
         };
 
         //  The "Utility" subsystems (e.g. support libraries)
-        class TT3_UTIL_PUBLIC Utility final : public virtual ISubsystem
+        class TT3_UTIL_PUBLIC Utility final
+            :   public virtual ISubsystem
         {
             DECLARE_SINGLETON(Utility);
 

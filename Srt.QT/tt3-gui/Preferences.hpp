@@ -151,7 +151,8 @@ namespace tt3::gui
 
     /// \class GeneralPreferences tt3-gui/API.hpp
     /// \brief The "/General" preferences.
-    class TT3_GUI_PUBLIC GeneralPreferences final : public Preferences
+    class TT3_GUI_PUBLIC GeneralPreferences final
+        :   public Preferences
     {
         DECLARE_SINGLETON(GeneralPreferences)
 
@@ -167,7 +168,8 @@ namespace tt3::gui
 
     /// \class GeneralAppearancePreferences tt3-gui/API.hpp
     /// \brief The "/General/Appearance" preferences.
-    class TT3_GUI_PUBLIC GeneralAppearancePreferences final : public Preferences
+    class TT3_GUI_PUBLIC GeneralAppearancePreferences final
+        :   public Preferences
     {
         DECLARE_SINGLETON(GeneralAppearancePreferences)
 
@@ -183,7 +185,8 @@ namespace tt3::gui
 
     /// \class GeneralStartupPreferences tt3-gui/API.hpp
     /// \brief The "/General/Startup" preferences.
-    class TT3_GUI_PUBLIC GeneralStartupPreferences final : public Preferences
+    class TT3_GUI_PUBLIC GeneralStartupPreferences final
+        :   public Preferences
     {
         DECLARE_SINGLETON(GeneralStartupPreferences)
 
@@ -199,7 +202,8 @@ namespace tt3::gui
 
     /// \class GeneralDialogsPreferences tt3-gui/API.hpp
     /// \brief The "/General/Dialogs" preferences.
-    class TT3_GUI_PUBLIC GeneralDialogsPreferences final : public Preferences
+    class TT3_GUI_PUBLIC GeneralDialogsPreferences final
+        :   public Preferences
     {
         DECLARE_SINGLETON(GeneralDialogsPreferences)
 

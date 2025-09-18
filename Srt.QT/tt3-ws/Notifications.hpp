@@ -43,7 +43,8 @@ namespace tt3::ws
     };
 
     //  Emitted when a workspace is closed
-    class TT3_WS_PUBLIC WorkspaceClosedNotification : public ChangeNotification
+    class TT3_WS_PUBLIC WorkspaceClosedNotification
+        :   public ChangeNotification
     {
         //////////
         //  Construction/destruction/assignment
@@ -54,7 +55,8 @@ namespace tt3::ws
     };
 
     //  Emitted after a new object is created
-    class TT3_WS_PUBLIC ObjectCreatedNotification : public ChangeNotification
+    class TT3_WS_PUBLIC ObjectCreatedNotification
+        :   public ChangeNotification
     {
         //////////
         //  Construction/destruction/assignment
@@ -81,7 +83,8 @@ namespace tt3::ws
     };
 
     //  Emitted after an object is destroyed
-    class TT3_WS_PUBLIC ObjectDestroyedNotification : public ChangeNotification
+    class TT3_WS_PUBLIC ObjectDestroyedNotification
+        :   public ChangeNotification
     {
         //////////
         //  Construction/destruction/assignment
@@ -110,7 +113,8 @@ namespace tt3::ws
     //  Emitted after an object is modified.
     //  This includes both changes to object's
     //  properties and changes to its associations.
-    class TT3_WS_PUBLIC ObjectModifiedNotification : public ChangeNotification
+    class TT3_WS_PUBLIC ObjectModifiedNotification
+        :   public ChangeNotification
     {
         //////////
         //  Construction/destruction/assignment

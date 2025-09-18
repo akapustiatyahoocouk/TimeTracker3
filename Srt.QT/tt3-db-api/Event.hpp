@@ -19,7 +19,8 @@ namespace tt3::db::api
 {
     /// \class IEvent tt3-db-api/API.hpp
     /// \brief A recorded event.
-    class TT3_DB_API_PUBLIC IEvent : public virtual IObject
+    class TT3_DB_API_PUBLIC IEvent
+        :   public virtual IObject
     {
         //////////
         //  This is an interface

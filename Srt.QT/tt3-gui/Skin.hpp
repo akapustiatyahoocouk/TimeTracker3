@@ -155,7 +155,8 @@ namespace tt3::gui
     ///     exists, and other instances should NOT be
     ///     constructed.
     //      Can be nullptr if there is no "current" skin.
-    class TT3_GUI_PUBLIC CurrentSkin final : public QObject
+    class TT3_GUI_PUBLIC CurrentSkin final
+        :   public QObject
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentSkin)

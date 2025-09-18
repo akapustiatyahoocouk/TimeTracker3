@@ -19,9 +19,10 @@
 
 namespace tt3::gui
 {
-    //  The modal "show configuration" dialog
     namespace Ui { class ShowConfigurationDialog; }
 
+    /// \class ShowConfigurationDialog tt3-gui/API.hpp
+    /// \brief The modal "show configuration" dialog.
     class TT3_GUI_PUBLIC ShowConfigurationDialog final
         :   private QDialog
     {
@@ -31,20 +32,30 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        explicit ShowConfigurationDialog(QWidget * parent);
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        explicit ShowConfigurationDialog(
+                QWidget * parent
+            );
+
+        /// \brief
+        ///     The class destructor.
         virtual ~ShowConfigurationDialog();
 
         //////////
         //  Operations
     public:
-        //  Runs the dialog modally
-        void            doModal();
+        /// \brief
+        ///     Runs the dialog modally.
+        void        doModal();
 
         //////////
         //  Implementation
     private:
         //  Helpers
-        void            _refresh();
+        void        _refresh();
 
         //////////
         //  Controls
@@ -54,8 +65,8 @@ namespace tt3::gui
         //////////
         //  Signal handlers
     private slots:
-        void            _configurationTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
-        void            _showLicensePushButtonClicked();
+        void        _configurationTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
+        void        _showLicensePushButtonClicked();
     };
 }
 

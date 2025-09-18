@@ -19,7 +19,8 @@ namespace tt3::ws
 {
     //////////
     //  The common base class for all workspace - level exceptions
-    class TT3_WS_PUBLIC WorkspaceException : public tt3::util::Exception
+    class TT3_WS_PUBLIC WorkspaceException
+        :   public tt3::util::Exception
     {
         //////////
         //  Construction/destruction/assignment
@@ -40,7 +41,8 @@ namespace tt3::ws
     };
 
     //  Thrown when an invalid workspace address is specified
-    class TT3_WS_PUBLIC InvalidWorkspaceAddressException : public WorkspaceException
+    class TT3_WS_PUBLIC InvalidWorkspaceAddressException
+        :   public WorkspaceException
     {
         //////////
         //  Types:
@@ -64,7 +66,8 @@ namespace tt3::ws
     };
 
     //  Thrown when a single-user workspace is already in use
-    class TT3_WS_PUBLIC WorkspaceInUseException : public WorkspaceException
+    class TT3_WS_PUBLIC WorkspaceInUseException
+        :   public WorkspaceException
     {
         friend class WorkspaceException;
 
@@ -111,7 +114,8 @@ namespace tt3::ws
     };
 
     //  Thrown when a workspace is corrupt
-    class TT3_WS_PUBLIC WorkspaceCorruptException : public WorkspaceException
+    class TT3_WS_PUBLIC WorkspaceCorruptException
+        :   public WorkspaceException
     {
         friend class WorkspaceException;
 
@@ -158,7 +162,8 @@ namespace tt3::ws
     };
 
     //  Thrown when a service is called on a closed Workspace.
-    class TT3_WS_PUBLIC WorkspaceClosedException : public WorkspaceException
+    class TT3_WS_PUBLIC WorkspaceClosedException
+        :   public WorkspaceException
     {
         //////////
         //  Types
@@ -183,7 +188,8 @@ namespace tt3::ws
     };
 
     //  Thrown when a workspace service is access-denied
-    class TT3_WS_PUBLIC AccessDeniedException : public WorkspaceException
+    class TT3_WS_PUBLIC AccessDeniedException
+        :   public WorkspaceException
     {
         //////////
         //  Types
@@ -208,7 +214,8 @@ namespace tt3::ws
     };
 
     //  Thrown when attempting to assign an invalid value to a property
-    class TT3_WS_PUBLIC InvalidPropertyValueException : public WorkspaceException
+    class TT3_WS_PUBLIC InvalidPropertyValueException
+        :   public WorkspaceException
     {
         //////////
         //  Types
@@ -266,7 +273,8 @@ namespace tt3::ws
 
     //  Thrown when an object with the specified property value,
     //  which is supposed to be unique, already exists
-    class TT3_WS_PUBLIC AlreadyExistsException : public WorkspaceException
+    class TT3_WS_PUBLIC AlreadyExistsException
+        :   public WorkspaceException
     {
         //////////
         //  Types
@@ -324,7 +332,8 @@ namespace tt3::ws
 
     //  Thrown when an object with the specified property value,
     //  which is supposed to exist, does not.
-    class TT3_WS_PUBLIC DoesNotExistException : public WorkspaceException
+    class TT3_WS_PUBLIC DoesNotExistException
+        :   public WorkspaceException
     {
         //////////
         //  Types
@@ -381,7 +390,8 @@ namespace tt3::ws
     };
 
     //  Thrown when attempting to access a "dead" instance
-    class TT3_WS_PUBLIC InstanceDeadException : public WorkspaceException
+    class TT3_WS_PUBLIC InstanceDeadException
+        :   public WorkspaceException
     {
         //////////
         //  Types
@@ -407,7 +417,8 @@ namespace tt3::ws
 
     //  Thrown when attempting to leave workspace without
     //  an enbled administrator user+account
-    class TT3_WS_PUBLIC AccessWouldBeLostException : public WorkspaceException
+    class TT3_WS_PUBLIC AccessWouldBeLostException
+        :   public WorkspaceException
     {
         //////////
         //  Types
@@ -487,7 +498,8 @@ namespace tt3::ws
     };
 
     //  Thrown when must carry a custom error message (from OS, etc.)
-    class TT3_WS_PUBLIC CustomWorkspaceException : public WorkspaceException
+    class TT3_WS_PUBLIC CustomWorkspaceException
+        :   public WorkspaceException
     {
         //////////
         //  Types

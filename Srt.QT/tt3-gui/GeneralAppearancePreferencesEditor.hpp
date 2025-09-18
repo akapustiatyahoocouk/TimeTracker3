@@ -27,7 +27,8 @@ namespace tt3::gui
     //  The "/General/Appearance" preferences editor
     namespace Ui { class GeneralAppearancePreferencesEditor; }
 
-    class TT3_GUI_PUBLIC GeneralAppearancePreferencesEditor final : public PreferencesEditor
+    class TT3_GUI_PUBLIC GeneralAppearancePreferencesEditor final
+        :   public PreferencesEditor
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(GeneralAppearancePreferencesEditor)

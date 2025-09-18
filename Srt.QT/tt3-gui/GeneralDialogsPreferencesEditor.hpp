@@ -23,7 +23,8 @@ namespace tt3::gui
 {
     namespace Ui { class GeneralDialogsPreferencesEditor; }
 
-    class TT3_GUI_PUBLIC GeneralDialogsPreferencesEditor final : public PreferencesEditor
+    class TT3_GUI_PUBLIC GeneralDialogsPreferencesEditor final
+        :   public PreferencesEditor
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(GeneralDialogsPreferencesEditor)

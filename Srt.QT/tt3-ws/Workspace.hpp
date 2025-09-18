@@ -21,7 +21,8 @@ namespace tt3::ws
 {
     //  A "workspace" is a connection to a
     //  persistent  container of business data.
-    class TT3_WS_PUBLIC WorkspaceImpl final : public QObject
+    class TT3_WS_PUBLIC WorkspaceImpl final
+        :   public QObject
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkspaceImpl)
@@ -415,7 +416,8 @@ namespace tt3::ws
     //  Only one global static instance of this class exists,
     //  and other instances should NOT be constructed.
     //  Can be nullptr if there is no "current" workspace.
-    class TT3_WS_PUBLIC CurrentWorkspace final : public QObject
+    class TT3_WS_PUBLIC CurrentWorkspace final
+        :   public QObject
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentWorkspace)

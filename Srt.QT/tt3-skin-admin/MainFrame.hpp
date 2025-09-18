@@ -25,7 +25,8 @@ namespace tt3::skin::admin
 
     /// \class MainFrame tt3-skin-admin/API.hpp
     /// \brief Main frame of the admin skin.
-    class TT3_SKIN_ADMIN_PUBLIC MainFrame : public QMainWindow
+    class TT3_SKIN_ADMIN_PUBLIC MainFrame
+        :   public QMainWindow
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(MainFrame)
@@ -129,8 +130,10 @@ namespace tt3::skin::admin
         void            _managersTabWidgetCurrentChanged(int);
     };
 
-    //  A helper class for opening recent workspaces
-    class TT3_SKIN_ADMIN_PUBLIC RecentWorkspaceOpener final : public QObject
+    /// \class RecentWorkspaceOpener tt3-skin-admin/API.hpp
+    /// \brief A helper class for opening recent workspaces.
+    class TT3_SKIN_ADMIN_PUBLIC RecentWorkspaceOpener final
+        :   public QObject
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(RecentWorkspaceOpener)
@@ -138,7 +141,7 @@ namespace tt3::skin::admin
         friend class MainFrame;
 
         //////////
-        //  Construction/destruction
+        //  Construction/destruction - from friends only
     private:
         RecentWorkspaceOpener(MainFrame * mainFrame, const tt3::ws::WorkspaceAddress & workspaceAddress);
         virtual ~RecentWorkspaceOpener();
@@ -150,7 +153,7 @@ namespace tt3::skin::admin
         const tt3::ws::WorkspaceAddress _workspaceAddress;
 
         //////////
-        //  Eveht handlers
+        //  Event handlers
     private slots:
         void            _onTriggered();
     };

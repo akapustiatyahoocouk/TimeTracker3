@@ -5,7 +5,8 @@
 
 namespace tt3::util
 {
-    //  A generic object that can be used for inter-thread synchronisation
+    /// \class SynchronisationObject tt3-util/API.hpp
+    /// \brief A generic object that can be used for thread synchronisation.
     class TT3_UTIL_PUBLIC SynchronisationObject
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(SynchronisationObject)
@@ -13,28 +14,41 @@ namespace tt3::util
         //////////
         //  Construction/destruction
     public:
+        /// \brief
+        ///     The class constructor.
         SynchronisationObject() = default;
+
+        /// \brief
+        ///     The class destructor.
         virtual ~SynchronisationObject() = default;
 
         //////////
         //  Operations
     public:
-        //  "Grabs" this synchronization object, waiying
-        //  until it is available for grabbing.
+        /// \brief
+        ///     "Grabs" this synchronization object, idle-waiting
+        ///     until it is available for grabbing.
         virtual void    grab() = 0;
 
-        //  "Grabs" this synchronization object, waiying
-        //  until it is available for grabbing OR the specified
-        //  timeout expires.
-        //  Returns true on grab success, false on timeout.
+        /// \brief
+        ///     "Grabs" this synchronization object, waiying
+        ///     until it is available for grabbing OR the specified
+        ///     timeout expires.
+        /// \param timeoutMs
+        ///     The timeout, in milliseconds, to want for.
+        /// \return
+        ///     True on grab success, false on timeout.
         virtual bool    tryGrab(int timeoutMs) = 0;
 
-        //  "Releases" a grabbed synchronization objecr.
+        /// \brief
+        ///     "Releases" a grabbed synchronization object.
         virtual void    release() = 0;
     };
 
-    //  A "lock" that "grabs" a synchronisation object in constructor and
-    //  "released" it in destructor
+    /// \class Lock tt3-util/API.hpp
+    /// \brief
+    ///     A helper object that "grabs" a synchronisation object
+    ///     in constructor and "released" it in destructor.
     class TT3_UTIL_PUBLIC Lock final
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Lock)
@@ -42,7 +56,16 @@ namespace tt3::util
         //////////
         //  Construction/destruction
     public:
-        explicit Lock(SynchronisationObject & guard) : _guard(guard) { _guard.grab(); }
+        /// \brief
+        ///     The class constructor; "grabs" the synchronization object.
+        /// \param guard
+        ///     The synchronization object to "grab".
+        explicit Lock(SynchronisationObject & guard)
+            :   _guard(guard) { _guard.grab(); }
+
+        /// \brief
+        ///     The class destructor; "releases" the synchronization
+        ///     object specified to the lock constructor.
         ~Lock() { _guard.release(); }
 
         //////////
@@ -51,15 +74,23 @@ namespace tt3::util
         SynchronisationObject & _guard;
     };
 
-    //  An extended mutex - only one thread can have it "grabbed"/"locked" at a time
-    class TT3_UTIL_PUBLIC Mutex : public SynchronisationObject
+    /// \class Mutex tt3-util/API.hpp
+    /// \brief An extended mutex - only one thread can
+    ///        have it "grabbed"/"locked" at a time.
+    class TT3_UTIL_PUBLIC Mutex
+        :   public SynchronisationObject
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Mutex)
 
         //////////
         //  Construction/destruction
     public:
+        /// \brief
+        ///     Constructs an initially un-"grabbed" mutex.
         Mutex() = default;
+
+        /// \brief
+        ///     The class destructor.
         virtual ~Mutex() = default;
 
         //////////
@@ -72,19 +103,52 @@ namespace tt3::util
         //////////
         //  Operations
     public:
-        //  Same as "grab()".
+        /// \brief
+        ///     "Locks" this Mutex, idle-waiting until it is
+        ///     available for locking.
+        /// \details
+        ///     Same as "grab()".
+        ///     A thread is allowed to repeatedly "lock" the same
+        ///     Mutex; later it must "unlock" that Mutex an equal
+        ///     number of times before another thread can "lock" it.
         void            lock();
 
-        //  Same as "tryGrab(timeoutMs)".
+        /// \brief
+        ///     "Locks" this Mutex, waiying until it is available for
+        ///     locking OR the specified timeout expires.
+        /// \details
+        ///     Same as "tryGrab(timeoutMs)".
+        ///     A thread is allowed to repeatedly "lock" the same
+        ///     Mutex; later it must "unlock" that Mutex an equal
+        ///     number of times before another thread can "lock" it.
+        /// \param timeoutMs
+        ///     The timeout, in milliseconds, to want for.
+        /// \return
+        ///     True on lock success, false on timeout.
         bool            tryLock(int timeoutMs);
 
-        //  Same as "release()".
+        /// \brief
+        ///     "Unlocks" a locked Mutex.
+        /// \details
+        ///     Same as "release()".
         void            unlock();
 
-        //  Checks whether this Mutex is locked by the specified thread.
+        /// \brief
+        ///     Checks whether this Mutex is locked by
+        ///     the specified thread.
+        /// \param thread
+        ///     The thread to check toe Mutex state for.
+        /// \return
+        ///     True if this Mutex is locked by the
+        ///     specified thread, else false.
         bool            isLockedBy(QThread * thread);
 
-        //  Checks whether this Mutex is locked by the current thread.
+        /// \brief
+        ///     Checks whether this Mutex is locked by
+        ///     the current thread.
+        /// \return
+        ///     True if this Mutex is locked by the
+        ///     current thread, else false.
         bool            isLockedByCurrentThread();
 
         //////////
@@ -98,7 +162,8 @@ namespace tt3::util
         QThread *       _lockingThread = nullptr;
     };
 
-    //  A "blocking inter-thread queue" ADT
+    /// \class BlockingQueue tt3-util/API.hpp
+    /// \brief A "blocking inter-thread queue" ADT.
     template <class T>
     class BlockingQueue
     {
@@ -107,25 +172,41 @@ namespace tt3::util
         //////////
         //  Construction/destruction
     public:
+        /// \brief
+        ///     Constructs an empty queue.
         BlockingQueue()
             :   _data(),
-            _dataSize(),
-            _dataGuard() {}
+                _dataSize(),
+                _dataGuard() {}
+
+        /// \brief
+        ///     The class destructor.
         ~BlockingQueue() {}
 
         //////////
         //  Operations
     public:
-        //  Adds value to the end of the queue.
+        /// \brief
+        ///     Adds value to the end of the queue.
+        /// \param value
+        ///     The value to add.
         void        enqueue(const T & value);
 
         //  Removes the value at the start of the queue and returns
         //  it, idle-waiting until one is actually available.
         T           dequeue();
 
-        //  Attempts to remove and store the item at the start
-        //  of the queue. On success, stores the value and returns
-        //  true; on timeout returns false.
+        /// \brief
+        ///     Attempts to remove and store the item at the start
+        ///     of the queue.
+        /// \param value
+        ///     The placeholder to store the value to if available.
+        ///     Remains unchanged if the call times out.
+        /// \param timeoutMs
+        ///     The timeout, in milliseconds, to wait for the queue
+        ///     to provide a value before giving up.
+        /// \return
+        ///     True on success (storing the value), false on timeout.
         bool        tryDequeue(T & value, int timeoutMs);
 
         //////////

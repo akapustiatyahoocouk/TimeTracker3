@@ -19,9 +19,10 @@
 
 namespace tt3::gui
 {
-    //  The modal "show license" dialog
     namespace Ui { class ShowLicenseDialog; }
 
+    /// \class ShowLicenseDialog tt3-gui/API.hpp
+    /// \brief The modal "show license" dialog.
     class TT3_GUI_PUBLIC ShowLicenseDialog final
         :   private QDialog
     {
@@ -31,13 +32,26 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        ShowLicenseDialog(QWidget * parent, tt3::util::ILicense * license);
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// \param license
+        ///     The license to display.
+        ShowLicenseDialog(
+                QWidget * parent,
+                tt3::util::ILicense * license
+            );
+
+        /// \brief
+        ///     The class destructor.
         virtual ~ShowLicenseDialog();
 
         //////////
         //  Operations
     public:
-        //  Runs the dialog modally
+        /// \brief
+        ///     Runs the dialog modally.
         void                doModal();
 
         //////////

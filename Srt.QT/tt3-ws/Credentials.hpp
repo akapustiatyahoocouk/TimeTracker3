@@ -81,7 +81,8 @@ namespace tt3::ws
 
     //////////
     //  The accessor for a "current" credentials.
-    class TT3_WS_PUBLIC CurrentCredentials final : public QObject
+    class TT3_WS_PUBLIC CurrentCredentials final
+        :   public QObject
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentCredentials)

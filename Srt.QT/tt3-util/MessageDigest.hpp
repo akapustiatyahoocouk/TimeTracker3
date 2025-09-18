@@ -89,7 +89,8 @@ namespace tt3::util
 
     //////////
     //  SHA-1 message digest
-    class TT3_UTIL_PUBLIC Sha1MessageDigest final : public virtual IMessageDigest
+    class TT3_UTIL_PUBLIC Sha1MessageDigest final
+        :   public virtual IMessageDigest
     {
         DECLARE_SINGLETON(Sha1MessageDigest)
 
@@ -107,7 +108,8 @@ namespace tt3::util
         //////////
         //  Implementation
     private:
-        class TT3_UTIL_PUBLIC _Builder : public Builder
+        class TT3_UTIL_PUBLIC _Builder
+            :   public Builder
         {
             CANNOT_ASSIGN_OR_COPY_CONSTRUCT(_Builder)
 

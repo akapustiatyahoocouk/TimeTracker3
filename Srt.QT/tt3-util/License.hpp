@@ -17,42 +17,70 @@
 
 namespace tt3::util
 {
-    //  A generic "License" is a legal displamer
-    //  of the rights and responsibilities of a product user
+    /// \class ILicense tt3-util/API.hpp
+    /// \brief
+    ///     A generic "License" is a legal disclamer of the
+    ///     rights and responsibilities of a product user.
     class TT3_UTIL_PUBLIC ILicense
     {
         //////////
         //  This is an interface
     protected:
+        /// \brief
+        ///     The empty [interface] constructor.
         ILicense() = default;
+
+        /// \brief
+        ///     The empty [interface] destructor.
         virtual ~ILicense() = default;
 
         //////////
         //  Operations
     public:
-        //  The mnemonic identifier of this license
+        /// \brief
+        ///     Returns the mnemonic identifier of this license.
+        /// \return
+        ///     The mnemonic identifier of this license.
         virtual Mnemonic    mnemonic() const = 0;
 
-        //  The user-readable display name of this license
-        //  for the current default locale.
+        /// \brief
+        ///     Returns the user-readable display name of this license.
+        /// \return
+        ///     The user-readable display name of this license
+        ///     for the current default locale.
         virtual QString     displayName() const = 0;
 
-        //  The short (1 line) description of this license
-        //  for the current default locale.
+        /// \brief
+        ///     Returns the short (1 line) description of
+        ///     this license.
+        /// \return
+        ///     The short (1 line) description of this license
+        ///     for the current default locale.
         virtual QString     description() const = 0;
 
-        //  The small (16x16) icon representing this license.
+        /// \brief
+        ///     Returns the small (16x16) icon representing this license.
+        /// \return
+        ///     The small (16x16) icon representing this license.
         virtual QIcon       smallIcon() const;
 
-        //  The large (32x32) icon representing this license.
+        /// \brief
+        ///     Returns the large (32x32) icon representing this license.
+        /// \return
+        ///     The large (32x32) icon representing this license.
         virtual QIcon       largeIcon() const;
 
-        //  The user-readable textual content of this license for
-        //  the current default locale in the fowm of an HTML document.
+        /// \brief
+        ///     Returns the user-readable textual content of this license
+        ///     in the fowm of an HTML document.
+        /// \return
+        ///     The user-readable textual content of this license for
+        ///     the current default locale in the fowm of an HTML document.
         virtual QString     contentAsHtml() const = 0;
     };
 
-    //  The standard (predefined) licenses
+    /// \class StandardLicenses tt3-util/API.hpp
+    /// \brief The standard (predefined) licenses.
     class TT3_UTIL_PUBLIC StandardLicenses final
     {
         UTILITY_CLASS(StandardLicenses)
@@ -60,8 +88,10 @@ namespace tt3::util
         //////////
         //  Members
     public:
-        //  The GPLv3 license
-        class TT3_UTIL_PUBLIC Gpl3 final : public virtual ILicense
+        /// \class Gpl3 tt3-util/PI.hpp
+        /// \brief The GPLv3 license.
+        class TT3_UTIL_PUBLIC Gpl3 final
+            :   public virtual ILicense
         {
             DECLARE_SINGLETON(Gpl3)
 
@@ -81,8 +111,8 @@ namespace tt3::util
         };
     };
 
-    //////////
-    //  The manager of known Licenses
+    /// \class LicenseManager tt3-util/API.hpp
+    /// \brief The manager of known Licenses.
     class TT3_UTIL_PUBLIC LicenseManager final
     {
         UTILITY_CLASS(LicenseManager)
@@ -90,15 +120,28 @@ namespace tt3::util
         //////////
         //  Operations
     public:
-        //  Returns the set of all registered licenses.
+        /// \brief
+        ///     Returns the set of all registered licenses.
+        /// \return
+        ///     The set of all registered licenses.
         static Licenses     allLicenses();
 
-        //  Registers the specified License; returns true
-        //  on success, false on failure.
+        /// \brief
+        ///     Registers the specified License.
+        /// \param license
+        ///     The License to register.
+        /// \return
+        ///     True on success, false on failure. Repeated regiatration
+        ///     of the same License is treated as a "success".
         static bool         registerLicense(ILicense * license);
 
-        //  Finds a registered License by its mnemonic;
-        //  returns nullptr if not found.
+        /// \brief
+        ///     Finds a registered License by its mnemonic.
+        /// \param mnemonic
+        ///     The mnemonic to look for.
+        /// \return
+        ///     The registered License with the required mnemonic;
+        ///     nullptr if not found.
         static ILicense *   findLicense(const Mnemonic & mnemonic);
 
         //////////

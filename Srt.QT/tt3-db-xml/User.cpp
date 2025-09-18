@@ -31,6 +31,7 @@ User::~User()
 {
     Q_ASSERT(!_database->_users.contains(this));
     Q_ASSERT(_accounts.isEmpty());
+    Q_ASSERT(_permittedWorkloads.isEmpty());
 }
 
 //////////

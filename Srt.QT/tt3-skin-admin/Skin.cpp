@@ -20,16 +20,8 @@ using namespace tt3::skin::admin;
 //////////
 //  Singleton
 IMPLEMENT_SINGLETON(Skin)
-
-Skin::Skin()
-    :   _smallIcon(":/tt3-skin-admin/Resources/Images/Objects/AdminSkinSmall.png"),
-        _largeIcon(":/tt3-skin-admin/Resources/Images/Objects/AdminSkinLarge.png")
-{
-}
-
-Skin::~Skin()
-{
-}
+Skin::Skin() {}
+Skin::~Skin() {}
 
 //////////
 //  gui::ISkin
@@ -50,12 +42,14 @@ QString Skin::description() const
 
 QIcon Skin::smallIcon() const
 {
-    return _smallIcon;
+    static const QIcon icon(":/tt3-skin-admin/Resources/Images/Objects/AdminSkinSmall.png");
+    return icon;
 }
 
 QIcon Skin::largeIcon() const
 {
-    return _largeIcon;
+    static const QIcon icon(":/tt3-skin-admin/Resources/Images/Objects/AdminSkinLarge.png");
+    return icon;
 }
 
 bool Skin::isDefault() const

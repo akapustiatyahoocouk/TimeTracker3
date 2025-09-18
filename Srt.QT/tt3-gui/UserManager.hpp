@@ -19,10 +19,12 @@
 
 namespace tt3::gui
 {
-    //  The User Manager widget
     namespace Ui { class UserManager; }
 
-    class TT3_GUI_PUBLIC UserManager : public QWidget
+    /// \class UserManager tt3-gui/API.hpp
+    /// \brief The User Manager widget.
+    class TT3_GUI_PUBLIC UserManager
+        :   public QWidget
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(UserManager)
@@ -30,37 +32,82 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        explicit UserManager(QWidget * parent);
+        /// \brief
+        ///     Constructs the dialog
+        /// \param parent
+        ///     The parent for the widget; nullptr == none.
+        explicit UserManager(
+                QWidget * parent
+            );
+
+        /// \brief
+        ///     The class destructor.
         virtual ~UserManager();
 
         //////////
         //  Operaions
     public:
-        //  Returns/sets the workspace currently viewed
-        //  in this widget; nullptr == none.
-        //  Starts off with the "current" workspace
-        //  when the widget is constructed.
+        /// \brief
+        ///     Returns the workspace currently viewed in
+        ///     this widget.
+        /// \details
+        ///     Starts off with the "current" workspace when the
+        ///     widget is constructed.
+        /// \return
+        ///     The workspace currently viewed in this
+        ///     widget; nullptr == none.
         tt3::ws::Workspace  workspace() const;
-        void                setWorkspace(tt3::ws::Workspace workspace);
 
-        //  Returns/sets the credentials used by this
-        //  widget to display the workspace.
-        //  Starts off with the "current" credentials
-        //  when the widget is constructed.
+        /// \brief
+        ///     Sets the workspace currently viewed in
+        ///     this widget.
+        /// \param workspace
+        ///     The workspace to be viewed in this widget;
+        ///     nullptr == none.
+        void                setWorkspace(
+                                    tt3::ws::Workspace workspace
+                                );
+
+        /// \brief
+        ///     Returns the credentials used by this widget to
+        ///     display the workspace.
+        /// \details
+        ///     Starts off with the "current" credentials when
+        ///     the widget is constructed.
+        /// \return
+        ///     The credentials used by this widget to display
+        ///     the workspace.
         tt3::ws::Credentials credentials() const;
-        void                setCredentials(const tt3::ws::Credentials & credentials);
 
-        //  Refreshes the content of this widget
+        /// \brief
+        ///     Sets the credentials used by this widget to
+        ///     display the workspace.
+        /// \param credentials
+        ///     The credentials to be used by this widget to
+        ///     display the workspace.
+        void                setCredentials(
+                                    const tt3::ws::Credentials & credentials
+                                );
+
+        /// \brief
+        ///     Refreshes the content of this widget.
         void                refresh();
 
-        //  Requests that refresh() br called as soon as
-        //  practicable on this widget's event loop thread
+        /// \brief
+        ///     Requests that refresh() br called as soon as
+        ///     practicable on this widget's event loop thread.
         void                requestRefresh();
 
         //////////
         //  Signals
     signals:
-        //  Emitted when this widget needs to refresh()
+        /// \brief
+        ///     Emitted when this widget needs to refresh().
+        /// \details
+        ///     The widget itself always subscribes to this
+        ///     signal to handle internal refresh requests; however,
+        ///     the signal allows external listeners to react to
+        ///     the widget's refresh requests as well.
         void                refreshRequested();
 
         //////////

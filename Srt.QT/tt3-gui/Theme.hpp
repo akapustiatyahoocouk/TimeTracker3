@@ -91,7 +91,8 @@ namespace tt3::gui
     public:
         /// \class System tt3-gui/API.hpp
         /// \brief The system theme.
-        class TT3_GUI_PUBLIC System final : public virtual ITheme
+        class TT3_GUI_PUBLIC System final
+            :   public virtual ITheme
         {
             DECLARE_SINGLETON(System)
 
@@ -113,7 +114,8 @@ namespace tt3::gui
 
         /// \class Light tt3-gui/API.hpp
         /// \brief The "light" theme.
-        class TT3_GUI_PUBLIC Light final : public virtual ITheme
+        class TT3_GUI_PUBLIC Light final
+            :   public virtual ITheme
         {
             DECLARE_SINGLETON(Light)
 
@@ -135,7 +137,8 @@ namespace tt3::gui
 
         /// \class Dark tt3-gui/API.hpp
         /// \brief The "dark" theme.
-        class TT3_GUI_PUBLIC Dark final : public virtual ITheme
+        class TT3_GUI_PUBLIC Dark final
+            :   public virtual ITheme
         {
             DECLARE_SINGLETON(Dark)
 
@@ -205,7 +208,8 @@ namespace tt3::gui
     ///     Only one global static instance of this class
     ///     exists, and other instances should NOT be
     ///     constructed. Cannot be nullptr,
-    class TT3_GUI_PUBLIC CurrentTheme final : public QObject
+    class TT3_GUI_PUBLIC CurrentTheme final
+        :   public QObject
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentTheme)

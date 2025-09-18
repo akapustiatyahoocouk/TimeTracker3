@@ -19,7 +19,8 @@ using namespace tt3::db::xml;
 
 namespace
 {
-    class XmlDbPlugin final : public virtual tt3::util::IPlugin
+    class XmlDbPlugin final
+        :   public virtual tt3::util::IPlugin
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(XmlDbPlugin)
 

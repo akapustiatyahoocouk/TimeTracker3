@@ -19,7 +19,8 @@ using namespace tt3::skin::admin;
 
 namespace
 {
-    class AdminSkinPlugin final : public virtual tt3::util::IPlugin
+    class AdminSkinPlugin final
+        :   public virtual tt3::util::IPlugin
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AdminSkinPlugin)
 

@@ -187,7 +187,8 @@ namespace tt3::db::xml
         QMap<tt3::db::api::Oid, Object*> _graveyard;    //  All "dead" objects
 
         //  Database file locking mechanism
-        class TT3_DB_XML_PUBLIC _LockRefresher final : public QThread
+        class TT3_DB_XML_PUBLIC _LockRefresher final
+            :   public QThread
         {
             CANNOT_ASSIGN_OR_COPY_CONSTRUCT(_LockRefresher)
 

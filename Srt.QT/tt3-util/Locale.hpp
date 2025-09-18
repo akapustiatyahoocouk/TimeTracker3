@@ -19,8 +19,8 @@
 
 namespace tt3::util
 {
-    //////////
-    //  The manager of known Locales
+    /// \class LocaleManager tt3-util/API.hpp
+    /// \brief The manager of known Locales.
     class TT3_UTIL_PUBLIC LocaleManager final
     {
         UTILITY_CLASS(LocaleManager)
@@ -28,14 +28,29 @@ namespace tt3::util
         //////////
         //  Operations
     public:
-        //  Returns the small (16x16) icon representing the specified locale.
-        static QIcon        smallIcon(const QLocale & locale);
+        /// \brief
+        ///     Returns the small (16x16) icon representing the specified locale.
+        /// \param locale
+        ///     The locale.
+        /// \return
+        ///     The small (16x16) icon representing the specified locale.
+        static QIcon    smallIcon(const QLocale & locale);
 
-        //  Returns the large (32x32) icon representing the specified locale.
-        static QIcon        largeIcon(const QLocale & locale);
+        /// \brief
+        ///     Returns the large (32x32) icon representing the specified locale.
+        /// \param locale
+        ///     The locale.
+        /// \return
+        ///     The large (32x32) icon representing the specified locale.
+        static QIcon    largeIcon(const QLocale & locale);
 
-        //  Returns the user-readable display name of the specified locale.
-        static QString      displayName(const QLocale & locale);
+        /// \brief
+        ///     Returns user-readable display name of the specified locale.
+        /// \param locale
+        ///     The locale.
+        /// \return
+        ///     The user-readable display name of the specified locale.
+        static QString  displayName(const QLocale & locale);
 
         //////////
         //  Implementation
@@ -43,15 +58,18 @@ namespace tt3::util
         struct _Impl;
 
         //  Helpers
-        static _Impl *      _impl();
+        static _Impl *  _impl();
     };
 
-    //  The accessor for a "current default" locale.
-    //  Only one global static instance of this class
-    //  exists, and other instances should NOT be
-    //  constructed.
-    //  Acts as a wrapper over QLocale::default().
-    class TT3_UTIL_PUBLIC CurrentLocale final : public QObject
+    /// \class CurrentLocale tt3-util/API.hpp
+    /// \brief The accessor for a "current default" locale.
+    /// \details
+    ///     Only one global static instance of this class
+    ///     exists, and other instances should NOT be
+    ///     constructed.
+    ///     Acts as a wrapper over QLocale::default().
+    class TT3_UTIL_PUBLIC CurrentLocale final
+        :   public QObject
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentLocale)
@@ -59,24 +77,44 @@ namespace tt3::util
         //////////
         //  Construction/destruction
     public:
+        /// \brief
+        ///     The class constructor.
         CurrentLocale();
+
+        /// \brief
+        ///     The class destructor.
         virtual ~CurrentLocale();
         \
         //////////
         //  Operators
     public:
+        /// \brief
+        ///     Changes the "current" locale.
+        /// \param locale
+        ///     Thew locale to set as the "current" locale.
         void            operator = (const QLocale & locale);
+
+        /// \brief
+        ///     Returns the "current" locale.
+        /// \return
+        ///     The "current" locale; starts off as system locale.
                         operator QLocale () const;
 
         //////////
         //  Signals
     signals:
-        //  Emitted after the current locale has changed.
+        /// \brief
+        ///     Emitted after the "current" locale has changed.
+        /// \param before
+        ///     The "current" locale before the change.
+        /// \param after
+        ///     The "current" locale afters the change.
         void                changed(QLocale before, QLocale after);
 
         //////////
         //  Implementation
     private:
+        //  TODO use the "struct _Impl" trick
         static std::atomic<int>     _instanceCount; //  ...to disallow a second instance
         mutable tt3::util::Mutex    _currentLocaleGuard;
     };

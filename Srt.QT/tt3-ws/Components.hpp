@@ -18,7 +18,8 @@
 namespace tt3::ws
 {
     //  The "TT3 Workspace" component
-    class TT3_WS_PUBLIC Component final : public virtual tt3::util::IComponent
+    class TT3_WS_PUBLIC Component final
+        :   public virtual tt3::util::IComponent
     {
         DECLARE_SINGLETON(Component)
 
@@ -26,13 +27,15 @@ namespace tt3::ws
         //  Types
     public:
         //  The component's resources
-        class TT3_WS_PUBLIC Resources final : public tt3::util::FileResourceFactory
+        class TT3_WS_PUBLIC Resources final
+            :   public tt3::util::FileResourceFactory
         {
             DECLARE_SINGLETON(Resources)
         };
 
         //  The component's settings
-        class TT3_WS_PUBLIC Settings final : public tt3::util::Settings
+        class TT3_WS_PUBLIC Settings final
+            :   public tt3::util::Settings
         {
             DECLARE_SINGLETON(Settings)
 

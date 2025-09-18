@@ -19,7 +19,8 @@ namespace tt3
 {
     /// \class Application API.hpp "tt3/API.hpp"
     /// \brief The TimeTracker3 application.
-    class Application final : public QApplication
+    class Application final
+        :   public QApplication
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Application)
 

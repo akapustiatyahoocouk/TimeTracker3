@@ -113,7 +113,8 @@ namespace tt3::gui
 
     /// \class AddEmailAddressDialog tt3-gui/API.hpp
     /// \brief The "Add e-mail address" modal dialog.
-    class TT3_GUI_PUBLIC AddEmailAddressDialog final : public EditStringDialog
+    class TT3_GUI_PUBLIC AddEmailAddressDialog final
+        :   public EditStringDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AddEmailAddressDialog)
 
@@ -134,7 +135,8 @@ namespace tt3::gui
 
     /// \class ModifyEmailAddressDialog tt3-gui/API.hpp
     /// \brief The "Modify e-mail address" modal dialog.
-    class TT3_GUI_PUBLIC ModifyEmailAddressDialog final : public EditStringDialog
+    class TT3_GUI_PUBLIC ModifyEmailAddressDialog final
+        :   public EditStringDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ModifyEmailAddressDialog)
 

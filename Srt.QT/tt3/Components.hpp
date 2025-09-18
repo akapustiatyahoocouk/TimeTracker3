@@ -19,7 +19,8 @@ namespace tt3
 {
     /// \class Component API.hpp "tt3/API.hpp"
     /// \brief The "TT3 application" component.
-    class Component final : public virtual tt3::util::IComponent
+    class Component final
+        :   public virtual tt3::util::IComponent
     {
         DECLARE_SINGLETON(Component)
 
@@ -28,14 +29,16 @@ namespace tt3
     public:
         /// \brief
         ///     The component's resources.
-        class Resources final : public tt3::util::FileResourceFactory
+        class Resources final
+            :   public tt3::util::FileResourceFactory
         {
             DECLARE_SINGLETON(Resources)
         };
 
         /// \brief
         ///     The component's settings
-        class Settings final : public tt3::util::Settings
+        class Settings final
+            :   public tt3::util::Settings
         {
             DECLARE_SINGLETON(Settings)
 

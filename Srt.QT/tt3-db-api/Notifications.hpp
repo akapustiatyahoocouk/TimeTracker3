@@ -58,7 +58,8 @@ namespace tt3::db::api
 
     /// \class DatabaseClosedNotification tt3-db-api/API.hpp
     /// \brief Issued after a database is closed.
-    class TT3_DB_API_PUBLIC DatabaseClosedNotification : public ChangeNotification
+    class TT3_DB_API_PUBLIC DatabaseClosedNotification
+        :   public ChangeNotification
     {
         //////////
         //  Construction/destruction/assignment
@@ -76,7 +77,8 @@ namespace tt3::db::api
 
     /// \class ObjectCreatedNotification tt3-db-api/API.hpp
     /// \brief Issued after a new object is created in a database.
-    class TT3_DB_API_PUBLIC ObjectCreatedNotification : public ChangeNotification
+    class TT3_DB_API_PUBLIC ObjectCreatedNotification
+        :   public ChangeNotification
     {
         //////////
         //  Construction/destruction/assignment
@@ -120,7 +122,8 @@ namespace tt3::db::api
 
     /// \class ObjectDestroyedNotification tt3-db-api/API.hpp
     /// \brief Issued after an object is destroyed in a database.
-    class TT3_DB_API_PUBLIC ObjectDestroyedNotification : public ChangeNotification
+    class TT3_DB_API_PUBLIC ObjectDestroyedNotification
+        :   public ChangeNotification
     {
         //////////
         //  Construction/destruction/assignment
@@ -168,7 +171,8 @@ namespace tt3::db::api
     /// \details
     ///     This includes both modifying object's properties
     ///     and modifying its associations.
-    class TT3_DB_API_PUBLIC ObjectModifiedNotification : public ChangeNotification
+    class TT3_DB_API_PUBLIC ObjectModifiedNotification
+        :   public ChangeNotification
     {
         //////////
         //  Construction/destruction/assignment
@@ -214,7 +218,8 @@ namespace tt3::db::api
     /// \brief
     ///     A per-database agent that emits change
     ///     notification signals for that database.
-    class TT3_DB_API_PUBLIC ChangeNotifier final : public QObject
+    class TT3_DB_API_PUBLIC ChangeNotifier final
+        :   public QObject
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ChangeNotifier)
@@ -290,7 +295,8 @@ namespace tt3::db::api
         tt3::util::BlockingQueue<ChangeNotification*>   _pendingNotifications;
 
         //  The worker thread is where signals are emitted
-        class TT3_DB_API_PUBLIC _WorkerThread : public QThread
+        class TT3_DB_API_PUBLIC _WorkerThread
+            :   public QThread
         {
             CANNOT_ASSIGN_OR_COPY_CONSTRUCT(_WorkerThread)
 

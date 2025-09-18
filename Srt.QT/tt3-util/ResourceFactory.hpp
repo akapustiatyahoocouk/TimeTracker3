@@ -90,12 +90,16 @@ namespace tt3::util
         }
     };
 
-    //  A resource factory that loads localized resources
-    //  from a set of related "<base>_<ll>_<CC>.res" files.
-    //  Which files are found becomes the "set of supported
-    //  locales" for the FileResourceFactory; the default
-    //  base locale is "en_GB".
-    class TT3_UTIL_PUBLIC FileResourceFactory : public virtual IResourceFactory
+    /// \class FileResourceFactory tt3-util/API.hpp
+    /// \brief
+    ///     A resource factory that loads localized resources
+    ///     from a set of related "<base>_<ll>_<CC>.res" files.
+    /// \details
+    ///     Which files are found becomes the "set of supported
+    ///     locales" for the FileResourceFactory; the default
+    ///     base locale is "en_GB".
+    class TT3_UTIL_PUBLIC FileResourceFactory
+        :   public virtual IResourceFactory
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(FileResourceFactory)
 

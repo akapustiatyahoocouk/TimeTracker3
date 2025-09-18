@@ -25,7 +25,8 @@ namespace tt3::util
     /// \details
     ///     These are throwables intended to be caught; they will
     ///     never be throws if the TT3 operated in an ideal world.
-    class TT3_UTIL_PUBLIC Exception : public Throwable
+    class TT3_UTIL_PUBLIC Exception
+        :   public Throwable
     {
         using Self = Exception;
 
@@ -66,7 +67,8 @@ namespace tt3::util
 
     /// \class MissingResourceException tt3-util/API.hpp
     /// \brief Thrown when a requested resource is not available.
-    class TT3_UTIL_PUBLIC MissingResourceException : public Exception
+    class TT3_UTIL_PUBLIC MissingResourceException
+        :   public Exception
     {
         using Self = MissingResourceException;
 
@@ -138,7 +140,8 @@ namespace tt3::util
     /// \brief
     ///     Thrown when an attempt to parse a string
     ///     (or a portion thereof) fails.
-    class TT3_UTIL_PUBLIC ParseException : public Exception
+    class TT3_UTIL_PUBLIC ParseException
+        :   public Exception
     {
         using Self = ParseException;
 
@@ -202,7 +205,8 @@ namespace tt3::util
     /// \details
     ///     These are throwables NOT intended to be caught; they will
     ///     never be throws if the TT3 operated in a sane world.
-    class TT3_UTIL_PUBLIC Error : public Throwable
+    class TT3_UTIL_PUBLIC Error
+        :   public Throwable
     {
         using Self = Error;
 
@@ -246,7 +250,8 @@ namespace tt3::util
     /// \details
     ///     These are errors that indicate the need to fix an
     ///     issue in the program.
-    class TT3_UTIL_PUBLIC ProgramError : public Error
+    class TT3_UTIL_PUBLIC ProgramError
+        :   public Error
     {
         using Self = ProgramError;
 
@@ -263,7 +268,8 @@ namespace tt3::util
     /// \details
     ///     These are errors that indicate an unusual condition
     ///     in the system which prevents TT3 from running normally.
-    class TT3_UTIL_PUBLIC SystemError : public Error
+    class TT3_UTIL_PUBLIC SystemError
+        :   public Error
     {
         using Self = SystemError;
 
@@ -277,7 +283,8 @@ namespace tt3::util
 
     /// \class NotImplementedError tt3-util/API.hpp
     /// \brief Thrown when a feature is not implemented.
-    class TT3_UTIL_PUBLIC NotImplementedError : public ProgramError
+    class TT3_UTIL_PUBLIC NotImplementedError
+        :   public ProgramError
     {
         using Self = NotImplementedError;
 

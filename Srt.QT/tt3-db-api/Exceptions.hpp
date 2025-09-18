@@ -19,7 +19,8 @@ namespace tt3::db::api
 {
     /// \class DatabaseException tt3-db-api/API.hpp
     /// \brief The common base class for all DB API - level exceptions.
-    class TT3_DB_API_PUBLIC DatabaseException : public tt3::util::Exception
+    class TT3_DB_API_PUBLIC DatabaseException
+        :   public tt3::util::Exception
     {
         //////////
         //  Construction/destruction/assignment
@@ -31,7 +32,8 @@ namespace tt3::db::api
 
     /// \class InvalidDatabaseAddressException tt3-db-api/API.hpp
     /// \brief Thrown when an invalid database address is specified.
-    class TT3_DB_API_PUBLIC InvalidDatabaseAddressException : public DatabaseException
+    class TT3_DB_API_PUBLIC InvalidDatabaseAddressException
+        :   public DatabaseException
     {
         //////////
         //  Types:
@@ -56,7 +58,8 @@ namespace tt3::db::api
 
     /// \class DatabaseInUseException tt3-db-api/API.hpp
     /// \brief Thrown when a single-user database is already in use.
-    class TT3_DB_API_PUBLIC DatabaseInUseException : public DatabaseException
+    class TT3_DB_API_PUBLIC DatabaseInUseException
+        :   public DatabaseException
     {
         //////////
         //  Types
@@ -111,7 +114,8 @@ namespace tt3::db::api
 
     /// \class DatabaseCorruptException tt3-db-api/API.hpp
     /// \brief Thrown when a database is corrupt.
-    class TT3_DB_API_PUBLIC DatabaseCorruptException : public DatabaseException
+    class TT3_DB_API_PUBLIC DatabaseCorruptException
+        :   public DatabaseException
     {
         //////////
         //  Types
@@ -166,7 +170,8 @@ namespace tt3::db::api
 
     /// \class DatabaseClosedException tt3-db-api/API.hpp
     /// \brief Thrown when a service is called on a closed database.
-    class TT3_DB_API_PUBLIC DatabaseClosedException : public DatabaseException
+    class TT3_DB_API_PUBLIC DatabaseClosedException
+        :   public DatabaseException
     {
         //////////
         //  Types
@@ -194,7 +199,8 @@ namespace tt3::db::api
 
     /// \class AccessDeniedException tt3-db-api/API.hpp
     /// \brief Thrown when a database service is access-denied
-    class TT3_DB_API_PUBLIC AccessDeniedException : public DatabaseException
+    class TT3_DB_API_PUBLIC AccessDeniedException
+        :   public DatabaseException
     {
         //////////
         //  Types
@@ -222,7 +228,8 @@ namespace tt3::db::api
 
     /// \class InvalidPropertyValueException tt3-db-api/API.hpp
     /// \brief Thrown when attempting to assign an invalid value to a property.
-    class TT3_DB_API_PUBLIC InvalidPropertyValueException : public DatabaseException
+    class TT3_DB_API_PUBLIC InvalidPropertyValueException
+        :   public DatabaseException
     {
         //////////
         //  Types
@@ -285,9 +292,9 @@ namespace tt3::db::api
         ///     The offending property value.
         template <class T>
         InvalidPropertyValueException(
-            IObjectType * objectType,
-            const QString & propertyName,
-            const T & propertyValue
+                IObjectType * objectType,
+                const QString & propertyName,
+                const T & propertyValue
             ) : Self(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
 
         //////////
@@ -334,7 +341,8 @@ namespace tt3::db::api
     /// \brief
     ///     Thrown when an object with the specified property value,
     ///     which is supposed to be unique, already exists.
-    class TT3_DB_API_PUBLIC AlreadyExistsException : public DatabaseException
+    class TT3_DB_API_PUBLIC AlreadyExistsException
+        :   public DatabaseException
     {
         //////////
         //  Types
@@ -446,7 +454,8 @@ namespace tt3::db::api
     /// \brief
     ///     Thrown when an object with the specified property value,
     ///     which is supposed to exist, does not.
-    class TT3_DB_API_PUBLIC DoesNotExistException : public DatabaseException
+    class TT3_DB_API_PUBLIC DoesNotExistException
+        :   public DatabaseException
     {
         //////////
         //  Types
@@ -556,7 +565,8 @@ namespace tt3::db::api
 
     /// \class InstanceDeadException tt3-db-api/API.hpp
     /// \brief Thrown when attempting to access a "dead" instance.
-    class TT3_DB_API_PUBLIC InstanceDeadException : public DatabaseException
+    class TT3_DB_API_PUBLIC InstanceDeadException
+        :   public DatabaseException
     {
         //////////
         //  Types
@@ -584,7 +594,8 @@ namespace tt3::db::api
 
     /// \class IncompatibleInstanceException tt3-db-api/API.hpp
     /// \brief Thrown when passing an incompatible instance to a service..
-    class TT3_DB_API_PUBLIC IncompatibleInstanceException : public DatabaseException
+    class TT3_DB_API_PUBLIC IncompatibleInstanceException
+        :   public DatabaseException
     {
         //////////
         //  Types
@@ -638,7 +649,8 @@ namespace tt3::db::api
 
     /// \class CustomDatabaseException tt3-db-api/API.hpp
     /// \brief Thrown when must carry a custom error message (from OS, etc.)
-    class TT3_DB_API_PUBLIC CustomDatabaseException : public DatabaseException
+    class TT3_DB_API_PUBLIC CustomDatabaseException
+        :   public DatabaseException
     {
         //////////
         //  Types

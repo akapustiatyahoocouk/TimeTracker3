@@ -17,9 +17,10 @@
 
 namespace tt3::skin::admin
 {
-    //////////
-    //  The "TT3 Administrator skin"
-    class TT3_SKIN_ADMIN_PUBLIC Skin final : public virtual tt3::gui::ISkin
+    /// \class Skin tt3-skin-admin/API.hpp
+    /// \brief The "TT3 Administrator skin".
+    class TT3_SKIN_ADMIN_PUBLIC Skin final
+        :   public virtual tt3::gui::ISkin
     {
         DECLARE_SINGLETON(Skin)
 
@@ -44,9 +45,6 @@ namespace tt3::skin::admin
         //////////
         //  Implementation
     private:
-        const QIcon         _smallIcon;
-        const QIcon         _largeIcon;
-
         MainFrame *         _mainFrame = nullptr;   //  nullptr when skin is inactive
     };
 }

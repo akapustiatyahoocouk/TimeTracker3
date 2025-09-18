@@ -72,7 +72,8 @@ namespace tt3::db::api
     public:
         /// \class User tt3-db-api/API.hpp
         /// \brief The type of the "User" objects.
-        class TT3_DB_API_PUBLIC User final : public virtual IObjectType
+        class TT3_DB_API_PUBLIC User final
+            :   public virtual IObjectType
         {
             DECLARE_SINGLETON(User)
 
@@ -88,7 +89,8 @@ namespace tt3::db::api
 
         /// \class Account tt3-db-api/API.hpp
         /// \brief The type of the "Account" objects.
-        class TT3_DB_API_PUBLIC Account final : public virtual IObjectType
+        class TT3_DB_API_PUBLIC Account final
+            :   public virtual IObjectType
         {
             DECLARE_SINGLETON(Account)
 
@@ -104,7 +106,8 @@ namespace tt3::db::api
 
         /// \class ActivityType tt3-db-api/API.hpp
         /// \brief The type of the "ActivityType" objects.
-        class TT3_DB_API_PUBLIC ActivityType final : public virtual IObjectType
+        class TT3_DB_API_PUBLIC ActivityType final
+            :   public virtual IObjectType
         {
             DECLARE_SINGLETON(ActivityType)
 
@@ -120,7 +123,8 @@ namespace tt3::db::api
 
         /// \class PublicActivity tt3-db-api/API.hpp
         /// \brief The type of the "PublicActivity" objects.
-        class TT3_DB_API_PUBLIC PublicActivity final : public virtual IObjectType
+        class TT3_DB_API_PUBLIC PublicActivity final
+            :   public virtual IObjectType
         {
             DECLARE_SINGLETON(PublicActivity)
 
@@ -136,7 +140,8 @@ namespace tt3::db::api
 
         /// \class PublicTask tt3-db-api/API.hpp
         /// \brief The type of the "PublicTask" objects.
-        class TT3_DB_API_PUBLIC PublicTask final : public virtual IObjectType
+        class TT3_DB_API_PUBLIC PublicTask final
+            :   public virtual IObjectType
         {
             DECLARE_SINGLETON(PublicTask)
 
@@ -152,7 +157,8 @@ namespace tt3::db::api
 
         /// \class PrivateActivity tt3-db-api/API.hpp
         /// \brief The type of the "PrivateActivity" objects.
-        class TT3_DB_API_PUBLIC PrivateActivity final : public virtual IObjectType
+        class TT3_DB_API_PUBLIC PrivateActivity final
+            :   public virtual IObjectType
         {
             DECLARE_SINGLETON(PrivateActivity)
 
@@ -168,7 +174,8 @@ namespace tt3::db::api
 
         /// \class PrivateTask tt3-db-api/API.hpp
         /// \brief The type of the "PrivateTask" objects.
-        class TT3_DB_API_PUBLIC PrivateTask final : public virtual IObjectType
+        class TT3_DB_API_PUBLIC PrivateTask final
+            :   public virtual IObjectType
         {
             DECLARE_SINGLETON(PrivateTask)
 
@@ -184,7 +191,8 @@ namespace tt3::db::api
 
         /// \class Work tt3-db-api/API.hpp
         /// \brief The type of the "Work" objects.
-        class TT3_DB_API_PUBLIC Work final : public virtual IObjectType
+        class TT3_DB_API_PUBLIC Work final
+            :   public virtual IObjectType
         {
             DECLARE_SINGLETON(Work)
 
@@ -200,7 +208,8 @@ namespace tt3::db::api
 
         /// \class Event tt3-db-api/API.hpp
         /// \brief The type of the "Event" objects.
-        class TT3_DB_API_PUBLIC Event final : public virtual IObjectType
+        class TT3_DB_API_PUBLIC Event final
+            :   public virtual IObjectType
         {
             DECLARE_SINGLETON(Event)
 
@@ -216,7 +225,8 @@ namespace tt3::db::api
 
         /// \class Project tt3-db-api/API.hpp
         /// \brief The type of the "Project" objects.
-        class TT3_DB_API_PUBLIC Project final : public virtual IObjectType
+        class TT3_DB_API_PUBLIC Project final
+            :   public virtual IObjectType
         {
             DECLARE_SINGLETON(Project)
 
@@ -249,7 +259,8 @@ namespace tt3::db::api
 
         /// \class Beneficiary tt3-db-api/API.hpp
         /// \brief The type of the "Beneficiary" objects.
-        class TT3_DB_API_PUBLIC Beneficiary final : public virtual IObjectType
+        class TT3_DB_API_PUBLIC Beneficiary final
+            :   public virtual IObjectType
         {
             DECLARE_SINGLETON(Beneficiary)
 

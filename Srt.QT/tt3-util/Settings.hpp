@@ -19,8 +19,10 @@
 
 namespace tt3::util
 {
-    //  A generic "settings" is a single value which is retained between runs
-    class TT3_UTIL_PUBLIC AbstractSetting : public QObject
+    /// \class AbstractSetting tt3-util/API.hpp
+    /// \brief A generic "settings" is a single value which is retained between runs.
+    class TT3_UTIL_PUBLIC AbstractSetting
+        :   public QObject
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AbstractSetting)
@@ -28,29 +30,62 @@ namespace tt3::util
         //////////
         //  Construction/destruction
     protected:
-        explicit AbstractSetting(const Mnemonic & mnemonic, bool changeRequiresRestart)
-            :   _mnemonic(mnemonic), _changeRequiresRestart(changeRequiresRestart) {}
+        /// \brief
+        ///     Constructs the setting.
+        /// \param mnemonic
+        ///     The mnemonic identifier of the setting.
+        /// \param changeRequiresRestart
+        ///     True if changes to the setting's values require TT3
+        ///     to be restarted, false if not.
+        explicit AbstractSetting(
+                const Mnemonic & mnemonic,
+                bool changeRequiresRestart
+            ) : _mnemonic(mnemonic),
+                _changeRequiresRestart(changeRequiresRestart) {}
+
+        /// \brief
+        ///     The class destructor.
         virtual ~AbstractSetting() = default;
 
         //////////
         //  Operations
     public:
-        //  The mnemonic identifier of this Setting.
+        /// \brief
+        ///     Returns the mnemonic identifier of this Setting.
+        /// \return
+        ///     The mnemonic identifier of this Setting.
         Mnemonic        mnemonic() const { return _mnemonic; }
 
-        //  True if changes to the value of this Setting
-        //  shall require application restart in order to
-        //  take effect, else false.
+        /// \brief
+        ///     Checks whether changes to the value of this
+        ///     Setting shall require application restart in
+        ///     order to take effect.
+        /// \return
+        ///     True if changes to the value of this Setting
+        ///     shall require application restart in order to
+        ///     take effect, else false.
         bool            changeRequiresRestart() const { return _changeRequiresRestart; }
 
-        //  Returns/sets the string representation of this Setting' value.
-        virtual QString valueString() const = 0;
-        virtual void    setValueString(const QString & valueString) = 0;
+        /// \brief
+        ///     Returns the string representation of this Setting' value.
+        /// \return
+        ///     The string representation of this Setting' value.
+        virtual QString valueString(
+                            ) const = 0;
+
+        /// \brief
+        ///     Returns the string representation of this Setting' value.
+        /// \param valueString
+        ///     The string representation of this Setting' new value.
+        virtual void    setValueString(
+                                const QString & valueString
+                            ) = 0;
 
         //////////
         //  Signals
     signals:
-        //  Emitted when a value of the setting changes
+        /// \brief
+        ///     Emitted when a value of the setting changes.
         void            valueChanged();
 
         //////////
@@ -60,26 +95,54 @@ namespace tt3::util
         const bool      _changeRequiresRestart;
     };
 
-    //  A "settings" is a single value which is retained between runs
+    /// \class Setting tt3-util/API.hpp
+    /// \brief A "settings" is a single value which is retained between runs.
     template <class T>
-    class Setting final : public AbstractSetting
+    class Setting final
+        :   public AbstractSetting
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Setting)
 
         //////////
         //  Construction/destruction
     public:
-        Setting(const Mnemonic & mnemonic, const T & defaultValue, bool changeRequiresRestart = false)
-            :   AbstractSetting(mnemonic, changeRequiresRestart),
+        /// \brief
+        ///     Constructs the setting.
+        /// \param mnemonic
+        ///     The mnemonic identifier of the setting.
+        /// \param defaultValue
+        ///     The default value of the setting.
+        /// \param changeRequiresRestart
+        ///     True if changes to the setting's values require TT3
+        ///     to be restarted, false if not.
+        Setting(
+                const Mnemonic & mnemonic,
+                const T & defaultValue,
+                bool changeRequiresRestart = false
+            ) : AbstractSetting(mnemonic, changeRequiresRestart),
                 _defaultValue(defaultValue),
                 _value(defaultValue),
-                _valueLoaded(false) {}
-        ~Setting() = default;
+                _valueAssigned(false) {}
+
+        /// \brief
+        ///     The class destructor.
+        virtual ~Setting() = default;
 
         //////////
         //  Operators
     public:
+        /// \brief
+        ///     Returns the value of this Setting.
+        /// \return
+        ///     The value of this Setting (starts off as default value).
                         operator T() const { return value(); }
+
+        /// \brief
+        ///     Assigns a new value to this Setting.
+        /// \param src
+        ///     The new value to assign to this Setting.
+        /// \return
+        ///     The reference to this Setting.
         Setting<T> &    operator = (const T & src) { setValue(src); return *this; }
 
         //////////
@@ -104,25 +167,35 @@ namespace tt3::util
         //////////
         //  Operations
     public:
-        //  The default value of this setting
+        /// \brief
+        ///     Returns the default value of this setting.
+        /// \return
+        ///     The default value of this setting.
         const T         defaultValue() const
         {
             return _defaultValue;
         }
 
-        //  Returns the current value of this setting
+        /// \brief
+        ///     Returns the current value of this Setting.
+        /// \return
+        ///     The current value of this Setting; default value
+        ///     if not assigned explicitly.
         T               value() const
         {
-            return _valueLoaded ? _value : _defaultValue;
+            return _valueAssigned ? _value : _defaultValue;
         }
 
-        //  Sets the current value of this setting
+        /// \brief
+        ///     Sets the current value of this Setting.
+        /// \param value
+        ///     The new value for this Setting.
         void            setValue(const T & value)
         {
             if (value != this->value())
             {
                 _value = value;
-                _valueLoaded = true;
+                _valueAssigned = true;
                 emit valueChanged();
             }
         }
@@ -133,12 +206,13 @@ namespace tt3::util
         const T         _defaultValue;
 
         T               _value;
-        bool            _valueLoaded;
+        bool            _valueAssigned;
     };
 
-    //////////
-    //  A bunch of related settings.
-    //  Concrete subclasses will normally be singletons.
+    /// \class Settings tt3-util/API.hpp
+    /// \brief A bunch of related settings.
+    /// \details
+    ///     Concrete subclasses will normally be singletons.
     class TT3_UTIL_PUBLIC Settings
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Settings)
@@ -146,23 +220,51 @@ namespace tt3::util
         //////////
         //  Construction/destruction
     protected:
+        /// \brief
+        ///     Constructs an initially empty binch of Settings.
         Settings() = default;
+
+        /// \brief
+        ///     The class destructor.
         virtual ~Settings() = default;
 
         //////////
         //  Operations
     protected:
-        //  A helper service for constructors of
-        //  derived classes to populate the Settings
-        //  with aggregated Setting<?> instances
-        bool                addSetting(AbstractSetting * setting);
+        /// \brief
+        ///     A helper service for constructors of
+        ///     derived classes to populate the Settings
+        ///     with aggregated Setting<?> instances.
+        /// \param setting
+        ///     The Setting to add to this bunch.
+        ///     TODO retire this service and add a new 1st
+        ///     parameter of type Settings* to he AbstractSetting
+        ///     nd Setting constructors, which will auto-add
+        ///     AbstractSetting to the Settings and assert on
+        ///     mnemonics conflict.
+        /// \return
+        ///     True on success, false on failure (mnemonic conflict).
+        bool                addSetting(
+                                    AbstractSetting * setting
+                                );
     public:
-        //  A set of all settings in this bunch
+        /// \brief
+        ///     Returns the set of all settings in this bunch.
+        /// \return
+        ///     The set of all settings in this bunch.
         QSet<AbstractSetting*>  settings() const;
 
-        //  Finds a setting with the specified mnemonic in
-        //  this settings; returns nullptr if not found
-        AbstractSetting *   findSetting(const Mnemonic & mnemonic) const;
+        /// \brief
+        ///     Finds a setting with the specified mnemonic in
+        ///     this settings.
+        /// \param mnemonic
+        ///     The mnemonic to look for.
+        /// \return
+        ///     The setting with the required mnemonic in
+        ///     this settings; returns nullptr if not found
+        AbstractSetting *   findSetting(
+                                    const Mnemonic & mnemonic
+                                ) const;
 
         //////////
         //  Implementation

@@ -21,7 +21,8 @@
 namespace tt3::util
 {
     //  The "TT3 Util" component
-    class TT3_UTIL_PUBLIC Component final : public virtual IComponent
+    class TT3_UTIL_PUBLIC Component final
+        :   public virtual IComponent
     {
         DECLARE_SINGLETON(Component)
 
@@ -29,13 +30,15 @@ namespace tt3::util
         //  Types
     public:
         //  The component's resources
-        class TT3_UTIL_PUBLIC Resources final : public FileResourceFactory
+        class TT3_UTIL_PUBLIC Resources final
+            :   public FileResourceFactory
         {
             DECLARE_SINGLETON(Resources)
         };
 
         //  The component's settings
-        class TT3_UTIL_PUBLIC Settings final : public tt3::util::Settings
+        class TT3_UTIL_PUBLIC Settings final
+            :   public tt3::util::Settings
         {
             DECLARE_SINGLETON(Settings)
 

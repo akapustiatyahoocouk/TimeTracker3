@@ -17,14 +17,26 @@
 
 namespace tt3::gui
 {
-    //  Decorations for a QTreeWidget
+    /// \class TreeWidgetDecorations tt3-gui/API.hpp
+    /// \brief Decorations for a QTreeWidget.
     class TT3_GUI_PUBLIC TreeWidgetDecorations
     {
         //////////
         //  Construction/destruction/assignment
     public:
-        TreeWidgetDecorations();    //  pick up from app's palette
-        explicit TreeWidgetDecorations(QTreeWidget * treeWidget);
+        /// \brief
+        ///     The class constructor.
+        /// \details
+        ///     Picks up ini9tial values from app's palette.
+        TreeWidgetDecorations();
+
+        /// \brief
+        ///     The class constructor.
+        /// \param treeWidget
+        ///     The tree widget to pick up decoration values from.
+        explicit TreeWidgetDecorations(
+                QTreeWidget * treeWidget
+            );
 
         //  The default copy constructor, assignment and
         //  destructors are all OK
@@ -32,12 +44,29 @@ namespace tt3::gui
         //////////
         //  Properties
     public:
+        /// \brief
+        ///     The brush to use for text of "normal" tree items.
         QBrush      itemForeground;
+
+        /// \brief
+        ///     The brush to use for text of "disabled" tree items.
         QBrush      disabledItemForeground;
+
+        /// \brief
+        ///     The brush to use for text of "error" tree items.
         QBrush      errorItemForeground;
+
+        /// \brief
+        ///     The brush to use for text of "filter match" tree items.
         QBrush      filterMatchItemForeground;
+
+        /// \brief
+        ///     The font to use for text of "normal" tree items.
         QFont       itemFont;
-        QFont       itemEmphasisFont;   //  e.g. bold
+
+        /// \brief
+        ///     The font to use for text of "emphasized" tree items (normally bold).
+        QFont       itemEmphasisFont;
 
         //////////
         //  Implementation

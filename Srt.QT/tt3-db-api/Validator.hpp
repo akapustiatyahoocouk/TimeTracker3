@@ -90,7 +90,8 @@ namespace tt3::db::api
 
         /// \class IUserValidator tt3-db-api/API.hpp
         /// \brief The validator for a User.
-        class TT3_DB_API_PUBLIC IUserValidator : public virtual IPrincipalValidator
+        class TT3_DB_API_PUBLIC IUserValidator
+            :   public virtual IPrincipalValidator
         {
             //////////
             //  This is an interface
@@ -147,7 +148,8 @@ namespace tt3::db::api
 
         /// \class IAccountValidator tt3-db-api/API.hpp
         /// \brief The validator for an Account.
-        class TT3_DB_API_PUBLIC IAccountValidator : public virtual IPrincipalValidator
+        class TT3_DB_API_PUBLIC IAccountValidator
+            :   public virtual IPrincipalValidator
         {
             //////////
             //  This is an interface
@@ -396,7 +398,8 @@ namespace tt3::db::api
                                 ) override;
         };
 
-        class TT3_DB_API_PUBLIC _AccountValidator final : public virtual IAccountValidator
+        class TT3_DB_API_PUBLIC _AccountValidator final
+            :   public virtual IAccountValidator
         {
             DECLARE_SINGLETON(_AccountValidator)
 

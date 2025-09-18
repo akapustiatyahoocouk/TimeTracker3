@@ -29,14 +29,16 @@ namespace tt3::db::xml
     public:
         /// \class Resources tt3-db-xml/API.hpp
         /// \brief The component's resources.
-        class TT3_DB_XML_PUBLIC Resources final : public tt3::util::FileResourceFactory
+        class TT3_DB_XML_PUBLIC Resources final
+            :   public tt3::util::FileResourceFactory
         {
             DECLARE_SINGLETON(Resources)
         };
 
         /// \class Settings tt3-db-xml/API.hpp
         /// \brief The component's settings.
-        class TT3_DB_XML_PUBLIC Settings final : public tt3::util::Settings
+        class TT3_DB_XML_PUBLIC Settings final
+            :   public tt3::util::Settings
         {
             DECLARE_SINGLETON(Settings)
         };

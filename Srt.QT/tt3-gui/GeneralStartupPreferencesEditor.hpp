@@ -24,7 +24,8 @@ namespace tt3::gui
     //  The "/General/Startup" preferences editor
     namespace Ui { class GeneralStartupPreferencesEditor; }
 
-    class TT3_GUI_PUBLIC GeneralStartupPreferencesEditor final : public PreferencesEditor
+    class TT3_GUI_PUBLIC GeneralStartupPreferencesEditor final
+        :   public PreferencesEditor
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(GeneralStartupPreferencesEditor)
