@@ -19,9 +19,10 @@
 
 namespace tt3::gui
 {
-    //  The modal "login" dialog
     namespace Ui { class LoginDialog; }
 
+    /// \class LoginDialog tt3-gui/API.hpp
+    /// \brief The modal "login" dialog.
     class TT3_GUI_PUBLIC LoginDialog final
         :   private QDialog
     {
@@ -31,23 +32,50 @@ namespace tt3::gui
         //////////
         //  Types
     public:
-        //  The dialog result after a modal invocation
-        enum class Result { Ok, Cancel };
+        /// \brief
+        ///     The dialog result after a modal invocation.
+        enum class Result
+        {
+            Ok,     ///<Login details confirmed by the user.
+            Cancel  ///< The user has cancelled the dialog.
+        };
 
         //////////
         //  Construction/destruction
     public:
-        LoginDialog(QWidget * parent, const QString & login);
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// \param login
+        ///     Thr login to display initially.
+        LoginDialog(
+                QWidget * parent,
+                const QString & login
+            );
+
+        /// \brief
+        ///     The class destructor.
         virtual ~LoginDialog();
 
         //////////
         //  Operations
     public:
-        //  Runs the dialog modally, returning user's choice
-        Result                  doModal();
+        /// \brief
+        ///     Runs the dialog modally.
+        /// \return
+        ///     the user's choice.
+        Result          doModal();
 
-        //  The credentials entered by the user
-        tt3::ws::Credentials    credentials() const { return _credentials; }
+        /// \brief
+        ///     Returns the credentials entered by the user.
+        /// \return
+        ///     The credentials entered by the user.
+        auto            credentials(
+                            ) const -> tt3::ws::Credentials
+        {
+            return _credentials;
+        }
 
         //////////
         //  Implementation
@@ -55,7 +83,7 @@ namespace tt3::gui
         tt3::ws::Credentials    _credentials;
 
         //  Helpers
-        void                    _refresh();
+        void            _refresh();
 
         //////////
         //  Controls
@@ -65,10 +93,10 @@ namespace tt3::gui
         //////////
         //  Event handlers
     private slots:
-        void                    _loginLineEditTextChanged(QString);
-        void                    _passwordLineEditTextChanged(QString);
-        void                    accept() override;
-        void                    reject() override;
+        void            _loginLineEditTextChanged(QString);
+        void            _passwordLineEditTextChanged(QString);
+        virtual void    accept() override;
+        virtual void    reject() override;
     };
 }
 

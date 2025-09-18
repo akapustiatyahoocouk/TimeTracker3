@@ -245,6 +245,15 @@ namespace tt3::db::xml
                                 const QDomElement & parentElement,
                                 const QString & tagName
                             ) -> QDomElement;
+        template <class T>
+        static QList<T> _sortedByOid(const QSet<T> objects)
+        {
+            QList<T> result = objects.values();
+            std::sort(result.begin(),
+                      result.end(),
+                      [](T a, T b) { return a->_oid < b->_oid; });
+            return result;
+        }
 
         QMap<Object*, QDomElement>  _deserializationMap;    //  object -> DOM element from which it came
 

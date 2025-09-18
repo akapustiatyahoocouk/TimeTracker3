@@ -805,8 +805,8 @@ void Database::_save()
     //  Serialize users (+ accounts, etc.)
     QDomElement usersElement = document.createElement("Users");
     rootElement.appendChild(usersElement);
-    for (User * user : _users)
-    {   //  TODO try to sort by OID to reduce changes
+    for (User * user : _sortedByOid(_users))
+    {   //  Sorting by OID to reduce changes
         QDomElement userElement = document.createElement("User");
         usersElement.appendChild(userElement);
         //  Serialize user features
@@ -818,8 +818,8 @@ void Database::_save()
     //  Serialize activity types
     QDomElement activityTypesElement = document.createElement("ActivityTypes");
     rootElement.appendChild(activityTypesElement);
-    for (ActivityType * activityType : _activityTypes)
-    {   //  TODO try to sort by OID to reduce changes
+    for (ActivityType * activityType : _sortedByOid(_activityTypes))
+    {   //  Sorting by OID to reduce changes
         QDomElement activityTypeElement = document.createElement("ActivityType");
         activityTypesElement.appendChild(activityTypeElement);
         //  Serialize activity type features
@@ -831,8 +831,8 @@ void Database::_save()
     //  Serialize public activities
     QDomElement publicActivitiesElement = document.createElement("PublicActivities");
     rootElement.appendChild(publicActivitiesElement);
-    for (PublicActivity * publicActivity : _publicActivities)
-    {   //  TODO try to sort by OID to reduce changes
+    for (PublicActivity * publicActivity : _sortedByOid(_publicActivities))
+    {   //  Sorting by OID to reduce changes
         QDomElement publicActivityElement = document.createElement("PublicActivity");
         publicActivitiesElement.appendChild(publicActivityElement);
         //  Serialize public activity features

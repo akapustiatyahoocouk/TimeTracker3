@@ -22,9 +22,10 @@ namespace tt3::gui
     class TT3_GUI_PUBLIC Preferences;
     class TT3_GUI_PUBLIC PreferencesEditor;
 
-    //  The modal "Preferences" dialog
     namespace Ui { class PreferencesDialog; }
 
+    /// \class PreferencesDialog tt3-gui/API.hpp
+    /// \brief The modal "Preferences" dialog.
     class TT3_GUI_PUBLIC PreferencesDialog final
         :   private QDialog
     {
@@ -34,19 +35,36 @@ namespace tt3::gui
         //////////
         //  Types
     public:
-        //  The dialog result after a modal invocation
-        enum class Result { Ok, Cancel };
+        /// \brief
+        ///     The dialog result after a modal invocation.
+        enum class Result
+        {
+            Ok,     ///< The user has confirmed changes made to Preferences.
+            Cancel  ///< The user has cancelled the dialog.
+        };
 
         //////////
         //  Construction/destruction
     public:
-        explicit PreferencesDialog(QWidget * parent);
-        ~PreferencesDialog();
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent window for the dialog; nullptr == none.
+        explicit PreferencesDialog(
+                QWidget * parent
+            );
+
+        /// \brief
+        ///     Te class destructor.
+        virtual ~PreferencesDialog();
 
         //////////
         //  Operations
     public:
-        //  Runs the dialog modally, returning user's choice
+        /// \brief
+        ///     Runs the dialog modally.
+        /// \return
+        ///     The user's choice.
         Result          doModal();
 
         //////////
@@ -67,19 +85,20 @@ namespace tt3::gui
         //  Controls
     private:
         Ui::PreferencesDialog * _ui;
-        QLabel *            _noPropertiesLabel;
-        QStackedLayout *    _editorsFrameLayout;
+        //  Dynamic controls are created at runtime
+        QLabel *            _noPropertiesLabel = nullptr;
+        QStackedLayout *    _editorsFrameLayout = nullptr;
 
         //////////
         //  Signal handlers
     private slots:
-        void                _preferencesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
-        void                _refresh();
-        void                _resetPushNuttonClicked();
-        void                _resetAllPushNuttonClicked();
-        void                accept() override;
-        void                reject() override;
-        void                _settingValueChanged();
+        void            _preferencesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
+        void            _refresh();
+        void            _resetPushNuttonClicked();
+        void            _resetAllPushNuttonClicked();
+        void            _settingValueChanged();
+        virtual void    accept() override;
+        virtual void    reject() override;
     };
 }
 

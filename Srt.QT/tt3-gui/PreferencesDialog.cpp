@@ -226,6 +226,20 @@ void PreferencesDialog::_resetAllPushNuttonClicked()
         _refresh();
     }
 }
+
+void PreferencesDialog::_settingValueChanged()
+{
+    QObject * sender = this->sender();
+    if (tt3::util::AbstractSetting * setting =
+        qobject_cast<tt3::util::AbstractSetting*>(sender))
+    {
+        if (setting->changeRequiresRestart())
+        {
+            _restartRequired = true;
+        }
+    }
+}
+
 void PreferencesDialog::accept()
 {
     //  Apply all changes to all settings
@@ -257,19 +271,6 @@ void PreferencesDialog::reject()
 {
     _saveCurrentPreferences();
     done(int(Result::Cancel));
-}
-
-void PreferencesDialog::_settingValueChanged()
-{
-    QObject * sender = this->sender();
-    if (tt3::util::AbstractSetting * setting =
-        qobject_cast<tt3::util::AbstractSetting*>(sender))
-    {
-        if (setting->changeRequiresRestart())
-        {
-            _restartRequired = true;
-        }
-    }
 }
 
 //  End of tt3-gui/PreferencesDialog.cpp

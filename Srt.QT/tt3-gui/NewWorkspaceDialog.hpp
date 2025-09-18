@@ -19,9 +19,10 @@
 
 namespace tt3::gui
 {
-    //  The modal "New workspace" dialog
     namespace Ui { class NewWorkspaceDialog; }
 
+    /// \class NewWorkspaceDialog tt3-gui/API.hpp
+    /// \brief The modal "New workspace" dialog.
     class TT3_GUI_PUBLIC NewWorkspaceDialog final
         :   private QDialog
     {
@@ -31,32 +32,61 @@ namespace tt3::gui
         //////////
         //  Types
     public:
-        //  The dialog result after a modal invocation
-        enum class Result { Ok, Cancel };
+        /// \brief
+        ///     The dialog result after a modal invocation.
+        enum class Result
+        {
+            Ok,     ///< The user has provided required details for the new workspace.
+            Cancel  ///< The user has cancelled the dialog.
+        };
 
         //////////
         //  Construction/destruction
     public:
-        explicit NewWorkspaceDialog(QWidget * parent);
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent widget for the dialog.
+        explicit NewWorkspaceDialog(
+                QWidget * parent
+            );
+
+        /// \brief
+        ///     The class destructor.
         virtual ~NewWorkspaceDialog();
 
         //////////
         //  Operations
     public:
-        //  Runs the dialog modally, returning user's choice
+        /// \brief
+        ///     Runs the dialog modally.
+        /// \return
+        ///     The user's choice.
         Result          doModal();
 
-        //  The workspace address selected by the user or
-        //  nullptr if the user has cancelled the dialog.
+        /// \brief
+        ///     Returns the workspace address selected by the user or.
+        /// \return
+        ///     The workspace address selected by the user or
+        ///     nullptr if the user has cancelled the dialog.
         tt3::ws::WorkspaceAddress   selectedWorkspaceAddress() { return _workspaceAddress; }
 
-        //  The chosen administrator user name.
+        /// \brief
+        ///     Returns the chosen administrator user name.
+        /// \return
+        ///     The chosen administrator user name.
         QString         adminUser() const { return _adminUser; }
 
-        //  The chosen administrator login.
+        /// \brief
+        ///     Returns the chosen administrator login.
+        /// \return
+        ///     The chosen administrator login.
         QString         adminLogin() const { return _adminLogin; }
 
-        //  The chosen administrator password.
+        /// \brief
+        ///     Returns the chosen administrator password.
+        /// \return
+        ///     The chosen administrator password.
         QString         adminPassword() const { return _adminPassword; }
 
         //////////
@@ -84,8 +114,8 @@ namespace tt3::gui
         void            _loginLineEditTextChanged(QString);
         void            _passwordLineEditTextChanged(QString);
         void            _confirmPasswordLineEditTextChanged(QString);
-        void            accept() override;
-        void            reject() override;
+        virtual void    accept() override;
+        virtual void    reject() override;
     };
 }
 

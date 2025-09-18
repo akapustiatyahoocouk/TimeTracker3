@@ -21,9 +21,10 @@ namespace tt3::gui
 {
     class TT3_GUI_PUBLIC UserManager;
 
-    //  The modal "Create user" dialog
     namespace Ui { class ManageUsersDialog; }
 
+    /// \class ManageUsersDialog tt3-gui/API.hpp
+    /// \brief The modal "Manage users/accounts" dialog.
     class TT3_GUI_PUBLIC ManageUsersDialog final
         :   private QDialog
     {
@@ -33,16 +34,29 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        ManageUsersDialog(QWidget * parent,
-                          tt3::ws::Workspace workspace,
-                          const tt3::ws::Credentials & credentials
-                        );
+        /// \brief
+        ///     Constructs the dialo.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// \param workspace
+        ///     The workspace to manage users/accounts in.
+        /// \param credentials
+        ///     The credentials to use for data access.
+        ManageUsersDialog(
+                QWidget * parent,
+                tt3::ws::Workspace workspace,
+                const tt3::ws::Credentials & credentials
+            );
+
+        /// \brief
+        ///     The class destructor.
         virtual ~ManageUsersDialog();
 
         //////////
         //  Operations
     public:
-        //  Runs the dialog modally
+        /// \brief
+        ///     Runs the dialog modally.
         void            doModal();
 
         //////////
@@ -50,8 +64,8 @@ namespace tt3::gui
     private:
         Ui::ManageUsersDialog * _ui;
         //  Custom controls are created dynamically
-        QStackedLayout *        _managerPanelLayout = nullptr;
-        UserManager *           _userManager = nullptr;
+        QStackedLayout *_managerPanelLayout = nullptr;
+        UserManager *   _userManager = nullptr;
     };
 }
 

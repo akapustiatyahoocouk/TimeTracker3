@@ -159,12 +159,12 @@ void PublicActivityManager::refresh()
         selectedPublicActivity->canModify(_credentials))
     {   //  RW
         _ui->modifyPublicActivityPushButton->setIcon(modifyPublicActivityIcon);
-        _ui->modifyPublicActivityPushButton->setText("Modify activity type");
+        _ui->modifyPublicActivityPushButton->setText("Modify public activity");
     }
     else
     {   //  RO
         _ui->modifyPublicActivityPushButton->setIcon(viewPublicActivityIcon);
-        _ui->modifyPublicActivityPushButton->setText("View activity type");
+        _ui->modifyPublicActivityPushButton->setText("View public activity");
     }
 
     refreshUnderway = false;

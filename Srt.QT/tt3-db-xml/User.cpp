@@ -234,7 +234,7 @@ auto User::permittedWorkloads(
 }
 
 void User::setPermittedWorkloads(
-    const tt3::db::api::Workloads & /*workloads*/
+        const tt3::db::api::Workloads & /*workloads*/
     )
 {
     throw tt3::util::NotImplementedError();
@@ -405,8 +405,8 @@ void User::_serializeAggregations(
     //  Do the accounts
     QDomElement accountsElement = objectElement.ownerDocument().createElement("Accounts");
     objectElement.appendChild(accountsElement);
-    for (Account * account : _accounts)
-    {   //  TODO try to sort by OID to reduce changes
+    for (Account * account : Database::_sortedByOid(_accounts))
+    {   //  Sorted by OID to reduce changes
         QDomElement accountElement = objectElement.ownerDocument().createElement("Account");
         accountsElement.appendChild(accountElement);
         //  Serialize user features

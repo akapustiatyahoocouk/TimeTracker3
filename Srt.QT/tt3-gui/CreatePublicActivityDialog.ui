@@ -132,31 +132,13 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="1" colspan="2">
-    <widget class="QLabel" name="activityTypeValueLabel">
-     <property name="text">
-      <string>-</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
    <item row="3" column="1" colspan="2">
     <widget class="QLabel" name="workloadValueLabel">
      <property name="text">
       <string>-</string>
      </property>
-    </widget>
-   </item>
-   <item row="2" column="3">
-    <widget class="QPushButton" name="selectActivityTypePushButton">
-     <property name="text">
-      <string>Select</string>
-     </property>
-     <property name="icon">
-      <iconset resource="tt3-gui.qrc">
-       <normaloff>:/tt3-gui/Resources/Images/Actions/ViewActivityTypeSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/ViewActivityTypeSmall.png</iconset>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -171,12 +153,15 @@
      </property>
     </widget>
    </item>
+   <item row="2" column="1" colspan="3">
+    <widget class="QComboBox" name="activityTypeComboBox"/>
+   </item>
   </layout>
  </widget>
  <tabstops>
   <tabstop>displayNameLineEdit</tabstop>
   <tabstop>descriptionTextEdit</tabstop>
-  <tabstop>selectActivityTypePushButton</tabstop>
+  <tabstop>activityTypeComboBox</tabstop>
   <tabstop>selectWorkloadPushButton</tabstop>
   <tabstop>timeoutCheckBox</tabstop>
   <tabstop>hoursComboBox</tabstop>
@@ -302,22 +287,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>selectActivityTypePushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>tt3::gui::CreatePublicActivityDialog</receiver>
-   <slot>_selectActivityTypePushButtonClicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>413</x>
-     <y>151</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>232</x>
-     <y>195</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>selectWorkloadPushButton</sender>
    <signal>clicked()</signal>
    <receiver>tt3::gui::CreatePublicActivityDialog</receiver>
@@ -340,7 +309,6 @@
   <slot>_timeoutCheckBoxStateChanged(int)</slot>
   <slot>_hoursComboBoxCurrentIndexChanged(int)</slot>
   <slot>_minutesComboBoxCurrentIndexChanged(int)</slot>
-  <slot>_selectActivityTypePushButtonClicked()</slot>
   <slot>_selectWorkloadPushButtonClicked()</slot>
  </slots>
 </ui>

@@ -19,7 +19,7 @@
 
 namespace tt3::gui
 {
-    /// \class ISkintt3-gui/API.hpp
+    /// \class ISkin tt3-gui/API.hpp
     /// \brief A generic "skin" is a way to present a GUI.
     class TT3_GUI_PUBLIC ISkin
     {

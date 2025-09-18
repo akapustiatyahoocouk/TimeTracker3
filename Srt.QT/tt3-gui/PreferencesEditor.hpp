@@ -21,8 +21,10 @@ namespace tt3::gui
 {
     class TT3_GUI_PUBLIC Preferences;
 
-    //  The common base class for all "preferences editor" widgets
-    class TT3_GUI_PUBLIC PreferencesEditor : public QWidget
+    /// \class PreferencesEditor tt3-gui/API.hpp
+    /// \brief The common base class for all "preferences editor" widgets.
+    class TT3_GUI_PUBLIC PreferencesEditor
+        :   public QWidget
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PreferencesEditor)
@@ -30,31 +32,51 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
-        explicit PreferencesEditor(QWidget * parent);
+        /// \brief
+        ///     Constructs the widget.
+        /// \param parent
+        ///     The parent for the new widget; nullptr == none.
+        explicit PreferencesEditor(
+                QWidget * parent
+            );
+
+        /// \brief
+        ///     The class destructor.
         virtual ~PreferencesEditor();
 
         //////////
         //  Operations
     public:
-        //  The Preferences edited by this editor
+        /// \brief
+        ///     Returns the Preferences edited by this editor.
+        /// \return
+        ///     The Preferences edited by this editor.
         virtual Preferences *   preferences() const = 0;
 
-        //  Populates inner widgets with values taken
-        //  from persistent settings
+        /// \brief
+        ///     Populates inner widgets with values taken
+        ///     from persistent settings.
         virtual void    loadControlValues() = 0;
 
-        //  Saves current values of inner widgets to
-        //  persistent settings IF THESE ARE ALL VALID,
-        //  ELSE DOES NOT SAVE ANY OF THEM
+        /// \brief
+        ///     Saves current values of inner widgets to
+        ///     persistent settings IF THESE ARE ALL VALID,
+        ///     ELSE DOES NOT SAVE ANY OF THEM.
         virtual void    saveControlValues() = 0;
 
-        //  Resets the values of inner widgets to their defaults
+        /// \brief
+        ///     Resets the values of inner widgets to their defaults.
         virtual void    resetControlValues() = 0;
 
-        //  Checks whether all inner widgets have values
-        //  that can be saved to persistent settings (e.h.
-        //  text fields that allow only numeric values
-        //  have only valid numbers in them, etc.)
+        /// \brief
+        ///     Checks whether all inner widgets have values
+        ///     that can be saved to persistent settings.
+        /// \details
+        ///     All text fields that allow only numeric values
+        ///     have only valid numbers in them, etc.
+        /// \return
+        ///     True if all inner widgets have values that can
+        ///     be saved to persistent settings, else false.
         virtual bool    isValid() const = 0;
 
         //////////

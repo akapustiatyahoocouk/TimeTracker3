@@ -42,6 +42,28 @@ CreatePublicActivityDialog::CreatePublicActivityDialog(
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
+    //  Fill the "activity type" combo box
+    QList<tt3::ws::ActivityType> activityTypes =
+        _workspace->activityTypes(_credentials).values();
+    std::sort(activityTypes.begin(),
+              activityTypes.end(),
+              [&](auto a, auto b)
+              {
+                  return a->displayName(_credentials) < b->displayName(_credentials);
+              });
+
+    _ui->activityTypeComboBox->addItem(
+        tt3::ws::ObjectTypes::ActivityType::instance()->smallIcon(),
+        "-",
+        QVariant::fromValue<tt3::ws::ActivityType>(nullptr));
+    for (tt3::ws::ActivityType activityType : activityTypes)
+    {
+        _ui->activityTypeComboBox->addItem(
+            activityType->type()->smallIcon(),
+            activityType->displayName(_credentials),
+            QVariant::fromValue(activityType));
+    }
+
     //  Fill "hours" amd "minutes" combo boxes
     for (int h = 0; h < 12; h++)
     {
