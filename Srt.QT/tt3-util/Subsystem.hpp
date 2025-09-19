@@ -17,42 +17,69 @@
 
 namespace tt3::util
 {
-    //  A generic "subsystem" is a group of components that
-    //  share the same purpose or area of functionality
+    /// \class ISubsystem tt3-util/API.hpp
+    /// \brief
+    ///     A generic "subsystem" is a group of components that
+    ///     share the same purpose or area of functionality.
     class TT3_UTIL_PUBLIC ISubsystem
     {
         //////////
         //  This is an interface
     protected:
+        /// \brief
+        ///     The empty [interface] constructor.
         ISubsystem() = default;
+
+        /// \brief
+        ///     The empty [interface] destructor.
         virtual ~ISubsystem() = default;
 
         //////////
         //  Operations
     public:
-        //  The mnemonic identifier of this subsystem
+        /// \brief
+        ///     Returns the mnemonic identifier of this subsystem,
+        /// \return
+        ///     The mnemonic identifier of this subsystem,
         virtual Mnemonic    mnemonic() const = 0;
 
-        //  The user-readable display name of this subsystem
-        //  for the current default locale.
+        /// \brief
+        ///     Returns the user-readable display name of this subsystem.
+        /// \return
+        ///     The user-readable display name of this subsystem
+        ///     for the current default locale.
         virtual QString     displayName() const = 0;
 
-        //  The short (1 line) description of this subsystem
-        //  for the current default locale.
+        /// \brief
+        ///     Returns the short (1 line) description of this subsystem.
+        /// \return
+        ///     The short (1 line) description of this subsystem
+        ///     for the current default locale.
         virtual QString     description() const = 0;
 
-        //  The small (16x16) icon representing this subsystem.
+        /// \brief
+        ///     Returns the small (16x16) icon representing this subsystem.
+        /// \return
+        ///     The small (16x16) icon representing this subsystem.
         virtual QIcon       smallIcon() const;
 
-        //  The large (32x32) icon representing this subsystem.
+        /// \brief
+        ///     Returns the large (32x32) icon representing this subsystem.
+        /// \return
+        ///     The large (32x32) icon representing this subsystem.
         virtual QIcon       largeIcon() const;
 
-        //  The set of all registered components that belong
-        //  to this subsystem.
+        /// \brief
+        ///     Returns the set of all registered components that
+        ///     belong to this subsystem.
+        /// \return
+        ///     The set of all registered components that belong
+        ///     to this subsystem.
         virtual Components  components() const;
     };
 
-    //  The standard (predefined) subsystems
+    /// \class StandardSubsystems tt3-util/API.hpp
+    /// \brief The standard (predefined) subsystems.
     class TT3_UTIL_PUBLIC StandardSubsystems final
     {
         UTILITY_CLASS(StandardSubsystems)
@@ -60,7 +87,8 @@ namespace tt3::util
         //////////
         //  Members
     public:
-        //  The "Applications" subsystems (i.e. .EXE files)
+        /// \class Applications tt3-util/API.hpp
+        /// \brief The "Applications" subsystems (EXE files).
         class TT3_UTIL_PUBLIC Applications final
             :   public virtual ISubsystem
         {
@@ -74,7 +102,8 @@ namespace tt3::util
             virtual QString     description() const override;
         };
 
-        //  The "Storage" subsystems (data storage)
+        /// \class Storage tt3-util/API.hpp
+        /// \brief The "Storage" subsystems (data storage).
         class TT3_UTIL_PUBLIC Storage final
             :   public virtual ISubsystem
         {
@@ -88,7 +117,8 @@ namespace tt3::util
             virtual QString     description() const override;
         };
 
-        //  The "GUI" subsystems (user interface)
+        /// \class Gui tt3-util/API.hpp
+        /// \brief The "GUI" subsystems (user interface).
         class TT3_UTIL_PUBLIC Gui final
             :   public virtual ISubsystem
         {
@@ -102,7 +132,8 @@ namespace tt3::util
             virtual QString     description() const override;
         };
 
-        //  The "Reporting" subsystems (quick/full reports)
+        /// \class Reporting tt3-util/API.hpp
+        /// \brief The "Reporting" subsystems (quick/full reports).
         class TT3_UTIL_PUBLIC Reporting final
             :   public virtual ISubsystem
         {
@@ -116,7 +147,8 @@ namespace tt3::util
             virtual QString     description() const override;
         };
 
-        //  The "Utility" subsystems (e.g. support libraries)
+        /// \class Utility tt3-util/API.hpp
+        /// \brief The "Utility" subsystems (support libraries).
         class TT3_UTIL_PUBLIC Utility final
             :   public virtual ISubsystem
         {
@@ -131,7 +163,8 @@ namespace tt3::util
         };
     };
 
-    //  The manager of known Subsystems
+    /// \class SubsystemManager tt3-util/API.hpp
+    /// \brief The manager of known Subsystems.
     class TT3_UTIL_PUBLIC SubsystemManager final
     {
         UTILITY_CLASS(SubsystemManager)
@@ -139,15 +172,29 @@ namespace tt3::util
         //////////
         //  Operations
     public:
-        //  Returns the set of all registered subsystems.
+        /// \brief
+        ///     Returns the set of all registered subsystems.
+        /// \return
+        ///     The set of all registered subsystems.
         static Subsystems   allSubsystems();
 
-        //  Registers the specified Subsystem; returns true
-        //  on success, false on failure.
+        /// \brief
+        ///     Registers the specified Subsystem.
+        /// \param subsystem
+        ///     The subsystem to register.
+        /// \return
+        ///     True on success, false on failure. Repeated
+        ///     registration of the same subsystem is treated
+        ///     as a success.
         static bool         registerSubsystem(ISubsystem * subsystem);
 
-        //  Finds a registered Subsystem by its mnemonic;
-        //  returns nullptr if not found.
+        /// \brief
+        ///     Finds a registered Subsystem by its mnemonic.
+        /// \param mnemonic
+        ///     The mnemonic to lok for.
+        /// \return
+        ///     The registered subsystem with the required mnemonic;
+        ///     nullptr if not found.
         static ISubsystem * findSubsystem(const Mnemonic & mnemonic);
 
         //////////
@@ -156,7 +203,7 @@ namespace tt3::util
         struct _Impl;
 
         //  Helpers
-        static _Impl *      _impl();
+        static _Impl *  _impl();
     };
 }
 

@@ -17,3 +17,5 @@
 /Build.QT
 /Bin.QT
 /Doc/Doxygen/Generated
+/Doc/Doxygen/err
+/Doc/Doxygen/out

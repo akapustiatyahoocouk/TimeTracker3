@@ -17,59 +17,98 @@
 
 namespace tt3::util
 {
-    //////////
-    //  An abstract interface to a "plugin" - an agent discovered
-    //  and instantiated at runtime.
-    //  TODO require implementing classes to be singltons?
+    /// \class IPlugin tt3-util/API.hpp
+    /// \brief
+    ///     An abstract interface to a "plugin" - an agent discovered
+    ///     and instantiated at runtime.
     class TT3_UTIL_PUBLIC IPlugin
     {
         //////////
         //  This is an interface
     protected:
+        /// \brief
+        ///     The empty [interface] constructor.
         IPlugin() = default;
+
+        /// \brief
+        ///     The empty [interface] destructor.
         virtual ~IPlugin() = default;
 
         //////////
         //  Operations
     public:
-        //  The mnemonic identifier of this plugin.
+        /// \brief
+        ///     Returns the mnemonic identifier of this plugin.
+        /// \return
+        ///     The mnemonic identifier of this plugin.
         virtual Mnemonic        mnemonic() const = 0;
 
-        //  The user-readanle display name of this plugin
-        //  for the current default locale.
+        /// \brief
+        ///     Returns the user-readanle display name of this
+        ///     plugin.
+        /// \return
+        ///     The user-readanle display name of this plugin
+        ///     for the current default locale.
         virtual QString         displayName() const = 0;
 
-        //  The short (1 line) user-readable description of
-        //  this plugin for the current default locale.
+        /// \brief
+        ///     Returns the short (1 line) user-readable
+        ///     description of this plugin.
+        /// \return
+        ///     The short (1 line) user-readable description of
+        ///     this plugin for the current default locale.
         virtual QString         description() const = 0;
 
-        //  The copyright message of this plugin for the
-        //  current default locale.
+        /// \brief
+        ///     Returns the copyright message of this plugin.
+        /// \return
+        ///     The copyright message of this plugin for the
+        ///     current default locale.
         virtual QString         copyright() const = 0;
 
-        //  The version of this plugin.
+        /// \brief
+        ///     Returns the version of this plugin.
+        /// \return
+        ///     The version of this plugin.
         virtual QVersionNumber  version() const = 0;
 
-        //  The build number of this plugin.
+        /// \brief
+        ///     Returns the build number of this plugin.
+        /// \return
+        ///     The build number of this plugin.
         virtual QString         buildNumber() const = 0;
 
-        //  The small (16x16) icon representing this plugin.
+        /// \brief
+        ///     Returns the small (16x16) icon representing this plugin.
+        /// \return
+        ///     The small (16x16) icon representing this plugin.
         virtual QIcon           smallIcon() const;
 
-        //  The large (32x32) icon representing this plugin.
+        /// \brief
+        ///     Returns the large (32x32) icon representing this plugin.
+        /// \return
+        ///     The large (32x32) icon representing this plugin.
         virtual QIcon           largeIcon() const;
 
-        //  Called by plugin manager to initialize this plugin.
-        //  On success, returns normally.
-        //  Throws Exception (or a subclass thereof) if an error occurs.
+        /// \brief
+        ///     Called by plugin manager to initialize this plugin.
+        /// \details
+        ///     On success, returns normally.
+        /// \exception Exception
+        ///     (Or a subclass thereof) if an error occurs.
         virtual void            initialize() = 0;
 
-        //  True if plugin was successfully initialized, else false
+        /// \brief
+        ///     Checks whether this plugin was successfully
+        ///     initialized.
+        /// \return
+        ///     True if plugin was successfully initialized,
+        ///     else false.
         bool                    isInitialized() const;
     };
 
-    //////////
-    //  A locator and manager of kavailable plugins
+    /// \class PluginManager tt3-util/API.hpp
+    /// \brief A locator and manager of available plugins.
     class TT3_UTIL_PUBLIC PluginManager
     {
         UTILITY_CLASS(PluginManager)
@@ -79,17 +118,27 @@ namespace tt3::util
         //////////
         //  Operations
     public:
-        //  Loads available Plugins and initializes them.
-        //  Plugins are loaded from tje .DLLs/.SOs that reside
-        //  in the same directpry as the application executavle.
+        /// \brief
+        ///     Loads available Plugins and initializes them.
+        /// \details
+        ///     Plugins are loaded from tje .DLLs/.SOs that reside
+        ///     in the same directpry as the application executavle.
         static void         loadPlugins();
 
-        //  The set of all discovered Plugins (whether
-        //  successfully iniyialized or not)
+        /// \brief
+        ///     Returns the set of all discovered Plugins (whether
+        ///     successfully iniyialized or not)
+        /// \return
+        ///     The set of all discovered Plugins (whether
+        ///     successfully iniyialized or not)
         static Plugins      discoveredPlugins();
 
-        //  The set of all discovered AND successfully
-        //  initialized Plugins.
+        /// \brief
+        ///     Returns the set of all discovered AND successfully
+        ///     initialized Plugins.
+        /// \return
+        ///     The set of all discovered AND successfully
+        ///     initialized Plugins.
         static Plugins      initializedPlugins();
 
         //////////
@@ -103,7 +152,7 @@ namespace tt3::util
     };
 
     //////////
-    //  Plugin export halpers
+    //  Plugin export helpers
     typedef void (*PluginExportProc)(Plugins & plugins);
 }
 

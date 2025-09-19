@@ -46,8 +46,14 @@ void ActivityType::destroy()
 #endif
 
     //  Dis-associate from other objects
-    //  TODO properly
-    Q_ASSERT(_activities.isEmpty());
+    for (Activity * activity : _activities.values())
+    {
+        Q_ASSERT(activity->_activityType == this);
+        activity->_activityType = nullptr;
+        _activities.remove(activity);
+        this->removeReference();
+        activity->removeReference();
+    }
 
     //  This object is now "dead"
     _markDead();
@@ -204,6 +210,15 @@ void ActivityType::_serializeAssociations(
 {
     Object::_serializeAssociations(objectElement);
 
+    if (!_activities.isEmpty())
+    {
+        objectElement.setAttribute(
+            "Activities",
+            Database::_map<QString,Activity*>(
+                    Database::_sortedByOid(_activities),
+                    [](auto a) { return tt3::util::toString(a->_oid); })
+                .join(","));
+    }
     //  TODO Activities      _activities;    //  count as "reference"s
 }
 
@@ -230,7 +245,18 @@ void ActivityType::_deserializeAssociations(
 {
     Object::_deserializeAssociations(objectElement);
 
-    //  TODO Activities      _activities;    //  count as "reference"s
+    if (objectElement.hasAttribute("Activities"))
+    {
+        _activities =
+            _database->_asSet(
+                Database::_map<Activity*,QString>(
+                    objectElement.attribute("Activities").split(','),
+                    [&](auto s)
+                    {
+                        return _database->_getObject<Activity*>(
+                                    tt3::util::fromString(s, tt3::db::api::Oid::Invalid));
+                    }));
+    }
 }
 
 //////////
@@ -251,6 +277,8 @@ void ActivityType::_validate(
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }
 
+    //  Validate aggregations
+
     //  Validate associations
     for (Activity * activity : _activities)
     {
@@ -262,8 +290,6 @@ void ActivityType::_validate(
             throw tt3::db::api::DatabaseCorruptException(_database->_address);
         }
     }
-
-    //  Validate aggregations
 }
 
 //  End of tt3-db-xml/ActivityType.cpp

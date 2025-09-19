@@ -214,7 +214,10 @@ void Activity::_serializeAssociations(
 {
     Object::_serializeAssociations(objectElement);
 
-    //  TODO    ActivityType *  _activityType = nullptr;//  counts as "references" unless nullptr
+    if (_activityType != nullptr)
+    {
+        objectElement.setAttribute("ActivityType", tt3::util::toString(_activityType->_oid));
+    }
     //  TODO    Workload *      _workload = nullptr;    //  counts as "references" uness nullptr
     //  TODO    Works           _works;     //  count as "references"
     //  TODO    Events          _events;    //  count as "references"
@@ -252,7 +255,13 @@ void Activity::_deserializeAssociations(
 {
     Object::_deserializeAssociations(objectElement);
 
-    //  TODO    ActivityType *  _activityType = nullptr;//  counts as "references" unless nullptr
+    if (objectElement.hasAttribute("ActivityType"))
+    {
+        _activityType =
+            _database->_getObject<ActivityType*>(
+                tt3::util::fromString<tt3::db::api::Oid>(
+                    objectElement.attribute("ActivityType")));
+    }
     //  TODO    Workload *      _workload = nullptr;    //  counts as "references" uness nullptr
     //  TODO    Works           _works;     //  count as "references"
     //  TODO    Events          _events;    //  count as "references"
@@ -281,6 +290,8 @@ void Activity::_validate(
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }
 
+    //  Validate aggregations
+
     //  Validate associations
     if (_activityType != nullptr)
     {
@@ -301,8 +312,6 @@ void Activity::_validate(
         }
     }
     //  TODO works, events
-
-    //  Validate aggregations
 }
 
 //  End of tt3-db-xml/Activity.cpp

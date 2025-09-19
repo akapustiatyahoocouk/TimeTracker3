@@ -27,6 +27,7 @@ namespace tt3::db::xml
 
         friend class Database;
         friend class Activity;
+        friend class PublicActivity;
 
         //////////
         //  Construction/destruction (from DB type only)

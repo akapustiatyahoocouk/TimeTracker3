@@ -347,6 +347,10 @@ void Account::_validate(
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }
 
+    //  Validate aggregations
+    //  TODO Works           _works;         //  count as "reference"
+    //  TODO Events          _events;        //  count as "reference"
+
     //  Validate associations
     if (_user == nullptr || !_user->_isLive ||
         _user->_database != _database ||
@@ -363,8 +367,6 @@ void Account::_validate(
             throw tt3::db::api::DatabaseCorruptException(_database->_address);
         }
     }
-
-    //  Validate aggregations
 }
 
 //  End of tt3-db-xml/Account.cpp

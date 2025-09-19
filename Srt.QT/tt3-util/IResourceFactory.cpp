@@ -19,8 +19,11 @@ using namespace tt3::util;
 
 //////////
 //  Operations
-QString IResourceFactory::string(const ResourceSectionId & sectionId,
-                                 const ResourceId & resourceId, const QStringList & params) const
+QString IResourceFactory::string(
+        const ResourceSectionId & sectionId,
+        const ResourceId & resourceId,
+        const QStringList & params
+    ) const
 {
     Q_ASSERT(params.size() <= 10);  //  ...for now
 
@@ -61,25 +64,36 @@ QString IResourceFactory::string(const ResourceSectionId & sectionId,
     return result;
 }
 
-QString IResourceFactory::string(const ResourceSectionId & sectionId, const ResourceId & resourceId,
-                                 const QString & param1) const
+QString IResourceFactory::string(
+        const ResourceSectionId & sectionId,
+        const ResourceId & resourceId,
+        const QString & param0
+    ) const
 {
     return string(sectionId, resourceId,
-                  QStringList{param1});
+                  QStringList{param0});
 }
 
-QString IResourceFactory::string(const ResourceSectionId & sectionId, const ResourceId & resourceId,
-                                 const QString & param1, const QString & param2) const
+QString IResourceFactory::string(
+        const ResourceSectionId & sectionId,
+        const ResourceId & resourceId,
+        const QString & param0,
+        const QString & param1
+    ) const
 {
     return string(sectionId, resourceId,
-                  QStringList{param1, param2});
+                  QStringList{param0, param1});
 }
 
-QString IResourceFactory::string(const ResourceSectionId & sectionId, const ResourceId & resourceId,
-                                 const QString & param1, const QString & param2, const QString & param3) const
+QString IResourceFactory::string(
+        const ResourceSectionId & sectionId,
+        const ResourceId & resourceId,
+        const QString & param0,
+        const QString & param1,
+        const QString & param2) const
 {
     return string(sectionId, resourceId,
-                  QStringList{param1, param2, param3});
+                  QStringList{param0, param1, param2});
 }
 
 //  End of tt3-util/IResourceFactory.cpp

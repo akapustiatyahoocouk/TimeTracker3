@@ -245,7 +245,7 @@ void Object::_validate(
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }
 
-    //  Validate associations
+    //  Validate aggregations
     if (!_database->_liveObjects.contains(_oid) ||
         _database->_liveObjects[_oid] != this ||
         _database->_graveyard.contains(_oid))
@@ -253,7 +253,7 @@ void Object::_validate(
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }
 
-    //  Validate aggregations
+    //  Validate associations
 }
 
 //  End of tt3-db-xml/Object.cpp

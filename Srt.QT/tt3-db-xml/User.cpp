@@ -501,18 +501,6 @@ void User::_validate(
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }
 
-    //  Validate associations
-    for (Workload * workload : _permittedWorkloads)
-    {
-        if (workload == nullptr ||
-            workload->_database != this->_database || !workload->_isLive ||
-            !workload->_assignedUsers.contains(this))
-        {   //  OOPS!
-            throw tt3::db::api::DatabaseCorruptException(_database->_address);
-        }
-    }
-    //  TODO
-
     //  Validate aggregations
     if (!_database->_users.contains(this))
     {   //  OOPS!
@@ -528,6 +516,18 @@ void User::_validate(
         }
         account->_validate(validatedObjects);
     }
+
+    //  Validate associations
+    for (Workload * workload : _permittedWorkloads)
+    {
+        if (workload == nullptr ||
+            workload->_database != this->_database || !workload->_isLive ||
+            !workload->_assignedUsers.contains(this))
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
+    }
+    //  TODO more aaggregations?
 }
 
 //  End of tt3-db-xml/User.cpp

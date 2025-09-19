@@ -88,7 +88,7 @@ namespace tt3::util
         //////////
         //  Members
     public:
-        /// \class Gpl3 tt3-util/PI.hpp
+        /// \class Gpl3 tt3-util/API.hpp
         /// \brief The GPLv3 license.
         class TT3_UTIL_PUBLIC Gpl3 final
             :   public virtual ILicense

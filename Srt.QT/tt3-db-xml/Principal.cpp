@@ -189,6 +189,8 @@ void Principal::_validate(
     }
 
     //  Validate aggregations
+
+    //  Validate associations
 }
 
 //  End of tt3-db-xml/Principal.cpp

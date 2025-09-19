@@ -17,17 +17,21 @@
 
 namespace tt3::util
 {
-    //////////
-    //  A generic "message digest" - an algorithm that creates a fixed-size
-    //  "digest" for an arbitrary size message
+    /// \class IMessageDigest tt3-util/API.hpp
+    /// \brief
+    ///     A generic "message digest" - an algorithm that creates
+    ///     a fixed-size "digest" for an arbitrary size message.
     class TT3_UTIL_PUBLIC IMessageDigest
     {
         //////////
         //  Types
     public:
-        //  The "builder" of a message digest.
-        //  Once created, a Builder is fed the message bytes (all at once or piecemeal),
-        //  after which it is "finalised". Once "finalised", the digest bytes become available.
+        /// \class Builder tt3-util/API.hpp
+        /// \brief The "builder" of a message digest.
+        /// \details
+        ///     Once created, a Builder is fed the message bytes
+        ///     (all at once or piecemeal), after which it is "finalised".
+        ///     Once "finalised", the digest bytes become available.
         class TT3_UTIL_PUBLIC Builder
         {
             CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Builder)
@@ -35,74 +39,115 @@ namespace tt3::util
             //////////
             //  Construction/destruction
         public:
+            /// \brief
+            ///     The class constructor.
             Builder() = default;
+
+            /// \brief
+            ///     The class destructor.
             virtual ~Builder() = default;
 
             //////////
             //  Operations
         public:
-            //  The message digest algorithm implemented by this Builder.
+            /// \brief
+            ///     Returns the message digest algorithm implemented by
+            ///     this Builder.
+            /// \return
+            ///     The message digest algorithm implemented by this Builder.
             virtual IMessageDigest * messageDigest() const = 0;
 
-            //  Resets this Builder to its initial state, ready
-            //  to digest the next message
+            /// \brief
+            ///     Resets this Builder to its initial state, ready
+            ///     to digest the next message
             virtual void        reset() = 0;
 
-            //  Modifies the state of this builder by processing the specified bytes.
-            //  String version uses UTF-8 to encode string as bytes.
+            /// \brief
+            ///     Modifies the state of this builder by processing
+            ///     the specified bytes.
+            /// \param data
+            ///     The data bytes to digest.
+            /// \param numBytes
+            ///     The number of data bytes to digest.
             virtual void        digestFragment(const void * data, size_t numBytes) = 0;
+
+            /// \brief
+            ///     Modifies the state of this builder by processing
+            ///     the specified bytes.
+            /// \details
+            ///     Uses UTF-8 to encode string as bytes brfore digesting them.
+            /// \param data
+            ///     The data bytes to digest.
+            /// \param numBytes
+            ///     The number of data bytes to digest.
             virtual void        digestFragment(const QString & s);
 
-            //  Finalises the state of this builder and calculates the "final" message digest.
+            /// \brief
+            ///     Finalises the state of this builder and calculates
+            ///     the "final" message digest.
             virtual void        finalise() = 0;
 
-            //  Returns the "final" message digest; "finalise()"s first if necessary.
+            /// \brief
+            ///     Returns the "final" message digest; "finalise()"s
+            ///     first if necessary.
+            /// \return
+            ///     The "final" message digest as a byte array.
             virtual QByteArray  digestAsBytes() = 0;
 
-            //  Same as "digestAsBytes()", but returns a string of [uppercase] hex digits, two per byte.
+            /// \brief
+            ///     Returns the "final" message digest; "finalise()"s
+            ///     first if necessary.
+            /// \return
+            ///     The "final" message digest as an uppercase hex string.
             virtual QString     digestAsString();
         };
 
         //////////
         //  This is an interface
     protected:
+        /// \brief
+        ///     The empty [interface] constructor.
         IMessageDigest() = default;
+
+        /// \brief
+        ///     The empty [interface] destructor.
         virtual ~IMessageDigest() = default;
 
         //////////
         //  Operations
     public:
-        //  The mnemonic identifier of this message digest algorithm.
+        /// \brief
+        ///     Returns the mnemonic identifier of this message digest algorithm.
+        /// \return
+        ///     The mnemonic identifier of this message digest algorithm.
         virtual Mnemonic        mnemonic() const = 0;
 
-        //  The user-readable display name of this message digest
-        //  algorithm for the current default locale.
+        /// \brief
+        ///     Returns the user-readable display name of this
+        ///     message digest algorithm.
+        /// \return
+        ///     The user-readable display name of this message
+        ///     digest algorithm for the current default locale.
         virtual QString         displayName() const = 0;
 
-        //////////
-        //  Operations
-    public:
         //  Creates a new Builder that implements this MessageDigest.
         //  The caller is responsible for destroying the Builder when done.
         virtual Builder *       createBuilder() = 0;
     };
 
-    //////////
-    //  SHA-1 message digest
+    /// \class Sha1MessageDigest tt3-util/API.hpp
+    /// \brief SHA-1 message digest.
+    /// TODO move to StandardMessageDigests::Sha1 class
     class TT3_UTIL_PUBLIC Sha1MessageDigest final
         :   public virtual IMessageDigest
     {
         DECLARE_SINGLETON(Sha1MessageDigest)
 
         //////////
-        //  MessageDigest
+        //  IMessageDigest
     public:
         virtual Mnemonic        mnemonic() const override;
         virtual QString         displayName() const override;
-
-        //////////
-        //  IMessageDigest
-    public:
         virtual Builder *       createBuilder() override;
 
         //////////
@@ -149,8 +194,8 @@ namespace tt3::util
         };
     };
 
-    //////////
-    //  The manager of known message ditest algorithms
+    /// \class MessageDigestManager tt3-util/API.hpp
+    /// \brief The manager of known message ditest algorithms.
     class TT3_UTIL_PUBLIC MessageDigestManager final
     {
         UTILITY_CLASS(MessageDigestManager)
@@ -158,16 +203,29 @@ namespace tt3::util
         //////////
         //  Operations
     public:
-        //  Returns the set of all registered message
-        //  digest algorithms.
+        /// \brief
+        ///     Returns the set of all registered message
+        ///     digest algorithms.
+        /// \return
+        ///     The set of all registered message digest algorithms.
         static MessageDigests   allMessageDigests();
 
-        //  Registers the specified MessageDigest; returns
-        //  true on success, false on failure.
+        /// \brief
+        ///     Registers the specified message digest algorithm.
+        /// \param messageDigest
+        ///     The message digest algorithm to register.
+        /// \return
+        ///     True on success, false on failure. Repeated registration
+        ///     of the same message digest algorithm is treated as a success.
         static bool         registerMessageDigest(IMessageDigest * messageDigest);
 
-        //  Finds a registered message digest algorithm by its
-        //  mnemonic; returns nullptr if not found.
+        /// \brief
+        ///     Finds a registered message digest algorithm by its mnemonic.
+        /// \param mnemonic
+        ///     The mnemonic to look for.
+        /// \return
+        ///     The message digest algorithm with the required
+        ///     mnemonic; nullptr if not found.
         static IMessageDigest * findMessageDigest(const Mnemonic & mnemonic);
 
         //////////
@@ -176,7 +234,7 @@ namespace tt3::util
         struct _Impl;
 
         //  Helpers
-        static _Impl *      _impl();
+        static _Impl *  _impl();
     };
 }
 

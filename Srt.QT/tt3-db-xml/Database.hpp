@@ -256,7 +256,43 @@ namespace tt3::db::xml
             return result;
         }
 
+        template <class R, class T>
+        static QList<R> _map(const QList<T> objects,
+                             std::function<R(T)> mapper)
+        {
+            QList<R> result;
+            for (T obj : objects)
+            {
+                result.append(mapper(obj));
+            }
+            return result;
+        }
+
         QMap<Object*, QDomElement>  _deserializationMap;    //  object -> DOM element from which it came
+
+        template <class T>
+        T _getObject(const tt3::db::api::Oid oid)
+        {
+            if (_liveObjects.contains(oid))
+            {
+                if (T t = dynamic_cast<T>(_liveObjects[oid]))
+                {
+                    return t;
+                }
+            }
+            throw tt3::db::api::DatabaseCorruptException(_address);
+        }
+
+        template <class T>
+        QSet<T> _asSet(const QList<T> & list)
+        {
+            QSet<T> result(list.cbegin(), list.cend());
+            if (result.size() != list.size())
+            {
+                throw tt3::db::api::DatabaseCorruptException(_address);
+            }
+            return result;
+        }
 
         //  Validation
         void            _validate();    //  throwstt3::db::api::DatabaseException

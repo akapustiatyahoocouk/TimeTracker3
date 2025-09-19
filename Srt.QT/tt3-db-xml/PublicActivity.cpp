@@ -44,8 +44,16 @@ void PublicActivity::destroy()
     _database->_validate(); //  may throw
 #endif
 
-    //  Associations TODO properly
-    Q_ASSERT(_activityType == nullptr);
+    //  Associations
+    if (_activityType != nullptr)
+    {
+        Q_ASSERT(_activityType->_activities.contains(this));
+        _activityType->_activities.remove(this);
+        this->removeReference();
+        _activityType->removeReference();
+        _activityType = nullptr;
+    }
+    //  TODO others - properly
     Q_ASSERT(_workload == nullptr);
     Q_ASSERT(_works.isEmpty());
     Q_ASSERT(_events.isEmpty());
@@ -134,14 +142,14 @@ void PublicActivity::_validate(
 
     //  Validate properties
 
-    //  Validate associations
-    //  TODO
-
     //  Validate aggregations
     if (!_database->_publicActivities.contains(this))
     {   //  OOPS!
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }
+
+    //  Validate associations
+    //  TODO
 }
 
 //  End of tt3-db-xml/User.cpp

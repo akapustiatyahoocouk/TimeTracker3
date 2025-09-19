@@ -17,7 +17,8 @@
 
 namespace tt3::util
 {
-    //  The product information provider
+    /// \class ProductInformation tt3-util/API.hpp
+    /// \brief The product information provider.
     class TT3_UTIL_PUBLIC ProductInformation final
     {
         UTILITY_CLASS(ProductInformation)
@@ -25,28 +26,52 @@ namespace tt3::util
         //////////
         //  Operations
     public:
-        //  The internal name of the TT3 product.
+        /// \brief
+        ///     Returns the internal name of the TT3 product.
+        /// \return
+        ///     The internal name of the TT3 product.
         static QString          applicationName();
 
-        //  The version of the TT3 product.
+        /// \brief
+        ///     Returns yhe version of the TT3 product.
+        /// \return
+        ///     The version of the TT3 product.
         static QVersionNumber   applicationVersion();
 
-        //  The short (1 line) user-readable copyright message of the TT3 product.
+        /// \brief
+        ///     Returns the short (1 line) user-readable copyright message of the TT3 product.
+        /// \return
+        ///     The short (1 line) user-readable copyright message of the TT3 product.
         static QString          applicationCopyright();
 
-        //  The build number of the TT3 product.
+        /// \brief
+        ///     Returns the build number of the TT3 product.
+        /// \return
+        ///     The build number of the TT3 product.
         static QString          applicationBuildNumber();
 
-        //  The user-readable name of the TT3 product.
+        /// \brief
+        ///     Returns the user-readable name of the TT3 product.
+        /// \return
+        ///     The user-readable name of the TT3 product.
         static QString          applicationDisplayName();
 
-        //  The TT3 organization name.
+        /// \brief
+        ///     Returns the TT3 organization name.
+        /// \return
+        ///     The TT3 organization name.
         static QString          organizationName();
 
-        //  The TT3 organization domain.
+        /// \brief
+        ///     Returns the TT3 organization domain.
+        /// \return
+        ///     The TT3 organization domain.
         static QString          organizationDomain();
 
-        //  The user-readable credits message of the TT3 product.
+        /// \brief
+        ///     Returns the user-readable credits message of the TT3 product.
+        /// \return
+        ///     The user-readable credits message of the TT3 product.
         static QString          credits();
     };
 }
