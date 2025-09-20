@@ -82,8 +82,8 @@ namespace tt3::gui
         //////////
         //  Signals
     signals:
-        //  Emitted when the value of some
-        //  inner widget changes
+        /// \brief
+        ///     Emitted when the value of some inner widget changes.
         void            controlValueChanged();
     };
 }

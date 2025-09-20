@@ -27,7 +27,16 @@ namespace tt3
         //////////
         //  Construction/destruction
     public:
+        /// \brief
+        ///     Constructs the Appliction instance.
+        /// \param argc
+        ///     The command line argument count (as passed to main()).
+        /// \param argv
+        ///     The command line arguments (as passed to main()).
         Application(int & argc, char ** argv);
+
+        /// \brief
+        ///     The class destructor.
         virtual ~Application();
 
         //////////

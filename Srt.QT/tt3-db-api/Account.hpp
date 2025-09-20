@@ -170,6 +170,8 @@ namespace tt3::db::api
         /// \param activity
         ///     The activity associated with this unit of work;
         ///     cann0t be nullptr.
+        /// \return
+        ///     The newly created Work.
         /// \exception DatabaseException
         ///     If an error occurs.
         virtual auto    createWork(
@@ -182,11 +184,13 @@ namespace tt3::db::api
         ///     Creates a new Event for this Account against
         ///     the specified activity.
         /// \param occurredAt
-        ///     TheUTC date+time when the event has occurred.
+        ///     The UTC date+time when the event has occurred.
         /// \param summary
         ///     The brief 1-line summary for the new Event.
         /// \param activity
         ///     The activity associated with the new Event; nullptr == none.
+        /// \return
+        ///     The newly created Event.
         /// \exception DatabaseException
         ///     If an error occurs.
         virtual auto    createEvent(

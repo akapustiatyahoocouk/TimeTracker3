@@ -17,10 +17,11 @@
 
 namespace tt3::ws
 {
-    //  A "workspace type" represents a specific storage technology
-    //  used to keep data persistent.
-    //  The set of available workspace types is generated
-    //  automatically based on the available database types.
+    /// \class WorkspaceTypeImpl tt3-ws/API.hpp
+    /// \brief A specific storage technology used to keep data persistent.
+    /// \details
+    ///     The set of available workspace types is generated
+    ///     automatically based on the available database types.
     class TT3_WS_PUBLIC WorkspaceTypeImpl final
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkspaceTypeImpl)
@@ -38,37 +39,69 @@ namespace tt3::ws
         //////////
         //  Operation (general)
     public:
-        //  The mnemonic identifier of this workspace type
+        /// \brief
+        ///     Returns the mnemonic identifier of this
+        ///     workspace type.
+        /// \return
+        ///     The mnemonic identifier of this workspace type.
         auto        mnemonic(
                         ) const -> tt3::util::Mnemonic;
 
-        //  The user-readable display name of this workspace type.
+        /// \brief
+        ///     Returns the user-readable display name of this
+        ///     workspace type.
+        /// \return
+        ///     The user-readable display name of this workspace
+        ///     type for the current default locale.
         auto        displayName(
                         ) const -> QString;
 
-        //  The small (16x16) icon representing this workspace type.
+        /// \brief
+        ///     Returns the small (16x16) icon representing this workspace type.
+        /// \return
+        ///     The small (16x16) icon representing this workspace type.
         auto        smallIcon(
                         ) const -> QIcon;
 
-        //  The large (32x32) icon representing this workspace type.
+        /// \brief
+        ///     Returns the large (32x32) icon representing this workspace type.
+        /// \return
+        ///     The large (32x32) icon representing this workspace type.
         auto        largeIcon(
                         ) const -> QIcon;
 
-        //  Checks whether this workspace type is "operational"
-        //  (i.e. can be used).
+        /// \brief
+        ///     Checks whether this workspace type is "operational"
+        ///     (can be used).
+        /// \return
+        ///     True if this workspace type is "operational" (can be
+        ///     used), else false.
         bool        isOperational(
                         ) const;
 
-        //  The short (1 line) status report for this workspace type.
+        /// \brief
+        ///     Returns the short (1 line) status report for
+        ///     this workspace type.
+        /// \return
+        ///     The short (1 line) status report for this
+        ///     workspace type.
         auto        shortStatusReport(
                         ) const -> QString;
 
-        //  The long (multi-line) status report for this workspace type.
-        //  Lines are separated by newline ('\n') character.
+        /// \brief
+        ///     Returns the long (multi-line) status report
+        ///     for this workspace type.
+        /// \return
+        ///     The long (multi-line) status report for this
+        ///     workspace type with lines separated by newline
+        ///     ('\\n') character.
         auto        fullStatusReport(
                         ) const -> QString;
 
-        //  The validator for workspaces of this type
+        /// \brief
+        ///     Returns yhe validator for workspaces of this type
+        /// \return
+        ///     The validator for workspaces of this type
         auto        validator(
                         ) const -> Validator *
         {
@@ -88,18 +121,28 @@ namespace tt3::ws
         auto        defaultWorkspaceAddress(
                         ) const -> WorkspaceAddress;
 
-        //  Prompts the user to interactively specify an address for a new
-        //  workspace of this type, using the specified widget as a parent
-        //  for all modal dialogs that may be involved in address choosing.
-        //  Returns the workspace address chosen by the user or invalid
-        //  workspace address if the user has chosen to cancel the dialog.
+        /// \brief
+        ///     Prompts the user to interactively specify an address
+        ///     for a new workspace of this type.
+        /// \param parent
+        ///     The parentwidget for all modal dialogs that may
+        ///     be involved in address choosing; nullptr == none.
+        /// \return
+        ///     The workspace address chosen by the user or
+        ///     invalid workspace address if the user has chosen
+        ///     to cancel the dialog.
         WorkspaceAddress    enterNewWorkspaceAddress(QWidget * parent);
 
-        //  Prompts the user to interactively specify an address of an existing
-        //  workspace of this type, using the specified widget as a parent
-        //  for all modal dialogs that may be involved in address choosing.
-        //  Returns the workspace address chosen by the user or invalid
-        //  workspace address if the user has chosen to cancel the dialog.
+        /// \brief
+        ///     Prompts the user to interactively specify an address
+        ///     if an existing workspace of this type.
+        /// \param parent
+        ///     The parentwidget for all modal dialogs that may
+        ///     be involved in address choosing; nullptr == none.
+        /// \return
+        ///     The workspace address chosen by the user or
+        ///     invalid workspace address if the user has chosen
+        ///     to cancel the dialog.
         WorkspaceAddress    enterExistingWorkspaceAddress(QWidget * parent);
 
         /// \brief
@@ -195,8 +238,8 @@ namespace tt3::ws
         void                _pruneWorkspaceCache();
     };
 
-    //////////
-    //  The registry/manager of known workspace types
+    /// \class WorkspaceTypeManager tt3-ws/API.hpp
+    /// \brief The registry/manager of known workspace types.
     class TT3_WS_PUBLIC WorkspaceTypeManager final
     {
         UTILITY_CLASS(WorkspaceTypeManager)
@@ -206,13 +249,23 @@ namespace tt3::ws
         //////////
         //  Operations
     public:
-        //  Finds a known workspace type by mnemonic;
-        //  returns nullptr if mpy fpind.
-        //  This is determined based on registered database types.
+        /// \brief
+        ///     Finds a known workspace type by mnemonic.
+        /// \details
+        ///     This is determined based on registered database types.
+        /// \param mnemonic
+        ///     The mnemonic to look for.
+        /// \return
+        ///     The workspace type with the required mnemonic
+        ///     or nullptr if not found.
         static WorkspaceType    findWorkspaceType(const tt3::util::Mnemonic & mnemonic);
 
-        //  The set of all known workspace types.
-        //  This is determined based on registered database types.
+        /// \brief
+        ///     Returns the set of all known workspace types.
+        /// \details
+        ///     This is determined based on registered database types.
+        /// \return
+        ///     The set of all known workspace types.
         static WorkspaceTypes   allWorkspaceTypes();
 
         //////////

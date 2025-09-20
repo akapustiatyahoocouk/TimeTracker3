@@ -17,7 +17,7 @@
 
 namespace tt3
 {
-    /// \class Component API.hpp "tt3/API.hpp"
+    /// \class Component tt3/API.hpp
     /// \brief The "TT3 application" component.
     class Component final
         :   public virtual tt3::util::IComponent
@@ -27,27 +27,28 @@ namespace tt3
         //////////
         //  Types
     public:
-        /// \brief
-        ///     The component's resources.
+        /// \class Resources tt3/API.hpp
+        /// \brief The component's resources.
         class Resources final
             :   public tt3::util::FileResourceFactory
         {
             DECLARE_SINGLETON(Resources)
         };
 
-        /// \brief
-        ///     The component's settings
+        /// \class Settings tt3/API.hpp
+        /// \brief The component's settings.
         class Settings final
             :   public tt3::util::Settings
         {
             DECLARE_SINGLETON(Settings)
-
         };
 
         //////////
         //  IComponent
     public:
+        /// \brief A type alias to improve code readability.
         using Mnemonic = tt3::util::Mnemonic;
+        /// \brief A type alias to improve code readability.
         using Subsystem = tt3::util::ISubsystem;
 
         virtual Mnemonic        mnemonic() const override;

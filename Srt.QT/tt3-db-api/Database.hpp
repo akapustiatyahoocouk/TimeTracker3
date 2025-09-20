@@ -113,6 +113,8 @@ namespace tt3::db::api
 
         /// \brief
         ///     Finds the account with the specified login.
+        /// \param login
+        ///     The lofin to look for.
         /// \return
         ///     The account with the specified login; nullptr
         ///     if not found.

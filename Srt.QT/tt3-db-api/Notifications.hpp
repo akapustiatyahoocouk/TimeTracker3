@@ -252,6 +252,8 @@ namespace tt3::db::api
         ///     notification dispatch thread, which automatically
         ///     means that connections of any slots to these signals
         ///     become queued connections.
+        /// \param notification
+        ///     The notification to post for eventual dispatch.
         void            post(ChangeNotification * notification);
 
         //////////

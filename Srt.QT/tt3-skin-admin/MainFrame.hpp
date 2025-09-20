@@ -51,8 +51,22 @@ namespace tt3::skin::admin
         //////////
         //  QWidget
     public:
+        /// \brief
+        ///     Called to handle a "window move" event
+        /// \param event
+        ///     The event detils.
         virtual void    moveEvent(QMoveEvent * event) override;
+
+        /// \brief
+        ///     Called to handle a "window resize" event
+        /// \param event
+        ///     The event detils.
         virtual void    resizeEvent(QResizeEvent * event) override;
+
+        /// \brief
+        ///     Called to handle a "window close" event
+        /// \param event
+        ///     The event detils.
         virtual void	closeEvent(QCloseEvent * event) override;
 
         //////////

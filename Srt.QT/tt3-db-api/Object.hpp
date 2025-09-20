@@ -44,16 +44,16 @@ namespace tt3::db::api
     ///     merging two databases
     class TT3_DB_API_PUBLIC Oid final
     {
+        friend TT3_DB_API_PUBLIC QString tt3::util::toString<Oid>(const Oid & value);
+        friend TT3_DB_API_PUBLIC Oid tt3::util::fromString<Oid>(const QString & s, qsizetype & scan);
+        friend TT3_DB_API_PUBLIC size_t qHash(const Oid & key, size_t seed);
+
         //////////
         //  Constants
     public:
         /// \brief
         ///     The special "invalid" OID.
         static const Oid    Invalid;
-
-        friend TT3_DB_API_PUBLIC QString tt3::util::toString<Oid>(const Oid & value);
-        friend TT3_DB_API_PUBLIC Oid tt3::util::fromString<Oid>(const QString & s, qsizetype & scan);
-        friend TT3_DB_API_PUBLIC size_t qHash(const Oid & key, size_t seed);
 
         //////////
         //  Construction
@@ -239,8 +239,12 @@ namespace tt3::db::api
         ///     The OID of the corresponding data object.
         virtual Oid     oid() const = 0;
 
-        //  True if this instance represents an existing data
-        //  object residing in a database, else false.
+        /// \brief
+        ///     Checks whether this instance represents an
+        ///     existing data object residing in a database.
+        /// \return
+        ///     True if this instance represents an existing
+        ///     data object residing in a database, else false.
         virtual bool    isLive() const = 0;
 
         //////////

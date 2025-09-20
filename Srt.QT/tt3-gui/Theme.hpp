@@ -39,6 +39,7 @@ namespace tt3::gui
         //////////
         //  Operations (properties)
     public:
+        /// \brief A type alias to improve code readability.
         using Mnemonic = tt3::util::Mnemonic;
 
         /// \brief
@@ -246,19 +247,24 @@ namespace tt3::gui
         /// \return
         ///     True if the "current" theme is non-existent (nullptr),
         ///     else false.
-        bool            operator == (nullptr_t null) const;
+        bool            operator == (nullptr_t /*null*/) const;
 
         /// \brief
         ///     Checks if the "current" theme is non-existent.
         /// \return
         ///     False if the "current" theme is non-existent (nullptr),
         ///     else true.
-        bool            operator != (nullptr_t null) const;
+        bool            operator != (nullptr_t /*null*/) const;
 
         //////////
         //  Signals
     signals:
-        //  Emitted after the current theme has changed.
+        /// \brief
+        ///     Emitted after the current theme has changed.
+        /// \param before
+        ///     The "current" theme before the change; nullptr == none.
+        /// \param after
+        ///     The "current" theme after the change; nullptr == none.
         void                changed(ITheme * before, ITheme * after);
 
         //////////

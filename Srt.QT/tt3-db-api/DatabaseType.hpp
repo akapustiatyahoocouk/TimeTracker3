@@ -44,42 +44,69 @@ namespace tt3::db::api
         //////////
         //  Operation (general)
     public:
-        //  The mnemonic identifier of this database type
+        /// \brief
+        ///     Returns the mnemonic identifier of this database type.
+        /// \return
+        ///     The mnemonic identifier of this database type.
         virtual auto    mnemonic(
                             ) const
                             -> tt3::util::Mnemonic = 0;
 
-        //  The user-readable display name of this database type
+        /// \brief
+        ///     Returns the user-readable display name of this database type.
+        /// \return
+        ///     The user-readable display name of this database type.
         virtual auto    displayName(
                             ) const
                             -> QString = 0;
 
-        //  The small (16x16) icon representing this database type.
+        /// \brief
+        ///     Returns the small (16x16) icon representing this database type.
+        /// \return
+        ///     The small (16x16) icon representing this database type.
         virtual auto    smallIcon(
                             ) const
                             -> QIcon = 0;
 
-        //  The large (32x32) icon representing this database type.
+        /// \brief
+        ///     Returns the large (32x32) icon representing this database type.
+        /// \return
+        ///     The large (32x32) icon representing this database type.
         virtual auto    largeIcon(
                             ) const
                             -> QIcon = 0;
 
-        //  Checks whether this database type is operationsl (i.e.
-        //  can be used) - e.g. a;; required drivers are present, etc.
+        /// \brief
+        ///     Checks whether this database type is operational
+        ///     and can be used - all required drivers are present, etc.
+        /// \return
+        ///     True if this database type is operationsl and
+        ///     can be used, else false.
         virtual bool    isOperational() const = 0;
 
-        //  The short (1 line) status report for this database type.
+        /// \brief
+        ///     Returns the short (1 line) status report for this database type.
+        /// \return
+        ///     The short (1 line) status report for this database type.
         virtual auto    shortStatusReport(
                             ) const
                             -> QString = 0;
 
-        //  The longer (mulyi-line) status report for this database
-        //  type with newline '\n' character separating the lines.
+        /// \brief
+        ///     Returns the longer (mulyi-line) status report
+        ///     for this database type.
+        /// \return
+        ///     The longer (mulyi-line) status report for this
+        ///     database type with newline '\\n' character
+        ///     separating the lines.
         virtual auto    fullStatusReport(
                             ) const
                             -> QString = 0;
 
-        //  The validator for databases of this type
+        /// \brief
+        ///     Returns the validator for databases of this type
+        /// \return
+        ///     The validator for databases of this type
         virtual auto    validator(
                             ) const
                             -> IValidator * = 0;
@@ -87,32 +114,44 @@ namespace tt3::db::api
         //////////
         //  Operations (address handling)
     public:
-        //  If this dataase type has a concept of a "default" database,
-        //  returns its address; otherwise returns nullptr.
+        /// \brief
+        ///     If this dataase type has a concept of a "default" database,
+        ///     returns its address.
+        /// \return
+        ///     The address of the "default" database of this type or
+        ///     nullptr if thia database type has no concept of a
+        ///     "default" database.
         virtual auto    defaultDatabaseAddress(
-                            ) const
-                            -> IDatabaseAddress * = 0;
+                            ) const -> IDatabaseAddress * = 0;
 
-        //  Prompts the user to interactively specify an address for a new
-        //  database of this type, using the specified widget as a parent
-        //  for all modal dialogs that may be involved in address choosing.
-        //  Returns the database address chosen by the user or nullptr if
-        //  the user has chosen to cancel the dialog.
+        /// \brief
+        ///     Prompts the user to interactively specify an address
+        ///     for a new database of this type.
+        /// \param parent
+        ///     The parent widget for all modal dialogs that may be
+        ///     involved in address choosing.
+        /// \return
+        ///     The database address chosen by the user or nullptr if
+        ///     the user has chosen to cancel the dialog.
         virtual auto    enterNewDatabaseAddress(
                                 QWidget * parent
                             ) -> IDatabaseAddress * = 0;
 
-        //  Prompts the user to interactively specify an address of an existing
-        //  database of this type, using the specified widget as a parent
-        //  for all modal dialogs that may be involved in address choosing.
-        //  Returns the database address chosen by the user or nullptr if
-        //  the user has chosen to cancel the dialog.
+        /// \brief
+        ///     Prompts the user to interactively specify an address
+        ///     of an existing database of this type.
+        /// \param parent
+        ///     The parent widget for all modal dialogs that may be
+        ///     involved in address choosing.
+        /// \return
+        ///     The database address chosen by the user or nullptr if
+        ///     the user has chosen to cancel the dialog.
         virtual auto    enterExistingDatabaseAddress(
                                 QWidget * parent
                             ) -> IDatabaseAddress * = 0;
 
-        /// Parses an external form of a database address of this type.
-        ///
+        /// \brief
+        ///     Parses an external form of a database address of this type.
         /// \param externalForm
         ///     The external form of a database address of this type.
         /// \return
@@ -126,8 +165,8 @@ namespace tt3::db::api
         //////////
         //  Operations (databases)
     public:
-        /// Creates a new, initially empty, database at the specified address.
-        ///
+        /// \brief
+        ///     Creates a new, initially empty, database at the specified address.
         /// \param address
         ///     The address to create a new database at.
         /// \return
@@ -138,8 +177,8 @@ namespace tt3::db::api
                                 IDatabaseAddress * address
                             ) -> IDatabase * = 0;
 
-        /// Opens an existing database at the specified address.
-        ///
+        /// \brief
+        ///     Opens an existing database at the specified address.
         /// \param address
         ///     The address to open an existing database at.
         /// \param openMode
@@ -153,9 +192,10 @@ namespace tt3::db::api
                                 OpenMode openMode
                             ) -> IDatabase * = 0;
 
-        /// Destroys an existing database at the specified address.
-        /// The database must not currently be in use.
-        ///
+        /// \brief
+        ///     Destroys an existing database at the specified address.
+        /// \details
+        ///     The database must not currently be in use.
         /// \param address
         ///     The address to destroy an existing database at.
         /// \exception DatabaseException

@@ -17,9 +17,10 @@
 
 namespace tt3::ws
 {
-    //  A generic access control principal
-    class TT3_WS_PUBLIC PrincipalImpl :
-        public ObjectImpl
+    /// \class PrincipalImpl tt3-ws/API.hpp
+    /// \brief A generic access control principal.
+    class TT3_WS_PUBLIC PrincipalImpl
+        :   public ObjectImpl
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PrincipalImpl)
 

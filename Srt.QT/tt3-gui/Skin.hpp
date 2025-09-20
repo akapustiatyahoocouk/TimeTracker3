@@ -37,6 +37,7 @@ namespace tt3::gui
         //////////
         //  Operations (properties)
     public:
+        /// \brief A type alias to improve code readability.
         using Mnemonic = tt3::util::Mnemonic;
 
         /// \brief
@@ -125,6 +126,8 @@ namespace tt3::gui
 
         /// \brief
         ///     Registers the specified Skin.
+        /// \param skin
+        ///     The Skin to register,
         /// \return
         ///     True on success, false on failure. A repeated
         ///     registration of the same skin is treated as a "success".
@@ -194,14 +197,14 @@ namespace tt3::gui
         /// \return
         ///     True if the "current" skin is non-existent (nullptr),
         ///     else false.
-        bool                operator == (nullptr_t null) const;
+        bool                operator == (nullptr_t /*null*/) const;
 
         /// \brief
         ///     Checks if the "current" skin is non-existent.
         /// \return
         ///     False if the "current" skin is non-existent (nullptr),
         ///     else true.
-        bool                operator != (nullptr_t null) const;
+        bool                operator != (nullptr_t /*null*/) const;
 
         //////////
         //  Signals

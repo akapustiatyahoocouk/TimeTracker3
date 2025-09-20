@@ -104,7 +104,8 @@ namespace tt3::gui
         //////////
         //  Signals
     signals:
-        //  Emitted when this widget needs to refresh()
+        /// \brief
+        ///     Emitted when this widget needs to refresh().
         void            refreshRequested();
 
         //////////

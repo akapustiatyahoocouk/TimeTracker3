@@ -47,6 +47,7 @@ namespace tt3::gui
         //////////
         //  Operations
     public:
+        /// \brief A type alias to improve code readability.
         using Mnemonic = tt3::util::Mnemonic;
 
         /// \brief

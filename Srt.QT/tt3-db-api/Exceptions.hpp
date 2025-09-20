@@ -36,7 +36,9 @@ namespace tt3::db::api
         :   public DatabaseException
     {
         //////////
-        //  Types:
+        //  Types
+    public:
+        /// \brief A type alias to improve code readability.
         using Self = InvalidDatabaseAddressException;
 
         //////////
@@ -64,6 +66,7 @@ namespace tt3::db::api
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = DatabaseInUseException;
 
         //////////
@@ -120,6 +123,7 @@ namespace tt3::db::api
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = DatabaseCorruptException;
 
         //////////
@@ -176,6 +180,7 @@ namespace tt3::db::api
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = DatabaseClosedException;
 
         //////////
@@ -205,6 +210,7 @@ namespace tt3::db::api
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = AccessDeniedException;
 
         //////////
@@ -234,6 +240,7 @@ namespace tt3::db::api
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = InvalidPropertyValueException;
 
         //////////
@@ -347,6 +354,7 @@ namespace tt3::db::api
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = AlreadyExistsException;
 
         //////////
@@ -460,6 +468,7 @@ namespace tt3::db::api
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = DoesNotExistException;
 
         //////////
@@ -571,6 +580,7 @@ namespace tt3::db::api
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = InstanceDeadException;
 
         //////////
@@ -593,13 +603,14 @@ namespace tt3::db::api
     };
 
     /// \class IncompatibleInstanceException tt3-db-api/API.hpp
-    /// \brief Thrown when passing an incompatible instance to a service..
+    /// \brief Thrown when passing an incompatible instance to a service.
     class TT3_DB_API_PUBLIC IncompatibleInstanceException
         :   public DatabaseException
     {
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = IncompatibleInstanceException;
 
         //////////
@@ -655,6 +666,7 @@ namespace tt3::db::api
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = CustomDatabaseException;
 
         //////////
@@ -662,7 +674,7 @@ namespace tt3::db::api
     public:
         /// \brief
         ///     Constructs the exception.
-        /// \param CustomDatabaseException
+        /// \param cerrorMessage
         ///     The custom error message.
         explicit CustomDatabaseException(
                 const QString & cerrorMessage

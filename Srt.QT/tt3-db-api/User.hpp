@@ -221,6 +221,8 @@ namespace tt3::db::api
         ///     The password for the new Account.
         /// \param capabilities
         ///     The capabilities for the new Account.
+        /// \return
+        ///     The newly created User.
         /// \exception DatabaseException
         ///     If an error occurs.
         virtual auto    createAccount(
