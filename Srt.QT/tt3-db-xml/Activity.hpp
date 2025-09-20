@@ -97,10 +97,13 @@ namespace tt3::db::xml
         bool            _requireCommentOnFinish = false;
         bool            _fullScreenReminder = false;
         //  Associations
-        ActivityType *  _activityType = nullptr;//  counts as "references" unless nullptr
-        Workload *      _workload = nullptr;    //  counts as "references" uness nullptr
+        ActivityType *  _activityType = nullptr;//  counts as "reference" unless nullptr
+        Workload *      _workload = nullptr;    //  counts as "reference" uness nullptr
         Works           _works;     //  count as "references"
         Events          _events;    //  count as "references"
+
+        //  Helpers
+        virtual bool    _siblingExists(const QString & displayName) const = 0;
 
         //////////
         //  Serialization

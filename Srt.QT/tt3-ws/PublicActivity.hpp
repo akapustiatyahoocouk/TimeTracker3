@@ -17,7 +17,8 @@
 
 namespace tt3::ws
 {
-    //  A public activity
+    /// \class PublicActivityImpl tt3-ws/API.hpp
+    /// \brief A public activity.
     class TT3_WS_PUBLIC PublicActivityImpl
         :   public virtual ActivityImpl
     {

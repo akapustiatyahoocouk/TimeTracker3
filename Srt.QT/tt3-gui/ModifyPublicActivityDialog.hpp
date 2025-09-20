@@ -1,5 +1,5 @@
 //
-//  tt3-gui/CreatePublicActivityDialog.hpp - The modal "Create public activity" dialog
+//  tt3-gui/ModifyPublicActivityDialog.hpp - The modal "Modify public activity" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,15 +19,15 @@
 
 namespace tt3::gui
 {
-    namespace Ui { class CreatePublicActivityDialog; }
+    namespace Ui { class ModifyPublicActivityDialog; }
 
-    /// \class CreatePublicActivityDialog tt3-gui/API.hpp
-    /// \brief The modal "Create public activity" dialog
-    class TT3_GUI_PUBLIC CreatePublicActivityDialog final
+    /// \class ModifyPublicActivityDialog "tt3-gui/API.hpp"
+    /// \brief The modal "Modify public activity" dialog.
+    class TT3_GUI_PUBLIC ModifyPublicActivityDialog final
         :   private QDialog
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CreatePublicActivityDialog)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ModifyPublicActivityDialog)
 
         //////////
         //  Types
@@ -36,8 +36,8 @@ namespace tt3::gui
         ///     The dialog result after a modal invocation.
         enum class Result
         {
-            Ok,     ///< Changes confirme; PublicActivity has been created.
-            Cancel  ///< The dialog has been cancelled.
+            Ok,     ///< The user has confirmed and saved the changes.
+            Cancel  ///< The user has cancelled the dialog.
         };
 
         //////////
@@ -45,66 +45,63 @@ namespace tt3::gui
     public:
         /// \brief
         ///     Constructs the dialog.
-        /// \param parent
+        /// @param parent
         ///     The parent widget for the dialog; nullptr == none.
-        /// \param workspace
-        ///     The workspace to create a new PublicActivity in.
-        /// \param credentials
-        ///     The credentials to use for data access.
-        /// \exception WorkspaceException
-        ///     If a data access error occurs.
-        CreatePublicActivityDialog(
+        /// @param publicActivity
+        ///     The public activity to modify.
+        /// @param credentials
+        ///     The credentials to use for accessing User's data.
+        /// @exception WorkspaceException
+        ///     If an error occurs retrieving ActivityType details.
+        ModifyPublicActivityDialog(
                 QWidget * parent,
-                tt3::ws::Workspace workspace,
+                tt3::ws::PublicActivity publicActivity,
                 const tt3::ws::Credentials & credentials
             );
 
         /// \brief
         ///     The class destructor.
-        virtual ~CreatePublicActivityDialog();
+        virtual ~ModifyPublicActivityDialog();
 
         //////////
         //  Operations
     public:
         /// \brief
         ///     Runs the dialog modally.
-        /// \return
-        ///     The user's choice; on OK a new PublicActivity has been created.
+        /// @return
+        ///     The dialog result; Ok means "changes saved".
         Result          doModal();
-
-        /// \brief
-        ///     Returns the newly created PublicActivity.
-        /// \return
-        ///     The newly created PublicActivity (on Ok) or
-        ///     nullptr if the dialog was cancelled.
-        auto            createdPublicActivity(
-                            ) const -> tt3::ws::PublicActivity
-        {
-            return _createdPublicActivity;
-        }
 
         //////////
         //  Implementation
     private:
-        tt3::ws::Workspace  _workspace;
+        tt3::ws::PublicActivity _publicActivity;
         const tt3::ws::Credentials  _credentials;
         tt3::ws::Validator::PublicActivity *const _validator;
+        const bool      _readOnly;
 
-        tt3::ws::Workload       _selectedWorkload;  //  currenty selected
-
-        tt3::ws::PublicActivity _createdPublicActivity;
+        tt3::ws::Workload   _selectedWorkload;  //  currenty selected
 
         //  Helpers
         auto            _selectedActivityType(
                             ) -> tt3::ws::ActivityType;
+        void            _setSelectedActivityType(
+                                tt3::ws::ActivityType activityType
+                            );
+        void            _setSelectedWorkload(
+                                tt3::ws::Workload workload
+                            );
         auto            _selectedTimeout(
                             ) -> tt3::ws::InactivityTimeout;
+        void            _setSelectedTimeout(
+                                const tt3::ws::InactivityTimeout & timeout
+                            );
         void            _refresh();
 
         //////////
         //  Controls
     private:
-        Ui::CreatePublicActivityDialog *    _ui;
+        Ui::ModifyPublicActivityDialog *    _ui;
 
         //////////
         //  Signal handlers
@@ -120,5 +117,5 @@ namespace tt3::gui
     };
 }
 
-//  End of tt3-gui/CreatePublicActivityDialog.hpp
+//  End of tt3-gui/ModifyPublicActivityDialog.hpp
 

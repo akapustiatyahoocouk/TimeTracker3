@@ -19,7 +19,7 @@ namespace tt3::db::xml
 {
     /// \class Workload tt3-db-xml/API.hpp
     /// \brief A generic workload in an XML database.
-    class TT3_DB_XML_PUBLIC Workload final
+    class TT3_DB_XML_PUBLIC Workload
         :   public Object,
             public virtual tt3::db::api::IWorkload
     {
@@ -52,10 +52,6 @@ namespace tt3::db::xml
                             ) override;
 
         //////////
-        //  tt3::db::api::IWorkload (associations)
-    public:
-
-        //////////
         //  Implementation
     private:
         //  Properties
@@ -66,9 +62,6 @@ namespace tt3::db::xml
         Users           _assignedUsers; //  count as "references"
         Activities      _contributingActivities;    //  count as "references"
 
-        //  Helpers
-        virtual void    _markDead() override;
-
         //////////
         //  Serialization
     private:
@@ -76,6 +69,9 @@ namespace tt3::db::xml
                                 QDomElement & objectElement
                             ) override;
         virtual void    _serializeAggregations(
+                                QDomElement & objectElement
+                            ) override;
+        virtual void    _serializeAssociations(
                                 QDomElement & objectElement
                             ) override;
 

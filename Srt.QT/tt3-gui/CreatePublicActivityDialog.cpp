@@ -42,7 +42,7 @@ CreatePublicActivityDialog::CreatePublicActivityDialog(
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    //  Fill the "activity type" combo box
+    //  Fill the "activity type" combo box (may throw)
     QList<tt3::ws::ActivityType> activityTypes =
         _workspace->activityTypes(_credentials).values();
     std::sort(activityTypes.begin(),
@@ -53,7 +53,7 @@ CreatePublicActivityDialog::CreatePublicActivityDialog(
               });
 
     _ui->activityTypeComboBox->addItem(
-        tt3::ws::ObjectTypes::ActivityType::instance()->smallIcon(),
+        //  TODO kill off tt3::ws::ObjectTypes::ActivityType::instance()->smallIcon(),
         "-",
         QVariant::fromValue<tt3::ws::ActivityType>(nullptr));
     for (tt3::ws::ActivityType activityType : activityTypes)
@@ -133,6 +133,11 @@ void CreatePublicActivityDialog::_descriptionTextEditTextChanged()
     _refresh();
 }
 
+void CreatePublicActivityDialog::_selectWorkloadPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+}
+
 void CreatePublicActivityDialog::_timeoutCheckBoxStateChanged(int)
 {
     _refresh();
@@ -146,16 +151,6 @@ void CreatePublicActivityDialog::_hoursComboBoxCurrentIndexChanged(int)
 void CreatePublicActivityDialog::_minutesComboBoxCurrentIndexChanged(int)
 {
     _refresh();
-}
-
-void CreatePublicActivityDialog::_selectActivityTypePushButtonClicked()
-{
-    ErrorDialog::show(this, "Not yet implemented");
-}
-
-void CreatePublicActivityDialog::_selectWorkloadPushButtonClicked()
-{
-    ErrorDialog::show(this, "Not yet implemented");
 }
 
 void CreatePublicActivityDialog::accept()

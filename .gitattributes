@@ -21,8 +21,9 @@
 *.qrc  text diff=cpp
 *.ui   text diff=cpp
 *.txt  text diff=cpp
-*.jtml text diff=cpp
+*.html text diff=cpp
 *.css  text diff=cpp
+Doxyfile  text diff=cpp
 
 # Compiled Object files
 *.slo   binary

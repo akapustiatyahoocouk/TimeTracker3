@@ -17,7 +17,8 @@
 
 namespace tt3::ws
 {
-    //  An activity type
+    /// \class ActivityTypeImpl tt3-ws/API.hpp
+    /// \brief An activity type.
     class TT3_WS_PUBLIC ActivityTypeImpl final :
         public ObjectImpl
     {
@@ -25,6 +26,7 @@ namespace tt3::ws
 
         friend class WorkspaceImpl;
         friend std::shared_ptr<ActivityTypeImpl>;
+        friend class ActivityImpl;
 
         //////////
         //  Construction/destruction - from friends only

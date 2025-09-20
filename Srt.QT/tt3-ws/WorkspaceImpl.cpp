@@ -596,6 +596,16 @@ PublicActivity WorkspaceImpl::_getProxy(tt3::db::api::IPublicActivity * dataPubl
     return publicActivity;
 }
 
+Workload WorkspaceImpl::_getProxy(tt3::db::api::IWorkload * dataWorkload) const
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    Q_ASSERT(_isOpen);
+    Q_ASSERT(dataWorkload != nullptr);
+
+    Q_ASSERT(false);    //  TODO implement properly;
+    return nullptr;
+}
+
 //////////
 //  Event handlers
 void WorkspaceImpl::_onDatabaseClosed(tt3::db::api::DatabaseClosedNotification notification)

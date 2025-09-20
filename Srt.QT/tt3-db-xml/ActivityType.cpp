@@ -256,6 +256,10 @@ void ActivityType::_deserializeAssociations(
                         return _database->_getObject<Activity*>(
                                     tt3::util::fromString(s, tt3::db::api::Oid::Invalid));
                     }));
+        for (Activity * activity : _activities)
+        {
+            activity->addReference();
+        }
     }
 }
 

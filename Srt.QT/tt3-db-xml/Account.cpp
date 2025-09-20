@@ -20,13 +20,13 @@ using namespace tt3::db::xml;
 //////////
 //  Construction/destruction (from DB type only)
 Account::Account(
-    User * user,
-    tt3::db::api::Oid oid)
-    :   Principal(user->_database, oid)
+        User * user,
+        tt3::db::api::Oid oid
+    ) : Principal(user->_database, oid)
 {
     //  Register with parent
     user->_accounts.insert(this);
-    this->emailAddresses();
+    this->addReference();
     this->_user = user;
     user->addReference();
 }

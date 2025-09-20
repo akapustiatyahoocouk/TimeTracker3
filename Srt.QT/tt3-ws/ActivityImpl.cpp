@@ -59,11 +59,27 @@ auto ActivityImpl::displayName(
 }
 
 void ActivityImpl::setDisplayName(
-        const Credentials & /*credentials*/,
-        const QString & /*displayName*/
+        const Credentials & credentials,
+        const QString & displayName
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataActivity->setDisplayName(displayName); //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 auto ActivityImpl::description(
@@ -90,11 +106,27 @@ auto ActivityImpl::description(
 }
 
 void ActivityImpl::setDescription(
-        const Credentials & /*credentials*/,
-        const QString & /*description*/
+        const Credentials & credentials,
+        const QString & description
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataActivity->setDescription(description); //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 auto ActivityImpl::timeout(
@@ -121,11 +153,27 @@ auto ActivityImpl::timeout(
 }
 
 void ActivityImpl::setTimeout(
-        const Credentials & /*credentials*/,
-        const InactivityTimeout & /*timeout*/
+        const Credentials & credentials,
+        const InactivityTimeout & timeout
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataActivity->setTimeout(timeout); //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 bool ActivityImpl::requireCommentOnStart(
@@ -152,11 +200,27 @@ bool ActivityImpl::requireCommentOnStart(
 }
 
 void ActivityImpl::setRequireCommentOnStart(
-        const Credentials & /*credentials*/,
-        bool /*requireCommentOnStart*/
+        const Credentials & credentials,
+        bool requireCommentOnStart
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataActivity->setRequireCommentOnStart(requireCommentOnStart); //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 bool ActivityImpl::requireCommentOnFinish(
@@ -183,11 +247,27 @@ bool ActivityImpl::requireCommentOnFinish(
 }
 
 void ActivityImpl::setRequireCommentOnFinish(
-        const Credentials & /*credentials*/,
-        bool /*requireCommentOnFinish*/
+        const Credentials & credentials,
+        bool requireCommentOnFinish
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataActivity->setRequireCommentOnFinish(requireCommentOnFinish); //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 bool ActivityImpl::fullScreenReminder(
@@ -214,43 +294,153 @@ bool ActivityImpl::fullScreenReminder(
 }
 
 void ActivityImpl::setFullScreenReminder(
-        const Credentials & /*credentials*/,
-        bool /*fullScreenReminder*/
+        const Credentials & credentials,
+        bool fullScreenReminder
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataActivity->setFullScreenReminder(fullScreenReminder);   //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 //////////
 //  Operations (associations)
 auto ActivityImpl::activityType(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const -> ActivityType
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        if (auto dataActivityType = _dataActivity->activityType())  //  may throw
+        {
+            return _workspace->_getProxy(dataActivityType);
+        }
+        return ActivityType();
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void ActivityImpl::setActivityType(
-        const Credentials & /*credentials*/,
-        ActivityType /*activityType*/
+        const Credentials & credentials,
+        ActivityType activityType
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+    if (activityType != nullptr)
+    {
+        if (activityType->_workspace != this->_workspace)
+        {   //  OOPS! Not in the same workspace!
+            throw IncompatibleInstanceException(activityType->type());
+        }
+        activityType->_ensureLive();    //  may throw
+    }
+
+    try
+    {
+        //  Validate access rights
+        if (!_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataActivity->setActivityType(
+            (activityType != nullptr) ?
+                activityType->_dataActivityType :
+                nullptr);   //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 auto ActivityImpl::workload(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const -> Workload
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        if (auto dataWorkload = _dataActivity->workload())  //  may throw
+        {
+            return _workspace->_getProxy(dataWorkload);
+        }
+        return Workload();
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void ActivityImpl::setWorkload(
-        const Credentials & /*credentials*/,
-        Workload /*workload*/
+        const Credentials & credentials,
+        Workload workload
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+    if (workload != nullptr)
+    {
+        if (workload->_workspace != this->_workspace)
+        {   //  OOPS! Not in the same workspace!
+            throw IncompatibleInstanceException(workload->type());
+        }
+        workload->_ensureLive();    //  may throw
+    }
+
+    try
+    {
+        //  Validate access rights
+        if (!_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataActivity->setWorkload(
+            (workload != nullptr) ?
+                workload->_dataWorkload :
+                nullptr);   //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 auto ActivityImpl::works(

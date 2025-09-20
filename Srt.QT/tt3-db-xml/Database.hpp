@@ -33,6 +33,8 @@ namespace tt3::db::xml
         friend class Activity;
         friend class PublicActivity;
 
+        friend class Workload;
+
         //////////
         //  Construction/destruction
     private:
@@ -76,8 +78,14 @@ namespace tt3::db::xml
                             ) const -> tt3::db::api::IAccount * override;
         virtual auto    activityTypes(
                             ) const -> tt3::db::api::ActivityTypes override;
+        virtual auto    findActivityType(
+                                const QString & displayName
+                            ) -> tt3::db::api::IActivityType * override;
         virtual auto    publicActivities(
                             ) const -> tt3::db::api::PublicActivities;
+        virtual auto    findPublicActivity(
+                                const QString & displayName
+                            ) -> tt3::db::api::IPublicActivity * override;
         virtual auto    publicActivitiesAndTasks(
                             ) const -> tt3::db::api::PublicActivities;
         virtual auto    publicTasks(

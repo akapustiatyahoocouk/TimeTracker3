@@ -17,14 +17,16 @@
 
 namespace tt3::ws
 {
-    //  A generic workload
-    class TT3_WS_PUBLIC WorkloadImpl final :
-                                                 public ObjectImpl
+    /// \class WorkloadImpl tt3-ws/API.hpp
+    /// \brief A generic workload [implementation].
+    class TT3_WS_PUBLIC WorkloadImpl final
+        :   public ObjectImpl
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkloadImpl)
 
         friend class WorkspaceImpl;
         friend std::shared_ptr<WorkloadImpl>;
+        friend class ActivityImpl;
 
         //////////
         //  Construction/destruction - from friends only

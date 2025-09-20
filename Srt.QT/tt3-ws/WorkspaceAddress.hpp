@@ -17,12 +17,14 @@
 
 namespace tt3::ws
 {
-    //////////
-    //  A workspace address uniquely specifies the
-    //  location of a workspace of a certain type.
-    //  In addition, a WorkspaceAddress instance can
-    //  be "invalid", i.e. guaranteed not to refer to
-    //  any existing workspace.
+    /// \class WorkspaceAddressImpl tt3-ws/API.hpp
+    /// \brief
+    ///     A workspace address uniquely specifies the
+    ///     location of a workspace of a certain type.
+    /// \details
+    ///     In addition, a WorkspaceAddress instance can
+    ///     be "invalid", guaranteed not to refer to
+    ///     any existing workspace.
     class TT3_WS_PUBLIC WorkspaceAddressImpl final
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkspaceAddressImpl)
@@ -40,14 +42,25 @@ namespace tt3::ws
         //////////
         //  Operations (general)
     public:
-        //  The workspace type to which this workspace address belongs
-        //  or nullptr is this workspace address is invalid.
+        /// \brief
+        ///     Returns the workspace type to which this workspace
+        ///     address belongs.
+        /// \return
+        ///     The workspace type to which this workspace address
+        ///     belongs or nullptr is this workspace address is invalid.
         WorkspaceType   workspaceType() const;
 
-        //  The user-readable form of this workspace address.
+        /// \brief
+        ///     Returns the user-readable form of this workspace address.
+        /// \return
+        ///     The user-readable form of this workspace address.
         QString         displayForm() const;
 
-        //  The external (re-parsable) form of this workspace address.
+        /// \brief
+        ///     Returns the external (re-parsable) form of this
+        ///     workspace address.
+        /// \return
+        ///     The external (re-parsable) form of this workspace   address.
         QString         externalForm() const;
 
         //////////

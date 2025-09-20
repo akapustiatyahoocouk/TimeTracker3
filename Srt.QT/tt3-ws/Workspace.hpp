@@ -19,8 +19,8 @@
 
 namespace tt3::ws
 {
-    //  A "workspace" is a connection to a
-    //  persistent  container of business data.
+    /// \class WorkspaceImpl tt3-ws/API.hpp
+    /// \brief A connection to a persistent container of data.
     class TT3_WS_PUBLIC WorkspaceImpl final
         :   public QObject
     {
@@ -50,35 +50,57 @@ namespace tt3::ws
         //////////
         //  Operations (general)
     public:
-        //  The type of this Workspace. Can be safely
-        //  obtained for both open and closed workspaces.
-        //  TODO convert to const property
+        /// \brief
+        ///     Returns the type of this Workspace.
+        /// \details
+        ///     Can be safely obtained for both open and
+        ///     closed workspaces.
+        /// \return
+        ///     The type of this Workspace.
         auto        type(
                         ) const -> WorkspaceType;
 
-        //  The address of this Workspace. Can be safely
-        //  obtained for both open and closed workspaces.
-        //  TODO convert to const property
+        /// \brief
+        ///     Returns the address of this Workspace.
+        /// \details
+        ///     Can be safely obtained for both open and
+        ///     closed workspaces.
+        /// \return
+        ///     The address of this Workspace.
         auto        address(
                         ) const -> WorkspaceAddress;
 
-        //  The validator for this workspace.
-        //  TODO convert to const property
+        /// \brief
+        ///     Returns the validator for this workspace.
+        /// \details
+        ///     Can be safely obtained for both open and
+        ///     closed workspaces (although WHY?)
+        /// \return
+        ///     The validator for this workspace.
         auto        validator(
                         ) const -> Validator *
         {
             return type()->validator();
         }
 
-        //  Checks whether this Workspace is open or closed.
+        /// \brief
+        ///     Checks whether this Workspace is open or closed.
+        /// \return
+        ///     True if this Workspace is open, false if closed.
         bool        isOpen() const;
 
-        //  Checks whether this Workspace is (open or closed.)or used
-        //  to be, while open) read-only.
+        /// \brief
+        ///     Checks whether this Workspace is open (or used
+        ///     to be, while open) read-only.
+        /// \return
+        ///     True if this Workspace is open (or used
+        ///     to be, while open) read-only, else false.
         bool        isReadOnly() const;
 
-        /// Closes this Workspace; has no effect if already closed.
-        ///
+        /// \brief
+        ///     Closes this Workspace.
+        /// \details
+        ///     Has no effect if already closed.
         /// \exception WorkspaceException
         ///     If an error occurs.
         void        close();
@@ -395,6 +417,9 @@ namespace tt3::ws
                             tt3::db::api::IPublicActivity * dataPublicActivity
                         ) const -> PublicActivity;
 
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IWorkload * dataWorkload
+                        ) const -> Workload;
         //////////
         //  Event handlers
     private slots:
@@ -412,10 +437,12 @@ namespace tt3::ws
                         );
     };
 
-    //  The accessor for a "current" workspace pseudo-variable.
-    //  Only one global static instance of this class exists,
-    //  and other instances should NOT be constructed.
-    //  Can be nullptr if there is no "current" workspace.
+    /// \class CurrentWorkspace tt3-ws/API.hpp
+    /// \brief The accessor for a "current" workspace pseudo-variable.
+    /// \details
+    ///     Only one global static instance of this class exists,
+    ///     and other instances should NOT be constructed.
+    ///     Can be nullptr if there is no "current" workspace.
     class TT3_WS_PUBLIC CurrentWorkspace final
         :   public QObject
     {
@@ -425,7 +452,12 @@ namespace tt3::ws
         //////////
         //  Construction/destruction
     public:
+        /// \brief
+        ///     The class constructor.
         CurrentWorkspace();
+
+        /// \brief
+        ///     The class destructor.
         virtual ~CurrentWorkspace();
         \
         //////////
@@ -433,18 +465,45 @@ namespace tt3::ws
         //  IMPORTANT: Changing the "current" workspace does
         //  NOT change its "open/closed" status.
     public:
+        /// \brief
+        ///     Replaces the "current" workspace.
+        /// \param workspace
+        ///     The workspace to make "current"; nullptr == none.
         void        operator = (const Workspace & workspace);
+
+        /// \brief
+        ///     Returns the pointer to the "current" workspace.
+        /// \return
+        ///     The pointer to the "current" workspace; nullptr == none.
         Workspace   operator -> () const;
+
+        /// \brief
+        ///     Returns the pointer to the "current" workspace.
+        /// \return
+        ///     The pointer to the "current" workspace; nullptr == none.
                     operator Workspace() const;
 
+        /// \brief
+        ///     Checks whether the "current" workspace is set (is not nullptr).
+        /// \return
+        ///     True if the "current" workspaceis set, else false.
         bool        operator == (nullptr_t null) const;
+
+        /// \brief
+        ///     Checks whether the "current" workspace is set (is not nullptr).
+        /// \return
+        ///     False if the "current" workspaceis set, else true.
         bool        operator != (nullptr_t null) const;
 
         //////////
         //  Operations
     public:
-        //  Swaps the specified Workspace with the "current" Workspace.
-        //  Does NOT change the "open/closed" status of either one.
+        /// \brief
+        ///     Swaps the specified Workspace with the "current" Workspace.
+        /// \details
+        ///     Does NOT change the "open/closed" status of either one.
+        /// \param other
+        ///     The "other" Workspace to swap with the "current" Workspace.
         void        swap(Workspace & other);
 
         //////////

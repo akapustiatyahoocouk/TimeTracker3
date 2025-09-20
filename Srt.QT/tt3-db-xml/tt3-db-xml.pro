@@ -15,7 +15,8 @@ SOURCES += \
     Plugins.cpp \
     Principal.cpp \
     PublicActivity.cpp \
-    User.cpp
+    User.cpp \
+    Workload.cpp
 
 HEADERS += \
     API.hpp \

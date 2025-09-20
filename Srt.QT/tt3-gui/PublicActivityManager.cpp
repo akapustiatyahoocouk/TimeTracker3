@@ -296,14 +296,16 @@ auto PublicActivityManager::_selectedPublicActivity(
                nullptr;
 }
 
-void PublicActivityManager::_setSelectedPublicActivity(tt3::ws::PublicActivity PublicActivity)
+void PublicActivityManager::_setSelectedPublicActivity(
+        tt3::ws::PublicActivity publicActivity
+    )
 {
     for (int i = 0; i < _ui->publicActivitiesTreeWidget->topLevelItemCount(); i++)
     {
-        QTreeWidgetItem * PublicActivityItem = _ui->publicActivitiesTreeWidget->topLevelItem(i);
-        if (PublicActivity == PublicActivityItem->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicActivity>())
+        QTreeWidgetItem * publicActivityItem = _ui->publicActivitiesTreeWidget->topLevelItem(i);
+        if (publicActivity == publicActivityItem->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicActivity>())
         {   //  This one!
-            _ui->publicActivitiesTreeWidget->setCurrentItem(PublicActivityItem);
+            _ui->publicActivitiesTreeWidget->setCurrentItem(publicActivityItem);
             return;
         }
     }
@@ -429,17 +431,16 @@ void PublicActivityManager::_createPublicActivityPushButtonClicked()
 
 void PublicActivityManager::_modifyPublicActivityPushButtonClicked()
 {
-    /*  TODO uncomment
-    tt3::ws::PublicActivity PublicActivity = _selectedPublicActivity();
-    if (PublicActivity != nullptr)
+    tt3::ws::PublicActivity publicActivity = _selectedPublicActivity();
+    if (publicActivity != nullptr)
     {
         try
         {
-            ModifyPublicActivityDialog dlg(this, PublicActivity, _credentials); //  may throw
+            ModifyPublicActivityDialog dlg(this, publicActivity, _credentials); //  may throw
             if (dlg.doModal() == ModifyPublicActivityDialog::Result::Ok)
             {   //  PublicActivity modified - its position in the activity types tree may have changed
                 refresh();  //  must refresh NOW
-                _setSelectedPublicActivity(PublicActivity);
+                _setSelectedPublicActivity(publicActivity);
             }
         }
         catch (const tt3::util::Exception & ex)
@@ -448,7 +449,6 @@ void PublicActivityManager::_modifyPublicActivityPushButtonClicked()
             requestRefresh();
         }
     }
-    */
 }
 
 void PublicActivityManager::_destroyPublicActivityPushButtonClicked()

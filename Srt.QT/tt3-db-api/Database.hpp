@@ -132,6 +132,17 @@ namespace tt3::db::api
                             ) const -> ActivityTypes = 0;
 
         /// \brief
+        ///     Finds ActivityType by its display name.
+        /// \param displayName
+        ///     The display name to look for.
+        /// \return
+        ///     The ActivityType with the required display name
+        ///     or nullptr if not found.
+        virtual auto    findActivityType(
+                                const QString & displayName
+                            ) -> IActivityType * = 0;
+
+        /// \brief
         ///     Returns the set of all public activities in this
         ///     database which are NOT also tasks.
         /// \return
@@ -141,6 +152,18 @@ namespace tt3::db::api
         ///     If an error occurs.
         virtual auto    publicActivities(
                             ) const -> PublicActivities = 0;
+
+        /// \brief
+        ///     Finds PublicActivity (but not a PublicTask!) by
+        ///     its display name.
+        /// \param displayName
+        ///     The display name to look for.
+        /// \return
+        ///     The PublicActivity (which is NOT also a PublicTask!) with
+        ///     the required display name or nullptr if not found.
+        virtual auto    findPublicActivity(
+                                const QString & displayName
+                            ) -> IPublicActivity * = 0;
 
         /// \brief
         ///     The set of all public activities in this database

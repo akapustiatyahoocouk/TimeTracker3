@@ -17,7 +17,8 @@
 
 namespace tt3::ws
 {
-    //  A generic activity
+    /// \class ActivityImpl tt3-ws/API.hpp
+    /// \brief A generic activity.
     class TT3_WS_PUBLIC ActivityImpl
         :   public ObjectImpl
     {

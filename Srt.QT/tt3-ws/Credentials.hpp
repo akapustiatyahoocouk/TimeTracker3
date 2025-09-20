@@ -19,8 +19,8 @@
 
 namespace tt3::ws
 {
-    //////////
-    //  The login credentials
+    /// \class Credentials tt3-ws/API.hpp
+    /// \brief The login credentials.
     class TT3_WS_PUBLIC Credentials final
     {
         friend class WorkspaceTypeImpl;
@@ -32,39 +32,108 @@ namespace tt3::ws
         //////////
         //  Constats
     public:
-        //  The invalid credentials (with empty login)
+        /// \brief
+        ///     The invalid credentials (with empty login).
         static const Credentials Invalid;
 
         //////////
         //  Construction/destruction/assignment
     public:
+        /// \brief
+        ///     Constructs invalid credentials (with empty login).
         Credentials() = default;
-        Credentials(const QString & login, const QString & password);
+
+        /// \brief
+        ///     Constructs the credentials.
+        /// \param login
+        ///     The login identifier.
+        /// \param password
+        ///     The password.
+        Credentials(
+                const QString & login,
+                const QString & password
+            );
+
+        /// \brief
+        ///     The class destructor.
         ~Credentials() = default;
+
         //  Default copy constructor and assignment are both OK
 
         //////////
         //  Operators
     public:
-        //  Two credentials are equal if all their details are equal
+        /// \brief
+        ///     Checks two Credentials for equality.
+        /// \details
+        ///     Two credentials are equal if all their details are equal.
+        /// \param op2
+        ///     The Credentials to compare this Credentials yo.
+        /// \return
+        ///     True if thw two Credentials are equal, else false.
         bool            operator == (const Credentials & op2) const;
+
+        /// \brief
+        ///     Checks two Credentials for inequality.
+        /// \details
+        ///     Two credentials are equal if all their details are equal.
+        /// \param op2
+        ///     The Credentials to compare this Credentials yo.
+        /// \return
+        ///     False if thw two Credentials are equal, else true.
         bool            operator != (const Credentials & op2) const;
 
-        //  We want to use Credentials as a QSet/QMap keys
+        /// \brief
+        ///     Checks two Credentials for order.
+        /// \param op2
+        ///     The 2nd Credentials to compare this Credentials to.
+        /// \return
+        ///     True if this Credentials is lexicographically
+        ///     "less than" the 2nd C5redentials, else false.
         bool            operator <  (const Credentials & op2) const;
+
+        /// \brief
+        ///     Checks two Credentials for order.
+        /// \param op2
+        ///     The 2nd Credentials to compare this Credentials to.
+        /// \return
+        ///     True if this Credentials is lexicographically
+        ///     "less than or equal to" the 2nd C5redentials, else false.
         bool            operator <= (const Credentials & op2) const;
+
+        /// \brief
+        ///     Checks two Credentials for order.
+        /// \param op2
+        ///     The 2nd Credentials to compare this Credentials to.
+        /// \return
+        ///     True if this Credentials is lexicographically
+        ///     "greater than" the 2nd C5redentials, else false.
         bool            operator >  (const Credentials & op2) const;
+
+        /// \brief
+        ///     Checks two Credentials for order.
+        /// \param op2
+        ///     The 2nd Credentials to compare this Credentials to.
+        /// \return
+        ///     True if this Credentials is lexicographically
+        ///     "greater than or equal to" the 2nd C5redentials, else false.
         bool            operator >= (const Credentials & op2) const;
 
         //////////
         //  Operations
     public:
-        //  Checks whether these Credentials are "valid",
-        //  (i.e. the "login" os not empty.
+        /// \brief
+        ///     Checks whether these Credentials are "valid"
+        ///     (its the "login" is not empty.
+        /// \return
+        ///     True if this Credentials are "vaolid" else false.
         bool            isValid() const { return !_login.isEmpty(); }
 
-        //  The login identifier of these Credentials.
-        //  For invalid Credentials this is an empty string.
+        /// \brief
+        ///     Returns the login identifier of these Credentials.
+        /// \return
+        ///     The login identifier of these Credentials; empty
+        ///     string for "invalid" Credentials.
         QString         login() const { return _login; }
 
         //////////
@@ -79,8 +148,8 @@ namespace tt3::ws
         return qHash(key.login(), seed);
     }
 
-    //////////
-    //  The accessor for a "current" credentials.
+    /// \class CurrentCredentials tt3-ws/API.hpp
+    /// \brief The accessor for a "current" credentials.
     class TT3_WS_PUBLIC CurrentCredentials final
         :   public QObject
     {
@@ -90,35 +159,61 @@ namespace tt3::ws
         //////////
         //  Construction/destruction
     public:
+        /// \brief
+        ///     The class constructor.
         CurrentCredentials();
+
+        /// \brief
+        ///     The class destructor.
         virtual ~CurrentCredentials();
         \
         //////////
         //  Operators
     public:
+        /// \brief
+        ///     Replaces the "current" Credentials.
+        /// \param credentials
+        ///     The Credentials to replace the "current" Credentials with.
         void                operator = (const Credentials & credentials);
+
+        /// \brief
+        ///     Returns the "current" credentials.
+        /// \return
+        ///     The "current" credentials.
                             operator const Credentials &() const;
 
         //////////
         //  Operations
     public:
-        //  Checks whether current Credentials are "valid",
-        //  (i.e. the "login" is not empty.
+        /// \brief
+        ///     Checks whether current Credentials are "valid"
+        ///     (its "login" is not empty.
+        /// \return
+        ///     True if "current" Credentials are valid, else false.
         bool                isValid() const;
 
-        //  The login identifier of the current Credentials.
-        //  For invalid Credentials this is an empty string.
+        /// \brief
+        ///     Returns the login identifier of the "current" Credentials.
+        /// \return
+        ///     The login identifier of the "current" Credentials
+        ///     or an empty string if the "current" Credentials are invalid.
         QString             login() const;
 
         //////////
         //  Signals
     signals:
-        //  Emitted after the current credentials have changed.
+        /// \brief
+        ///     Emitted after the current credentials have changed.
+        /// \param before
+        ///     The "current" Credentials before the change.
+        /// \param after
+        ///     The "current" Credentials after the change.
         void                changed(Credentials before, Credentials after);
 
         //////////
         //  Implementation
     private:
+        //  TODO use the "struct _Impl" trick
         static std::atomic<int>     _instanceCount; //  ...to disallow a second instance
         mutable tt3::util::Mutex    _currentCredentialsGuard;
         Credentials                 _currentCredentials;

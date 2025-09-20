@@ -314,6 +314,50 @@ namespace tt3::db::api
         ///     The validator for PublicActivities.
         virtual auto    publicActivity(
             ) const -> IPublicActivityValidator * = 0;
+
+        /// \class IWorkloadValidator tt3-db-api/API.hpp
+        /// \brief The validator for a Workload.
+        class TT3_DB_API_PUBLIC IWorkloadValidator
+        {
+            //////////
+            //  This is an interface
+        protected:
+            IWorkloadValidator() = default;
+            virtual ~IWorkloadValidator() = default;
+
+            //////////
+            //  Operations
+        public:
+            /// \brief
+            ///     Checks whether the specified string is a valid
+            ///     "display name" for a Workload.
+            /// \param displayName
+            ///     The string to check.
+            /// \return
+            ///     True if the specified string is a valid
+            ///     "display name" for a Workload.
+            virtual bool    isValidDisplayName(
+                                    const QString & displayName
+                                ) = 0;
+
+            /// \brief
+            ///     Checks whether the specified string is a valid
+            ///     "description" for a Workload.
+            /// \param description
+            ///     The string to check.
+            /// \return
+            ///     True if the specified string is a valid
+            ///     "description" for a Workload.
+            virtual bool    isValidDescription(
+                                    const QString & description
+                                ) = 0;
+        };
+        /// \brief
+        ///     Returns the validator for Workloads.
+        /// \return
+        ///     The validator for Workloads.
+        virtual auto    workload(
+            ) const -> IWorkloadValidator * = 0;
     };
 
     /// \class DefaultValidator tt3-db-api/API.hpp
@@ -340,6 +384,8 @@ namespace tt3::db::api
                             ) const -> IActivityValidator * override;
         virtual auto    publicActivity(
                             ) const -> IPublicActivityValidator * override;
+        virtual auto    workload(
+                            ) const -> IWorkloadValidator * override;
 
         //////////
         //  Implementatiob
@@ -472,6 +518,22 @@ namespace tt3::db::api
                                 ) override;
             virtual bool    isValidTimeout(
                                     const InactivityTimeout & timeout
+                                ) override;
+        };
+
+        class TT3_DB_API_PUBLIC _WorkloadValidator final
+            :   public virtual IWorkloadValidator
+        {
+            DECLARE_SINGLETON(_WorkloadValidator)
+
+            //////////
+            //  IWorkloadValidator
+        public:
+            virtual bool    isValidDisplayName(
+                                    const QString & displayName
+                                ) override;
+            virtual bool    isValidDescription(
+                                    const QString & description
                                 ) override;
         };
     };

@@ -62,6 +62,12 @@ auto DefaultValidator::publicActivity(
     return _PublicActivityValidator::instance();
 }
 
+auto DefaultValidator::workload(
+    ) const -> IValidator::IWorkloadValidator *
+{
+    return _WorkloadValidator::instance();
+}
+
 //////////
 //  Implementation helpers
 bool DefaultValidator::_isValidEmailAddress(
@@ -254,6 +260,26 @@ bool DefaultValidator::_PublicActivityValidator::isValidDescription(
 bool DefaultValidator::_PublicActivityValidator::isValidTimeout(const InactivityTimeout & timeout)
 {
     return _ActivityValidator::instance()->isValidTimeout(timeout);
+}
+
+//////////
+//  DefaultValidator::_WorkloadValidator
+IMPLEMENT_SINGLETON(DefaultValidator::_WorkloadValidator)
+DefaultValidator::_WorkloadValidator::_WorkloadValidator() {}
+DefaultValidator::_WorkloadValidator::~_WorkloadValidator() {}
+
+bool DefaultValidator::_WorkloadValidator::isValidDisplayName(
+        const QString & displayName
+    )
+{
+    return _isValidName(displayName, 255);
+}
+
+bool DefaultValidator::_WorkloadValidator::isValidDescription(
+        const QString & description
+    )
+{
+    return _isValidDescription(description, 32767);
 }
 
 //  End of tt3-db-api/DefaultValidator.cpp

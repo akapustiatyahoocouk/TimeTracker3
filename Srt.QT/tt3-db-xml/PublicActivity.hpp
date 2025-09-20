@@ -43,6 +43,7 @@ namespace tt3::db::xml
         //  Implementation
     private:
         //  Helpers
+        virtual bool    _siblingExists(const QString & displayName) const override;
         virtual void    _markDead() override;
 
         //////////

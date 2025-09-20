@@ -17,7 +17,8 @@
 
 namespace tt3::ws
 {
-    //  A named user
+    /// \class UserImpl tt3-ws/API.hpp
+    /// \brief A named user.
     class TT3_WS_PUBLIC UserImpl final :
         public PrincipalImpl
     {

@@ -38,6 +38,9 @@
     </property>
     <item row="1" column="0">
      <widget class="QTabWidget" name="managersTabWidget">
+      <property name="tabPosition">
+       <enum>QTabWidget::TabPosition::North</enum>
+      </property>
       <property name="currentIndex">
        <number>2</number>
       </property>

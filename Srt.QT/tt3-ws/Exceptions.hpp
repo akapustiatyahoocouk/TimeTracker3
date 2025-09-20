@@ -17,14 +17,16 @@
 
 namespace tt3::ws
 {
-    //////////
-    //  The common base class for all workspace - level exceptions
+    /// \class WorkspaceException tt3-ws/API.hpp
+    /// \brief The common base class for all workspace - level exceptions.
     class TT3_WS_PUBLIC WorkspaceException
         :   public tt3::util::Exception
     {
         //////////
         //  Construction/destruction/assignment
     public:
+        /// \brief
+        ///     Constructs the exception.
         WorkspaceException();
 
         //////////
@@ -40,7 +42,8 @@ namespace tt3::ws
                             const tt3::util::Exception & ex);
     };
 
-    //  Thrown when an invalid workspace address is specified
+    /// \class InvalidWorkspaceAddressException tt3-ws/API.hpp
+    /// \brief Thrown when an invalid workspace address is specified.
     class TT3_WS_PUBLIC InvalidWorkspaceAddressException
         :   public WorkspaceException
     {
@@ -51,6 +54,8 @@ namespace tt3::ws
         //////////
         //  Construction/destruction/assignment
     public:
+        /// \brief
+        ///     Constructs the exception.
         InvalidWorkspaceAddressException();
 
         //////////
@@ -65,7 +70,8 @@ namespace tt3::ws
         virtual QString errorMessage() const override;
     };
 
-    //  Thrown when a single-user workspace is already in use
+    /// \class WorkspaceInUseException tt3-ws/API.hpp
+    /// \brief Thrown when a single-user workspace is already in use.
     class TT3_WS_PUBLIC WorkspaceInUseException
         :   public WorkspaceException
     {
@@ -80,10 +86,17 @@ namespace tt3::ws
         //  Construction/destruction/assignment
     private:
         WorkspaceInUseException(
-            const QString & workspaceTypeDisplayName,
-            const QString & workspaceAddressDisplayForm);
+                const QString & workspaceTypeDisplayName,
+                const QString & workspaceAddressDisplayForm
+            );
     public:
-        explicit WorkspaceInUseException(const WorkspaceAddress & workspaceAddress);
+        /// \brief
+        ///     Constructs the exception.
+        /// \param workspaceAddress
+        ///     The address of the workspace in question.
+        explicit WorkspaceInUseException(
+                const WorkspaceAddress & workspaceAddress
+            );
 
         //////////
         //  QException
@@ -99,11 +112,18 @@ namespace tt3::ws
         //////////
         //  Operations
     public:
-        //  The user-readable display name of the workspace type
+        /// \brief
+        ///     Returns the user-readable display name of the workspace type.
+        /// \return
+        ///     The user-readable display name of the workspace type.
         QString         workspaceTypeDisplayName() const { return _workspaceTypeDisplayName; }
 
-        //  Returns the user-readable display form of the
-        //  address of the workspace that is already in use
+        /// \brief
+        ///     Returns the user-readable display form of the
+        ///     address of the workspace that is already in use.
+        /// \return
+        ///     The user-readable display form of the
+        ///     address of the workspace that is already in use.
         QString         workspaceAddressDisplayForm() const { return _workspaceAddressDisplayForm; }
 
         //////////
@@ -113,7 +133,8 @@ namespace tt3::ws
         QString         _workspaceAddressDisplayForm;
     };
 
-    //  Thrown when a workspace is corrupt
+    /// \class WorkspaceCorruptException tt3-ws/API.hpp
+    /// \brief Thrown when a workspace is corrupt.
     class TT3_WS_PUBLIC WorkspaceCorruptException
         :   public WorkspaceException
     {
@@ -128,10 +149,17 @@ namespace tt3::ws
         //  Construction/destruction/assignment
     private:
         WorkspaceCorruptException(
-            const QString & workspaceTypeDisplayName,
-            const QString & workspaceAddressDisplayForm);
+                const QString & workspaceTypeDisplayName,
+                const QString & workspaceAddressDisplayForm
+            );
     public:
-        explicit WorkspaceCorruptException(const WorkspaceAddress & workspaceAddress);
+        /// \brief
+        ///     Constructs the exception.
+        /// \param workspaceAddress
+        ///     The address of the workspace in question.
+        explicit WorkspaceCorruptException(
+                const WorkspaceAddress & workspaceAddress
+            );
 
         //////////
         //  QException
@@ -147,21 +175,29 @@ namespace tt3::ws
         //////////
         //  Operations
     public:
-        //  The user-readable display name of the workspace type
+        /// \brief
+        ///     Returns the user-readable display name of the workspace type.
+        /// \return
+        ///     The user-readable display name of the workspace type.
         QString         workspaceTypeDisplayName() const { return _workspaceTypeDisplayName; }
 
-        //  Returns the user-readable display form of the
-        //  address of the workspace that is already in use
+        /// \brief
+        ///     Returns the user-readable display form of the
+        ///     address of the workspace that is corrupt.
+        /// \return
+        ///     The user-readable display form of the
+        ///     address of the workspace that is corrupt.
         QString         workspaceAddressDisplayForm() const { return _workspaceAddressDisplayForm; }
 
         //////////
         //  Implementayion
     private:
-        QString     _workspaceTypeDisplayName;
-        QString     _workspaceAddressDisplayForm;
+        QString         _workspaceTypeDisplayName;
+        QString         _workspaceAddressDisplayForm;
     };
 
-    //  Thrown when a service is called on a closed Workspace.
+    /// \class WorkspaceClosedException tt3-ws/API.hpp
+    /// \brief Thrown when a service is called on a closed Workspace.
     class TT3_WS_PUBLIC WorkspaceClosedException
         :   public WorkspaceException
     {
@@ -173,6 +209,8 @@ namespace tt3::ws
         //////////
         //  Construction/destruction/assignment
     public:
+        /// \brief
+        ///     Constructs the exception.
         WorkspaceClosedException();
 
         //////////
@@ -187,7 +225,8 @@ namespace tt3::ws
         virtual QString errorMessage() const override;
     };
 
-    //  Thrown when a workspace service is access-denied
+    /// \class AccessDeniedException tt3-ws/API.hpp
+    /// \brief Thrown when a workspace service is access-denied.
     class TT3_WS_PUBLIC AccessDeniedException
         :   public WorkspaceException
     {
@@ -199,6 +238,8 @@ namespace tt3::ws
         //////////
         //  Construction/destruction/assignment
     public:
+        /// \brief
+        ///     Constructs the exception.
         AccessDeniedException();
 
         //////////
@@ -213,7 +254,8 @@ namespace tt3::ws
         virtual QString errorMessage() const override;
     };
 
-    //  Thrown when attempting to assign an invalid value to a property
+    /// \class InvalidPropertyValueException tt3-ws/API.hpp
+    /// \brief Thrown when attempting to assign an invalid value to a property.
     class TT3_WS_PUBLIC InvalidPropertyValueException
         :   public WorkspaceException
     {
@@ -225,20 +267,63 @@ namespace tt3::ws
         //////////
         //  Construction/destruction/assignment
     public:
-        InvalidPropertyValueException(const QString & objectTypeName,
-                                      const QString & propertyName, const QString & propertyValueString);
-        InvalidPropertyValueException(ObjectType * objectType,
-                                      const QString & propertyName, const QString & propertyValueString)
-            :   Self(objectType->displayName(), propertyName, propertyValueString) {}
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectTypeName
+        ///     The internal name of the object's type.
+        /// \param propertyName
+        ///     The name of the property.
+        /// \param propertyValueString
+        ///     The string form of the offending property value.
+        InvalidPropertyValueException(
+                const QString & objectTypeName,
+                const QString & propertyName,
+                const QString & propertyValueString
+            );
 
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectType
+        ///     The object's type.
+        /// \param propertyName
+        ///     The name of the property.
+        /// \param propertyValueString
+        ///     The string form of the offending property value.
+        InvalidPropertyValueException(
+                ObjectType * objectType,
+                const QString & propertyName,
+                const QString & propertyValueString
+            ) : Self(objectType->displayName(), propertyName, propertyValueString) {}
+
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectType
+        ///     The object's type.
+        /// \param propertyName
+        ///     The name of the property.
+        /// \param propertyValue
+        ///     The offending property value.
         template <class T>
-        InvalidPropertyValueException(ObjectType * objectType,
-                                      const QString & propertyName, const T & propertyValue)
-            :   Self(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
+        InvalidPropertyValueException(
+                ObjectType * objectType,
+                const QString & propertyName,
+                const T & propertyValue
+            ) : Self(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
+
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectTypeName
+        ///     The internal name of the object's type.
+        /// \param propertyName
+        ///     The name of the property.
+        /// \param propertyValue
+        ///     The offending property value.
         template <class T>
-        InvalidPropertyValueException(const QString & objectTypeName,
-                                      const QString & propertyName, const T & propertyValue)
-            :   Self(objectTypeName, propertyName, tt3::util::toString(propertyValue)) {}
+        InvalidPropertyValueException(
+                const QString & objectTypeName,
+                const QString & propertyName,
+                const T & propertyValue
+            ) : Self(objectTypeName, propertyName, tt3::util::toString(propertyValue)) {}
 
         //////////
         //  QException
@@ -254,13 +339,22 @@ namespace tt3::ws
         //////////
         //  Operations
     public:
-        //  Thw ibternal name of the object type.
+        /// \brief
+        ///     Returns the internal name of the object type.
+        /// \return
+        ///     The internal name of the object type.
         QString         objectTypeName() const { return _objectTypeName; }
 
-        //  The name of the property.
+        /// \brief
+        ///     Returns the name of the property.
+        /// \return
+        ///     The name of the property.
         QString         propertyName() const { return _propertyName; }
 
-        //  The string representation of the offending property value.
+        /// \brief
+        ///     Returns the string representation of the offending property value.
+        /// \return
+        ///     The string representation of the offending property value.
         QString         propertyValueString() const { return _propertyValueString; }
 
         //////////
@@ -271,8 +365,10 @@ namespace tt3::ws
         QString         _propertyValueString;
     };
 
-    //  Thrown when an object with the specified property value,
-    //  which is supposed to be unique, already exists
+    /// \class AlreadyExistsException tt3-ws/API.hpp
+    /// \brief
+    ///     Thrown when an object with the specified property value,
+    ///     which is supposed to be unique, already exists.
     class TT3_WS_PUBLIC AlreadyExistsException
         :   public WorkspaceException
     {
@@ -284,20 +380,63 @@ namespace tt3::ws
         //////////
         //  Construction/destruction/assignment
     public:
-        AlreadyExistsException(const QString & objectTypeName,
-                               const QString & propertyName, const QString & propertyValueString);
-        AlreadyExistsException(ObjectType * objectType,
-                               const QString & propertyName, const QString & propertyValueString)
-            :   Self(objectType->displayName(), propertyName, propertyValueString) {}
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectTypeName
+        ///     The internal name of the object's type.
+        /// \param propertyName
+        ///     The name of the unique property.
+        /// \param propertyValueString
+        ///     The string form of the duplicate property value.
+        AlreadyExistsException(
+                const QString & objectTypeName,
+                const QString & propertyName,
+                const QString & propertyValueString
+            );
 
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectType
+        ///     The object's type.
+        /// \param propertyName
+        ///     The name of the unique property.
+        /// \param propertyValueString
+        ///     The string form of the duplicate property value.
+        AlreadyExistsException(
+                ObjectType * objectType,
+                const QString & propertyName,
+                const QString & propertyValueString
+            ) : Self(objectType->displayName(), propertyName, propertyValueString) {}
+
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectType
+        ///     The object's type.
+        /// \param propertyName
+        ///     The name of the unique property.
+        /// \param propertyValue
+        ///     The duplicate property value.
         template <class T>
-        AlreadyExistsException(ObjectType * objectType,
-                               const QString & propertyName, const T & propertyValue)
-            :   Self(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
+        AlreadyExistsException(
+                ObjectType * objectType,
+                const QString & propertyName,
+                const T & propertyValue
+            ) : Self(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
+
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectTypeName
+        ///     The internal name of the object's type.
+        /// \param propertyName
+        ///     The name of the unique property.
+        /// \param propertyValue
+        ///     The duplicate property value.
         template <class T>
-        AlreadyExistsException(const QString & objectTypeName,
-                               const QString & propertyName, const T & propertyValue)
-            :   Self(objectTypeName, propertyName, tt3::util::toString(propertyValue)) {}
+        AlreadyExistsException(
+                const QString & objectTypeName,
+                const QString & propertyName,
+                const T & propertyValue
+            ) : Self(objectTypeName, propertyName, tt3::util::toString(propertyValue)) {}
 
         //////////
         //  QException
@@ -313,13 +452,22 @@ namespace tt3::ws
         //////////
         //  Operations
     public:
-        //  The internal name of the object type.
+        /// \brief
+        ///     Returns the internal name of the object type.
+        /// \return
+        ///     The internal name of the object type.
         QString         objectTypeName() const { return _objectTypeName; }
 
-        //  The name of the property.
+        /// \brief
+        ///     Returns the name of the unique property.
+        /// \return
+        ///     The name of the unique property.
         QString         propertyName() const { return _propertyName; }
 
-        //  The string representation of the offending property value.
+        /// \brief
+        ///     Returns the string representation of the duplicate property value.
+        /// \return
+        ///     The string representation of the duplicate property value.
         QString         propertyValueString() const { return _propertyValueString; }
 
         //////////
@@ -330,8 +478,10 @@ namespace tt3::ws
         QString         _propertyValueString;
     };
 
-    //  Thrown when an object with the specified property value,
-    //  which is supposed to exist, does not.
+    /// \class DoesNotExistException tt3-ws/API.hpp
+    /// \brief
+    ///     Thrown when an object with the specified property value,
+    ///     which is supposed to exist, does not.
     class TT3_WS_PUBLIC DoesNotExistException
         :   public WorkspaceException
     {
@@ -343,20 +493,63 @@ namespace tt3::ws
         //////////
         //  Construction/destruction/assignment
     public:
-        DoesNotExistException(const QString & objectTypeName,
-                              const QString & propertyName, const QString & propertyValueString);
-        DoesNotExistException(ObjectType * objectType,
-                              const QString & propertyName, const QString & propertyValueString)
-            :   Self(objectType->displayName(), propertyName, propertyValueString) {}
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectTypeName
+        ///     The internal name of the object's type.
+        /// \param propertyName
+        ///     The name of the property.
+        /// \param propertyValueString
+        ///     The string form of the absent property value.
+        DoesNotExistException(
+                const QString & objectTypeName,
+                const QString & propertyName,
+                const QString & propertyValueString
+            );
 
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectType
+        ///     The object's type.
+        /// \param propertyName
+        ///     The name of the property.
+        /// \param propertyValueString
+        ///     The string form of the absent property value.
+        DoesNotExistException(
+                ObjectType * objectType,
+                const QString & propertyName,
+                const QString & propertyValueString
+            ) : Self(objectType->displayName(), propertyName, propertyValueString) {}
+
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectType
+        ///     The object's type.
+        /// \param propertyName
+        ///     The name of the property.
+        /// \param propertyValue
+        ///     The absent property value.
         template <class T>
-        DoesNotExistException(ObjectType * objectType,
-                              const QString & propertyName, const T & propertyValue)
-            :   Self(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
+        DoesNotExistException(
+                ObjectType * objectType,
+                const QString & propertyName,
+                const T & propertyValue
+            ) : Self(objectType->displayName(), propertyName, tt3::util::toString(propertyValue)) {}
+
+        /// \brief
+        ///     Constructs the exception.
+        /// \param objectTypeName
+        ///     The internal name of the object's type.
+        /// \param propertyName
+        ///     The name of the property.
+        /// \param propertyValue
+        ///     The absent property value.
         template <class T>
-        DoesNotExistException(const QString & objectTypeName,
-                              const QString & propertyName, const T & propertyValue)
-            :   Self(objectTypeName, propertyName, tt3::util::toString(propertyValue)) {}
+        DoesNotExistException(
+                const QString & objectTypeName,
+                const QString & propertyName,
+                const T & propertyValue
+            ) : Self(objectTypeName, propertyName, tt3::util::toString(propertyValue)) {}
 
         //////////
         //  QException
@@ -372,13 +565,22 @@ namespace tt3::ws
         //////////
         //  Operations
     public:
-        //  The internal name of the object type.
+        /// \brief
+        ///     Returns the internal name of the object type.
+        /// \return
+        ///     The internal name of the object type.
         QString         objectTypeName() const { return _objectTypeName; }
 
-        //  The name of the property.
+        /// \brief
+        ///     Returns the name of the property.
+        /// \return
+        ///     The name of the property.
         QString         propertyName() const { return _propertyName; }
 
-        //  The string representation of the offending property value.
+        /// \brief
+        ///     Returns the string representation of the absent property value.
+        /// \return
+        ///     The string representation of the absent property value.
         QString         propertyValueString() const { return _propertyValueString; }
 
         //////////
@@ -389,7 +591,8 @@ namespace tt3::ws
         QString         _propertyValueString;
     };
 
-    //  Thrown when attempting to access a "dead" instance
+    /// \class InstanceDeadException tt3-ws/API.hpp
+    /// \brief Thrown when attempting to access a "dead" instance.
     class TT3_WS_PUBLIC InstanceDeadException
         :   public WorkspaceException
     {
@@ -401,6 +604,8 @@ namespace tt3::ws
         //////////
         //  Construction/destruction/assignment
     public:
+        /// \brief
+        ///     Constructs the exception.
         InstanceDeadException();
 
         //////////
@@ -415,8 +620,10 @@ namespace tt3::ws
         virtual QString errorMessage() const override;
     };
 
-    //  Thrown when attempting to leave workspace without
-    //  an enbled administrator user+account
+    /// \class AccessWouldBeLostException tt3-ws/API.hpp
+    /// \brief
+    ///     Thrown when attempting to leave workspace without
+    ///     an enbled administrator user+account.
     class TT3_WS_PUBLIC AccessWouldBeLostException
         :   public WorkspaceException
     {
@@ -428,6 +635,8 @@ namespace tt3::ws
         //////////
         //  Construction/destruction/assignment
     public:
+        /// \brief
+        ///     Constructs the exception.
         AccessWouldBeLostException();
 
         //////////
@@ -497,7 +706,8 @@ namespace tt3::ws
         QString         _objectTypeName;
     };
 
-    //  Thrown when must carry a custom error message (from OS, etc.)
+    /// \class CustomWorkspaceException tt3-ws/API.hpp
+    /// \brief Thrown when must carry a custom error message (from OS, etc.)
     class TT3_WS_PUBLIC CustomWorkspaceException
         :   public WorkspaceException
     {
@@ -509,7 +719,13 @@ namespace tt3::ws
         //////////
         //  Construction/destruction/assignment
     public:
-        explicit CustomWorkspaceException(const QString & errorMessage);
+        /// \brief
+        ///     Constructs the exception.
+        /// \param errorMessage
+        ///     The custom error message.
+        explicit CustomWorkspaceException(
+                const QString & errorMessage
+            );
 
         //////////
         //  QException

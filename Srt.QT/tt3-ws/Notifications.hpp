@@ -19,21 +19,34 @@
 
 namespace tt3::ws
 {
-    //  The common base class for all workspace change notifications.
+    /// \class ChangeNotification tt3-ws/API.hpp
+    /// \brief The common base class for all workspace change notifications.
     class TT3_WS_PUBLIC ChangeNotification
     {
         //////////
         //  Construction/destruction/assignment
     public:
-        ChangeNotification(const Workspace & workspace)
-            :   _workspace(workspace) { Q_ASSERT(_workspace != nullptr); }
+        /// \brief
+        ///     Constructs the notification.
+        /// \param workspace
+        ///     The workspace where the change has occurred.
+        explicit ChangeNotification(
+                const Workspace & workspace
+            ) : _workspace(workspace) { Q_ASSERT(_workspace != nullptr); }
+
+        /// \brief
+        ///     The class destructor.
         virtual ~ChangeNotification() = default;
+
         //  Defult copy-constructor and assigmnent are OK
 
         //////////
         //  Operations
     public:
-        //  The workspace where the change has occurred
+        /// \brief
+        ///     Returns the workspace where the change has occurred.
+        /// \return
+        ///     The workspace where the change has occurred.
         Workspace       workspace() const { return _workspace; }
 
         //////////
@@ -42,37 +55,69 @@ namespace tt3::ws
         Workspace       _workspace; //  never nullptr
     };
 
-    //  Emitted when a workspace is closed
+    /// \class WorkspaceClosedNotification tt3-ws/API.hpp
+    /// \brief Emitted after a workspace is closed.
     class TT3_WS_PUBLIC WorkspaceClosedNotification
         :   public ChangeNotification
     {
         //////////
         //  Construction/destruction/assignment
     public:
-        WorkspaceClosedNotification(const Workspace & workspace)
-            :   ChangeNotification(workspace) {}
-        //  Defult copy-constructor and assigmnent are OK
+        /// \brief
+        ///     Constructs the notification.
+        /// \param workspace
+        ///     The workspace where the change has occurred.
+        WorkspaceClosedNotification(
+                const Workspace & workspace
+            ) : ChangeNotification(workspace) {}
+
+        //  Defult copy-constructor, destructor and assigmnent
+        //  are a;; OK
     };
 
-    //  Emitted after a new object is created
+    /// \class ObjectCreatedNotification tt3-ws/API.hpp
+    /// \brief Emitted after a new object is created.
     class TT3_WS_PUBLIC ObjectCreatedNotification
         :   public ChangeNotification
     {
         //////////
         //  Construction/destruction/assignment
     public:
-        ObjectCreatedNotification(const Workspace & workspace, ObjectType * objectType, const Oid & oid)
-            :   ChangeNotification(workspace), _objectType(objectType), _oid(oid)
-            { Q_ASSERT(_objectType != nullptr && _oid != Oid::Invalid); }
-        //  Defult copy-constructor and assigmnent are OK
+        /// \brief
+        ///     Constructs the notification.
+        /// \param workspace
+        ///     The workspace where the change has occurred.
+        /// \param objectType
+        ///     The type of the newly created object.
+        /// \param oid
+        ///     The OID of the newly created object.
+        ObjectCreatedNotification(
+                const Workspace & workspace,
+                ObjectType * objectType,
+                const Oid & oid
+            ) : ChangeNotification(workspace),
+                _objectType(objectType),
+                _oid(oid)
+        {
+            Q_ASSERT(_objectType != nullptr && _oid != Oid::Invalid);
+        }
+
+        //  Defult copy-constructor, destructor and assigmnent
+        //  are all OK
 
         //////////
         //  Operations
     public:
-        //  The type of the created object
+        /// \brief
+        ///     Returns the type of the newly created object.
+        /// \return
+        ///     The type of the newly created object.
         ObjectType *    objectType() const { return _objectType; }
 
-        //  The OID of the created object
+        /// \brief
+        ///     Returns the OID of the newly reated object.
+        /// \return
+        ///     The OID of the newly reated object.
         Oid             oid() const { return _oid; }
 
         //////////
@@ -82,25 +127,49 @@ namespace tt3::ws
         Oid             _oid;
     };
 
-    //  Emitted after an object is destroyed
+    /// \class ObjectDestroyedNotification tt3-ws/API.hpp
+    /// \brief Emitted after an object is destroyed.
     class TT3_WS_PUBLIC ObjectDestroyedNotification
         :   public ChangeNotification
     {
         //////////
         //  Construction/destruction/assignment
     public:
-        ObjectDestroyedNotification(const Workspace & workspace, ObjectType * objectType, const Oid & oid)
-            :   ChangeNotification(workspace), _objectType(objectType), _oid(oid)
-            { Q_ASSERT(_objectType != nullptr && _oid != Oid::Invalid); }
-        //  Defult copy-constructor and assigmnent are OK
+        /// \brief
+        ///     Constructs the notification.
+        /// \param workspace
+        ///     The workspace where the change has occurred.
+        /// \param objectType
+        ///     The type of the destroyed object.
+        /// \param oid
+        ///     The OID of the destroyed object.
+        ObjectDestroyedNotification(
+                const Workspace & workspace,
+                ObjectType * objectType,
+                const Oid & oid
+            ) : ChangeNotification(workspace),
+                _objectType(objectType),
+                _oid(oid)
+        {
+            Q_ASSERT(_objectType != nullptr && _oid != Oid::Invalid);
+        }
+
+        //  Defult copy-constructor, destructor and assigmnent
+        //  are all OK
 
         //////////
         //  Operations
     public:
-        //  The type of the destroyed object
+        /// \brief
+        ///     Returns the type of the destroyed object.
+        /// \return
+        ///     The type of the destroyed object.
         ObjectType *    objectType() const { return _objectType; }
 
-        //  The OID of the destroyed object
+        /// \brief
+        ///     Returns the OID of the destroyed object.
+        /// \return
+        ///     The OID of the destroyed object.
         Oid             oid() const { return _oid; }
 
         //////////
@@ -110,27 +179,52 @@ namespace tt3::ws
         Oid             _oid;
     };
 
-    //  Emitted after an object is modified.
-    //  This includes both changes to object's
-    //  properties and changes to its associations.
+    /// \class ObjectModifiedNotification tt3-ws/API.hpp
+    /// \brief Emitted after an object is modified.
+    /// \details
+    ///     This includes both changes to object's
+    ///     properties and changes to its associations.
     class TT3_WS_PUBLIC ObjectModifiedNotification
         :   public ChangeNotification
     {
         //////////
         //  Construction/destruction/assignment
     public:
-        ObjectModifiedNotification(const Workspace & workspace, ObjectType * objectType, const Oid & oid)
-            :   ChangeNotification(workspace), _objectType(objectType), _oid(oid)
-            { Q_ASSERT(_objectType != nullptr && _oid != Oid::Invalid); }
-        //  Defult copy-constructor and assigmnent are OK
+        /// \brief
+        ///     Constructs the notification.
+        /// \param workspace
+        ///     The workspace where the change has occurred.
+        /// \param objectType
+        ///     The type of the modified object.
+        /// \param oid
+        ///     The OID of the modified object.
+        ObjectModifiedNotification(
+                const Workspace & workspace,
+                ObjectType * objectType,
+                const Oid & oid
+            ) : ChangeNotification(workspace),
+                _objectType(objectType),
+                _oid(oid)
+        {
+            Q_ASSERT(_objectType != nullptr && _oid != Oid::Invalid);
+        }
+
+        //  Defult copy-constructor, destructor and assigmnent
+        //  are all OK
 
         //////////
         //  Operations
     public:
-        //  The type of the modified object
+        /// \brief
+        ///     Returns the type of the modified object.
+        /// \return
+        ///     The type of the modified object.
         ObjectType *    objectType() const { return _objectType; }
 
-        //  The OID of the modified object
+        /// \brief
+        ///     Returns the OID of the modified object.
+        /// \return
+        ///     The OID of the modified object.
         Oid             oid() const { return _oid; }
 
         //////////

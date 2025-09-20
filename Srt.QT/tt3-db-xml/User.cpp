@@ -527,7 +527,6 @@ void User::_validate(
             throw tt3::db::api::DatabaseCorruptException(_database->_address);
         }
     }
-    //  TODO more aaggregations?
 }
 
 //  End of tt3-db-xml/User.cpp

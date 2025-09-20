@@ -43,10 +43,43 @@ auto Activity::displayName(
 }
 
 void Activity::setDisplayName(
-        const QString & /*displayName*/
+        const QString & displayName
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (!_database->_validator->activity()->isValidDisplayName(displayName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "displayName",
+            displayName);
+    }
+    if (displayName != _displayName)
+    {   //  Make the change (but no duplication)...
+        if (_siblingExists(displayName))
+        {
+            throw tt3::db::api::AlreadyExistsException(
+                type(),
+                "displayName",
+                displayName);
+        }
+        _displayName = displayName;
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 auto Activity::description(
@@ -60,10 +93,36 @@ auto Activity::description(
 }
 
 void Activity::setDescription(
-        const QString & /*description*/
+        const QString & description
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (!_database->_validator->activity()->isValidDescription(description))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "description",
+            description);
+    }
+    if (description != _description)
+    {   //  Make the change...
+        _description = description;
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 auto Activity::timeout(
@@ -77,10 +136,37 @@ auto Activity::timeout(
 }
 
 void Activity::setTimeout(
-        const tt3::db::api::InactivityTimeout & /*timeout*/
+        const tt3::db::api::InactivityTimeout & timeout
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (timeout.has_value() &&
+        !_database->_validator->activity()->isValidTimeout(timeout.value()))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "timeout",
+            timeout.value());
+    }
+    if (timeout != _timeout)
+    {   //  Make the change...
+        _timeout = timeout;
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 bool Activity::requireCommentOnStart(
@@ -94,10 +180,29 @@ bool Activity::requireCommentOnStart(
 }
 
 void Activity::setRequireCommentOnStart(
-        bool /*requireCommentOnStart*/
+        bool requireCommentOnStart
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (requireCommentOnStart != _requireCommentOnStart)
+    {   //  Make the change...
+        _requireCommentOnStart = requireCommentOnStart;
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 bool Activity::requireCommentOnFinish(
@@ -111,10 +216,28 @@ bool Activity::requireCommentOnFinish(
 }
 
 void Activity::setRequireCommentOnFinish(
-        bool /*requireCommentOnFinish*/
+        bool requireCommentOnFinish
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    if (requireCommentOnFinish != _requireCommentOnFinish)
+    {   //  Make the change...
+        _requireCommentOnFinish = requireCommentOnFinish;
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 bool Activity::fullScreenReminder(
@@ -128,10 +251,28 @@ bool Activity::fullScreenReminder(
 }
 
 void Activity::setFullScreenReminder(
-        bool /*fullScreenReminder*/
+        bool fullScreenReminder
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    if (fullScreenReminder != _fullScreenReminder)
+    {   //  Make the change...
+        _fullScreenReminder = fullScreenReminder;
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 //////////
@@ -147,10 +288,57 @@ auto Activity::activityType(
 }
 
 void Activity::setActivityType(
-        tt3::db::api::IActivityType * /*activityType*/
+        tt3::db::api::IActivityType * activityType
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    ActivityType * xmlActivityType = nullptr;
+    if (activityType != nullptr)
+    {
+        xmlActivityType = dynamic_cast<ActivityType*>(activityType);
+        if (xmlActivityType == nullptr ||
+            !xmlActivityType->_isLive ||
+            xmlActivityType->_database != this->_database)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(activityType->type());
+        }
+    }
+    if (xmlActivityType != _activityType)
+    {   //  Make the change...
+        if (_activityType != nullptr)
+        {
+            _activityType->_activities.remove(this);
+            this->removeReference();
+            _activityType->removeReference();
+            _database->_changeNotifier.post(
+                new tt3::db::api::ObjectModifiedNotification(
+                    _database, _activityType->type(), _activityType->_oid));
+        }
+        _activityType = xmlActivityType;
+        if (_activityType != nullptr)
+        {
+            _activityType->_activities.insert(this);
+            this->addReference();
+            _activityType->addReference();
+            _database->_changeNotifier.post(
+                new tt3::db::api::ObjectModifiedNotification(
+                    _database, _activityType->type(), _activityType->_oid));
+        }
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 auto Activity::workload(
@@ -164,10 +352,57 @@ auto Activity::workload(
 }
 
 void Activity::setWorkload(
-        tt3::db::api::IWorkload * /*workload*/
+        tt3::db::api::IWorkload * workload
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    Workload * xmlWorkload = nullptr;
+    if (workload != nullptr)
+    {
+        xmlWorkload = dynamic_cast<Workload*>(workload);
+        if (xmlWorkload == nullptr ||
+            !xmlWorkload->_isLive ||
+            xmlWorkload->_database != this->_database)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(workload->type());
+        }
+    }
+    if (xmlWorkload != _workload)
+    {   //  Make the change...
+        if (_workload != nullptr)
+        {
+            _workload->_contributingActivities.remove(this);
+            this->removeReference();
+            _workload->removeReference();
+            _database->_changeNotifier.post(
+                new tt3::db::api::ObjectModifiedNotification(
+                    _database, _workload->type(), _workload->_oid));
+        }
+        _workload = xmlWorkload;
+        if (_workload != nullptr)
+        {
+            _workload->_contributingActivities.insert(this);
+            this->addReference();
+            _workload->addReference();
+            _database->_changeNotifier.post(
+                new tt3::db::api::ObjectModifiedNotification(
+                    _database, _workload->type(), _workload->_oid));
+        }
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 auto Activity::works(
@@ -261,6 +496,7 @@ void Activity::_deserializeAssociations(
             _database->_getObject<ActivityType*>(
                 tt3::util::fromString<tt3::db::api::Oid>(
                     objectElement.attribute("ActivityType")));
+        _activityType->addReference();
     }
     //  TODO    Workload *      _workload = nullptr;    //  counts as "references" uness nullptr
     //  TODO    Works           _works;     //  count as "references"

@@ -304,6 +304,17 @@ auto Database::activityTypes(
     return tt3::db::api::ActivityTypes(_activityTypes.cbegin(), _activityTypes.cend());
 }
 
+auto Database::findActivityType(
+        const QString & displayName
+    ) -> tt3::db::api::IActivityType *
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _findActivityType(displayName);
+}
+
 auto Database::publicActivities(
     ) const -> tt3::db::api::PublicActivities
 {
@@ -312,6 +323,17 @@ auto Database::publicActivities(
     //  We assume database is consistent since last change
 
     return tt3::db::api::PublicActivities(_publicActivities.cbegin(), _publicActivities.cend());
+}
+
+auto Database::findPublicActivity(
+        const QString & displayName
+    ) -> tt3::db::api::IPublicActivity *
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _findPublicActivity(displayName);
 }
 
 auto Database::publicActivitiesAndTasks(

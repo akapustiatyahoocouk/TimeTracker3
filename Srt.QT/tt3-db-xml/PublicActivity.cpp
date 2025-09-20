@@ -69,6 +69,16 @@ void PublicActivity::destroy()
 
 //////////
 //  Implementation helpers
+bool PublicActivity::_siblingExists(const QString & displayName) const
+{
+    Q_ASSERT(_database->_guard.isLockedByCurrentThread());
+    Q_ASSERT(_isLive);
+
+    PublicActivity * found =
+        _database->_findPublicActivity(displayName);
+    return found != nullptr && found != this;
+}
+
 void PublicActivity::_markDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
