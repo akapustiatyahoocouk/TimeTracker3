@@ -118,8 +118,8 @@ void NewWorkspaceDialog::_browsePushButtonClicked()
     tt3::ws::WorkspaceType workspaceType =
         _ui->workspaceTypeComboBox->currentData().value<tt3::ws::WorkspaceType>();
     Q_ASSERT(workspaceType != nullptr);
-    tt3::ws::WorkspaceAddress workspaceAddress = workspaceType->enterNewWorkspaceAddress(this);
-    if (workspaceAddress != nullptr)
+
+    if (auto workspaceAddress = workspaceType->enterNewWorkspaceAddress(this))
     {
         _workspaceAddress = workspaceAddress;
         _refresh();

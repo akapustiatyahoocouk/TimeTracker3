@@ -39,31 +39,36 @@ namespace tt3::ws
         //////////
         //  Operations (general)
     public:
-        /// Returns the type of this workspace object.
-        /// Can be safely obtained for both live and dead objects.
-        ///
+        /// \brief
+        ///     Returns the type of this workspace object.
+        /// \details
+        ///     Can be safely obtained for both live and dead objects.
         /// \return
         ///     The type of this workspace object
         auto        type(
                         ) const -> ObjectType *;
 
-        /// Returns the workspace where the corresponding object
-        /// resides (if live) or used to reside (if dead).
-        ///
+        /// \brief
+        ///     Returns the workspace where the corresponding object
+        ///     resides (if live) or used to reside (if dead).
         /// \return
         ///     The workspace where this object resides or used to reside.
         auto        workspace(
                         ) const -> Workspace;
 
-        /// Returns the OID of the corresponding object.
-        /// Can be safely obtained for both live and dead objects.
-        ///
+        /// \brief
+        ///     Returns the OID of the corresponding object.
+        ///     Can be safely obtained for both live and dead objects.
         /// \return
         ///     The OID of the corresponding object
         Oid         oid() const;
 
-        /// True if this instance represents an existing data
-        /// object residing in a database, else false.
+        /// \brief
+        ///     Checks whether this instance represents an existing
+        ///     data object residing in a database.
+        /// \return
+        ///     True if this instance represents an existing data
+        ///     object residing in a database, else false.
         bool        isLive() const;
 
         //////////

@@ -151,6 +151,8 @@ namespace tt3::ws
         ///     The password for the new Account.
         /// \param capabilities
         ///     The capabilities for the new Account.
+        /// \return
+        ///     The newly created Account.
         /// \exception WorkspaceException
         ///     If an error occurs.
         auto        createAccount(

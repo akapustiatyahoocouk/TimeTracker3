@@ -431,9 +431,8 @@ void PublicActivityManager::_createPublicActivityPushButtonClicked()
 
 void PublicActivityManager::_modifyPublicActivityPushButtonClicked()
 {
-    tt3::ws::PublicActivity publicActivity = _selectedPublicActivity();
-    if (publicActivity != nullptr)
-    {
+    if (auto publicActivity = _selectedPublicActivity())
+    {   //  TODO use the same slection/condition tandem in other similar contexts
         try
         {
             ModifyPublicActivityDialog dlg(this, publicActivity, _credentials); //  may throw
@@ -453,16 +452,17 @@ void PublicActivityManager::_modifyPublicActivityPushButtonClicked()
 
 void PublicActivityManager::_destroyPublicActivityPushButtonClicked()
 {
-    /*  TODO uncomment
-    tt3::ws::PublicActivity PublicActivity = _selectedPublicActivity();
-    if (PublicActivity != nullptr)
+    if (auto publicActivity = _selectedPublicActivity())
     {
         try
         {
-            ConfirmDestroyPublicActivityDialog dlg(this, PublicActivity, _credentials); //  may throw
+            ConfirmDestroyPublicActivityDialog dlg(this, publicActivity, _credentials); //  may throw
             if (dlg.doModal() == ConfirmDestroyPublicActivityDialog::Result::Yes)
             {   //  Do it!
-                PublicActivity->destroy(_credentials);    //  may throw
+                //  TODO if the publicActivity is currently
+                //  underway, stop it; there's no need yo
+                //  record a Work unit.
+                publicActivity->destroy(_credentials);    //  may throw
                 requestRefresh();
             }
         }
@@ -472,7 +472,6 @@ void PublicActivityManager::_destroyPublicActivityPushButtonClicked()
             requestRefresh();
         }
     }
-    */
 }
 
 void PublicActivityManager::_filterLineEditTextChanged(QString)

@@ -129,8 +129,7 @@ void PreferencesDialog::_createEditor(QTreeWidgetItem * item)
 {
     Preferences * node =
         item->data(0, Qt::ItemDataRole::UserRole).value<Preferences*>();;
-    PreferencesEditor * editor = node->createEditor();
-    if (editor != nullptr)
+    if (auto editor = node->createEditor())
     {
         _editorsFrameLayout->addWidget(editor);
         editor->setParent(_ui->editorsFrame);
@@ -160,9 +159,7 @@ void PreferencesDialog::_loadCurrentPreferences(const QMap<Preferences*,QTreeWid
 
 void PreferencesDialog::_saveCurrentPreferences()
 {
-    QTreeWidgetItem * item =
-        _ui->preferencesTreeWidget->currentItem();
-    if (item != nullptr)
+    if (auto item = _ui->preferencesTreeWidget->currentItem())
     {   //  Save!
         Preferences * node =
             item->data(0, Qt::ItemDataRole::UserRole).value<Preferences*>();;

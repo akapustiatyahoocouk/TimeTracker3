@@ -422,8 +422,7 @@ void ActivityTypeManager::_createActivityTypePushButtonClicked()
 
 void ActivityTypeManager::_modifyActivityTypePushButtonClicked()
 {
-    tt3::ws::ActivityType activityType = _selectedActivityType();
-    if (activityType != nullptr)
+    if (auto activityType = _selectedActivityType())
     {
         try
         {
@@ -444,8 +443,7 @@ void ActivityTypeManager::_modifyActivityTypePushButtonClicked()
 
 void ActivityTypeManager::_destroyActivityTypePushButtonClicked()
 {
-    tt3::ws::ActivityType activityType = _selectedActivityType();
-    if (activityType != nullptr)
+    if (auto activityType = _selectedActivityType())
     {
         try
         {

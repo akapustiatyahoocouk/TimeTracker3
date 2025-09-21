@@ -272,4 +272,31 @@ ConfirmDestroyActivityTypeDialog::ConfirmDestroyActivityTypeDialog(
 {
 }
 
+//////////
+//  ConfirmDestroyPublicActivityDialog
+ConfirmDestroyPublicActivityDialog::ConfirmDestroyPublicActivityDialog(
+        ::QWidget * parent,
+        tt3::ws::PublicActivity publicActivity,
+        const tt3::ws::Credentials & credentials
+    )
+    :   AskYesNoDialog(
+          parent,
+          QIcon(":/tt3-gui/Resources/Images/Actions/DestroyPublicActivityLarge.png"),
+          "Destroy public activity",
+          _prompt(publicActivity, credentials))
+{
+}
+
+auto ConfirmDestroyPublicActivityDialog::_prompt(
+        tt3::ws::PublicActivity publicActivity,
+        const tt3::ws::Credentials & credentials
+    ) -> QString
+{
+    QString result =
+        "Are you sure you want to destroy public activity \n" +
+        publicActivity->displayName(credentials) + " ?";
+    //  TODO if there are works/events, count them and add a line
+    return result;
+}
+
 //  End of tt3-gui/AskYesNoDialog.cpp

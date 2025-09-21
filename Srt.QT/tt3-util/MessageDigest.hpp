@@ -75,11 +75,9 @@ namespace tt3::util
             ///     Modifies the state of this builder by processing
             ///     the specified bytes.
             /// \details
-            ///     Uses UTF-8 to encode string as bytes brfore digesting them.
-            /// \param data
-            ///     The data bytes to digest.
-            /// \param numBytes
-            ///     The number of data bytes to digest.
+            ///     Uses UTF-8 to encode string as bytes before digesting them.
+            /// \param s
+            ///     The string to digest.
             virtual void        digestFragment(const QString & s);
 
             /// \brief
@@ -130,8 +128,12 @@ namespace tt3::util
         ///     digest algorithm for the current default locale.
         virtual QString         displayName() const = 0;
 
-        //  Creates a new Builder that implements this MessageDigest.
-        //  The caller is responsible for destroying the Builder when done.
+        /// \brief
+        ///     Creates a new Builder that implements this MessageDigest.
+        /// \details
+        ///     The caller is responsible for destroying the Builder when done.
+        /// \return
+        ///     A new Builder that implements this MessageDigest.
         virtual Builder *       createBuilder() = 0;
     };
 

@@ -86,7 +86,9 @@ namespace tt3::ws
         //////////
         //  IComponent
     public:
+        /// \brief A type alias to improve code readability.
         using Mnemonic = tt3::util::Mnemonic;
+        /// \brief A type alias to improve code readability.
         using Subsystem = tt3::util::ISubsystem;
 
         virtual Mnemonic        mnemonic() const override;

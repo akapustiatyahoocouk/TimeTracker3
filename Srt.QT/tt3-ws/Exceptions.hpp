@@ -32,9 +32,11 @@ namespace tt3::ws
         //////////
         //  Operations
     public:
-        /// @brief
+        /// \brief
         ///     Throws WorkspaceException (or a subclass thereof)
         ///     that best represents the specified arbitrary exception
+        /// \param ex
+        ///     The exception to translate and re-throw.
         /// \exception WorkspaceException
         ///     Always.
         Q_NORETURN
@@ -49,6 +51,8 @@ namespace tt3::ws
     {
         //////////
         //  Types:
+    public:
+        /// \brief A type alias to improve code readability.
         using Self = InvalidWorkspaceAddressException;
 
         //////////
@@ -80,6 +84,7 @@ namespace tt3::ws
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = WorkspaceInUseException;
 
         //////////
@@ -143,6 +148,7 @@ namespace tt3::ws
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = WorkspaceCorruptException;
 
         //////////
@@ -204,6 +210,7 @@ namespace tt3::ws
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = WorkspaceClosedException;
 
         //////////
@@ -233,6 +240,7 @@ namespace tt3::ws
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = AccessDeniedException;
 
         //////////
@@ -262,6 +270,7 @@ namespace tt3::ws
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = InvalidPropertyValueException;
 
         //////////
@@ -375,6 +384,7 @@ namespace tt3::ws
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = AlreadyExistsException;
 
         //////////
@@ -488,6 +498,7 @@ namespace tt3::ws
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = DoesNotExistException;
 
         //////////
@@ -599,6 +610,7 @@ namespace tt3::ws
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = InstanceDeadException;
 
         //////////
@@ -630,6 +642,7 @@ namespace tt3::ws
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = AccessWouldBeLostException;
 
         //////////
@@ -652,13 +665,14 @@ namespace tt3::ws
     };
 
     /// \class IncompatibleInstanceException tt3-ws/API.hpp
-    /// \brief Thrown when passing an incompatible instance to a service..
+    /// \brief Thrown when passing an incompatible instance to a service.
     class TT3_WS_PUBLIC IncompatibleInstanceException
         :   public WorkspaceException
     {
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = IncompatibleInstanceException;
 
         //////////
@@ -714,6 +728,7 @@ namespace tt3::ws
         //////////
         //  Types
     public:
+        /// \brief A type alias to improve code readability.
         using Self = CustomWorkspaceException;
 
         //////////

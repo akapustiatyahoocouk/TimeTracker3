@@ -192,8 +192,11 @@ namespace tt3::util
         ///     The value to add.
         void        enqueue(const T & value);
 
-        //  Removes the value at the start of the queue and returns
-        //  it, idle-waiting until one is actually available.
+        /// \brief
+        ///     Removes the value at the start of the queue and returns
+        ///     it, idle-waiting until one is actually available.
+        /// \return
+        ///     The value removed from the head of the queue.
         T           dequeue();
 
         /// \brief

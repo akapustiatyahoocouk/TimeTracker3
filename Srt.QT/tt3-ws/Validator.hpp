@@ -40,17 +40,25 @@ namespace tt3::ws
         ~Validator() = default;
 
         //////////
+        //  We can piggyback on some DB API types.
+    public:
+        /// \brief The validator for Principals.
+        using Principal = tt3::db::api::IValidator::IPrincipalValidator;
+        /// \brief The validator for Users.
+        using User = tt3::db::api::IValidator::IUserValidator;
+        /// \brief The validator for Accounts.
+        using Account = tt3::db::api::IValidator::IAccountValidator;
+        /// \brief The validator for ActivityTypes.
+        using ActivityType = tt3::db::api::IValidator::IActivityTypeValidator;
+        /// \brief The validator for Activities.
+        using Activity = tt3::db::api::IValidator::IActivityValidator;
+        /// \brief The validator for PublicActivities.
+        using PublicActivity = tt3::db::api::IValidator::IPublicActivityValidator;
+
+        //////////
         //  Operations
         //  TODO convert these into const properties!
     public:
-        //  We can piggyback on some DB API types.
-        using Principal = tt3::db::api::IValidator::IPrincipalValidator;
-        using User = tt3::db::api::IValidator::IUserValidator;
-        using Account = tt3::db::api::IValidator::IAccountValidator;
-        using ActivityType = tt3::db::api::IValidator::IActivityTypeValidator;
-        using Activity = tt3::db::api::IValidator::IActivityValidator;
-        using PublicActivity = tt3::db::api::IValidator::IPublicActivityValidator;
-
         /// \brief
         ///     Returns the validator for Principals.
         /// \return

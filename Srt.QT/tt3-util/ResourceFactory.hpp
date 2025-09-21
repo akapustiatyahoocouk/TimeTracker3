@@ -102,6 +102,11 @@ namespace tt3::util
         ///     The resource ID within the section.
         /// \param params
         ///     The parameters to replace placeholders {0}-{9} with.
+        /// \return
+        ///     The string resource with the specified section
+        ///     ID and resource ID for the current default locale,
+        ///     with parameter placeholders replaced with
+        ///     actual parameter vaolues..
         /// \exception MissingResourceException
         ///     If an error occurs (specifically, resource does not exist).
         virtual QString string(
@@ -125,6 +130,11 @@ namespace tt3::util
         ///     The resource ID within the section.
         /// \param param0
         ///     The parameter to replace placeholder {0} with.
+        /// \return
+        ///     The string resource with the specified section
+        ///     ID and resource ID for the current default locale,
+        ///     with parameter placeholders replaced with
+        ///     actual parameter vaolues..
         /// \exception MissingResourceException
         ///     If an error occurs (specifically, resource does not exist).
         virtual QString string(
@@ -150,6 +160,11 @@ namespace tt3::util
         ///     The parameter to replace placeholder {0} with.
         /// \param param1
         ///     The parameter to replace placeholder {1} with.
+        /// \return
+        ///     The string resource with the specified section
+        ///     ID and resource ID for the current default locale,
+        ///     with parameter placeholders replaced with
+        ///     actual parameter vaolues..
         /// \exception MissingResourceException
         ///     If an error occurs (specifically, resource does not exist).
         virtual QString string(
@@ -178,6 +193,11 @@ namespace tt3::util
         ///     The parameter to replace placeholder {1} with.
         /// \param param2
         ///     The parameter to replace placeholder {2} with.
+        /// \return
+        ///     The string resource with the specified section
+        ///     ID and resource ID for the current default locale,
+        ///     with parameter placeholders replaced with
+        ///     actual parameter vaolues..
         /// \exception MissingResourceException
         ///     If an error occurs (specifically, resource does not exist).
         virtual QString string(
@@ -203,6 +223,11 @@ namespace tt3::util
         ///     The resource ID within the section.
         /// \param param0
         ///     The parameter to replace placeholder {0} with.
+        /// \return
+        ///     The string resource with the specified section
+        ///     ID and resource ID for the current default locale,
+        ///     with parameter placeholders replaced with
+        ///     actual parameter vaolues..
         /// \exception MissingResourceException
         ///     If an error occurs (specifically, resource does not exist).
         template <class P0>
@@ -232,6 +257,11 @@ namespace tt3::util
         ///     The parameter to replace placeholder {0} with.
         /// \param param1
         ///     The parameter to replace placeholder {1} with.
+        /// \return
+        ///     The string resource with the specified section
+        ///     ID and resource ID for the current default locale,
+        ///     with parameter placeholders replaced with
+        ///     actual parameter vaolues..
         /// \exception MissingResourceException
         ///     If an error occurs (specifically, resource does not exist).
         template <class P0, class P1>
@@ -264,6 +294,11 @@ namespace tt3::util
         ///     The parameter to replace placeholder {1} with.
         /// \param param2
         ///     The parameter to replace placeholder {2} with.
+        /// \return
+        ///     The string resource with the specified section
+        ///     ID and resource ID for the current default locale,
+        ///     with parameter placeholders replaced with
+        ///     actual parameter vaolues..
         /// \exception MissingResourceException
         ///     If an error occurs (specifically, resource does not exist).
         template <class P0, class P1, class P2>

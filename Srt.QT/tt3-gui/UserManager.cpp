@@ -686,8 +686,7 @@ void UserManager::_createUserPushButtonClicked()
 
 void UserManager::_modifyUserPushButtonClicked()
 {
-    tt3::ws::User user = _selectedUser();
-    if (user != nullptr)
+    if (auto user = _selectedUser())
     {
         try
         {
@@ -708,8 +707,7 @@ void UserManager::_modifyUserPushButtonClicked()
 
 void UserManager::_destroyUserPushButtonClicked()
 {
-    tt3::ws::User user = _selectedUser();
-    if (user != nullptr)
+    if (auto user = _selectedUser())
     {
         try
         {
@@ -730,8 +728,7 @@ void UserManager::_destroyUserPushButtonClicked()
 
 void UserManager::_createAccountPushButtonClicked()
 {
-    tt3::ws::User user = _selectedUser();
-    if (user != nullptr)
+    if (auto user = _selectedUser())
     {
         try
         {
@@ -751,8 +748,7 @@ void UserManager::_createAccountPushButtonClicked()
 
 void UserManager::_modifyAccountPushButtonClicked()
 {
-    tt3::ws::Account account = _selectedAccount();
-    if (account != nullptr)
+    if (auto account = _selectedAccount())
     {
         try
         {
@@ -773,8 +769,7 @@ void UserManager::_modifyAccountPushButtonClicked()
 
 void UserManager::_destroyAccountPushButtonClicked()
 {
-    tt3::ws::Account account = _selectedAccount();
-    if (account != nullptr)
+    if (auto account = _selectedAccount())
     {
         try
         {

@@ -488,9 +488,7 @@ auto WorkspaceImpl::_validateAccessRights(
     }
     try
     {
-        tt3::db::api::IAccount * dataAccount =
-            _database->tryLogin(credentials._login, credentials._password); //  may throw
-        if (dataAccount != nullptr)
+        if (auto dataAccount = _database->tryLogin(credentials._login, credentials._password))  //  may throw
         {
             Capabilities capabilities = dataAccount->capabilities();    //  may throw
             _goodCredentialsCache.insert(credentials, capabilities);

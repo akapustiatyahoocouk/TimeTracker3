@@ -106,6 +106,8 @@ namespace tt3::util
         ///     the resultibg extended mnemonic
         /// \param suffix
         ///     The suffix to add to this Mnemonic to form a result.
+        /// \return
+        ///     The mnemonic extended with the specified suffix.
         Mnemonic    operator + (const QString & suffix) const { return Mnemonic(_impl + suffix); }
 
         //////////

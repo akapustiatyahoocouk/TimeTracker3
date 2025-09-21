@@ -393,6 +393,42 @@ namespace tt3::gui
                 const tt3::ws::Credentials & credentials
             );
     };
+
+    /// \class ConfirmDestroyPublicActivityDialog tt3-gui/API.hpp
+    /// \brief The modal "confirm PublicActivity destruction" dialog.
+    class TT3_GUI_PUBLIC ConfirmDestroyPublicActivityDialog final :
+                                                          public AskYesNoDialog
+    {
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmDestroyPublicActivityDialog)
+
+        //////////
+        //  Construction/destruction
+    public:
+        /// @brief
+        ///     Constructs the dialog.
+        /// @param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// @param publicActivity
+        ///     The PublicActivity whose destruction is to be confirmed.
+        /// @param credentials
+        ///     The credentials to use for accessing PublicActivity's data.
+        /// @exception WorkspaceException
+        ///     If an error occurs retrieving PublicActivity details.
+        ConfirmDestroyPublicActivityDialog(
+                ::QWidget * parent,
+                tt3::ws::PublicActivity publicActivity,
+                const tt3::ws::Credentials & credentials
+            );
+
+        //////////
+        //  Implementation
+    private:
+        //  Helpers
+        static auto     _prompt(
+                                tt3::ws::PublicActivity publicActivity,
+                                const tt3::ws::Credentials & credentials
+                            ) -> QString;
+    };
 }
 
 //  End of tt3-gui/AskYesNoDialog.hpp

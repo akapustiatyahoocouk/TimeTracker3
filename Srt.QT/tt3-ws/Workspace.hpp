@@ -487,13 +487,13 @@ namespace tt3::ws
         ///     Checks whether the "current" workspace is set (is not nullptr).
         /// \return
         ///     True if the "current" workspaceis set, else false.
-        bool        operator == (nullptr_t null) const;
+        bool        operator == (nullptr_t /*null*/) const;
 
         /// \brief
         ///     Checks whether the "current" workspace is set (is not nullptr).
         /// \return
         ///     False if the "current" workspaceis set, else true.
-        bool        operator != (nullptr_t null) const;
+        bool        operator != (nullptr_t /*null*/) const;
 
         //////////
         //  Operations
