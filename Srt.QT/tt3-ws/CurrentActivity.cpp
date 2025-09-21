@@ -22,6 +22,7 @@ struct CurrentActivity::_Impl
     std::atomic<int>    instanceCount = 0;  //  ...to disallow a second instance
     tt3::util::Mutex    guard;
     Activity            activity = nullptr;
+    QDateTime           lastChangedAt = QDateTime::currentDateTimeUtc();
 };
 
 //////////
@@ -56,6 +57,7 @@ void CurrentActivity::operator = (const Activity & activity)
         {
             before = impl->activity;
             impl->activity = activity;
+            impl->lastChangedAt = QDateTime::currentDateTimeUtc();
             after = impl->activity;
         }
     }
@@ -100,6 +102,35 @@ bool CurrentActivity::operator != (nullptr_t /*null*/) const
 
     Q_ASSERT(impl->instanceCount == 1);
     return impl->activity.get() != nullptr;
+}
+
+bool CurrentActivity::operator == (Activity activity) const
+{
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
+
+    Q_ASSERT(impl->instanceCount == 1);
+    return impl->activity == activity;
+}
+
+bool CurrentActivity::operator != (Activity activity) const
+{
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
+
+    Q_ASSERT(impl->instanceCount == 1);
+    return impl->activity != activity;
+}
+
+//////////
+//  Operations
+QDateTime CurrentActivity::lastChangedAt() const
+{
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
+
+    Q_ASSERT(impl->instanceCount == 1);
+    return impl->lastChangedAt;
 }
 
 //////////

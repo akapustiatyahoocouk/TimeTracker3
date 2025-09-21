@@ -354,6 +354,33 @@ namespace tt3::ws
         ///     False if the "current" Activityis set, else true.
         bool        operator != (nullptr_t /*null*/) const;
 
+        /// \brief
+        ///     Checks whether the sppecified activity is "current".
+        /// \param activity
+        ///     The activity to check.
+        /// \return
+        ///     True if the sppecified activity is "current", else false.
+        bool        operator == (Activity activity) const;
+
+        /// \brief
+        ///     Checks whether the sppecified activity is "current".
+        /// \param activity
+        ///     The activity to check.
+        /// \return
+        ///     False if the sppecified activity is "current", else true.
+        bool        operator != (Activity activity) const;
+
+        //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Returns the last date+time (UTC) when the
+        ///     "current" activity was assigned to.
+        /// \return
+        ///     The last date+time (UTC) when the
+        ///     "current" activity was assigned to.
+        QDateTime   lastChangedAt() const;
+
         //////////
         //  Signals
         //  Clients are encourated to use "queued" connections.
@@ -379,7 +406,7 @@ namespace tt3::ws
     //  Building tt3-ws
 #else
     //  Building tt3-ws client
-    Q_DECL_IMPORT CurrentWorkspace theCurrentWorkspace;
+    Q_DECL_IMPORT CurrentActivity theCurrentActivity;
 #endif
 }
 

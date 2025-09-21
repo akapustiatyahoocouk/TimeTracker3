@@ -32,7 +32,8 @@ PublicActivityManager::PublicActivityManager(
         _workspace(tt3::ws::theCurrentWorkspace),
         _credentials(tt3::ws::theCurrentCredentials),
         //  Controls
-        _ui(new Ui::PublicActivityManager)
+        _ui(new Ui::PublicActivityManager),
+        _refreshTimer(this)
 {
     _ui->setupUi(this);
 
@@ -56,10 +57,18 @@ PublicActivityManager::PublicActivityManager(
     //  Start listening for change notifications
     //  on the currently "viewed" Workspace
     _startListeningToWorkspaceChanges();
+
+    //  Start refreshing on timer
+    connect(&_refreshTimer,
+            &QTimer::timeout,
+            this,
+            &PublicActivityManager::_refreshTimerTimeout);
+    _refreshTimer.start(500);
 }
 
 PublicActivityManager::~PublicActivityManager()
 {
+    _refreshTimer.stop();
     _stopListeningToWorkspaceChanges();
     delete _ui;
 }
@@ -121,6 +130,8 @@ void PublicActivityManager::refresh()
         _ui->createPublicActivityPushButton->setEnabled(false);
         _ui->modifyPublicActivityPushButton->setEnabled(false);
         _ui->destroyPublicActivityPushButton->setEnabled(false);
+        _ui->startPublicActivityPushButton->setEnabled(false);
+        _ui->stopPublicActivityPushButton->setEnabled(false);
         //  ...and we're done
         refreshUnderway = false;
         return;
@@ -152,6 +163,14 @@ void PublicActivityManager::refresh()
         !readOnly &&
         selectedPublicActivity != nullptr &&
         selectedPublicActivity->canDestroy(_credentials));
+    _ui->startPublicActivityPushButton->setEnabled(
+        !readOnly &&
+        selectedPublicActivity != nullptr &&
+        tt3::ws::theCurrentActivity != selectedPublicActivity);
+    _ui->stopPublicActivityPushButton->setEnabled(
+        !readOnly &&
+        selectedPublicActivity != nullptr &&
+        tt3::ws::theCurrentActivity == selectedPublicActivity);
 
     //  Some buttons need to be adjusted for ReadOnoly mode
     if (selectedPublicActivity != nullptr &&
@@ -214,6 +233,18 @@ auto PublicActivityManager::_createPublicActivityModel(
         publicActivityModel->brush = _decorations.itemForeground;
         publicActivityModel->font = _decorations.itemFont;
         publicActivityModel->tooltip = publicActivity->description(_credentials).trimmed();
+        //  A "current" activity needs some extras
+        if (tt3::ws::theCurrentActivity == publicActivity)
+        {
+            qint64 secs = qMax(0, tt3::ws::theCurrentActivity.lastChangedAt().secsTo(QDateTime::currentDateTimeUtc()));
+            char s[32];
+            sprintf(s, " [%d:%02d:%02d]",
+                    int(secs / (60 * 60)),
+                    int((secs / 60) % 60),
+                    int(secs % 60));
+            publicActivityModel->text += s;
+            publicActivityModel->font = _decorations.itemEmphasisFont;
+        }
     }
     catch (const tt3::util::Exception & ex)
     {
@@ -391,6 +422,7 @@ void PublicActivityManager::_publicActivitiesTreeWidgetCustomContextMenuRequeste
         _publicActivitiesTreeContextMenu->addAction(
             _ui->destroyPublicActivityPushButton->icon(),
             _ui->destroyPublicActivityPushButton->text());
+    _publicActivitiesTreeContextMenu->addSeparator();
     QAction * startPublicActivityAction =
         _publicActivitiesTreeContextMenu->addAction(
             _ui->startPublicActivityPushButton->icon(),
@@ -418,6 +450,14 @@ void PublicActivityManager::_publicActivitiesTreeWidgetCustomContextMenuRequeste
             &QAction::triggered,
             this,
             &PublicActivityManager::_destroyPublicActivityPushButtonClicked);
+    connect(startPublicActivityAction,
+            &QAction::triggered,
+            this,
+            &PublicActivityManager::_startPublicActivityPushButtonClicked);
+    connect(stopPublicActivityAction,
+            &QAction::triggered,
+            this,
+            &PublicActivityManager::_stopPublicActivityPushButtonClicked);
     //  Go!
     _publicActivitiesTreeContextMenu->popup(_ui->publicActivitiesTreeWidget->mapToGlobal(p));
 }
@@ -486,12 +526,54 @@ void PublicActivityManager::_destroyPublicActivityPushButtonClicked()
 
 void PublicActivityManager::_startPublicActivityPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    if (auto publicActivity = _selectedPublicActivity())
+    {
+        if (tt3::ws::theCurrentActivity == publicActivity)
+        {   //  Nothing to do!
+            return;
+        }
+        bool commentRequired = false;
+        try
+        {
+            commentRequired =
+                (tt3::ws::theCurrentActivity != nullptr &&
+                 tt3::ws::theCurrentActivity->requireCommentOnFinish(_credentials)) ||
+                publicActivity->requireCommentOnStart(_credentials);
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
+        }
+        //  TODO do we need a comment? if yes, record it as an event
+        //  TODO if there IS a "current" activity, record a unit of Work and stop it
+        tt3::ws::theCurrentActivity = publicActivity;
+        requestRefresh();
+    }
 }
 
 void PublicActivityManager::_stopPublicActivityPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    if (auto publicActivity = _selectedPublicActivity())
+    {
+        if (tt3::ws::theCurrentActivity != publicActivity)
+        {   //  Nothing to do!
+            return;
+        }
+        bool commentRequired = false;
+        try
+        {
+            commentRequired =
+                tt3::ws::theCurrentActivity->requireCommentOnFinish(_credentials);
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
+        }
+        //  TODO do we need a comment? if yes, record it as an event
+        //  TODO record a unit of Work the the "current" activity
+        tt3::ws::theCurrentActivity = nullptr;
+        requestRefresh();
+    }
 }
 
 void PublicActivityManager::_filterLineEditTextChanged(QString)
@@ -522,6 +604,17 @@ void PublicActivityManager::_objectModified(tt3::ws::ObjectModifiedNotification 
 void PublicActivityManager::_refreshRequested()
 {
     refresh();
+}
+
+void PublicActivityManager::_refreshTimerTimeout()
+{
+    if (tt3::ws::Activity activity = tt3::ws::theCurrentActivity)
+    {
+        if (std::dynamic_pointer_cast<tt3::ws::PublicActivityImpl>(activity))
+        {
+            refresh();
+        }
+    }
 }
 
 //  End of tt3-gui/PublicActivityManager.cpp

@@ -162,6 +162,7 @@ namespace tt3::gui
     private:
         Ui::PublicActivityManager * _ui;
         std::unique_ptr<QMenu>  _publicActivitiesTreeContextMenu;
+        QTimer                  _refreshTimer;
 
         //  Drawing resources
         TreeWidgetDecorations   _decorations;
@@ -183,6 +184,7 @@ namespace tt3::gui
         void            _objectDestroyed(tt3::ws::ObjectDestroyedNotification notification);
         void            _objectModified(tt3::ws::ObjectModifiedNotification notification);
         void            _refreshRequested();
+        void            _refreshTimerTimeout();
     };
 }
 
