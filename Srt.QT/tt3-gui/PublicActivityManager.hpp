@@ -175,6 +175,8 @@ namespace tt3::gui
         void            _createPublicActivityPushButtonClicked();
         void            _modifyPublicActivityPushButtonClicked();
         void            _destroyPublicActivityPushButtonClicked();
+        void            _startPublicActivityPushButtonClicked();
+        void            _stopPublicActivityPushButtonClicked();
         void            _filterLineEditTextChanged(QString);
         void            _workspaceClosed(tt3::ws::WorkspaceClosedNotification notification);
         void            _objectCreated(tt3::ws::ObjectCreatedNotification notification);

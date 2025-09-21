@@ -23,6 +23,7 @@
 *.txt  text diff=cpp
 *.html text diff=cpp
 *.css  text diff=cpp
+*.bat  text diff=cpp
 Doxyfile  text diff=cpp
 
 # Compiled Object files

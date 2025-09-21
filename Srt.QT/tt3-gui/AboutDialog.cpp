@@ -37,7 +37,15 @@ AboutDialog::AboutDialog(QWidget * parent)
     _ui->copyrightLabel->setText(tt3::util::ProductInformation::applicationCopyright());
     _ui->creditsLabel->setText(tt3::util::ProductInformation::credits());
 
-    //  Done
+    _ui->linkLabel->setText(
+        "<a href=\"" +
+        tt3::util::ProductInformation::organizationDomain() +
+        "\">" +
+        tt3::util::ProductInformation::organizationDomain() +
+        "</a>");
+    _ui->linkLabel->setTextFormat(Qt::RichText);
+    _ui->linkLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
+    _ui->linkLabel->setOpenExternalLinks(true);    //  Done
     adjustSize();
 }
 

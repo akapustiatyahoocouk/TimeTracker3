@@ -120,5 +120,9 @@
         <file>Resources/Images/Objects/WorkStreamLarge.png</file>
         <file>Resources/Images/Objects/WorkStreamSmall.png</file>
         <file>Resources/Light.qss</file>
+        <file>Resources/Images/Actions/StartPublicActivityLarge.png</file>
+        <file>Resources/Images/Actions/StartPublicActivitySmall.png</file>
+        <file>Resources/Images/Actions/StopPublicActivityLarge.png</file>
+        <file>Resources/Images/Actions/StopPublicActivitySmall.png</file>
     </qresource>
 </RCC>

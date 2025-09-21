@@ -9,6 +9,7 @@ SOURCES += \
     ActivityTypeImpl.cpp \
     Component.cpp \
     Credentials.cpp \
+    CurrentActivity.cpp \
     CurrentCredentials.cpp \
     CurrentWorkspace.cpp \
     Exceptions.cpp \

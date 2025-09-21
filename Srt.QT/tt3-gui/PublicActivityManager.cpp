@@ -391,10 +391,20 @@ void PublicActivityManager::_publicActivitiesTreeWidgetCustomContextMenuRequeste
         _publicActivitiesTreeContextMenu->addAction(
             _ui->destroyPublicActivityPushButton->icon(),
             _ui->destroyPublicActivityPushButton->text());
+    QAction * startPublicActivityAction =
+        _publicActivitiesTreeContextMenu->addAction(
+            _ui->startPublicActivityPushButton->icon(),
+            _ui->startPublicActivityPushButton->text());
+    QAction * stopPublicActivityAction =
+        _publicActivitiesTreeContextMenu->addAction(
+            _ui->stopPublicActivityPushButton->icon(),
+            _ui->stopPublicActivityPushButton->text());
     //  Adjust menu item states
     createPublicActivityAction->setEnabled(_ui->createPublicActivityPushButton->isEnabled());
     modifyPublicActivityAction->setEnabled(_ui->modifyPublicActivityPushButton->isEnabled());
     destroyPublicActivityAction->setEnabled(_ui->destroyPublicActivityPushButton->isEnabled());
+    startPublicActivityAction->setEnabled(_ui->startPublicActivityPushButton->isEnabled());
+    stopPublicActivityAction->setEnabled(_ui->stopPublicActivityPushButton->isEnabled());
     //  Set up signal handling
     connect(createPublicActivityAction,
             &QAction::triggered,
@@ -472,6 +482,16 @@ void PublicActivityManager::_destroyPublicActivityPushButtonClicked()
             requestRefresh();
         }
     }
+}
+
+void PublicActivityManager::_startPublicActivityPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+}
+
+void PublicActivityManager::_stopPublicActivityPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
 }
 
 void PublicActivityManager::_filterLineEditTextChanged(QString)

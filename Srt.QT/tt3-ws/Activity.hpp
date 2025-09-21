@@ -14,6 +14,8 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
+#pragma once
+#include "tt3-ws/API.hpp"
 
 namespace tt3::ws
 {
@@ -295,10 +297,97 @@ namespace tt3::ws
     private:
         tt3::db::api::IActivity *const  _dataActivity;  //  counts as "reference"
     };
+
+    /// \class CurrentActivity tt3-ws/API.hpp
+    /// \brief The accessor for a "current" activity pseudo-variable.
+    /// \details
+    ///     Only one global static instance of this class exists,
+    ///     and other instances should NOT be constructed.
+    ///     Can be nullptr if there is no "current" Activity.
+    class TT3_WS_PUBLIC CurrentActivity final
+        :   public QObject
+    {
+        Q_OBJECT
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentActivity)
+
+        //////////
+        //  Construction/destruction
+    public:
+        /// \brief
+        ///     The class constructor.
+        CurrentActivity();
+
+        /// \brief
+        ///     The class destructor.
+        virtual ~CurrentActivity();
+        \
+        //////////
+        //  Operators
+    public:
+        /// \brief
+        ///     Replaces the "current" Activity.
+        /// \param activity
+        ///     The activity to make "current"; nullptr == none.
+        void        operator = (const Activity & activity);
+
+        /// \brief
+        ///     Returns the pointer to the "current" Activity.
+        /// \return
+        ///     The pointer to the "current" Activity; nullptr == none.
+        Activity    operator -> () const;
+
+        /// \brief
+        ///     Returns the pointer to the "current" Activity.
+        /// \return
+        ///     The pointer to the "current" Activity; nullptr == none.
+                    operator Activity() const;
+
+        /// \brief
+        ///     Checks whether the "current" Activity is set (is not nullptr).
+        /// \return
+        ///     True if the "current" Activityis set, else false.
+        bool        operator == (nullptr_t /*null*/) const;
+
+        /// \brief
+        ///     Checks whether the "current" Activity is set (is not nullptr).
+        /// \return
+        ///     False if the "current" Activityis set, else true.
+        bool        operator != (nullptr_t /*null*/) const;
+
+        //////////
+        //  Signals
+        //  Clients are encourated to use "queued" connections.
+    signals:
+        /// \brief
+        ///     Emitted after the current Activity has changed.
+        /// \param before
+        ///     The Activity "current" before the change, nullptr == none.
+        /// \param after
+        ///     The Activity "current" after the change, nullptr == none.
+        void        changed(Activity before, Activity after);
+
+        //////////
+        //  Implementation
+    private:
+        struct _Impl;
+
+        //  Helpers
+        static _Impl *  _impl();
+    };
+
+#if defined(TT3_WS_LIBRARY)
+    //  Building tt3-ws
+#else
+    //  Building tt3-ws client
+    Q_DECL_IMPORT CurrentWorkspace theCurrentWorkspace;
+#endif
 }
 
 //  Enable objects and object pointers for QVariant
 Q_DECLARE_METATYPE(tt3::ws::ActivityImpl)
 Q_DECLARE_METATYPE(tt3::ws::Activity)
+
+//  Macro needed for MOC-generated .cpp files
+#define TT3_WS_ACTIVITY_DEFINED
 
 //  End of tt3-ws/Activity.hpp
