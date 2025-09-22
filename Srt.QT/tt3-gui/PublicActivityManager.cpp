@@ -170,6 +170,15 @@ void PublicActivityManager::refresh()
         !readOnly &&
         selectedPublicActivity != nullptr &&
         selectedPublicActivity->canDestroy(_credentials));
+
+    //  TODO if the current  credentials do not allow logging
+    //       Work, "start" and "stop" shall be disabled
+    //  TODO if the current credentials do not allow logging
+    //       Events and the selectedPublicActivity requires comment
+    //       on start, "start" shall be disabled.
+    //  TODO if the current credentials do not allow logging
+    //       Events and the current activity requires comment on
+    //       finish, "start" and "stop" shall be disabled.
     _ui->startPublicActivityPushButton->setEnabled(
         !readOnly &&
         selectedPublicActivity != nullptr &&

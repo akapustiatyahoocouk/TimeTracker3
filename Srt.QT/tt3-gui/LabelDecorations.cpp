@@ -75,8 +75,8 @@ void LabelDecorations::_initialize(
     errorForeground = ColorManager::redder(textColor);
 
     background = backColor;
-    errorBackground = ColorManager::redder(backColor);
-    liveStatusBackground = ColorManager::greener(backColor);
+    errorBackground = ColorManager::slightlyRedder(backColor);
+    liveStatusBackground = ColorManager::slightlyGreener(backColor);
 
     font = baseFont;
     emphasisFont = baseFont;

@@ -163,7 +163,15 @@ void Application::_initialize()
 
 void Application::_cleanup()
 {
-    //  TODO if there is a "current activity", record & stop it
+    //  If there is a "current activity", record & stop it.
+    try
+    {
+        tt3::ws::theCurrentActivity.replaceWith(nullptr);
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Report!
+        tt3::gui::ErrorDialog::show(ex);
+    }
 
     //  If there's a "current" workspace, close it
     tt3::ws::Workspace currentWorkspace;
@@ -175,7 +183,7 @@ void Application::_cleanup()
             currentWorkspace->close();
         }
         catch (const tt3::util::Exception & ex)
-        {
+        {   //  OOPS! Report!
             tt3::gui::ErrorDialog::show(ex);
         }
     }

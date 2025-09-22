@@ -389,7 +389,16 @@
      <normaloff>:/tt3-skin-admin/Resources/Images/Actions/ManageUsersSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/ManageUsersSmall.png</iconset>
    </property>
    <property name="text">
-    <string>Manage &amp;users</string>
+    <string>&amp;1 - Manage users</string>
+   </property>
+   <property name="iconText">
+    <string>Manage users</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage users</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+1</string>
    </property>
   </action>
   <action name="actionManageActivityTypes">
@@ -398,7 +407,16 @@
      <normaloff>:/tt3-skin-admin/Resources/Images/Objects/ActivityTypeSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/ActivityTypeSmall.png</iconset>
    </property>
    <property name="text">
-    <string>Manage activity &amp;types</string>
+    <string>&amp;2 - Manage activity types</string>
+   </property>
+   <property name="iconText">
+    <string>Manage activity types</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage activity types</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+2</string>
    </property>
   </action>
   <action name="actionRefresh">
@@ -419,7 +437,16 @@
      <normaloff>:/tt3-skin-admin/Resources/Images/Objects/PublicActivitySmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/PublicActivitySmall.png</iconset>
    </property>
    <property name="text">
-    <string>Manage public &amp;activities</string>
+    <string>&amp;3 - Manage public activities</string>
+   </property>
+   <property name="iconText">
+    <string>Manage public activities</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage public activities</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+3</string>
    </property>
   </action>
  </widget>
@@ -683,6 +710,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>stopActivityPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_stopActivityPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>480</x>
+     <y>77</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionManagePublicActivities</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManagePublicActivities()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_onActionExit()</slot>
@@ -701,5 +760,7 @@
   <slot>_onActionManageActivityTypes()</slot>
   <slot>_onActionRefresh()</slot>
   <slot>_managersTabWidgetCurrentChanged(int)</slot>
+  <slot>_stopActivityPushButtonClicked()</slot>
+  <slot>_onActionManagePublicActivities()</slot>
  </slots>
 </ui>

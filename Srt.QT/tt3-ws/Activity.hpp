@@ -326,6 +326,10 @@ namespace tt3::ws
     public:
         /// \brief
         ///     Replaces the "current" Activity.
+        /// \details
+        ///     Technically this is a shortcut form for a
+        ///     "replace(activity, theCurrentCredentials);
+        ///     any errors are logged but ignored.
         /// \param activity
         ///     The activity to make "current"; nullptr == none.
         void        operator = (const Activity & activity);
@@ -380,6 +384,33 @@ namespace tt3::ws
         ///     The last date+time (UTC) when the
         ///     "current" activity was assigned to.
         QDateTime   lastChangedAt() const;
+
+        /// \brief
+        ///     Replaces the "current" activity with
+        ///     the specified activity.
+        /// \details
+        ///     If the "current" activity alredy exists and
+        ///     requires a comment to be entered (as Event)
+        ///     when it's fnished, this is handled internally
+        ///     by asking the user to supply that comment.
+        ///     Similaely, if the new activity is not nullptr
+        ///     and requires a comment when started, user will
+        ///     be prompted to enter this comment internally.
+        ///     If tge comment entry dialog is cancelled, the
+        ///     "current" activity remains unchanged.
+        /// \param with
+        ///     The activity t set as "current"; ullptr == none.
+        /// \param credentials
+        ///     The credentials to use for data access.
+        /// \return
+        ///     True if the "current" activity was actually
+        ///     replaced, false if not,
+        /// \exception WorkspaceException
+        ///     If a data access error occurs.
+        bool        replaceWoth(
+                            Activity with,
+                            const Credentials & credentials
+                        );
 
         //////////
         //  Signals

@@ -17,6 +17,11 @@
 #include "tt3-ws/API.hpp"
 using namespace tt3::ws;
 
+namespace tt3::ws
+{
+    extern CurrentCredentials theCurrentCredentials;
+}
+
 struct CurrentActivity::_Impl
 {
     std::atomic<int>    instanceCount = 0;  //  ...to disallow a second instance
@@ -45,26 +50,13 @@ CurrentActivity::~CurrentActivity()
 //  Operators
 void CurrentActivity::operator = (const Activity & activity)
 {
-    Activity before, after;
-
-    //  Change is effected in a "locked" state
+    try
     {
-        _Impl * impl = _impl();
-        tt3::util::Lock lock(impl->guard);
-
-        Q_ASSERT(impl->instanceCount == 1);
-        if (activity != impl->activity)
-        {
-            before = impl->activity;
-            impl->activity = activity;
-            impl->lastChangedAt = QDateTime::currentDateTimeUtc();
-            after = impl->activity;
-        }
+        replace(activity, theCurrentCredentials);
     }
-    //  Signal is sent in a "not locked" state
-    if (before != after)
+    catch (const tt3::util::Exception & ex)
     {
-        emit changed(before, after);
+        qCritical() << ex.errorMessage();
     }
 }
 
@@ -72,8 +64,8 @@ Activity CurrentActivity::operator -> () const
 {
     _Impl * impl = _impl();
     tt3::util::Lock lock(impl->guard);
-
     Q_ASSERT(impl->instanceCount == 1);
+
     return impl->activity;
 }
 
@@ -81,8 +73,8 @@ CurrentActivity::operator Activity() const
 {
     _Impl * impl = _impl();
     tt3::util::Lock lock(impl->guard);
-
     Q_ASSERT(impl->instanceCount == 1);
+
     return impl->activity;
 }
 
@@ -90,8 +82,8 @@ bool CurrentActivity::operator == (nullptr_t /*null*/) const
 {
     _Impl * impl = _impl();
     tt3::util::Lock lock(impl->guard);
-
     Q_ASSERT(impl->instanceCount == 1);
+
     return impl->activity.get() == nullptr;
 }
 
@@ -99,8 +91,8 @@ bool CurrentActivity::operator != (nullptr_t /*null*/) const
 {
     _Impl * impl = _impl();
     tt3::util::Lock lock(impl->guard);
-
     Q_ASSERT(impl->instanceCount == 1);
+
     return impl->activity.get() != nullptr;
 }
 
@@ -108,8 +100,8 @@ bool CurrentActivity::operator == (Activity activity) const
 {
     _Impl * impl = _impl();
     tt3::util::Lock lock(impl->guard);
-
     Q_ASSERT(impl->instanceCount == 1);
+
     return impl->activity == activity;
 }
 
@@ -117,8 +109,8 @@ bool CurrentActivity::operator != (Activity activity) const
 {
     _Impl * impl = _impl();
     tt3::util::Lock lock(impl->guard);
-
     Q_ASSERT(impl->instanceCount == 1);
+
     return impl->activity != activity;
 }
 
@@ -128,9 +120,56 @@ QDateTime CurrentActivity::lastChangedAt() const
 {
     _Impl * impl = _impl();
     tt3::util::Lock lock(impl->guard);
-
     Q_ASSERT(impl->instanceCount == 1);
+
     return impl->lastChangedAt;
+}
+
+bool CurrentActivity::replaceWoth(
+        Activity with,
+        const Credentials & credentials
+    )
+{
+    Activity before, after;
+
+    //  Change is effected in a "locked" state
+    {
+        _Impl * impl = _impl();
+        tt3::util::Lock lock(impl->guard);
+        Q_ASSERT(impl->instanceCount == 1);
+
+        if (with != impl->activity)
+        {   //  Enter the comment if necessary
+            bool commentRequired =
+                (impl->activity != nullptr &&
+                 impl->activity->requireCommentOnFinish(credentials)) ||    //  may throw
+                (with != nullptr &&
+                 with->requireCommentOnStart(credentials)); //  may throw
+            //  Log current activity, if there is one, as a Work item
+            if (impl->activity != nullptr)
+            {   //  TODO properly
+                qDebug() << "Logging "
+                         << impl->activity->displayName(credentials)
+                         << " from "
+                         << impl->lastChangedAt
+                         << " to "
+                         << QDateTime::currentDateTimeUtc();
+            }
+            //  TODO Log entered comment as an Event
+            //  Make the change
+            before = impl->activity;
+            impl->activity = with;
+            impl->lastChangedAt = QDateTime::currentDateTimeUtc();
+            after = impl->activity;
+        }
+    }
+    //  Signal is sent in a "not locked" state
+    if (before != after)
+    {
+        emit changed(before, after);
+        return true;
+    }
+    return false;
 }
 
 //////////

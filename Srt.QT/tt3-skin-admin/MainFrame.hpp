@@ -133,6 +133,7 @@ namespace tt3::skin::admin
         void            _onActionExit();
         void            _onActionManageUsers();
         void            _onActionManageActivityTypes();
+        void            _onActionManagePublicActivities();
         void            _onActionRefresh();
         void            _onActionPreferences();
         void            _onActionLoginAsDifferentUser();
@@ -140,6 +141,7 @@ namespace tt3::skin::admin
         void            _onActionHelpIndex();
         void            _onActionHelpSearch();
         void            _onActionAbout();
+        void            _stopActivityPushButtonClicked();
 
         void            _workspaceClosed(tt3::ws::WorkspaceClosedNotification);
         void            _currentWorkspaceChanged(tt3::ws::Workspace, tt3::ws::Workspace);

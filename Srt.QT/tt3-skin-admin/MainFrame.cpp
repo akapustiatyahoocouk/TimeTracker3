@@ -580,6 +580,11 @@ void MainFrame::_onActionManageActivityTypes()
     dlg.doModal();
 }
 
+void MainFrame::_onActionManagePublicActivities()
+{
+    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+}
+
 void MainFrame::_onActionRefresh()
 {
     if (tt3::ws::theCurrentWorkspace != nullptr)
@@ -593,6 +598,7 @@ void MainFrame::_onActionRefresh()
             tt3::gui::ErrorDialog::show(this, ex);
         }
     }
+    refresh();
 }
 
 void MainFrame::_onActionPreferences()
@@ -654,6 +660,19 @@ void MainFrame::_onActionAbout()
 {
     tt3::gui::AboutDialog dlg(this);
     dlg.doModal();
+}
+
+void MainFrame::_stopActivityPushButtonClicked()
+{
+    try
+    {
+        tt3::ws::theCurrentActivity.replace(nullptr, tt3::ws::theCurrentCredentials);
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        tt3::gui::ErrorDialog::show(this, ex);
+    }
+    refresh();
 }
 
 void MainFrame::_workspaceClosed(tt3::ws::WorkspaceClosedNotification)

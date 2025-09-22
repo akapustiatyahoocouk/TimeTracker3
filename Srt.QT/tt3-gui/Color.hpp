@@ -45,12 +45,28 @@ namespace tt3::gui
         static QColor   redder(const QColor & c);
 
         /// \brief
+        ///     Returns a visually "slightly redder" variant of the original color.
+        /// \param c
+        ///     The original color
+        /// \return
+        ///     The visually "slightly redder" variant of the original color.
+        static QColor   slightlyRedder(const QColor & c);
+
+        /// \brief
         ///     Returns a visually "greener" variant of the original color.
         /// \param c
         ///     The original color
         /// \return
         ///     The visually "greener" variant of the original color.
         static QColor   greener(const QColor & c);
+
+        /// \brief
+        ///     Returns a visually "slightly greener" variant of the original color.
+        /// \param c
+        ///     The original color
+        /// \return
+        ///     The visually "slightly greener" variant of the original color.
+        static QColor   slightlyGreener(const QColor & c);
     };
 }
 

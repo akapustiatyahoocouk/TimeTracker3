@@ -37,6 +37,12 @@ QColor ColorManager::redder(const QColor & c)
     }
 }
 
+QColor ColorManager::slightlyRedder(const QColor & c)
+{
+    QColor c1 = redder(c);
+    return mid(c, c1);
+}
+
 QColor ColorManager::greener(const QColor & c)
 {
     if (c.green() < 128)
@@ -47,6 +53,12 @@ QColor ColorManager::greener(const QColor & c)
     {   //  max the green, reduce red and blue
         return QColor(qMax(0, c.red() - 128), 255, qMax(0, c.blue()) - 128, c.alpha());
     }
+}
+
+QColor ColorManager::slightlyGreener(const QColor & c)
+{
+    QColor c1 = greener(c);
+    return mid(c, c1);
 }
 
 //  End of tt3-gui/ColorManager.cpp
