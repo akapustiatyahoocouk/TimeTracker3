@@ -171,6 +171,7 @@ namespace tt3::gui
         //  Signal handlers
     private slots:
         void            _currentThemeChanged(ITheme *, ITheme *);
+        void            _currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity);
         void            _publicActivitiesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
         void            _publicActivitiesTreeWidgetCustomContextMenuRequested(QPoint);
         void            _createPublicActivityPushButtonClicked();

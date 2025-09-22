@@ -47,6 +47,13 @@ PublicActivityManager::PublicActivityManager(
             &PublicActivityManager::_currentThemeChanged,
             Qt::ConnectionType::QueuedConnection);
 
+    //  Current activity change means, at least, a refresh
+    connect(&tt3::ws::theCurrentActivity,
+            &tt3::ws::CurrentActivity::changed,
+            this,
+            &PublicActivityManager::_currentActivityChanged,
+            Qt::ConnectionType::QueuedConnection);
+
     //  Must listen to delayed refresh requests
     connect(this,
             &PublicActivityManager::refreshRequested,
@@ -398,6 +405,11 @@ void PublicActivityManager::_currentThemeChanged(ITheme *, ITheme *)
 {
     _ui->publicActivitiesTreeWidget->clear();
     _decorations = TreeWidgetDecorations(_ui->publicActivitiesTreeWidget);
+    requestRefresh();
+}
+
+void PublicActivityManager::_currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity)
+{
     requestRefresh();
 }
 

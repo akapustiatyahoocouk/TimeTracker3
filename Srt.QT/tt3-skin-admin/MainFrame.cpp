@@ -22,9 +22,12 @@ using namespace tt3::skin::admin;
 //  Construction/destruction
 MainFrame::MainFrame(QWidget * parent)
     :   QMainWindow(parent),
-        _ui(new Ui::MainFrame)
+        _ui(new Ui::MainFrame),
+        _savePositionTimer(this),
+        _refreshTimer(this)
 {
     _ui->setupUi(this);
+    _labelDecorations = tt3::gui::LabelDecorations(_ui->currentActivityLabel);
 
     _loadPosition();
     _updateMruWorkspaces();
@@ -62,15 +65,33 @@ MainFrame::MainFrame(QWidget * parent)
             this,
             &MainFrame::_currentCredentialsChanged,
             Qt::ConnectionType::QueuedConnection);
+    connect(&tt3::ws::theCurrentActivity,
+            &tt3::ws::CurrentActivity::changed,
+            this,
+            &MainFrame::_currentActivityChanged,
+            Qt::ConnectionType::QueuedConnection);
+    connect(&tt3::gui::theCurrentTheme,
+            &tt3::gui::CurrentTheme::changed,
+            this,
+            &MainFrame::_currentThemeChanged,
+            Qt::ConnectionType::QueuedConnection);
 
     //  Done
     _ui->managersTabWidget->setCurrentIndex(Component::Settings::instance()->mainFrameCurrentTab);
     _trackPosition = true;
     refresh();
+
+    //  Start refreshing on timer
+    connect(&_refreshTimer,
+            &QTimer::timeout,
+            this,
+            &MainFrame::_refreshTimerTimeout);
+    _refreshTimer.start(500);
 }
 
 MainFrame::~MainFrame()
 {
+    _refreshTimer.stop();
     delete _ui;
 
     for (RecentWorkspaceOpener * o : _recentWorkspaceOpeners)
@@ -141,6 +162,8 @@ void MainFrame::refresh()
     _userManager->refresh();
     _activityTypeManager->refresh();
     _publicActivityManager->refresh();
+
+    _refreshCurrentActivityControls();
 }
 
 //////////
@@ -381,6 +404,49 @@ void MainFrame::_updateMruWorkspaces()
     _ui->actionRecentWorkspaces->setEnabled(!menu->isEmpty());
 }
 
+void MainFrame::_refreshCurrentActivityControls()
+{
+    QPalette currentActivityLabelPalette = _ui->currentActivityLabel->palette();
+    if (tt3::ws::theCurrentActivity != nullptr)
+    {
+        qint64 secs = qMax(0, tt3::ws::theCurrentActivity.lastChangedAt().secsTo(QDateTime::currentDateTimeUtc()));
+        char s[32];
+        sprintf(s, " [%d:%02d:%02d]",
+                int(secs / (60 * 60)),
+                int((secs / 60) % 60),
+                int(secs % 60));
+
+        _ui->currentActivityLabel->setAutoFillBackground(true);
+        currentActivityLabelPalette.setColor(QPalette::Window, _labelDecorations.liveStatusBackground);
+        currentActivityLabelPalette.setColor(QPalette::WindowText, _labelDecorations.foreground);
+
+        try
+        {
+            _ui->currentActivityLabel->setText(tt3::ws::theCurrentActivity->displayName(tt3::ws::theCurrentCredentials) + s);    //  may throw
+            _ui->currentActivityLabel->setFont(_labelDecorations.emphasisFont);
+            _ui->stopActivityPushButton->setEnabled(true);
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            currentActivityLabelPalette.setColor(QPalette::Window, _labelDecorations.errorBackground);
+            currentActivityLabelPalette.setColor(QPalette::WindowText, _labelDecorations.errorForeground);
+            _ui->currentActivityLabel->setText(ex.errorMessage());
+            _ui->currentActivityLabel->setFont(_labelDecorations.emphasisFont);
+        }
+    }
+    else
+    {
+        _ui->currentActivityLabel->setAutoFillBackground(false);
+        currentActivityLabelPalette.setColor(QPalette::Window, _labelDecorations.background);
+        currentActivityLabelPalette.setColor(QPalette::WindowText, _labelDecorations.disabledForeground);
+
+        _ui->currentActivityLabel->setText("There is no current activity");
+        _ui->currentActivityLabel->setFont(_labelDecorations.font);
+        _ui->stopActivityPushButton->setEnabled(false);
+    }
+    _ui->currentActivityLabel->setPalette(currentActivityLabelPalette);
+}
+
 //////////
 //  Signal handlers
 void MainFrame::_savePositionTimerTimeout()
@@ -595,7 +661,7 @@ void MainFrame::_workspaceClosed(tt3::ws::WorkspaceClosedNotification)
     refresh();
 }
 
-void MainFrame::_currentWorkspaceChanged(tt3::ws::Workspace /*before*/, tt3::ws::Workspace /*after*/)
+void MainFrame::_currentWorkspaceChanged(tt3::ws::Workspace, tt3::ws::Workspace)
 {
     _userManager->setWorkspace(tt3::ws::theCurrentWorkspace);
     _activityTypeManager->setWorkspace(tt3::ws::theCurrentWorkspace);
@@ -603,11 +669,22 @@ void MainFrame::_currentWorkspaceChanged(tt3::ws::Workspace /*before*/, tt3::ws:
     refresh();
 }
 
-void MainFrame::_currentCredentialsChanged(tt3::ws::Credentials /*before*/, tt3::ws::Credentials /*after*/)
+void MainFrame::_currentCredentialsChanged(tt3::ws::Credentials, tt3::ws::Credentials)
 {
     _userManager->setCredentials(tt3::ws::theCurrentCredentials);
     _activityTypeManager->setCredentials(tt3::ws::theCurrentCredentials);
     _publicActivityManager->setCredentials(tt3::ws::theCurrentCredentials);
+    refresh();
+}
+
+void MainFrame::_currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity)
+{
+    _refreshCurrentActivityControls();
+}
+
+void MainFrame::_currentThemeChanged(tt3::gui::ITheme*, tt3::gui::ITheme*)
+{
+    _labelDecorations = tt3::gui::LabelDecorations(_ui->currentActivityLabel);
     refresh();
 }
 
@@ -617,6 +694,14 @@ void MainFrame::_managersTabWidgetCurrentChanged(int)
     {   //  i.e. constructor has finished
         refresh();
         Component::Settings::instance()->mainFrameCurrentTab = _ui->managersTabWidget->currentIndex();
+    }
+}
+
+void MainFrame::_refreshTimerTimeout()
+{
+    if (tt3::ws::theCurrentActivity != nullptr)
+    {
+        _refreshCurrentActivityControls();
     }
 }
 

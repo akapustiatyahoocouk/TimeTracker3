@@ -7,6 +7,7 @@ SOURCES += \
     AboutDialog.cpp \
     ActivityTypeManager.cpp \
     AskYesNoDialog.cpp \
+    ColorManager.cpp \
     Component.cpp \
     CreateAccountDialog.cpp \
     CreateActivityTypeDialog.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
     GeneralPreferences.cpp \
     GeneralStartupPreferences.cpp \
     GeneralStartupPreferencesEditor.cpp \
+    LabelDecorations.cpp \
     LoginDialog.cpp \
     ManageActivityTypesDialog.cpp \
     ManageUsersDialog.cpp \
@@ -50,6 +52,7 @@ HEADERS += \
     AboutDialog.hpp \
     ActivityTypeManager.hpp \
     AskYesNoDialog.hpp \
+    Color.hpp \
     Components.hpp \
     CreateAccountDialog.hpp \
     CreateActivityTypeDialog.hpp \

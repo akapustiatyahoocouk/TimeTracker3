@@ -120,4 +120,4 @@ Component::Settings::~Settings()
 {
 }
 
-//  End of tt3-gui/GuiComponent.cpp
+//  End of tt3-gui/Component.cpp

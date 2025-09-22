@@ -80,6 +80,7 @@ namespace tt3::skin::admin
         //  Implementation
     private:
         bool            _trackPosition = false;
+        tt3::gui::LabelDecorations  _labelDecorations;
 
         //  Helpers
         void            _loadPosition();
@@ -95,6 +96,7 @@ namespace tt3::skin::admin
         void            _destroyWorkspace(tt3::ws::WorkspaceAddress workspaceAddress);
 
         void            _updateMruWorkspaces();
+        void            _refreshCurrentActivityControls();
 
         //////////
         //  Implementation
@@ -106,6 +108,7 @@ namespace tt3::skin::admin
     private:
         Ui::MainFrame *     _ui;
         QTimer              _savePositionTimer;
+        QTimer              _refreshTimer;
 
         //  Custom controls for the tabbed pane
         //  in the middle are created dynamically
@@ -139,9 +142,12 @@ namespace tt3::skin::admin
         void            _onActionAbout();
 
         void            _workspaceClosed(tt3::ws::WorkspaceClosedNotification);
-        void            _currentWorkspaceChanged(tt3::ws::Workspace before, tt3::ws::Workspace after);
-        void            _currentCredentialsChanged(tt3::ws::Credentials before, tt3::ws::Credentials after);
+        void            _currentWorkspaceChanged(tt3::ws::Workspace, tt3::ws::Workspace);
+        void            _currentCredentialsChanged(tt3::ws::Credentials, tt3::ws::Credentials);
+        void            _currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity);
+        void            _currentThemeChanged(tt3::gui::ITheme*, tt3::gui::ITheme*);
         void            _managersTabWidgetCurrentChanged(int);
+        void            _refreshTimerTimeout();
     };
 
     /// \class RecentWorkspaceOpener tt3-skin-admin/API.hpp

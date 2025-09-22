@@ -27,7 +27,7 @@ namespace tt3::gui
         /// \brief
         ///     The class constructor.
         /// \details
-        ///     Picks up ini9tial values from app's palette.
+        ///     Picks up initial values from app's palette.
         TreeWidgetDecorations();
 
         /// \brief
@@ -72,8 +72,81 @@ namespace tt3::gui
         //  Implementation
     private:
         //  Helpers
-        void        _init(const QColor & textColor, const QColor & backColor,
-                          const QFont & baseFont);
+        void        _initialize(
+                            const QColor & textColor,
+                            const QColor & backColor,
+                            const QFont & baseFont
+                        );
+    };
+
+    /// \class LabelDecorations tt3-gui/API.hpp
+    /// \brief Decorations for a QLabel.
+    class TT3_GUI_PUBLIC LabelDecorations
+    {
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        /// \brief
+        ///     The class constructor.
+        /// \details
+        ///     Picks up initial values from app's palette.
+        LabelDecorations();
+
+        /// \brief
+        ///     The class constructor.
+        /// \param label
+        ///     The label to pick up decoration values from.
+        explicit LabelDecorations(
+                QLabel * label
+            );
+
+        //  The default copy constructor, assignment and
+        //  destructors are all OK
+
+        //////////
+        //  Properties
+    public:
+        /// \brief
+        ///     The color to use for text of "normal" labels.
+        QColor      foreground;
+
+        /// \brief
+        ///     The color to use for text of "disabled" labels.
+        QColor      disabledForeground;
+
+        /// \brief
+        ///     The color to use for text of "error" labels.
+        QColor      errorForeground;
+
+        /// \brief
+        ///     The color to use for background of "normal" labels.
+        QColor      background;
+
+        /// \brief
+        ///     The color to use for background of "error" labels.
+        QColor      errorBackground;
+
+        /// \brief
+        ///     The color to use for background of "live status" labels.
+        QColor      liveStatusBackground;
+
+        /// \brief
+        ///     The font to use for text of "normal" labelss.
+        QFont       font;
+
+        /// \brief
+        ///     The font to use for text of "emphasized" labels (normally bold).
+        QFont       emphasisFont;
+
+        //////////
+        //  Implementation
+    private:
+        //  Helpers
+        void        _initialize(
+                            const QColor & textColor,
+                            const QColor & backColor,
+                            const QFont & baseFont
+                        );
     };
 }
 

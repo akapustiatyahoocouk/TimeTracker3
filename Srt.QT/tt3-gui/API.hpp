@@ -30,6 +30,7 @@
 #include "tt3-gui/Skin.hpp"
 #include "tt3-gui/Theme.hpp"
 #include "tt3-gui/Preferences.hpp"
+#include "tt3-gui/Color.hpp"
 
 //  Controls
 #include "tt3-gui/WidgetDecorations.hpp"
