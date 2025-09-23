@@ -101,7 +101,7 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::EditStringDialog *  _ui;
+        Ui::EditStringDialog *const _ui;
 
         //////////
         //  Signal handlers

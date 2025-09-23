@@ -57,7 +57,6 @@ namespace tt3::ws
 
         //////////
         //  Operations
-        //  TODO convert these into const properties!
     public:
         /// \brief
         ///     Returns the validator for Principals.

@@ -104,7 +104,7 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::CreatePublicActivityDialog *    _ui;
+        Ui::CreatePublicActivityDialog *const   _ui;
 
         //////////
         //  Signal handlers

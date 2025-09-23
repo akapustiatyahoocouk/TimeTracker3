@@ -150,11 +150,12 @@ namespace tt3::gui
         void        _setSelectedActivityType(tt3::ws::ActivityType activityType);
         void        _startListeningToWorkspaceChanges();
         void        _stopListeningToWorkspaceChanges();
+        void        _clearAndDisableAllControls();
 
         //////////
         //  Controls
     private:
-        Ui::ActivityTypeManager *   _ui;
+        Ui::ActivityTypeManager *const  _ui;
         std::unique_ptr<QMenu>  _activityTypesTreeContextMenu;
 
         //  Drawing resources

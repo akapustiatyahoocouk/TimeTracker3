@@ -114,9 +114,10 @@ namespace tt3::util
         //////////
         //  Implementation
     private:
-        //  TODO use the "struct _Impl" trick
-        static std::atomic<int>     _instanceCount; //  ...to disallow a second instance
-        mutable tt3::util::Mutex    _currentLocaleGuard;
+        struct _Impl;
+
+        //  Helpers
+        static _Impl *  _impl();
     };
 
 #if defined(TT3_UTIL_LIBRARY)

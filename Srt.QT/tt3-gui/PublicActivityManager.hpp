@@ -156,11 +156,13 @@ namespace tt3::gui
         void            _setSelectedPublicActivity(tt3::ws::PublicActivity PublicActivity);
         void            _startListeningToWorkspaceChanges();
         void            _stopListeningToWorkspaceChanges();
+        void            _clearAndDisableAllControls();
+
 
         //////////
         //  Controls
     private:
-        Ui::PublicActivityManager * _ui;
+        Ui::PublicActivityManager *const    _ui;
         std::unique_ptr<QMenu>  _publicActivitiesTreeContextMenu;
         QTimer                  _refreshTimer;
 

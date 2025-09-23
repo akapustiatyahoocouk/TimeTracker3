@@ -219,7 +219,6 @@ void ActivityType::_serializeAssociations(
                     [](auto a) { return tt3::util::toString(a->_oid); })
                 .join(","));
     }
-    //  TODO Activities      _activities;    //  count as "reference"s
 }
 
 void ActivityType::_deserializeProperties(

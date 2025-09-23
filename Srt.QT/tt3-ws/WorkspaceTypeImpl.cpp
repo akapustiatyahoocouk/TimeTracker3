@@ -160,8 +160,9 @@ auto WorkspaceTypeImpl::createWorkspace(
         {   //  ..destroy the newly created database!
             address->_databaseAddress->databaseType()->destroyDatabase(address->_databaseAddress);
         }
-        catch (const tt3::util::Exception &)
-        {   //  OOPS! TODO log?
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log, though
+            qCritical() << ex.errorMessage();
         }
         WorkspaceException::translateAndThrow(ex);
     }

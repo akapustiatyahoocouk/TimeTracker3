@@ -53,7 +53,6 @@ CreatePublicActivityDialog::CreatePublicActivityDialog(
               });
 
     _ui->activityTypeComboBox->addItem(
-        //  TODO kill off tt3::ws::ObjectTypes::ActivityType::instance()->smallIcon(),
         "-",
         QVariant::fromValue<tt3::ws::ActivityType>(nullptr));
     for (tt3::ws::ActivityType activityType : activityTypes)

@@ -60,7 +60,7 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::ShowConfigurationDialog *   _ui;
+        Ui::ShowConfigurationDialog *const  _ui;
 
         //////////
         //  Signal handlers

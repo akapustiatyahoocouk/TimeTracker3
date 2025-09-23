@@ -17,20 +17,28 @@
 #include "tt3-util/API.hpp"
 using namespace tt3::util;
 
-std::atomic<int> CurrentLocale::_instanceCount = 0;
+struct CurrentLocale::_Impl
+{
+    std::atomic<int>    instanceCount = 0;  //  ...to disallow a second instance
+    tt3::util::Mutex    guard;
+};
 
 //////////
 //  Construction/destruction
 CurrentLocale::CurrentLocale()
 {
-    Q_ASSERT(_instanceCount == 0);
-    _instanceCount++;
+    _Impl * impl = _impl();
+    Q_ASSERT(impl->instanceCount == 0);
+
+    impl->instanceCount++;
 }
 
 CurrentLocale::~CurrentLocale()
 {
-    Q_ASSERT(_instanceCount == 1);
-    _instanceCount--;
+    _Impl * impl = _impl();
+    Q_ASSERT(impl->instanceCount == 1);
+
+    impl->instanceCount--;
 }
 
 //////////
@@ -41,9 +49,10 @@ void CurrentLocale::operator = (const QLocale & locale)
 
     //  Change is effected in a "locked" state
     {
-        Lock lock(_currentLocaleGuard);
+        _Impl * impl = _impl();
+        Lock lock(impl->guard);
 
-        Q_ASSERT(_instanceCount == 1);
+        Q_ASSERT(impl->instanceCount == 1);
         QLocale defaultLocale;
         if (locale != defaultLocale)
         {
@@ -61,8 +70,18 @@ void CurrentLocale::operator = (const QLocale & locale)
 
 CurrentLocale::operator QLocale () const
 {
-    Lock lock(_currentLocaleGuard);
+    _Impl * impl = _impl();
+    Lock lock(impl->guard);
+
     return QLocale();
+}
+
+//////////
+//  Implementation helpers
+CurrentLocale::_Impl * CurrentLocale::_impl()
+{
+    static _Impl impl;
+    return &impl;
 }
 
 //////////

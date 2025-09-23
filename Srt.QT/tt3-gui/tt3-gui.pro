@@ -85,6 +85,7 @@ HEADERS += \
     ShowLicenseDialog.hpp \
     Skin.hpp \
     Theme.hpp \
+    UiHelpers.hpp \
     UserManager.hpp \
     WidgetDecorations.hpp
 

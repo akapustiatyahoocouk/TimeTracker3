@@ -220,10 +220,10 @@ namespace tt3::gui
         //////////
         //  Implementation
     private:
-        //  TODO use the "struct _Impl" idiom;
-        static std::atomic<int>     _instanceCount; //  ...to disallow a second instance
-        mutable tt3::util::Mutex    _currentSkinGuard;
-        ISkin *                     _currentSkin;
+        struct _Impl;
+
+        //  Helpers
+        static _Impl *  _impl();
     };
 
 #if defined(TT3_GUI_LIBRARY)

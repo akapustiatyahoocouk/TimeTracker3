@@ -48,7 +48,7 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::GeneralStartupPreferencesEditor *   _ui;
+        Ui::GeneralStartupPreferencesEditor *const  _ui;
 
         //////////
         //  Signal handlers

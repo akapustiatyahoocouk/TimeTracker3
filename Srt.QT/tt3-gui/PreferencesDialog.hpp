@@ -84,7 +84,7 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::PreferencesDialog * _ui;
+        Ui::PreferencesDialog *const    _ui;
         //  Dynamic controls are created at runtime
         QLabel *            _noPropertiesLabel = nullptr;
         QStackedLayout *    _editorsFrameLayout = nullptr;

@@ -82,7 +82,7 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::ModifyActivityTypeDialog *  _ui;
+        Ui::ModifyActivityTypeDialog *const _ui;
 
         //////////
         //  Signal handlers

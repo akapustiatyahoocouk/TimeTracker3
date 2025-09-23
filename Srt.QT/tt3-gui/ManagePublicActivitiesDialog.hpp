@@ -62,7 +62,7 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::ManagePublicActivitiesDialog *  _ui;
+        Ui::ManagePublicActivitiesDialog *const _ui;
         //  Custom controls are created dynamically
         QStackedLayout *        _managerPanelLayout = nullptr;
         PublicActivityManager * _publicActivityManager = nullptr;

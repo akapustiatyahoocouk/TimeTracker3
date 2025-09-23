@@ -102,7 +102,7 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::SelectWorkspaceDialog *   _ui;
+        Ui::SelectWorkspaceDialog *const    _ui;
 
         //////////
         //  Event handlers

@@ -21,6 +21,10 @@ namespace tt3::util
     /// \brief
     ///     An abstract interface to a "plugin" - an agent discovered
     ///     and instantiated at runtime.
+    /// \details
+    ///     Any implementing concrete class P must provide:
+    ///     -   A public default constructor T::T().
+    ///     -   A public destructor T::~T().
     class TT3_UTIL_PUBLIC IPlugin
     {
         //////////

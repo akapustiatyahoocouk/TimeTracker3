@@ -24,7 +24,7 @@ Application::Application(int & argc, char ** argv)
 {
     setApplicationName(tt3::util::ProductInformation::applicationName());
     setApplicationVersion(tt3::util::ProductInformation::applicationVersion().toString());
-    //  TODO kill ? setApplicationDisplayName(tt3::util::ProductInformation::applicationDisplayName());
+    //  Don't setApplicationDisplayName() - will mess up dialog titles!
     setOrganizationName(tt3::util::ProductInformation::organizationName());
     setOrganizationDomain(tt3::util::ProductInformation::organizationDomain());
 }

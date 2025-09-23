@@ -101,71 +101,67 @@ void ActivityTypeManager::refresh()
 
     //  We don't want a refresh() to trigger a recursive refresh()!
     static bool refreshUnderway = false;
-    if (refreshUnderway)
-    {   //  Don't recurse!
-        return;
-    }
-    refreshUnderway = true;
-
-    if (_workspace == nullptr || !_credentials.isValid() ||
-        !_workspace->isOpen() ||
-        !_workspace->canAccess(_credentials)) //  TODO handle WorkspaceExceptions
-    {   //  Nothing to show...
-        _ui->activityTypesTreeWidget->clear();
-        //  ...so disable all controls...
-        _ui->filterLabel->setEnabled(false);
-        _ui->filterLineEdit->setEnabled(false);
-        _ui->activityTypesTreeWidget->setEnabled(false);
-        _ui->createActivityTypePushButton->setEnabled(false);
-        _ui->modifyActivityTypePushButton->setEnabled(false);
-        _ui->destroyActivityTypePushButton->setEnabled(false);
-        //  ...and we're done
-        refreshUnderway = false;
-        return;
-    }
-
-    //  Otherwise some controls are always enabled...
-    _ui->filterLabel->setEnabled(true);
-    _ui->filterLineEdit->setEnabled(true);
-    _ui->activityTypesTreeWidget->setEnabled(true);
-
-    //  ...while others are enabled based on current
-    //  selection and permissions granted by Credentials
-    _WorkspaceModel workspaceModel = _createWorkspaceModel();
-    if (!_ui->filterLineEdit->text().trimmed().isEmpty())
+    RefreshGuard refreshGuard(refreshUnderway);
+    if (refreshGuard)   //  Don't recurse!
     {
-        _filterItems(workspaceModel);
-    }
-    _refreshActivityTypeItems(workspaceModel);
+        try
+        {
+            if (_workspace == nullptr || !_credentials.isValid() ||
+                !_workspace->isOpen() ||
+                !_workspace->canAccess(_credentials))   //  may throw
+            {   //  Nothing to show...
+                _clearAndDisableAllControls();
+                return;
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! No point in proceesing.
+            qCritical() << ex.errorMessage();
+            _clearAndDisableAllControls();
+            return;
+        }
 
-    tt3::ws::ActivityType selectedActivityType = _selectedActivityType();
-    bool readOnly = _workspace->isReadOnly();
-    _ui->createActivityTypePushButton->setEnabled(
-        !readOnly &&
-        (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
-         _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageActivityTypes)));
-    _ui->modifyActivityTypePushButton->setEnabled(
-        selectedActivityType != nullptr);
-    _ui->destroyActivityTypePushButton->setEnabled(
-        !readOnly &&
-        selectedActivityType != nullptr &&
-        selectedActivityType->canDestroy(_credentials));
+        //  Otherwise some controls are always enabled...
+        _ui->filterLabel->setEnabled(true);
+        _ui->filterLineEdit->setEnabled(true);
+        _ui->activityTypesTreeWidget->setEnabled(true);
 
-    //  Some buttons need to be adjusted for ReadOnoly mode
-    if (selectedActivityType != nullptr &&
-        !selectedActivityType->workspace()->isReadOnly() &&
-        selectedActivityType->canModify(_credentials))
-    {   //  RW
-        _ui->modifyActivityTypePushButton->setIcon(modifyActivityTypeIcon);
-        _ui->modifyActivityTypePushButton->setText("Modify activity type");
-    }
-    else
-    {   //  RO
-        _ui->modifyActivityTypePushButton->setIcon(viewActivityTypeIcon);
-        _ui->modifyActivityTypePushButton->setText("View activity type");
-    }
+        //  ...while others are enabled based on current
+        //  selection and permissions granted by Credentials
+        _WorkspaceModel workspaceModel = _createWorkspaceModel();
+        if (!_ui->filterLineEdit->text().trimmed().isEmpty())
+        {
+            _filterItems(workspaceModel);
+        }
+        _refreshActivityTypeItems(workspaceModel);
 
-    refreshUnderway = false;
+        tt3::ws::ActivityType selectedActivityType = _selectedActivityType();
+        bool readOnly = _workspace->isReadOnly();
+        _ui->createActivityTypePushButton->setEnabled(
+            !readOnly &&
+            (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
+             _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageActivityTypes)));
+        _ui->modifyActivityTypePushButton->setEnabled(
+            selectedActivityType != nullptr);
+        _ui->destroyActivityTypePushButton->setEnabled(
+            !readOnly &&
+            selectedActivityType != nullptr &&
+            selectedActivityType->canDestroy(_credentials));
+
+        //  Some buttons need to be adjusted for ReadOnoly mode
+        if (selectedActivityType != nullptr &&
+            !selectedActivityType->workspace()->isReadOnly() &&
+            selectedActivityType->canModify(_credentials))
+        {   //  RW
+            _ui->modifyActivityTypePushButton->setIcon(modifyActivityTypeIcon);
+            _ui->modifyActivityTypePushButton->setText("Modify activity type");
+        }
+        else
+        {   //  RO
+            _ui->modifyActivityTypePushButton->setIcon(viewActivityTypeIcon);
+            _ui->modifyActivityTypePushButton->setText("View activity type");
+        }
+    }
 }
 
 void ActivityTypeManager::requestRefresh()
@@ -350,6 +346,17 @@ void ActivityTypeManager::_stopListeningToWorkspaceChanges()
                    this,
                    &ActivityTypeManager::_objectModified);
     }
+}
+
+void ActivityTypeManager::_clearAndDisableAllControls()
+{
+    _ui->activityTypesTreeWidget->clear();
+    _ui->filterLabel->setEnabled(false);
+    _ui->filterLineEdit->setEnabled(false);
+    _ui->activityTypesTreeWidget->setEnabled(false);
+    _ui->createActivityTypePushButton->setEnabled(false);
+    _ui->modifyActivityTypePushButton->setEnabled(false);
+    _ui->destroyActivityTypePushButton->setEnabled(false);
 }
 
 //////////

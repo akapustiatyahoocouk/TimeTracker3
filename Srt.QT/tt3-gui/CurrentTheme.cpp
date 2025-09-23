@@ -17,21 +17,29 @@
 #include "tt3-gui/API.hpp"
 using namespace tt3::gui;
 
-std::atomic<int> CurrentTheme::_instanceCount = 0;
+struct CurrentTheme::_Impl
+{
+    std::atomic<int>    instanceCount = 0;  //  ...to disallow a second instance
+    tt3::util::Mutex    guard;
+    ITheme *            theme = nullptr;
+};
 
 //////////
 //  Construction/destruction
 CurrentTheme::CurrentTheme()
-    :   _currentTheme(nullptr)
 {
-    Q_ASSERT(_instanceCount == 0);
-    _instanceCount++;
+    _Impl * impl = _impl();
+    Q_ASSERT(impl->instanceCount == 0);
+
+    impl->instanceCount++;
 }
 
 CurrentTheme::~CurrentTheme()
 {
-    Q_ASSERT(_instanceCount == 1);
-    _instanceCount--;
+    _Impl * impl = _impl();
+    Q_ASSERT(impl->instanceCount == 1);
+
+    impl->instanceCount--;
 }
 
 //////////
@@ -42,14 +50,15 @@ void CurrentTheme::operator = (ITheme * theme)
 
     //  Change is effected in a "locked" state
     {
-        tt3::util::Lock lock(_currentThemeGuard);
+        _Impl * impl = _impl();
+        tt3::util::Lock lock(impl->guard);
+        Q_ASSERT(impl->instanceCount == 1);
 
-        Q_ASSERT(_instanceCount == 1);
-        if (theme != _currentTheme)
+        if (theme != impl->theme)
         {
-            before = _currentTheme;
-            _currentTheme = theme;
-            after = _currentTheme;
+            before = impl->theme;
+            impl->theme = theme;
+            after = impl->theme;
         }
     }
     //  Signal is sent in a "not locked" state
@@ -62,26 +71,37 @@ void CurrentTheme::operator = (ITheme * theme)
 
 ITheme * CurrentTheme::operator -> () const
 {
-    tt3::util::Lock lock(_currentThemeGuard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
 
-    Q_ASSERT(_instanceCount == 1);
-    return _currentTheme;
+    Q_ASSERT(impl->instanceCount == 1);
+    return impl->theme;
 }
 
 bool CurrentTheme::operator == (nullptr_t /*null*/) const
 {
-    tt3::util::Lock lock(_currentThemeGuard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
+    Q_ASSERT(impl->instanceCount == 1);
 
-    Q_ASSERT(_instanceCount == 1);
-    return _currentTheme == nullptr;
+    return impl->theme == nullptr;
 }
 
 bool CurrentTheme::operator != (nullptr_t /*null*/) const
 {
-    tt3::util::Lock lock(_currentThemeGuard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
+    Q_ASSERT(impl->instanceCount == 1);
 
-    Q_ASSERT(_instanceCount == 1);
-    return _currentTheme != nullptr;
+    return impl->theme != nullptr;
+}
+
+//////////
+//  Implementation helpers
+CurrentTheme::_Impl * CurrentTheme::_impl()
+{
+    static _Impl impl;
+    return &impl;
 }
 
 //////////

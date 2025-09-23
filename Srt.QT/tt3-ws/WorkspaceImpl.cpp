@@ -54,8 +54,9 @@ WorkspaceImpl::~WorkspaceImpl()
     {
         close();
     }
-    catch (const tt3::util::Exception &)
-    {   //  OOPS! Suppress TODO but log ?
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Suppress, but log
+        qCritical() << ex.errorMessage();
     }
     delete _database;
 }
@@ -144,7 +145,7 @@ auto WorkspaceImpl::users(
     ) const -> Users
 {
     tt3::util::Lock lock(_guard);
-    _ensureOpen();  //  may throw TODO add similar comment to all calls of throwing private methods
+    _ensureOpen();  //  may throw
 
     try
     {

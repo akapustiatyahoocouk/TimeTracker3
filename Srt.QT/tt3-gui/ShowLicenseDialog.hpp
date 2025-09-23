@@ -57,7 +57,7 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::ShowLicenseDialog * _ui;
+        Ui::ShowLicenseDialog *const    _ui;
     };
 }
 

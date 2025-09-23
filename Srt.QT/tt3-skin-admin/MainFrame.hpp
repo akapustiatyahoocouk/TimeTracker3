@@ -106,9 +106,9 @@ namespace tt3::skin::admin
         //////////
         //  Controls
     private:
-        Ui::MainFrame *     _ui;
-        QTimer              _savePositionTimer;
-        QTimer              _refreshTimer;
+        Ui::MainFrame *const    _ui;
+        QTimer                  _savePositionTimer;
+        QTimer                  _refreshTimer;
 
         //  Custom controls for the tabbed pane
         //  in the middle are created dynamically

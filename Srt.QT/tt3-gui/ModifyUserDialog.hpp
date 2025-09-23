@@ -96,7 +96,7 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::ModifyUserDialog *  _ui;
+        Ui::ModifyUserDialog *const _ui;
 
         //////////
         //  Signal handlers

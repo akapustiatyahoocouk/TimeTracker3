@@ -106,7 +106,7 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::ErrorDialog *   _ui;
+        Ui::ErrorDialog *const  _ui;
     };
 }
 

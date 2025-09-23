@@ -189,10 +189,34 @@ bool CurrentActivity::replaceWith(
     return replaceWith(with, tt3::ws::theCurrentCredentials);
 }
 
+void CurrentActivity::drop()
+{
+    tt3::ws::Activity before, after;
+
+    //  Change is effected in a "locked" state
+    {
+        _Impl * impl = _impl();
+        tt3::util::Lock lock(impl->guard);
+        Q_ASSERT(impl->instanceCount == 1);
+
+        if (impl->activity != nullptr)
+        {   //  Make the change
+            before = impl->activity;
+            impl->activity = nullptr;
+            impl->lastChangedAt = QDateTime::currentDateTimeUtc();
+            after = impl->activity;
+        }
+    }
+    //  Signal is sent in a "not locked" state
+    if (before != after)
+    {
+        emit changed(before, after);
+    }
+}
+
 //////////
 //  Implementation helpers
-auto CurrentActivity::_impl()
-    -> CurrentActivity::_Impl *
+CurrentActivity::_Impl * CurrentActivity::_impl()
 {
     static _Impl impl;
     return &impl;

@@ -120,90 +120,85 @@ void PublicActivityManager::refresh()
 
     //  We don't want a refresh() to trigger a recursive refresh()!
     static bool refreshUnderway = false;
-    if (refreshUnderway)
-    {   //  Don't recurse!
-        return;
-    }
-    refreshUnderway = true;
-
-    if (_workspace == nullptr || !_credentials.isValid() ||
-        !_workspace->isOpen() ||
-        !_workspace->canAccess(_credentials)) //  TODO handle WorkspaceExceptions
-    {   //  Nothing to show...
-        _ui->publicActivitiesTreeWidget->clear();
-        //  ...so disable all controls...
-        _ui->filterLabel->setEnabled(false);
-        _ui->filterLineEdit->setEnabled(false);
-        _ui->publicActivitiesTreeWidget->setEnabled(false);
-        _ui->createPublicActivityPushButton->setEnabled(false);
-        _ui->modifyPublicActivityPushButton->setEnabled(false);
-        _ui->destroyPublicActivityPushButton->setEnabled(false);
-        _ui->startPublicActivityPushButton->setEnabled(false);
-        _ui->stopPublicActivityPushButton->setEnabled(false);
-        //  ...and we're done
-        refreshUnderway = false;
-        return;
-    }
-
-    //  Otherwise some controls are always enabled...
-    _ui->filterLabel->setEnabled(true);
-    _ui->filterLineEdit->setEnabled(true);
-    _ui->publicActivitiesTreeWidget->setEnabled(true);
-
-    //  ...while others are enabled based on current
-    //  selection and permissions granted by Credentials
-    _WorkspaceModel workspaceModel = _createWorkspaceModel();
-    if (!_ui->filterLineEdit->text().trimmed().isEmpty())
+    RefreshGuard refreshGuard(refreshUnderway);
+    if (refreshGuard)   //  Don't recurse!
     {
-        _filterItems(workspaceModel);
+        try
+        {
+            if (_workspace == nullptr || !_credentials.isValid() ||
+                !_workspace->isOpen() ||
+                !_workspace->canAccess(_credentials)) //  may throw
+            {   //  Nothing to show
+                refreshUnderway = false;
+                _clearAndDisableAllControls();
+                return;
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! No point in proceesing.
+            qCritical() << ex.errorMessage();
+            _clearAndDisableAllControls();
+            return;
+        }
+
+        //  Otherwise some controls are always enabled...
+        _ui->filterLabel->setEnabled(true);
+        _ui->filterLineEdit->setEnabled(true);
+        _ui->publicActivitiesTreeWidget->setEnabled(true);
+
+        //  ...while others are enabled based on current
+        //  selection and permissions granted by Credentials
+        _WorkspaceModel workspaceModel = _createWorkspaceModel();
+        if (!_ui->filterLineEdit->text().trimmed().isEmpty())
+        {
+            _filterItems(workspaceModel);
+        }
+        _refreshPublicActivityItems(workspaceModel);
+
+        tt3::ws::PublicActivity selectedPublicActivity = _selectedPublicActivity();
+        bool readOnly = _workspace->isReadOnly();
+        _ui->createPublicActivityPushButton->setEnabled(
+            !readOnly &&
+            (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
+             _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManagePublicActivities)));
+        _ui->modifyPublicActivityPushButton->setEnabled(
+            selectedPublicActivity != nullptr);
+        _ui->destroyPublicActivityPushButton->setEnabled(
+            !readOnly &&
+            selectedPublicActivity != nullptr &&
+            selectedPublicActivity->canDestroy(_credentials));
+
+        //  TODO if the current  credentials do not allow logging
+        //       Work, "start" and "stop" shall be disabled
+        //  TODO if the current credentials do not allow logging
+        //       Events and the selectedPublicActivity requires comment
+        //       on start, "start" shall be disabled.
+        //  TODO if the current credentials do not allow logging
+        //       Events and the current activity requires comment on
+        //       finish, "start" and "stop" shall be disabled.
+        _ui->startPublicActivityPushButton->setEnabled(
+            !readOnly &&
+            selectedPublicActivity != nullptr &&
+            theCurrentActivity != selectedPublicActivity);
+        _ui->stopPublicActivityPushButton->setEnabled(
+            !readOnly &&
+            selectedPublicActivity != nullptr &&
+            theCurrentActivity == selectedPublicActivity);
+
+        //  Some buttons need to be adjusted for ReadOnoly mode
+        if (selectedPublicActivity != nullptr &&
+            !selectedPublicActivity->workspace()->isReadOnly() &&
+            selectedPublicActivity->canModify(_credentials))
+        {   //  RW
+            _ui->modifyPublicActivityPushButton->setIcon(modifyPublicActivityIcon);
+            _ui->modifyPublicActivityPushButton->setText("Modify public activity");
+        }
+        else
+        {   //  RO
+            _ui->modifyPublicActivityPushButton->setIcon(viewPublicActivityIcon);
+            _ui->modifyPublicActivityPushButton->setText("View public activity");
+        }
     }
-    _refreshPublicActivityItems(workspaceModel);
-
-    tt3::ws::PublicActivity selectedPublicActivity = _selectedPublicActivity();
-    bool readOnly = _workspace->isReadOnly();
-    _ui->createPublicActivityPushButton->setEnabled(
-        !readOnly &&
-        (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
-         _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManagePublicActivities)));
-    _ui->modifyPublicActivityPushButton->setEnabled(
-        selectedPublicActivity != nullptr);
-    _ui->destroyPublicActivityPushButton->setEnabled(
-        !readOnly &&
-        selectedPublicActivity != nullptr &&
-        selectedPublicActivity->canDestroy(_credentials));
-
-    //  TODO if the current  credentials do not allow logging
-    //       Work, "start" and "stop" shall be disabled
-    //  TODO if the current credentials do not allow logging
-    //       Events and the selectedPublicActivity requires comment
-    //       on start, "start" shall be disabled.
-    //  TODO if the current credentials do not allow logging
-    //       Events and the current activity requires comment on
-    //       finish, "start" and "stop" shall be disabled.
-    _ui->startPublicActivityPushButton->setEnabled(
-        !readOnly &&
-        selectedPublicActivity != nullptr &&
-        theCurrentActivity != selectedPublicActivity);
-    _ui->stopPublicActivityPushButton->setEnabled(
-        !readOnly &&
-        selectedPublicActivity != nullptr &&
-        theCurrentActivity == selectedPublicActivity);
-
-    //  Some buttons need to be adjusted for ReadOnoly mode
-    if (selectedPublicActivity != nullptr &&
-        !selectedPublicActivity->workspace()->isReadOnly() &&
-        selectedPublicActivity->canModify(_credentials))
-    {   //  RW
-        _ui->modifyPublicActivityPushButton->setIcon(modifyPublicActivityIcon);
-        _ui->modifyPublicActivityPushButton->setText("Modify public activity");
-    }
-    else
-    {   //  RO
-        _ui->modifyPublicActivityPushButton->setIcon(viewPublicActivityIcon);
-        _ui->modifyPublicActivityPushButton->setText("View public activity");
-    }
-
-    refreshUnderway = false;
 }
 
 void PublicActivityManager::requestRefresh()
@@ -409,6 +404,19 @@ void PublicActivityManager::_stopListeningToWorkspaceChanges()
     }
 }
 
+void PublicActivityManager::_clearAndDisableAllControls()
+{
+    _ui->publicActivitiesTreeWidget->clear();
+    _ui->filterLabel->setEnabled(false);
+    _ui->filterLineEdit->setEnabled(false);
+    _ui->publicActivitiesTreeWidget->setEnabled(false);
+    _ui->createPublicActivityPushButton->setEnabled(false);
+    _ui->modifyPublicActivityPushButton->setEnabled(false);
+    _ui->destroyPublicActivityPushButton->setEnabled(false);
+    _ui->startPublicActivityPushButton->setEnabled(false);
+    _ui->stopPublicActivityPushButton->setEnabled(false);
+}
+
 //////////
 //  Signal handlers
 void PublicActivityManager::_currentThemeChanged(ITheme *, ITheme *)
@@ -530,10 +538,13 @@ void PublicActivityManager::_destroyPublicActivityPushButtonClicked()
         {
             ConfirmDestroyPublicActivityDialog dlg(this, publicActivity, _credentials); //  may throw
             if (dlg.doModal() == ConfirmDestroyPublicActivityDialog::Result::Yes)
-            {   //  Do it!
-                //  TODO if the publicActivity is currently
-                //  underway, stop it; there's no need yo
-                //  record a Work unit.
+            {   //  If the publicActivity is currently underway,
+                //  stop it; there's no need to record a Work unit.
+                if (theCurrentActivity == publicActivity)
+                {
+                    theCurrentActivity.drop();
+                }
+                //  Do it!
                 publicActivity->destroy(_credentials);    //  may throw
                 requestRefresh();
             }

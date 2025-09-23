@@ -175,11 +175,12 @@ namespace tt3::gui
         void                _setSelectedAccount(tt3::ws::Account account);
         void                _startListeningToWorkspaceChanges();
         void                _stopListeningToWorkspaceChanges();
+        void                _clearAndDisableAllControls();
 
         //////////
         //  Controls
     private:
-        Ui::UserManager *   _ui;
+        Ui::UserManager *const  _ui;
         std::unique_ptr<QMenu>  _usersTreeContextMenu;
 
         //  Drawing resources

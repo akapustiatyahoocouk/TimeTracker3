@@ -17,20 +17,29 @@
 #include "tt3-ws/API.hpp"
 using namespace tt3::ws;
 
-std::atomic<int> CurrentCredentials::_instanceCount = 0;
+struct CurrentCredentials::_Impl
+{
+    std::atomic<int>    instanceCount = 0;  //  ...to disallow a second instance
+    tt3::util::Mutex    guard;
+    Credentials         credentials;
+};
 
 //////////
 //  Construction/destruction
 CurrentCredentials::CurrentCredentials()
 {
-    Q_ASSERT(_instanceCount == 0);
-    _instanceCount++;
+    _Impl * impl = _impl();
+    Q_ASSERT(impl->instanceCount == 0);
+
+    impl->instanceCount++;
 }
 
 CurrentCredentials::~CurrentCredentials()
 {
-    Q_ASSERT(_instanceCount == 1);
-    _instanceCount--;
+    _Impl * impl = _impl();
+    Q_ASSERT(impl->instanceCount == 1);
+
+    impl->instanceCount--;
 }
 
 //////////
@@ -41,14 +50,15 @@ void CurrentCredentials::operator = (const Credentials & credentials)
 
     //  Change is effected i n a "locked" state
     {
-        tt3::util::Lock lock(_currentCredentialsGuard);
+        _Impl * impl = _impl();
+        tt3::util::Lock lock(impl->guard);
 
-        Q_ASSERT(_instanceCount == 1);
-        if (credentials != _currentCredentials)
+        Q_ASSERT(impl->instanceCount == 1);
+        if (credentials != impl->credentials)
         {
-            before = _currentCredentials;
-            after = credentials;
-            _currentCredentials = credentials;
+            before = impl->credentials;
+            impl->credentials = credentials;
+            after = impl->credentials;
         }
     }
     //  Notification is issued in a "not locked" state
@@ -60,28 +70,39 @@ void CurrentCredentials::operator = (const Credentials & credentials)
 
 CurrentCredentials::operator const Credentials & () const
 {
-    tt3::util::Lock lock(_currentCredentialsGuard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
+    Q_ASSERT(impl->instanceCount == 1);
 
-    Q_ASSERT(_instanceCount == 1);
-    return _currentCredentials;
+    return impl->credentials;
 }
 
 //////////
 //  Operations
 bool CurrentCredentials::isValid() const
 {
-    tt3::util::Lock lock(_currentCredentialsGuard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
+    Q_ASSERT(impl->instanceCount == 1);
 
-    Q_ASSERT(_instanceCount == 1);
-    return _currentCredentials.isValid();
+    return impl->credentials.isValid();
 }
 
 QString CurrentCredentials::login() const
 {
-    tt3::util::Lock lock(_currentCredentialsGuard);
+    _Impl * impl = _impl();
+    tt3::util::Lock lock(impl->guard);
+    Q_ASSERT(impl->instanceCount == 1);
 
-    Q_ASSERT(_instanceCount == 1);
-    return _currentCredentials.login();
+    return impl->credentials.login();
+}
+
+//////////
+//  Implementation helpers
+CurrentCredentials::_Impl * CurrentCredentials::_impl()
+{
+    static _Impl impl;
+    return &impl;
 }
 
 //////////

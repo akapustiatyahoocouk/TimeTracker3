@@ -110,113 +110,105 @@ void UserManager::refresh()
 
     //  We don't want a refresh() to trigger a recursive refresh()!
     static bool refreshUnderway = false;
-    if (refreshUnderway)
-    {   //  Don't recurse!
-        return;
-    }
-    refreshUnderway = true;
-
-    if (_workspace == nullptr || !_credentials.isValid() ||
-        !_workspace->isOpen() ||
-        !_workspace->canAccess(_credentials)) //  TODO handle WorkspaceExceptions
-    {   //  Nothing to show...
-        _ui->usersTreeWidget->clear();
-        //  ...so disable all controls...
-        _ui->filterLabel->setEnabled(false);
-        _ui->filterLineEdit->setEnabled(false);
-        _ui->usersTreeWidget->setEnabled(false);
-        _ui->createUserPushButton->setEnabled(false);
-        _ui->modifyUserPushButton->setEnabled(false);
-        _ui->destroyUserPushButton->setEnabled(false);
-        _ui->createAccountPushButton->setEnabled(false);
-        _ui->modifyAccountPushButton->setEnabled(false);
-        _ui->destroyAccountPushButton->setEnabled(false);
-        _ui->showDisabledCheckBox->setEnabled(false);
-        //  ...and we're done
-        refreshUnderway = false;
-        return;
-    }
-
-    //  Otherwise some controls are always enabled...
-    _ui->filterLabel->setEnabled(true);
-    _ui->filterLineEdit->setEnabled(true);
-        _ui->usersTreeWidget->setEnabled(true);
-        _ui->showDisabledCheckBox->setEnabled(true);
-
-    //  ...while others are enabled based on current
-    //  selection and permissions granted by Credentials
-    _WorkspaceModel workspaceModel = _createWorkspaceModel();
-    if (!Component::Settings::instance()->showHiddenUsersAndAccounts)
+    RefreshGuard refreshGuard(refreshUnderway);
+    if (refreshGuard)   //  Don't recurse!
     {
-        _removeDisabledItems(workspaceModel);
-    }
-    if (!_ui->filterLineEdit->text().trimmed().isEmpty())
-    {
-        _filterItems(workspaceModel);
-    }
-    _refreshUserItems(workspaceModel);
-    if (!_ui->filterLineEdit->text().trimmed().isEmpty())
-    {   //  Filtered - show all
-        _ui->usersTreeWidget->expandAll();
-    }
+        try
+        {
+            if (_workspace == nullptr || !_credentials.isValid() ||
+                !_workspace->isOpen() ||
+                !_workspace->canAccess(_credentials)) //  may throw
+            {   //  Nothing to show
+                _clearAndDisableAllControls();
+                return;
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! No point in proceesing.
+            qCritical() << ex.errorMessage();
+            _clearAndDisableAllControls();
+            return;
+        }
 
-    tt3::ws::User selectedUser = _selectedUser();
-    tt3::ws::Account selectedAccount = _selectedAccount();
-    bool readOnly = _workspace->isReadOnly();
-    _ui->createUserPushButton->setEnabled(
-        !readOnly &&
-        (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
-         _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageUsers)));
-    _ui->modifyUserPushButton->setEnabled(
-        selectedUser != nullptr &&
-        selectedUser->canModify(_credentials));
-    _ui->destroyUserPushButton->setEnabled(
-        !readOnly &&
-        selectedUser != nullptr &&
-        selectedUser->canDestroy(_credentials));
-    _ui->createAccountPushButton->setEnabled(
-        !readOnly &&
-        (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
-         _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageUsers)) &&
-        selectedUser != nullptr);
-    _ui->modifyAccountPushButton->setEnabled(
-        selectedAccount != nullptr &&
-        selectedAccount->canModify(_credentials));
-    _ui->destroyAccountPushButton->setEnabled(
-        !readOnly &&
-        selectedAccount != nullptr &&
-        selectedAccount->canDestroy(_credentials));
+        //  Otherwise some controls are always enabled...
+        _ui->filterLabel->setEnabled(true);
+        _ui->filterLineEdit->setEnabled(true);
+            _ui->usersTreeWidget->setEnabled(true);
+            _ui->showDisabledCheckBox->setEnabled(true);
 
-    _ui->showDisabledCheckBox->setChecked(
-        Component::Settings::instance()->showHiddenUsersAndAccounts);
+        //  ...while others are enabled based on current
+        //  selection and permissions granted by Credentials
+        _WorkspaceModel workspaceModel = _createWorkspaceModel();
+        if (!Component::Settings::instance()->showHiddenUsersAndAccounts)
+        {
+            _removeDisabledItems(workspaceModel);
+        }
+        if (!_ui->filterLineEdit->text().trimmed().isEmpty())
+        {
+            _filterItems(workspaceModel);
+        }
+        _refreshUserItems(workspaceModel);
+        if (!_ui->filterLineEdit->text().trimmed().isEmpty())
+        {   //  Filtered - show all
+            _ui->usersTreeWidget->expandAll();
+        }
 
-    //  Some buttons need to be adjusted for ReadOnoly mode
-    if (selectedUser != nullptr &&
-        !selectedUser->workspace()->isReadOnly() &&
-        selectedUser->canModify(_credentials))
-    {   //  RW
-        _ui->modifyUserPushButton->setIcon(modifyUserIcon);
-        _ui->modifyUserPushButton->setText("Modify user");
-    }
-    else
-    {   //  RO
-        _ui->modifyUserPushButton->setIcon(viewUserIcon);
-        _ui->modifyUserPushButton->setText("View user");
-    }
-    if (selectedAccount != nullptr &&
-        !selectedAccount->workspace()->isReadOnly() &&
-        selectedAccount->canModify(_credentials))
-    {   //  RW
-        _ui->modifyAccountPushButton->setIcon(modifyAccountIcon);
-        _ui->modifyAccountPushButton->setText("Modify account");
-    }
-    else
-    {   //  RO
-        _ui->modifyAccountPushButton->setIcon(viewAccountIcon);
-        _ui->modifyAccountPushButton->setText("View account");
-    }
+        tt3::ws::User selectedUser = _selectedUser();
+        tt3::ws::Account selectedAccount = _selectedAccount();
+        bool readOnly = _workspace->isReadOnly();
+        _ui->createUserPushButton->setEnabled(
+            !readOnly &&
+            (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
+             _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageUsers)));
+        _ui->modifyUserPushButton->setEnabled(
+            selectedUser != nullptr &&
+            selectedUser->canModify(_credentials));
+        _ui->destroyUserPushButton->setEnabled(
+            !readOnly &&
+            selectedUser != nullptr &&
+            selectedUser->canDestroy(_credentials));
+        _ui->createAccountPushButton->setEnabled(
+            !readOnly &&
+            (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
+             _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageUsers)) &&
+            selectedUser != nullptr);
+        _ui->modifyAccountPushButton->setEnabled(
+            selectedAccount != nullptr &&
+            selectedAccount->canModify(_credentials));
+        _ui->destroyAccountPushButton->setEnabled(
+            !readOnly &&
+            selectedAccount != nullptr &&
+            selectedAccount->canDestroy(_credentials));
 
-    refreshUnderway = false;
+        _ui->showDisabledCheckBox->setChecked(
+            Component::Settings::instance()->showHiddenUsersAndAccounts);
+
+        //  Some buttons need to be adjusted for ReadOnoly mode
+        if (selectedUser != nullptr &&
+            !selectedUser->workspace()->isReadOnly() &&
+            selectedUser->canModify(_credentials))
+        {   //  RW
+            _ui->modifyUserPushButton->setIcon(modifyUserIcon);
+            _ui->modifyUserPushButton->setText("Modify user");
+        }
+        else
+        {   //  RO
+            _ui->modifyUserPushButton->setIcon(viewUserIcon);
+            _ui->modifyUserPushButton->setText("View user");
+        }
+        if (selectedAccount != nullptr &&
+            !selectedAccount->workspace()->isReadOnly() &&
+            selectedAccount->canModify(_credentials))
+        {   //  RW
+            _ui->modifyAccountPushButton->setIcon(modifyAccountIcon);
+            _ui->modifyAccountPushButton->setText("Modify account");
+        }
+        else
+        {   //  RO
+            _ui->modifyAccountPushButton->setIcon(viewAccountIcon);
+            _ui->modifyAccountPushButton->setText("View account");
+        }
+    }
 }
 
 void UserManager::requestRefresh()
@@ -341,8 +333,9 @@ void UserManager::_removeDisabledItems(_WorkspaceModel workspaceModel)
             }
             //  ...else keep this user item
         }
-        catch (const tt3::util::Exception &)
-        {   //  OOPS! TODO log?
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Suppress, but log
+            qCritical() << ex.errorMessage();
         }
     }
 }
@@ -358,8 +351,9 @@ void UserManager::_removeDisabledItems(_UserModel userModel)
                 userModel->accountModels.removeAt(i);
             }
         }
-        catch (const tt3::util::Exception &)
-        {   //  OOPS! TODO log?
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Suppress, but log
+            qCritical() << ex.errorMessage();
         }
     }
 }
@@ -407,8 +401,9 @@ void UserManager::_filterItems(_UserModel userModel)
                 userModel->accountModels.removeAt(i);
             }
         }
-        catch (const tt3::util::Exception &)
-        {   //  OOPS! TODO log?
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Suppress, but log
+            qCritical() << ex.errorMessage();
         }
     }
 }
@@ -586,6 +581,21 @@ void UserManager::_stopListeningToWorkspaceChanges()
                    this,
                    &UserManager::_objectModified);
     }
+}
+
+void UserManager::_clearAndDisableAllControls()
+{
+    _ui->usersTreeWidget->clear();
+    _ui->filterLabel->setEnabled(false);
+    _ui->filterLineEdit->setEnabled(false);
+    _ui->usersTreeWidget->setEnabled(false);
+    _ui->createUserPushButton->setEnabled(false);
+    _ui->modifyUserPushButton->setEnabled(false);
+    _ui->destroyUserPushButton->setEnabled(false);
+    _ui->createAccountPushButton->setEnabled(false);
+    _ui->modifyAccountPushButton->setEnabled(false);
+    _ui->destroyAccountPushButton->setEnabled(false);
+    _ui->showDisabledCheckBox->setEnabled(false);
 }
 
 //////////

@@ -166,6 +166,15 @@ namespace tt3::gui
                             tt3::ws::Activity with
                         );
 
+        /// \brief
+        ///     Drops the "current" activity.
+        /// \details
+        ///     Sets the "current" activity to nullptr.
+        ///     If it requires a commet-when-finished,
+        ///     ignores this behaviour. Does not record
+        ///     a Work unit.
+        void        drop();
+
         //////////
         //  Signals
         //  Clients are encourated to use "queued" connections.

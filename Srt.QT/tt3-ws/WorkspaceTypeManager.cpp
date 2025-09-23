@@ -61,14 +61,4 @@ WorkspaceTypeManager::_Impl * WorkspaceTypeManager::_impl()
     return &impl;
 }
 
-/*  TODO kill off
-WorkspaceType WorkspaceTypeManager::_findWorkspaceType(tt3::db::api::IDatabaseType * databaseType)
-{
-    _Impl * impl = _impl();
-    Q_ASSERT(impl->guard.isLockedByCurrentThread());
-
-    return impl->registry.contains(databaseType) ? impl->registry[databaseType] : nullptr;
-}
-*/
-
 //  End of tt3-ws/WorkspaceTypeManager.cpp

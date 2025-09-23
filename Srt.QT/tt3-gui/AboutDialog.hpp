@@ -57,7 +57,7 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::AboutDialog *   _ui;
+        Ui::AboutDialog *const  _ui;
         QMenu *         _licensesPopupMenu = nullptr;
 
         //////////

@@ -217,7 +217,16 @@ bool MainFrame::_createWorkspace(
             workspaceAddress->workspaceType()->createWorkspace(
                 workspaceAddress, adminUser, adminLogin, adminPassword)
         };
-        //  TODO if there is a "current activity", record & stop it
+        //  If there is a "current activity", record & stop it
+        try
+        {
+            tt3::gui::theCurrentActivity.replaceWith(nullptr);
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            tt3::gui::ErrorDialog::show(this, ex);
+        }
+        //  Replace the "current" workspace
         tt3::ws::theCurrentWorkspace.swap(workspace);
         tt3::ws::Component::Settings::instance()->addRecentWorkspace(workspaceAddress);
         _updateMruWorkspaces();
@@ -278,7 +287,15 @@ bool MainFrame::_openWorkspace(
             workspace->close();
             return false;
         }
-        //  TODO if there is a "current activity", record & stop it
+        //  If there is a "current activity", record & stop it
+        try
+        {
+            tt3::gui::theCurrentActivity.replaceWith(nullptr);
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            tt3::gui::ErrorDialog::show(this, ex);
+        }
         //  Use the newly open workspace
         tt3::ws::theCurrentWorkspace.swap(workspace);
         tt3::ws::Component::Settings::instance()->addRecentWorkspace(workspaceAddress);
@@ -581,7 +598,7 @@ void MainFrame::_onActionManageActivityTypes()
 }
 
 void MainFrame::_onActionManagePublicActivities()
-{   //  TODO switch to "Activity types" tab instead
+{   //  TODO switch to "Public activities" tab instead
     tt3::gui::ManagePublicActivitiesDialog dlg(
         this,
         tt3::ws::theCurrentWorkspace,

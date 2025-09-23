@@ -274,8 +274,7 @@ namespace tt3::ws
         struct _Impl;
 
         //  Helpers
-        static _Impl *          _impl();
-        //  TODO kill off static WorkspaceType    _findWorkspaceType(tt3::db::api::IDatabaseType * databaseType);
+        static _Impl *  _impl();
     };
 }
 

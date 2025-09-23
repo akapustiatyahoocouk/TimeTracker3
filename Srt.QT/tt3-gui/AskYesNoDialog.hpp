@@ -91,7 +91,7 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::AskYesNoDialog *    _ui;
+        Ui::AskYesNoDialog *const   _ui;
 
         //////////
         //  Signal handlers

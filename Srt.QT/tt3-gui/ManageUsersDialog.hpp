@@ -62,7 +62,7 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::ManageUsersDialog * _ui;
+        Ui::ManageUsersDialog *const    _ui;
         //  Custom controls are created dynamically
         QStackedLayout *_managerPanelLayout = nullptr;
         UserManager *   _userManager = nullptr;

@@ -47,7 +47,7 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::GeneralDialogsPreferencesEditor *   _ui;
+        Ui::GeneralDialogsPreferencesEditor *const  _ui;
     };
 }
 
