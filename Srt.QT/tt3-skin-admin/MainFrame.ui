@@ -171,6 +171,12 @@
     <addaction name="actionManageUsers"/>
     <addaction name="actionManageActivityTypes"/>
     <addaction name="actionManagePublicActivities"/>
+    <addaction name="actionManagePublicTasks"/>
+    <addaction name="actionManagePrivateActivities"/>
+    <addaction name="actionManagePrivateTasks"/>
+    <addaction name="actionManageProjects"/>
+    <addaction name="actionManageWorkStreams"/>
+    <addaction name="actionManageBeneficiaries"/>
     <addaction name="separator"/>
     <addaction name="actionRefresh"/>
    </widget>
@@ -225,6 +231,12 @@
    <addaction name="actionManageUsers"/>
    <addaction name="actionManageActivityTypes"/>
    <addaction name="actionManagePublicActivities"/>
+   <addaction name="actionManagePublicTasks"/>
+   <addaction name="actionManagePrivateActivities"/>
+   <addaction name="actionManagePrivateTasks"/>
+   <addaction name="actionManageProjects"/>
+   <addaction name="actionManageWorkStreams"/>
+   <addaction name="actionManageBeneficiaries"/>
    <addaction name="separator"/>
    <addaction name="actionRefresh"/>
    <addaction name="separator"/>
@@ -447,6 +459,114 @@
    </property>
    <property name="shortcut">
     <string>Alt+3</string>
+   </property>
+  </action>
+  <action name="actionManagePublicTasks">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Objects/PublicTaskSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/PublicTaskSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;4 - Manage public tasks</string>
+   </property>
+   <property name="iconText">
+    <string>Manage public tasks</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage public tasks</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+4</string>
+   </property>
+  </action>
+  <action name="actionManagePrivateActivities">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Objects/PrivateActivitySmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/PrivateActivitySmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;5 - Manage private activities</string>
+   </property>
+   <property name="iconText">
+    <string>Manage private activities</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage private activities</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+5</string>
+   </property>
+  </action>
+  <action name="actionManagePrivateTasks">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Objects/PrivateTaskSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/PrivateTaskSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;6 - Manage private tasks</string>
+   </property>
+   <property name="iconText">
+    <string>Manage private tasks</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage private tasks</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+6</string>
+   </property>
+  </action>
+  <action name="actionManageProjects">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Objects/ProjectSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/ProjectSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;7 - Manage projects</string>
+   </property>
+   <property name="iconText">
+    <string>Manage projects</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage projects</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+7</string>
+   </property>
+  </action>
+  <action name="actionManageWorkStreams">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Objects/WorkStreamSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/WorkStreamSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;8 - Manage work streams</string>
+   </property>
+   <property name="iconText">
+    <string>Manage work streams</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage work streams</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+8</string>
+   </property>
+  </action>
+  <action name="actionManageBeneficiaries">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Objects/BeneficiarySmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/BeneficiarySmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;9 - Manage beneficiaries</string>
+   </property>
+   <property name="iconText">
+    <string>Manage beneficiaries</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage beneficiaries</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+9</string>
    </property>
   </action>
  </widget>
@@ -742,6 +862,102 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionManagePublicTasks</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManagePublicTasks()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionManagePrivateActivities</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManagePrivateActivities()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionManagePrivateTasks</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManagePrivateTasks()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionManageProjects</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManageProjects()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionManageWorkStreams</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManageWorkStreams()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionManageBeneficiaries</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManageBeneficiaries()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_onActionExit()</slot>
@@ -762,5 +978,11 @@
   <slot>_managersTabWidgetCurrentChanged(int)</slot>
   <slot>_stopActivityPushButtonClicked()</slot>
   <slot>_onActionManagePublicActivities()</slot>
+  <slot>_onActionManagePublicTasks()</slot>
+  <slot>_onActionManagePrivateActivities()</slot>
+  <slot>_onActionManagePrivateTasks()</slot>
+  <slot>_onActionManageProjects()</slot>
+  <slot>_onActionManageWorkStreams()</slot>
+  <slot>_onActionManageBeneficiaries()</slot>
  </slots>
 </ui>

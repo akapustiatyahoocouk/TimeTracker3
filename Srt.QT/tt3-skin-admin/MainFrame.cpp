@@ -156,6 +156,12 @@ void MainFrame::refresh()
     _ui->actionManageUsers->setEnabled(currentWorkspace != nullptr);
     _ui->actionManageActivityTypes->setEnabled(currentWorkspace != nullptr);
     _ui->actionManagePublicActivities->setEnabled(currentWorkspace != nullptr);
+    _ui->actionManagePublicTasks->setEnabled(currentWorkspace != nullptr);
+    _ui->actionManagePrivateActivities->setEnabled(currentWorkspace != nullptr);
+    _ui->actionManagePrivateTasks->setEnabled(currentWorkspace != nullptr);
+    _ui->actionManageProjects->setEnabled(currentWorkspace != nullptr);
+    _ui->actionManageWorkStreams->setEnabled(currentWorkspace != nullptr);
+    _ui->actionManageBeneficiaries->setEnabled(currentWorkspace != nullptr);
     _ui->actionRefresh->setEnabled(currentWorkspace != nullptr);
 
     //  Controls
@@ -604,6 +610,36 @@ void MainFrame::_onActionManagePublicActivities()
         tt3::ws::theCurrentWorkspace,
         tt3::ws::theCurrentCredentials);
     dlg.doModal();
+}
+
+void MainFrame::_onActionManagePublicTasks()
+{
+    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+}
+
+void MainFrame::_onActionManagePrivateActivities()
+{
+    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+}
+
+void MainFrame::_onActionManagePrivateTasks()
+{
+    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+}
+
+void MainFrame::_onActionManageProjects()
+{
+    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+}
+
+void MainFrame::_onActionManageWorkStreams()
+{
+    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+}
+
+void MainFrame::_onActionManageBeneficiaries()
+{
+    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
 }
 
 void MainFrame::_onActionRefresh()

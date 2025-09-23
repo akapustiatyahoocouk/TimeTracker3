@@ -46,5 +46,11 @@
         <file>Resources/Images/Objects/PublicActivitySmall.png</file>
         <file>Resources/Images/Objects/PublicTaskLarge.png</file>
         <file>Resources/Images/Objects/PublicTaskSmall.png</file>
+        <file>Resources/Images/Objects/BeneficiaryLarge.png</file>
+        <file>Resources/Images/Objects/BeneficiarySmall.png</file>
+        <file>Resources/Images/Objects/ProjectLarge.png</file>
+        <file>Resources/Images/Objects/ProjectSmall.png</file>
+        <file>Resources/Images/Objects/WorkStreamLarge.png</file>
+        <file>Resources/Images/Objects/WorkStreamSmall.png</file>
     </qresource>
 </RCC>

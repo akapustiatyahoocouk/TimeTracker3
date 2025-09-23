@@ -134,6 +134,12 @@ namespace tt3::skin::admin
         void            _onActionManageUsers();
         void            _onActionManageActivityTypes();
         void            _onActionManagePublicActivities();
+        void            _onActionManagePublicTasks();
+        void            _onActionManagePrivateActivities();
+        void            _onActionManagePrivateTasks();
+        void            _onActionManageProjects();
+        void            _onActionManageWorkStreams();
+        void            _onActionManageBeneficiaries();
         void            _onActionRefresh();
         void            _onActionPreferences();
         void            _onActionLoginAsDifferentUser();
