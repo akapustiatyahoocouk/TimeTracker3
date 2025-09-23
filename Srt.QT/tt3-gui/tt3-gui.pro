@@ -28,6 +28,7 @@ SOURCES += \
     LabelDecorations.cpp \
     LoginDialog.cpp \
     ManageActivityTypesDialog.cpp \
+    ManagePublicActivitiesDialog.cpp \
     ManageUsersDialog.cpp \
     ModifyAccountDialog.cpp \
     ModifyActivityTypeDialog.cpp \
@@ -68,6 +69,7 @@ HEADERS += \
     Linkage.hpp \
     LoginDialog.hpp \
     ManageActivityTypesDialog.hpp \
+    ManagePublicActivitiesDialog.hpp \
     ManageUsersDialog.hpp \
     ModifyAccountDialog.hpp \
     ModifyActivityTypeDialog.hpp \
@@ -101,6 +103,7 @@ FORMS += \
     GeneralStartupPreferencesEditor.ui \
     LoginDialog.ui \
     ManageActivityTypesDialog.ui \
+    ManagePublicActivitiesDialog.ui \
     ManageUsersDialog.ui \
     ModifyAccountDialog.ui \
     ModifyActivityTypeDialog.ui \

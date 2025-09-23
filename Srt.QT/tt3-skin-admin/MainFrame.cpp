@@ -86,7 +86,7 @@ MainFrame::MainFrame(QWidget * parent)
             &QTimer::timeout,
             this,
             &MainFrame::_refreshTimerTimeout);
-    _refreshTimer.start(500);
+    _refreshTimer.start(1000);
 }
 
 MainFrame::~MainFrame()
@@ -581,8 +581,12 @@ void MainFrame::_onActionManageActivityTypes()
 }
 
 void MainFrame::_onActionManagePublicActivities()
-{
-    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+{   //  TODO switch to "Activity types" tab instead
+    tt3::gui::ManagePublicActivitiesDialog dlg(
+        this,
+        tt3::ws::theCurrentWorkspace,
+        tt3::ws::theCurrentCredentials);
+    dlg.doModal();
 }
 
 void MainFrame::_onActionRefresh()

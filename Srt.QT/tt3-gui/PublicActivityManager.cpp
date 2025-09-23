@@ -71,7 +71,7 @@ PublicActivityManager::PublicActivityManager(
             &QTimer::timeout,
             this,
             &PublicActivityManager::_refreshTimerTimeout);
-    _refreshTimer.start(500);
+    _refreshTimer.start(1000);
 }
 
 PublicActivityManager::~PublicActivityManager()

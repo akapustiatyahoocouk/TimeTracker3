@@ -1,5 +1,5 @@
 //
-//  tt3-gui/ManageActivityTypesDialog.hpp - The modal "Manage activity types" dialog
+//  tt3-gui/ManagePublicActivitiesDialog.hpp - The modal "Manage public activities" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,17 +19,17 @@
 
 namespace tt3::gui
 {
-    class TT3_GUI_PUBLIC ActivityTypeManager;
+    class TT3_GUI_PUBLIC PublicActivityManager;
 
-    namespace Ui { class ManageActivityTypesDialog; }
+    namespace Ui { class ManagePublicActivitiesDialog; }
 
-    /// \class ManageActivityTypesDialog tt3-gui/API.hpp "tt3-gui/API.hpp"
-    /// \brief The modal "Manage activity types" dialog.
-    class TT3_GUI_PUBLIC ManageActivityTypesDialog final
+    /// \class ManagePublicActivitiesDialog tt3-gui/API.hpp "tt3-gui/API.hpp"
+    /// \brief The modal "Manage public activities" dialog.
+    class TT3_GUI_PUBLIC ManagePublicActivitiesDialog final
         :   private QDialog
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ManageActivityTypesDialog)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ManagePublicActivitiesDialog)
 
         //////////
         //  Construction/destruction
@@ -39,10 +39,10 @@ namespace tt3::gui
         /// \param parent
         ///     The parent widget for the dialog, nullptr == none.
         /// \param workspace
-        ///     The workspace to manage activity types in.
+        ///     The workspace to manage public activities in.
         /// \param credentials
         ///     The credentials to use for data access.
-        ManageActivityTypesDialog(
+        ManagePublicActivitiesDialog(
                 QWidget * parent,
                 tt3::ws::Workspace workspace,
                 const tt3::ws::Credentials & credentials
@@ -50,7 +50,7 @@ namespace tt3::gui
 
         /// \brief
         ///     The class destructor.
-        virtual ~ManageActivityTypesDialog();
+        virtual ~ManagePublicActivitiesDialog();
 
         //////////
         //  Operations
@@ -62,12 +62,11 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::ManageActivityTypesDialog * _ui;
+        Ui::ManagePublicActivitiesDialog *  _ui;
         //  Custom controls are created dynamically
         QStackedLayout *        _managerPanelLayout = nullptr;
-        ActivityTypeManager *   _activityTypeManager = nullptr;
+        PublicActivityManager * _publicActivityManager = nullptr;
     };
 }
 
-//  End of tt3-gui/ManageActivityTypesDialog.hpp
-
+//  End of tt3-gui/ManagePublicActivitiesDialog.hpp
