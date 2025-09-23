@@ -166,7 +166,7 @@ void Application::_cleanup()
     //  If there is a "current activity", record & stop it.
     try
     {
-        tt3::ws::theCurrentActivity.replaceWith(nullptr);
+        tt3::gui::theCurrentActivity.replaceWith(nullptr);
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Report!

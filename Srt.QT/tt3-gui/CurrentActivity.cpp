@@ -1,5 +1,5 @@
 //
-//  tt3-ws/CurrentActivity.cpp - tt3::gui::CurrentActivity class implementation
+//  tt3-gui/CurrentActivity.cpp - tt3::gui::CurrentActivity class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,19 +14,14 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#include "tt3-ws/API.hpp"
-using namespace tt3::ws;
-
-namespace tt3::ws
-{
-    extern CurrentCredentials theCurrentCredentials;
-}
+#include "tt3-gui/API.hpp"
+using namespace tt3::gui;
 
 struct CurrentActivity::_Impl
 {
     std::atomic<int>    instanceCount = 0;  //  ...to disallow a second instance
     tt3::util::Mutex    guard;
-    Activity            activity = nullptr;
+    tt3::ws::Activity   activity = nullptr;
     QDateTime           lastChangedAt = QDateTime::currentDateTimeUtc();
 };
 
@@ -48,11 +43,13 @@ CurrentActivity::~CurrentActivity()
 
 //////////
 //  Operators
-void CurrentActivity::operator = (const Activity & activity)
+void CurrentActivity::operator = (
+        const tt3::ws::Activity & activity
+    )
 {
     try
     {
-        replace(activity, theCurrentCredentials);
+        replaceWith(activity);
     }
     catch (const tt3::util::Exception & ex)
     {
@@ -60,7 +57,7 @@ void CurrentActivity::operator = (const Activity & activity)
     }
 }
 
-Activity CurrentActivity::operator -> () const
+tt3::ws::Activity CurrentActivity::operator -> () const
 {
     _Impl * impl = _impl();
     tt3::util::Lock lock(impl->guard);
@@ -69,7 +66,7 @@ Activity CurrentActivity::operator -> () const
     return impl->activity;
 }
 
-CurrentActivity::operator Activity() const
+CurrentActivity::operator tt3::ws::Activity() const
 {
     _Impl * impl = _impl();
     tt3::util::Lock lock(impl->guard);
@@ -96,7 +93,9 @@ bool CurrentActivity::operator != (nullptr_t /*null*/) const
     return impl->activity.get() != nullptr;
 }
 
-bool CurrentActivity::operator == (Activity activity) const
+bool CurrentActivity::operator == (
+        tt3::ws::Activity activity
+    ) const
 {
     _Impl * impl = _impl();
     tt3::util::Lock lock(impl->guard);
@@ -105,7 +104,9 @@ bool CurrentActivity::operator == (Activity activity) const
     return impl->activity == activity;
 }
 
-bool CurrentActivity::operator != (Activity activity) const
+bool CurrentActivity::operator != (
+        tt3::ws::Activity activity
+    ) const
 {
     _Impl * impl = _impl();
     tt3::util::Lock lock(impl->guard);
@@ -125,12 +126,12 @@ QDateTime CurrentActivity::lastChangedAt() const
     return impl->lastChangedAt;
 }
 
-bool CurrentActivity::replaceWoth(
-        Activity with,
-        const Credentials & credentials
+bool CurrentActivity::replaceWith(
+        tt3::ws::Activity with,
+        const tt3::ws::Credentials & credentials
     )
 {
-    Activity before, after;
+    tt3::ws::Activity before, after;
 
     //  Change is effected in a "locked" state
     {
@@ -145,6 +146,11 @@ bool CurrentActivity::replaceWoth(
                  impl->activity->requireCommentOnFinish(credentials)) ||    //  may throw
                 (with != nullptr &&
                  with->requireCommentOnStart(credentials)); //  may throw
+            QString comment;
+            if (commentRequired)
+            {
+                comment = "TODO";
+            }
             //  Log current activity, if there is one, as a Work item
             if (impl->activity != nullptr)
             {   //  TODO properly
@@ -155,7 +161,11 @@ bool CurrentActivity::replaceWoth(
                          << " to "
                          << QDateTime::currentDateTimeUtc();
             }
-            //  TODO Log entered comment as an Event
+            //  Log entered comment as an Event
+            if (commentRequired)
+            {
+                qDebug() << "Loging Event " << comment;
+            }
             //  Make the change
             before = impl->activity;
             impl->activity = with;
@@ -172,6 +182,13 @@ bool CurrentActivity::replaceWoth(
     return false;
 }
 
+bool CurrentActivity::replaceWith(
+        tt3::ws::Activity with
+    )
+{
+    return replaceWith(with, tt3::ws::theCurrentCredentials);
+}
+
 //////////
 //  Implementation helpers
 auto CurrentActivity::_impl()
@@ -183,9 +200,9 @@ auto CurrentActivity::_impl()
 
 //////////
 //  Global statics
-namespace tt3::ws
+namespace tt3::gui
 {
     Q_DECL_EXPORT CurrentActivity theCurrentActivity;
 }
 
-//  End of tt3-ws/CurrentWorkspace.cpp
+//  End of tt3-gui/CurrentWorkspace.cpp

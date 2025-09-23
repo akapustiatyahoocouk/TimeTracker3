@@ -65,8 +65,8 @@ MainFrame::MainFrame(QWidget * parent)
             this,
             &MainFrame::_currentCredentialsChanged,
             Qt::ConnectionType::QueuedConnection);
-    connect(&tt3::ws::theCurrentActivity,
-            &tt3::ws::CurrentActivity::changed,
+    connect(&tt3::gui::theCurrentActivity,
+            &tt3::gui::CurrentActivity::changed,
             this,
             &MainFrame::_currentActivityChanged,
             Qt::ConnectionType::QueuedConnection);
@@ -407,9 +407,9 @@ void MainFrame::_updateMruWorkspaces()
 void MainFrame::_refreshCurrentActivityControls()
 {
     QPalette currentActivityLabelPalette = _ui->currentActivityLabel->palette();
-    if (tt3::ws::theCurrentActivity != nullptr)
+    if (tt3::gui::theCurrentActivity != nullptr)
     {
-        qint64 secs = qMax(0, tt3::ws::theCurrentActivity.lastChangedAt().secsTo(QDateTime::currentDateTimeUtc()));
+        qint64 secs = qMax(0, tt3::gui::theCurrentActivity.lastChangedAt().secsTo(QDateTime::currentDateTimeUtc()));
         char s[32];
         sprintf(s, " [%d:%02d:%02d]",
                 int(secs / (60 * 60)),
@@ -422,7 +422,7 @@ void MainFrame::_refreshCurrentActivityControls()
 
         try
         {
-            _ui->currentActivityLabel->setText(tt3::ws::theCurrentActivity->displayName(tt3::ws::theCurrentCredentials) + s);    //  may throw
+            _ui->currentActivityLabel->setText(tt3::gui::theCurrentActivity->displayName(tt3::ws::theCurrentCredentials) + s);    //  may throw
             _ui->currentActivityLabel->setFont(_labelDecorations.emphasisFont);
             _ui->stopActivityPushButton->setEnabled(true);
         }
@@ -666,7 +666,7 @@ void MainFrame::_stopActivityPushButtonClicked()
 {
     try
     {
-        tt3::ws::theCurrentActivity.replace(nullptr, tt3::ws::theCurrentCredentials);
+        tt3::gui::theCurrentActivity.replaceWith(nullptr);
     }
     catch (const tt3::util::Exception & ex)
     {
@@ -718,7 +718,7 @@ void MainFrame::_managersTabWidgetCurrentChanged(int)
 
 void MainFrame::_refreshTimerTimeout()
 {
-    if (tt3::ws::theCurrentActivity != nullptr)
+    if (tt3::gui::theCurrentActivity != nullptr)
     {
         _refreshCurrentActivityControls();
     }

@@ -21,6 +21,7 @@ using namespace tt3::gui;
 namespace tt3::gui
 {
     extern CurrentTheme theCurrentTheme;
+    extern CurrentActivity theCurrentActivity;
 }
 
 //////////
@@ -48,8 +49,8 @@ PublicActivityManager::PublicActivityManager(
             Qt::ConnectionType::QueuedConnection);
 
     //  Current activity change means, at least, a refresh
-    connect(&tt3::ws::theCurrentActivity,
-            &tt3::ws::CurrentActivity::changed,
+    connect(&theCurrentActivity,
+            &CurrentActivity::changed,
             this,
             &PublicActivityManager::_currentActivityChanged,
             Qt::ConnectionType::QueuedConnection);
@@ -182,11 +183,11 @@ void PublicActivityManager::refresh()
     _ui->startPublicActivityPushButton->setEnabled(
         !readOnly &&
         selectedPublicActivity != nullptr &&
-        tt3::ws::theCurrentActivity != selectedPublicActivity);
+        theCurrentActivity != selectedPublicActivity);
     _ui->stopPublicActivityPushButton->setEnabled(
         !readOnly &&
         selectedPublicActivity != nullptr &&
-        tt3::ws::theCurrentActivity == selectedPublicActivity);
+        theCurrentActivity == selectedPublicActivity);
 
     //  Some buttons need to be adjusted for ReadOnoly mode
     if (selectedPublicActivity != nullptr &&
@@ -250,9 +251,9 @@ auto PublicActivityManager::_createPublicActivityModel(
         publicActivityModel->font = _decorations.itemFont;
         publicActivityModel->tooltip = publicActivity->description(_credentials).trimmed();
         //  A "current" activity needs some extras
-        if (tt3::ws::theCurrentActivity == publicActivity)
+        if (theCurrentActivity == publicActivity)
         {
-            qint64 secs = qMax(0, tt3::ws::theCurrentActivity.lastChangedAt().secsTo(QDateTime::currentDateTimeUtc()));
+            qint64 secs = qMax(0, theCurrentActivity.lastChangedAt().secsTo(QDateTime::currentDateTimeUtc()));
             char s[32];
             sprintf(s, " [%d:%02d:%02d]",
                     int(secs / (60 * 60)),
@@ -549,25 +550,18 @@ void PublicActivityManager::_startPublicActivityPushButtonClicked()
 {
     if (auto publicActivity = _selectedPublicActivity())
     {
-        if (tt3::ws::theCurrentActivity == publicActivity)
+        if (theCurrentActivity == publicActivity)
         {   //  Nothing to do!
             return;
         }
-        bool commentRequired = false;
         try
         {
-            commentRequired =
-                (tt3::ws::theCurrentActivity != nullptr &&
-                 tt3::ws::theCurrentActivity->requireCommentOnFinish(_credentials)) ||
-                publicActivity->requireCommentOnStart(_credentials);
+            theCurrentActivity.replaceWith(publicActivity);
         }
         catch (const tt3::util::Exception & ex)
         {
             ErrorDialog::show(this, ex);
         }
-        //  TODO do we need a comment? if yes, record it as an event
-        //  TODO if there IS a "current" activity, record a unit of Work and stop it
-        tt3::ws::theCurrentActivity = publicActivity;
         requestRefresh();
     }
 }
@@ -576,23 +570,18 @@ void PublicActivityManager::_stopPublicActivityPushButtonClicked()
 {
     if (auto publicActivity = _selectedPublicActivity())
     {
-        if (tt3::ws::theCurrentActivity != publicActivity)
+        if (theCurrentActivity != publicActivity)
         {   //  Nothing to do!
             return;
         }
-        bool commentRequired = false;
         try
         {
-            commentRequired =
-                tt3::ws::theCurrentActivity->requireCommentOnFinish(_credentials);
+            theCurrentActivity.replaceWith(nullptr);
         }
         catch (const tt3::util::Exception & ex)
         {
             ErrorDialog::show(this, ex);
         }
-        //  TODO do we need a comment? if yes, record it as an event
-        //  TODO record a unit of Work the the "current" activity
-        tt3::ws::theCurrentActivity = nullptr;
         requestRefresh();
     }
 }
@@ -629,7 +618,7 @@ void PublicActivityManager::_refreshRequested()
 
 void PublicActivityManager::_refreshTimerTimeout()
 {
-    if (tt3::ws::Activity activity = tt3::ws::theCurrentActivity)
+    if (tt3::ws::Activity activity = theCurrentActivity)
     {
         if (std::dynamic_pointer_cast<tt3::ws::PublicActivityImpl>(activity))
         {

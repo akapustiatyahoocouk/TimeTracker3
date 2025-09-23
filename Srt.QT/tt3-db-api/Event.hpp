@@ -71,14 +71,15 @@ namespace tt3::db::api
                             ) const -> IUser * = 0;
 
         /// \brief
-        ///     Returns the Activity against which this event was logged;.
+        ///     Returns the set of Activities against which
+        ///     this event was logged;.
         /// \return
-        ///     The Activity against which this event was logged;
-        ///     nullptr == none.
+        ///     The set of Activities against which this event
+        ///     was logged; can be empty.
         /// \exception DatabaseException
         ///     If an error occurs.
-        virtual auto    activity(
-                            ) const -> IActivity * = 0;
+        virtual auto    activities(
+                            ) const -> Activities = 0;
     };
 }
 

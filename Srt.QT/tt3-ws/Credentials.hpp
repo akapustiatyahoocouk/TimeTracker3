@@ -150,6 +150,7 @@ namespace tt3::ws
 
     /// \class CurrentCredentials tt3-ws/API.hpp
     /// \brief The accessor for a "current" credentials.
+    /// TODO move to tt3-gui
     class TT3_WS_PUBLIC CurrentCredentials final
         :   public QObject
     {

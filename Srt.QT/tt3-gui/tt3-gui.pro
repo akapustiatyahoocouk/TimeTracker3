@@ -13,6 +13,7 @@ SOURCES += \
     CreateActivityTypeDialog.cpp \
     CreatePublicActivityDialog.cpp \
     CreateUserDialog.cpp \
+    CurrentActivity.cpp \
     CurrentSkin.cpp \
     CurrentTheme.cpp \
     EditStringDialog.cpp \
@@ -58,6 +59,7 @@ HEADERS += \
     CreateActivityTypeDialog.hpp \
     CreatePublicActivityDialog.hpp \
     CreateUserDialog.hpp \
+    CurrentActivity.hpp \
     EditStringDialog.hpp \
     ErrorDialog.hpp \
     GeneralAppearancePreferencesEditor.hpp \
