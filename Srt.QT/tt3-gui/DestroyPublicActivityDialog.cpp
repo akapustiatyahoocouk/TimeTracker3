@@ -1,5 +1,5 @@
 //
-//  tt3-gui/DestroyUserDialog.cpp - tt3::gui::DestroyUserDialog class implementation
+//  tt3-gui/DestroyPublicActivityDialog.cpp - tt3::gui::DestroyPublicActivityDialog class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -17,53 +17,65 @@
 #include "tt3-gui/API.hpp"
 using namespace tt3::gui;
 
+namespace tt3::gui
+{
+    extern CurrentActivity theCurrentActivity;
+}
+
 //////////
 //  Construction/destrution
-DestroyUserDialog::DestroyUserDialog(
+DestroyPublicActivityDialog::DestroyPublicActivityDialog(
         ::QWidget * parent,
-        tt3::ws::User user,
+        tt3::ws::PublicActivity publicActivity,
         const tt3::ws::Credentials & credentials
     ) : AskYesNoDialog(
             parent,
-            QIcon(":/tt3-gui/Resources/Images/Actions/DestroyUserLarge.png"),
-            "Destroy user",
-            _prompt(user, credentials)),
-        _user(user),
+            QIcon(":/tt3-gui/Resources/Images/Actions/DestroyPublicActivityLarge.png"),
+            "Destroy public activity",
+            _prompt(publicActivity, credentials)),
+        _publicActivity(publicActivity),
         _credentials(credentials)
 {
 }
 
 //////////
 //  Operations
-DestroyUserDialog::Result DestroyUserDialog::doModal()
+DestroyPublicActivityDialog::Result DestroyPublicActivityDialog::doModal()
 {
     return (AskYesNoDialog::doModal() == AskYesNoDialog::Result::Yes) ?
-                Result::Ok :
-                Result::Cancel;
+               Result::Ok :
+               Result::Cancel;
 }
 
 //////////
 //  Implementation helpers
-QString DestroyUserDialog::_prompt(
-        tt3::ws::User user,
+QString DestroyPublicActivityDialog::_prompt(
+        tt3::ws::PublicActivity publicActivity,
         const tt3::ws::Credentials & credentials
     )
 {
     QString result =
-        "Are you sure you want to destroy user\n" +
-        user->realName(credentials) + " ?";
-    //  TODO if there are works/events logged by any of the
-    //  destroyed User's accounts, count them and add a line
+        "Are you sure you want to destroy public activity\n" +
+        publicActivity->displayName(credentials) + " ?";
+    //  TODO if there are Works/Events logged against this
+    //  activity, count them and add a line to the prompt.
     return result;
 }
 
 //////////
 //  Signal handlers
-void DestroyUserDialog::accept()
+void DestroyPublicActivityDialog::accept()
 {
     try
     {
-        _user->destroy(_credentials);
+        //  If the publicActivity is currently underway,
+        //  stop it; there's no need to record a Work unit.
+        if (theCurrentActivity == _publicActivity)
+        {
+            theCurrentActivity.drop();
+        }
+        //  Destroy!
+        _publicActivity->destroy(_credentials);
         AskYesNoDialog::accept();
     }
     catch (const tt3::util::Exception & ex)
@@ -76,4 +88,4 @@ void DestroyUserDialog::accept()
     }
 }
 
-//  End of tt3-gui/DestroyUserDialog.cpp
+//  End of tt3-gui/DestroyPublicActivityDialog.cpp

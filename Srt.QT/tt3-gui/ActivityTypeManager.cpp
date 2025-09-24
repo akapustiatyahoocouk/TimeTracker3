@@ -456,10 +456,9 @@ void ActivityTypeManager::_destroyActivityTypePushButtonClicked()
     {
         try
         {
-            ConfirmDestroyActivityTypeDialog dlg(this, activityType, _credentials); //  may throw
-            if (dlg.doModal() == ConfirmDestroyActivityTypeDialog::Result::Yes)
-            {   //  Do it!
-                activityType->destroy(_credentials);    //  may throw
+            DestroyActivityTypeDialog dlg(this, activityType, _credentials); //  may throw
+            if (dlg.doModal() == DestroyActivityTypeDialog::Result::Ok)
+            {   //  Destroyed
                 requestRefresh();
             }
         }

@@ -18,6 +18,9 @@ SOURCES += \
     CurrentSkin.cpp \
     CurrentTheme.cpp \
     CurrentWorkspace.cpp \
+    DestroyAccountDialog.cpp \
+    DestroyActivityTypeDialog.cpp \
+    DestroyPublicActivityDialog.cpp \
     DestroyUserDialog.cpp \
     EditStringDialog.cpp \
     ErrorDialog.cpp \
@@ -66,6 +69,9 @@ HEADERS += \
     CurrentActivity.hpp \
     CurrentCredentials.hpp \
     CurrentWorkspace.hpp \
+    DestroyAccountDialog.hpp \
+    DestroyActivityTypeDialog.hpp \
+    DestroyPublicActivityDialog.hpp \
     DestroyUserDialog.hpp \
     EditStringDialog.hpp \
     ErrorDialog.hpp \

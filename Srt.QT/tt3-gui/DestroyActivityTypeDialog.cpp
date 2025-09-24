@@ -1,5 +1,5 @@
 //
-//  tt3-gui/DestroyUserDialog.cpp - tt3::gui::DestroyUserDialog class implementation
+//  tt3-gui/DestroyActivityTypeDialog.cpp - tt3::gui::DestroyActivityTypeDialog class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,51 +19,49 @@ using namespace tt3::gui;
 
 //////////
 //  Construction/destrution
-DestroyUserDialog::DestroyUserDialog(
+DestroyActivityTypeDialog::DestroyActivityTypeDialog(
         ::QWidget * parent,
-        tt3::ws::User user,
+        tt3::ws::ActivityType activityType,
         const tt3::ws::Credentials & credentials
     ) : AskYesNoDialog(
             parent,
-            QIcon(":/tt3-gui/Resources/Images/Actions/DestroyUserLarge.png"),
-            "Destroy user",
-            _prompt(user, credentials)),
-        _user(user),
+            QIcon(":/tt3-gui/Resources/Images/Actions/DestroyActivityTypeLarge.png"),
+            "Destroy activity type",
+            _prompt(activityType, credentials)),
+        _activityType(activityType),
         _credentials(credentials)
 {
 }
 
 //////////
 //  Operations
-DestroyUserDialog::Result DestroyUserDialog::doModal()
+DestroyActivityTypeDialog::Result DestroyActivityTypeDialog::doModal()
 {
     return (AskYesNoDialog::doModal() == AskYesNoDialog::Result::Yes) ?
-                Result::Ok :
-                Result::Cancel;
+               Result::Ok :
+               Result::Cancel;
 }
 
 //////////
 //  Implementation helpers
-QString DestroyUserDialog::_prompt(
-        tt3::ws::User user,
+QString DestroyActivityTypeDialog::_prompt(
+        tt3::ws::ActivityType activityType,
         const tt3::ws::Credentials & credentials
     )
 {
     QString result =
-        "Are you sure you want to destroy user\n" +
-        user->realName(credentials) + " ?";
-    //  TODO if there are works/events logged by any of the
-    //  destroyed User's accounts, count them and add a line
+        "Are you sure you want to destroy activity type\n" +
+        activityType->displayName(credentials) + " ?";
     return result;
 }
 
 //////////
 //  Signal handlers
-void DestroyUserDialog::accept()
+void DestroyActivityTypeDialog::accept()
 {
     try
     {
-        _user->destroy(_credentials);
+        _activityType->destroy(_credentials);
         AskYesNoDialog::accept();
     }
     catch (const tt3::util::Exception & ex)
@@ -76,4 +74,4 @@ void DestroyUserDialog::accept()
     }
 }
 
-//  End of tt3-gui/DestroyUserDialog.cpp
+//  End of tt3-gui/DestroyActivityTypeDialog.cpp

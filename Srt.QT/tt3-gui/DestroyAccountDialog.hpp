@@ -1,5 +1,5 @@
 //
-//  tt3-gui/DestroyUserDialog.hpp - the modal "destroy user" dialog
+//  tt3-gui/DestroyAccountDialog.hpp - the modal "destroy Account" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -21,12 +21,12 @@
 
 namespace tt3::gui
 {
-    /// \class DestroyUserDialog tt3-gui/API.hpp
-    /// \brief The modal "Destroy User" dialog.
-    class TT3_GUI_PUBLIC DestroyUserDialog final
+    /// \class DestroyAccountDialog tt3-gui/API.hpp
+    /// \brief The modal "Destroy Account" dialog.
+    class TT3_GUI_PUBLIC DestroyAccountDialog final
         :   private AskYesNoDialog
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DestroyUserDialog)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DestroyAccountDialog)
 
         //////////
         //  Types
@@ -35,7 +35,7 @@ namespace tt3::gui
         ///     The dialog result after a modal invocation.
         enum Result
         {
-            Ok,     ///<    Destruction confirmed; the User has been destroyed.
+            Ok,     ///<    Destruction confirmed; the Account has been destroyed.
             Cancel  ///<    The user has cancelled the dialog.
         };
 
@@ -46,16 +46,16 @@ namespace tt3::gui
         ///     Constructs the dialog.
         /// @param parent
         ///     The parent widget for the dialog; nullptr == none.
-        /// @param user
-        ///     The User whose destruction is to be performed.
+        /// @param account
+        ///     The Account whose destruction is to be performed.
         /// @param credentials
-        ///     The credentials to use for accessing User's data.
+        ///     The credentials to use for accessing Account's data.
         /// @exception WorkspaceException
-        ///     If an error occurs retrieving User details.
-        DestroyUserDialog(
-                ::QWidget * parent,
-                tt3::ws::User user,
-                const tt3::ws::Credentials & credentials
+        ///     If an error occurs retrieving Account details.
+        DestroyAccountDialog(
+            ::QWidget * parent,
+            tt3::ws::Account account,
+            const tt3::ws::Credentials & credentials
             );
         //  The default destructor is OK
 
@@ -65,18 +65,18 @@ namespace tt3::gui
         /// \brief
         ///     Rund the dialog modally.
         /// \return
-        ///     The user's choice; on Ok the User has been destroyed.
+        ///     The user's choice; on Ok the Account has been destroyed.
         Result          doModal();
 
         //////////
         //  Implementation
     private:
-        tt3::ws::User           _user;
+        tt3::ws::Account        _account;
         tt3::ws::Credentials    _credentials;
 
         //  Helpers
-        static QString  _prompt(tt3::ws::User user,
-                                const tt3::ws::Credentials & credentials);
+        static QString  _prompt(tt3::ws::Account account,
+                               const tt3::ws::Credentials & credentials);
 
         //////////
         //  Signal handlers
@@ -86,4 +86,4 @@ namespace tt3::gui
 }
 
 #endif  //  def TT3_GUI_ASK_YES_NO_DIALOG_DEFINED
-//  End of tt3-gui/DestroyUserDialog.hpp
+//  End of tt3-gui/DestroyAccountDialog.hpp

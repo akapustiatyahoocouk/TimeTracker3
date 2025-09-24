@@ -538,16 +538,9 @@ void PublicActivityManager::_destroyPublicActivityPushButtonClicked()
     {
         try
         {
-            ConfirmDestroyPublicActivityDialog dlg(this, publicActivity, _credentials); //  may throw
-            if (dlg.doModal() == ConfirmDestroyPublicActivityDialog::Result::Yes)
-            {   //  If the publicActivity is currently underway,
-                //  stop it; there's no need to record a Work unit.
-                if (theCurrentActivity == publicActivity)
-                {
-                    theCurrentActivity.drop();
-                }
-                //  Do it!
-                publicActivity->destroy(_credentials);    //  may throw
+            DestroyPublicActivityDialog dlg(this, publicActivity, _credentials); //  may throw
+            if (dlg.doModal() == DestroyPublicActivityDialog::Result::Ok)
+            {   //  Destroyed
                 requestRefresh();
             }
         }

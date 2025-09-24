@@ -63,10 +63,13 @@
 #include "tt3-gui/DestroyUserDialog.hpp"
 #include "tt3-gui/CreateAccountDialog.hpp"
 #include "tt3-gui/ModifyAccountDialog.hpp"
+#include "tt3-gui/DestroyAccountDialog.hpp"
 #include "tt3-gui/CreateActivityTypeDialog.hpp"
 #include "tt3-gui/ModifyActivityTypeDialog.hpp"
+#include "tt3-gui/DestroyActivityTypeDialog.hpp"
 #include "tt3-gui/CreatePublicActivityDialog.hpp"
 #include "tt3-gui/ModifyPublicActivityDialog.hpp"
+#include "tt3-gui/DestroyPublicActivityDialog.hpp"
 
 #include "tt3-gui/ManageUsersDialog.hpp"
 #include "tt3-gui/ManageActivityTypesDialog.hpp"

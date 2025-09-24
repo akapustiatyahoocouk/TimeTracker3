@@ -1,5 +1,5 @@
 //
-//  tt3-gui/DestroyUserDialog.cpp - tt3::gui::DestroyUserDialog class implementation
+//  tt3-gui/DestroyAccountDialog.cpp - tt3::gui::DestroyAccountDialog class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,51 +19,52 @@ using namespace tt3::gui;
 
 //////////
 //  Construction/destrution
-DestroyUserDialog::DestroyUserDialog(
+DestroyAccountDialog::DestroyAccountDialog(
         ::QWidget * parent,
-        tt3::ws::User user,
+        tt3::ws::Account account,
         const tt3::ws::Credentials & credentials
     ) : AskYesNoDialog(
             parent,
-            QIcon(":/tt3-gui/Resources/Images/Actions/DestroyUserLarge.png"),
-            "Destroy user",
-            _prompt(user, credentials)),
-        _user(user),
+            QIcon(":/tt3-gui/Resources/Images/Actions/DestroyAccountLarge.png"),
+            "Destroy account",
+            _prompt(account, credentials)),
+        _account(account),
         _credentials(credentials)
 {
 }
 
 //////////
 //  Operations
-DestroyUserDialog::Result DestroyUserDialog::doModal()
+DestroyAccountDialog::Result DestroyAccountDialog::doModal()
 {
     return (AskYesNoDialog::doModal() == AskYesNoDialog::Result::Yes) ?
-                Result::Ok :
-                Result::Cancel;
+               Result::Ok :
+               Result::Cancel;
 }
 
 //////////
 //  Implementation helpers
-QString DestroyUserDialog::_prompt(
-        tt3::ws::User user,
+QString DestroyAccountDialog::_prompt(
+        tt3::ws::Account account,
         const tt3::ws::Credentials & credentials
     )
 {
     QString result =
-        "Are you sure you want to destroy user\n" +
-        user->realName(credentials) + " ?";
-    //  TODO if there are works/events logged by any of the
-    //  destroyed User's accounts, count them and add a line
+        "Are you sure you want to destroy account\n" +
+        account->login(credentials) + " of user " +
+        account->user(credentials)->realName(credentials) + " ?";
+    //  TODO if there are works/events logged by destroyed
+    //  Account, count them and add a line
     return result;
 }
 
 //////////
 //  Signal handlers
-void DestroyUserDialog::accept()
+void DestroyAccountDialog::accept()
 {
     try
     {
-        _user->destroy(_credentials);
+        _account->destroy(_credentials);
         AskYesNoDialog::accept();
     }
     catch (const tt3::util::Exception & ex)
@@ -76,4 +77,4 @@ void DestroyUserDialog::accept()
     }
 }
 
-//  End of tt3-gui/DestroyUserDialog.cpp
+//  End of tt3-gui/DestroyAccountDialog.cpp

@@ -784,10 +784,9 @@ void UserManager::_destroyAccountPushButtonClicked()
     {
         try
         {
-            ConfirmDestroyAccountDialog dlg(this, account, _credentials); //  may throw
-            if (dlg.doModal() == ConfirmDestroyAccountDialog::Result::Yes)
-            {   //  Do it!
-                account->destroy(_credentials);    //  may throw
+            DestroyAccountDialog dlg(this, account, _credentials); //  may throw
+            if (dlg.doModal() == DestroyAccountDialog::Result::Ok)
+            {   //  Destroyed
                 requestRefresh();
             }
         }
