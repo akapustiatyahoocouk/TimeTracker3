@@ -116,24 +116,14 @@ void Workload::_serializeAssociations(
     Object::_serializeAssociations(objectElement);
 
     //  TODO    Beneficiaries   _beneficiaries; //  count as "references"
-    if (!_assignedUsers.isEmpty())
-    {
-        objectElement.setAttribute(
-            "AssignedUsers",
-            Database::_map<QString,User*>(
-                Database::_sortedByOid(_assignedUsers),
-                [](auto u) { return tt3::util::toString(u->_oid); })
-                .join(","));
-    }
-    if (!_contributingActivities.isEmpty())
-    {
-        objectElement.setAttribute(
-            "ContributingActivities",
-            Database::_map<QString,Activity*>(
-                Database::_sortedByOid(_contributingActivities),
-                [](auto a) { return tt3::util::toString(a->_oid); })
-                .join(","));
-    }
+    _database->_serializeAssociation(
+        objectElement,
+        "AssignedUsers",
+        _assignedUsers);
+    _database->_serializeAssociation(
+        objectElement,
+        "ContributingActivities",
+        _contributingActivities);
 }
 
 void Workload::_deserializeProperties(
@@ -160,38 +150,14 @@ void Workload::_deserializeAssociations(
     Object::_deserializeAssociations(objectElement);
 
     //  TODO    Beneficiaries   _beneficiaries; //  count as "references"
-    if (objectElement.hasAttribute("AssignedUsers"))
-    {
-        _assignedUsers =
-            _database->_asSet(
-                Database::_map<User*,QString>(
-                    objectElement.attribute("AssignedUsers").split(','),
-                    [&](auto s)
-                    {
-                        return _database->_getObject<User*>(
-                            tt3::util::fromString(s, tt3::db::api::Oid::Invalid));
-                    }));
-        for (User * user : _assignedUsers)
-        {
-            user->addReference();
-        }
-    }
-    if (objectElement.hasAttribute("ContributingActivities"))
-    {
-        _contributingActivities =
-            _database->_asSet(
-                Database::_map<Activity*,QString>(
-                    objectElement.attribute("ContributingActivities").split(','),
-                    [&](auto s)
-                    {
-                        return _database->_getObject<Activity*>(
-                            tt3::util::fromString(s, tt3::db::api::Oid::Invalid));
-                    }));
-        for (Activity * activity : _contributingActivities)
-        {
-            activity->addReference();
-        }
-    }
+    _database->_deserializeAssociation(
+        objectElement,
+        "AssignedUsers",
+        _assignedUsers);
+    _database->_deserializeAssociation(
+        objectElement,
+        "ContributingActivities",
+        _contributingActivities);
 }
 
 //////////

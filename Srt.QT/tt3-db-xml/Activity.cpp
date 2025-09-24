@@ -481,14 +481,14 @@ void Activity::_serializeAssociations(
 {
     Object::_serializeAssociations(objectElement);
 
-    if (_activityType != nullptr)
-    {
-        objectElement.setAttribute("ActivityType", tt3::util::toString(_activityType->_oid));
-    }
-    if (_workload != nullptr)
-    {
-        objectElement.setAttribute("Workload", tt3::util::toString(_workload->_oid));
-    }
+    _database->_serializeAssociation(
+        objectElement,
+        "ActivityType",
+        _activityType);
+    _database->_serializeAssociation(
+        objectElement,
+        "Workload",
+        _workload);
     //  TODO    Works           _works;     //  count as "references"
     //  TODO    Events          _events;    //  count as "references"
 }
@@ -525,22 +525,14 @@ void Activity::_deserializeAssociations(
 {
     Object::_deserializeAssociations(objectElement);
 
-    if (objectElement.hasAttribute("ActivityType"))
-    {
-        _activityType =
-            _database->_getObject<ActivityType*>(
-                tt3::util::fromString<tt3::db::api::Oid>(
-                    objectElement.attribute("ActivityType")));
-        _activityType->addReference();
-    }
-    if (objectElement.hasAttribute("Workload"))
-    {
-        _workload =
-            _database->_getObject<Workload*>(
-                tt3::util::fromString<tt3::db::api::Oid>(
-                    objectElement.attribute("Workload")));
-        _workload->addReference();
-    }
+    _database->_deserializeAssociation(
+        objectElement,
+        "ActivityType",
+        _activityType);
+    _database->_deserializeAssociation(
+        objectElement,
+        "Workload",
+        _workload);
     //  TODO    Works           _works;     //  count as "references"
     //  TODO    Events          _events;    //  count as "references"
 }

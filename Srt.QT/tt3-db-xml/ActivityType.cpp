@@ -209,15 +209,10 @@ void ActivityType::_serializeAssociations(
 {
     Object::_serializeAssociations(objectElement);
 
-    if (!_activities.isEmpty())
-    {
-        objectElement.setAttribute(
-            "Activities",
-            Database::_map<QString,Activity*>(
-                    Database::_sortedByOid(_activities),
-                    [](auto a) { return tt3::util::toString(a->_oid); })
-                .join(","));
-    }
+    _database->_serializeAssociation(
+        objectElement,
+        "Activities",
+        _activities);
 }
 
 void ActivityType::_deserializeProperties(
@@ -243,22 +238,10 @@ void ActivityType::_deserializeAssociations(
 {
     Object::_deserializeAssociations(objectElement);
 
-    if (objectElement.hasAttribute("Activities"))
-    {
-        _activities =
-            _database->_asSet(
-                Database::_map<Activity*,QString>(
-                    objectElement.attribute("Activities").split(','),
-                    [&](auto s)
-                    {
-                        return _database->_getObject<Activity*>(
-                                    tt3::util::fromString(s, tt3::db::api::Oid::Invalid));
-                    }));
-        for (Activity * activity : _activities)
-        {
-            activity->addReference();
-        }
-    }
+    _database->_deserializeAssociation(
+        objectElement,
+        "Activities",
+        _activities);
 }
 
 //////////

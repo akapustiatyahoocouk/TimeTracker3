@@ -302,15 +302,10 @@ void Account::_serializeAssociations(
 {
     Principal::_serializeAssociations(objectElement);
 
-    if (!_quickPickList.isEmpty())
-    {
-        objectElement.setAttribute(
-            "QuickPickList",
-            Database::_map<QString,Activity*>(
-                Database::_sortedByOid(_quickPickList),
-                [](auto a) { return tt3::util::toString(a->_oid); })
-                .join(","));
-    }
+    _database->_serializeAssociation(
+        objectElement,
+        "QuickPickList",
+        _quickPickList);
 }
 
 void Account::_deserializeProperties(
@@ -340,21 +335,10 @@ void Account::_deserializeAssociations(
 {
     Principal::_deserializeAssociations(objectElement);
 
-    if (objectElement.hasAttribute("QuickPickList"))
-    {
-        _quickPickList =
-            Database::_map<Activity*,QString>(
-                objectElement.attribute("QuickPickList").split(','),
-                [&](auto s)
-                {
-                    return _database->_getObject<Activity*>(
-                        tt3::util::fromString(s, tt3::db::api::Oid::Invalid));
-                });
-        for (Activity * activity : _quickPickList)
-        {
-            activity->addReference();
-        }
-    }
+    _database->_deserializeAssociation(
+        objectElement,
+        "QuickPickList",
+        _quickPickList);
 }
 
 //////////

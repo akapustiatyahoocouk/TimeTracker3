@@ -245,18 +245,8 @@ namespace tt3::db::xml
 
         //  Serialization
         void            _save();    //  throws tt3::util::Exception
-        void            _load();    //  throws tt3::util::Exception
-        auto            _childElements(
-                                const QDomElement & parentElement,
-                                const QString & tagName
-                            ) -> QList<QDomElement>;
-        auto            _childElement(  //  throws tt3::db::api::DatabaseException
-                                const QDomElement & parentElement,
-                                const QString & tagName
-                            ) -> QDomElement;
-
         template <class T>
-        static QList<T> _sortedByOid(const QSet<T> & objects)
+        QList<T>        _sortedByOid(const QSet<T> & objects)
         {
             QList<T> result = objects.values();
             std::sort(result.begin(),
@@ -264,20 +254,8 @@ namespace tt3::db::xml
                       [](T a, T b) { return a->_oid < b->_oid; });
             return result;
         }
-
-        template <class T>
-        static QList<T> _sortedByOid(const QList<T> & objects)
-        {
-            QList<T> result;
-            result.append(objects); //  we need a copy, not a shared impl
-            std::sort(result.begin(),
-                      result.end(),
-                      [](T a, T b) { return a->_oid < b->_oid; });
-            return result;
-        }
-
         template <class R, class T>
-        static QList<R> _map(const QList<T> & objects,
+        QList<R>        _map(const QList<T> & objects,
                              std::function<R(T)> mapper)
         {
             QList<R> result;
@@ -287,11 +265,59 @@ namespace tt3::db::xml
             }
             return result;
         }
+        template <class T>
+        void            _serializeAssociation(
+                                QDomElement & objectElement,
+                                const QString & associationName,
+                                const T * association
+                            )
+        {
+            if (association != nullptr)
+            {
+                objectElement.setAttribute(associationName, tt3::util::toString(association->_oid));
+            }
+        }
+        template <class T>
+        void            _serializeAssociation(
+                                QDomElement & objectElement,
+                                const QString & associationName,
+                                const QList<T*> association
+                            )
+        {
+            if (!association.isEmpty())
+            {
+                objectElement.setAttribute(
+                    associationName,
+                    _map<QString,T*>(
+                        association,
+                        [](auto a) { return tt3::util::toString(a->_oid); })
+                        .join(","));
+            }
+        }
+        template <class T>
+        void            _serializeAssociation(
+                                QDomElement & objectElement,
+                                const QString & associationName,
+                                const QSet<T*> association
+                            )
+        {
+            _serializeAssociation(objectElement, associationName, _sortedByOid(association));
+        }
 
+        //  Deserialization
         QMap<Object*, QDomElement>  _deserializationMap;    //  object -> DOM element from which it came
 
+        void            _load();    //  throws tt3::util::Exception
+        auto            _childElements(
+                                const QDomElement & parentElement,
+                                const QString & tagName
+                            ) -> QList<QDomElement>;
+        auto            _childElement(  //  throws tt3::db::api::DatabaseException
+                                const QDomElement & parentElement,
+                                const QString & tagName
+                            ) -> QDomElement;
         template <class T>
-        T _getObject(const tt3::db::api::Oid oid)
+        T               _getObject(const tt3::db::api::Oid oid)
         {
             if (_liveObjects.contains(oid))
             {
@@ -302,16 +328,62 @@ namespace tt3::db::xml
             }
             throw tt3::db::api::DatabaseCorruptException(_address);
         }
-
         template <class T>
-        QSet<T> _asSet(const QList<T> & list)
+        void            _deserializeAssociation(
+                                const QDomElement & objectElement,
+                                const QString & associationName,
+                                T *& association
+                            )
         {
-            QSet<T> result(list.cbegin(), list.cend());
-            if (result.size() != list.size())
+            Q_ASSERT(association == nullptr);
+            if (objectElement.hasAttribute(associationName))
+            {
+                association =
+                    _getObject<T*>(
+                        tt3::util::fromString<tt3::db::api::Oid>(
+                            objectElement.attribute(associationName)));
+                association->addReference();
+            }
+        }
+        template <class T>
+        void            _deserializeAssociation(
+                                const QDomElement & objectElement,
+                                const QString & associationName,
+                                QList<T*> & association
+                            )
+        {
+            Q_ASSERT(association.isEmpty());
+            if (objectElement.hasAttribute(associationName))
+            {
+                association =
+                    _map<T*,QString>(
+                        objectElement.attribute(associationName).split(','),
+                        [&](auto s)
+                        {
+                            return _getObject<T*>(
+                                tt3::util::fromString(s, tt3::db::api::Oid::Invalid));
+                        });
+                for (T * a : association)
+                {
+                    a->addReference();
+                }
+            }
+        }
+        template <class T>
+        void            _deserializeAssociation(
+                                const QDomElement & objectElement,
+                                const QString & associationName,
+                                QSet<T*> & association
+                            )
+        {
+            Q_ASSERT(association.isEmpty());
+            QList<T*> temp;
+            _deserializeAssociation(objectElement, associationName, temp);
+            association = QSet<T*>(temp.cbegin(), temp.cend());
+            if (association.size() != temp.size())
             {
                 throw tt3::db::api::DatabaseCorruptException(_address);
             }
-            return result;
         }
 
         //  Validation

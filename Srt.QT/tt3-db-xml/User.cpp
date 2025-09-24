@@ -404,7 +404,7 @@ void User::_serializeAggregations(
     //  Do the accounts
     QDomElement accountsElement = objectElement.ownerDocument().createElement("Accounts");
     objectElement.appendChild(accountsElement);
-    for (Account * account : Database::_sortedByOid(_accounts))
+    for (Account * account : _database->_sortedByOid(_accounts))
     {   //  Sorted by OID to reduce changes
         QDomElement accountElement = objectElement.ownerDocument().createElement("Account");
         accountsElement.appendChild(accountElement);
@@ -421,15 +421,10 @@ void User::_serializeAssociations(
 {
     Principal::_serializeProperties(objectElement);
 
-    if (!_permittedWorkloads.isEmpty())
-    {
-        objectElement.setAttribute(
-            "PermittedWorkloads",
-            Database::_map<QString,Workload*>(
-                Database::_sortedByOid(_permittedWorkloads),
-                [](auto w) { return tt3::util::toString(w->_oid); })
-                .join(","));
-    }
+    _database->_serializeAssociation(
+        objectElement,
+        "PermittedWorkloads",
+        _permittedWorkloads);
 }
 
 void User::_deserializeProperties(
@@ -480,22 +475,10 @@ void User::_deserializeAssociations(
 {
     Principal::_deserializeProperties(objectElement);
 
-    if (objectElement.hasAttribute("PermittedWorkloads"))
-    {
-        _permittedWorkloads =
-            _database->_asSet(
-                Database::_map<Workload*,QString>(
-                    objectElement.attribute("PermittedWorkloads").split(','),
-                    [&](auto s)
-                    {
-                        return _database->_getObject<Workload*>(
-                            tt3::util::fromString(s, tt3::db::api::Oid::Invalid));
-                    }));
-        for (Workload * workload : _permittedWorkloads)
-        {
-            workload->addReference();
-        }
-    }
+    _database->_deserializeAssociation(
+        objectElement,
+        "PermittedWorkloads",
+        _permittedWorkloads);
 }
 
 //////////
