@@ -210,33 +210,6 @@ RestartRequiredDialog::RestartRequiredDialog(::QWidget * parent)
 }
 
 //////////
-//  ConfirmDestroyUserDialog
-ConfirmDestroyUserDialog::ConfirmDestroyUserDialog(
-        ::QWidget * parent,
-        tt3::ws::User user,
-        const tt3::ws::Credentials & credentials
-    )
-    :   AskYesNoDialog(
-            parent,
-            QIcon(":/tt3-gui/Resources/Images/Actions/DestroyUserLarge.png"),
-            "Destroy user",
-            _prompt(user, credentials))
-{
-}
-
-auto ConfirmDestroyUserDialog::_prompt(
-        tt3::ws::User user,
-        const tt3::ws::Credentials & credentials
-    ) -> QString
-{
-    QString result =
-        "Are you sure you want to destroy user \n" +
-        user->realName(credentials) + " ?";
-    //  TODO if there are works/events, count them and add a line
-    return result;
-}
-
-//////////
 //  ConfirmDestroyAccountDialog
 ConfirmDestroyAccountDialog::ConfirmDestroyAccountDialog(
         ::QWidget * parent,

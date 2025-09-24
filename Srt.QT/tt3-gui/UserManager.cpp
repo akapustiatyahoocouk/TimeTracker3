@@ -723,10 +723,9 @@ void UserManager::_destroyUserPushButtonClicked()
     {
         try
         {
-            ConfirmDestroyUserDialog dlg(this, user, _credentials); //  may throw
-            if (dlg.doModal() == ConfirmDestroyUserDialog::Result::Yes)
-            {   //  Do it!
-                user->destroy(_credentials);    //  may throw
+            DestroyUserDialog dlg(this, user, _credentials); //  may throw
+            if (dlg.doModal() == DestroyUserDialog::Result::Ok)
+            {   //  User destroyed
                 requestRefresh();
             }
         }

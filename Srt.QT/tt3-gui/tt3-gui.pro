@@ -18,6 +18,7 @@ SOURCES += \
     CurrentSkin.cpp \
     CurrentTheme.cpp \
     CurrentWorkspace.cpp \
+    DestroyUserDialog.cpp \
     EditStringDialog.cpp \
     ErrorDialog.cpp \
     GeneralAppearancePreferences.cpp \
@@ -65,6 +66,7 @@ HEADERS += \
     CurrentActivity.hpp \
     CurrentCredentials.hpp \
     CurrentWorkspace.hpp \
+    DestroyUserDialog.hpp \
     EditStringDialog.hpp \
     ErrorDialog.hpp \
     GeneralAppearancePreferencesEditor.hpp \

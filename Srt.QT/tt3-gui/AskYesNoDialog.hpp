@@ -94,8 +94,8 @@ namespace tt3::gui
         Ui::AskYesNoDialog *const   _ui;
 
         //////////
-        //  Signal handlers
-    private slots:
+        //  Signal handlers - "protected" for derived classes to override
+    protected slots:
         virtual void    accept() override;
         virtual void    reject() override;
     };
@@ -122,6 +122,7 @@ namespace tt3::gui
                 ::QWidget * parent,
                 tt3::ws::WorkspaceAddress workspaceAddress
             );
+        //  The default destructor is OK
     };
 
     /// \class ConfirmCloseWorkspaceDialog tt3-gui/API.hpp
@@ -144,6 +145,7 @@ namespace tt3::gui
                 ::QWidget * parent,
                 tt3::ws::WorkspaceAddress workspaceAddress
             );
+        //  The default destructor is OK
     };
 
     /// \class ConfirmDropWorkspaceDialog tt3-gui/API.hpp
@@ -166,6 +168,7 @@ namespace tt3::gui
                 ::QWidget * parent,
                 tt3::ws::WorkspaceAddress workspaceAddress
             );
+        //  The default destructor is OK
     };
 
     /// \class ConfirmDestroyWorkspaceDialog tt3-gui/API.hpp
@@ -188,6 +191,7 @@ namespace tt3::gui
                 ::QWidget * parent,
                 tt3::ws::WorkspaceAddress workspaceAddress
             );
+        //  The default destructor is OK
     };
 
     /// \class ConfirmRestartDialog tt3-gui/API.hpp
@@ -207,6 +211,7 @@ namespace tt3::gui
         explicit ConfirmRestartDialog(
                 ::QWidget * parent
             );
+        //  The default destructor is OK
     };
 
     /// \class ConfirmExitDialog tt3-gui/API.hpp
@@ -226,6 +231,7 @@ namespace tt3::gui
         explicit ConfirmExitDialog(
                 ::QWidget * parent
             );
+        //  The default destructor is OK
     };
 
     /// \class ChooseReloginDialog tt3-gui/API.hpp
@@ -248,6 +254,7 @@ namespace tt3::gui
                 ::QWidget * parent,
                 tt3::ws::WorkspaceAddress workspaceAddress
             );
+        //  The default destructor is OK
     };
 
     /// \class ConfirmResetPageSettingsDialog tt3-gui/API.hpp
@@ -267,6 +274,7 @@ namespace tt3::gui
         explicit ConfirmResetPageSettingsDialog(
                 ::QWidget * parent
             );
+        //  The default destructor is OK
     };
 
     /// \class ConfirmResetAllSettingsDialog tt3-gui/API.hpp
@@ -286,6 +294,7 @@ namespace tt3::gui
         explicit ConfirmResetAllSettingsDialog(
                 ::QWidget * parent
             );
+        //  The default destructor is OK
     };
 
     /// \class RestartRequiredDialog tt3-gui/API.hpp
@@ -302,46 +311,15 @@ namespace tt3::gui
         ///     Constructs the dialog.
         /// \param parent
         ///     The parent widget for the dialog; nullptr == none.
-        explicit RestartRequiredDialog(::QWidget * parent);
-    };
-
-    /// \class ConfirmDestroyUserDialog tt3-gui/API.hpp
-    /// \brief The modal "confirm User destruction" dialog.
-    class TT3_GUI_PUBLIC ConfirmDestroyUserDialog final :
-        public AskYesNoDialog
-    {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmDestroyUserDialog)
-
-        //////////
-        //  Construction/destruction
-    public:
-        /// @brief
-        ///     Constructs the dialog.
-        /// @param parent
-        ///     The parent widget for the dialog; nullptr == none.
-        /// @param user
-        ///     The user whose destruction is to be confirmed.
-        /// @param credentials
-        ///     The credentials to use for accessing User's data.
-        /// @exception WorkspaceException
-        ///     If an error occurs retrieving User details.
-        ConfirmDestroyUserDialog(
-                ::QWidget * parent,
-                tt3::ws::User user,
-                const tt3::ws::Credentials & credentials
+        explicit RestartRequiredDialog(
+                ::QWidget * parent
             );
-
-        //////////
-        //  Implementation
-    private:
-        //  Helpers
-        static auto     _prompt(tt3::ws::User user,
-                                const tt3::ws::Credentials & credentials
-                            ) -> QString;
+        //  The default destructor is OK
     };
 
     /// \class ConfirmDestroyAccountDialog tt3-gui/API.hpp
     /// \brief The modal "confirm Account destruction" dialog.
+    /// TODO convert to DestroyAccountDialog
     class TT3_GUI_PUBLIC ConfirmDestroyAccountDialog final :
         public AskYesNoDialog
     {
@@ -365,10 +343,12 @@ namespace tt3::gui
                 tt3::ws::Account account,
                 const tt3::ws::Credentials & credentials
             );
+        //  The default destructor is OK
     };
 
     /// \class ConfirmDestroyActivityTypeDialog tt3-gui/API.hpp
     /// \brief The modal "confirm ActivityType destruction" dialog.
+    /// TODO convert to DestroyActivityTypeDialog
     class TT3_GUI_PUBLIC ConfirmDestroyActivityTypeDialog final :
         public AskYesNoDialog
     {
@@ -392,10 +372,12 @@ namespace tt3::gui
                 tt3::ws::ActivityType activityType,
                 const tt3::ws::Credentials & credentials
             );
+        //  The default destructor is OK
     };
 
     /// \class ConfirmDestroyPublicActivityDialog tt3-gui/API.hpp
     /// \brief The modal "confirm PublicActivity destruction" dialog.
+    /// TODO convert to DestroyPublicActivityDialog
     class TT3_GUI_PUBLIC ConfirmDestroyPublicActivityDialog final :
                                                           public AskYesNoDialog
     {
@@ -419,6 +401,7 @@ namespace tt3::gui
                 tt3::ws::PublicActivity publicActivity,
                 const tt3::ws::Credentials & credentials
             );
+        //  The default destructor is OK
 
         //////////
         //  Implementation
@@ -430,6 +413,9 @@ namespace tt3::gui
                             ) -> QString;
     };
 }
+
+//  Macro needed for MOC-generated .cpp files
+#define TT3_GUI_ASK_YES_NO_DIALOG_DEFINED
 
 //  End of tt3-gui/AskYesNoDialog.hpp
 

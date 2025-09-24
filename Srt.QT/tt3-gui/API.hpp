@@ -60,6 +60,7 @@
 #include "tt3-gui/ShowConfigurationDialog.hpp"
 #include "tt3-gui/CreateUserDialog.hpp"
 #include "tt3-gui/ModifyUserDialog.hpp"
+#include "tt3-gui/DestroyUserDialog.hpp"
 #include "tt3-gui/CreateAccountDialog.hpp"
 #include "tt3-gui/ModifyAccountDialog.hpp"
 #include "tt3-gui/CreateActivityTypeDialog.hpp"
