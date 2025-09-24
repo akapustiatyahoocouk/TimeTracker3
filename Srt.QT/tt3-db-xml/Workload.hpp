@@ -25,6 +25,7 @@ namespace tt3::db::xml
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Workload)
 
+        friend class Database;
         friend class User;
         friend class Activity;
 
@@ -61,6 +62,10 @@ namespace tt3::db::xml
         Beneficiaries   _beneficiaries; //  count as "references"
         Users           _assignedUsers; //  count as "references"
         Activities      _contributingActivities;    //  count as "references"
+
+        //  Helpers
+        virtual bool    _siblingExists(const QString & displayName) const = 0;
+        virtual void    _markDead() override;
 
         //////////
         //  Serialization

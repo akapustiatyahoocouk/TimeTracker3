@@ -260,7 +260,9 @@ void Account::_markDead()
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
 
-    //  Remove from "live" caches
+    //  Break associations
+    _quickPickList.clear(); //  The _quickPickList is a one-way association
+
     Q_ASSERT(_user != nullptr && _user->_isLive);
     Q_ASSERT(_user->_accounts.contains(this));
     _user->_accounts.remove(this);
@@ -300,7 +302,15 @@ void Account::_serializeAssociations(
 {
     Principal::_serializeAssociations(objectElement);
 
-    //  TODO QList<Activity*>_quickPickList;
+    if (!_quickPickList.isEmpty())
+    {
+        objectElement.setAttribute(
+            "QuickPickList",
+            Database::_map<QString,Activity*>(
+                Database::_sortedByOid(_quickPickList),
+                [](auto a) { return tt3::util::toString(a->_oid); })
+                .join(","));
+    }
 }
 
 void Account::_deserializeProperties(
@@ -330,7 +340,21 @@ void Account::_deserializeAssociations(
 {
     Principal::_deserializeAssociations(objectElement);
 
-    //  TODO QList<Activity*>_quickPickList;
+    if (objectElement.hasAttribute("QuickPickList"))
+    {
+        _quickPickList =
+            Database::_map<Activity*,QString>(
+                objectElement.attribute("QuickPickList").split(','),
+                [&](auto s)
+                {
+                    return _database->_getObject<Activity*>(
+                        tt3::util::fromString(s, tt3::db::api::Oid::Invalid));
+                });
+        for (Activity * activity : _quickPickList)
+        {
+            activity->addReference();
+        }
+    }
 }
 
 //////////

@@ -168,6 +168,8 @@ void Object::_markDead()
     Q_ASSERT(_isLive);
     Q_ASSERT(_database->_liveObjects.contains(_oid));
 
+
+    //  Make this object "dead"
     _isLive = false;
     _database->_liveObjects.remove(_oid);
     _database->_graveyard.insert(_oid, this);

@@ -28,6 +28,7 @@ namespace tt3::db::xml
         friend class Database;
         friend class ActivityType;
         friend class PublicActivity;
+        friend class Workload;
 
         //////////
         //  Construction/destruction (from DB type only)
@@ -104,6 +105,7 @@ namespace tt3::db::xml
 
         //  Helpers
         virtual bool    _siblingExists(const QString & displayName) const = 0;
+        virtual void    _markDead() override;
 
         //////////
         //  Serialization

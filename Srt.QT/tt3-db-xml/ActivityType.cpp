@@ -45,16 +45,6 @@ void ActivityType::destroy()
     _database->_validate(); //  may throw
 #endif
 
-    //  Dis-associate from other objects
-    for (Activity * activity : _activities.values())
-    {
-        Q_ASSERT(activity->_activityType == this);
-        activity->_activityType = nullptr;
-        _activities.remove(activity);
-        this->removeReference();
-        activity->removeReference();
-    }
-
     //  This object is now "dead"
     _markDead();
 
@@ -174,7 +164,16 @@ void ActivityType::_markDead()
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
 
-    Q_ASSERT(_activities.isEmpty());
+    //  Break associations
+    for (Activity * activity : _activities.values())
+    {
+        Q_ASSERT(activity->_activityType == this);
+        activity->_activityType = nullptr;
+        _activities.remove(activity);
+        this->removeReference();
+        activity->removeReference();
+    }
+    _activities.clear();
 
     //  Remove from "live" caches
     Q_ASSERT(_database->_activityTypes.contains(this));

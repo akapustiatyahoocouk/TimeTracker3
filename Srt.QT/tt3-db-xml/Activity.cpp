@@ -418,6 +418,38 @@ auto Activity::events(
 }
 
 //////////
+//  Implementation helpers
+void Activity::_markDead()
+{
+    Q_ASSERT(_database->_guard.isLockedByCurrentThread());
+    Q_ASSERT(_isLive);
+
+    //  Break associations
+    if (_activityType != nullptr)
+    {
+        Q_ASSERT(_activityType->_activities.contains(this));
+        _activityType->_activities.remove(this);
+        this->removeReference();
+        _activityType->removeReference();
+        _activityType = nullptr;
+    }
+    if (_workload != nullptr)
+    {
+        Q_ASSERT(_workload->_contributingActivities.contains(this));
+        _workload->_contributingActivities.remove(this);
+        this->removeReference();
+        _workload->removeReference();
+        _workload = nullptr;
+    }
+    //  TODO others - properly
+    Q_ASSERT(_works.isEmpty());
+    Q_ASSERT(_events.isEmpty());
+
+    //  The rest is up to the base class
+    Object::_markDead();
+}
+
+//////////
 //  Serialization
 void Activity::_serializeProperties(
         QDomElement & objectElement
@@ -453,7 +485,10 @@ void Activity::_serializeAssociations(
     {
         objectElement.setAttribute("ActivityType", tt3::util::toString(_activityType->_oid));
     }
-    //  TODO    Workload *      _workload = nullptr;    //  counts as "references" uness nullptr
+    if (_workload != nullptr)
+    {
+        objectElement.setAttribute("Workload", tt3::util::toString(_workload->_oid));
+    }
     //  TODO    Works           _works;     //  count as "references"
     //  TODO    Events          _events;    //  count as "references"
 }
@@ -498,7 +533,14 @@ void Activity::_deserializeAssociations(
                     objectElement.attribute("ActivityType")));
         _activityType->addReference();
     }
-    //  TODO    Workload *      _workload = nullptr;    //  counts as "references" uness nullptr
+    if (objectElement.hasAttribute("Workload"))
+    {
+        _workload =
+            _database->_getObject<Workload*>(
+                tt3::util::fromString<tt3::db::api::Oid>(
+                    objectElement.attribute("Workload")));
+        _workload->addReference();
+    }
     //  TODO    Works           _works;     //  count as "references"
     //  TODO    Events          _events;    //  count as "references"
 }

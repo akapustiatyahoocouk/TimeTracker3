@@ -254,8 +254,9 @@ namespace tt3::db::xml
                                 const QDomElement & parentElement,
                                 const QString & tagName
                             ) -> QDomElement;
+
         template <class T>
-        static QList<T> _sortedByOid(const QSet<T> objects)
+        static QList<T> _sortedByOid(const QSet<T> & objects)
         {
             QList<T> result = objects.values();
             std::sort(result.begin(),
@@ -264,8 +265,19 @@ namespace tt3::db::xml
             return result;
         }
 
+        template <class T>
+        static QList<T> _sortedByOid(const QList<T> & objects)
+        {
+            QList<T> result;
+            result.append(objects); //  we need a copy, not a shared impl
+            std::sort(result.begin(),
+                      result.end(),
+                      [](T a, T b) { return a->_oid < b->_oid; });
+            return result;
+        }
+
         template <class R, class T>
-        static QList<R> _map(const QList<T> objects,
+        static QList<R> _map(const QList<T> & objects,
                              std::function<R(T)> mapper)
         {
             QList<R> result;

@@ -126,8 +126,9 @@ Database::~Database()
     {
         close();
     }
-    catch (const tt3::util::Exception &)
-    {   //  OOPS! TODO log?
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Suppress, but log.
+        qCritical() << ex.errorMessage();
     }
 
     //  All Objects should be in graveyard by now
@@ -250,7 +251,7 @@ void Database::refresh()
     tt3::util::Lock lock(_guard);
 
     _ensureOpen();  //  may throw
-#ifdef Q_DEBUG  //  TODO add as pre/post condition to all public XML DB methods!
+#ifdef Q_DEBUG
     _validate();    //  may throw
 #endif
     //  ...otherwise an all-in-RAM database performs no caching
@@ -589,13 +590,19 @@ auto Database::createPublicActivity(
             xmlActivityType->_database != this ||
             !xmlActivityType->_isLive)
         {   //  OOPS!
-            throw tt3::db::api::IncompatibleInstanceException(
-                    tt3::db::api::ObjectTypes::ActivityType::instance());
+            throw tt3::db::api::IncompatibleInstanceException(activityType->type());
         }
     }
+    Workload * xmlWorkload = nullptr;
     if (workload != nullptr)
     {
-        Q_ASSERT(false);    //  TODO validate workload similarly to activityType
+        xmlWorkload = dynamic_cast<Workload*>(workload);
+        if (xmlWorkload == nullptr ||
+            xmlWorkload->_database != this ||
+            !xmlWorkload->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(workload->type());
+        }
     }
 
     //  Display names must be unique
@@ -622,7 +629,13 @@ auto Database::createPublicActivity(
         xmlActivityType->addReference();
         publicActivity->addReference();
     }
-    Q_ASSERT(workload == nullptr);   // TODO Link with Workload
+    if (xmlWorkload != nullptr)
+    {   //  Link with Workload
+        publicActivity->_workload = xmlWorkload;
+        xmlWorkload->_contributingActivities.insert(publicActivity);
+        xmlWorkload->addReference();
+        publicActivity->addReference();
+    }
     _markModified();
     //  ...schedule change notifications...
     _changeNotifier.post(
@@ -634,7 +647,12 @@ auto Database::createPublicActivity(
             new tt3::db::api::ObjectModifiedNotification(
                 this, xmlActivityType->type(), xmlActivityType->_oid));
     }
-    //  TODO same notification for associated Workload
+    if (xmlWorkload != nullptr)
+    {
+        _changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                this, xmlWorkload->type(), xmlWorkload->_oid));
+    }
     //  ...and we're done
 #ifdef Q_DEBUG
     _validate();    //  may throw

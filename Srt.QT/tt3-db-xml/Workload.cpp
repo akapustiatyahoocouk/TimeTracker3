@@ -59,6 +59,38 @@ void Workload::setDescription(
 }
 
 //////////
+//  Implementation helpers
+void Workload::_markDead()
+{
+    Q_ASSERT(_database->_guard.isLockedByCurrentThread());
+    Q_ASSERT(_isLive);
+
+    //  Break associations
+    //  TODO Beneficiaries   _beneficiaries; //  count as "references"
+    for (User * user : _assignedUsers.values())
+    {
+        Q_ASSERT(user->_permittedWorkloads.contains(this));
+        user->_permittedWorkloads.remove(this);
+        _assignedUsers.remove(user);
+        this->removeReference();
+        user->removeReference();
+    }
+    _assignedUsers.clear();
+    for (Activity * activity : _contributingActivities.values())
+    {
+        Q_ASSERT(activity->_workload == this);
+        activity->_workload = nullptr;
+        _contributingActivities.remove(activity);
+        this->removeReference();
+        activity->removeReference();
+    }
+    _contributingActivities.clear();
+
+    //  The rest is up to the base class
+    Object::_markDead();
+}
+
+//////////
 //  Serialization
 void Workload::_serializeProperties(
         QDomElement & objectElement
@@ -84,8 +116,24 @@ void Workload::_serializeAssociations(
     Object::_serializeAssociations(objectElement);
 
     //  TODO    Beneficiaries   _beneficiaries; //  count as "references"
-    //  TODO    Users           _assignedUsers; //  count as "references"
-    //  TODO    Activities      _contributingActivities;    //  count as "references"
+    if (!_assignedUsers.isEmpty())
+    {
+        objectElement.setAttribute(
+            "AssignedUsers",
+            Database::_map<QString,User*>(
+                Database::_sortedByOid(_assignedUsers),
+                [](auto u) { return tt3::util::toString(u->_oid); })
+                .join(","));
+    }
+    if (!_contributingActivities.isEmpty())
+    {
+        objectElement.setAttribute(
+            "ContributingActivities",
+            Database::_map<QString,Activity*>(
+                Database::_sortedByOid(_contributingActivities),
+                [](auto a) { return tt3::util::toString(a->_oid); })
+                .join(","));
+    }
 }
 
 void Workload::_deserializeProperties(
@@ -112,8 +160,38 @@ void Workload::_deserializeAssociations(
     Object::_deserializeAssociations(objectElement);
 
     //  TODO    Beneficiaries   _beneficiaries; //  count as "references"
-    //  TODO    Users           _assignedUsers; //  count as "references"
-    //  TODO    Activities      _contributingActivities;    //  count as "references"
+    if (objectElement.hasAttribute("AssignedUsers"))
+    {
+        _assignedUsers =
+            _database->_asSet(
+                Database::_map<User*,QString>(
+                    objectElement.attribute("AssignedUsers").split(','),
+                    [&](auto s)
+                    {
+                        return _database->_getObject<User*>(
+                            tt3::util::fromString(s, tt3::db::api::Oid::Invalid));
+                    }));
+        for (User * user : _assignedUsers)
+        {
+            user->addReference();
+        }
+    }
+    if (objectElement.hasAttribute("ContributingActivities"))
+    {
+        _contributingActivities =
+            _database->_asSet(
+                Database::_map<Activity*,QString>(
+                    objectElement.attribute("ContributingActivities").split(','),
+                    [&](auto s)
+                    {
+                        return _database->_getObject<Activity*>(
+                            tt3::util::fromString(s, tt3::db::api::Oid::Invalid));
+                    }));
+        for (Activity * activity : _contributingActivities)
+        {
+            activity->addReference();
+        }
+    }
 }
 
 //////////
@@ -138,8 +216,22 @@ void Workload::_validate(
 
     //  Validate associations
     //  TODO    Beneficiaries   _beneficiaries; //  count as "references"
-    //  TODO    Users           _assignedUsers; //  count as "references"
-    //  TODO    Activities      _contributingActivities;    //  count as "references"
+    for (User * user : _assignedUsers)
+    {
+        if (user == nullptr ||
+            user->_database != this->_database || !user->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
+    }
+    for (Activity * activity : _contributingActivities)
+    {
+        if (activity == nullptr ||
+            activity->_database != this->_database || !activity->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
+    }
 }
 
 //  End of tt3-db-xml/Workload.cpp

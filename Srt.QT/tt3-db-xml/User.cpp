@@ -44,16 +44,14 @@ void User::destroy()
     _database->_validate(); //  may throw
 #endif
 
-    //  Aggregated objects
+    //  Destroy aggregated objects
     for (Account * account : _accounts.values())
     {
         account->destroy();
     }
 
-    //  This object is now "dead"
     _markDead();
 
-    //  ...and we're done
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
 #endif
@@ -423,7 +421,15 @@ void User::_serializeAssociations(
 {
     Principal::_serializeProperties(objectElement);
 
-    //  TODO    Workloads       _permittedWorkloads;//  count as "references"
+    if (!_permittedWorkloads.isEmpty())
+    {
+        objectElement.setAttribute(
+            "PermittedWorkloads",
+            Database::_map<QString,Workload*>(
+                Database::_sortedByOid(_permittedWorkloads),
+                [](auto w) { return tt3::util::toString(w->_oid); })
+                .join(","));
+    }
 }
 
 void User::_deserializeProperties(
@@ -474,7 +480,22 @@ void User::_deserializeAssociations(
 {
     Principal::_deserializeProperties(objectElement);
 
-    //  TODO    Workloads       _permittedWorkloads;//  count as "references"
+    if (objectElement.hasAttribute("PermittedWorkloads"))
+    {
+        _permittedWorkloads =
+            _database->_asSet(
+                Database::_map<Workload*,QString>(
+                    objectElement.attribute("PermittedWorkloads").split(','),
+                    [&](auto s)
+                    {
+                        return _database->_getObject<Workload*>(
+                            tt3::util::fromString(s, tt3::db::api::Oid::Invalid));
+                    }));
+        for (Workload * workload : _permittedWorkloads)
+        {
+            workload->addReference();
+        }
+    }
 }
 
 //////////

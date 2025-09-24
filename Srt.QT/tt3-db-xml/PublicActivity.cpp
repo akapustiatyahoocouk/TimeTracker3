@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-db-xml/API.hpp"
-    using namespace tt3::db::xml;
+using namespace tt3::db::xml;
 
 //////////
 //  Construction/destruction (from DB type only)
@@ -44,24 +44,8 @@ void PublicActivity::destroy()
     _database->_validate(); //  may throw
 #endif
 
-    //  Associations
-    if (_activityType != nullptr)
-    {
-        Q_ASSERT(_activityType->_activities.contains(this));
-        _activityType->_activities.remove(this);
-        this->removeReference();
-        _activityType->removeReference();
-        _activityType = nullptr;
-    }
-    //  TODO others - properly
-    Q_ASSERT(_workload == nullptr);
-    Q_ASSERT(_works.isEmpty());
-    Q_ASSERT(_events.isEmpty());
-
-    //  This object is now "dead"
     _markDead();
 
-//  ...and we're done
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
 #endif
@@ -83,11 +67,6 @@ void PublicActivity::_markDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
-
-    Q_ASSERT(_activityType == nullptr);
-    Q_ASSERT(_workload == nullptr);
-    Q_ASSERT(_works.isEmpty());
-    Q_ASSERT(_events.isEmpty());
 
     //  Remove from "live" caches
     Q_ASSERT(_database->_publicActivities.contains(this));
@@ -159,7 +138,6 @@ void PublicActivity::_validate(
     }
 
     //  Validate associations
-    //  TODO
 }
 
 //  End of tt3-db-xml/User.cpp

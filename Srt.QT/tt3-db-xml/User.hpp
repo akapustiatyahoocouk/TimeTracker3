@@ -26,6 +26,7 @@ namespace tt3::db::xml
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(User)
 
         friend class Database;
+        friend class Workload;
         friend class Account;
 
         //////////
