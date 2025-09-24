@@ -131,7 +131,7 @@ void Application::_initialize()
         //  chnaged in application's settings
         ::exit(0);
     }
-    tt3::ws::theCurrentCredentials = loginDialog.credentials();
+    tt3::gui::theCurrentCredentials = loginDialog.credentials();
 
     //  Can we open the last workspace now ?
     if (tt3::gui::Component::Settings::instance()->loadLastWorkspaceAtStartup)
@@ -144,9 +144,9 @@ void Application::_initialize()
             {
                 tt3::ws::Workspace workspace =
                     mru[0]->workspaceType()->openWorkspace(mru[0], tt3::ws::OpenMode::Default);
-                if (workspace->canAccess(tt3::ws::theCurrentCredentials))
+                if (workspace->canAccess(tt3::gui::theCurrentCredentials))
                 {
-                    tt3::ws::theCurrentWorkspace.swap(workspace);
+                    tt3::gui::theCurrentWorkspace.swap(workspace);
                 }
                 else
                 {
@@ -175,7 +175,7 @@ void Application::_cleanup()
 
     //  If there's a "current" workspace, close it
     tt3::ws::Workspace currentWorkspace;
-    tt3::ws::theCurrentWorkspace.swap(currentWorkspace);
+    tt3::gui::theCurrentWorkspace.swap(currentWorkspace);
     if (currentWorkspace != nullptr)
     {
         try

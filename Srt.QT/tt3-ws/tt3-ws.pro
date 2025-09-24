@@ -9,8 +9,6 @@ SOURCES += \
     ActivityTypeImpl.cpp \
     Component.cpp \
     Credentials.cpp \
-    CurrentCredentials.cpp \
-    CurrentWorkspace.cpp \
     Exceptions.cpp \
     ObjectImpl.cpp \
     PrincipalImpl.cpp \

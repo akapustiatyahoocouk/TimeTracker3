@@ -55,13 +55,13 @@ MainFrame::MainFrame(QWidget * parent)
             this,
             &MainFrame::_savePositionTimerTimeout);
 
-    connect(&tt3::ws::theCurrentWorkspace,
-            &tt3::ws::CurrentWorkspace::changed,
+    connect(&tt3::gui::theCurrentWorkspace,
+            &tt3::gui::CurrentWorkspace::changed,
             this,
             &MainFrame::_currentWorkspaceChanged,
             Qt::ConnectionType::QueuedConnection);
-    connect(&tt3::ws::theCurrentCredentials,
-            &tt3::ws::CurrentCredentials::changed,
+    connect(&tt3::gui::theCurrentCredentials,
+            &tt3::gui::CurrentCredentials::changed,
             this,
             &MainFrame::_currentCredentialsChanged,
             Qt::ConnectionType::QueuedConnection);
@@ -130,20 +130,21 @@ void MainFrame::closeEvent(QCloseEvent * event)
 //  Operations
 void MainFrame::refresh()
 {
-    tt3::ws::Workspace currentWorkspace = tt3::ws::theCurrentWorkspace;
+    tt3::ws::Workspace workspace = tt3::gui::theCurrentWorkspace;
+    tt3::ws::Credentials credentials = tt3::gui::theCurrentCredentials;
     //  Frame title
     QString title = "TimeTracker3";
-    if (tt3::ws::theCurrentCredentials.isValid())
+    if (credentials.isValid())
     {
         title += " [";
-        title += tt3::ws::theCurrentCredentials.login();
+        title += credentials.login();
         title += "]";
     }
-    if (currentWorkspace != nullptr)
+    if (workspace != nullptr)
     {
         title += " - ";
-        title += currentWorkspace->address()->displayForm();
-        if (currentWorkspace->isReadOnly())
+        title += workspace->address()->displayForm();
+        if (workspace->isReadOnly())
         {
             title += " [read-only]";
         }
@@ -151,18 +152,18 @@ void MainFrame::refresh()
     this->setWindowTitle(title);
 
     //  Menu items
-    _ui->actionCloseWorkspace->setEnabled(currentWorkspace != nullptr);
-    _ui->menuEdit->setEnabled(currentWorkspace != nullptr);
-    _ui->actionManageUsers->setEnabled(currentWorkspace != nullptr);
-    _ui->actionManageActivityTypes->setEnabled(currentWorkspace != nullptr);
-    _ui->actionManagePublicActivities->setEnabled(currentWorkspace != nullptr);
-    _ui->actionManagePublicTasks->setEnabled(currentWorkspace != nullptr);
-    _ui->actionManagePrivateActivities->setEnabled(currentWorkspace != nullptr);
-    _ui->actionManagePrivateTasks->setEnabled(currentWorkspace != nullptr);
-    _ui->actionManageProjects->setEnabled(currentWorkspace != nullptr);
-    _ui->actionManageWorkStreams->setEnabled(currentWorkspace != nullptr);
-    _ui->actionManageBeneficiaries->setEnabled(currentWorkspace != nullptr);
-    _ui->actionRefresh->setEnabled(currentWorkspace != nullptr);
+    _ui->actionCloseWorkspace->setEnabled(workspace != nullptr);
+    _ui->menuEdit->setEnabled(workspace != nullptr);
+    _ui->actionManageUsers->setEnabled(workspace != nullptr);
+    _ui->actionManageActivityTypes->setEnabled(workspace != nullptr);
+    _ui->actionManagePublicActivities->setEnabled(workspace != nullptr);
+    _ui->actionManagePublicTasks->setEnabled(workspace != nullptr);
+    _ui->actionManagePrivateActivities->setEnabled(workspace != nullptr);
+    _ui->actionManagePrivateTasks->setEnabled(workspace != nullptr);
+    _ui->actionManageProjects->setEnabled(workspace != nullptr);
+    _ui->actionManageWorkStreams->setEnabled(workspace != nullptr);
+    _ui->actionManageBeneficiaries->setEnabled(workspace != nullptr);
+    _ui->actionRefresh->setEnabled(workspace != nullptr);
 
     //  Controls
     _userManager->refresh();
@@ -205,8 +206,8 @@ bool MainFrame::_createWorkspace(
 
     //  If the workspaceAddress refers to the currently
     //  open workspace, the call is an error
-    if (tt3::ws::theCurrentWorkspace != nullptr &&
-        tt3::ws::theCurrentWorkspace->address() == workspaceAddress)
+    if (tt3::gui::theCurrentWorkspace != nullptr &&
+        tt3::gui::theCurrentWorkspace->address() == workspaceAddress)
     {   //  OOPS!
         tt3::gui::ErrorDialog::show(
             this,
@@ -233,7 +234,7 @@ bool MainFrame::_createWorkspace(
             tt3::gui::ErrorDialog::show(this, ex);
         }
         //  Replace the "current" workspace
-        tt3::ws::theCurrentWorkspace.swap(workspace);
+        tt3::gui::theCurrentWorkspace.swap(workspace);
         tt3::ws::Component::Settings::instance()->addRecentWorkspace(workspaceAddress);
         _updateMruWorkspaces();
         //  The previously "current" workspace is closed
@@ -253,7 +254,7 @@ bool MainFrame::_createWorkspace(
             }
         }
         //  We need to change th "current" credentials to allow access to the new workspace
-        tt3::ws::theCurrentCredentials = tt3::ws::Credentials(adminLogin, adminPassword);
+        tt3::gui::theCurrentCredentials = tt3::ws::Credentials(adminLogin, adminPassword);
         tt3::gui::Component::Settings::instance()->lastLogin = adminLogin;  //  ...for next startup
         //  Done
         refresh();
@@ -275,8 +276,8 @@ bool MainFrame::_openWorkspace(
 
     //  If the workspaceAddress refers to the currently
     //  open workspace, we don't need to re-open
-    if (tt3::ws::theCurrentWorkspace != nullptr &&
-        tt3::ws::theCurrentWorkspace->address() == workspaceAddress)
+    if (tt3::gui::theCurrentWorkspace != nullptr &&
+        tt3::gui::theCurrentWorkspace->address() == workspaceAddress)
     {
         return true;
     }
@@ -303,7 +304,7 @@ bool MainFrame::_openWorkspace(
             tt3::gui::ErrorDialog::show(this, ex);
         }
         //  Use the newly open workspace
-        tt3::ws::theCurrentWorkspace.swap(workspace);
+        tt3::gui::theCurrentWorkspace.swap(workspace);
         tt3::ws::Component::Settings::instance()->addRecentWorkspace(workspaceAddress);
         _updateMruWorkspaces();
         //  The previously "current" workspace is closed
@@ -338,7 +339,7 @@ bool MainFrame::_reconcileCurrntCredentials(const tt3::ws::Workspace & workspace
 {
     Q_ASSERT(workspace != nullptr && workspace->isOpen());
 
-    if (workspace->canAccess(tt3::ws::theCurrentCredentials))
+    if (workspace->canAccess(tt3::gui::theCurrentCredentials))
     {   //  Already OK
         return true;
     }
@@ -358,7 +359,7 @@ bool MainFrame::_reconcileCurrntCredentials(const tt3::ws::Workspace & workspace
         }
         if (workspace->canAccess(dlg1.credentials()))
         {   //  Access OK
-            tt3::ws::theCurrentCredentials = dlg1.credentials();
+            tt3::gui::theCurrentCredentials = dlg1.credentials();
             return true;
         }
     }
@@ -370,8 +371,8 @@ void MainFrame::_destroyWorkspace(tt3::ws::WorkspaceAddress workspaceAddress)
 
     //  If the workspaceAddress refers to the currently
     //  open workspace, we can't destroy it
-    if (tt3::ws::theCurrentWorkspace != nullptr &&
-        tt3::ws::theCurrentWorkspace->address() == workspaceAddress)
+    if (tt3::gui::theCurrentWorkspace != nullptr &&
+        tt3::gui::theCurrentWorkspace->address() == workspaceAddress)
     {
         tt3::gui::ErrorDialog::show(
             this,
@@ -384,7 +385,7 @@ void MainFrame::_destroyWorkspace(tt3::ws::WorkspaceAddress workspaceAddress)
     //  Do the work
     try
     {
-        workspaceAddress->workspaceType()->destroyWorkspace(tt3::ws::theCurrentCredentials, workspaceAddress);
+        workspaceAddress->workspaceType()->destroyWorkspace(tt3::gui::theCurrentCredentials, workspaceAddress);
         //  No need to refreh()!
     }
     catch (const tt3::util::Exception & ex)
@@ -445,7 +446,7 @@ void MainFrame::_refreshCurrentActivityControls()
 
         try
         {
-            _ui->currentActivityLabel->setText(tt3::gui::theCurrentActivity->displayName(tt3::ws::theCurrentCredentials) + s);    //  may throw
+            _ui->currentActivityLabel->setText(tt3::gui::theCurrentActivity->displayName(tt3::gui::theCurrentCredentials) + s);    //  may throw
             _ui->currentActivityLabel->setFont(_labelDecorations.emphasisFont);
             _ui->stopActivityPushButton->setEnabled(true);
         }
@@ -506,10 +507,10 @@ void MainFrame::_onActionCloseWorkspace()
 {
     //  Get the "current workspace: out of the way
     tt3::ws::Workspace workspace = nullptr;
-    tt3::ws::theCurrentWorkspace.swap(workspace);
+    tt3::gui::theCurrentWorkspace.swap(workspace);
     //  So?
     if (workspace == nullptr)
-    {   //  ..there wasn't one - there's nothing to close
+    {   //  ...there wasn't one - there's nothing to close
         return;
     }
     //  Confirm...
@@ -520,7 +521,7 @@ void MainFrame::_onActionCloseWorkspace()
         if (dlg.doModal() != tt3::gui::ConfirmCloseWorkspaceDialog::Result::Yes)
         {   //  ...and the user has said "no" - restore the "current"
             //  database as it was, and we're done
-            tt3::ws::theCurrentWorkspace.swap(workspace);
+            tt3::gui::theCurrentWorkspace.swap(workspace);
             return;
         }
     }
@@ -589,8 +590,8 @@ void MainFrame::_onActionManageUsers()
 {   //  TODO switch to "Users" tab instead
     tt3::gui::ManageUsersDialog dlg(
         this,
-        tt3::ws::theCurrentWorkspace,
-        tt3::ws::theCurrentCredentials);
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
     dlg.doModal();
 }
 
@@ -598,8 +599,8 @@ void MainFrame::_onActionManageActivityTypes()
 {   //  TODO switch to "Activity types" tab instead
     tt3::gui::ManageActivityTypesDialog dlg(
         this,
-        tt3::ws::theCurrentWorkspace,
-        tt3::ws::theCurrentCredentials);
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
     dlg.doModal();
 }
 
@@ -607,8 +608,8 @@ void MainFrame::_onActionManagePublicActivities()
 {   //  TODO switch to "Public activities" tab instead
     tt3::gui::ManagePublicActivitiesDialog dlg(
         this,
-        tt3::ws::theCurrentWorkspace,
-        tt3::ws::theCurrentCredentials);
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
     dlg.doModal();
 }
 
@@ -644,11 +645,11 @@ void MainFrame::_onActionManageBeneficiaries()
 
 void MainFrame::_onActionRefresh()
 {
-    if (tt3::ws::theCurrentWorkspace != nullptr)
+    if (tt3::gui::theCurrentWorkspace != nullptr)
     {
         try
         {
-            tt3::ws::theCurrentWorkspace->refresh();
+            tt3::gui::theCurrentWorkspace->refresh();
         }
         catch (const tt3::util::Exception & ex)
         {
@@ -672,20 +673,20 @@ void MainFrame::_onActionLoginAsDifferentUser()
         tt3::ws::Credentials credentials = dlg.credentials();
         try
         {
-            if (tt3::ws::theCurrentWorkspace == nullptr ||
-                tt3::ws::theCurrentWorkspace->canAccess(credentials))   //  may throw
+            if (tt3::gui::theCurrentWorkspace == nullptr ||
+                tt3::gui::theCurrentWorkspace->canAccess(credentials))   //  may throw
             {   //  Login is fine
-                tt3::ws::theCurrentCredentials = credentials;
+                tt3::gui::theCurrentCredentials = credentials;
             }
             else
             {   //  OOPS! Do we close the current workspace? Or ignore login attempt?
-                tt3::gui::ConfirmDropWorkspaceDialog dlg1(this, tt3::ws::theCurrentWorkspace->address());
+                tt3::gui::ConfirmDropWorkspaceDialog dlg1(this, tt3::gui::theCurrentWorkspace->address());
                 if (dlg1.doModal() == tt3::gui::ConfirmDropWorkspaceDialog::Result::Yes)
                 {   //  Yes - close the current workspace and keep the new credentials
                     tt3::ws::Workspace workspace = nullptr;
-                    tt3::ws::theCurrentWorkspace.swap(workspace);
+                    tt3::gui::theCurrentWorkspace.swap(workspace);
                     workspace->close(); //  may throw
-                    tt3::ws::theCurrentCredentials = credentials;
+                    tt3::gui::theCurrentCredentials = credentials;
                 }
                 //  else forget about the re-login and keep the workspace open
             }
@@ -739,17 +740,17 @@ void MainFrame::_workspaceClosed(tt3::ws::WorkspaceClosedNotification)
 
 void MainFrame::_currentWorkspaceChanged(tt3::ws::Workspace, tt3::ws::Workspace)
 {
-    _userManager->setWorkspace(tt3::ws::theCurrentWorkspace);
-    _activityTypeManager->setWorkspace(tt3::ws::theCurrentWorkspace);
-    _publicActivityManager->setWorkspace(tt3::ws::theCurrentWorkspace);
+    _userManager->setWorkspace(tt3::gui::theCurrentWorkspace);
+    _activityTypeManager->setWorkspace(tt3::gui::theCurrentWorkspace);
+    _publicActivityManager->setWorkspace(tt3::gui::theCurrentWorkspace);
     refresh();
 }
 
 void MainFrame::_currentCredentialsChanged(tt3::ws::Credentials, tt3::ws::Credentials)
 {
-    _userManager->setCredentials(tt3::ws::theCurrentCredentials);
-    _activityTypeManager->setCredentials(tt3::ws::theCurrentCredentials);
-    _publicActivityManager->setCredentials(tt3::ws::theCurrentCredentials);
+    _userManager->setCredentials(tt3::gui::theCurrentCredentials);
+    _activityTypeManager->setCredentials(tt3::gui::theCurrentCredentials);
+    _publicActivityManager->setCredentials(tt3::gui::theCurrentCredentials);
     refresh();
 }
 

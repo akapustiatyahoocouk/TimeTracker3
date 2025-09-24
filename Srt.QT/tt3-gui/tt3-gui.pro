@@ -14,8 +14,10 @@ SOURCES += \
     CreatePublicActivityDialog.cpp \
     CreateUserDialog.cpp \
     CurrentActivity.cpp \
+    CurrentCredentials.cpp \
     CurrentSkin.cpp \
     CurrentTheme.cpp \
+    CurrentWorkspace.cpp \
     EditStringDialog.cpp \
     ErrorDialog.cpp \
     GeneralAppearancePreferences.cpp \
@@ -61,6 +63,8 @@ HEADERS += \
     CreatePublicActivityDialog.hpp \
     CreateUserDialog.hpp \
     CurrentActivity.hpp \
+    CurrentCredentials.hpp \
+    CurrentWorkspace.hpp \
     EditStringDialog.hpp \
     ErrorDialog.hpp \
     GeneralAppearancePreferencesEditor.hpp \

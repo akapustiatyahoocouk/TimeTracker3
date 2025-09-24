@@ -14,8 +14,6 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
-#include "tt3-ws/API.hpp"
 
 namespace tt3::ws
 {
@@ -147,85 +145,6 @@ namespace tt3::ws
     {
         return qHash(key.login(), seed);
     }
-
-    /// \class CurrentCredentials tt3-ws/API.hpp
-    /// \brief The accessor for a "current" credentials.
-    /// TODO move to tt3-gui
-    class TT3_WS_PUBLIC CurrentCredentials final
-        :   public QObject
-    {
-        Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentCredentials)
-
-        //////////
-        //  Construction/destruction
-    public:
-        /// \brief
-        ///     The class constructor.
-        CurrentCredentials();
-
-        /// \brief
-        ///     The class destructor.
-        virtual ~CurrentCredentials();
-        \
-        //////////
-        //  Operators
-    public:
-        /// \brief
-        ///     Replaces the "current" Credentials.
-        /// \param credentials
-        ///     The Credentials to replace the "current" Credentials with.
-        void                operator = (const Credentials & credentials);
-
-        /// \brief
-        ///     Returns the "current" credentials.
-        /// \return
-        ///     The "current" credentials.
-                            operator const Credentials &() const;
-
-        //////////
-        //  Operations
-    public:
-        /// \brief
-        ///     Checks whether current Credentials are "valid"
-        ///     (its "login" is not empty.
-        /// \return
-        ///     True if "current" Credentials are valid, else false.
-        bool                isValid() const;
-
-        /// \brief
-        ///     Returns the login identifier of the "current" Credentials.
-        /// \return
-        ///     The login identifier of the "current" Credentials
-        ///     or an empty string if the "current" Credentials are invalid.
-        QString             login() const;
-
-        //////////
-        //  Signals
-    signals:
-        /// \brief
-        ///     Emitted after the current credentials have changed.
-        /// \param before
-        ///     The "current" Credentials before the change.
-        /// \param after
-        ///     The "current" Credentials after the change.
-        void                changed(Credentials before, Credentials after);
-
-        //////////
-        //  Implementation
-    private:
-        struct _Impl;
-
-        //  Helpers
-        static _Impl *  _impl();
-    };
-
-#if defined(TT3_WS_LIBRARY)
-    //  Building tt3-ws
-#else
-    //  Building tt3-ws client
-    Q_DECL_IMPORT CurrentCredentials theCurrentCredentials;
-#endif
 }
 
 //  End of tt3-ws/Credentials.hpp

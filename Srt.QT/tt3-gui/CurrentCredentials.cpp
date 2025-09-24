@@ -1,5 +1,5 @@
 //
-//  tt3-ws/CurrentCredentials.cpp - tt3::gui::CurrentCredentials class implementation
+//  tt3-gui/CurrentCredentials.cpp - tt3::gui::CurrentCredentials class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,14 +14,14 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#include "tt3-ws/API.hpp"
-using namespace tt3::ws;
+#include "tt3-gui/API.hpp"
+using namespace tt3::gui;
 
 struct CurrentCredentials::_Impl
 {
-    std::atomic<int>    instanceCount = 0;  //  ...to disallow a second instance
-    tt3::util::Mutex    guard;
-    Credentials         credentials;
+    std::atomic<int>        instanceCount = 0;  //  ...to disallow a second instance
+    tt3::util::Mutex        guard;
+    tt3::ws::Credentials    credentials;
 };
 
 //////////
@@ -44,9 +44,11 @@ CurrentCredentials::~CurrentCredentials()
 
 //////////
 //  Operators
-void CurrentCredentials::operator = (const Credentials & credentials)
+void CurrentCredentials::operator = (
+        const tt3::ws::Credentials & credentials
+    )
 {
-    Credentials before, after;
+    tt3::ws::Credentials before, after;
 
     //  Change is effected i n a "locked" state
     {
@@ -68,7 +70,7 @@ void CurrentCredentials::operator = (const Credentials & credentials)
     }
 }
 
-CurrentCredentials::operator const Credentials & () const
+CurrentCredentials::operator const tt3::ws::Credentials & () const
 {
     _Impl * impl = _impl();
     tt3::util::Lock lock(impl->guard);
@@ -107,9 +109,9 @@ CurrentCredentials::_Impl * CurrentCredentials::_impl()
 
 //////////
 //  Global statics
-namespace tt3::ws
+namespace tt3::gui
 {
     Q_DECL_EXPORT CurrentCredentials theCurrentCredentials;
 }
 
-//  End of tt3-ws/CurrentCredentials.cpp
+//  End of tt3-gui/CurrentCredentials.cpp

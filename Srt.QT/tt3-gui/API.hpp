@@ -31,6 +31,8 @@
 #include "tt3-gui/Theme.hpp"
 #include "tt3-gui/Preferences.hpp"
 #include "tt3-gui/Color.hpp"
+#include "tt3-gui/CurrentCredentials.hpp"
+#include "tt3-gui/CurrentWorkspace.hpp"
 #include "tt3-gui/CurrentActivity.hpp"
 #include "tt3-gui/UiHelpers.hpp"
 

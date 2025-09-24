@@ -21,6 +21,8 @@ using namespace tt3::gui;
 namespace tt3::gui
 {
     extern CurrentTheme theCurrentTheme;
+    extern CurrentCredentials theCurrentCredentials;
+    extern CurrentWorkspace theCurrentWorkspace;
 }
 
 //////////
@@ -28,8 +30,8 @@ namespace tt3::gui
 ActivityTypeManager::ActivityTypeManager(QWidget * parent)
     :   QWidget(parent),
         //  Implementation
-        _workspace(tt3::ws::theCurrentWorkspace),
-        _credentials(tt3::ws::theCurrentCredentials),
+        _workspace(theCurrentWorkspace),
+        _credentials(theCurrentCredentials),
         //  Controls
         _ui(new Ui::ActivityTypeManager)
 {

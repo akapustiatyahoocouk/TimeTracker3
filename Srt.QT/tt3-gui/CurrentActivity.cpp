@@ -17,6 +17,11 @@
 #include "tt3-gui/API.hpp"
 using namespace tt3::gui;
 
+namespace tt3::gui
+{
+    extern CurrentCredentials theCurrentCredentials;
+}
+
 struct CurrentActivity::_Impl
 {
     std::atomic<int>    instanceCount = 0;  //  ...to disallow a second instance
@@ -186,7 +191,7 @@ bool CurrentActivity::replaceWith(
         tt3::ws::Activity with
     )
 {
-    return replaceWith(with, tt3::ws::theCurrentCredentials);
+    return replaceWith(with, theCurrentCredentials);
 }
 
 void CurrentActivity::drop()
