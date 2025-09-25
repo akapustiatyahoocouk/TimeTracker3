@@ -381,7 +381,7 @@ void User::_markDead()
 //  Serialization
 void User::_serializeProperties(
         QDomElement & objectElement
-    )
+    ) const
 {
     Principal::_serializeProperties(objectElement);
 
@@ -398,27 +398,19 @@ void User::_serializeProperties(
 
 void User::_serializeAggregations(
         QDomElement & objectElement
-    )
+    ) const
 {
     Principal::_serializeAggregations(objectElement);
 
-    //  Do the accounts
-    QDomElement accountsElement = objectElement.ownerDocument().createElement("Accounts");
-    objectElement.appendChild(accountsElement);
-    for (Account * account : _database->_sortedByOid(_accounts))
-    {   //  Sorted by OID to reduce changes
-        QDomElement accountElement = objectElement.ownerDocument().createElement("Account");
-        accountsElement.appendChild(accountElement);
-        //  Serialize user features
-        account->_serializeProperties(accountElement);
-        account->_serializeAggregations(accountElement);
-        account->_serializeAssociations(accountElement);
-    }
+    _database->_serializeAggregation(
+        objectElement,
+        "Accounts",
+        _accounts);
 }
 
 void User::_serializeAssociations(
         QDomElement & objectElement
-    )
+    ) const
 {
     Principal::_serializeProperties(objectElement);
 
@@ -455,19 +447,14 @@ void User::_deserializeAggregations(
 {
     Principal::_deserializeAggregations(objectElement);
 
-    //  Do the accounts
-    QDomElement accountsElement = _database->_childElement(objectElement, "Accounts");  //  may throw
-    for (QDomElement accountElement : _database->_childElements(accountsElement, "Account"))
-    {
-        tt3::db::api::Oid oid = tt3::util::fromString<tt3::db::api::Oid>(accountElement.attribute("OID", ""));
-        if (!oid.isValid() || _database->_liveObjects.contains(oid))
-        {   //  OOPS!
-            throw tt3::db::api::DatabaseCorruptException(_database->_address);
-        }
-        Account * account = new Account(this, oid);
-        account->_deserializeProperties(accountElement);
-        account->_deserializeAggregations(accountElement);
-    }
+    _database->_deserializeAggregation<Account>(
+        objectElement,
+        "Accounts",
+        _accounts,
+        [&](auto oid)
+        {
+            return new Account(this, oid);
+        });
 }
 
 void User::_deserializeAssociations(

@@ -184,11 +184,21 @@ void ActivityType::_markDead()
     Object::_markDead();
 }
 
+bool ActivityType::_siblingExists(
+        const QString & displayName
+    ) const
+{
+    Q_ASSERT(_database->_guard.isLockedByCurrentThread());
+
+    ActivityType * sibling = _database->_findActivityType(displayName);
+    return sibling != nullptr && sibling != this;
+}
+
 //////////
 //  Serialization
 void ActivityType::_serializeProperties(
         QDomElement & objectElement
-    )
+    ) const
 {
     Object::_serializeProperties(objectElement);
 
@@ -198,14 +208,14 @@ void ActivityType::_serializeProperties(
 
 void ActivityType::_serializeAggregations(
         QDomElement & objectElement
-    )
+    ) const
 {
     Object::_serializeAggregations(objectElement);
 }
 
 void ActivityType::_serializeAssociations(
         QDomElement & objectElement
-    )
+    ) const
 {
     Object::_serializeAssociations(objectElement);
 

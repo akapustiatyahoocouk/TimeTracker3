@@ -49,6 +49,11 @@ PublicTask::PublicTask(
     _parent->_children.insert(this);
     this->addReference();
     _parent->addReference();
+
+    //  Undo the damage done by PublicActivity constructor
+    Q_ASSERT(_database->_publicActivities.contains(this));
+    _database->_publicActivities.remove(this);
+    this->removeReference();
 }
 
 PublicTask::~PublicTask()
@@ -82,16 +87,172 @@ void PublicTask::destroy()
 }
 
 //////////
+//  tt3::db::api::IPublicTask (associations)
+auto PublicTask::parent(
+    ) const -> IPublicTask *
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _parent;
+}
+
+void PublicTask::setParent(
+        IPublicTask * /*parent*/
+    )
+{
+    throw tt3::util::NotImplementedError();
+}
+
+auto PublicTask::children(
+    ) const -> tt3::db::api::PublicTasks
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return tt3::db::api::PublicTasks(_children.cbegin(), _children.cend());
+}
+
+//////////
+//  tt3::db::api::IPublicTask (life cycle)
+auto PublicTask::createChild(
+        const QString & displayName,
+        const QString & description,
+        const tt3::db::api::InactivityTimeout & timeout,
+        bool requireCommentOnStart,
+        bool requireCommentOnFinish,
+        bool fullScreenReminder,
+        tt3::db::api::IActivityType * activityType,
+        tt3::db::api::IWorkload * workload,
+        bool completed,
+        bool requireCommentOnCompletion
+    ) -> tt3::db::api::IPublicTask *
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable(); //  may throw
+#ifdef Q_DEBUG
+    _database->_validate();    //  may throw
+#endif
+
+    //  Validate parameters
+    if (!_database->_validator->publicTask()->isValidDisplayName(displayName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PublicTask::instance(),
+            "displayName",
+            displayName);
+    }
+    if (!_database->_validator->publicTask()->isValidDescription(description))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PublicTask::instance(),
+            "description",
+            description);
+    }
+    if (timeout.has_value() &&
+        !_database->_validator->publicTask()->isValidTimeout(timeout))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PublicTask::instance(),
+            "timeout",
+            timeout.value());
+    }
+    ActivityType * xmlActivityType = nullptr;
+    if (activityType != nullptr)
+    {
+        xmlActivityType = dynamic_cast<ActivityType*>(activityType);
+        if (xmlActivityType == nullptr ||
+            xmlActivityType->_database != _database ||
+            !xmlActivityType->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(activityType->type());
+        }
+    }
+    Workload * xmlWorkload = nullptr;
+    if (workload != nullptr)
+    {
+        xmlWorkload = dynamic_cast<Workload*>(workload);
+        if (xmlWorkload == nullptr ||
+            xmlWorkload->_database != _database ||
+            !xmlWorkload->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(workload->type());
+        }
+    }
+
+    //  Display names must be unique
+    if (_findChild(displayName) != nullptr)
+    {   //  OOPS!
+        throw tt3::db::api::AlreadyExistsException(
+            tt3::db::api::ObjectTypes::PublicTask::instance(),
+            "displayName",
+            displayName);
+    }
+
+    //  Do the work - create & initialize the PublicTask...
+    PublicTask * child = new PublicTask(this, _database->_generateOid()); //  registers with Database
+    child->_displayName = displayName;
+    child->_description = description;
+    child->_timeout = timeout;
+    child->_requireCommentOnStart = requireCommentOnStart;
+    child->_requireCommentOnFinish = requireCommentOnFinish;
+    child->_fullScreenReminder = fullScreenReminder;
+    child->_completed = completed;
+    child->_requireCommentOnCompletion = requireCommentOnCompletion;
+    if (xmlActivityType != nullptr)
+    {   //  Link with ActivityType
+        child->_activityType = xmlActivityType;
+        xmlActivityType->_activities.insert(child);
+        xmlActivityType->addReference();
+        child->addReference();
+    }
+    if (xmlWorkload != nullptr)
+    {   //  Link with Workload
+        child->_workload = xmlWorkload;
+        xmlWorkload->_contributingActivities.insert(child);
+        xmlWorkload->addReference();
+        child->addReference();
+    }
+    _database->_markModified();
+    //  ...schedule change notifications...
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            _database, child->type(), child->_oid));
+    if (xmlActivityType != nullptr)
+    {
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, xmlActivityType->type(), xmlActivityType->_oid));
+    }
+    if (xmlWorkload != nullptr)
+    {
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, xmlWorkload->type(), xmlWorkload->_oid));
+    }
+    //  ...and we're done
+#ifdef Q_DEBUG
+    _database->_validate();    //  may throw
+#endif
+    return child;
+}
+
+//////////
 //  Implementation helpers
 bool PublicTask::_siblingExists(
-        const QString & /*displayName*/
+        const QString & displayName
     ) const
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
 
-    Q_ASSERT(false);    //  TODO propery
-    return true;
+    PublicTask * sibling =
+        (_parent == nullptr) ?
+            _database->_findRootPublicTask(displayName) :
+            _parent->_findChild(displayName);
+    return sibling != nullptr && sibling != this;
 }
 
 void PublicTask::_markDead()
@@ -121,11 +282,27 @@ void PublicTask::_markDead()
     Activity::_markDead();
 }
 
+PublicTask * PublicTask::_findChild(
+        const QString & displayName
+    ) const
+{
+    Q_ASSERT(_database->_guard.isLockedByCurrentThread());
+
+    for (PublicTask * child : _children)
+    {
+        if (child->_displayName == displayName)
+        {
+            return child;
+        }
+    }
+    return nullptr;
+}
+
 //////////
 //  Serialization
 void PublicTask::_serializeProperties(
         QDomElement & objectElement
-    )
+    ) const
 {
     PublicActivity::_serializeProperties(objectElement);
     Task::_serializeProperties(objectElement);
@@ -133,15 +310,20 @@ void PublicTask::_serializeProperties(
 
 void PublicTask::_serializeAggregations(
         QDomElement & objectElement
-    )
+    ) const
 {
     PublicActivity::_serializeAggregations(objectElement);
     Task::_serializeAggregations(objectElement);
+
+    _database->_serializeAggregation(
+        objectElement,
+        "Children",
+        _children);
 }
 
 void PublicTask::_serializeAssociations(
         QDomElement & objectElement
-    )
+    ) const
 {
     PublicActivity::_serializeAssociations(objectElement);
     Task::_serializeAssociations(objectElement);
@@ -161,6 +343,15 @@ void PublicTask::_deserializeAggregations(
 {
     PublicActivity::_deserializeAggregations(objectElement);
     Task::_deserializeAggregations(objectElement);
+
+    _database->_deserializeAggregation<PublicTask>(
+        objectElement,
+        "Children",
+        _children,
+        [&](auto oid)
+        {
+            return new PublicTask(this, oid);
+        });
 }
 
 void PublicTask::_deserializeAssociations(

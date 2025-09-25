@@ -122,7 +122,7 @@ void Principal::_markDead()
 //  Serialization
 void Principal::_serializeProperties(
         QDomElement & objectElement
-    )
+    ) const
 {
     Object::_serializeProperties(objectElement);
 
@@ -135,14 +135,14 @@ void Principal::_serializeProperties(
 
 void Principal::_serializeAggregations(
         QDomElement & objectElement
-    )
+    ) const
 {
     Object::_serializeAggregations(objectElement);
 }
 
 void Principal::_serializeAssociations(
         QDomElement & objectElement
-    )
+    ) const
 {
     Object::_serializeAssociations(objectElement);
 }

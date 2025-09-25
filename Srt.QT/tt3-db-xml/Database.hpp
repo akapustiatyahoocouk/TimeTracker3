@@ -244,6 +244,7 @@ namespace tt3::db::xml
         Account *           _findAccount(const QString & login) const;
         ActivityType *      _findActivityType(const QString & displayName) const;
         PublicActivity *    _findPublicActivity(const QString & displayName) const;
+        PublicTask *        _findRootPublicTask(const QString & displayName) const;
 
         //  Serialization
         void            _save();    //  throws tt3::util::Exception
@@ -304,6 +305,36 @@ namespace tt3::db::xml
                             )
         {
             _serializeAssociation(objectElement, associationName, _sortedByOid(association));
+        }
+        template <class T>
+        void            _serializeObject(
+                                QDomElement & collectionElement,
+                                const T * object
+                            )
+        {
+            QDomElement objectElement =
+                collectionElement.ownerDocument()
+                                 .createElement(object->type()->mnemonic().toString());
+            collectionElement.appendChild(objectElement);
+            //  Serialize features
+            object->_serializeProperties(objectElement);
+            object->_serializeAggregations(objectElement);
+            object->_serializeAssociations(objectElement);
+        }
+        template <class T>
+        void            _serializeAggregation(
+                                QDomElement & parentElement,
+                                const QString & aggregationName,
+                                const QSet<T*> & aggregation
+                            )
+        {
+            QDomElement aggregationElement =
+                parentElement.ownerDocument().createElement(aggregationName);
+            parentElement.appendChild(aggregationElement);
+            for (T * object : _sortedByOid(aggregation))
+            {   //  Sorting by OID to reduce changes
+                _serializeObject(aggregationElement, object);
+            }
         }
 
         //  Deserialization
@@ -386,6 +417,87 @@ namespace tt3::db::xml
             {
                 throw tt3::db::api::DatabaseCorruptException(_address);
             }
+        }
+        template <class T>
+        void            _deserializeObject(
+                                const QDomElement & objectElement,
+                                T *& object,
+                                std::function<T*(const tt3::db::api::Oid & oid)> objectFactory
+                            )
+        {
+            tt3::db::api::Oid oid =
+                tt3::util::fromString<tt3::db::api::Oid>(objectElement.attribute("OID", ""));
+            if (!oid.isValid() || _liveObjects.contains(oid))
+            {   //  OOPS!
+                throw tt3::db::api::DatabaseCorruptException(_address);
+            }
+            object = objectFactory(oid);
+            if (object == nullptr || !object->_isLive ||
+                object->_database != this)
+            {   //  OOPS!
+                throw tt3::db::api::DatabaseCorruptException(_address);
+            }
+            object->_deserializeProperties(objectElement);
+            object->_deserializeAggregations(objectElement);
+        }
+        template <class T>
+        void            _deserializeAggregation(
+                                const QDomElement & parentElement,
+                                const QString & aggregationName,
+                                QSet<T*> & aggregation,
+                                std::function<T*(const tt3::db::api::Oid & oid)> objectFactory
+            )
+        {
+            Q_ASSERT(aggregation.isEmpty());
+            QDomElement aggregationElement = _childElement(parentElement, aggregationName); //  may throw
+            tt3::db::api::IObjectType * objectType = _objectTypeTraits<T>();
+            for (QDomElement objectElement : _childElements(aggregationElement, objectType->mnemonic().toString()))
+            {
+                T * object = nullptr;
+                _deserializeObject<T>(
+                    objectElement,
+                    object,
+                    objectFactory);
+               aggregation.insert(object);
+            }
+        }
+
+        template <class T>
+        auto            _objectTypeTraits(
+                            ) -> tt3::db::api::IObjectType *  = delete;
+        template <>
+        auto            _objectTypeTraits<User>(
+                            ) -> tt3::db::api::IObjectType *
+        {
+            return tt3::db::api::ObjectTypes::User::instance();
+        }
+
+        template <>
+        auto            _objectTypeTraits<Account>(
+                            ) -> tt3::db::api::IObjectType *
+        {
+            return tt3::db::api::ObjectTypes::Account::instance();
+        }
+
+        template <>
+        auto            _objectTypeTraits<ActivityType>(
+                            ) -> tt3::db::api::IObjectType *
+        {
+            return tt3::db::api::ObjectTypes::ActivityType::instance();
+        }
+
+        template <>
+        auto            _objectTypeTraits<PublicActivity>(
+                            ) -> tt3::db::api::IObjectType *
+        {
+            return tt3::db::api::ObjectTypes::PublicActivity::instance();
+        }
+
+        template <>
+        auto            _objectTypeTraits<PublicTask>(
+                            ) -> tt3::db::api::IObjectType *
+        {
+            return tt3::db::api::ObjectTypes::PublicTask::instance();
         }
 
         //  Validation

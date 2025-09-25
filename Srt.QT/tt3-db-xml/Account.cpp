@@ -278,9 +278,10 @@ void Account::_markDead()
 //  Serialization
 void Account::_serializeProperties(
         QDomElement & objectElement
-    )
+    ) const
 {
     Principal::_serializeProperties(objectElement);
+
     objectElement.setAttribute("Login", _login);
     objectElement.setAttribute("PasswordHash", _passwordHash);
     objectElement.setAttribute("Capabilities", tt3::util::toString(_capabilities));
@@ -288,7 +289,7 @@ void Account::_serializeProperties(
 
 void Account::_serializeAggregations(
         QDomElement & objectElement
-    )
+    ) const
 {
     Principal::_serializeAggregations(objectElement);
 
@@ -298,7 +299,7 @@ void Account::_serializeAggregations(
 
 void Account::_serializeAssociations(
         QDomElement & objectElement
-    )
+    ) const
 {
     Principal::_serializeAssociations(objectElement);
 

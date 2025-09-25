@@ -661,19 +661,125 @@ auto Database::createPublicActivity(
 }
 
 auto Database::createPublicTask(
-        const QString & /*displayName*/,
-        const QString & /*description*/,
-        const tt3::db::api::InactivityTimeout & /*timeout*/,
-        bool /*requireCommentOnStart*/,
-        bool /*requireCommentOnFinish*/,
-        bool /*fullScreenReminder*/,
-        tt3::db::api::IActivityType * /*activityType*/,
-        tt3::db::api::IWorkload * /*workload*/,
-        bool /*completed*/,
-        bool /*requireCommentOnCompletion*/
+        const QString & displayName,
+        const QString & description,
+        const tt3::db::api::InactivityTimeout & timeout,
+        bool requireCommentOnStart,
+        bool requireCommentOnFinish,
+        bool fullScreenReminder,
+        tt3::db::api::IActivityType * activityType,
+        tt3::db::api::IWorkload * workload,
+        bool completed,
+        bool requireCommentOnCompletion
     ) -> tt3::db::api::IPublicTask *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_guard);
+    _ensureOpenAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
+
+    //  Validate parameters
+    if (!_validator->publicTask()->isValidDisplayName(displayName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PublicTask::instance(),
+            "displayName",
+            displayName);
+    }
+    if (!_validator->publicTask()->isValidDescription(description))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PublicTask::instance(),
+            "description",
+            description);
+    }
+    if (timeout.has_value() &&
+        !_validator->publicTask()->isValidTimeout(timeout))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PublicTask::instance(),
+            "timeout",
+            timeout.value());
+    }
+    ActivityType * xmlActivityType = nullptr;
+    if (activityType != nullptr)
+    {
+        xmlActivityType = dynamic_cast<ActivityType*>(activityType);
+        if (xmlActivityType == nullptr ||
+            xmlActivityType->_database != this ||
+            !xmlActivityType->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(activityType->type());
+        }
+    }
+    Workload * xmlWorkload = nullptr;
+    if (workload != nullptr)
+    {
+        xmlWorkload = dynamic_cast<Workload*>(workload);
+        if (xmlWorkload == nullptr ||
+            xmlWorkload->_database != this ||
+            !xmlWorkload->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(workload->type());
+        }
+    }
+
+    //  Display names must be unique
+    if (_findRootPublicTask(displayName) != nullptr)
+    {   //  OOPS!
+        throw tt3::db::api::AlreadyExistsException(
+            tt3::db::api::ObjectTypes::PublicTask::instance(),
+            "displayName",
+            displayName);
+    }
+
+    //  Do the work - create & initialize the PublicTask...
+    PublicTask * publicTask = new PublicTask(this, _generateOid()); //  registers with Database
+    publicTask->_displayName = displayName;
+    publicTask->_description = description;
+    publicTask->_timeout = timeout;
+    publicTask->_requireCommentOnStart = requireCommentOnStart;
+    publicTask->_requireCommentOnFinish = requireCommentOnFinish;
+    publicTask->_fullScreenReminder = fullScreenReminder;
+    publicTask->_completed = completed;
+    publicTask->_requireCommentOnCompletion = requireCommentOnCompletion;
+    if (xmlActivityType != nullptr)
+    {   //  Link with ActivityType
+        publicTask->_activityType = xmlActivityType;
+        xmlActivityType->_activities.insert(publicTask);
+        xmlActivityType->addReference();
+        publicTask->addReference();
+    }
+    if (xmlWorkload != nullptr)
+    {   //  Link with Workload
+        publicTask->_workload = xmlWorkload;
+        xmlWorkload->_contributingActivities.insert(publicTask);
+        xmlWorkload->addReference();
+        publicTask->addReference();
+    }
+    _markModified();
+    //  ...schedule change notifications...
+    _changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            this, publicTask->type(), publicTask->_oid));
+    if (xmlActivityType != nullptr)
+    {
+        _changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                this, xmlActivityType->type(), xmlActivityType->_oid));
+    }
+    if (xmlWorkload != nullptr)
+    {
+        _changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                this, xmlWorkload->type(), xmlWorkload->_oid));
+    }
+    //  ...and we're done
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
+    return publicTask;
 }
 
 auto Database::createProject(
@@ -822,6 +928,22 @@ auto Database::_findPublicActivity(
     return nullptr;
 }
 
+auto Database::_findRootPublicTask(
+        const QString & displayName
+    ) const -> PublicTask *
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    _ensureOpen();  //  may throw
+
+    for (PublicTask * publicTask : _rootPublicTasks)
+    {
+        if (publicTask->_displayName == displayName)
+        {
+            return publicTask;
+        }
+    }
+    return nullptr;
+}
 
 //////////
 //  Serialization
@@ -842,44 +964,22 @@ void Database::_save()
     rootElement.setAttribute("FormatVersion", "1");
     document.appendChild(rootElement);
 
-    //  Serialize users (+ accounts, etc.)
-    QDomElement usersElement = document.createElement("Users");
-    rootElement.appendChild(usersElement);
-    for (User * user : _sortedByOid(_users))
-    {   //  Sorting by OID to reduce changes
-        QDomElement userElement = document.createElement("User");
-        usersElement.appendChild(userElement);
-        //  Serialize user features
-        user->_serializeProperties(userElement);
-        user->_serializeAggregations(userElement);
-        user->_serializeAssociations(userElement);
-    }
-
-    //  Serialize activity types
-    QDomElement activityTypesElement = document.createElement("ActivityTypes");
-    rootElement.appendChild(activityTypesElement);
-    for (ActivityType * activityType : _sortedByOid(_activityTypes))
-    {   //  Sorting by OID to reduce changes
-        QDomElement activityTypeElement = document.createElement("ActivityType");
-        activityTypesElement.appendChild(activityTypeElement);
-        //  Serialize activity type features
-        activityType->_serializeProperties(activityTypeElement);
-        activityType->_serializeAggregations(activityTypeElement);
-        activityType->_serializeAssociations(activityTypeElement);
-    }
-
-    //  Serialize public activities
-    QDomElement publicActivitiesElement = document.createElement("PublicActivities");
-    rootElement.appendChild(publicActivitiesElement);
-    for (PublicActivity * publicActivity : _sortedByOid(_publicActivities))
-    {   //  Sorting by OID to reduce changes
-        QDomElement publicActivityElement = document.createElement("PublicActivity");
-        publicActivitiesElement.appendChild(publicActivityElement);
-        //  Serialize public activity features
-        publicActivity->_serializeProperties(publicActivityElement);
-        publicActivity->_serializeAggregations(publicActivityElement);
-        publicActivity->_serializeAssociations(publicActivityElement);
-    }
+    _serializeAggregation(
+        rootElement,
+        "Users",
+        _users);    //  + accounts, works, events, etc.
+    _serializeAggregation(
+        rootElement,
+        "ActivityTypes",
+        _activityTypes);
+    _serializeAggregation(
+        rootElement,
+        "PublicActivities",
+        _publicActivities);
+    _serializeAggregation(
+        rootElement,
+        "PublicTasks",
+        _rootPublicTasks);
 
     //  Save DOM
     QFile file(_address->_path);
@@ -893,6 +993,8 @@ void Database::_save()
     _needsSaving = false;
 }
 
+//////////
+//  Deserialization
 void Database::_load()
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
@@ -920,47 +1022,38 @@ void Database::_load()
         throw tt3::db::api::DatabaseCorruptException(_address);
     }
 
-    //  Process users (+ nested Accounts, etc.)
-    QDomElement usersElement = _childElement(rootElement, "Users");  //  may throw
-    for (QDomElement userElement : _childElements(usersElement, "User"))
-    {
-        tt3::db::api::Oid oid = tt3::util::fromString<tt3::db::api::Oid>(userElement.attribute("OID", ""));
-        if (!oid.isValid() || _liveObjects.contains(oid))
-        {   //  OOPS!
-            throw tt3::db::api::DatabaseCorruptException(_address);
-        }
-        User * user = new User(this, oid);
-        user->_deserializeProperties(userElement);
-        user->_deserializeAggregations(userElement);
-    }
-
-    //  Process activity types
-    QDomElement activityTypesElement = _childElement(rootElement, "ActivityTypes");  //  may throw
-    for (QDomElement activityTypeElement : _childElements(activityTypesElement, "ActivityType"))
-    {
-        tt3::db::api::Oid oid = tt3::util::fromString<tt3::db::api::Oid>(activityTypeElement.attribute("OID", ""));
-        if (!oid.isValid() || _liveObjects.contains(oid))
-        {   //  OOPS!
-            throw tt3::db::api::DatabaseCorruptException(_address);
-        }
-        ActivityType * activityType = new ActivityType(this, oid);
-        activityType->_deserializeProperties(activityTypeElement);
-        activityType->_deserializeAggregations(activityTypeElement);
-    }
-
-    //  Process public activities
-    QDomElement publicActivitiesElement = _childElement(rootElement, "PublicActivities");  //  may throw
-    for (QDomElement publicActivityElement : _childElements(publicActivitiesElement, "PublicActivity"))
-    {
-        tt3::db::api::Oid oid = tt3::util::fromString<tt3::db::api::Oid>(publicActivityElement.attribute("OID", ""));
-        if (!oid.isValid() || _liveObjects.contains(oid))
-        {   //  OOPS!
-            throw tt3::db::api::DatabaseCorruptException(_address);
-        }
-        PublicActivity * publicActivity = new PublicActivity(this, oid);
-        publicActivity->_deserializeProperties(publicActivityElement);
-        publicActivity->_deserializeAggregations(publicActivityElement);
-    }
+    _deserializeAggregation<User>(
+        rootElement,
+        "Users",
+        _users,
+        [&](auto oid)
+        {
+            return new User(this, oid);
+        }); //  + accounts, works, events, etc.
+    _deserializeAggregation<ActivityType>(
+        rootElement,
+        "ActivityTypes",
+        _activityTypes,
+        [&](auto oid)
+        {
+            return new ActivityType(this, oid);
+        });
+    _deserializeAggregation<PublicActivity>(
+        rootElement,
+        "PublicActivities",
+        _publicActivities,
+        [&](auto oid)
+        {
+            return new PublicActivity(this, oid);
+        });
+    _deserializeAggregation<PublicTask>(
+        rootElement,
+        "PublicTasks",
+        _rootPublicTasks,
+        [&](auto oid)
+        {
+            return new PublicTask(this, oid);
+        });
 
     //  Now we can do the asociations
     Q_ASSERT(_liveObjects.size() == _deserializationMap.size());
@@ -1032,6 +1125,10 @@ void Database::_validate()
             throw tt3::db::api::DatabaseCorruptException(this->_address);
         }
         activityType->_validate(validatedObjects);
+        if (activityType->_siblingExists(activityType->_displayName))
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(this->_address);
+        }
     }
     for (PublicActivity * publicActivity : _publicActivities)
     {
@@ -1042,6 +1139,10 @@ void Database::_validate()
             throw tt3::db::api::DatabaseCorruptException(this->_address);
         }
         publicActivity->_validate(validatedObjects);
+        if (publicActivity->_siblingExists(publicActivity->_displayName))
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(this->_address);
+        }
     }
     for (PublicTask * publicTask : _rootPublicTasks)
     {
@@ -1052,6 +1153,10 @@ void Database::_validate()
             throw tt3::db::api::DatabaseCorruptException(this->_address);
         }
         publicTask->_validate(validatedObjects);
+        if (publicTask->_siblingExists(publicTask->_displayName))
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(this->_address);
+        }
     }
 
     //  Final checks

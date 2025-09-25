@@ -94,7 +94,7 @@ void Workload::_markDead()
 //  Serialization
 void Workload::_serializeProperties(
         QDomElement & objectElement
-    )
+    ) const
 {
     Object::_serializeProperties(objectElement);
 
@@ -104,14 +104,14 @@ void Workload::_serializeProperties(
 
 void Workload::_serializeAggregations(
         QDomElement & objectElement
-    )
+    ) const
 {
     Object::_serializeAggregations(objectElement);
 }
 
 void Workload::_serializeAssociations(
         QDomElement & objectElement
-    )
+    ) const
 {
     Object::_serializeAssociations(objectElement);
 

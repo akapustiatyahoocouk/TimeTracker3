@@ -28,6 +28,7 @@ namespace tt3::db::xml
         friend class Database;
         friend class User;
         friend class Activity;
+        friend class PublicTask;
 
         //////////
         //  Construction/destruction (from DB type only)
@@ -72,13 +73,13 @@ namespace tt3::db::xml
     private:
         virtual void    _serializeProperties(
                                 QDomElement & objectElement
-                            ) override;
+                            ) const override;
         virtual void    _serializeAggregations(
                                 QDomElement & objectElement
-                            ) override;
+                            ) const override;
         virtual void    _serializeAssociations(
                                 QDomElement & objectElement
-                            ) override;
+                            ) const override;
 
         virtual void    _deserializeProperties(
                                 const QDomElement & objectElement

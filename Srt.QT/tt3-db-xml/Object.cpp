@@ -189,20 +189,20 @@ void Object::_markDead()
 //  Serialization
 void Object::_serializeProperties(
         QDomElement & objectElement
-    )
+    ) const
 {
     objectElement.setAttribute("OID", tt3::util::toString(_oid));
 }
 
 void Object::_serializeAggregations(
         QDomElement & /*parentElement*/
-    )
+    ) const
 {   //  Nothing at this level
 }
 
 void Object::_serializeAssociations(
         QDomElement & /*objectElement*/
-    )
+    ) const
 {   //  Nothing at this level
 }
 

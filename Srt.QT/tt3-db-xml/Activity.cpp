@@ -452,7 +452,7 @@ void Activity::_markDead()
 //  Serialization
 void Activity::_serializeProperties(
         QDomElement & objectElement
-    )
+    ) const
 {
     Object::_serializeProperties(objectElement);
 
@@ -469,14 +469,14 @@ void Activity::_serializeProperties(
 
 void Activity::_serializeAggregations(
         QDomElement & objectElement
-    )
+    ) const
 {
     Object::_serializeAggregations(objectElement);
 }
 
 void Activity::_serializeAssociations(
         QDomElement & objectElement
-    )
+    ) const
 {
     Object::_serializeAssociations(objectElement);
 

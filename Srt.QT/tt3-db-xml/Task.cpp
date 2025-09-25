@@ -106,7 +106,7 @@ void Task::setRequireCommentOnCompletion(
 //  Serialization
 void Task::_serializeProperties(
         QDomElement & objectElement
-    )
+    ) const
 {
     //  Activity properties of a concrete Task
     //  will be serialized via Activity route
@@ -117,7 +117,7 @@ void Task::_serializeProperties(
 
 void Task::_serializeAggregations(
         QDomElement & /*objectElement*/
-    )
+    ) const
 {
     //  Activity aggregations of a concrete Task
     //  will be serialized via Activity route
@@ -125,7 +125,7 @@ void Task::_serializeAggregations(
 
 void Task::_serializeAssociations(
         QDomElement & /*objectElement*/
-    )
+    ) const
 {
     //  Activity associations of a concrete Task
     //  will be serialized via Activity route

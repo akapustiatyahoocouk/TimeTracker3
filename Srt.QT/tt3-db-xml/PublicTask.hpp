@@ -42,6 +42,33 @@ namespace tt3::db::xml
                             ) override;
 
         //////////
+        //  tt3::db::api::IPublicTask (associations)
+    public:
+        virtual auto    parent(
+                            ) const -> IPublicTask * override;
+        virtual void    setParent(
+                                IPublicTask * parent
+                            ) override;
+        virtual auto    children(
+                            ) const -> tt3::db::api::PublicTasks override;
+
+        //////////
+        //  tt3::db::api::IPublicTask (life cycle)
+    public:
+        virtual auto    createChild(
+                                const QString & displayName,
+                                const QString & description,
+                                const tt3::db::api::InactivityTimeout & timeout,
+                                bool requireCommentOnStart,
+                                bool requireCommentOnFinish,
+                                bool fullScreenReminder,
+                                tt3::db::api::IActivityType * activityType,
+                                tt3::db::api::IWorkload * workload,
+                                bool completed,
+                                bool requireCommentOnCompletion
+                            ) -> tt3::db::api::IPublicTask * override;
+
+        //////////
         //  Implementation
     private:
         //  Associations
@@ -52,19 +79,20 @@ namespace tt3::db::xml
         //  Helpers
         virtual bool    _siblingExists(const QString & displayName) const override;
         virtual void    _markDead() override;
+        PublicTask *    _findChild(const QString & displayName) const;
 
         //////////
         //  Serialization
     private:
         virtual void    _serializeProperties(
                                 QDomElement & objectElement
-                            ) override;
+                            ) const override;
         virtual void    _serializeAggregations(
                                 QDomElement & objectElement
-                            ) override;
+                            ) const override;
         virtual void    _serializeAssociations(
                                 QDomElement & objectElement
-                            ) override;
+                            ) const override;
 
         virtual void    _deserializeProperties(
                                 const QDomElement & objectElement

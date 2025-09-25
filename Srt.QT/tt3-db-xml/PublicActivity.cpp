@@ -81,21 +81,21 @@ void PublicActivity::_markDead()
 //  Serialization
 void PublicActivity::_serializeProperties(
         QDomElement & objectElement
-    )
+    ) const
 {
     Activity::_serializeProperties(objectElement);
 }
 
 void PublicActivity::_serializeAggregations(
         QDomElement & objectElement
-    )
+    ) const
 {
     Activity::_serializeAggregations(objectElement);
 }
 
 void PublicActivity::_serializeAssociations(
         QDomElement & objectElement
-    )
+    ) const
 {
     Activity::_serializeAssociations(objectElement);
 }

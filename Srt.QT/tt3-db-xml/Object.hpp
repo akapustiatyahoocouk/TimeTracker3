@@ -76,13 +76,13 @@ namespace tt3::db::xml
     private:
         virtual void    _serializeProperties(
                                 QDomElement & objectElement
-                            );
+                            ) const;
         virtual void    _serializeAggregations(
                                 QDomElement & objectElement
-                            );
+                            ) const;
         virtual void    _serializeAssociations(
                                 QDomElement & objectElement
-                            );
+                            ) const;
 
         virtual void    _deserializeProperties(
                                 const QDomElement & objectElement
