@@ -31,6 +31,78 @@ Task::~Task()
 }
 
 //////////
+//  tt3::db::api::ITask (properties)
+bool Task::completed(
+    ) const
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _completed;
+}
+
+void Task::setCompleted(
+        bool completed
+    )
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    if (completed != _completed)
+    {   //  Make the change...
+        _completed = completed;
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
+}
+
+bool Task::requireCommentOnCompletion(
+    ) const
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _requireCommentOnCompletion;
+}
+
+void Task::setRequireCommentOnCompletion(
+        bool requireCommentOnCompletion
+    )
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    if (requireCommentOnCompletion != _requireCommentOnCompletion)
+    {   //  Make the change...
+        _requireCommentOnCompletion = requireCommentOnCompletion;
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
+}
+
+//////////
 //  Serialization
 void Task::_serializeProperties(
         QDomElement & objectElement
@@ -84,34 +156,6 @@ void Task::_deserializeAssociations(
 {
     //  Activity associations of a concrete Task
     //  will be deserialized via Activity route
-}
-
-//////////
-//  tt3::db::api::ITask (properties)
-bool Task::completed(
-    ) const
-{
-    throw tt3::util::NotImplementedError();
-}
-
-void Task::setCompleted(
-        bool /*completed*/
-    )
-{
-    throw tt3::util::NotImplementedError();
-}
-
-bool Task::requireCommentOnCompletion(
-    ) const
-{
-    throw tt3::util::NotImplementedError();
-}
-
-void Task::setRequireCommentOnCompletion(
-        bool /*requireCommentOnCompletion*/
-    )
-{
-    throw tt3::util::NotImplementedError();
 }
 
 //////////

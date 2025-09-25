@@ -192,8 +192,24 @@ void PublicTask::_validate(
     }
     else
     {
+        if (!_parent->_isLive ||
+            _parent->_database != this->_database ||
+            !_parent->_children.contains(this))
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
         Q_ASSERT(false);    //  TODO properly
         //  TODO there must be no parent/child loops
+    }
+    for (PublicTask * child : _children)
+    {
+        if (child == nullptr || !child->_isLive ||
+            child->_database != _database ||
+            child->_parent != this)
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
+        child->_validate(validatedObjects);
     }
 
     //  Validate associations

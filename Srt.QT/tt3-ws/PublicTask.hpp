@@ -14,10 +14,6 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-//#pragma once
-//#include "tt3-ws/API.hpp"
-
-//#ifdef TT3_WS_ACTIVITY_DEFINED
 
 namespace tt3::ws
 {
@@ -63,5 +59,4 @@ namespace tt3::ws
 Q_DECLARE_METATYPE(tt3::ws::PublicTaskImpl)
 Q_DECLARE_METATYPE(tt3::ws::PublicTask)
 
-//#endif  //  def TT3_WS_ACTIVITY_DEFINED
 //  End of tt3-ws/PublicTask.hpp

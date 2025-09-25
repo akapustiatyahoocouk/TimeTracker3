@@ -189,7 +189,6 @@ void Activity::setRequireCommentOnStart(
     _database->_validate(); //  may throw
 #endif
 
-    //  Validate parameters
     if (requireCommentOnStart != _requireCommentOnStart)
     {   //  Make the change...
         _requireCommentOnStart = requireCommentOnStart;

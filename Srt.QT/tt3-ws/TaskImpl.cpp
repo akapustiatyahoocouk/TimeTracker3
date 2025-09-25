@@ -36,33 +36,97 @@ TaskImpl::~TaskImpl()
 //////////
 //  Operations (properties)
 bool TaskImpl::completed(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _dataTask->completed();  //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void TaskImpl::setCompleted(
-        const Credentials & /*credentials*/,
-        bool /*completed*/
+        const Credentials & credentials,
+        bool completed
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataTask->setCompleted(completed); //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 bool TaskImpl::requireCommentOnCompletion(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _dataTask->requireCommentOnCompletion(); //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void TaskImpl::setRequireCommentOnCompletion(
-        const Credentials & /*credentials*/,
-        bool /*requireCommentOnCompletion*/
+        const Credentials & credentials,
+        bool requireCommentOnCompletion
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataTask->setRequireCommentOnCompletion(requireCommentOnCompletion);   //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 //  End of tt3-ws/TaskImpl.cpp
