@@ -59,7 +59,31 @@ auto DefaultValidator::activity(
 auto DefaultValidator::publicActivity(
     ) const -> IValidator::IPublicActivityValidator *
 {
-    return _PublicActivityValidator::instance();
+    return _ActivityValidator::instance();
+}
+
+auto DefaultValidator::privateActivity(
+    ) const -> IValidator::IPrivateActivityValidator *
+{
+    return _ActivityValidator::instance();
+}
+
+auto DefaultValidator::task(
+    ) const -> IValidator::ITaskValidator *
+{
+    return _ActivityValidator::instance();
+}
+
+auto DefaultValidator::publicTask(
+    ) const -> IPublicTaskValidator *
+{
+    return _ActivityValidator::instance();
+}
+
+auto DefaultValidator::privateTask(
+    ) const -> IPrivateTaskValidator *
+{
+    return _ActivityValidator::instance();
 }
 
 auto DefaultValidator::workload(
@@ -235,31 +259,6 @@ bool DefaultValidator::_ActivityValidator::isValidTimeout(const InactivityTimeou
             (timeout.value().isValid() &&
              timeout.value() >= Min &&
              timeout.value() <= Max));
-}
-
-//////////
-//  DefaultValidator::_PublicActivityValidator
-IMPLEMENT_SINGLETON(DefaultValidator::_PublicActivityValidator)
-DefaultValidator::_PublicActivityValidator::_PublicActivityValidator() {}
-DefaultValidator::_PublicActivityValidator::~_PublicActivityValidator() {}
-
-bool DefaultValidator::_PublicActivityValidator::isValidDisplayName(
-        const QString & displayName
-    )
-{
-    return _ActivityValidator::instance()->isValidDisplayName(displayName);
-}
-
-bool DefaultValidator::_PublicActivityValidator::isValidDescription(
-        const QString & description
-    )
-{
-    return _ActivityValidator::instance()->isValidDescription(description);
-}
-
-bool DefaultValidator::_PublicActivityValidator::isValidTimeout(const InactivityTimeout & timeout)
-{
-    return _ActivityValidator::instance()->isValidTimeout(timeout);
 }
 
 //////////

@@ -1,5 +1,5 @@
 //
-//  tt3-ws/PublicActivityImpl.cpp - tt3::ws::PublicActivityImpl class implementation
+//  tt3-ws/PublicTaskImpl.cpp - tt3::ws::PublicTaskImpl class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,23 +19,25 @@ using namespace tt3::ws;
 
 //////////
 //  Construction/destruction
-PublicActivityImpl::PublicActivityImpl(
+PublicTaskImpl::PublicTaskImpl(
         Workspace workspace,
-        tt3::db::api::IPublicActivity * dataPublicActivity
-    ) : ActivityImpl(workspace, dataPublicActivity),
-        _dataPublicActivity(dataPublicActivity)
+        tt3::db::api::IPublicTask * dataPublicTask
+    ) : ActivityImpl(workspace, dataPublicTask),
+        PublicActivityImpl(workspace, dataPublicTask),
+        TaskImpl(workspace, dataPublicTask),
+        _dataPublicTask(dataPublicTask)
 {
-    _dataPublicActivity->addReference();
+    _dataPublicTask->addReference();
 }
 
-PublicActivityImpl::~PublicActivityImpl()
+PublicTaskImpl::~PublicTaskImpl()
 {
-    _dataPublicActivity->removeReference();
+    _dataPublicTask->removeReference();
 }
 
 //////////
 //  Implementation (Access control)
-bool PublicActivityImpl::_canRead(
+bool PublicTaskImpl::_canRead(
         const Credentials & credentials
     ) const
 {
@@ -57,7 +59,7 @@ bool PublicActivityImpl::_canRead(
     }
 }
 
-bool PublicActivityImpl::_canModify(
+bool PublicTaskImpl::_canModify(
         const Credentials & credentials
     ) const
 {
@@ -67,7 +69,7 @@ bool PublicActivityImpl::_canModify(
     {
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         return (clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
-               (clientCapabilities & Capabilities::ManagePublicActivities) != Capabilities::None;
+               (clientCapabilities & Capabilities::ManagePublicTasks) != Capabilities::None;
     }
     catch (const AccessDeniedException &)
     {   //  This is a special case!
@@ -79,7 +81,7 @@ bool PublicActivityImpl::_canModify(
     }
 }
 
-bool PublicActivityImpl::_canDestroy(
+bool PublicTaskImpl::_canDestroy(
         const Credentials & credentials
     ) const
 {
@@ -89,7 +91,7 @@ bool PublicActivityImpl::_canDestroy(
     {
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         return (clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
-               (clientCapabilities & Capabilities::ManagePublicActivities) != Capabilities::None;
+               (clientCapabilities & Capabilities::ManagePublicTasks) != Capabilities::None;
     }
     catch (const AccessDeniedException &)
     {   //  This is a special case!
@@ -101,4 +103,4 @@ bool PublicActivityImpl::_canDestroy(
     }
 }
 
-//  End of tt3-ws/PublicActivityImpl.cpp
+//  End of tt3-ws/PublicTaskImpl.cpp

@@ -40,6 +40,8 @@
 #include "tt3-ws/ActivityType.hpp"
 #include "tt3-ws/Activity.hpp"
 #include "tt3-ws/PublicActivity.hpp"
+#include "tt3-ws/Task.hpp"
+#include "tt3-ws/PublicTask.hpp"
 
 #include "tt3-ws/Workload.hpp"
 

@@ -1,5 +1,5 @@
 //
-//  tt3-ws/PublicActivity.hpp - A public activity
+//  tt3-ws/PublicTask.hpp - A public task
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -21,30 +21,30 @@
 
 namespace tt3::ws
 {
-    /// \class PublicActivityImpl tt3-ws/API.hpp
-    /// \brief A public activity.
-    class TT3_WS_PUBLIC PublicActivityImpl
-        :   public virtual ActivityImpl
+    /// \class PublicTaskImpl tt3-ws/API.hpp
+    /// \brief A public task.
+    class TT3_WS_PUBLIC PublicTaskImpl final
+        :   public PublicActivityImpl,
+            public TaskImpl
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PublicActivityImpl)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PublicTaskImpl)
 
         friend class WorkspaceImpl;
-        friend std::shared_ptr<PublicActivityImpl>;
-        friend class PublicTaskImpl;
+        friend std::shared_ptr<PublicTaskImpl>;
 
         //////////
         //  Construction/destruction - from friends only
     private:
-        PublicActivityImpl(
+        PublicTaskImpl(
                 Workspace workspace,
-                tt3::db::api::IPublicActivity * dataPublicActivity
+                tt3::db::api::IPublicTask * dataPublicTask
             );
-        virtual ~PublicActivityImpl();
+        virtual ~PublicTaskImpl();
 
         //////////
         //  Implementation
     private:
-        tt3::db::api::IPublicActivity *const    _dataPublicActivity;  //  counts as "reference"
+        tt3::db::api::IPublicTask *const    _dataPublicTask;  //  counts as "reference"
 
         //  Access control
         virtual bool    _canRead(       //  throws WorkspaceException
@@ -60,8 +60,8 @@ namespace tt3::ws
 }
 
 //  Enable objects and object pointers for QVariant
-Q_DECLARE_METATYPE(tt3::ws::PublicActivityImpl)
-Q_DECLARE_METATYPE(tt3::ws::PublicActivity)
+Q_DECLARE_METATYPE(tt3::ws::PublicTaskImpl)
+Q_DECLARE_METATYPE(tt3::ws::PublicTask)
 
 //#endif  //  def TT3_WS_ACTIVITY_DEFINED
-//  End of tt3-ws/PublicActivity.hpp
+//  End of tt3-ws/PublicTask.hpp

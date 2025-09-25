@@ -1036,11 +1036,22 @@ void Database::_validate()
     for (PublicActivity * publicActivity : _publicActivities)
     {
         if (publicActivity == nullptr || !publicActivity->_isLive ||
-            publicActivity->_database != this)
+            publicActivity->_database != this ||
+            dynamic_cast<PublicTask*>(publicActivity) != nullptr)
         {   //  OOPS!
             throw tt3::db::api::DatabaseCorruptException(this->_address);
         }
         publicActivity->_validate(validatedObjects);
+    }
+    for (PublicTask * publicTask : _rootPublicTasks)
+    {
+        if (publicTask == nullptr || !publicTask->_isLive ||
+            publicTask->_database != this ||
+            publicTask->_parent != nullptr)
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(this->_address);
+        }
+        publicTask->_validate(validatedObjects);
     }
 
     //  Final checks

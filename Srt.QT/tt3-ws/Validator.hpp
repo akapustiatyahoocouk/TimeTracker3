@@ -54,6 +54,14 @@ namespace tt3::ws
         using Activity = tt3::db::api::IValidator::IActivityValidator;
         /// \brief The validator for PublicActivities.
         using PublicActivity = tt3::db::api::IValidator::IPublicActivityValidator;
+        /// \brief The validator for PrivateActivities.
+        using PrivateActivity = tt3::db::api::IValidator::IPrivateActivityValidator;
+        /// \brief The validator for Tasks.
+        using Task = tt3::db::api::IValidator::ITaskValidator;
+        /// \brief The validator for PublicTasks.
+        using PublicTask = tt3::db::api::IValidator::IPublicTaskValidator;
+        /// \brief The validator for PrivateTasks.
+        using PrivateTask = tt3::db::api::IValidator::IPrivateTaskValidator;
 
         //////////
         //  Operations
@@ -93,6 +101,30 @@ namespace tt3::ws
         /// \return
         ///     The validator for PublicActivities.
         PublicActivity *publicActivity() const { return _databaseValidator->publicActivity(); }
+
+        /// \brief
+        ///     Returns the validator for PrivateActivities.
+        /// \return
+        ///     The validator for PrivateActivities.
+        PrivateActivity*privateActivity() const { return _databaseValidator->privateActivity(); }
+
+        /// \brief
+        ///     Returns the validator for Tasks.
+        /// \return
+        ///     The validator for Tasks.
+        Task *          task() const { return _databaseValidator->task(); }
+
+        /// \brief
+        ///     Returns the validator for PublicTasks.
+        /// \return
+        ///     The validator for PublicTasks.
+        PublicTask *    publicTask() const { return _databaseValidator->publicTask(); }
+
+        /// \brief
+        ///     Returns the validator for PrivateTasks.
+        /// \return
+        ///     The validator for PrivateTasks.
+        PrivateTask *   privateTask() const { return _databaseValidator->privateTask(); }
 
         //////////
         //  Implementation

@@ -25,6 +25,8 @@ namespace tt3::ws
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ActivityImpl)
 
         friend class PublicActivityImpl;
+        friend class TaskImpl;
+        friend class PublicTaskImpl;
 
         //////////
         //  Construction/destruction - from friends only

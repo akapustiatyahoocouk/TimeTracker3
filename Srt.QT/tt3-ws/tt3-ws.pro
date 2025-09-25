@@ -13,6 +13,8 @@ SOURCES += \
     ObjectImpl.cpp \
     PrincipalImpl.cpp \
     PublicActivityImpl.cpp \
+    PublicTaskImpl.cpp \
+    TaskImpl.cpp \
     UserImpl.cpp \
     WorkspaceAddressImpl.cpp \
     WorkspaceImpl.cpp \
@@ -33,6 +35,8 @@ HEADERS += \
     Object.hpp \
     Principal.hpp \
     PublicActivity.hpp \
+    PublicTask.hpp \
+    Task.hpp \
     User.hpp \
     Validator.hpp \
     Workload.hpp \

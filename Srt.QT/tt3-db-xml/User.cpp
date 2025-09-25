@@ -49,6 +49,7 @@ void User::destroy()
     {
         account->destroy();
     }
+    Q_ASSERT(_accounts.isEmpty());
 
     _markDead();
 

@@ -1,5 +1,5 @@
 //
-//  tt3-db-xml/PublicActivity.hpp - a public activity
+//  tt3-db-xml/PublicTask.hpp - a public task
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -17,22 +17,23 @@
 
 namespace tt3::db::xml
 {
-    /// \class PublicActivity tt3-db-xml/API.hpp
-    /// \brief A public activity in an XML file database.
-    class TT3_DB_XML_PUBLIC PublicActivity
-        :   public virtual Activity,
-            public virtual tt3::db::api::IPublicActivity
+    /// \class PublicTask tt3-db-xml/API.hpp
+    /// \brief A public task in an XML file database.
+    class TT3_DB_XML_PUBLIC PublicTask final
+        :   public PublicActivity,
+            public Task,
+            public virtual tt3::db::api::IPublicTask
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PublicActivity)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PublicTask)
 
         friend class Database;
-        friend class PublicTask;
 
         //////////
         //  Construction/destruction (from DB type only)
     private:
-        PublicActivity(Database * database, tt3::db::api::Oid oid);
-        virtual ~PublicActivity();
+        PublicTask(Database * database, tt3::db::api::Oid oid);
+        PublicTask(PublicTask * parent, tt3::db::api::Oid oid);
+        virtual ~PublicTask();
 
         //////////
         //  tt3::db::api::IObject (life cycle)
@@ -43,6 +44,11 @@ namespace tt3::db::xml
         //////////
         //  Implementation
     private:
+        //  Associations
+        PublicTask *    _parent;    //  counts as "reference" unless nullptr
+        //  Aggregations
+        PublicTasks     _children;  //  cunt as "references"
+
         //  Helpers
         virtual bool    _siblingExists(const QString & displayName) const override;
         virtual void    _markDead() override;
@@ -55,7 +61,7 @@ namespace tt3::db::xml
                             ) override;
         virtual void    _serializeAggregations(
                                 QDomElement & objectElement
-                        ) override;
+                            ) override;
         virtual void    _serializeAssociations(
                                 QDomElement & objectElement
                             ) override;
@@ -79,4 +85,4 @@ namespace tt3::db::xml
     };
 }
 
-//  End of tt3-db-xml/PublicActivity.hpp
+//  End of tt3-db-xml/PublicTask.hpp

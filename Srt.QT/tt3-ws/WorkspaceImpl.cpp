@@ -573,8 +573,17 @@ ActivityType WorkspaceImpl::_getProxy(tt3::db::api::IActivityType * dataActivity
     return activityType;
 }
 
-PublicActivity WorkspaceImpl::_getProxy(tt3::db::api::IPublicActivity * dataPublicActivity) const
-{   //  TODO what if it's a PublicTask???
+PublicActivity WorkspaceImpl::_getProxy(
+        tt3::db::api::IPublicActivity * dataPublicActivity
+    ) const
+{   //  What if it's a PublicTask?
+    if (auto dataPublicTask =
+            dynamic_cast<tt3::db::api::IPublicTask *>(dataPublicActivity))
+    {   //  ...then use the dedicated proxy getter
+        return std::dynamic_pointer_cast<PublicTaskImpl>(_getProxy(dataPublicTask));
+    }
+
+    //  Do the work
     Q_ASSERT(_guard.isLockedByCurrentThread());
     Q_ASSERT(_isOpen);
     Q_ASSERT(dataPublicActivity != nullptr);
@@ -593,6 +602,30 @@ PublicActivity WorkspaceImpl::_getProxy(tt3::db::api::IPublicActivity * dataPubl
         [](PublicActivityImpl * p) { delete p; });
     _proxyCache.insert(oid, publicActivity);
     return publicActivity;
+}
+
+PublicTask WorkspaceImpl::_getProxy(
+        tt3::db::api::IPublicTask * dataPublicTask
+    ) const
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    Q_ASSERT(_isOpen);
+    Q_ASSERT(dataPublicTask != nullptr);
+
+    Oid oid = dataPublicTask->oid();
+    if (_proxyCache.contains(oid))
+    {
+        PublicTask publicTask = std::dynamic_pointer_cast<PublicTaskImpl>(_proxyCache[oid]);
+        Q_ASSERT(publicTask != nullptr);   //  Objects do not change their types OR reuse OIDs
+        return publicTask;
+    }
+    //  Must create a new proxy
+    Workspace workspace = _address->_workspaceType->_mapWorkspace(const_cast<WorkspaceImpl*>(this));
+    PublicTask publicTask(
+        new PublicTaskImpl(workspace, dataPublicTask),
+        [](PublicTaskImpl * p) { delete p; });
+    _proxyCache.insert(oid, publicTask);
+    return publicTask;
 }
 
 Workload WorkspaceImpl::_getProxy(tt3::db::api::IWorkload * dataWorkload) const

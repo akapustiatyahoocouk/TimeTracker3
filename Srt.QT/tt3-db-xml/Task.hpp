@@ -1,5 +1,5 @@
 //
-//  tt3-db-xml/PublicActivity.hpp - a public activity
+//  tt3-db-xml/Task.hpp - a generic task
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -17,35 +17,42 @@
 
 namespace tt3::db::xml
 {
-    /// \class PublicActivity tt3-db-xml/API.hpp
-    /// \brief A public activity in an XML file database.
-    class TT3_DB_XML_PUBLIC PublicActivity
+    /// \class Task tt3-db-xml/API.hpp
+    /// \brief A generic task in an XML file database.
+    class TT3_DB_XML_PUBLIC Task
         :   public virtual Activity,
-            public virtual tt3::db::api::IPublicActivity
+            public virtual tt3::db::api::ITask
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PublicActivity)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Task)
 
-        friend class Database;
         friend class PublicTask;
 
         //////////
         //  Construction/destruction (from DB type only)
     private:
-        PublicActivity(Database * database, tt3::db::api::Oid oid);
-        virtual ~PublicActivity();
+        Task(Database * database, tt3::db::api::Oid oid);
+        virtual ~Task();
 
         //////////
-        //  tt3::db::api::IObject (life cycle)
+        //  tt3::db::api::ITask (properties)
     public:
-        virtual void    destroy(
+        virtual bool    completed(
+                            ) const override;
+        virtual void    setCompleted(
+                                bool completed
+                            ) override;
+        virtual bool    requireCommentOnCompletion(
+                            ) const override;
+        virtual void    setRequireCommentOnCompletion(
+                                bool requireCommentOnCompletion
                             ) override;
 
         //////////
         //  Implementation
     private:
-        //  Helpers
-        virtual bool    _siblingExists(const QString & displayName) const override;
-        virtual void    _markDead() override;
+        //  Properties
+        bool            _requireCommentOnCompletion;
+        bool            _completed;
 
         //////////
         //  Serialization
@@ -55,7 +62,7 @@ namespace tt3::db::xml
                             ) override;
         virtual void    _serializeAggregations(
                                 QDomElement & objectElement
-                        ) override;
+                            ) override;
         virtual void    _serializeAssociations(
                                 QDomElement & objectElement
                             ) override;
@@ -74,9 +81,9 @@ namespace tt3::db::xml
         //  Validation
     private:
         virtual void    _validate(  //  throws tt3::db::api::DatabaseException
-                                Objects & validatedObjects
-                            ) override;
+                Objects & validatedObjects
+            ) override;
     };
 }
 
-//  End of tt3-db-xml/PublicActivity.hpp
+//  End of tt3-db-xml/Task.hpp

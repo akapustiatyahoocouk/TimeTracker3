@@ -32,6 +32,7 @@ namespace tt3::db::xml
         friend class ActivityType;
         friend class Activity;
         friend class PublicActivity;
+        friend class PublicTask;
 
         friend class Workload;
 
@@ -189,6 +190,7 @@ namespace tt3::db::xml
         Users               _users;             //  count as "references"
         ActivityTypes       _activityTypes;     //  count as "references"
         PublicActivities    _publicActivities;  //  BUT NOT TASKS! count as "references"
+        PublicTasks         _rootPublicTasks;   //  count as "references"
 
         //  Seconsary caches - these do NOT count as "references"
         QMap<tt3::db::api::Oid, Object*> _liveObjects;  //  All "live" objects

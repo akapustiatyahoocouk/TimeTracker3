@@ -37,6 +37,7 @@ namespace tt3::ws
         friend class ActivityTypeImpl;
         friend class ActivityImpl;
         friend class PublicActivityImpl;
+        friend class PublicTaskImpl;
 
         //////////
         //  Construction/destruction - from friends only
@@ -416,6 +417,9 @@ namespace tt3::ws
         auto        _getProxy(  //  throws WorkspaceException
                             tt3::db::api::IPublicActivity * dataPublicActivity
                         ) const -> PublicActivity;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IPublicTask * dataPublicTask
+                        ) const -> PublicTask;
 
         auto        _getProxy(  //  throws WorkspaceException
                             tt3::db::api::IWorkload * dataWorkload

@@ -21,8 +21,8 @@ using namespace tt3::db::xml;
 //  Construction/destruction (from DB type only)
 Activity::Activity(
         Database * database,
-        tt3::db::api::Oid oid)
-    :   Object(database, oid)
+        tt3::db::api::Oid oid
+    ) : Object(database, oid)
 {
 }
 

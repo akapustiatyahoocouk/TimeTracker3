@@ -315,6 +315,96 @@ namespace tt3::db::api
         virtual auto    publicActivity(
             ) const -> IPublicActivityValidator * = 0;
 
+        /// \class IPrivateActivityValidator tt3-db-api/API.hpp
+        /// \brief The validator for a Private Activity.
+        class TT3_DB_API_PUBLIC IPrivateActivityValidator
+            :   public virtual IActivityValidator
+        {
+            //////////
+            //  This is an interface
+        protected:
+            IPrivateActivityValidator() = default;
+            virtual ~IPrivateActivityValidator() = default;
+
+            //////////
+            //  Operations
+        public:
+        };
+        /// \brief
+        ///     Returns the validator for PrivateActivities.
+        /// \return
+        ///     The validator for PrivateActivities.
+        virtual auto    privateActivity(
+            ) const -> IPrivateActivityValidator * = 0;
+
+        /// \class ITaskValidator tt3-db-api/API.hpp
+        /// \brief The validator for a Task.
+        class TT3_DB_API_PUBLIC ITaskValidator
+            :   public virtual IActivityValidator
+        {
+            //////////
+            //  This is an interface
+        protected:
+            ITaskValidator() = default;
+            virtual ~ITaskValidator() = default;
+
+            //////////
+            //  Operations
+        public:
+        };
+        /// \brief
+        ///     Returns the validator for Tasks.
+        /// \return
+        ///     The validator for Tasks.
+        virtual auto    task(
+                            ) const -> ITaskValidator * = 0;
+
+        /// \class IPublicTaskValidator tt3-db-api/API.hpp
+        /// \brief The validator for a PublicTask.
+        class TT3_DB_API_PUBLIC IPublicTaskValidator
+            :   public virtual IPublicActivityValidator,
+                public virtual ITaskValidator
+        {
+            //////////
+            //  This is an interface
+        protected:
+            IPublicTaskValidator() = default;
+            virtual ~IPublicTaskValidator() = default;
+
+            //////////
+            //  Operations
+        public:
+        };
+        /// \brief
+        ///     Returns the validator for PublicTasks.
+        /// \return
+        ///     The validator for PublicTasks.
+        virtual auto    publicTask(
+                            ) const -> IPublicTaskValidator * = 0;
+
+        /// \class IPrivateTaskValidator tt3-db-api/API.hpp
+        /// \brief The validator for a PrivateTask.
+        class TT3_DB_API_PUBLIC IPrivateTaskValidator
+            :   public virtual IPrivateActivityValidator,
+                public virtual ITaskValidator
+        {
+            //////////
+            //  This is an interface
+        protected:
+            IPrivateTaskValidator() = default;
+            virtual ~IPrivateTaskValidator() = default;
+
+            //////////
+            //  Operations
+        public:
+        };
+        /// \brief
+        ///     Returns the validator for PrivateTasks.
+        /// \return
+        ///     The validator for PrivateTasks.
+        virtual auto    privateTask(
+                            ) const -> IPrivateTaskValidator * = 0;
+
         /// \class IWorkloadValidator tt3-db-api/API.hpp
         /// \brief The validator for a Workload.
         class TT3_DB_API_PUBLIC IWorkloadValidator
@@ -384,6 +474,14 @@ namespace tt3::db::api
                             ) const -> IActivityValidator * override;
         virtual auto    publicActivity(
                             ) const -> IPublicActivityValidator * override;
+        virtual auto    privateActivity(
+                            ) const -> IPrivateActivityValidator * override;
+        virtual auto    task(
+                            ) const -> ITaskValidator * override;
+        virtual auto    publicTask(
+                            ) const -> IPublicTaskValidator * override;
+        virtual auto    privateTask(
+                            ) const -> IPrivateTaskValidator * override;
         virtual auto    workload(
                             ) const -> IWorkloadValidator * override;
 
@@ -484,28 +582,14 @@ namespace tt3::db::api
         };
 
         class TT3_DB_API_PUBLIC _ActivityValidator final
-            :   public virtual IActivityValidator
+            :   public virtual IActivityValidator,
+                public virtual IPublicActivityValidator,
+                public virtual IPrivateActivityValidator,
+                public virtual ITaskValidator,
+                public virtual IPublicTaskValidator,
+                public virtual IPrivateTaskValidator
         {
             DECLARE_SINGLETON(_ActivityValidator)
-
-            //////////
-            //  IActivityValidator
-        public:
-            virtual bool    isValidDisplayName(
-                                    const QString & displayName
-                                ) override;
-            virtual bool    isValidDescription(
-                                    const QString & description
-                                ) override;
-            virtual bool    isValidTimeout(
-                                    const InactivityTimeout & timeout
-                                ) override;
-        };
-
-        class TT3_DB_API_PUBLIC _PublicActivityValidator final
-            :   public virtual IPublicActivityValidator
-        {
-            DECLARE_SINGLETON(_PublicActivityValidator)
 
             //////////
             //  IActivityValidator

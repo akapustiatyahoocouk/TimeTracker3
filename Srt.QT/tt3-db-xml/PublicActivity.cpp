@@ -21,8 +21,8 @@ using namespace tt3::db::xml;
 //  Construction/destruction (from DB type only)
 PublicActivity::PublicActivity(
         Database * database,
-        tt3::db::api::Oid oid)
-    :   Activity(database, oid)
+        tt3::db::api::Oid oid
+    ) : Activity(database, oid)
 {
     //  Register PublicActivity with parent
     _database->_publicActivities.insert(this);

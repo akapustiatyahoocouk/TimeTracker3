@@ -15,6 +15,8 @@ SOURCES += \
     Plugins.cpp \
     Principal.cpp \
     PublicActivity.cpp \
+    PublicTask.cpp \
+    Task.cpp \
     User.cpp \
     Workload.cpp
 
@@ -32,6 +34,8 @@ HEADERS += \
     Object.hpp \
     Principal.hpp \
     PublicActivity.hpp \
+    PublicTask.hpp \
+    Task.hpp \
     User.hpp \
     Workload.hpp
 
