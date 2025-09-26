@@ -11,6 +11,7 @@
         <file>Resources/Images/Actions/CancelSmall.png</file>
         <file>Resources/Images/Actions/CloseWorkspaceLarge.png</file>
         <file>Resources/Images/Actions/CloseWorkspaceSmall.png</file>
+        <file>Resources/Images/Actions/CompletePublicTaskLarge.png</file>
         <file>Resources/Images/Actions/CreateAccountLarge.png</file>
         <file>Resources/Images/Actions/CreateAccountSmall.png</file>
         <file>Resources/Images/Actions/CreateActivityTypeLarge.png</file>
@@ -19,6 +20,8 @@
         <file>Resources/Images/Actions/CreateProjectSmall.png</file>
         <file>Resources/Images/Actions/CreatePublicActivityLarge.png</file>
         <file>Resources/Images/Actions/CreatePublicActivitySmall.png</file>
+        <file>Resources/Images/Actions/CreatePublicTaskLarge.png</file>
+        <file>Resources/Images/Actions/CreatePublicTaskSmall.png</file>
         <file>Resources/Images/Actions/CreateUserLarge.png</file>
         <file>Resources/Images/Actions/CreateUserSmall.png</file>
         <file>Resources/Images/Actions/CreateWorkStreamLarge.png</file>
@@ -33,6 +36,8 @@
         <file>Resources/Images/Actions/DestroyProjectSmall.png</file>
         <file>Resources/Images/Actions/DestroyPublicActivityLarge.png</file>
         <file>Resources/Images/Actions/DestroyPublicActivitySmall.png</file>
+        <file>Resources/Images/Actions/DestroyPublicTaskLarge.png</file>
+        <file>Resources/Images/Actions/DestroyPublicTaskSmall.png</file>
         <file>Resources/Images/Actions/DestroyUserLarge.png</file>
         <file>Resources/Images/Actions/DestroyUserSmall.png</file>
         <file>Resources/Images/Actions/DestroyWorkStreamLarge.png</file>
@@ -55,6 +60,8 @@
         <file>Resources/Images/Actions/ModifyProjectSmall.png</file>
         <file>Resources/Images/Actions/ModifyPublicActivityLarge.png</file>
         <file>Resources/Images/Actions/ModifyPublicActivitySmall.png</file>
+        <file>Resources/Images/Actions/ModifyPublicTaskLarge.png</file>
+        <file>Resources/Images/Actions/ModifyPublicTaskSmall.png</file>
         <file>Resources/Images/Actions/ModifyUserLarge.png</file>
         <file>Resources/Images/Actions/ModifyUserSmall.png</file>
         <file>Resources/Images/Actions/ModifyWorkStreamLarge.png</file>
@@ -75,6 +82,14 @@
         <file>Resources/Images/Actions/ShowConfigurationSmall.png</file>
         <file>Resources/Images/Actions/ShowLicenseLarge.png</file>
         <file>Resources/Images/Actions/ShowLicenseSmall.png</file>
+        <file>Resources/Images/Actions/StartPublicActivityLarge.png</file>
+        <file>Resources/Images/Actions/StartPublicActivitySmall.png</file>
+        <file>Resources/Images/Actions/StartPublicTaskLarge.png</file>
+        <file>Resources/Images/Actions/StartPublicTaskSmall.png</file>
+        <file>Resources/Images/Actions/StopPublicActivityLarge.png</file>
+        <file>Resources/Images/Actions/StopPublicActivitySmall.png</file>
+        <file>Resources/Images/Actions/StopPublicTaskLarge.png</file>
+        <file>Resources/Images/Actions/StopPublicTaskSmall.png</file>
         <file>Resources/Images/Actions/ViewAccountLarge.png</file>
         <file>Resources/Images/Actions/ViewAccountSmall.png</file>
         <file>Resources/Images/Actions/ViewActivityTypeLarge.png</file>
@@ -120,9 +135,6 @@
         <file>Resources/Images/Objects/WorkStreamLarge.png</file>
         <file>Resources/Images/Objects/WorkStreamSmall.png</file>
         <file>Resources/Light.qss</file>
-        <file>Resources/Images/Actions/StartPublicActivityLarge.png</file>
-        <file>Resources/Images/Actions/StartPublicActivitySmall.png</file>
-        <file>Resources/Images/Actions/StopPublicActivityLarge.png</file>
-        <file>Resources/Images/Actions/StopPublicActivitySmall.png</file>
+        <file>Resources/Images/Actions/CompletePublicTaskSmall.png</file>
     </qresource>
 </RCC>

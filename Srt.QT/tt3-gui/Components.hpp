@@ -95,7 +95,12 @@ namespace tt3::gui
             /// \brief
             ///     True if the User Manager widget shall display disabled
             ///     Users and Accounts (false to hide them).
-            tt3::util::Setting<bool>    showHiddenUsersAndAccounts;
+            tt3::util::Setting<bool>    showDisabledUsersAndAccounts;
+
+            /// \brief
+            ///     True if the Public Task Manager widget shall display
+            ///     completed Public Tasks (false to hide them).
+            tt3::util::Setting<bool>    showCompletedPublicTasks;
         };
 
         //////////

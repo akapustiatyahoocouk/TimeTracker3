@@ -40,7 +40,6 @@ PublicActivityManager::PublicActivityManager(
 {
     _ui->setupUi(this);
 
-
     _decorations = TreeWidgetDecorations(_ui->publicActivitiesTreeWidget);
 
     //  Theme change means widget decorations change
@@ -161,14 +160,14 @@ void PublicActivityManager::refresh()
         bool readOnly = _workspace->isReadOnly();
         _ui->createPublicActivityPushButton->setEnabled(
             !readOnly &&
-            (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
-             _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManagePublicActivities)));
+            (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||        //  TODO may throw
+             _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManagePublicActivities)));//  TODO may throw
         _ui->modifyPublicActivityPushButton->setEnabled(
             selectedPublicActivity != nullptr);
         _ui->destroyPublicActivityPushButton->setEnabled(
             !readOnly &&
             selectedPublicActivity != nullptr &&
-            selectedPublicActivity->canDestroy(_credentials));
+            selectedPublicActivity->canDestroy(_credentials));  //  TODO may throw
 
         //  TODO if the current  credentials do not allow logging
         //       Work, "start" and "stop" shall be disabled
@@ -190,7 +189,7 @@ void PublicActivityManager::refresh()
         //  Some buttons need to be adjusted for ReadOnoly mode
         if (selectedPublicActivity != nullptr &&
             !selectedPublicActivity->workspace()->isReadOnly() &&
-            selectedPublicActivity->canModify(_credentials))
+            selectedPublicActivity->canModify(_credentials))    //  TODO may throw
         {   //  RW
             _ui->modifyPublicActivityPushButton->setIcon(modifyPublicActivityIcon);
             _ui->modifyPublicActivityPushButton->setText("Modify public activity");
@@ -292,12 +291,14 @@ void PublicActivityManager::_filterItems(_WorkspaceModel workspaceModel)
 
 //////////
 //  Implementation helpers
-void PublicActivityManager::_refreshPublicActivityItems(_WorkspaceModel workspaceModel)
+void PublicActivityManager::_refreshPublicActivityItems(
+        _WorkspaceModel workspaceModel
+    )
 {
     Q_ASSERT(_workspace != nullptr);
     Q_ASSERT(_credentials.isValid());
 
-    //  Make sure the "activity types" tree contains
+    //  Make sure the "public activities" tree contains
     //  a proper number of root (PublicActivity) items...
     while (_ui->publicActivitiesTreeWidget->topLevelItemCount() < workspaceModel->publicActivityModels.size())
     {   //  Too few root (PublicActivity) items
@@ -318,7 +319,7 @@ void PublicActivityManager::_refreshPublicActivityItems(_WorkspaceModel workspac
     }
 
     //  ...and that each top-level item represents
-    //  a proper PublicActivity and has proper children
+    //  a proper PublicActivity
     for (int i = 0; i < workspaceModel->publicActivityModels.size(); i++)
     {
         QTreeWidgetItem * publicActivityItem = _ui->publicActivitiesTreeWidget->topLevelItem(i);

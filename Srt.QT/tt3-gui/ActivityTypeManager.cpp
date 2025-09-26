@@ -141,19 +141,19 @@ void ActivityTypeManager::refresh()
         bool readOnly = _workspace->isReadOnly();
         _ui->createActivityTypePushButton->setEnabled(
             !readOnly &&
-            (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
-             _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageActivityTypes)));
+            (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||    //  TODO may throw
+             _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageActivityTypes)));//  TODO may throw
         _ui->modifyActivityTypePushButton->setEnabled(
             selectedActivityType != nullptr);
         _ui->destroyActivityTypePushButton->setEnabled(
             !readOnly &&
             selectedActivityType != nullptr &&
-            selectedActivityType->canDestroy(_credentials));
+            selectedActivityType->canDestroy(_credentials));    //  TODO may throw
 
         //  Some buttons need to be adjusted for ReadOnoly mode
         if (selectedActivityType != nullptr &&
             !selectedActivityType->workspace()->isReadOnly() &&
-            selectedActivityType->canModify(_credentials))
+            selectedActivityType->canModify(_credentials))  //  TODO may throw
         {   //  RW
             _ui->modifyActivityTypePushButton->setIcon(modifyActivityTypeIcon);
             _ui->modifyActivityTypePushButton->setText("Modify activity type");

@@ -1,5 +1,5 @@
 //
-//  tt3-gui/PublicActivityManager.hpp - The Public Activity Manager widget
+//  tt3-gui/PublicTaskManager.hpp - The Public Task Manager widget
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,15 +19,14 @@
 
 namespace tt3::gui
 {
-    namespace Ui { class PublicActivityManager; }
+    namespace Ui { class PublicTaskManager; }
 
-    /// \class PublicActivityManager tt3-gui/API.hpp
-    /// \brief The Public Activity Manager widget
-    class TT3_GUI_PUBLIC PublicActivityManager final
-        :   public QWidget
+    /// \class PublicTaskManager tt3-gui/API.hpp
+    /// \brief The Public Task Manager widget
+    class TT3_GUI_PUBLIC PublicTaskManager final : public QWidget
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PublicActivityManager)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PublicTaskManager)
 
         //////////
         //  Construction/destruction
@@ -36,13 +35,13 @@ namespace tt3::gui
         ///     Constructs the widget.
         /// \param parent
         ///     The parent for this widget; nullptr == none.
-        explicit PublicActivityManager(
-                QWidget * parent
+        explicit PublicTaskManager(
+                QWidget * parentr
             );
 
         /// \brief
         ///     The class destructor.
-        virtual ~PublicActivityManager();
+        virtual ~PublicTaskManager();
 
         //////////
         //  Operaions
@@ -56,7 +55,7 @@ namespace tt3::gui
         ///     The workspace currently viewed in this widget;
         ///     nullptr == none.
         auto            workspace(
-                            ) const -> tt3::ws::Workspace;
+            ) const -> tt3::ws::Workspace;
 
         /// \brief
         ///     Sets the workspace currently viewed in this widget.
@@ -64,8 +63,8 @@ namespace tt3::gui
         ///     The new workspace to be viewed in this widget;
         ///     nullptr == none.
         void            setWorkspace(
-                                tt3::ws::Workspace workspace
-                            );
+            tt3::ws::Workspace workspace
+            );
 
         /// \brief
         ///     Returns the credentials used by this widget to
@@ -77,7 +76,7 @@ namespace tt3::gui
         ///     The credentials used by this widget to display
         ///     the workspace.
         auto            credentials(
-                            ) const -> tt3::ws::Credentials;
+            ) const -> tt3::ws::Credentials;
 
         /// \brief
         ///     Sets the credentials used by this widget to
@@ -89,8 +88,8 @@ namespace tt3::gui
         ///     The credentials to be used by this widget to
         ///     display the workspace.
         void            setCredentials(
-                                const tt3::ws::Credentials & credentials
-                            );
+            const tt3::ws::Credentials & credentials
+            );
 
         /// \brief
         ///     Refreshes the content of this widget.
@@ -116,44 +115,69 @@ namespace tt3::gui
 
         //  View model
         struct _WorkspaceModelImpl;
-        struct _PublicActivityModelImpl;
+        struct _PublicTaskModelImpl;
 
         using _WorkspaceModel = std::shared_ptr<_WorkspaceModelImpl>;
-        using _PublicActivityModel = std::shared_ptr<_PublicActivityModelImpl>;
+        using _PublicTaskModel = std::shared_ptr<_PublicTaskModelImpl>;
 
-        using _PublicActivityModels = QList<_PublicActivityModel>;
+        using _PublicTaskModels = QList<_PublicTaskModel>;
 
         struct _WorkspaceModelImpl
         {
             //  Aggregations
-            _PublicActivityModels publicActivityModels;     //  ordered by text
+            _PublicTaskModels publicTaskModels; //  ordered by text
         };
 
-        struct _PublicActivityModelImpl
+        struct _PublicTaskModelImpl
         {
-            _PublicActivityModelImpl(tt3::ws::PublicActivity pa)
-                :   publicActivity(pa) {}
+            _PublicTaskModelImpl(tt3::ws::PublicTask pt)
+                :   publicTask(pt) {}
             //  Properties
-            tt3::ws::PublicActivity publicActivity;//  represented by this model
-            QString     text;           //  for PublicActivity tree items
-            QIcon       icon;           //  for PublicActivity tree items
-            QFont       font;           //  for PublicActivity tree items
-            QBrush      brush;          //  for PublicActivity tree items' text
-            QString     tooltip;        //  for PublicActivity tree items' text
+            tt3::ws::PublicTask publicTask;//  represented by this model
+            QString     text;           //  for PublicTask tree items
+            QIcon       icon;           //  for PublicTask tree items
+            QFont       font;           //  for PublicTask tree items
+            QBrush      brush;          //  for PublicTask tree items' text
+            QString     tooltip;        //  for PublicTask tree items' text
+            //  Aggregations
+            _PublicTaskModels childModels;  //  ordered by text
         };
 
         auto            _createWorkspaceModel(
                             ) -> _WorkspaceModel;
-        auto            _createPublicActivityModel(
-                                tt3::ws::PublicActivity publicActivity
-                            ) -> _PublicActivityModel;
-        void            _filterItems(_WorkspaceModel workspaceModel);
+        auto            _createPublicTaskModel(
+                                tt3::ws::PublicTask publicTask
+                            ) -> _PublicTaskModel;
+        void            _removeCompletedItems(
+                                _WorkspaceModel workspaceModel
+                            );
+        void            _removeCompletedItems(
+                                _PublicTaskModel publicTaskModel
+                            );
+        void            _filterItems(
+                                _WorkspaceModel workspaceModel
+                            );
+        void            _filterItems(
+                                _PublicTaskModel publicTaskModel
+                            );
 
         //  Helpers
-        void            _refreshPublicActivityItems(_WorkspaceModel workspaceModel);
-        auto            _selectedPublicActivity(
-                            ) -> tt3::ws::PublicActivity;
-        void            _setSelectedPublicActivity(tt3::ws::PublicActivity publicActivity);
+        void            _refreshPublicTaskItems(
+                                _WorkspaceModel workspaceModel
+                            );
+        void            _refreshChildItems(
+                                QTreeWidgetItem * publicTaskItem,
+                                _PublicTaskModel publicTaskModel
+                            );
+        auto            _selectedPublicTask(
+                            ) -> tt3::ws::PublicTask;
+        bool            _setSelectedPublicTask(
+                                tt3::ws::PublicTask publicTask
+                            );
+        bool            _setSelectedPublicTask(
+                                QTreeWidgetItem * parentItem,
+                                tt3::ws::PublicTask publicTask
+                            );
         void            _startListeningToWorkspaceChanges();
         void            _stopListeningToWorkspaceChanges();
         void            _clearAndDisableAllControls();
@@ -161,8 +185,8 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::PublicActivityManager *const    _ui;
-        std::unique_ptr<QMenu>  _publicActivitiesTreeContextMenu;
+        Ui::PublicTaskManager *const    _ui;
+        std::unique_ptr<QMenu>  _publicTasksTreeContextMenu;
         QTimer                  _refreshTimer;
 
         //  Drawing resources
@@ -173,13 +197,16 @@ namespace tt3::gui
     private slots:
         void            _currentThemeChanged(ITheme *, ITheme *);
         void            _currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity);
-        void            _publicActivitiesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
-        void            _publicActivitiesTreeWidgetCustomContextMenuRequested(QPoint);
-        void            _createPublicActivityPushButtonClicked();
-        void            _modifyPublicActivityPushButtonClicked();
-        void            _destroyPublicActivityPushButtonClicked();
-        void            _startPublicActivityPushButtonClicked();
-        void            _stopPublicActivityPushButtonClicked();
+        void            _publicTasksTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
+        void            _publicTasksTreeWidgetCustomContextMenuRequested(QPoint);
+        void            _createPublicTaskPushButtonClicked();
+        void            _modifyPublicTaskPushButtonClicked();
+        void            _destroyPublicTaskPushButtonClicked();
+        void            _startPublicTaskPushButtonClicked();
+        void            _stopPublicTaskPushButtonClicked();
+        void            _completePublicTaskPushButtonClicked();
+        void            _showCompletedCheckBoxToggled(bool);
+        void            _viewOptionSettingValueChanged();
         void            _filterLineEditTextChanged(QString);
         void            _workspaceClosed(tt3::ws::WorkspaceClosedNotification notification);
         void            _objectCreated(tt3::ws::ObjectCreatedNotification notification);
@@ -190,5 +217,4 @@ namespace tt3::gui
     };
 }
 
-//  End of tt3-gui/PublicActivityManager.hpp
-
+//  End of tt3-gui/PublicTaskManager.hpp

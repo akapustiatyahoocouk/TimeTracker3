@@ -36,6 +36,71 @@ PublicTaskImpl::~PublicTaskImpl()
 }
 
 //////////
+//  Operations (associations)
+auto PublicTaskImpl::parent(
+        const Credentials & credentials
+    ) const -> PublicTask
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        if (auto dataParent = _dataPublicTask->parent())  //  may throw
+        {
+            return _workspace->_getProxy(dataParent);
+        }
+        return PublicTask();
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+void PublicTaskImpl::setParent(
+        const Credentials & /*credentials*/,
+        PublicTask /*parent*/
+    )
+{
+    throw tt3::util::NotImplementedError();
+}
+
+auto PublicTaskImpl::children(
+        const Credentials & credentials
+    ) const -> PublicTasks
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        PublicTasks result;
+        for (auto dataChild : _dataPublicTask->children())  //  may throw
+        {
+            result.insert(_workspace->_getProxy(dataChild));
+        }
+        return result;
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+//////////
 //  Implementation (Access control)
 bool PublicTaskImpl::_canRead(
         const Credentials & credentials

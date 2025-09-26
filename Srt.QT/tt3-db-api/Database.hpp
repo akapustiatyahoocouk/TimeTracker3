@@ -176,8 +176,7 @@ namespace tt3::db::api
         /// \exception DatabaseException
         ///     If an error occurs.
         virtual auto    publicActivitiesAndTasks(
-                            ) const
-                            -> PublicActivities = 0;
+                            ) const -> PublicActivities = 0;
 
         /// \brief
         ///     Returns the set of all public tasks in this database.

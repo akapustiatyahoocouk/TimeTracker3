@@ -46,6 +46,7 @@
 #include "tt3-gui/UserManager.hpp"
 #include "tt3-gui/ActivityTypeManager.hpp"
 #include "tt3-gui/PublicActivityManager.hpp"
+#include "tt3-gui/PublicTaskManager.hpp"
 
 //  Dialogs
 #include "tt3-gui/ErrorDialog.hpp"

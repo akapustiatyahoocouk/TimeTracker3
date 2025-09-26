@@ -19,18 +19,6 @@ using namespace tt3::util;
 
 //////////
 //  Operations
-bool Settings::addSetting(AbstractSetting * setting)
-{
-    Q_ASSERT(setting != nullptr);
-
-    if (!_settings.contains(setting->mnemonic()))
-    {
-        _settings[setting->mnemonic()] = setting;
-        return true;
-    }
-    return false;
-}
-
 QSet<AbstractSetting*> Settings::settings() const
 {
     QList<AbstractSetting*> values = _settings.values();

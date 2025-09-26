@@ -102,11 +102,8 @@ const Component::Settings * Component::settings() const
 IMPLEMENT_SINGLETON(Component::Settings)
 
 Component::Settings::Settings()
-    :   recentWorkspaces(
-            M(RecentWorkspaces),
-            WorkspaceAddressesList())
+    :   recentWorkspaces(this, M(RecentWorkspaces), WorkspaceAddressesList())
 {
-    addSetting(&recentWorkspaces);
 }
 
 Component::Settings::~Settings()

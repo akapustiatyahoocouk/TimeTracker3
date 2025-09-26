@@ -151,7 +151,7 @@ void ComponentManager::saveComponentSettings()
     {
         QTextStream iniStream(&iniFile);
         for (IComponent * component : ComponentManager::allComponents())
-        {
+        {   //  TODO sort by component mnemonic
             iniStream << "["
                       << component->mnemonic().toString()
                       << ":"
@@ -159,7 +159,7 @@ void ComponentManager::saveComponentSettings()
                       << "]"
                       << Qt::endl;
             for (AbstractSetting * setting : component->settings()->settings())
-            {
+            {   //  TODO sort by setting mnemonic
                 iniStream
                     << setting->mnemonic().toString()
                     << "="

@@ -1,0 +1,912 @@
+//
+//  tt3-gui/PublicTaskManager.cpp - tt3::gui::PublicTaskManager class implementation
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+#include "tt3-gui/API.hpp"
+#include "ui_PublicTaskManager.h"
+using namespace tt3::gui;
+
+namespace tt3::gui
+{
+    extern CurrentTheme theCurrentTheme;
+    extern CurrentActivity theCurrentActivity;
+    extern CurrentCredentials theCurrentCredentials;
+    extern CurrentWorkspace theCurrentWorkspace;
+}
+
+//////////
+//  Construction/destruction
+PublicTaskManager::PublicTaskManager(
+        QWidget * parent
+    ) : QWidget(parent),
+        //  Implementation
+        _workspace(theCurrentWorkspace),
+        _credentials(theCurrentCredentials),
+        //  Controls
+        _ui(new Ui::PublicTaskManager),
+        _refreshTimer(this)
+{
+    _ui->setupUi(this);
+
+    _decorations = TreeWidgetDecorations(_ui->publicTasksTreeWidget);
+
+    //  Theme change means widget decorations change
+    connect(&theCurrentTheme,
+            &CurrentTheme::changed,
+            this,
+            &PublicTaskManager::_currentThemeChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Current activity change means, at least, a refresh
+    connect(&theCurrentActivity,
+            &CurrentActivity::changed,
+            this,
+            &PublicTaskManager::_currentActivityChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  View options changes should cause a refresh
+    connect(&Component::Settings::instance()->showCompletedPublicTasks,
+            &tt3::util::AbstractSetting::valueChanged,
+            this,
+            &PublicTaskManager::_viewOptionSettingValueChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Must listen to delayed refresh requests
+    connect(this,
+            &PublicTaskManager::refreshRequested,
+            this,
+            &PublicTaskManager::_refreshRequested,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Start listening for change notifications
+    //  on the currently "viewed" Workspace
+    _startListeningToWorkspaceChanges();
+
+    //  Start refreshing on timer
+    connect(&_refreshTimer,
+            &QTimer::timeout,
+            this,
+            &PublicTaskManager::_refreshTimerTimeout);
+    _refreshTimer.start(1000);
+}
+
+PublicTaskManager::~PublicTaskManager()
+{
+    _refreshTimer.stop();
+    _stopListeningToWorkspaceChanges();
+    delete _ui;
+}
+
+//////////
+//  Operaions
+tt3::ws::Workspace PublicTaskManager::workspace() const
+{
+    return _workspace;
+}
+
+void PublicTaskManager::setWorkspace(tt3::ws::Workspace workspace)
+{
+    if (workspace != _workspace)
+    {
+        _stopListeningToWorkspaceChanges();
+        _workspace = workspace;
+        _startListeningToWorkspaceChanges();
+        requestRefresh();
+    }
+}
+
+tt3::ws::Credentials PublicTaskManager::credentials() const
+{
+    return _credentials;
+}
+
+void PublicTaskManager::setCredentials(const tt3::ws::Credentials & credentials)
+{
+    if (credentials != _credentials)
+    {
+        _credentials = credentials;
+        requestRefresh();
+    }
+}
+
+void PublicTaskManager::refresh()
+{
+    static const QIcon viewPublicTaskIcon(":/tt3-gui/Resources/Images/Actions/ViewPublicTaskLarge.png");
+    static const QIcon modifyPublicTaskIcon(":/tt3-gui/Resources/Images/Actions/ModifyPublicTaskLarge.png");
+
+    //  We don't want a refresh() to trigger a recursive refresh()!
+    static bool refreshUnderway = false;
+    RefreshGuard refreshGuard(refreshUnderway);
+    if (refreshGuard)   //  Don't recurse!
+    {
+        try
+        {
+            if (_workspace == nullptr || !_credentials.isValid() ||
+                !_workspace->isOpen() ||
+                !_workspace->canAccess(_credentials)) //  may throw
+            {   //  Nothing to show
+                refreshUnderway = false;
+                _clearAndDisableAllControls();
+                return;
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! No point in proceesing.
+            qCritical() << ex.errorMessage();
+            _clearAndDisableAllControls();
+            return;
+        }
+
+        //  Otherwise some controls are always enabled...
+        _ui->filterLabel->setEnabled(true);
+        _ui->filterLineEdit->setEnabled(true);
+        _ui->publicTasksTreeWidget->setEnabled(true);
+        _ui->showCompletedCheckBox->setEnabled(true);
+
+        //  ...while others are enabled based on current
+        //  selection and permissions granted by Credentials
+        _WorkspaceModel workspaceModel = _createWorkspaceModel();
+        if (!_ui->filterLineEdit->text().trimmed().isEmpty())
+        {
+            _filterItems(workspaceModel);
+        }
+        _refreshPublicTaskItems(workspaceModel);
+
+        tt3::ws::PublicTask selectedPublicTask = _selectedPublicTask();
+        bool readOnly = _workspace->isReadOnly();
+        try
+        {
+            _ui->createPublicTaskPushButton->setEnabled(
+                !readOnly &&
+                (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
+                 _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManagePublicTasks)));
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Report & recover
+            qCritical() << ex.errorMessage();
+            _ui->createPublicTaskPushButton->setEnabled(false);
+        }
+        _ui->modifyPublicTaskPushButton->setEnabled(
+            selectedPublicTask != nullptr);
+        try
+        {
+            _ui->destroyPublicTaskPushButton->setEnabled(
+                !readOnly &&
+                selectedPublicTask != nullptr &&
+                selectedPublicTask->canDestroy(_credentials));
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Report & recover
+            qCritical() << ex.errorMessage();
+            _ui->destroyPublicTaskPushButton->setEnabled(false);
+        }
+
+        //  TODO if the current  credentials do not allow logging
+        //       Work, "start" and "stop" shall be disabled
+        //  TODO if the current credentials do not allow logging
+        //       Events and the selectedPublicTask requires comment
+        //       on start, "start" shall be disabled.
+        //  TODO if the current credentials do not allow logging
+        //       Events and the current Task requires comment on
+        //       finish, "start" and "stop" shall be disabled.
+        _ui->startPublicTaskPushButton->setEnabled(
+            !readOnly &&
+            selectedPublicTask != nullptr &&
+            theCurrentActivity != selectedPublicTask);
+        _ui->stopPublicTaskPushButton->setEnabled(
+            !readOnly &&
+            selectedPublicTask != nullptr &&
+            theCurrentActivity == selectedPublicTask);
+        try
+        {
+            _ui->completePublicTaskPushButton->setEnabled(
+                !readOnly &&
+                selectedPublicTask != nullptr &&
+                selectedPublicTask->canModify(_credentials) &&   //  may throw
+                !selectedPublicTask->completed(_credentials));   //  may throw
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Report & recover
+            qCritical() << ex.errorMessage();
+            _ui->completePublicTaskPushButton->setEnabled(false);
+        }
+
+        _ui->showCompletedCheckBox->setChecked(
+            Component::Settings::instance()->showCompletedPublicTasks);
+
+        //  Some buttons need to be adjusted for ReadOnoly mode
+        if (selectedPublicTask != nullptr &&
+            !selectedPublicTask->workspace()->isReadOnly() &&
+            selectedPublicTask->canModify(_credentials))    //  TODO may throw
+        {   //  RW
+            _ui->modifyPublicTaskPushButton->setIcon(modifyPublicTaskIcon);
+            _ui->modifyPublicTaskPushButton->setText("Modify public task");
+        }
+        else
+        {   //  RO
+            _ui->modifyPublicTaskPushButton->setIcon(viewPublicTaskIcon);
+            _ui->modifyPublicTaskPushButton->setText("View public task");
+        }
+    }
+}
+
+void PublicTaskManager::requestRefresh()
+{
+    emit refreshRequested();
+}
+
+//////////
+//  View model
+PublicTaskManager::_WorkspaceModel PublicTaskManager::_createWorkspaceModel()
+{
+    _WorkspaceModel workspaceModel { new _WorkspaceModelImpl() };
+    try
+    {
+        for (tt3::ws::PublicTask publicTask : _workspace->rootPublicTasks(_credentials))    //  may throw
+        {
+            workspaceModel->publicTaskModels.append(_createPublicTaskModel(publicTask));
+        }
+        std::sort(workspaceModel->publicTaskModels.begin(),
+                  workspaceModel->publicTaskModels.end(),
+                  [&](auto a, auto b)
+                  { return a->text < b->text; });
+    }
+    catch (const tt3::util::Exception &)
+    {
+        workspaceModel->publicTaskModels.clear();
+    }
+    return workspaceModel;
+}
+
+auto PublicTaskManager::_createPublicTaskModel(
+        tt3::ws::PublicTask publicTask
+    ) -> PublicTaskManager::_PublicTaskModel
+{
+    static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+
+    _PublicTaskModel publicTaskModel
+        { new _PublicTaskModelImpl(publicTask) };
+    try
+    {
+        publicTaskModel->text = publicTask->displayName(_credentials);
+        publicTaskModel->icon = publicTask->type()->smallIcon();
+        publicTaskModel->brush = _decorations.itemForeground;
+        publicTaskModel->font = _decorations.itemFont;
+        publicTaskModel->tooltip = publicTask->description(_credentials).trimmed();
+        //  A "current" activity needs some extras
+        if (theCurrentActivity == publicTask)
+        {
+            qint64 secs = qMax(0, theCurrentActivity.lastChangedAt().secsTo(QDateTime::currentDateTimeUtc()));
+            char s[32];
+            sprintf(s, " [%d:%02d:%02d]",
+                    int(secs / (60 * 60)),
+                    int((secs / 60) % 60),
+                    int(secs % 60));
+            publicTaskModel->text += s;
+            publicTaskModel->font = _decorations.itemEmphasisFont;
+        }
+        //  Do the children
+        for (tt3::ws::PublicTask child : publicTask->children(_credentials))    //  may throw
+        {
+            publicTaskModel->childModels.append(_createPublicTaskModel(child));
+        }
+        std::sort(publicTaskModel->childModels.begin(),
+                  publicTaskModel->childModels.end(),
+                  [&](auto a, auto b)
+                  { return a->text < b->text; });
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        publicTaskModel->text = ex.errorMessage();
+        publicTaskModel->icon = errorIcon;
+        publicTaskModel->font = _decorations.itemFont;
+        publicTaskModel->brush = _decorations.errorItemForeground;
+        publicTaskModel->tooltip = ex.errorMessage();
+        publicTaskModel->childModels.clear();
+    }
+    return publicTaskModel;
+}
+
+void PublicTaskManager::_removeCompletedItems(
+        _WorkspaceModel workspaceModel
+    )
+{
+    for (qsizetype i = workspaceModel->publicTaskModels.size() - 1; i >= 0; i--)
+    {
+        _PublicTaskModel publicTaskModel = workspaceModel->publicTaskModels[i];
+        _removeCompletedItems(publicTaskModel);
+        //  If this PublicTask is completed...
+        try
+        {
+            if (publicTaskModel->publicTask->completed(_credentials))   //  may throw
+            {
+                if (publicTaskModel->childModels.isEmpty())
+                {   //  ...and has no children models - delete it
+                    workspaceModel->publicTaskModels.removeAt(i);
+                }
+                //  ...else it has child models - keep it
+            }
+            //  ...else keep this PublicTask item
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Suppress, but log
+            qCritical() << ex.errorMessage();
+        }
+    }
+}
+
+void PublicTaskManager::_removeCompletedItems(
+        _PublicTaskModel publicTaskModel
+    )
+{
+    for (qsizetype i = publicTaskModel->childModels.size() - 1; i >= 0; i--)
+    {
+        _PublicTaskModel childModel = publicTaskModel->childModels[i];
+        _removeCompletedItems(childModel);
+        //  If this PublicTask is completed...
+        try
+        {
+            if (childModel->publicTask->completed(_credentials))    //  may throw
+            {
+                if (childModel->childModels.isEmpty())
+                {   //  ...and has no children models - delete it
+                    publicTaskModel->childModels.removeAt(i);
+                }
+                //  ...else it has child models - keep it
+            }
+            //  ...else keep this PublicTask item
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Suppress, but log
+            qCritical() << ex.errorMessage();
+        }
+    }
+}
+
+void PublicTaskManager::_filterItems(
+        _WorkspaceModel workspaceModel
+    )
+{
+    QString filter = _ui->filterLineEdit->text().trimmed();
+    Q_ASSERT(!filter.isEmpty());
+
+    for (qsizetype i = workspaceModel->publicTaskModels.size() - 1; i >= 0; i--)
+    {
+        _PublicTaskModel publicTaskModel = workspaceModel->publicTaskModels[i];
+        _filterItems(publicTaskModel);
+        if (publicTaskModel->text.indexOf(filter, 0, Qt::CaseInsensitive) != -1)
+        {   //  Item matches the filter - mark it as a match
+            publicTaskModel->brush = _decorations.filterMatchItemForeground;
+        }
+        else if (publicTaskModel->childModels.isEmpty())
+        {   //  Item does not match the filter and has no children - remove it
+            workspaceModel->publicTaskModels.removeAt(i);
+        }
+        else
+        {   //  Item does not match the filter but has children - show as disabled
+            workspaceModel->publicTaskModels[i]->brush = _decorations.disabledItemForeground;
+        }
+    }
+}
+
+void PublicTaskManager::_filterItems(
+        _PublicTaskModel publicTaskModel
+    )
+{
+    QString filter = _ui->filterLineEdit->text().trimmed();
+    Q_ASSERT(!filter.isEmpty());
+
+    for (qsizetype i = publicTaskModel->childModels.size() - 1; i >= 0; i--)
+    {
+        _PublicTaskModel childModel = publicTaskModel->childModels[i];
+        _filterItems(childModel);
+        if (childModel->text.indexOf(filter, 0, Qt::CaseInsensitive) != -1)
+        {   //  Item matches the filter - mark it as a match
+            childModel->brush = _decorations.filterMatchItemForeground;
+        }
+        else if (childModel->childModels.isEmpty())
+        {   //  Item does not match the filter and has no children - remove it
+            publicTaskModel->childModels.removeAt(i);
+        }
+        else
+        {   //  Item does not match the filter but has children - show as disabled
+            publicTaskModel->childModels[i]->brush = _decorations.disabledItemForeground;
+        }
+    }
+}
+
+//////////
+//  Implementation helpers
+void PublicTaskManager::_refreshPublicTaskItems(
+        _WorkspaceModel workspaceModel
+    )
+{
+    Q_ASSERT(workspaceModel != nullptr);
+
+    //  Make sure the "public tasks" tree contains
+    //  a proper number of root (PublicTask) items...
+    while (_ui->publicTasksTreeWidget->topLevelItemCount() < workspaceModel->publicTaskModels.size())
+    {   //  Too few root (PublicTask) items
+        _PublicTaskModel publicTaskModel = workspaceModel->publicTaskModels[_ui->publicTasksTreeWidget->topLevelItemCount()];
+        QTreeWidgetItem * publicTaskItem = new QTreeWidgetItem();
+        publicTaskItem->setText(0, publicTaskModel->text);
+        publicTaskItem->setIcon(0, publicTaskModel->icon);
+        publicTaskItem->setForeground(0, publicTaskModel->brush);
+        publicTaskItem->setFont(0, publicTaskModel->font);
+        publicTaskItem->setToolTip(0, publicTaskModel->tooltip);
+        publicTaskItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(publicTaskModel->publicTask));
+        _ui->publicTasksTreeWidget->addTopLevelItem(publicTaskItem);
+    }
+    while (_ui->publicTasksTreeWidget->topLevelItemCount() > workspaceModel->publicTaskModels.size())
+    {   //  Too many root (PublicTask) items
+        delete _ui->publicTasksTreeWidget->takeTopLevelItem(
+            _ui->publicTasksTreeWidget->topLevelItemCount() - 1);
+    }
+
+    //  ...and that each top-level item represents
+    //  a proper PublicTask and has proper children
+    for (int i = 0; i < workspaceModel->publicTaskModels.size(); i++)
+    {
+        QTreeWidgetItem * publicTaskItem = _ui->publicTasksTreeWidget->topLevelItem(i);
+        _PublicTaskModel publicTaskModel = workspaceModel->publicTaskModels[i];
+        publicTaskItem->setText(0, publicTaskModel->text);
+        publicTaskItem->setIcon(0, publicTaskModel->icon);
+        publicTaskItem->setForeground(0, publicTaskModel->brush);
+        publicTaskItem->setFont(0, publicTaskModel->font);
+        publicTaskItem->setToolTip(0, publicTaskModel->tooltip);
+        publicTaskItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(publicTaskModel->publicTask));
+        //  ...and children
+        _refreshChildItems(publicTaskItem, publicTaskModel);
+    }
+}
+
+void PublicTaskManager::_refreshChildItems(
+        QTreeWidgetItem * publicTaskItem,
+        _PublicTaskModel publicTaskModel
+    )
+{
+    Q_ASSERT(publicTaskItem != nullptr);
+    Q_ASSERT(publicTaskModel != nullptr);
+
+    //  Make sure the public task, tree item tree contains
+    //  a proper number of childs items...
+    while (publicTaskItem->childCount() < publicTaskModel->childModels.size())
+    {   //  Too few child items
+        //  TODO optimize all ...Manager::_refresh...() methods similarly
+        //  TODO kill off _PublicTaskModel childModel = publicTaskModel->childModels[publicTaskItem->childCount()];
+        QTreeWidgetItem * childItem = new QTreeWidgetItem();
+        /*  TODO kill off
+        childItem->setText(0, childModel->text);
+        childItem->setIcon(0, childModel->icon);
+        childItem->setForeground(0, childModel->brush);
+        childItem->setFont(0, childModel->font);
+        childItem->setToolTip(0, childModel->tooltip);
+        childItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(childModel->publicTask));
+        */
+        publicTaskItem->addChild(childItem);
+    }
+    while (publicTaskItem->childCount() > publicTaskModel->childModels.size())
+    {   //  Too many child items
+        delete _ui->publicTasksTreeWidget->takeTopLevelItem(
+            _ui->publicTasksTreeWidget->topLevelItemCount() - 1);
+    }
+
+    //  ...and that each child item represents
+    //  a proper PublicTask and has proper children
+    for (int i = 0; i < publicTaskModel->childModels.size(); i++)
+    {
+        QTreeWidgetItem * childItem = publicTaskItem->child(i);
+        _PublicTaskModel childModel = publicTaskModel->childModels[i];
+        childItem->setText(0, childModel->text);
+        childItem->setIcon(0, childModel->icon);
+        childItem->setForeground(0, childModel->brush);
+        childItem->setFont(0, childModel->font);
+        childItem->setToolTip(0, childModel->tooltip);
+        childItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(childModel->publicTask));
+        //  ...and children
+        _refreshChildItems(childItem, childModel);
+    }
+}
+
+auto PublicTaskManager::_selectedPublicTask(
+    ) -> tt3::ws::PublicTask
+{
+    QTreeWidgetItem * item = _ui->publicTasksTreeWidget->currentItem();
+    return (item != nullptr) ?
+               item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicTask>() :
+               nullptr;
+}
+
+bool PublicTaskManager::_setSelectedPublicTask(
+        tt3::ws::PublicTask publicTask
+    )
+{
+    for (int i = 0; i < _ui->publicTasksTreeWidget->topLevelItemCount(); i++)
+    {
+        QTreeWidgetItem * item = _ui->publicTasksTreeWidget->topLevelItem(i);
+        if (publicTask == item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicTask>())
+        {   //  This one!
+            _ui->publicTasksTreeWidget->setCurrentItem(item);
+            return true;
+        }
+        if (_setSelectedPublicTask(item, publicTask))
+        {   //  One of descendants selected
+            return true;
+        }
+    }
+    return false;
+}
+
+bool PublicTaskManager::_setSelectedPublicTask(
+        QTreeWidgetItem * parentItem,
+        tt3::ws::PublicTask publicTask
+    )
+{
+    for (int i = 0; i < parentItem->childCount(); i++)
+    {
+        QTreeWidgetItem * item = parentItem->child(i);
+        if (publicTask == item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicTask>())
+        {   //  This one!
+            _ui->publicTasksTreeWidget->setCurrentItem(item);
+            return true;
+        }
+        if (_setSelectedPublicTask(item, publicTask))
+        {   //  One of descendants selected
+            return true;
+        }
+    }
+    return false;
+}
+
+void PublicTaskManager::_startListeningToWorkspaceChanges()
+{
+    if (_workspace != nullptr)
+    {
+        connect(_workspace.get(),
+                &tt3::ws::WorkspaceImpl::workspaceClosed,
+                this,
+                &PublicTaskManager::_workspaceClosed,
+                Qt::ConnectionType::QueuedConnection);
+        connect(_workspace.get(),
+                &tt3::ws::WorkspaceImpl::objectCreated,
+                this,
+                &PublicTaskManager::_objectCreated,
+                Qt::ConnectionType::QueuedConnection);
+        connect(_workspace.get(),
+                &tt3::ws::WorkspaceImpl::objectDestroyed,
+                this,
+                &PublicTaskManager::_objectDestroyed,
+                Qt::ConnectionType::QueuedConnection);
+        connect(_workspace.get(),
+                &tt3::ws::WorkspaceImpl::objectModified,
+                this,
+                &PublicTaskManager::_objectModified,
+                Qt::ConnectionType::QueuedConnection);
+    }
+}
+
+void PublicTaskManager::_stopListeningToWorkspaceChanges()
+{
+    if (_workspace != nullptr)
+    {
+        disconnect(_workspace.get(),
+                   &tt3::ws::WorkspaceImpl::workspaceClosed,
+                   this,
+                   &PublicTaskManager::_workspaceClosed);
+        disconnect(_workspace.get(),
+                   &tt3::ws::WorkspaceImpl::objectCreated,
+                   this,
+                   &PublicTaskManager::_objectCreated);
+        disconnect(_workspace.get(),
+                   &tt3::ws::WorkspaceImpl::objectDestroyed,
+                   this,
+                   &PublicTaskManager::_objectDestroyed);
+        disconnect(_workspace.get(),
+                   &tt3::ws::WorkspaceImpl::objectModified,
+                   this,
+                   &PublicTaskManager::_objectModified);
+    }
+}
+
+void PublicTaskManager::_clearAndDisableAllControls()
+{
+    _ui->publicTasksTreeWidget->clear();
+    _ui->filterLabel->setEnabled(false);
+    _ui->filterLineEdit->setEnabled(false);
+    _ui->publicTasksTreeWidget->setEnabled(false);
+    _ui->createPublicTaskPushButton->setEnabled(false);
+    _ui->modifyPublicTaskPushButton->setEnabled(false);
+    _ui->destroyPublicTaskPushButton->setEnabled(false);
+    _ui->startPublicTaskPushButton->setEnabled(false);
+    _ui->stopPublicTaskPushButton->setEnabled(false);
+    _ui->completePublicTaskPushButton->setEnabled(false);
+    _ui->showCompletedCheckBox->setEnabled(false);
+}
+
+//////////
+//  Signal handlers
+void PublicTaskManager::_currentThemeChanged(ITheme *, ITheme *)
+{
+    _ui->publicTasksTreeWidget->clear();
+    _decorations = TreeWidgetDecorations(_ui->publicTasksTreeWidget);
+    requestRefresh();
+}
+
+void PublicTaskManager::_currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity)
+{
+    requestRefresh();
+}
+
+void PublicTaskManager::_publicTasksTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)
+{
+    requestRefresh();
+}
+
+void PublicTaskManager::_publicTasksTreeWidgetCustomContextMenuRequested(QPoint p)
+{
+    //  [re-]create the popup menu
+    _publicTasksTreeContextMenu.reset(new QMenu());
+    QAction * createPublicTaskAction =
+        _publicTasksTreeContextMenu->addAction(
+            _ui->createPublicTaskPushButton->icon(),
+            _ui->createPublicTaskPushButton->text());
+    QAction * modifyPublicTaskAction =
+        _publicTasksTreeContextMenu->addAction(
+            _ui->modifyPublicTaskPushButton->icon(),
+            _ui->modifyPublicTaskPushButton->text());
+    QAction * destroyPublicTaskAction =
+        _publicTasksTreeContextMenu->addAction(
+            _ui->destroyPublicTaskPushButton->icon(),
+            _ui->destroyPublicTaskPushButton->text());
+    _publicTasksTreeContextMenu->addSeparator();
+    QAction * startPublicTaskAction =
+        _publicTasksTreeContextMenu->addAction(
+            _ui->startPublicTaskPushButton->icon(),
+            _ui->startPublicTaskPushButton->text());
+    QAction * stopPublicTaskAction =
+        _publicTasksTreeContextMenu->addAction(
+            _ui->stopPublicTaskPushButton->icon(),
+            _ui->stopPublicTaskPushButton->text());
+    QAction * completePublicTaskAction =
+        _publicTasksTreeContextMenu->addAction(
+            _ui->completePublicTaskPushButton->icon(),
+            _ui->completePublicTaskPushButton->text());
+    //  Adjust menu item states
+    createPublicTaskAction->setEnabled(_ui->createPublicTaskPushButton->isEnabled());
+    modifyPublicTaskAction->setEnabled(_ui->modifyPublicTaskPushButton->isEnabled());
+    destroyPublicTaskAction->setEnabled(_ui->destroyPublicTaskPushButton->isEnabled());
+    startPublicTaskAction->setEnabled(_ui->startPublicTaskPushButton->isEnabled());
+    stopPublicTaskAction->setEnabled(_ui->stopPublicTaskPushButton->isEnabled());
+    completePublicTaskAction->setEnabled(_ui->completePublicTaskPushButton->isEnabled());
+    //  Set up signal handling
+    connect(createPublicTaskAction,
+            &QAction::triggered,
+            this,
+            &PublicTaskManager::_createPublicTaskPushButtonClicked);
+    connect(modifyPublicTaskAction,
+            &QAction::triggered,
+            this,
+            &PublicTaskManager::_modifyPublicTaskPushButtonClicked);
+    connect(destroyPublicTaskAction,
+            &QAction::triggered,
+            this,
+            &PublicTaskManager::_destroyPublicTaskPushButtonClicked);
+    connect(startPublicTaskAction,
+            &QAction::triggered,
+            this,
+            &PublicTaskManager::_startPublicTaskPushButtonClicked);
+    connect(stopPublicTaskAction,
+            &QAction::triggered,
+            this,
+            &PublicTaskManager::_stopPublicTaskPushButtonClicked);
+    connect(completePublicTaskAction,
+            &QAction::triggered,
+            this,
+            &PublicTaskManager::_completePublicTaskPushButtonClicked);
+    //  Go!
+    _publicTasksTreeContextMenu->popup(_ui->publicTasksTreeWidget->mapToGlobal(p));
+}
+
+void PublicTaskManager::_createPublicTaskPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+    /*  TODO
+    try
+    {
+        CreateUserDialog dlg(this, _workspace, _credentials);   //  may throw
+        if (dlg.doModal() == CreateUserDialog::Result::Ok)
+        {   //  User created
+            refresh();  //  must refresh NOW
+            _setSelectedUser(dlg.createdUser());
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        tt3::gui::ErrorDialog::show(this, ex);
+    }
+    */
+}
+
+void PublicTaskManager::_modifyPublicTaskPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+    /*
+    if (auto user = _selectedUser())
+    {
+        try
+        {
+            ModifyUserDialog dlg(this, user, _credentials); //  may throw
+            if (dlg.doModal() == ModifyUserDialog::Result::Ok)
+            {   //  User modified - its position in the users tree may have changed
+                refresh();  //  must refresh NOW
+                _setSelectedUser(user);
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
+            requestRefresh();
+        }
+    }
+    */
+}
+
+void PublicTaskManager::_destroyPublicTaskPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+    /*
+    if (auto user = _selectedUser())
+    {
+        try
+        {
+            DestroyUserDialog dlg(this, user, _credentials); //  may throw
+            if (dlg.doModal() == DestroyUserDialog::Result::Ok)
+            {   //  User destroyed
+                requestRefresh();
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
+            requestRefresh();
+        }
+    }
+    */
+}
+
+void PublicTaskManager::_startPublicTaskPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+    /*
+    if (auto user = _selectedUser())
+    {
+        try
+        {
+            CreateAccountDialog dlg(this, user, _credentials);  //  may throw
+            if (dlg.doModal() == CreateAccountDialog::Result::Ok)
+            {   //  Account created
+                refresh();  //  must refresh NOW
+                _setSelectedAccount(dlg.createdAccount());
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            tt3::gui::ErrorDialog::show(this, ex);
+        }
+    }
+    */
+}
+
+void PublicTaskManager::_stopPublicTaskPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+    /*
+    if (auto account = _selectedAccount())
+    {
+        try
+        {
+            ModifyAccountDialog dlg(this, account, _credentials); //  may throw
+            if (dlg.doModal() == ModifyAccountDialog::Result::Ok)
+            {   //  User modified - its position in the users tree may have changed
+                refresh();  //  must refresh NOW
+                _setSelectedAccount(account);
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
+            requestRefresh();
+        }
+    }
+    */
+}
+
+void PublicTaskManager::_completePublicTaskPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+    /*
+    if (auto account = _selectedAccount())
+    {
+        try
+        {
+            DestroyAccountDialog dlg(this, account, _credentials); //  may throw
+            if (dlg.doModal() == DestroyAccountDialog::Result::Ok)
+            {   //  Destroyed
+                requestRefresh();
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
+            requestRefresh();
+        }
+    }
+    */
+}
+
+void PublicTaskManager::_showCompletedCheckBoxToggled(bool)
+{
+    Component::Settings::instance()->showCompletedPublicTasks =
+        _ui->showCompletedCheckBox->isChecked();
+    requestRefresh();
+}
+
+void PublicTaskManager::_viewOptionSettingValueChanged()
+{
+    requestRefresh();
+}
+
+void PublicTaskManager::_filterLineEditTextChanged(QString)
+{
+    requestRefresh();
+}
+
+void PublicTaskManager::_workspaceClosed(tt3::ws::WorkspaceClosedNotification /*notification*/)
+{
+    requestRefresh();
+}
+
+void PublicTaskManager::_objectCreated(tt3::ws::ObjectCreatedNotification /*notification*/)
+{
+    requestRefresh();
+}
+
+void PublicTaskManager::_objectDestroyed(tt3::ws::ObjectDestroyedNotification /*notification*/)
+{
+    requestRefresh();
+}
+
+void PublicTaskManager::_objectModified(tt3::ws::ObjectModifiedNotification /*notification*/)
+{
+    requestRefresh();
+}
+
+void PublicTaskManager::_refreshRequested()
+{
+    refresh();
+}
+
+void PublicTaskManager::_refreshTimerTimeout()
+{
+    if (tt3::ws::Activity activity = theCurrentActivity)
+    {
+        if (std::dynamic_pointer_cast<tt3::ws::PublicTaskImpl>(activity))
+        {
+            refresh();
+        }
+    }
+}
+
+//  End of tt3-gui/PublicTaskManager.cpp

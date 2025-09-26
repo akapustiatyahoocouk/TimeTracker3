@@ -352,7 +352,11 @@ auto Database::publicTasks(
 auto Database::rootPublicTasks(
     ) const -> tt3::db::api::PublicTasks
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+    //  We assume database is consistent since last change
+
+    return tt3::db::api::PublicTasks(_rootPublicTasks.cbegin(), _rootPublicTasks.cend());
 }
 
 auto Database::projects(

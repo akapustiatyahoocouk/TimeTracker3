@@ -225,6 +225,78 @@ auto WorkspaceImpl::publicActivities(
     }
 }
 
+auto WorkspaceImpl::publicActivitiesAndTasks(
+        const Credentials & credentials
+    ) const -> PublicActivities
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+
+    try
+    {
+        _validateAccessRights(credentials);
+        //  The caller can see all public activities
+        PublicActivities result;
+        for (tt3::db::api::IPublicActivity * dataPublicActivity : _database->publicActivitiesAndTasks())
+        {
+            result.insert(_getProxy(dataPublicActivity));
+        }
+        return result;
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+auto WorkspaceImpl::publicTasks(
+        const Credentials & credentials
+    ) const -> PublicTasks
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+
+    try
+    {
+        _validateAccessRights(credentials);
+        //  The caller can see all public activities
+        PublicTasks result;
+        for (tt3::db::api::IPublicTask * dataPublicTask : _database->publicTasks())
+        {
+            result.insert(_getProxy(dataPublicTask));
+        }
+        return result;
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+auto WorkspaceImpl::rootPublicTasks(
+        const Credentials & credentials
+    ) const -> PublicTasks
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+
+    try
+    {
+        _validateAccessRights(credentials);
+        //  The caller can see all public activities
+        PublicTasks result;
+        for (tt3::db::api::IPublicTask * dataPublicTask : _database->rootPublicTasks())
+        {
+            result.insert(_getProxy(dataPublicTask));
+        }
+        return result;
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
 //////////
 //  Operations (access control)
 bool WorkspaceImpl::canAccess(

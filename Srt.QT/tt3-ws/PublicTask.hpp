@@ -38,6 +38,49 @@ namespace tt3::ws
         virtual ~PublicTaskImpl();
 
         //////////
+        //  Operations (associations)
+    public:
+        /// \brief
+        ///     Returns the immediate parent of this public task.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The immediate parent of this public task; nullptr == none.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        parent(
+                            const Credentials & credentials
+                        ) const -> PublicTask;
+
+        /// \brief
+        ///     Sets the immediate parent of this public task.
+        /// \details
+        ///     Setting a parent to nullptr makes this a root private task.
+        ///     Attempting to create parenthood loops is an error.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param parent
+        ///     The new immediate parent for this public task; nullptr if none.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        setParent(
+                            const Credentials & credentials,
+                            PublicTask parent
+                        );
+
+        /// \brief
+        ///     Returns the set of immediate children of this public task.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of immediate children of this public task.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        children(
+                            const Credentials & credentials
+                        ) const -> PublicTasks;
+
+        //////////
         //  Implementation
     private:
         tt3::db::api::IPublicTask *const    _dataPublicTask;  //  counts as "reference"

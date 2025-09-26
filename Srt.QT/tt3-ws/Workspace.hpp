@@ -183,6 +183,44 @@ namespace tt3::ws
                             const Credentials & credentials
                         ) const -> PublicActivities;
 
+        /// \brief
+        ///     The set of all public activities in this database
+        ///     including those which are also tasks.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all public activities in this database
+        ///     including those which are also tasks.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        publicActivitiesAndTasks(
+                            const Credentials & credentials
+                        ) const -> PublicActivities;
+
+        /// \brief
+        ///     Returns the set of all public tasks in this database.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all public tasks in this database.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        publicTasks(
+                            const Credentials & credentials
+                        ) const -> PublicTasks;
+
+        /// \brief
+        ///     Returns the set of root public tasks in this database.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of root public tasks in this database.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        rootPublicTasks(
+                            const Credentials & credentials
+                        ) const -> PublicTasks;
+
         //////////
         //  Operations (access control)
     public:
@@ -327,7 +365,7 @@ namespace tt3::ws
         ///     The Workload for the new PublicActivity; nullptr == don't assign.
         /// \return
         ///     The newly created PublicActivity.
-        /// \exception DatabaseException
+        /// \exception WorkspaceException
         ///     If an error occurs.
         auto        createPublicActivity(
                             const Credentials & credentials,

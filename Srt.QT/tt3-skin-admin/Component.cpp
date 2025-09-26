@@ -87,13 +87,10 @@ Component::Resources::~Resources() {}
 IMPLEMENT_SINGLETON(Component::Settings)
 
 Component::Settings::Settings()
-    :   mainFrameBounds( M(MainFrameBounds), QRect(32, 32, 480, 320)),
-        mainFrameMaximized(M(MainFrameMaximized), false),
-        mainFrameCurrentTab(M(MainFrameCurrentTab), 0)
+    :   mainFrameBounds(this, M(MainFrameBounds), QRect(32, 32, 480, 320)),
+        mainFrameMaximized(this, M(MainFrameMaximized), false),
+        mainFrameCurrentTab(this, M(MainFrameCurrentTab), 0)
 {
-    addSetting(&mainFrameBounds);
-    addSetting(&mainFrameMaximized);
-    addSetting(&mainFrameCurrentTab);
 }
 
 Component::Settings::~Settings()

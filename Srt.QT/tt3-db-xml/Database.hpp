@@ -465,40 +465,24 @@ namespace tt3::db::xml
         template <class T>
         auto            _objectTypeTraits(
                             ) -> tt3::db::api::IObjectType *  = delete;
-        template <>
-        auto            _objectTypeTraits<User>(
-                            ) -> tt3::db::api::IObjectType *
-        {
-            return tt3::db::api::ObjectTypes::User::instance();
+#define DECLARE_OBJECT_TYPE_TRAITS(TYPE)                               \
+        template <>                                             \
+        auto            _objectTypeTraits<TYPE>(                \
+                            ) -> tt3::db::api::IObjectType *    \
+        {                                                       \
+            return tt3::db::api::ObjectTypes::TYPE::instance(); \
         }
-
-        template <>
-        auto            _objectTypeTraits<Account>(
-                            ) -> tt3::db::api::IObjectType *
-        {
-            return tt3::db::api::ObjectTypes::Account::instance();
-        }
-
-        template <>
-        auto            _objectTypeTraits<ActivityType>(
-                            ) -> tt3::db::api::IObjectType *
-        {
-            return tt3::db::api::ObjectTypes::ActivityType::instance();
-        }
-
-        template <>
-        auto            _objectTypeTraits<PublicActivity>(
-                            ) -> tt3::db::api::IObjectType *
-        {
-            return tt3::db::api::ObjectTypes::PublicActivity::instance();
-        }
-
-        template <>
-        auto            _objectTypeTraits<PublicTask>(
-                            ) -> tt3::db::api::IObjectType *
-        {
-            return tt3::db::api::ObjectTypes::PublicTask::instance();
-        }
+        DECLARE_OBJECT_TYPE_TRAITS(User)
+        DECLARE_OBJECT_TYPE_TRAITS(Account)
+        DECLARE_OBJECT_TYPE_TRAITS(ActivityType)
+        DECLARE_OBJECT_TYPE_TRAITS(PublicActivity)
+        DECLARE_OBJECT_TYPE_TRAITS(PublicTask)
+        DECLARE_OBJECT_TYPE_TRAITS(PrivateActivity)
+        DECLARE_OBJECT_TYPE_TRAITS(PrivateTask)
+        DECLARE_OBJECT_TYPE_TRAITS(Project)
+        DECLARE_OBJECT_TYPE_TRAITS(WorkStream)
+        DECLARE_OBJECT_TYPE_TRAITS(Beneficiary)
+#undef DECLARE_OBJECT_TYPE_TRAITS
 
         //  Validation
         void            _validate();    //  throwstt3::db::api::DatabaseException

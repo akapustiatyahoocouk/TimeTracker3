@@ -19,6 +19,57 @@
 
 namespace tt3::util
 {
+    class TT3_UTIL_PUBLIC AbstractSetting;
+
+    /// \class Settings tt3-util/API.hpp
+    /// \brief A bunch of related settings.
+    /// \details
+    ///     Concrete subclasses will normally be singletons.
+    class TT3_UTIL_PUBLIC Settings
+    {
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Settings)
+
+        friend class AbstractSetting;
+
+        //////////
+        //  Construction/destruction
+    protected:
+        /// \brief
+        ///     Constructs an initially empty binch of Settings.
+        Settings() = default;
+
+        /// \brief
+        ///     The class destructor.
+        virtual ~Settings() = default;
+
+        //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Returns the set of all settings in this bunch.
+        /// \return
+        ///     The set of all settings in this bunch.
+        auto        settings(
+                        ) const -> QSet<AbstractSetting*>;
+
+        /// \brief
+        ///     Finds a setting with the specified mnemonic in
+        ///     this settings.
+        /// \param mnemonic
+        ///     The mnemonic to look for.
+        /// \return
+        ///     The setting with the required mnemonic in
+        ///     this settings; returns nullptr if not found
+        auto        findSetting(
+                            const Mnemonic & mnemonic
+                        ) const -> AbstractSetting *;
+
+        //////////
+        //  Implementation
+    private:
+        QMap<Mnemonic, AbstractSetting*>    _settings;
+    };
+
     /// \class AbstractSetting tt3-util/API.hpp
     /// \brief A generic "settings" is a single value which is retained between runs.
     class TT3_UTIL_PUBLIC AbstractSetting
@@ -32,16 +83,24 @@ namespace tt3::util
     protected:
         /// \brief
         ///     Constructs the setting.
+        /// \param settings
+        ///     The settings bunch to which this AbstractSetting belonga.
         /// \param mnemonic
         ///     The mnemonic identifier of the setting.
         /// \param changeRequiresRestart
         ///     True if changes to the setting's values require TT3
         ///     to be restarted, false if not.
         explicit AbstractSetting(
+                Settings * settings,
                 const Mnemonic & mnemonic,
                 bool changeRequiresRestart
             ) : _mnemonic(mnemonic),
-                _changeRequiresRestart(changeRequiresRestart) {}
+                _changeRequiresRestart(changeRequiresRestart)
+        {
+            Q_ASSERT(settings != nullptr);
+            Q_ASSERT(!settings->_settings.contains(mnemonic));
+            settings->_settings.insert(mnemonic, this);
+        }
 
         /// \brief
         ///     The class destructor.
@@ -54,7 +113,7 @@ namespace tt3::util
         ///     Returns the mnemonic identifier of this Setting.
         /// \return
         ///     The mnemonic identifier of this Setting.
-        Mnemonic        mnemonic() const { return _mnemonic; }
+        Mnemonic    mnemonic() const { return _mnemonic; }
 
         /// \brief
         ///     Checks whether changes to the value of this
@@ -64,7 +123,7 @@ namespace tt3::util
         ///     True if changes to the value of this Setting
         ///     shall require application restart in order to
         ///     take effect, else false.
-        bool            changeRequiresRestart() const { return _changeRequiresRestart; }
+        bool        changeRequiresRestart() const { return _changeRequiresRestart; }
 
         /// \brief
         ///     Returns the string representation of this Setting' value.
@@ -86,7 +145,7 @@ namespace tt3::util
     signals:
         /// \brief
         ///     Emitted when a value of the setting changes.
-        void            valueChanged();
+        void        valueChanged();
 
         //////////
         //  Implementation
@@ -108,6 +167,8 @@ namespace tt3::util
     public:
         /// \brief
         ///     Constructs the setting.
+        /// \param settings
+        ///     The settings bunch to which this Setting belonga.
         /// \param mnemonic
         ///     The mnemonic identifier of the setting.
         /// \param defaultValue
@@ -115,11 +176,11 @@ namespace tt3::util
         /// \param changeRequiresRestart
         ///     True if changes to the setting's values require TT3
         ///     to be restarted, false if not.
-        Setting(
+        Setting(Settings * settings,
                 const Mnemonic & mnemonic,
                 const T & defaultValue,
                 bool changeRequiresRestart = false
-            ) : AbstractSetting(mnemonic, changeRequiresRestart),
+            ) : AbstractSetting(settings, mnemonic, changeRequiresRestart),
                 _defaultValue(defaultValue),
                 _value(defaultValue),
                 _valueAssigned(false) {}
@@ -135,7 +196,7 @@ namespace tt3::util
         ///     Returns the value of this Setting.
         /// \return
         ///     The value of this Setting (starts off as default value).
-                        operator T() const { return value(); }
+                    operator T() const { return value(); }
 
         /// \brief
         ///     Assigns a new value to this Setting.
@@ -143,7 +204,7 @@ namespace tt3::util
         ///     The new value to assign to this Setting.
         /// \return
         ///     The reference to this Setting.
-        Setting<T> &    operator = (const T & src) { setValue(src); return *this; }
+        Setting<T> &operator = (const T & src) { setValue(src); return *this; }
 
         //////////
         //  AbstractSetting
@@ -171,7 +232,7 @@ namespace tt3::util
         ///     Returns the default value of this setting.
         /// \return
         ///     The default value of this setting.
-        const T         defaultValue() const
+        const T     defaultValue() const
         {
             return _defaultValue;
         }
@@ -181,7 +242,7 @@ namespace tt3::util
         /// \return
         ///     The current value of this Setting; default value
         ///     if not assigned explicitly.
-        T               value() const
+        T           value() const
         {
             return _valueAssigned ? _value : _defaultValue;
         }
@@ -190,7 +251,7 @@ namespace tt3::util
         ///     Sets the current value of this Setting.
         /// \param value
         ///     The new value for this Setting.
-        void            setValue(const T & value)
+        void        setValue(const T & value)
         {
             if (value != this->value())
             {
@@ -207,69 +268,6 @@ namespace tt3::util
 
         T               _value;
         bool            _valueAssigned;
-    };
-
-    /// \class Settings tt3-util/API.hpp
-    /// \brief A bunch of related settings.
-    /// \details
-    ///     Concrete subclasses will normally be singletons.
-    class TT3_UTIL_PUBLIC Settings
-    {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Settings)
-
-        //////////
-        //  Construction/destruction
-    protected:
-        /// \brief
-        ///     Constructs an initially empty binch of Settings.
-        Settings() = default;
-
-        /// \brief
-        ///     The class destructor.
-        virtual ~Settings() = default;
-
-        //////////
-        //  Operations
-    protected:
-        /// \brief
-        ///     A helper service for constructors of
-        ///     derived classes to populate the Settings
-        ///     with aggregated Setting<?> instances.
-        /// \param setting
-        ///     The Setting to add to this bunch.
-        ///     TODO retire this service and add a new 1st
-        ///     parameter of type Settings* to he AbstractSetting
-        ///     nd Setting constructors, which will auto-add
-        ///     AbstractSetting to the Settings and assert on
-        ///     mnemonics conflict.
-        /// \return
-        ///     True on success, false on failure (mnemonic conflict).
-        bool                addSetting(
-                                    AbstractSetting * setting
-                                );
-    public:
-        /// \brief
-        ///     Returns the set of all settings in this bunch.
-        /// \return
-        ///     The set of all settings in this bunch.
-        QSet<AbstractSetting*>  settings() const;
-
-        /// \brief
-        ///     Finds a setting with the specified mnemonic in
-        ///     this settings.
-        /// \param mnemonic
-        ///     The mnemonic to look for.
-        /// \return
-        ///     The setting with the required mnemonic in
-        ///     this settings; returns nullptr if not found
-        AbstractSetting *   findSetting(
-                                    const Mnemonic & mnemonic
-                                ) const;
-
-        //////////
-        //  Implementation
-    private:
-        QMap<Mnemonic, AbstractSetting*>    _settings;
     };
 }
 

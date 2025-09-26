@@ -47,7 +47,7 @@ UserManager::UserManager(QWidget * parent)
             Qt::ConnectionType::QueuedConnection);
 
     //  View options changes should cause a refresh
-    connect(&Component::Settings::instance()->showHiddenUsersAndAccounts,
+    connect(&Component::Settings::instance()->showDisabledUsersAndAccounts,
             &tt3::util::AbstractSetting::valueChanged,
             this,
             &UserManager::_viewOptionSettingValueChanged,
@@ -135,13 +135,13 @@ void UserManager::refresh()
         //  Otherwise some controls are always enabled...
         _ui->filterLabel->setEnabled(true);
         _ui->filterLineEdit->setEnabled(true);
-            _ui->usersTreeWidget->setEnabled(true);
-            _ui->showDisabledCheckBox->setEnabled(true);
+        _ui->usersTreeWidget->setEnabled(true);
+        _ui->showDisabledCheckBox->setEnabled(true);
 
         //  ...while others are enabled based on current
         //  selection and permissions granted by Credentials
         _WorkspaceModel workspaceModel = _createWorkspaceModel();
-        if (!Component::Settings::instance()->showHiddenUsersAndAccounts)
+        if (!Component::Settings::instance()->showDisabledUsersAndAccounts)
         {
             _removeDisabledItems(workspaceModel);
         }
@@ -160,35 +160,33 @@ void UserManager::refresh()
         bool readOnly = _workspace->isReadOnly();
         _ui->createUserPushButton->setEnabled(
             !readOnly &&
-            (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
-             _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageUsers)));
+            (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||//  TODO may throw
+             _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageUsers)));  //  TODO may throw
         _ui->modifyUserPushButton->setEnabled(
-            selectedUser != nullptr &&
-            selectedUser->canModify(_credentials));
+            selectedUser != nullptr);
         _ui->destroyUserPushButton->setEnabled(
             !readOnly &&
             selectedUser != nullptr &&
-            selectedUser->canDestroy(_credentials));
+            selectedUser->canDestroy(_credentials));    //  TODO may throw
         _ui->createAccountPushButton->setEnabled(
             !readOnly &&
-            (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
-             _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageUsers)) &&
+            (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||//  TODO may throw
+             _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageUsers)) && //  TODO may throw
             selectedUser != nullptr);
         _ui->modifyAccountPushButton->setEnabled(
-            selectedAccount != nullptr &&
-            selectedAccount->canModify(_credentials));
+            selectedAccount != nullptr);
         _ui->destroyAccountPushButton->setEnabled(
             !readOnly &&
             selectedAccount != nullptr &&
-            selectedAccount->canDestroy(_credentials));
+            selectedAccount->canDestroy(_credentials)); //  TODO may throw
 
         _ui->showDisabledCheckBox->setChecked(
-            Component::Settings::instance()->showHiddenUsersAndAccounts);
+            Component::Settings::instance()->showDisabledUsersAndAccounts);
 
         //  Some buttons need to be adjusted for ReadOnoly mode
         if (selectedUser != nullptr &&
             !selectedUser->workspace()->isReadOnly() &&
-            selectedUser->canModify(_credentials))
+            selectedUser->canModify(_credentials))  //  TODO may throw
         {   //  RW
             _ui->modifyUserPushButton->setIcon(modifyUserIcon);
             _ui->modifyUserPushButton->setText("Modify user");
@@ -200,7 +198,7 @@ void UserManager::refresh()
         }
         if (selectedAccount != nullptr &&
             !selectedAccount->workspace()->isReadOnly() &&
-            selectedAccount->canModify(_credentials))
+            selectedAccount->canModify(_credentials))   //  TODO may throw
         {   //  RW
             _ui->modifyAccountPushButton->setIcon(modifyAccountIcon);
             _ui->modifyAccountPushButton->setText("Modify account");
@@ -800,7 +798,7 @@ void UserManager::_destroyAccountPushButtonClicked()
 
 void UserManager::_showDisabledCheckBoxToggled(bool)
 {
-    Component::Settings::instance()->showHiddenUsersAndAccounts =
+    Component::Settings::instance()->showDisabledUsersAndAccounts =
         _ui->showDisabledCheckBox->isChecked();
    requestRefresh();
 }

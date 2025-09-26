@@ -87,33 +87,21 @@ Component::Resources::~Resources() {}
 IMPLEMENT_SINGLETON(Component::Settings)
 
 Component::Settings::Settings()
-    :   activeSkin(M(ActiveSkin), M(-), true),
-        activeTheme(M(ActiveTheme), StandardThemes::System::instance()->mnemonic(), true),
-        lastLogin(M(LastLogin), ""),
-        uiLocale(M(UiLocale), QLocale(QLocale::English, QLocale::UnitedKingdom), true),
-        loadLastWorkspaceAtStartup(M(LoadLastWorkspaceAtStartup), false),
-        rememberLastLogin(M(RememberLastLogin), true),
-        currentPreferences(M(CurrentPreferences), M(-)),
+    :   activeSkin(this, M(ActiveSkin), M(-), true),
+        activeTheme(this, M(ActiveTheme), StandardThemes::System::instance()->mnemonic(), true),
+        lastLogin(this, M(LastLogin), ""),
+        uiLocale(this, M(UiLocale), QLocale(QLocale::English, QLocale::UnitedKingdom), true),
+        loadLastWorkspaceAtStartup(this, M(LoadLastWorkspaceAtStartup), false),
+        rememberLastLogin(this, M(RememberLastLogin), true),
+        currentPreferences(this, M(CurrentPreferences), M(-)),
         //  Properties (user confirmations)
-        confirmCloseWorkspace(M(ConfirmCloseWorkspace), true),
-        confirmRestart(M(ConfirmRestart), true),
-        confirmExit(M(ConfirmExit), true),
+        confirmCloseWorkspace(this, M(ConfirmCloseWorkspace), true),
+        confirmRestart(this, M(ConfirmRestart), true),
+        confirmExit(this, M(ConfirmExit), true),
         //  Properties (view configurations)
-        showHiddenUsersAndAccounts(M(ShowHiddenUsersAndAccounts), true)
+        showDisabledUsersAndAccounts(this, M(ShowDisabledUsersAndAccounts), true),
+        showCompletedPublicTasks(this, M(ShowCompletedPublicTasks), true)
 {
-    addSetting(&activeSkin);
-    addSetting(&activeTheme);
-    addSetting(&lastLogin);
-    addSetting(&uiLocale);
-    addSetting(&loadLastWorkspaceAtStartup);
-    addSetting(&rememberLastLogin);
-    addSetting(&currentPreferences);
-    //  Properties (user confirmations)
-    addSetting(&confirmCloseWorkspace);
-    addSetting(&confirmRestart);
-    addSetting(&confirmExit);
-    //  Properties (view configurations)
-    addSetting(&showHiddenUsersAndAccounts);
 }
 
 Component::Settings::~Settings()
