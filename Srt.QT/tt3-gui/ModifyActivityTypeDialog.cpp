@@ -100,13 +100,16 @@ void ModifyActivityTypeDialog::_descriptionTextEditTextChanged()
 void ModifyActivityTypeDialog::accept()
 {
     try
-    {
-        _activityType->setDisplayName(
-            _credentials,
-            _ui->displayNameLineEdit->text());
-        _activityType->setDescription(
-            _credentials,
-            _ui->descriptionTextEdit->toPlainText());
+    {   //  Any of the setters may throw
+        if (!_readOnly)
+        {
+            _activityType->setDisplayName(
+                _credentials,
+                _ui->displayNameLineEdit->text());
+            _activityType->setDescription(
+                _credentials,
+                _ui->descriptionTextEdit->toPlainText());
+        }
         done(int(Result::Ok));
     }
     catch (const tt3::util::Exception & ex)

@@ -344,12 +344,25 @@ void ModifyUserDialog::_workingOnPushButtonClicked()
 void ModifyUserDialog::accept()
 {
     try
-    {
-        _user->setEnabled(_credentials, _ui->enabledCheckBox->isChecked()); //  must be first!!!
-        _user->setEmailAddresses(_credentials, _selectedEmailAddresses());
-        _user->setRealName(_credentials, _ui->realNameLineEdit->text());
-        _user->setInactivityTimeout(_credentials, _selectedInactivityTimeout());
-        _user->setUiLocale(_credentials, _selectedUiLocale());
+    {   //  Any of the setters may throw
+        if (!_readOnly)
+        {
+            _user->setEnabled(
+                _credentials,
+                _ui->enabledCheckBox->isChecked()); //  must be first!!!
+            _user->setEmailAddresses(
+                _credentials,
+                _selectedEmailAddresses());
+            _user->setRealName(
+                _credentials,
+                _ui->realNameLineEdit->text());
+            _user->setInactivityTimeout(
+                _credentials,
+                _selectedInactivityTimeout());
+            _user->setUiLocale(
+                _credentials,
+                _selectedUiLocale());
+        }
         done(int(Result::Ok));
     }
     catch (const tt3::util::Exception & ex)

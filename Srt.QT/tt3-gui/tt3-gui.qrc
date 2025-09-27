@@ -136,5 +136,7 @@
         <file>Resources/Images/Objects/WorkStreamSmall.png</file>
         <file>Resources/Light.qss</file>
         <file>Resources/Images/Actions/CompletePublicTaskSmall.png</file>
+        <file>Resources/Images/Actions/ViewPublicTaskLarge.png</file>
+        <file>Resources/Images/Actions/ViewPublicTaskSmall.png</file>
     </qresource>
 </RCC>

@@ -248,31 +248,34 @@ void ModifyPublicActivityDialog::_minutesComboBoxCurrentIndexChanged(int)
 void ModifyPublicActivityDialog::accept()
 {
     try
-    {
-        _publicActivity->setDisplayName(
-            _credentials,
-            _ui->displayNameLineEdit->text());
-        _publicActivity->setDescription(
-            _credentials,
-            _ui->descriptionTextEdit->toPlainText());
-        _publicActivity->setTimeout(
-            _credentials,
-            _selectedTimeout());
-        _publicActivity->setRequireCommentOnStart(
-            _credentials,
-            _ui->requireCommentOnStartCheckBox->isChecked());
-        _publicActivity->setRequireCommentOnFinish(
-            _credentials,
-            _ui->requireCommentOnFinishCheckBox->isChecked());
-        _publicActivity->setFullScreenReminder(
-            _credentials,
-            _ui->fullScreenReminderCheckBox->isChecked());
-        _publicActivity->setActivityType(
-            _credentials,
-            _selectedActivityType());
-        _publicActivity->setWorkload(
-            _credentials,
-            _selectedWorkload);
+    {   //  Any of the setters may throw
+        if (!_readOnly)
+        {
+            _publicActivity->setDisplayName(
+                _credentials,
+                _ui->displayNameLineEdit->text());
+            _publicActivity->setDescription(
+                _credentials,
+                _ui->descriptionTextEdit->toPlainText());
+            _publicActivity->setTimeout(
+                _credentials,
+                _selectedTimeout());
+            _publicActivity->setRequireCommentOnStart(
+                _credentials,
+                _ui->requireCommentOnStartCheckBox->isChecked());
+            _publicActivity->setRequireCommentOnFinish(
+                _credentials,
+                _ui->requireCommentOnFinishCheckBox->isChecked());
+            _publicActivity->setFullScreenReminder(
+                _credentials,
+                _ui->fullScreenReminderCheckBox->isChecked());
+            _publicActivity->setActivityType(
+                _credentials,
+                _selectedActivityType());
+            _publicActivity->setWorkload(
+                _credentials,
+                _selectedWorkload);
+        }
         done(int(Result::Ok));
     }
     catch (const tt3::util::Exception & ex)

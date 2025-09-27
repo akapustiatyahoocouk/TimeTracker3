@@ -755,17 +755,15 @@ void PublicTaskManager::_createPublicTaskPushButtonClicked()
 
 void PublicTaskManager::_modifyPublicTaskPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
-    /*
-    if (auto user = _selectedUser())
+    if (auto publicTask = _selectedPublicTask())
     {
         try
         {
-            ModifyUserDialog dlg(this, user, _credentials); //  may throw
-            if (dlg.doModal() == ModifyUserDialog::Result::Ok)
-            {   //  User modified - its position in the users tree may have changed
+            ModifyPublicTaskDialog dlg(this, publicTask, _credentials); //  may throw
+            if (dlg.doModal() == ModifyPublicTaskDialog::Result::Ok)
+            {   //  PublicTask modified - its position in the public tasks tree may have changed
                 refresh();  //  must refresh NOW
-                _setSelectedUser(user);
+                _setSelectedPublicTask(publicTask);
             }
         }
         catch (const tt3::util::Exception & ex)
@@ -774,7 +772,6 @@ void PublicTaskManager::_modifyPublicTaskPushButtonClicked()
             requestRefresh();
         }
     }
-    */
 }
 
 void PublicTaskManager::_destroyPublicTaskPushButtonClicked()

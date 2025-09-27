@@ -317,22 +317,24 @@ void ModifyAccountDialog::_removeEmailAddressPushButtonClicked()
 void ModifyAccountDialog::accept()
 {
     try
-    {
-        if (_ui->enabledCheckBox->isEnabled())
-        {   //  i.e. editable. MUST come first!
-            _account->setEnabled(_credentials, _ui->enabledCheckBox->isChecked());
-        }
-        _account->setEmailAddresses(_credentials, _selectedEmailAddresses());
-        if (_ui->loginLineEdit->isEnabled())
-        {   //  i.e. editable
-            _account->setLogin(_credentials, _ui->loginLineEdit->text());
-        }
-        if (_ui->passwordLineEdit->text() != _oldPasswordHash)
-        {   //  i.e. changed
-            _account->setPassword(_credentials, _ui->passwordLineEdit->text());
-        }
-        if (_ui->capabilitiesGroupBox->isEnabled())
-        {   //  i.e. editable
+    {   //  Any of the setters may throw
+        if (!_readOnly)
+        {
+            _account->setEnabled(   //  MUST come first!
+                _credentials,
+                _ui->enabledCheckBox->isChecked());
+            _account->setEmailAddresses(
+                _credentials,
+                _selectedEmailAddresses());
+            _account->setLogin(
+                _credentials,
+                _ui->loginLineEdit->text());
+            if (_ui->passwordLineEdit->text() != _oldPasswordHash)
+            {   //  i.e. changed
+                _account->setPassword(
+                    _credentials,
+                    _ui->passwordLineEdit->text());
+            }
             _account->setCapabilities(_credentials, _selectedCapabilities());
         }
 

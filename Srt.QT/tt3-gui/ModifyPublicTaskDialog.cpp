@@ -86,12 +86,16 @@ ModifyPublicTaskDialog::ModifyPublicTaskDialog(
     _ui->requireCommentOnStartCheckBox->setChecked(_publicTask->requireCommentOnStart(_credentials));
     _ui->requireCommentOnFinishCheckBox->setChecked(_publicTask->requireCommentOnFinish(_credentials));
     _ui->fullScreenReminderCheckBox->setChecked(_publicTask->fullScreenReminder(_credentials));
+    _ui->completedCheckBox->setChecked(_publicTask->completed(_credentials));
+    _ui->requiresCommentOnCompletionCeckBox->setChecked(_publicTask->requireCommentOnCompletion(_credentials));
 
     //  Adjust for "view only" mode
     if (_readOnly)
     {
-        this->setWindowTitle("View public activity");
-        this->setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewPublicActivityLarge.png"));
+        this->setWindowTitle("View public task");
+        this->setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewPublicTaskLarge.png"));
+        _ui->parentTaskComboBox->setEnabled(false);
+        _ui->selectParentRaskPushButton->setEnabled(false);
         _ui->displayNameLineEdit->setReadOnly(true);
         _ui->descriptionTextEdit->setReadOnly(true);
         _ui->activityTypeComboBox->setEnabled(false);
@@ -102,6 +106,8 @@ ModifyPublicTaskDialog::ModifyPublicTaskDialog(
         _ui->requireCommentOnStartCheckBox->setEnabled(false);
         _ui->requireCommentOnFinishCheckBox->setEnabled(false);
         _ui->fullScreenReminderCheckBox->setEnabled(false);
+        _ui->completedCheckBox->setEnabled(false);
+        _ui->requiresCommentOnCompletionCeckBox->setEnabled(false);
     }
 
     //  Done
@@ -227,6 +233,94 @@ void ModifyPublicTaskDialog::_refresh()
         _validator->isValidDisplayName(_ui->displayNameLineEdit->text()) &&
         _validator->isValidDescription(_ui->descriptionTextEdit->toPlainText()) &&
         _validator->isValidTimeout(_selectedTimeout()));
+}
+
+//////////
+//  Signal handlers
+void ModifyPublicTaskDialog::_selectParentTaskPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+}
+
+void ModifyPublicTaskDialog::_displayNameLineEditTextChanged(QString)
+{
+    _refresh();
+}
+
+void ModifyPublicTaskDialog::_descriptionTextEditTextChanged()
+{
+    _refresh();
+}
+
+void ModifyPublicTaskDialog::_selectWorkloadPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+}
+
+void ModifyPublicTaskDialog::_timeoutCheckBoxStateChanged(int)
+{
+    _refresh();
+}
+
+void ModifyPublicTaskDialog::_hoursComboBoxCurrentIndexChanged(int)
+{
+    _refresh();
+}
+
+void ModifyPublicTaskDialog::_minutesComboBoxCurrentIndexChanged(int)
+{
+    _refresh();
+}
+
+void ModifyPublicTaskDialog::accept()
+{
+    try
+    {   //  Any of the setters may throw
+        if (!_readOnly)
+        {
+            //  TODO uncomment _publicTask->setParent(_credentials, _selectedParentTask);
+            _publicTask->setDisplayName(
+                _credentials,
+                _ui->displayNameLineEdit->text());
+            _publicTask->setDescription(
+                _credentials,
+                _ui->descriptionTextEdit->toPlainText());
+            _publicTask->setTimeout(
+                _credentials,
+                _selectedTimeout());
+            _publicTask->setRequireCommentOnStart(
+                _credentials,
+                _ui->requireCommentOnStartCheckBox->isChecked());
+            _publicTask->setRequireCommentOnFinish(
+                _credentials,
+                _ui->requireCommentOnFinishCheckBox->isChecked());
+            _publicTask->setFullScreenReminder(
+                _credentials,
+                _ui->fullScreenReminderCheckBox->isChecked());
+            _publicTask->setActivityType(
+                _credentials,
+                _selectedActivityType());
+            _publicTask->setWorkload(
+                _credentials,
+                _selectedWorkload);
+            _publicTask->setCompleted(
+                _credentials,
+                _ui->completedCheckBox->isChecked());
+            _publicTask->setRequireCommentOnCompletion(
+                _credentials,
+                _ui->requiresCommentOnCompletionCeckBox->isChecked());
+        }
+        done(int(Result::Ok));
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        ErrorDialog::show(this, ex);
+    }
+}
+
+void ModifyPublicTaskDialog::reject()
+{
+    done(int(Result::Cancel));
 }
 
 //  End oif tt3-gui/ModifyPublicTaskDialog.cpp
