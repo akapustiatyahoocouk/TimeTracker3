@@ -505,6 +505,53 @@ auto WorkspaceImpl::createPublicActivity(
     }
 }
 
+auto WorkspaceImpl::createPublicTask(
+        const Credentials & credentials,
+        const QString & displayName,
+        const QString & description,
+        const InactivityTimeout & timeout,
+        bool requireCommentOnStart,
+        bool requireCommentOnFinish,
+        bool fullScreenReminder,
+        ActivityType activityType,
+        Workload workload,
+        bool completed,
+        bool requireCommentOnCompletion
+    ) -> PublicTask
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();
+
+    try
+    {
+        //  Check access rights
+        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+        if ((clientCapabilities & Capabilities::Administrator) == Capabilities::None &&
+            (clientCapabilities & Capabilities::ManagePublicTasks) == Capabilities::None)
+        {   //  OOPS! Can't!
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        tt3::db::api::IPublicTask * dataPublicTask =
+            _database->createPublicTask(
+                displayName,
+                description,
+                timeout,
+                requireCommentOnStart,
+                requireCommentOnFinish,
+                fullScreenReminder,
+                (activityType != nullptr) ? activityType->_dataActivityType : nullptr,
+                (workload != nullptr) ? workload->_dataWorkload : nullptr,
+                completed,
+                requireCommentOnCompletion);
+        return _getProxy(dataPublicTask);;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
 //////////
 //  Implementation helpers
 void WorkspaceImpl::_ensureOpen() const

@@ -158,11 +158,19 @@ void PublicTaskManager::refresh()
         //  ...while others are enabled based on current
         //  selection and permissions granted by Credentials
         _WorkspaceModel workspaceModel = _createWorkspaceModel();
+        if (!Component::Settings::instance()->showCompletedPublicTasks)
+        {
+            _removeCompletedItems(workspaceModel);
+        }
         if (!_ui->filterLineEdit->text().trimmed().isEmpty())
         {
             _filterItems(workspaceModel);
         }
         _refreshPublicTaskItems(workspaceModel);
+        if (!_ui->filterLineEdit->text().trimmed().isEmpty())
+        {   //  Filtered - show all
+            _ui->publicTasksTreeWidget->expandAll();
+        }
 
         tt3::ws::PublicTask selectedPublicTask = _selectedPublicTask();
         bool readOnly = _workspace->isReadOnly();
@@ -281,8 +289,16 @@ auto PublicTaskManager::_createPublicTaskModel(
     try
     {
         publicTaskModel->text = publicTask->displayName(_credentials);
+        if (publicTask->completed(_credentials))
+        {
+            publicTaskModel->text += " [completed]";
+            publicTaskModel->brush = _decorations.disabledItemForeground;
+        }
+        else
+        {
+            publicTaskModel->brush = _decorations.itemForeground;
+        }
         publicTaskModel->icon = publicTask->type()->smallIcon();
-        publicTaskModel->brush = _decorations.itemForeground;
         publicTaskModel->font = _decorations.itemFont;
         publicTaskModel->tooltip = publicTask->description(_credentials).trimmed();
         //  A "current" activity needs some extras
@@ -499,8 +515,8 @@ void PublicTaskManager::_refreshChildItems(
     }
     while (publicTaskItem->childCount() > publicTaskModel->childModels.size())
     {   //  Too many child items
-        delete _ui->publicTasksTreeWidget->takeTopLevelItem(
-            _ui->publicTasksTreeWidget->topLevelItemCount() - 1);
+        delete publicTaskItem->takeChild(
+            publicTaskItem->childCount() - 1);
     }
 
     //  ...and that each child item represents
@@ -721,22 +737,20 @@ void PublicTaskManager::_publicTasksTreeWidgetCustomContextMenuRequested(QPoint 
 
 void PublicTaskManager::_createPublicTaskPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
-    /*  TODO
     try
     {
-        CreateUserDialog dlg(this, _workspace, _credentials);   //  may throw
-        if (dlg.doModal() == CreateUserDialog::Result::Ok)
+        CreatePublicTaskDialog dlg(
+            this, _workspace, _credentials, _selectedPublicTask()); //  may throw
+        if (dlg.doModal() == CreatePublicTaskDialog::Result::Ok)
         {   //  User created
             refresh();  //  must refresh NOW
-            _setSelectedUser(dlg.createdUser());
+            _setSelectedPublicTask(dlg.createdPublicTask());
         }
     }
     catch (const tt3::util::Exception & ex)
     {
         tt3::gui::ErrorDialog::show(this, ex);
     }
-    */
 }
 
 void PublicTaskManager::_modifyPublicTaskPushButtonClicked()

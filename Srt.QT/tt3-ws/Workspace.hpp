@@ -377,7 +377,58 @@ namespace tt3::ws
                             bool fullScreenReminder,
                             ActivityType activityType,
                             Workload workload
-            ) -> PublicActivity;
+                        ) -> PublicActivity;
+
+        /// \brief
+        ///     Creates a new root PublicTask in this database
+        ///     (that is, a PublicTask that has no parent).
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param displayName
+        ///     The short (1 line) user-readable display name
+        ///     for the new PublicTask.
+        /// \param description
+        ///     The multi-line user-readable description for the new
+        ///     PublicTask; with lines separated by a newline '\\n' character.
+        /// \param timeout
+        ///     The user-does-nothing timeout for the new PublicTask;
+        ///     absent == none.
+        /// \param requireCommentOnStart
+        ///     True if the newly created PublicTask small require the
+        ///     user to enter a comment when it is started.
+        /// \param requireCommentOnFinish
+        ///     True if the newly created PublicTask small require the
+        ///     user to enter a comment when it is started.
+        /// \param fullScreenReminder
+        ///     True if a full-screen reminder shall be displayed while the
+        ///     newly created PublicTask is underway.
+        /// \param activityType
+        ///     The type for the new PublicTask; nullptr == don't assign.
+        /// \param workload
+        ///     The Workload for the new PublicTask; nullptr == don't assign.
+        /// \param completed
+        ///     True if the PublicTask shall initially be marked as
+        ///     "completed", false if not.
+        /// \param requireCommentOnCompletion
+        ///     True if the newly created PublicTask small require the
+        ///     user to enter a comment when marking it as "completed".
+        /// \return
+        ///     The newly created PublicTask.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        createPublicTask(
+                            const Credentials & credentials,
+                            const QString & displayName,
+                            const QString & description,
+                            const InactivityTimeout & timeout,
+                            bool requireCommentOnStart,
+                            bool requireCommentOnFinish,
+                            bool fullScreenReminder,
+                            ActivityType activityType,
+                            Workload workload,
+                            bool completed,
+                            bool requireCommentOnCompletion
+                        ) -> PublicTask;
 
         //////////
         //  Signals

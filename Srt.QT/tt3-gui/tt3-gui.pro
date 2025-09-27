@@ -12,6 +12,7 @@ SOURCES += \
     CreateAccountDialog.cpp \
     CreateActivityTypeDialog.cpp \
     CreatePublicActivityDialog.cpp \
+    CreatePublicTaskDialog.cpp \
     CreateUserDialog.cpp \
     CurrentActivity.cpp \
     CurrentCredentials.cpp \
@@ -66,6 +67,7 @@ HEADERS += \
     CreateAccountDialog.hpp \
     CreateActivityTypeDialog.hpp \
     CreatePublicActivityDialog.hpp \
+    CreatePublicTaskDialog.hpp \
     CreateUserDialog.hpp \
     CurrentActivity.hpp \
     CurrentCredentials.hpp \
@@ -110,6 +112,7 @@ FORMS += \
     CreateAccountDialog.ui \
     CreateActivityTypeDialog.ui \
     CreatePublicActivityDialog.ui \
+    CreatePublicTaskDialog.ui \
     CreateUserDialog.ui \
     EditStringDialog.ui \
     ErrorDialog.ui \

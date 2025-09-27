@@ -72,6 +72,13 @@ namespace tt3::db::api
         a = Capabilities(int(a) | int(b));
         return a;
     }
+
+    TT3_DB_API_PUBLIC inline bool operator ! (
+            Capabilities a
+        )
+    {
+        return a == Capabilities::None;
+    }
 }
 
 //  Formatting/parsing

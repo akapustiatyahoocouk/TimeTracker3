@@ -368,7 +368,7 @@ void PublicTask::_validate(
        Objects & validatedObjects
     )
 {
-    PublicActivity::_validate(validatedObjects);
+    Activity::_validate(validatedObjects);
     Task::_validate(validatedObjects);
 
     //  Validate properties
@@ -389,7 +389,6 @@ void PublicTask::_validate(
         {   //  OOPS!
             throw tt3::db::api::DatabaseCorruptException(_database->_address);
         }
-        Q_ASSERT(false);    //  TODO properly
         //  TODO there must be no parent/child loops
     }
     for (PublicTask * child : _children)

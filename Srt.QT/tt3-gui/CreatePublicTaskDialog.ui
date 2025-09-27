@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>tt3::gui::CreatePublicTaskDialog</class>
+ <widget class="QDialog" name="tt3::gui::CreatePublicTaskDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>466</width>
+    <height>494</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="2" column="1" colspan="3">
+    <widget class="QTextEdit" name="descriptionTextEdit">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>85</height>
+      </size>
+     </property>
+     <property name="acceptRichText">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="3">
+    <widget class="QPushButton" name="selectWorkloadPushButton">
+     <property name="text">
+      <string>Select</string>
+     </property>
+     <property name="icon">
+      <iconset resource="tt3-gui.qrc">
+       <normaloff>:/tt3-gui/Resources/Images/Actions/ViewWorkStreamSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/ViewWorkStreamSmall.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="descriptionLabel">
+     <property name="text">
+      <string>Description:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="0" colspan="4">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="displayNameLabel">
+     <property name="text">
+      <string>Name:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="activityTypeLabel">
+     <property name="text">
+      <string>Activity type:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="2">
+    <widget class="QComboBox" name="hoursComboBox"/>
+   </item>
+   <item row="7" column="0" colspan="4">
+    <widget class="QCheckBox" name="requireCommentOnFinishCheckBox">
+     <property name="text">
+      <string>Require comment when finishing this activity</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="0" colspan="4">
+    <widget class="QCheckBox" name="requiresCommentOnCompletionCeckBox">
+     <property name="text">
+      <string>Requires comment on completion</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1" colspan="3">
+    <widget class="QComboBox" name="activityTypeComboBox"/>
+   </item>
+   <item row="5" column="1">
+    <widget class="QCheckBox" name="timeoutCheckBox">
+     <property name="text">
+      <string>stop if unattended for</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0" colspan="4">
+    <widget class="QCheckBox" name="requireCommentOnStartCheckBox">
+     <property name="text">
+      <string>Require comment when starting this activity</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="3">
+    <widget class="QComboBox" name="minutesComboBox"/>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="timeoutLabel">
+     <property name="text">
+      <string>Timeout:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" colspan="3">
+    <widget class="QLineEdit" name="displayNameLineEdit"/>
+   </item>
+   <item row="4" column="1" colspan="2">
+    <widget class="QLabel" name="workloadValueLabel">
+     <property name="text">
+      <string>-</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="0" colspan="4">
+    <widget class="QCheckBox" name="fullScreenReminderCheckBox">
+     <property name="text">
+      <string>Full-screen reminder</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" colspan="3">
+    <widget class="QComboBox" name="parentTaskComboBox"/>
+   </item>
+   <item row="12" column="0" colspan="4">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="workloadLabel">
+     <property name="text">
+      <string>Workload:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="parentTaskLabel">
+     <property name="text">
+      <string>Create as:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="0" colspan="4">
+    <widget class="QCheckBox" name="completedCheckBox">
+     <property name="text">
+      <string>Task is completed</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>parentTaskComboBox</tabstop>
+  <tabstop>displayNameLineEdit</tabstop>
+  <tabstop>descriptionTextEdit</tabstop>
+  <tabstop>activityTypeComboBox</tabstop>
+  <tabstop>selectWorkloadPushButton</tabstop>
+  <tabstop>timeoutCheckBox</tabstop>
+  <tabstop>hoursComboBox</tabstop>
+  <tabstop>minutesComboBox</tabstop>
+  <tabstop>requireCommentOnStartCheckBox</tabstop>
+  <tabstop>requireCommentOnFinishCheckBox</tabstop>
+  <tabstop>fullScreenReminderCheckBox</tabstop>
+ </tabstops>
+ <resources>
+  <include location="tt3-gui.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>tt3::gui::CreatePublicTaskDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>tt3::gui::CreatePublicTaskDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>displayNameLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::CreatePublicTaskDialog</receiver>
+   <slot>_displayNameLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>278</x>
+     <y>59</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>232</x>
+     <y>246</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>descriptionTextEdit</sender>
+   <signal>textChanged()</signal>
+   <receiver>tt3::gui::CreatePublicTaskDialog</receiver>
+   <slot>_descriptionTextEditTextChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>278</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>232</x>
+     <y>246</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>selectWorkloadPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::CreatePublicTaskDialog</receiver>
+   <slot>_selectWorkloadPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>413</x>
+     <y>221</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>232</x>
+     <y>246</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>timeoutCheckBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>tt3::gui::CreatePublicTaskDialog</receiver>
+   <slot>_timeoutCheckBoxStateChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>189</x>
+     <y>255</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>232</x>
+     <y>246</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hoursComboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>tt3::gui::CreatePublicTaskDialog</receiver>
+   <slot>_hoursComboBoxCurrentIndexChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>324</x>
+     <y>255</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>232</x>
+     <y>246</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>minutesComboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>tt3::gui::CreatePublicTaskDialog</receiver>
+   <slot>_minutesComboBoxCurrentIndexChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>413</x>
+     <y>255</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>232</x>
+     <y>246</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_displayNameLineEditTextChanged(QString)</slot>
+  <slot>_descriptionTextEditTextChanged()</slot>
+  <slot>_selectWorkloadPushButtonClicked()</slot>
+  <slot>_timeoutCheckBoxStateChanged(int)</slot>
+  <slot>_hoursComboBoxCurrentIndexChanged(int)</slot>
+  <slot>_minutesComboBoxCurrentIndexChanged(int)</slot>
+ </slots>
+</ui>

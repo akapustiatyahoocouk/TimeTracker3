@@ -101,6 +101,58 @@ auto PublicTaskImpl::children(
 }
 
 //////////
+//  Operations (life cycle)
+auto PublicTaskImpl::createChild(
+        const Credentials & credentials,
+        const QString & displayName,
+        const QString & description,
+        const InactivityTimeout & timeout,
+        bool requireCommentOnStart,
+        bool requireCommentOnFinish,
+        bool fullScreenReminder,
+        ActivityType activityType,
+        Workload workload,
+        bool completed,
+        bool requireCommentOnCompletion
+    ) -> PublicTask
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();
+
+    try
+    {
+        //  Check access rights
+        Capabilities clientCapabilities =
+            _workspace->_validateAccessRights(credentials); //  may throw
+        if (!(clientCapabilities & Capabilities::Administrator) &&
+            !(clientCapabilities & Capabilities::ManagePublicTasks))
+            //  TODO use the "!capabilities" trick everywhere
+            //  where capablities are checked
+        {   //  OOPS! Can't!
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        tt3::db::api::IPublicTask * dataPublicTask =
+            _dataPublicTask->createChild(
+                displayName,
+                description,
+                timeout,
+                requireCommentOnStart,
+                requireCommentOnFinish,
+                fullScreenReminder,
+                (activityType != nullptr) ? activityType->_dataActivityType : nullptr,
+                (workload != nullptr) ? workload->_dataWorkload : nullptr,
+                completed,
+                requireCommentOnCompletion);
+        return _workspace->_getProxy(dataPublicTask);;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+//////////
 //  Implementation (Access control)
 bool PublicTaskImpl::_canRead(
         const Credentials & credentials
