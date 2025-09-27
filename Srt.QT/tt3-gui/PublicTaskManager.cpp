@@ -776,15 +776,13 @@ void PublicTaskManager::_modifyPublicTaskPushButtonClicked()
 
 void PublicTaskManager::_destroyPublicTaskPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
-    /*
-    if (auto user = _selectedUser())
+    if (auto publicTask = _selectedPublicTask())
     {
         try
         {
-            DestroyUserDialog dlg(this, user, _credentials); //  may throw
-            if (dlg.doModal() == DestroyUserDialog::Result::Ok)
-            {   //  User destroyed
+            DestroyPublicTaskDialog dlg(this, publicTask, _credentials); //  may throw
+            if (dlg.doModal() == DestroyPublicTaskDialog::Result::Ok)
+            {   //  PublicTask destroyed
                 requestRefresh();
             }
         }
@@ -794,77 +792,51 @@ void PublicTaskManager::_destroyPublicTaskPushButtonClicked()
             requestRefresh();
         }
     }
-    */
 }
 
 void PublicTaskManager::_startPublicTaskPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
-    /*
-    if (auto user = _selectedUser())
+    if (auto publicTask = _selectedPublicTask())
     {
+        if (theCurrentActivity == publicTask)
+        {   //  Nothing to do!
+            return;
+        }
         try
         {
-            CreateAccountDialog dlg(this, user, _credentials);  //  may throw
-            if (dlg.doModal() == CreateAccountDialog::Result::Ok)
-            {   //  Account created
-                refresh();  //  must refresh NOW
-                _setSelectedAccount(dlg.createdAccount());
-            }
-        }
-        catch (const tt3::util::Exception & ex)
-        {
-            tt3::gui::ErrorDialog::show(this, ex);
-        }
-    }
-    */
-}
-
-void PublicTaskManager::_stopPublicTaskPushButtonClicked()
-{
-    ErrorDialog::show(this, "Not yet implemented");
-    /*
-    if (auto account = _selectedAccount())
-    {
-        try
-        {
-            ModifyAccountDialog dlg(this, account, _credentials); //  may throw
-            if (dlg.doModal() == ModifyAccountDialog::Result::Ok)
-            {   //  User modified - its position in the users tree may have changed
-                refresh();  //  must refresh NOW
-                _setSelectedAccount(account);
-            }
+            theCurrentActivity.replaceWith(publicTask);
         }
         catch (const tt3::util::Exception & ex)
         {
             ErrorDialog::show(this, ex);
-            requestRefresh();
         }
+        requestRefresh();
     }
-    */
+}
+
+void PublicTaskManager::_stopPublicTaskPushButtonClicked()
+{
+    if (auto publicTask = _selectedPublicTask())
+    {
+        if (theCurrentActivity != publicTask)
+        {   //  Nothing to do!
+            return;
+        }
+        try
+        {
+            theCurrentActivity.replaceWith(nullptr);
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
+        }
+        requestRefresh();
+    }
 }
 
 void PublicTaskManager::_completePublicTaskPushButtonClicked()
 {
     ErrorDialog::show(this, "Not yet implemented");
-    /*
-    if (auto account = _selectedAccount())
-    {
-        try
-        {
-            DestroyAccountDialog dlg(this, account, _credentials); //  may throw
-            if (dlg.doModal() == DestroyAccountDialog::Result::Ok)
-            {   //  Destroyed
-                requestRefresh();
-            }
-        }
-        catch (const tt3::util::Exception & ex)
-        {
-            ErrorDialog::show(this, ex);
-            requestRefresh();
-        }
-    }
-    */
 }
 
 void PublicTaskManager::_showCompletedCheckBoxToggled(bool)

@@ -22,6 +22,7 @@ SOURCES += \
     DestroyAccountDialog.cpp \
     DestroyActivityTypeDialog.cpp \
     DestroyPublicActivityDialog.cpp \
+    DestroyPublicTaskDialog.cpp \
     DestroyUserDialog.cpp \
     EditStringDialog.cpp \
     ErrorDialog.cpp \
@@ -76,6 +77,7 @@ HEADERS += \
     DestroyAccountDialog.hpp \
     DestroyActivityTypeDialog.hpp \
     DestroyPublicActivityDialog.hpp \
+    DestroyPublicTaskDialog.hpp \
     DestroyUserDialog.hpp \
     EditStringDialog.hpp \
     ErrorDialog.hpp \
