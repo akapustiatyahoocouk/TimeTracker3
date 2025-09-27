@@ -40,6 +40,7 @@ SOURCES += \
     ModifyAccountDialog.cpp \
     ModifyActivityTypeDialog.cpp \
     ModifyPublicActivityDialog.cpp \
+    ModifyPublicTaskDialog.cpp \
     ModifyUserDialog.cpp \
     NewWorkspaceDialog.cpp \
     Preferences.cpp \
@@ -89,6 +90,7 @@ HEADERS += \
     ModifyAccountDialog.hpp \
     ModifyActivityTypeDialog.hpp \
     ModifyPublicActivityDialog.hpp \
+    ModifyPublicTaskDialog.hpp \
     ModifyUserDialog.hpp \
     NewWorkspaceDialog.hpp \
     Preferences.hpp \
@@ -126,6 +128,7 @@ FORMS += \
     ModifyAccountDialog.ui \
     ModifyActivityTypeDialog.ui \
     ModifyPublicActivityDialog.ui \
+    ModifyPublicTaskDialog.ui \
     ModifyUserDialog.ui \
     NewWorkspaceDialog.ui \
     PreferencesDialog.ui \

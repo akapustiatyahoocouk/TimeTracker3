@@ -51,6 +51,7 @@ CreatePublicTaskDialog::CreatePublicTaskDialog(
     if (parentTask != nullptr)
     {
         _ui->parentTaskComboBox->addItem(
+            parentTask->type()->smallIcon(),
             "A subtask of " + parentTask->displayName(_credentials),
             QVariant::fromValue(parentTask));
         _ui->parentTaskComboBox->setCurrentIndex(1);

@@ -1,5 +1,5 @@
 //
-//  tt3-gui/ModifyPublicActivityDialog.hpp - The modal "Modify public activity" dialog
+//  tt3-gui/ModifyPublicTaskDialog.hpp - The modal "Modify public task" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,15 +19,15 @@
 
 namespace tt3::gui
 {
-    namespace Ui { class ModifyPublicActivityDialog; }
+    namespace Ui { class ModifyPublicTaskDialog; }
 
-    /// \class ModifyPublicActivityDialog "tt3-gui/API.hpp"
-    /// \brief The modal "Modify public activity" dialog.
-    class TT3_GUI_PUBLIC ModifyPublicActivityDialog final
+    /// \class ModifyPublicTaskDialog tt3-gui/API.hpp
+    /// \brief The modal "Modify public task" dialog.
+    class TT3_GUI_PUBLIC ModifyPublicTaskDialog final
         :   private QDialog
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ModifyPublicActivityDialog)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ModifyPublicTaskDialog)
 
         //////////
         //  Types
@@ -47,21 +47,21 @@ namespace tt3::gui
         ///     Constructs the dialog.
         /// @param parent
         ///     The parent widget for the dialog; nullptr == none.
-        /// @param publicActivity
-        ///     The public activity to modify.
+        /// @param publicTask
+        ///     The public task to modify.
         /// @param credentials
         ///     The credentials to use for accessing User's data.
         /// @exception WorkspaceException
-        ///     If an error occurs retrieving PublicActivity details.
-        ModifyPublicActivityDialog(
+        ///     If an error occurs retrieving PublicTask details.
+        ModifyPublicTaskDialog(
                 QWidget * parent,
-                tt3::ws::PublicActivity publicActivity,
+                tt3::ws::PublicTask publicTask,
                 const tt3::ws::Credentials & credentials
             );
 
         /// \brief
         ///     The class destructor.
-        virtual ~ModifyPublicActivityDialog();
+        virtual ~ModifyPublicTaskDialog();
 
         //////////
         //  Operations
@@ -75,14 +75,18 @@ namespace tt3::gui
         //////////
         //  Implementation
     private:
-        tt3::ws::PublicActivity _publicActivity;
+        tt3::ws::PublicTask     _publicTask;
         const tt3::ws::Credentials  _credentials;
-        tt3::ws::Validator::PublicActivity *const _validator;
+        tt3::ws::Validator::PublicTask *const   _validator;
         const bool      _readOnly;
 
+        tt3::ws::PublicTask _selectedParentTask;//  currenty selected
         tt3::ws::Workload   _selectedWorkload;  //  currenty selected
 
         //  Helpers
+        void            _setSelectedParentTask(
+                                tt3::ws::PublicTask parentTask
+                            );
         auto            _selectedActivityType(
                             ) -> tt3::ws::ActivityType;
         void            _setSelectedActivityType(
@@ -101,11 +105,12 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::ModifyPublicActivityDialog *const   _ui;
+        Ui::ModifyPublicTaskDialog *const   _ui;
 
         //////////
         //  Signal handlers
     private slots:
+        void            _selectParentTaskPushButtonClicked();
         void            _displayNameLineEditTextChanged(QString);
         void            _descriptionTextEditTextChanged();
         void            _selectWorkloadPushButtonClicked();
@@ -117,5 +122,5 @@ namespace tt3::gui
     };
 }
 
-//  End of tt3-gui/ModifyPublicActivityDialog.hpp
+//  End of tt3-gui/ModifyPublicTaskDialog.hpp
 

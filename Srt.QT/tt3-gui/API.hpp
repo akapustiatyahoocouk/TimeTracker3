@@ -72,6 +72,7 @@
 #include "tt3-gui/ModifyPublicActivityDialog.hpp"
 #include "tt3-gui/DestroyPublicActivityDialog.hpp"
 #include "tt3-gui/CreatePublicTaskDialog.hpp"
+#include "tt3-gui/ModifyPublicTaskDialog.hpp"
 
 #include "tt3-gui/ManageUsersDialog.hpp"
 #include "tt3-gui/ManageActivityTypesDialog.hpp"
