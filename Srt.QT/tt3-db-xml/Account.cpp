@@ -57,8 +57,7 @@ void Account::destroy()
 
 //////////
 //  tt3::db::api::IAccount (properties)
-auto Account::login(
-    ) const -> QString
+QString Account::login() const
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -111,8 +110,7 @@ void Account::setLogin(
     }
 }
 
-auto Account::passwordHash(
-    ) const -> QString
+QString Account::passwordHash() const
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw

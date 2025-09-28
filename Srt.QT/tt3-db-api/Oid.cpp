@@ -48,9 +48,9 @@ Oid Oid::createRandom()
 //////////
 //  Formatting and parsing
 template <> TT3_DB_API_PUBLIC
-auto tt3::util::toString<tt3::db::api::Oid>(
+QString tt3::util::toString<tt3::db::api::Oid>(
         const tt3::db::api::Oid & value
-    ) -> QString
+    )
 {
     return value._impl.toString().toUpper();
 }

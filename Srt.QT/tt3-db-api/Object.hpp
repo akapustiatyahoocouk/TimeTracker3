@@ -21,9 +21,9 @@ namespace tt3::util
 {   //  Uses {00000000-0000-0000-0000-000000000000} braced format.
     //  Formats as uppercase, parses upper- or lowercase.
     template <> TT3_DB_API_PUBLIC
-    auto toString<tt3::db::api::Oid>(
+    QString toString<tt3::db::api::Oid>(
             const tt3::db::api::Oid & value
-        ) -> QString;
+        );
 
     template <> TT3_DB_API_PUBLIC
     auto fromString<tt3::db::api::Oid>(
@@ -228,8 +228,8 @@ namespace tt3::db::api
         /// \return
         ///     The database where the corresponding data object
         ///     resides (if live) or used to reside (if dead).
-        virtual auto    database() const
-                            -> IDatabase * = 0;
+        virtual auto    database(
+                            ) const -> IDatabase * = 0;
 
         /// \brief
         ///     Returns the OID of the corresponding data object.

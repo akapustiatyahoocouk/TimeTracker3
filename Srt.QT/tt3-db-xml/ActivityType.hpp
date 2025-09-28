@@ -48,13 +48,13 @@ namespace tt3::db::xml
         //////////
         //  tt3::db::api::IActivityType (properties)
     public:
-        virtual auto    displayName(
-                            ) const -> QString override;
+        virtual QString displayName(
+                            ) const override;
         virtual void    setDisplayName(
                              const QString & displayName
                             ) override;
-        virtual auto    description(
-                            ) const -> QString override;
+        virtual QString description(
+                            ) const override;
         virtual void    setDescription(
                                 const QString & description
                             ) override;

@@ -31,8 +31,8 @@ namespace tt3::db::api
         //////////
         //  IObject
     public:
-        virtual auto    type() const
-                            -> IObjectType * override
+        virtual auto    type(
+                            ) const -> IObjectType * override
         {
             return ObjectTypes::Beneficiary::instance();
         }
@@ -46,8 +46,7 @@ namespace tt3::db::api
         ///     The user-readable display name of this beneficiary.
         /// \exception DatabaseException
         ///     If an error occurs.
-        virtual auto    displayName(
-                            ) const -> QString = 0;
+        virtual QString displayName() const = 0;
 
         /// \brief
         ///     Sets the user-readable display name of this beneficiary.
@@ -66,8 +65,7 @@ namespace tt3::db::api
         ///     lines separated by a newline character '\n'.
         /// \exception DatabaseException
         ///     If an error occurs.
-        virtual auto    description(
-                            ) const -> QString = 0;
+        virtual QString description() const = 0;
 
         /// \brief
         ///     Sets the multi-line description of this Beneficiary.

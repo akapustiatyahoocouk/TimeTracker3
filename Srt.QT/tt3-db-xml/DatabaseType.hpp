@@ -35,27 +35,20 @@ namespace tt3::db::xml
         //  tt3::db::api::IDatabaseType (general)
     public:
         virtual auto    mnemonic(
-                            ) const
-                            ->tt3::util::Mnemonic override;
-        virtual auto    displayName(
-                            ) const
-                            -> QString override;
-        virtual auto    smallIcon(
-                            ) const
-                            -> QIcon override;
-        virtual auto    largeIcon(
-                            ) const
-                            -> QIcon override;
+                            ) const ->tt3::util::Mnemonic override;
+        virtual QString displayName(
+                            ) const override;
+        virtual QIcon   smallIcon(
+                            ) const override;
+        virtual QIcon   largeIcon(
+                            ) const override;
         virtual bool    isOperational() const override;
-        virtual auto    shortStatusReport(
-                            ) const
-                            -> QString override;
-        virtual auto    fullStatusReport(
-                            ) const
-                            -> QString override;
+        virtual QString shortStatusReport(
+                            ) const override;
+        virtual QString fullStatusReport(
+                            ) const override;
         virtual auto    validator(
-                            ) const
-                            -> tt3::db::api::IValidator * override;
+                            ) const -> tt3::db::api::IValidator * override;
 
         //////////
         //  tt3::db::api::IDatabaseType (address handling)

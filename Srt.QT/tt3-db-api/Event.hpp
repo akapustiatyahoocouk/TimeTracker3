@@ -31,8 +31,8 @@ namespace tt3::db::api
         //////////
         //  IObject
     public:
-        virtual auto    type() const
-                            -> IObjectType * override
+        virtual auto    type(
+                            ) const -> IObjectType * override
         {
             return ObjectTypes::Event::instance();
         }
@@ -55,8 +55,7 @@ namespace tt3::db::api
         ///     The 1-line summary of this event, as entered by the user.
         /// \exception DatabaseException
         ///     If an error occurs.
-        virtual auto    summary(
-                            ) const -> QString = 0;
+        virtual QString summary() const = 0;
 
         //////////
         //  Operations (associations)

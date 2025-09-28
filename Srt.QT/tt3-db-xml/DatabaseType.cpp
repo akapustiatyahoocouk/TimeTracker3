@@ -65,14 +65,12 @@ bool DatabaseType::isOperational() const
     return true;
 }
 
-auto DatabaseType::shortStatusReport(
-    ) const -> QString
+QString DatabaseType::shortStatusReport() const
 {
     return "The XML file storage is operational";
 }
 
-auto DatabaseType::fullStatusReport(
-    ) const -> QString
+QString DatabaseType::fullStatusReport() const
 {
     return shortStatusReport();
 }

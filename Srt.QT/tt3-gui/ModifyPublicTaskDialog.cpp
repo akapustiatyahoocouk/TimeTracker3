@@ -275,7 +275,13 @@ void ModifyPublicTaskDialog::_minutesComboBoxCurrentIndexChanged(int)
 void ModifyPublicTaskDialog::accept()
 {
     try
-    {   //  Any of the setters may throw
+    {
+        if (!_publicTask->completed(_credentials) &&
+            _ui->completedCheckBox->isChecked())
+        {   //  Completing a PublicTask
+            //  TODO ask user for the comment
+        }
+        //  Any of the setters may throw
         if (!_readOnly)
         {
             //  TODO uncomment _publicTask->setParent(_credentials, _selectedParentTask);
@@ -309,6 +315,9 @@ void ModifyPublicTaskDialog::accept()
             _publicTask->setRequireCommentOnCompletion(
                 _credentials,
                 _ui->requiresCommentOnCompletionCeckBox->isChecked());
+            //  TODO ...if the completed task is the "current activity",
+            //  then it should no longer be "current"...
+            //  TODO ...and record the completion comment
         }
         done(int(Result::Ok));
     }

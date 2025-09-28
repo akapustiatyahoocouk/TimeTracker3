@@ -53,22 +53,19 @@ namespace tt3::ws
         /// \return
         ///     The user-readable display name of this workspace
         ///     type for the current default locale.
-        auto        displayName(
-                        ) const -> QString;
+        QString     displayName() const;
 
         /// \brief
         ///     Returns the small (16x16) icon representing this workspace type.
         /// \return
         ///     The small (16x16) icon representing this workspace type.
-        auto        smallIcon(
-                        ) const -> QIcon;
+        QIcon       smallIcon() const;
 
         /// \brief
         ///     Returns the large (32x32) icon representing this workspace type.
         /// \return
         ///     The large (32x32) icon representing this workspace type.
-        auto        largeIcon(
-                        ) const -> QIcon;
+        QIcon       largeIcon() const;
 
         /// \brief
         ///     Checks whether this workspace type is "operational"
@@ -85,8 +82,7 @@ namespace tt3::ws
         /// \return
         ///     The short (1 line) status report for this
         ///     workspace type.
-        auto        shortStatusReport(
-                        ) const -> QString;
+        QString     shortStatusReport() const;
 
         /// \brief
         ///     Returns the long (multi-line) status report
@@ -95,8 +91,7 @@ namespace tt3::ws
         ///     The long (multi-line) status report for this
         ///     workspace type with lines separated by newline
         ///     ('\\n') character.
-        auto        fullStatusReport(
-                        ) const -> QString;
+        QString     fullStatusReport() const;
 
         /// \brief
         ///     Returns yhe validator for workspaces of this type

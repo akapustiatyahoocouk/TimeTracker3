@@ -62,6 +62,18 @@ namespace tt3::ws
         using PublicTask = tt3::db::api::IValidator::IPublicTaskValidator;
         /// \brief The validator for PrivateTasks.
         using PrivateTask = tt3::db::api::IValidator::IPrivateTaskValidator;
+        /// \brief The validator for Workloads.
+        using Workload = tt3::db::api::IValidator::IWorkloadValidator;
+        /// \brief The validator for Projects.
+        using Project = tt3::db::api::IValidator::IProjectValidator;
+        /// \brief The validator for WorkStreams.
+        using WorkStream = tt3::db::api::IValidator::IWorkStreamValidator;
+        /// \brief The validator for Beneficiaries.
+        using Beneficiary = tt3::db::api::IValidator::IBeneficiaryValidator;
+        /// \brief The validator for Works.
+        using Work = tt3::db::api::IValidator::IWorkValidator;
+        /// \brief The validator for Events.
+        using Event = tt3::db::api::IValidator::IEventValidator;
 
         //////////
         //  Operations
@@ -125,6 +137,42 @@ namespace tt3::ws
         /// \return
         ///     The validator for PrivateTasks.
         PrivateTask *   privateTask() const { return _databaseValidator->privateTask(); }
+
+        /// \brief
+        ///     Returns the validator for Workloads.
+        /// \return
+        ///     The validator for Workloads.
+        Workload *      workload() const { return _databaseValidator->workload(); }
+
+        /// \brief
+        ///     Returns the validator for Projects.
+        /// \return
+        ///     The validator for Projects.
+        Project *       project() const { return _databaseValidator->project(); }
+
+        /// \brief
+        ///     Returns the validator for WorkStreams.
+        /// \return
+        ///     The validator for WorkStreams.
+        WorkStream *    workStream() const { return _databaseValidator->workStream(); }
+
+        /// \brief
+        ///     Returns the validator for Beneficiaries.
+        /// \return
+        ///     The validator for Beneficiariess.
+        Beneficiary *   beneficiary() const { return _databaseValidator->beneficiary(); }
+
+        /// \brief
+        ///     Returns the validator for Works.
+        /// \return
+        ///     The validator for Works.
+        Work *          works() const { return _databaseValidator->work(); }
+
+        /// \brief
+        ///     Returns the validator for Events.
+        /// \return
+        ///     The validator for Events.
+        Event *         event() const { return _databaseValidator->event(); }
 
         //////////
         //  Implementation

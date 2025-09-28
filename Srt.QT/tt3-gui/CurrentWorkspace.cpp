@@ -136,8 +136,8 @@ void CurrentWorkspace::swap(
 
 //////////
 //  Implementation helpers
-auto CurrentWorkspace::_impl()
-    -> CurrentWorkspace::_Impl *
+auto CurrentWorkspace::_impl(
+    ) -> CurrentWorkspace::_Impl *
 {
     static _Impl impl;
     return &impl;

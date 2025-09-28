@@ -32,8 +32,7 @@ Activity::~Activity()
 
 //////////
 //  tt3::db::api::IActivity (general)
-auto Activity::displayName(
-    ) const -> QString
+QString Activity::displayName() const
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -82,8 +81,7 @@ void Activity::setDisplayName(
     }
 }
 
-auto Activity::description(
-    ) const -> QString
+QString Activity::description() const
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw

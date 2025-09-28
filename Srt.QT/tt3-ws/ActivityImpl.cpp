@@ -35,9 +35,9 @@ ActivityImpl::~ActivityImpl()
 
 //////////
 //  Operations (properties)
-auto ActivityImpl::displayName(
+QString ActivityImpl::displayName(
         const Credentials & credentials
-    ) const -> QString
+    ) const
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
@@ -82,9 +82,9 @@ void ActivityImpl::setDisplayName(
     }
 }
 
-auto ActivityImpl::description(
+QString ActivityImpl::description(
         const Credentials & credentials
-    ) const -> QString
+    ) const
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw

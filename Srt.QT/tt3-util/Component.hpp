@@ -50,8 +50,7 @@ namespace tt3::util
         /// \return
         ///     The user-readable display name of this component
         ///     for the current default locale.
-        virtual auto    displayName(
-                            ) const -> QString = 0;
+        virtual QString displayName() const = 0;
 
         /// \brief
         ///     Returns the short (1 line) user-readable description
@@ -59,16 +58,14 @@ namespace tt3::util
         /// \return
         ///     The short (1 line) user-readable description of
         ///     this component for the current default locale.
-        virtual auto    description(
-                            ) const -> QString = 0;
+        virtual QString description() const = 0;
 
         /// \brief
         ///     Returns the copyight message of this component.
         /// \return
         ///     The copyight message of this component for
         ///     the current default locales.
-        virtual auto    copyright(
-                            ) const -> QString = 0;
+        virtual QString copyright() const = 0;
 
         /// \brief
         ///     Returns the version of this component.
@@ -81,22 +78,19 @@ namespace tt3::util
         ///     Returns the build number of this component.
         /// \return
         ///     The build number of this component.
-        virtual auto    buildNumber(
-                            ) const -> QString = 0;
+        virtual QString buildNumber() const = 0;
 
         /// \brief
         ///     Returns the small (16x16) icon representing this component.
         /// \return
         ///     The small (16x16) icon representing this component.
-        virtual auto    smallIcon(
-                            ) const -> QIcon;
+        virtual QIcon   smallIcon() const;
 
         /// \brief
         ///     Returns the large (32x32) icon representing this component.
         /// \return
         ///     The large (32x32) icon representing this component.
-        virtual auto    largeIcon(
-                            ) const -> QIcon;
+        virtual QIcon   largeIcon() const;
 
         /// \brief
         ///     Returns the license of this component.
@@ -153,8 +147,8 @@ namespace tt3::util
         ///     Returns the set of all registered components.
         /// \return
         ///     Returns the set of all registered components.
-        static auto     allComponents()
-                            -> Components;
+        static auto     allComponents(
+                            ) -> Components;
 
         /// \brief
         ///     Registers the specified component.

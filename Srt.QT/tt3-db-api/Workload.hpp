@@ -37,8 +37,7 @@ namespace tt3::db::api
         ///     The user-readable display name of this Workload.
         /// \exception DatabaseException
         ///     If an error occurs.
-        virtual auto    displayName(
-                            ) const -> QString = 0;
+        virtual QString displayName() const = 0;
 
         /// \brief
         ///     Sets the user-readable display name of this Workload.
@@ -57,8 +56,7 @@ namespace tt3::db::api
         ///     with lines separated by a newline character '\n'.
         /// \exception DatabaseException
         ///     If an error occurs.
-        virtual auto    description(
-                            ) const -> QString = 0;
+        virtual QString description() const = 0;
 
         /// \brief
         ///     Sets the multi-line description of this Workload.

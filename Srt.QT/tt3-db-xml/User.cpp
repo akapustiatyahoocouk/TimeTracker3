@@ -60,8 +60,7 @@ void User::destroy()
 
 //////////
 //  tt3::db::api::IUser (properties)
-auto User::realName(
-    ) const -> QString
+QString User::realName() const
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw

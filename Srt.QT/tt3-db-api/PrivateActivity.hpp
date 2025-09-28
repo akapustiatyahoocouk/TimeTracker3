@@ -31,8 +31,8 @@ namespace tt3::db::api
         //////////
         //  IObject
     public:
-        virtual auto    type() const
-                            -> IObjectType * override
+        virtual auto    type(
+                            ) const -> IObjectType * override
         {
             return ObjectTypes::PrivateActivity::instance();
         }

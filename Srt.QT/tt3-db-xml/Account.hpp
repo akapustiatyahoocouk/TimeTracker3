@@ -45,13 +45,13 @@ namespace tt3::db::xml
         //////////
         //  tt3::db::api::IAccount (properties)
     public:
-        virtual auto    login(
-                            ) const -> QString override;
+        virtual QString login(
+                            ) const override;
         virtual void    setLogin(
                                 const QString & login
                             ) override;
-        virtual auto    passwordHash(
-                            ) const -> QString override;
+        virtual QString passwordHash(
+                            ) const override;
         virtual void    setPassword(
                                 const QString & password
                             ) override;

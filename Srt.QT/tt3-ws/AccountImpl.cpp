@@ -33,9 +33,9 @@ AccountImpl::~AccountImpl()
 
 //////////
 //  Operations (properties)
-auto AccountImpl::login(
+QString AccountImpl::login(
         const Credentials & credentials
-    ) const -> QString
+    ) const
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
@@ -83,9 +83,9 @@ void AccountImpl::setLogin(
     }
 }
 
-auto AccountImpl::passwordHash(
+QString AccountImpl::passwordHash(
         const Credentials & credentials
-    ) const -> QString
+    ) const
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw

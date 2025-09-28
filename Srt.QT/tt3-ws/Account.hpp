@@ -43,9 +43,9 @@ namespace tt3::ws
         ///     The login identifier of this account.
         /// \exception WorkspaceException
         ///     If an error occurs.
-        auto        login(
+        QString     login(
                             const Credentials & credentials
-                        ) const -> QString;
+                        ) const;
 
         /// \brief
         ///     Sets the login identifier of this account.
@@ -71,9 +71,9 @@ namespace tt3::ws
         ///     as an uppercase hexstring.
         /// \exception WorkspaceException
         ///     If an error occurs.
-        auto        passwordHash(
+        QString     passwordHash(
                             const Credentials & credentials
-                        ) const -> QString;
+                        ) const;
 
         /// \brief
         ///     Sets the password of this account.

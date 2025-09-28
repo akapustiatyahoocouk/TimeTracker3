@@ -33,9 +33,9 @@ UserImpl::~UserImpl()
 
 //////////
 //  Operations (properties)
-auto UserImpl::realName(
+QString UserImpl::realName(
         const Credentials & credentials
-    ) const -> QString
+    ) const
 {
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw

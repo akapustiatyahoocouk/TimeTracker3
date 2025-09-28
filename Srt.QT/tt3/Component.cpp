@@ -31,20 +31,17 @@ auto Component::mnemonic(
     return M(tt3);
 }
 
-auto Component::displayName(
-    ) const -> QString
+QString Component::displayName() const
 {
     return "TimeTracker3 application";
 }
 
-auto Component::description(
-    ) const -> QString
+QString Component::description() const
 {
     return "Defines startup and top-level logic of TimeTracker3 application";
 }
 
-auto Component::copyright(
-    ) const -> QString
+QString Component::copyright() const
 {
     return tt3::util::ProductInformation::applicationCopyright();
 }
@@ -55,8 +52,7 @@ auto Component::version(
     return tt3::util::ProductInformation::applicationVersion();
 }
 
-auto Component::buildNumber(
-    ) const -> QString
+QString Component::buildNumber() const
 {
     return tt3::util::ProductInformation::applicationBuildNumber();
 }

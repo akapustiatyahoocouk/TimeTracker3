@@ -56,8 +56,7 @@ void ActivityType::destroy()
 
 //////////
 //  tt3::db::api::IActivityType (properties)
-auto ActivityType::displayName(
-    ) const -> QString
+QString ActivityType::displayName() const
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
@@ -106,8 +105,7 @@ void ActivityType::setDisplayName(
     }
 }
 
-auto ActivityType::description(
-    ) const -> QString
+QString ActivityType::description() const
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw

@@ -45,9 +45,9 @@ namespace
 }
 
 template <> TT3_DB_API_PUBLIC
-auto tt3::util::toString<Capabilities>(
+QString tt3::util::toString<Capabilities>(
         const Capabilities & value
-    ) -> QString
+    )
 {
     QString result;
     for (size_t i = 0; i < sizeof(capabilityNames) / sizeof(capabilityNames[0]); i++)

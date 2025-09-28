@@ -236,9 +236,9 @@ namespace
 }
 
 template <> TT3_WS_PUBLIC
-auto tt3::util::toString<WorkspaceAddress>(
+QString tt3::util::toString<WorkspaceAddress>(
         const WorkspaceAddress & value
-    ) -> QString
+    )
 {
     if (value != nullptr)
     {
@@ -252,9 +252,9 @@ auto tt3::util::toString<WorkspaceAddress>(
 }
 
 template <> TT3_WS_PUBLIC
-auto tt3::util::toString<WorkspaceAddressesList>(
+QString tt3::util::toString<WorkspaceAddressesList>(
         const tt3::ws::WorkspaceAddressesList & value
-    ) -> QString
+    )
 {
     QString result;
     result += '[';

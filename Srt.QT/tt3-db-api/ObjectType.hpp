@@ -38,8 +38,8 @@ namespace tt3::db::api
         ///     Returns the mnemonic identifier of this database object type.
         /// \return
         ///     The mnemonic identifier of this database object type.
-        virtual auto    mnemonic() const
-                            -> tt3::util::Mnemonic = 0;
+        virtual auto    mnemonic(
+                            ) const -> tt3::util::Mnemonic = 0;
 
         /// \brief
         ///     Returns the user-readable display name of this database
@@ -80,8 +80,8 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual auto    mnemonic() const
-                                -> tt3::util::Mnemonic override;
+            virtual auto    mnemonic(
+                                ) const -> tt3::util::Mnemonic override;
             virtual QString displayName() const override;
             virtual QIcon   smallIcon() const override;
             virtual QIcon   largeIcon() const override;
@@ -97,8 +97,8 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual auto    mnemonic() const
-                                -> tt3::util::Mnemonic override;
+            virtual auto    mnemonic(
+                                ) const -> tt3::util::Mnemonic override;
             virtual QString displayName() const override;
             virtual QIcon   smallIcon() const override;
             virtual QIcon   largeIcon() const override;
@@ -114,8 +114,8 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual auto    mnemonic() const
-                                -> tt3::util::Mnemonic override;
+            virtual auto    mnemonic(
+                                ) const -> tt3::util::Mnemonic override;
             virtual QString displayName() const override;
             virtual QIcon   smallIcon() const override;
             virtual QIcon   largeIcon() const override;
@@ -131,8 +131,8 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual auto    mnemonic() const
-                                -> tt3::util::Mnemonic override;
+            virtual auto    mnemonic(
+                                ) const -> tt3::util::Mnemonic override;
             virtual QString displayName() const override;
             virtual QIcon   smallIcon() const override;
             virtual QIcon   largeIcon() const override;
@@ -148,8 +148,8 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual auto    mnemonic() const
-                                -> tt3::util::Mnemonic override;
+            virtual auto    mnemonic(
+                                ) const -> tt3::util::Mnemonic override;
             virtual QString displayName() const override;
             virtual QIcon   smallIcon() const override;
             virtual QIcon   largeIcon() const override;
@@ -165,8 +165,8 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual auto    mnemonic() const
-                                -> tt3::util::Mnemonic override;
+            virtual auto    mnemonic(
+                                ) const -> tt3::util::Mnemonic override;
             virtual QString displayName() const override;
             virtual QIcon   smallIcon() const override;
             virtual QIcon   largeIcon() const override;
@@ -182,8 +182,8 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual auto    mnemonic() const
-                                -> tt3::util::Mnemonic override;
+            virtual auto    mnemonic(
+                                ) const -> tt3::util::Mnemonic override;
             virtual QString displayName() const override;
             virtual QIcon   smallIcon() const override;
             virtual QIcon   largeIcon() const override;
@@ -199,8 +199,8 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual auto    mnemonic() const
-                                -> tt3::util::Mnemonic override;
+            virtual auto    mnemonic(
+                                ) const -> tt3::util::Mnemonic override;
             virtual QString displayName() const override;
             virtual QIcon   smallIcon() const override;
             virtual QIcon   largeIcon() const override;
@@ -216,8 +216,8 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual auto    mnemonic() const
-                                -> tt3::util::Mnemonic override;
+            virtual auto    mnemonic(
+                                ) const -> tt3::util::Mnemonic override;
             virtual QString displayName() const override;
             virtual QIcon   smallIcon() const override;
             virtual QIcon   largeIcon() const override;
@@ -233,8 +233,8 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual auto    mnemonic() const
-                                -> tt3::util::Mnemonic override;
+            virtual auto    mnemonic(
+                                ) const -> tt3::util::Mnemonic override;
             virtual QString displayName() const override;
             virtual QIcon   smallIcon() const override;
             virtual QIcon   largeIcon() const override;
@@ -250,8 +250,8 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual auto    mnemonic() const
-                                -> tt3::util::Mnemonic override;
+            virtual auto    mnemonic(
+                                ) const -> tt3::util::Mnemonic override;
             virtual QString displayName() const override;
             virtual QIcon   smallIcon() const override;
             virtual QIcon   largeIcon() const override;
@@ -267,8 +267,8 @@ namespace tt3::db::api
             //////////
             //  IObjectType
         public:
-            virtual auto    mnemonic() const
-                                -> tt3::util::Mnemonic override;
+            virtual auto    mnemonic(
+                                ) const -> tt3::util::Mnemonic override;
             virtual QString displayName() const override;
             virtual QIcon   smallIcon() const override;
             virtual QIcon   largeIcon() const override;

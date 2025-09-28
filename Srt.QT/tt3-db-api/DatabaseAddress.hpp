@@ -74,17 +74,14 @@ namespace tt3::db::api
         ///     The database type to which this database
         ///     address belongs.
         virtual auto    databaseType(
-                            ) const
-                            -> IDatabaseType * = 0;
+                            ) const -> IDatabaseType * = 0;
 
         /// \brief
         ///     Returns the user-readable form of this
         ///     database address.
         /// \return
         ///     The user-readable form of this database address.
-        virtual auto    displayForm(
-                            ) const
-                            -> QString = 0;
+        virtual QString displayForm() const = 0;
 
         /// \brief
         ///     Returns the external (re-parsable) form of this
@@ -92,9 +89,7 @@ namespace tt3::db::api
         /// \return
         ///     The external (re-parsable) form of this database
         ///     address.
-        virtual auto    externalForm(
-                            ) const
-                            -> QString = 0;
+        virtual QString externalForm() const = 0;
 
         //////////
         //  Operations (reference counting)
@@ -105,8 +100,7 @@ namespace tt3::db::api
         /// \return
         ///     The current "state" of this database address.
         virtual auto    state(
-                            ) const
-                            -> State = 0;
+                            ) const -> State = 0;
 
         /// \brief
         ///     Returns the current "reference count" of this database address.

@@ -85,8 +85,7 @@ namespace tt3::db::api
         /// \return
         ///     The validator for Principals.
         virtual auto    principal(
-                            ) const
-                            -> IPrincipalValidator * = 0;
+                            ) const -> IPrincipalValidator * = 0;
 
         /// \class IUserValidator tt3-db-api/API.hpp
         /// \brief The validator for a User.
@@ -143,8 +142,7 @@ namespace tt3::db::api
         /// \return
         ///     The validator for Users.
         virtual auto    user(
-                            ) const
-                            -> IUserValidator * = 0;
+                            ) const -> IUserValidator * = 0;
 
         /// \class IAccountValidator tt3-db-api/API.hpp
         /// \brief The validator for an Account.
@@ -189,8 +187,7 @@ namespace tt3::db::api
         /// \return
         ///     The validator for Accounts.
         virtual auto    account(
-                            ) const
-                            -> IAccountValidator * = 0;
+                            ) const -> IAccountValidator * = 0;
 
         /// \class IActivityTypeValidator tt3-db-api/API.hpp
         /// \brief The validator for an ActivityType.
@@ -234,8 +231,7 @@ namespace tt3::db::api
         /// \return
         ///     The validator for ActivityTypes.
         virtual auto    activityType(
-                            ) const
-                            -> IActivityTypeValidator * = 0;
+                            ) const -> IActivityTypeValidator * = 0;
 
         /// \class IActivityValidator tt3-db-api/API.hpp
         /// \brief The validator for an Activity.
@@ -303,10 +299,6 @@ namespace tt3::db::api
         protected:
             IPublicActivityValidator() = default;
             virtual ~IPublicActivityValidator() = default;
-
-            //////////
-            //  Operations
-        public:
         };
         /// \brief
         ///     Returns the validator for PublicActivities.
@@ -325,10 +317,6 @@ namespace tt3::db::api
         protected:
             IPrivateActivityValidator() = default;
             virtual ~IPrivateActivityValidator() = default;
-
-            //////////
-            //  Operations
-        public:
         };
         /// \brief
         ///     Returns the validator for PrivateActivities.
@@ -347,10 +335,6 @@ namespace tt3::db::api
         protected:
             ITaskValidator() = default;
             virtual ~ITaskValidator() = default;
-
-            //////////
-            //  Operations
-        public:
         };
         /// \brief
         ///     Returns the validator for Tasks.
@@ -370,10 +354,6 @@ namespace tt3::db::api
         protected:
             IPublicTaskValidator() = default;
             virtual ~IPublicTaskValidator() = default;
-
-            //////////
-            //  Operations
-        public:
         };
         /// \brief
         ///     Returns the validator for PublicTasks.
@@ -393,10 +373,6 @@ namespace tt3::db::api
         protected:
             IPrivateTaskValidator() = default;
             virtual ~IPrivateTaskValidator() = default;
-
-            //////////
-            //  Operations
-        public:
         };
         /// \brief
         ///     Returns the validator for PrivateTasks.
@@ -448,6 +424,164 @@ namespace tt3::db::api
         ///     The validator for Workloads.
         virtual auto    workload(
             ) const -> IWorkloadValidator * = 0;
+
+        /// \class IProjectValidator tt3-db-api/API.hpp
+        /// \brief The validator for a Project.
+        class TT3_DB_API_PUBLIC IProjectValidator
+            : public virtual IWorkloadValidator
+        {
+            //////////
+            //  This is an interface
+        protected:
+            IProjectValidator() = default;
+            virtual ~IProjectValidator() = default;
+        };
+        /// \brief
+        ///     Returns the validator for Projects.
+        /// \return
+        ///     The validator for Projects.
+        virtual auto    project(
+                            ) const -> IProjectValidator * = 0;
+
+        /// \class IWorkStreamValidator tt3-db-api/API.hpp
+        /// \brief The validator for a WorkStream.
+        class TT3_DB_API_PUBLIC IWorkStreamValidator
+            : public virtual IWorkloadValidator
+        {
+            //////////
+            //  This is an interface
+        protected:
+            IWorkStreamValidator() = default;
+            virtual ~IWorkStreamValidator() = default;
+        };
+        /// \brief
+        ///     Returns the validator for WorkStreams.
+        /// \return
+        ///     The validator for WorkStreams.
+        virtual auto    workStream(
+                            ) const -> IWorkStreamValidator * = 0;
+
+        /// \class IBeneficiaryValidator tt3-db-api/API.hpp
+        /// \brief The validator for a Beneficiary.
+        class TT3_DB_API_PUBLIC IBeneficiaryValidator
+        {
+            //////////
+            //  This is an interface
+        protected:
+            IBeneficiaryValidator() = default;
+            virtual ~IBeneficiaryValidator() = default;
+
+            //////////
+            //  Operations
+        public:
+            /// \brief
+            ///     Checks whether the specified string is a valid
+            ///     "display name" for a Beneficiary.
+            /// \param displayName
+            ///     The string to check.
+            /// \return
+            ///     True if the specified string is a valid
+            ///     "display name" for a Beneficiary, else false.
+            virtual bool    isValidDisplayName(
+                                    const QString & displayName
+                                ) = 0;
+
+            /// \brief
+            ///     Checks whether the specified string is a valid
+            ///     "description" for a Beneficiary.
+            /// \param description
+            ///     The string to check.
+            /// \return
+            ///     True if the specified string is a valid
+            ///     "description" for a Beneficiary, else false.
+            virtual bool    isValidDescription(
+                                    const QString & description
+                                ) = 0;
+        };
+        /// \brief
+        ///     Returns the validator for Beneficiaries.
+        /// \return
+        ///     The validator for Beneficiaries.
+        virtual auto    beneficiary(
+                                ) const -> IBeneficiaryValidator * = 0;
+
+        /// \class IWorkValidator tt3-db-api/API.hpp
+        /// \brief The validator for a Work.
+        class TT3_DB_API_PUBLIC IWorkValidator
+        {
+            //////////
+            //  This is an interface
+        protected:
+            IWorkValidator() = default;
+            virtual ~IWorkValidator() = default;
+
+            //////////
+            //  Operations
+        public:
+            /// \brief
+            ///     Checks whether the specified start/end date+time
+            ///     is a valid start/at combination for a Work.
+            /// \param startedAt
+            ///     The UTC date+time when Work unit starts.
+            /// \param finishedAt
+            ///     The UTC date+time when Work unit finishes.
+            /// \return
+            ///     True the specified start/end date+time is a
+            ///     valid start/at combination for a Work, else false.
+            virtual bool    isValidStartedFinishedAt(
+                                    const QDateTime & startedAt,
+                                    const QDateTime & finishedAt
+                                ) = 0;
+        };
+        /// \brief
+        ///     Returns the validator for Works.
+        /// \return
+        ///     The validator for Works.
+        virtual auto    work() const -> IWorkValidator * = 0;
+
+        /// \class IEventValidator tt3-db-api/API.hpp
+        /// \brief The validator for a Event.
+        class TT3_DB_API_PUBLIC IEventValidator
+        {
+            //////////
+            //  This is an interface
+        protected:
+            IEventValidator() = default;
+            virtual ~IEventValidator() = default;
+
+            //////////
+            //  Operations
+        public:
+            /// \brief
+            ///     Checks whether the specified date+time
+            ///     is a valid occurrence time for an Work.
+            /// \param occurredAt
+            ///     The UTC date+time when the Event has occurred.
+            /// \return
+            ///     True the specified start/end date+time is a
+            ///     valid start/at combination for an Work, else false.
+            virtual bool    isValidOccurredAt(
+                                    const QDateTime & occurredAt
+                                ) = 0;
+
+            /// \brief
+            ///     Checks whether the specified string is a valid
+            ///     "comment" for an Event.
+            /// \param comment
+            ///     The string to check.
+            /// \return
+            ///     True if the specified string is a valid
+            ///     "comment" for an Event.
+            virtual bool    isValidComment(
+                                    const QString & comment
+                                ) = 0;
+        };
+        /// \brief
+        ///     Returns the validator for Events.
+        /// \return
+        ///     The validator for Events.
+        virtual auto    event(
+            ) const -> IEventValidator * = 0;
     };
 
     /// \class DefaultValidator tt3-db-api/API.hpp
@@ -484,6 +618,16 @@ namespace tt3::db::api
                             ) const -> IPrivateTaskValidator * override;
         virtual auto    workload(
                             ) const -> IWorkloadValidator * override;
+        virtual auto    project(
+                            ) const -> IProjectValidator * override;
+        virtual auto    workStream(
+                            ) const -> IWorkStreamValidator * override;
+        virtual auto    beneficiary(
+                            ) const -> IBeneficiaryValidator * override;
+        virtual auto    work(
+                            ) const -> IWorkValidator * override;
+        virtual auto    event(
+                            ) const -> IEventValidator * override;
 
         //////////
         //  Implementatiob
@@ -499,6 +643,9 @@ namespace tt3::db::api
         static bool     _isValidDescription(
                                 const QString & description,
                                 int maxLength
+                            );
+        static bool     _isValidDateTime(
+                                const QDateTime & dateTime
                             );
 
         //  Per-type validators
@@ -516,8 +663,8 @@ namespace tt3::db::api
                                 ) override;
         };
 
-        class TT3_DB_API_PUBLIC _UserValidator final :
-            public virtual IUserValidator
+        class TT3_DB_API_PUBLIC _UserValidator final
+            :   public virtual IUserValidator
         {
             DECLARE_SINGLETON(_UserValidator)
 
@@ -565,8 +712,8 @@ namespace tt3::db::api
                                 ) override;
         };
 
-        class TT3_DB_API_PUBLIC _ActivityTypeValidator final :
-            public virtual IActivityTypeValidator
+        class TT3_DB_API_PUBLIC _ActivityTypeValidator final
+            :   public virtual IActivityTypeValidator
         {
             DECLARE_SINGLETON(_ActivityTypeValidator)
 
@@ -606,7 +753,9 @@ namespace tt3::db::api
         };
 
         class TT3_DB_API_PUBLIC _WorkloadValidator final
-            :   public virtual IWorkloadValidator
+            :   public virtual IWorkloadValidator,
+                public virtual IProjectValidator,
+                public virtual IWorkStreamValidator
         {
             DECLARE_SINGLETON(_WorkloadValidator)
 
@@ -618,6 +767,52 @@ namespace tt3::db::api
                                 ) override;
             virtual bool    isValidDescription(
                                     const QString & description
+                                ) override;
+        };
+
+        class TT3_DB_API_PUBLIC _BeneficiaryValidator final
+            :   public virtual IBeneficiaryValidator
+        {
+            DECLARE_SINGLETON(_BeneficiaryValidator)
+
+            //////////
+            //  IBeneficiaryValidator
+        public:
+            virtual bool    isValidDisplayName(
+                                    const QString & displayName
+                                ) override;
+            virtual bool    isValidDescription(
+                                    const QString & description
+                                ) override;
+        };
+
+        class TT3_DB_API_PUBLIC _WorkValidator final
+            :   public virtual IWorkValidator
+        {
+            DECLARE_SINGLETON(_WorkValidator)
+
+            //////////
+            //  IWorkValidator
+        public:
+            virtual bool    isValidStartedFinishedAt(
+                                    const QDateTime & startedAt,
+                                    const QDateTime & finishedAt
+                                ) override;
+        };
+
+        class TT3_DB_API_PUBLIC _EventValidator final
+            :   public virtual IEventValidator
+        {
+            DECLARE_SINGLETON(_EventValidator)
+
+            //////////
+            //  IEventValidator
+        public:
+            virtual bool    isValidOccurredAt(
+                                    const QDateTime & occurredAt
+                                ) override;
+            virtual bool    isValidComment(
+                                    const QString & comment
                                 ) override;
         };
     };

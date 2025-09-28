@@ -23,8 +23,8 @@ IMPLEMENT_SINGLETON(ObjectTypes::User)
 ObjectTypes::User::User() {}
 ObjectTypes::User::~User() {}
 
-auto ObjectTypes::User::mnemonic() const
-    -> tt3::util::Mnemonic
+auto ObjectTypes::User::mnemonic(
+    ) const -> tt3::util::Mnemonic
 {
     return M(User);
 }
@@ -52,8 +52,8 @@ IMPLEMENT_SINGLETON(ObjectTypes::Account)
 ObjectTypes::Account::Account() {}
 ObjectTypes::Account::~Account() {}
 
-auto ObjectTypes::Account::mnemonic() const
-    -> tt3::util::Mnemonic
+auto ObjectTypes::Account::mnemonic(
+    ) const -> tt3::util::Mnemonic
 {
     return M(Account);
 }
@@ -81,8 +81,8 @@ IMPLEMENT_SINGLETON(ObjectTypes::ActivityType)
 ObjectTypes::ActivityType::ActivityType() {}
 ObjectTypes::ActivityType::~ActivityType() {}
 
-auto ObjectTypes::ActivityType::mnemonic() const
-    -> tt3::util::Mnemonic
+auto ObjectTypes::ActivityType::mnemonic(
+    ) const -> tt3::util::Mnemonic
 {
     return M(ActivityType);
 }
@@ -110,8 +110,8 @@ IMPLEMENT_SINGLETON(ObjectTypes::PublicActivity)
 ObjectTypes::PublicActivity::PublicActivity() {}
 ObjectTypes::PublicActivity::~PublicActivity() {}
 
-auto ObjectTypes::PublicActivity::mnemonic() const
-    -> tt3::util::Mnemonic
+auto ObjectTypes::PublicActivity::mnemonic(
+    ) const -> tt3::util::Mnemonic
 {
     return M(PublicActivity);
 }
@@ -139,8 +139,8 @@ IMPLEMENT_SINGLETON(ObjectTypes::PublicTask)
 ObjectTypes::PublicTask::PublicTask() {}
 ObjectTypes::PublicTask::~PublicTask() {}
 
-auto ObjectTypes::PublicTask::mnemonic() const
-    -> tt3::util::Mnemonic
+auto ObjectTypes::PublicTask::mnemonic(
+    ) const -> tt3::util::Mnemonic
 {
     return M(PublicTask);
 }
@@ -168,8 +168,8 @@ IMPLEMENT_SINGLETON(ObjectTypes::PrivateActivity)
 ObjectTypes::PrivateActivity::PrivateActivity() {}
 ObjectTypes::PrivateActivity::~PrivateActivity() {}
 
-auto ObjectTypes::PrivateActivity::mnemonic() const
-    -> tt3::util::Mnemonic
+auto ObjectTypes::PrivateActivity::mnemonic(
+    ) const -> tt3::util::Mnemonic
 {
     return M(PrivateActivity);
 }
@@ -197,8 +197,8 @@ IMPLEMENT_SINGLETON(ObjectTypes::PrivateTask)
 ObjectTypes::PrivateTask::PrivateTask() {}
 ObjectTypes::PrivateTask::~PrivateTask() {}
 
-auto ObjectTypes::PrivateTask::mnemonic() const
-    -> tt3::util::Mnemonic
+auto ObjectTypes::PrivateTask::mnemonic(
+    ) const -> tt3::util::Mnemonic
 {
     return M(PrivateTask);
 }
@@ -226,8 +226,8 @@ IMPLEMENT_SINGLETON(ObjectTypes::Work)
 ObjectTypes::Work::Work() {}
 ObjectTypes::Work::~Work() {}
 
-auto ObjectTypes::Work::mnemonic() const
-    -> tt3::util::Mnemonic
+auto ObjectTypes::Work::mnemonic(
+    ) const -> tt3::util::Mnemonic
 {
     return M(Work);
 }
@@ -255,8 +255,8 @@ IMPLEMENT_SINGLETON(ObjectTypes::Event)
 ObjectTypes::Event::Event() {}
 ObjectTypes::Event::~Event() {}
 
-auto ObjectTypes::Event::mnemonic() const
-    -> tt3::util::Mnemonic
+auto ObjectTypes::Event::mnemonic(
+    ) const -> tt3::util::Mnemonic
 {
     return M(Event);
 }
@@ -284,8 +284,8 @@ IMPLEMENT_SINGLETON(ObjectTypes::Project)
 ObjectTypes::Project::Project() {}
 ObjectTypes::Project::~Project() {}
 
-auto ObjectTypes::Project::mnemonic() const
-    -> tt3::util::Mnemonic
+auto ObjectTypes::Project::mnemonic(
+    ) const -> tt3::util::Mnemonic
 {
     return M(Project);
 }
@@ -313,8 +313,8 @@ IMPLEMENT_SINGLETON(ObjectTypes::WorkStream)
 ObjectTypes::WorkStream::WorkStream() {}
 ObjectTypes::WorkStream::~WorkStream() {}
 
-auto ObjectTypes::WorkStream::mnemonic() const
-    -> tt3::util::Mnemonic
+auto ObjectTypes::WorkStream::mnemonic(
+    ) const -> tt3::util::Mnemonic
 {
     return M(WorkStream);
 }
@@ -342,8 +342,8 @@ IMPLEMENT_SINGLETON(ObjectTypes::Beneficiary)
 ObjectTypes::Beneficiary::Beneficiary() {}
 ObjectTypes::Beneficiary::~Beneficiary() {}
 
-auto ObjectTypes::Beneficiary::mnemonic() const
-    -> tt3::util::Mnemonic
+auto ObjectTypes::Beneficiary::mnemonic(
+    ) const -> tt3::util::Mnemonic
 {
     return M(Beneficiary);
 }

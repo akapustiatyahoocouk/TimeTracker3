@@ -61,8 +61,7 @@ namespace tt3::util
         /// \return
         ///     The error message describing the exception for
         ///     the current default locale
-        virtual auto    errorMessage(
-                            ) const -> QString = 0;
+        virtual QString errorMessage() const = 0;
     };
 
     /// \class MissingResourceException tt3-util/API.hpp
@@ -102,8 +101,7 @@ namespace tt3::util
         //////////
         //  Exception
     public:
-        virtual auto    errorMessage(
-                            ) const -> QString override;
+        virtual QString errorMessage() const override;
 
         //////////
         //  Property accessors
@@ -112,8 +110,8 @@ namespace tt3::util
         ///     Returns the name of the resource factory where a resource is missing.
         /// \return
         ///     The name of the resource factory where a resource is missing.
-        auto            resourceFactoryName(
-                            ) const -> QString { return _resourceFactoryName; }
+        QString         resourceFactoryName(
+                            ) const { return _resourceFactoryName; }
 
         /// \brief
         ///     Returns the ID of the resource section where the resource is missing.
@@ -171,8 +169,8 @@ namespace tt3::util
         //////////
         //  Exception
     public:
-        virtual auto    errorMessage(
-                            ) const -> QString override;
+        virtual QString errorMessage(
+                            ) const override;
 
         //////////
         //  Property accessors
@@ -181,8 +179,8 @@ namespace tt3::util
         ///     Returns the string which has failed to parse.
         /// \return
         ///     The string which has failed to parse.
-        auto            string(
-                            ) const -> QString { return _string; }
+        QString         string(
+                            ) const { return _string; }
 
         /// \brief
         ///     Returns the position within the parsed string where a
@@ -241,8 +239,8 @@ namespace tt3::util
         /// \return
         ///     The error message describing the error for
         ///     the current default locale
-        virtual auto    errorMessage(
-                            ) const -> QString = 0;
+        virtual QString errorMessage(
+                            ) const = 0;
     };
 
     /// \class ProgramError tt3-util/API.hpp
@@ -307,8 +305,8 @@ namespace tt3::util
         //////////
         //  Error
     public:
-        virtual auto    errorMessage(
-                            ) const -> QString override;
+        virtual QString errorMessage(
+                            ) const override;
     };
 }
 

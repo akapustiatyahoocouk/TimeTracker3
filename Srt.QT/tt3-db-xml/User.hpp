@@ -44,8 +44,8 @@ namespace tt3::db::xml
         //////////
         //  tt3::db::api::IUser (properties)
     public:
-        virtual auto    realName(
-                            ) const -> QString override;
+        virtual QString realName(
+                            ) const override;
         virtual void    setRealName(
                                 const QString & realName
                             ) override;

@@ -1,5 +1,4 @@
-//ina
-
+//
 //  tt3-db-api/DefaultValidator.cpp tt3::db::api::DefaultValidator class implementation
 //
 //  TimeTracker3
@@ -92,6 +91,36 @@ auto DefaultValidator::workload(
     return _WorkloadValidator::instance();
 }
 
+auto DefaultValidator::project(
+    ) const -> IProjectValidator *
+{
+    return _WorkloadValidator::instance();
+}
+
+auto DefaultValidator::workStream(
+    ) const -> IWorkStreamValidator *
+{
+    return _WorkloadValidator::instance();
+}
+
+auto DefaultValidator::beneficiary(
+    ) const -> IBeneficiaryValidator *
+{
+    return _BeneficiaryValidator::instance();
+}
+
+auto DefaultValidator::work(
+    ) const -> IWorkValidator *
+{
+    return _WorkValidator::instance();
+}
+
+auto DefaultValidator::event(
+    ) const -> IEventValidator *
+{
+    return _EventValidator::instance();
+}
+
 //////////
 //  Implementation helpers
 bool DefaultValidator::_isValidEmailAddress(
@@ -144,6 +173,32 @@ bool DefaultValidator::_isValidDescription(
         }
     }
     return true;
+}
+
+bool DefaultValidator::_isValidDateTime(
+        const QDateTime & dateTime
+    )
+{
+    static const QCalendar gregorianCalendar(QCalendar::System::Gregorian);
+
+    Q_ASSERT(dateTime.timeSpec() == Qt::TimeSpec::UTC);
+    QDate date = dateTime.date();
+    QTime time = dateTime.time();
+    int y = date.year(gregorianCalendar),
+        m = date.month(gregorianCalendar),
+        d = date.day(gregorianCalendar);
+    int h = time.hour(),
+        n = time.minute(),
+        s = time.second(),
+        l = time.msec();
+    return dateTime.isValid() &&
+           y >= 1970 && y <= 9999 &&
+           m >= 1 && m <= 12 &&
+           d >= 1 && d <= 31 &&
+           h >= 0 && h <= 23 &&
+           n >= 0 && n <= 59 &&
+           s >= 0 && s <= 59 && //  QDateTime doesn't do UTC leap seconds!
+           l >= 0 && l <= 999;
 }
 
 //////////
@@ -220,7 +275,7 @@ bool DefaultValidator::_ActivityTypeValidator::isValidDisplayName(
         const QString & displayName
     )
 {
-    return _isValidName(displayName, 255);
+    return _isValidName(displayName, 127);
 }
 
 bool DefaultValidator::_ActivityTypeValidator::isValidDescription(
@@ -240,7 +295,7 @@ bool DefaultValidator::_ActivityValidator::isValidDisplayName(
         const QString & displayName
     )
 {
-    return _isValidName(displayName, 255);
+    return _isValidName(displayName, 127);
 }
 
 bool DefaultValidator::_ActivityValidator::isValidDescription(
@@ -271,7 +326,7 @@ bool DefaultValidator::_WorkloadValidator::isValidDisplayName(
         const QString & displayName
     )
 {
-    return _isValidName(displayName, 255);
+    return _isValidName(displayName, 127);
 }
 
 bool DefaultValidator::_WorkloadValidator::isValidDescription(
@@ -279,6 +334,62 @@ bool DefaultValidator::_WorkloadValidator::isValidDescription(
     )
 {
     return _isValidDescription(description, 32767);
+}
+
+//////////
+//  DefaultValidator::_BeneficiaryValidator
+IMPLEMENT_SINGLETON(DefaultValidator::_BeneficiaryValidator)
+DefaultValidator::_BeneficiaryValidator::_BeneficiaryValidator() {}
+DefaultValidator::_BeneficiaryValidator::~_BeneficiaryValidator() {}
+
+bool DefaultValidator::_BeneficiaryValidator::isValidDisplayName(
+        const QString & displayName
+    )
+{
+    return _isValidName(displayName, 127);
+}
+
+bool DefaultValidator::_BeneficiaryValidator::isValidDescription(
+        const QString & description
+    )
+{
+    return _isValidDescription(description, 32767);
+}
+
+//////////
+//  DefaultValidator::_WorkValidator
+IMPLEMENT_SINGLETON(DefaultValidator::_WorkValidator)
+DefaultValidator::_WorkValidator::_WorkValidator() {}
+DefaultValidator::_WorkValidator::~_WorkValidator() {}
+
+bool DefaultValidator::_WorkValidator::isValidStartedFinishedAt(
+        const QDateTime & startedAt,
+        const QDateTime & finishedAt
+    )
+{
+    return _isValidDateTime(startedAt) &&
+           _isValidDateTime(finishedAt) &&
+           startedAt <= finishedAt;
+}
+
+//////////
+//  DefaultValidator::_EventValidator
+IMPLEMENT_SINGLETON(DefaultValidator::_EventValidator)
+DefaultValidator::_EventValidator::_EventValidator() {}
+DefaultValidator::_EventValidator::~_EventValidator() {}
+
+bool DefaultValidator::_EventValidator::isValidOccurredAt(
+        const QDateTime & occurredAt
+    )
+{
+    return _isValidDateTime(occurredAt);
+}
+
+bool DefaultValidator::_EventValidator::isValidComment(
+        const QString & comment
+    )
+{
+    return _isValidName(comment, 255);
 }
 
 //  End of tt3-db-api/DefaultValidator.cpp

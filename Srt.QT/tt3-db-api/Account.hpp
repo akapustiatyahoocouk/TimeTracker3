@@ -31,8 +31,8 @@ namespace tt3::db::api
         //////////
         //  IObject
     public:
-        virtual auto    type() const
-                            -> IObjectType * override
+        virtual auto    type(
+            ) const -> IObjectType * override
         {
             return ObjectTypes::Account::instance();
         }
@@ -46,8 +46,7 @@ namespace tt3::db::api
         ///     The login identifier of this account.
         /// \exception DatabaseException
         ///     If an error occurs.
-        virtual auto    login(
-                            ) const -> QString = 0;
+        virtual QString login() const = 0;
 
         /// \brief
         ///     Sets the login identifier of this account.
@@ -66,8 +65,7 @@ namespace tt3::db::api
         ///     as an uppercase hexstring.
         /// \exception DatabaseException
         ///     If an error occurs.
-        virtual auto    passwordHash(
-                            ) const -> QString = 0;
+        virtual QString passwordHash() const = 0;
 
         /// \brief
         ///     Sets the password of this account.

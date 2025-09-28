@@ -75,14 +75,14 @@ namespace tt3::ws
 namespace tt3::util
 {
     template <> TT3_WS_PUBLIC
-    auto toString<tt3::ws::WorkspaceAddress>(
+    QString toString<tt3::ws::WorkspaceAddress>(
             const tt3::ws::WorkspaceAddress & value
-        ) -> QString;
+        );
 
     template <> TT3_WS_PUBLIC
-    auto toString<tt3::ws::WorkspaceAddressesList>(
+    QString toString<tt3::ws::WorkspaceAddressesList>(
             const tt3::ws::WorkspaceAddressesList & value
-        ) -> QString;
+        );
 
     template <> TT3_WS_PUBLIC
     auto fromString<tt3::ws::WorkspaceAddress>(

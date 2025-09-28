@@ -37,8 +37,8 @@ namespace tt3::db::api
         ///     Can be safely obtained on both open and closed databases.
         /// \return
         ///     The type of this database.
-        virtual auto    type() const
-                            -> IDatabaseType * = 0;
+        virtual auto    type(
+                            ) const -> IDatabaseType * = 0;
 
         /// \brief
         ///     Returns the address of this database.
@@ -46,8 +46,8 @@ namespace tt3::db::api
         ///     Can be safely obtained on both open and closed databases.
         /// \return
         ///     The address of this database.
-        virtual auto    address() const
-                            -> IDatabaseAddress * = 0;
+        virtual auto    address(
+                            ) const -> IDatabaseAddress * = 0;
 
         /// \brief
         ///     Returns the validator used by this database.
@@ -55,8 +55,8 @@ namespace tt3::db::api
         ///     Can be safely obtained on both open and closed databases.
         /// \return
         ///     The validator used by this database.
-        virtual auto    validator() const
-                            -> IValidator * = 0;
+        virtual auto    validator(
+                            ) const -> IValidator * = 0;
 
         /// \brief
         ///     Checks whether this database is open or closed.

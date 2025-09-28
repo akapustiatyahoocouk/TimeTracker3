@@ -32,8 +32,7 @@ Workload::~Workload()
 
 //////////
 //  tt3::db::api::IWorkload (properties)
-auto Workload::displayName(
-    ) const -> QString
+QString Workload::displayName() const
 {
     throw tt3::util::NotImplementedError();
 }
@@ -45,8 +44,7 @@ void Workload::setDisplayName(
     throw tt3::util::NotImplementedError();
 }
 
-auto Workload::description(
-    ) const -> QString
+QString Workload::description() const
 {
     throw tt3::util::NotImplementedError();
 }

@@ -70,8 +70,7 @@ NotImplementedError::NotImplementedError()
 #endif
 }
 
-auto NotImplementedError::errorMessage(
-    ) const -> QString
+QString NotImplementedError::errorMessage() const
 {
     return "Not yet implemented";
 }

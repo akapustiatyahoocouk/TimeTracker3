@@ -85,9 +85,9 @@ namespace tt3::db::api
 namespace tt3::util
 {
     template <> TT3_DB_API_PUBLIC
-    auto toString<tt3::db::api::Capabilities>(
+    QString toString<tt3::db::api::Capabilities>(
             const tt3::db::api::Capabilities & value
-        ) -> QString;
+        );
 
     template <> TT3_DB_API_PUBLIC
     auto fromString<tt3::db::api::Capabilities>(

@@ -44,9 +44,9 @@ namespace tt3::ws
         ///     The "real name" of this User.
         /// \exception WorkspaceException
         ///     If an error occurs.
-        auto        realName(
+        QString     realName(
                             const Credentials & credentials
-                        ) const -> QString;
+                        ) const;
 
         /// \brief
         ///     Sets the "real name" of this User.

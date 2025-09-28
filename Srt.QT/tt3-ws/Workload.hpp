@@ -49,9 +49,9 @@ namespace tt3::ws
         ///     The user-readable display name of this workload.
         /// \exception WorkspaceException
         ///     If an error occurs.
-        auto        displayName(
+        QString     displayName(
                             const Credentials & credentials
-                        ) const -> QString;
+                        ) const;
 
         /// \brief
         ///     Sets the user-readable display name of this workload.
@@ -76,9 +76,9 @@ namespace tt3::ws
         ///     type, with lines separated by a newline character '\n'.
         /// \exception WorkspaceException
         ///     If an error occurs.
-        auto        description(
+        QString     description(
                             const Credentials & credentials
-                        ) const -> QString;
+                        ) const;
 
         /// \brief
         ///     Sets the multi-line description of this workload.

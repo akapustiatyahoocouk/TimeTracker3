@@ -49,32 +49,25 @@ namespace tt3::db::api
         /// \return
         ///     The mnemonic identifier of this database type.
         virtual auto    mnemonic(
-                            ) const
-                            -> tt3::util::Mnemonic = 0;
+                            ) const -> tt3::util::Mnemonic = 0;
 
         /// \brief
         ///     Returns the user-readable display name of this database type.
         /// \return
         ///     The user-readable display name of this database type.
-        virtual auto    displayName(
-                            ) const
-                            -> QString = 0;
+        virtual QString displayName() const = 0;
 
         /// \brief
         ///     Returns the small (16x16) icon representing this database type.
         /// \return
         ///     The small (16x16) icon representing this database type.
-        virtual auto    smallIcon(
-                            ) const
-                            -> QIcon = 0;
+        virtual QIcon   smallIcon() const = 0;
 
         /// \brief
         ///     Returns the large (32x32) icon representing this database type.
         /// \return
         ///     The large (32x32) icon representing this database type.
-        virtual auto    largeIcon(
-                            ) const
-                            -> QIcon = 0;
+        virtual QIcon   largeIcon() const = 0;
 
         /// \brief
         ///     Checks whether this database type is operational
@@ -88,9 +81,7 @@ namespace tt3::db::api
         ///     Returns the short (1 line) status report for this database type.
         /// \return
         ///     The short (1 line) status report for this database type.
-        virtual auto    shortStatusReport(
-                            ) const
-                            -> QString = 0;
+        virtual QString shortStatusReport() const = 0;
 
         /// \brief
         ///     Returns the longer (mulyi-line) status report
@@ -99,17 +90,14 @@ namespace tt3::db::api
         ///     The longer (mulyi-line) status report for this
         ///     database type with newline '\\n' character
         ///     separating the lines.
-        virtual auto    fullStatusReport(
-                            ) const
-                            -> QString = 0;
+        virtual QString fullStatusReport() const = 0;
 
         /// \brief
         ///     Returns the validator for databases of this type
         /// \return
         ///     The validator for databases of this type
         virtual auto    validator(
-                            ) const
-                            -> IValidator * = 0;
+                            ) const -> IValidator * = 0;
 
         //////////
         //  Operations (address handling)
@@ -236,15 +224,14 @@ namespace tt3::db::api
         ///     mnemonic; nullptr if not found.
         static auto     findDatabaseType(
                                 const tt3::util::Mnemonic & mnemonic
-                            )
-                            -> IDatabaseType *;
+                            ) -> IDatabaseType *;
 
         /// \brief
         ///     Returns the set of all registered database types.
         /// \return
         ///     Rhe set of all registered database types.
-        static auto     allDatabaseTypes()
-                            -> DatabaseTypes;
+        static auto     allDatabaseTypes(
+                            ) -> DatabaseTypes;
 
         //////////
         //  Implementation
