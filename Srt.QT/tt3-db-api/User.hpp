@@ -247,7 +247,7 @@ namespace tt3::db::api
         /// \param requireCommentOnStart
         ///     True if the newly created PrivateActivity small require the
         ///     user to enter a comment when it is started.
-        /// \param requireCommentOnFinish
+        /// \param requireCommentOnStop
         ///     True if the newly created PrivateActivity small require the
         ///     user to enter a comment when it is started.
         /// \param fullScreenReminder
@@ -266,7 +266,7 @@ namespace tt3::db::api
                                 const QString & description,
                                 const InactivityTimeout & timeout,
                                 bool requireCommentOnStart,
-                                bool requireCommentOnFinish,
+                                bool requireCommentOnStop,
                                 bool fullScreenReminder,
                                 IActivityType * activityType,
                                 tt3::db::api::IWorkload * workload
@@ -287,7 +287,7 @@ namespace tt3::db::api
         /// \param requireCommentOnStart
         ///     True if the newly created PrivateTask small require the
         ///     user to enter a comment when it is started.
-        /// \param requireCommentOnFinish
+        /// \param requireCommentOnStop
         ///     True if the newly created PrivateTask small require the
         ///     user to enter a comment when it is started.
         /// \param fullScreenReminder
@@ -312,7 +312,7 @@ namespace tt3::db::api
                                 const QString & description,
                                 const InactivityTimeout & timeout,
                                 bool requireCommentOnStart,
-                                bool requireCommentOnFinish,
+                                bool requireCommentOnStop,
                                 bool fullScreenReminder,
                                 IActivityType * activityType,
                                 IWorkload * workload,

@@ -152,34 +152,34 @@ namespace tt3::ws
                         );
 
         /// \brief
-        ///     Checks if user must enter a comment when finishing
+        ///     Checks if user must enter a comment when stopping
         ///     this activity.
         /// \param credentials
         ///     The credentials of the service caller.
         /// \return
-        ///     True if user must enter a comment when finishing this
+        ///     True if user must enter a comment when stopping this
         ///     activity (this comment will be recorded as an event),
         ///     false if not.
         /// \exception WorkspaceException
         ///     If an error occurs.
-        bool        requireCommentOnFinish(
+        bool        requireCommentOnStop(
                             const Credentials & credentials
                         ) const;
 
         /// \brief
-        ///     Specifies if user must enter a comment when finishing
+        ///     Specifies if user must enter a comment when stopping
         ///     this activity.
         /// \param credentials
         ///     The credentials of the service caller.
-        /// \param requireCommentOnFinish
-        ///     True if user must enter a comment when finishing this
+        /// \param requireCommentOnStop
+        ///     True if user must enter a comment when stopping this
         ///     activity (this comment will be recorded as an event),
         ///     false if not.
         /// \exception WorkspaceException
         ///     If an error occurs.
-        void        setRequireCommentOnFinish(
+        void        setRequireCommentOnStop(
                             const Credentials & credentials,
-                            bool requireCommentOnFinish
+                            bool requireCommentOnStop
                         );
 
         /// \brief

@@ -19,6 +19,7 @@ using namespace tt3::gui;
 
 namespace tt3::gui
 {
+    extern CurrentSkin theCurrentSkin;
     extern CurrentCredentials theCurrentCredentials;
 }
 
@@ -146,15 +147,26 @@ bool CurrentActivity::replaceWith(
 
         if (with != impl->activity)
         {   //  Enter the comment if necessary
-            bool commentRequired =
-                (impl->activity != nullptr &&
-                 impl->activity->requireCommentOnFinish(credentials)) ||    //  may throw
-                (with != nullptr &&
-                 with->requireCommentOnStart(credentials)); //  may throw
             QString comment;
-            if (commentRequired)
+            if (with != nullptr &&
+                with->requireCommentOnStart(credentials))  //  may throw
             {
-                comment = "TODO";
+                EnterActivityStartCommentDialog dlg(theCurrentSkin->mainWindow(), with);
+                if (dlg.doModal() != EnterActivityStartCommentDialog::Result::Ok)
+                {   //  OOPS! The user has cancelled the change
+                    return false;
+                }
+                comment = dlg.comment();
+            }
+            else if (impl->activity != nullptr &&
+                     impl->activity->requireCommentOnStop(credentials))   //  may throw
+            {
+                EnterActivityStopCommentDialog dlg(theCurrentSkin->mainWindow(), impl->activity);
+                if (dlg.doModal() != EnterActivityStopCommentDialog::Result::Ok)
+                {   //  OOPS! The user has cancelled the change
+                    return false;
+                }
+                comment = dlg.comment();
             }
             //  Log current activity, if there is one, as a Work item
             if (impl->activity != nullptr)
@@ -167,7 +179,7 @@ bool CurrentActivity::replaceWith(
                          << QDateTime::currentDateTimeUtc();
             }
             //  Log entered comment as an Event
-            if (commentRequired)
+            if (!comment.isEmpty())
             {
                 qDebug() << "Loging Event " << comment;
             }

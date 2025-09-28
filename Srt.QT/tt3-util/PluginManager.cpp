@@ -33,13 +33,13 @@ void PluginManager::loadPlugins()
     QString startupDirectory = QCoreApplication::applicationDirPath();
     QString exeFile = QCoreApplication::applicationFilePath();
     //  Discover plugins
-    for (const auto & ei : QDir(startupDirectory).entryInfoList())
+    for (const auto & dllInfo : QDir(startupDirectory).entryInfoList())
     {
-        if (ei.isFile() && !ei.isSymbolicLink() &&
-            ei.baseName().startsWith("tt3-") && ei.absoluteFilePath() != exeFile)
+        if (dllInfo.isFile() && !dllInfo.isSymbolicLink() &&
+            dllInfo.baseName().startsWith("tt3-") &&
+            dllInfo.absoluteFilePath() != exeFile)
         {
-            qDebug() << ei;
-            _loadPluginsFromLibrary(ei.absoluteFilePath());
+            _loadPluginsFromLibrary(dllInfo.absoluteFilePath());
         }
     }
     //  Initialize plugins

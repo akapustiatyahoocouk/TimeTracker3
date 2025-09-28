@@ -120,28 +120,28 @@ namespace tt3::db::api
                             ) = 0;
 
         /// \brief
-        ///     Checks if user must enter a comment when finishing
+        ///     Checks if user must enter a comment when stopping
         ///     this activity.
         /// \return
-        ///     True if user must enter a comment when finishing this
+        ///     True if user must enter a comment when stopping this
         ///     activity (this comment will be recorded as an event),
         ///     false if not.
         /// \exception DatabaseException
         ///     If an error occurs.
-        virtual bool    requireCommentOnFinish(
+        virtual bool    requireCommentOnStop(
                             ) const = 0;
 
         /// \brief
-        ///     Specifies if user must enter a comment when finishing
+        ///     Specifies if user must enter a comment when stopping
         ///     this activity.
-        /// \param requireCommentOnFinish
-        ///     True if user must enter a comment when finishing this
+        /// \param requireCommentOnStop
+        ///     True if user must enter a comment when stopping this
         ///     activity (this comment will be recorded as an event),
         ///     false if not.
         /// \exception DatabaseException
         ///     If an error occurs.
-        virtual void    setRequireCommentOnFinish(
-                                bool requireCommentOnFinish
+        virtual void    setRequireCommentOnStop(
+                                bool requireCommentOnStop
                             ) = 0;
 
         /// \brief

@@ -353,7 +353,7 @@ namespace tt3::ws
         /// \param requireCommentOnStart
         ///     True if the newly created PublicActivity small require the
         ///     user to enter a comment when it is started.
-        /// \param requireCommentOnFinish
+        /// \param requireCommentOnStop
         ///     True if the newly created PublicActivifinishedty small require the
         ///     user to enter a comment when it is started.
         /// \param fullScreenReminder
@@ -373,7 +373,7 @@ namespace tt3::ws
                             const QString & description,
                             const InactivityTimeout & timeout,
                             bool requireCommentOnStart,
-                            bool requireCommentOnFinish,
+                            bool requireCommentOnStop,
                             bool fullScreenReminder,
                             ActivityType activityType,
                             Workload workload
@@ -396,7 +396,7 @@ namespace tt3::ws
         /// \param requireCommentOnStart
         ///     True if the newly created PublicTask small require the
         ///     user to enter a comment when it is started.
-        /// \param requireCommentOnFinish
+        /// \param requireCommentOnStop
         ///     True if the newly created PublicTask small require the
         ///     user to enter a comment when it is started.
         /// \param fullScreenReminder
@@ -422,7 +422,7 @@ namespace tt3::ws
                             const QString & description,
                             const InactivityTimeout & timeout,
                             bool requireCommentOnStart,
-                            bool requireCommentOnFinish,
+                            bool requireCommentOnStop,
                             bool fullScreenReminder,
                             ActivityType activityType,
                             Workload workload,

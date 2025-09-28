@@ -84,7 +84,7 @@ ModifyPublicTaskDialog::ModifyPublicTaskDialog(
     _setSelectedWorkload(_publicTask->workload(_credentials));
     _setSelectedTimeout(_publicTask->timeout(_credentials));
     _ui->requireCommentOnStartCheckBox->setChecked(_publicTask->requireCommentOnStart(_credentials));
-    _ui->requireCommentOnFinishCheckBox->setChecked(_publicTask->requireCommentOnFinish(_credentials));
+    _ui->requireCommentOnStopCheckBox->setChecked(_publicTask->requireCommentOnStop(_credentials));
     _ui->fullScreenReminderCheckBox->setChecked(_publicTask->fullScreenReminder(_credentials));
     _ui->completedCheckBox->setChecked(_publicTask->completed(_credentials));
     _ui->requiresCommentOnCompletionCeckBox->setChecked(_publicTask->requireCommentOnCompletion(_credentials));
@@ -104,10 +104,20 @@ ModifyPublicTaskDialog::ModifyPublicTaskDialog(
         _ui->hoursComboBox->setEnabled(false);
         _ui->minutesComboBox->setEnabled(false);
         _ui->requireCommentOnStartCheckBox->setEnabled(false);
-        _ui->requireCommentOnFinishCheckBox->setEnabled(false);
+        _ui->requireCommentOnStopCheckBox->setEnabled(false);
         _ui->fullScreenReminderCheckBox->setEnabled(false);
         _ui->completedCheckBox->setEnabled(false);
         _ui->requiresCommentOnCompletionCeckBox->setEnabled(false);
+    }
+    else if (_publicTask->completed(_credentials))
+    {
+        //  Only an Administrator can "uncomplete"
+        //  a PublicTask - the ManagePublicTasks capability
+        //  is not enough
+        _ui->completedCheckBox->setEnabled(
+            _publicTask->workspace()->grantsCapability( //  may throw
+                _credentials,
+                tt3::ws::Capabilities::Administrator));
     }
 
     //  Done
@@ -276,10 +286,17 @@ void ModifyPublicTaskDialog::accept()
 {
     try
     {
+        QString completionComment;
         if (!_publicTask->completed(_credentials) &&
-            _ui->completedCheckBox->isChecked())
-        {   //  Completing a PublicTask
-            //  TODO ask user for the comment
+            _ui->completedCheckBox->isChecked() &&
+            _publicTask->requireCommentOnCompletion(_credentials))
+        {   //  Completing a PublicTask that requires a comment
+            EnterTaskCompletionCommentDialog dlg(this, _publicTask);
+            if (dlg.doModal() != EnterTaskCompletionCommentDialog::Result::Ok)
+            {   //  OOPS! The user has cancelled!
+                return;
+            }
+            completionComment = dlg.comment();
         }
         //  Any of the setters may throw
         if (!_readOnly)
@@ -297,9 +314,9 @@ void ModifyPublicTaskDialog::accept()
             _publicTask->setRequireCommentOnStart(
                 _credentials,
                 _ui->requireCommentOnStartCheckBox->isChecked());
-            _publicTask->setRequireCommentOnFinish(
+            _publicTask->setRequireCommentOnStop(
                 _credentials,
-                _ui->requireCommentOnFinishCheckBox->isChecked());
+                _ui->requireCommentOnStopCheckBox->isChecked());
             _publicTask->setFullScreenReminder(
                 _credentials,
                 _ui->fullScreenReminderCheckBox->isChecked());
@@ -317,7 +334,11 @@ void ModifyPublicTaskDialog::accept()
                 _ui->requiresCommentOnCompletionCeckBox->isChecked());
             //  TODO ...if the completed task is the "current activity",
             //  then it should no longer be "current"...
-            //  TODO ...and record the completion comment
+            //  ...and record the completion comment if there is one
+            if (!completionComment.isEmpty())
+            {   //  TODO properly
+                qDebug() << completionComment;
+            }
         }
         done(int(Result::Ok));
     }

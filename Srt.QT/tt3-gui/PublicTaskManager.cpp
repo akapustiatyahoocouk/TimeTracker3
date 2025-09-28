@@ -836,7 +836,48 @@ void PublicTaskManager::_stopPublicTaskPushButtonClicked()
 
 void PublicTaskManager::_completePublicTaskPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    if (auto publicTask = _selectedPublicTask())
+    {
+        try
+        {
+            if (publicTask->completed(_credentials))
+            {   //  Nothing to do
+                return;
+            }
+            //  Do we need a task completion comment ?
+            QString completionComment;
+            if (publicTask->requireCommentOnCompletion(_credentials))
+            {
+                EnterTaskCompletionCommentDialog dlg(this, publicTask);
+                if (dlg.doModal() != EnterTaskCompletionCommentDialog::Result::Ok)
+                {   //  OOPS! User has cancelled!
+                    return;
+                }
+                completionComment = dlg.comment();
+            }
+            //  We are completing the PublicTask...
+            if (theCurrentActivity == publicTask)
+            {   //  ...which is also "current" - stop it first
+                if (!theCurrentActivity.replaceWith(nullptr))
+                {   //  ...but if the user fails to provide a finish
+                    //  comment, then don't proceed any further
+                    return;
+                }
+            }
+            //  Now we can enter the completion comment as an Event...
+            if (!completionComment.isEmpty())
+            {   //  TODO properly
+                qDebug() << completionComment;
+            }
+            //  ...and complete the PublicTask
+            publicTask->setCompleted(_credentials, true);
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
+        }
+        requestRefresh();
+    }
 }
 
 void PublicTaskManager::_showCompletedCheckBoxToggled(bool)

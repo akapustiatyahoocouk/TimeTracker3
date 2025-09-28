@@ -214,7 +214,7 @@ void Database::close()
         }
         catch (const tt3::util::Exception & ex)
         {   //  Cleanup & re-throw
-            qDebug() << ex.errorMessage();
+            qCritical() << ex.errorMessage();
             _markClosed();
             throw;
         }
@@ -551,7 +551,7 @@ auto Database::createPublicActivity(
         const QString & description,
         const tt3::db::api::InactivityTimeout & timeout,
         bool requireCommentOnStart,
-        bool requireCommentOnFinish,
+        bool requireCommentOnStop,
         bool fullScreenReminder,
         tt3::db::api::IActivityType * activityType,
         tt3::db::api::IWorkload * workload
@@ -624,7 +624,7 @@ auto Database::createPublicActivity(
     publicActivity->_description = description;
     publicActivity->_timeout = timeout;
     publicActivity->_requireCommentOnStart = requireCommentOnStart;
-    publicActivity->_requireCommentOnFinish = requireCommentOnFinish;
+    publicActivity->_requireCommentOnStop = requireCommentOnStop;
     publicActivity->_fullScreenReminder = fullScreenReminder;
     if (xmlActivityType != nullptr)
     {   //  Link with ActivityType
@@ -669,7 +669,7 @@ auto Database::createPublicTask(
         const QString & description,
         const tt3::db::api::InactivityTimeout & timeout,
         bool requireCommentOnStart,
-        bool requireCommentOnFinish,
+        bool requireCommentOnStop,
         bool fullScreenReminder,
         tt3::db::api::IActivityType * activityType,
         tt3::db::api::IWorkload * workload,
@@ -744,7 +744,7 @@ auto Database::createPublicTask(
     publicTask->_description = description;
     publicTask->_timeout = timeout;
     publicTask->_requireCommentOnStart = requireCommentOnStart;
-    publicTask->_requireCommentOnFinish = requireCommentOnFinish;
+    publicTask->_requireCommentOnStop = requireCommentOnStop;
     publicTask->_fullScreenReminder = fullScreenReminder;
     publicTask->_completed = completed;
     publicTask->_requireCommentOnCompletion = requireCommentOnCompletion;

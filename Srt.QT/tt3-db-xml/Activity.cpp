@@ -202,18 +202,18 @@ void Activity::setRequireCommentOnStart(
     }
 }
 
-bool Activity::requireCommentOnFinish(
+bool Activity::requireCommentOnStop(
     ) const
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
-    return _requireCommentOnFinish;
+    return _requireCommentOnStop;
 }
 
-void Activity::setRequireCommentOnFinish(
-        bool requireCommentOnFinish
+void Activity::setRequireCommentOnStop(
+        bool requireCommentOnStop
     )
 {
     tt3::util::Lock lock(_database->_guard);
@@ -222,9 +222,9 @@ void Activity::setRequireCommentOnFinish(
     _database->_validate(); //  may throw
 #endif
 
-    if (requireCommentOnFinish != _requireCommentOnFinish)
+    if (requireCommentOnStop != _requireCommentOnStop)
     {   //  Make the change...
-        _requireCommentOnFinish = requireCommentOnFinish;
+        _requireCommentOnStop = requireCommentOnStop;
         _database->_markModified();
         //  ...schedule change notifications...
         _database->_changeNotifier.post(
@@ -461,7 +461,7 @@ void Activity::_serializeProperties(
         objectElement.setAttribute("Timeout", tt3::util::toString(_timeout.value()));
     }
     objectElement.setAttribute("RequireCommentOnStart", tt3::util::toString(_requireCommentOnStart));
-    objectElement.setAttribute("RequireCommentOnFinish", tt3::util::toString(_requireCommentOnFinish));
+    objectElement.setAttribute("RequireCommentOnStop", tt3::util::toString(_requireCommentOnStop));
     objectElement.setAttribute("FullScreenReminder", tt3::util::toString(_fullScreenReminder));
 }
 
@@ -505,7 +505,7 @@ void Activity::_deserializeProperties(
                 objectElement.attribute("Timeout"));
     }
     _requireCommentOnStart = tt3::util::fromString<bool>(objectElement.attribute("RequireCommentOnStart"));
-    _requireCommentOnFinish = tt3::util::fromString<bool>(objectElement.attribute("RequireCommentOnFinish"));
+    _requireCommentOnStop = tt3::util::fromString<bool>(objectElement.attribute("RequireCommentOnStop"));
     _fullScreenReminder = tt3::util::fromString<bool>(objectElement.attribute("FullScreenReminder"));
 }
 

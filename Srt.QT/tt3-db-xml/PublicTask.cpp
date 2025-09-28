@@ -122,7 +122,7 @@ auto PublicTask::createChild(
         const QString & description,
         const tt3::db::api::InactivityTimeout & timeout,
         bool requireCommentOnStart,
-        bool requireCommentOnFinish,
+        bool requireCommentOnStop,
         bool fullScreenReminder,
         tt3::db::api::IActivityType * activityType,
         tt3::db::api::IWorkload * workload,
@@ -197,7 +197,7 @@ auto PublicTask::createChild(
     child->_description = description;
     child->_timeout = timeout;
     child->_requireCommentOnStart = requireCommentOnStart;
-    child->_requireCommentOnFinish = requireCommentOnFinish;
+    child->_requireCommentOnStop = requireCommentOnStop;
     child->_fullScreenReminder = fullScreenReminder;
     child->_completed = completed;
     child->_requireCommentOnCompletion = requireCommentOnCompletion;

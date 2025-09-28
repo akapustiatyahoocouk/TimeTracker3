@@ -83,7 +83,7 @@ ModifyPublicActivityDialog::ModifyPublicActivityDialog(
     _setSelectedWorkload(_publicActivity->workload(_credentials));
     _setSelectedTimeout(_publicActivity->timeout(_credentials));
     _ui->requireCommentOnStartCheckBox->setChecked(_publicActivity->requireCommentOnStart(_credentials));
-    _ui->requireCommentOnFinishCheckBox->setChecked(_publicActivity->requireCommentOnFinish(_credentials));
+    _ui->requireCommentOnStopCheckBox->setChecked(_publicActivity->requireCommentOnStop(_credentials));
     _ui->fullScreenReminderCheckBox->setChecked(_publicActivity->fullScreenReminder(_credentials));
 
     //  Adjust for "view only" mode
@@ -99,7 +99,7 @@ ModifyPublicActivityDialog::ModifyPublicActivityDialog(
         _ui->hoursComboBox->setEnabled(false);
         _ui->minutesComboBox->setEnabled(false);
         _ui->requireCommentOnStartCheckBox->setEnabled(false);
-        _ui->requireCommentOnFinishCheckBox->setEnabled(false);
+        _ui->requireCommentOnStopCheckBox->setEnabled(false);
         _ui->fullScreenReminderCheckBox->setEnabled(false);
     }
 
@@ -263,9 +263,9 @@ void ModifyPublicActivityDialog::accept()
             _publicActivity->setRequireCommentOnStart(
                 _credentials,
                 _ui->requireCommentOnStartCheckBox->isChecked());
-            _publicActivity->setRequireCommentOnFinish(
+            _publicActivity->setRequireCommentOnStop(
                 _credentials,
-                _ui->requireCommentOnFinishCheckBox->isChecked());
+                _ui->requireCommentOnStopCheckBox->isChecked());
             _publicActivity->setFullScreenReminder(
                 _credentials,
                 _ui->fullScreenReminderCheckBox->isChecked());

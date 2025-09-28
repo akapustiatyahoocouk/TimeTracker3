@@ -162,7 +162,7 @@ void CreatePublicActivityDialog::accept()
             _ui->descriptionTextEdit->toPlainText(),
             _selectedTimeout(),
             _ui->requireCommentOnStartCheckBox->isChecked(),
-            _ui->requireCommentOnFinishCheckBox->isChecked(),
+            _ui->requireCommentOnStopCheckBox->isChecked(),
             _ui->fullScreenReminderCheckBox->isChecked(),
             _selectedActivityType(),
             _selectedWorkload);

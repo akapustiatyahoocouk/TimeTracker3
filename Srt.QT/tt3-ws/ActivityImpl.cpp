@@ -223,7 +223,7 @@ void ActivityImpl::setRequireCommentOnStart(
     }
 }
 
-bool ActivityImpl::requireCommentOnFinish(
+bool ActivityImpl::requireCommentOnStop(
         const Credentials & credentials
     ) const
 {
@@ -238,7 +238,7 @@ bool ActivityImpl::requireCommentOnFinish(
             throw AccessDeniedException();
         }
         //  Do the work
-        return _dataActivity->requireCommentOnFinish();   //  may throw
+        return _dataActivity->requireCommentOnStop();   //  may throw
     }
     catch (const tt3::util::Exception & ex)
     {
@@ -246,9 +246,9 @@ bool ActivityImpl::requireCommentOnFinish(
     }
 }
 
-void ActivityImpl::setRequireCommentOnFinish(
+void ActivityImpl::setRequireCommentOnStop(
         const Credentials & credentials,
-        bool requireCommentOnFinish
+        bool requireCommentOnStop
     )
 {
     tt3::util::Lock lock(_workspace->_guard);
@@ -262,7 +262,7 @@ void ActivityImpl::setRequireCommentOnFinish(
             throw AccessDeniedException();
         }
         //  Do the work
-        _dataActivity->setRequireCommentOnFinish(requireCommentOnFinish); //  may throw
+        _dataActivity->setRequireCommentOnStop(requireCommentOnStop); //  may throw
     }
     catch (const tt3::util::Exception & ex)
     {

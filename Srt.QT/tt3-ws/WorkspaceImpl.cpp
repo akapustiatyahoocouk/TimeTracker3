@@ -468,7 +468,7 @@ auto WorkspaceImpl::createPublicActivity(
         const QString & description,
         const InactivityTimeout & timeout,
         bool requireCommentOnStart,
-        bool requireCommentOnFinish,
+        bool requireCommentOnStop,
         bool fullScreenReminder,
         ActivityType activityType,
         Workload workload
@@ -493,7 +493,7 @@ auto WorkspaceImpl::createPublicActivity(
                 description,
                 timeout,
                 requireCommentOnStart,
-                requireCommentOnFinish,
+                requireCommentOnStop,
                 fullScreenReminder,
                 (activityType != nullptr) ? activityType->_dataActivityType : nullptr,
                 (workload != nullptr) ? workload->_dataWorkload : nullptr);
@@ -511,7 +511,7 @@ auto WorkspaceImpl::createPublicTask(
         const QString & description,
         const InactivityTimeout & timeout,
         bool requireCommentOnStart,
-        bool requireCommentOnFinish,
+        bool requireCommentOnStop,
         bool fullScreenReminder,
         ActivityType activityType,
         Workload workload,
@@ -538,7 +538,7 @@ auto WorkspaceImpl::createPublicTask(
                 description,
                 timeout,
                 requireCommentOnStart,
-                requireCommentOnFinish,
+                requireCommentOnStop,
                 fullScreenReminder,
                 (activityType != nullptr) ? activityType->_dataActivityType : nullptr,
                 (workload != nullptr) ? workload->_dataWorkload : nullptr,
@@ -761,7 +761,6 @@ Workload WorkspaceImpl::_getProxy(tt3::db::api::IWorkload * dataWorkload) const
 //  Event handlers
 void WorkspaceImpl::_onDatabaseClosed(tt3::db::api::DatabaseClosedNotification notification)
 {
-    qDebug() << "Workspace::_onDatabaseClosed()";
     Q_ASSERT(notification.database() == _database);
     //  Stop listening to database notifications
     disconnect(_database->changeNotifier(),
@@ -788,9 +787,6 @@ void WorkspaceImpl::_onDatabaseClosed(tt3::db::api::DatabaseClosedNotification n
 
 void WorkspaceImpl::_onObjectCreated(tt3::db::api::ObjectCreatedNotification notification)
 {
-    qDebug() << "Workspace::_onObjectCreated("
-             << tt3::util::toString(notification.oid())
-             << ")";
     Q_ASSERT(notification.database() == _database);
     //  Any change to users/accounts must drop the access rights cache
     if (notification.objectType() == ObjectTypes::User::instance() ||
@@ -810,9 +806,6 @@ void WorkspaceImpl::_onObjectCreated(tt3::db::api::ObjectCreatedNotification not
 
 void WorkspaceImpl::_onObjectDestroyed(tt3::db::api::ObjectDestroyedNotification notification)
 {
-    qDebug() << "Workspace::_onObjectDestroyed("
-             << tt3::util::toString(notification.oid())
-             << ")";
     Q_ASSERT(notification.database() == _database);
     //  Any change to users/accounts must drop the access rights cache
     if (notification.objectType() == ObjectTypes::User::instance() ||
@@ -839,9 +832,6 @@ void WorkspaceImpl::_onObjectDestroyed(tt3::db::api::ObjectDestroyedNotification
 
 void WorkspaceImpl::_onObjectModified(tt3::db::api::ObjectModifiedNotification notification)
 {
-    qDebug() << "Workspace::_onObjectModified("
-             << tt3::util::toString(notification.oid())
-             << ")";
     Q_ASSERT(notification.database() == _database);
     //  Any change to users/accounts must drop the access rights cache
     if (notification.objectType() == ObjectTypes::User::instance() ||

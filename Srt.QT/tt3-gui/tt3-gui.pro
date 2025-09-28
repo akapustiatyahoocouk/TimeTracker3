@@ -25,6 +25,9 @@ SOURCES += \
     DestroyPublicTaskDialog.cpp \
     DestroyUserDialog.cpp \
     EditStringDialog.cpp \
+    EnterActivityStartCommentDialog.cpp \
+    EnterActivityStopCommentDialog.cpp \
+    EnterTaskCompletionCommentDialog.cpp \
     ErrorDialog.cpp \
     GeneralAppearancePreferences.cpp \
     GeneralAppearancePreferencesEditor.cpp \
@@ -80,6 +83,9 @@ HEADERS += \
     DestroyPublicTaskDialog.hpp \
     DestroyUserDialog.hpp \
     EditStringDialog.hpp \
+    EnterActivityStartCommentDialog.hpp \
+    EnterActivityStopCommentDialog.hpp \
+    EnterTaskCompletionCommentDialog.hpp \
     ErrorDialog.hpp \
     GeneralAppearancePreferencesEditor.hpp \
     GeneralDialogsPreferencesEditor.hpp \

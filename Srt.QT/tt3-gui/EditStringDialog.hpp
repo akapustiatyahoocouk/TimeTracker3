@@ -107,12 +107,15 @@ namespace tt3::gui
         //  Signal handlers
     private slots:
         void            _lineEditTextChanged(QString);
+        //  protected" for derived classes to override
+    protected slots:
         virtual void    accept() override;
         virtual void    reject() override;
     };
 
     /// \class AddEmailAddressDialog tt3-gui/API.hpp
     /// \brief The "Add e-mail address" modal dialog.
+    //  TODO move to a separate .hpp/.cpp
     class TT3_GUI_PUBLIC AddEmailAddressDialog final
         :   public EditStringDialog
     {
@@ -135,6 +138,7 @@ namespace tt3::gui
 
     /// \class ModifyEmailAddressDialog tt3-gui/API.hpp
     /// \brief The "Modify e-mail address" modal dialog.
+    //  TODO move to a separate .hpp/.cpp
     class TT3_GUI_PUBLIC ModifyEmailAddressDialog final
         :   public EditStringDialog
     {
@@ -158,6 +162,9 @@ namespace tt3::gui
             );
     };
 }
+
+//  Macro needed for MOC-generated .cpp files
+#define TT3_GUI_EDIT_STRING_DIALOG_DEFINED
 
 //  End of tt3-gui/EditStringDialog.hpp
 

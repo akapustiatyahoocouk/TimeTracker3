@@ -75,6 +75,10 @@
 #include "tt3-gui/ModifyPublicTaskDialog.hpp"
 #include "tt3-gui/DestroyPublicTaskDialog.hpp"
 
+#include "tt3-gui/EnterActivityStartCommentDialog.hpp"
+#include "tt3-gui/EnterActivityStopCommentDialog.hpp"
+#include "tt3-gui/EnterTaskCompletionCommentDialog.hpp"
+
 #include "tt3-gui/ManageUsersDialog.hpp"
 #include "tt3-gui/ManageActivityTypesDialog.hpp"
 #include "tt3-gui/ManagePublicActivitiesDialog.hpp"

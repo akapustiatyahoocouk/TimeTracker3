@@ -334,10 +334,10 @@ namespace tt3::db::api
         ///     The user-does-nothing timeout for the new PublicActivity;
         ///     absent == none.
         /// \param requireCommentOnStart
-        ///     True if the newly created PublicActivity small require the
+        ///     True if the newly created PublicActivity shall require the
         ///     user to enter a comment when it is started.
-        /// \param requireCommentOnFinish
-        ///     True if the newly created PublicActivifinishedty small require the
+        /// \param requireCommentOnStop
+        ///     True if the newly created PublicActivi shall require the
         ///     user to enter a comment when it is started.
         /// \param fullScreenReminder
         ///     True if a full-screen reminder shall be displayed while the
@@ -355,7 +355,7 @@ namespace tt3::db::api
                                 const QString & description,
                                 const InactivityTimeout & timeout,
                                 bool requireCommentOnStart,
-                                bool requireCommentOnFinish,
+                                bool requireCommentOnStop,
                                 bool fullScreenReminder,
                                 IActivityType * activityType,
                                 IWorkload * workload
@@ -376,7 +376,7 @@ namespace tt3::db::api
         /// \param requireCommentOnStart
         ///     True if the newly created PublicTask small require the
         ///     user to enter a comment when it is started.
-        /// \param requireCommentOnFinish
+        /// \param requireCommentOnStop
         ///     True if the newly created PublicTask small require the
         ///     user to enter a comment when it is started.
         /// \param fullScreenReminder
@@ -401,7 +401,7 @@ namespace tt3::db::api
                                 const QString & description,
                                 const InactivityTimeout & timeout,
                                 bool requireCommentOnStart,
-                                bool requireCommentOnFinish,
+                                bool requireCommentOnStop,
                                 bool fullScreenReminder,
                                 IActivityType * activityType,
                                 IWorkload * workload,

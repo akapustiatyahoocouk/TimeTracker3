@@ -61,10 +61,10 @@ namespace tt3::db::xml
         virtual void    setRequireCommentOnStart(
                                 bool requireCommentOnStart
                             ) override;
-        virtual bool    requireCommentOnFinish(
+        virtual bool    requireCommentOnStop(
                             ) const override;
-        virtual void    setRequireCommentOnFinish(
-                                bool requireCommentOnFinish
+        virtual void    setRequireCommentOnStop(
+                                bool requireCommentOnStop
                             ) override;
         virtual bool    fullScreenReminder(
                             ) const override;
@@ -97,7 +97,7 @@ namespace tt3::db::xml
         QString         _description;
         tt3::db::api::InactivityTimeout _timeout;
         bool            _requireCommentOnStart = false;
-        bool            _requireCommentOnFinish = false;
+        bool            _requireCommentOnStop = false;
         bool            _fullScreenReminder = false;
         //  Associations
         ActivityType *  _activityType = nullptr;//  counts as "reference" unless nullptr

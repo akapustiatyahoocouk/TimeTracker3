@@ -133,7 +133,7 @@ namespace tt3::db::xml
                                 const QString & description,
                                 const tt3::db::api::InactivityTimeout & timeout,
                                 bool requireCommentOnStart,
-                                bool requireCommentOnFinish,
+                                bool requireCommentOnStop,
                                 bool fullScreenReminder,
                                 tt3::db::api::IActivityType * activityType,
                                 tt3::db::api::IWorkload * workload
@@ -143,7 +143,7 @@ namespace tt3::db::xml
                                 const QString & description,
                                 const tt3::db::api::InactivityTimeout & timeout,
                                 bool requireCommentOnStart,
-                                bool requireCommentOnFinish,
+                                bool requireCommentOnStop,
                                 bool fullScreenReminder,
                                 tt3::db::api::IActivityType * activityType,
                                 tt3::db::api::IWorkload * workload,

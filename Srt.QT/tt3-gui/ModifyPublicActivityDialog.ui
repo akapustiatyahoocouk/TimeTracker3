@@ -126,9 +126,9 @@
     </widget>
    </item>
    <item row="6" column="0" colspan="4">
-    <widget class="QCheckBox" name="requireCommentOnFinishCheckBox">
+    <widget class="QCheckBox" name="requireCommentOnStopCheckBox">
      <property name="text">
-      <string>Require comment when finishing this activity</string>
+      <string>Require comment when stopping this activity</string>
      </property>
     </widget>
    </item>
