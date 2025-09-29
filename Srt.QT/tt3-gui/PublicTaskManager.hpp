@@ -55,7 +55,7 @@ namespace tt3::gui
         ///     The workspace currently viewed in this widget;
         ///     nullptr == none.
         auto            workspace(
-            ) const -> tt3::ws::Workspace;
+                            ) const -> tt3::ws::Workspace;
 
         /// \brief
         ///     Sets the workspace currently viewed in this widget.
@@ -63,8 +63,8 @@ namespace tt3::gui
         ///     The new workspace to be viewed in this widget;
         ///     nullptr == none.
         void            setWorkspace(
-            tt3::ws::Workspace workspace
-            );
+                                tt3::ws::Workspace workspace
+                            );
 
         /// \brief
         ///     Returns the credentials used by this widget to
@@ -76,7 +76,7 @@ namespace tt3::gui
         ///     The credentials used by this widget to display
         ///     the workspace.
         auto            credentials(
-            ) const -> tt3::ws::Credentials;
+                            ) const -> tt3::ws::Credentials;
 
         /// \brief
         ///     Sets the credentials used by this widget to
@@ -88,8 +88,8 @@ namespace tt3::gui
         ///     The credentials to be used by this widget to
         ///     display the workspace.
         void            setCredentials(
-            const tt3::ws::Credentials & credentials
-            );
+                                const tt3::ws::Credentials & credentials
+                            );
 
         /// \brief
         ///     Refreshes the content of this widget.
@@ -114,6 +114,9 @@ namespace tt3::gui
         tt3::ws::Credentials    _credentials;
 
         //  View model
+        //  Model services are "static" because they are oiggybacked
+        //  on by e.g. "select new parent for a public task" dialog.
+        //  TODO similar "static" treatment in other XXXManager classes
         struct _WorkspaceModelImpl;
         struct _PublicTaskModelImpl;
 
@@ -143,32 +146,44 @@ namespace tt3::gui
             _PublicTaskModels childModels;  //  ordered by text
         };
 
-        auto            _createWorkspaceModel(
+        static auto     _createWorkspaceModel(
+                                tt3::ws::Workspace workspace,
+                                const tt3::ws::Credentials & credentials,
+                                const TreeWidgetDecorations & decorations
                             ) -> _WorkspaceModel;
-        auto            _createPublicTaskModel(
-                                tt3::ws::PublicTask publicTask
+        static auto     _createPublicTaskModel(
+                                tt3::ws::PublicTask publicTask,
+                                const tt3::ws::Credentials & credentials,
+                                const TreeWidgetDecorations & decorations
                             ) -> _PublicTaskModel;
-        void            _removeCompletedItems(
+        static void     _removeCompletedItems(
+                                _WorkspaceModel workspaceModel,
+                                const tt3::ws::Credentials & credentials
+                            );
+        static void     _removeCompletedItems(
+                                _PublicTaskModel publicTaskModel,
+                                const tt3::ws::Credentials & credentials
+                            );
+        static void     _filterItems(
+                                _WorkspaceModel workspaceModel,
+                                const QString & filter,
+                                const TreeWidgetDecorations & decorations
+                            );
+        static void     _filterItems(
+                                _PublicTaskModel publicTaskModel,
+                                const QString & filter,
+                                const TreeWidgetDecorations & decorations
+                            );
+        static void     _refreshWorkspaceItem(
+                                QTreeWidget * publicTasksTreeWidget,
                                 _WorkspaceModel workspaceModel
                             );
-        void            _removeCompletedItems(
-                                _PublicTaskModel publicTaskModel
-                            );
-        void            _filterItems(
-                                _WorkspaceModel workspaceModel
-                            );
-        void            _filterItems(
+        static void     _refreshPublicTaskItem(
+                                QTreeWidgetItem * publicTaskItem,
                                 _PublicTaskModel publicTaskModel
                             );
 
         //  Helpers
-        void            _refreshPublicTaskItems(
-                                _WorkspaceModel workspaceModel
-                            );
-        void            _refreshChildItems(
-                                QTreeWidgetItem * publicTaskItem,
-                                _PublicTaskModel publicTaskModel
-                            );
         auto            _selectedPublicTask(
                             ) -> tt3::ws::PublicTask;
         bool            _setSelectedPublicTask(

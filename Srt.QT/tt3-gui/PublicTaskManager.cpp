@@ -157,16 +157,18 @@ void PublicTaskManager::refresh()
 
         //  ...while others are enabled based on current
         //  selection and permissions granted by Credentials
-        _WorkspaceModel workspaceModel = _createWorkspaceModel();
+        _WorkspaceModel workspaceModel =
+            _createWorkspaceModel(_workspace, _credentials, _decorations);
         if (!Component::Settings::instance()->showCompletedPublicTasks)
         {
-            _removeCompletedItems(workspaceModel);
+            _removeCompletedItems(workspaceModel, _credentials);
         }
-        if (!_ui->filterLineEdit->text().trimmed().isEmpty())
+        QString filter = _ui->filterLineEdit->text().trimmed();
+        if (!filter.isEmpty())
         {
-            _filterItems(workspaceModel);
+            _filterItems(workspaceModel, filter, _decorations);
         }
-        _refreshPublicTaskItems(workspaceModel);
+        _refreshWorkspaceItem(_ui->publicTasksTreeWidget, workspaceModel);
         if (!_ui->filterLineEdit->text().trimmed().isEmpty())
         {   //  Filtered - show all
             _ui->publicTasksTreeWidget->expandAll();
@@ -257,14 +259,20 @@ void PublicTaskManager::requestRefresh()
 
 //////////
 //  View model
-PublicTaskManager::_WorkspaceModel PublicTaskManager::_createWorkspaceModel()
+auto PublicTaskManager::_createWorkspaceModel(
+        tt3::ws::Workspace workspace,
+        const tt3::ws::Credentials & credentials,
+        const TreeWidgetDecorations & decorations
+    ) -> PublicTaskManager::_WorkspaceModel
 {
-    _WorkspaceModel workspaceModel { new _WorkspaceModelImpl() };
+    _WorkspaceModel workspaceModel
+        { new _WorkspaceModelImpl() };
     try
     {
-        for (tt3::ws::PublicTask publicTask : _workspace->rootPublicTasks(_credentials))    //  may throw
+        for (auto publicTask : workspace->rootPublicTasks(credentials))  //  may throw
         {
-            workspaceModel->publicTaskModels.append(_createPublicTaskModel(publicTask));
+            workspaceModel->publicTaskModels.append(
+                _createPublicTaskModel(publicTask, credentials, decorations));
         }
         std::sort(workspaceModel->publicTaskModels.begin(),
                   workspaceModel->publicTaskModels.end(),
@@ -279,7 +287,9 @@ PublicTaskManager::_WorkspaceModel PublicTaskManager::_createWorkspaceModel()
 }
 
 auto PublicTaskManager::_createPublicTaskModel(
-        tt3::ws::PublicTask publicTask
+        tt3::ws::PublicTask publicTask,
+        const tt3::ws::Credentials & credentials,
+        const TreeWidgetDecorations & decorations
     ) -> PublicTaskManager::_PublicTaskModel
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
@@ -288,19 +298,19 @@ auto PublicTaskManager::_createPublicTaskModel(
         { new _PublicTaskModelImpl(publicTask) };
     try
     {
-        publicTaskModel->text = publicTask->displayName(_credentials);
-        if (publicTask->completed(_credentials))
+        publicTaskModel->text = publicTask->displayName(credentials);
+        if (publicTask->completed(credentials))
         {
             publicTaskModel->text += " [completed]";
-            publicTaskModel->brush = _decorations.disabledItemForeground;
+            publicTaskModel->brush = decorations.disabledItemForeground;
         }
         else
         {
-            publicTaskModel->brush = _decorations.itemForeground;
+            publicTaskModel->brush = decorations.itemForeground;
         }
         publicTaskModel->icon = publicTask->type()->smallIcon();
-        publicTaskModel->font = _decorations.itemFont;
-        publicTaskModel->tooltip = publicTask->description(_credentials).trimmed();
+        publicTaskModel->font = decorations.itemFont;
+        publicTaskModel->tooltip = publicTask->description(credentials).trimmed();
         //  A "current" activity needs some extras
         if (theCurrentActivity == publicTask)
         {
@@ -311,12 +321,13 @@ auto PublicTaskManager::_createPublicTaskModel(
                     int((secs / 60) % 60),
                     int(secs % 60));
             publicTaskModel->text += s;
-            publicTaskModel->font = _decorations.itemEmphasisFont;
+            publicTaskModel->font = decorations.itemEmphasisFont;
         }
         //  Do the children
-        for (tt3::ws::PublicTask child : publicTask->children(_credentials))    //  may throw
+        for (tt3::ws::PublicTask child : publicTask->children(credentials)) //  may throw
         {
-            publicTaskModel->childModels.append(_createPublicTaskModel(child));
+            publicTaskModel->childModels.append(
+                _createPublicTaskModel(child, credentials, decorations));
         }
         std::sort(publicTaskModel->childModels.begin(),
                   publicTaskModel->childModels.end(),
@@ -327,8 +338,8 @@ auto PublicTaskManager::_createPublicTaskModel(
     {
         publicTaskModel->text = ex.errorMessage();
         publicTaskModel->icon = errorIcon;
-        publicTaskModel->font = _decorations.itemFont;
-        publicTaskModel->brush = _decorations.errorItemForeground;
+        publicTaskModel->font = decorations.itemFont;
+        publicTaskModel->brush = decorations.errorItemForeground;
         publicTaskModel->tooltip = ex.errorMessage();
         publicTaskModel->childModels.clear();
     }
@@ -336,17 +347,18 @@ auto PublicTaskManager::_createPublicTaskModel(
 }
 
 void PublicTaskManager::_removeCompletedItems(
-        _WorkspaceModel workspaceModel
+        _WorkspaceModel workspaceModel,
+        const tt3::ws::Credentials & credentials
     )
 {
     for (qsizetype i = workspaceModel->publicTaskModels.size() - 1; i >= 0; i--)
     {
         _PublicTaskModel publicTaskModel = workspaceModel->publicTaskModels[i];
-        _removeCompletedItems(publicTaskModel);
+        _removeCompletedItems(publicTaskModel, credentials);
         //  If this PublicTask is completed...
         try
         {
-            if (publicTaskModel->publicTask->completed(_credentials))   //  may throw
+            if (publicTaskModel->publicTask->completed(credentials))    //  may throw
             {
                 if (publicTaskModel->childModels.isEmpty())
                 {   //  ...and has no children models - delete it
@@ -364,17 +376,18 @@ void PublicTaskManager::_removeCompletedItems(
 }
 
 void PublicTaskManager::_removeCompletedItems(
-        _PublicTaskModel publicTaskModel
+        _PublicTaskModel publicTaskModel,
+        const tt3::ws::Credentials & credentials
     )
 {
     for (qsizetype i = publicTaskModel->childModels.size() - 1; i >= 0; i--)
     {
         _PublicTaskModel childModel = publicTaskModel->childModels[i];
-        _removeCompletedItems(childModel);
+        _removeCompletedItems(childModel, credentials);
         //  If this PublicTask is completed...
         try
         {
-            if (childModel->publicTask->completed(_credentials))    //  may throw
+            if (childModel->publicTask->completed(credentials)) //  may throw
             {
                 if (childModel->childModels.isEmpty())
                 {   //  ...and has no children models - delete it
@@ -392,19 +405,20 @@ void PublicTaskManager::_removeCompletedItems(
 }
 
 void PublicTaskManager::_filterItems(
-        _WorkspaceModel workspaceModel
+        _WorkspaceModel workspaceModel,
+        const QString & filter,
+        const TreeWidgetDecorations & decorations
     )
 {
-    QString filter = _ui->filterLineEdit->text().trimmed();
     Q_ASSERT(!filter.isEmpty());
 
     for (qsizetype i = workspaceModel->publicTaskModels.size() - 1; i >= 0; i--)
     {
         _PublicTaskModel publicTaskModel = workspaceModel->publicTaskModels[i];
-        _filterItems(publicTaskModel);
+        _filterItems(publicTaskModel, filter, decorations);
         if (publicTaskModel->text.indexOf(filter, 0, Qt::CaseInsensitive) != -1)
         {   //  Item matches the filter - mark it as a match
-            publicTaskModel->brush = _decorations.filterMatchItemForeground;
+            publicTaskModel->brush = decorations.filterMatchItemForeground;
         }
         else if (publicTaskModel->childModels.isEmpty())
         {   //  Item does not match the filter and has no children - remove it
@@ -412,25 +426,26 @@ void PublicTaskManager::_filterItems(
         }
         else
         {   //  Item does not match the filter but has children - show as disabled
-            workspaceModel->publicTaskModels[i]->brush = _decorations.disabledItemForeground;
+            workspaceModel->publicTaskModels[i]->brush = decorations.disabledItemForeground;
         }
     }
 }
 
 void PublicTaskManager::_filterItems(
-        _PublicTaskModel publicTaskModel
+        _PublicTaskModel publicTaskModel,
+        const QString & filter,
+        const TreeWidgetDecorations & decorations
     )
 {
-    QString filter = _ui->filterLineEdit->text().trimmed();
     Q_ASSERT(!filter.isEmpty());
 
     for (qsizetype i = publicTaskModel->childModels.size() - 1; i >= 0; i--)
     {
         _PublicTaskModel childModel = publicTaskModel->childModels[i];
-        _filterItems(childModel);
+        _filterItems(childModel, filter, decorations);
         if (childModel->text.indexOf(filter, 0, Qt::CaseInsensitive) != -1)
         {   //  Item matches the filter - mark it as a match
-            childModel->brush = _decorations.filterMatchItemForeground;
+            childModel->brush = decorations.filterMatchItemForeground;
         }
         else if (childModel->childModels.isEmpty())
         {   //  Item does not match the filter and has no children - remove it
@@ -438,14 +453,13 @@ void PublicTaskManager::_filterItems(
         }
         else
         {   //  Item does not match the filter but has children - show as disabled
-            publicTaskModel->childModels[i]->brush = _decorations.disabledItemForeground;
+            publicTaskModel->childModels[i]->brush = decorations.disabledItemForeground;
         }
     }
 }
 
-//////////
-//  Implementation helpers
-void PublicTaskManager::_refreshPublicTaskItems(
+void PublicTaskManager::_refreshWorkspaceItem(
+        QTreeWidget * publicTasksTreeWidget,
         _WorkspaceModel workspaceModel
     )
 {
@@ -453,48 +467,51 @@ void PublicTaskManager::_refreshPublicTaskItems(
 
     //  Make sure the "public tasks" tree contains
     //  a proper number of root (PublicTask) items...
-    while (_ui->publicTasksTreeWidget->topLevelItemCount() < workspaceModel->publicTaskModels.size())
+    while (publicTasksTreeWidget->topLevelItemCount() < workspaceModel->publicTaskModels.size())
     {   //  Too few root (PublicTask) items
-        _PublicTaskModel publicTaskModel = workspaceModel->publicTaskModels[_ui->publicTasksTreeWidget->topLevelItemCount()];
+        //  TODO kill off _PublicTaskModel publicTaskModel = workspaceModel->publicTaskModels[_ui->publicTasksTreeWidget->topLevelItemCount()];
         QTreeWidgetItem * publicTaskItem = new QTreeWidgetItem();
+        /*  TODO kill off
         publicTaskItem->setText(0, publicTaskModel->text);
         publicTaskItem->setIcon(0, publicTaskModel->icon);
         publicTaskItem->setForeground(0, publicTaskModel->brush);
         publicTaskItem->setFont(0, publicTaskModel->font);
         publicTaskItem->setToolTip(0, publicTaskModel->tooltip);
         publicTaskItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(publicTaskModel->publicTask));
-        _ui->publicTasksTreeWidget->addTopLevelItem(publicTaskItem);
+        */
+        publicTasksTreeWidget->addTopLevelItem(publicTaskItem);
     }
-    while (_ui->publicTasksTreeWidget->topLevelItemCount() > workspaceModel->publicTaskModels.size())
+    while (publicTasksTreeWidget->topLevelItemCount() > workspaceModel->publicTaskModels.size())
     {   //  Too many root (PublicTask) items
-        delete _ui->publicTasksTreeWidget->takeTopLevelItem(
-            _ui->publicTasksTreeWidget->topLevelItemCount() - 1);
+        delete publicTasksTreeWidget->takeTopLevelItem(
+            publicTasksTreeWidget->topLevelItemCount() - 1);
     }
 
     //  ...and that each top-level item represents
     //  a proper PublicTask and has proper children
     for (int i = 0; i < workspaceModel->publicTaskModels.size(); i++)
     {
-        QTreeWidgetItem * publicTaskItem = _ui->publicTasksTreeWidget->topLevelItem(i);
+        QTreeWidgetItem * publicTaskItem = publicTasksTreeWidget->topLevelItem(i);
         _PublicTaskModel publicTaskModel = workspaceModel->publicTaskModels[i];
-        publicTaskItem->setText(0, publicTaskModel->text);
-        publicTaskItem->setIcon(0, publicTaskModel->icon);
-        publicTaskItem->setForeground(0, publicTaskModel->brush);
-        publicTaskItem->setFont(0, publicTaskModel->font);
-        publicTaskItem->setToolTip(0, publicTaskModel->tooltip);
-        publicTaskItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(publicTaskModel->publicTask));
-        //  ...and children
-        _refreshChildItems(publicTaskItem, publicTaskModel);
+        _refreshPublicTaskItem(publicTaskItem, publicTaskModel);
     }
 }
 
-void PublicTaskManager::_refreshChildItems(
+void PublicTaskManager::_refreshPublicTaskItem(
         QTreeWidgetItem * publicTaskItem,
         _PublicTaskModel publicTaskModel
     )
 {
     Q_ASSERT(publicTaskItem != nullptr);
     Q_ASSERT(publicTaskModel != nullptr);
+
+    //  Make sure the tree item has correct properties
+    publicTaskItem->setText(0, publicTaskModel->text);
+    publicTaskItem->setIcon(0, publicTaskModel->icon);
+    publicTaskItem->setForeground(0, publicTaskModel->brush);
+    publicTaskItem->setFont(0, publicTaskModel->font);
+    publicTaskItem->setToolTip(0, publicTaskModel->tooltip);
+    publicTaskItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(publicTaskModel->publicTask));
 
     //  Make sure the public task, tree item tree contains
     //  a proper number of childs items...
@@ -525,17 +542,12 @@ void PublicTaskManager::_refreshChildItems(
     {
         QTreeWidgetItem * childItem = publicTaskItem->child(i);
         _PublicTaskModel childModel = publicTaskModel->childModels[i];
-        childItem->setText(0, childModel->text);
-        childItem->setIcon(0, childModel->icon);
-        childItem->setForeground(0, childModel->brush);
-        childItem->setFont(0, childModel->font);
-        childItem->setToolTip(0, childModel->tooltip);
-        childItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(childModel->publicTask));
-        //  ...and children
-        _refreshChildItems(childItem, childModel);
+        _refreshPublicTaskItem(childItem, childModel);
     }
 }
 
+//////////
+//  Implementation helpers
 auto PublicTaskManager::_selectedPublicTask(
     ) -> tt3::ws::PublicTask
 {

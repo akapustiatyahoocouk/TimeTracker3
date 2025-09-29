@@ -140,11 +140,16 @@ auto ModifyPublicTaskDialog::doModal(
 
 //////////
 //  Implementation helpers
+auto ModifyPublicTaskDialog::_selectedParentTask(
+    ) -> tt3::ws::PublicTask
+{
+    return _ui->parentTaskComboBox->currentData().value<tt3::ws::PublicTask>();
+}
+
 void ModifyPublicTaskDialog::_setSelectedParentTask(
         tt3::ws::PublicTask parentTask
     )
 {
-    _selectedParentTask = parentTask;
     //  Refill the "parent task" combo box
     _ui->parentTaskComboBox->clear();
     _ui->parentTaskComboBox->addItem(
