@@ -1,5 +1,5 @@
 //
-//  tt3-gui/ManagePublicActivitiesDialog.cpp - tt3::gui::ManagePublicActivitiesDialog class implementation
+//  tt3-gui/ManagePublicTasksDialog.cpp - tt3::gui::ManagePublicTasksDialog class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,17 +15,17 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-gui/API.hpp"
-#include "ui_ManagePublicActivitiesDialog.h"
+#include "ui_ManagePublicTasksDialog.h"
 using namespace tt3::gui;
 
 //////////
 //  Construction/destruction
-ManagePublicActivitiesDialog::ManagePublicActivitiesDialog(
+ManagePublicTasksDialog::ManagePublicTasksDialog(
         QWidget * parent,
         tt3::ws::Workspace workspace,
         const tt3::ws::Credentials & credentials
     ) : QDialog(parent),
-        _ui(new Ui::ManagePublicActivitiesDialog)
+        _ui(new Ui::ManagePublicTasksDialog)
 {
     Q_ASSERT(workspace != nullptr);
     Q_ASSERT(credentials.isValid());
@@ -37,25 +37,25 @@ ManagePublicActivitiesDialog::ManagePublicActivitiesDialog(
 
     //  Create dynamic controls
     _managerPanelLayout = new QStackedLayout();
-    _publicActivityManager = new tt3::gui::PublicActivityManager(_ui->managerPanel);
-    _managerPanelLayout->addWidget(_publicActivityManager);
+    _publicTaskManager = new tt3::gui::PublicTaskManager(_ui->managerPanel);
+    _managerPanelLayout->addWidget(_publicTaskManager);
     _ui->managerPanel->setLayout(_managerPanelLayout);
 
     //  Done
     adjustSize();
-    _publicActivityManager->refresh();
+    _publicTaskManager->refresh();
 }
 
-ManagePublicActivitiesDialog::~ManagePublicActivitiesDialog()
+ManagePublicTasksDialog::~ManagePublicTasksDialog()
 {
     delete _ui;
 }
 
 //////////
 //  Operations
-void ManagePublicActivitiesDialog::doModal()
+void ManagePublicTasksDialog::doModal()
 {
     exec();
 }
 
-//  End of tt3-gui/ManagePublicActivitiesDialog.cpp
+//  End of tt3-gui/ManagePublicTasksDialog.cpp

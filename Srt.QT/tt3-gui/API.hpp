@@ -83,5 +83,6 @@
 #include "tt3-gui/ManageUsersDialog.hpp"
 #include "tt3-gui/ManageActivityTypesDialog.hpp"
 #include "tt3-gui/ManagePublicActivitiesDialog.hpp"
+#include "tt3-gui/ManagePublicTasksDialog.hpp"
 
 //  End of tt3-gui/API.hpp

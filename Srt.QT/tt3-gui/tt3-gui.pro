@@ -40,6 +40,7 @@ SOURCES += \
     LoginDialog.cpp \
     ManageActivityTypesDialog.cpp \
     ManagePublicActivitiesDialog.cpp \
+    ManagePublicTasksDialog.cpp \
     ManageUsersDialog.cpp \
     ModifyAccountDialog.cpp \
     ModifyActivityTypeDialog.cpp \
@@ -95,6 +96,7 @@ HEADERS += \
     LoginDialog.hpp \
     ManageActivityTypesDialog.hpp \
     ManagePublicActivitiesDialog.hpp \
+    ManagePublicTasksDialog.hpp \
     ManageUsersDialog.hpp \
     ModifyAccountDialog.hpp \
     ModifyActivityTypeDialog.hpp \
@@ -134,6 +136,7 @@ FORMS += \
     LoginDialog.ui \
     ManageActivityTypesDialog.ui \
     ManagePublicActivitiesDialog.ui \
+    ManagePublicTasksDialog.ui \
     ManageUsersDialog.ui \
     ModifyAccountDialog.ui \
     ModifyActivityTypeDialog.ui \

@@ -18,6 +18,11 @@
 #include "ui_ModifyPublicTaskDialog.h"
 using namespace tt3::gui;
 
+namespace tt3::gui
+{
+    extern CurrentActivity theCurrentActivity;
+}
+
 //////////
 //  Construction/destruction
 ModifyPublicTaskDialog::ModifyPublicTaskDialog(
@@ -306,15 +311,25 @@ void ModifyPublicTaskDialog::accept()
     {
         QString completionComment;
         if (!_publicTask->completed(_credentials) &&
-            _ui->completedCheckBox->isChecked() &&
-            _publicTask->requireCommentOnCompletion(_credentials))
-        {   //  Completing a PublicTask that requires a comment
-            EnterTaskCompletionCommentDialog dlg(this, _publicTask);
-            if (dlg.doModal() != EnterTaskCompletionCommentDialog::Result::Ok)
-            {   //  OOPS! The user has cancelled!
-                return;
+            _ui->completedCheckBox->isChecked())
+        {   //  Completing a PublicTask
+            if (_publicTask->requireCommentOnCompletion(_credentials))
+            {   //  ...that requires a comment
+                EnterTaskCompletionCommentDialog dlg(this, _publicTask);
+                if (dlg.doModal() != EnterTaskCompletionCommentDialog::Result::Ok)
+                {   //  OOPS! The user has cancelled!
+                    return;
+                }
+                completionComment = dlg.comment();
             }
-            completionComment = dlg.comment();
+            //  A task that is being Completed must be stopped
+            if (theCurrentActivity == _publicTask)
+            {
+                if (!theCurrentActivity.replaceWith(nullptr))
+                {   //  OOPS! Stopping the task was cancelled by the user
+                    return;
+                }
+            }
         }
         //  Any of the setters may throw
         if (!_readOnly)

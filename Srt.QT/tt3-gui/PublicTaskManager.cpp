@@ -213,7 +213,8 @@ void PublicTaskManager::refresh()
         _ui->startPublicTaskPushButton->setEnabled(
             !readOnly &&
             selectedPublicTask != nullptr &&
-            theCurrentActivity != selectedPublicTask);
+            theCurrentActivity != selectedPublicTask &&
+            !selectedPublicTask->completed(_credentials));  //  TODO may throw
         _ui->stopPublicTaskPushButton->setEnabled(
             !readOnly &&
             selectedPublicTask != nullptr &&
