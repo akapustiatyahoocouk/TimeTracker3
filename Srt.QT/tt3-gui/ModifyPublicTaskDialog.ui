@@ -31,7 +31,7 @@
    <item row="6" column="0" colspan="6">
     <widget class="QCheckBox" name="requireCommentOnStartCheckBox">
      <property name="text">
-      <string>Require comment when starting this activity</string>
+      <string>Require comment when starting this task</string>
      </property>
     </widget>
    </item>
@@ -58,7 +58,7 @@
    <item row="7" column="0" colspan="6">
     <widget class="QCheckBox" name="requireCommentOnStopCheckBox">
      <property name="text">
-      <string>Require comment when stopping this activity</string>
+      <string>Require comment when stopping this task</string>
      </property>
     </widget>
    </item>
@@ -91,7 +91,7 @@
     <widget class="QComboBox" name="minutesComboBox"/>
    </item>
    <item row="0" column="5">
-    <widget class="QPushButton" name="selectParentRaskPushButton">
+    <widget class="QPushButton" name="selectParentTaskPushButton">
      <property name="text">
       <string>Select</string>
      </property>
@@ -189,7 +189,7 @@
  </widget>
  <tabstops>
   <tabstop>parentTaskComboBox</tabstop>
-  <tabstop>selectParentRaskPushButton</tabstop>
+  <tabstop>selectParentTaskPushButton</tabstop>
   <tabstop>displayNameLineEdit</tabstop>
   <tabstop>descriptionPlainTextEdit</tabstop>
   <tabstop>activityTypeComboBox</tabstop>
@@ -240,7 +240,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>selectParentRaskPushButton</sender>
+   <sender>selectParentTaskPushButton</sender>
    <signal>clicked()</signal>
    <receiver>tt3::gui::ModifyPublicTaskDialog</receiver>
    <slot>_selectParentTaskPushButtonClicked()</slot>
@@ -344,6 +344,22 @@
     <hint type="sourcelabel">
      <x>278</x>
      <y>123</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>232</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>selectParentTaskPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::ModifyPublicTaskDialog</receiver>
+   <slot>_selectParentTaskPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>413</x>
+     <y>24</y>
     </hint>
     <hint type="destinationlabel">
      <x>232</x>

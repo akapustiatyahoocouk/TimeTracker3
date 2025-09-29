@@ -95,7 +95,7 @@ ModifyPublicTaskDialog::ModifyPublicTaskDialog(
         this->setWindowTitle("View public task");
         this->setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewPublicTaskLarge.png"));
         _ui->parentTaskComboBox->setEnabled(false);
-        _ui->selectParentRaskPushButton->setEnabled(false);
+        _ui->selectParentTaskPushButton->setEnabled(false);
         _ui->displayNameLineEdit->setReadOnly(true);
         _ui->descriptionPlainTextEdit->setReadOnly(true);
         _ui->activityTypeComboBox->setEnabled(false);

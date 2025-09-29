@@ -27,6 +27,7 @@ SelectPublicTaskParentDialog::SelectPublicTaskParentDialog(
         tt3::ws::PublicTask initialParentTask
     ) : QDialog(parent),
         //  Implementation
+        _workspace(publicTask->workspace()),
         _publicTask(publicTask),
         _credentials(credentials),
         _selectedParentTask(initialParentTask),
@@ -45,6 +46,42 @@ SelectPublicTaskParentDialog::SelectPublicTaskParentDialog(
         _prompt("Select new parent for public task", _publicTask));
     _ui->showCompletedTasksCheckBox->setChecked(
         _publicTask->completed(_credentials));
+    _decorations = TreeWidgetDecorations(_ui->publicTasksTreeWidget);
+
+    _refresh(); //  NOW, to adjust tree widget size to content
+    _ui->publicTasksTreeWidget->expandAll();
+    _setSelectedPublicTask(_selectedParentTask);
+    _ui->publicTasksTreeWidget->setFocus();
+
+    //  Done
+    _trackItemStateChanges = true;
+    adjustSize();
+}
+
+SelectPublicTaskParentDialog::SelectPublicTaskParentDialog(
+        QWidget * parent,
+        tt3::ws::Workspace workspace,
+        const tt3::ws::Credentials & credentials,
+        tt3::ws::PublicTask initialParentTask
+    ) : QDialog(parent),
+        //  Implementation
+        _workspace(workspace),
+        _publicTask(nullptr),
+        _credentials(credentials),
+        _selectedParentTask(initialParentTask),
+        //  Controls
+        _ui(new Ui::SelectPublicTaskParentDialog)
+{
+    _ui->setupUi(this);
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
+
+    //  Set initial control values
+    _ui->promptLabel->setText("Select new parent for public task");
+    _ui->showCompletedTasksCheckBox->setChecked(false);
     _decorations = TreeWidgetDecorations(_ui->publicTasksTreeWidget);
 
     _refresh(); //  NOW, to adjust tree widget size to content
@@ -117,7 +154,7 @@ void SelectPublicTaskParentDialog::_refresh()
     {
         PublicTaskManager::_WorkspaceModel workspaceModel =
             PublicTaskManager::_createWorkspaceModel(
-                _publicTask->workspace(), _credentials, _decorations);
+                _workspace, _credentials, _decorations);
         _removeReparentedTask(workspaceModel);
         if (!_ui->showCompletedTasksCheckBox->isChecked())
         {

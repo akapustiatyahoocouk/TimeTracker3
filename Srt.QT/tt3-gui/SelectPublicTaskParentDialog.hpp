@@ -63,6 +63,29 @@ namespace tt3::gui
                 const tt3::ws::Credentials & credentials,
                 tt3::ws::PublicTask initialParentTask
             );
+
+        /// \brief
+        ///     Constructs the dialog.
+        /// @param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// @param workspace
+        ///     The workspace where a public task with the selected
+        ///     parent will be created.
+        /// @param credentials
+        ///     The credentials to use for data access.
+        /// @param initialParentTask
+        ///     The public task to initially select as a parent.
+        /// @exception WorkspaceException
+        ///     If an error occurs retrieving PublicTask details.
+        SelectPublicTaskParentDialog(
+                QWidget * parent,
+                tt3::ws::Workspace workspace,
+                const tt3::ws::Credentials & credentials,
+                tt3::ws::PublicTask initialParentTask
+            );
+
+        /// \brief
+        ///     The class destructor.
         virtual ~SelectPublicTaskParentDialog();
 
         //////////
@@ -87,6 +110,7 @@ namespace tt3::gui
         //////////
         //  Implementation
     private:
+        tt3::ws::Workspace      _workspace;
         tt3::ws::PublicTask     _publicTask;
         tt3::ws::Credentials    _credentials;
         tt3::ws::PublicTask     _selectedParentTask;

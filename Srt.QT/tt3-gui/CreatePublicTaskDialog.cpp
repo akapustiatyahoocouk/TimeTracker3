@@ -24,7 +24,7 @@ CreatePublicTaskDialog::CreatePublicTaskDialog(
         QWidget *parent,
         tt3::ws::Workspace workspace,
         const tt3::ws::Credentials & credentials,
-        tt3::ws::PublicTask parentTask
+        tt3::ws::PublicTask initialParentTask
     ) : QDialog(parent),
         //  Implementation
         _workspace(workspace),
@@ -35,7 +35,8 @@ CreatePublicTaskDialog::CreatePublicTaskDialog(
 {
     Q_ASSERT(_workspace != nullptr);
     Q_ASSERT(_credentials.isValid());
-    Q_ASSERT(parentTask == nullptr || parentTask->workspace() == _workspace);
+    Q_ASSERT(initialParentTask == nullptr ||
+             initialParentTask->workspace() == _workspace);
 
     _ui->setupUi(this);
 
@@ -43,19 +44,6 @@ CreatePublicTaskDialog::CreatePublicTaskDialog(
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
-
-    //  Fill the "parent task" combo box
-    _ui->parentTaskComboBox->addItem(
-        "A root public task (no parent)",
-        QVariant::fromValue<tt3::ws::PublicTask>(nullptr));
-    if (parentTask != nullptr)
-    {
-        _ui->parentTaskComboBox->addItem(
-            parentTask->type()->smallIcon(),
-            "A subtask of " + parentTask->displayName(_credentials),
-            QVariant::fromValue(parentTask));
-        _ui->parentTaskComboBox->setCurrentIndex(1);
-    }
 
     //  Fill the "activity type" combo box (may throw)
     QList<tt3::ws::ActivityType> activityTypes =
@@ -88,6 +76,9 @@ CreatePublicTaskDialog::CreatePublicTaskDialog(
         _ui->minutesComboBox->addItem(tt3::util::toString(m) + " min", QVariant::fromValue(m));
     }
 
+    //  Set initial control values (may throw)
+    _setSelectedParentTask(initialParentTask);
+
     //  Done
     _ui->displayNameLineEdit->setFocus();
     adjustSize();
@@ -114,6 +105,25 @@ auto CreatePublicTaskDialog::_selectedParentTask(
     return _ui->parentTaskComboBox->currentData().value<tt3::ws::PublicTask>();
 }
 
+void CreatePublicTaskDialog::_setSelectedParentTask(
+        tt3::ws::PublicTask parentTask
+    )
+{
+    //  Refill the "parent task" combo box
+    _ui->parentTaskComboBox->clear();
+    _ui->parentTaskComboBox->addItem(
+        "- (a root public task with no parent)",
+        QVariant::fromValue<tt3::ws::PublicTask>(nullptr));
+    if (parentTask != nullptr)
+    {
+        _ui->parentTaskComboBox->addItem(
+            parentTask->type()->smallIcon(),
+            parentTask->displayName(_credentials),
+            QVariant::fromValue(parentTask));
+        _ui->parentTaskComboBox->setCurrentIndex(1);
+    }
+}
+
 auto CreatePublicTaskDialog::_selectedActivityType(
     ) -> tt3::ws::ActivityType
 {
@@ -138,18 +148,36 @@ void CreatePublicTaskDialog::_refresh()
     _ui->minutesComboBox->setEnabled(_ui->timeoutCheckBox->isChecked());
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(
         _validator->isValidDisplayName(_ui->displayNameLineEdit->text()) &&
-        _validator->isValidDescription(_ui->descriptionTextEdit->toPlainText()) &&
+        _validator->isValidDescription(_ui->descriptionPlainTextEdit->toPlainText()) &&
         _validator->isValidTimeout(_selectedTimeout()));
 }
 
 //////////
 //  Signal handlers
+void CreatePublicTaskDialog::_selectParentTaskPushButtonClicked()
+{
+    try
+    {
+        SelectPublicTaskParentDialog dlg(
+            this, _workspace, _credentials, _selectedParentTask());
+        if (dlg.doModal() == SelectPublicTaskParentDialog::Result::Ok)
+        {
+            _setSelectedParentTask(dlg.selectedParentTask());
+            _refresh();
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        ErrorDialog::show(this, ex);
+    }
+}
+
 void CreatePublicTaskDialog::_displayNameLineEditTextChanged(QString)
 {
     _refresh();
 }
 
-void CreatePublicTaskDialog::_descriptionTextEditTextChanged()
+void CreatePublicTaskDialog::_descriptionPlainTextEditTextChanged()
 {
     _refresh();
 }
@@ -183,7 +211,7 @@ void CreatePublicTaskDialog::accept()
             _createdPublicTask = parentTask->createChild(
                 _credentials,
                 _ui->displayNameLineEdit->text(),
-                _ui->descriptionTextEdit->toPlainText(),
+                _ui->descriptionPlainTextEdit->toPlainText(),
                 _selectedTimeout(),
                 _ui->requireCommentOnStartCheckBox->isChecked(),
                 _ui->requireCommentOnStopCheckBox->isChecked(),
@@ -198,7 +226,7 @@ void CreatePublicTaskDialog::accept()
             _createdPublicTask = _workspace->createPublicTask(
                 _credentials,
                 _ui->displayNameLineEdit->text(),
-                _ui->descriptionTextEdit->toPlainText(),
+                _ui->descriptionPlainTextEdit->toPlainText(),
                 _selectedTimeout(),
                 _ui->requireCommentOnStartCheckBox->isChecked(),
                 _ui->requireCommentOnStopCheckBox->isChecked(),

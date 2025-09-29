@@ -51,7 +51,7 @@ namespace tt3::gui
         ///     The workspace to create a new PublicTask in.
         /// \param credentials
         ///     The credentials to use for data access.
-        /// \param parentTask
+        /// \param initialParentTask
         ///     The proposed parent PublicTask for the new
         ///     PublicTask; nullptr == none.
         /// \exception WorkspaceException
@@ -60,7 +60,7 @@ namespace tt3::gui
                 QWidget * parent,
                 tt3::ws::Workspace workspace,
                 const tt3::ws::Credentials & credentials,
-                tt3::ws::PublicTask parentTask
+                tt3::ws::PublicTask initialParentTask
             );
 
         /// \brief
@@ -101,6 +101,9 @@ namespace tt3::gui
         //  Helpers
         auto            _selectedParentTask(
                             ) -> tt3::ws::PublicTask;
+        void            _setSelectedParentTask(
+                                tt3::ws::PublicTask parentTask
+                            );
         auto            _selectedActivityType(
                             ) -> tt3::ws::ActivityType;
         auto            _selectedTimeout(
@@ -115,8 +118,9 @@ namespace tt3::gui
         //////////
         //  Signal handlers
     private slots:
+        void            _selectParentTaskPushButtonClicked();
         void            _displayNameLineEditTextChanged(QString);
-        void            _descriptionTextEditTextChanged();
+        void            _descriptionPlainTextEditTextChanged();
         void            _selectWorkloadPushButtonClicked();
         void            _timeoutCheckBoxStateChanged(int);
         void            _hoursComboBoxCurrentIndexChanged(int);
