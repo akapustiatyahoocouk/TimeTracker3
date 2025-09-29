@@ -19,6 +19,8 @@
 
 namespace tt3::gui
 {
+    class TT3_GUI_PUBLIC SelectPublicTaskParentDialog;
+
     namespace Ui { class PublicTaskManager; }
 
     /// \class PublicTaskManager tt3-gui/API.hpp
@@ -27,6 +29,8 @@ namespace tt3::gui
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PublicTaskManager)
+
+        friend class SelectPublicTaskParentDialog;
 
         //////////
         //  Construction/destruction
@@ -231,5 +235,8 @@ namespace tt3::gui
         void            _refreshTimerTimeout();
     };
 }
+
+//  Macro needed for MOC-generated .cpp files
+#define TT3_GUI_PUBLIC_TASK_MANAGER_DEFINED
 
 //  End of tt3-gui/PublicTaskManager.hpp

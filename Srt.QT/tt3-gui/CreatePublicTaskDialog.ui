@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Create public task</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="tt3-gui.qrc">
+    <normaloff>:/tt3-gui/Resources/Images/Actions/CreatePublicTaskLarge.png</normaloff>:/tt3-gui/Resources/Images/Actions/CreatePublicTaskLarge.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="2" column="1" colspan="3">

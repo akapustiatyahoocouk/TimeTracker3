@@ -256,7 +256,8 @@ void ModifyPublicTaskDialog::_selectParentTaskPushButtonClicked()
 {
     try
     {
-        SelectPublicTaskParentDialog dlg(this, _publicTask, _credentials);
+        SelectPublicTaskParentDialog dlg(
+            this, _publicTask, _credentials, _selectedParentTask());
         if (dlg.doModal() == SelectPublicTaskParentDialog::Result::Ok)
         {
             _setSelectedParentTask(dlg.selectedParentTask());

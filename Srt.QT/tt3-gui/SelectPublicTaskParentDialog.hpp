@@ -17,6 +17,8 @@
 #pragma once
 #include "tt3-gui/API.hpp"
 
+#ifdef TT3_GUI_PUBLIC_TASK_MANAGER_DEFINED
+
 namespace tt3::gui
 {
     namespace Ui { class SelectPublicTaskParentDialog; }
@@ -51,12 +53,15 @@ namespace tt3::gui
         ///     The public task to select a new parent for.
         /// @param credentials
         ///     The credentials to use for data access.
+        /// @param initialParentTask
+        ///     The public task to initially select as a parent.
         /// @exception WorkspaceException
         ///     If an error occurs retrieving PublicTask details.
         SelectPublicTaskParentDialog(
                 QWidget * parent,
                 tt3::ws::PublicTask publicTask,
-                const tt3::ws::Credentials & credentials
+                const tt3::ws::Credentials & credentials,
+                tt3::ws::PublicTask initialParentTask
             );
         virtual ~SelectPublicTaskParentDialog();
 
@@ -74,7 +79,7 @@ namespace tt3::gui
         /// \return
         ///     The new PublicTask parent selected by the user.
         auto            selectedParentTask(
-            ) const -> tt3::ws::PublicTask
+                            ) const -> tt3::ws::PublicTask
         {
             return _selectedParentTask;
         }
@@ -85,22 +90,40 @@ namespace tt3::gui
         tt3::ws::PublicTask     _publicTask;
         tt3::ws::Credentials    _credentials;
         tt3::ws::PublicTask     _selectedParentTask;
+        bool                    _trackItemStateChanges = false;
+
+        //  Model
+        void            _removeReparentedTask(
+                                PublicTaskManager::_WorkspaceModel workspaceModel
+                            );
+        void            _removeReparentedTask(
+                                PublicTaskManager::_PublicTaskModel publicTaskModel
+                            );
 
         //  Helpers
         void            _refresh();
+        void            _refreshCheckStates();
+        void            _refreshCheckStates(QTreeWidgetItem * item);
+        bool            _setSelectedPublicTask(tt3::ws::PublicTask publicTask);
+        bool            _setSelectedPublicTask(QTreeWidgetItem * item, tt3::ws::PublicTask publicTask);
+        QStringList     _taskDisplayPath(tt3::ws::PublicTask publicTask);
+        QString         _prompt(const QString & prompt, tt3::ws::PublicTask publicTask);
 
         //////////
         //  Controls
     private:
         Ui::SelectPublicTaskParentDialog *const _ui;
+        TreeWidgetDecorations   _decorations;
 
         //////////
         //  Signal handlers
     private slots:
+        void            _publicTasksTreeWidgetItemChanged(QTreeWidgetItem * item, int column);
+        void            _publicTasksTreeWidgetItemDoubleClicked(QTreeWidgetItem * item);
         virtual void    accept() override;
         virtual void    reject() override;
     };
 }
 
+#endif  //  def TT3_GUI_PUBLIC_TASK_MANAGER_DEFINED
 //  End of tt3-gui/SelectPublicTaskParentDialog.hpp
-

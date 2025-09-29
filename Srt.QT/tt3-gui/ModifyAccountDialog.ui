@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Modify account</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="tt3-gui.qrc">
+    <normaloff>:/tt3-gui/Resources/Images/Actions/ModifyAccountLarge.png</normaloff>:/tt3-gui/Resources/Images/Actions/ModifyAccountLarge.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
@@ -277,6 +281,29 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>loginLineEdit</tabstop>
+  <tabstop>passwordLineEdit</tabstop>
+  <tabstop>confirmPasswordLineEdit</tabstop>
+  <tabstop>emailAddressesListWidget</tabstop>
+  <tabstop>addEmailAddressPushButton</tabstop>
+  <tabstop>modifyEmailAddressPushButton</tabstop>
+  <tabstop>removeEmailAddressPushButton</tabstop>
+  <tabstop>administratorCheckBox</tabstop>
+  <tabstop>manageUsersCheckBox</tabstop>
+  <tabstop>manageActivityTypesCheckBox</tabstop>
+  <tabstop>manageBeneficiariesCheckBox</tabstop>
+  <tabstop>manageWorkloadsCheckBox</tabstop>
+  <tabstop>managePublicActivitiesCheckBox</tabstop>
+  <tabstop>managePublicTasksCheckBox</tabstop>
+  <tabstop>managePrivateActivitiesCheckBox</tabstop>
+  <tabstop>managePrivateTasksCheckBox</tabstop>
+  <tabstop>logWorkCheckBox</tabstop>
+  <tabstop>logEventsCheckBox</tabstop>
+  <tabstop>generateReportsCheckBox</tabstop>
+  <tabstop>backupAndRestoreCheckBox</tabstop>
+  <tabstop>enabledCheckBox</tabstop>
+ </tabstops>
  <resources>
   <include location="tt3-gui.qrc"/>
  </resources>

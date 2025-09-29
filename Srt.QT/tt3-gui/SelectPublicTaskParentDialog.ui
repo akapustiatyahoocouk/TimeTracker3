@@ -27,7 +27,7 @@
       <string>&lt;PROMPT&gt;</string>
      </property>
      <property name="wordWrap">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -71,7 +71,7 @@
       <string>&lt;SELECTION&gt;</string>
      </property>
      <property name="wordWrap">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -161,5 +161,41 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>publicTasksTreeWidget</sender>
+   <signal>itemChanged(QTreeWidgetItem*,int)</signal>
+   <receiver>tt3::gui::SelectPublicTaskParentDialog</receiver>
+   <slot>_publicTasksTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>138</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>138</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>publicTasksTreeWidget</sender>
+   <signal>itemDoubleClicked(QTreeWidgetItem*,int)</signal>
+   <receiver>tt3::gui::SelectPublicTaskParentDialog</receiver>
+   <slot>_publicTasksTreeWidgetItemDoubleClicked(QTreeWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>138</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>138</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>_publicTasksTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
+  <slot>_publicTasksTreeWidgetItemDoubleClicked(QTreeWidgetItem*)</slot>
+ </slots>
 </ui>

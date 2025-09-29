@@ -130,7 +130,6 @@ void PublicActivityManager::refresh()
                 !_workspace->isOpen() ||
                 !_workspace->canAccess(_credentials)) //  may throw
             {   //  Nothing to show
-                refreshUnderway = false;
                 _clearAndDisableAllControls();
                 return;
             }
