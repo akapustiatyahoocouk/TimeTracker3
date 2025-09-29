@@ -87,25 +87,6 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="2" colspan="4">
-    <widget class="QTextEdit" name="descriptionTextEdit">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>85</height>
-      </size>
-     </property>
-     <property name="acceptRichText">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
    <item row="5" column="5">
     <widget class="QComboBox" name="minutesComboBox"/>
    </item>
@@ -188,13 +169,29 @@
      </property>
     </widget>
    </item>
+   <item row="2" column="2" colspan="4">
+    <widget class="QPlainTextEdit" name="descriptionPlainTextEdit">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>85</height>
+      </size>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <tabstops>
   <tabstop>parentTaskComboBox</tabstop>
   <tabstop>selectParentRaskPushButton</tabstop>
   <tabstop>displayNameLineEdit</tabstop>
-  <tabstop>descriptionTextEdit</tabstop>
+  <tabstop>descriptionPlainTextEdit</tabstop>
   <tabstop>activityTypeComboBox</tabstop>
   <tabstop>selectWorkloadPushButton</tabstop>
   <tabstop>timeoutCheckBox</tabstop>
@@ -275,22 +272,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>descriptionTextEdit</sender>
-   <signal>textChanged()</signal>
-   <receiver>tt3::gui::ModifyPublicTaskDialog</receiver>
-   <slot>_descriptionTextEditTextChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>278</x>
-     <y>123</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>232</x>
-     <y>247</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>selectWorkloadPushButton</sender>
    <signal>clicked()</signal>
    <receiver>tt3::gui::ModifyPublicTaskDialog</receiver>
@@ -354,11 +335,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>descriptionPlainTextEdit</sender>
+   <signal>textChanged()</signal>
+   <receiver>tt3::gui::ModifyPublicTaskDialog</receiver>
+   <slot>_descriptionPlainTextEditTextChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>278</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>232</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_selectParentTaskPushButtonClicked()</slot>
   <slot>_displayNameLineEditTextChanged(QString)</slot>
-  <slot>_descriptionTextEditTextChanged()</slot>
+  <slot>_descriptionPlainTextEditTextChanged()</slot>
   <slot>_selectWorkloadPushButtonClicked()</slot>
   <slot>_timeoutCheckBoxStateChanged(int)</slot>
   <slot>_hoursComboBoxCurrentIndexChanged(int)</slot>

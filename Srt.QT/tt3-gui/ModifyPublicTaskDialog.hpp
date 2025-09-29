@@ -113,7 +113,7 @@ namespace tt3::gui
     private slots:
         void            _selectParentTaskPushButtonClicked();
         void            _displayNameLineEditTextChanged(QString);
-        void            _descriptionTextEditTextChanged();
+        void            _descriptionPlainTextEditTextChanged();
         void            _selectWorkloadPushButtonClicked();
         void            _timeoutCheckBoxStateChanged(int);
         void            _hoursComboBoxCurrentIndexChanged(int);

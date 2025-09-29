@@ -79,7 +79,7 @@ ModifyPublicTaskDialog::ModifyPublicTaskDialog(
     //  Set initial control values (may throw)
     _setSelectedParentTask(_publicTask->parent(_credentials));
     _ui->displayNameLineEdit->setText(_publicTask->displayName(_credentials));
-    _ui->descriptionTextEdit->setPlainText(_publicTask->description(_credentials));
+    _ui->descriptionPlainTextEdit->setPlainText(_publicTask->description(_credentials));
     _setSelectedActivityType(_publicTask->activityType(_credentials));
     _setSelectedWorkload(_publicTask->workload(_credentials));
     _setSelectedTimeout(_publicTask->timeout(_credentials));
@@ -97,7 +97,7 @@ ModifyPublicTaskDialog::ModifyPublicTaskDialog(
         _ui->parentTaskComboBox->setEnabled(false);
         _ui->selectParentRaskPushButton->setEnabled(false);
         _ui->displayNameLineEdit->setReadOnly(true);
-        _ui->descriptionTextEdit->setReadOnly(true);
+        _ui->descriptionPlainTextEdit->setReadOnly(true);
         _ui->activityTypeComboBox->setEnabled(false);
         _ui->selectWorkloadPushButton->setEnabled(false);
         _ui->timeoutCheckBox->setEnabled(false);
@@ -246,7 +246,7 @@ void ModifyPublicTaskDialog::_refresh()
     _ui->minutesComboBox->setEnabled(_ui->timeoutCheckBox->isChecked());
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(
         _validator->isValidDisplayName(_ui->displayNameLineEdit->text()) &&
-        _validator->isValidDescription(_ui->descriptionTextEdit->toPlainText()) &&
+        _validator->isValidDescription(_ui->descriptionPlainTextEdit->toPlainText()) &&
         _validator->isValidTimeout(_selectedTimeout()));
 }
 
@@ -254,7 +254,19 @@ void ModifyPublicTaskDialog::_refresh()
 //  Signal handlers
 void ModifyPublicTaskDialog::_selectParentTaskPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    try
+    {
+        SelectPublicTaskParentDialog dlg(this, _publicTask, _credentials);
+        if (dlg.doModal() == SelectPublicTaskParentDialog::Result::Ok)
+        {
+            _setSelectedParentTask(dlg.selectedParentTask());
+            _refresh();
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        ErrorDialog::show(this, ex);
+    }
 }
 
 void ModifyPublicTaskDialog::_displayNameLineEditTextChanged(QString)
@@ -262,7 +274,7 @@ void ModifyPublicTaskDialog::_displayNameLineEditTextChanged(QString)
     _refresh();
 }
 
-void ModifyPublicTaskDialog::_descriptionTextEditTextChanged()
+void ModifyPublicTaskDialog::_descriptionPlainTextEditTextChanged()
 {
     _refresh();
 }
@@ -312,7 +324,7 @@ void ModifyPublicTaskDialog::accept()
                 _ui->displayNameLineEdit->text());
             _publicTask->setDescription(
                 _credentials,
-                _ui->descriptionTextEdit->toPlainText());
+                _ui->descriptionPlainTextEdit->toPlainText());
             _publicTask->setTimeout(
                 _credentials,
                 _selectedTimeout());

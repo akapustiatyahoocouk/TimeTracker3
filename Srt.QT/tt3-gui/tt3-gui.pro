@@ -53,6 +53,7 @@ SOURCES += \
     PreferencesManager.cpp \
     PublicActivityManager.cpp \
     PublicTaskManager.cpp \
+    SelectPublicTaskParentDialog.cpp \
     SelectWorkspaceDialog.cpp \
     ShowConfigurationDialog.cpp \
     ShowLicenseDialog.cpp \
@@ -106,6 +107,7 @@ HEADERS += \
     PreferencesEditor.hpp \
     PublicActivityManager.hpp \
     PublicTaskManager.hpp \
+    SelectPublicTaskParentDialog.hpp \
     SelectWorkspaceDialog.hpp \
     ShowConfigurationDialog.hpp \
     ShowLicenseDialog.hpp \
@@ -142,6 +144,7 @@ FORMS += \
     PreferencesDialog.ui \
     PublicActivityManager.ui \
     PublicTaskManager.ui \
+    SelectPublicTaskParentDialog.ui \
     SelectWorkspaceDialog.ui \
     ShowConfigurationDialog.ui \
     ShowLicenseDialog.ui \
