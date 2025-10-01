@@ -1,5 +1,5 @@
 //
-//  tt3-db-xml/PublicActivity.cpp - tt3::db::xml::PublicActivity class implementation
+//  tt3-db-xml/PrivateActivity.cpp - tt3::db::xml::PrivateActivity class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,24 +19,26 @@ using namespace tt3::db::xml;
 
 //////////
 //  Construction/destruction (from DB type only)
-PublicActivity::PublicActivity(
-        Database * database,
+PrivateActivity::PrivateActivity(
+        User * owner,
         tt3::db::api::Oid oid
-    ) : Activity(database, oid)
+    ) : Activity(owner->_database, oid)
 {
-    //  Register PublicActivity with parent
-    _database->_publicActivities.insert(this);
+    //  Register PrivateActivity with parent
+    _owner->_privateActivities.insert(this);
     this->addReference();
+    this->_owner = owner;
+    owner->addReference();
 }
 
-PublicActivity::~PublicActivity()
+PrivateActivity::~PrivateActivity()
 {
-    Q_ASSERT(!_database->_publicActivities.contains(this));
+    Q_ASSERT(!_owner->_privateActivities.contains(this));
 }
 
 //////////
 //  tt3::db::api::IObject (life cycle)
-void PublicActivity::destroy()
+void PrivateActivity::destroy()
 {
     tt3::util::Lock lock(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
@@ -52,26 +54,41 @@ void PublicActivity::destroy()
 }
 
 //////////
+//  tt3::db::api::IPrivateActivity (associations)
+auto PrivateActivity::owner(
+    ) const -> tt3::db::api::IUser *
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _owner;
+}
+
+//////////
 //  Implementation helpers
-bool PublicActivity::_siblingExists(const QString & displayName) const
+bool PrivateActivity::_siblingExists(const QString & displayName) const
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
 
-    PublicActivity * found =
-        _database->_findPublicActivity(displayName);
+    PrivateActivity * found =
+        _owner->_findPrivateActivity(displayName);
     return found != nullptr && found != this;
 }
 
-void PublicActivity::_markDead()
+void PrivateActivity::_markDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
 
-    //  Remove from "live" caches
-    Q_ASSERT(_database->_publicActivities.contains(this));
-    _database->_publicActivities.remove(this);
+    //  Break associations
+    Q_ASSERT(_owner != nullptr && _owner->_isLive);
+    Q_ASSERT(_owner->_privateActivities.contains(this));
+    _owner->_privateActivities.remove(this);
     this->removeReference();
+    _owner->removeReference();
+    _owner = nullptr;
 
     //  The rest is up to the base class
     Activity::_markDead();
@@ -79,42 +96,42 @@ void PublicActivity::_markDead()
 
 //////////
 //  Serialization
-void PublicActivity::_serializeProperties(
+void PrivateActivity::_serializeProperties(
         QDomElement & objectElement
     ) const
 {
     Activity::_serializeProperties(objectElement);
 }
 
-void PublicActivity::_serializeAggregations(
+void PrivateActivity::_serializeAggregations(
         QDomElement & objectElement
     ) const
 {
     Activity::_serializeAggregations(objectElement);
 }
 
-void PublicActivity::_serializeAssociations(
+void PrivateActivity::_serializeAssociations(
         QDomElement & objectElement
     ) const
 {
     Activity::_serializeAssociations(objectElement);
 }
 
-void PublicActivity::_deserializeProperties(
+void PrivateActivity::_deserializeProperties(
         const QDomElement & objectElement
     )
 {
     Activity::_deserializeProperties(objectElement);
 }
 
-void PublicActivity::_deserializeAggregations(
+void PrivateActivity::_deserializeAggregations(
         const QDomElement & objectElement
     )
 {
     Activity::_deserializeAggregations(objectElement);
 }
 
-void PublicActivity::_deserializeAssociations(
+void PrivateActivity::_deserializeAssociations(
         const QDomElement & objectElement
     )
 {
@@ -123,7 +140,7 @@ void PublicActivity::_deserializeAssociations(
 
 //////////
 //  Validation
-void PublicActivity::_validate(
+void PrivateActivity::_validate(
         Objects & validatedObjects
     )
 {
@@ -132,12 +149,14 @@ void PublicActivity::_validate(
     //  Validate properties
 
     //  Validate aggregations
-    if (!_database->_publicActivities.contains(this))
+
+    //  Validate associations
+    if (_owner == nullptr || !_owner->_isLive ||
+        _owner->_database != _database ||
+        !_owner->_privateActivities.contains(this))
     {   //  OOPS!
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }
-
-    //  Validate associations
 }
 
-//  End of tt3-db-xml/PublicActivity.cpp
+//  End of tt3-db-xml/PrivateActivity.cpp

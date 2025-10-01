@@ -179,8 +179,10 @@ void PublicTaskManager::refresh()
         {
             _ui->createPublicTaskPushButton->setEnabled(
                 !readOnly &&
-                (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||
-                 _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManagePublicTasks)));
+                _workspace->grantsAny(  //  may throw
+                    _credentials,
+                    tt3::ws::Capabilities::Administrator |
+                    tt3::ws::Capabilities::ManagePublicTasks));
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Report & recover
@@ -194,7 +196,7 @@ void PublicTaskManager::refresh()
             _ui->destroyPublicTaskPushButton->setEnabled(
                 !readOnly &&
                 selectedPublicTask != nullptr &&
-                selectedPublicTask->canDestroy(_credentials));
+                selectedPublicTask->canDestroy(_credentials));  //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Report & recover
@@ -210,11 +212,19 @@ void PublicTaskManager::refresh()
         //  TODO if the current credentials do not allow logging
         //       Events and the current Task requires comment on
         //       finish, "start" and "stop" shall be disabled.
-        _ui->startPublicTaskPushButton->setEnabled(
-            !readOnly &&
-            selectedPublicTask != nullptr &&
-            theCurrentActivity != selectedPublicTask &&
-            !selectedPublicTask->completed(_credentials));  //  TODO may throw
+        try
+        {
+            _ui->startPublicTaskPushButton->setEnabled(
+                !readOnly &&
+                selectedPublicTask != nullptr &&
+                theCurrentActivity != selectedPublicTask &&
+                !selectedPublicTask->completed(_credentials));
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & disable
+            qCritical() << ex.errorMessage();
+            _ui->startPublicTaskPushButton->setEnabled(false);
+        }
         _ui->stopPublicTaskPushButton->setEnabled(
             !readOnly &&
             selectedPublicTask != nullptr &&
@@ -237,15 +247,24 @@ void PublicTaskManager::refresh()
             Component::Settings::instance()->showCompletedPublicTasks);
 
         //  Some buttons need to be adjusted for ReadOnoly mode
-        if (selectedPublicTask != nullptr &&
-            !selectedPublicTask->workspace()->isReadOnly() &&
-            selectedPublicTask->canModify(_credentials))    //  TODO may throw
-        {   //  RW
-            _ui->modifyPublicTaskPushButton->setIcon(modifyPublicTaskIcon);
-            _ui->modifyPublicTaskPushButton->setText("Modify public task");
+        try
+        {
+            if (selectedPublicTask != nullptr &&
+                !selectedPublicTask->workspace()->isReadOnly() &&
+                selectedPublicTask->canModify(_credentials))    //  may throw
+            {   //  RW
+                _ui->modifyPublicTaskPushButton->setIcon(modifyPublicTaskIcon);
+                _ui->modifyPublicTaskPushButton->setText("Modify public task");
+            }
+            else
+            {   //  RO
+                _ui->modifyPublicTaskPushButton->setIcon(viewPublicTaskIcon);
+                _ui->modifyPublicTaskPushButton->setText("View public task");
+            }
         }
-        else
-        {   //  RO
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & simulate RO
+            qCritical() << ex.errorMessage();
             _ui->modifyPublicTaskPushButton->setIcon(viewPublicTaskIcon);
             _ui->modifyPublicTaskPushButton->setText("View public task");
         }

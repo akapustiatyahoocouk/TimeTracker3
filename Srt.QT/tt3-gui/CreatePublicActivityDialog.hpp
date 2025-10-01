@@ -110,7 +110,7 @@ namespace tt3::gui
         //  Signal handlers
     private slots:
         void            _displayNameLineEditTextChanged(QString);
-        void            _descriptionTextEditTextChanged();
+        void            _descriptionPlainTextEditTextChanged();
         void            _selectWorkloadPushButtonClicked();
         void            _timeoutCheckBoxStateChanged(int);
         void            _hoursComboBoxCurrentIndexChanged(int);

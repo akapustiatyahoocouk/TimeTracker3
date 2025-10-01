@@ -338,9 +338,9 @@ auto WorkspaceImpl::capabilities(
     }
 }
 
-bool WorkspaceImpl::grantsCapability(
+bool WorkspaceImpl::grantsAll(
         const Credentials & credentials,
-        Capabilities requiredCapability
+        Capabilities requiredCapabilities
     ) const
 {
     tt3::util::Lock lock(_guard);
@@ -348,23 +348,37 @@ bool WorkspaceImpl::grantsCapability(
 
     try
     {
-        Q_ASSERT(requiredCapability == Capabilities::Administrator ||
-                 requiredCapability == Capabilities::ManageUsers ||
-                 requiredCapability == Capabilities::ManageActivityTypes ||
-                 requiredCapability == Capabilities::ManageBeheficiaries ||
-                 requiredCapability == Capabilities::ManageWorkloads ||
-                 requiredCapability == Capabilities::ManagePublicActivities ||
-                 requiredCapability == Capabilities::ManagePublicTasks ||
-                 requiredCapability == Capabilities::ManagePrivateActivities ||
-                 requiredCapability == Capabilities::ManagePrivateTasks ||
-                 requiredCapability == Capabilities::LogWork ||
-                 requiredCapability == Capabilities::LogEvents ||
-                 requiredCapability == Capabilities::GenerateReports ||
-                 requiredCapability == Capabilities::BackupAndRestore);
+        Q_ASSERT(requiredCapabilities != Capabilities::None);
 
         //  Do the work; be defensive in release mode
         Capabilities c = _validateAccessRights(credentials);  //  may throw
-        return (c & requiredCapability) == requiredCapability;
+        return (c & requiredCapabilities) == requiredCapabilities;
+    }
+    catch (const AccessDeniedException &)
+    {   //  This is a special case
+        return false;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+bool WorkspaceImpl::grantsAny(
+        const Credentials & credentials,
+        Capabilities requiredCapabilities
+    ) const
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();
+
+    try
+    {
+        Q_ASSERT(requiredCapabilities != Capabilities::None);
+
+        //  Do the work; be defensive in release mode
+        Capabilities c = _validateAccessRights(credentials);  //  may throw
+        return (c & requiredCapabilities) != Capabilities::None;
     }
     catch (const AccessDeniedException &)
     {   //  This is a special case
@@ -747,7 +761,42 @@ PublicTask WorkspaceImpl::_getProxy(
     return publicTask;
 }
 
-Workload WorkspaceImpl::_getProxy(tt3::db::api::IWorkload * dataWorkload) const
+PrivateActivity WorkspaceImpl::_getProxy(
+        tt3::db::api::IPrivateActivity * dataPrivateActivity
+    ) const
+{   //  What if it's a PublicTask?
+    /*  TODO uncomment
+    if (auto dataPrivateTask =
+        dynamic_cast<tt3::db::api::IPrivateTask *>(dataPrivateActivity))
+    {   //  ...then use the dedicated proxy getter
+        return std::dynamic_pointer_cast<PublicTaskImpl>(_getProxy(dataPublicTask));
+    }
+    */
+
+    //  Do the work
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    Q_ASSERT(_isOpen);
+    Q_ASSERT(dataPrivateActivity != nullptr);
+
+    Oid oid = dataPrivateActivity->oid();
+    if (_proxyCache.contains(oid))
+    {
+        PrivateActivity privateActivity = std::dynamic_pointer_cast<PrivateActivityImpl>(_proxyCache[oid]);
+        Q_ASSERT(privateActivity != nullptr);   //  Objects do not change their types OR reuse OIDs
+        return privateActivity;
+    }
+    //  Must create a new proxy
+    Workspace workspace = _address->_workspaceType->_mapWorkspace(const_cast<WorkspaceImpl*>(this));
+    PrivateActivity privateActivity(
+        new PrivateActivityImpl(workspace, dataPrivateActivity),
+        [](PrivateActivityImpl * p) { delete p; });
+    _proxyCache.insert(oid, privateActivity);
+    return privateActivity;
+}
+
+Workload WorkspaceImpl::_getProxy(
+        tt3::db::api::IWorkload * dataWorkload
+    ) const
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
     Q_ASSERT(_isOpen);

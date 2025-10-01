@@ -441,6 +441,7 @@ void Activity::_markDead()
     //  TODO others - properly
     Q_ASSERT(_works.isEmpty());
     Q_ASSERT(_events.isEmpty());
+    //  TODO remove from all "quick pick" lists
 
     //  The rest is up to the base class
     Object::_markDead();

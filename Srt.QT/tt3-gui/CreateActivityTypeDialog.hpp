@@ -97,11 +97,10 @@ namespace tt3::gui
         //  Signal handlers
     private slots:
         void            _displayNameLineEditTextChanged(QString);
-        void            _descriptionTextEditTextChanged();
+        void            _descriptionPlainTextEditTextChanged();
         void            accept() override;
         void            reject() override;
     };
 }
 
 //  End of tt3-gui/CreateActivityTypeDialog.hpp
-

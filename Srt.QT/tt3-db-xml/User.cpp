@@ -376,6 +376,20 @@ void User::_markDead()
     Principal::_markDead();
 }
 
+auto User::_findPrivateActivity(
+        const QString & displayName
+    ) const -> PrivateActivity *
+{
+    for (PrivateActivity * privateActivity : _privateActivities)
+    {
+        if (privateActivity->_displayName == displayName)
+        {
+            return privateActivity;
+        }
+    }
+    return nullptr;
+}
+
 //////////
 //  Serialization
 void User::_serializeProperties(
@@ -405,6 +419,10 @@ void User::_serializeAggregations(
         objectElement,
         "Accounts",
         _accounts);
+    _database->_serializeAggregation(
+        objectElement,
+        "PrivateActivities",
+        _privateActivities);
 }
 
 void User::_serializeAssociations(
@@ -453,6 +471,14 @@ void User::_deserializeAggregations(
         [&](auto oid)
         {
             return new Account(this, oid);
+        });
+    _database->_deserializeAggregation<PrivateActivity>(
+        objectElement,
+        "PrivateActivities",
+        _privateActivities,
+        [&](auto oid)
+        {
+            return new PrivateActivity(this, oid);
         });
 }
 
@@ -506,6 +532,16 @@ void User::_validate(
             throw tt3::db::api::DatabaseCorruptException(_database->_address);
         }
         account->_validate(validatedObjects);
+    }
+    for (PrivateActivity * privateActivity : _privateActivities)
+    {
+        if (privateActivity == nullptr || !privateActivity->_isLive ||
+            privateActivity->_database != _database ||
+            privateActivity->_owner != this)
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
+        privateActivity->_validate(validatedObjects);
     }
 
     //  Validate associations

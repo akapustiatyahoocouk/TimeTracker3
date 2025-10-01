@@ -47,7 +47,7 @@ ModifyActivityTypeDialog::ModifyActivityTypeDialog(
 
     //  Set initial control values (may throw)
     _ui->displayNameLineEdit->setText(_activityType->displayName(_credentials));
-    _ui->descriptionTextEdit->setPlainText(_activityType->description(_credentials));
+    _ui->descriptionPlainTextEdit->setPlainText(_activityType->description(_credentials));
 
     //  Adjust for "view only" mode
     if (_readOnly)
@@ -55,7 +55,7 @@ ModifyActivityTypeDialog::ModifyActivityTypeDialog(
         this->setWindowTitle("View activity type");
         this->setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewActivityTypeLarge.png"));
         _ui->displayNameLineEdit->setReadOnly(true);
-        _ui->descriptionTextEdit->setReadOnly(true);
+        _ui->descriptionPlainTextEdit->setReadOnly(true);
     }
 
     //  Done
@@ -82,7 +82,7 @@ void ModifyActivityTypeDialog::_refresh()
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(
         !_readOnly &&
         _validator->isValidDisplayName(_ui->displayNameLineEdit->text()) &&
-        _validator->isValidDescription(_ui->descriptionTextEdit->toPlainText()));
+        _validator->isValidDescription(_ui->descriptionPlainTextEdit->toPlainText()));
 }
 
 //////////
@@ -92,7 +92,7 @@ void ModifyActivityTypeDialog::_displayNameLineEditTextChanged(QString)
     _refresh();
 }
 
-void ModifyActivityTypeDialog::_descriptionTextEditTextChanged()
+void ModifyActivityTypeDialog::_descriptionPlainTextEditTextChanged()
 {
     _refresh();
 }
@@ -108,7 +108,7 @@ void ModifyActivityTypeDialog::accept()
                 _ui->displayNameLineEdit->text());
             _activityType->setDescription(
                 _credentials,
-                _ui->descriptionTextEdit->toPlainText());
+                _ui->descriptionPlainTextEdit->toPlainText());
         }
         done(int(Result::Ok));
     }

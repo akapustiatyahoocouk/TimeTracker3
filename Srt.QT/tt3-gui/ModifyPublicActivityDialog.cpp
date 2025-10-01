@@ -78,7 +78,7 @@ ModifyPublicActivityDialog::ModifyPublicActivityDialog(
 
     //  Set initial control values (may throw)
     _ui->displayNameLineEdit->setText(_publicActivity->displayName(_credentials));
-    _ui->descriptionTextEdit->setPlainText(_publicActivity->description(_credentials));
+    _ui->descriptionPlainTextEdit->setPlainText(_publicActivity->description(_credentials));
     _setSelectedActivityType(_publicActivity->activityType(_credentials));
     _setSelectedWorkload(_publicActivity->workload(_credentials));
     _setSelectedTimeout(_publicActivity->timeout(_credentials));
@@ -92,7 +92,7 @@ ModifyPublicActivityDialog::ModifyPublicActivityDialog(
         this->setWindowTitle("View public activity");
         this->setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewPublicActivityLarge.png"));
         _ui->displayNameLineEdit->setReadOnly(true);
-        _ui->descriptionTextEdit->setReadOnly(true);
+        _ui->descriptionPlainTextEdit->setReadOnly(true);
         _ui->activityTypeComboBox->setEnabled(false);
         _ui->selectWorkloadPushButton->setEnabled(false);
         _ui->timeoutCheckBox->setEnabled(false);
@@ -209,7 +209,7 @@ void ModifyPublicActivityDialog::_refresh()
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(
         !_readOnly &&
         _validator->isValidDisplayName(_ui->displayNameLineEdit->text()) &&
-        _validator->isValidDescription(_ui->descriptionTextEdit->toPlainText()) &&
+        _validator->isValidDescription(_ui->descriptionPlainTextEdit->toPlainText()) &&
         _validator->isValidTimeout(_selectedTimeout()));
 }
 
@@ -220,7 +220,7 @@ void ModifyPublicActivityDialog::_displayNameLineEditTextChanged(QString)
     _refresh();
 }
 
-void ModifyPublicActivityDialog::_descriptionTextEditTextChanged()
+void ModifyPublicActivityDialog::_descriptionPlainTextEditTextChanged()
 {
     _refresh();
 }
@@ -256,7 +256,7 @@ void ModifyPublicActivityDialog::accept()
                 _ui->displayNameLineEdit->text());
             _publicActivity->setDescription(
                 _credentials,
-                _ui->descriptionTextEdit->toPlainText());
+                _ui->descriptionPlainTextEdit->toPlainText());
             _publicActivity->setTimeout(
                 _credentials,
                 _selectedTimeout());

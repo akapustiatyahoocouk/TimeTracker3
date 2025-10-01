@@ -157,16 +157,34 @@ void PublicActivityManager::refresh()
 
         tt3::ws::PublicActivity selectedPublicActivity = _selectedPublicActivity();
         bool readOnly = _workspace->isReadOnly();
-        _ui->createPublicActivityPushButton->setEnabled(
-            !readOnly &&
-            (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||        //  TODO may throw
-             _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManagePublicActivities)));//  TODO may throw
+        try
+        {
+            _ui->createPublicActivityPushButton->setEnabled(
+                !readOnly &&
+                _workspace->grantsAny(  //  may throw
+                    _credentials,
+                    tt3::ws::Capabilities::Administrator |
+                    tt3::ws::Capabilities::ManagePublicActivities));
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & disable
+            qCritical() << ex.errorMessage();
+            _ui->createPublicActivityPushButton->setEnabled(false);
+        }
         _ui->modifyPublicActivityPushButton->setEnabled(
             selectedPublicActivity != nullptr);
-        _ui->destroyPublicActivityPushButton->setEnabled(
-            !readOnly &&
-            selectedPublicActivity != nullptr &&
-            selectedPublicActivity->canDestroy(_credentials));  //  TODO may throw
+        try
+        {
+            _ui->destroyPublicActivityPushButton->setEnabled(
+                !readOnly &&
+                selectedPublicActivity != nullptr &&
+                selectedPublicActivity->canDestroy(_credentials));  //  may throw
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & disable
+            qCritical() << ex.errorMessage();
+            _ui->destroyPublicActivityPushButton->setEnabled(false);
+        }
 
         //  TODO if the current  credentials do not allow logging
         //       Work, "start" and "stop" shall be disabled
@@ -186,15 +204,24 @@ void PublicActivityManager::refresh()
             theCurrentActivity == selectedPublicActivity);
 
         //  Some buttons need to be adjusted for ReadOnoly mode
-        if (selectedPublicActivity != nullptr &&
-            !selectedPublicActivity->workspace()->isReadOnly() &&
-            selectedPublicActivity->canModify(_credentials))    //  TODO may throw
-        {   //  RW
-            _ui->modifyPublicActivityPushButton->setIcon(modifyPublicActivityIcon);
-            _ui->modifyPublicActivityPushButton->setText("Modify public activity");
+        try
+        {
+            if (selectedPublicActivity != nullptr &&
+                !selectedPublicActivity->workspace()->isReadOnly() &&
+                selectedPublicActivity->canModify(_credentials))    //  may throw
+            {   //  RW
+                _ui->modifyPublicActivityPushButton->setIcon(modifyPublicActivityIcon);
+                _ui->modifyPublicActivityPushButton->setText("Modify public activity");
+            }
+            else
+            {   //  RO
+                _ui->modifyPublicActivityPushButton->setIcon(viewPublicActivityIcon);
+                _ui->modifyPublicActivityPushButton->setText("View public activity");
+            }
         }
-        else
-        {   //  RO
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Simulate RO
+            qCritical() << ex.errorMessage();
             _ui->modifyPublicActivityPushButton->setIcon(viewPublicActivityIcon);
             _ui->modifyPublicActivityPushButton->setText("View public activity");
         }

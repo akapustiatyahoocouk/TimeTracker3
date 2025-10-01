@@ -158,53 +158,107 @@ void UserManager::refresh()
         tt3::ws::User selectedUser = _selectedUser();
         tt3::ws::Account selectedAccount = _selectedAccount();
         bool readOnly = _workspace->isReadOnly();
-        _ui->createUserPushButton->setEnabled(
-            !readOnly &&
-            (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||//  TODO may throw
-             _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageUsers)));  //  TODO may throw
+        try
+        {
+            _ui->createUserPushButton->setEnabled(
+                !readOnly &&
+                _workspace->grantsAny(  //  may throw
+                    _credentials,
+                    tt3::ws::Capabilities::Administrator |
+                    tt3::ws::Capabilities::ManageUsers));
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & disable
+            qCritical() << ex.errorMessage();
+            _ui->createUserPushButton->setEnabled(false);
+        }
         _ui->modifyUserPushButton->setEnabled(
             selectedUser != nullptr);
-        _ui->destroyUserPushButton->setEnabled(
-            !readOnly &&
-            selectedUser != nullptr &&
-            selectedUser->canDestroy(_credentials));    //  TODO may throw
-        _ui->createAccountPushButton->setEnabled(
-            !readOnly &&
-            (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||//  TODO may throw
-             _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageUsers)) && //  TODO may throw
-            selectedUser != nullptr);
+        try
+        {
+            _ui->destroyUserPushButton->setEnabled(
+                !readOnly &&
+                selectedUser != nullptr &&
+                selectedUser->canDestroy(_credentials));    //  may throw
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & disable
+            qCritical() << ex.errorMessage();
+            _ui->destroyUserPushButton->setEnabled(false);
+        }
+        try
+        {
+            _ui->createAccountPushButton->setEnabled(
+                !readOnly &&
+                _workspace->grantsAny(
+                    _credentials,
+                    tt3::ws::Capabilities::Administrator |
+                    tt3::ws::Capabilities::ManageUsers) &&
+                selectedUser != nullptr);
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & disable
+            qCritical() << ex.errorMessage();
+            _ui->createAccountPushButton->setEnabled(false);
+        }
         _ui->modifyAccountPushButton->setEnabled(
             selectedAccount != nullptr);
-        _ui->destroyAccountPushButton->setEnabled(
-            !readOnly &&
-            selectedAccount != nullptr &&
-            selectedAccount->canDestroy(_credentials)); //  TODO may throw
+        try
+        {
+            _ui->destroyAccountPushButton->setEnabled(
+                !readOnly &&
+                selectedAccount != nullptr &&
+                selectedAccount->canDestroy(_credentials)); //  may throw
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & disable
+            qCritical() << ex.errorMessage();
+            _ui->destroyAccountPushButton->setEnabled(false);
+        }
 
         _ui->showDisabledCheckBox->setChecked(
             Component::Settings::instance()->showDisabledUsersAndAccounts);
 
         //  Some buttons need to be adjusted for ReadOnoly mode
-        if (selectedUser != nullptr &&
-            !selectedUser->workspace()->isReadOnly() &&
-            selectedUser->canModify(_credentials))  //  TODO may throw
-        {   //  RW
-            _ui->modifyUserPushButton->setIcon(modifyUserIcon);
-            _ui->modifyUserPushButton->setText("Modify user");
+        try
+        {
+            if (selectedUser != nullptr &&
+                !selectedUser->workspace()->isReadOnly() &&
+                selectedUser->canModify(_credentials))  //  may throw
+            {   //  RW
+                _ui->modifyUserPushButton->setIcon(modifyUserIcon);
+                _ui->modifyUserPushButton->setText("Modify user");
+            }
+            else
+            {   //  RO
+                _ui->modifyUserPushButton->setIcon(viewUserIcon);
+                _ui->modifyUserPushButton->setText("View user");
+            }
         }
-        else
-        {   //  RO
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & simulate RO
+            qCritical() << ex.errorMessage();
             _ui->modifyUserPushButton->setIcon(viewUserIcon);
             _ui->modifyUserPushButton->setText("View user");
         }
-        if (selectedAccount != nullptr &&
-            !selectedAccount->workspace()->isReadOnly() &&
-            selectedAccount->canModify(_credentials))   //  TODO may throw
-        {   //  RW
-            _ui->modifyAccountPushButton->setIcon(modifyAccountIcon);
-            _ui->modifyAccountPushButton->setText("Modify account");
+        try
+        {
+            if (selectedAccount != nullptr &&
+                !selectedAccount->workspace()->isReadOnly() &&
+                selectedAccount->canModify(_credentials))   //  may throw
+            {   //  RW
+                _ui->modifyAccountPushButton->setIcon(modifyAccountIcon);
+                _ui->modifyAccountPushButton->setText("Modify account");
+            }
+            else
+            {   //  RO
+                _ui->modifyAccountPushButton->setIcon(viewAccountIcon);
+                _ui->modifyAccountPushButton->setText("View account");
+            }
         }
-        else
-        {   //  RO
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & simulate RO
+            qCritical() << ex.errorMessage();
             _ui->modifyAccountPushButton->setIcon(viewAccountIcon);
             _ui->modifyAccountPushButton->setText("View account");
         }

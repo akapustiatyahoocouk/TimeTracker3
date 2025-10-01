@@ -138,12 +138,14 @@ namespace tt3::gui
     private:
         Ui::SelectPublicTaskParentDialog *const _ui;
         TreeWidgetDecorations   _decorations;
+        QTimer                  _refreshTimer;
 
         //////////
         //  Signal handlers
     private slots:
         void            _publicTasksTreeWidgetItemChanged(QTreeWidgetItem * item, int column);
         void            _publicTasksTreeWidgetItemDoubleClicked(QTreeWidgetItem * item);
+        void            _refreshTimerTimeout();
         virtual void    accept() override;
         virtual void    reject() override;
     };

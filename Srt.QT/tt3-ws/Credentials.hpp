@@ -26,6 +26,7 @@ namespace tt3::ws
         friend class PrincipalImpl;
         friend class UserImpl;
         friend class AccountImpl;
+        friend class PrivateActivityImpl;
 
         //////////
         //  Constats

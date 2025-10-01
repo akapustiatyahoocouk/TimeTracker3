@@ -232,9 +232,10 @@ bool AccountImpl::_canRead(
             return true;
         }
         //  The caller can only see his own accounts
-        tt3::db::api::IAccount * clientAccount =
+        tt3::db::api::IAccount * callerAccount =
             _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
-        return clientAccount != nullptr && clientAccount->user() == _dataAccount->user();
+        return callerAccount != nullptr &&
+               callerAccount->user() == _dataAccount->user();
     }
     catch (const AccessDeniedException &)
     {   //  This is a special case!
@@ -261,9 +262,10 @@ bool AccountImpl::_canModify(
             return true;
         }
         //  The caller can only modify his own accounts
-        tt3::db::api::IAccount * clientAccount =
+        tt3::db::api::IAccount * callerAccount =
             _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
-        return clientAccount != nullptr && clientAccount->user() == _dataAccount->user();
+        return callerAccount != nullptr &&
+               callerAccount->user() == _dataAccount->user();
     }
     catch (const AccessDeniedException &)
     {   //  This is a special case!

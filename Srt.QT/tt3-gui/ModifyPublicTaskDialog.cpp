@@ -115,12 +115,11 @@ ModifyPublicTaskDialog::ModifyPublicTaskDialog(
         _ui->requiresCommentOnCompletionCeckBox->setEnabled(false);
     }
     else if (_publicTask->completed(_credentials))
-    {
-        //  Only an Administrator can "uncomplete"
+    {   //  Only an Administrator can "uncomplete"
         //  a PublicTask - the ManagePublicTasks capability
         //  is not enough
         _ui->completedCheckBox->setEnabled(
-            _publicTask->workspace()->grantsCapability( //  may throw
+            _publicTask->workspace()->grantsAll( //  may throw
                 _credentials,
                 tt3::ws::Capabilities::Administrator));
     }

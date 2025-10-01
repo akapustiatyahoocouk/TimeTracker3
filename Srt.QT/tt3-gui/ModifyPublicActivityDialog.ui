@@ -41,25 +41,6 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1" colspan="3">
-    <widget class="QTextEdit" name="descriptionTextEdit">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>85</height>
-      </size>
-     </property>
-     <property name="acceptRichText">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
    <item row="2" column="0">
     <widget class="QLabel" name="activityTypeLabel">
      <property name="text">
@@ -156,6 +137,22 @@
      </property>
     </widget>
    </item>
+   <item row="1" column="1" colspan="3">
+    <widget class="QPlainTextEdit" name="descriptionPlainTextEdit">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>85</height>
+      </size>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources>
@@ -203,22 +200,6 @@
     <hint type="sourcelabel">
      <x>278</x>
      <y>24</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>232</x>
-     <y>196</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>descriptionTextEdit</sender>
-   <signal>textChanged()</signal>
-   <receiver>tt3::gui::ModifyPublicActivityDialog</receiver>
-   <slot>_descriptionTextEditTextChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>278</x>
-     <y>88</y>
     </hint>
     <hint type="destinationlabel">
      <x>232</x>
@@ -290,10 +271,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>descriptionPlainTextEdit</sender>
+   <signal>textChanged()</signal>
+   <receiver>tt3::gui::ModifyPublicActivityDialog</receiver>
+   <slot>_descriptionPlainTextEditTextChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>278</x>
+     <y>88</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>232</x>
+     <y>196</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_displayNameLineEditTextChanged(QString)</slot>
-  <slot>_descriptionTextEditTextChanged()</slot>
+  <slot>_descriptionPlainTextEditTextChanged()</slot>
   <slot>_selectWorkloadPushButtonClicked()</slot>
   <slot>_timeoutCheckBoxStateChanged(int)</slot>
   <slot>_hoursComboBoxCurrentIndexChanged(int)</slot>

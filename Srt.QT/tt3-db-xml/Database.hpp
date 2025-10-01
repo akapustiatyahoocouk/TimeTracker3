@@ -32,6 +32,7 @@ namespace tt3::db::xml
         friend class ActivityType;
         friend class Activity;
         friend class PublicActivity;
+        friend class PrivateActivity;
         friend class Task;
         friend class PublicTask;
         friend class Workload;

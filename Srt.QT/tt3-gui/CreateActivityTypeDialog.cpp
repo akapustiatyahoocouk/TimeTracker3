@@ -65,7 +65,7 @@ void CreateActivityTypeDialog::_refresh()
 {
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(
         _validator->isValidDisplayName(_ui->displayNameLineEdit->text()) &&
-        _validator->isValidDescription(_ui->descriptionTextEdit->toPlainText()));
+        _validator->isValidDescription(_ui->descriptionPlainTextEdit->toPlainText()));
 }
 
 //////////
@@ -75,7 +75,7 @@ void CreateActivityTypeDialog::_displayNameLineEditTextChanged(QString)
     _refresh();
 }
 
-void CreateActivityTypeDialog::_descriptionTextEditTextChanged()
+void CreateActivityTypeDialog::_descriptionPlainTextEditTextChanged()
 {
     _refresh();
 }
@@ -88,7 +88,7 @@ void CreateActivityTypeDialog::accept()
             _workspace->createActivityType(
                 _credentials,
                 _ui->displayNameLineEdit->text(),
-                _ui->descriptionTextEdit->toPlainText());
+                _ui->descriptionPlainTextEdit->toPlainText());
         done(int(Result::Ok));
     }
     catch (const tt3::util::Exception & ex)

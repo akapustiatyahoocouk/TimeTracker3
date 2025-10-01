@@ -12,6 +12,7 @@ SOURCES += \
     Exceptions.cpp \
     ObjectImpl.cpp \
     PrincipalImpl.cpp \
+    PrivateActivityImpl.cpp \
     PublicActivityImpl.cpp \
     PublicTaskImpl.cpp \
     TaskImpl.cpp \
@@ -34,6 +35,7 @@ HEADERS += \
     Notifications.hpp \
     Object.hpp \
     Principal.hpp \
+    PrivateActivity.hpp \
     PublicActivity.hpp \
     PublicTask.hpp \
     Task.hpp \

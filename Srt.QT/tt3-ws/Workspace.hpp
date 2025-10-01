@@ -37,6 +37,7 @@ namespace tt3::ws
         friend class ActivityTypeImpl;
         friend class ActivityImpl;
         friend class PublicActivityImpl;
+        friend class PrivateActivityImpl;
         friend class TaskImpl;
         friend class PublicTaskImpl;
 
@@ -253,23 +254,43 @@ namespace tt3::ws
                         ) const -> Capabilities;
 
         /// \brief
-        ///     Checks if the specified credentials grant
-        ///     the specified capability within this workspace.
+        ///     Checks if the specified credentials grant all of
+        ///     the specified capabilities within this workspace.
         /// \details
         ///     IMPORTANT: Only a single capability flag can be checked
         //      for, not a combination of them
         /// \param credentials
         ///     The credentials to check.
-        /// \param requiredCapability
-        ///     The required capability.
+        /// \param requiredCapabilities
+        ///     The required capabilities.
         /// \return
-        ///     True if the specified credentials grant the specified
-        ///     capability within this workspace, false if not.
+        ///     True if the specified credentials grant all of the
+        ///     specified capabilities within this workspace, false if not.
         /// \exception WorkspaceException
         ///     If an error occurs.
-        bool        grantsCapability(
+        bool        grantsAll(
                             const Credentials & credentials,
-                            Capabilities requiredCapability
+                            Capabilities requiredCapabilities
+                        ) const;
+
+        /// \brief
+        ///     Checks if the specified credentials grant any of
+        ///     the specified capabilities within this workspace.
+        /// \details
+        ///     IMPORTANT: Only a single capability flag can be checked
+        //      for, not a combination of them
+        /// \param credentials
+        ///     The credentials to check.
+        /// \param requiredCapabilities
+        ///     The required capabilities.
+        /// \return
+        ///     True if the specified credentials grant any of the
+        ///     specified capabilityieswithin this workspace, false if not.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        bool        grantsAny(
+                            const Credentials & credentials,
+                            Capabilities requiredCapabilities
                         ) const;
 
         /// \brief
@@ -510,6 +531,9 @@ namespace tt3::ws
         auto        _getProxy(  //  throws WorkspaceException
                             tt3::db::api::IPublicTask * dataPublicTask
                         ) const -> PublicTask;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IPrivateActivity * dataPublicActivity
+                        ) const -> PrivateActivity;
 
         auto        _getProxy(  //  throws WorkspaceException
                             tt3::db::api::IWorkload * dataWorkload

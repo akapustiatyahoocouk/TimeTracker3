@@ -116,7 +116,7 @@ void CreatePublicActivityDialog::_refresh()
     _ui->minutesComboBox->setEnabled(_ui->timeoutCheckBox->isChecked());
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(
         _validator->isValidDisplayName(_ui->displayNameLineEdit->text()) &&
-        _validator->isValidDescription(_ui->descriptionTextEdit->toPlainText()) &&
+        _validator->isValidDescription(_ui->descriptionPlainTextEdit->toPlainText()) &&
         _validator->isValidTimeout(_selectedTimeout()));
 }
 
@@ -127,7 +127,7 @@ void CreatePublicActivityDialog::_displayNameLineEditTextChanged(QString)
     _refresh();
 }
 
-void CreatePublicActivityDialog::_descriptionTextEditTextChanged()
+void CreatePublicActivityDialog::_descriptionPlainTextEditTextChanged()
 {
     _refresh();
 }
@@ -159,7 +159,7 @@ void CreatePublicActivityDialog::accept()
         _createdPublicActivity = _workspace->createPublicActivity(
             _credentials,
             _ui->displayNameLineEdit->text(),
-            _ui->descriptionTextEdit->toPlainText(),
+            _ui->descriptionPlainTextEdit->toPlainText(),
             _selectedTimeout(),
             _ui->requireCommentOnStartCheckBox->isChecked(),
             _ui->requireCommentOnStopCheckBox->isChecked(),

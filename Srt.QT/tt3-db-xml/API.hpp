@@ -38,7 +38,7 @@
 #include "tt3-db-xml/ActivityType.hpp"
 #include "tt3-db-xml/Activity.hpp"
 #include "tt3-db-xml/PublicActivity.hpp"
-
+#include "tt3-db-xml/PrivateActivity.hpp"
 #include "tt3-db-xml/Task.hpp"
 #include "tt3-db-xml/PublicTask.hpp"
 

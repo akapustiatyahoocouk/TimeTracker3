@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-ws/API.hpp"
-    using namespace tt3::ws;
+using namespace tt3::ws;
 
 //////////
 //  Construction/destruction

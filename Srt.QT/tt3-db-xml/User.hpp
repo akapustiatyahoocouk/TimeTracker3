@@ -28,6 +28,7 @@ namespace tt3::db::xml
         friend class Database;
         friend class Workload;
         friend class Account;
+        friend class PrivateActivity;
 
         //////////
         //  Construction/destruction (from DB type only)
@@ -127,11 +128,15 @@ namespace tt3::db::xml
         tt3::db::api::UiLocale          _uiLocale;
         //  Aggregations
         Accounts        _accounts;          //  count as "references"
+        PrivateActivities _privateActivities;//  count as "references"
         //  Associations
         Workloads       _permittedWorkloads;//  count as "references"
 
         //  Helpers
         virtual void    _markDead() override;
+        auto            _findPrivateActivity(
+                             const QString & displayName
+                            ) const -> PrivateActivity *;
 
         //////////
         //  Serialization

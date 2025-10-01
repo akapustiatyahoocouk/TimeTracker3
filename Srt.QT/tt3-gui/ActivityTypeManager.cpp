@@ -139,27 +139,54 @@ void ActivityTypeManager::refresh()
 
         tt3::ws::ActivityType selectedActivityType = _selectedActivityType();
         bool readOnly = _workspace->isReadOnly();
-        _ui->createActivityTypePushButton->setEnabled(
-            !readOnly &&
-            (_workspace->grantsCapability(_credentials, tt3::ws::Capabilities::Administrator) ||    //  TODO may throw
-             _workspace->grantsCapability(_credentials, tt3::ws::Capabilities::ManageActivityTypes)));//  TODO may throw
+        try
+        {
+            _ui->createActivityTypePushButton->setEnabled(
+                !readOnly &&
+                _workspace->grantsAny(  //  may throw
+                    _credentials,
+                    tt3::ws::Capabilities::Administrator |
+                    tt3::ws::Capabilities::ManageActivityTypes));
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & disable
+            qCritical() << ex.errorMessage();
+            _ui->createActivityTypePushButton->setEnabled(false);
+        }
         _ui->modifyActivityTypePushButton->setEnabled(
             selectedActivityType != nullptr);
-        _ui->destroyActivityTypePushButton->setEnabled(
-            !readOnly &&
-            selectedActivityType != nullptr &&
-            selectedActivityType->canDestroy(_credentials));    //  TODO may throw
+        try
+        {
+            _ui->destroyActivityTypePushButton->setEnabled(
+                !readOnly &&
+                selectedActivityType != nullptr &&
+                selectedActivityType->canDestroy(_credentials));    //  may throw
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & disable
+            qCritical() << ex.errorMessage();
+            _ui->destroyActivityTypePushButton->setEnabled(false);
+        }
 
         //  Some buttons need to be adjusted for ReadOnoly mode
-        if (selectedActivityType != nullptr &&
-            !selectedActivityType->workspace()->isReadOnly() &&
-            selectedActivityType->canModify(_credentials))  //  TODO may throw
-        {   //  RW
-            _ui->modifyActivityTypePushButton->setIcon(modifyActivityTypeIcon);
-            _ui->modifyActivityTypePushButton->setText("Modify activity type");
+        try
+        {
+            if (selectedActivityType != nullptr &&
+                !selectedActivityType->workspace()->isReadOnly() &&
+                selectedActivityType->canModify(_credentials))  //  may throw
+            {   //  RW
+                _ui->modifyActivityTypePushButton->setIcon(modifyActivityTypeIcon);
+                _ui->modifyActivityTypePushButton->setText("Modify activity type");
+            }
+            else
+            {   //  RO
+                _ui->modifyActivityTypePushButton->setIcon(viewActivityTypeIcon);
+                _ui->modifyActivityTypePushButton->setText("View activity type");
+            }
         }
-        else
-        {   //  RO
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & simulate RO
+            qCritical() << ex.errorMessage();
             _ui->modifyActivityTypePushButton->setIcon(viewActivityTypeIcon);
             _ui->modifyActivityTypePushButton->setText("View activity type");
         }

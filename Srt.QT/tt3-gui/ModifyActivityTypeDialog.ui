@@ -38,25 +38,6 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QTextEdit" name="descriptionTextEdit">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>85</height>
-      </size>
-     </property>
-     <property name="acceptRichText">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
    <item row="2" column="0" colspan="2">
     <widget class="Line" name="line">
      <property name="orientation">
@@ -71,6 +52,22 @@
      </property>
      <property name="standardButtons">
       <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QPlainTextEdit" name="descriptionPlainTextEdit">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>85</height>
+      </size>
      </property>
     </widget>
    </item>
@@ -112,5 +109,41 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>displayNameLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::ModifyActivityTypeDialog</receiver>
+   <slot>_displayNameLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>224</x>
+     <y>24</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>181</x>
+     <y>93</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>descriptionPlainTextEdit</sender>
+   <signal>textChanged()</signal>
+   <receiver>tt3::gui::ModifyActivityTypeDialog</receiver>
+   <slot>_descriptionPlainTextEditTextChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>224</x>
+     <y>88</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>181</x>
+     <y>93</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>_displayNameLineEditTextChanged(QString)</slot>
+  <slot>_descriptionPlainTextEditTextChanged()</slot>
+ </slots>
 </ui>

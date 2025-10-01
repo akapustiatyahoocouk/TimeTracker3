@@ -29,6 +29,7 @@ namespace tt3::ws
         friend class ActivityTypeImpl;
         friend class ActivityImpl;
         friend class PublicActivityImpl;
+        friend class PrivateActivityImpl;
         friend class TaskImpl;
         friend class PublicTaskImpl;
 

@@ -25,37 +25,19 @@ SelectPublicTaskParentDialog::SelectPublicTaskParentDialog(
         tt3::ws::PublicTask publicTask,
         const tt3::ws::Credentials & credentials,
         tt3::ws::PublicTask initialParentTask
-    ) : QDialog(parent),
-        //  Implementation
-        _workspace(publicTask->workspace()),
-        _publicTask(publicTask),
-        _credentials(credentials),
-        _selectedParentTask(initialParentTask),
-        //  Controls
-        _ui(new Ui::SelectPublicTaskParentDialog)
+    ) : SelectPublicTaskParentDialog(
+            parent,
+            publicTask->workspace(),
+            credentials,
+            initialParentTask)
 {
-    _ui->setupUi(this);
-
-    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
-        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
-    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
-        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
+    _publicTask = publicTask;
 
     //  Set initial control values
     _ui->promptLabel->setText(
         _prompt("Select new parent for public task", _publicTask));
     _ui->showCompletedTasksCheckBox->setChecked(
         _publicTask->completed(_credentials));
-    _decorations = TreeWidgetDecorations(_ui->publicTasksTreeWidget);
-
-    _refresh(); //  NOW, to adjust tree widget size to content
-    _ui->publicTasksTreeWidget->expandAll();
-    _setSelectedPublicTask(_selectedParentTask);
-    _ui->publicTasksTreeWidget->setFocus();
-
-    //  Done
-    _trackItemStateChanges = true;
-    adjustSize();
 }
 
 SelectPublicTaskParentDialog::SelectPublicTaskParentDialog(
@@ -70,8 +52,11 @@ SelectPublicTaskParentDialog::SelectPublicTaskParentDialog(
         _credentials(credentials),
         _selectedParentTask(initialParentTask),
         //  Controls
-        _ui(new Ui::SelectPublicTaskParentDialog)
+        _ui(new Ui::SelectPublicTaskParentDialog),
+        _refreshTimer(this)
 {
+    Q_ASSERT(workspace != nullptr);
+
     _ui->setupUi(this);
 
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
@@ -89,6 +74,15 @@ SelectPublicTaskParentDialog::SelectPublicTaskParentDialog(
     _setSelectedPublicTask(_selectedParentTask);
     _ui->publicTasksTreeWidget->setFocus();
 
+    //  Start refreshing on timer
+    //  We need to connect() by name (old-style)
+    //  because we privately inherit from QDialog
+    connect(&_refreshTimer,
+            SIGNAL(timeout()),
+            this,
+            SLOT(_refreshTimerTimeout()));
+    _refreshTimer.start(1000);
+
     //  Done
     _trackItemStateChanges = true;
     adjustSize();
@@ -96,6 +90,7 @@ SelectPublicTaskParentDialog::SelectPublicTaskParentDialog(
 
 SelectPublicTaskParentDialog::~SelectPublicTaskParentDialog()
 {
+    _refreshTimer.stop();
     delete _ui;
 }
 
@@ -297,6 +292,11 @@ void SelectPublicTaskParentDialog::_publicTasksTreeWidgetItemDoubleClicked(QTree
         item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicTask>();
     _refresh();
     accept();
+}
+
+void SelectPublicTaskParentDialog::_refreshTimerTimeout()
+{
+    _refresh();
 }
 
 void SelectPublicTaskParentDialog::accept()

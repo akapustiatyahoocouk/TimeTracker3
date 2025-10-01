@@ -351,22 +351,6 @@
     </hint>
    </hints>
   </connection>
-  <connection>
-   <sender>selectParentTaskPushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>tt3::gui::ModifyPublicTaskDialog</receiver>
-   <slot>_selectParentTaskPushButtonClicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>413</x>
-     <y>24</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>232</x>
-     <y>247</y>
-    </hint>
-   </hints>
-  </connection>
  </connections>
  <slots>
   <slot>_selectParentTaskPushButtonClicked()</slot>

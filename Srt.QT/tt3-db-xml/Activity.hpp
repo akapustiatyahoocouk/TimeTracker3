@@ -26,8 +26,10 @@ namespace tt3::db::xml
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Activity)
 
         friend class Database;
+        friend class User;
         friend class ActivityType;
         friend class PublicActivity;
+        friend class PrivateActivity;
         friend class Task;
         friend class PublicTask;
         friend class Workload;
