@@ -52,6 +52,7 @@ SOURCES += \
     PreferencesDialog.cpp \
     PreferencesEditor.cpp \
     PreferencesManager.cpp \
+    PrivateActivityManager.cpp \
     PublicActivityManager.cpp \
     PublicTaskManager.cpp \
     SelectPublicTaskParentDialog.cpp \
@@ -107,6 +108,7 @@ HEADERS += \
     Preferences.hpp \
     PreferencesDialog.hpp \
     PreferencesEditor.hpp \
+    PrivateActivityManager.hpp \
     PublicActivityManager.hpp \
     PublicTaskManager.hpp \
     SelectPublicTaskParentDialog.hpp \
@@ -145,6 +147,7 @@ FORMS += \
     ModifyUserDialog.ui \
     NewWorkspaceDialog.ui \
     PreferencesDialog.ui \
+    PrivateActivityManager.ui \
     PublicActivityManager.ui \
     PublicTaskManager.ui \
     SelectPublicTaskParentDialog.ui \

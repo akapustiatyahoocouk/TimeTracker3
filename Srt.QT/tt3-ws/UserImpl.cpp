@@ -219,6 +219,48 @@ auto UserImpl::accounts(
     }
 }
 
+auto UserImpl::privateActivities(
+        const Credentials & credentials
+    ) const -> PrivateActivities
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        Capabilities capabilities = _workspace->_validateAccessRights(credentials);
+        if ((capabilities & Capabilities::Administrator) != Capabilities::None)
+        {   //  The caller can see all private activities of all users
+            PrivateActivities result;
+            for (tt3::db::api::IPrivateActivity * dataPrivateActivity : _dataUser->privateActivities()) //  may throw
+            {
+                result.insert(_workspace->_getProxy(dataPrivateActivity));
+            }
+            return result;
+        }
+        else
+        {   //  The caller can only see his own private activities
+            tt3::db::api::IAccount * dataAccount =
+                _workspace->_database->login(credentials._login, credentials._password);    //  may throw
+            if (dataAccount->user() == _dataUser)
+            {
+                PrivateActivities result;
+                for (tt3::db::api::IPrivateActivity * dataPrivateActivity : _dataUser->privateActivities()) //  may throw
+                {
+                    result.insert(_workspace->_getProxy(dataPrivateActivity));
+                }
+                return result;
+            }
+            //  OOPS! The caller is trying to see someone else's private activities
+            throw AccessDeniedException();
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
 //////////
 //  Operations (life cycle)
 auto UserImpl::createAccount(

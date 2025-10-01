@@ -308,6 +308,21 @@ namespace tt3::ws
                             const Credentials & credentials
                         ) const -> Account;
 
+        /// \brief
+        ///     If there exists an a) enabled account b) of an
+        ///     enabled user c) with the spcified credentials,
+        ///     returns it; otherwise an error occurs.
+        /// \param credentials
+        ///     The credentials to perform the check for.
+        /// \return
+        ///     The enabled Account of an enabled User which matches
+        ///     the specified Credentials.
+        /// \exception WorkspaceException
+        ///     If an error occurs or login fails.
+        auto        login(
+                            const Credentials & credentials
+                        ) const -> Account;
+
         //////////
         //  Operations (life cycle)
     public:

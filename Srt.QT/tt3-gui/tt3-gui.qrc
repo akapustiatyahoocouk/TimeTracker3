@@ -12,10 +12,13 @@
         <file>Resources/Images/Actions/CloseWorkspaceLarge.png</file>
         <file>Resources/Images/Actions/CloseWorkspaceSmall.png</file>
         <file>Resources/Images/Actions/CompletePublicTaskLarge.png</file>
+        <file>Resources/Images/Actions/CompletePublicTaskSmall.png</file>
         <file>Resources/Images/Actions/CreateAccountLarge.png</file>
         <file>Resources/Images/Actions/CreateAccountSmall.png</file>
         <file>Resources/Images/Actions/CreateActivityTypeLarge.png</file>
         <file>Resources/Images/Actions/CreateActivityTypeSmall.png</file>
+        <file>Resources/Images/Actions/CreatePrivateActivityLarge.png</file>
+        <file>Resources/Images/Actions/CreatePrivateActivitySmall.png</file>
         <file>Resources/Images/Actions/CreateProjectLarge.png</file>
         <file>Resources/Images/Actions/CreateProjectSmall.png</file>
         <file>Resources/Images/Actions/CreatePublicActivityLarge.png</file>
@@ -32,6 +35,8 @@
         <file>Resources/Images/Actions/DestroyAccountSmall.png</file>
         <file>Resources/Images/Actions/DestroyActivityTypeLarge.png</file>
         <file>Resources/Images/Actions/DestroyActivityTypeSmall.png</file>
+        <file>Resources/Images/Actions/DestroyPrivateActivityLarge.png</file>
+        <file>Resources/Images/Actions/DestroyPrivateActivitySmall.png</file>
         <file>Resources/Images/Actions/DestroyProjectLarge.png</file>
         <file>Resources/Images/Actions/DestroyProjectSmall.png</file>
         <file>Resources/Images/Actions/DestroyPublicActivityLarge.png</file>
@@ -56,6 +61,8 @@
         <file>Resources/Images/Actions/ModifyActivityTypeSmall.png</file>
         <file>Resources/Images/Actions/ModifyEmailAddressLarge.png</file>
         <file>Resources/Images/Actions/ModifyEmailAddressSmall.png</file>
+        <file>Resources/Images/Actions/ModifyPrivateActivityLarge.png</file>
+        <file>Resources/Images/Actions/ModifyPrivateActivitySmall.png</file>
         <file>Resources/Images/Actions/ModifyProjectLarge.png</file>
         <file>Resources/Images/Actions/ModifyProjectSmall.png</file>
         <file>Resources/Images/Actions/ModifyPublicActivityLarge.png</file>
@@ -82,10 +89,14 @@
         <file>Resources/Images/Actions/ShowConfigurationSmall.png</file>
         <file>Resources/Images/Actions/ShowLicenseLarge.png</file>
         <file>Resources/Images/Actions/ShowLicenseSmall.png</file>
+        <file>Resources/Images/Actions/StartPrivateActivityLarge.png</file>
+        <file>Resources/Images/Actions/StartPrivateActivitySmall.png</file>
         <file>Resources/Images/Actions/StartPublicActivityLarge.png</file>
         <file>Resources/Images/Actions/StartPublicActivitySmall.png</file>
         <file>Resources/Images/Actions/StartPublicTaskLarge.png</file>
         <file>Resources/Images/Actions/StartPublicTaskSmall.png</file>
+        <file>Resources/Images/Actions/StopPrivateActivityLarge.png</file>
+        <file>Resources/Images/Actions/StopPrivateActivitySmall.png</file>
         <file>Resources/Images/Actions/StopPublicActivityLarge.png</file>
         <file>Resources/Images/Actions/StopPublicActivitySmall.png</file>
         <file>Resources/Images/Actions/StopPublicTaskLarge.png</file>
@@ -98,6 +109,8 @@
         <file>Resources/Images/Actions/ViewProjectSmall.png</file>
         <file>Resources/Images/Actions/ViewPublicActivityLarge.png</file>
         <file>Resources/Images/Actions/ViewPublicActivitySmall.png</file>
+        <file>Resources/Images/Actions/ViewPublicTaskLarge.png</file>
+        <file>Resources/Images/Actions/ViewPublicTaskSmall.png</file>
         <file>Resources/Images/Actions/ViewUserLarge.png</file>
         <file>Resources/Images/Actions/ViewUserSmall.png</file>
         <file>Resources/Images/Actions/ViewWorkStreamLarge.png</file>
@@ -135,8 +148,5 @@
         <file>Resources/Images/Objects/WorkStreamLarge.png</file>
         <file>Resources/Images/Objects/WorkStreamSmall.png</file>
         <file>Resources/Light.qss</file>
-        <file>Resources/Images/Actions/CompletePublicTaskSmall.png</file>
-        <file>Resources/Images/Actions/ViewPublicTaskLarge.png</file>
-        <file>Resources/Images/Actions/ViewPublicTaskSmall.png</file>
     </qresource>
 </RCC>

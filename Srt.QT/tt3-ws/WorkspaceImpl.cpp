@@ -411,6 +411,25 @@ auto WorkspaceImpl::tryLogin(
     }
 }
 
+auto WorkspaceImpl::login(
+        const Credentials & credentials
+    ) const -> Account
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();
+
+    try
+    {
+        tt3::db::api::IAccount * dataAccount =
+            _database->login(credentials._login, credentials._password);
+        return _getProxy(dataAccount);
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
 //////////
 //  Operations (life cycle)
 auto WorkspaceImpl::createUser(

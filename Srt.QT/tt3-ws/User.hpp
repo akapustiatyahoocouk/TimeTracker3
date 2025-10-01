@@ -132,6 +132,20 @@ namespace tt3::ws
                             const Credentials & credentials
                         ) const -> Accounts;
 
+        /// \brief
+        ///     Returns the set of all private activities of this User
+        ///     which are NOT also tasks.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all private activities of this User
+        ///     which are NOT also tasks.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        auto        privateActivities(
+                            const Credentials & credentials
+                        ) const -> PrivateActivities;
+
         //////////
         //  Operations (life cycle)
     public:

@@ -296,7 +296,9 @@ auto PublicActivityManager::_createPublicActivityModel(
     return publicActivityModel;
 }
 
-void PublicActivityManager::_filterItems(_WorkspaceModel workspaceModel)
+void PublicActivityManager::_filterItems(
+        _WorkspaceModel workspaceModel
+    )
 {
     QString filter = _ui->filterLineEdit->text().trimmed();
     Q_ASSERT(!filter.isEmpty());
@@ -315,8 +317,6 @@ void PublicActivityManager::_filterItems(_WorkspaceModel workspaceModel)
     }
 }
 
-//////////
-//  Implementation helpers
 void PublicActivityManager::_refreshPublicActivityItems(
         _WorkspaceModel workspaceModel
     )
@@ -359,6 +359,8 @@ void PublicActivityManager::_refreshPublicActivityItems(
     }
 }
 
+//////////
+//  Implementation helpers
 auto PublicActivityManager::_selectedPublicActivity(
     ) -> tt3::ws::PublicActivity
 {

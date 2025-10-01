@@ -1,5 +1,5 @@
 //
-//  tt3-gui/PublicActivityManager.hpp - The Public Activity Manager widget
+//  tt3-gui/PrivateActivityManager.hpp - The Public Activity Manager widget
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,15 +19,15 @@
 
 namespace tt3::gui
 {
-    namespace Ui { class PublicActivityManager; }
+    namespace Ui { class PrivateActivityManager; }
 
-    /// \class PublicActivityManager tt3-gui/API.hpp
-    /// \brief The Public Activity Manager widget
-    class TT3_GUI_PUBLIC PublicActivityManager final
+    /// \class PrivateActivityManager tt3-gui/API.hpp
+    /// \brief The Private Activity Manager widget
+    class TT3_GUI_PUBLIC PrivateActivityManager final
         :   public QWidget
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PublicActivityManager)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PrivateActivityManager)
 
         //////////
         //  Construction/destruction
@@ -36,13 +36,13 @@ namespace tt3::gui
         ///     Constructs the widget.
         /// \param parent
         ///     The parent for this widget; nullptr == none.
-        explicit PublicActivityManager(
+        explicit PrivateActivityManager(
                 QWidget * parent
             );
 
         /// \brief
         ///     The class destructor.
-        virtual ~PublicActivityManager();
+        virtual ~PrivateActivityManager();
 
         //////////
         //  Operaions
@@ -56,7 +56,7 @@ namespace tt3::gui
         ///     The workspace currently viewed in this widget;
         ///     nullptr == none.
         auto            workspace(
-                            ) const -> tt3::ws::Workspace;
+            ) const -> tt3::ws::Workspace;
 
         /// \brief
         ///     Sets the workspace currently viewed in this widget.
@@ -64,8 +64,8 @@ namespace tt3::gui
         ///     The new workspace to be viewed in this widget;
         ///     nullptr == none.
         void            setWorkspace(
-                                tt3::ws::Workspace workspace
-                            );
+            tt3::ws::Workspace workspace
+            );
 
         /// \brief
         ///     Returns the credentials used by this widget to
@@ -77,7 +77,7 @@ namespace tt3::gui
         ///     The credentials used by this widget to display
         ///     the workspace.
         auto            credentials(
-                            ) const -> tt3::ws::Credentials;
+            ) const -> tt3::ws::Credentials;
 
         /// \brief
         ///     Sets the credentials used by this widget to
@@ -89,8 +89,8 @@ namespace tt3::gui
         ///     The credentials to be used by this widget to
         ///     display the workspace.
         void            setCredentials(
-                                const tt3::ws::Credentials & credentials
-                            );
+            const tt3::ws::Credentials & credentials
+            );
 
         /// \brief
         ///     Refreshes the content of this widget.
@@ -116,48 +116,83 @@ namespace tt3::gui
 
         //  View model
         struct _WorkspaceModelImpl;
-        struct _PublicActivityModelImpl;
+        struct _UserModelImpl;
+        struct _PrivateActivityModelImpl;
 
         using _WorkspaceModel = std::shared_ptr<_WorkspaceModelImpl>;
-        using _PublicActivityModel = std::shared_ptr<_PublicActivityModelImpl>;
+        using _UserModel = std::shared_ptr<_UserModelImpl>;
+        using _PrivateActivityModel = std::shared_ptr<_PrivateActivityModelImpl>;
 
-        using _PublicActivityModels = QList<_PublicActivityModel>;
+        using _UserModels = QList<_UserModel>;
+        using _PrivateActivityModels = QList<_PrivateActivityModel>;
 
         struct _WorkspaceModelImpl
         {
             //  Aggregations
-            _PublicActivityModels publicActivityModels;     //  ordered by text
+            _UserModels userModels;     //  ordered by text
         };
 
-        struct _PublicActivityModelImpl
+        struct _UserModelImpl
         {
-            _PublicActivityModelImpl(tt3::ws::PublicActivity pa)
-                :   publicActivity(pa) {}
+            _UserModelImpl(tt3::ws::User u)
+                :   user(u) {}
             //  Properties
-            tt3::ws::PublicActivity publicActivity;//  represented by this model
-            QString     text;           //  for PublicActivity tree items
-            QIcon       icon;           //  for PublicActivity tree items
-            QFont       font;           //  for PublicActivity tree items
-            QBrush      brush;          //  for PublicActivity tree items' text
-            QString     tooltip;        //  for PublicActivity tree items' text
+            tt3::ws::User   user;       //  represented by this model
+            QString     text;           //  for User tree items
+            QIcon       icon;           //  for User tree items
+            QFont       font;           //  for User tree items
+            QBrush      brush;          //  for User tree items' text
+            QString     tooltip;        //  for User tree items' text
+            //  Aggregations
+            _PrivateActivityModels privateActivityModels;     //  ordered by text
+        };
+
+        struct _PrivateActivityModelImpl
+        {
+            _PrivateActivityModelImpl(tt3::ws::PrivateActivity pa)
+                :   privateActivity(pa) {}
+            //  Properties
+            tt3::ws::PrivateActivity privateActivity;//  represented by this model
+            QString     text;           //  for PrivateActivity tree items
+            QIcon       icon;           //  for PrivateActivity tree items
+            QFont       font;           //  for PrivateActivity tree items
+            QBrush      brush;          //  for PrivateActivity tree items' text
+            QString     tooltip;        //  for PrivateActivity tree items' text
         };
 
         auto            _createWorkspaceModel(
                             ) -> _WorkspaceModel;
-        auto            _createPublicActivityModel(
-                                tt3::ws::PublicActivity publicActivity
-                            ) -> _PublicActivityModel;
+        auto            _createUserModel(
+                                tt3::ws::User user
+                            ) -> _UserModel;
+        auto            _createPrivateActivityModel(
+                                tt3::ws::PrivateActivity privateActivity
+                            ) -> _PrivateActivityModel;
         void            _filterItems(
                                 _WorkspaceModel workspaceModel
                             );
-        void            _refreshPublicActivityItems(
+        void            _filterItems(
+                                _UserModel userModel
+                            );
+        //  TODO refactor _refresh(...model) methods in all ...Managers
+        void            _refreshWorkspaceTree(
                                 _WorkspaceModel workspaceModel
+                            );
+        void            _refreshUserItem(
+                                QTreeWidgetItem * userItem,
+                                _UserModel userModel
+                            );
+        void            _refreshPrivateActivityItem(
+                                QTreeWidgetItem * privateActivityItem,
+                                _PrivateActivityModel privateActivityModel
                             );
 
         //  Helpers
-        auto            _selectedPublicActivity(
-                            ) -> tt3::ws::PublicActivity;
-        void            _setSelectedPublicActivity(tt3::ws::PublicActivity publicActivity);
+        auto            _selectedPrivateActivity(
+                            ) -> tt3::ws::PrivateActivity;
+        void            _setSelectedPrivateActivity(
+                                tt3::ws::PrivateActivity publicActivity
+                            );
         void            _startListeningToWorkspaceChanges();
         void            _stopListeningToWorkspaceChanges();
         void            _clearAndDisableAllControls();
@@ -165,8 +200,8 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::PublicActivityManager *const    _ui;
-        std::unique_ptr<QMenu>  _publicActivitiesTreeContextMenu;
+        Ui::PrivateActivityManager *const   _ui;
+        std::unique_ptr<QMenu>  _privateActivitiesTreeContextMenu;
         QTimer                  _refreshTimer;
 
         //  Drawing resources
@@ -177,13 +212,13 @@ namespace tt3::gui
     private slots:
         void            _currentThemeChanged(ITheme *, ITheme *);
         void            _currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity);
-        void            _publicActivitiesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
-        void            _publicActivitiesTreeWidgetCustomContextMenuRequested(QPoint);
-        void            _createPublicActivityPushButtonClicked();
-        void            _modifyPublicActivityPushButtonClicked();
-        void            _destroyPublicActivityPushButtonClicked();
-        void            _startPublicActivityPushButtonClicked();
-        void            _stopPublicActivityPushButtonClicked();
+        void            _privateActivitiesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
+        void            _privateActivitiesTreeWidgetCustomContextMenuRequested(QPoint);
+        void            _createPrivateActivityPushButtonClicked();
+        void            _modifyPrivateActivityPushButtonClicked();
+        void            _destroyPrivateActivityPushButtonClicked();
+        void            _startPrivateActivityPushButtonClicked();
+        void            _stopPrivateActivityPushButtonClicked();
         void            _filterLineEditTextChanged(QString);
         void            _workspaceClosed(tt3::ws::WorkspaceClosedNotification notification);
         void            _objectCreated(tt3::ws::ObjectCreatedNotification notification);
@@ -194,5 +229,4 @@ namespace tt3::gui
     };
 }
 
-//  End of tt3-gui/PublicActivityManager.hpp
-
+//  End of tt3-gui/PrivateActivityManager.hpp
