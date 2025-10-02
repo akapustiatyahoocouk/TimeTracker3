@@ -162,7 +162,7 @@ void SelectPublicTaskParentDialog::_refresh()
                 workspaceModel, filter, _decorations);
         }
         _trackItemStateChanges = false;
-        PublicTaskManager::_refreshWorkspaceItem(
+        PublicTaskManager::_refreshWorkspaceTree(
             _ui->publicTasksTreeWidget, workspaceModel);
         _refreshCheckStates();
         _trackItemStateChanges = true;

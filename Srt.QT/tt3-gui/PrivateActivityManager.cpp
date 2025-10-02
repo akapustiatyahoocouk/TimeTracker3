@@ -474,6 +474,8 @@ void PrivateActivityManager::_refreshPrivateActivityItem(
     privateActivityItem->setFont(0, privateActivityModel->font);
     privateActivityItem->setToolTip(0, privateActivityModel->tooltip);
     privateActivityItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(privateActivityModel->privateActivity));
+    //  There will be no further children
+    Q_ASSERT(privateActivityItem->childCount() == 0);
 }
 
 //////////

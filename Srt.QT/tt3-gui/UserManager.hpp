@@ -165,10 +165,19 @@ namespace tt3::gui
         void                _removeDisabledItems(_UserModel userModel);
         void                _filterItems(_WorkspaceModel workspaceModel);
         void                _filterItems(_UserModel userModel);
+        void                _refreshWorkspaceTree(
+                                    _WorkspaceModel workspaceModel
+                                );
+        void                _refreshUserItem(
+                                    QTreeWidgetItem * userItem,
+                                    _UserModel userModel
+                                );
+        void                _refreshAccountItem(
+                                    QTreeWidgetItem * accountItem,
+                                    _AccountModel accountModel
+                               );
 
         //  Helpers
-        void                _refreshUserItems(_WorkspaceModel workspaceModel);
-        void                _refreshAccountItems(QTreeWidgetItem * userItem, _UserModel userModel);
         tt3::ws::User       _selectedUser();
         void                _setSelectedUser(tt3::ws::User user);
         tt3::ws::Account    _selectedAccount();

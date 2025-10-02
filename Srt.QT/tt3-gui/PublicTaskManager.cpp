@@ -167,7 +167,7 @@ void PublicTaskManager::refresh()
         {
             _filterItems(workspaceModel, filter, _decorations);
         }
-        _refreshWorkspaceItem(_ui->publicTasksTreeWidget, workspaceModel);
+        _refreshWorkspaceTree(_ui->publicTasksTreeWidget, workspaceModel);
         if (!_ui->filterLineEdit->text().trimmed().isEmpty())
         {   //  Filtered - show all
             _ui->publicTasksTreeWidget->expandAll();
@@ -477,42 +477,32 @@ void PublicTaskManager::_filterItems(
     }
 }
 
-void PublicTaskManager::_refreshWorkspaceItem(
+void PublicTaskManager::_refreshWorkspaceTree(
         QTreeWidget * publicTasksTreeWidget,
         _WorkspaceModel workspaceModel
     )
 {
+    Q_ASSERT(publicTasksTreeWidget != nullptr);
     Q_ASSERT(workspaceModel != nullptr);
 
     //  Make sure the "public tasks" tree contains
     //  a proper number of root (PublicTask) items...
     while (publicTasksTreeWidget->topLevelItemCount() < workspaceModel->publicTaskModels.size())
     {   //  Too few root (PublicTask) items
-        //  TODO kill off _PublicTaskModel publicTaskModel = workspaceModel->publicTaskModels[_ui->publicTasksTreeWidget->topLevelItemCount()];
-        QTreeWidgetItem * publicTaskItem = new QTreeWidgetItem();
-        /*  TODO kill off
-        publicTaskItem->setText(0, publicTaskModel->text);
-        publicTaskItem->setIcon(0, publicTaskModel->icon);
-        publicTaskItem->setForeground(0, publicTaskModel->brush);
-        publicTaskItem->setFont(0, publicTaskModel->font);
-        publicTaskItem->setToolTip(0, publicTaskModel->tooltip);
-        publicTaskItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(publicTaskModel->publicTask));
-        */
-        publicTasksTreeWidget->addTopLevelItem(publicTaskItem);
+        publicTasksTreeWidget->addTopLevelItem(new QTreeWidgetItem());
     }
     while (publicTasksTreeWidget->topLevelItemCount() > workspaceModel->publicTaskModels.size())
     {   //  Too many root (PublicTask) items
         delete publicTasksTreeWidget->takeTopLevelItem(
             publicTasksTreeWidget->topLevelItemCount() - 1);
     }
-
     //  ...and that each top-level item represents
     //  a proper PublicTask and has proper children
     for (int i = 0; i < workspaceModel->publicTaskModels.size(); i++)
     {
-        QTreeWidgetItem * publicTaskItem = publicTasksTreeWidget->topLevelItem(i);
-        _PublicTaskModel publicTaskModel = workspaceModel->publicTaskModels[i];
-        _refreshPublicTaskItem(publicTaskItem, publicTaskModel);
+        _refreshPublicTaskItem(
+            publicTasksTreeWidget->topLevelItem(i),
+            workspaceModel->publicTaskModels[i]);
     }
 }
 
@@ -531,37 +521,25 @@ void PublicTaskManager::_refreshPublicTaskItem(
     publicTaskItem->setFont(0, publicTaskModel->font);
     publicTaskItem->setToolTip(0, publicTaskModel->tooltip);
     publicTaskItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(publicTaskModel->publicTask));
-
     //  Make sure the public task, tree item tree contains
     //  a proper number of childs items...
     while (publicTaskItem->childCount() < publicTaskModel->childModels.size())
     {   //  Too few child items
         //  TODO optimize all ...Manager::_refresh...() methods similarly
-        //  TODO kill off _PublicTaskModel childModel = publicTaskModel->childModels[publicTaskItem->childCount()];
-        QTreeWidgetItem * childItem = new QTreeWidgetItem();
-        /*  TODO kill off
-        childItem->setText(0, childModel->text);
-        childItem->setIcon(0, childModel->icon);
-        childItem->setForeground(0, childModel->brush);
-        childItem->setFont(0, childModel->font);
-        childItem->setToolTip(0, childModel->tooltip);
-        childItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(childModel->publicTask));
-        */
-        publicTaskItem->addChild(childItem);
+        publicTaskItem->addChild(new QTreeWidgetItem());
     }
     while (publicTaskItem->childCount() > publicTaskModel->childModels.size())
     {   //  Too many child items
         delete publicTaskItem->takeChild(
             publicTaskItem->childCount() - 1);
     }
-
     //  ...and that each child item represents
     //  a proper PublicTask and has proper children
     for (int i = 0; i < publicTaskModel->childModels.size(); i++)
     {
-        QTreeWidgetItem * childItem = publicTaskItem->child(i);
-        _PublicTaskModel childModel = publicTaskModel->childModels[i];
-        _refreshPublicTaskItem(childItem, childModel);
+        _refreshPublicTaskItem(
+            publicTaskItem->child(i),
+            publicTaskModel->childModels[i]);
     }
 }
 

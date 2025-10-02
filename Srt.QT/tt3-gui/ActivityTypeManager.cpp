@@ -135,7 +135,7 @@ void ActivityTypeManager::refresh()
         {
             _filterItems(workspaceModel);
         }
-        _refreshActivityTypeItems(workspaceModel);
+        _refreshWorkspaceTree(workspaceModel);
 
         tt3::ws::ActivityType selectedActivityType = _selectedActivityType();
         bool readOnly = _workspace->isReadOnly();
@@ -264,9 +264,9 @@ void ActivityTypeManager::_filterItems(_WorkspaceModel workspaceModel)
     }
 }
 
-//////////
-//  Implementation helpers
-void ActivityTypeManager::_refreshActivityTypeItems(_WorkspaceModel workspaceModel)
+void ActivityTypeManager::_refreshWorkspaceTree(
+        _WorkspaceModel workspaceModel
+    )
 {
     Q_ASSERT(_workspace != nullptr);
     Q_ASSERT(_credentials.isValid());
@@ -275,37 +275,45 @@ void ActivityTypeManager::_refreshActivityTypeItems(_WorkspaceModel workspaceMod
     //  a proper number of root (ActivityType) items...
     while (_ui->activityTypesTreeWidget->topLevelItemCount() < workspaceModel->activityTypeModels.size())
     {   //  Too few root (ActivityType) items
-        _ActivityTypeModel activityTypeModel = workspaceModel->activityTypeModels[_ui->activityTypesTreeWidget->topLevelItemCount()];
-        QTreeWidgetItem * activityTypeItem = new QTreeWidgetItem();
-        activityTypeItem->setText(0, activityTypeModel->text);
-        activityTypeItem->setIcon(0, activityTypeModel->icon);
-        activityTypeItem->setForeground(0, activityTypeModel->brush);
-        activityTypeItem->setFont(0, activityTypeModel->font);
-        activityTypeItem->setToolTip(0, activityTypeModel->tooltip);
-        activityTypeItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(activityTypeModel->activityType));
-        _ui->activityTypesTreeWidget->addTopLevelItem(activityTypeItem);
+        _ui->activityTypesTreeWidget->addTopLevelItem(new QTreeWidgetItem());
     }
     while (_ui->activityTypesTreeWidget->topLevelItemCount() > workspaceModel->activityTypeModels.size())
     {   //  Too many root (ActivityType) items
         delete _ui->activityTypesTreeWidget->takeTopLevelItem(
             _ui->activityTypesTreeWidget->topLevelItemCount() - 1);
     }
-
     //  ...and that each top-level item represents
     //  a proper ActivityType and has proper children
     for (int i = 0; i < workspaceModel->activityTypeModels.size(); i++)
     {
-        QTreeWidgetItem * activityTypeItem = _ui->activityTypesTreeWidget->topLevelItem(i);
-        _ActivityTypeModel activityTypeModel = workspaceModel->activityTypeModels[i];
-        activityTypeItem->setText(0, activityTypeModel->text);
-        activityTypeItem->setIcon(0, activityTypeModel->icon);
-        activityTypeItem->setForeground(0, activityTypeModel->brush);
-        activityTypeItem->setFont(0, activityTypeModel->font);
-        activityTypeItem->setToolTip(0, activityTypeModel->tooltip);
-        activityTypeItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(activityTypeModel->activityType));
+        _refreshActivityTypeItem(
+            _ui->activityTypesTreeWidget->topLevelItem(i),
+            workspaceModel->activityTypeModels[i]);
     }
 }
 
+void ActivityTypeManager::_refreshActivityTypeItem(
+        QTreeWidgetItem * activityTypeItem,
+        _ActivityTypeModel activityTypeModel
+    )
+{
+    Q_ASSERT(activityTypeItem != nullptr);
+    Q_ASSERT(activityTypeModel != nullptr);
+    Q_ASSERT(_credentials.isValid());
+
+    //  Refresh ActivityType item properties
+    activityTypeItem->setText(0, activityTypeModel->text);
+    activityTypeItem->setIcon(0, activityTypeModel->icon);
+    activityTypeItem->setForeground(0, activityTypeModel->brush);
+    activityTypeItem->setFont(0, activityTypeModel->font);
+    activityTypeItem->setToolTip(0, activityTypeModel->tooltip);
+    activityTypeItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(activityTypeModel->activityType));
+    //  There will be no further children
+    Q_ASSERT(activityTypeItem->childCount() == 0);
+}
+
+//////////
+//  Implementation helpers
 tt3::ws::ActivityType ActivityTypeManager::_selectedActivityType()
 {
     QTreeWidgetItem * item = _ui->activityTypesTreeWidget->currentItem();

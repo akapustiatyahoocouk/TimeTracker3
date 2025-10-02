@@ -142,9 +142,15 @@ namespace tt3::gui
                             tt3::ws::ActivityType activityType
                         ) -> _ActivityTypeModel;
         void        _filterItems(_WorkspaceModel workspaceModel);
+        void        _refreshWorkspaceTree(
+                            _WorkspaceModel workspaceModel
+                        );
+        void        _refreshActivityTypeItem(
+                            QTreeWidgetItem * activityTypeItem,
+                            _ActivityTypeModel activityTypeModel
+                        );
 
         //  Helpers
-        void        _refreshActivityTypeItems(_WorkspaceModel workspaceModel);
         auto        _selectedActivityType(
                         ) -> tt3::ws::ActivityType;
         void        _setSelectedActivityType(tt3::ws::ActivityType activityType);

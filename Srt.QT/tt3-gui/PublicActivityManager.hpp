@@ -150,14 +150,20 @@ namespace tt3::gui
         void            _filterItems(
                                 _WorkspaceModel workspaceModel
                             );
-        void            _refreshPublicActivityItems(
+        void            _refreshWorkspaceTree(
                                 _WorkspaceModel workspaceModel
+                            );
+        void            _refreshPublicActivityItem(
+                                QTreeWidgetItem * publicActivityItem,
+                                _PublicActivityModel publicActivityModel
                             );
 
         //  Helpers
         auto            _selectedPublicActivity(
                             ) -> tt3::ws::PublicActivity;
-        void            _setSelectedPublicActivity(tt3::ws::PublicActivity publicActivity);
+        void            _setSelectedPublicActivity(
+                                tt3::ws::PublicActivity publicActivity
+                            );
         void            _startListeningToWorkspaceChanges();
         void            _stopListeningToWorkspaceChanges();
         void            _clearAndDisableAllControls();

@@ -178,7 +178,7 @@ namespace tt3::gui
                                 const QString & filter,
                                 const TreeWidgetDecorations & decorations
                             );
-        static void     _refreshWorkspaceItem(
+        static void     _refreshWorkspaceTree(
                                 QTreeWidget * publicTasksTreeWidget,
                                 _WorkspaceModel workspaceModel
                             );

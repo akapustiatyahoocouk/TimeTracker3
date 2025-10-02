@@ -149,7 +149,7 @@ void UserManager::refresh()
         {
             _filterItems(workspaceModel);
         }
-        _refreshUserItems(workspaceModel);
+        _refreshWorkspaceTree(workspaceModel);
         if (!_ui->filterLineEdit->text().trimmed().isEmpty())
         {   //  Filtered - show all
             _ui->usersTreeWidget->expandAll();
@@ -462,9 +462,9 @@ void UserManager::_filterItems(_UserModel userModel)
     }
 }
 
-//////////
-//  Implementation helpers
-void UserManager::_refreshUserItems(_WorkspaceModel workspaceModel)
+void UserManager::_refreshWorkspaceTree(
+        _WorkspaceModel workspaceModel
+    )
 {
     Q_ASSERT(_workspace != nullptr);
     Q_ASSERT(_credentials.isValid());
@@ -473,74 +473,78 @@ void UserManager::_refreshUserItems(_WorkspaceModel workspaceModel)
     //  a proper number of root (User) items...
     while (_ui->usersTreeWidget->topLevelItemCount() < workspaceModel->userModels.size())
     {   //  Too few root (User) items
-        _UserModel userModel = workspaceModel->userModels[_ui->usersTreeWidget->topLevelItemCount()];
-        QTreeWidgetItem * userItem = new QTreeWidgetItem();
-        userItem->setText(0, userModel->text);
-        userItem->setIcon(0, userModel->icon);
-        userItem->setForeground(0, userModel->brush);
-        userItem->setFont(0, userModel->font);
-        userItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(userModel->user));
-        _ui->usersTreeWidget->addTopLevelItem(userItem);
+        _ui->usersTreeWidget->addTopLevelItem(new QTreeWidgetItem());
     }
     while (_ui->usersTreeWidget->topLevelItemCount() > workspaceModel->userModels.size())
     {   //  Too many root (User) items
         delete _ui->usersTreeWidget->takeTopLevelItem(
             _ui->usersTreeWidget->topLevelItemCount() - 1);
     }
-
     //  ...and that each top-level item represents
     //  a proper User and has proper children
     for (int i = 0; i < workspaceModel->userModels.size(); i++)
     {
-        QTreeWidgetItem * userItem = _ui->usersTreeWidget->topLevelItem(i);
-        _UserModel userModel = workspaceModel->userModels[i];
-        userItem->setText(0, userModel->text);
-        userItem->setIcon(0, userModel->icon);
-        userItem->setForeground(0, userModel->brush);
-        userItem->setFont(0, userModel->font);
-        userItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(userModel->user));
-        //  ...and children
-        _refreshAccountItems(userItem, userModel);
+        _refreshUserItem(
+            _ui->usersTreeWidget->topLevelItem(i),
+            workspaceModel->userModels[i]);
     }
 }
 
-void UserManager::_refreshAccountItems(QTreeWidgetItem * userItem, _UserModel userModel)
+void UserManager::_refreshUserItem(
+        QTreeWidgetItem * userItem,
+        _UserModel userModel)
 {
     Q_ASSERT(userItem != nullptr);
+    Q_ASSERT(userModel != nullptr);
     Q_ASSERT(_credentials.isValid());
 
-    //  Make sure the "users" tree contains
-    //  a proper number of leaf (Account) items...
+    //  Refresh User item properties
+    userItem->setText(0, userModel->text);
+    userItem->setIcon(0, userModel->icon);
+    userItem->setForeground(0, userModel->brush);
+    userItem->setFont(0, userModel->font);
+    userItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(userModel->user));
+    //  Make sure the "users" item contains
+    //  a proper number of child (Account) items...
     while (userItem->childCount() < userModel->accountModels.size())
     {   //  Too few leaf (Account) items
-        _AccountModel accountModel = userModel->accountModels[userItem->childCount()];
-        QTreeWidgetItem * accountItem = new QTreeWidgetItem();
-        accountItem->setText(0, accountModel->text);
-        accountItem->setIcon(0, accountModel->icon);
-        accountItem->setForeground(0, accountModel->brush);
-        accountItem->setFont(0, accountModel->font);
-        accountItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(accountModel->account));
-        userItem->addChild(accountItem);
+        userItem->addChild(new QTreeWidgetItem());
     }
     while (userItem->childCount() > userModel->accountModels.size())
     {   //  Too many leaf (Account) items
         delete userItem->takeChild(userItem->childCount() - 1);
     }
-
-    //  ...and that each leaf item represents
-    //  a proper Account and has proper children
+    //  ...and that each child item represents
+    //  a proper Account
     for (int i = 0; i < userModel->accountModels.size(); i++)
     {
-        QTreeWidgetItem * accountItem = userItem->child(i);
-        _AccountModel accountModel = userModel->accountModels[i];
-        accountItem->setText(0, accountModel->text);
-        accountItem->setIcon(0, accountModel->icon);
-        accountItem->setForeground(0, accountModel->brush);
-        accountItem->setFont(0, accountModel->font);
-        accountItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(accountModel->account));
+        _refreshAccountItem(
+            userItem->child(i),
+            userModel->accountModels[i]);
     }
 }
 
+void UserManager::_refreshAccountItem(
+        QTreeWidgetItem * accountItem,
+        _AccountModel accountModel
+    )
+{
+    Q_ASSERT(accountItem != nullptr);
+    Q_ASSERT(accountModel != nullptr);
+    Q_ASSERT(_credentials.isValid());
+
+    //  Refresh Account item properties
+    accountItem->setText(0, accountModel->text);
+    accountItem->setIcon(0, accountModel->icon);
+    accountItem->setForeground(0, accountModel->brush);
+    accountItem->setFont(0, accountModel->font);
+    accountItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(accountModel->account));
+    //  There will be no further children
+    Q_ASSERT(accountItem->childCount() == 0);
+}
+
+//////////
+//  Implementation helpers
 tt3::ws::User UserManager::_selectedUser()
 {
     QTreeWidgetItem * item = _ui->usersTreeWidget->currentItem();

@@ -153,7 +153,7 @@ void PublicActivityManager::refresh()
         {
             _filterItems(workspaceModel);
         }
-        _refreshPublicActivityItems(workspaceModel);
+        _refreshWorkspaceTree(workspaceModel);
 
         tt3::ws::PublicActivity selectedPublicActivity = _selectedPublicActivity();
         bool readOnly = _workspace->isReadOnly();
@@ -317,7 +317,7 @@ void PublicActivityManager::_filterItems(
     }
 }
 
-void PublicActivityManager::_refreshPublicActivityItems(
+void PublicActivityManager::_refreshWorkspaceTree(
         _WorkspaceModel workspaceModel
     )
 {
@@ -328,35 +328,41 @@ void PublicActivityManager::_refreshPublicActivityItems(
     //  a proper number of root (PublicActivity) items...
     while (_ui->publicActivitiesTreeWidget->topLevelItemCount() < workspaceModel->publicActivityModels.size())
     {   //  Too few root (PublicActivity) items
-        _PublicActivityModel publicActivityModel = workspaceModel->publicActivityModels[_ui->publicActivitiesTreeWidget->topLevelItemCount()];
-        QTreeWidgetItem * publicActivityItem = new QTreeWidgetItem();
-        publicActivityItem->setText(0, publicActivityModel->text);
-        publicActivityItem->setIcon(0, publicActivityModel->icon);
-        publicActivityItem->setForeground(0, publicActivityModel->brush);
-        publicActivityItem->setFont(0, publicActivityModel->font);
-        publicActivityItem->setToolTip(0, publicActivityModel->tooltip);
-        publicActivityItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(publicActivityModel->publicActivity));
-        _ui->publicActivitiesTreeWidget->addTopLevelItem(publicActivityItem);
+        _ui->publicActivitiesTreeWidget->addTopLevelItem(new QTreeWidgetItem());
     }
     while (_ui->publicActivitiesTreeWidget->topLevelItemCount() > workspaceModel->publicActivityModels.size())
     {   //  Too many root (PublicActivity) items
         delete _ui->publicActivitiesTreeWidget->takeTopLevelItem(
             _ui->publicActivitiesTreeWidget->topLevelItemCount() - 1);
     }
-
     //  ...and that each top-level item represents
     //  a proper PublicActivity
     for (int i = 0; i < workspaceModel->publicActivityModels.size(); i++)
     {
-        QTreeWidgetItem * publicActivityItem = _ui->publicActivitiesTreeWidget->topLevelItem(i);
-        _PublicActivityModel publicActivityModel = workspaceModel->publicActivityModels[i];
-        publicActivityItem->setText(0, publicActivityModel->text);
-        publicActivityItem->setIcon(0, publicActivityModel->icon);
-        publicActivityItem->setForeground(0, publicActivityModel->brush);
-        publicActivityItem->setFont(0, publicActivityModel->font);
-        publicActivityItem->setToolTip(0, publicActivityModel->tooltip);
-        publicActivityItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(publicActivityModel->publicActivity));
+        _refreshPublicActivityItem(
+            _ui->publicActivitiesTreeWidget->topLevelItem(i),
+            workspaceModel->publicActivityModels[i]);
     }
+}
+
+void PublicActivityManager::_refreshPublicActivityItem(
+        QTreeWidgetItem * publicActivityItem,
+        _PublicActivityModel publicActivityModel
+    )
+{
+    Q_ASSERT(publicActivityItem != nullptr);
+    Q_ASSERT(publicActivityModel != nullptr);
+    Q_ASSERT(_credentials.isValid());
+
+    //  Refresh PublicActivity item properties
+    publicActivityItem->setText(0, publicActivityModel->text);
+    publicActivityItem->setIcon(0, publicActivityModel->icon);
+    publicActivityItem->setForeground(0, publicActivityModel->brush);
+    publicActivityItem->setFont(0, publicActivityModel->font);
+    publicActivityItem->setToolTip(0, publicActivityModel->tooltip);
+    publicActivityItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(publicActivityModel->publicActivity));
+    //  There will be no further children
+    Q_ASSERT(publicActivityItem->childCount() == 0);
 }
 
 //////////
