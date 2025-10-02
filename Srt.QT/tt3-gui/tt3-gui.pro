@@ -11,6 +11,7 @@ SOURCES += \
     Component.cpp \
     CreateAccountDialog.cpp \
     CreateActivityTypeDialog.cpp \
+    CreatePrivateActivityDialog.cpp \
     CreatePublicActivityDialog.cpp \
     CreatePublicTaskDialog.cpp \
     CreateUserDialog.cpp \
@@ -74,6 +75,7 @@ HEADERS += \
     Components.hpp \
     CreateAccountDialog.hpp \
     CreateActivityTypeDialog.hpp \
+    CreatePrivateActivityDialog.hpp \
     CreatePublicActivityDialog.hpp \
     CreatePublicTaskDialog.hpp \
     CreateUserDialog.hpp \
@@ -121,12 +123,15 @@ HEADERS += \
     UserManager.hpp \
     WidgetDecorations.hpp
 
+PRECOMPILED_HEADER = API.hpp
+
 FORMS += \
     AboutDialog.ui \
     ActivityTypeManager.ui \
     AskYesNoDialog.ui \
     CreateAccountDialog.ui \
     CreateActivityTypeDialog.ui \
+    CreatePrivateActivityDialog.ui \
     CreatePublicActivityDialog.ui \
     CreatePublicTaskDialog.ui \
     CreateUserDialog.ui \

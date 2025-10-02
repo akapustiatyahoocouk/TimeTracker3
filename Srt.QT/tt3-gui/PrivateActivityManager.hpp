@@ -174,7 +174,6 @@ namespace tt3::gui
         void            _filterItems(
                                 _UserModel userModel
                             );
-        //  TODO refactor _refresh(...model) methods in all ...Managers
         void            _refreshWorkspaceTree(
                                 _WorkspaceModel workspaceModel
                             );

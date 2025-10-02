@@ -47,13 +47,11 @@ QIcon EnterActivityStopCommentDialog::_dialogIcon(
     {
         return QIcon(":/tt3-gui/Resources/Images/Actions/StopPublicTaskLarge.png");
     }
-    /*  TODO uncomment
     else if (std::dynamic_pointer_cast<tt3::ws::PrivateActivityImpl>(activity))
     {
-        return "Complete private activity";
+        return QIcon(":/tt3-gui/Resources/Images/Actions/StopPrivateActivityLarge.png");
     }
     else
-    */
     {
         Q_ASSERT(std::dynamic_pointer_cast<tt3::ws::PublicActivityImpl>(activity));
         return QIcon(":/tt3-gui/Resources/Images/Actions/StopPublicActivityLarge.png");
@@ -73,13 +71,11 @@ QString EnterActivityStopCommentDialog::_dialogTitle(
     {
         return "Stop public task";
     }
-    /*  TODO uncomment
     else if (std::dynamic_pointer_cast<tt3::ws::PrivateActivityImpl>(activity))
     {
         return "Stop private activity";
     }
     else
-    */
     {
         Q_ASSERT(std::dynamic_pointer_cast<tt3::ws::PublicActivityImpl>(activity));
         return "Stop public activity";

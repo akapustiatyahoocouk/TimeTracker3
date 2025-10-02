@@ -46,4 +46,6 @@ HEADERS += \
     WorkspaceAddress.hpp \
     WorkspaceType.hpp
 
+PRECOMPILED_HEADER = API.hpp
+
 LIBS += -ltt3-db-api -ltt3-util

@@ -151,21 +151,38 @@ void ComponentManager::saveComponentSettings()
     if (iniFile.open(QIODevice::WriteOnly))
     {
         QTextStream iniStream(&iniFile);
-        for (IComponent * component : ComponentManager::allComponents())
-        {   //  TODO sort by component mnemonic
+
+        QList<IComponent*> allComponents =
+            ComponentManager::allComponents().values();
+        std::sort(allComponents.begin(),
+                  allComponents.end(),
+                  [](auto a, auto b)
+                  {
+                      return a->mnemonic() < b->mnemonic();
+                  });
+        for (IComponent * component : allComponents)
+        {   //  Sorted by component mnemonic to simplify lookin text editor
             iniStream << "["
                       << component->mnemonic().toString()
                       << ":"
                       << toString(component->version())
                       << "]"
                       << Qt::endl;
-            for (AbstractSetting * setting : component->settings()->settings())
-            {   //  TODO sort by setting mnemonic
-                iniStream
-                    << setting->mnemonic().toString()
-                    << "="
-                    << setting->valueString()
-                    << Qt::endl;
+
+            QList<AbstractSetting*> componentSettings =
+                component->settings()->settings().values();
+            std::sort(componentSettings.begin(),
+                      componentSettings.end(),
+                      [](auto a, auto b)
+                      {
+                          return a->mnemonic() < b->mnemonic();
+                      });
+            for (AbstractSetting * setting : componentSettings)
+            {   //  Sorted by setting mnemonic to simplify lookin text editor
+                iniStream << setting->mnemonic().toString()
+                          << "="
+                          << setting->valueString()
+                          << Qt::endl;
             }
             iniStream << Qt::endl;
         }

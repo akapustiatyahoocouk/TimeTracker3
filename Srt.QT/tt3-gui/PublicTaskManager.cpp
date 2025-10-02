@@ -204,21 +204,14 @@ void PublicTaskManager::refresh()
             _ui->destroyPublicTaskPushButton->setEnabled(false);
         }
 
-        //  TODO if the current  credentials do not allow logging
-        //       Work, "start" and "stop" shall be disabled
-        //  TODO if the current credentials do not allow logging
-        //       Events and the selectedPublicTask requires comment
-        //       on start, "start" shall be disabled.
-        //  TODO if the current credentials do not allow logging
-        //       Events and the current Task requires comment on
-        //       finish, "start" and "stop" shall be disabled.
         try
         {
             _ui->startPublicTaskPushButton->setEnabled(
                 !readOnly &&
                 selectedPublicTask != nullptr &&
                 theCurrentActivity != selectedPublicTask &&
-                !selectedPublicTask->completed(_credentials));
+                !selectedPublicTask->completed(_credentials) && //  may throw
+                selectedPublicTask->canStart(_credentials));    //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -228,7 +221,8 @@ void PublicTaskManager::refresh()
         _ui->stopPublicTaskPushButton->setEnabled(
             !readOnly &&
             selectedPublicTask != nullptr &&
-            theCurrentActivity == selectedPublicTask);
+            theCurrentActivity == selectedPublicTask &&
+            selectedPublicTask->canStop(_credentials)); //  TODO may throw
         try
         {
             _ui->completePublicTaskPushButton->setEnabled(

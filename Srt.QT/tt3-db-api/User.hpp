@@ -269,7 +269,7 @@ namespace tt3::db::api
                                 bool requireCommentOnStop,
                                 bool fullScreenReminder,
                                 IActivityType * activityType,
-                                tt3::db::api::IWorkload * workload
+                                IWorkload * workload
                             ) -> IPrivateActivity * = 0;
 
         /// \brief

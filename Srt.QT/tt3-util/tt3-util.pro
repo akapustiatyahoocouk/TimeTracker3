@@ -53,5 +53,7 @@ HEADERS += \
     Sync.hpp \
     ToString.hpp
 
+PRECOMPILED_HEADER = API.hpp
+
 RESOURCES += \
     tt3-util.qrc

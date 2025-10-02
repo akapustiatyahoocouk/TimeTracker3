@@ -10,6 +10,8 @@ HEADERS += \
     Application.hpp \
     Components.hpp
 
+PRECOMPILED_HEADER = API.hpp
+
 FORMS += \
 
 RESOURCES += \

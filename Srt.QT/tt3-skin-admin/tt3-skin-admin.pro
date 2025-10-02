@@ -18,6 +18,8 @@ HEADERS += \
     MainFrame.hpp \
     Skin.hpp
 
+PRECOMPILED_HEADER = API.hpp
+
 RESOURCES += \
     tt3-skin-admin.qrc
 

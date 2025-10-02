@@ -287,9 +287,65 @@ auto UserImpl::createAccount(
         //  Do the work
         tt3::db::api::IAccount * dataAccount =
             _dataUser->createAccount(
-                enabled, emailAddresses,
-                login, password, capabilities);
+                enabled,
+                emailAddresses,
+                login,
+                password,
+                capabilities);
         return _workspace->_getProxy(dataAccount);;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+auto UserImpl::createPrivateActivity(
+        const Credentials & credentials,
+        const QString & displayName,
+        const QString & description,
+        const InactivityTimeout & timeout,
+        bool requireCommentOnStart,
+        bool requireCommentOnStop,
+        bool fullScreenReminder,
+        ActivityType activityType,
+        Workload workload
+    ) -> PrivateActivity
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();
+
+    try
+    {
+        //  Check access rights
+        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        if (clientCapabilities.contains(Capability::Administrator))
+        {   //  Can create PrivateActivities for any User
+        }
+        else if (clientCapabilities.contains(Capability::ManagePrivateActivities))
+        {   //  Can ONLY create their own PrivateActivities
+            if (_workspace->_database->login(   //  may throw
+                    credentials._login, credentials._password)->user() != _dataUser)
+            {
+                throw AccessDeniedException();
+            }
+        }
+        else
+        {   //  OOPS! Can't!
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        tt3::db::api::IPrivateActivity * dataPrivateActivity =
+            _dataUser->createPrivateActivity(
+                displayName,
+                description,
+                timeout,
+                requireCommentOnStart,
+                requireCommentOnStop,
+                fullScreenReminder,
+                (activityType != nullptr) ? activityType->_dataActivityType : nullptr,
+                (workload != nullptr) ? workload->_dataWorkload : nullptr);
+        return _workspace->_getProxy(dataPrivateActivity);;
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw

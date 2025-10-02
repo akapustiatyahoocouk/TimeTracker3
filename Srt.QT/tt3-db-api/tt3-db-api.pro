@@ -44,6 +44,8 @@ HEADERS += \
     WorkStream.hpp \
     Workload.hpp
 
+PRECOMPILED_HEADER = API.hpp
+
 LIBS += -ltt3-util
 
 RESOURCES += \

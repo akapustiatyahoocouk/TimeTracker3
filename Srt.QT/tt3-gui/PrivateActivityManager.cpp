@@ -185,22 +185,16 @@ void PrivateActivityManager::refresh()
             _ui->destroyPrivateActivityPushButton->setEnabled(false);
         }
 
-        //  TODO if the current  credentials do not allow logging
-        //       Work, "start" and "stop" shall be disabled
-        //  TODO if the current credentials do not allow logging
-        //       Events and the selectedPrivateActivity requires comment
-        //       on start, "start" shall be disabled.
-        //  TODO if the current credentials do not allow logging
-        //       Events and the current activity requires comment on
-        //       finish, "start" and "stop" shall be disabled.
         _ui->startPrivateActivityPushButton->setEnabled(
             !readOnly &&
             selectedPrivateActivity != nullptr &&
-            theCurrentActivity != selectedPrivateActivity);
+            theCurrentActivity != selectedPrivateActivity &&
+            selectedPrivateActivity->canStart(_credentials));   //  TODO may throw
         _ui->stopPrivateActivityPushButton->setEnabled(
             !readOnly &&
             selectedPrivateActivity != nullptr &&
-            theCurrentActivity == selectedPrivateActivity);
+            theCurrentActivity == selectedPrivateActivity &&
+            selectedPrivateActivity->canStop(_credentials));    //  TODO may throw
 
         //  Some buttons need to be adjusted for ReadOnoly mode
         try

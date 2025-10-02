@@ -178,6 +178,48 @@ namespace tt3::ws
                             Capabilities capabilities
                         ) -> Account;
 
+        /// \brief
+        ///     Creates a new PrivateActivity for this User.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param displayName
+        ///     The short (1 line) user-readable display name
+        ///     for the new PrivateActivity.
+        /// \param description
+        ///     The multi-line user-readable description for the new
+        ///     PrivateActivity; with lines separated by a newline '\\n' character.
+        /// \param timeout
+        ///     The user-does-nothing timeout for the new PrivateActivity;
+        ///     absent == none.
+        /// \param requireCommentOnStart
+        ///     True if the newly created PrivateActivity small require the
+        ///     user to enter a comment when it is started.
+        /// \param requireCommentOnStop
+        ///     True if the newly created PrivateActivity small require the
+        ///     user to enter a comment when it is started.
+        /// \param fullScreenReminder
+        ///     True if a full-screen reminder shall be displayed while the
+        ///     newly created PrivateActivity is underway.
+        /// \param activityType
+        ///     The type for the new PrivateActivity; nullptr == don't assign.
+        /// \param workload
+        ///     The Workload for the new PrivateActivity; nullptr == don't assign.
+        /// \return
+        ///     The newly created PrivateActivity.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        createPrivateActivity(
+                        const Credentials & credentials,
+                        const QString & displayName,
+                        const QString & description,
+                        const InactivityTimeout & timeout,
+                        bool requireCommentOnStart,
+                        bool requireCommentOnStop,
+                        bool fullScreenReminder,
+                        ActivityType activityType,
+                        Workload workload
+                    ) -> PrivateActivity;
+
         //////////
         //  Implementation
     private:

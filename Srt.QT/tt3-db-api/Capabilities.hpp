@@ -33,12 +33,7 @@ namespace tt3::db::api
         LogWork = 0x0200,
         LogEvents = 0x0400,
         GenerateReports = 0x0800,
-        BackupAndRestore = 0x1000,
-    /*  TODO kill off
-        //  Flag combinatons
-        None = 0x0000,
-        All = 0x1FFF
-    */
+        BackupAndRestore = 0x1000
     };
 
     /// \class Capabilities tt3-db-api/API.hpp
