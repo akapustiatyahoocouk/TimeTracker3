@@ -187,6 +187,10 @@ namespace tt3::gui
                             );
 
         //  Helpers
+        tt3::ws::User   _selectedUser();
+        void            _setSelectedUser(
+                                tt3::ws::User user
+                            );
         auto            _selectedPrivateActivity(
                             ) -> tt3::ws::PrivateActivity;
         void            _setSelectedPrivateActivity(

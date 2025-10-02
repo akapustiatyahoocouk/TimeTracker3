@@ -72,7 +72,6 @@ SelectPublicTaskParentDialog::SelectPublicTaskParentDialog(
     _refresh(); //  NOW, to adjust tree widget size to content
     _ui->publicTasksTreeWidget->expandAll();
     _setSelectedPublicTask(_selectedParentTask);
-    _ui->publicTasksTreeWidget->setFocus();
 
     //  Start refreshing on timer
     //  We need to connect() by name (old-style)
@@ -84,6 +83,7 @@ SelectPublicTaskParentDialog::SelectPublicTaskParentDialog(
     _refreshTimer.start(1000);
 
     //  Done
+    _ui->publicTasksTreeWidget->setFocus();
     _trackItemStateChanges = true;
     adjustSize();
 }

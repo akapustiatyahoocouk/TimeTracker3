@@ -59,6 +59,7 @@ ModifyActivityTypeDialog::ModifyActivityTypeDialog(
     }
 
     //  Done
+    _ui->displayNameLabel->setFocus();
     adjustSize();
     _refresh();
 }

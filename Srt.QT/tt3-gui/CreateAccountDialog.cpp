@@ -62,6 +62,7 @@ CreateAccountDialog::CreateAccountDialog(
     _setSelectedUser(user);
 
     //  Done
+    _ui->loginLineEdit->setFocus();
     adjustSize();
     _refresh();
 }

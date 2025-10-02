@@ -25,7 +25,7 @@ PrivateActivity::PrivateActivity(
     ) : Activity(owner->_database, oid)
 {
     //  Register PrivateActivity with parent
-    _owner->_privateActivities.insert(this);
+    owner->_privateActivities.insert(this);
     this->addReference();
     this->_owner = owner;
     owner->addReference();

@@ -92,6 +92,7 @@ CreatePrivateActivityDialog::CreatePrivateActivityDialog(
     }
 
     //  Done
+    _ui->displayNameLineEdit->setFocus();
     adjustSize();
     _refresh();
 }

@@ -32,10 +32,6 @@ LoginDialog::LoginDialog(QWidget * parent, const QString & login)
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
     _ui->loginLineEdit->setText(login.trimmed());
-    if (!login.trimmed().isEmpty())
-    {
-        _ui->passwordLineEdit->setFocus();
-    }
 
     //  We don't want a modal dialog so importnt to be obscured
     Qt::WindowFlags flags = this->windowFlags();
@@ -43,6 +39,10 @@ LoginDialog::LoginDialog(QWidget * parent, const QString & login)
     this->setWindowFlags(flags);
 
     //  Done
+    if (!login.trimmed().isEmpty())
+    {
+        _ui->passwordLineEdit->setFocus();
+    }
     adjustSize();
     _refresh();
 }

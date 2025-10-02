@@ -477,6 +477,27 @@ void PrivateActivityManager::_refreshPrivateActivityItem(
 
 //////////
 //  Implementation helpers
+tt3::ws::User PrivateActivityManager::_selectedUser()
+{
+    QTreeWidgetItem * item = _ui->privateActivitiesTreeWidget->currentItem();
+    return (item != nullptr && item->parent() == nullptr) ?
+               item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::User>() :
+               nullptr;
+}
+
+void PrivateActivityManager::_setSelectedUser(tt3::ws::User user)
+{
+    for (int i = 0; i < _ui->privateActivitiesTreeWidget->topLevelItemCount(); i++)
+    {
+        QTreeWidgetItem * userItem = _ui->privateActivitiesTreeWidget->topLevelItem(i);
+        if (user == userItem->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::User>())
+        {   //  This one!
+            _ui->privateActivitiesTreeWidget->setCurrentItem(userItem);
+            return;
+        }
+    }
+}
+
 auto PrivateActivityManager::_selectedPrivateActivity(
     ) -> tt3::ws::PrivateActivity
 {
@@ -645,22 +666,22 @@ void PrivateActivityManager::_privateActivitiesTreeWidgetCustomContextMenuReques
 
 void PrivateActivityManager::_createPrivateActivityPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
-    /*  TODO uncomment
     try
     {
-        CreatePrivateActivityDialog dlg(this, _workspace, _credentials);   //  may throw
-        if (dlg.doModal() == CreatePrivateActivityDialog::Result::Ok)
-        {   //  PrivateActivity created
-            refresh();  //  must refresh NOW
-            _setSelectedPrivateActivity(dlg.createdPrivateActivity());
+        if (auto user = _selectedUser())
+        {
+            CreatePrivateActivityDialog dlg(this, user, _credentials);   //  may throw
+            if (dlg.doModal() == CreatePrivateActivityDialog::Result::Ok)
+            {   //  PrivateActivity created
+                refresh();  //  must refresh NOW
+                _setSelectedPrivateActivity(dlg.createdPrivateActivity());
+            }
         }
     }
     catch (const tt3::util::Exception & ex)
     {
         tt3::gui::ErrorDialog::show(this, ex);
     }
-    */
 }
 
 void PrivateActivityManager::_modifyPrivateActivityPushButtonClicked()
