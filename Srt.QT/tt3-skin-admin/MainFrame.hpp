@@ -124,6 +124,9 @@ namespace tt3::skin::admin
         QStackedLayout *        _managePublicTasksTabLayout = nullptr;
         tt3::gui::PublicTaskManager *   _publicTaskManager = nullptr;
 
+        QStackedLayout *        _managePrivateActivitiesTabLayout = nullptr;
+        tt3::gui::PrivateActivityManager *  _privateActivityManager = nullptr;
+
         //////////
         //  Signal handlers
     private slots:

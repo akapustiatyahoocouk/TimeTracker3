@@ -294,6 +294,47 @@ namespace tt3::ws
                         ) const -> Events;
 
         //////////
+        //  Operations (access control)
+    public:
+        /// \brief
+        ///     Checks whether if the specified credentials will
+        ///     allow the caller to "start" this activity.
+        /// \details
+        ///     The caller must be able to log Work items. In
+        ///     addition, if this Activity requires user comment
+        ///     whet it is started and/or stopped, the caller
+        ///     must also be able to log Events.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     True if the specified credentials will allow
+        ///     the caller to "start" this activity, else false.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        bool        canStart(
+                            const Credentials & credentials
+                        ) const;
+
+        /// \brief
+        ///     Checks whether if the specified credentials will
+        ///     allow the caller to "stop" this activity.
+        /// \details
+        ///     The caller must be able to log Work items. In
+        ///     addition, if this Activity requires user comment
+        ///     whet it is stopped, the caller must also be able
+        ///     to log Events.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     True if the specified credentials will allow
+        ///     the caller to "stop" this activity, else false.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        bool        canStop(
+                            const Credentials & credentials
+                        ) const;
+
+        //////////
         //  Implementation
     private:
         tt3::db::api::IActivity *const  _dataActivity;  //  counts as "reference"

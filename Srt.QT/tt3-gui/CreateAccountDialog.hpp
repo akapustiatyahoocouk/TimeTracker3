@@ -82,13 +82,15 @@ namespace tt3::gui
         //////////
         //  Implementation
     private:
-        tt3::ws::User           _user;
+        tt3::ws::Workspace      _workspace;
         tt3::ws::Credentials    _credentials;
         tt3::ws::Validator::Account  *const _validator;
 
         tt3::ws::Account        _createdAccount;
 
         //  Helpers
+        tt3::ws::User       _selectedUser();
+        void                _setSelectedUser(tt3::ws::User user);
         QStringList         _selectedEmailAddresses();
         void                _setSelectedEmailAddresses(const QStringList & emailAddresses);
         QString             _selectedEmailAddress();

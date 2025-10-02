@@ -205,7 +205,11 @@ auto User::accounts(
 auto User::privateActivities(
     ) const -> tt3::db::api::PrivateActivities
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return tt3::db::api::PrivateActivities(_privateActivities.begin(), _privateActivities.end());
 }
 
 auto User::privateActivitiesAndTasks(

@@ -457,4 +457,73 @@ auto ActivityImpl::events(
     throw tt3::util::NotImplementedError();
 }
 
+//////////
+//  Operations (access control)
+bool ActivityImpl::canStart(
+        const Credentials & credentials
+    ) const
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        Capabilities capabilities =
+            _workspace->_validateAccessRights(credentials);
+        if ((capabilities & Capabilities::Administrator) == Capabilities::None &&
+            (capabilities & Capabilities::LogWork) == Capabilities::None)
+        {   //  OOPS! The caller won't be able to record the Work unit
+            return false;
+        }
+        if (_dataActivity->requireCommentOnStart() ||
+            _dataActivity->requireCommentOnStop())
+        {   //  Will need to log an Event before/after a Work item...
+            if ((capabilities & Capabilities::Administrator) == Capabilities::None &&
+                (capabilities & Capabilities::LogEvents) == Capabilities::None)
+            {   //  ...but won't be able to!
+                return false;
+            }
+        }
+        return true;
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+bool ActivityImpl::canStop(
+        const Credentials & credentials
+    ) const
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        Capabilities capabilities =
+            _workspace->_validateAccessRights(credentials);
+        if ((capabilities & Capabilities::Administrator) == Capabilities::None &&
+            (capabilities & Capabilities::LogWork) == Capabilities::None)
+        {   //  OOPS! The caller won't be able to record the Work unit
+            return false;
+        }
+        if (_dataActivity->requireCommentOnStop())
+        {   //  Will need to log an Event after a Work item...
+            if ((capabilities & Capabilities::Administrator) == Capabilities::None &&
+                (capabilities & Capabilities::LogEvents) == Capabilities::None)
+            {   //  ...but won't be able to!
+                return false;
+            }
+        }
+        return true;
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
 //  End of tt3-ws/ActivityImpl.cpp

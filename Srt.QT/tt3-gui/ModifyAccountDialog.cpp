@@ -46,6 +46,25 @@ ModifyAccountDialog::ModifyAccountDialog(
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
+    //  Populate User combo box & select the proper user
+    QList<tt3::ws::User> usersList =
+        _account->workspace()->users(_credentials).values();   //  may throw
+    std::sort(usersList.begin(),
+              usersList.end(),
+              [&](auto a, auto b)
+              {
+                  return a->realName(_credentials) < b->realName(_credentials);   //  may throw
+              });
+    for (tt3::ws::User u : usersList)
+    {
+        _ui->userComboBox->addItem(
+            u->type()->smallIcon(),
+            u->realName(_credentials),  //  may throw
+            QVariant::fromValue(u));
+    }
+    _setSelectedUser(_account->user(_credentials));
+    _ui->userComboBox->setEnabled(false);   //  TODO for now!
+
     //  Set initial control values (may throw)
     _ui->loginLineEdit->setText(_account->login(_credentials));
     _ui->passwordLineEdit->setText(_oldPasswordHash);
@@ -98,6 +117,23 @@ ModifyAccountDialog::Result ModifyAccountDialog::doModal()
 
 //////////
 //  Implementation helpers
+tt3::ws::User ModifyAccountDialog::_selectedUser()
+{
+    return _ui->userComboBox->currentData().value<tt3::ws::User>();
+}
+
+void ModifyAccountDialog::_setSelectedUser(tt3::ws::User user)
+{
+    for (int i = 0; i < _ui->userComboBox->count(); i++)
+    {
+        if (_ui->userComboBox->itemData(i).value<tt3::ws::User>() == user)
+        {
+            _ui->userComboBox->setCurrentIndex(i);
+            break;
+        }
+    }
+}
+
 QStringList ModifyAccountDialog::_selectedEmailAddresses()
 {
     QStringList result;
@@ -320,6 +356,7 @@ void ModifyAccountDialog::accept()
     {   //  Any of the setters may throw
         if (!_readOnly)
         {
+            //  TODO move account to another User?
             _account->setEnabled(   //  MUST come first!
                 _credentials,
                 _ui->enabledCheckBox->isChecked());
@@ -337,7 +374,6 @@ void ModifyAccountDialog::accept()
             }
             _account->setCapabilities(_credentials, _selectedCapabilities());
         }
-
         done(int(Result::Ok));
     }
     catch (const tt3::util::Exception & ex)

@@ -20,18 +20,21 @@ using namespace tt3::gui;
 
 //////////
 //  Construction/destruction
-CreateAccountDialog::CreateAccountDialog(QWidget * parent,
-                                         tt3::ws::User user, const tt3::ws::Credentials & credentials)
-    :   QDialog(parent),
+CreateAccountDialog::CreateAccountDialog(
+        QWidget * parent,
+        tt3::ws::User user,
+        const tt3::ws::Credentials & credentials
+    ) : QDialog(parent),
         //  Implementation
-        _user(user),
+        _workspace(user->workspace()),
         _credentials(credentials),
-        _validator(user->workspace()->validator()->account()),
+        _validator(_workspace->validator()->account()),
         //  Controls
         _ui(new Ui::CreateAccountDialog)
 {
-    Q_ASSERT(_user != nullptr);
+    Q_ASSERT(_workspace != nullptr);
     Q_ASSERT(_credentials.isValid());
+    Q_ASSERT(_validator != nullptr);
 
     _ui->setupUi(this);
 
@@ -39,6 +42,24 @@ CreateAccountDialog::CreateAccountDialog(QWidget * parent,
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
+
+    //  Populate User combo box & select the proper user
+    QList<tt3::ws::User> usersList =
+        _workspace->users(_credentials).values();   //  may throw
+    std::sort(usersList.begin(),
+              usersList.end(),
+              [&](auto a, auto b)
+              {
+                  return a->realName(_credentials) < b->realName(_credentials);   //  may throw
+              });
+    for (tt3::ws::User u : usersList)
+    {
+        _ui->userComboBox->addItem(
+            u->type()->smallIcon(),
+            u->realName(_credentials),  //  may throw
+            QVariant::fromValue(u));
+    }
+    _setSelectedUser(user);
 
     //  Done
     adjustSize();
@@ -59,6 +80,23 @@ CreateAccountDialog::Result CreateAccountDialog::doModal()
 
 //////////
 //  Implementation helpers
+tt3::ws::User CreateAccountDialog::_selectedUser()
+{
+    return _ui->userComboBox->currentData().value<tt3::ws::User>();
+}
+
+void CreateAccountDialog::_setSelectedUser(tt3::ws::User user)
+{
+    for (int i = 0; i < _ui->userComboBox->count(); i++)
+    {
+        if (_ui->userComboBox->itemData(i).value<tt3::ws::User>() == user)
+        {
+            _ui->userComboBox->setCurrentIndex(i);
+            break;
+        }
+    }
+}
+
 QStringList CreateAccountDialog::_selectedEmailAddresses()
 {
     QStringList result;
@@ -162,6 +200,7 @@ void CreateAccountDialog::_refresh()
     _ui->modifyEmailAddressPushButton->setEnabled(!_selectedEmailAddress().isEmpty());
     _ui->removeEmailAddressPushButton->setEnabled(!_selectedEmailAddress().isEmpty());
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(
+        _selectedUser() != nullptr &&
         _validator->isValidLogin(_ui->loginLineEdit->text()) &&
         _validator->isValidPassword(_ui->passwordLineEdit->text()) &&
         _ui->passwordLineEdit->text() == _ui->confirmPasswordLineEdit->text() &&
@@ -242,13 +281,14 @@ void CreateAccountDialog::accept()
 {
     try
     {
-        _createdAccount = _user->createAccount(
-            _credentials,
-            _ui->enabledCheckBox->isChecked(),
-            _selectedEmailAddresses(),
-            _ui->loginLineEdit->text(),
-            _ui->passwordLineEdit->text(),
-            _selectedCapabilities());
+        _createdAccount =
+            _selectedUser()->createAccount(
+                _credentials,
+                _ui->enabledCheckBox->isChecked(),
+                _selectedEmailAddresses(),
+                _ui->loginLineEdit->text(),
+                _ui->passwordLineEdit->text(),
+                _selectedCapabilities());
         done(int(Result::Ok));
     }
     catch (const tt3::util::Exception & ex)

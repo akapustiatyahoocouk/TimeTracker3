@@ -42,7 +42,7 @@
        <enum>QTabWidget::TabPosition::North</enum>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="manageUsersTab">
        <attribute name="icon">
@@ -78,6 +78,15 @@
        </attribute>
        <attribute name="title">
         <string>Public tasks</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="managePrivateActivitiesTab">
+       <attribute name="icon">
+        <iconset resource="../tt3-gui/tt3-gui.qrc">
+         <normaloff>:/tt3-gui/Resources/Images/Objects/PrivateActivitySmall.png</normaloff>:/tt3-gui/Resources/Images/Objects/PrivateActivitySmall.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Private activities</string>
        </attribute>
       </widget>
      </widget>
@@ -135,7 +144,7 @@
      <x>0</x>
      <y>0</y>
      <width>527</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -580,6 +589,7 @@
   </action>
  </widget>
  <resources>
+  <include location="../tt3-gui/tt3-gui.qrc"/>
   <include location="tt3-skin-admin.qrc"/>
  </resources>
  <connections>

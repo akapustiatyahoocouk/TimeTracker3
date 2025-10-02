@@ -83,6 +83,8 @@ namespace tt3::gui
         QString             _oldPasswordHash;   //  used to determine if password was changed
 
         //  Helpers
+        tt3::ws::User       _selectedUser();
+        void                _setSelectedUser(tt3::ws::User user);
         QStringList         _selectedEmailAddresses();
         void                _setSelectedEmailAddresses(const QStringList & emailAddresses);
         QString             _selectedEmailAddress();

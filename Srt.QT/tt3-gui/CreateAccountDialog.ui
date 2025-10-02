@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>620</width>
-    <height>490</height>
+    <height>525</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,14 @@
     <normaloff>:/tt3-gui/Resources/Images/Actions/CreateAccountLarge.png</normaloff>:/tt3-gui/Resources/Images/Actions/CreateAccountLarge.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
-   <item row="2" column="2" colspan="6">
+   <item row="1" column="0">
+    <widget class="QLabel" name="loginLabel">
+     <property name="text">
+      <string>Login:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2" colspan="6">
     <widget class="QWidget" name="emailAddressesWidget" native="true">
      <layout class="QGridLayout" name="gridLayout">
       <property name="leftMargin">
@@ -75,7 +82,17 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="5">
+   <item row="3" column="0" colspan="2">
+    <widget class="QLabel" name="emailAddressesLabel">
+     <property name="text">
+      <string>E-mail addresses:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="5">
     <spacer name="horizontalSpacer">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
@@ -88,22 +105,15 @@
      </property>
     </spacer>
    </item>
-   <item row="9" column="0" colspan="8">
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
+   <item row="2" column="0">
     <widget class="QLabel" name="passwordLabel">
      <property name="text">
       <string>Password:</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="1" colspan="2">
-    <widget class="QLineEdit" name="passwordLineEdit">
+   <item row="2" column="4">
+    <widget class="QLineEdit" name="confirmPasswordLineEdit">
      <property name="echoMode">
       <enum>QLineEdit::EchoMode::Password</enum>
      </property>
@@ -112,7 +122,17 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0" rowspan="2" colspan="8">
+   <item row="6" column="2" colspan="5">
+    <widget class="QCheckBox" name="enabledCheckBox">
+     <property name="text">
+      <string>Account is enabled</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" rowspan="2" colspan="8">
     <widget class="QGroupBox" name="capabilitiesGroupBox">
      <property name="title">
       <string>Capabilities</string>
@@ -224,38 +244,14 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="3">
+   <item row="2" column="3">
     <widget class="QLabel" name="confirmPasswordLabel">
      <property name="text">
       <string>Confirm:</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="0" colspan="2">
-    <widget class="QLabel" name="emailAddressesLabel">
-     <property name="text">
-      <string>E-mail addresses:</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1" colspan="2">
-    <widget class="QLineEdit" name="loginLineEdit">
-     <property name="readOnly">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="loginLabel">
-     <property name="text">
-      <string>Login:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="0" colspan="8">
+   <item row="11" column="0" colspan="8">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
@@ -265,18 +261,22 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="2" colspan="5">
-    <widget class="QCheckBox" name="enabledCheckBox">
-     <property name="text">
-      <string>Account is enabled</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
+   <item row="10" column="0" colspan="8">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
    </item>
-   <item row="1" column="4">
-    <widget class="QLineEdit" name="confirmPasswordLineEdit">
+   <item row="0" column="0">
+    <widget class="QLabel" name="userLabel">
+     <property name="text">
+      <string>User:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QLineEdit" name="passwordLineEdit">
      <property name="echoMode">
       <enum>QLineEdit::EchoMode::Password</enum>
      </property>
@@ -285,9 +285,20 @@
      </property>
     </widget>
    </item>
+   <item row="0" column="2" colspan="3">
+    <widget class="QComboBox" name="userComboBox"/>
+   </item>
+   <item row="1" column="2" colspan="3">
+    <widget class="QLineEdit" name="loginLineEdit">
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <tabstops>
+  <tabstop>userComboBox</tabstop>
   <tabstop>loginLineEdit</tabstop>
   <tabstop>passwordLineEdit</tabstop>
   <tabstop>confirmPasswordLineEdit</tabstop>

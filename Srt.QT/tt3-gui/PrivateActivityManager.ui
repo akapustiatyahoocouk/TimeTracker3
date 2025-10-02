@@ -171,5 +171,144 @@
  <resources>
   <include location="tt3-gui.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>privateActivitiesTreeWidget</sender>
+   <signal>currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</signal>
+   <receiver>tt3::gui::PrivateActivityManager</receiver>
+   <slot>_privateActivitiesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>137</x>
+     <y>163</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>237</x>
+     <y>142</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>privateActivitiesTreeWidget</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>tt3::gui::PrivateActivityManager</receiver>
+   <slot>_privateActivitiesTreeWidgetCustomContextMenuRequested(QPoint)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>137</x>
+     <y>163</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>237</x>
+     <y>142</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>createPrivateActivityPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::PrivateActivityManager</receiver>
+   <slot>_createPrivateActivityPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>367</x>
+     <y>71</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>237</x>
+     <y>142</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modifyPrivateActivityPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::PrivateActivityManager</receiver>
+   <slot>_modifyPrivateActivityPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>367</x>
+     <y>102</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>237</x>
+     <y>142</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>destroyPrivateActivityPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::PrivateActivityManager</receiver>
+   <slot>_destroyPrivateActivityPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>367</x>
+     <y>133</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>237</x>
+     <y>142</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>startPrivateActivityPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::PrivateActivityManager</receiver>
+   <slot>_startPrivateActivityPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>367</x>
+     <y>171</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>237</x>
+     <y>142</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>stopPrivateActivityPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::PrivateActivityManager</receiver>
+   <slot>_stopPrivateActivityPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>367</x>
+     <y>202</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>237</x>
+     <y>142</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filterLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::PrivateActivityManager</receiver>
+   <slot>_filterLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>257</x>
+     <y>28</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>237</x>
+     <y>142</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_privateActivitiesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+  <slot>_privateActivitiesTreeWidgetCustomContextMenuRequested(QPoint)</slot>
+  <slot>_createPrivateActivityPushButtonClicked()</slot>
+  <slot>_modifyPrivateActivityPushButtonClicked()</slot>
+  <slot>_destroyPrivateActivityPushButtonClicked()</slot>
+  <slot>_startPrivateActivityPushButtonClicked()</slot>
+  <slot>_stopPrivateActivityPushButtonClicked()</slot>
+  <slot>_filterLineEditTextChanged(QString)</slot>
+ </slots>
 </ui>
