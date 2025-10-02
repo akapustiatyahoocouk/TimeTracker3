@@ -52,7 +52,7 @@ bool PublicActivityImpl::_canRead(
         return false;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -66,15 +66,15 @@ bool PublicActivityImpl::_canModify(
     try
     {
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        return (clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
-               (clientCapabilities & Capabilities::ManagePublicActivities) != Capabilities::None;
+        return clientCapabilities.contains(Capability::Administrator) ||
+               clientCapabilities.contains(Capability::ManagePublicActivities);
     }
     catch (const AccessDeniedException &)
     {   //  This is a special case!
         return false;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -88,15 +88,15 @@ bool PublicActivityImpl::_canDestroy(
     try
     {
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        return (clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
-               (clientCapabilities & Capabilities::ManagePublicActivities) != Capabilities::None;
+        return clientCapabilities.contains(Capability::Administrator) ||
+               clientCapabilities.contains(Capability::ManagePublicActivities);
     }
     catch (const AccessDeniedException &)
     {   //  This is a special case!
         return false;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }

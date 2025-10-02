@@ -59,7 +59,7 @@ auto PublicTaskImpl::parent(
         return PublicTask();
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -95,7 +95,7 @@ auto PublicTaskImpl::children(
         return result;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -124,10 +124,8 @@ auto PublicTaskImpl::createChild(
         //  Check access rights
         Capabilities clientCapabilities =
             _workspace->_validateAccessRights(credentials); //  may throw
-        if (!(clientCapabilities & Capabilities::Administrator) &&
-            !(clientCapabilities & Capabilities::ManagePublicTasks))
-            //  TODO use the "!capabilities" trick everywhere
-            //  where capablities are checked
+        if (!clientCapabilities.contains(Capability::Administrator) &&
+            !clientCapabilities.contains(Capability::ManagePublicTasks))
         {   //  OOPS! Can't!
             throw AccessDeniedException();
         }
@@ -171,7 +169,7 @@ bool PublicTaskImpl::_canRead(
         return false;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -185,15 +183,15 @@ bool PublicTaskImpl::_canModify(
     try
     {
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        return (clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
-               (clientCapabilities & Capabilities::ManagePublicTasks) != Capabilities::None;
+        return clientCapabilities.contains(Capability::Administrator) ||
+               clientCapabilities.contains(Capability::ManagePublicTasks);
     }
     catch (const AccessDeniedException &)
     {   //  This is a special case!
         return false;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -207,15 +205,15 @@ bool PublicTaskImpl::_canDestroy(
     try
     {
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        return (clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
-               (clientCapabilities & Capabilities::ManagePublicTasks) != Capabilities::None;
+        return clientCapabilities.contains(Capability::Administrator) ||
+               clientCapabilities.contains(Capability::ManagePublicTasks);
     }
     catch (const AccessDeniedException &)
     {   //  This is a special case!
         return false;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }

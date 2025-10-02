@@ -17,10 +17,10 @@
 
 namespace tt3::db::api
 {
-    //  Capabilities of a login account
-    enum class Capabilities
+    /// \brief
+    ///     Capabilities of a login account.
+    enum class Capability
     {
-        //  Individual capabilty flags
         Administrator = 0x0001,
         ManageUsers = 0x0002,
         ManageActivityTypes = 0x0004,
@@ -34,50 +34,149 @@ namespace tt3::db::api
         LogEvents = 0x0400,
         GenerateReports = 0x0800,
         BackupAndRestore = 0x1000,
+    /*  TODO kill off
         //  Flag combinatons
         None = 0x0000,
         All = 0x1FFF
+    */
     };
 
-    TT3_DB_API_PUBLIC inline auto operator & (
-            Capabilities a,
-            Capabilities b
-        ) -> Capabilities
+    /// \class Capabilities tt3-db-api/API.hpp
+    /// \brief A "set of Capability flags" ADT.
+    /// \details
+    ///     Implemented as a bit set for better performance.
+    class TT3_DB_API_PUBLIC Capabilities final
     {
-        return Capabilities(int(a) & int(b));
-    }
+        //////////
+        //  Construction/destruction/assignment
+    private:
+        explicit Capabilities(int mask) : _mask(mask) {}
+    public:
+        /// \brief
+        ///     Constructs an empty set of Capability flags.
+        constexpr Capabilities() : _mask(0) {}
 
-    TT3_DB_API_PUBLIC inline auto operator | (
-            Capabilities a,
-            Capabilities b
-        ) -> Capabilities
-    {
-        return Capabilities(int(a) | int(b));
-    }
+        /// \brief
+        ///     Constructs a set with a single Capability flag.
+        /// \param c
+        ///     The Capability flag to initialize the set with.
+        constexpr Capabilities(Capability c) : _mask(int(c)) {}
 
-    TT3_DB_API_PUBLIC inline auto operator &= (
-            Capabilities & a,
-            Capabilities b
-        ) -> Capabilities &
-    {
-        a = Capabilities(int(a) & int(b));
-        return a;
-    }
+        //  The default copy constructor, destructor anjd
+        //  assignment are all OK
 
-    TT3_DB_API_PUBLIC inline auto operator |= (
-            Capabilities & a,
-            Capabilities b
-        ) -> Capabilities &
-    {
-        a = Capabilities(int(a) | int(b));
-        return a;
-    }
+        //////////
+        //  Operators
+    public:
+        /// \brief
+        ///     Compares two Capability sets for equality.
+        /// \param op2
+        ///     The 2nd Capability set to compare this one with.
+        /// \return
+        ///     True if the two Capability sets are equal, else false.
+        bool            operator == (const Capabilities & op2) const { return _mask == op2._mask; }
 
-    TT3_DB_API_PUBLIC inline bool operator ! (
-            Capabilities a
-        )
+        /// \brief
+        ///     Compares two Capability sets for inequality.
+        /// \param op2
+        ///     The 2nd Capability set to compare this one with.
+        /// \return
+        ///     False if the two Capability sets are equal, else true.
+        bool            operator != (const Capabilities & op2) const { return _mask != op2._mask; }
+
+        /// \brief
+        ///     Calculates a union of two Capabilitty sets.
+        /// \param op2
+        ///     The 2nd Capability set.
+        /// \return
+        ///     The union of two Capabilitty sets.
+        Capabilities    operator |(const Capabilities & op2) const
+        {
+            return Capabilities(_mask | op2._mask);
+        }
+
+        /// \brief
+        ///     Calculates a union of two Capabilitty sets.
+        /// \param op2
+        ///     The 2nd Capability set.
+        /// \return
+        ///     The *this, whose value has been updated to
+        ///     be the union of two Capabilitty sets.
+        Capabilities &  operator |=(const Capabilities & op2)
+        {
+            _mask |= op2._mask;
+            return *this;
+        }
+
+        /// \brief
+        ///     Calculates an intersection of two Capabilitty sets.
+        /// \param op2
+        ///     The 2nd Capability set.
+        /// \return
+        ///     The intersection of two Capabilitty sets.
+        Capabilities    operator &(const Capabilities & op2) const
+        {
+            return Capabilities(_mask & op2._mask);
+        }
+
+        /// \brief
+        ///     Calculates an intersection of two Capabilitty sets.
+        /// \param op2
+        ///     The 2nd Capability set.
+        /// \return
+        ///     The *this, whose value has been updated to
+        ///     be the intersection of two Capabilitty sets.
+        Capabilities &  operator &=(const Capabilities & op2)
+        {
+            _mask &= op2._mask;
+            return *this;
+        }
+
+        //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Checks if this capability set is empty.
+        /// \return
+        ///     True if this capability set is empty, false if not.
+        constexpr bool  isEmpty() const
+        {
+            return _mask == 0;
+        }
+
+        /// \brief
+        ///     Checks if this Capability set contains the
+        ///     specified Capability.
+        /// \param c
+        ///     The Capability to check.
+        /// \return
+        ///     True if this Capability set contains the
+        ///     specified Capability, else false.
+        constexpr bool  contains(Capability c) const
+        {
+            return (_mask & int(c)) != 0;
+        }
+
+        //////////
+        //  Implementation
+    private:
+        int             _mask;
+    };
+
+    /// \brief
+    ///     Returns the Capability set that contains
+    ///     all of the specified Capabilities.
+    /// \param a
+    ///     The Capability to include into the set.
+    /// \param b
+    ///     The Capability to include into the set.
+    /// \return
+    ///     The Capability set that contains all of
+    ///     the specified Capabilities.
+    TT3_DB_API_PUBLIC
+    inline Capabilities operator |(Capability a, Capability b)
     {
-        return a == Capabilities::None;
+        return Capabilities(a) | Capabilities(b);
     }
 }
 

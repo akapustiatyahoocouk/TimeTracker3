@@ -146,7 +146,7 @@ auto WorkspaceTypeImpl::createWorkspace(
                 QStringList(),
                 adminLogin,
                 adminPassword,
-                tt3::db::api::Capabilities::Administrator);
+                tt3::db::api::Capability::Administrator);
         /*  NOTE that database change notifications caused
             by creating admin user and account (above) are
             NOT forwarded to the Workspace, as the Workspace
@@ -205,7 +205,7 @@ void WorkspaceTypeImpl::destroyWorkspace(
         std::unique_ptr<tt3::db::api::IDatabase> database
             { address->_databaseAddress->databaseType()->openDatabase(address->_databaseAddress, OpenMode::ReadWrite) };
         tt3::db::api::IAccount * account = database->login(credentials._login, credentials._password);
-        if ((account->capabilities() & Capabilities::Administrator) == Capabilities::None)
+        if (!account->capabilities().contains(Capability::Administrator))
         {   //  OOPS! Not allowed!
             throw AccessDeniedException();
         }

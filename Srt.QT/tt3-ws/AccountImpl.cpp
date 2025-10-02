@@ -51,7 +51,7 @@ QString AccountImpl::login(
         return _dataAccount->login();   //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -69,8 +69,8 @@ void AccountImpl::setLogin(
         //  Validate access rights.
         //  Note that a user CANNOT modify their own login!
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        if ((clientCapabilities & Capabilities::Administrator) == Capabilities::None &&
-            (clientCapabilities & Capabilities::ManageUsers) == Capabilities::None)
+        if (!clientCapabilities.contains(Capability::Administrator) &&
+            !clientCapabilities.contains(Capability::ManageUsers))
         {
             throw AccessDeniedException();
         }
@@ -78,7 +78,7 @@ void AccountImpl::setLogin(
         return _dataAccount->setLogin(login);   //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -101,7 +101,7 @@ QString AccountImpl::passwordHash(
         return _dataAccount->passwordHash();    //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -125,7 +125,7 @@ void AccountImpl::setPassword(
         _dataAccount->setPassword(password); //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -148,7 +148,7 @@ auto AccountImpl::capabilities(
         return _dataAccount->capabilities();    //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -166,14 +166,14 @@ void AccountImpl::setCapabilities(
         //  Validate access rights.
         //  Note that a user CANNOT modify their own capabilities...
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        if ((clientCapabilities & Capabilities::Administrator) == Capabilities::None &&
-            (clientCapabilities & Capabilities::ManageUsers) == Capabilities::None)
+        if (!clientCapabilities.contains(Capability::Administrator) &&
+            !clientCapabilities.contains(Capability::ManageUsers))
         {
             throw AccessDeniedException();
         }
         //  ...or leave workspace without an enabled admin user+account
-        if ((_dataAccount->capabilities() & Capabilities::Administrator) != Capabilities::None &&
-            (capabilities & Capabilities::Administrator) == Capabilities::None)
+        if (_dataAccount->capabilities().contains(Capability::Administrator) &&
+            !capabilities.contains(Capability::Administrator))
         {   //  This account is losing its Administrator capability
             if (_destroyingLosesAccess())
             {
@@ -185,7 +185,7 @@ void AccountImpl::setCapabilities(
         return _dataAccount->setCapabilities(capabilities); //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -210,7 +210,7 @@ auto AccountImpl::user(
         return _workspace->_getProxy(_dataAccount->user()); //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -226,8 +226,8 @@ bool AccountImpl::_canRead(
     try
     {
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        if ((clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
-            (clientCapabilities & Capabilities::ManageUsers) != Capabilities::None)
+        if (clientCapabilities.contains(Capability::Administrator) ||
+            clientCapabilities.contains(Capability::ManageUsers))
         {   //  Can read any accounts
             return true;
         }
@@ -242,7 +242,7 @@ bool AccountImpl::_canRead(
         return false;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -256,8 +256,8 @@ bool AccountImpl::_canModify(
     try
     {
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        if ((clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
-            (clientCapabilities & Capabilities::ManageUsers) != Capabilities::None)
+        if (clientCapabilities.contains(Capability::Administrator) ||
+            clientCapabilities.contains(Capability::ManageUsers))
         {   //  Can modify any accounts
             return true;
         }
@@ -272,7 +272,7 @@ bool AccountImpl::_canModify(
         return false;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -286,15 +286,15 @@ bool AccountImpl::_canDestroy(
     try
     {
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        return (clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
-               (clientCapabilities & Capabilities::ManageUsers) != Capabilities::None;
+        return clientCapabilities.contains(Capability::Administrator) ||
+               clientCapabilities.contains(Capability::ManageUsers);
     }
     catch (const AccessDeniedException &)
     {   //  This is a special case!
         return false;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -315,7 +315,7 @@ bool AccountImpl::_destroyingLosesAccess(
                 {
                     if (aDataAccount != _dataAccount &&
                         aDataAccount->enabled() &&
-                        (aDataAccount->capabilities() & Capabilities::Administrator) != Capabilities::None)
+                        aDataAccount->capabilities().contains(Capability::Administrator))
                     {   //  ...then we CAN destroy this Account
                         return false;
                     }
@@ -326,7 +326,7 @@ bool AccountImpl::_destroyingLosesAccess(
         return true;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }

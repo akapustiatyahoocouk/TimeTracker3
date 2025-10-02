@@ -53,7 +53,7 @@ bool TaskImpl::completed(
         return _dataTask->completed();  //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -77,7 +77,7 @@ void TaskImpl::setCompleted(
         _dataTask->setCompleted(completed); //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -100,7 +100,7 @@ bool TaskImpl::requireCommentOnCompletion(
         return _dataTask->requireCommentOnCompletion(); //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -124,7 +124,7 @@ void TaskImpl::setRequireCommentOnCompletion(
         _dataTask->setRequireCommentOnCompletion(requireCommentOnCompletion);   //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }

@@ -56,6 +56,7 @@ Database::Database(
             }
             catch (const tt3::util::Exception & ex)
             {   //  Cleanup & re-throw
+                qCritical() << ex.errorMessage();
                 delete _lockRefresher;
                 if (dynamic_cast<const tt3::db::api::DatabaseException*>(&ex) != nullptr)
                 {   //  Can re-throw "as is"
@@ -73,6 +74,7 @@ Database::Database(
             }
             catch (const tt3::util::Exception & ex)
             {   //  e.g. ParseException, etc.
+                qCritical() << ex.errorMessage();
                 //  Cleanup & re-throw
                 if (dynamic_cast<const tt3::db::api::DatabaseException*>(&ex) != nullptr)
                 {   //  Can re-throw "as is"
@@ -97,6 +99,7 @@ Database::Database(
             }
             catch (const tt3::util::Exception & ex)
             {   //  e.g. ParseException, etc.
+                qCritical() << ex.errorMessage();
                 //  Cleanup & re-throw
                 delete _lockRefresher;
                 if (dynamic_cast<const tt3::db::api::DatabaseException*>(&ex) != nullptr)

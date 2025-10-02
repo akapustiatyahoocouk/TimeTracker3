@@ -95,6 +95,7 @@ namespace tt3::ws
     using OpenMode = tt3::db::api::OpenMode;
     using ObjectType = tt3::db::api::IObjectType;
     using ObjectTypes = tt3::db::api::ObjectTypes;
+    using Capability = tt3::db::api::Capability;
     using Capabilities = tt3::db::api::Capabilities;
 
     using Oid = tt3::db::api::Oid;

@@ -220,8 +220,9 @@ namespace tt3::util
             {
                 setValue(fromString<T>(valueString, _defaultValue));
             }
-            catch (const ParseException &)
-            {   //  Ignore
+            catch (const ParseException & /*ex*/)
+            {   //  OOPS! Log, but Ignore
+                //  TODO qCritical() << ex.errorMessage();
             }
         }
 

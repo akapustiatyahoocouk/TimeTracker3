@@ -99,6 +99,7 @@ void WorkspaceImpl::close()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Ensure cleanup, translate & re-throw
+            qCritical() << ex.errorMessage();
             _markClosed();
             WorkspaceException::translateAndThrow(ex);
         }
@@ -133,7 +134,7 @@ void WorkspaceImpl::refresh()
         }
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -151,8 +152,8 @@ auto WorkspaceImpl::users(
     {
         Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
         Users result;
-        if ((clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
-            (clientCapabilities & Capabilities::ManageUsers) != Capabilities::None)
+        if (clientCapabilities.contains(Capability::Administrator) ||
+            clientCapabilities.contains(Capability::ManageUsers))
         {   //  The caller can see all users
             for (tt3::db::api::IUser * dataUser : _database->users())
             {
@@ -169,7 +170,7 @@ auto WorkspaceImpl::users(
         return result;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -196,7 +197,7 @@ auto WorkspaceImpl::activityTypes(
         return result;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -220,7 +221,7 @@ auto WorkspaceImpl::publicActivities(
         return result;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -244,7 +245,7 @@ auto WorkspaceImpl::publicActivitiesAndTasks(
         return result;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -268,7 +269,7 @@ auto WorkspaceImpl::publicTasks(
         return result;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -292,7 +293,7 @@ auto WorkspaceImpl::rootPublicTasks(
         return result;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -348,7 +349,7 @@ bool WorkspaceImpl::grantsAll(
 
     try
     {
-        Q_ASSERT(requiredCapabilities != Capabilities::None);
+        Q_ASSERT(!requiredCapabilities.isEmpty());
 
         //  Do the work; be defensive in release mode
         Capabilities c = _validateAccessRights(credentials);  //  may throw
@@ -374,11 +375,11 @@ bool WorkspaceImpl::grantsAny(
 
     try
     {
-        Q_ASSERT(requiredCapabilities != Capabilities::None);
+        Q_ASSERT(!requiredCapabilities.isEmpty());
 
         //  Do the work; be defensive in release mode
         Capabilities c = _validateAccessRights(credentials);  //  may throw
-        return (c & requiredCapabilities) != Capabilities::None;
+        return !(c & requiredCapabilities).isEmpty();
     }
     catch (const AccessDeniedException &)
     {   //  This is a special case
@@ -406,7 +407,7 @@ auto WorkspaceImpl::tryLogin(
                    Account();
     }
     catch (const tt3::util::Exception & ex)
-    {   //  Translate & re-throw
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -425,7 +426,7 @@ auto WorkspaceImpl::login(
         return _getProxy(dataAccount);
     }
     catch (const tt3::util::Exception & ex)
-    {   //  Translate & re-throw
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -448,8 +449,8 @@ auto WorkspaceImpl::createUser(
     {
         //  Check access rights
         Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
-        if ((clientCapabilities & Capabilities::Administrator) == Capabilities::None &&
-            (clientCapabilities & Capabilities::ManageUsers) == Capabilities::None)
+        if (!clientCapabilities.contains(Capability::Administrator) &&
+            !clientCapabilities.contains(Capability::ManageUsers))
         {   //  OOPS! Can't!
             throw AccessDeniedException();
         }
@@ -479,8 +480,8 @@ auto WorkspaceImpl::createActivityType(
     {
         //  Check access rights
         Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
-        if ((clientCapabilities & Capabilities::Administrator) == Capabilities::None &&
-            (clientCapabilities & Capabilities::ManageActivityTypes) == Capabilities::None)
+        if (!clientCapabilities.contains(Capability::Administrator) &&
+            !clientCapabilities.contains(Capability::ManageActivityTypes))
         {   //  OOPS! Can't!
             throw AccessDeniedException();
         }
@@ -514,8 +515,8 @@ auto WorkspaceImpl::createPublicActivity(
     {
         //  Check access rights
         Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
-        if ((clientCapabilities & Capabilities::Administrator) == Capabilities::None &&
-            (clientCapabilities & Capabilities::ManagePublicActivities) == Capabilities::None)
+        if (!clientCapabilities.contains(Capability::Administrator) &&
+            !clientCapabilities.contains(Capability::ManagePublicActivities))
         {   //  OOPS! Can't!
             throw AccessDeniedException();
         }
@@ -559,8 +560,8 @@ auto WorkspaceImpl::createPublicTask(
     {
         //  Check access rights
         Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
-        if ((clientCapabilities & Capabilities::Administrator) == Capabilities::None &&
-            (clientCapabilities & Capabilities::ManagePublicTasks) == Capabilities::None)
+        if (!clientCapabilities.contains(Capability::Administrator) &&
+            !clientCapabilities.contains(Capability::ManagePublicTasks))
         {   //  OOPS! Can't!
             throw AccessDeniedException();
         }

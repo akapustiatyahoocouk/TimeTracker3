@@ -162,8 +162,8 @@ void PrivateActivityManager::refresh()
                 !readOnly &&
                 _workspace->grantsAny(  //  may throw
                     _credentials,
-                    tt3::ws::Capabilities::Administrator |
-                        tt3::ws::Capabilities::ManagePrivateActivities));
+                    tt3::ws::Capability::Administrator |
+                    tt3::ws::Capability::ManagePrivateActivities));
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -240,7 +240,7 @@ auto PrivateActivityManager::_createWorkspaceModel(
     _WorkspaceModel workspaceModel { new _WorkspaceModelImpl() };
     try
     {
-        if (_workspace->grantsAll(_credentials, tt3::ws::Capabilities::Administrator))
+        if (_workspace->grantsAll(_credentials, tt3::ws::Capability::Administrator))
         {   //  See private activities of all users
             for (tt3::ws::User user : _workspace->users(_credentials))    //  may throw
             {
@@ -258,8 +258,9 @@ auto PrivateActivityManager::_createWorkspaceModel(
                   [&](auto a, auto b)
                   { return a->text < b->text; });
     }
-    catch (const tt3::util::Exception &)
+    catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         workspaceModel->userModels.clear();
     }
     return workspaceModel;
@@ -299,6 +300,7 @@ auto PrivateActivityManager::_createUserModel(
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         userModel->text = ex.errorMessage();
         userModel->icon = errorIcon;
         userModel->font = _decorations.itemFont;
@@ -339,6 +341,7 @@ auto PrivateActivityManager::_createPrivateActivityModel(
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         privateActivityModel->text = ex.errorMessage();
         privateActivityModel->icon = errorIcon;
         privateActivityModel->font = _decorations.itemFont;

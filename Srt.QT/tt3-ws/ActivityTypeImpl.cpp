@@ -53,7 +53,7 @@ QString ActivityTypeImpl::displayName(
         return _dataActivityType->displayName();   //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -77,7 +77,7 @@ void ActivityTypeImpl::setDisplayName(
         _dataActivityType->setDisplayName(displayName); //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -100,7 +100,7 @@ QString ActivityTypeImpl::description(
         return _dataActivityType->description();   //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -124,7 +124,7 @@ void ActivityTypeImpl::setDescription(
         _dataActivityType->setDescription(description); //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -157,7 +157,7 @@ bool ActivityTypeImpl::_canRead(
         return false;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -171,15 +171,15 @@ bool ActivityTypeImpl::_canModify(
     try
     {
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        if ((clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
-            (clientCapabilities & Capabilities::ManageActivityTypes) != Capabilities::None)
+        if (clientCapabilities.contains(Capability::Administrator) ||
+            clientCapabilities.contains(Capability::ManageActivityTypes))
         {   //  Can modify any activoty type
             return true;
         }
         return false;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -193,15 +193,15 @@ bool ActivityTypeImpl::_canDestroy(
     try
     {
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        if ((clientCapabilities & Capabilities::Administrator) != Capabilities::None ||
-            (clientCapabilities & Capabilities::ManageActivityTypes) != Capabilities::None)
+        if (clientCapabilities.contains(Capability::Administrator) ||
+            clientCapabilities.contains(Capability::ManageActivityTypes))
         {   //  Can destroy any activoty type
             return true;
         }
         return false;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }

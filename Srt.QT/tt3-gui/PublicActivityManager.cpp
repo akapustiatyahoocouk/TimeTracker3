@@ -163,8 +163,8 @@ void PublicActivityManager::refresh()
                 !readOnly &&
                 _workspace->grantsAny(  //  may throw
                     _credentials,
-                    tt3::ws::Capabilities::Administrator |
-                    tt3::ws::Capabilities::ManagePublicActivities));
+                    tt3::ws::Capability::Administrator |
+                    tt3::ws::Capability::ManagePublicActivities));
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -250,8 +250,9 @@ auto PublicActivityManager::_createWorkspaceModel(
                   [&](auto a, auto b)
                   { return a->text < b->text; });
     }
-    catch (const tt3::util::Exception &)
+    catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         workspaceModel->publicActivityModels.clear();
     }
     return workspaceModel;
@@ -287,6 +288,7 @@ auto PublicActivityManager::_createPublicActivityModel(
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         publicActivityModel->text = ex.errorMessage();
         publicActivityModel->icon = errorIcon;
         publicActivityModel->font = _decorations.itemFont;

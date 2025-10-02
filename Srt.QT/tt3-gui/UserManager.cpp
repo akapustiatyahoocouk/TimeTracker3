@@ -164,8 +164,8 @@ void UserManager::refresh()
                 !readOnly &&
                 _workspace->grantsAny(  //  may throw
                     _credentials,
-                    tt3::ws::Capabilities::Administrator |
-                    tt3::ws::Capabilities::ManageUsers));
+                    tt3::ws::Capability::Administrator |
+                    tt3::ws::Capability::ManageUsers));
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -192,8 +192,8 @@ void UserManager::refresh()
                 !readOnly &&
                 _workspace->grantsAny(
                     _credentials,
-                    tt3::ws::Capabilities::Administrator |
-                    tt3::ws::Capabilities::ManageUsers) &&
+                    tt3::ws::Capability::Administrator |
+                    tt3::ws::Capability::ManageUsers) &&
                 selectedUser != nullptr);
         }
         catch (const tt3::util::Exception & ex)
@@ -286,8 +286,9 @@ UserManager::_WorkspaceModel UserManager::_createWorkspaceModel()
                   [&](auto a, auto b)
                   { return a->text < b->text; });
     }
-    catch (const tt3::util::Exception &)
+    catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         workspaceModel->userModels.clear();
     }
     return workspaceModel;
@@ -315,6 +316,7 @@ UserManager::_UserModel UserManager::_createUserModel(tt3::ws::User user)
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         userModel->text = ex.errorMessage();
         userModel->icon = errorIcon;
         userModel->font = _decorations.itemFont;
@@ -331,8 +333,9 @@ UserManager::_UserModel UserManager::_createUserModel(tt3::ws::User user)
                   [&](auto a, auto b)
                   { return a->text < b->text; });
     }
-    catch (const tt3::util::Exception &)
+    catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         userModel->accountModels.clear();
     }
     return userModel;
@@ -360,6 +363,7 @@ UserManager::_AccountModel UserManager::_createAccountModel(tt3::ws::Account acc
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         accountModel->text = ex.errorMessage();
         accountModel->icon = errorIcon;
         accountModel->font = _decorations.itemFont;

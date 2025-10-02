@@ -181,8 +181,8 @@ void PublicTaskManager::refresh()
                 !readOnly &&
                 _workspace->grantsAny(  //  may throw
                     _credentials,
-                    tt3::ws::Capabilities::Administrator |
-                    tt3::ws::Capabilities::ManagePublicTasks));
+                    tt3::ws::Capability::Administrator |
+                    tt3::ws::Capability::ManagePublicTasks));
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Report & recover
@@ -298,8 +298,9 @@ auto PublicTaskManager::_createWorkspaceModel(
                   [&](auto a, auto b)
                   { return a->text < b->text; });
     }
-    catch (const tt3::util::Exception &)
+    catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         workspaceModel->publicTaskModels.clear();
     }
     return workspaceModel;
@@ -355,6 +356,7 @@ auto PublicTaskManager::_createPublicTaskModel(
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         publicTaskModel->text = ex.errorMessage();
         publicTaskModel->icon = errorIcon;
         publicTaskModel->font = decorations.itemFont;

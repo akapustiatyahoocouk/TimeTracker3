@@ -121,7 +121,7 @@ ModifyPublicTaskDialog::ModifyPublicTaskDialog(
         _ui->completedCheckBox->setEnabled(
             _publicTask->workspace()->grantsAll( //  may throw
                 _credentials,
-                tt3::ws::Capabilities::Administrator));
+                tt3::ws::Capability::Administrator));
     }
 
     //  Done

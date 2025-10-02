@@ -53,7 +53,7 @@ QString ActivityImpl::displayName(
         return _dataActivity->displayName();   //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -77,7 +77,7 @@ void ActivityImpl::setDisplayName(
         _dataActivity->setDisplayName(displayName); //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -100,7 +100,7 @@ QString ActivityImpl::description(
         return _dataActivity->description();    //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -124,7 +124,7 @@ void ActivityImpl::setDescription(
         _dataActivity->setDescription(description); //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -147,7 +147,7 @@ auto ActivityImpl::timeout(
         return _dataActivity->timeout();   //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -171,7 +171,7 @@ void ActivityImpl::setTimeout(
         _dataActivity->setTimeout(timeout); //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -194,7 +194,7 @@ bool ActivityImpl::requireCommentOnStart(
         return _dataActivity->requireCommentOnStart();   //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -218,7 +218,7 @@ void ActivityImpl::setRequireCommentOnStart(
         _dataActivity->setRequireCommentOnStart(requireCommentOnStart); //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -241,7 +241,7 @@ bool ActivityImpl::requireCommentOnStop(
         return _dataActivity->requireCommentOnStop();   //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -265,7 +265,7 @@ void ActivityImpl::setRequireCommentOnStop(
         _dataActivity->setRequireCommentOnStop(requireCommentOnStop); //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -288,7 +288,7 @@ bool ActivityImpl::fullScreenReminder(
         return _dataActivity->fullScreenReminder();   //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -312,7 +312,7 @@ void ActivityImpl::setFullScreenReminder(
         _dataActivity->setFullScreenReminder(fullScreenReminder);   //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -341,7 +341,7 @@ auto ActivityImpl::activityType(
         return ActivityType();
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -376,7 +376,7 @@ void ActivityImpl::setActivityType(
                 nullptr);   //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -403,7 +403,7 @@ auto ActivityImpl::workload(
         return Workload();
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -438,7 +438,7 @@ void ActivityImpl::setWorkload(
                 nullptr);   //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -471,16 +471,16 @@ bool ActivityImpl::canStart(
         //  Validate access rights
         Capabilities capabilities =
             _workspace->_validateAccessRights(credentials);
-        if ((capabilities & Capabilities::Administrator) == Capabilities::None &&
-            (capabilities & Capabilities::LogWork) == Capabilities::None)
+        if (!capabilities.contains(Capability::Administrator) &&
+            !capabilities.contains(Capability::LogWork))
         {   //  OOPS! The caller won't be able to record the Work unit
             return false;
         }
         if (_dataActivity->requireCommentOnStart() ||
             _dataActivity->requireCommentOnStop())
         {   //  Will need to log an Event before/after a Work item...
-            if ((capabilities & Capabilities::Administrator) == Capabilities::None &&
-                (capabilities & Capabilities::LogEvents) == Capabilities::None)
+            if (!capabilities.contains(Capability::Administrator) &&
+                !capabilities.contains(Capability::LogEvents))
             {   //  ...but won't be able to!
                 return false;
             }
@@ -488,7 +488,7 @@ bool ActivityImpl::canStart(
         return true;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -505,15 +505,15 @@ bool ActivityImpl::canStop(
         //  Validate access rights
         Capabilities capabilities =
             _workspace->_validateAccessRights(credentials);
-        if ((capabilities & Capabilities::Administrator) == Capabilities::None &&
-            (capabilities & Capabilities::LogWork) == Capabilities::None)
+        if (!capabilities.contains(Capability::Administrator) &&
+            !capabilities.contains(Capability::LogWork))
         {   //  OOPS! The caller won't be able to record the Work unit
             return false;
         }
         if (_dataActivity->requireCommentOnStop())
         {   //  Will need to log an Event after a Work item...
-            if ((capabilities & Capabilities::Administrator) == Capabilities::None &&
-                (capabilities & Capabilities::LogEvents) == Capabilities::None)
+            if (!capabilities.contains(Capability::Administrator) &&
+                !capabilities.contains(Capability::LogEvents))
             {   //  ...but won't be able to!
                 return false;
             }
@@ -521,7 +521,7 @@ bool ActivityImpl::canStop(
         return true;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }

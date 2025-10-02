@@ -79,8 +79,9 @@ namespace tt3::util
         {
             return fromString<T>(s, scan);
         }
-        catch (const ParseException &)
+        catch (const ParseException & ex)
         {
+            //  TODO qCritical() << ex.errorMessage();
             return defaultValue;
         }
     }
@@ -95,8 +96,9 @@ namespace tt3::util
             T result = fromString<T>(s, scan);
             return (scan == s.length()) ? result : defaultValue;
         }
-        catch (const ParseException &)
+        catch (const ParseException & /*ex*/)
         {
+            //  TODO qCritical() << ex.errorMessage();
             return defaultValue;
         }
     }

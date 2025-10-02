@@ -78,8 +78,8 @@ ModifyAccountDialog::ModifyAccountDialog(
     //  An ordinary user cannot change their login,
     //  capabilities or enabled status - only password
     //  and e-mail addresses
-    if ((clientCapabilities & tt3::ws::Capabilities::Administrator) == tt3::ws::Capabilities::None &&
-        (clientCapabilities & tt3::ws::Capabilities::Administrator) == tt3::ws::Capabilities::None)
+    if (!clientCapabilities.contains(tt3::ws::Capability::Administrator) &&
+        !clientCapabilities.contains(tt3::ws::Capability::ManageUsers))
     {
         _ui->loginLineEdit->setReadOnly(true);
         _ui->capabilitiesGroupBox->setEnabled(false);
@@ -176,58 +176,58 @@ void ModifyAccountDialog::_setSelectedEmailAddress(const QString & emailAddress)
 
 tt3::ws::Capabilities ModifyAccountDialog::_selectedCapabilities()
 {
-    tt3::ws::Capabilities result = tt3::ws::Capabilities::None;
+    tt3::ws::Capabilities result;
     if (_ui->administratorCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::Administrator;
+        result |= tt3::ws::Capability::Administrator;
     }
     if (_ui->manageUsersCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::ManageUsers;
+        result |= tt3::ws::Capability::ManageUsers;
     }
     if (_ui->manageActivityTypesCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::ManageActivityTypes;
+        result |= tt3::ws::Capability::ManageActivityTypes;
     }
     if (_ui->manageBeneficiariesCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::ManageBeheficiaries;
+        result |= tt3::ws::Capability::ManageBeheficiaries;
     }
     if (_ui->manageWorkloadsCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::ManageWorkloads;
+        result |= tt3::ws::Capability::ManageWorkloads;
     }
     if (_ui->managePublicActivitiesCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::ManagePublicActivities;
+        result |= tt3::ws::Capability::ManagePublicActivities;
     }
     if (_ui->managePublicTasksCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::ManagePublicTasks;
+        result |= tt3::ws::Capability::ManagePublicTasks;
     }
     if (_ui->managePrivateActivitiesCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::ManagePrivateActivities;
+        result |= tt3::ws::Capability::ManagePrivateActivities;
     }
     if (_ui->managePrivateTasksCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::ManagePrivateTasks;
+        result |= tt3::ws::Capability::ManagePrivateTasks;
     }
     if (_ui->logWorkCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::LogWork;
+        result |= tt3::ws::Capability::LogWork;
     }
     if (_ui->logEventsCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::LogEvents;
+        result |= tt3::ws::Capability::LogEvents;
     }
     if (_ui->generateReportsCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::GenerateReports;
+        result |= tt3::ws::Capability::GenerateReports;
     }
     if (_ui->backupAndRestoreCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::BackupAndRestore;
+        result |= tt3::ws::Capability::BackupAndRestore;
     }
     return result;
 }
@@ -235,31 +235,31 @@ tt3::ws::Capabilities ModifyAccountDialog::_selectedCapabilities()
 void ModifyAccountDialog::_setSelectedCapabilities(tt3::ws::Capabilities capabilities)
 {
     _ui->administratorCheckBox->setChecked(
-        (capabilities & tt3::ws::Capabilities::Administrator) != tt3::ws::Capabilities::None);
+        capabilities.contains(tt3::ws::Capability::Administrator));
     _ui->manageUsersCheckBox->setChecked(
-        (capabilities & tt3::ws::Capabilities::ManageUsers) != tt3::ws::Capabilities::None);
+        capabilities.contains(tt3::ws::Capability::ManageUsers));
     _ui->manageActivityTypesCheckBox->setChecked(
-        (capabilities & tt3::ws::Capabilities::ManageActivityTypes) != tt3::ws::Capabilities::None);
+        capabilities.contains(tt3::ws::Capability::ManageActivityTypes));
     _ui->manageBeneficiariesCheckBox->setChecked(
-        (capabilities & tt3::ws::Capabilities::ManageBeheficiaries) != tt3::ws::Capabilities::None);
+        capabilities.contains(tt3::ws::Capability::ManageBeheficiaries));
     _ui->manageWorkloadsCheckBox->setChecked(
-        (capabilities & tt3::ws::Capabilities::ManageWorkloads) != tt3::ws::Capabilities::None);
+        capabilities.contains(tt3::ws::Capability::ManageWorkloads));
     _ui->managePublicActivitiesCheckBox->setChecked(
-        (capabilities & tt3::ws::Capabilities::ManagePublicActivities) != tt3::ws::Capabilities::None);
+        capabilities.contains(tt3::ws::Capability::ManagePublicActivities));
     _ui->managePublicTasksCheckBox->setChecked(
-        (capabilities & tt3::ws::Capabilities::ManagePublicTasks) != tt3::ws::Capabilities::None);
+        capabilities.contains(tt3::ws::Capability::ManagePublicTasks));
     _ui->managePrivateActivitiesCheckBox->setChecked(
-        (capabilities & tt3::ws::Capabilities::ManagePrivateActivities) != tt3::ws::Capabilities::None);
+        capabilities.contains(tt3::ws::Capability::ManagePrivateActivities));
     _ui->managePrivateTasksCheckBox->setChecked(
-        (capabilities & tt3::ws::Capabilities::ManagePrivateTasks) != tt3::ws::Capabilities::None);
+        capabilities.contains(tt3::ws::Capability::ManagePrivateTasks));
     _ui->logWorkCheckBox->setChecked(
-        (capabilities & tt3::ws::Capabilities::LogWork) != tt3::ws::Capabilities::None);
+        capabilities.contains(tt3::ws::Capability::LogWork));
     _ui->logEventsCheckBox->setChecked(
-        (capabilities & tt3::ws::Capabilities::LogEvents) != tt3::ws::Capabilities::None);
+        capabilities.contains(tt3::ws::Capability::LogEvents));
     _ui->generateReportsCheckBox->setChecked(
-        (capabilities & tt3::ws::Capabilities::GenerateReports) != tt3::ws::Capabilities::None);
+        capabilities.contains(tt3::ws::Capability::GenerateReports));
     _ui->backupAndRestoreCheckBox->setChecked(
-        (capabilities & tt3::ws::Capabilities::BackupAndRestore) != tt3::ws::Capabilities::None);
+        capabilities.contains(tt3::ws::Capability::BackupAndRestore));
 }
 
 void ModifyAccountDialog::_refresh()

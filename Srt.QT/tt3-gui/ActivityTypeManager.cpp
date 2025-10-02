@@ -145,8 +145,8 @@ void ActivityTypeManager::refresh()
                 !readOnly &&
                 _workspace->grantsAny(  //  may throw
                     _credentials,
-                    tt3::ws::Capabilities::Administrator |
-                    tt3::ws::Capabilities::ManageActivityTypes));
+                    tt3::ws::Capability::Administrator |
+                    tt3::ws::Capability::ManageActivityTypes));
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -214,8 +214,9 @@ ActivityTypeManager::_WorkspaceModel ActivityTypeManager::_createWorkspaceModel(
                   [&](auto a, auto b)
                     { return a->text < b->text; });
     }
-    catch (const tt3::util::Exception &)
+    catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         workspaceModel->activityTypeModels.clear();
     }
     return workspaceModel;
@@ -236,6 +237,7 @@ ActivityTypeManager::_ActivityTypeModel ActivityTypeManager::_createActivityType
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         activityTypeModel->text = ex.errorMessage();
         activityTypeModel->icon = errorIcon;
         activityTypeModel->font = _decorations.itemFont;

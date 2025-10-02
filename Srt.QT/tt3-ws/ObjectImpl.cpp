@@ -81,7 +81,7 @@ void ObjectImpl::destroy(
         _dataObject->destroy(); //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }

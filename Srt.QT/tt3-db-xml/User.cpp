@@ -316,7 +316,7 @@ auto User::createAccount(
     account->_emailAddresses = emailAddresses;
     account->_login = login;
     account->_passwordHash = passwordHash;
-    account->_capabilities = capabilities & tt3::db::api::Capabilities::All;
+    account->_capabilities = capabilities;
     _database->_markModified();
     //  ...schedule change notifications...
     _database->_changeNotifier.post(

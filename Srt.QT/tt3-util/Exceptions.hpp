@@ -223,7 +223,7 @@ namespace tt3::util
         /// \exception
         ///     *this always.
         Q_NORETURN
-            void            raise() const override = 0;
+        void            raise() const override = 0;
 
         /// \brief
         ///     Returns a deep clone of this error.

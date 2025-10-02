@@ -139,58 +139,58 @@ void CreateAccountDialog::_setSelectedEmailAddress(const QString & emailAddress)
 
 tt3::ws::Capabilities CreateAccountDialog::_selectedCapabilities()
 {
-    tt3::ws::Capabilities result = tt3::ws::Capabilities::None;
+    tt3::ws::Capabilities result;
     if (_ui->administratorCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::Administrator;
+        result |= tt3::ws::Capability::Administrator;
     }
     if (_ui->manageUsersCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::ManageUsers;
+        result |= tt3::ws::Capability::ManageUsers;
     }
     if (_ui->manageActivityTypesCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::ManageActivityTypes;
+        result |= tt3::ws::Capability::ManageActivityTypes;
     }
     if (_ui->manageBeneficiariesCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::ManageBeheficiaries;
+        result |= tt3::ws::Capability::ManageBeheficiaries;
     }
     if (_ui->manageWorkloadsCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::ManageWorkloads;
+        result |= tt3::ws::Capability::ManageWorkloads;
     }
     if (_ui->managePublicActivitiesCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::ManagePublicActivities;
+        result |= tt3::ws::Capability::ManagePublicActivities;
     }
     if (_ui->managePublicTasksCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::ManagePublicTasks;
+        result |= tt3::ws::Capability::ManagePublicTasks;
     }
     if (_ui->managePrivateActivitiesCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::ManagePrivateActivities;
+        result |= tt3::ws::Capability::ManagePrivateActivities;
     }
     if (_ui->managePrivateTasksCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::ManagePrivateTasks;
+        result |= tt3::ws::Capability::ManagePrivateTasks;
     }
     if (_ui->logWorkCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::LogWork;
+        result |= tt3::ws::Capability::LogWork;
     }
     if (_ui->logEventsCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::LogEvents;
+        result |= tt3::ws::Capability::LogEvents;
     }
     if (_ui->generateReportsCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::GenerateReports;
+        result |= tt3::ws::Capability::GenerateReports;
     }
     if (_ui->backupAndRestoreCheckBox->isChecked())
     {
-        result |= tt3::ws::Capabilities::BackupAndRestore;
+        result |= tt3::ws::Capability::BackupAndRestore;
     }
     return result;
 }

@@ -51,7 +51,7 @@ bool PrincipalImpl::enabled(
         return _dataPrincipal->enabled();   //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -85,7 +85,7 @@ void PrincipalImpl::setEnabled(
         _dataPrincipal->setEnabled(enabled);   //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -108,7 +108,7 @@ auto PrincipalImpl::emailAddresses(
         return _dataPrincipal->emailAddresses();   //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -134,7 +134,7 @@ void PrincipalImpl::setEmailAddresses(
         _dataPrincipal->setEmailAddresses(emailAddresses);  //  may throw
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }

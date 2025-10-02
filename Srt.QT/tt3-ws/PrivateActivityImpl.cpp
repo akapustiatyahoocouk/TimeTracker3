@@ -48,7 +48,7 @@ bool PrivateActivityImpl::_canRead(
         try
         {
             Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-            if ((clientCapabilities & Capabilities::Administrator) != Capabilities::None)
+            if (clientCapabilities.contains(Capability::Administrator))
             {   //  Can read private activities of all users
                 return true;
             }
@@ -63,7 +63,7 @@ bool PrivateActivityImpl::_canRead(
             return false;
         }
         catch (const tt3::util::Exception & ex)
-        {
+        {   //  OOPS! Translate & re-throw
             WorkspaceException::translateAndThrow(ex);
         }
     }
@@ -72,7 +72,7 @@ bool PrivateActivityImpl::_canRead(
         return false;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -90,7 +90,7 @@ bool PrivateActivityImpl::_canModify(
         try
         {
             Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-            if ((clientCapabilities & Capabilities::Administrator) != Capabilities::None)
+            if (clientCapabilities.contains(Capability::Administrator))
             {   //  Can modify private activities of all users
                 return true;
             }
@@ -98,7 +98,7 @@ bool PrivateActivityImpl::_canModify(
             //  IF they ALSO have the corresponding capability
             tt3::db::api::IAccount * callerAccount =
                 _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
-            return (clientCapabilities & Capabilities::ManagePrivateActivities) != Capabilities::None &&
+            return clientCapabilities.contains(Capability::ManagePrivateActivities) &&
                    callerAccount != nullptr &&
                    callerAccount->user() == _dataPrivateActivity->owner();   //  may throw
         }
@@ -107,7 +107,7 @@ bool PrivateActivityImpl::_canModify(
             return false;
         }
         catch (const tt3::util::Exception & ex)
-        {
+        {   //  OOPS! Translate & re-throw
             WorkspaceException::translateAndThrow(ex);
         }
     }
@@ -116,7 +116,7 @@ bool PrivateActivityImpl::_canModify(
         return false;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }
@@ -134,7 +134,7 @@ bool PrivateActivityImpl::_canDestroy(
         try
         {
             Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-            if ((clientCapabilities & Capabilities::Administrator) != Capabilities::None)
+            if (clientCapabilities.contains(Capability::Administrator))
             {   //  Can destroy private activities of all users
                 return true;
             }
@@ -142,7 +142,7 @@ bool PrivateActivityImpl::_canDestroy(
             //  IF they ALSO have the corresponding capability
             tt3::db::api::IAccount * callerAccount =
                 _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
-            return (clientCapabilities & Capabilities::ManagePrivateActivities) != Capabilities::None &&
+            return clientCapabilities.contains(Capability::ManagePrivateActivities) &&
                    callerAccount != nullptr &&
                    callerAccount->user() == _dataPrivateActivity->owner();   //  may throw
         }
@@ -151,7 +151,7 @@ bool PrivateActivityImpl::_canDestroy(
             return false;
         }
         catch (const tt3::util::Exception & ex)
-        {
+        {   //  OOPS! Translate & re-throw
             WorkspaceException::translateAndThrow(ex);
         }
     }
@@ -160,7 +160,7 @@ bool PrivateActivityImpl::_canDestroy(
         return false;
     }
     catch (const tt3::util::Exception & ex)
-    {
+    {   //  OOPS! Translate & re-throw
         WorkspaceException::translateAndThrow(ex);
     }
 }

@@ -21,24 +21,24 @@ namespace
 {
     struct CapabilityName
     {
-        Capabilities    capability;
-        QString         name;
+        Capability  capability;
+        QString     name;
     };
     const CapabilityName capabilityNames[] =
     {
-        { Capabilities::Administrator, "Administrator" },
-        { Capabilities::ManageUsers, "ManageUsers" },
-        { Capabilities::ManageActivityTypes, "ManageActivityTypes" },
-        { Capabilities::ManageBeheficiaries, "ManageBeheficiaries" },
-        { Capabilities::ManageWorkloads, "ManageWorkloads" },
-        { Capabilities::ManagePublicActivities, "ManagePublicActivities" },
-        { Capabilities::ManagePublicTasks, "ManagePublicTasks" },
-        { Capabilities::ManagePrivateActivities, "ManagePrivateActivities" },
-        { Capabilities::ManagePrivateTasks, "ManagePrivateTasks" },
-        { Capabilities::LogWork, "LogWork" },
-        { Capabilities::LogEvents, "LogEvents" },
-        { Capabilities::GenerateReports, "GenerateReports" },
-        { Capabilities::BackupAndRestore, "BackupAndRestore" }
+        { Capability::Administrator, "Administrator" },
+        { Capability::ManageUsers, "ManageUsers" },
+        { Capability::ManageActivityTypes, "ManageActivityTypes" },
+        { Capability::ManageBeheficiaries, "ManageBeheficiaries" },
+        { Capability::ManageWorkloads, "ManageWorkloads" },
+        { Capability::ManagePublicActivities, "ManagePublicActivities" },
+        { Capability::ManagePublicTasks, "ManagePublicTasks" },
+        { Capability::ManagePrivateActivities, "ManagePrivateActivities" },
+        { Capability::ManagePrivateTasks, "ManagePrivateTasks" },
+        { Capability::LogWork, "LogWork" },
+        { Capability::LogEvents, "LogEvents" },
+        { Capability::GenerateReports, "GenerateReports" },
+        { Capability::BackupAndRestore, "BackupAndRestore" }
     };
 
     const char Separator = '+';
@@ -52,7 +52,7 @@ QString tt3::util::toString<Capabilities>(
     QString result;
     for (size_t i = 0; i < sizeof(capabilityNames) / sizeof(capabilityNames[0]); i++)
     {
-        if ((value & capabilityNames[i].capability) != Capabilities::None)
+        if (value.contains(capabilityNames[i].capability))
         {
             if (!result.isEmpty())
             {
@@ -70,7 +70,7 @@ auto tt3::util::fromString<Capabilities>(
         qsizetype & scan
     ) -> Capabilities
 {
-    Capabilities result = Capabilities::None;
+    Capabilities result;
     if (scan >= s.length())
     {
         return result;
@@ -80,7 +80,7 @@ auto tt3::util::fromString<Capabilities>(
     for (; ; )
     {
         //  Does a capability name start at s[scan] |
-        Capabilities addend = Capabilities::None;
+        Capabilities addend;
         for (size_t i = 0; i < sizeof(capabilityNames) / sizeof(capabilityNames[0]); i++)
         {
             if (s.mid(prescan).startsWith(capabilityNames[i].name))
@@ -90,7 +90,7 @@ auto tt3::util::fromString<Capabilities>(
                 break;
             }
         }
-        if (addend == Capabilities::None)
+        if (addend.isEmpty())
         {   //  No more!
             separatorConsumed = false;
             break;

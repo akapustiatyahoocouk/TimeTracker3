@@ -464,6 +464,7 @@ void MainFrame::_refreshCurrentActivityControls()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             currentActivityLabelPalette.setColor(QPalette::Window, _labelDecorations.errorBackground);
             currentActivityLabelPalette.setColor(QPalette::WindowText, _labelDecorations.errorForeground);
             _ui->currentActivityLabel->setText(ex.errorMessage());
