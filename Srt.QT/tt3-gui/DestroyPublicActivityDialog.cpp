@@ -68,7 +68,7 @@ void DestroyPublicActivityDialog::accept()
 {
     try
     {
-        //  If the publicActivity is currently underway,
+        //  If the PublicActivity is currently underway,
         //  stop it; there's no need to record a Work unit.
         if (theCurrentActivity == _publicActivity)
         {

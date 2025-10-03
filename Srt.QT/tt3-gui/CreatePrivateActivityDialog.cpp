@@ -151,6 +151,7 @@ void CreatePrivateActivityDialog::_refresh()
     _ui->hoursComboBox->setEnabled(_ui->timeoutCheckBox->isChecked());
     _ui->minutesComboBox->setEnabled(_ui->timeoutCheckBox->isChecked());
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(
+        _selectedUser() != nullptr &&
         _validator->isValidDisplayName(_ui->displayNameLineEdit->text()) &&
         _validator->isValidDescription(_ui->descriptionPlainTextEdit->toPlainText()) &&
         _validator->isValidTimeout(_selectedTimeout()));

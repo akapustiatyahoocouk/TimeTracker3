@@ -22,6 +22,7 @@ SOURCES += \
     CurrentWorkspace.cpp \
     DestroyAccountDialog.cpp \
     DestroyActivityTypeDialog.cpp \
+    DestroyPrivateActivityDialog.cpp \
     DestroyPublicActivityDialog.cpp \
     DestroyPublicTaskDialog.cpp \
     DestroyUserDialog.cpp \
@@ -45,6 +46,7 @@ SOURCES += \
     ManageUsersDialog.cpp \
     ModifyAccountDialog.cpp \
     ModifyActivityTypeDialog.cpp \
+    ModifyPrivateActivityDialog.cpp \
     ModifyPublicActivityDialog.cpp \
     ModifyPublicTaskDialog.cpp \
     ModifyUserDialog.cpp \
@@ -84,6 +86,7 @@ HEADERS += \
     CurrentWorkspace.hpp \
     DestroyAccountDialog.hpp \
     DestroyActivityTypeDialog.hpp \
+    DestroyPrivateActivityDialog.hpp \
     DestroyPublicActivityDialog.hpp \
     DestroyPublicTaskDialog.hpp \
     DestroyUserDialog.hpp \
@@ -103,6 +106,7 @@ HEADERS += \
     ManageUsersDialog.hpp \
     ModifyAccountDialog.hpp \
     ModifyActivityTypeDialog.hpp \
+    ModifyPrivateActivityDialog.hpp \
     ModifyPublicActivityDialog.hpp \
     ModifyPublicTaskDialog.hpp \
     ModifyUserDialog.hpp \
@@ -147,6 +151,7 @@ FORMS += \
     ManageUsersDialog.ui \
     ModifyAccountDialog.ui \
     ModifyActivityTypeDialog.ui \
+    ModifyPrivateActivityDialog.ui \
     ModifyPublicActivityDialog.ui \
     ModifyPublicTaskDialog.ui \
     ModifyUserDialog.ui \

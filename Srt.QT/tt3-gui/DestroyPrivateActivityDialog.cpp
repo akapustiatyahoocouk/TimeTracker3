@@ -1,5 +1,5 @@
 //
-//  tt3-gui/DestroyPublicTaskDialog.cpp - tt3::gui::DestroyPublicTaskDialog class implementation
+//  tt3-gui/DestroyPrivateActivityDialog.cpp - tt3::gui::DestroyPrivateActivityDialog class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -24,23 +24,23 @@ namespace tt3::gui
 
 //////////
 //  Construction/destrution
-DestroyPublicTaskDialog::DestroyPublicTaskDialog(
+DestroyPrivateActivityDialog::DestroyPrivateActivityDialog(
         ::QWidget * parent,
-        tt3::ws::PublicTask publicTask,
+        tt3::ws::PrivateActivity privateActivity,
         const tt3::ws::Credentials & credentials
     ) : AskYesNoDialog(
             parent,
-            QIcon(":/tt3-gui/Resources/Images/Actions/DestroyPublicTaskLarge.png"),
-            "Destroy public task",
-            _prompt(publicTask, credentials)),
-        _publicTask(publicTask),
-        _credentials(credentials)
+            QIcon(":/tt3-gui/Resources/Images/Actions/DestroyPrivateActivityLarge.png"),
+            "Destroy private activity",
+            _prompt(privateActivity, credentials)),
+    _privateActivity(privateActivity),
+    _credentials(credentials)
 {
 }
 
 //////////
 //  Operations
-DestroyPublicTaskDialog::Result DestroyPublicTaskDialog::doModal()
+DestroyPrivateActivityDialog::Result DestroyPrivateActivityDialog::doModal()
 {
     return (AskYesNoDialog::doModal() == AskYesNoDialog::Result::Yes) ?
                Result::Ok :
@@ -49,35 +49,33 @@ DestroyPublicTaskDialog::Result DestroyPublicTaskDialog::doModal()
 
 //////////
 //  Implementation helpers
-QString DestroyPublicTaskDialog::_prompt(
-        tt3::ws::PublicTask publicTask,
+QString DestroyPrivateActivityDialog::_prompt(
+        tt3::ws::PrivateActivity privateActivity,
         const tt3::ws::Credentials & credentials
     )
 {
     QString result =
-        "Are you sure you want to destroy public task\n" +
-        publicTask->displayName(credentials) + " ?";
+        "Are you sure you want to destroy private activity\n" +
+        privateActivity->displayName(credentials) + " ?";
     //  TODO if there are Works/Events logged against this
-    //  task OR ITS DESCENDNTS, count them and add a line
-    //  to the prompt, including the number of descendants -
-    //  they all will be delete-cascaded.
+    //  activity, count them and add a line to the prompt.
     return result;
 }
 
 //////////
 //  Signal handlers
-void DestroyPublicTaskDialog::accept()
+void DestroyPrivateActivityDialog::accept()
 {
     try
     {
-        //  If the PublicTask is currently underway,
+        //  If the PrivateActivity is currently underway,
         //  stop it; there's no need to record a Work unit.
-        if (theCurrentActivity == _publicTask)
+        if (theCurrentActivity == _privateActivity)
         {
             theCurrentActivity.drop();
         }
         //  Destroy!
-        _publicTask->destroy(_credentials);
+        _privateActivity->destroy(_credentials);
         AskYesNoDialog::accept();
     }
     catch (const tt3::util::Exception & ex)
@@ -90,4 +88,4 @@ void DestroyPublicTaskDialog::accept()
     }
 }
 
-//  End of tt3-gui/DestroyPublicTaskDialog.cpp
+//  End of tt3-gui/DestroyPrivateActivityDialog.cpp

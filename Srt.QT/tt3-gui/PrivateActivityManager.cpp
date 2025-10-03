@@ -153,6 +153,10 @@ void PrivateActivityManager::refresh()
             _filterItems(workspaceModel);
         }
         _refreshWorkspaceTree(workspaceModel);
+        if (!_ui->filterLineEdit->text().trimmed().isEmpty())
+        {   //  Filtered - show all
+            _ui->privateActivitiesTreeWidget->expandAll();
+        }
 
         tt3::ws::PrivateActivity selectedPrivateActivity = _selectedPrivateActivity();
         bool readOnly = _workspace->isReadOnly();
@@ -163,7 +167,8 @@ void PrivateActivityManager::refresh()
                 _workspace->grantsAny(  //  may throw
                     _credentials,
                     tt3::ws::Capability::Administrator |
-                    tt3::ws::Capability::ManagePrivateActivities));
+                    tt3::ws::Capability::ManagePrivateActivities) &&
+                _selectedUser() != nullptr);
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -686,10 +691,8 @@ void PrivateActivityManager::_createPrivateActivityPushButtonClicked()
 
 void PrivateActivityManager::_modifyPrivateActivityPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
-    /*  TODO uncomment
     if (auto privateActivity = _selectedPrivateActivity())
-    {   //  TODO use the same slection/condition tandem in other similar contexts
+    {
         try
         {
             ModifyPrivateActivityDialog dlg(this, privateActivity, _credentials); //  may throw
@@ -705,13 +708,10 @@ void PrivateActivityManager::_modifyPrivateActivityPushButtonClicked()
             requestRefresh();
         }
     }
-    */
 }
 
 void PrivateActivityManager::_destroyPrivateActivityPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
-    /*  TODO uncomment
     if (auto privateActivity = _selectedPrivateActivity())
     {
         try
@@ -728,7 +728,6 @@ void PrivateActivityManager::_destroyPrivateActivityPushButtonClicked()
             requestRefresh();
         }
     }
-    */
 }
 
 void PrivateActivityManager::_startPrivateActivityPushButtonClicked()

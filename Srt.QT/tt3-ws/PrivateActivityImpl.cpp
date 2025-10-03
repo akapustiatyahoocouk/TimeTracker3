@@ -34,6 +34,31 @@ PrivateActivityImpl::~PrivateActivityImpl()
 }
 
 //////////
+//  Operations (associations)
+auto PrivateActivityImpl::owner(
+        const Credentials & credentials
+    ) const -> User
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials)) //  may throw
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _workspace->_getProxy(_dataPrivateActivity->owner()); //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+//////////
 //  Implementation (Access control)
 bool PrivateActivityImpl::_canRead(
         const Credentials & credentials
