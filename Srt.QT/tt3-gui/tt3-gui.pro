@@ -41,6 +41,7 @@ SOURCES += \
     LabelDecorations.cpp \
     LoginDialog.cpp \
     ManageActivityTypesDialog.cpp \
+    ManagePrivateActivitiesDialog.cpp \
     ManagePublicActivitiesDialog.cpp \
     ManagePublicTasksDialog.cpp \
     ManageUsersDialog.cpp \
@@ -101,6 +102,7 @@ HEADERS += \
     Linkage.hpp \
     LoginDialog.hpp \
     ManageActivityTypesDialog.hpp \
+    ManagePrivateActivitiesDialog.hpp \
     ManagePublicActivitiesDialog.hpp \
     ManagePublicTasksDialog.hpp \
     ManageUsersDialog.hpp \
@@ -146,6 +148,7 @@ FORMS += \
     GeneralStartupPreferencesEditor.ui \
     LoginDialog.ui \
     ManageActivityTypesDialog.ui \
+    ManagePrivateActivitiesDialog.ui \
     ManagePublicActivitiesDialog.ui \
     ManagePublicTasksDialog.ui \
     ManageUsersDialog.ui \

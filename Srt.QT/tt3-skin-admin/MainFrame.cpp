@@ -636,8 +636,12 @@ void MainFrame::_onActionManagePublicTasks()
 }
 
 void MainFrame::_onActionManagePrivateActivities()
-{
-    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+{   //  TODO switch to "Private activities" tab instead
+    tt3::gui::ManagePrivateActivitiesDialog dlg(
+        this,
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
 }
 
 void MainFrame::_onActionManagePrivateTasks()
