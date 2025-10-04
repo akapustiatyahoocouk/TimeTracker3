@@ -120,7 +120,6 @@ namespace tt3::gui
         //  View model
         //  Model services are "static" because they are oiggybacked
         //  on by e.g. "select new parent for a public task" dialog.
-        //  TODO similar "static" treatment in other XXXManager classes
         struct _WorkspaceModelImpl;
         struct _PublicTaskModelImpl;
 

@@ -38,13 +38,11 @@ QIcon EnterTaskCompletionCommentDialog::_dialogIcon(
         tt3::ws::Task task
     )
 {
-    /*  TODO uncomment
     if (std::dynamic_pointer_cast<tt3::ws::PrivateTaskImpl>(task))
     {
         return QIcon(":/tt3-gui/Resources/Images/Actions/CompletePrivateTaskLarge.png");
     }
     else
-    */
     {
         Q_ASSERT(std::dynamic_pointer_cast<tt3::ws::PublicTaskImpl>(task));
         return QIcon(":/tt3-gui/Resources/Images/Actions/CompletePublicTaskLarge.png");
@@ -55,13 +53,11 @@ QString EnterTaskCompletionCommentDialog::_dialogTitle(
         tt3::ws::Task task
     )
 {
-    /*  TODO uncomment
     if (std::dynamic_pointer_cast<tt3::ws::PrivateTaskImpl>(task))
     {
         return "Complete private task";
     }
     else
-    */
     {
         Q_ASSERT(std::dynamic_pointer_cast<tt3::ws::PublicTaskImpl>(task));
         return "Complete public task";

@@ -140,11 +140,49 @@ namespace tt3::ws
         /// \return
         ///     The set of all private activities of this User
         ///     which are NOT also tasks.
-        /// \exception DatabaseException
+        /// \exception WorkspaceException
         ///     If an error occurs.
         auto        privateActivities(
                             const Credentials & credentials
                         ) const -> PrivateActivities;
+
+        /// \brief
+        ///     Returns the set of all private activities of this User,
+        ///     including those which are also tasks.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all private activities of this User,
+        ///     including those which are also tasks.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        privateActivitiesAndTasks(
+                            const Credentials & credentials
+                        ) const -> PrivateActivities;
+
+        /// \brief
+        ///     Returns the set of all private tasks of this User.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all private tasks of this User.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        privateTasks(
+                            const Credentials & credentials
+                        ) const -> PrivateTasks;
+
+        /// \brief
+        ///     Returns the set of root private tasks of this User.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of root private tasks of this User.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        rootPrivateTasks(
+                            const Credentials & credentials
+                        ) const -> PrivateTasks;
 
         //////////
         //  Operations (life cycle)
@@ -209,16 +247,67 @@ namespace tt3::ws
         /// \exception WorkspaceException
         ///     If an error occurs.
         auto        createPrivateActivity(
-                        const Credentials & credentials,
-                        const QString & displayName,
-                        const QString & description,
-                        const InactivityTimeout & timeout,
-                        bool requireCommentOnStart,
-                        bool requireCommentOnStop,
-                        bool fullScreenReminder,
-                        ActivityType activityType,
-                        Workload workload
-                    ) -> PrivateActivity;
+                            const Credentials & credentials,
+                            const QString & displayName,
+                            const QString & description,
+                            const InactivityTimeout & timeout,
+                            bool requireCommentOnStart,
+                            bool requireCommentOnStop,
+                            bool fullScreenReminder,
+                            ActivityType activityType,
+                            Workload workload
+                        ) -> PrivateActivity;
+
+        /// \brief
+        ///     Creates a new root PrivateTask in this database
+        ///     (that is, a PrivateTask that has no parent).
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param displayName
+        ///     The short (1 line) user-readable display name
+        ///     for the new PrivateTask.
+        /// \param description
+        ///     The multi-line user-readable description for the new
+        ///     PrivateTask; with lines separated by a newline '\\n' character.
+        /// \param timeout
+        ///     The user-does-nothing timeout for the new PrivateTask;
+        ///     absent == none.
+        /// \param requireCommentOnStart
+        ///     True if the newly created PrivateTask small require the
+        ///     user to enter a comment when it is started.
+        /// \param requireCommentOnStop
+        ///     True if the newly created PrivateTask small require the
+        ///     user to enter a comment when it is started.
+        /// \param fullScreenReminder
+        ///     True if a full-screen reminder shall be displayed while the
+        ///     newly created PrivateTask is underway.
+        /// \param activityType
+        ///     The type for the new PrivateTask; nullptr == don't assign.
+        /// \param workload
+        ///     The Workload for the new PrivateTask; nullptr == don't assign.
+        /// \param completed
+        ///     True if the PrivateTask shall initially be marked as
+        ///     "completed", false if not.
+        /// \param requireCommentOnCompletion
+        ///     True if the newly created PrivateTask small require the
+        ///     user to enter a comment when marking it as "completed".
+        /// \return
+        ///     The newly created PrivateTask.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        createPrivateTask(
+                            const Credentials & credentials,
+                            const QString & displayName,
+                            const QString & description,
+                            const InactivityTimeout & timeout,
+                            bool requireCommentOnStart,
+                            bool requireCommentOnStop,
+                            bool fullScreenReminder,
+                            ActivityType activityType,
+                            Workload workload,
+                            bool completed,
+                            bool requireCommentOnCompletion
+                        ) -> PrivateTask;
 
         //////////
         //  Implementation

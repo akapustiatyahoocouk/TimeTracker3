@@ -74,7 +74,7 @@ namespace tt3::db::xml
         //  Associations
         PublicTask *    _parent;    //  counts as "reference" unless nullptr
         //  Aggregations
-        PublicTasks     _children;  //  cunt as "references"
+        PublicTasks     _children;  //  count as "references"
 
         //  Helpers
         virtual bool    _siblingExists(const QString & displayName) const override;

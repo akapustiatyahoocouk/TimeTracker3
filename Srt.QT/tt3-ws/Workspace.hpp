@@ -40,6 +40,7 @@ namespace tt3::ws
         friend class PrivateActivityImpl;
         friend class TaskImpl;
         friend class PublicTaskImpl;
+        friend class PrivateTaskImpl;
 
         //////////
         //  Construction/destruction - from friends only
@@ -549,6 +550,9 @@ namespace tt3::ws
         auto        _getProxy(  //  throws WorkspaceException
                             tt3::db::api::IPrivateActivity * dataPublicActivity
                         ) const -> PrivateActivity;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IPrivateTask * dataPrivateTask
+                        ) const -> PrivateTask;
 
         auto        _getProxy(  //  throws WorkspaceException
                             tt3::db::api::IWorkload * dataWorkload

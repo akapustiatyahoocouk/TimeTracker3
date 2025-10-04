@@ -148,5 +148,17 @@
         <file>Resources/Images/Objects/WorkStreamLarge.png</file>
         <file>Resources/Images/Objects/WorkStreamSmall.png</file>
         <file>Resources/Light.qss</file>
+        <file>Resources/Images/Actions/CreatePrivateTaskLarge.png</file>
+        <file>Resources/Images/Actions/CreatePrivateTaskSmall.png</file>
+        <file>Resources/Images/Actions/DestroyPrivateTaskLarge.png</file>
+        <file>Resources/Images/Actions/DestroyPrivateTaskSmall.png</file>
+        <file>Resources/Images/Actions/ModifyPrivateTaskLarge.png</file>
+        <file>Resources/Images/Actions/ModifyPrivateTaskSmall.png</file>
+        <file>Resources/Images/Actions/StartPrivateTaskLarge.png</file>
+        <file>Resources/Images/Actions/StartPrivateTaskSmall.png</file>
+        <file>Resources/Images/Actions/StopPrivateTaskLarge.png</file>
+        <file>Resources/Images/Actions/StopPrivateTaskSmall.png</file>
+        <file>Resources/Images/Actions/CompletePrivateTaskLarge.png</file>
+        <file>Resources/Images/Actions/CompletePrivateTaskSmall.png</file>
     </qresource>
 </RCC>

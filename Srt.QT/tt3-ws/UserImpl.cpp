@@ -261,6 +261,132 @@ auto UserImpl::privateActivities(
     }
 }
 
+auto UserImpl::privateActivitiesAndTasks(
+        const Credentials & credentials
+    ) const -> PrivateActivities
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        Capabilities capabilities = _workspace->_validateAccessRights(credentials);
+        if (capabilities.contains(Capability::Administrator))
+        {   //  The caller can see all private activities and tasks of all users
+            PrivateActivities result;
+            for (tt3::db::api::IPrivateActivity * dataPrivateActivity : _dataUser->privateActivitiesAndTasks()) //  may throw
+            {
+                result.insert(_workspace->_getProxy(dataPrivateActivity));
+            }
+            return result;
+        }
+        else
+        {   //  The caller can only see his own private activities and tasks
+            tt3::db::api::IAccount * dataAccount =
+                _workspace->_database->login(credentials._login, credentials._password);    //  may throw
+            if (dataAccount->user() == _dataUser)
+            {
+                PrivateActivities result;
+                for (tt3::db::api::IPrivateActivity * dataPrivateActivity : _dataUser->privateActivitiesAndTasks()) //  may throw
+                {
+                    result.insert(_workspace->_getProxy(dataPrivateActivity));
+                }
+                return result;
+            }
+            //  OOPS! The caller is trying to see someone else's private activities and tasks
+            throw AccessDeniedException();
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+auto UserImpl::privateTasks(
+        const Credentials & credentials
+    ) const -> PrivateTasks
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        Capabilities capabilities = _workspace->_validateAccessRights(credentials);
+        if (capabilities.contains(Capability::Administrator))
+        {   //  The caller can see all private tasks of all users
+            PrivateTasks result;
+            for (tt3::db::api::IPrivateTask * dataPrivateTask : _dataUser->privateTasks()) //  may throw
+            {
+                result.insert(_workspace->_getProxy(dataPrivateTask));
+            }
+            return result;
+        }
+        else
+        {   //  The caller can only see his own private tasks
+            tt3::db::api::IAccount * dataAccount =
+                _workspace->_database->login(credentials._login, credentials._password);    //  may throw
+            if (dataAccount->user() == _dataUser)
+            {
+                PrivateTasks result;
+                for (tt3::db::api::IPrivateTask * dataPrivateTask : _dataUser->privateTasks())  //  may throw
+                {
+                    result.insert(_workspace->_getProxy(dataPrivateTask));
+                }
+                return result;
+            }
+            //  OOPS! The caller is trying to see someone else's private tasks
+            throw AccessDeniedException();
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+auto UserImpl::rootPrivateTasks(
+        const Credentials & credentials
+    ) const -> PrivateTasks
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        Capabilities capabilities = _workspace->_validateAccessRights(credentials);
+        if (capabilities.contains(Capability::Administrator))
+        {   //  The caller can see all private tasks of all users
+            PrivateTasks result;
+            for (tt3::db::api::IPrivateTask * dataPrivateTask : _dataUser->rootPrivateTasks()) //  may throw
+            {
+                result.insert(_workspace->_getProxy(dataPrivateTask));
+            }
+            return result;
+        }
+        else
+        {   //  The caller can only see his own private tasks
+            tt3::db::api::IAccount * dataAccount =
+                _workspace->_database->login(credentials._login, credentials._password);    //  may throw
+            if (dataAccount->user() == _dataUser)
+            {
+                PrivateTasks result;
+                for (tt3::db::api::IPrivateTask * dataPrivateTask : _dataUser->rootPrivateTasks())  //  may throw
+                {
+                    result.insert(_workspace->_getProxy(dataPrivateTask));
+                }
+                return result;
+            }
+            //  OOPS! The caller is trying to see someone else's private tasks
+            throw AccessDeniedException();
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
 //////////
 //  Operations (life cycle)
 auto UserImpl::createAccount(
@@ -346,6 +472,63 @@ auto UserImpl::createPrivateActivity(
                 (activityType != nullptr) ? activityType->_dataActivityType : nullptr,
                 (workload != nullptr) ? workload->_dataWorkload : nullptr);
         return _workspace->_getProxy(dataPrivateActivity);;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+auto UserImpl::createPrivateTask(
+        const Credentials & credentials,
+        const QString & displayName,
+        const QString & description,
+        const InactivityTimeout & timeout,
+        bool requireCommentOnStart,
+        bool requireCommentOnStop,
+        bool fullScreenReminder,
+        ActivityType activityType,
+        Workload workload,
+        bool completed,
+        bool requireCommentOnCompletion
+    ) -> PrivateTask
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();
+
+    try
+    {
+        //  Check access rights
+        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        if (clientCapabilities.contains(Capability::Administrator))
+        {   //  Can create PrivateTasks for any User
+        }
+        else if (clientCapabilities.contains(Capability::ManagePrivateTasks))
+        {   //  Can ONLY create their own PrivateTasks
+            if (_workspace->_database->login(   //  may throw
+                    credentials._login, credentials._password)->user() != _dataUser)
+            {
+                throw AccessDeniedException();
+            }
+        }
+        else
+        {   //  OOPS! Can't!
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        tt3::db::api::IPrivateTask * dataPrivateTask =
+            _dataUser->createPrivateTask(
+                displayName,
+                description,
+                timeout,
+                requireCommentOnStart,
+                requireCommentOnStop,
+                fullScreenReminder,
+                (activityType != nullptr) ? activityType->_dataActivityType : nullptr,
+                (workload != nullptr) ? workload->_dataWorkload : nullptr,
+                completed,
+                requireCommentOnCompletion);
+        return _workspace->_getProxy(dataPrivateTask);;
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw

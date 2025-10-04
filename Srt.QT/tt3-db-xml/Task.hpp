@@ -27,6 +27,8 @@ namespace tt3::db::xml
 
         friend class Database;
         friend class PublicTask;
+        friend class PrivateTask;
+        friend class User;
 
         //////////
         //  Construction/destruction (from DB type only)

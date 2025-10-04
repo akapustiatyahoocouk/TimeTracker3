@@ -13,6 +13,7 @@ SOURCES += \
     ObjectImpl.cpp \
     PrincipalImpl.cpp \
     PrivateActivityImpl.cpp \
+    PrivateTaskImpl.cpp \
     PublicActivityImpl.cpp \
     PublicTaskImpl.cpp \
     TaskImpl.cpp \
@@ -36,6 +37,7 @@ HEADERS += \
     Object.hpp \
     Principal.hpp \
     PrivateActivity.hpp \
+    PrivateTask.hpp \
     PublicActivity.hpp \
     PublicTask.hpp \
     Task.hpp \

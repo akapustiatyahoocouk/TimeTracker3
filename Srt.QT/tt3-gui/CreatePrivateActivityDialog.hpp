@@ -47,7 +47,7 @@ namespace tt3::gui
         ///     Constructs the dialog.
         /// \param parent
         ///     The parent widget for the dialog; nullptr == none.
-        /// \param user
+        /// \param owner
         ///     The User to create a new PrivateActivity for.
         /// \param credentials
         ///     The credentials to use for data access.
@@ -55,7 +55,7 @@ namespace tt3::gui
         ///     If a data access error occurs.
         CreatePrivateActivityDialog(
                 QWidget * parent,
-                tt3::ws::User user,
+                tt3::ws::User owner,
                 const tt3::ws::Credentials & credentials
             );
 

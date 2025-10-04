@@ -26,6 +26,7 @@ namespace tt3::ws
 
         friend std::shared_ptr<TaskImpl>;
         friend class PublicTaskImpl;
+        friend class PrivateTaskImpl;
 
         //////////
         //  Construction/destruction - from friends only

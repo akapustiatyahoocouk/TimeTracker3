@@ -227,7 +227,11 @@ auto User::privateTasks(
 auto User::rootPrivateTasks(
     ) const -> tt3::db::api::PrivateTasks
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return tt3::db::api::PrivateTasks(_rootPrivateTasks.begin(), _rootPrivateTasks.end());
 }
 
 auto User::permittedWorkloads(
@@ -455,19 +459,129 @@ auto User::createPrivateActivity(
 }
 
 auto User::createPrivateTask(
-        const QString & /*displayName*/,
-        const QString & /*description*/,
-        const tt3::db::api::InactivityTimeout & /*timeout*/,
-        bool /*requireCommentOnStart*/,
-        bool /*requireCommentOnStop*/,
-        bool /*fullScreenReminder*/,
-        tt3::db::api::IActivityType * /*activityType*/,
-        tt3::db::api::IWorkload * /*workload*/,
-        bool /*completed*/,
-        bool /*requireCommentOnCompletion*/
+        const QString & displayName,
+        const QString & description,
+        const tt3::db::api::InactivityTimeout & timeout,
+        bool requireCommentOnStart,
+        bool requireCommentOnStop,
+        bool fullScreenReminder,
+        tt3::db::api::IActivityType * activityType,
+        tt3::db::api::IWorkload * workload,
+        bool completed,
+        bool requireCommentOnCompletion
     ) -> tt3::db::api::IPrivateTask *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (!_database->_validator->privateTask()->isValidDisplayName(displayName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PrivateTask::instance(),
+            "displayName",
+            displayName);
+    }
+    if (!_database->_validator->privateTask()->isValidDescription(description))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PrivateTask::instance(),
+            "description",
+            description);
+    }
+    if (timeout.has_value() &&
+        !_database->_validator->privateTask()->isValidTimeout(timeout))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PrivateTask::instance(),
+            "timeout",
+            timeout.value());
+    }
+    ActivityType * xmlActivityType = nullptr;
+    if (activityType != nullptr)
+    {
+        xmlActivityType = dynamic_cast<ActivityType*>(activityType);
+        if (xmlActivityType == nullptr ||
+            xmlActivityType->_database != this->_database ||
+            !xmlActivityType->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(activityType->type());
+        }
+    }
+    Workload * xmlWorkload = nullptr;
+    if (workload != nullptr)
+    {
+        xmlWorkload = dynamic_cast<Workload*>(workload);
+        if (xmlWorkload == nullptr ||
+            xmlWorkload->_database != this->_database ||
+            !xmlWorkload->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(workload->type());
+        }
+    }
+
+    //  Display names must be unique
+    if (_findRootPrivateTask(displayName) != nullptr)
+    {   //  OOPS!
+        throw tt3::db::api::AlreadyExistsException(
+            tt3::db::api::ObjectTypes::PrivateTask::instance(),
+            "displayName",
+            displayName);
+    }
+
+    //  Do the work - create & initialize the PrivateTask...
+    PrivateTask * privateTask =
+        new PrivateTask(this, _database->_generateOid());   //  registers with User
+    privateTask->_displayName = displayName;
+    privateTask->_description = description;
+    privateTask->_timeout = timeout;
+    privateTask->_requireCommentOnStart = requireCommentOnStart;
+    privateTask->_requireCommentOnStop = requireCommentOnStop;
+    privateTask->_fullScreenReminder = fullScreenReminder;
+    privateTask->_completed = completed;
+    privateTask->_requireCommentOnCompletion = requireCommentOnCompletion;
+    if (xmlActivityType != nullptr)
+    {   //  Link with ActivityType
+        privateTask->_activityType = xmlActivityType;
+        xmlActivityType->_activities.insert(privateTask);
+        xmlActivityType->addReference();
+        privateTask->addReference();
+    }
+    if (xmlWorkload != nullptr)
+    {   //  Link with Workload
+        privateTask->_workload = xmlWorkload;
+        xmlWorkload->_contributingActivities.insert(privateTask);
+        xmlWorkload->addReference();
+        privateTask->addReference();
+    }
+    _database->_markModified();
+    //  ...schedule change notifications...
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectModifiedNotification(
+            _database, this->type(), this->_oid));
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            _database, privateTask->type(), privateTask->_oid));
+    if (xmlActivityType != nullptr)
+    {
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, xmlActivityType->type(), xmlActivityType->_oid));
+    }
+    if (xmlWorkload != nullptr)
+    {
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, xmlWorkload->type(), xmlWorkload->_oid));
+    }
+    //  ...and we're done
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
+    return privateTask;
 }
 
 //////////
@@ -497,6 +611,20 @@ auto User::_findPrivateActivity(
         if (privateActivity->_displayName == displayName)
         {
             return privateActivity;
+        }
+    }
+    return nullptr;
+}
+
+auto User::_findRootPrivateTask(
+        const QString & displayName
+    ) const -> PrivateTask *
+{
+    for (PrivateTask * privateTask : _rootPrivateTasks)
+    {
+        if (privateTask->_displayName == displayName)
+        {
+            return privateTask;
         }
     }
     return nullptr;
@@ -535,6 +663,10 @@ void User::_serializeAggregations(
         objectElement,
         "PrivateActivities",
         _privateActivities);
+    _database->_serializeAggregation(
+        objectElement,
+        "PrivateTasks",
+        _rootPrivateTasks);
 }
 
 void User::_serializeAssociations(
@@ -591,6 +723,14 @@ void User::_deserializeAggregations(
         [&](auto oid)
         {
             return new PrivateActivity(this, oid);
+        });
+    _database->_deserializeAggregation<PrivateTask>(
+        objectElement,
+        "PrivateTasks",
+        _rootPrivateTasks,
+        [&](auto oid)
+        {
+            return new PrivateTask(this, oid);
         });
 }
 
@@ -654,6 +794,16 @@ void User::_validate(
             throw tt3::db::api::DatabaseCorruptException(_database->_address);
         }
         privateActivity->_validate(validatedObjects);
+    }
+    for (PrivateTask * privateTask : _rootPrivateTasks)
+    {
+        if (privateTask == nullptr || !privateTask->_isLive ||
+            privateTask->_database != _database ||
+            privateTask->_owner != this)
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
+        privateTask->_validate(validatedObjects);
     }
 
     //  Validate associations

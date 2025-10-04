@@ -21,8 +21,8 @@ namespace tt3::gui
 {
     namespace Ui { class CreatePublicTaskDialog; }
 
-    /// \class CreatePublicActivityDialog tt3-gui/API.hpp
-    /// \brief The modal "Create public activity" dialog
+    /// \class CreatePublicTaskDialog tt3-gui/API.hpp
+    /// \brief The modal "Create public task" dialog
     class TT3_GUI_PUBLIC CreatePublicTaskDialog final
         :   private QDialog
     {

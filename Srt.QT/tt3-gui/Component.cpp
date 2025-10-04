@@ -100,7 +100,8 @@ Component::Settings::Settings()
         confirmExit(this, M(ConfirmExit), true),
         //  Properties (view configurations)
         showDisabledUsersAndAccounts(this, M(ShowDisabledUsersAndAccounts), true),
-        showCompletedPublicTasks(this, M(ShowCompletedPublicTasks), true)
+        showCompletedPublicTasks(this, M(ShowCompletedPublicTasks), true),
+        showCompletedPrivateTasks(this, M(ShowCompletedPrivateTasks), true)
 {
 }
 

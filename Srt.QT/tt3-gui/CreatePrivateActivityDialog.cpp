@@ -22,13 +22,13 @@ using namespace tt3::gui;
 //  Construction/destruction
 CreatePrivateActivityDialog::CreatePrivateActivityDialog(
         QWidget * parent,
-        tt3::ws::User user,
+        tt3::ws::User owner,
         const tt3::ws::Credentials & credentials
     ) : QDialog(parent),
         //  Implementation
-        _workspace(user->workspace()),
+        _workspace(owner->workspace()),
         _credentials(credentials),
-        _validator(user->workspace()->validator()->privateActivity()),
+        _validator(owner->workspace()->validator()->privateActivity()),
         //  Controls
         _ui(new Ui::CreatePrivateActivityDialog)
 {
@@ -58,7 +58,7 @@ CreatePrivateActivityDialog::CreatePrivateActivityDialog(
             u->realName(_credentials),  //  may throw
             QVariant::fromValue(u));
     }
-    _setSelectedUser(user);
+    _setSelectedUser(owner);
 
     //  Fill the "activity type" combo box (may throw)
     QList<tt3::ws::ActivityType> activityTypes =

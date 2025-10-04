@@ -41,6 +41,7 @@
 #include "tt3-db-xml/PrivateActivity.hpp"
 #include "tt3-db-xml/Task.hpp"
 #include "tt3-db-xml/PublicTask.hpp"
+#include "tt3-db-xml/PrivateTask.hpp"
 
 #include "tt3-db-xml/Workload.hpp"
 

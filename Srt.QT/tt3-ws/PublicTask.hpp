@@ -55,7 +55,7 @@ namespace tt3::ws
         /// \brief
         ///     Sets the immediate parent of this public task.
         /// \details
-        ///     Setting a parent to nullptr makes this a root private task.
+        ///     Setting a parent to nullptr makes this a root public task.
         ///     Attempting to create parenthood loops is an error.
         /// \param credentials
         ///     The credentials of the service caller.

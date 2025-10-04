@@ -58,6 +58,11 @@ MainFrame::MainFrame(QWidget * parent)
     _managePrivateActivitiesTabLayout->addWidget(_privateActivityManager);
     _ui->managePrivateActivitiesTab->setLayout(_managePrivateActivitiesTabLayout);
 
+    _managePrivateTasksTabLayout = new QStackedLayout();
+    _privateTaskManager = new tt3::gui::PrivateTaskManager(_ui->managePrivateTasksTab);
+    _managePrivateTasksTabLayout->addWidget(_privateTaskManager);
+    _ui->managePrivateTasksTab->setLayout(_managePrivateTasksTabLayout);
+
     //  Set up signal handlers
     _savePositionTimer.setSingleShot(true);
     connect(&_savePositionTimer,
@@ -181,6 +186,7 @@ void MainFrame::refresh()
     _publicActivityManager->refresh();
     _publicTaskManager->refresh();
     _privateActivityManager->refresh();
+    _privateTaskManager->refresh();
 
     _refreshCurrentActivityControls();
 }
@@ -766,6 +772,7 @@ void MainFrame::_currentWorkspaceChanged(tt3::ws::Workspace, tt3::ws::Workspace)
     _publicActivityManager->setWorkspace(tt3::gui::theCurrentWorkspace);
     _publicTaskManager->setWorkspace(tt3::gui::theCurrentWorkspace);
     _privateActivityManager->setWorkspace(tt3::gui::theCurrentWorkspace);
+    _privateTaskManager->setWorkspace(tt3::gui::theCurrentWorkspace);
     refresh();
 }
 
@@ -776,6 +783,7 @@ void MainFrame::_currentCredentialsChanged(tt3::ws::Credentials, tt3::ws::Creden
     _publicActivityManager->setCredentials(tt3::gui::theCurrentCredentials);
     _publicTaskManager->setCredentials(tt3::gui::theCurrentCredentials);
     _privateActivityManager->setCredentials(tt3::gui::theCurrentCredentials);
+    _privateTaskManager->setCredentials(tt3::gui::theCurrentCredentials);
     refresh();
 }
 

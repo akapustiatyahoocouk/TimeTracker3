@@ -48,6 +48,7 @@
 #include "tt3-gui/PublicActivityManager.hpp"
 #include "tt3-gui/PublicTaskManager.hpp"
 #include "tt3-gui/PrivateActivityManager.hpp"
+#include "tt3-gui/PrivateTaskManager.hpp"
 
 //  Dialogs
 #include "tt3-gui/ErrorDialog.hpp"
@@ -79,6 +80,7 @@
 #include "tt3-gui/CreatePrivateActivityDialog.hpp"
 #include "tt3-gui/ModifyPrivateActivityDialog.hpp"
 #include "tt3-gui/DestroyPrivateActivityDialog.hpp"
+#include "tt3-gui/CreatePrivateTaskDialog.hpp"
 
 #include "tt3-gui/EnterActivityStartCommentDialog.hpp"
 #include "tt3-gui/EnterActivityStopCommentDialog.hpp"

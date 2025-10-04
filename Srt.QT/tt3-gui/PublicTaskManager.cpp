@@ -521,7 +521,6 @@ void PublicTaskManager::_refreshPublicTaskItem(
     //  a proper number of childs items...
     while (publicTaskItem->childCount() < publicTaskModel->childModels.size())
     {   //  Too few child items
-        //  TODO optimize all ...Manager::_refresh...() methods similarly
         publicTaskItem->addChild(new QTreeWidgetItem());
     }
     while (publicTaskItem->childCount() > publicTaskModel->childModels.size())

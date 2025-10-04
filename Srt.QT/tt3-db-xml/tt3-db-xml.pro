@@ -15,6 +15,7 @@ SOURCES += \
     Plugins.cpp \
     Principal.cpp \
     PrivateActivity.cpp \
+    PrivateTask.cpp \
     PublicActivity.cpp \
     PublicTask.cpp \
     Task.cpp \
@@ -35,6 +36,7 @@ HEADERS += \
     Object.hpp \
     Principal.hpp \
     PrivateActivity.hpp \
+    PrivateTask.hpp \
     PublicActivity.hpp \
     PublicTask.hpp \
     Task.hpp \
