@@ -1,5 +1,5 @@
 //
-//  tt3-gui/ModifyPublicTaskDialog.cpp - tt3::gui::ModifyPublicTaskDialog class implementation
+//  tt3-gui/ModifyPrivateTaskDialog.cpp - tt3::gui::ModifyPrivateTaskDialog class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-gui/API.hpp"
-#include "ui_ModifyPublicTaskDialog.h"
+#include "ui_ModifyPrivateTaskDialog.h"
 using namespace tt3::gui;
 
 namespace tt3::gui
@@ -25,22 +25,22 @@ namespace tt3::gui
 
 //////////
 //  Construction/destruction
-ModifyPublicTaskDialog::ModifyPublicTaskDialog(
+ModifyPrivateTaskDialog::ModifyPrivateTaskDialog(
         QWidget * parent,
-        tt3::ws::PublicTask publicTask,
+        tt3::ws::PrivateTask privateTask,
         const tt3::ws::Credentials & credentials
     ) : QDialog(parent),
         //  Implementation
-        _publicTask(publicTask),
+        _privateTask(privateTask),
         _credentials(credentials),
-        _validator(publicTask->workspace()->validator()->publicTask()),
-        _readOnly(publicTask == nullptr ||
-                  !publicTask->canModify(credentials) ||  //  may throw
-                  publicTask->workspace()->isReadOnly()),
+        _validator(privateTask->workspace()->validator()->privateTask()),
+        _readOnly(privateTask == nullptr ||
+                  !privateTask->canModify(credentials) ||   //  may throw
+                  privateTask->workspace()->isReadOnly()),
         //  Controls
-        _ui(new Ui::ModifyPublicTaskDialog)
+        _ui(new Ui::ModifyPrivateTaskDialog)
 {
-    Q_ASSERT(_publicTask != nullptr);
+    Q_ASSERT(_privateTask != nullptr);
     Q_ASSERT(_credentials.isValid());
 
     _ui->setupUi(this);
@@ -50,9 +50,28 @@ ModifyPublicTaskDialog::ModifyPublicTaskDialog(
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
+    //  Populate User combo box & select the proper user
+    QList<tt3::ws::User> usersList =
+        _privateTask->workspace()->users(_credentials).values();   //  may throw
+    std::sort(usersList.begin(),
+              usersList.end(),
+              [&](auto a, auto b)
+              {
+                  return a->realName(_credentials) < b->realName(_credentials);   //  may throw
+              });
+    for (tt3::ws::User u : usersList)
+    {
+        _ui->userComboBox->addItem(
+            u->type()->smallIcon(),
+            u->realName(_credentials),  //  may throw
+            QVariant::fromValue(u));
+    }
+    _setSelectedUser(_privateTask->owner(_credentials));
+    _ui->userComboBox->setEnabled(false);   //  TODO for now!
+
     //  Fill the "activity type" combo box (may throw)
     QList<tt3::ws::ActivityType> activityTypes =
-        _publicTask->workspace()->activityTypes(_credentials).values();
+        _privateTask->workspace()->activityTypes(_credentials).values();
     std::sort(activityTypes.begin(),
               activityTypes.end(),
               [&](auto a, auto b)
@@ -82,23 +101,23 @@ ModifyPublicTaskDialog::ModifyPublicTaskDialog(
     }
 
     //  Set initial control values (may throw)
-    _setSelectedParentTask(_publicTask->parent(_credentials));
-    _ui->displayNameLineEdit->setText(_publicTask->displayName(_credentials));
-    _ui->descriptionPlainTextEdit->setPlainText(_publicTask->description(_credentials));
-    _setSelectedActivityType(_publicTask->activityType(_credentials));
-    _setSelectedWorkload(_publicTask->workload(_credentials));
-    _setSelectedTimeout(_publicTask->timeout(_credentials));
-    _ui->requireCommentOnStartCheckBox->setChecked(_publicTask->requireCommentOnStart(_credentials));
-    _ui->requireCommentOnStopCheckBox->setChecked(_publicTask->requireCommentOnStop(_credentials));
-    _ui->fullScreenReminderCheckBox->setChecked(_publicTask->fullScreenReminder(_credentials));
-    _ui->completedCheckBox->setChecked(_publicTask->completed(_credentials));
-    _ui->requiresCommentOnCompletionCeckBox->setChecked(_publicTask->requireCommentOnCompletion(_credentials));
+    _setSelectedParentTask(_privateTask->parent(_credentials));
+    _ui->displayNameLineEdit->setText(_privateTask->displayName(_credentials));
+    _ui->descriptionPlainTextEdit->setPlainText(_privateTask->description(_credentials));
+    _setSelectedActivityType(_privateTask->activityType(_credentials));
+    _setSelectedWorkload(_privateTask->workload(_credentials));
+    _setSelectedTimeout(_privateTask->timeout(_credentials));
+    _ui->requireCommentOnStartCheckBox->setChecked(_privateTask->requireCommentOnStart(_credentials));
+    _ui->requireCommentOnStopCheckBox->setChecked(_privateTask->requireCommentOnStop(_credentials));
+    _ui->fullScreenReminderCheckBox->setChecked(_privateTask->fullScreenReminder(_credentials));
+    _ui->completedCheckBox->setChecked(_privateTask->completed(_credentials));
+    _ui->requiresCommentOnCompletionCeckBox->setChecked(_privateTask->requireCommentOnCompletion(_credentials));
 
     //  Adjust for "view only" mode
     if (_readOnly)
     {
-        this->setWindowTitle("View public task");
-        this->setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewPublicTaskLarge.png"));
+        this->setWindowTitle("View private task");
+        this->setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewPrivateTaskLarge.png"));
         _ui->parentTaskComboBox->setEnabled(false);
         _ui->selectParentTaskPushButton->setEnabled(false);
         _ui->displayNameLineEdit->setReadOnly(true);
@@ -114,12 +133,12 @@ ModifyPublicTaskDialog::ModifyPublicTaskDialog(
         _ui->completedCheckBox->setEnabled(false);
         _ui->requiresCommentOnCompletionCeckBox->setEnabled(false);
     }
-    else if (_publicTask->completed(_credentials))
+    else if (_privateTask->completed(_credentials))
     {   //  Only an Administrator can "uncomplete"
-        //  a PublicTask - the ManagePublicTasks capability
+        //  a PrivateTask - the ManagePrivateTasks capability
         //  is not enough
         _ui->completedCheckBox->setEnabled(
-            _publicTask->workspace()->grantsAll( //  may throw
+            _privateTask->workspace()->grantsAll( //  may throw
                 _credentials,
                 tt3::ws::Capability::Administrator));
     }
@@ -129,36 +148,52 @@ ModifyPublicTaskDialog::ModifyPublicTaskDialog(
     _refresh();
 }
 
-ModifyPublicTaskDialog::~ModifyPublicTaskDialog()
+ModifyPrivateTaskDialog::~ModifyPrivateTaskDialog()
 {
     delete _ui;
 }
 
 //////////
 //  Operations
-auto ModifyPublicTaskDialog::doModal(
-    ) -> ModifyPublicTaskDialog::Result
+auto ModifyPrivateTaskDialog::doModal(
+    ) -> ModifyPrivateTaskDialog::Result
 {
     return Result(this->exec());
 }
 
-//////////
-//  Implementation helpers
-auto ModifyPublicTaskDialog::_selectedParentTask(
-    ) -> tt3::ws::PublicTask
+tt3::ws::User ModifyPrivateTaskDialog::_selectedUser()
 {
-    return _ui->parentTaskComboBox->currentData().value<tt3::ws::PublicTask>();
+    return _ui->userComboBox->currentData().value<tt3::ws::User>();
 }
 
-void ModifyPublicTaskDialog::_setSelectedParentTask(
-        tt3::ws::PublicTask parentTask
+void ModifyPrivateTaskDialog::_setSelectedUser(tt3::ws::User user)
+{
+    for (int i = 0; i < _ui->userComboBox->count(); i++)
+    {
+        if (_ui->userComboBox->itemData(i).value<tt3::ws::User>() == user)
+        {
+            _ui->userComboBox->setCurrentIndex(i);
+            _setSelectedParentTask(nullptr);
+            break;
+        }
+    }
+}
+
+auto ModifyPrivateTaskDialog::_selectedParentTask(
+    ) -> tt3::ws::PrivateTask
+{
+    return _ui->parentTaskComboBox->currentData().value<tt3::ws::PrivateTask>();
+}
+
+void ModifyPrivateTaskDialog::_setSelectedParentTask(
+    tt3::ws::PrivateTask parentTask
     )
 {
     //  Refill the "parent task" combo box
     _ui->parentTaskComboBox->clear();
     _ui->parentTaskComboBox->addItem(
-        "- (a root public task with no parent)",
-        QVariant::fromValue<tt3::ws::PublicTask>(nullptr));
+        "- (a root private task with no parent)",
+        QVariant::fromValue<tt3::ws::PrivateTask>(nullptr));
     if (parentTask != nullptr)
     {
         _ui->parentTaskComboBox->addItem(
@@ -169,14 +204,14 @@ void ModifyPublicTaskDialog::_setSelectedParentTask(
     }
 }
 
-auto ModifyPublicTaskDialog::_selectedActivityType(
+auto ModifyPrivateTaskDialog::_selectedActivityType(
     ) -> tt3::ws::ActivityType
 {
     return _ui->activityTypeComboBox->currentData().value<tt3::ws::ActivityType>();
 }
 
-void ModifyPublicTaskDialog::_setSelectedActivityType(
-        tt3::ws::ActivityType activityType
+void ModifyPrivateTaskDialog::_setSelectedActivityType(
+    tt3::ws::ActivityType activityType
     )
 {
     for (int i = 0; i < _ui->activityTypeComboBox->count(); i++)
@@ -189,8 +224,8 @@ void ModifyPublicTaskDialog::_setSelectedActivityType(
     }
 }
 
-void ModifyPublicTaskDialog::_setSelectedWorkload(
-        tt3::ws::Workload workload
+void ModifyPrivateTaskDialog::_setSelectedWorkload(
+    tt3::ws::Workload workload
     )
 {   //  TODO implement properly
     Q_ASSERT(workload == nullptr);
@@ -198,7 +233,7 @@ void ModifyPublicTaskDialog::_setSelectedWorkload(
     _selectedWorkload = workload;
 }
 
-auto ModifyPublicTaskDialog::_selectedTimeout(
+auto ModifyPrivateTaskDialog::_selectedTimeout(
     ) -> tt3::ws::InactivityTimeout
 {
     if (_ui->timeoutCheckBox->isChecked())
@@ -210,8 +245,8 @@ auto ModifyPublicTaskDialog::_selectedTimeout(
     return tt3::ws::InactivityTimeout();
 }
 
-void ModifyPublicTaskDialog::_setSelectedTimeout(
-        const tt3::ws::InactivityTimeout & timeout
+void ModifyPrivateTaskDialog::_setSelectedTimeout(
+    const tt3::ws::InactivityTimeout & timeout
     )
 {
     _ui->timeoutCheckBox->setChecked(false);
@@ -244,7 +279,7 @@ void ModifyPublicTaskDialog::_setSelectedTimeout(
     _refresh();
 }
 
-void ModifyPublicTaskDialog::_refresh()
+void ModifyPrivateTaskDialog::_refresh()
 {
     _ui->hoursComboBox->setEnabled(
         !_readOnly &&
@@ -254,6 +289,7 @@ void ModifyPublicTaskDialog::_refresh()
         _ui->timeoutCheckBox->isChecked());
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(
         !_readOnly &&
+        _selectedUser() != nullptr &&
         _validator->isValidDisplayName(_ui->displayNameLineEdit->text()) &&
         _validator->isValidDescription(_ui->descriptionPlainTextEdit->toPlainText()) &&
         _validator->isValidTimeout(_selectedTimeout()));
@@ -261,13 +297,20 @@ void ModifyPublicTaskDialog::_refresh()
 
 //////////
 //  Signal handlers
-void ModifyPublicTaskDialog::_selectParentTaskPushButtonClicked()
+void ModifyPrivateTaskDialog::_userComboBoxCurrentIndexChanged(int)
 {
+    _setSelectedParentTask(nullptr);
+}
+
+void ModifyPrivateTaskDialog::_selectParentTaskPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+    /*  TODO uncomment
     try
     {
-        SelectPublicTaskParentDialog dlg(
-            this, _publicTask, _credentials, _selectedParentTask());
-        if (dlg.doModal() == SelectPublicTaskParentDialog::Result::Ok)
+        SelectPrivateTaskParentDialog dlg(
+            this, _privateTask, _credentials, _selectedParentTask());
+        if (dlg.doModal() == SelectPrivateTaskParentDialog::Result::Ok)
         {
             _setSelectedParentTask(dlg.selectedParentTask());
             _refresh();
@@ -277,49 +320,50 @@ void ModifyPublicTaskDialog::_selectParentTaskPushButtonClicked()
     {
         ErrorDialog::show(this, ex);
     }
+    */
 }
 
-void ModifyPublicTaskDialog::_displayNameLineEditTextChanged(QString)
+void ModifyPrivateTaskDialog::_displayNameLineEditTextChanged(QString)
 {
     _refresh();
 }
 
-void ModifyPublicTaskDialog::_descriptionPlainTextEditTextChanged()
+void ModifyPrivateTaskDialog::_descriptionPlainTextEditTextChanged()
 {
     _refresh();
 }
 
-void ModifyPublicTaskDialog::_selectWorkloadPushButtonClicked()
+void ModifyPrivateTaskDialog::_selectWorkloadPushButtonClicked()
 {
     ErrorDialog::show(this, "Not yet implemented");
 }
 
-void ModifyPublicTaskDialog::_timeoutCheckBoxStateChanged(int)
+void ModifyPrivateTaskDialog::_timeoutCheckBoxStateChanged(int)
 {
     _refresh();
 }
 
-void ModifyPublicTaskDialog::_hoursComboBoxCurrentIndexChanged(int)
+void ModifyPrivateTaskDialog::_hoursComboBoxCurrentIndexChanged(int)
 {
     _refresh();
 }
 
-void ModifyPublicTaskDialog::_minutesComboBoxCurrentIndexChanged(int)
+void ModifyPrivateTaskDialog::_minutesComboBoxCurrentIndexChanged(int)
 {
     _refresh();
 }
 
-void ModifyPublicTaskDialog::accept()
+void ModifyPrivateTaskDialog::accept()
 {
     try
     {
         QString completionComment;
-        if (!_publicTask->completed(_credentials) &&
+        if (!_privateTask->completed(_credentials) &&
             _ui->completedCheckBox->isChecked())
-        {   //  Completing a PublicTask
-            if (_publicTask->requireCommentOnCompletion(_credentials))
+        {   //  Completing a PrivateTask
+            if (_privateTask->requireCommentOnCompletion(_credentials))
             {   //  ...that requires a comment
-                EnterTaskCompletionCommentDialog dlg(this, _publicTask);
+                EnterTaskCompletionCommentDialog dlg(this, _privateTask);
                 if (dlg.doModal() != EnterTaskCompletionCommentDialog::Result::Ok)
                 {   //  OOPS! The user has cancelled!
                     return;
@@ -327,7 +371,7 @@ void ModifyPublicTaskDialog::accept()
                 completionComment = dlg.comment();
             }
             //  A task that is being Completed must be stopped
-            if (theCurrentActivity == _publicTask)
+            if (theCurrentActivity == _privateTask)
             {
                 if (!theCurrentActivity.replaceWith(nullptr))
                 {   //  OOPS! Stopping the task was cancelled by the user
@@ -338,35 +382,38 @@ void ModifyPublicTaskDialog::accept()
         //  Any of the setters may throw
         if (!_readOnly)
         {
-            //  TODO uncomment _publicTask->setParent(_credentials, _selectedParentTask);
-            _publicTask->setDisplayName(
+            if (_selectedUser() != _privateTask->owner(_credentials))
+            {   //  TODO confirm the owner change
+                //  TODO move PrivateTask to another User?
+            }
+            _privateTask->setDisplayName(
                 _credentials,
                 _ui->displayNameLineEdit->text());
-            _publicTask->setDescription(
+            _privateTask->setDescription(
                 _credentials,
                 _ui->descriptionPlainTextEdit->toPlainText());
-            _publicTask->setTimeout(
+            _privateTask->setTimeout(
                 _credentials,
                 _selectedTimeout());
-            _publicTask->setRequireCommentOnStart(
+            _privateTask->setRequireCommentOnStart(
                 _credentials,
                 _ui->requireCommentOnStartCheckBox->isChecked());
-            _publicTask->setRequireCommentOnStop(
+            _privateTask->setRequireCommentOnStop(
                 _credentials,
                 _ui->requireCommentOnStopCheckBox->isChecked());
-            _publicTask->setFullScreenReminder(
+            _privateTask->setFullScreenReminder(
                 _credentials,
                 _ui->fullScreenReminderCheckBox->isChecked());
-            _publicTask->setActivityType(
+            _privateTask->setActivityType(
                 _credentials,
                 _selectedActivityType());
-            _publicTask->setWorkload(
+            _privateTask->setWorkload(
                 _credentials,
                 _selectedWorkload);
-            _publicTask->setCompleted(
+            _privateTask->setCompleted(
                 _credentials,
                 _ui->completedCheckBox->isChecked());
-            _publicTask->setRequireCommentOnCompletion(
+            _privateTask->setRequireCommentOnCompletion(
                 _credentials,
                 _ui->requiresCommentOnCompletionCeckBox->isChecked());
             //  ...and record the completion comment if there is one
@@ -383,9 +430,9 @@ void ModifyPublicTaskDialog::accept()
     }
 }
 
-void ModifyPublicTaskDialog::reject()
+void ModifyPrivateTaskDialog::reject()
 {
     done(int(Result::Cancel));
 }
 
-//  End oif tt3-gui/ModifyPublicTaskDialog.cpp
+//  End of tt3-gui/ModifyPrivateTaskDialog.cpp

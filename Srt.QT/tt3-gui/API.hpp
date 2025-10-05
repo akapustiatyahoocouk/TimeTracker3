@@ -81,6 +81,7 @@
 #include "tt3-gui/ModifyPrivateActivityDialog.hpp"
 #include "tt3-gui/DestroyPrivateActivityDialog.hpp"
 #include "tt3-gui/CreatePrivateTaskDialog.hpp"
+#include "tt3-gui/ModifyPrivateTaskDialog.hpp"
 
 #include "tt3-gui/EnterActivityStartCommentDialog.hpp"
 #include "tt3-gui/EnterActivityStopCommentDialog.hpp"

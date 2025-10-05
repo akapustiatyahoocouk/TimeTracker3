@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>tt3::gui::CreatePrivateTaskDialog</class>
- <widget class="QDialog" name="tt3::gui::CreatePrivateTaskDialog">
+ <class>tt3::gui::ModifyPrivateTaskDialog</class>
+ <widget class="QDialog" name="tt3::gui::ModifyPrivateTaskDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,11 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Create private task</string>
+   <string>Modify private task</string>
   </property>
   <property name="windowIcon">
    <iconset resource="tt3-gui.qrc">
-    <normaloff>:/tt3-gui/Resources/Images/Actions/CreatePrivateTaskLarge.png</normaloff>:/tt3-gui/Resources/Images/Actions/CreatePrivateTaskLarge.png</iconset>
+    <normaloff>:/tt3-gui/Resources/Images/Actions/ModifyPrivateTaskLarge.png</normaloff>:/tt3-gui/Resources/Images/Actions/ModifyPrivateTaskLarge.png</iconset>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -207,7 +207,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>tt3::gui::CreatePrivateTaskDialog</receiver>
+   <receiver>tt3::gui::ModifyPrivateTaskDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -223,7 +223,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>tt3::gui::CreatePrivateTaskDialog</receiver>
+   <receiver>tt3::gui::ModifyPrivateTaskDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -239,7 +239,7 @@
   <connection>
    <sender>userComboBox</sender>
    <signal>currentIndexChanged(int)</signal>
-   <receiver>tt3::gui::CreatePrivateTaskDialog</receiver>
+   <receiver>tt3::gui::ModifyPrivateTaskDialog</receiver>
    <slot>_userComboBoxCurrentIndexChanged(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -255,7 +255,7 @@
   <connection>
    <sender>selectParentTaskPushButton</sender>
    <signal>clicked()</signal>
-   <receiver>tt3::gui::CreatePrivateTaskDialog</receiver>
+   <receiver>tt3::gui::ModifyPrivateTaskDialog</receiver>
    <slot>_selectParentTaskPushButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -271,7 +271,7 @@
   <connection>
    <sender>displayNameLineEdit</sender>
    <signal>textChanged(QString)</signal>
-   <receiver>tt3::gui::CreatePrivateTaskDialog</receiver>
+   <receiver>tt3::gui::ModifyPrivateTaskDialog</receiver>
    <slot>_displayNameLineEditTextChanged(QString)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -287,7 +287,7 @@
   <connection>
    <sender>descriptionPlainTextEdit</sender>
    <signal>textChanged()</signal>
-   <receiver>tt3::gui::CreatePrivateTaskDialog</receiver>
+   <receiver>tt3::gui::ModifyPrivateTaskDialog</receiver>
    <slot>_descriptionPlainTextEditTextChanged()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -303,7 +303,7 @@
   <connection>
    <sender>selectWorkloadPushButton</sender>
    <signal>clicked()</signal>
-   <receiver>tt3::gui::CreatePrivateTaskDialog</receiver>
+   <receiver>tt3::gui::ModifyPrivateTaskDialog</receiver>
    <slot>_selectWorkloadPushButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -319,7 +319,7 @@
   <connection>
    <sender>timeoutCheckBox</sender>
    <signal>stateChanged(int)</signal>
-   <receiver>tt3::gui::CreatePrivateTaskDialog</receiver>
+   <receiver>tt3::gui::ModifyPrivateTaskDialog</receiver>
    <slot>_timeoutCheckBoxStateChanged(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -335,7 +335,7 @@
   <connection>
    <sender>hoursComboBox</sender>
    <signal>currentIndexChanged(int)</signal>
-   <receiver>tt3::gui::CreatePrivateTaskDialog</receiver>
+   <receiver>tt3::gui::ModifyPrivateTaskDialog</receiver>
    <slot>_hoursComboBoxCurrentIndexChanged(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -351,7 +351,7 @@
   <connection>
    <sender>minutesComboBox</sender>
    <signal>currentIndexChanged(int)</signal>
-   <receiver>tt3::gui::CreatePrivateTaskDialog</receiver>
+   <receiver>tt3::gui::ModifyPrivateTaskDialog</receiver>
    <slot>_minutesComboBoxCurrentIndexChanged(int)</slot>
    <hints>
     <hint type="sourcelabel">

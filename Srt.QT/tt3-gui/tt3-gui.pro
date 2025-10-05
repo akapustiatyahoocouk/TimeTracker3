@@ -49,6 +49,7 @@ SOURCES += \
     ModifyAccountDialog.cpp \
     ModifyActivityTypeDialog.cpp \
     ModifyPrivateActivityDialog.cpp \
+    ModifyPrivateTaskDialog.cpp \
     ModifyPublicActivityDialog.cpp \
     ModifyPublicTaskDialog.cpp \
     ModifyUserDialog.cpp \
@@ -112,6 +113,7 @@ HEADERS += \
     ModifyAccountDialog.hpp \
     ModifyActivityTypeDialog.hpp \
     ModifyPrivateActivityDialog.hpp \
+    ModifyPrivateTaskDialog.hpp \
     ModifyPublicActivityDialog.hpp \
     ModifyPublicTaskDialog.hpp \
     ModifyUserDialog.hpp \
@@ -160,6 +162,7 @@ FORMS += \
     ModifyAccountDialog.ui \
     ModifyActivityTypeDialog.ui \
     ModifyPrivateActivityDialog.ui \
+    ModifyPrivateTaskDialog.ui \
     ModifyPublicActivityDialog.ui \
     ModifyPublicTaskDialog.ui \
     ModifyUserDialog.ui \

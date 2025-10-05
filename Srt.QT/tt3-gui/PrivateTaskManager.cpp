@@ -227,19 +227,19 @@ void PrivateTaskManager::refresh()
                 selectedPrivateTask->canModify(_credentials))    //  may throw
             {   //  RW
                 _ui->modifyPrivateTaskPushButton->setIcon(modifyPrivateTaskIcon);
-                _ui->modifyPrivateTaskPushButton->setText("Modify public task");
+                _ui->modifyPrivateTaskPushButton->setText("Modify private task");
             }
             else
             {   //  RO
                 _ui->modifyPrivateTaskPushButton->setIcon(viewPrivateTaskIcon);
-                _ui->modifyPrivateTaskPushButton->setText("View public task");
+                _ui->modifyPrivateTaskPushButton->setText("View private task");
             }
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Simulate RO
             qCritical() << ex.errorMessage();
             _ui->modifyPrivateTaskPushButton->setIcon(viewPrivateTaskIcon);
-            _ui->modifyPrivateTaskPushButton->setText("View public task");
+            _ui->modifyPrivateTaskPushButton->setText("View private task");
         }
     }
 }
@@ -629,7 +629,7 @@ void PrivateTaskManager::_refreshPrivateTaskItem(
     privateTaskItem->setFont(0, privateTaskModel->font);
     privateTaskItem->setToolTip(0, privateTaskModel->tooltip);
     privateTaskItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(privateTaskModel->privateTask));
-    //  Make sure the public task, tree item tree contains
+    //  Make sure the private task, tree item tree contains
     //  a proper number of childs items...
     while (privateTaskItem->childCount() < privateTaskModel->childModels.size())
     {   //  Too few child items
@@ -908,15 +908,13 @@ void PrivateTaskManager::_createPrivateTaskPushButtonClicked()
 
 void PrivateTaskManager::_modifyPrivateTaskPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
-    /*  TODO uncomment
     if (auto privateTask = _selectedPrivateTask())
     {
         try
         {
             ModifyPrivateTaskDialog dlg(this, privateTask, _credentials); //  may throw
             if (dlg.doModal() == ModifyPrivateTaskDialog::Result::Ok)
-            {   //  PrivateTask modified - its position in the public tasks tree may have changed
+            {   //  PrivateTask modified - its position in the private tasks tree may have changed
                 refresh();  //  must refresh NOW
                 _setSelectedPrivateTask(privateTask);
             }
@@ -927,7 +925,6 @@ void PrivateTaskManager::_modifyPrivateTaskPushButtonClicked()
             requestRefresh();
         }
     }
-    */
 }
 
 void PrivateTaskManager::_destroyPrivateTaskPushButtonClicked()

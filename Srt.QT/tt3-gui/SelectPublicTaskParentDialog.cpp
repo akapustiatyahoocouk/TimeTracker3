@@ -32,6 +32,7 @@ SelectPublicTaskParentDialog::SelectPublicTaskParentDialog(
             initialParentTask)
 {
     _publicTask = publicTask;
+    _refresh();
 
     //  Set initial control values
     _ui->promptLabel->setText(
