@@ -76,7 +76,7 @@ namespace tt3::gui
 
         //  Helpers
         static QString  _prompt(tt3::ws::PublicActivity publicActivity,
-                               const tt3::ws::Credentials & credentials);
+                                const tt3::ws::Credentials & credentials);
 
         //////////
         //  Signal handlers

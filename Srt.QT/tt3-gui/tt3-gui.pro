@@ -24,6 +24,7 @@ SOURCES += \
     DestroyAccountDialog.cpp \
     DestroyActivityTypeDialog.cpp \
     DestroyPrivateActivityDialog.cpp \
+    DestroyPrivateTaskDialog.cpp \
     DestroyPublicActivityDialog.cpp \
     DestroyPublicTaskDialog.cpp \
     DestroyUserDialog.cpp \
@@ -43,6 +44,7 @@ SOURCES += \
     LoginDialog.cpp \
     ManageActivityTypesDialog.cpp \
     ManagePrivateActivitiesDialog.cpp \
+    ManagePrivateTasksDialog.cpp \
     ManagePublicActivitiesDialog.cpp \
     ManagePublicTasksDialog.cpp \
     ManageUsersDialog.cpp \
@@ -62,6 +64,7 @@ SOURCES += \
     PrivateTaskManager.cpp \
     PublicActivityManager.cpp \
     PublicTaskManager.cpp \
+    SelectPrivateTaskParentDialog.cpp \
     SelectPublicTaskParentDialog.cpp \
     SelectWorkspaceDialog.cpp \
     ShowConfigurationDialog.cpp \
@@ -92,6 +95,7 @@ HEADERS += \
     DestroyAccountDialog.hpp \
     DestroyActivityTypeDialog.hpp \
     DestroyPrivateActivityDialog.hpp \
+    DestroyPrivateTaskDialog.hpp \
     DestroyPublicActivityDialog.hpp \
     DestroyPublicTaskDialog.hpp \
     DestroyUserDialog.hpp \
@@ -107,6 +111,7 @@ HEADERS += \
     LoginDialog.hpp \
     ManageActivityTypesDialog.hpp \
     ManagePrivateActivitiesDialog.hpp \
+    ManagePrivateTasksDialog.hpp \
     ManagePublicActivitiesDialog.hpp \
     ManagePublicTasksDialog.hpp \
     ManageUsersDialog.hpp \
@@ -125,6 +130,7 @@ HEADERS += \
     PrivateTaskManager.hpp \
     PublicActivityManager.hpp \
     PublicTaskManager.hpp \
+    SelectPrivateTaskParentDialog.hpp \
     SelectPublicTaskParentDialog.hpp \
     SelectWorkspaceDialog.hpp \
     ShowConfigurationDialog.hpp \
@@ -156,6 +162,7 @@ FORMS += \
     LoginDialog.ui \
     ManageActivityTypesDialog.ui \
     ManagePrivateActivitiesDialog.ui \
+    ManagePrivateTasksDialog.ui \
     ManagePublicActivitiesDialog.ui \
     ManagePublicTasksDialog.ui \
     ManageUsersDialog.ui \
@@ -172,6 +179,7 @@ FORMS += \
     PrivateTaskManager.ui \
     PublicActivityManager.ui \
     PublicTaskManager.ui \
+    SelectPrivateTaskParentDialog.ui \
     SelectPublicTaskParentDialog.ui \
     SelectWorkspaceDialog.ui \
     ShowConfigurationDialog.ui \

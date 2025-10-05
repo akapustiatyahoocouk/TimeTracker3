@@ -19,6 +19,8 @@
 
 namespace tt3::gui
 {
+    class TT3_GUI_PUBLIC SelectPrivateTaskParentDialog;
+
     namespace Ui { class PrivateTaskManager; }
 
     /// \class PrivateTaskManager tt3-gui/API.hpp
@@ -274,5 +276,8 @@ namespace tt3::gui
         void            _refreshTimerTimeout();
     };
 }
+
+//  Macro needed for MOC-generated .cpp files
+#define TT3_GUI_PRIVATE_TASK_MANAGER_DEFINED
 
 //  End of tt3-gui/PrivateTaskManager.hpp

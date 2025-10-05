@@ -1,5 +1,5 @@
 //
-//  tt3-gui/DestroyPublicTaskDialog.hpp - the modal "destroy PublicTask" dialog
+//  tt3-gui/DestroyPrivateTaskDialog.hpp - the modal "destroy PublicTask" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -21,12 +21,12 @@
 
 namespace tt3::gui
 {
-    /// \class DestroyPublicTaskDialog tt3-gui/API.hpp
-    /// \brief The modal "Destroy PublicTask" dialog.
-    class TT3_GUI_PUBLIC DestroyPublicTaskDialog final
+    /// \class DestroyPrivateTaskDialog tt3-gui/API.hpp
+    /// \brief The modal "Destroy PrivateTask" dialog.
+    class TT3_GUI_PUBLIC DestroyPrivateTaskDialog final
         :   private AskYesNoDialog
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DestroyPublicTaskDialog)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DestroyPrivateTaskDialog)
 
         //////////
         //  Types
@@ -35,7 +35,7 @@ namespace tt3::gui
         ///     The dialog result after a modal invocation.
         enum Result
         {
-            Ok,     ///<    Destruction confirmed; the PublicTask has been destroyed.
+            Ok,     ///<    Destruction confirmed; the PrivateTask has been destroyed.
             Cancel  ///<    The user has cancelled the dialog.
         };
 
@@ -46,16 +46,16 @@ namespace tt3::gui
         ///     Constructs the dialog.
         /// @param parent
         ///     The parent widget for the dialog; nullptr == none.
-        /// @param publicTask
-        ///     The PublicTask whose destruction is to be performed.
+        /// @param privateTask
+        ///     The PrivateTask whose destruction is to be performed.
         /// @param credentials
-        ///     The credentials to use for accessing PublicTask's data.
+        ///     The credentials to use for accessing PrivateTask's data.
         /// @exception WorkspaceException
-        ///     If an error occurs retrieving PublicTask details.
-        DestroyPublicTaskDialog(
-            ::QWidget * parent,
-            tt3::ws::PublicTask publicTask,
-            const tt3::ws::Credentials & credentials
+        ///     If an error occurs retrieving PrivateTask details.
+        DestroyPrivateTaskDialog(
+                ::QWidget * parent,
+                tt3::ws::PrivateTask privateTask,
+                const tt3::ws::Credentials & credentials
             );
         //  The default destructor is OK
 
@@ -65,17 +65,17 @@ namespace tt3::gui
         /// \brief
         ///     Rund the dialog modally.
         /// \return
-        ///     The user's choice; on Ok the PublicTask has been destroyed.
+        ///     The user's choice; on Ok the PrivateTask has been destroyed.
         Result          doModal();
 
         //////////
         //  Implementation
     private:
-        tt3::ws::PublicTask _publicTask;
+        tt3::ws::PrivateTask    _privateTask;
         tt3::ws::Credentials    _credentials;
 
         //  Helpers
-        static QString  _prompt(tt3::ws::PublicTask publicTask,
+        static QString  _prompt(tt3::ws::PrivateTask privateTask,
                                 const tt3::ws::Credentials & credentials);
 
         //////////
@@ -86,4 +86,4 @@ namespace tt3::gui
 }
 
 #endif  //  def TT3_GUI_ASK_YES_NO_DIALOG_DEFINED
-//  End of tt3-gui/DestroyPublicTaskDialog.hpp
+//  End of tt3-gui/DestroyPrivateTaskDialog.hpp

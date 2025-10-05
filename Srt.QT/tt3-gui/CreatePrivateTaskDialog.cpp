@@ -207,12 +207,10 @@ void CreatePrivateTaskDialog::_userComboBoxCurrentIndexChanged(int)
 
 void CreatePrivateTaskDialog::_selectParentTaskPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
-    /*  TODO uncomment
     try
     {
         SelectPrivateTaskParentDialog dlg(
-            this, _workspace, _credentials, _selectedParentTask());
+            this, _selectedUser(), _credentials, _selectedParentTask());
         if (dlg.doModal() == SelectPrivateTaskParentDialog::Result::Ok)
         {
             _setSelectedParentTask(dlg.selectedParentTask());
@@ -223,7 +221,6 @@ void CreatePrivateTaskDialog::_selectParentTaskPushButtonClicked()
     {
         ErrorDialog::show(this, ex);
     }
-    */
 }
 
 void CreatePrivateTaskDialog::_displayNameLineEditTextChanged(QString)

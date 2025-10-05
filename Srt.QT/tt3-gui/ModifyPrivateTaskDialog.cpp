@@ -304,8 +304,6 @@ void ModifyPrivateTaskDialog::_userComboBoxCurrentIndexChanged(int)
 
 void ModifyPrivateTaskDialog::_selectParentTaskPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
-    /*  TODO uncomment
     try
     {
         SelectPrivateTaskParentDialog dlg(
@@ -320,7 +318,6 @@ void ModifyPrivateTaskDialog::_selectParentTaskPushButtonClicked()
     {
         ErrorDialog::show(this, ex);
     }
-    */
 }
 
 void ModifyPrivateTaskDialog::_displayNameLineEditTextChanged(QString)
@@ -386,6 +383,7 @@ void ModifyPrivateTaskDialog::accept()
             {   //  TODO confirm the owner change
                 //  TODO move PrivateTask to another User?
             }
+            //  TODO uncomment _privateTask->setParent(_credentials, _selectedParentTask);
             _privateTask->setDisplayName(
                 _credentials,
                 _ui->displayNameLineEdit->text());

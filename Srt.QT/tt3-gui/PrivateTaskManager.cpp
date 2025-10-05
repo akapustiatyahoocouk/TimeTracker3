@@ -31,7 +31,12 @@ namespace tt3::gui
 PrivateTaskManager::PrivateTaskManager(
         QWidget * parent
     ) : QWidget(parent),
-        _ui(new Ui::PrivateTaskManager)
+        //  Implementation
+        _workspace(theCurrentWorkspace),
+        _credentials(theCurrentCredentials),
+        //  Controls
+        _ui(new Ui::PrivateTaskManager),
+        _refreshTimer(this)
 {
     _ui->setupUi(this);
 
@@ -151,6 +156,10 @@ void PrivateTaskManager::refresh()
         //  selection and permissions granted by Credentials
         _WorkspaceModel workspaceModel =
             _createWorkspaceModel(_workspace, _credentials, _decorations);
+        if (!Component::Settings::instance()->showCompletedPrivateTasks)
+        {
+            _removeCompletedItems(workspaceModel, _credentials);
+        }
         QString filter = _ui->filterLineEdit->text().trimmed();
         if (!filter.isEmpty())
         {
@@ -218,6 +227,9 @@ void PrivateTaskManager::refresh()
             qCritical() << ex.errorMessage();
             _ui->completePrivateTaskPushButton->setEnabled(false);
         }
+
+        _ui->showCompletedCheckBox->setChecked(
+            Component::Settings::instance()->showCompletedPrivateTasks);
 
         //  Some buttons need to be adjusted for ReadOnoly mode
         try
@@ -557,7 +569,7 @@ void PrivateTaskManager::_refreshWorkspaceTree(
     Q_ASSERT(privateTasksTreeWidget != nullptr);
     Q_ASSERT(workspaceModel != nullptr);
 
-    //  Make sure the "private activities" tree contains
+    //  Make sure the "private tasks" tree contains
     //  a proper number of root (User) items...
     while (privateTasksTreeWidget->topLevelItemCount() < workspaceModel->userModels.size())
     {   //  Too few root (User) items
@@ -929,8 +941,6 @@ void PrivateTaskManager::_modifyPrivateTaskPushButtonClicked()
 
 void PrivateTaskManager::_destroyPrivateTaskPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
-    /*  TODO uncomment
     if (auto privateTask = _selectedPrivateTask())
     {
         try
@@ -947,7 +957,6 @@ void PrivateTaskManager::_destroyPrivateTaskPushButtonClicked()
             requestRefresh();
         }
     }
-    */
 }
 
 void PrivateTaskManager::_startPrivateTaskPushButtonClicked()

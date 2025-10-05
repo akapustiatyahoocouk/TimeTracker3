@@ -339,6 +339,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>showCompletedCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>tt3::gui::PrivateTaskManager</receiver>
+   <slot>_showCompletedCheckBoxToggled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>228</x>
+     <y>327</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>228</x>
+     <y>177</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_privateTasksTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
@@ -349,5 +365,6 @@
   <slot>_startPrivateTaskPushButtonClicked()</slot>
   <slot>_stopPrivateTaskPushButtonClicked()</slot>
   <slot>_filterLineEditTextChanged(QString)</slot>
+  <slot>_showCompletedCheckBoxToggled(bool)</slot>
  </slots>
 </ui>
