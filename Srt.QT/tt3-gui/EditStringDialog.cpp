@@ -88,34 +88,4 @@ void EditStringDialog::reject()
     done(int(Result::Cancel));
 }
 
-//////////
-//  AddEmailAddressDialog
-AddEmailAddressDialog::AddEmailAddressDialog(::QWidget * parent, Validator validator)
-    :   EditStringDialog(parent,
-                         QIcon(":/tt3-gui/Resources/Images/Actions/AddEmailAddressLarge.png"),
-                         "Add e-mail address",
-                         "Enter the e-mail address",
-                         "",
-                         validator)
-{
-    Q_ASSERT(validator != nullptr);
-}
-
-//////////
-//  ModifyEmailAddressDialog
-ModifyEmailAddressDialog::ModifyEmailAddressDialog(
-        ::QWidget * parent,
-        const QString & initialValue,
-        Validator validator
-    ) : EditStringDialog(
-            parent,
-            QIcon(":/tt3-gui/Resources/Images/Actions/AddEmailAddressLarge.png"),
-            "Modify e-mail address",
-            "Enter the e-mail address",
-            initialValue,
-            validator)
-{
-    Q_ASSERT(validator != nullptr);
-}
-
 //  End of tt3-gui/EditStringDialog.cpp

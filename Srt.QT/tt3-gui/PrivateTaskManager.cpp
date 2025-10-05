@@ -203,17 +203,33 @@ void PrivateTaskManager::refresh()
             _ui->destroyPrivateTaskPushButton->setEnabled(false);
         }
 
-        _ui->startPrivateTaskPushButton->setEnabled(
-            !readOnly &&
-            selectedPrivateTask != nullptr &&
-            theCurrentActivity != selectedPrivateTask &&
-            !selectedPrivateTask->completed(_credentials) &&    //  may throw
-            selectedPrivateTask->canStart(_credentials));       //  TODO may throw
-        _ui->stopPrivateTaskPushButton->setEnabled(
-            !readOnly &&
-            selectedPrivateTask != nullptr &&
-            theCurrentActivity == selectedPrivateTask &&
-            selectedPrivateTask->canStop(_credentials));    //  TODO may throw
+        try
+        {
+            _ui->startPrivateTaskPushButton->setEnabled(
+                !readOnly &&
+                selectedPrivateTask != nullptr &&
+                theCurrentActivity != selectedPrivateTask &&
+                !selectedPrivateTask->completed(_credentials) &&    //  may throw
+                selectedPrivateTask->canStart(_credentials));       //  may throw
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & disable
+            qCritical() << ex.errorMessage();
+            _ui->startPrivateTaskPushButton->setEnabled(false);
+        }
+        try
+        {
+            _ui->stopPrivateTaskPushButton->setEnabled(
+                !readOnly &&
+                selectedPrivateTask != nullptr &&
+                theCurrentActivity == selectedPrivateTask &&
+                selectedPrivateTask->canStop(_credentials));    //  may throw
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & disable
+            qCritical() << ex.errorMessage();
+            _ui->stopPrivateTaskPushButton->setEnabled(false);
+        }
         try
         {
             _ui->completePrivateTaskPushButton->setEnabled(

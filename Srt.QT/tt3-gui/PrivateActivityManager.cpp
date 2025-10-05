@@ -190,16 +190,32 @@ void PrivateActivityManager::refresh()
             _ui->destroyPrivateActivityPushButton->setEnabled(false);
         }
 
-        _ui->startPrivateActivityPushButton->setEnabled(
-            !readOnly &&
-            selectedPrivateActivity != nullptr &&
-            theCurrentActivity != selectedPrivateActivity &&
-            selectedPrivateActivity->canStart(_credentials));   //  TODO may throw
-        _ui->stopPrivateActivityPushButton->setEnabled(
-            !readOnly &&
-            selectedPrivateActivity != nullptr &&
-            theCurrentActivity == selectedPrivateActivity &&
-            selectedPrivateActivity->canStop(_credentials));    //  TODO may throw
+        try
+        {
+            _ui->startPrivateActivityPushButton->setEnabled(
+                !readOnly &&
+                selectedPrivateActivity != nullptr &&
+                theCurrentActivity != selectedPrivateActivity &&
+                selectedPrivateActivity->canStart(_credentials));   //  may throw
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & disable
+            qCritical() << ex.errorMessage();
+            _ui->startPrivateActivityPushButton->setEnabled(false);
+        }
+        try
+        {
+            _ui->stopPrivateActivityPushButton->setEnabled(
+                !readOnly &&
+                selectedPrivateActivity != nullptr &&
+                theCurrentActivity == selectedPrivateActivity &&
+                selectedPrivateActivity->canStop(_credentials));    //  may throw
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & disable
+            qCritical() << ex.errorMessage();
+            _ui->stopPrivateActivityPushButton->setEnabled(false);
+        }
 
         //  Some buttons need to be adjusted for ReadOnoly mode
         try

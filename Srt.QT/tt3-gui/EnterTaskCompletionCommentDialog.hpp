@@ -1,5 +1,5 @@
 //
-//  tt3-gui/EnterTaskCompletionCommentDialog.hpp - The modal "Edit task completion comment" dialog
+//  tt3-gui/EnterTaskCompletionCommentDialog.hpp - The modal "Enter task completion comment" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin

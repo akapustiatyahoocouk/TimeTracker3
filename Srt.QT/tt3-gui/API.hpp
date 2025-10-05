@@ -85,6 +85,8 @@
 #include "tt3-gui/DestroyPrivateTaskDialog.hpp"
 #include "tt3-gui/SelectPrivateTaskParentDialog.hpp"
 
+#include "tt3-gui/AddEmailAddressDialog.hpp"
+#include "tt3-gui/ModifyEmailAddressDialog.hpp"
 #include "tt3-gui/EnterActivityStartCommentDialog.hpp"
 #include "tt3-gui/EnterActivityStopCommentDialog.hpp"
 #include "tt3-gui/EnterTaskCompletionCommentDialog.hpp"

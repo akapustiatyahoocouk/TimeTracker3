@@ -1,5 +1,5 @@
 //
-//  tt3-gui/EnterActivityStartCommentDialog.hpp - The modal "Enter activity start comment" dialog
+//  tt3-gui/AddEmailAddressDialog.hpp - The modal "Add e-mail address" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -21,14 +21,12 @@
 
 namespace tt3::gui
 {
-    namespace Ui { class EditStringDialog; }
-
-    /// \class EnterActivityStartCommentDialog tt3-gui/API.hpp
-    /// \brief The "Enter activity start comment" modal dialog.
-    class TT3_GUI_PUBLIC EnterActivityStartCommentDialog final
+    /// \class AddEmailAddressDialog tt3-gui/API.hpp
+    /// \brief The "Add e-mail addresss" modal dialog.
+    class TT3_GUI_PUBLIC AddEmailAddressDialog final
         :   private EditStringDialog
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(EnterActivityStartCommentDialog)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AddEmailAddressDialog)
 
         //////////
         //  Types
@@ -44,11 +42,11 @@ namespace tt3::gui
         ///     Constructs the dialog
         /// \param parent
         ///     The parent widget for the dialog; nullptr == none.
-        /// \param task
-        ///     The Activity that is being "started".
-        EnterActivityStartCommentDialog(
+        /// \param workspace
+        ///     The workspace where the e-mail address will be stored.
+        AddEmailAddressDialog(
                 ::QWidget * parent,
-                tt3::ws::Activity activity
+                tt3::ws::Workspace workspace
             );
         //  The default destructor is OK
 
@@ -58,23 +56,12 @@ namespace tt3::gui
         using EditStringDialog::doModal;
 
         /// \brief
-        ///     Returns the comment as entered by the user.
+        ///     Returns the e-mail address as entered by the user.
         /// \return
-        ///     The comment as entered by the user.
-        QString         comment() const { return EditStringDialog::editedValue(); }
-
-        //////////
-        //  Implementation
-    private:
-        //  Helpers
-        static QIcon    _dialogIcon(
-                                tt3::ws::Activity activity
-                            );
-        static QString  _dialogTitle(
-                                tt3::ws::Activity activity
-                            );
+        ///     The e-mail address as entered by the user.
+        QString         emailAddress() const { return EditStringDialog::editedValue(); }
     };
 }
 
 #endif//    def TT3_GUI_EDIT_STRING_DIALOG_DEFINED
-//  End of tt3-gui/EnterActivityStartCommentDialog.hpp
+//  End of tt3-gui/AddEmailAddressDialog.hpp

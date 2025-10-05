@@ -299,17 +299,15 @@ void ModifyAccountDialog::_emailAddressesListWidgetCurrentRowChanged(int)
 
 void ModifyAccountDialog::_addEmailAddressPushButtonClicked()
 {
-    AddEmailAddressDialog dlg(
-        this,
-        [&](auto a) { return _validator->isValidEmailAddress(a); });
+    AddEmailAddressDialog dlg(this, _account->workspace());
     if (dlg.doModal() == AddEmailAddressDialog::Result::Ok)
     {
         QStringList emailAddresses = _selectedEmailAddresses();
-        emailAddresses.removeOne(dlg.editedValue());    //  in case it's already there
-        emailAddresses.append(dlg.editedValue());
+        emailAddresses.removeOne(dlg.emailAddress());    //  in case it's already there
+        emailAddresses.append(dlg.emailAddress());
         emailAddresses.sort();
         _setSelectedEmailAddresses(emailAddresses);
-        _setSelectedEmailAddress(dlg.editedValue());
+        _setSelectedEmailAddress(dlg.emailAddress());
         _refresh();
     }
 }
@@ -319,19 +317,16 @@ void ModifyAccountDialog::_modifyEmailAddressPushButtonClicked()
     QString oldEmailAddress = _selectedEmailAddress();
     if (!oldEmailAddress.isEmpty())
     {
-        ModifyEmailAddressDialog dlg(
-            this,
-            oldEmailAddress,
-            [&](auto a) { return _validator->isValidEmailAddress(a); });
+        ModifyEmailAddressDialog dlg(this, oldEmailAddress, _account->workspace());
         if (dlg.doModal() == ModifyEmailAddressDialog::Result::Ok)
         {
             QStringList emailAddresses = _selectedEmailAddresses();
             emailAddresses.removeOne(oldEmailAddress);
-            emailAddresses.removeOne(dlg.editedValue());
-            emailAddresses.append(dlg.editedValue());
+            emailAddresses.removeOne(dlg.emailAddress());
+            emailAddresses.append(dlg.emailAddress());
             emailAddresses.sort();
             _setSelectedEmailAddresses(emailAddresses);
-            _setSelectedEmailAddress(dlg.editedValue());
+            _setSelectedEmailAddress(dlg.emailAddress());
             _refresh();
         }
     }

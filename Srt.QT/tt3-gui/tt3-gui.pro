@@ -6,6 +6,7 @@ DEFINES += TT3_GUI_LIBRARY
 SOURCES += \
     AboutDialog.cpp \
     ActivityTypeManager.cpp \
+    AddEmailAddressDialog.cpp \
     AskYesNoDialog.cpp \
     ColorManager.cpp \
     Component.cpp \
@@ -50,6 +51,7 @@ SOURCES += \
     ManageUsersDialog.cpp \
     ModifyAccountDialog.cpp \
     ModifyActivityTypeDialog.cpp \
+    ModifyEmailAddressDialog.cpp \
     ModifyPrivateActivityDialog.cpp \
     ModifyPrivateTaskDialog.cpp \
     ModifyPublicActivityDialog.cpp \
@@ -79,6 +81,7 @@ HEADERS += \
     API.hpp \
     AboutDialog.hpp \
     ActivityTypeManager.hpp \
+    AddEmailAddressDialog.hpp \
     AskYesNoDialog.hpp \
     Color.hpp \
     Components.hpp \
@@ -117,6 +120,7 @@ HEADERS += \
     ManageUsersDialog.hpp \
     ModifyAccountDialog.hpp \
     ModifyActivityTypeDialog.hpp \
+    ModifyEmailAddressDialog.hpp \
     ModifyPrivateActivityDialog.hpp \
     ModifyPrivateTaskDialog.hpp \
     ModifyPublicActivityDialog.hpp \

@@ -112,55 +112,6 @@ namespace tt3::gui
         virtual void    accept() override;
         virtual void    reject() override;
     };
-
-    /// \class AddEmailAddressDialog tt3-gui/API.hpp
-    /// \brief The "Add e-mail address" modal dialog.
-    //  TODO move to a separate .hpp/.cpp
-    class TT3_GUI_PUBLIC AddEmailAddressDialog final
-        :   public EditStringDialog
-    {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AddEmailAddressDialog)
-
-        //////////
-        //  Construction/destruction
-    public:
-        /// \brief
-        ///     Constructs the dialog
-        /// \param parent
-        ///     The parent widget for the dialog; nullptr == none.
-        /// \param validator
-        ///     The value validator, nullptr == none.
-        AddEmailAddressDialog(
-                ::QWidget * parent,
-                Validator validator
-            );
-    };
-
-    /// \class ModifyEmailAddressDialog tt3-gui/API.hpp
-    /// \brief The "Modify e-mail address" modal dialog.
-    //  TODO move to a separate .hpp/.cpp
-    class TT3_GUI_PUBLIC ModifyEmailAddressDialog final
-        :   public EditStringDialog
-    {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ModifyEmailAddressDialog)
-
-        //////////
-        //  Construction/destruction
-    public:
-        /// \brief
-        ///     Constructs the dialog
-        /// \param parent
-        ///     The parent widget for the dialog; nullptr == none.
-        /// \param initialValue
-        ///     The initial edited value.
-        /// \param validator
-        ///     The value validator, cannot be nullptr.
-        ModifyEmailAddressDialog(
-                ::QWidget * parent,
-                const QString & initialValue,
-                Validator validator
-            );
-    };
 }
 
 //  Macro needed for MOC-generated .cpp files

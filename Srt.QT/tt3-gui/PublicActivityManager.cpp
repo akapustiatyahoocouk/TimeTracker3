@@ -186,16 +186,32 @@ void PublicActivityManager::refresh()
             _ui->destroyPublicActivityPushButton->setEnabled(false);
         }
 
-        _ui->startPublicActivityPushButton->setEnabled(
-            !readOnly &&
-            selectedPublicActivity != nullptr &&
-            theCurrentActivity != selectedPublicActivity &&
-            selectedPublicActivity->canStart(_credentials));    //  TODO may throw
-        _ui->stopPublicActivityPushButton->setEnabled(
-            !readOnly &&
-            selectedPublicActivity != nullptr &&
-            theCurrentActivity == selectedPublicActivity &&
-            selectedPublicActivity->canStop(_credentials)); //  TODO may throw
+        try
+        {
+            _ui->startPublicActivityPushButton->setEnabled(
+                !readOnly &&
+                selectedPublicActivity != nullptr &&
+                theCurrentActivity != selectedPublicActivity &&
+                selectedPublicActivity->canStart(_credentials));    //  may throw
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //OOPS! Log & disable
+            qCritical() << ex.errorMessage();
+            _ui->startPublicActivityPushButton->setEnabled(false);
+        }
+        try
+        {
+            _ui->stopPublicActivityPushButton->setEnabled(
+                !readOnly &&
+                selectedPublicActivity != nullptr &&
+                theCurrentActivity == selectedPublicActivity &&
+                selectedPublicActivity->canStop(_credentials)); //  may throw
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //OOPS! Log & disable
+            qCritical() << ex.errorMessage();
+            _ui->stopPublicActivityPushButton->setEnabled(false);
+        }
 
         //  Some buttons need to be adjusted for ReadOnoly mode
         try
@@ -545,7 +561,7 @@ void PublicActivityManager::_createPublicActivityPushButtonClicked()
 void PublicActivityManager::_modifyPublicActivityPushButtonClicked()
 {
     if (auto publicActivity = _selectedPublicActivity())
-    {   //  TODO use the same slection/condition tandem in other similar contexts
+    {
         try
         {
             ModifyPublicActivityDialog dlg(this, publicActivity, _credentials); //  may throw

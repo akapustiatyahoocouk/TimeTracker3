@@ -218,11 +218,19 @@ void PublicTaskManager::refresh()
             qCritical() << ex.errorMessage();
             _ui->startPublicTaskPushButton->setEnabled(false);
         }
-        _ui->stopPublicTaskPushButton->setEnabled(
-            !readOnly &&
-            selectedPublicTask != nullptr &&
-            theCurrentActivity == selectedPublicTask &&
-            selectedPublicTask->canStop(_credentials)); //  TODO may throw
+        try
+        {
+            _ui->stopPublicTaskPushButton->setEnabled(
+                !readOnly &&
+                selectedPublicTask != nullptr &&
+                theCurrentActivity == selectedPublicTask &&
+                selectedPublicTask->canStop(_credentials)); //  may throw
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & disable
+            qCritical() << ex.errorMessage();
+            _ui->stopPublicTaskPushButton->setEnabled(false);
+        }
         try
         {
             _ui->completePublicTaskPushButton->setEnabled(
@@ -232,7 +240,7 @@ void PublicTaskManager::refresh()
                 !selectedPublicTask->completed(_credentials));   //  may throw
         }
         catch (const tt3::util::Exception & ex)
-        {   //  OOPS! Report & recover
+        {   //  OOPS! Report & disable
             qCritical() << ex.errorMessage();
             _ui->completePublicTaskPushButton->setEnabled(false);
         }

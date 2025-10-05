@@ -1,5 +1,5 @@
 //
-//  tt3-gui/EnterActivityStopCommentDialog.hpp - The modal "Edit activity stop comment" dialog
+//  tt3-gui/EnterActivityStopCommentDialog.hpp - The modal "Enter activity stop comment" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin

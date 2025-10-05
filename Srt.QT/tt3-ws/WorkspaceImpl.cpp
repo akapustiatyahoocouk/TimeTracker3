@@ -175,8 +175,81 @@ auto WorkspaceImpl::users(
     }
 }
 
-//  TODO implement Accounts WorkspaceImpl::accounts(const Credentials & credentials) const throws(WorkspaceException);
-//  TODO implement Account WorkspaceImpl::findAccount(const Credentials & credentials, const QString & login) const throws(WorkspaceException);
+Accounts WorkspaceImpl::accounts(
+        const Credentials & credentials
+    ) const
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+
+    try
+    {
+        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+        Accounts result;
+        if (clientCapabilities.contains(Capability::Administrator) ||
+            clientCapabilities.contains(Capability::ManageUsers))
+        {   //  The caller can see all accounts if all users
+            for (tt3::db::api::IAccount * dataAccount : _database->accounts())
+            {
+                result.insert(_getProxy(dataAccount));
+            }
+        }
+        else
+        {   //  The caller can only see his own account
+            tt3::db::api::IAccount * dataAccount =
+                _database->login(credentials._login, credentials._password);
+            tt3::db::api::IUser * dataUser = dataAccount->user();
+            for (tt3::db::api::IAccount * da : dataUser->accounts())
+            {
+                result.insert(_getProxy(da));
+            }
+        }
+        return result;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+Account WorkspaceImpl::findAccount(
+        const Credentials & credentials,
+        const QString & login
+    ) const
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+
+    try
+    {
+        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+        tt3::db::api::IAccount * dataAccount = _database->findAccount(login);
+        if (dataAccount != nullptr)
+        {   //  Something found - but is it visible ?
+            if (clientCapabilities.contains(Capability::Administrator) ||
+                clientCapabilities.contains(Capability::ManageUsers))
+            {   //  The caller can see all accounts if all users
+                return _getProxy(dataAccount);
+            }
+            else
+            {   //  The caller can only see his own account
+                tt3::db::api::IAccount * dataClientAccount =
+                    _database->login(credentials._login, credentials._password);
+                tt3::db::api::IUser * dataUser = dataClientAccount->user();
+                if (dataUser == dataAccount->user())
+                {   //  Yes!
+                    return _getProxy(dataAccount);
+                }
+            }
+        }
+        //  OOPS! Not found OR belongs to a wrong user
+        return nullptr;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
 
 auto WorkspaceImpl::activityTypes(
         const Credentials & credentials
