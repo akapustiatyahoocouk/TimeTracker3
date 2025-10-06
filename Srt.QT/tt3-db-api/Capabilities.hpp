@@ -24,7 +24,7 @@ namespace tt3::db::api
         Administrator = 0x0001,
         ManageUsers = 0x0002,
         ManageActivityTypes = 0x0004,
-        ManageBeheficiaries = 0x0008,
+        ManageBeneficiaries = 0x0008,
         ManageWorkloads = 0x0010,
         ManagePublicActivities = 0x0020,
         ManagePublicTasks = 0x0040,

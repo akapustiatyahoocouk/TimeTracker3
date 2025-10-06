@@ -33,6 +33,8 @@ namespace tt3::ws
         friend class TaskImpl;
         friend class PublicTaskImpl;
         friend class PrivateTaskImpl;
+        friend class WorkloadImpl;
+        friend class ProjectImpl;
 
         //////////
         //  Construction/destruction - from frinds only

@@ -30,6 +30,7 @@ namespace tt3::db::xml
         friend class Activity;
         friend class PublicTask;
         friend class PrivateTask;
+        friend class Project;
 
         //////////
         //  Construction/destruction (from DB type only)
@@ -52,6 +53,34 @@ namespace tt3::db::xml
                             ) const override;
         virtual void    setDescription(
                                 const QString & description
+                            ) override;
+
+        //////////
+        //  tt3::db::api::IWorkload (associations)
+    public:
+        virtual auto    contributingActivities(
+                            ) const -> tt3::db::api::Activities override;
+        virtual auto    beneficiaries(
+                            ) const -> tt3::db::api::Beneficiaries override;
+        virtual void    setBeneficiaries(
+                                const tt3::db::api::Beneficiaries & beneficiaries
+                            ) override;
+        virtual void    addBeneficiary(
+                                tt3::db::api::IBeneficiary * beneficiary
+                            ) override;
+        virtual void    removeBeneficiary(
+                                tt3::db::api::IBeneficiary * beneficiary
+                            ) override;
+        virtual auto    assignedUsers(
+                            ) const -> tt3::db::api::Users override;
+        virtual void    setAssignedUsers(
+                                const tt3::db::api::Users & users
+                            ) override;
+        virtual void    addAssignedUser(
+                                tt3::db::api::IUser * user
+                            ) override;
+        virtual void    removeAssignedUser(
+                                tt3::db::api::IUser * user
                             ) override;
 
         //////////

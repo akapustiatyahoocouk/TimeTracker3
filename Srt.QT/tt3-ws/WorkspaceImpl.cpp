@@ -333,7 +333,7 @@ auto WorkspaceImpl::publicTasks(
     try
     {
         _validateAccessRights(credentials);
-        //  The caller can see all public activities
+        //  The caller can see all public tasks
         PublicTasks result;
         for (tt3::db::api::IPublicTask * dataPublicTask : _database->publicTasks())
         {
@@ -357,11 +357,59 @@ auto WorkspaceImpl::rootPublicTasks(
     try
     {
         _validateAccessRights(credentials);
-        //  The caller can see all public activities
+        //  The caller can see all public tasks
         PublicTasks result;
         for (tt3::db::api::IPublicTask * dataPublicTask : _database->rootPublicTasks())
         {
             result.insert(_getProxy(dataPublicTask));
+        }
+        return result;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+auto WorkspaceImpl::projects(
+        const Credentials & credentials
+    ) const -> Projects
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+
+    try
+    {
+        _validateAccessRights(credentials);
+        //  The caller can see all projects
+        Projects result;
+        for (tt3::db::api::IProject * dataProject : _database->rootProjects())
+        {
+            result.insert(_getProxy(dataProject));
+        }
+        return result;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+auto WorkspaceImpl::rootProjects(
+        const Credentials & credentials
+    ) const -> Projects
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+
+    try
+    {
+        _validateAccessRights(credentials);
+        //  The caller can see all projects
+        Projects result;
+        for (tt3::db::api::IProject * dataProject : _database->rootProjects())
+        {
+            result.insert(_getProxy(dataProject));
         }
         return result;
     }
@@ -806,7 +854,7 @@ PublicActivity WorkspaceImpl::_getProxy(
     if (auto dataPublicTask =
             dynamic_cast<tt3::db::api::IPublicTask *>(dataPublicActivity))
     {   //  ...then use the dedicated proxy getter
-        return std::dynamic_pointer_cast<PublicTaskImpl>(_getProxy(dataPublicTask));
+        return std::dynamic_pointer_cast<PublicActivityImpl>(_getProxy(dataPublicTask));
     }
 
     //  Do the work
@@ -861,7 +909,7 @@ PrivateActivity WorkspaceImpl::_getProxy(
     if (auto dataPrivateTask =
         dynamic_cast<tt3::db::api::IPrivateTask *>(dataPrivateActivity))
     {   //  ...then use the dedicated proxy getter
-        return std::dynamic_pointer_cast<PrivateTaskImpl>(_getProxy(dataPrivateTask));
+        return std::dynamic_pointer_cast<PrivateActivityImpl>(_getProxy(dataPrivateTask));
     }
 
     //  Do the work
@@ -917,8 +965,38 @@ Workload WorkspaceImpl::_getProxy(
     Q_ASSERT(_isOpen);
     Q_ASSERT(dataWorkload != nullptr);
 
+    if (auto dataProject=
+        dynamic_cast<tt3::db::api::IProject*>(dataWorkload))
+    {   //  ...then use the dedicated proxy getter
+        return std::dynamic_pointer_cast<WorkloadImpl>(_getProxy(dataProject));
+    }
+
     Q_ASSERT(false);    //  TODO implement properly;
     return nullptr;
+}
+
+Project WorkspaceImpl::_getProxy(
+        tt3::db::api::IProject * dataProject
+    ) const
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    Q_ASSERT(_isOpen);
+    Q_ASSERT(dataProject != nullptr);
+
+    Oid oid = dataProject->oid();
+    if (_proxyCache.contains(oid))
+    {
+        Project project = std::dynamic_pointer_cast<ProjectImpl>(_proxyCache[oid]);
+        Q_ASSERT(project != nullptr);   //  Objects do not change their types OR reuse OIDs
+        return project;
+    }
+    //  Must create a new proxy
+    Workspace workspace = _address->_workspaceType->_mapWorkspace(const_cast<WorkspaceImpl*>(this));
+    Project project(
+        new ProjectImpl(workspace, dataProject),
+        [](ProjectImpl * p) { delete p; });
+    _proxyCache.insert(oid, project);
+    return project;
 }
 
 //////////

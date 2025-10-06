@@ -19,7 +19,7 @@ namespace tt3::ws
 {
     /// \class WorkloadImpl tt3-ws/API.hpp
     /// \brief A generic workload [implementation].
-    class TT3_WS_PUBLIC WorkloadImpl final
+    class TT3_WS_PUBLIC WorkloadImpl
         :   public ObjectImpl
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkloadImpl)
@@ -30,6 +30,7 @@ namespace tt3::ws
         friend class ActivityImpl;
         friend class PublicTaskImpl;
         friend class PrivateTaskImpl;
+        friend class ProjectImpl;
 
         //////////
         //  Construction/destruction - from friends only
@@ -97,20 +98,138 @@ namespace tt3::ws
                         );
 
         //////////
+        //  Operations (associations)
+    public:
+        /// \brief
+        ///     Returns the set of Activities associated with this Workload.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of Activities associated with this Workload.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        contributingActivities(
+                            const Credentials & credentials
+                        ) const -> Activities;
+
+        /// \brief
+        ///     Returns the Beneficiaries of this Workload.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The Beneficiaries of this Workload.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        beneficiaries(
+                            const Credentials & credentials
+                        ) const -> Beneficiaries;
+
+        /// \brief
+        ///     Sets the Beneficiaries of this Workload.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param beneficiaries
+        ///     The new Beneficiaries for this Workload.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        setBeneficiaries(
+                            const Credentials & credentials,
+                            const Beneficiaries & beneficiaries
+                        );
+
+        /// \brief
+        ///     Adds the specified Beneficiary to the set
+        ///     of Beneficiaries associated with this Workload.
+        /// \details
+        ///     Has no effect if already there.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param beneficiary
+        ///     The beneficiary to add.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        addBeneficiary(
+                            const Credentials & credentials,
+                            Beneficiary beneficiary
+                        );
+
+        /// \brief
+        ///     Removes the specified Beneficiary from the set
+        ///     of Beneficiaries associated with this Workload.
+        /// \details
+        ///     Has no effect if already not there.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param beneficiary
+        ///     The beneficiary to remove.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        removeBeneficiary(
+                            const Credentials & credentials,
+                            Beneficiary beneficiary
+                        );
+
+        /// \brief
+        ///     Returns the set of Users assigned to this Workload.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of Users assigned to this Workload.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        assignedUsers(
+                            const Credentials & credentials
+                        ) const -> Users;
+
+        /// \brief
+        ///     Sets the Users assigned to this Workload.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param users
+        ///     The ne set of Users to assign to this Workload.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        setAssignedUsers(
+                            const Credentials & credentials,
+                            const Users & users
+                        );
+
+        /// \brief
+        ///     Adds the specified User to the  set of Users
+        ///     assigned to this Workload;
+        /// \details
+        ///     Has no effect if already there there.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param user
+        ///     The user to add.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        addAssignedUser(
+                            const Credentials & credentials,
+                            User user
+                        );
+
+        /// \brief
+        ///     Removes the specified User from the  set of Users
+        ///     assigned to this Workload;
+        /// \details
+        ///     Has no effect if already not there.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param user
+        ///     The user to remove.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        removeAssignedUser(
+                            const Credentials & credentials,
+                            User user
+                        );
+
+        //////////
         //  Implementation
     private:
         tt3::db::api::IWorkload *const  _dataWorkload;    //  counts as "reference"
-
-        //  Access control
-        virtual bool    _canRead(       //  throws WorkspaceException
-                                const Credentials & credentials
-                            ) const override;
-        virtual bool    _canModify(     //  throws WorkspaceException
-                                const Credentials & credentials
-                            ) const override;
-        virtual bool    _canDestroy(    //  throws WorkspaceException
-                                const Credentials & credentials
-                            ) const override;
     };
 }
 

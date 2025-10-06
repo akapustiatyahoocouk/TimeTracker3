@@ -191,7 +191,7 @@ tt3::ws::Capabilities ModifyAccountDialog::_selectedCapabilities()
     }
     if (_ui->manageBeneficiariesCheckBox->isChecked())
     {
-        result |= tt3::ws::Capability::ManageBeheficiaries;
+        result |= tt3::ws::Capability::ManageBeneficiaries;
     }
     if (_ui->manageWorkloadsCheckBox->isChecked())
     {
@@ -241,7 +241,7 @@ void ModifyAccountDialog::_setSelectedCapabilities(tt3::ws::Capabilities capabil
     _ui->manageActivityTypesCheckBox->setChecked(
         capabilities.contains(tt3::ws::Capability::ManageActivityTypes));
     _ui->manageBeneficiariesCheckBox->setChecked(
-        capabilities.contains(tt3::ws::Capability::ManageBeheficiaries));
+        capabilities.contains(tt3::ws::Capability::ManageBeneficiaries));
     _ui->manageWorkloadsCheckBox->setChecked(
         capabilities.contains(tt3::ws::Capability::ManageWorkloads));
     _ui->managePublicActivitiesCheckBox->setChecked(

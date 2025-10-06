@@ -29,7 +29,7 @@ namespace
         { Capability::Administrator, "Administrator" },
         { Capability::ManageUsers, "ManageUsers" },
         { Capability::ManageActivityTypes, "ManageActivityTypes" },
-        { Capability::ManageBeheficiaries, "ManageBeheficiaries" },
+        { Capability::ManageBeneficiaries, "ManageBeneficiaries" },
         { Capability::ManageWorkloads, "ManageWorkloads" },
         { Capability::ManagePublicActivities, "ManagePublicActivities" },
         { Capability::ManagePublicTasks, "ManagePublicTasks" },

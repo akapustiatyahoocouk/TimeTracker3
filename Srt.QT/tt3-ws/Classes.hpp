@@ -37,6 +37,7 @@ namespace tt3::ws
     class TT3_WS_PUBLIC WorkloadImpl;
     class TT3_WS_PUBLIC ProjectImpl;
     class TT3_WS_PUBLIC WorkStreamImpl;
+    class TT3_WS_PUBLIC BeneficiaryImpl;
 
     //  Opaque pointer-like types (reference counted);
     //  can all be nullptr
@@ -60,6 +61,7 @@ namespace tt3::ws
     using Workload = std::shared_ptr<WorkloadImpl>;
     using Project = std::shared_ptr<ProjectImpl>;
     using WorkStream = std::shared_ptr<WorkStreamImpl>;
+    using Beneficiary = std::shared_ptr<BeneficiaryImpl>;
 
     //  Collections
     using WorkspaceTypes = QSet<WorkspaceType>;
@@ -79,6 +81,7 @@ namespace tt3::ws
     using Workloads = QSet<Workload>;
     using Projects = QSet<Project>;
     using WorkStreams = QSet<WorkStream>;
+    using Beneficiaries = QSet<Beneficiary>;
 
     //  Exceptins & notifications
     class TT3_WS_PUBLIC WorkspaceException;

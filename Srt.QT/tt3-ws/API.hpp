@@ -44,8 +44,8 @@
 #include "tt3-ws/Task.hpp"
 #include "tt3-ws/PublicTask.hpp"
 #include "tt3-ws/PrivateTask.hpp"
-
 #include "tt3-ws/Workload.hpp"
+#include "tt3-ws/Project.hpp"
 
 #include "tt3-ws/Notifications.hpp"
 #include "tt3-ws/Exceptions.hpp"

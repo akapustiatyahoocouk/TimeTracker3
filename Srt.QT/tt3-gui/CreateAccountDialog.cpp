@@ -155,7 +155,7 @@ tt3::ws::Capabilities CreateAccountDialog::_selectedCapabilities()
     }
     if (_ui->manageBeneficiariesCheckBox->isChecked())
     {
-        result |= tt3::ws::Capability::ManageBeheficiaries;
+        result |= tt3::ws::Capability::ManageBeneficiaries;
     }
     if (_ui->manageWorkloadsCheckBox->isChecked())
     {

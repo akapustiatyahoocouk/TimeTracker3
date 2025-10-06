@@ -14,10 +14,12 @@ SOURCES += \
     PrincipalImpl.cpp \
     PrivateActivityImpl.cpp \
     PrivateTaskImpl.cpp \
+    ProjectImpl.cpp \
     PublicActivityImpl.cpp \
     PublicTaskImpl.cpp \
     TaskImpl.cpp \
     UserImpl.cpp \
+    WorkloadImpl.cpp \
     WorkspaceAddressImpl.cpp \
     WorkspaceImpl.cpp \
     WorkspaceTypeImpl.cpp \
@@ -38,6 +40,7 @@ HEADERS += \
     Principal.hpp \
     PrivateActivity.hpp \
     PrivateTask.hpp \
+    Project.hpp \
     PublicActivity.hpp \
     PublicTask.hpp \
     Task.hpp \

@@ -240,9 +240,19 @@ void Database::close()
     {
         publicActivity->destroy();
     }
+    for (PublicTask * publicTask : _rootPublicTasks.values())
+    {
+        publicTask->destroy();
+    }
+    for (Project * project : _rootProjects.values())
+    {
+        project->destroy();
+    }
     Q_ASSERT(_users.isEmpty());
     Q_ASSERT(_activityTypes.isEmpty());
     Q_ASSERT(_publicActivities.isEmpty());
+    Q_ASSERT(_rootPublicTasks.isEmpty());
+    Q_ASSERT(_rootProjects.isEmpty());
     _isReadOnly = wasReadOnly;
 
     //  Done
@@ -952,6 +962,23 @@ auto Database::_findRootPublicTask(
     return nullptr;
 }
 
+auto Database::_findRootProject(
+        const QString & displayName
+    ) const -> Project *
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    _ensureOpen();  //  may throw
+
+    for (Project * project : _rootProjects)
+    {
+        if (project->_displayName == displayName)
+        {
+            return project;
+        }
+    }
+    return nullptr;
+}
+
 //////////
 //  Serialization
 void Database::_save()
@@ -987,6 +1014,10 @@ void Database::_save()
         rootElement,
         "PublicTasks",
         _rootPublicTasks);
+    _serializeAggregation(
+        rootElement,
+        "Projects",
+        _rootProjects);
 
     //  Save DOM
     QFile file(_address->_path);
@@ -1060,6 +1091,14 @@ void Database::_load()
         [&](auto oid)
         {
             return new PublicTask(this, oid);
+        });
+    _deserializeAggregation<Project>(
+        rootElement,
+        "Projects",
+        _rootProjects,
+        [&](auto oid)
+        {
+            return new Project(this, oid);
         });
 
     //  Now we can do the asociations

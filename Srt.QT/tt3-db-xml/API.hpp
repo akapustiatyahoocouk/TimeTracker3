@@ -42,7 +42,7 @@
 #include "tt3-db-xml/Task.hpp"
 #include "tt3-db-xml/PublicTask.hpp"
 #include "tt3-db-xml/PrivateTask.hpp"
-
 #include "tt3-db-xml/Workload.hpp"
+#include "tt3-db-xml/Project.hpp"
 
 //  End of tt3-db-xml/API.hpp

@@ -57,6 +57,68 @@ void Workload::setDescription(
 }
 
 //////////
+//  tt3::db::api::IWorkload (associations)
+auto Workload::contributingActivities(
+    ) const -> tt3::db::api::Activities
+{
+    throw tt3::util::NotImplementedError();
+}
+
+auto Workload::beneficiaries(
+    ) const -> tt3::db::api::Beneficiaries
+{
+    throw tt3::util::NotImplementedError();
+}
+
+void Workload::setBeneficiaries(
+        const tt3::db::api::Beneficiaries & /*beneficiaries*/
+    )
+{
+    throw tt3::util::NotImplementedError();
+}
+
+void Workload::addBeneficiary(
+        tt3::db::api::IBeneficiary * /*beneficiary*/
+    )
+{
+    throw tt3::util::NotImplementedError();
+}
+
+void Workload::removeBeneficiary(
+        tt3::db::api::IBeneficiary * /*beneficiary*/
+    )
+{
+    throw tt3::util::NotImplementedError();
+}
+
+auto Workload::assignedUsers(
+    ) const -> tt3::db::api::Users
+{
+    throw tt3::util::NotImplementedError();
+}
+
+void Workload::setAssignedUsers(
+        const tt3::db::api::Users & /*users*/
+    )
+{
+    throw tt3::util::NotImplementedError();
+}
+
+void Workload::addAssignedUser(
+        tt3::db::api::IUser * /*user*/
+    )
+{
+    throw tt3::util::NotImplementedError();
+}
+
+void Workload::removeAssignedUser(
+        tt3::db::api::IUser * /*user*/
+    )
+{
+    throw tt3::util::NotImplementedError();
+}
+
+//////////
 //  Implementation helpers
 void Workload::_markDead()
 {

@@ -41,6 +41,8 @@ namespace tt3::ws
         friend class TaskImpl;
         friend class PublicTaskImpl;
         friend class PrivateTaskImpl;
+        friend class WorkloadImpl;
+        friend class ProjectImpl;
 
         //////////
         //  Construction/destruction - from friends only
@@ -222,6 +224,30 @@ namespace tt3::ws
         auto        rootPublicTasks(
                             const Credentials & credentials
                         ) const -> PublicTasks;
+
+        /// \brief
+        ///     Returns the set of all Projects in this database.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all Projects in this database.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        auto        projects(
+                            const Credentials & credentials
+                        ) const -> Projects;
+
+        /// \brief
+        ///     Returns the set of root Projects in this database.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of root Projects in this database.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        auto        rootProjects(
+                            const Credentials & credentials
+                        ) const -> Projects;
 
         //////////
         //  Operations (access control)
@@ -553,10 +579,16 @@ namespace tt3::ws
         auto        _getProxy(  //  throws WorkspaceException
                             tt3::db::api::IPrivateTask * dataPrivateTask
                         ) const -> PrivateTask;
-
         auto        _getProxy(  //  throws WorkspaceException
                             tt3::db::api::IWorkload * dataWorkload
                         ) const -> Workload;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IProject * dataProject
+                        ) const -> Project;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IWorkStream * dataWorkStream
+                        ) const -> WorkStream;
+
         //////////
         //  Event handlers
     private slots:
