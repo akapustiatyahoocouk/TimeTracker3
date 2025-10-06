@@ -59,11 +59,27 @@ bool ProjectImpl::completed(
 }
 
 void ProjectImpl::setCompleted(
-        const Credentials & /*credentials*/,
-        bool /*completed*/
+        const Credentials & credentials,
+        bool completed
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataProject->setCompleted(completed); //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 //////////

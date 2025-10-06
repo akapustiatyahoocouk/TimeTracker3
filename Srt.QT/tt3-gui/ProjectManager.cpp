@@ -699,8 +699,6 @@ void ProjectManager::_createProjectPushButtonClicked()
 
 void ProjectManager::_modifyProjectPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
-    /*  TODO uncomment
     if (auto project = _selectedProject())
     {
         try
@@ -718,7 +716,6 @@ void ProjectManager::_modifyProjectPushButtonClicked()
             requestRefresh();
         }
     }
-    */
 }
 
 void ProjectManager::_destroyProjectPushButtonClicked()

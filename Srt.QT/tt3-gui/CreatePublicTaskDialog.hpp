@@ -73,7 +73,7 @@ namespace tt3::gui
         /// \brief
         ///     Runs the dialog modally.
         /// \return
-        ///     The user's choice; on OK a new PublicYask has been created.
+        ///     The user's choice; on OK a new PublicTask has been created.
         Result          doModal();
 
         /// \brief

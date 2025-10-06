@@ -85,10 +85,28 @@ bool Project::completed(
 }
 
 void Project::setCompleted(
-        bool /*completed*/
+        bool completed
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    if (completed != _completed)
+    {   //  Make the change...
+        _completed = completed;
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 //////////

@@ -42,10 +42,43 @@ QString Workload::displayName() const
 }
 
 void Workload::setDisplayName(
-        const QString & /*displayName*/
+        const QString & displayName
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (!_database->_validator->workload()->isValidDisplayName(displayName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "displayName",
+            displayName);
+    }
+    if (displayName != _displayName)
+    {   //  Make the change (but no duplication)...
+        if (_siblingExists(displayName))
+        {
+            throw tt3::db::api::AlreadyExistsException(
+                type(),
+                "displayName",
+                displayName);
+        }
+        _displayName = displayName;
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 QString Workload::description() const
@@ -58,10 +91,36 @@ QString Workload::description() const
 }
 
 void Workload::setDescription(
-        const QString & /*description*/
+        const QString & description
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (!_database->_validator->project()->isValidDescription(description))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "description",
+            description);
+    }
+    if (description != _description)
+    {   //  Make the change...
+        _description = description;
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 //////////

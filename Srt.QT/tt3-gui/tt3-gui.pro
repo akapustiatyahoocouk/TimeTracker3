@@ -55,6 +55,7 @@ SOURCES += \
     ModifyEmailAddressDialog.cpp \
     ModifyPrivateActivityDialog.cpp \
     ModifyPrivateTaskDialog.cpp \
+    ModifyProjectDialog.cpp \
     ModifyPublicActivityDialog.cpp \
     ModifyPublicTaskDialog.cpp \
     ModifyUserDialog.cpp \
@@ -127,6 +128,7 @@ HEADERS += \
     ModifyEmailAddressDialog.hpp \
     ModifyPrivateActivityDialog.hpp \
     ModifyPrivateTaskDialog.hpp \
+    ModifyProjectDialog.hpp \
     ModifyPublicActivityDialog.hpp \
     ModifyPublicTaskDialog.hpp \
     ModifyUserDialog.hpp \
@@ -181,6 +183,7 @@ FORMS += \
     ModifyActivityTypeDialog.ui \
     ModifyPrivateActivityDialog.ui \
     ModifyPrivateTaskDialog.ui \
+    ModifyProjectDialog.ui \
     ModifyPublicActivityDialog.ui \
     ModifyPublicTaskDialog.ui \
     ModifyUserDialog.ui \

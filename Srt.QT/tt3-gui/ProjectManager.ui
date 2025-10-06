@@ -310,6 +310,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>filterLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::ProjectManager</receiver>
+   <slot>_filterLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>240</x>
+     <y>28</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>220</x>
+     <y>148</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_projectsTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
@@ -319,5 +335,6 @@
   <slot>_destroyProjectPushButtonClicked()</slot>
   <slot>_completeProjectPushButtonClicked()</slot>
   <slot>_showCompletedCheckBoxToggled(bool)</slot>
+  <slot>_filterLineEditTextChanged(QString)</slot>
  </slots>
 </ui>

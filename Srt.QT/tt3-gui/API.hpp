@@ -86,6 +86,7 @@
 #include "tt3-gui/DestroyPrivateTaskDialog.hpp"
 #include "tt3-gui/SelectPrivateTaskParentDialog.hpp"
 #include "tt3-gui/CreateProjectDialog.hpp"
+#include "tt3-gui/ModifyProjectDialog.hpp"
 
 #include "tt3-gui/SelectProjectParentDialog.hpp"
 

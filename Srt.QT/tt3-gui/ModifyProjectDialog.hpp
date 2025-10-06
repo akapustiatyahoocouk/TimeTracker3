@@ -1,5 +1,5 @@
 //
-//  tt3-gui/CreateProjectDialog.hpp - The modal "Create project" dialog
+//  tt3-gui/ModifyProjectDialog.hpp - The modal "Modify project" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,15 +19,15 @@
 
 namespace tt3::gui
 {
-    namespace Ui { class CreateProjectDialog; }
+    namespace Ui { class ModifyProjectDialog; }
 
-    /// \class CreateProjectDialog tt3-gui/API.hpp
-    /// \brief The modal "Create project" dialog
-    class TT3_GUI_PUBLIC CreateProjectDialog final
+    /// \class ModifyProjectDialog tt3-gui/API.hpp
+    /// \brief The modal "Modify project" dialog
+    class TT3_GUI_PUBLIC ModifyProjectDialog final
         :   private QDialog
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CreateProjectDialog)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ModifyProjectDialog)
 
         //////////
         //  Types
@@ -36,7 +36,7 @@ namespace tt3::gui
         ///     The dialog result after a modal invocation.
         enum class Result
         {
-            Ok,     ///< Changes confirme; Project has been created.
+            Ok,     ///< Changes confirme; changes have been saved.
             Cancel  ///< The dialog has been cancelled.
         };
 
@@ -47,25 +47,21 @@ namespace tt3::gui
         ///     Constructs the dialog.
         /// \param parent
         ///     The parent widget for the dialog; nullptr == none.
-        /// \param workspace
-        ///     The workspace to create a new Project in.
+        /// \param project
+        ///     The Project to modify.
         /// \param credentials
         ///     The credentials to use for data access.
-        /// \param initialParentProject
-        ///     The proposed parent Project for the new
-        ///     Project; nullptr == none.
         /// \exception WorkspaceException
         ///     If a data access error occurs.
-        CreateProjectDialog(
+        ModifyProjectDialog(
                 QWidget * parent,
-                tt3::ws::Workspace workspace,
-                const tt3::ws::Credentials & credentials,
-                tt3::ws::Project initialParentProject
+                tt3::ws::Project project,
+                const tt3::ws::Credentials & credentials
             );
 
         /// \brief
         ///     The class destructor.
-        virtual ~CreateProjectDialog();
+        virtual ~ModifyProjectDialog();
 
         //////////
         //  Operations
@@ -73,28 +69,16 @@ namespace tt3::gui
         /// \brief
         ///     Runs the dialog modally.
         /// \return
-        ///     The user's choice; on OK a new Project has been created.
+        ///     The user's choice; on OK all changes have been saved.
         Result          doModal();
-
-        /// \brief
-        ///     Returns the newly created Project.
-        /// \return
-        ///     The newly created Project (on Ok) or
-        ///     nullptr if the dialog was cancelled.
-        auto            createdProject(
-                            ) const -> tt3::ws::Project
-        {
-            return _createdProject;
-        }
 
         //////////
         //  Implementation
     private:
-        tt3::ws::Workspace  _workspace;
+        tt3::ws::Project    _project;
         const tt3::ws::Credentials  _credentials;
         tt3::ws::Validator::Project *const   _validator;
-
-        tt3::ws::Project _createdProject;
+        const bool      _readOnly;
 
         //  Helpers
         auto            _selectedParentProject(
@@ -107,7 +91,7 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::CreateProjectDialog *const  _ui;
+        Ui::ModifyProjectDialog *const  _ui;
 
         //////////
         //  Signal handlers
@@ -121,5 +105,4 @@ namespace tt3::gui
     };
 }
 
-//  End of tt3-gui/CreateProjectDialog.hpp
-
+//  End of tt3-gui/ModifyProjectDialog.hpp
