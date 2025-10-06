@@ -1288,6 +1288,20 @@ void Database::_validate()
             throw tt3::db::api::DatabaseCorruptException(this->_address);
         }
     }
+    for (Project * project : _rootProjects)
+    {
+        if (project == nullptr || !project->_isLive ||
+            project->_database != this ||
+            project->_parent != nullptr)
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(this->_address);
+        }
+        project->_validate(validatedObjects);
+        if (project->_siblingExists(project->_displayName))
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(this->_address);
+        }
+    }
 
     //  Final checks
     if (validatedObjects.size() != _liveObjects.size())

@@ -69,6 +69,7 @@ SOURCES += \
     PublicActivityManager.cpp \
     PublicTaskManager.cpp \
     SelectPrivateTaskParentDialog.cpp \
+    SelectProjectParentDialog.cpp \
     SelectPublicTaskParentDialog.cpp \
     SelectWorkspaceDialog.cpp \
     ShowConfigurationDialog.cpp \
@@ -139,6 +140,7 @@ HEADERS += \
     PublicActivityManager.hpp \
     PublicTaskManager.hpp \
     SelectPrivateTaskParentDialog.hpp \
+    SelectProjectParentDialog.hpp \
     SelectPublicTaskParentDialog.hpp \
     SelectWorkspaceDialog.hpp \
     ShowConfigurationDialog.hpp \
@@ -190,6 +192,7 @@ FORMS += \
     PublicActivityManager.ui \
     PublicTaskManager.ui \
     SelectPrivateTaskParentDialog.ui \
+    SelectProjectParentDialog.ui \
     SelectPublicTaskParentDialog.ui \
     SelectWorkspaceDialog.ui \
     ShowConfigurationDialog.ui \

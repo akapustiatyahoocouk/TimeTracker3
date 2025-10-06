@@ -103,8 +103,6 @@ void CreateProjectDialog::_refresh()
 //  Signal handlers
 void CreateProjectDialog::_selectParentProjectPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
-    /*  TODO uncomment
     try
     {
         SelectProjectParentDialog dlg(
@@ -119,7 +117,6 @@ void CreateProjectDialog::_selectParentProjectPushButtonClicked()
     {
         ErrorDialog::show(this, ex);
     }
-    */
 }
 
 void CreateProjectDialog::_displayNameLineEditTextChanged(QString)

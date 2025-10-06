@@ -218,6 +218,9 @@ auto PrivateTask::createChild(
     _database->_markModified();
     //  ...schedule change notifications...
     _database->_changeNotifier.post(
+        new tt3::db::api::ObjectModifiedNotification(
+            _database, type(), _oid));
+    _database->_changeNotifier.post(
         new tt3::db::api::ObjectCreatedNotification(
             _database, child->type(), child->_oid));
     if (xmlActivityType != nullptr)

@@ -87,6 +87,8 @@
 #include "tt3-gui/SelectPrivateTaskParentDialog.hpp"
 #include "tt3-gui/CreateProjectDialog.hpp"
 
+#include "tt3-gui/SelectProjectParentDialog.hpp"
+
 #include "tt3-gui/AddEmailAddressDialog.hpp"
 #include "tt3-gui/ModifyEmailAddressDialog.hpp"
 #include "tt3-gui/EnterActivityStartCommentDialog.hpp"
