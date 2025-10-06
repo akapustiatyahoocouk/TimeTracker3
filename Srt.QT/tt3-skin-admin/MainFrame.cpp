@@ -63,6 +63,11 @@ MainFrame::MainFrame(QWidget * parent)
     _managePrivateTasksTabLayout->addWidget(_privateTaskManager);
     _ui->managePrivateTasksTab->setLayout(_managePrivateTasksTabLayout);
 
+    _manageProjectsTabLayout = new QStackedLayout();
+    _projectManager = new tt3::gui::ProjectManager(_ui->manageProjectsTab);
+    _manageProjectsTabLayout->addWidget(_projectManager);
+    _ui->manageProjectsTab->setLayout(_manageProjectsTabLayout);
+
     //  Set up signal handlers
     _savePositionTimer.setSingleShot(true);
     connect(&_savePositionTimer,
@@ -187,6 +192,7 @@ void MainFrame::refresh()
     _publicTaskManager->refresh();
     _privateActivityManager->refresh();
     _privateTaskManager->refresh();
+    _projectManager->refresh();
 
     _refreshCurrentActivityControls();
 }
@@ -777,6 +783,7 @@ void MainFrame::_currentWorkspaceChanged(tt3::ws::Workspace, tt3::ws::Workspace)
     _publicTaskManager->setWorkspace(tt3::gui::theCurrentWorkspace);
     _privateActivityManager->setWorkspace(tt3::gui::theCurrentWorkspace);
     _privateTaskManager->setWorkspace(tt3::gui::theCurrentWorkspace);
+    _projectManager->setWorkspace(tt3::gui::theCurrentWorkspace);
     refresh();
 }
 
@@ -788,6 +795,7 @@ void MainFrame::_currentCredentialsChanged(tt3::ws::Credentials, tt3::ws::Creden
     _publicTaskManager->setCredentials(tt3::gui::theCurrentCredentials);
     _privateActivityManager->setCredentials(tt3::gui::theCurrentCredentials);
     _privateTaskManager->setCredentials(tt3::gui::theCurrentCredentials);
+    _projectManager->setCredentials(tt3::gui::theCurrentCredentials);
     refresh();
 }
 

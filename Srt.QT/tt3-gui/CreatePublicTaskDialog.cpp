@@ -21,7 +21,7 @@ using namespace tt3::gui;
 //////////
 //  Construction/destruction
 CreatePublicTaskDialog::CreatePublicTaskDialog(
-        QWidget *parent,
+        QWidget * parent,
         tt3::ws::Workspace workspace,
         const tt3::ws::Credentials & credentials,
         tt3::ws::PublicTask initialParentTask

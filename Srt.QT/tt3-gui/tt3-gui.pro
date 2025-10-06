@@ -14,6 +14,7 @@ SOURCES += \
     CreateActivityTypeDialog.cpp \
     CreatePrivateActivityDialog.cpp \
     CreatePrivateTaskDialog.cpp \
+    CreateProjectDialog.cpp \
     CreatePublicActivityDialog.cpp \
     CreatePublicTaskDialog.cpp \
     CreateUserDialog.cpp \
@@ -64,6 +65,7 @@ SOURCES += \
     PreferencesManager.cpp \
     PrivateActivityManager.cpp \
     PrivateTaskManager.cpp \
+    ProjectManager.cpp \
     PublicActivityManager.cpp \
     PublicTaskManager.cpp \
     SelectPrivateTaskParentDialog.cpp \
@@ -89,6 +91,7 @@ HEADERS += \
     CreateActivityTypeDialog.hpp \
     CreatePrivateActivityDialog.hpp \
     CreatePrivateTaskDialog.hpp \
+    CreateProjectDialog.hpp \
     CreatePublicActivityDialog.hpp \
     CreatePublicTaskDialog.hpp \
     CreateUserDialog.hpp \
@@ -132,6 +135,7 @@ HEADERS += \
     PreferencesEditor.hpp \
     PrivateActivityManager.hpp \
     PrivateTaskManager.hpp \
+    ProjectManager.hpp \
     PublicActivityManager.hpp \
     PublicTaskManager.hpp \
     SelectPrivateTaskParentDialog.hpp \
@@ -155,6 +159,7 @@ FORMS += \
     CreateActivityTypeDialog.ui \
     CreatePrivateActivityDialog.ui \
     CreatePrivateTaskDialog.ui \
+    CreateProjectDialog.ui \
     CreatePublicActivityDialog.ui \
     CreatePublicTaskDialog.ui \
     CreateUserDialog.ui \
@@ -181,6 +186,7 @@ FORMS += \
     PreferencesDialog.ui \
     PrivateActivityManager.ui \
     PrivateTaskManager.ui \
+    ProjectManager.ui \
     PublicActivityManager.ui \
     PublicTaskManager.ui \
     SelectPrivateTaskParentDialog.ui \

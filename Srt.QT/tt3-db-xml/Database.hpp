@@ -156,7 +156,8 @@ namespace tt3::db::xml
         virtual auto    createProject(
                                 const QString & displayName,
                                 const QString & description,
-                                const tt3::db::api::Beneficiaries & beneficiaries
+                                const tt3::db::api::Beneficiaries & beneficiaries,
+                                bool completed
                             ) -> tt3::db::api::IProject * override;
         virtual auto    createWorkStream(
                                 const QString & displayName,

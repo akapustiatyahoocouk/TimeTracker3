@@ -207,6 +207,17 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>filterLineEdit</tabstop>
+  <tabstop>privateTasksTreeWidget</tabstop>
+  <tabstop>createPrivateTaskPushButton</tabstop>
+  <tabstop>modifyPrivateTaskPushButton</tabstop>
+  <tabstop>destroyPrivateTaskPushButton</tabstop>
+  <tabstop>startPrivateTaskPushButton</tabstop>
+  <tabstop>stopPrivateTaskPushButton</tabstop>
+  <tabstop>completePrivateTaskPushButton</tabstop>
+  <tabstop>showCompletedCheckBox</tabstop>
+ </tabstops>
  <resources>
   <include location="tt3-gui.qrc"/>
  </resources>

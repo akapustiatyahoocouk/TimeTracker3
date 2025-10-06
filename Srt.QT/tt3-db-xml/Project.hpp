@@ -67,12 +67,15 @@ namespace tt3::db::xml
         virtual auto    createChild(
                                 const QString & displayName,
                                 const QString & description,
-                                const tt3::db::api::Beneficiaries & beneficiaries
+                                const tt3::db::api::Beneficiaries & beneficiaries,
+                                bool completed
                             ) -> tt3::db::api::IProject * override;
 
         //////////
         //  Implementation
     private:
+        //  Properties
+        bool            _completed;
         //  Associations
         Project *       _parent;    //  counts as "reference" unless nullptr
         //  Aggregations

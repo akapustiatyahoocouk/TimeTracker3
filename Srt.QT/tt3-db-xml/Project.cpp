@@ -77,7 +77,11 @@ void Project::destroy()
 bool Project::completed(
     ) const
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _completed;
 }
 
 void Project::setCompleted(
@@ -121,7 +125,8 @@ auto Project::children(
 auto Project::createChild(
         const QString & /*displayName*/,
         const QString & /*description*/,
-        const tt3::db::api::Beneficiaries & /*beneficiaries*/
+        const tt3::db::api::Beneficiaries & /*beneficiaries*/,
+        bool /*completed*/
     ) -> tt3::db::api::IProject *
 {
     throw tt3::util::NotImplementedError();
@@ -193,6 +198,7 @@ void Project::_serializeProperties(
     ) const
 {
     Workload::_serializeProperties(objectElement);
+    objectElement.setAttribute("Completed", tt3::util::toString(_completed));
 }
 
 void Project::_serializeAggregations(
@@ -219,6 +225,7 @@ void Project::_deserializeProperties(
     )
 {
     Workload::_deserializeProperties(objectElement);
+    _completed = tt3::util::fromString<bool>(objectElement.attribute("Completed"));
 }
 
 void Project::_deserializeAggregations(

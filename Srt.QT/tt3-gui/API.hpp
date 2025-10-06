@@ -49,6 +49,7 @@
 #include "tt3-gui/PublicTaskManager.hpp"
 #include "tt3-gui/PrivateActivityManager.hpp"
 #include "tt3-gui/PrivateTaskManager.hpp"
+#include "tt3-gui/ProjectManager.hpp"
 
 //  Dialogs
 #include "tt3-gui/ErrorDialog.hpp"
@@ -84,6 +85,7 @@
 #include "tt3-gui/ModifyPrivateTaskDialog.hpp"
 #include "tt3-gui/DestroyPrivateTaskDialog.hpp"
 #include "tt3-gui/SelectPrivateTaskParentDialog.hpp"
+#include "tt3-gui/CreateProjectDialog.hpp"
 
 #include "tt3-gui/AddEmailAddressDialog.hpp"
 #include "tt3-gui/ModifyEmailAddressDialog.hpp"

@@ -36,10 +36,26 @@ ProjectImpl::~ProjectImpl()
 //////////
 //  Operations (properties)
 bool ProjectImpl::completed(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return _dataProject->completed();   //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void ProjectImpl::setCompleted(
@@ -117,6 +133,55 @@ auto ProjectImpl::children(
 
 //////////
 //  Operations (life cycle)
+auto ProjectImpl::createChild(
+        const Credentials & credentials,
+        const QString & displayName,
+        const QString & description,
+        const Beneficiaries & /*beneficiaries*/,
+        bool completed
+    ) -> Project
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();
+
+    try
+    {
+        //  Check access rights
+        Capabilities clientCapabilities =
+            _workspace->_validateAccessRights(credentials); //  may throw
+        if (!clientCapabilities.contains(Capability::Administrator) &&
+            !clientCapabilities.contains(Capability::ManageWorkloads))
+        {   //  OOPS! Can't!
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        tt3::db::api::Beneficiaries dataBeneficiaries;
+        /*  TODO uncomment
+        for (Beneficiary beneficiary : beneficiaries)
+        {
+            if (beneficiary == nullptr)
+            {
+                throw InvalidPropertyValueException(
+                    ObjectTypes::Project::instance(),
+                    "beneficiaries",
+                    nullptr);
+            }
+            dataBeneficiaries.insert(beneficiary->_dataBeneficiary);
+        }
+        */
+        tt3::db::api::IProject * dataProject =
+            _dataProject->createChild(
+                displayName,
+                description,
+                dataBeneficiaries,
+                completed);
+        return _workspace->_getProxy(dataProject);;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
 
 //////////
 //  Implementation (Access control)

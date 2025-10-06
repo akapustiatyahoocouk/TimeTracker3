@@ -34,7 +34,11 @@ Workload::~Workload()
 //  tt3::db::api::IWorkload (properties)
 QString Workload::displayName() const
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _displayName;
 }
 
 void Workload::setDisplayName(
@@ -46,7 +50,11 @@ void Workload::setDisplayName(
 
 QString Workload::description() const
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _description;
 }
 
 void Workload::setDescription(

@@ -123,6 +123,9 @@ namespace tt3::ws
         /// \param beneficiaries
         ///     The set of Beneficiaries to associate with the newly
         ///     created Project (can be empty).
+        /// \param completed
+        ///     True if the new Project shall be initially
+        ///     marked as "completed", false if not.
         /// \return
         ///     The newly created Project.
         /// \exception WorkspaceException
@@ -131,7 +134,8 @@ namespace tt3::ws
                             const Credentials & credentials,
                             const QString & displayName,
                             const QString & description,
-                            const Beneficiaries & beneficiaries
+                            const Beneficiaries & beneficiaries,
+                            bool completed
                         ) -> Project;
 
         //////////

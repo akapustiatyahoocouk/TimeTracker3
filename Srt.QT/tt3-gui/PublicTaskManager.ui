@@ -222,6 +222,17 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>filterLineEdit</tabstop>
+  <tabstop>publicTasksTreeWidget</tabstop>
+  <tabstop>createPublicTaskPushButton</tabstop>
+  <tabstop>modifyPublicTaskPushButton</tabstop>
+  <tabstop>destroyPublicTaskPushButton</tabstop>
+  <tabstop>startPublicTaskPushButton</tabstop>
+  <tabstop>stopPublicTaskPushButton</tabstop>
+  <tabstop>completePublicTaskPushButton</tabstop>
+  <tabstop>showCompletedCheckBox</tabstop>
+ </tabstops>
  <resources>
   <include location="tt3-gui.qrc"/>
  </resources>

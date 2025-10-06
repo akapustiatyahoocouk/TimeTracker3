@@ -106,6 +106,11 @@ namespace tt3::gui
             ///     True if the Private Task Manager widget shall display
             ///     completed Private Tasks (false to hide them).
             tt3::util::Setting<bool>    showCompletedPrivateTasks;
+
+            /// \brief
+            ///     True if the Project Manager widget shall display
+            ///     completed Projects (false to hide them).
+            tt3::util::Setting<bool>    showCompletedProjects;
         };
 
         //////////

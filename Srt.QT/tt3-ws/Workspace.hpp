@@ -188,12 +188,12 @@ namespace tt3::ws
                         ) const -> PublicActivities;
 
         /// \brief
-        ///     The set of all public activities in this database
+        ///     The set of all public activities in this workspace
         ///     including those which are also tasks.
         /// \param credentials
         ///     The credentials of the service caller.
         /// \return
-        ///     The set of all public activities in this database
+        ///     The set of all public activities in this workspace
         ///     including those which are also tasks.
         /// \exception WorkspaceException
         ///     If an error occurs.
@@ -202,11 +202,11 @@ namespace tt3::ws
                         ) const -> PublicActivities;
 
         /// \brief
-        ///     Returns the set of all public tasks in this database.
+        ///     Returns the set of all public tasks in this workspace.
         /// \param credentials
         ///     The credentials of the service caller.
         /// \return
-        ///     The set of all public tasks in this database.
+        ///     The set of all public tasks in this workspace.
         /// \exception WorkspaceException
         ///     If an error occurs.
         auto        publicTasks(
@@ -214,11 +214,11 @@ namespace tt3::ws
                         ) const -> PublicTasks;
 
         /// \brief
-        ///     Returns the set of root public tasks in this database.
+        ///     Returns the set of root public tasks in this workspace.
         /// \param credentials
         ///     The credentials of the service caller.
         /// \return
-        ///     The set of root public tasks in this database.
+        ///     The set of root public tasks in this workspace.
         /// \exception WorkspaceException
         ///     If an error occurs.
         auto        rootPublicTasks(
@@ -226,24 +226,24 @@ namespace tt3::ws
                         ) const -> PublicTasks;
 
         /// \brief
-        ///     Returns the set of all Projects in this database.
+        ///     Returns the set of all Projects in this workspace.
         /// \param credentials
         ///     The credentials of the service caller.
         /// \return
-        ///     The set of all Projects in this database.
-        /// \exception DatabaseException
+        ///     The set of all Projects in this workspace.
+        /// \exception WorkspaceException
         ///     If an error occurs.
         auto        projects(
                             const Credentials & credentials
                         ) const -> Projects;
 
         /// \brief
-        ///     Returns the set of root Projects in this database.
+        ///     Returns the set of root Projects in this workspace.
         /// \param credentials
         ///     The credentials of the service caller.
         /// \return
-        ///     The set of root Projects in this database.
-        /// \exception DatabaseException
+        ///     The set of root Projects in this workspace.
+        /// \exception WorkspaceException
         ///     If an error occurs.
         auto        rootProjects(
                             const Credentials & credentials
@@ -401,7 +401,7 @@ namespace tt3::ws
             ) -> ActivityType;
 
         /// \brief
-        ///     Creates a new PublicActivity in this database.
+        ///     Creates a new PublicActivity in this workspace.
         /// \param credentials
         ///     The credentials of the service caller.
         /// \param displayName
@@ -443,7 +443,7 @@ namespace tt3::ws
                         ) -> PublicActivity;
 
         /// \brief
-        ///     Creates a new root PublicTask in this database
+        ///     Creates a new root PublicTask in this workspace
         ///     (that is, a PublicTask that has no parent).
         /// \param credentials
         ///     The credentials of the service caller.
@@ -492,6 +492,35 @@ namespace tt3::ws
                             bool completed,
                             bool requireCommentOnCompletion
                         ) -> PublicTask;
+
+        /// \brief
+        ///     Creates a new root Project in this workspace
+        ///     (that is, a Project that has no parent).
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param displayName
+        ///     The short (1 line) user-readable display name
+        ///     for the new Project.
+        /// \param description
+        ///     The multi-line user-readable description for the new
+        ///     Project; with lines separated by a newline '\\n' character.
+        /// \param beneficiaries
+        ///     The set of Beneficiaries to associate with the newly
+        ///     created Project (can be empty).
+        /// \param completed
+        ///     True if the new Project shall be initially
+        ///     marked as "completed", false if not.
+        /// \return
+        ///     The newly created Project.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        createProject(
+                            const Credentials & credentials,
+                            const QString & displayName,
+                            const QString & description,
+                            const Beneficiaries & beneficiaries,
+                            bool completed
+                        ) -> Project;
 
         //////////
         //  Signals

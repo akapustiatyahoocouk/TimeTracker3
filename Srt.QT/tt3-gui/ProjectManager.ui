@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>tt3::gui::ProjectManager</class>
+ <widget class="QWidget" name="tt3::gui::ProjectManager">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>442</width>
+    <height>298</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0" colspan="2">
+    <widget class="QWidget" name="filterWidget" native="true">
+     <layout class="QFormLayout" name="formLayout">
+      <property name="horizontalSpacing">
+       <number>4</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>4</number>
+      </property>
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="filterLabel">
+        <property name="text">
+         <string>Filter:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="filterLineEdit"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QTreeWidget" name="projectsTreeWidget">
+     <property name="contextMenuPolicy">
+      <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+     </property>
+     <attribute name="headerVisible">
+      <bool>false</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string notr="true">1</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QWidget" name="buttonsWidget" native="true">
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <property name="spacing">
+       <number>4</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="createProjectPushButton">
+        <property name="text">
+         <string>Create project</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/CreateProjectSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/CreateProjectSmall.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QPushButton" name="completeProjectPushButton">
+        <property name="text">
+         <string>Complete project</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/CompleteProjectSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/CompleteProjectSmall.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="modifyProjectPushButton">
+        <property name="text">
+         <string>Modify project</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/ModifyProjectSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/ModifyProjectSmall.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="destroyProjectPushButton">
+        <property name="text">
+         <string>Destroy project</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/DestroyProjectSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/DestroyProjectSmall.png</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QWidget" name="optionsWidget" native="true">
+     <layout class="QGridLayout" name="gridLayout_3">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <property name="spacing">
+       <number>4</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="showCompletedCheckBox">
+        <property name="text">
+         <string>Show completed projects</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>filterLineEdit</tabstop>
+  <tabstop>projectsTreeWidget</tabstop>
+  <tabstop>createProjectPushButton</tabstop>
+  <tabstop>modifyProjectPushButton</tabstop>
+  <tabstop>destroyProjectPushButton</tabstop>
+  <tabstop>completeProjectPushButton</tabstop>
+  <tabstop>showCompletedCheckBox</tabstop>
+ </tabstops>
+ <resources>
+  <include location="tt3-gui.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>projectsTreeWidget</sender>
+   <signal>currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</signal>
+   <receiver>tt3::gui::ProjectManager</receiver>
+   <slot>_projectsTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>138</x>
+     <y>149</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>220</x>
+     <y>148</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>projectsTreeWidget</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>tt3::gui::ProjectManager</receiver>
+   <slot>_projectsTreeWidgetCustomContextMenuRequested(QPoint)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>138</x>
+     <y>149</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>220</x>
+     <y>148</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>createProjectPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::ProjectManager</receiver>
+   <slot>_createProjectPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>352</x>
+     <y>71</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>220</x>
+     <y>148</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modifyProjectPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::ProjectManager</receiver>
+   <slot>_modifyProjectPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>352</x>
+     <y>102</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>220</x>
+     <y>148</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>destroyProjectPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::ProjectManager</receiver>
+   <slot>_destroyProjectPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>352</x>
+     <y>133</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>220</x>
+     <y>148</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>completeProjectPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::ProjectManager</receiver>
+   <slot>_completeProjectPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>352</x>
+     <y>171</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>220</x>
+     <y>148</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>showCompletedCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>tt3::gui::ProjectManager</receiver>
+   <slot>_showCompletedCheckBoxToggled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>220</x>
+     <y>269</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>220</x>
+     <y>148</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_projectsTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+  <slot>_projectsTreeWidgetCustomContextMenuRequested(QPoint)</slot>
+  <slot>_createProjectPushButtonClicked()</slot>
+  <slot>_modifyProjectPushButtonClicked()</slot>
+  <slot>_destroyProjectPushButtonClicked()</slot>
+  <slot>_completeProjectPushButtonClicked()</slot>
+  <slot>_showCompletedCheckBoxToggled(bool)</slot>
+ </slots>
+</ui>

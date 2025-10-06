@@ -381,7 +381,11 @@ auto Database::projects(
 auto Database::rootProjects(
     ) const -> tt3::db::api::Projects
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+    //  We assume database is consistent since last change
+
+    return tt3::db::api::Projects(_rootProjects.cbegin(), _rootProjects.cend());
 }
 
 auto Database::workStreams(
@@ -800,12 +804,92 @@ auto Database::createPublicTask(
 }
 
 auto Database::createProject(
-        const QString & /*displayName*/,
-        const QString & /*description*/,
-        const tt3::db::api::Beneficiaries & /*beneficiaries*/
+        const QString & displayName,
+        const QString & description,
+        const tt3::db::api::Beneficiaries & beneficiaries,
+        bool completed
     ) -> tt3::db::api::IProject *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_guard);
+    _ensureOpenAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
+
+    //  Validate parameters
+    if (!_validator->project()->isValidDisplayName(displayName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Project::instance(),
+            "displayName",
+            displayName);
+    }
+    if (!_validator->project()->isValidDescription(description))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Project::instance(),
+            "description",
+            description);
+    }
+    Beneficiaries xmlBeneficiaries;
+    Q_ASSERT(beneficiaries.isEmpty());  //  TODO for now
+    /*  TODO uncomment
+    for (tt3::db::api::IBeneficiary * beneficiary : beneficiaries)
+    {
+        Beneficiary * xmlBeneficiary =
+            dynamic_cast<Beneficiary*>(beneficiary);
+        if (xmlBeneficiary == nullptr ||
+            xmlBeneficiary->_database != this ||
+            !xmlBeneficiary->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(
+                tt3::db::api::ObjectTypes::Beneficiary::instance());
+        }
+        xmlBeneficiaries.insert(xmlBeneficiary);
+    }
+    */
+
+    //  Display names must be unique
+    if (_findRootProject(displayName) != nullptr)
+    {   //  OOPS!
+        throw tt3::db::api::AlreadyExistsException(
+            tt3::db::api::ObjectTypes::Project::instance(),
+            "displayName",
+            displayName);
+    }
+
+    //  Do the work - create & initialize the Project...
+    Project * project = new Project(this, _generateOid()); //  registers with Database
+    project->_displayName = displayName;
+    project->_description = description;
+    project->_completed = completed;
+    /*  TODO uncomment
+    for (Beneficiary * xmlBeneficiary : xmlBeneficiaries)
+    {   //  Link with Beneficiary
+        project->_beneficiaries.insert(xmlBeneficiary);
+        xmlBeneficiary->_projects.insert(project);
+        xmlBeneficiary->addReference();
+        project->addReference();
+    }
+    */
+    _markModified();
+    //  ...schedule change notifications...
+    _changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            this, project->type(), project->_oid));
+    /*  TODO uncomment
+    for (Beneficiary * xmlBeneficiary : xmlBeneficiaries)
+    {
+        _changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                this, xmlBeneficiary->type(), xmlBeneficiary->_oid));
+    }
+    */
+    //  ...and we're done
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
+    return project;
 }
 
 auto Database::createWorkStream(

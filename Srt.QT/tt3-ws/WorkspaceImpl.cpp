@@ -707,6 +707,55 @@ auto WorkspaceImpl::createPublicTask(
     }
 }
 
+auto WorkspaceImpl::createProject(
+        const Credentials & credentials,
+        const QString & displayName,
+        const QString & description,
+        const Beneficiaries & /*beneficiaries*/,
+        bool completed
+    ) -> Project
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();
+
+    try
+    {
+        //  Check access rights
+        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+        if (!clientCapabilities.contains(Capability::Administrator) &&
+            !clientCapabilities.contains(Capability::ManageWorkloads))
+        {   //  OOPS! Can't!
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        tt3::db::api::Beneficiaries dataBeneficiaries;
+        /*  TODO uncomment
+        for (Beneficiary beneficiary : beneficiaries)
+        {
+            if (beneficiary == nullptr)
+            {
+                throw InvalidPropertyValueException(
+                    ObjectTypes::Project::instance(),
+                    "beneficiaries",
+                    nullptr);
+            }
+            dataBeneficiaries.insert(beneficiary->_dataBeneficiary);
+        }
+        */
+        tt3::db::api::IProject * dataProject =
+            _database->createProject(
+                displayName,
+                description,
+                dataBeneficiaries,
+                completed);
+        return _getProxy(dataProject);;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
 //////////
 //  Implementation helpers
 void WorkspaceImpl::_ensureOpen() const
