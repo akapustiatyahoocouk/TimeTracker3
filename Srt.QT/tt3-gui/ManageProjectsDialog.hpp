@@ -1,5 +1,5 @@
 //
-//  tt3-gui/ManagePublicTasksDialog.hpp - The modal "Manage public tasks" dialog
+//  tt3-gui/ManageProjectsDialog.hpp - The modal "Manage projects" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,17 +19,17 @@
 
 namespace tt3::gui
 {
-    class TT3_GUI_PUBLIC PublicTaskManager;
+    class TT3_GUI_PUBLIC ProjectManager;
 
-    namespace Ui { class ManagePublicTasksDialog; }
+    namespace Ui { class ManageProjectsDialog; }
 
-    /// \class ManagePublicTasksDialog tt3-gui/API.hpp "tt3-gui/API.hpp"
-    /// \brief The modal "Manage public tasks" dialog.
-    class TT3_GUI_PUBLIC ManagePublicTasksDialog final
+    /// \class ManageProjectsDialog tt3-gui/API.hpp "tt3-gui/API.hpp"
+    /// \brief The modal "Manage projects" dialog.
+    class TT3_GUI_PUBLIC ManageProjectsDialog final
         :   private QDialog
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ManagePublicTasksDialog)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ManageProjectsDialog)
 
         //////////
         //  Construction/destruction
@@ -39,18 +39,18 @@ namespace tt3::gui
         /// \param parent
         ///     The parent widget for the dialog, nullptr == none.
         /// \param workspace
-        ///     The workspace to manage public tasks in.
+        ///     The workspace to manage project in.
         /// \param credentials
         ///     The credentials to use for data access.
-        ManagePublicTasksDialog(
-                QWidget * parent,
-                tt3::ws::Workspace workspace,
-                const tt3::ws::Credentials & credentials
+        ManageProjectsDialog(
+            QWidget * parent,
+            tt3::ws::Workspace workspace,
+            const tt3::ws::Credentials & credentials
             );
 
         /// \brief
         ///     The class destructor.
-        virtual ~ManagePublicTasksDialog();
+        virtual ~ManageProjectsDialog();
 
         //////////
         //  Operations
@@ -62,12 +62,11 @@ namespace tt3::gui
         //////////
         //  Controls
     private:
-        Ui::ManagePublicTasksDialog *const  _ui;
+        Ui::ManageProjectsDialog *const  _ui;
         //  Custom controls are created dynamically
         QStackedLayout *    _managerPanelLayout = nullptr;
-        PublicTaskManager * _publicTaskManager = nullptr;
+        ProjectManager *    _projectManager = nullptr;
     };
 }
 
-//  End of tt3-gui/ManagePublicTasksDialog.hpp
-
+//  End of tt3-gui/ManageProjectsDialog.hpp

@@ -102,5 +102,6 @@
 #include "tt3-gui/ManagePublicTasksDialog.hpp"
 #include "tt3-gui/ManagePrivateActivitiesDialog.hpp"
 #include "tt3-gui/ManagePrivateTasksDialog.hpp"
+#include "tt3-gui/ManageProjectsDialog.hpp"
 
 //  End of tt3-gui/API.hpp

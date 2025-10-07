@@ -48,6 +48,7 @@ SOURCES += \
     ManageActivityTypesDialog.cpp \
     ManagePrivateActivitiesDialog.cpp \
     ManagePrivateTasksDialog.cpp \
+    ManageProjectsDialog.cpp \
     ManagePublicActivitiesDialog.cpp \
     ManagePublicTasksDialog.cpp \
     ManageUsersDialog.cpp \
@@ -122,6 +123,7 @@ HEADERS += \
     ManageActivityTypesDialog.hpp \
     ManagePrivateActivitiesDialog.hpp \
     ManagePrivateTasksDialog.hpp \
+    ManageProjectsDialog.hpp \
     ManagePublicActivitiesDialog.hpp \
     ManagePublicTasksDialog.hpp \
     ManageUsersDialog.hpp \
@@ -178,6 +180,7 @@ FORMS += \
     ManageActivityTypesDialog.ui \
     ManagePrivateActivitiesDialog.ui \
     ManagePrivateTasksDialog.ui \
+    ManageProjectsDialog.ui \
     ManagePublicActivitiesDialog.ui \
     ManagePublicTasksDialog.ui \
     ManageUsersDialog.ui \

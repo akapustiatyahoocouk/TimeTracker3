@@ -39,7 +39,7 @@ namespace tt3::gui
         /// \param parent
         ///     The parent widget for the dialog, nullptr == none.
         /// \param workspace
-        ///     The workspace to manage public tasjs in.
+        ///     The workspace to manage public tasks in.
         /// \param credentials
         ///     The credentials to use for data access.
         ManagePrivateTasksDialog(

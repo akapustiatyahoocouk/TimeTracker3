@@ -666,8 +666,12 @@ void MainFrame::_onActionManagePrivateTasks()
 }
 
 void MainFrame::_onActionManageProjects()
-{
-    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+{   //  TODO switch to "Projects" tab instead
+    tt3::gui::ManageProjectsDialog dlg(
+        this,
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
 }
 
 void MainFrame::_onActionManageWorkStreams()
