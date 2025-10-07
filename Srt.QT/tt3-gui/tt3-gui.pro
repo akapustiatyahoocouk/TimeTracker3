@@ -54,6 +54,7 @@ SOURCES += \
     ManagePublicActivitiesDialog.cpp \
     ManagePublicTasksDialog.cpp \
     ManageUsersDialog.cpp \
+    ManageWorkStreamsDialog.cpp \
     ModifyAccountDialog.cpp \
     ModifyActivityTypeDialog.cpp \
     ModifyEmailAddressDialog.cpp \
@@ -133,6 +134,7 @@ HEADERS += \
     ManagePublicActivitiesDialog.hpp \
     ManagePublicTasksDialog.hpp \
     ManageUsersDialog.hpp \
+    ManageWorkStreamsDialog.hpp \
     ModifyAccountDialog.hpp \
     ModifyActivityTypeDialog.hpp \
     ModifyEmailAddressDialog.hpp \
@@ -193,6 +195,7 @@ FORMS += \
     ManagePublicActivitiesDialog.ui \
     ManagePublicTasksDialog.ui \
     ManageUsersDialog.ui \
+    ManageWorkStreamsDialog.ui \
     ModifyAccountDialog.ui \
     ModifyActivityTypeDialog.ui \
     ModifyPrivateActivityDialog.ui \

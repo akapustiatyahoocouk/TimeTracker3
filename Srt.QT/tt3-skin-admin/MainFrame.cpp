@@ -681,8 +681,12 @@ void MainFrame::_onActionManageProjects()
 }
 
 void MainFrame::_onActionManageWorkStreams()
-{
-    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+{   //  TODO switch to "WorkStreams" tab instead
+    tt3::gui::ManageWorkStreamsDialog dlg(
+        this,
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
 }
 
 void MainFrame::_onActionManageBeneficiaries()
