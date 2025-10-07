@@ -456,8 +456,6 @@ void WorkStreamManager::_workStreamsTreeWidgetCustomContextMenuRequested(QPoint 
 
 void WorkStreamManager::_createWorkStreamPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
-    /*  TODO uncomment
     try
     {
         CreateWorkStreamDialog dlg(this, _workspace, _credentials);   //  may throw
@@ -471,7 +469,6 @@ void WorkStreamManager::_createWorkStreamPushButtonClicked()
     {
         tt3::gui::ErrorDialog::show(this, ex);
     }
-    */
 }
 
 void WorkStreamManager::_modifyWorkStreamPushButtonClicked()

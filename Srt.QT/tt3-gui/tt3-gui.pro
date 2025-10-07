@@ -18,6 +18,7 @@ SOURCES += \
     CreatePublicActivityDialog.cpp \
     CreatePublicTaskDialog.cpp \
     CreateUserDialog.cpp \
+    CreateWorkStreamDialog.cpp \
     CurrentActivity.cpp \
     CurrentCredentials.cpp \
     CurrentSkin.cpp \
@@ -100,6 +101,7 @@ HEADERS += \
     CreatePublicActivityDialog.hpp \
     CreatePublicTaskDialog.hpp \
     CreateUserDialog.hpp \
+    CreateWorkStreamDialog.hpp \
     CurrentActivity.hpp \
     CurrentCredentials.hpp \
     CurrentWorkspace.hpp \
@@ -173,6 +175,7 @@ FORMS += \
     CreatePublicActivityDialog.ui \
     CreatePublicTaskDialog.ui \
     CreateUserDialog.ui \
+    CreateWorkStreamDialog.ui \
     EditStringDialog.ui \
     ErrorDialog.ui \
     GeneralAppearancePreferencesEditor.ui \

@@ -780,6 +780,50 @@ auto WorkspaceImpl::createProject(
     }
 }
 
+auto WorkspaceImpl::createWorkStream(
+        const Credentials & credentials,
+        const QString & displayName,
+        const QString & description,
+        const Beneficiaries & /*beneficiaries*/
+    ) -> WorkStream
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();
+
+    try
+    {
+        //  Check access rights
+        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+        if (!clientCapabilities.contains(Capability::Administrator) &&
+            !clientCapabilities.contains(Capability::ManageWorkloads))
+        {   //  OOPS! Can't!
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        tt3::db::api::Beneficiaries dataBeneficiaries;
+        /*  TODO uncomment and use std::transform everywhere we need
+        std::transform(
+            beneficiaries.cbegin(),
+            beneficiaries.cend(),
+            std::back_inserter(dataBeneficiaries),
+            [](auto b)
+            {
+                return (b != nullptr) ? b->_dataBeneficiary : nullptr;
+            });
+        */
+        tt3::db::api::IWorkStream * dataWorkStream =
+            _database->createWorkStream(
+                displayName,
+                description,
+                dataBeneficiaries);
+        return _getProxy(dataWorkStream);;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
 //////////
 //  Implementation helpers
 void WorkspaceImpl::_ensureOpen() const

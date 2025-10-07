@@ -897,12 +897,90 @@ auto Database::createProject(
 }
 
 auto Database::createWorkStream(
-        const QString & /*displayName*/,
-        const QString & /*description*/,
-        const tt3::db::api::Beneficiaries & /*beneficiaries*/
+        const QString & displayName,
+        const QString & description,
+        const tt3::db::api::Beneficiaries & beneficiaries
     ) -> tt3::db::api::IWorkStream *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_guard);
+    _ensureOpenAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
+
+    //  Validate parameters
+    if (!_validator->workStream()->isValidDisplayName(displayName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::WorkStream::instance(),
+            "displayName",
+            displayName);
+    }
+    if (!_validator->workStream()->isValidDescription(description))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::WorkStream::instance(),
+            "description",
+            description);
+    }
+    Beneficiaries xmlBeneficiaries;
+    Q_ASSERT(beneficiaries.isEmpty());  //  TODO for now
+    /*  TODO uncomment
+    for (tt3::db::api::IBeneficiary * beneficiary : beneficiaries)
+    {
+        Beneficiary * xmlBeneficiary =
+            dynamic_cast<Beneficiary*>(beneficiary);
+        if (xmlBeneficiary == nullptr ||
+            xmlBeneficiary->_database != this ||
+            !xmlBeneficiary->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(
+                tt3::db::api::ObjectTypes::Beneficiary::instance());
+        }
+        xmlBeneficiaries.insert(xmlBeneficiary);
+    }
+    */
+
+    //  Display names must be unique
+    if (_findWorkStream(displayName) != nullptr)
+    {   //  OOPS!
+        throw tt3::db::api::AlreadyExistsException(
+            tt3::db::api::ObjectTypes::WorkStream::instance(),
+            "displayName",
+            displayName);
+    }
+
+    //  Do the work - create & initialize the WorkStream...
+    WorkStream * workStream = new WorkStream(this, _generateOid()); //  registers with Database
+    workStream->_displayName = displayName;
+    workStream->_description = description;
+    /*  TODO uncomment
+    for (Beneficiary * xmlBeneficiary : xmlBeneficiaries)
+    {   //  Link with Beneficiary
+        WorkStream->_beneficiaries.insert(xmlBeneficiary);
+        xmlBeneficiary->_WorkStreams.insert(WorkStream);
+        xmlBeneficiary->addReference();
+        WorkStream->addReference();
+    }
+    */
+    _markModified();
+    //  ...schedule change notifications...
+    _changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            this, workStream->type(), workStream->_oid));
+    /*  TODO uncomment
+    for (Beneficiary * xmlBeneficiary : xmlBeneficiaries)
+    {
+        _changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                this, xmlBeneficiary->type(), xmlBeneficiary->_oid));
+    }
+    */
+    //  ...and we're done
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
+    return workStream;
 }
 
 auto Database::createBeneficiary(
@@ -1329,6 +1407,19 @@ void Database::_validate()
         }
         project->_validate(validatedObjects);
         if (project->_siblingExists(project->_displayName))
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(this->_address);
+        }
+    }
+    for (WorkStream * workStream : _workStreams)
+    {
+        if (workStream == nullptr || !workStream->_isLive ||
+            workStream->_database != this)
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(this->_address);
+        }
+        workStream->_validate(validatedObjects);
+        if (workStream->_siblingExists(workStream->_displayName))
         {   //  OOPS!
             throw tt3::db::api::DatabaseCorruptException(this->_address);
         }

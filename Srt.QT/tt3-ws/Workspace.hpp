@@ -535,6 +535,30 @@ namespace tt3::ws
                             bool completed
                         ) -> Project;
 
+        /// \brief
+        ///     Creates a new work stream in this database.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param displayName
+        ///     The short (1 line) user-readable display name
+        ///     for the new WorkStream.
+        /// \param description
+        ///     The multi-line user-readable description for the new
+        ///     WorkStream; with lines separated by a newline '\\n' character.
+        /// \param beneficiaries
+        ///     The set of Beneficiaries to associate with the newly
+        ///     created WorkStream (can be empty).
+        /// \return
+        ///     The newly created WorkStream.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        createWorkStream(
+                            const Credentials & credentials,
+                            const QString & displayName,
+                            const QString & description,
+                            const Beneficiaries & beneficiaries
+                        ) -> WorkStream;
+
         //////////
         //  Signals
         //  Clients are encourated to use "queued" connections.
