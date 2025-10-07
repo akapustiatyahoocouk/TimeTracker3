@@ -82,6 +82,7 @@
                                 const tt3::ws::Credentials & credentials,
                                 int & projectsCount
                             );
+        //  TODO add "_collectDestructionClosure" to all DestroyXXXDialogs
 
         //////////
         //  Signal handlers

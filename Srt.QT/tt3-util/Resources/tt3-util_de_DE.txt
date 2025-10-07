@@ -11,7 +11,6 @@ Credits=Idea by: Yuri Levdik
 [Component]
 DisplayName=TimeTracker3 Dienstprogramm
 Description=Definiert die Dienstprogramme für TimeTracker3
-Copyright=Copyright (C) 2026, Andrey Kapustin
 
 [StandardSubsystems]
 Applications.DisplayName=Anwendungen

@@ -1,0 +1,29 @@
+[Component]
+DisplayName=API базы данных TimeTracker3
+Description=Определяет общий API для баз данных TimeTracker3
+
+[ObjectTypes]
+User.DisplayName=Пользователь
+Account.DisplayName=Учётная запись
+ActivityType.DisplayName=Тип активности
+PublicActivity.DisplayName=Публичная активность
+PublicTask.DisplayName=Публичная задача
+PrivateActivity.DisplayName=Частная активность
+PrivateTask.DisplayName=Частная задача
+Work.DisplayName=Работа
+Event.DisplayName=Событие
+Project.DisplayName=Проект
+WorkStream.DisplayName=Рабочий поток
+Beneficiary.DisplayName=Бенефициар
+
+[Errors]
+InvalidDatabaseAddressException=Недопустимый адрес базы данных
+DatabaseInUseException={0} {1} уже используется
+DatabaseCorruptException={0} {1} недействителен или повреждён
+DatabaseClosedException=База данных закрыта
+AccessDeniedException=Доступ запрещён
+InvalidPropertyValueException=Свойство '{1}' для '{0}' не может быть установлено в '{2}'
+AlreadyExistsException={0} с '{1}' = '{2}' уже существует
+DoesNotExistException={0} с '{1}' = '{2}' не существует
+InstanceDeadException=Экземпляр мёртв
+IncompatibleInstanceException=Несовместимый {0}

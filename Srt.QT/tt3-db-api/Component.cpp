@@ -43,12 +43,14 @@ tt3::util::Mnemonic Component::mnemonic() const
 
 QString Component::displayName() const
 {
-    return "TimeTracker3 database API";
+    static Resources * resources = Resources::instance();   //  idempotent
+    return resources->string(RSID(Component), RID(DisplayName));
 }
 
 QString Component::description() const
 {
-    return "Defines common API for TimeTracker3 databases";
+    static Resources * resources = Resources::instance();   //  idempotent
+    return resources->string(RSID(Component), RID(Description));
 }
 
 QString Component::copyright() const

@@ -31,24 +31,29 @@ InvalidDatabaseAddressException::InvalidDatabaseAddressException()
 
 QString InvalidDatabaseAddressException::errorMessage() const
 {
-    return "Invalid database address";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+                RSID(Errors),
+                RID(InvalidDatabaseAddressException));
 }
 
 //////////
 //  DatabaseInUseException
 DatabaseInUseException::DatabaseInUseException(
-    IDatabaseAddress * databaseAddress)
-    :   _databaseTypeDisplayName(databaseAddress->databaseType()->displayName()),
+        IDatabaseAddress * databaseAddress
+    ) : _databaseTypeDisplayName(databaseAddress->databaseType()->displayName()),
         _databaseAddressDisplayForm(databaseAddress->displayForm())
 {
 }
 
 QString DatabaseInUseException::errorMessage() const
 {
-    return _databaseTypeDisplayName +
-           " "  +
-           _databaseAddressDisplayForm +
-           " is already in use";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+                RSID(Errors),
+                RID(DatabaseInUseException),
+                _databaseTypeDisplayName,
+                _databaseAddressDisplayForm);
 }
 
 //////////
@@ -71,10 +76,12 @@ DatabaseCorruptException::DatabaseCorruptException(
 
 QString DatabaseCorruptException::errorMessage() const
 {
-    return _databaseTypeDisplayName +
-           " "  +
-           _databaseAddressDisplayForm +
-           " is invalid or corrupt";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+                RSID(Errors),
+                RID(DatabaseCorruptException),
+                _databaseTypeDisplayName,
+                _databaseAddressDisplayForm);
 }
 
 //////////
@@ -85,7 +92,10 @@ DatabaseClosedException::DatabaseClosedException()
 
 QString DatabaseClosedException::errorMessage() const
 {
-    return "Daabase is closed";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+                RSID(Errors),
+                RID(DatabaseClosedException));
 }
 
 //////////
@@ -96,15 +106,19 @@ AccessDeniedException::AccessDeniedException()
 
 QString AccessDeniedException::errorMessage() const
 {
-    return "Access denied";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+                RSID(Errors),
+                RID(AccessDeniedException));
 }
 
 //////////
 //  InvalidPropertyValueException
 InvalidPropertyValueException::InvalidPropertyValueException(
-    const QString & objectTypeName,
-    const QString & propertyName, const QString & propertyValueString)
-    :   _objectTypeName(objectTypeName),
+        const QString & objectTypeName,
+        const QString & propertyName,
+        const QString & propertyValueString
+    ) : _objectTypeName(objectTypeName),
         _propertyName(propertyName),
         _propertyValueString(propertyValueString)
 {
@@ -112,17 +126,22 @@ InvalidPropertyValueException::InvalidPropertyValueException(
 
 QString InvalidPropertyValueException::errorMessage() const
 {
-    return "Property '" + _propertyName +
-           "' of '" + _objectTypeName +
-           "' cannot be set to '" + _propertyValueString + "'";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+                RSID(Errors),
+                RID(InvalidPropertyValueException),
+                _objectTypeName,
+                _propertyName,
+                _propertyValueString);
 }
 
 //////////
 //  AlreadyExistsException
 AlreadyExistsException::AlreadyExistsException(
-    const QString & objectTypeName,
-    const QString & propertyName, const QString & propertyValueString)
-    :   _objectTypeName(objectTypeName),
+        const QString & objectTypeName,
+        const QString & propertyName,
+        const QString & propertyValueString
+    ) : _objectTypeName(objectTypeName),
         _propertyName(propertyName),
         _propertyValueString(propertyValueString)
 {
@@ -130,18 +149,22 @@ AlreadyExistsException::AlreadyExistsException(
 
 QString AlreadyExistsException::errorMessage() const
 {
-    return "The " + _objectTypeName +
-           " with '" + _propertyName +
-           "' = '" + _propertyValueString +
-           "' already exists";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+                RSID(Errors),
+                RID(AlreadyExistsException),
+                _objectTypeName,
+                _propertyName,
+                _propertyValueString);
 }
 
 //////////
 //  DoesNotExistException
 DoesNotExistException::DoesNotExistException(
-    const QString & objectTypeName,
-    const QString & propertyName, const QString & propertyValueString)
-    :   _objectTypeName(objectTypeName),
+        const QString & objectTypeName,
+        const QString & propertyName,
+        const QString & propertyValueString
+    ) : _objectTypeName(objectTypeName),
         _propertyName(propertyName),
         _propertyValueString(propertyValueString)
 {
@@ -149,10 +172,13 @@ DoesNotExistException::DoesNotExistException(
 
 QString DoesNotExistException::errorMessage() const
 {
-    return "The " + _objectTypeName +
-           " with '" + _propertyName +
-           "' = '" + _propertyValueString +
-           "' does not exist";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+                RSID(Errors),
+                RID(DoesNotExistException),
+                _objectTypeName,
+                _propertyName,
+                _propertyValueString);
 }
 
 //////////
@@ -163,26 +189,34 @@ InstanceDeadException::InstanceDeadException()
 
 QString InstanceDeadException::errorMessage() const
 {
-    return "The instance is dead";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+                RSID(Errors),
+                RID(InstanceDeadException));
 }
 
 //////////
 //  IncompatibleInstanceException
 IncompatibleInstanceException::IncompatibleInstanceException(
-    const QString & objectTypeName
+        const QString & objectTypeName
     ) : _objectTypeName(objectTypeName)
 {
 }
 
 QString IncompatibleInstanceException::errorMessage() const
 {
-    return "Incompatible " + _objectTypeName;
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+                RSID(Errors),
+                RID(IncompatibleInstanceException),
+                _objectTypeName);
 }
 
 //////////
 //  CustomDatabaseException
-CustomDatabaseException::CustomDatabaseException(const QString & errorMessage)
-    :   _errorMessage(errorMessage)
+CustomDatabaseException::CustomDatabaseException(
+        const QString & errorMessage
+    ) : _errorMessage(errorMessage)
 {
 }
 

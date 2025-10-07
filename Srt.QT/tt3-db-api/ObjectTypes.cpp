@@ -31,7 +31,8 @@ auto ObjectTypes::User::mnemonic(
 
 QString ObjectTypes::User::displayName() const
 {
-    return "User";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(ObjectTypes), RID(User.DisplayName));
 }
 
 QIcon ObjectTypes::User::smallIcon() const
@@ -60,7 +61,8 @@ auto ObjectTypes::Account::mnemonic(
 
 QString ObjectTypes::Account::displayName() const
 {
-    return "Account";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(ObjectTypes), RID(Account.DisplayName));
 }
 
 QIcon ObjectTypes::Account::smallIcon() const
@@ -89,7 +91,8 @@ auto ObjectTypes::ActivityType::mnemonic(
 
 QString ObjectTypes::ActivityType::displayName() const
 {
-    return "Activity type";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(ObjectTypes), RID(ActivityType.DisplayName));
 }
 
 QIcon ObjectTypes::ActivityType::smallIcon() const
@@ -118,7 +121,8 @@ auto ObjectTypes::PublicActivity::mnemonic(
 
 QString ObjectTypes::PublicActivity::displayName() const
 {
-    return "Public activity";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(ObjectTypes), RID(PublicActivity.DisplayName));
 }
 
 QIcon ObjectTypes::PublicActivity::smallIcon() const
@@ -147,7 +151,8 @@ auto ObjectTypes::PublicTask::mnemonic(
 
 QString ObjectTypes::PublicTask::displayName() const
 {
-    return "Public task";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(ObjectTypes), RID(PublicTask.DisplayName));
 }
 
 QIcon ObjectTypes::PublicTask::smallIcon() const
@@ -176,7 +181,8 @@ auto ObjectTypes::PrivateActivity::mnemonic(
 
 QString ObjectTypes::PrivateActivity::displayName() const
 {
-    return "Private activity";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(ObjectTypes), RID(PrivateActivity.DisplayName));
 }
 
 QIcon ObjectTypes::PrivateActivity::smallIcon() const
@@ -205,7 +211,8 @@ auto ObjectTypes::PrivateTask::mnemonic(
 
 QString ObjectTypes::PrivateTask::displayName() const
 {
-    return "Private task";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(ObjectTypes), RID(PrivateTask.DisplayName));
 }
 
 QIcon ObjectTypes::PrivateTask::smallIcon() const
@@ -234,7 +241,8 @@ auto ObjectTypes::Work::mnemonic(
 
 QString ObjectTypes::Work::displayName() const
 {
-    return "Work";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(ObjectTypes), RID(Work.DisplayName));
 }
 
 QIcon ObjectTypes::Work::smallIcon() const
@@ -263,7 +271,8 @@ auto ObjectTypes::Event::mnemonic(
 
 QString ObjectTypes::Event::displayName() const
 {
-    return "Event";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(ObjectTypes), RID(Event.DisplayName));
 }
 
 QIcon ObjectTypes::Event::smallIcon() const
@@ -292,7 +301,8 @@ auto ObjectTypes::Project::mnemonic(
 
 QString ObjectTypes::Project::displayName() const
 {
-    return "Project";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(ObjectTypes), RID(Project.DisplayName));
 }
 
 QIcon ObjectTypes::Project::smallIcon() const
@@ -321,7 +331,8 @@ auto ObjectTypes::WorkStream::mnemonic(
 
 QString ObjectTypes::WorkStream::displayName() const
 {
-    return "Work stream";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(ObjectTypes), RID(WorkStream.DisplayName));
 }
 
 QIcon ObjectTypes::WorkStream::smallIcon() const
@@ -350,7 +361,8 @@ auto ObjectTypes::Beneficiary::mnemonic(
 
 QString ObjectTypes::Beneficiary::displayName() const
 {
-    return "Beneficiary";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(ObjectTypes), RID(Beneficiary.DisplayName));
 }
 
 QIcon ObjectTypes::Beneficiary::smallIcon() const

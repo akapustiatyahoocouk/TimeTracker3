@@ -24,5 +24,8 @@
         <file>Resources/Images/Objects/WorkSmall.png</file>
         <file>Resources/Images/Objects/WorkStreamLarge.png</file>
         <file>Resources/Images/Objects/WorkStreamSmall.png</file>
+        <file>Resources/tt3-db-api_de_DE.txt</file>
+        <file>Resources/tt3-db-api_en_GB.txt</file>
+        <file>Resources/tt3-db-api_ru_RU.txt</file>
     </qresource>
 </RCC>
