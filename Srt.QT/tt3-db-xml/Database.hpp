@@ -38,6 +38,7 @@ namespace tt3::db::xml
         friend class PrivateTask;
         friend class Workload;
         friend class Project;
+        friend class WorkStream;
 
         //////////
         //  Construction/destruction
@@ -196,6 +197,7 @@ namespace tt3::db::xml
         PublicActivities    _publicActivities;  //  BUT NOT TASKS! count as "references"
         PublicTasks         _rootPublicTasks;   //  count as "references"
         Projects            _rootProjects;      //  count as "references"
+        WorkStreams         _workStreams;       //  count as "references"
 
         //  Seconsary caches - these do NOT count as "references"
         QMap<tt3::db::api::Oid, Object*> _liveObjects;  //  All "live" objects
@@ -251,6 +253,7 @@ namespace tt3::db::xml
         PublicActivity *    _findPublicActivity(const QString & displayName) const;
         PublicTask *        _findRootPublicTask(const QString & displayName) const;
         Project *           _findRootProject(const QString & displayName) const;
+        WorkStream *        _findWorkStream(const QString & displayName) const;
 
         //  Serialization
         void            _save();    //  throws tt3::util::Exception

@@ -21,6 +21,7 @@ SOURCES += \
     PublicTask.cpp \
     Task.cpp \
     User.cpp \
+    WorkStream.cpp \
     Workload.cpp
 
 HEADERS += \
@@ -43,6 +44,7 @@ HEADERS += \
     PublicTask.hpp \
     Task.hpp \
     User.hpp \
+    WorkStream.hpp \
     Workload.hpp
 
 PRECOMPILED_HEADER = API.hpp

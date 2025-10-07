@@ -1014,13 +1014,17 @@ Workload WorkspaceImpl::_getProxy(
     Q_ASSERT(_isOpen);
     Q_ASSERT(dataWorkload != nullptr);
 
-    if (auto dataProject=
+    if (auto dataProject =
         dynamic_cast<tt3::db::api::IProject*>(dataWorkload))
     {   //  ...then use the dedicated proxy getter
         return std::dynamic_pointer_cast<WorkloadImpl>(_getProxy(dataProject));
     }
-
-    Q_ASSERT(false);    //  TODO implement properly;
+    if (auto dataWorkStream =
+        dynamic_cast<tt3::db::api::IWorkStream*>(dataWorkload))
+    {   //  ...then use the dedicated proxy getter
+        return std::dynamic_pointer_cast<WorkloadImpl>(_getProxy(dataWorkStream));
+    }
+    Q_ASSERT(false);    //  Can't happen!
     return nullptr;
 }
 
@@ -1046,6 +1050,30 @@ Project WorkspaceImpl::_getProxy(
         [](ProjectImpl * p) { delete p; });
     _proxyCache.insert(oid, project);
     return project;
+}
+
+WorkStream WorkspaceImpl::_getProxy(
+        tt3::db::api::IWorkStream * dataWorkStream
+    ) const
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    Q_ASSERT(_isOpen);
+    Q_ASSERT(dataWorkStream != nullptr);
+
+    Oid oid = dataWorkStream->oid();
+    if (_proxyCache.contains(oid))
+    {
+        WorkStream workStream = std::dynamic_pointer_cast<WorkStreamImpl>(_proxyCache[oid]);
+        Q_ASSERT(workStream != nullptr);   //  Objects do not change their types OR reuse OIDs
+        return workStream;
+    }
+    //  Must create a new proxy
+    Workspace workspace = _address->_workspaceType->_mapWorkspace(const_cast<WorkspaceImpl*>(this));
+    WorkStream workStream(
+        new WorkStreamImpl(workspace, dataWorkStream),
+        [](WorkStreamImpl * p) { delete p; });
+    _proxyCache.insert(oid, workStream);
+    return workStream;
 }
 
 //////////

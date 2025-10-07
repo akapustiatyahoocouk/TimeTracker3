@@ -37,6 +37,7 @@ namespace tt3::db::xml
         friend class PrivateTask;
         friend class Workload;
         friend class Project;
+        friend class WorkStream;
 
         //////////
         //  Construction/destruction (from DB type only)

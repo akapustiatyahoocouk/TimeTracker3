@@ -1063,6 +1063,21 @@ auto Database::_findRootProject(
     return nullptr;
 }
 
+WorkStream * Database::_findWorkStream(const QString & displayName) const
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    _ensureOpen();  //  may throw
+
+    for (WorkStream * workStream : _workStreams)
+    {
+        if (workStream->_displayName == displayName)
+        {
+            return workStream;
+        }
+    }
+    return nullptr;
+}
+
 //////////
 //  Serialization
 void Database::_save()
@@ -1102,6 +1117,10 @@ void Database::_save()
         rootElement,
         "Projects",
         _rootProjects);
+    _serializeAggregation(
+        rootElement,
+        "WorkStreams",
+        _workStreams);
 
     //  Save DOM
     QFile file(_address->_path);
@@ -1183,6 +1202,14 @@ void Database::_load()
         [&](auto oid)
         {
             return new Project(this, oid);
+        });
+    _deserializeAggregation<WorkStream>(
+        rootElement,
+        "WorkStreams",
+        _workStreams,
+        [&](auto oid)
+        {
+            return new WorkStream(this, oid);
         });
 
     //  Now we can do the asociations
