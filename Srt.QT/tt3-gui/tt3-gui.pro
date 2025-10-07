@@ -27,6 +27,7 @@ SOURCES += \
     DestroyActivityTypeDialog.cpp \
     DestroyPrivateActivityDialog.cpp \
     DestroyPrivateTaskDialog.cpp \
+    DestroyProjectDialog.cpp \
     DestroyPublicActivityDialog.cpp \
     DestroyPublicTaskDialog.cpp \
     DestroyUserDialog.cpp \
@@ -104,6 +105,7 @@ HEADERS += \
     DestroyActivityTypeDialog.hpp \
     DestroyPrivateActivityDialog.hpp \
     DestroyPrivateTaskDialog.hpp \
+    DestroyProjectDialog.hpp \
     DestroyPublicActivityDialog.hpp \
     DestroyPublicTaskDialog.hpp \
     DestroyUserDialog.hpp \
