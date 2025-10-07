@@ -81,7 +81,8 @@ SOURCES += \
     StandardThemes.cpp \
     ThemeManager.cpp \
     TreeWidgetDecorations.cpp \
-    UserManager.cpp
+    UserManager.cpp \
+    WorkStreamManager.cpp
 
 HEADERS += \
     API.hpp \
@@ -155,7 +156,8 @@ HEADERS += \
     Theme.hpp \
     UiHelpers.hpp \
     UserManager.hpp \
-    WidgetDecorations.hpp
+    WidgetDecorations.hpp \
+    WorkStreamManager.hpp
 
 PRECOMPILED_HEADER = API.hpp
 
@@ -205,7 +207,8 @@ FORMS += \
     SelectWorkspaceDialog.ui \
     ShowConfigurationDialog.ui \
     ShowLicenseDialog.ui \
-    UserManager.ui
+    UserManager.ui \
+    WorkStreamManager.ui
 
 RESOURCES += \
     tt3-gui.qrc

@@ -250,6 +250,18 @@ namespace tt3::ws
                             const Credentials & credentials
                         ) const -> Projects;
 
+        /// \brief
+        ///     Returns the set of all WorkStreams in this workspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all WorkStreams in this workspace.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        workStreams(
+                            const Credentials & credentials
+                        ) const -> WorkStreams;
+
         //////////
         //  Operations (access control)
     public:

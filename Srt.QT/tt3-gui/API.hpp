@@ -50,6 +50,7 @@
 #include "tt3-gui/PrivateActivityManager.hpp"
 #include "tt3-gui/PrivateTaskManager.hpp"
 #include "tt3-gui/ProjectManager.hpp"
+#include "tt3-gui/WorkStreamManager.hpp"
 
 //  Dialogs
 #include "tt3-gui/ErrorDialog.hpp"

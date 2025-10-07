@@ -1,0 +1,554 @@
+//
+//  tt3-gui/WorkStreamManager.cpp - tt3::gui::WorkStreamManager class implementation
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+#include "tt3-gui/API.hpp"
+#include "ui_WorkStreamManager.h"
+using namespace tt3::gui;
+
+namespace tt3::gui
+{
+extern CurrentTheme theCurrentTheme;
+extern CurrentCredentials theCurrentCredentials;
+extern CurrentWorkspace theCurrentWorkspace;
+}
+
+//////////
+//  Construction/destruction
+WorkStreamManager::WorkStreamManager(
+        QWidget * parent
+    ) : QWidget(parent),
+        //  Implementation
+        _workspace(theCurrentWorkspace),
+        _credentials(theCurrentCredentials),
+        //  Controls
+        _ui(new Ui::WorkStreamManager)
+{
+    _ui->setupUi(this);
+
+    _decorations = TreeWidgetDecorations(_ui->workStreamsTreeWidget);
+
+    //  Theme change means widget decorations change
+    connect(&theCurrentTheme,
+            &CurrentTheme::changed,
+            this,
+            &WorkStreamManager::_currentThemeChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Must listen to delayed refresh requests
+    connect(this,
+            &WorkStreamManager::refreshRequested,
+            this,
+            &WorkStreamManager::_refreshRequested,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Start listening for change notifications
+    //  on the currently "viewed" Workspace
+    _startListeningToWorkspaceChanges();
+}
+
+WorkStreamManager::~WorkStreamManager()
+{
+    _stopListeningToWorkspaceChanges();
+    delete _ui;
+}
+
+//////////
+//  Operaions
+tt3::ws::Workspace WorkStreamManager::workspace() const
+{
+    return _workspace;
+}
+
+void WorkStreamManager::setWorkspace(tt3::ws::Workspace workspace)
+{
+    if (workspace != _workspace)
+    {
+        _stopListeningToWorkspaceChanges();
+        _workspace = workspace;
+        _startListeningToWorkspaceChanges();
+        requestRefresh();
+    }
+}
+
+tt3::ws::Credentials WorkStreamManager::credentials() const
+{
+    return _credentials;
+}
+
+void WorkStreamManager::setCredentials(const tt3::ws::Credentials & credentials)
+{
+    if (credentials != _credentials)
+    {
+        _credentials = credentials;
+        requestRefresh();
+    }
+}
+
+void WorkStreamManager::refresh()
+{
+    static const QIcon viewWorkStreamIcon(":/tt3-gui/Resources/Images/Actions/ViewWorkStreamLarge.png");
+    static const QIcon modifyWorkStreamIcon(":/tt3-gui/Resources/Images/Actions/ModifyWorkStreamLarge.png");
+
+    //  We don't want a refresh() to trigger a recursive refresh()!
+    static bool refreshUnderway = false;
+    RefreshGuard refreshGuard(refreshUnderway);
+    if (refreshGuard)   //  Don't recurse!
+    {
+        try
+        {
+            if (_workspace == nullptr || !_credentials.isValid() ||
+                !_workspace->isOpen() ||
+                !_workspace->canAccess(_credentials))   //  may throw
+            {   //  Nothing to show...
+                _clearAndDisableAllControls();
+                return;
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! No point in proceesing.
+            qCritical() << ex.errorMessage();
+            _clearAndDisableAllControls();
+            return;
+        }
+
+        //  Otherwise some controls are always enabled...
+        _ui->filterLabel->setEnabled(true);
+        _ui->filterLineEdit->setEnabled(true);
+        _ui->workStreamsTreeWidget->setEnabled(true);
+
+        //  ...while others are enabled based on current
+        //  selection and permissions granted by Credentials
+        _WorkspaceModel workspaceModel = _createWorkspaceModel();
+        if (!_ui->filterLineEdit->text().trimmed().isEmpty())
+        {
+            _filterItems(workspaceModel);
+        }
+        _refreshWorkspaceTree(workspaceModel);
+
+        tt3::ws::WorkStream selectedWorkStream = _selectedWorkStream();
+        bool readOnly = _workspace->isReadOnly();
+        try
+        {
+            _ui->createWorkStreamPushButton->setEnabled(
+                !readOnly &&
+                _workspace->grantsAny(  //  may throw
+                    _credentials,
+                    tt3::ws::Capability::Administrator |
+                    tt3::ws::Capability::ManageWorkloads));
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & disable
+            qCritical() << ex.errorMessage();
+            _ui->createWorkStreamPushButton->setEnabled(false);
+        }
+        _ui->modifyWorkStreamPushButton->setEnabled(
+            selectedWorkStream != nullptr);
+        try
+        {
+            _ui->destroyWorkStreamPushButton->setEnabled(
+                !readOnly &&
+                selectedWorkStream != nullptr &&
+                selectedWorkStream->canDestroy(_credentials));    //  may throw
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & disable
+            qCritical() << ex.errorMessage();
+            _ui->destroyWorkStreamPushButton->setEnabled(false);
+        }
+
+        //  Some buttons need to be adjusted for ReadOnoly mode
+        try
+        {
+            if (selectedWorkStream != nullptr &&
+                !selectedWorkStream->workspace()->isReadOnly() &&
+                selectedWorkStream->canModify(_credentials))  //  may throw
+            {   //  RW
+                _ui->modifyWorkStreamPushButton->setIcon(modifyWorkStreamIcon);
+                _ui->modifyWorkStreamPushButton->setText("Modify work stream");
+            }
+            else
+            {   //  RO
+                _ui->modifyWorkStreamPushButton->setIcon(viewWorkStreamIcon);
+                _ui->modifyWorkStreamPushButton->setText("View work stream");
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & simulate RO
+            qCritical() << ex.errorMessage();
+            _ui->modifyWorkStreamPushButton->setIcon(viewWorkStreamIcon);
+            _ui->modifyWorkStreamPushButton->setText("View work stream");
+        }
+    }
+}
+
+void WorkStreamManager::requestRefresh()
+{
+    emit refreshRequested();
+}
+
+//////////
+//  View model
+WorkStreamManager::_WorkspaceModel WorkStreamManager::_createWorkspaceModel()
+{
+    _WorkspaceModel workspaceModel { new _WorkspaceModelImpl() };
+    try
+    {
+        for (tt3::ws::WorkStream workStream : _workspace->workStreams(_credentials))    //  may throw
+        {
+            workspaceModel->workStreamModels.append(_createWorkStreamModel(workStream));
+        }
+        std::sort(workspaceModel->workStreamModels.begin(),
+                  workspaceModel->workStreamModels.end(),
+                  [&](auto a, auto b)
+                  { return a->text < b->text; });
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        qCritical() << ex.errorMessage();
+        workspaceModel->workStreamModels.clear();
+    }
+    return workspaceModel;
+}
+
+WorkStreamManager::_WorkStreamModel WorkStreamManager::_createWorkStreamModel(
+        tt3::ws::WorkStream workStream
+    )
+{
+    static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+
+    _WorkStreamModel workStreamModel { new _WorkStreamModelImpl(workStream) };
+    try
+    {
+        workStreamModel->text = workStream->displayName(_credentials);
+        workStreamModel->icon = workStream->type()->smallIcon();
+        workStreamModel->brush = _decorations.itemForeground;
+        workStreamModel->font = _decorations.itemFont;
+        workStreamModel->tooltip = workStream->description(_credentials).trimmed();
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        qCritical() << ex.errorMessage();
+        workStreamModel->text = ex.errorMessage();
+        workStreamModel->icon = errorIcon;
+        workStreamModel->font = _decorations.itemFont;
+        workStreamModel->brush = _decorations.errorItemForeground;
+        workStreamModel->tooltip = ex.errorMessage();
+    }
+    return workStreamModel;
+}
+
+void WorkStreamManager::_filterItems(_WorkspaceModel workspaceModel)
+{
+    QString filter = _ui->filterLineEdit->text().trimmed();
+    Q_ASSERT(!filter.isEmpty());
+
+    for (qsizetype i = workspaceModel->workStreamModels.size() - 1; i >= 0; i--)
+    {
+        _WorkStreamModel workStreamModel = workspaceModel->workStreamModels[i];
+        if (workStreamModel->text.indexOf(filter, 0, Qt::CaseInsensitive) != -1)
+        {   //  Item matches the filter - mark it as a match
+            workStreamModel->brush = _decorations.filterMatchItemForeground;
+        }
+        else
+        {   //  Item does not match the filter
+            workspaceModel->workStreamModels.removeAt(i);
+        }
+    }
+}
+
+void WorkStreamManager::_refreshWorkspaceTree(
+    _WorkspaceModel workspaceModel
+    )
+{
+    Q_ASSERT(_workspace != nullptr);
+    Q_ASSERT(_credentials.isValid());
+
+    //  Make sure the "activity types" tree contains
+    //  a proper number of root (WorkStream) items...
+    while (_ui->workStreamsTreeWidget->topLevelItemCount() < workspaceModel->workStreamModels.size())
+    {   //  Too few root (WorkStream) items
+        _ui->workStreamsTreeWidget->addTopLevelItem(new QTreeWidgetItem());
+    }
+    while (_ui->workStreamsTreeWidget->topLevelItemCount() > workspaceModel->workStreamModels.size())
+    {   //  Too many root (WorkStream) items
+        delete _ui->workStreamsTreeWidget->takeTopLevelItem(
+            _ui->workStreamsTreeWidget->topLevelItemCount() - 1);
+    }
+    //  ...and that each top-level item represents
+    //  a proper WorkStream and has proper children
+    for (int i = 0; i < workspaceModel->workStreamModels.size(); i++)
+    {
+        _refreshWorkStreamItem(
+            _ui->workStreamsTreeWidget->topLevelItem(i),
+            workspaceModel->workStreamModels[i]);
+    }
+}
+
+void WorkStreamManager::_refreshWorkStreamItem(
+    QTreeWidgetItem * workStreamItem,
+    _WorkStreamModel workStreamModel
+    )
+{
+    Q_ASSERT(workStreamItem != nullptr);
+    Q_ASSERT(workStreamModel != nullptr);
+    Q_ASSERT(_credentials.isValid());
+
+    //  Refresh WorkStream item properties
+    workStreamItem->setText(0, workStreamModel->text);
+    workStreamItem->setIcon(0, workStreamModel->icon);
+    workStreamItem->setForeground(0, workStreamModel->brush);
+    workStreamItem->setFont(0, workStreamModel->font);
+    workStreamItem->setToolTip(0, workStreamModel->tooltip);
+    workStreamItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(workStreamModel->workStream));
+    //  There will be no further children
+    Q_ASSERT(workStreamItem->childCount() == 0);
+}
+
+//////////
+//  Implementation helpers
+tt3::ws::WorkStream WorkStreamManager::_selectedWorkStream()
+{
+    QTreeWidgetItem * item = _ui->workStreamsTreeWidget->currentItem();
+    return (item != nullptr) ?
+               item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::WorkStream>() :
+               nullptr;
+}
+
+void WorkStreamManager::_setSelectedWorkStream(
+        tt3::ws::WorkStream workStream
+    )
+{
+    for (int i = 0; i < _ui->workStreamsTreeWidget->topLevelItemCount(); i++)
+    {
+        QTreeWidgetItem * workStreamItem = _ui->workStreamsTreeWidget->topLevelItem(i);
+        if (workStream == workStreamItem->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::WorkStream>())
+        {   //  This one!
+            _ui->workStreamsTreeWidget->setCurrentItem(workStreamItem);
+            return;
+        }
+    }
+}
+
+void WorkStreamManager::_startListeningToWorkspaceChanges()
+{
+    if (_workspace != nullptr)
+    {
+        connect(_workspace.get(),
+                &tt3::ws::WorkspaceImpl::workspaceClosed,
+                this,
+                &WorkStreamManager::_workspaceClosed,
+                Qt::ConnectionType::QueuedConnection);
+        connect(_workspace.get(),
+                &tt3::ws::WorkspaceImpl::objectCreated,
+                this,
+                &WorkStreamManager::_objectCreated,
+                Qt::ConnectionType::QueuedConnection);
+        connect(_workspace.get(),
+                &tt3::ws::WorkspaceImpl::objectDestroyed,
+                this,
+                &WorkStreamManager::_objectDestroyed,
+                Qt::ConnectionType::QueuedConnection);
+        connect(_workspace.get(),
+                &tt3::ws::WorkspaceImpl::objectModified,
+                this,
+                &WorkStreamManager::_objectModified,
+                Qt::ConnectionType::QueuedConnection);
+    }
+}
+
+void WorkStreamManager::_stopListeningToWorkspaceChanges()
+{
+    if (_workspace != nullptr)
+    {
+        disconnect(_workspace.get(),
+                   &tt3::ws::WorkspaceImpl::workspaceClosed,
+                   this,
+                   &WorkStreamManager::_workspaceClosed);
+        disconnect(_workspace.get(),
+                   &tt3::ws::WorkspaceImpl::objectCreated,
+                   this,
+                   &WorkStreamManager::_objectCreated);
+        disconnect(_workspace.get(),
+                   &tt3::ws::WorkspaceImpl::objectDestroyed,
+                   this,
+                   &WorkStreamManager::_objectDestroyed);
+        disconnect(_workspace.get(),
+                   &tt3::ws::WorkspaceImpl::objectModified,
+                   this,
+                   &WorkStreamManager::_objectModified);
+    }
+}
+
+void WorkStreamManager::_clearAndDisableAllControls()
+{
+    _ui->workStreamsTreeWidget->clear();
+    _ui->filterLabel->setEnabled(false);
+    _ui->filterLineEdit->setEnabled(false);
+    _ui->workStreamsTreeWidget->setEnabled(false);
+    _ui->createWorkStreamPushButton->setEnabled(false);
+    _ui->modifyWorkStreamPushButton->setEnabled(false);
+    _ui->destroyWorkStreamPushButton->setEnabled(false);
+}
+
+//////////
+//  Signal handlers
+void WorkStreamManager::_currentThemeChanged(ITheme *, ITheme *)
+{
+    _ui->workStreamsTreeWidget->clear();
+    _decorations = TreeWidgetDecorations(_ui->workStreamsTreeWidget);
+    requestRefresh();
+}
+
+void WorkStreamManager::_workStreamsTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)
+{
+    requestRefresh();
+}
+
+void WorkStreamManager::_workStreamsTreeWidgetCustomContextMenuRequested(QPoint p)
+{
+    //  [re-]create the popup menu
+    _workStreamsTreeContextMenu.reset(new QMenu());
+    QAction * createWorkStreamAction =
+        _workStreamsTreeContextMenu->addAction(
+            _ui->createWorkStreamPushButton->icon(),
+            _ui->createWorkStreamPushButton->text());
+    QAction * modifyWorkStreamAction =
+        _workStreamsTreeContextMenu->addAction(
+            _ui->modifyWorkStreamPushButton->icon(),
+            _ui->modifyWorkStreamPushButton->text());
+    QAction * destroyWorkStreamAction =
+        _workStreamsTreeContextMenu->addAction(
+            _ui->destroyWorkStreamPushButton->icon(),
+            _ui->destroyWorkStreamPushButton->text());
+    //  Adjust menu item states
+    createWorkStreamAction->setEnabled(_ui->createWorkStreamPushButton->isEnabled());
+    modifyWorkStreamAction->setEnabled(_ui->modifyWorkStreamPushButton->isEnabled());
+    destroyWorkStreamAction->setEnabled(_ui->destroyWorkStreamPushButton->isEnabled());
+    //  Set up signal handling
+    connect(createWorkStreamAction,
+            &QAction::triggered,
+            this,
+            &WorkStreamManager::_createWorkStreamPushButtonClicked);
+    connect(modifyWorkStreamAction,
+            &QAction::triggered,
+            this,
+            &WorkStreamManager::_modifyWorkStreamPushButtonClicked);
+    connect(destroyWorkStreamAction,
+            &QAction::triggered,
+            this,
+            &WorkStreamManager::_destroyWorkStreamPushButtonClicked);
+    //  Go!
+    _workStreamsTreeContextMenu->popup(_ui->workStreamsTreeWidget->mapToGlobal(p));
+}
+
+void WorkStreamManager::_createWorkStreamPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+    /*  TODO uncomment
+    try
+    {
+        CreateWorkStreamDialog dlg(this, _workspace, _credentials);   //  may throw
+        if (dlg.doModal() == CreateWorkStreamDialog::Result::Ok)
+        {   //  WorkStream created
+            refresh();  //  must refresh NOW
+            _setSelectedWorkStream(dlg.createdWorkStream());
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        tt3::gui::ErrorDialog::show(this, ex);
+    }
+    */
+}
+
+void WorkStreamManager::_modifyWorkStreamPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+    /*  TODO uncomment
+    if (auto workStream = _selectedWorkStream())
+    {
+        try
+        {
+            ModifyWorkStreamDialog dlg(this, WorkStream, _credentials); //  may throw
+            if (dlg.doModal() == ModifyWorkStreamDialog::Result::Ok)
+            {   //  WorkStream modified - its position in the activity types tree may have changed
+                refresh();  //  must refresh NOW
+                _setSelectedWorkStream(WorkStream);
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
+            requestRefresh();
+        }
+    }
+    */
+}
+
+void WorkStreamManager::_destroyWorkStreamPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+    /*  TODO uncomment
+    if (auto workStream = _selectedWorkStream())
+    {
+        try
+        {
+            DestroyWorkStreamDialog dlg(this, WorkStream, _credentials); //  may throw
+            if (dlg.doModal() == DestroyWorkStreamDialog::Result::Ok)
+            {   //  Destroyed
+                requestRefresh();
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
+            requestRefresh();
+        }
+    }
+    */
+}
+
+void WorkStreamManager::_filterLineEditTextChanged(QString)
+{
+    requestRefresh();
+}
+
+void WorkStreamManager::_workspaceClosed(tt3::ws::WorkspaceClosedNotification /*notification*/)
+{
+    requestRefresh();
+}
+
+void WorkStreamManager::_objectCreated(tt3::ws::ObjectCreatedNotification /*notification*/)
+{
+    requestRefresh();
+}
+
+void WorkStreamManager::_objectDestroyed(tt3::ws::ObjectDestroyedNotification /*notification*/)
+{
+    requestRefresh();
+}
+
+void WorkStreamManager::_objectModified(tt3::ws::ObjectModifiedNotification /*notification*/)
+{
+    requestRefresh();
+}
+
+void WorkStreamManager::_refreshRequested()
+{
+    refresh();
+}
+
+//  End of tt3-gui/WorkStreamManager.cpp

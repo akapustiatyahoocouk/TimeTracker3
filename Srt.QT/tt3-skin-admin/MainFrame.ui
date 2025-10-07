@@ -42,7 +42,7 @@
        <enum>QTabWidget::TabPosition::North</enum>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>7</number>
       </property>
       <widget class="QWidget" name="manageUsersTab">
        <attribute name="icon">
@@ -105,6 +105,15 @@
        </attribute>
        <attribute name="title">
         <string>Projects</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="manageWorkStreamsTab">
+       <attribute name="icon">
+        <iconset resource="tt3-skin-admin.qrc">
+         <normaloff>:/tt3-skin-admin/Resources/Images/Objects/WorkStreamSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/WorkStreamSmall.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Work streams</string>
        </attribute>
       </widget>
      </widget>

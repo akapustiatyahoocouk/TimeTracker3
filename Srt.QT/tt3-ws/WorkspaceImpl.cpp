@@ -419,6 +419,30 @@ auto WorkspaceImpl::rootProjects(
     }
 }
 
+auto WorkspaceImpl::workStreams(
+        const Credentials & credentials
+    ) const -> WorkStreams
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+
+    try
+    {
+        _validateAccessRights(credentials);
+        //  The caller can see all WorkStreams
+        WorkStreams result;
+        for (tt3::db::api::IWorkStream * dataWorkStream : _database->workStreams())
+        {
+            result.insert(_getProxy(dataWorkStream));
+        }
+        return result;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
 //////////
 //  Operations (access control)
 bool WorkspaceImpl::canAccess(
