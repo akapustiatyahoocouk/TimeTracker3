@@ -473,17 +473,15 @@ void WorkStreamManager::_createWorkStreamPushButtonClicked()
 
 void WorkStreamManager::_modifyWorkStreamPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
-    /*  TODO uncomment
     if (auto workStream = _selectedWorkStream())
     {
         try
         {
-            ModifyWorkStreamDialog dlg(this, WorkStream, _credentials); //  may throw
+            ModifyWorkStreamDialog dlg(this, workStream, _credentials); //  may throw
             if (dlg.doModal() == ModifyWorkStreamDialog::Result::Ok)
             {   //  WorkStream modified - its position in the activity types tree may have changed
                 refresh();  //  must refresh NOW
-                _setSelectedWorkStream(WorkStream);
+                _setSelectedWorkStream(workStream);
             }
         }
         catch (const tt3::util::Exception & ex)
@@ -492,18 +490,15 @@ void WorkStreamManager::_modifyWorkStreamPushButtonClicked()
             requestRefresh();
         }
     }
-    */
 }
 
 void WorkStreamManager::_destroyWorkStreamPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
-    /*  TODO uncomment
     if (auto workStream = _selectedWorkStream())
     {
         try
         {
-            DestroyWorkStreamDialog dlg(this, WorkStream, _credentials); //  may throw
+            DestroyWorkStreamDialog dlg(this, workStream, _credentials); //  may throw
             if (dlg.doModal() == DestroyWorkStreamDialog::Result::Ok)
             {   //  Destroyed
                 requestRefresh();
@@ -515,7 +510,6 @@ void WorkStreamManager::_destroyWorkStreamPushButtonClicked()
             requestRefresh();
         }
     }
-    */
 }
 
 void WorkStreamManager::_filterLineEditTextChanged(QString)

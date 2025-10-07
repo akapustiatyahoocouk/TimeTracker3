@@ -634,6 +634,9 @@ namespace tt3::ws
                             tt3::db::api::IActivityType * dataActivityType
                         ) const -> ActivityType;
         auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IActivity * dataActivity
+                        ) const -> Activity;
+        auto        _getProxy(  //  throws WorkspaceException
                             tt3::db::api::IPublicActivity * dataPublicActivity
                         ) const -> PublicActivity;
         auto        _getProxy(  //  throws WorkspaceException

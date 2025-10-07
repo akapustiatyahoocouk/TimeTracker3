@@ -32,6 +32,7 @@ SOURCES += \
     DestroyPublicActivityDialog.cpp \
     DestroyPublicTaskDialog.cpp \
     DestroyUserDialog.cpp \
+    DestroyWorkStreamDialog.cpp \
     EditStringDialog.cpp \
     EnterActivityStartCommentDialog.cpp \
     EnterActivityStopCommentDialog.cpp \
@@ -62,6 +63,7 @@ SOURCES += \
     ModifyPublicActivityDialog.cpp \
     ModifyPublicTaskDialog.cpp \
     ModifyUserDialog.cpp \
+    ModifyWorkStreamDialog.cpp \
     NewWorkspaceDialog.cpp \
     Preferences.cpp \
     PreferencesDialog.cpp \
@@ -113,6 +115,7 @@ HEADERS += \
     DestroyPublicActivityDialog.hpp \
     DestroyPublicTaskDialog.hpp \
     DestroyUserDialog.hpp \
+    DestroyWorkStreamDialog.hpp \
     EditStringDialog.hpp \
     EnterActivityStartCommentDialog.hpp \
     EnterActivityStopCommentDialog.hpp \
@@ -139,6 +142,7 @@ HEADERS += \
     ModifyPublicActivityDialog.hpp \
     ModifyPublicTaskDialog.hpp \
     ModifyUserDialog.hpp \
+    ModifyWorkStreamDialog.hpp \
     NewWorkspaceDialog.hpp \
     Preferences.hpp \
     PreferencesDialog.hpp \
@@ -197,6 +201,7 @@ FORMS += \
     ModifyPublicActivityDialog.ui \
     ModifyPublicTaskDialog.ui \
     ModifyUserDialog.ui \
+    ModifyWorkStreamDialog.ui \
     NewWorkspaceDialog.ui \
     PreferencesDialog.ui \
     PrivateActivityManager.ui \

@@ -91,6 +91,8 @@
 #include "tt3-gui/DestroyProjectDialog.hpp"
 #include "tt3-gui/SelectProjectParentDialog.hpp"
 #include "tt3-gui/CreateWorkStreamDialog.hpp"
+#include "tt3-gui/ModifyWorkStreamDialog.hpp"
+#include "tt3-gui/DestroyWorkStreamDialog.hpp"
 
 #include "tt3-gui/AddEmailAddressDialog.hpp"
 #include "tt3-gui/ModifyEmailAddressDialog.hpp"
