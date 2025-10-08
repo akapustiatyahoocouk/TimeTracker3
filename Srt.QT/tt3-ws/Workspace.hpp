@@ -549,7 +549,7 @@ namespace tt3::ws
                         ) -> Project;
 
         /// \brief
-        ///     Creates a new work stream in this database.
+        ///     Creates a new work stream in this workspace.
         /// \param credentials
         ///     The credentials of the service caller.
         /// \param displayName
@@ -571,6 +571,29 @@ namespace tt3::ws
                             const QString & description,
                             const Beneficiaries & beneficiaries
                         ) -> WorkStream;
+
+        /// \brief
+        ///     Creates a new Beneficiary in this wprkspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param displayName
+        ///     The short (1 line) user-readable display name
+        ///     for the new Beneficiary.
+        /// \param description
+        ///     The multi-line user-readable description for the new
+        ///     Beneficiary; with lines separated by a newline '\\n' character.
+        /// \param workloads
+        ///     The workloads to associate the new Beneficiary with.
+        /// \return
+        ///     The newly created Beneficiary.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        auto        createBeneficiary(
+                            const Credentials & credentials,
+                            const QString & displayName,
+                            const QString & description,
+                            const Workloads & workloads
+                        ) -> Beneficiary;
 
         //////////
         //  Signals

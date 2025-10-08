@@ -13,6 +13,7 @@ SOURCES += \
     Component.cpp \
     CreateAccountDialog.cpp \
     CreateActivityTypeDialog.cpp \
+    CreateBeneficiaryDialog.cpp \
     CreatePrivateActivityDialog.cpp \
     CreatePrivateTaskDialog.cpp \
     CreateProjectDialog.cpp \
@@ -100,6 +101,7 @@ HEADERS += \
     Components.hpp \
     CreateAccountDialog.hpp \
     CreateActivityTypeDialog.hpp \
+    CreateBeneficiaryDialog.hpp \
     CreatePrivateActivityDialog.hpp \
     CreatePrivateTaskDialog.hpp \
     CreateProjectDialog.hpp \
@@ -178,6 +180,7 @@ FORMS += \
     BeneficiaryManager.ui \
     CreateAccountDialog.ui \
     CreateActivityTypeDialog.ui \
+    CreateBeneficiaryDialog.ui \
     CreatePrivateActivityDialog.ui \
     CreatePrivateTaskDialog.ui \
     CreateProjectDialog.ui \

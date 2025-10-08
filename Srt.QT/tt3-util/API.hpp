@@ -116,6 +116,7 @@
 //  Algorithms
 #include "tt3-util/ToString.hpp"
 #include "tt3-util/FromString.hpp"
+#include "tt3-util/Collections.hpp"
 
 //  Stock objects
 #include "tt3-util/MessageDigest.hpp"

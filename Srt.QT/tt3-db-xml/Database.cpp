@@ -988,11 +988,92 @@ auto Database::createWorkStream(
 }
 
 auto Database::createBeneficiary(
-        const QString & /*displayName*/,
-        const QString & /*description*/
+        const QString & displayName,
+        const QString & description,
+        const tt3::db::api::Workloads & workloads
     ) -> tt3::db::api::IBeneficiary *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_guard);
+    _ensureOpenAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
+
+    //  Validate parameters
+    if (!_validator->beneficiary()->isValidDisplayName(displayName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Beneficiary::instance(),
+            "displayName",
+            displayName);
+    }
+    if (!_validator->beneficiary()->isValidDescription(description))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Beneficiary::instance(),
+            "description",
+            description);
+    }
+    if (workloads.contains(nullptr))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Beneficiary::instance(),
+            "workloads",
+            nullptr);
+    }
+
+    Workloads xmlWorkloads =
+        tt3::util::transform<Workload*, tt3::db::api::IWorkload*>(
+            workloads,
+            [&](auto w)
+            {
+                Q_ASSERT(w != nullptr); //  should have been caught before!
+                Workload * xmlWorkload = dynamic_cast<Workload*>(w);
+                if (xmlWorkload == nullptr ||
+                    xmlWorkload->_database != this ||
+                    !xmlWorkload->_isLive)
+                {   //  OOPS!
+                    throw tt3::db::api::IncompatibleInstanceException(w->type());
+                }
+                return xmlWorkload;
+            });
+
+    //  Display names must be unique
+    if (_findBeneficiary(displayName) != nullptr)
+    {   //  OOPS!
+        throw tt3::db::api::AlreadyExistsException(
+            tt3::db::api::ObjectTypes::Beneficiary::instance(),
+            "displayName",
+            displayName);
+    }
+
+    //  Do the work - create & initialize the Beneficiary...
+    Beneficiary * beneficiary = new Beneficiary(this, _generateOid()); //  registers with Database
+    beneficiary->_displayName = displayName;
+    beneficiary->_description = description;
+    for (Workload * xmlWorkload : xmlWorkloads)
+    {   //  Link with Workload
+        beneficiary->_workloads.insert(xmlWorkload);
+        xmlWorkload->_beneficiaries.insert(beneficiary);
+        xmlWorkload->addReference();
+        beneficiary->addReference();
+    }
+    _markModified();
+    //  ...schedule change notifications...
+    _changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            this, beneficiary->type(), beneficiary->_oid));
+    for (Workload * xmlWorkload : xmlWorkloads)
+    {
+        _changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                this, xmlWorkload->type(), xmlWorkload->_oid));
+    }
+    //  ...and we're done
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
+    return beneficiary;
 }
 
 //////////

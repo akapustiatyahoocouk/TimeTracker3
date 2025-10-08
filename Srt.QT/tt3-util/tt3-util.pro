@@ -34,6 +34,7 @@ SOURCES += \
 HEADERS += \
     API.hpp \
     Classes.hpp \
+    Collections.hpp \
     Component.hpp \
     Components.hpp \
     DateTime.hpp \

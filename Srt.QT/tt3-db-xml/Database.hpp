@@ -168,7 +168,8 @@ namespace tt3::db::xml
                             ) -> tt3::db::api::IWorkStream * override;
         virtual auto    createBeneficiary(
                                 const QString & displayName,
-                                const QString & description
+                                const QString & description,
+                                const tt3::db::api::Workloads & workloads
                             ) -> tt3::db::api::IBeneficiary * override;
 
         //////////

@@ -464,13 +464,16 @@ namespace tt3::db::api
         /// \param description
         ///     The multi-line user-readable description for the new
         ///     Beneficiary; with lines separated by a newline '\\n' character.
+        /// \param workloads
+        ///     The workloads to associate the new Beneficiary with.
         /// \return
         ///     The newly created Beneficiary.
         /// \exception DatabaseException
         ///     If an error occurs.
         virtual auto    createBeneficiary(
                                 const QString & displayName,
-                                const QString & description
+                                const QString & description,
+                                const Workloads & workloads
                             ) -> IBeneficiary * = 0;
 
         //////////

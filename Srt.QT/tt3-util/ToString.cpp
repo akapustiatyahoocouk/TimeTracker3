@@ -17,6 +17,11 @@
 #include "tt3-util/API.hpp"
 
 //  C++ types
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<nullptr_t>(const nullptr_t & /*value*/)
+{
+    return "(null)";
+}
+
 template <> TT3_UTIL_PUBLIC QString tt3::util::toString<bool>(const bool & value)
 {
     return value ? "true" : "false";

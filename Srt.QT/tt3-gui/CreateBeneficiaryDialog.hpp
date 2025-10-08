@@ -1,5 +1,5 @@
 //
-//  tt3-gui/CreateActivityTypeDialog.hpp - The modal "Create activity type" dialog
+//  tt3-gui/CreateBeneficiaryDialog.hpp - The modal "Create beneficiary" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,15 +19,15 @@
 
 namespace tt3::gui
 {
-    namespace Ui { class CreateActivityTypeDialog; }
+    namespace Ui { class CreateBeneficiaryDialog; }
 
-    /// \class CreateActivityTypeDialog tt3-gui/API.hpp "tt3-gui/API.hpp"
-    /// \brief The modal "Create activity type" dialog
-    class TT3_GUI_PUBLIC CreateActivityTypeDialog final
+    /// \class CreateBeneficiaryDialog tt3-gui/API.hpp "tt3-gui/API.hpp"
+    /// \brief The modal "Create beneficiary" dialog
+    class TT3_GUI_PUBLIC CreateBeneficiaryDialog final
         :   private QDialog
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CreateActivityTypeDialog)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CreateBeneficiaryDialog)
 
         //////////
         //  Types
@@ -35,7 +35,7 @@ namespace tt3::gui
         /// The dialog result after a modal invocation
         enum class Result
         {
-            Ok,     ///< The user has confirmed the choice, activity type created.
+            Ok,     ///< The user has confirmed the choice, beneficiary created.
             Cancel  ///< The user has cancelled the dialog.
         };
 
@@ -47,17 +47,20 @@ namespace tt3::gui
         /// \param parent
         ///     The parent widget for the dialog.
         /// \param workspace
-        ///     The workspace to create a new activity type in.
+        ///     The workspace to create a new beneficiary in.
         /// \param credentials
         ///     The credentials to use for workspace access.
         /// \exception WorkspaceException
         ///     If a data access error occurs.
-        CreateActivityTypeDialog(
+        CreateBeneficiaryDialog(
                 QWidget * parent,
                 tt3::ws::Workspace workspace,
                 const tt3::ws::Credentials & credentials
             );
-        virtual ~CreateActivityTypeDialog();
+
+        /// \brief
+        ///     The class destructor.
+        virtual ~CreateBeneficiaryDialog();
 
         //////////
         //  Operations
@@ -69,38 +72,45 @@ namespace tt3::gui
         Result      doModal();
 
         /// \brief
-        ///     Returns the newly created activity type.
+        ///     Returns the newly created beneficiary.
         /// \return
-        ///     The newly created activity type (on Ok) or nullptr
+        ///     The newly created beneficiary (on Ok) or nullptr
         ///     (if the dialog was cancelled).
-        auto        createdActivityType(
-                        ) const -> tt3::ws::ActivityType { return _createdActivityType; }
+        auto        createdBeneficiary(
+                        ) const -> tt3::ws::Beneficiary { return _createdBeneficiary; }
 
         //////////
         //  Implementation
     private:
         tt3::ws::Workspace  _workspace;
         const tt3::ws::Credentials  _credentials;
-        tt3::ws::Validator::ActivityType *const _validator;
+        tt3::ws::Validator::Beneficiary *const _validator;
 
-        tt3::ws::ActivityType   _createdActivityType;
+        tt3::ws::Beneficiary    _createdBeneficiary;
 
         //  Helpers
+        auto        _selectedWorkloads(
+                        ) -> tt3::ws::Workloads;
+        void        _setSelectedWorkloads(
+                            const tt3::ws::Workloads & workloads
+                        );
         void        _refresh();
 
         //////////
         //  Controls
     private:
-        Ui::CreateActivityTypeDialog *const _ui;
+        Ui::CreateBeneficiaryDialog *const  _ui;
 
         //////////
         //  Signal handlers
     private slots:
         void            _displayNameLineEditTextChanged(QString);
         void            _descriptionPlainTextEditTextChanged();
+        void            _selectWorkloadsPushButtonClicked();
         void            accept() override;
         void            reject() override;
     };
 }
 
-//  End of tt3-gui/CreateActivityTypeDialog.hpp
+//  End of tt3-gui/CreateBeneficiaryDialog.hpp
+

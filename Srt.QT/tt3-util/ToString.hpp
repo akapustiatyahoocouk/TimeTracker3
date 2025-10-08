@@ -21,6 +21,7 @@ namespace tt3::util
     QString toString(const T & value) = delete;
 
     //  C++ types
+    template <> TT3_UTIL_PUBLIC QString toString<nullptr_t>(const nullptr_t & value);
     template <> TT3_UTIL_PUBLIC QString toString<bool>(const bool & value);
     template <> TT3_UTIL_PUBLIC QString toString<char>(const char & value);
     template <> TT3_UTIL_PUBLIC QString toString<signed char>(const signed char & value);

@@ -452,8 +452,6 @@ void BeneficiaryManager::_beneficiariesTreeWidgetCustomContextMenuRequested(QPoi
 
 void BeneficiaryManager::_createBeneficiaryPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
-    /*  TODO uncomment
     try
     {
         CreateBeneficiaryDialog dlg(this, _workspace, _credentials);   //  may throw
@@ -467,7 +465,6 @@ void BeneficiaryManager::_createBeneficiaryPushButtonClicked()
     {
         tt3::gui::ErrorDialog::show(this, ex);
     }
-    */
 }
 
 void BeneficiaryManager::_modifyBeneficiaryPushButtonClicked()
