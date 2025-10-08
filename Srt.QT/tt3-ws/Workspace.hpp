@@ -44,6 +44,7 @@ namespace tt3::ws
         friend class WorkloadImpl;
         friend class ProjectImpl;
         friend class WorkStreamImpl;
+        friend class BeneficiaryImpl;
 
         //////////
         //  Construction/destruction - from friends only
@@ -261,6 +262,18 @@ namespace tt3::ws
         auto        workStreams(
                             const Credentials & credentials
                         ) const -> WorkStreams;
+
+        /// \brief
+        ///     The set of Beneficiaries in this database.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of Beneficiaries in this database.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        beneficiaries(
+                            const Credentials & credentials
+                        ) const -> Beneficiaries;
 
         //////////
         //  Operations (access control)
@@ -657,6 +670,9 @@ namespace tt3::ws
         auto        _getProxy(  //  throws WorkspaceException
                             tt3::db::api::IWorkStream * dataWorkStream
                         ) const -> WorkStream;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IBeneficiary * dataWorkStream
+                        ) const -> Beneficiary;
 
         //////////
         //  Event handlers

@@ -164,5 +164,11 @@
         <file>Resources/Images/Actions/CompleteProjectSmall.png</file>
         <file>Resources/Images/Actions/ViewBeneficiaryLarge.png</file>
         <file>Resources/Images/Actions/ViewBeneficiarySmall.png</file>
+        <file>Resources/Images/Actions/CreateBeneficiaryLarge.png</file>
+        <file>Resources/Images/Actions/CreateBeneficiarySmall.png</file>
+        <file>Resources/Images/Actions/DestroyBeneficiaryLarge.png</file>
+        <file>Resources/Images/Actions/DestroyBeneficiarySmall.png</file>
+        <file>Resources/Images/Actions/ModifyBeneficiaryLarge.png</file>
+        <file>Resources/Images/Actions/ModifyBeneficiarySmall.png</file>
     </qresource>
 </RCC>

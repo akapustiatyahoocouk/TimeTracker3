@@ -7,6 +7,7 @@ SOURCES += \
     AccountImpl.cpp \
     ActivityImpl.cpp \
     ActivityTypeImpl.cpp \
+    BeneficiaryImpl.cpp \
     Component.cpp \
     Credentials.cpp \
     Exceptions.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
     Account.hpp \
     Activity.hpp \
     ActivityType.hpp \
+    Beneficiary.hpp \
     Classes.hpp \
     Components.hpp \
     Credentials.hpp \

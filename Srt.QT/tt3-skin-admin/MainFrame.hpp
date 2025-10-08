@@ -136,6 +136,9 @@ namespace tt3::skin::admin
         QStackedLayout *        _manageWorkStreamsTabLayout = nullptr;
         tt3::gui::WorkStreamManager *   _workStreamManager = nullptr;
 
+        QStackedLayout *        _manageBeneficiariesTabLayout = nullptr;
+        tt3::gui::BeneficiaryManager *   _beneficiaryManager = nullptr;
+
         //////////
         //  Signal handlers
     private slots:

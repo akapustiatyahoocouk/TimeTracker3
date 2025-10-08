@@ -47,6 +47,7 @@
 #include "tt3-ws/Workload.hpp"
 #include "tt3-ws/Project.hpp"
 #include "tt3-ws/WorkStream.hpp"
+#include "tt3-ws/Beneficiary.hpp"
 
 #include "tt3-ws/Notifications.hpp"
 #include "tt3-ws/Exceptions.hpp"

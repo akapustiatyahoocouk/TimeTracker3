@@ -8,6 +8,7 @@ SOURCES += \
     ActivityTypeManager.cpp \
     AddEmailAddressDialog.cpp \
     AskYesNoDialog.cpp \
+    BeneficiaryManager.cpp \
     ColorManager.cpp \
     Component.cpp \
     CreateAccountDialog.cpp \
@@ -94,6 +95,7 @@ HEADERS += \
     ActivityTypeManager.hpp \
     AddEmailAddressDialog.hpp \
     AskYesNoDialog.hpp \
+    BeneficiaryManager.hpp \
     Color.hpp \
     Components.hpp \
     CreateAccountDialog.hpp \
@@ -173,6 +175,7 @@ FORMS += \
     AboutDialog.ui \
     ActivityTypeManager.ui \
     AskYesNoDialog.ui \
+    BeneficiaryManager.ui \
     CreateAccountDialog.ui \
     CreateActivityTypeDialog.ui \
     CreatePrivateActivityDialog.ui \

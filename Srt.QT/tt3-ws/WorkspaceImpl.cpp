@@ -443,6 +443,30 @@ auto WorkspaceImpl::workStreams(
     }
 }
 
+auto WorkspaceImpl::beneficiaries(
+        const Credentials & credentials
+    ) const -> Beneficiaries
+{
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+
+    try
+    {
+        _validateAccessRights(credentials);
+        //  The caller can see all Beneficiaries
+        Beneficiaries result;
+        for (tt3::db::api::IBeneficiary * dataBeneficiary : _database->beneficiaries())
+        {
+            result.insert(_getProxy(dataBeneficiary));
+        }
+        return result;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
 //////////
 //  Operations (access control)
 bool WorkspaceImpl::canAccess(
@@ -1174,6 +1198,30 @@ WorkStream WorkspaceImpl::_getProxy(
         [](WorkStreamImpl * p) { delete p; });
     _proxyCache.insert(oid, workStream);
     return workStream;
+}
+
+Beneficiary WorkspaceImpl::_getProxy(
+        tt3::db::api::IBeneficiary * dataBeneficiary
+    ) const
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    Q_ASSERT(_isOpen);
+    Q_ASSERT(dataBeneficiary != nullptr);
+
+    Oid oid = dataBeneficiary->oid();
+    if (_proxyCache.contains(oid))
+    {
+        Beneficiary beneficiary = std::dynamic_pointer_cast<BeneficiaryImpl>(_proxyCache[oid]);
+        Q_ASSERT(beneficiary != nullptr);   //  Objects do not change their types OR reuse OIDs
+        return beneficiary;
+    }
+    //  Must create a new proxy
+    Workspace workspace = _address->_workspaceType->_mapWorkspace(const_cast<WorkspaceImpl*>(this));
+    Beneficiary beneficiary(
+        new BeneficiaryImpl(workspace, dataBeneficiary),
+        [](BeneficiaryImpl * p) { delete p; });
+    _proxyCache.insert(oid, beneficiary);
+    return beneficiary;
 }
 
 //////////

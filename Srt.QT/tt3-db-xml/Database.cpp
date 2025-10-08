@@ -401,7 +401,11 @@ auto Database::workStreams(
 auto Database::beneficiaries(
     ) const -> tt3::db::api::Beneficiaries
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+    //  We assume database is consistent since last change
+
+    return tt3::db::api::Beneficiaries(_beneficiaries.cbegin(), _beneficiaries.cend());
 }
 
 //////////
