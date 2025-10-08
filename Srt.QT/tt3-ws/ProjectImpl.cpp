@@ -153,7 +153,7 @@ auto ProjectImpl::createChild(
         const Credentials & credentials,
         const QString & displayName,
         const QString & description,
-        const Beneficiaries & /*beneficiaries*/,
+        const Beneficiaries & beneficiaries,
         bool completed
     ) -> Project
 {
@@ -172,19 +172,13 @@ auto ProjectImpl::createChild(
         }
         //  Do the work
         tt3::db::api::Beneficiaries dataBeneficiaries;
-        /*  TODO uncomment
         for (Beneficiary beneficiary : beneficiaries)
         {
-            if (beneficiary == nullptr)
-            {
-                throw InvalidPropertyValueException(
-                    ObjectTypes::Project::instance(),
-                    "beneficiaries",
+            dataBeneficiaries.insert(
+                (beneficiary != nullptr) ?
+                    beneficiary->_dataBeneficiary :
                     nullptr);
-            }
-            dataBeneficiaries.insert(beneficiary->_dataBeneficiary);
         }
-        */
         tt3::db::api::IProject * dataProject =
             _dataProject->createChild(
                 displayName,

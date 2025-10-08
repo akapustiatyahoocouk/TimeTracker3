@@ -41,6 +41,10 @@ ManageUsersDialog::ManageUsersDialog(
     _managerPanelLayout->addWidget(_userManager);
     _ui->managerPanel->setLayout(_managerPanelLayout);
 
+    //  Adjust controls
+    _userManager->setWorkspace(workspace);
+    _userManager->setCredentials(credentials);
+
     //  Done
     adjustSize();
     _userManager->refresh();

@@ -41,6 +41,10 @@ ManagePublicTasksDialog::ManagePublicTasksDialog(
     _managerPanelLayout->addWidget(_publicTaskManager);
     _ui->managerPanel->setLayout(_managerPanelLayout);
 
+    //  Adjust controls
+    _publicTaskManager->setWorkspace(workspace);
+    _publicTaskManager->setCredentials(credentials);
+
     //  Done
     adjustSize();
     _publicTaskManager->refresh();

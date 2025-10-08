@@ -41,6 +41,10 @@ ManagePrivateActivitiesDialog::ManagePrivateActivitiesDialog(
     _managerPanelLayout->addWidget(_privateActivityManager);
     _ui->managerPanel->setLayout(_managerPanelLayout);
 
+    //  Adjust controls
+    _privateActivityManager->setWorkspace(workspace);
+    _privateActivityManager->setCredentials(credentials);
+
     //  Done
     adjustSize();
     _privateActivityManager->refresh();

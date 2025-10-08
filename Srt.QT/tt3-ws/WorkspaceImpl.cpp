@@ -759,7 +759,7 @@ auto WorkspaceImpl::createProject(
         const Credentials & credentials,
         const QString & displayName,
         const QString & description,
-        const Beneficiaries & /*beneficiaries*/,
+        const Beneficiaries & beneficiaries,
         bool completed
     ) -> Project
 {
@@ -777,19 +777,13 @@ auto WorkspaceImpl::createProject(
         }
         //  Do the work
         tt3::db::api::Beneficiaries dataBeneficiaries;
-        /*  TODO uncomment
         for (Beneficiary beneficiary : beneficiaries)
         {
-            if (beneficiary == nullptr)
-            {
-                throw InvalidPropertyValueException(
-                    ObjectTypes::Project::instance(),
-                    "beneficiaries",
+            dataBeneficiaries.insert(
+                (beneficiary != nullptr) ?
+                    beneficiary->_dataBeneficiary :
                     nullptr);
-            }
-            dataBeneficiaries.insert(beneficiary->_dataBeneficiary);
         }
-        */
         tt3::db::api::IProject * dataProject =
             _database->createProject(
                 displayName,
@@ -808,7 +802,7 @@ auto WorkspaceImpl::createWorkStream(
         const Credentials & credentials,
         const QString & displayName,
         const QString & description,
-        const Beneficiaries & /*beneficiaries*/
+        const Beneficiaries & beneficiaries
     ) -> WorkStream
 {
     tt3::util::Lock lock(_guard);
@@ -825,16 +819,13 @@ auto WorkspaceImpl::createWorkStream(
         }
         //  Do the work
         tt3::db::api::Beneficiaries dataBeneficiaries;
-        /*  TODO uncomment and use std::transform everywhere we need
-        std::transform(
-            beneficiaries.cbegin(),
-            beneficiaries.cend(),
-            std::back_inserter(dataBeneficiaries),
-            [](auto b)
-            {
-                return (b != nullptr) ? b->_dataBeneficiary : nullptr;
-            });
-        */
+        for (Beneficiary beneficiary : beneficiaries)
+        {
+            dataBeneficiaries.insert(
+                (beneficiary != nullptr) ?
+                    beneficiary->_dataBeneficiary :
+                    nullptr);
+        }
         tt3::db::api::IWorkStream * dataWorkStream =
             _database->createWorkStream(
                 displayName,

@@ -42,7 +42,6 @@ ManageBeneficiariesDialog::ManageBeneficiariesDialog(
     _ui->managerPanel->setLayout(_managerPanelLayout);
 
     //  Adjust controls
-    //  TODO the same for all ManageXXXDialogs
     _beneficiaryManager->setWorkspace(workspace);
     _beneficiaryManager->setCredentials(credentials);
 

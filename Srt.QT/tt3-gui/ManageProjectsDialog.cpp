@@ -41,6 +41,10 @@ ManageProjectsDialog::ManageProjectsDialog(
     _managerPanelLayout->addWidget(_projectManager);
     _ui->managerPanel->setLayout(_managerPanelLayout);
 
+    //  Adjust controls
+    _projectManager->setWorkspace(workspace);
+    _projectManager->setCredentials(credentials);
+
     //  Done
     adjustSize();
     _projectManager->refresh();

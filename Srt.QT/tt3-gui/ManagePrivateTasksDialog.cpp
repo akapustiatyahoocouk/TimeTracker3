@@ -41,6 +41,10 @@ ManagePrivateTasksDialog::ManagePrivateTasksDialog(
     _managerPanelLayout->addWidget(_privateTaskManager);
     _ui->managerPanel->setLayout(_managerPanelLayout);
 
+    //  Adjust controls
+    _privateTaskManager->setWorkspace(workspace);
+    _privateTaskManager->setCredentials(credentials);
+
     //  Done
     adjustSize();
     _privateTaskManager->refresh();

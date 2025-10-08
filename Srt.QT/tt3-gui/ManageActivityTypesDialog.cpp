@@ -41,6 +41,10 @@ ManageActivityTypesDialog::ManageActivityTypesDialog(
     _managerPanelLayout->addWidget(_activityTypeManager);
     _ui->managerPanel->setLayout(_managerPanelLayout);
 
+    //  Adjust controls
+    _activityTypeManager->setWorkspace(workspace);
+    _activityTypeManager->setCredentials(credentials);
+
     //  Done
     adjustSize();
     _activityTypeManager->refresh();

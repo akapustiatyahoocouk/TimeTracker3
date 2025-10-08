@@ -39,12 +39,11 @@ LoginDialog::LoginDialog(QWidget * parent, const QString & login)
     this->setWindowFlags(flags);
 
     //  Done
-    if (!login.trimmed().isEmpty())
-    {
-        _ui->passwordLineEdit->setFocus();
-    }
-    adjustSize();
     _refresh();
+    adjustSize();
+    (login.trimmed().isEmpty() ?
+        _ui->loginLineEdit :
+        _ui->passwordLineEdit)->setFocus();
 }
 
 LoginDialog::~LoginDialog()
@@ -83,7 +82,7 @@ void LoginDialog::accept()
 {
     _credentials =
         tt3::ws::Credentials(
-            _ui->loginLineEdit->text(),
+            _ui->loginLineEdit->text().trimmed(),
             _ui->passwordLineEdit->text());
     Component::Settings::instance()->lastLogin = _ui->loginLineEdit->text();
     done(int(Result::Ok));

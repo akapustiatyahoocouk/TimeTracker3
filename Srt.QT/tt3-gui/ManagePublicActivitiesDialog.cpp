@@ -41,6 +41,10 @@ ManagePublicActivitiesDialog::ManagePublicActivitiesDialog(
     _managerPanelLayout->addWidget(_publicActivityManager);
     _ui->managerPanel->setLayout(_managerPanelLayout);
 
+    //  Adjust controls
+    _publicActivityManager->setWorkspace(workspace);
+    _publicActivityManager->setCredentials(credentials);
+
     //  Done
     adjustSize();
     _publicActivityManager->refresh();

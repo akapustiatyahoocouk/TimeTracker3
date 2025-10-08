@@ -188,7 +188,15 @@ void Beneficiary::_markDead()
     Q_ASSERT(_isLive);
 
     //  Break associations
-    //  TODO _workloads
+    for (Workload * workload : _workloads.values())
+    {
+        Q_ASSERT(workload->_beneficiaries.contains(this));
+        workload->_beneficiaries.remove(this);
+        _workloads.remove(workload);
+        this->removeReference();
+        workload->removeReference();
+    }
+    _workloads.clear();
 
     //  Remove from "live" caches
     Q_ASSERT(_database->_beneficiaries.contains(this));

@@ -129,7 +129,9 @@ void ModifyBeneficiaryDialog::accept()
             _beneficiary->setDescription(
                 _credentials,
                 _ui->descriptionPlainTextEdit->toPlainText());
-            //  TODO workloads
+            _beneficiary->setWorkloads(
+                _credentials,
+                _selectedWorkloads());
         }
         done(int(Result::Ok));
     }

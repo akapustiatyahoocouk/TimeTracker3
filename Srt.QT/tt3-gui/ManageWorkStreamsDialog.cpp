@@ -42,7 +42,6 @@ ManageWorkStreamsDialog::ManageWorkStreamsDialog(
     _ui->managerPanel->setLayout(_managerPanelLayout);
 
     //  Adjust controls
-    //  TODO the same for all ManageXXXDialogs
     _workStreamManager->setWorkspace(workspace);
     _workStreamManager->setCredentials(credentials);
 

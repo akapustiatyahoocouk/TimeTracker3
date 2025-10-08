@@ -193,7 +193,15 @@ void Workload::_markDead()
     Q_ASSERT(_isLive);
 
     //  Break associations
-    //  TODO Beneficiaries   _beneficiaries; //  count as "references"
+    for (Beneficiary * beneficiary : _beneficiaries.values())
+    {
+        Q_ASSERT(beneficiary->_workloads.contains(this));
+        beneficiary->_workloads.remove(this);
+        _beneficiaries.remove(beneficiary);
+        this->removeReference();
+        beneficiary->removeReference();
+    }
+    _beneficiaries.clear();
     for (User * user : _assignedUsers.values())
     {
         Q_ASSERT(user->_permittedWorkloads.contains(this));
@@ -242,7 +250,10 @@ void Workload::_serializeAssociations(
 {
     Object::_serializeAssociations(objectElement);
 
-    //  TODO    Beneficiaries   _beneficiaries; //  count as "references"
+    _database->_serializeAssociation(
+        objectElement,
+        "Beneficiaries",
+        _beneficiaries);
     _database->_serializeAssociation(
         objectElement,
         "AssignedUsers",
@@ -276,7 +287,10 @@ void Workload::_deserializeAssociations(
 {
     Object::_deserializeAssociations(objectElement);
 
-    //  TODO    Beneficiaries   _beneficiaries; //  count as "references"
+    _database->_deserializeAssociation(
+        objectElement,
+        "Beneficiaries",
+        _beneficiaries);
     _database->_deserializeAssociation(
         objectElement,
         "AssignedUsers",
@@ -308,11 +322,22 @@ void Workload::_validate(
     //  Validate aggregations
 
     //  Validate associations
-    //  TODO    Beneficiaries   _beneficiaries; //  count as "references"
+    for (Beneficiary * beneficiary : _beneficiaries)
+    {
+        if (beneficiary == nullptr ||
+            beneficiary->_database != this->_database ||
+            !beneficiary->_isLive ||
+            !beneficiary->_workloads.contains(this))    //  TODO make sure ALL back associations are validated
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
+    }
     for (User * user : _assignedUsers)
     {
         if (user == nullptr ||
-            user->_database != this->_database || !user->_isLive)
+            user->_database != this->_database ||
+            !user->_isLive ||
+            !user->_permittedWorkloads.contains(this))
         {   //  OOPS!
             throw tt3::db::api::DatabaseCorruptException(_database->_address);
         }
@@ -320,7 +345,9 @@ void Workload::_validate(
     for (Activity * activity : _contributingActivities)
     {
         if (activity == nullptr ||
-            activity->_database != this->_database || !activity->_isLive)
+            activity->_database != this->_database ||
+            !activity->_isLive ||
+            activity->_workload != this)
         {   //  OOPS!
             throw tt3::db::api::DatabaseCorruptException(_database->_address);
         }

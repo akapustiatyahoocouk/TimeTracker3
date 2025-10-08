@@ -168,23 +168,27 @@ auto Project::createChild(
             "description",
             description);
     }
+    if (beneficiaries.contains(nullptr))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Project::instance(),
+            "beneficiaries",
+            nullptr);
+    }
+
     Beneficiaries xmlBeneficiaries;
-    Q_ASSERT(beneficiaries.isEmpty());  //  TODO for now
-    /*  TODO uncomment
     for (tt3::db::api::IBeneficiary * beneficiary : beneficiaries)
     {
-        Beneficiary * xmlBeneficiary =
-            dynamic_cast<Beneficiary*>(beneficiary);
+        Q_ASSERT(beneficiary != nullptr);   //  should have been caught earlier
+        Beneficiary * xmlBeneficiary = dynamic_cast<Beneficiary*>(beneficiary);
         if (xmlBeneficiary == nullptr ||
-            xmlBeneficiary->_database != this ||
+            xmlBeneficiary->_database != this->_database ||
             !xmlBeneficiary->_isLive)
         {   //  OOPS!
-            throw tt3::db::api::IncompatibleInstanceException(
-                tt3::db::api::ObjectTypes::Beneficiary::instance());
+            throw tt3::db::api::IncompatibleInstanceException(beneficiary->type());
         }
         xmlBeneficiaries.insert(xmlBeneficiary);
     }
-    */
 
     //  Display names must be unique
     if (_findChild(displayName) != nullptr)
@@ -200,15 +204,13 @@ auto Project::createChild(
     project->_displayName = displayName;
     project->_description = description;
     project->_completed = completed;
-    /*  TODO uncomment
     for (Beneficiary * xmlBeneficiary : xmlBeneficiaries)
     {   //  Link with Beneficiary
         project->_beneficiaries.insert(xmlBeneficiary);
-        xmlBeneficiary->_projects.insert(project);
+        xmlBeneficiary->_workloads.insert(project);
         xmlBeneficiary->addReference();
         project->addReference();
     }
-    */
     _database->_markModified();
     //  ...schedule change notifications...
     _database->_changeNotifier.post(
@@ -217,14 +219,12 @@ auto Project::createChild(
     _database->_changeNotifier.post(
         new tt3::db::api::ObjectCreatedNotification(
             _database, project->type(), project->_oid));
-    /*  TODO uncomment
     for (Beneficiary * xmlBeneficiary : xmlBeneficiaries)
     {
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, xmlBeneficiary->type(), xmlBeneficiary->_oid));
     }
-    */
     //  ...and we're done
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
