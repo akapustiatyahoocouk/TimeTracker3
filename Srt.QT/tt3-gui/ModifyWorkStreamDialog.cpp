@@ -25,15 +25,15 @@ ModifyWorkStreamDialog::ModifyWorkStreamDialog(
         tt3::ws::WorkStream workStream,
         const tt3::ws::Credentials & credentials
     ) : QDialog(parent),
-    //  Implementation
-    _workStream(workStream),
-    _credentials(credentials),
-    _validator(workStream->workspace()->validator()->workStream()),
-    _readOnly(workStream == nullptr ||
-              !workStream->canModify(credentials) ||  //  may throw
-              workStream->workspace()->isReadOnly()),
-    //  Controls
-    _ui(new Ui::ModifyWorkStreamDialog)
+        //  Implementation
+        _workStream(workStream),
+        _credentials(credentials),
+        _validator(workStream->workspace()->validator()->workStream()),
+        _readOnly(workStream == nullptr ||
+                  !workStream->canModify(credentials) ||  //  may throw
+                  workStream->workspace()->isReadOnly()),
+        //  Controls
+        _ui(new Ui::ModifyWorkStreamDialog)
 {
     Q_ASSERT(_workStream != nullptr);
     Q_ASSERT(_credentials.isValid());
@@ -60,8 +60,9 @@ ModifyWorkStreamDialog::ModifyWorkStreamDialog(
     }
 
     //  Done
-    adjustSize();
     _refresh();
+    adjustSize();
+    _ui->displayNameLineEdit->setFocus();
 }
 
 ModifyWorkStreamDialog::~ModifyWorkStreamDialog()

@@ -696,8 +696,12 @@ void MainFrame::_onActionManageWorkStreams()
 }
 
 void MainFrame::_onActionManageBeneficiaries()
-{
-    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+{   //  TODO switch to "Beneficiaries" tab instead
+    tt3::gui::ManageBeneficiariesDialog dlg(
+        this,
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
 }
 
 void MainFrame::_onActionRefresh()

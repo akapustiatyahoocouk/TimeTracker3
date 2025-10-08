@@ -490,13 +490,11 @@ void BeneficiaryManager::_modifyBeneficiaryPushButtonClicked()
 
 void BeneficiaryManager::_destroyBeneficiaryPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
-    /*  TODO uncomment
-    if (auto Beneficiary = _selectedBeneficiary())
+    if (auto beneficiary = _selectedBeneficiary())
     {
         try
         {
-            DestroyBeneficiaryDialog dlg(this, Beneficiary, _credentials); //  may throw
+            DestroyBeneficiaryDialog dlg(this, beneficiary, _credentials); //  may throw
             if (dlg.doModal() == DestroyBeneficiaryDialog::Result::Ok)
             {   //  Destroyed
                 requestRefresh();
@@ -508,7 +506,6 @@ void BeneficiaryManager::_destroyBeneficiaryPushButtonClicked()
             requestRefresh();
         }
     }
-    */
 }
 
 void BeneficiaryManager::_filterLineEditTextChanged(QString)

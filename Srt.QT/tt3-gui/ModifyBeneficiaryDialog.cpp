@@ -61,9 +61,9 @@ ModifyBeneficiaryDialog::ModifyBeneficiaryDialog(
     }
 
     //  Done
-    _ui->displayNameLabel->setFocus();
-    adjustSize();
     _refresh();
+    adjustSize();
+    _ui->displayNameLineEdit->setFocus();
 }
 
 ModifyBeneficiaryDialog::~ModifyBeneficiaryDialog()

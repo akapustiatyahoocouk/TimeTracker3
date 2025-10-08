@@ -28,6 +28,7 @@ SOURCES += \
     CurrentWorkspace.cpp \
     DestroyAccountDialog.cpp \
     DestroyActivityTypeDialog.cpp \
+    DestroyBeneficiaryDialog.cpp \
     DestroyPrivateActivityDialog.cpp \
     DestroyPrivateTaskDialog.cpp \
     DestroyProjectDialog.cpp \
@@ -50,6 +51,7 @@ SOURCES += \
     LabelDecorations.cpp \
     LoginDialog.cpp \
     ManageActivityTypesDialog.cpp \
+    ManageBeneficiariesDialog.cpp \
     ManagePrivateActivitiesDialog.cpp \
     ManagePrivateTasksDialog.cpp \
     ManageProjectsDialog.cpp \
@@ -115,6 +117,7 @@ HEADERS += \
     CurrentWorkspace.hpp \
     DestroyAccountDialog.hpp \
     DestroyActivityTypeDialog.hpp \
+    DestroyBeneficiaryDialog.hpp \
     DestroyPrivateActivityDialog.hpp \
     DestroyPrivateTaskDialog.hpp \
     DestroyProjectDialog.hpp \
@@ -133,6 +136,7 @@ HEADERS += \
     Linkage.hpp \
     LoginDialog.hpp \
     ManageActivityTypesDialog.hpp \
+    ManageBeneficiariesDialog.hpp \
     ManagePrivateActivitiesDialog.hpp \
     ManagePrivateTasksDialog.hpp \
     ManageProjectsDialog.hpp \
@@ -197,6 +201,7 @@ FORMS += \
     GeneralStartupPreferencesEditor.ui \
     LoginDialog.ui \
     ManageActivityTypesDialog.ui \
+    ManageBeneficiariesDialog.ui \
     ManagePrivateActivitiesDialog.ui \
     ManagePrivateTasksDialog.ui \
     ManageProjectsDialog.ui \

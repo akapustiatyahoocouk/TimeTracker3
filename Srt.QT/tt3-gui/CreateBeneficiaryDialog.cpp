@@ -42,9 +42,10 @@ CreateBeneficiaryDialog::CreateBeneficiaryDialog(
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    //  Done
-    adjustSize();
+    //  Done TODO use this sequence & explicit setFocus() in LL dialogs!
     _refresh();
+    adjustSize();
+    _ui->displayNameLineEdit->setFocus();
 }
 
 CreateBeneficiaryDialog::~CreateBeneficiaryDialog()

@@ -43,8 +43,9 @@ CreateWorkStreamDialog::CreateWorkStreamDialog(
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
     //  Done
-    adjustSize();
     _refresh();
+    adjustSize();
+    _ui->displayNameLineEdit->setFocus();
 }
 
 CreateWorkStreamDialog::~CreateWorkStreamDialog()

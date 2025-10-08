@@ -96,6 +96,7 @@
 #include "tt3-gui/DestroyWorkStreamDialog.hpp"
 #include "tt3-gui/CreateBeneficiaryDialog.hpp"
 #include "tt3-gui/ModifyBeneficiaryDialog.hpp"
+#include "tt3-gui/DestroyBeneficiaryDialog.hpp"
 
 #include "tt3-gui/AddEmailAddressDialog.hpp"
 #include "tt3-gui/ModifyEmailAddressDialog.hpp"
@@ -111,5 +112,6 @@
 #include "tt3-gui/ManagePrivateTasksDialog.hpp"
 #include "tt3-gui/ManageProjectsDialog.hpp"
 #include "tt3-gui/ManageWorkStreamsDialog.hpp"
+#include "tt3-gui/ManageBeneficiariesDialog.hpp"
 
 //  End of tt3-gui/API.hpp
