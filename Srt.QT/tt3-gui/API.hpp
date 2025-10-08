@@ -95,6 +95,7 @@
 #include "tt3-gui/ModifyWorkStreamDialog.hpp"
 #include "tt3-gui/DestroyWorkStreamDialog.hpp"
 #include "tt3-gui/CreateBeneficiaryDialog.hpp"
+#include "tt3-gui/ModifyBeneficiaryDialog.hpp"
 
 #include "tt3-gui/AddEmailAddressDialog.hpp"
 #include "tt3-gui/ModifyEmailAddressDialog.hpp"

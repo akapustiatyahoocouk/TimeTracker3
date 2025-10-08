@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>tt3::gui::CreateBeneficiaryDialog</class>
- <widget class="QDialog" name="tt3::gui::CreateBeneficiaryDialog">
+ <class>tt3::gui::ModifyBeneficiaryDialog</class>
+ <widget class="QDialog" name="tt3::gui::ModifyBeneficiaryDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>459</width>
+    <width>451</width>
     <height>260</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Create beneficiary</string>
+   <string>Modify beneficiary</string>
   </property>
   <property name="windowIcon">
    <iconset resource="tt3-gui.qrc">
-    <normaloff>:/tt3-gui/Resources/Images/Actions/CreateBeneficiaryLarge.png</normaloff>:/tt3-gui/Resources/Images/Actions/CreateBeneficiaryLarge.png</iconset>
+    <normaloff>:/tt3-gui/Resources/Images/Actions/ModifyBeneficiaryLarge.png</normaloff>:/tt3-gui/Resources/Images/Actions/ModifyBeneficiaryLarge.png</iconset>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -145,7 +145,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>tt3::gui::CreateBeneficiaryDialog</receiver>
+   <receiver>tt3::gui::ModifyBeneficiaryDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -161,7 +161,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>tt3::gui::CreateBeneficiaryDialog</receiver>
+   <receiver>tt3::gui::ModifyBeneficiaryDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -177,15 +177,15 @@
   <connection>
    <sender>displayNameLineEdit</sender>
    <signal>textChanged(QString)</signal>
-   <receiver>tt3::gui::CreateBeneficiaryDialog</receiver>
+   <receiver>tt3::gui::ModifyBeneficiaryDialog</receiver>
    <slot>_displayNameLineEditTextChanged(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>228</x>
+     <x>268</x>
      <y>24</y>
     </hint>
     <hint type="destinationlabel">
-     <x>229</x>
+     <x>225</x>
      <y>129</y>
     </hint>
    </hints>
@@ -193,15 +193,15 @@
   <connection>
    <sender>descriptionPlainTextEdit</sender>
    <signal>textChanged()</signal>
-   <receiver>tt3::gui::CreateBeneficiaryDialog</receiver>
+   <receiver>tt3::gui::ModifyBeneficiaryDialog</receiver>
    <slot>_descriptionPlainTextEditTextChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>272</x>
+     <x>268</x>
      <y>88</y>
     </hint>
     <hint type="destinationlabel">
-     <x>229</x>
+     <x>225</x>
      <y>129</y>
     </hint>
    </hints>
@@ -209,15 +209,15 @@
   <connection>
    <sender>selectWorkloadsPushButton</sender>
    <signal>clicked()</signal>
-   <receiver>tt3::gui::CreateBeneficiaryDialog</receiver>
+   <receiver>tt3::gui::ModifyBeneficiaryDialog</receiver>
    <slot>_selectWorkloadsPushButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>407</x>
+     <x>399</x>
      <y>151</y>
     </hint>
     <hint type="destinationlabel">
-     <x>229</x>
+     <x>225</x>
      <y>129</y>
     </hint>
    </hints>

@@ -132,10 +132,31 @@ void BeneficiaryImpl::setDescription(
 //////////
 //  Operations (associations)
 auto BeneficiaryImpl:: workloads(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const -> Workloads
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        Workloads result;
+        for (auto dataWorkload : _dataBeneficiary->workloads()) //  may throw
+        {
+            result.insert(_workspace->_getProxy(dataWorkload));
+        }
+        return result;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void BeneficiaryImpl::setWorkloads(

@@ -59,6 +59,7 @@ SOURCES += \
     ManageWorkStreamsDialog.cpp \
     ModifyAccountDialog.cpp \
     ModifyActivityTypeDialog.cpp \
+    ModifyBeneficiaryDialog.cpp \
     ModifyEmailAddressDialog.cpp \
     ModifyPrivateActivityDialog.cpp \
     ModifyPrivateTaskDialog.cpp \
@@ -141,6 +142,7 @@ HEADERS += \
     ManageWorkStreamsDialog.hpp \
     ModifyAccountDialog.hpp \
     ModifyActivityTypeDialog.hpp \
+    ModifyBeneficiaryDialog.hpp \
     ModifyEmailAddressDialog.hpp \
     ModifyPrivateActivityDialog.hpp \
     ModifyPrivateTaskDialog.hpp \
@@ -204,6 +206,7 @@ FORMS += \
     ManageWorkStreamsDialog.ui \
     ModifyAccountDialog.ui \
     ModifyActivityTypeDialog.ui \
+    ModifyBeneficiaryDialog.ui \
     ModifyPrivateActivityDialog.ui \
     ModifyPrivateTaskDialog.ui \
     ModifyProjectDialog.ui \

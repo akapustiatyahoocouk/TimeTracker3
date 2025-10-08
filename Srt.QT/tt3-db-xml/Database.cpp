@@ -1022,6 +1022,20 @@ auto Database::createBeneficiary(
             nullptr);
     }
 
+    Workloads xmlWorkloads;
+    for (tt3::db::api::IWorkload * workload : workloads)
+    {
+        Q_ASSERT(workload != nullptr); //  should have been caught before!
+        Workload * xmlWorkload = dynamic_cast<Workload*>(workload);
+        if (xmlWorkload == nullptr ||
+            xmlWorkload->_database != this ||
+            !xmlWorkload->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(workload->type());
+        }
+        xmlWorkloads.insert(xmlWorkload);
+    }
+    /*  TODO use? kill?
     Workloads xmlWorkloads =
         tt3::util::transform<Workload*, tt3::db::api::IWorkload*>(
             workloads,
@@ -1037,6 +1051,7 @@ auto Database::createBeneficiary(
                 }
                 return xmlWorkload;
             });
+    */
 
     //  Display names must be unique
     if (_findBeneficiary(displayName) != nullptr)

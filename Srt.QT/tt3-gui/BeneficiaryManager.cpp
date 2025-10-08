@@ -469,17 +469,15 @@ void BeneficiaryManager::_createBeneficiaryPushButtonClicked()
 
 void BeneficiaryManager::_modifyBeneficiaryPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
-    /*  TODO uncomment
-    if (auto Beneficiary = _selectedBeneficiary())
+    if (auto beneficiary = _selectedBeneficiary())
     {
         try
         {
-            ModifyBeneficiaryDialog dlg(this, Beneficiary, _credentials); //  may throw
+            ModifyBeneficiaryDialog dlg(this, beneficiary, _credentials); //  may throw
             if (dlg.doModal() == ModifyBeneficiaryDialog::Result::Ok)
             {   //  Beneficiary modified - its position in the activity types tree may have changed
                 refresh();  //  must refresh NOW
-                _setSelectedBeneficiary(Beneficiary);
+                _setSelectedBeneficiary(beneficiary);
             }
         }
         catch (const tt3::util::Exception & ex)
@@ -488,7 +486,6 @@ void BeneficiaryManager::_modifyBeneficiaryPushButtonClicked()
             requestRefresh();
         }
     }
-    */
 }
 
 void BeneficiaryManager::_destroyBeneficiaryPushButtonClicked()

@@ -152,7 +152,11 @@ void Beneficiary::setDescription(
 auto Beneficiary::workloads(
     ) const -> tt3::db::api::Workloads
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return tt3::db::api::Workloads(_workloads.cbegin(), _workloads.cend());
 }
 
 void Beneficiary::setWorkloads(
