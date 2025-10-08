@@ -7,6 +7,7 @@ SOURCES += \
     Account.cpp \
     Activity.cpp \
     ActivityType.cpp \
+    Beneficiary.cpp \
     Component.cpp \
     Database.cpp \
     DatabaseAddress.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     Account.hpp \
     Activity.hpp \
     ActivityType.hpp \
+    Beneficiary.hpp \
     Classes.hpp \
     Components.hpp \
     Database.hpp \

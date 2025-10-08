@@ -19,8 +19,10 @@ using namespace tt3::db::xml;
 
 //////////
 //  Construction/destruction (from DB type only)
-Object::Object(Database * database, tt3::db::api::Oid oid)
-    :   _database(database),
+Object::Object(
+        Database * database,
+        tt3::db::api::Oid oid
+    ) : _database(database),
         _oid(oid)
 {
     Q_ASSERT(_database != nullptr);

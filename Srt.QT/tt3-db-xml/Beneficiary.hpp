@@ -1,5 +1,5 @@
 //
-//  tt3-db-xml/Workload.hpp - a generic workload
+//  tt3-db-xml/Beneficiary.hpp - a generic Beneficiary
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -17,31 +17,30 @@
 
 namespace tt3::db::xml
 {
-    /// \class Workload tt3-db-xml/API.hpp
-    /// \brief A generic workload in an XML database.
-    class TT3_DB_XML_PUBLIC Workload
+    /// \class Beneficiary tt3-db-xml/API.hpp
+    /// \brief A generic beneficiary in an XML database.
+    class TT3_DB_XML_PUBLIC Beneficiary
         :   public Object,
-            public virtual tt3::db::api::IWorkload
+            public virtual tt3::db::api::IBeneficiary
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Workload)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Beneficiary)
 
         friend class Database;
-        friend class User;
-        friend class Activity;
-        friend class PublicTask;
-        friend class PrivateTask;
-        friend class Project;
-        friend class WorkStream;
-        friend class Beneficiary;
 
         //////////
         //  Construction/destruction (from DB type only)
     private:
-        Workload(Database * database, tt3::db::api::Oid oid);
-        virtual ~Workload();
+        Beneficiary(Database * database, tt3::db::api::Oid oid);
+        virtual ~Beneficiary();
 
         //////////
-        //  tt3::db::api::IWorkload (properties)
+        //  tt3::db::api::IObject (life cycle)
+    public:
+        virtual void    destroy(
+                            ) override;
+
+        //////////
+        //  tt3::db::api::IBeneficiary (properties)
     public:
         virtual QString displayName(
                             ) const override;
@@ -55,31 +54,18 @@ namespace tt3::db::xml
                             ) override;
 
         //////////
-        //  tt3::db::api::IWorkload (associations)
+        //  tt3::db::api::IBeneficiary (associations)
     public:
-        virtual auto    contributingActivities(
-                            ) const -> tt3::db::api::Activities override;
-        virtual auto    beneficiaries(
-                            ) const -> tt3::db::api::Beneficiaries override;
-        virtual void    setBeneficiaries(
-                                const tt3::db::api::Beneficiaries & beneficiaries
+        virtual auto    workloads(
+                            ) const -> tt3::db::api::Workloads override;
+        virtual void    setWorkloads(
+                                const tt3::db::api::Workloads & workloads
                             ) override;
-        virtual void    addBeneficiary(
-                                tt3::db::api::IBeneficiary * beneficiary
+        virtual void    addWorkload(
+                                tt3::db::api::IWorkload * workload
                             ) override;
-        virtual void    removeBeneficiary(
-                                tt3::db::api::IBeneficiary * beneficiary
-                            ) override;
-        virtual auto    assignedUsers(
-                            ) const -> tt3::db::api::Users override;
-        virtual void    setAssignedUsers(
-                                const tt3::db::api::Users & users
-                            ) override;
-        virtual void    addAssignedUser(
-                                tt3::db::api::IUser * user
-                            ) override;
-        virtual void    removeAssignedUser(
-                                tt3::db::api::IUser * user
+        virtual void    removeWorkload(
+                                tt3::db::api::IWorkload * workload
                             ) override;
 
         //////////
@@ -89,12 +75,10 @@ namespace tt3::db::xml
         QString         _displayName;
         QString         _description;
         //  Associations
-        Beneficiaries   _beneficiaries; //  count as "references"
-        Users           _assignedUsers; //  count as "references"
-        Activities      _contributingActivities;    //  count as "references"
+        Workloads       _workloads; //  count as "references"
 
         //  Helpers
-        virtual bool    _siblingExists(const QString & displayName) const = 0;
+        bool            _siblingExists(const QString & displayName) const;
         virtual void    _markDead() override;
 
         //////////

@@ -1160,6 +1160,21 @@ WorkStream * Database::_findWorkStream(const QString & displayName) const
     return nullptr;
 }
 
+Beneficiary * Database::_findBeneficiary(const QString & displayName) const
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    _ensureOpen();  //  may throw
+
+    for (Beneficiary * beneficiary : _beneficiaries)
+    {
+        if (beneficiary->_displayName == displayName)
+        {
+            return beneficiary;
+        }
+    }
+    return nullptr;
+}
+
 //////////
 //  Serialization
 void Database::_save()
@@ -1203,6 +1218,10 @@ void Database::_save()
         rootElement,
         "WorkStreams",
         _workStreams);
+    _serializeAggregation(
+        rootElement,
+        "Beneficiaries",
+        _beneficiaries);
 
     //  Save DOM
     QFile file(_address->_path);
@@ -1292,6 +1311,14 @@ void Database::_load()
         [&](auto oid)
         {
             return new WorkStream(this, oid);
+        });
+    _deserializeAggregation<Beneficiary>(
+        rootElement,
+        "Beneficiaries",
+        _beneficiaries,
+        [&](auto oid)
+        {
+            return new Beneficiary(this, oid);
         });
 
     //  Now we can do the asociations
@@ -1420,6 +1447,19 @@ void Database::_validate()
         }
         workStream->_validate(validatedObjects);
         if (workStream->_siblingExists(workStream->_displayName))
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(this->_address);
+        }
+    }
+    for (Beneficiary * beneficiary : _beneficiaries)
+    {
+        if (beneficiary == nullptr || !beneficiary->_isLive ||
+            beneficiary->_database != this)
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(this->_address);
+        }
+        beneficiary->_validate(validatedObjects);
+        if (beneficiary->_siblingExists(beneficiary->_displayName))
         {   //  OOPS!
             throw tt3::db::api::DatabaseCorruptException(this->_address);
         }

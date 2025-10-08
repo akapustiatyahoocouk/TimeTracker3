@@ -45,5 +45,6 @@
 #include "tt3-db-xml/Workload.hpp"
 #include "tt3-db-xml/Project.hpp"
 #include "tt3-db-xml/WorkStream.hpp"
+#include "tt3-db-xml/Beneficiary.hpp"
 
 //  End of tt3-db-xml/API.hpp

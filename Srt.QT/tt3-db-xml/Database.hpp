@@ -39,6 +39,7 @@ namespace tt3::db::xml
         friend class Workload;
         friend class Project;
         friend class WorkStream;
+        friend class Beneficiary;
 
         //////////
         //  Construction/destruction
@@ -198,6 +199,7 @@ namespace tt3::db::xml
         PublicTasks         _rootPublicTasks;   //  count as "references"
         Projects            _rootProjects;      //  count as "references"
         WorkStreams         _workStreams;       //  count as "references"
+        Beneficiaries       _beneficiaries;     //  count as "references"
 
         //  Seconsary caches - these do NOT count as "references"
         QMap<tt3::db::api::Oid, Object*> _liveObjects;  //  All "live" objects
@@ -254,6 +256,7 @@ namespace tt3::db::xml
         PublicTask *        _findRootPublicTask(const QString & displayName) const;
         Project *           _findRootProject(const QString & displayName) const;
         WorkStream *        _findWorkStream(const QString & displayName) const;
+        Beneficiary *       _findBeneficiary(const QString & displayName) const;
 
         //  Serialization
         void            _save();    //  throws tt3::util::Exception
