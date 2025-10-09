@@ -130,6 +130,8 @@ namespace tt3::gui
         void            _objectDestroyed(tt3::ws::ObjectDestroyedNotification notification);
         void            _objectModified(tt3::ws::ObjectModifiedNotification notification);
         void            _refreshRequested();
+        void            _quickPicksPushButtonClicked();
+        void            _logEventPushButtonClicked();
     };
 }
 

@@ -38,6 +38,13 @@ MyDayManager::MyDayManager(
 {
     _ui->setupUi(this);
 
+    //  Populate the "filter" combo box
+    _ui->filterComboBox->addItem("today", QVariant::fromValue(1));
+    _ui->filterComboBox->addItem("last 2 days", QVariant::fromValue(2));
+    _ui->filterComboBox->addItem("last 3 days", QVariant::fromValue(3));
+    _ui->filterComboBox->addItem("last 7 days", QVariant::fromValue(7));
+    _ui->filterComboBox->addItem("last 30 days", QVariant::fromValue(30));
+
     //  Theme change means widget decorations change
     connect(&theCurrentTheme,
             &CurrentTheme::changed,
@@ -96,7 +103,39 @@ void MyDayManager::setCredentials(const tt3::ws::Credentials & credentials)
 }
 
 void MyDayManager::refresh()
-{   //  TODO implement
+{
+    //  We don't want a refresh() to trigger a recursive refresh()!
+    static bool refreshUnderway = false;
+    RefreshGuard refreshGuard(refreshUnderway);
+    if (refreshGuard)   //  Don't recurse!
+    {
+        try
+        {
+            if (_workspace == nullptr || !_credentials.isValid() ||
+                !_workspace->isOpen() ||
+                !_workspace->canAccess(_credentials)) //  may throw
+            {   //  Nothing to show
+                _clearAndDisableAllControls();
+                return;
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! No point in proceesing.
+            qCritical() << ex.errorMessage();
+            _clearAndDisableAllControls();
+            return;
+        }
+
+        //  Otherwise some controls are always enabled...
+        _ui->quickPicksPushButton->setEnabled(true);
+        _ui->filterLabel->setEnabled(true);
+        _ui->filterComboBox->setEnabled(true);
+        _ui->logEventPushButton->setEnabled(true);
+
+        //  TODO finish the implementation
+
+        //  TODO adjust for RO
+    }
 }
 
 void MyDayManager::requestRefresh()
@@ -157,7 +196,12 @@ void MyDayManager::_stopListeningToWorkspaceChanges()
 }
 
 void MyDayManager::_clearAndDisableAllControls()
-{   //  TODO implement
+{
+    _ui->quickPicksPushButton->setEnabled(false);
+    _ui->filterLabel->setEnabled(false);
+    _ui->filterComboBox->setEnabled(false);
+    _ui->logEventPushButton->setEnabled(false);
+    //  TODO finish the implementation
 }
 
 //////////
@@ -190,6 +234,16 @@ void MyDayManager::_objectModified(tt3::ws::ObjectModifiedNotification /*notific
 void MyDayManager::_refreshRequested()
 {
     refresh();
+}
+
+void MyDayManager::_quickPicksPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
+}
+
+void MyDayManager::_logEventPushButtonClicked()
+{
+    ErrorDialog::show(this, "Not yet implemented");
 }
 
 //  End of tt3-gui/MyDayManager.cpp

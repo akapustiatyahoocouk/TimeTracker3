@@ -574,6 +574,18 @@ void User::_makeDead()
     }
     Q_ASSERT(_accounts.isEmpty());
 
+    for(PrivateActivity * privateActivity : _privateActivities.values())
+    {
+        privateActivity->destroy();
+    }
+    Q_ASSERT(_privateActivities.isEmpty());
+
+    for(PrivateTask * privateTask : _rootPrivateTasks.values())
+    {
+        privateTask->destroy();
+    }
+    Q_ASSERT(_rootPrivateTasks.isEmpty());
+
     //  Remove from "live" caches
     Q_ASSERT(_database->_users.contains(this));
     _database->_users.remove(this);

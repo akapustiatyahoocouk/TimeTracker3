@@ -33,7 +33,7 @@ PrivateActivity::PrivateActivity(
 
 PrivateActivity::~PrivateActivity()
 {
-    Q_ASSERT(!_owner->_privateActivities.contains(this));
+    Q_ASSERT(_owner == nullptr);
 }
 
 //////////

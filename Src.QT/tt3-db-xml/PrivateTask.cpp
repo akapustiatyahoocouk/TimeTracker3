@@ -58,7 +58,7 @@ PrivateTask::PrivateTask(
 
 PrivateTask::~PrivateTask()
 {
-    Q_ASSERT(!_owner->_rootPrivateTasks.contains(this));
+    Q_ASSERT(_owner == nullptr);
     Q_ASSERT(_parent == nullptr);
 }
 
@@ -261,6 +261,7 @@ void PrivateTask::_makeDead()
         _parent->removeReference();
         _parent = nullptr;
     }
+    _owner = nullptr;
 
     //  The rest is up to the base class
     Activity::_makeDead();

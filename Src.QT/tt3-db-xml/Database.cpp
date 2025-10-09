@@ -248,11 +248,21 @@ void Database::close()
     {
         project->destroy();
     }
+    for (WorkStream * workStream : _workStreams.values())
+    {
+        workStream->destroy();
+    }
+    for (Beneficiary * beneficiary : _beneficiaries.values())
+    {
+        beneficiary->destroy();
+    }
     Q_ASSERT(_users.isEmpty());
     Q_ASSERT(_activityTypes.isEmpty());
     Q_ASSERT(_publicActivities.isEmpty());
     Q_ASSERT(_rootPublicTasks.isEmpty());
     Q_ASSERT(_rootProjects.isEmpty());
+    Q_ASSERT(_workStreams.isEmpty());
+    Q_ASSERT(_beneficiaries.isEmpty());
     _isReadOnly = wasReadOnly;
 
     //  Done
