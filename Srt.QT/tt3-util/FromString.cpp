@@ -440,6 +440,37 @@ template <> TT3_UTIL_PUBLIC QColor tt3::util::fromString<QColor>(const QString &
     throw ParseException(s, scan);
 }
 
+template <> TT3_UTIL_PUBLIC QDateTime tt3::util::fromString<QDateTime>(const QString & s, qsizetype & scan)
+{
+    static QRegularExpression regex("([0-9]{4})([0-9]{2})([0-9]{2})T([0-9]{2})([0-9]{2})([0-9]{2})\\.([0-9]{3})");
+
+    if (scan < 0 || scan + 19 > s.length())
+    {
+        throw ParseException(s, scan);
+    }
+    QRegularExpressionMatch regexMatch = regex.match(s.mid(scan));
+    if (regexMatch.hasMatch())
+    {
+        int year = fromString<int>(regexMatch.captured(1), 0);
+        int month = fromString<int>(regexMatch.captured(2), 0);
+        int day = fromString<int>(regexMatch.captured(3), 0);
+        int hour = fromString<int>(regexMatch.captured(4), 0);
+        int minute = fromString<int>(regexMatch.captured(5), 0);
+        int second = fromString<int>(regexMatch.captured(6), 0);
+        int msec = fromString<int>(regexMatch.captured(7), 0);
+        QDateTime result(QDate(year, month, day),
+                         QTime(hour, minute, second, msec),
+                         QTimeZone::UTC);
+        if (!result.isValid())
+        {
+            throw ParseException(s, scan);
+        }
+        scan += 19;
+        return result;
+    }
+    throw ParseException(s, scan);
+}
+
 //  tt3::util types
 template <> TT3_UTIL_PUBLIC tt3::util::TimeSpan tt3::util::fromString<tt3::util::TimeSpan>(const QString & s, qsizetype & scan)
 {

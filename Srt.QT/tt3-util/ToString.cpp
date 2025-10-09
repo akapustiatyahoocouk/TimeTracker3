@@ -142,6 +142,24 @@ template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QColor>(const QColor & v
     }
 }
 
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QDateTime>(const QDateTime & value)
+{
+    if (value.isValid())
+    {
+        char s[64];
+        sprintf(s, "%04d%02d%02dT%02d%02d%02d.%03d",
+                value.date().year(),
+                value.date().month(),
+                value.date().day(),
+                value.time().hour(),
+                value.time().minute(),
+                value.time().second(),
+                value.time().msec());
+        return s;
+    }
+    return "-";
+}
+
 //  tt3::util types
 template <> TT3_UTIL_PUBLIC QString tt3::util::toString<tt3::util::TimeSpan>(const TimeSpan & value)
 {

@@ -66,13 +66,13 @@ namespace tt3::db::api
         //  Operations (associations)
     public:
         /// \brief
-        ///     Returns the User who has logged this unit of work.
+        ///     Returns the Account who has logged this unit of work.
         /// \return
-        ///     The User who has logged this unit of work.
+        ///     The Account who has logged this unit of work.
         /// \exception DatabaseException
         ///     If an error occurs.
-        virtual auto    user(
-                            ) const -> IUser * = 0;
+        virtual auto    account(
+                            ) const -> IAccount * = 0;
 
         /// \brief
         ///     Returns the Activity against which this unit of work was logged.

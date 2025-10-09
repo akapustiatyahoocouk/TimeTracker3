@@ -234,12 +234,60 @@ auto Account::events(
 //////////
 //  tt3::db::api::IAccount (life cycle)
 auto Account::createWork(
-    const QDateTime & /*startedAt*/,
-    const QDateTime & /*finishedAt*/,
-    tt3::db::api::IActivity * /*activity*/
+        const QDateTime & startedAt,
+        const QDateTime & finishedAt,
+        tt3::db::api::IActivity * activity
     ) -> tt3::db::api::IWork *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (!_database->_validator->work()->isValidStartedFinishedAt(startedAt, finishedAt))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Work::instance(),
+            "startedAt+finishedAt",
+            tt3::util::toString(startedAt) + "/" +
+                tt3::util::toString(finishedAt));
+    }
+    Activity * xmlActivity = dynamic_cast<Activity*>(activity);
+    if (xmlActivity == nullptr ||
+        xmlActivity->_database != this->_database ||
+        !xmlActivity->_isLive)
+    {   //  OOPS!
+        throw tt3::db::api::IncompatibleInstanceException(
+            tt3::db::api::ObjectTypes::ActivityType::instance());
+    }
+    //  Do the work - create & initialize the Work...
+    Work * work = new Work(this, _database->_generateOid());   //  registers with User
+    work->_startedAt = startedAt;
+    work->_finishedAt = finishedAt;
+    //  Link with Activity
+    work->_activity = xmlActivity;
+    xmlActivity->_works.insert(work);
+    xmlActivity->addReference();
+    work->addReference();
+    _database->_markModified();
+    //  ...schedule change notifications...
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectModifiedNotification(
+            _database, this->type(), this->_oid));
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            _database, work->type(), work->_oid));
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectModifiedNotification(
+            _database, xmlActivity->type(), xmlActivity->_oid));
+
+    //  ...and we're done
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
+    return work;
 }
 
 auto Account::createEvent(
@@ -291,7 +339,10 @@ void Account::_serializeAggregations(
 {
     Principal::_serializeAggregations(objectElement);
 
-    //  TODO Works           _works;         //  count as "reference"
+    _database->_serializeAggregation(
+        objectElement,
+        "Works",
+        _works);
     //  TODO Events          _events;        //  count as "reference"
 }
 
@@ -324,7 +375,14 @@ void Account::_deserializeAggregations(
 {
     Principal::_deserializeAggregations(objectElement);
 
-    //  TODO Works           _works;         //  count as "reference"
+    _database->_deserializeAggregation<Work>(
+        objectElement,
+        "Works",
+        _works,
+        [&](auto oid)
+        {
+            return new Work(this, oid);
+        });
     //  TODO Events          _events;        //  count as "reference"
 }
 
@@ -355,7 +413,16 @@ void Account::_validate(
     }
 
     //  Validate aggregations
-    //  TODO Works           _works;         //  count as "reference"
+    for (Work * work : _works)
+    {
+        if (work == nullptr || !work->_isLive ||
+            work->_database != _database ||
+            work->_account != this)
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
+        work->_validate(validatedObjects);
+    }
     //  TODO Events          _events;        //  count as "reference"
 
     //  Validate associations

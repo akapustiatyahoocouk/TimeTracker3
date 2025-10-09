@@ -487,7 +487,10 @@ void Activity::_serializeAssociations(
         objectElement,
         "Workload",
         _workload);
-    //  TODO    Works           _works;     //  count as "references"
+    _database->_serializeAssociation(
+        objectElement,
+        "Works",
+        _works);
     //  TODO    Events          _events;    //  count as "references"
 }
 
@@ -531,7 +534,10 @@ void Activity::_deserializeAssociations(
         objectElement,
         "Workload",
         _workload);
-    //  TODO    Works           _works;     //  count as "references"
+    _database->_deserializeAssociation(
+        objectElement,
+        "Works",
+        _works);
     //  TODO    Events          _events;    //  count as "references"
 }
 

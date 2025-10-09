@@ -22,6 +22,7 @@ SOURCES += \
     PublicTask.cpp \
     Task.cpp \
     User.cpp \
+    Work.cpp \
     WorkStream.cpp \
     Workload.cpp
 
@@ -46,6 +47,7 @@ HEADERS += \
     PublicTask.hpp \
     Task.hpp \
     User.hpp \
+    Work.hpp \
     WorkStream.hpp \
     Workload.hpp
 

@@ -27,6 +27,7 @@ namespace tt3::db::xml
 
         friend class Database;
         friend class User;
+        friend class Work;
 
         //////////
         //  Construction/destruction (from DB type only)
