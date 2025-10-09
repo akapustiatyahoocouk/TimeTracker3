@@ -35,23 +35,6 @@ WorkStream::~WorkStream()
 }
 
 //////////
-//  tt3::db::api::IObject (life cycle)
-void WorkStream::destroy()
-{
-    tt3::util::Lock lock(_database->_guard);
-    _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
-
-    _markDead();
-
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
-}
-
-//////////
 //  Implementation helpers
 bool WorkStream::_siblingExists(
         const QString & displayName
@@ -64,7 +47,7 @@ bool WorkStream::_siblingExists(
     return sibling != nullptr && sibling != this;
 }
 
-void WorkStream::_markDead()
+void WorkStream::_makeDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
@@ -75,7 +58,7 @@ void WorkStream::_markDead()
     this->removeReference();
 
     //  The rest is up to the base class
-    Workload::_markDead();
+    Workload::_makeDead();
 }
 
 //////////

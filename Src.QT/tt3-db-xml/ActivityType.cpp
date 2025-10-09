@@ -36,25 +36,6 @@ ActivityType::~ActivityType()
 }
 
 //////////
-//  tt3::db::api::IObject (life cycle)
-void ActivityType::destroy()
-{
-    tt3::util::Lock lock(_database->_guard);
-    _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
-
-    //  This object is now "dead"
-    _markDead();
-
-    //  ...and we're done
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
-}
-
-//////////
 //  tt3::db::api::IActivityType (properties)
 QString ActivityType::displayName() const
 {
@@ -157,7 +138,7 @@ auto ActivityType::activities(
 
 //////////
 //  Implementation helpers
-void ActivityType::_markDead()
+void ActivityType::_makeDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
@@ -179,7 +160,7 @@ void ActivityType::_markDead()
     this->removeReference();
 
     //  The rest is up to the base class
-    Object::_markDead();
+    Object::_makeDead();
 }
 
 bool ActivityType::_siblingExists(

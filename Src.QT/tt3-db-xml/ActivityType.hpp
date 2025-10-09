@@ -42,12 +42,6 @@ namespace tt3::db::xml
         virtual ~ActivityType();
 
         //////////
-        //  tt3::db::api::IObject (life cycle)
-    public:
-        virtual void    destroy(
-                            ) override;
-
-        //////////
         //  tt3::db::api::IActivityType (properties)
     public:
         virtual QString displayName(
@@ -77,7 +71,7 @@ namespace tt3::db::xml
         Activities      _activities;    //  count as "reference"s
 
         //  Helpers
-        virtual void    _markDead() override;
+        virtual void    _makeDead() override;
         bool            _siblingExists(const QString & displayName) const;
 
         //////////

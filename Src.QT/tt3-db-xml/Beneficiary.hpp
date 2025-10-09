@@ -36,12 +36,6 @@ namespace tt3::db::xml
         virtual ~Beneficiary();
 
         //////////
-        //  tt3::db::api::IObject (life cycle)
-    public:
-        virtual void    destroy(
-                            ) override;
-
-        //////////
         //  tt3::db::api::IBeneficiary (properties)
     public:
         virtual QString displayName(
@@ -81,7 +75,7 @@ namespace tt3::db::xml
 
         //  Helpers
         bool            _siblingExists(const QString & displayName) const;
-        virtual void    _markDead() override;
+        virtual void    _makeDead() override;
 
         //////////
         //  Serialization

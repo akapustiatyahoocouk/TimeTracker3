@@ -38,12 +38,6 @@ namespace tt3::db::xml
         virtual ~User();
 
         //////////
-        //  tt3::db::api::IObject (life cycle)
-    public:
-        virtual void    destroy(
-                            ) override;
-
-        //////////
         //  tt3::db::api::IUser (properties)
     public:
         virtual QString realName(
@@ -135,7 +129,7 @@ namespace tt3::db::xml
         Workloads       _permittedWorkloads;//  count as "references"
 
         //  Helpers
-        virtual void    _markDead() override;
+        virtual void    _makeDead() override;
         auto            _findPrivateActivity(
                                 const QString & displayName
                             ) const -> PrivateActivity *;

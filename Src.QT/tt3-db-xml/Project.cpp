@@ -49,30 +49,6 @@ Project::~Project()
 }
 
 //////////
-//  tt3::db::api::IObject (life cycle)
-void Project::destroy()
-{
-    tt3::util::Lock lock(_database->_guard);
-    _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
-
-    //  Destroy aggregated objects
-    for (Project * child : _children.values())
-    {
-        child->destroy();
-    }
-    Q_ASSERT(_children.isEmpty());
-
-    _markDead();
-
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
-}
-
-//////////
 //  tt3::db::api::IProject (properties)
 bool Project::completed(
     ) const
@@ -248,11 +224,16 @@ bool Project::_siblingExists(
     return sibling != nullptr && sibling != this;
 }
 
-void Project::_markDead()
+void Project::_makeDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
 
+    //  Destroy aggregated objects
+    for (Project * child : _children.values())
+    {
+        child->destroy();
+    }
     Q_ASSERT(_children.isEmpty());
 
     //  Remove from "live" caches
@@ -272,7 +253,7 @@ void Project::_markDead()
     }
 
     //  The rest is up to the base class
-    Workload::_markDead();
+    Workload::_makeDead();
 }
 
 Project * Project::_findChild(

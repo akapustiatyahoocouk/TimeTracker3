@@ -416,7 +416,7 @@ auto Activity::events(
 
 //////////
 //  Implementation helpers
-void Activity::_markDead()
+void Activity::_makeDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
@@ -449,7 +449,7 @@ void Activity::_markDead()
     //  TODO remove from all "quick pick" lists
 
     //  The rest is up to the base class
-    Object::_markDead();
+    Object::_makeDead();
 }
 
 //////////

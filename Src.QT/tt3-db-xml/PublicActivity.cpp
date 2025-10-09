@@ -35,23 +35,6 @@ PublicActivity::~PublicActivity()
 }
 
 //////////
-//  tt3::db::api::IObject (life cycle)
-void PublicActivity::destroy()
-{
-    tt3::util::Lock lock(_database->_guard);
-    _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
-
-    _markDead();
-
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
-}
-
-//////////
 //  Implementation helpers
 bool PublicActivity::_siblingExists(const QString & displayName) const
 {
@@ -63,7 +46,7 @@ bool PublicActivity::_siblingExists(const QString & displayName) const
     return found != nullptr && found != this;
 }
 
-void PublicActivity::_markDead()
+void PublicActivity::_makeDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
@@ -74,7 +57,7 @@ void PublicActivity::_markDead()
     this->removeReference();
 
     //  The rest is up to the base class
-    Activity::_markDead();
+    Activity::_makeDead();
 }
 
 //////////

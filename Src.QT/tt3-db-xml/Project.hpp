@@ -35,12 +35,6 @@ namespace tt3::db::xml
         virtual ~Project();
 
         //////////
-        //  tt3::db::api::IObject (life cycle)
-    public:
-        virtual void    destroy(
-                            ) override;
-
-        //////////
         //  tt3::db::api::IProject (properties)
     public:
         virtual bool    completed(
@@ -83,7 +77,7 @@ namespace tt3::db::xml
 
         //  Helpers
         virtual bool    _siblingExists(const QString & displayName) const override;
-        virtual void    _markDead() override;
+        virtual void    _makeDead() override;
         Project *       _findChild(const QString & displayName) const;
 
         //////////

@@ -110,12 +110,12 @@ void Principal::setEmailAddresses(
 
 //////////
 //  Implementation helpers
-void Principal::_markDead()
+void Principal::_makeDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
 
-    Object::_markDead();
+    Object::_makeDead();
 }
 
 //////////

@@ -39,25 +39,6 @@ Work::~Work()
 }
 
 //////////
-//  tt3::db::api::IObject (life cycle)
-void Work::destroy()
-{
-    tt3::util::Lock lock(_database->_guard);
-    _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
-
-    //  This object is now "dead"
-    _markDead();
-
-//  ...and we're done
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
-}
-
-//////////
 //  tt3::db::api::IWork (properties)
 auto Work::startedAt(
     ) const -> QDateTime
@@ -104,7 +85,7 @@ auto Work::activity(
 
 //////////
 //  Implementation helpers
-void Work::_markDead()
+void Work::_makeDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
@@ -125,7 +106,7 @@ void Work::_markDead()
     _activity = nullptr;
 
     //  The rest is up to the base class
-    Object::_markDead();
+    Object::_makeDead();
 }
 
 //////////

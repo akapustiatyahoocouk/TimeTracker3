@@ -60,7 +60,7 @@ namespace tt3::db::xml
         QStringList     _emailAddresses {};
 
         //  Helpers
-        virtual void    _markDead() override;
+        virtual void    _makeDead() override;
 
         //////////
         //  Serialization

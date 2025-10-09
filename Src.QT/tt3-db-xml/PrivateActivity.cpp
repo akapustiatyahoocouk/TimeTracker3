@@ -37,23 +37,6 @@ PrivateActivity::~PrivateActivity()
 }
 
 //////////
-//  tt3::db::api::IObject (life cycle)
-void PrivateActivity::destroy()
-{
-    tt3::util::Lock lock(_database->_guard);
-    _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
-
-    _markDead();
-
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
-}
-
-//////////
 //  tt3::db::api::IPrivateActivity (associations)
 auto PrivateActivity::owner(
     ) const -> tt3::db::api::IUser *
@@ -77,7 +60,7 @@ bool PrivateActivity::_siblingExists(const QString & displayName) const
     return found != nullptr && found != this;
 }
 
-void PrivateActivity::_markDead()
+void PrivateActivity::_makeDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
@@ -91,7 +74,7 @@ void PrivateActivity::_markDead()
     _owner = nullptr;
 
     //  The rest is up to the base class
-    Activity::_markDead();
+    Activity::_makeDead();
 }
 
 //////////

@@ -63,30 +63,6 @@ PublicTask::~PublicTask()
 }
 
 //////////
-//  tt3::db::api::IObject (life cycle)
-void PublicTask::destroy()
-{
-    tt3::util::Lock lock(_database->_guard);
-    _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
-
-    //  Destroy aggregated objects
-    for (PublicTask * child : _children.values())
-    {
-        child->destroy();
-    }
-    Q_ASSERT(_children.isEmpty());
-
-    _markDead();
-
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
-}
-
-//////////
 //  tt3::db::api::IPublicTask (associations)
 auto PublicTask::parent(
     ) const -> IPublicTask *
@@ -258,11 +234,16 @@ bool PublicTask::_siblingExists(
     return sibling != nullptr && sibling != this;
 }
 
-void PublicTask::_markDead()
+void PublicTask::_makeDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
 
+    //  Destroy aggregated objects
+    for (PublicTask * child : _children.values())
+    {
+        child->destroy();
+    }
     Q_ASSERT(_children.isEmpty());
 
     //  Remove from "live" caches
@@ -282,7 +263,7 @@ void PublicTask::_markDead()
     }
 
     //  The rest is up to the base class
-    Activity::_markDead();
+    Activity::_makeDead();
 }
 
 PublicTask * PublicTask::_findChild(

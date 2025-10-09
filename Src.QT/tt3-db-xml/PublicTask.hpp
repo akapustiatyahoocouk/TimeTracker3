@@ -36,12 +36,6 @@ namespace tt3::db::xml
         virtual ~PublicTask();
 
         //////////
-        //  tt3::db::api::IObject (life cycle)
-    public:
-        virtual void    destroy(
-                            ) override;
-
-        //////////
         //  tt3::db::api::IPublicTask (associations)
     public:
         virtual auto    parent(
@@ -78,7 +72,7 @@ namespace tt3::db::xml
 
         //  Helpers
         virtual bool    _siblingExists(const QString & displayName) const override;
-        virtual void    _markDead() override;
+        virtual void    _makeDead() override;
         PublicTask *    _findChild(const QString & displayName) const;
 
         //////////

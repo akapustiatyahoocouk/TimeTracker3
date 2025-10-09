@@ -35,30 +35,6 @@ User::~User()
 }
 
 //////////
-//  tt3::db::api::IObject (life cycle)
-void User::destroy()
-{
-    tt3::util::Lock lock(_database->_guard);
-    _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
-
-    //  Destroy aggregated objects
-    for (Account * account : _accounts.values())
-    {
-        account->destroy();
-    }
-    Q_ASSERT(_accounts.isEmpty());
-
-    _markDead();
-
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
-}
-
-//////////
 //  tt3::db::api::IUser (properties)
 QString User::realName() const
 {
@@ -586,11 +562,16 @@ auto User::createPrivateTask(
 
 //////////
 //  Implementation helpers
-void User::_markDead()
+void User::_makeDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
 
+    //  Destroy aggregated objects
+    for (Account * account : _accounts.values())
+    {
+        account->destroy();
+    }
     Q_ASSERT(_accounts.isEmpty());
 
     //  Remove from "live" caches
@@ -599,7 +580,7 @@ void User::_markDead()
     this->removeReference();
 
     //  The rest is up to the base class
-    Principal::_markDead();
+    Principal::_makeDead();
 }
 
 auto User::_findPrivateActivity(

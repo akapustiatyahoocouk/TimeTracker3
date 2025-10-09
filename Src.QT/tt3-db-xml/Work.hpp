@@ -35,12 +35,6 @@ namespace tt3::db::xml
         virtual ~Work();
 
         //////////
-        //  tt3::db::api::IObject (life cycle)
-    public:
-        virtual void    destroy(
-                            ) override;
-
-        //////////
         //  tt3::db::api::IWork (properties)
     public:
         virtual auto    startedAt(
@@ -67,7 +61,7 @@ namespace tt3::db::xml
         Activity *      _activity;    //  counts as "reference"
 
         //  Helpers
-        virtual void    _markDead() override;
+        virtual void    _makeDead() override;
 
         //////////
         //  Serialization

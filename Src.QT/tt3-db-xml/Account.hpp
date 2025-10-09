@@ -38,12 +38,6 @@ namespace tt3::db::xml
         virtual ~Account();
 
         //////////
-        //  tt3::db::api::IObject (life cycle)
-    public:
-        virtual void    destroy(
-                            ) override;
-
-        //////////
         //  tt3::db::api::IAccount (properties)
     public:
         virtual QString login(
@@ -105,7 +99,7 @@ namespace tt3::db::xml
         QList<Activity*>_quickPickList; //  count as "reference"
 
         //  Helpers
-        virtual void    _markDead() override;
+        virtual void    _makeDead() override;
 
         //////////
         //  Serialization

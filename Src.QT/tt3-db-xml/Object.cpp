@@ -58,6 +58,23 @@ bool Object::isLive() const
 }
 
 //////////
+//  tt3::db::api::IObject (life cycle)
+void Object::destroy()
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    _makeDead();
+
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+}
+
+//////////
 //  tt3::db::api::IObject (reference counting)
 Object::State Object::state() const
 {
@@ -164,7 +181,7 @@ void Object::_ensureLiveAndWritable() const
     }
 }
 
-void Object::_markDead()
+void Object::_makeDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);

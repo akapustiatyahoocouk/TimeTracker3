@@ -36,17 +36,11 @@ namespace tt3::db::xml
         virtual ~PublicActivity();
 
         //////////
-        //  tt3::db::api::IObject (life cycle)
-    public:
-        virtual void    destroy(
-                            ) override;
-
-        //////////
         //  Implementation
     private:
         //  Helpers
         virtual bool    _siblingExists(const QString & displayName) const override;
-        virtual void    _markDead() override;
+        virtual void    _makeDead() override;
 
         //////////
         //  Serialization

@@ -37,25 +37,6 @@ Account::~Account()
 }
 
 //////////
-//  tt3::db::api::IObject (life cycle)
-void Account::destroy()
-{
-    tt3::util::Lock lock(_database->_guard);
-    _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
-
-    //  This object is now "dead"
-    _markDead();
-
-    //  ...and we're done
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
-}
-
-//////////
 //  tt3::db::api::IAccount (properties)
 QString Account::login() const
 {
@@ -301,7 +282,7 @@ auto Account::createEvent(
 
 //////////
 //  Implementation helpers
-void Account::_markDead()
+void Account::_makeDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
@@ -325,7 +306,7 @@ void Account::_markDead()
     _user = nullptr;
 
     //  The rest is up to the base class
-    Principal::_markDead();
+    Principal::_makeDead();
 }
 
 //////////

@@ -187,7 +187,7 @@ void Workload::removeAssignedUser(
 
 //////////
 //  Implementation helpers
-void Workload::_markDead()
+void Workload::_makeDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
@@ -222,7 +222,7 @@ void Workload::_markDead()
     _contributingActivities.clear();
 
     //  The rest is up to the base class
-    Object::_markDead();
+    Object::_makeDead();
 }
 
 //////////

@@ -36,25 +36,6 @@ Beneficiary::~Beneficiary()
 }
 
 //////////
-//  tt3::db::api::IObject (life cycle)
-void Beneficiary::destroy()
-{
-    tt3::util::Lock lock(_database->_guard);
-    _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
-
-    //  This object is now "dead"
-    _markDead();
-
-//  ...and we're done
-#ifdef Q_DEBUG
-    _database->_validate(); //  may throw
-#endif
-}
-
-//////////
 //  tt3::db::api::IBeneficiary (properties)
 QString Beneficiary::displayName() const
 {
@@ -182,7 +163,7 @@ void Beneficiary::removeWorkload(
 
 //////////
 //  Implementation helpers
-void Beneficiary::_markDead()
+void Beneficiary::_makeDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
@@ -204,7 +185,7 @@ void Beneficiary::_markDead()
     this->removeReference();
 
     //  The rest is up to the base class
-    Object::_markDead();
+    Object::_makeDead();
 }
 
 bool Beneficiary::_siblingExists(

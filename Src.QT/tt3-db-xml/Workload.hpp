@@ -95,7 +95,7 @@ namespace tt3::db::xml
 
         //  Helpers
         virtual bool    _siblingExists(const QString & displayName) const = 0;
-        virtual void    _markDead() override;
+        virtual void    _makeDead() override;
 
         //////////
         //  Serialization

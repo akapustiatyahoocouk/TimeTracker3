@@ -55,6 +55,10 @@ namespace tt3::db::xml
         virtual bool        isLive() const override;
 
         //////////
+        //  tt3::db::api::IObject (life cycle)
+        virtual void        destroy() override final;
+
+        //////////
         //  tt3::db::api::IObject (reference counting)
     public:
         virtual State       state() const override;
@@ -75,7 +79,7 @@ namespace tt3::db::xml
         //  Helpers
         void            _ensureLive() const;    //  throws tt3::db::api::DatabaseException
         void            _ensureLiveAndWritable() const;    //  throws tt3::db::api::DatabaseException
-        virtual void    _markDead();
+        virtual void    _makeDead();
 
         //////////
         //  Serialization
