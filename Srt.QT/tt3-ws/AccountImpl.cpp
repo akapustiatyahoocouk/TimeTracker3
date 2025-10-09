@@ -216,6 +216,62 @@ auto AccountImpl::user(
 }
 
 //////////
+//  Operations (life cycle)
+auto AccountImpl::createWork(
+        const Credentials & credentials,
+        const QDateTime & startedAt,
+        const QDateTime & finishedAt,
+        Activity activity
+    ) -> Work
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Check access rights
+        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        if (clientCapabilities.contains(Capability::Administrator))
+        {   //  can log Work items for any account/activity
+        }
+        else if (clientCapabilities.contains(Capability::LogWork))
+        {   //  Can log Work items aganst public Activities/Tasks and
+            //  caller's own private Activities/Tasks
+            tt3::db::api::IAccount * callerAccount =
+                _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
+            if (callerAccount == nullptr ||
+                callerAccount->user() != this->_dataAccount->user())
+            {   //  OOPS! Can't!
+                throw AccessDeniedException();
+            }
+            if (auto dataPrivateActivity =
+                dynamic_cast<tt3::db::api::IPrivateActivity*>(activity->_dataActivity))
+            {   //  The private Activity/Tak must belong to the caller!
+                if (dataPrivateActivity->owner() != callerAccount->user())
+                {   //  OOPS! Can't!
+                    throw AccessDeniedException();
+                }
+            }
+        }
+        else
+        {   //  OOPS! Can't!
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        tt3::db::api::IWork * dataWork =
+            _dataAccount->createWork(   //  may throw
+                startedAt,
+                finishedAt,
+                activity->_dataActivity);
+        return _workspace->_getProxy(dataWork);
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+//////////
 //  Implementation (Access control)
 bool AccountImpl::_canRead(
         const Credentials & credentials

@@ -138,8 +138,14 @@ void Task::_deserializeProperties(
     //  Activity properties of a concrete Task
     //  will be deserialized via Activity route
 
-    _requireCommentOnCompletion = tt3::util::fromString<bool>(objectElement.attribute("RequireCommentOnCompletion"));
-    _completed = tt3::util::fromString<bool>(objectElement.attribute("Completed"));
+    _requireCommentOnCompletion =
+        tt3::util::fromString(
+            objectElement.attribute("RequireCommentOnCompletion"),
+            _requireCommentOnCompletion);
+    _completed =
+        tt3::util::fromString(
+            objectElement.attribute("Completed"),
+            _completed);
 }
 
 void Task::_deserializeAggregations(

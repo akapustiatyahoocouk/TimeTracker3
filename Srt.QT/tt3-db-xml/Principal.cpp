@@ -153,7 +153,10 @@ void Principal::_deserializeProperties(
 {
     Object::_deserializeProperties(objectElement);
 
-    _enabled = tt3::util::fromString<bool>(objectElement.attribute("Enabled"));
+    _enabled =
+        tt3::util::fromString(
+            objectElement.attribute("Enabled"),
+            _enabled);
     if (objectElement.hasAttribute("EmailAddresses"))
     {   //  A valid e-mail address has no ',' in it
         _emailAddresses = objectElement.attribute("EmailAddresses").split(',');

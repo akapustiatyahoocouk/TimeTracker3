@@ -1255,6 +1255,30 @@ Beneficiary WorkspaceImpl::_getProxy(
     return beneficiary;
 }
 
+Work WorkspaceImpl::_getProxy(
+        tt3::db::api::IWork * dataWork
+    ) const
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    Q_ASSERT(_isOpen);
+    Q_ASSERT(dataWork != nullptr);
+
+    Oid oid = dataWork->oid();
+    if (_proxyCache.contains(oid))
+    {
+        Work work = std::dynamic_pointer_cast<WorkImpl>(_proxyCache[oid]);
+        Q_ASSERT(work != nullptr);   //  Objects do not change their types OR reuse OIDs
+        return work;
+    }
+    //  Must create a new proxy
+    Workspace workspace = _address->_workspaceType->_mapWorkspace(const_cast<WorkspaceImpl*>(this));
+    Work work(
+        new WorkImpl(workspace, dataWork),
+        [](WorkImpl * p) { delete p; });
+    _proxyCache.insert(oid, work);
+    return work;
+}
+
 //////////
 //  Event handlers
 void WorkspaceImpl::_onDatabaseClosed(tt3::db::api::DatabaseClosedNotification notification)

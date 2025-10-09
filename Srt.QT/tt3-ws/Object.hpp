@@ -37,6 +37,7 @@ namespace tt3::ws
         friend class ProjectImpl;
         friend class WorkStreamImpl;
         friend class BeneficiaryImpl;
+        friend class WorkImpl;
 
         //////////
         //  Construction/destruction - from frinds only

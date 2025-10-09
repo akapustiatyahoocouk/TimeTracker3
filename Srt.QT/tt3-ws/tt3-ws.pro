@@ -20,6 +20,7 @@ SOURCES += \
     PublicTaskImpl.cpp \
     TaskImpl.cpp \
     UserImpl.cpp \
+    WorkImpl.cpp \
     WorkStreamImpl.cpp \
     WorkloadImpl.cpp \
     WorkspaceAddressImpl.cpp \
@@ -49,6 +50,7 @@ HEADERS += \
     Task.hpp \
     User.hpp \
     Validator.hpp \
+    Work.hpp \
     WorkStream.hpp \
     Workload.hpp \
     Workspace.hpp \

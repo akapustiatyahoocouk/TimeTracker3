@@ -45,6 +45,7 @@ namespace tt3::ws
         friend class ProjectImpl;
         friend class WorkStreamImpl;
         friend class BeneficiaryImpl;
+        friend class WorkImpl;
 
         //////////
         //  Construction/destruction - from friends only
@@ -694,8 +695,11 @@ namespace tt3::ws
                             tt3::db::api::IWorkStream * dataWorkStream
                         ) const -> WorkStream;
         auto        _getProxy(  //  throws WorkspaceException
-                            tt3::db::api::IBeneficiary * dataWorkStream
+                            tt3::db::api::IBeneficiary * dataBeneficiary
                         ) const -> Beneficiary;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IWork * dataWork
+                        ) const -> Work;
 
         //////////
         //  Event handlers

@@ -306,6 +306,14 @@ void Account::_markDead()
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
 
+    //  Destroy aggregated objects
+    for (Work * work : _works.values())
+    {
+        work->destroy();
+    }
+    Q_ASSERT(_works.isEmpty());
+    //  TODO events
+
     //  Break associations
     _quickPickList.clear(); //  The _quickPickList is a one-way association
 
@@ -366,7 +374,7 @@ void Account::_deserializeProperties(
 
     _login = objectElement.attribute("Login");
     _passwordHash = objectElement.attribute("PasswordHash");
-    _capabilities = tt3::util::fromString<tt3::db::api::Capabilities>(objectElement.attribute("Capabilities"));
+    _capabilities = tt3::util::fromString(objectElement.attribute("Capabilities"), _capabilities);
 }
 
 void Account::_deserializeAggregations(

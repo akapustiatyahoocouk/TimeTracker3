@@ -212,7 +212,9 @@ void Object::_deserializeProperties(
         const QDomElement & objectElement
     )
 {
-    tt3::db::api::Oid oid = tt3::util::fromString<tt3::db::api::Oid>(objectElement.attribute("OID", ""));
+    tt3::db::api::Oid oid =
+        tt3::util::fromString<tt3::db::api::Oid>(
+            objectElement.attribute("OID", ""));
     if (oid != _oid)
     {   //  OOPS! Deserialization implemented wrong!
         throw tt3::db::api::DatabaseCorruptException(_database->_address);

@@ -171,12 +171,13 @@ bool CurrentActivity::replaceWith(
             //  Log current activity, if there is one, as a Work item
             if (impl->activity != nullptr)
             {   //  TODO properly
-                qDebug() << "Logging "
-                         << impl->activity->displayName(credentials)
-                         << " from "
-                         << impl->lastChangedAt
-                         << " to "
-                         << QDateTime::currentDateTimeUtc();
+                tt3::ws::Account callerAccount =
+                    impl->activity->workspace()->login(credentials);//  may throw
+                callerAccount->createWork(
+                    credentials,
+                    impl->lastChangedAt,
+                    QDateTime::currentDateTimeUtc(),
+                    impl->activity);
             }
             //  Log entered comment as an Event
             if (!comment.isEmpty())

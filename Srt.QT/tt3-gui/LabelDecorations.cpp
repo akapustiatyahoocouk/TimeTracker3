@@ -44,7 +44,7 @@ LabelDecorations::LabelDecorations(
         if (match.hasMatch())
         {
             QString colorSpec = match.captured(1).trimmed();
-            textColor = tt3::util::fromString<QColor>(colorSpec, textColor);
+            textColor = tt3::util::fromString(colorSpec, textColor);
         }
     }
 
@@ -55,7 +55,7 @@ LabelDecorations::LabelDecorations(
         if (match.hasMatch())
         {
             QString colorSpec = match.captured(1).trimmed();
-            backColor = tt3::util::fromString<QColor>(colorSpec, backColor);
+            backColor = tt3::util::fromString(colorSpec, backColor);
         }
     }
 

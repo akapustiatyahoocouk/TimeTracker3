@@ -421,6 +421,14 @@ void Activity::_markDead()
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
 
+    //  Destroy aggregated objects
+    for (Work * work : _works.values())
+    {
+        work->destroy();
+    }
+    Q_ASSERT(_works.isEmpty());
+    //  TODO events
+
     //  Break associations
     if (_activityType != nullptr)
     {
@@ -438,9 +446,6 @@ void Activity::_markDead()
         _workload->removeReference();
         _workload = nullptr;
     }
-    //  TODO others - properly
-    Q_ASSERT(_works.isEmpty());
-    Q_ASSERT(_events.isEmpty());
     //  TODO remove from all "quick pick" lists
 
     //  The rest is up to the base class
@@ -508,9 +513,18 @@ void Activity::_deserializeProperties(
             tt3::util::fromString<tt3::util::TimeSpan>(
                 objectElement.attribute("Timeout"));
     }
-    _requireCommentOnStart = tt3::util::fromString<bool>(objectElement.attribute("RequireCommentOnStart"));
-    _requireCommentOnStop = tt3::util::fromString<bool>(objectElement.attribute("RequireCommentOnStop"));
-    _fullScreenReminder = tt3::util::fromString<bool>(objectElement.attribute("FullScreenReminder"));
+    _requireCommentOnStart =
+        tt3::util::fromString(
+            objectElement.attribute("RequireCommentOnStart"),
+            _requireCommentOnStart);
+    _requireCommentOnStop =
+        tt3::util::fromString(
+            objectElement.attribute("RequireCommentOnStop"),
+            _requireCommentOnStop);
+    _fullScreenReminder =
+        tt3::util::fromString(
+            objectElement.attribute("FullScreenReminder"),
+            _fullScreenReminder);
 }
 
 void Activity::_deserializeAggregations(

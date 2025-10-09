@@ -22,18 +22,20 @@ using namespace tt3::db::xml;
 Work::Work(
         Account * account,
         tt3::db::api::Oid oid
-    ) : Object(account->_database, oid)
+    ) : Object(account->_database, oid),
+        _account(account),
+        _activity(nullptr)
 {
     //  Register with parent
-    account->_works.insert(this);
+    _account->_works.insert(this);
     this->addReference();
-    this->_account = account;
-    account->addReference();
+    _account->addReference();
 }
 
 Work::~Work()
 {
     Q_ASSERT(_account == nullptr);
+    Q_ASSERT(_activity == nullptr);
 }
 
 //////////
@@ -114,6 +116,13 @@ void Work::_markDead()
     this->removeReference();
     _account->removeReference();
     _account = nullptr;
+
+    Q_ASSERT(_activity != nullptr && _activity->_isLive);
+    Q_ASSERT(_activity->_works.contains(this));
+    _activity->_works.remove(this);
+    this->removeReference();
+    _activity->removeReference();
+    _activity = nullptr;
 
     //  The rest is up to the base class
     Object::_markDead();

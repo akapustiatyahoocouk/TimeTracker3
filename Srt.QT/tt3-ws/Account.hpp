@@ -129,6 +129,32 @@ namespace tt3::ws
                         ) const -> User;
 
         //////////
+        //  Operations (life cycle)
+    public:
+        /// \brief
+        ///     Creates a new unit of Work for this Account against
+        ///     the specified activity.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param startedAt
+        ///     The UTC date+time when this unit of work has started.
+        /// \param finishedAt
+        ///     The UTC date+time when this unit of work has finished.
+        /// \param activity
+        ///     The activity associated with this unit of work;
+        ///     cann0t be nullptr.
+        /// \return
+        ///     The newly created Work.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        auto        createWork(
+                            const Credentials & credentials,
+                            const QDateTime & startedAt,
+                            const QDateTime & finishedAt,
+                            Activity activity
+                        ) -> Work;
+
+        //////////
         //  Implementation
     private:
         tt3::db::api::IAccount *const   _dataAccount;    //  counts as "reference"

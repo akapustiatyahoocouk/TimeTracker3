@@ -325,7 +325,10 @@ void Project::_deserializeProperties(
     )
 {
     Workload::_deserializeProperties(objectElement);
-    _completed = tt3::util::fromString<bool>(objectElement.attribute("Completed"));
+    _completed =
+        tt3::util::fromString(
+            objectElement.attribute("Completed"),
+            _completed);
 }
 
 void Project::_deserializeAggregations(

@@ -64,7 +64,7 @@ namespace tt3::db::xml
         QDateTime       _finishedAt;
         //  Associations
         Account *       _account;   //  counts as "reference"
-        Activity *      _activity;  //  counts as "reference"
+        Activity *      _activity;    //  counts as "reference"
 
         //  Helpers
         virtual void    _markDead() override;
