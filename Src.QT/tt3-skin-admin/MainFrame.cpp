@@ -78,6 +78,11 @@ MainFrame::MainFrame(QWidget * parent)
     _manageBeneficiariesTabLayout->addWidget(_beneficiaryManager);
     _ui->manageBeneficiariesTab->setLayout(_manageBeneficiariesTabLayout);
 
+    _manageMyDayTabLayout = new QStackedLayout();
+    _myDayManager = new tt3::gui::MyDayManager(_ui->manageMyDayTab);
+    _manageMyDayTabLayout->addWidget(_myDayManager);
+    _ui->manageMyDayTab->setLayout(_manageMyDayTabLayout);
+
     //  Set up signal handlers
     _savePositionTimer.setSingleShot(true);
     connect(&_savePositionTimer,
@@ -205,6 +210,7 @@ void MainFrame::refresh()
     _projectManager->refresh();
     _workStreamManager->refresh();
     _beneficiaryManager->refresh();
+    _myDayManager->refresh();
 
     _refreshCurrentActivityControls();
 }
@@ -704,6 +710,11 @@ void MainFrame::_onActionManageBeneficiaries()
     dlg.doModal();
 }
 
+void MainFrame::_onActionManageMyDay()
+{
+    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+}
+
 void MainFrame::_onActionRefresh()
 {
     if (tt3::gui::theCurrentWorkspace != nullptr)
@@ -810,6 +821,7 @@ void MainFrame::_currentWorkspaceChanged(tt3::ws::Workspace, tt3::ws::Workspace)
     _projectManager->setWorkspace(tt3::gui::theCurrentWorkspace);
     _workStreamManager->setWorkspace(tt3::gui::theCurrentWorkspace);
     _beneficiaryManager->setWorkspace(tt3::gui::theCurrentWorkspace);
+    _myDayManager->setWorkspace(tt3::gui::theCurrentWorkspace);
     refresh();
 }
 
@@ -824,6 +836,7 @@ void MainFrame::_currentCredentialsChanged(tt3::ws::Credentials, tt3::ws::Creden
     _projectManager->setCredentials(tt3::gui::theCurrentCredentials);
     _workStreamManager->setCredentials(tt3::gui::theCurrentCredentials);
     _beneficiaryManager->setCredentials(tt3::gui::theCurrentCredentials);
+    _myDayManager->setCredentials(tt3::gui::theCurrentCredentials);
     refresh();
 }
 

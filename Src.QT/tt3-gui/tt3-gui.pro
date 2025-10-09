@@ -70,6 +70,7 @@ SOURCES += \
     ModifyPublicTaskDialog.cpp \
     ModifyUserDialog.cpp \
     ModifyWorkStreamDialog.cpp \
+    MyDayManager.cpp \
     NewWorkspaceDialog.cpp \
     Preferences.cpp \
     PreferencesDialog.cpp \
@@ -155,6 +156,7 @@ HEADERS += \
     ModifyPublicTaskDialog.hpp \
     ModifyUserDialog.hpp \
     ModifyWorkStreamDialog.hpp \
+    MyDayManager.hpp \
     NewWorkspaceDialog.hpp \
     Preferences.hpp \
     PreferencesDialog.hpp \
@@ -219,6 +221,7 @@ FORMS += \
     ModifyPublicTaskDialog.ui \
     ModifyUserDialog.ui \
     ModifyWorkStreamDialog.ui \
+    MyDayManager.ui \
     NewWorkspaceDialog.ui \
     PreferencesDialog.ui \
     PrivateActivityManager.ui \

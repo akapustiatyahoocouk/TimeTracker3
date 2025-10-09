@@ -52,5 +52,7 @@
         <file>Resources/Images/Objects/ProjectSmall.png</file>
         <file>Resources/Images/Objects/WorkStreamLarge.png</file>
         <file>Resources/Images/Objects/WorkStreamSmall.png</file>
+        <file>Resources/Images/Misc/MyDayLarge.png</file>
+        <file>Resources/Images/Misc/MyDaySmall.png</file>
     </qresource>
 </RCC>

@@ -13,12 +13,16 @@
         <file>Resources/Images/Actions/CloseWorkspaceSmall.png</file>
         <file>Resources/Images/Actions/CompletePrivateTaskLarge.png</file>
         <file>Resources/Images/Actions/CompletePrivateTaskSmall.png</file>
+        <file>Resources/Images/Actions/CompleteProjectLarge.png</file>
+        <file>Resources/Images/Actions/CompleteProjectSmall.png</file>
         <file>Resources/Images/Actions/CompletePublicTaskLarge.png</file>
         <file>Resources/Images/Actions/CompletePublicTaskSmall.png</file>
         <file>Resources/Images/Actions/CreateAccountLarge.png</file>
         <file>Resources/Images/Actions/CreateAccountSmall.png</file>
         <file>Resources/Images/Actions/CreateActivityTypeLarge.png</file>
         <file>Resources/Images/Actions/CreateActivityTypeSmall.png</file>
+        <file>Resources/Images/Actions/CreateBeneficiaryLarge.png</file>
+        <file>Resources/Images/Actions/CreateBeneficiarySmall.png</file>
         <file>Resources/Images/Actions/CreatePrivateActivityLarge.png</file>
         <file>Resources/Images/Actions/CreatePrivateActivitySmall.png</file>
         <file>Resources/Images/Actions/CreatePrivateTaskLarge.png</file>
@@ -39,6 +43,8 @@
         <file>Resources/Images/Actions/DestroyAccountSmall.png</file>
         <file>Resources/Images/Actions/DestroyActivityTypeLarge.png</file>
         <file>Resources/Images/Actions/DestroyActivityTypeSmall.png</file>
+        <file>Resources/Images/Actions/DestroyBeneficiaryLarge.png</file>
+        <file>Resources/Images/Actions/DestroyBeneficiarySmall.png</file>
         <file>Resources/Images/Actions/DestroyPrivateActivityLarge.png</file>
         <file>Resources/Images/Actions/DestroyPrivateActivitySmall.png</file>
         <file>Resources/Images/Actions/DestroyPrivateTaskLarge.png</file>
@@ -65,6 +71,8 @@
         <file>Resources/Images/Actions/ModifyAccountSmall.png</file>
         <file>Resources/Images/Actions/ModifyActivityTypeLarge.png</file>
         <file>Resources/Images/Actions/ModifyActivityTypeSmall.png</file>
+        <file>Resources/Images/Actions/ModifyBeneficiaryLarge.png</file>
+        <file>Resources/Images/Actions/ModifyBeneficiarySmall.png</file>
         <file>Resources/Images/Actions/ModifyEmailAddressLarge.png</file>
         <file>Resources/Images/Actions/ModifyEmailAddressSmall.png</file>
         <file>Resources/Images/Actions/ModifyPrivateActivityLarge.png</file>
@@ -117,6 +125,8 @@
         <file>Resources/Images/Actions/ViewAccountSmall.png</file>
         <file>Resources/Images/Actions/ViewActivityTypeLarge.png</file>
         <file>Resources/Images/Actions/ViewActivityTypeSmall.png</file>
+        <file>Resources/Images/Actions/ViewBeneficiaryLarge.png</file>
+        <file>Resources/Images/Actions/ViewBeneficiarySmall.png</file>
         <file>Resources/Images/Actions/ViewProjectLarge.png</file>
         <file>Resources/Images/Actions/ViewProjectSmall.png</file>
         <file>Resources/Images/Actions/ViewPublicActivityLarge.png</file>
@@ -133,6 +143,8 @@
         <file>Resources/Images/Misc/ErrorSmall.png</file>
         <file>Resources/Images/Misc/LightThemeLarge.png</file>
         <file>Resources/Images/Misc/LightThemeSmall.png</file>
+        <file>Resources/Images/Misc/MyDayLarge.png</file>
+        <file>Resources/Images/Misc/MyDaySmall.png</file>
         <file>Resources/Images/Misc/SystemThemeLarge.png</file>
         <file>Resources/Images/Misc/SystemThemeSmall.png</file>
         <file>Resources/Images/Objects/ActivityTypeLarge.png</file>
@@ -160,15 +172,5 @@
         <file>Resources/Images/Objects/WorkStreamLarge.png</file>
         <file>Resources/Images/Objects/WorkStreamSmall.png</file>
         <file>Resources/Light.qss</file>
-        <file>Resources/Images/Actions/CompleteProjectLarge.png</file>
-        <file>Resources/Images/Actions/CompleteProjectSmall.png</file>
-        <file>Resources/Images/Actions/ViewBeneficiaryLarge.png</file>
-        <file>Resources/Images/Actions/ViewBeneficiarySmall.png</file>
-        <file>Resources/Images/Actions/CreateBeneficiaryLarge.png</file>
-        <file>Resources/Images/Actions/CreateBeneficiarySmall.png</file>
-        <file>Resources/Images/Actions/DestroyBeneficiaryLarge.png</file>
-        <file>Resources/Images/Actions/DestroyBeneficiarySmall.png</file>
-        <file>Resources/Images/Actions/ModifyBeneficiaryLarge.png</file>
-        <file>Resources/Images/Actions/ModifyBeneficiarySmall.png</file>
     </qresource>
 </RCC>

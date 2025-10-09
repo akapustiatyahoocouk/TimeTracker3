@@ -52,6 +52,7 @@
 #include "tt3-gui/ProjectManager.hpp"
 #include "tt3-gui/WorkStreamManager.hpp"
 #include "tt3-gui/BeneficiaryManager.hpp"
+#include "tt3-gui/MyDayManager.hpp"
 
 //  Dialogs
 #include "tt3-gui/ErrorDialog.hpp"

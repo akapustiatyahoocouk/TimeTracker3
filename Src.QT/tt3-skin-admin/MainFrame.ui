@@ -42,7 +42,7 @@
        <enum>QTabWidget::TabPosition::North</enum>
       </property>
       <property name="currentIndex">
-       <number>8</number>
+       <number>9</number>
       </property>
       <widget class="QWidget" name="manageUsersTab">
        <attribute name="icon">
@@ -123,6 +123,15 @@
        </attribute>
        <attribute name="title">
         <string>Beneficiaries</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="manageMyDayTab">
+       <attribute name="icon">
+        <iconset resource="tt3-skin-admin.qrc">
+         <normaloff>:/tt3-skin-admin/Resources/Images/Misc/MyDaySmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Misc/MyDaySmall.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>My day</string>
        </attribute>
       </widget>
      </widget>
@@ -232,6 +241,8 @@
     <addaction name="actionManageWorkStreams"/>
     <addaction name="actionManageBeneficiaries"/>
     <addaction name="separator"/>
+    <addaction name="actionManageMyDay"/>
+    <addaction name="separator"/>
     <addaction name="actionRefresh"/>
    </widget>
    <widget class="QMenu" name="menuTools">
@@ -291,6 +302,8 @@
    <addaction name="actionManageProjects"/>
    <addaction name="actionManageWorkStreams"/>
    <addaction name="actionManageBeneficiaries"/>
+   <addaction name="separator"/>
+   <addaction name="actionManageMyDay"/>
    <addaction name="separator"/>
    <addaction name="actionRefresh"/>
    <addaction name="separator"/>
@@ -621,6 +634,24 @@
    </property>
    <property name="shortcut">
     <string>Alt+9</string>
+   </property>
+  </action>
+  <action name="actionManageMyDay">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Misc/MyDaySmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Misc/MyDaySmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;0 - Manage my day</string>
+   </property>
+   <property name="iconText">
+    <string>Manage my day</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage my day</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+0</string>
    </property>
   </action>
  </widget>
@@ -1013,6 +1044,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionManageMyDay</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManageMyDay()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_onActionExit()</slot>
@@ -1039,5 +1086,6 @@
   <slot>_onActionManageProjects()</slot>
   <slot>_onActionManageWorkStreams()</slot>
   <slot>_onActionManageBeneficiaries()</slot>
+  <slot>_onActionManageMyDay()</slot>
  </slots>
 </ui>

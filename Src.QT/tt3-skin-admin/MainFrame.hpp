@@ -139,6 +139,9 @@ namespace tt3::skin::admin
         QStackedLayout *        _manageBeneficiariesTabLayout = nullptr;
         tt3::gui::BeneficiaryManager *   _beneficiaryManager = nullptr;
 
+        QStackedLayout *        _manageMyDayTabLayout = nullptr;
+        tt3::gui::MyDayManager *_myDayManager = nullptr;
+
         //////////
         //  Signal handlers
     private slots:
@@ -158,6 +161,7 @@ namespace tt3::skin::admin
         void            _onActionManageProjects();
         void            _onActionManageWorkStreams();
         void            _onActionManageBeneficiaries();
+        void            _onActionManageMyDay();
         void            _onActionRefresh();
         void            _onActionPreferences();
         void            _onActionLoginAsDifferentUser();
