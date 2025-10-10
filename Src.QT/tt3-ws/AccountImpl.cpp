@@ -215,6 +215,42 @@ auto AccountImpl::user(
     }
 }
 
+auto AccountImpl::quickPicksList(
+        const Credentials & credentials
+    ) const -> QList<Activity>
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials)) //  may throw
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        QList<Activity> result;
+        for (tt3::db::api::IActivity * dataActivity : _dataAccount->quickPicksList())
+        {
+            result.append(_workspace->_getProxy(dataActivity));
+        }
+        return result;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+void AccountImpl::setQuickPicksList(
+        const Credentials & /*credentials*/,
+        const QList<Activity> & /*quickPicksList*/
+    )
+{
+    throw tt3::util::NotImplementedError();
+}
+
 //////////
 //  Operations (life cycle)
 auto AccountImpl::createWork(

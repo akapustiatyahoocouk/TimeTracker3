@@ -28,6 +28,7 @@ ManageQuickPicksListDialog::ManageQuickPicksListDialog(
         //  Implementation
         _account(account),
         _credentials(credentials),
+        _quickPicksList(account->quickPicksList(credentials)),
         //  Controls
         _ui(new Ui::ManageQuickPicksListDialog)
 {

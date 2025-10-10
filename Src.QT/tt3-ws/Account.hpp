@@ -128,6 +128,41 @@ namespace tt3::ws
                             const Credentials & credentials
                         ) const -> User;
 
+        /// \brief
+        ///     Returns the list of "quick pick" activities
+        ///     associated with this account.
+        /// \details
+        ///     This is the list of activities that can be quickly
+        ///     chosen via the UI.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The list of "quick pick" activities
+        ///     associated with this account.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        quickPicksList(
+                            const Credentials & credentials
+                        ) const -> QList<Activity>;
+
+        /// \brief
+        ///     Sets the list of "quick pick" activities
+        ///     associated with this account.
+        /// \details
+        ///     This is the list of activities that can be quickly
+        ///     chosen via the UI.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param quickPicksList
+        ///     The new list of "quick pick" activities
+        ///     associated with this account.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        setQuickPicksList(
+                            const Credentials & credentials,
+                            const QList<Activity> & quickPicksList
+                        );
+
         //////////
         //  Operations (life cycle)
     public:
@@ -145,7 +180,7 @@ namespace tt3::ws
         ///     cann0t be nullptr.
         /// \return
         ///     The newly created Work.
-        /// \exception DatabaseException
+        /// \exception WorkspaceException
         ///     If an error occurs.
         auto        createWork(
                             const Credentials & credentials,

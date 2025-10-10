@@ -61,10 +61,10 @@ namespace tt3::db::xml
     public:
         virtual auto    user(
                             ) const -> tt3::db::api::IUser * override;
-        virtual auto    quickPickList(
+        virtual auto    quickPicksList(
                             ) const -> QList<tt3::db::api::IActivity*> override;
-        virtual void    setQuickPickList(
-                                const QList<tt3::db::api::IActivity*> & quickPickList
+        virtual void    setQuickPicksList(
+                                const QList<tt3::db::api::IActivity*> & quickPicksList
                             ) override;
         virtual auto    works(
                             ) const -> tt3::db::api::Works override;
@@ -96,7 +96,7 @@ namespace tt3::db::xml
         Events          _events;        //  count as "reference"
         //  Associations
         User *          _user;          //  counts as "reference"
-        QList<Activity*>_quickPickList; //  count as "reference"
+        QList<Activity*>_quickPicksList; //  count as "reference"
 
         //  Helpers
         virtual void    _makeDead() override;

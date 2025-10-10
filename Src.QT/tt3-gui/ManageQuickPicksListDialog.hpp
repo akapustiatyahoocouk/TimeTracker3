@@ -65,6 +65,8 @@ namespace tt3::gui
         tt3::ws::Credentials    _credentials;
         bool                    _trackItemStateChanges = false;
 
+        QList<tt3::ws::Activity>_quickPicksList;
+
         //  Model
         void            _refreshWorkspaceTree(
                                 PrivateActivityManager::_UserModel userModel

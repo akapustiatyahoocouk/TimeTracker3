@@ -111,7 +111,7 @@ namespace tt3::db::api
         /// \brief
         ///     Returns the list of "quick pick" activities
         ///     associated with this account.
-        /// \brief
+        /// \details
         ///     This is the list of activities that can be quickly
         ///     chosen via the UI.
         /// \return
@@ -119,22 +119,22 @@ namespace tt3::db::api
         ///     associated with this account.
         /// \exception DatabaseException
         ///     If an error occurs.
-        virtual auto    quickPickList(
+        virtual auto    quickPicksList(
                             ) const -> QList<IActivity*> = 0;
 
         /// \brief
         ///     Sets the list of "quick pick" activities
         ///     associated with this account.
-        /// \brief
+        /// \details
         ///     This is the list of activities that can be quickly
         ///     chosen via the UI.
-        /// \param quickPickList
+        /// \param quickPicksList
         ///     The new list of "quick pick" activities
         ///     associated with this account.
         /// \exception DatabaseException
         ///     If an error occurs.
-        virtual void    setQuickPickList(
-                                const QList<IActivity*> & quickPickList
+        virtual void    setQuickPicksList(
+                                const QList<IActivity*> & quickPicksList
                             ) = 0;
 
         /// \brief

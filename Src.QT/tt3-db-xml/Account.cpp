@@ -187,14 +187,18 @@ auto Account::user(
     return _user;
 }
 
-auto Account::quickPickList(
+auto Account::quickPicksList(
     ) const -> QList<tt3::db::api::IActivity*>
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return QList<tt3::db::api::IActivity*>(_quickPicksList.cbegin(), _quickPicksList.cend());
 }
 
-void Account::setQuickPickList(
-        const QList<tt3::db::api::IActivity*> & /*quickPickList*/
+void Account::setQuickPicksList(
+        const QList<tt3::db::api::IActivity*> & /*quickPicksList*/
     )
 {
     throw tt3::util::NotImplementedError();
@@ -296,7 +300,7 @@ void Account::_makeDead()
     //  TODO events
 
     //  Break associations
-    _quickPickList.clear(); //  The _quickPickList is a one-way association
+    _quickPicksList.clear(); //  The _quickPicksList is a one-way association
 
     Q_ASSERT(_user != nullptr && _user->_isLive);
     Q_ASSERT(_user->_accounts.contains(this));
@@ -343,8 +347,8 @@ void Account::_serializeAssociations(
 
     _database->_serializeAssociation(
         objectElement,
-        "QuickPickList",
-        _quickPickList);
+        "QuickPicksList",
+        _quickPicksList);
 }
 
 void Account::_deserializeProperties(
@@ -383,8 +387,8 @@ void Account::_deserializeAssociations(
 
     _database->_deserializeAssociation(
         objectElement,
-        "QuickPickList",
-        _quickPickList);
+        "QuickPicksList",
+        _quickPicksList);
 }
 
 //////////
@@ -421,7 +425,7 @@ void Account::_validate(
     {   //  OOPS!
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }
-    for (Activity * activity : _quickPickList)
+    for (Activity * activity : _quickPicksList)
     {
         if (activity == nullptr ||
             activity->_database != this->_database || !activity->_isLive)
