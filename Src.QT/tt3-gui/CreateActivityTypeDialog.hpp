@@ -21,7 +21,7 @@ namespace tt3::gui
 {
     namespace Ui { class CreateActivityTypeDialog; }
 
-    /// \class CreateActivityTypeDialog tt3-gui/API.hpp "tt3-gui/API.hpp"
+    /// \class CreateActivityTypeDialog tt3-gui/API.hpp
     /// \brief The modal "Create activity type" dialog
     class TT3_GUI_PUBLIC CreateActivityTypeDialog final
         :   private QDialog

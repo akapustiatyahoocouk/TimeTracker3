@@ -23,7 +23,7 @@ namespace tt3::gui
 
     namespace Ui { class ManagePublicTasksDialog; }
 
-    /// \class ManagePublicTasksDialog tt3-gui/API.hpp "tt3-gui/API.hpp"
+    /// \class ManagePublicTasksDialog tt3-gui/API.hpp
     /// \brief The modal "Manage public tasks" dialog.
     class TT3_GUI_PUBLIC ManagePublicTasksDialog final
         :   private QDialog

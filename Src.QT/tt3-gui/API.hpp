@@ -115,4 +115,6 @@
 #include "tt3-gui/ManageWorkStreamsDialog.hpp"
 #include "tt3-gui/ManageBeneficiariesDialog.hpp"
 
+#include "tt3-gui/ManageQuickPicksListDialog.hpp"
+
 //  End of tt3-gui/API.hpp

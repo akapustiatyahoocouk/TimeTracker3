@@ -21,7 +21,7 @@ namespace tt3::gui
 {
     namespace Ui { class CreateBeneficiaryDialog; }
 
-    /// \class CreateBeneficiaryDialog tt3-gui/API.hpp "tt3-gui/API.hpp"
+    /// \class CreateBeneficiaryDialog tt3-gui/API.hpp
     /// \brief The modal "Create beneficiary" dialog
     class TT3_GUI_PUBLIC CreateBeneficiaryDialog final
         :   private QDialog

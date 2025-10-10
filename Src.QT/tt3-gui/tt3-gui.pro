@@ -57,6 +57,7 @@ SOURCES += \
     ManageProjectsDialog.cpp \
     ManagePublicActivitiesDialog.cpp \
     ManagePublicTasksDialog.cpp \
+    ManageQuickPicksListDialog.cpp \
     ManageUsersDialog.cpp \
     ManageWorkStreamsDialog.cpp \
     ModifyAccountDialog.cpp \
@@ -143,6 +144,7 @@ HEADERS += \
     ManageProjectsDialog.hpp \
     ManagePublicActivitiesDialog.hpp \
     ManagePublicTasksDialog.hpp \
+    ManageQuickPicksListDialog.hpp \
     ManageUsersDialog.hpp \
     ManageWorkStreamsDialog.hpp \
     ModifyAccountDialog.hpp \
@@ -209,6 +211,7 @@ FORMS += \
     ManageProjectsDialog.ui \
     ManagePublicActivitiesDialog.ui \
     ManagePublicTasksDialog.ui \
+    ManageQuickPicksListDialog.ui \
     ManageUsersDialog.ui \
     ManageWorkStreamsDialog.ui \
     ModifyAccountDialog.ui \

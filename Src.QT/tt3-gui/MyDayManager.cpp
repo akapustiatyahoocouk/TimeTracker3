@@ -238,7 +238,18 @@ void MyDayManager::_refreshRequested()
 
 void MyDayManager::_quickPicksPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    try
+    {
+        tt3::ws::Account account = _workspace->login(_credentials);
+        ManageQuickPicksListDialog dlg(this, account, _credentials);
+        if (dlg.doModal() == ManageQuickPicksListDialog::Result::Ok)
+        {   //  TODO refresh quick picks buttons
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        ErrorDialog::show(this, ex);
+    }
 }
 
 void MyDayManager::_logEventPushButtonClicked()

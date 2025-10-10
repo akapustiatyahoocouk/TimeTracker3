@@ -148,12 +148,16 @@ void PublicActivityManager::refresh()
 
         //  ...while others are enabled based on current
         //  selection and permissions granted by Credentials
-        _WorkspaceModel workspaceModel = _createWorkspaceModel();
-        if (!_ui->filterLineEdit->text().trimmed().isEmpty())
+        _WorkspaceModel workspaceModel =
+            _createWorkspaceModel(_workspace, _credentials, _decorations);
+        QString filter = _ui->filterLineEdit->text().trimmed();
+        if (!filter.isEmpty())
         {
-            _filterItems(workspaceModel);
+            _filterItems(workspaceModel, filter, _decorations);
         }
-        _refreshWorkspaceTree(workspaceModel);
+        _refreshWorkspaceTree(
+            _ui->publicActivitiesTreeWidget,
+            workspaceModel);
 
         tt3::ws::PublicActivity selectedPublicActivity = _selectedPublicActivity();
         bool readOnly = _workspace->isReadOnly();
@@ -246,14 +250,18 @@ void PublicActivityManager::requestRefresh()
 //////////
 //  View model
 auto PublicActivityManager::_createWorkspaceModel(
+        tt3::ws::Workspace workspace,
+        const tt3::ws::Credentials & credentials,
+        const TreeWidgetDecorations & decorations
     )   -> PublicActivityManager::_WorkspaceModel
 {
     _WorkspaceModel workspaceModel { new _WorkspaceModelImpl() };
     try
     {
-        for (tt3::ws::PublicActivity publicActivity : _workspace->publicActivities(_credentials))    //  may throw
+        for (tt3::ws::PublicActivity publicActivity : workspace->publicActivities(credentials)) //  may throw
         {
-            workspaceModel->publicActivityModels.append(_createPublicActivityModel(publicActivity));
+            workspaceModel->publicActivityModels.append(
+                _createPublicActivityModel(publicActivity, credentials, decorations));
         }
         std::sort(workspaceModel->publicActivityModels.begin(),
                   workspaceModel->publicActivityModels.end(),
@@ -269,7 +277,9 @@ auto PublicActivityManager::_createWorkspaceModel(
 }
 
 auto PublicActivityManager::_createPublicActivityModel(
-        tt3::ws::PublicActivity publicActivity
+        tt3::ws::PublicActivity publicActivity,
+        const tt3::ws::Credentials & credentials,
+        const TreeWidgetDecorations & decorations
     ) -> PublicActivityManager::_PublicActivityModel
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
@@ -278,11 +288,11 @@ auto PublicActivityManager::_createPublicActivityModel(
         { new _PublicActivityModelImpl(publicActivity) };
     try
     {
-        publicActivityModel->text = publicActivity->displayName(_credentials);
+        publicActivityModel->text = publicActivity->displayName(credentials);
         publicActivityModel->icon = publicActivity->type()->smallIcon();
-        publicActivityModel->brush = _decorations.itemForeground;
-        publicActivityModel->font = _decorations.itemFont;
-        publicActivityModel->tooltip = publicActivity->description(_credentials).trimmed();
+        publicActivityModel->brush = decorations.itemForeground;
+        publicActivityModel->font = decorations.itemFont;
+        publicActivityModel->tooltip = publicActivity->description(credentials).trimmed();
         //  A "current" activity needs some extras
         if (theCurrentActivity == publicActivity)
         {
@@ -293,7 +303,7 @@ auto PublicActivityManager::_createPublicActivityModel(
                     int((secs / 60) % 60),
                     int(secs % 60));
             publicActivityModel->text += s;
-            publicActivityModel->font = _decorations.itemEmphasisFont;
+            publicActivityModel->font = decorations.itemEmphasisFont;
         }
     }
     catch (const tt3::util::Exception & ex)
@@ -301,18 +311,19 @@ auto PublicActivityManager::_createPublicActivityModel(
         qCritical() << ex.errorMessage();
         publicActivityModel->text = ex.errorMessage();
         publicActivityModel->icon = errorIcon;
-        publicActivityModel->font = _decorations.itemFont;
-        publicActivityModel->brush = _decorations.errorItemForeground;
+        publicActivityModel->font = decorations.itemFont;
+        publicActivityModel->brush = decorations.errorItemForeground;
         publicActivityModel->tooltip = ex.errorMessage();
     }
     return publicActivityModel;
 }
 
 void PublicActivityManager::_filterItems(
-        _WorkspaceModel workspaceModel
+        _WorkspaceModel workspaceModel,
+        const QString & filter,
+        const TreeWidgetDecorations & decorations
     )
 {
-    QString filter = _ui->filterLineEdit->text().trimmed();
     Q_ASSERT(!filter.isEmpty());
 
     for (qsizetype i = workspaceModel->publicActivityModels.size() - 1; i >= 0; i--)
@@ -320,7 +331,7 @@ void PublicActivityManager::_filterItems(
         _PublicActivityModel publicActivityModel = workspaceModel->publicActivityModels[i];
         if (publicActivityModel->text.indexOf(filter, 0, Qt::CaseInsensitive) != -1)
         {   //  Item matches the filter - mark it as a match
-            publicActivityModel->brush = _decorations.filterMatchItemForeground;
+            publicActivityModel->brush = decorations.filterMatchItemForeground;
         }
         else
         {   //  Item does not match the filter
@@ -330,29 +341,30 @@ void PublicActivityManager::_filterItems(
 }
 
 void PublicActivityManager::_refreshWorkspaceTree(
+        QTreeWidget * publicActivitiesTreeWidget,
         _WorkspaceModel workspaceModel
     )
 {
-    Q_ASSERT(_workspace != nullptr);
-    Q_ASSERT(_credentials.isValid());
+    Q_ASSERT(publicActivitiesTreeWidget != nullptr);
+    Q_ASSERT(workspaceModel != nullptr);
 
     //  Make sure the "public activities" tree contains
     //  a proper number of root (PublicActivity) items...
-    while (_ui->publicActivitiesTreeWidget->topLevelItemCount() < workspaceModel->publicActivityModels.size())
+    while (publicActivitiesTreeWidget->topLevelItemCount() < workspaceModel->publicActivityModels.size())
     {   //  Too few root (PublicActivity) items
-        _ui->publicActivitiesTreeWidget->addTopLevelItem(new QTreeWidgetItem());
+        publicActivitiesTreeWidget->addTopLevelItem(new QTreeWidgetItem());
     }
-    while (_ui->publicActivitiesTreeWidget->topLevelItemCount() > workspaceModel->publicActivityModels.size())
+    while (publicActivitiesTreeWidget->topLevelItemCount() > workspaceModel->publicActivityModels.size())
     {   //  Too many root (PublicActivity) items
-        delete _ui->publicActivitiesTreeWidget->takeTopLevelItem(
-            _ui->publicActivitiesTreeWidget->topLevelItemCount() - 1);
+        delete publicActivitiesTreeWidget->takeTopLevelItem(
+            publicActivitiesTreeWidget->topLevelItemCount() - 1);
     }
     //  ...and that each top-level item represents
     //  a proper PublicActivity
     for (int i = 0; i < workspaceModel->publicActivityModels.size(); i++)
     {
         _refreshPublicActivityItem(
-            _ui->publicActivitiesTreeWidget->topLevelItem(i),
+            publicActivitiesTreeWidget->topLevelItem(i),
             workspaceModel->publicActivityModels[i]);
     }
 }
@@ -364,7 +376,6 @@ void PublicActivityManager::_refreshPublicActivityItem(
 {
     Q_ASSERT(publicActivityItem != nullptr);
     Q_ASSERT(publicActivityModel != nullptr);
-    Q_ASSERT(_credentials.isValid());
 
     //  Refresh PublicActivity item properties
     publicActivityItem->setText(0, publicActivityModel->text);

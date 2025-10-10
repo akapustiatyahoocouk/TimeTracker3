@@ -19,6 +19,8 @@
 
 namespace tt3::gui
 {
+    class TT3_GUI_PUBLIC ManageQuickPicksListDialog;
+
     namespace Ui { class PrivateActivityManager; }
 
     /// \class PrivateActivityManager tt3-gui/API.hpp
@@ -28,6 +30,8 @@ namespace tt3::gui
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PrivateActivityManager)
+
+        friend class TT3_GUI_PUBLIC ManageQuickPicksListDialog;
 
         //////////
         //  Construction/destruction
@@ -115,6 +119,8 @@ namespace tt3::gui
         tt3::ws::Credentials    _credentials;
 
         //  View model
+        //  Model services are "static" because they are oiggybacked
+        //  on by e.g. "manage quick picks" dialog.
         struct _WorkspaceModelImpl;
         struct _UserModelImpl;
         struct _PrivateActivityModelImpl;
@@ -160,28 +166,40 @@ namespace tt3::gui
             QString     tooltip;        //  for PrivateActivity tree items' text
         };
 
-        auto            _createWorkspaceModel(
+        static auto     _createWorkspaceModel(
+                                tt3::ws::Workspace workspace,
+                                const tt3::ws::Credentials & credentials,
+                                const TreeWidgetDecorations & decorations
                             ) -> _WorkspaceModel;
-        auto            _createUserModel(
-                                tt3::ws::User user
+        static auto     _createUserModel(
+                                tt3::ws::User user,
+                                const tt3::ws::Credentials & credentials,
+                                const TreeWidgetDecorations & decorations
                             ) -> _UserModel;
-        auto            _createPrivateActivityModel(
-                                tt3::ws::PrivateActivity privateActivity
+        static auto     _createPrivateActivityModel(
+                                tt3::ws::PrivateActivity privateActivity,
+                                const tt3::ws::Credentials & credentials,
+                                const TreeWidgetDecorations & decorations
                             ) -> _PrivateActivityModel;
-        void            _filterItems(
+        static void     _filterItems(
+                                _WorkspaceModel workspaceModel,
+                                const QString & filter,
+                                const TreeWidgetDecorations & decorations
+                            );
+        static void     _filterItems(
+                                _UserModel userModel,
+                                const QString & filter,
+                                const TreeWidgetDecorations & decorations
+                            );
+        static void     _refreshWorkspaceTree(
+                                QTreeWidget * privateActivitiesTreeWidget,
                                 _WorkspaceModel workspaceModel
                             );
-        void            _filterItems(
-                                _UserModel userModel
-                            );
-        void            _refreshWorkspaceTree(
-                                _WorkspaceModel workspaceModel
-                            );
-        void            _refreshUserItem(
+        static void     _refreshUserItem(
                                 QTreeWidgetItem * userItem,
                                 _UserModel userModel
                             );
-        void            _refreshPrivateActivityItem(
+        static void     _refreshPrivateActivityItem(
                                 QTreeWidgetItem * privateActivityItem,
                                 _PrivateActivityModel privateActivityModel
                             );

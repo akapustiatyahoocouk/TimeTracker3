@@ -22,8 +22,7 @@ namespace tt3::gui
     namespace Ui { class ModifyAccountDialog; }
 
     /// \class ModifyAccountDialog "tt3-gui/API.hpp"
-    /// \brief
-    ///     The modal "Modify account" dialog
+    /// \brief The modal "Modify account" dialog.
     class TT3_GUI_PUBLIC ModifyAccountDialog final
         :   private QDialog
     {

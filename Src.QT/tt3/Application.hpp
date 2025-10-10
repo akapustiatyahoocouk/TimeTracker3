@@ -17,7 +17,7 @@
 
 namespace tt3
 {
-    /// \class Application API.hpp "tt3/API.hpp"
+    /// \class Application API.hpp
     /// \brief The TimeTracker3 application.
     class Application final
         :   public QApplication

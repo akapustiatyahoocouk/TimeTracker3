@@ -19,6 +19,8 @@
 
 namespace tt3::gui
 {
+    class TT3_GUI_PUBLIC ManageQuickPicksListDialog;
+
     namespace Ui { class PublicActivityManager; }
 
     /// \class PublicActivityManager tt3-gui/API.hpp
@@ -28,6 +30,8 @@ namespace tt3::gui
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PublicActivityManager)
+
+        friend class ManageQuickPicksListDialog;
 
         //////////
         //  Construction/destruction
@@ -115,6 +119,8 @@ namespace tt3::gui
         tt3::ws::Credentials    _credentials;
 
         //  View model
+        //  Model services are "static" because they are oiggybacked
+        //  on by e.g. "manage quick picks" dialog.
         struct _WorkspaceModelImpl;
         struct _PublicActivityModelImpl;
 
@@ -142,18 +148,26 @@ namespace tt3::gui
             QString     tooltip;        //  for PublicActivity tree items' text
         };
 
-        auto            _createWorkspaceModel(
+        static auto     _createWorkspaceModel(
+                                tt3::ws::Workspace workspace,
+                                const tt3::ws::Credentials & credentials,
+                                const TreeWidgetDecorations & decorations
                             ) -> _WorkspaceModel;
-        auto            _createPublicActivityModel(
-                                tt3::ws::PublicActivity publicActivity
+        static auto     _createPublicActivityModel(
+                                tt3::ws::PublicActivity publicActivity,
+                                const tt3::ws::Credentials & credentials,
+                                const TreeWidgetDecorations & decorations
                             ) -> _PublicActivityModel;
-        void            _filterItems(
+        static void     _filterItems(
+                                _WorkspaceModel workspaceModel,
+                                const QString & filter,
+                                const TreeWidgetDecorations & decorations
+                            );
+        static void     _refreshWorkspaceTree(
+                                QTreeWidget * publicActivitiesTreeWidget,
                                 _WorkspaceModel workspaceModel
                             );
-        void            _refreshWorkspaceTree(
-                                _WorkspaceModel workspaceModel
-                            );
-        void            _refreshPublicActivityItem(
+        static void     _refreshPublicActivityItem(
                                 QTreeWidgetItem * publicActivityItem,
                                 _PublicActivityModel publicActivityModel
                             );

@@ -20,6 +20,7 @@
 namespace tt3::gui
 {
     class TT3_GUI_PUBLIC SelectPrivateTaskParentDialog;
+    class TT3_GUI_PUBLIC ManageQuickPicksListDialog;
 
     namespace Ui { class PrivateTaskManager; }
 
@@ -32,6 +33,7 @@ namespace tt3::gui
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PrivateTaskManager)
 
         friend class SelectPrivateTaskParentDialog;
+        friend class ManageQuickPicksListDialog;
 
         //////////
         //  Construction/destruction

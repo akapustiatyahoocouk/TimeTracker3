@@ -172,5 +172,17 @@
         <file>Resources/Images/Objects/WorkStreamLarge.png</file>
         <file>Resources/Images/Objects/WorkStreamSmall.png</file>
         <file>Resources/Light.qss</file>
+        <file>Resources/Images/Actions/MoveDownLarge.png</file>
+        <file>Resources/Images/Actions/MoveDownSmall.png</file>
+        <file>Resources/Images/Actions/MoveToBottomLarge.png</file>
+        <file>Resources/Images/Actions/MoveToBottomSmall.png</file>
+        <file>Resources/Images/Actions/MoveToTopLarge.png</file>
+        <file>Resources/Images/Actions/MoveToTopSmall.png</file>
+        <file>Resources/Images/Actions/MoveUpLarge.png</file>
+        <file>Resources/Images/Actions/MoveUpSmall.png</file>
+        <file>Resources/Images/Misc/QuickPicksLarge.png</file>
+        <file>Resources/Images/Misc/QuickPicksSmall.png</file>
+        <file>Resources/Images/Actions/RemoveLarge.png</file>
+        <file>Resources/Images/Actions/RemoveSmall.png</file>
     </qresource>
 </RCC>

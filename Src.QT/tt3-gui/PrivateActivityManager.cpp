@@ -147,12 +147,16 @@ void PrivateActivityManager::refresh()
 
         //  ...while others are enabled based on current
         //  selection and permissions granted by Credentials
-        _WorkspaceModel workspaceModel = _createWorkspaceModel();
-        if (!_ui->filterLineEdit->text().trimmed().isEmpty())
+        _WorkspaceModel workspaceModel =
+            _createWorkspaceModel(_workspace, _credentials, _decorations);
+        QString filter = _ui->filterLineEdit->text().trimmed();
+        if (!filter.isEmpty())
         {
-            _filterItems(workspaceModel);
+            _filterItems(workspaceModel, filter, _decorations);
         }
-        _refreshWorkspaceTree(workspaceModel);
+        _refreshWorkspaceTree(
+            _ui->privateActivitiesTreeWidget,
+            workspaceModel);
         if (!_ui->filterLineEdit->text().trimmed().isEmpty())
         {   //  Filtered - show all
             _ui->privateActivitiesTreeWidget->expandAll();
@@ -250,23 +254,29 @@ void PrivateActivityManager::requestRefresh()
 //////////
 //  View model
 auto PrivateActivityManager::_createWorkspaceModel(
+        tt3::ws::Workspace workspace,
+        const tt3::ws::Credentials & credentials,
+        const TreeWidgetDecorations & decorations
     )   -> PrivateActivityManager::_WorkspaceModel
 {
     _WorkspaceModel workspaceModel { new _WorkspaceModelImpl() };
     try
     {
-        if (_workspace->grantsAll(_credentials, tt3::ws::Capability::Administrator))
+        if (workspace->grantsAll(credentials, tt3::ws::Capability::Administrator))
         {   //  See private activities of all users
-            for (tt3::ws::User user : _workspace->users(_credentials))    //  may throw
+            for (tt3::ws::User user : workspace->users(credentials))    //  may throw
             {
-                workspaceModel->userModels.append(_createUserModel(user));
+                workspaceModel->userModels.append(
+                    _createUserModel(user, credentials, decorations));
             }
         }
         else
         {   //  If not Administrator, show ONLY the caller User
             workspaceModel->userModels.append(
                 _createUserModel(
-                    _workspace->login(_credentials)->user(_credentials)));
+                    workspace->login(credentials)->user(credentials),
+                    credentials,
+                    decorations));
         }
         std::sort(workspaceModel->userModels.begin(),
                   workspaceModel->userModels.end(),
@@ -282,7 +292,9 @@ auto PrivateActivityManager::_createWorkspaceModel(
 }
 
 auto PrivateActivityManager::_createUserModel(
-        tt3::ws::User user
+        tt3::ws::User user,
+        const tt3::ws::Credentials & credentials,
+        const TreeWidgetDecorations & decorations
     ) -> PrivateActivityManager::_UserModel
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
@@ -291,22 +303,23 @@ auto PrivateActivityManager::_createUserModel(
         { new _UserModelImpl(user) };
     try
     {
-        userModel->text = user->realName(_credentials);
-        if (!user->enabled(_credentials))
+        userModel->text = user->realName(credentials);
+        if (!user->enabled(credentials))
         {
             userModel->text += " [disabled]";
-            userModel->brush = _decorations.disabledItemForeground;
+            userModel->brush = decorations.disabledItemForeground;
         }
         else
         {
-            userModel->brush = _decorations.itemForeground;
+            userModel->brush = decorations.itemForeground;
         }
         userModel->icon = user->type()->smallIcon();
-        userModel->font = _decorations.itemFont;
+        userModel->font = decorations.itemFont;
         //  Do the children
-        for (tt3::ws::PrivateActivity privateActivity : user->privateActivities(_credentials))    //  may throw
+        for (tt3::ws::PrivateActivity privateActivity : user->privateActivities(credentials))    //  may throw
         {
-            userModel->privateActivityModels.append(_createPrivateActivityModel(privateActivity));
+            userModel->privateActivityModels.append(
+                _createPrivateActivityModel(privateActivity, credentials, decorations));
         }
         std::sort(userModel->privateActivityModels.begin(),
                   userModel->privateActivityModels.end(),
@@ -318,8 +331,8 @@ auto PrivateActivityManager::_createUserModel(
         qCritical() << ex.errorMessage();
         userModel->text = ex.errorMessage();
         userModel->icon = errorIcon;
-        userModel->font = _decorations.itemFont;
-        userModel->brush = _decorations.errorItemForeground;
+        userModel->font = decorations.itemFont;
+        userModel->brush = decorations.errorItemForeground;
         userModel->tooltip = ex.errorMessage();
         userModel->privateActivityModels.clear();
     }
@@ -327,7 +340,9 @@ auto PrivateActivityManager::_createUserModel(
 }
 
 auto PrivateActivityManager::_createPrivateActivityModel(
-        tt3::ws::PrivateActivity privateActivity
+        tt3::ws::PrivateActivity privateActivity,
+        const tt3::ws::Credentials & credentials,
+        const TreeWidgetDecorations & decorations
     ) -> PrivateActivityManager::_PrivateActivityModel
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
@@ -336,11 +351,11 @@ auto PrivateActivityManager::_createPrivateActivityModel(
         { new _PrivateActivityModelImpl(privateActivity) };
     try
     {
-        privateActivityModel->text = privateActivity->displayName(_credentials);
+        privateActivityModel->text = privateActivity->displayName(credentials);
         privateActivityModel->icon = privateActivity->type()->smallIcon();
-        privateActivityModel->brush = _decorations.itemForeground;
-        privateActivityModel->font = _decorations.itemFont;
-        privateActivityModel->tooltip = privateActivity->description(_credentials).trimmed();
+        privateActivityModel->brush = decorations.itemForeground;
+        privateActivityModel->font = decorations.itemFont;
+        privateActivityModel->tooltip = privateActivity->description(credentials).trimmed();
         //  A "current" activity needs some extras
         if (theCurrentActivity == privateActivity)
         {
@@ -351,7 +366,7 @@ auto PrivateActivityManager::_createPrivateActivityModel(
                     int((secs / 60) % 60),
                     int(secs % 60));
             privateActivityModel->text += s;
-            privateActivityModel->font = _decorations.itemEmphasisFont;
+            privateActivityModel->font = decorations.itemEmphasisFont;
         }
     }
     catch (const tt3::util::Exception & ex)
@@ -359,27 +374,28 @@ auto PrivateActivityManager::_createPrivateActivityModel(
         qCritical() << ex.errorMessage();
         privateActivityModel->text = ex.errorMessage();
         privateActivityModel->icon = errorIcon;
-        privateActivityModel->font = _decorations.itemFont;
-        privateActivityModel->brush = _decorations.errorItemForeground;
+        privateActivityModel->font = decorations.itemFont;
+        privateActivityModel->brush = decorations.errorItemForeground;
         privateActivityModel->tooltip = ex.errorMessage();
     }
     return privateActivityModel;
 }
 
 void PrivateActivityManager::_filterItems(
-        _WorkspaceModel workspaceModel
+        _WorkspaceModel workspaceModel,
+        const QString & filter,
+        const TreeWidgetDecorations & decorations
     )
 {
-    QString filter = _ui->filterLineEdit->text().trimmed();
     Q_ASSERT(!filter.isEmpty());
 
     for (qsizetype i = workspaceModel->userModels.size() - 1; i >= 0; i--)
     {
         _UserModel userModel = workspaceModel->userModels[i];
-        _filterItems(userModel);
+        _filterItems(userModel, filter, decorations);
         if (userModel->text.indexOf(filter, 0, Qt::CaseInsensitive) != -1)
         {   //  Item matches the filter - mark it as a match
-            userModel->brush = _decorations.filterMatchItemForeground;
+            userModel->brush = decorations.filterMatchItemForeground;
         }
         else if (userModel->privateActivityModels.isEmpty())
         {   //  Item does not match the filter and has no children - remove it
@@ -387,16 +403,17 @@ void PrivateActivityManager::_filterItems(
         }
         else
         {   //  Item does not match the filter but has children - show as disabled
-            workspaceModel->userModels[i]->brush = _decorations.disabledItemForeground;
+            workspaceModel->userModels[i]->brush = decorations.disabledItemForeground;
         }
     }
 }
 
 void PrivateActivityManager::_filterItems(
-        _UserModel userModel
+        _UserModel userModel,
+        const QString & filter,
+        const TreeWidgetDecorations & decorations
     )
 {
-    QString filter = _ui->filterLineEdit->text().trimmed();
     Q_ASSERT(!filter.isEmpty());
 
     for (qsizetype i = userModel->privateActivityModels.size() - 1; i >= 0; i--)
@@ -404,7 +421,7 @@ void PrivateActivityManager::_filterItems(
         _PrivateActivityModel privateActivityModel = userModel->privateActivityModels[i];
         if (privateActivityModel->text.indexOf(filter, 0, Qt::CaseInsensitive) != -1)
         {   //  Item matches the filter - mark it as a match
-            privateActivityModel->brush = _decorations.filterMatchItemForeground;
+            privateActivityModel->brush = decorations.filterMatchItemForeground;
         }
         else
         {   //  Item does not match the filter
@@ -414,29 +431,30 @@ void PrivateActivityManager::_filterItems(
 }
 
 void PrivateActivityManager::_refreshWorkspaceTree(
+        QTreeWidget * privateActivitiesTreeWidget,
         _WorkspaceModel workspaceModel
     )
 {
-    Q_ASSERT(_workspace != nullptr);
-    Q_ASSERT(_credentials.isValid());
+    Q_ASSERT(privateActivitiesTreeWidget != nullptr);
+    Q_ASSERT(workspaceModel != nullptr);
 
     //  Make sure the "private activities" tree contains
     //  a proper number of root (User) items...
-    while (_ui->privateActivitiesTreeWidget->topLevelItemCount() < workspaceModel->userModels.size())
+    while (privateActivitiesTreeWidget->topLevelItemCount() < workspaceModel->userModels.size())
     {   //  Too few root (User) items
-        _ui->privateActivitiesTreeWidget->addTopLevelItem(new QTreeWidgetItem());
+        privateActivitiesTreeWidget->addTopLevelItem(new QTreeWidgetItem());
     }
-    while (_ui->privateActivitiesTreeWidget->topLevelItemCount() > workspaceModel->userModels.size())
+    while (privateActivitiesTreeWidget->topLevelItemCount() > workspaceModel->userModels.size())
     {   //  Too many root (User) items
-        delete _ui->privateActivitiesTreeWidget->takeTopLevelItem(
-            _ui->privateActivitiesTreeWidget->topLevelItemCount() - 1);
+        delete privateActivitiesTreeWidget->takeTopLevelItem(
+            privateActivitiesTreeWidget->topLevelItemCount() - 1);
     }
     //  ...and that each top-level item represents
     //  a proper User
     for (int i = 0; i < workspaceModel->userModels.size(); i++)
     {
         _refreshUserItem(
-            _ui->privateActivitiesTreeWidget->topLevelItem(i),
+            privateActivitiesTreeWidget->topLevelItem(i),
             workspaceModel->userModels[i]);
     }
 }
@@ -446,8 +464,8 @@ void PrivateActivityManager::_refreshUserItem(
         _UserModel userModel
     )
 {
-    Q_ASSERT(_workspace != nullptr);
-    Q_ASSERT(_credentials.isValid());
+    Q_ASSERT(userItem != nullptr);
+    Q_ASSERT(userModel != nullptr);
 
     //  Refresh User item properties
     userItem->setText(0, userModel->text);
@@ -482,8 +500,8 @@ void PrivateActivityManager::_refreshPrivateActivityItem(
         _PrivateActivityModel privateActivityModel
     )
 {
-    Q_ASSERT(_workspace != nullptr);
-    Q_ASSERT(_credentials.isValid());
+    Q_ASSERT(privateActivityItem != nullptr);
+    Q_ASSERT(privateActivityModel != nullptr);
 
     //  Refresh PrivateActivity item properties
     privateActivityItem->setText(0, privateActivityModel->text);

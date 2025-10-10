@@ -23,7 +23,7 @@ namespace tt3::gui
 
     namespace Ui { class ManagePrivateActivitiesDialog; }
 
-    /// \class ManagePrivateActivitiesDialog tt3-gui/API.hpp "tt3-gui/API.hpp"
+    /// \class ManagePrivateActivitiesDialog tt3-gui/API.hpp
     /// \brief The modal "Manage private activities" dialog.
     class TT3_GUI_PUBLIC ManagePrivateActivitiesDialog final
         :   private QDialog
