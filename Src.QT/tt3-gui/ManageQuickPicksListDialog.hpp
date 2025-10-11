@@ -92,6 +92,11 @@ namespace tt3::gui
                                 QTreeWidgetItem * item,
                                 _ActivityExtractor fn
                             );
+        auto            _selectedQuickPicksListItem(
+                            ) -> tt3::ws::Activity;
+        void            _setSelectedQuickPicksListItem(
+                                tt3::ws::Activity activity
+                            );
 
         //  Drawing resources
         TreeWidgetDecorations   _decorations;
@@ -109,6 +114,7 @@ namespace tt3::gui
         void            _privateActivitiesTreeWidgetItemChanged(QTreeWidgetItem * item, int);
         void            _privateTasksTreeWidgetItemChanged(QTreeWidgetItem * item, int);
         void            _quickPicksListWidgetCurrentRowChanged(int);
+        void            _removePushButtonClicked();
         void            accept() override;
         void            reject() override;
     };

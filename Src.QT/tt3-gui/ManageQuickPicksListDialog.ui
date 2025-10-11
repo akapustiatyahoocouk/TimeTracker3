@@ -543,6 +543,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>removePushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::ManageQuickPicksListDialog</receiver>
+   <slot>_removePushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>599</x>
+     <y>520</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>332</x>
+     <y>300</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_publicActivitiesTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
@@ -550,5 +566,6 @@
   <slot>_privateActivitiesTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
   <slot>_privateTasksTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
   <slot>_quickPicksListWidgetCurrentRowChanged(int)</slot>
+  <slot>_removePushButtonClicked()</slot>
  </slots>
 </ui>

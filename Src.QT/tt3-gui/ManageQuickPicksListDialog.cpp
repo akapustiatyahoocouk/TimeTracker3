@@ -271,7 +271,8 @@ void ManageQuickPicksListDialog::_refillQuickPicksListWidget()
             item->setText(ex.errorMessage());
             item->setIcon(errorIcon);
         }
-        item->setData(Qt::ItemDataRole::UserRole, QVariant::fromValue(_quickPicksList[i]));
+        auto a = _quickPicksList[i];
+        item->setData(Qt::ItemDataRole::UserRole, QVariant::fromValue(a));
     }
 }
 
@@ -361,6 +362,31 @@ void ManageQuickPicksListDialog::_refreshCheckMarks(
     }
 }
 
+auto ManageQuickPicksListDialog::_selectedQuickPicksListItem(
+    ) -> tt3::ws::Activity
+{
+    QListWidgetItem * item = _ui->quickPicksListWidget->currentItem();
+    if (item == nullptr) return nullptr;    //  TODO UGLY!!
+    auto a = item->data(Qt::ItemDataRole::UserRole).value<tt3::ws::Activity>();
+    return a;
+}
+
+void ManageQuickPicksListDialog::_setSelectedQuickPicksListItem(
+        tt3::ws::Activity activity
+    )
+{
+    for (int i = 0; i < _ui->quickPicksListWidget->count(); i++)
+    {
+        QListWidgetItem * item = _ui->quickPicksListWidget->item(i);
+        auto a = item->data(Qt::ItemDataRole::UserRole).value<tt3::ws::Activity>();
+        if (activity == a)
+        {
+            _ui->quickPicksListWidget->setCurrentRow(i);
+            break;
+        }
+    }
+}
+
 //////////
 //  Signal handlers
 void ManageQuickPicksListDialog::_publicActivitiesTreeWidgetItemChanged(QTreeWidgetItem * item, int)
@@ -374,6 +400,7 @@ void ManageQuickPicksListDialog::_publicActivitiesTreeWidgetItemChanged(QTreeWid
         {   //  Item is newly "checked"
             _quickPicksList.append(publicActivity);
             _refillQuickPicksListWidget();
+            _setSelectedQuickPicksListItem(publicActivity);
         }
         else if (item->checkState(0) == Qt::Unchecked &&
                  _quickPicksList.contains(publicActivity))
@@ -396,6 +423,7 @@ void ManageQuickPicksListDialog::_publicTasksTreeWidgetItemChanged(QTreeWidgetIt
         {   //  Item is newly "checked"
             _quickPicksList.append(publicTask);
             _refillQuickPicksListWidget();
+            _setSelectedQuickPicksListItem(publicTask);
         }
         else if (item->checkState(0) == Qt::Unchecked &&
                  _quickPicksList.contains(publicTask))
@@ -418,6 +446,7 @@ void ManageQuickPicksListDialog::_privateActivitiesTreeWidgetItemChanged(QTreeWi
         {   //  Item is newly "checked"
             _quickPicksList.append(privateActivity);
             _refillQuickPicksListWidget();
+            _setSelectedQuickPicksListItem(privateActivity);
         }
         else if (item->checkState(0) == Qt::Unchecked &&
                  _quickPicksList.contains(privateActivity))
@@ -440,6 +469,7 @@ void ManageQuickPicksListDialog::_privateTasksTreeWidgetItemChanged(QTreeWidgetI
         {   //  Item is newly "checked"
             _quickPicksList.append(privateTask);
             _refillQuickPicksListWidget();
+            _setSelectedQuickPicksListItem(privateTask);
         }
         else if (item->checkState(0) == Qt::Unchecked &&
                  _quickPicksList.contains(privateTask))
@@ -454,6 +484,42 @@ void ManageQuickPicksListDialog::_privateTasksTreeWidgetItemChanged(QTreeWidgetI
 void ManageQuickPicksListDialog::_quickPicksListWidgetCurrentRowChanged(int)
 {
     _refresh();
+}
+
+void ManageQuickPicksListDialog::_removePushButtonClicked()
+{
+    if (tt3::ws::Activity activity = _selectedQuickPicksListItem())
+    {
+        _quickPicksList.removeOne(activity);
+        _refillQuickPicksListWidget();
+        //  The check states of the tree items must be adjusted!
+        _trackItemStateChanges = false;
+        _refreshCheckMarks(
+            _ui->publicActivitiesTreeWidget,
+            [](auto item)
+            {
+                return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicActivity>();
+            });
+        _refreshCheckMarks(
+            _ui->publicTasksTreeWidget,
+            [](auto item)
+            {
+                return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicTask>();
+            });
+        _refreshCheckMarks(
+            _ui->privateActivitiesTreeWidget,
+            [](auto item)
+            {
+                return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PrivateActivity>();
+            });
+        _refreshCheckMarks(
+            _ui->privateTasksTreeWidget,
+            [](auto item)
+            {
+                return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PrivateTask>();
+            });
+        _trackItemStateChanges = true;
+    }
 }
 
 void ManageQuickPicksListDialog::accept()
