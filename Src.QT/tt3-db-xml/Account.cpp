@@ -198,10 +198,65 @@ auto Account::quickPicksList(
 }
 
 void Account::setQuickPicksList(
-        const QList<tt3::db::api::IActivity*> & /*quickPicksList*/
+        const QList<tt3::db::api::IActivity*> & quickPicksList
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (quickPicksList.contains(nullptr))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "quickPicksList",
+            nullptr);
+    }
+
+    QList<Activity*> xmlQuickPicksList;
+    for (tt3::db::api::IActivity * activity : quickPicksList)
+    {
+        Q_ASSERT(activity != nullptr); //  should have been caught before!
+        Activity * xmlActivity = dynamic_cast<Activity*>(activity);
+        if (xmlActivity == nullptr ||
+            xmlActivity->_database != this->_database ||
+            !xmlActivity->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(activity->type());
+        }
+        if (!xmlQuickPicksList.contains(xmlActivity))
+        {
+            xmlQuickPicksList.append(xmlActivity);
+        }
+    }
+
+    if (xmlQuickPicksList != _quickPicksList)
+    {   //  Make the change -
+        //  link the new quick picks list...
+        for (Activity * xmlActivity : xmlQuickPicksList)
+        {
+            xmlActivity->addReference();
+        }
+        //  ...un-link the old quick picks list...
+        for (Activity * xmlActivity : _quickPicksList)
+        {
+            xmlActivity->removeReference();
+        }
+        //  ...replace old quick picks list with new one...
+        _quickPicksList = xmlQuickPicksList;
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 auto Account::works(

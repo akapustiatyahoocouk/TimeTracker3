@@ -56,9 +56,9 @@
          </sizepolicy>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(85, 170, 0);</string>
+         <string notr="true"/>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
+        <layout class="QVBoxLayout" name="quickPicksPanelLayout">
          <property name="spacing">
           <number>2</number>
          </property>
@@ -102,7 +102,7 @@
          </sizepolicy>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(170, 0, 0);</string>
+         <string notr="true"/>
         </property>
         <layout class="QGridLayout" name="gridLayout">
          <property name="leftMargin">

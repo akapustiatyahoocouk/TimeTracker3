@@ -486,6 +486,66 @@ void ManageQuickPicksListDialog::_quickPicksListWidgetCurrentRowChanged(int)
     _refresh();
 }
 
+void ManageQuickPicksListDialog::_moveUpPushButtonClicked()
+{
+    if (tt3::ws::Activity activity = _selectedQuickPicksListItem())
+    {
+        qsizetype n = _quickPicksList.indexOf(activity);
+        if (n > 0)  //  includes a check for n != -1
+        {
+            _quickPicksList.remove(n);
+            _quickPicksList.insert(n - 1, activity);
+            _refillQuickPicksListWidget();
+            _setSelectedQuickPicksListItem(activity);
+        }
+    }
+}
+
+void ManageQuickPicksListDialog::_moveDownPushButtonClicked()
+{
+    if (tt3::ws::Activity activity = _selectedQuickPicksListItem())
+    {
+        qsizetype n = _quickPicksList.indexOf(activity);
+        if (n != -1 && n + 1 < _quickPicksList.size())
+        {
+            _quickPicksList.remove(n);
+            _quickPicksList.insert(n + 1, activity);
+            _refillQuickPicksListWidget();
+            _setSelectedQuickPicksListItem(activity);
+        }
+    }
+}
+
+void ManageQuickPicksListDialog::_moveToTopPushButtonClicked()
+{
+    if (tt3::ws::Activity activity = _selectedQuickPicksListItem())
+    {
+        qsizetype n = _quickPicksList.indexOf(activity);
+        if (n > 0)  //  includes a check for n != -1
+        {
+            _quickPicksList.remove(n);
+            _quickPicksList.insert(0, activity);
+            _refillQuickPicksListWidget();
+            _setSelectedQuickPicksListItem(activity);
+        }
+    }
+}
+
+void ManageQuickPicksListDialog::_moveToBottomPushButtonClicked()
+{
+    if (tt3::ws::Activity activity = _selectedQuickPicksListItem())
+    {
+        qsizetype n = _quickPicksList.indexOf(activity);
+        if (n != -1 && n + 1 < _quickPicksList.size())
+        {
+            _quickPicksList.remove(n);
+            _quickPicksList.append(activity);
+            _refillQuickPicksListWidget();
+            _setSelectedQuickPicksListItem(activity);
+        }
+    }
+}
+
 void ManageQuickPicksListDialog::_removePushButtonClicked()
 {
     if (tt3::ws::Activity activity = _selectedQuickPicksListItem())

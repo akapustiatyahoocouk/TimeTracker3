@@ -54,7 +54,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="publicActivitiesTab">
       <attribute name="icon">
@@ -116,6 +116,9 @@
        </item>
        <item row="1" column="0">
         <widget class="QTreeWidget" name="publicActivitiesTreeWidget">
+         <attribute name="headerVisible">
+          <bool>false</bool>
+         </attribute>
          <column>
           <property name="text">
            <string notr="true">1</string>
@@ -185,6 +188,9 @@
        </item>
        <item row="1" column="0">
         <widget class="QTreeWidget" name="publicTasksTreeWidget">
+         <attribute name="headerVisible">
+          <bool>false</bool>
+         </attribute>
          <column>
           <property name="text">
            <string notr="true">1</string>
@@ -254,6 +260,9 @@
        </item>
        <item row="1" column="0">
         <widget class="QTreeWidget" name="privateActivitiesTreeWidget">
+         <attribute name="headerVisible">
+          <bool>false</bool>
+         </attribute>
          <column>
           <property name="text">
            <string notr="true">1</string>
@@ -323,6 +332,9 @@
        </item>
        <item row="1" column="0">
         <widget class="QTreeWidget" name="privateTasksTreeWidget">
+         <attribute name="headerVisible">
+          <bool>false</bool>
+         </attribute>
          <column>
           <property name="text">
            <string notr="true">1</string>
@@ -559,6 +571,70 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>moveUpPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::ManageQuickPicksListDialog</receiver>
+   <slot>_moveUpPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>189</x>
+     <y>520</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>332</x>
+     <y>300</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>moveDownPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::ManageQuickPicksListDialog</receiver>
+   <slot>_moveDownPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>297</x>
+     <y>520</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>332</x>
+     <y>300</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>moveToTopPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::ManageQuickPicksListDialog</receiver>
+   <slot>_moveToTopPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>79</x>
+     <y>520</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>332</x>
+     <y>300</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>moveToBottomPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::ManageQuickPicksListDialog</receiver>
+   <slot>_moveToBottomPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>430</x>
+     <y>520</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>332</x>
+     <y>300</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_publicActivitiesTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
@@ -567,5 +643,9 @@
   <slot>_privateTasksTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
   <slot>_quickPicksListWidgetCurrentRowChanged(int)</slot>
   <slot>_removePushButtonClicked()</slot>
+  <slot>_moveUpPushButtonClicked()</slot>
+  <slot>_moveDownPushButtonClicked()</slot>
+  <slot>_moveToTopPushButtonClicked()</slot>
+  <slot>_moveToBottomPushButtonClicked()</slot>
  </slots>
 </ui>

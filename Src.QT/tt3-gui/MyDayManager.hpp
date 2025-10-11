@@ -115,11 +115,16 @@ namespace tt3::gui
         void            _startListeningToWorkspaceChanges();
         void            _stopListeningToWorkspaceChanges();
         void            _clearAndDisableAllControls();
+        void            _recreateQuickPickButtons();
+        void            _recreateDynamicControls();
 
         //////////
         //  Controls
     private:
         Ui::MyDayManager *const _ui;
+        //  Dynamic controls
+        QList<tt3::ws::Activity>    _quickPicksList;
+        QList<QPushButton*> _quickPicksButtons; //  parallel to _quickPicksButtons
 
         //////////
         //  Signal handlers

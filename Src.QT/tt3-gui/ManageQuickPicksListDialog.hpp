@@ -58,6 +58,16 @@ namespace tt3::gui
         ///     The dialog result; Ok means "changes saved".
         Result          doModal();
 
+        /// \brief
+        ///     Returns the "quick picks" list as edited by the user.
+        /// \return
+        ///     The "quick picks" list as edited by the user.
+        auto            quickPicksList(
+                            ) -> QList<tt3::ws::Activity>
+        {
+            return _quickPicksList;
+        }
+
         //////////
         //  Implementation
     private:
@@ -114,6 +124,10 @@ namespace tt3::gui
         void            _privateActivitiesTreeWidgetItemChanged(QTreeWidgetItem * item, int);
         void            _privateTasksTreeWidgetItemChanged(QTreeWidgetItem * item, int);
         void            _quickPicksListWidgetCurrentRowChanged(int);
+        void            _moveUpPushButtonClicked();
+        void            _moveDownPushButtonClicked();
+        void            _moveToTopPushButtonClicked();
+        void            _moveToBottomPushButtonClicked();
         void            _removePushButtonClicked();
         void            accept() override;
         void            reject() override;

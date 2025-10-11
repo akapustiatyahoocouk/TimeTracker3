@@ -244,11 +244,35 @@ auto AccountImpl::quickPicksList(
 }
 
 void AccountImpl::setQuickPicksList(
-        const Credentials & /*credentials*/,
-        const QList<Activity> & /*quickPicksList*/
+        const Credentials & credentials,
+        const QList<Activity> & quickPicksList
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights.
+        if (!_canModify(credentials)) //  may throw
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        QList<tt3::db::api::IActivity*> dataQuickPicksList;
+        for (Activity activity : quickPicksList)
+        {
+            dataQuickPicksList.append(
+                (activity != nullptr) ?
+                    activity->_dataActivity :
+                    nullptr);
+        }
+        _dataAccount->setQuickPicksList(dataQuickPicksList);//  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 //////////

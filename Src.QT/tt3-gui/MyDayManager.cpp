@@ -38,6 +38,9 @@ MyDayManager::MyDayManager(
 {
     _ui->setupUi(this);
 
+    //  Populate the "quick pick" buttons area
+    _recreateDynamicControls();
+
     //  Populate the "filter" combo box
     _ui->filterComboBox->addItem("today", QVariant::fromValue(1));
     _ui->filterComboBox->addItem("last 2 days", QVariant::fromValue(2));
@@ -84,6 +87,7 @@ void MyDayManager::setWorkspace(tt3::ws::Workspace workspace)
         _stopListeningToWorkspaceChanges();
         _workspace = workspace;
         _startListeningToWorkspaceChanges();
+        _recreateDynamicControls();
         requestRefresh();
     }
 }
@@ -98,6 +102,7 @@ void MyDayManager::setCredentials(const tt3::ws::Credentials & credentials)
     if (credentials != _credentials)
     {
         _credentials = credentials;
+        _recreateDynamicControls();
         requestRefresh();
     }
 }
@@ -204,6 +209,67 @@ void MyDayManager::_clearAndDisableAllControls()
     //  TODO finish the implementation
 }
 
+void MyDayManager::_recreateQuickPickButtons()
+{
+    static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+
+    for (int i = 0; i < _quickPicksButtons.size(); i++)
+    {
+        delete _quickPicksButtons[i];
+    }
+    _quickPicksButtons.clear();
+    //  No quick picks buttons is a special case
+    if (_quickPicksList.isEmpty())
+    {
+        _ui->noQuickPicksLabel->setVisible(true);
+        return;
+    }
+    //  Create buttons
+    for (int i = 0; i < _quickPicksList.size(); i++)
+    {
+        QPushButton * button;
+        try
+        {
+            button = new QPushButton(
+                _quickPicksList[i]->type()->smallIcon(),
+                _quickPicksList[i]->displayName(_credentials),   //  may throw
+                this);
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            button = new QPushButton(
+                errorIcon,
+                ex.errorMessage(),
+                this);
+        }
+        button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        _quickPicksButtons.append(button);
+        _ui->quickPicksPanelLayout->addWidget(button);
+    }
+    _ui->noQuickPicksLabel->setVisible(false);
+}
+
+void MyDayManager::_recreateDynamicControls()
+{
+    if (_workspace != nullptr)
+    {
+        try
+        {
+            _quickPicksList = _workspace->login(_credentials)->quickPicksList(_credentials);
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS!. Log, but suppress
+            qCritical() << ex.errorMessage();
+            _quickPicksList.clear();
+        }
+    }
+    else
+    {
+        _quickPicksList.clear();
+    }
+    _recreateQuickPickButtons();
+}
+
 //////////
 //  Signal handlers
 void MyDayManager::_currentThemeChanged(ITheme *, ITheme *)
@@ -213,21 +279,25 @@ void MyDayManager::_currentThemeChanged(ITheme *, ITheme *)
 
 void MyDayManager::_workspaceClosed(tt3::ws::WorkspaceClosedNotification /*notification*/)
 {
+    _recreateDynamicControls();
     requestRefresh();
 }
 
 void MyDayManager::_objectCreated(tt3::ws::ObjectCreatedNotification /*notification*/)
 {
+    _recreateDynamicControls();
     requestRefresh();
 }
 
 void MyDayManager::_objectDestroyed(tt3::ws::ObjectDestroyedNotification /*notification*/)
 {
+    _recreateDynamicControls();
     requestRefresh();
 }
 
 void MyDayManager::_objectModified(tt3::ws::ObjectModifiedNotification /*notification*/)
 {
+    _recreateDynamicControls();
     requestRefresh();
 }
 
@@ -243,7 +313,9 @@ void MyDayManager::_quickPicksPushButtonClicked()
         tt3::ws::Account account = _workspace->login(_credentials);
         ManageQuickPicksListDialog dlg(this, account, _credentials);
         if (dlg.doModal() == ManageQuickPicksListDialog::Result::Ok)
-        {   //  TODO refresh quick picks buttons
+        {   //  Refresh quick picks buttons
+            account->setQuickPicksList(_credentials, dlg.quickPicksList());
+            _recreateDynamicControls();
         }
     }
     catch (const tt3::util::Exception & ex)
