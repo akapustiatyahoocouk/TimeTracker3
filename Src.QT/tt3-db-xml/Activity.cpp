@@ -446,7 +446,20 @@ void Activity::_makeDead()
         _workload->removeReference();
         _workload = nullptr;
     }
-    //  TODO remove from all "quick pick" lists
+    //  remove from all "quick pick" lists
+    for (User * user : _database->_users)
+    {
+        for (Account * account : user->_accounts)
+        {
+            if (account->_quickPicksList.contains(this))
+            {
+                Q_ASSERT(account->_quickPicksList.count(this) == 1);
+                account->_quickPicksList.removeOne(this);
+                this->removeReference();
+                //  The association is one-directional!
+            }
+        }
+    }
 
     //  The rest is up to the base class
     Object::_makeDead();

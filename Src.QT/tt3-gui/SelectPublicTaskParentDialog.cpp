@@ -273,7 +273,7 @@ void SelectPublicTaskParentDialog::_publicTasksTreeWidgetItemChanged(
             item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicTask>();
         if (item->checkState(0) == Qt::Checked &&
             publicTask != _selectedParentTask)
-        {   //  Item is mewly "checked" - select as "parent"
+        {   //  Item is newly "checked" - select as "parent"
             _selectedParentTask = publicTask;
             _setSelectedPublicTask(publicTask);
         }

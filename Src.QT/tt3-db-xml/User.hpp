@@ -28,6 +28,7 @@ namespace tt3::db::xml
         friend class Database;
         friend class Workload;
         friend class Account;
+        friend class Activity;
         friend class PrivateActivity;
         friend class PrivateTask;
 

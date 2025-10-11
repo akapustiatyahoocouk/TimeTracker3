@@ -428,11 +428,16 @@ void Account::_validate(
     for (Activity * activity : _quickPicksList)
     {
         if (activity == nullptr ||
-            activity->_database != this->_database || !activity->_isLive)
+            activity->_database != this->_database ||
+            !activity->_isLive)
         {   //  OOPS! We don't check for a back link - the
             //  "quick pick list" is a uni-directional association
             throw tt3::db::api::DatabaseCorruptException(_database->_address);
         }
+    }
+    if (Activities(_quickPicksList.cbegin(), _quickPicksList.cend()).size() != _quickPicksList.size())
+    {   //  OOPS! Duplicates detected!
+        throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }
 }
 

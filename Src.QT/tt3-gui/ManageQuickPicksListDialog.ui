@@ -463,5 +463,92 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>publicActivitiesTreeWidget</sender>
+   <signal>itemChanged(QTreeWidgetItem*,int)</signal>
+   <receiver>tt3::gui::ManageQuickPicksListDialog</receiver>
+   <slot>_publicActivitiesTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>332</x>
+     <y>178</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>332</x>
+     <y>300</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>publicTasksTreeWidget</sender>
+   <signal>itemChanged(QTreeWidgetItem*,int)</signal>
+   <receiver>tt3::gui::ManageQuickPicksListDialog</receiver>
+   <slot>_publicTasksTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>332</x>
+     <y>178</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>332</x>
+     <y>300</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>privateActivitiesTreeWidget</sender>
+   <signal>itemChanged(QTreeWidgetItem*,int)</signal>
+   <receiver>tt3::gui::ManageQuickPicksListDialog</receiver>
+   <slot>_privateActivitiesTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>332</x>
+     <y>178</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>332</x>
+     <y>300</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>privateTasksTreeWidget</sender>
+   <signal>itemChanged(QTreeWidgetItem*,int)</signal>
+   <receiver>tt3::gui::ManageQuickPicksListDialog</receiver>
+   <slot>_privateTasksTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>332</x>
+     <y>178</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>332</x>
+     <y>300</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>quickPicksListWidget</sender>
+   <signal>currentRowChanged(int)</signal>
+   <receiver>tt3::gui::ManageQuickPicksListDialog</receiver>
+   <slot>_quickPicksListWidgetCurrentRowChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>332</x>
+     <y>392</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>332</x>
+     <y>300</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>_publicActivitiesTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
+  <slot>_publicTasksTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
+  <slot>_privateActivitiesTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
+  <slot>_privateTasksTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
+  <slot>_quickPicksListWidgetCurrentRowChanged(int)</slot>
+ </slots>
 </ui>

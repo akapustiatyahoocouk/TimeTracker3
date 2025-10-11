@@ -27,6 +27,7 @@ namespace tt3::db::xml
 
         friend class Database;
         friend class User;
+        friend class Activity;
         friend class Work;
 
         //////////

@@ -342,7 +342,7 @@ void SelectPrivateTaskParentDialog::_privateTasksTreeWidgetItemChanged(
             item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PrivateTask>();
         if (item->checkState(0) == Qt::Checked &&
             privateTask != _selectedParentTask)
-        {   //  Item is mewly "checked" - select as "parent"
+        {   //  Item is newly "checked" - select as "parent"
             _selectedParentTask = privateTask;
             _setSelectedPrivateTask(privateTask);
         }

@@ -76,12 +76,22 @@ namespace tt3::gui
                             );
 
         //  Helpers
+        using _ActivityExtractor = std::function<tt3::ws::Activity(QTreeWidgetItem*)>;
         void            _clearAndDisableAllControls();
         void            _refillPublicActivitiesTree();
         void            _refillPublicTasksTree();
         void            _refillPrivateActivitiesTree();
         void            _refillPrivateTasksTree();
+        void            _refillQuickPicksListWidget();
         void            _refresh();
+        void            _refreshCheckMarks(
+                                QTreeWidget * treeWidget,
+                                _ActivityExtractor fn
+                            );
+        void            _refreshCheckMarks(
+                                QTreeWidgetItem * item,
+                                _ActivityExtractor fn
+                            );
 
         //  Drawing resources
         TreeWidgetDecorations   _decorations;
@@ -94,6 +104,11 @@ namespace tt3::gui
         //////////
         //  Signal handlers
     private slots:
+        void            _publicActivitiesTreeWidgetItemChanged(QTreeWidgetItem * item, int);
+        void            _publicTasksTreeWidgetItemChanged(QTreeWidgetItem * item, int);
+        void            _privateActivitiesTreeWidgetItemChanged(QTreeWidgetItem * item, int);
+        void            _privateTasksTreeWidgetItemChanged(QTreeWidgetItem * item, int);
+        void            _quickPicksListWidgetCurrentRowChanged(int);
         void            accept() override;
         void            reject() override;
     };
