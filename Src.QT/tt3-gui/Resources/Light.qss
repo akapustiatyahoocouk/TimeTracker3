@@ -133,7 +133,7 @@ QPushButton{
 	border-top-color: rgb(180,180,180);
 	border-style: solid;
 	padding: 4px;
-	background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(220, 220, 220, 255), stop:1 rgba(255, 255, 255, 255));
+    background-color: rgb(220,220,220);
 }
 QPushButton:hover{
 	color:rgb(17,17,17);
@@ -145,7 +145,7 @@ QPushButton:hover{
 	border-bottom-color: rgb(200,70,20);
 	border-style: solid;
 	padding: 2px;
-	background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(220, 220, 220, 255), stop:1 rgba(255, 255, 255, 255));
+    background-color: rgb(220,220,220);
 }
 QPushButton:default{
 	color:rgb(17,17,17);
@@ -157,7 +157,7 @@ QPushButton:default{
 	border-bottom-color: rgb(200,70,20);
 	border-style: solid;
 	padding: 2px;
-	background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(220, 220, 220, 255), stop:1 rgba(255, 255, 255, 255));
+    background-color: rgb(220,220,220);
 }
 QPushButton:pressed{
 	color:rgb(17,17,17);
@@ -170,13 +170,13 @@ QPushButton:pressed{
 	border-bottom-color: rgba(200,70,20,200);
 	border-style: solid;
 	padding: 2px;
-	background-color: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(220, 220, 220, 255), stop:1 rgba(255, 255, 255, 255));
+    background-color: rgb(220,220,220);
 }
 QPushButton:disabled{
 	color:rgb(174,167,159);
 	border-width: 1px;
 	border-radius: 6px;
-	background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(200, 200, 200, 255), stop:1 rgba(230, 230, 230, 255));
+    background-color: rgb(200,200,200);
 }
 QRadioButton {
 	padding: 1px;
