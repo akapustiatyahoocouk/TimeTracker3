@@ -111,6 +111,12 @@ namespace tt3::gui
             ///     True if the Project Manager widget shall display
             ///     completed Projects (false to hide them).
             tt3::util::Setting<bool>    showCompletedProjects;
+
+            //////////
+            //  Properties (dialogs)
+            /// \brief
+            ///     The "current" tab in the ManageQuickPicksListDialog.
+            tt3::util::Setting<int>     manageQuickPicksListDialogTab;
         };
 
         //////////

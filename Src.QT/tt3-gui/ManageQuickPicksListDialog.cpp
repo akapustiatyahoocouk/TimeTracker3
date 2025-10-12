@@ -51,6 +51,9 @@ ManageQuickPicksListDialog::ManageQuickPicksListDialog(
     _refillPrivateTasksTree();
     _refillQuickPicksListWidget();
 
+    _ui->tasksTabWidget->setCurrentIndex(
+        Component::Settings::instance()->manageQuickPicksListDialogTab);
+
     //  Done
     _refresh();
     adjustSize();
@@ -584,11 +587,15 @@ void ManageQuickPicksListDialog::_removePushButtonClicked()
 
 void ManageQuickPicksListDialog::accept()
 {
+    Component::Settings::instance()->manageQuickPicksListDialogTab =
+        _ui->tasksTabWidget->currentIndex();
     done(int(Result::Ok));
 }
 
 void ManageQuickPicksListDialog::reject()
 {
+    Component::Settings::instance()->manageQuickPicksListDialogTab =
+        _ui->tasksTabWidget->currentIndex();
     done(int(Result::Cancel));
 }
 

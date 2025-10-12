@@ -102,7 +102,9 @@ Component::Settings::Settings()
         showDisabledUsersAndAccounts(this, M(ShowDisabledUsersAndAccounts), true),
         showCompletedPublicTasks(this, M(ShowCompletedPublicTasks), true),
         showCompletedPrivateTasks(this, M(ShowCompletedPrivateTasks), true),
-        showCompletedProjects(this, M(ShowCompletedProjects), true)
+        showCompletedProjects(this, M(ShowCompletedProjects), true),
+        //  Properties (dialogs)
+        manageQuickPicksListDialogTab(this, M(ManageQuickPicksListDialogTab), 0)
 {
 }
 
