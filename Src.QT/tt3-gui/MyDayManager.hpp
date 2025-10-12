@@ -122,9 +122,13 @@ namespace tt3::gui
         //  Controls
     private:
         Ui::MyDayManager *const _ui;
+        QTimer          _refreshTimer;
         //  Dynamic controls
         QList<tt3::ws::Activity>    _quickPicksList;
         QList<QPushButton*> _quickPicksButtons; //  parallel to _quickPicksButtons
+
+        //  Drawing resources
+        PushButtonDecorations   _pushButtonDecorations;
 
         //////////
         //  Signal handlers
@@ -137,8 +141,10 @@ namespace tt3::gui
         void            _refreshRequested();
         void            _quickPicksPushButtonClicked();
         void            _logEventPushButtonClicked();
+        void            _quickPickPushButtonClicked();
+        void            _refreshTimerTimeout();
+        void            _currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity);
     };
 }
 
 //  End of tt3-gui/MyDayManager.hpp
-

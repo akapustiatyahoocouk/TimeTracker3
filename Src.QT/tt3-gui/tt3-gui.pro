@@ -82,6 +82,7 @@ SOURCES += \
     ProjectManager.cpp \
     PublicActivityManager.cpp \
     PublicTaskManager.cpp \
+    PushButtonDecorations.cpp \
     SelectPrivateTaskParentDialog.cpp \
     SelectProjectParentDialog.cpp \
     SelectPublicTaskParentDialog.cpp \
