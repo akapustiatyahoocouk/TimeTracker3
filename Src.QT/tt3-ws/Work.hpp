@@ -39,10 +39,6 @@ namespace tt3::ws
         //////////
         //  Operations (properties)
     public:
-
-        //////////
-        //  Operations (properties)
-    public:
         /// \brief
         ///     Returns the UTC date+time when this unit of work
         ///     was started.

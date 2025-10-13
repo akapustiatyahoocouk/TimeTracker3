@@ -163,6 +163,18 @@ namespace tt3::ws
                             const QList<Activity> & quickPicksList
                         );
 
+        /// \brief
+        ///     Returns the set of all Works logged by this Account.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all Works logged by this Account.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        works(
+                            const Credentials & credentials
+                        ) const -> Works;
+
         //////////
         //  Operations (life cycle)
     public:

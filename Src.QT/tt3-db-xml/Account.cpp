@@ -262,7 +262,11 @@ void Account::setQuickPicksList(
 auto Account::works(
     ) const -> tt3::db::api::Works
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return tt3::db::api::Works(_works.cbegin(), _works.cend());
 }
 
 auto Account::events(

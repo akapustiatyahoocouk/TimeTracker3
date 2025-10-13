@@ -34,6 +34,8 @@ MyDayManager::MyDayManager(
         //  Implementation
         _workspace(theCurrentWorkspace),
         _credentials(theCurrentCredentials),
+        //  View model
+        _myDayModel(new _MyDayModelImpl()),
         //  Controls
         _ui(new Ui::MyDayManager),
         _refreshTimer(this)
@@ -50,6 +52,9 @@ MyDayManager::MyDayManager(
     _ui->filterComboBox->addItem("last 3 days", QVariant::fromValue(3));
     _ui->filterComboBox->addItem("last 7 days", QVariant::fromValue(7));
     _ui->filterComboBox->addItem("last 30 days", QVariant::fromValue(30));
+
+    //  Populate the ",my day" view area
+    _myDayModel = _createMyDayModel();
 
     //  Theme change means widget decorations change
     connect(&theCurrentTheme,
@@ -106,6 +111,7 @@ void MyDayManager::setWorkspace(tt3::ws::Workspace workspace)
         _workspace = workspace;
         _startListeningToWorkspaceChanges();
         _recreateDynamicControls();
+        _myDayModel = _createMyDayModel();
         requestRefresh();
     }
 }
@@ -121,6 +127,7 @@ void MyDayManager::setCredentials(const tt3::ws::Credentials & credentials)
     {
         _credentials = credentials;
         _recreateDynamicControls();
+        _myDayModel = _createMyDayModel();
         requestRefresh();
     }
 }
@@ -168,6 +175,8 @@ void MyDayManager::refresh()
             qCritical() << ex.errorMessage();
             _ui->logEventPushButton->setEnabled(false);
         }
+
+        _refreslLogList();
 
         //  TODO finish the implementation
 
@@ -231,6 +240,154 @@ void MyDayManager::requestRefresh()
 }
 
 //////////
+//  View model
+MyDayManager::_MyDayModel MyDayManager::_createMyDayModel()
+{
+    _MyDayModel myDayModel { new _MyDayModelImpl() };
+    if (_workspace != nullptr)
+    {
+        try
+        {
+            tt3::ws::Account account = _workspace->login(_credentials); //  may throw
+            for (tt3::ws::Work work : account->works(_credentials)) //  may throw
+            {
+                try
+                {
+                    myDayModel->itemModels.append(_createWorkModel(work));  //  may throw
+                }
+                catch (const tt3::util::Exception & ex)
+                {   //  OOPS! Log, but ignore
+                    qCritical() << ex.errorMessage();
+                }
+            }
+            //  If there is a "current" activity add its item
+            if (theCurrentActivity != nullptr)
+            {
+                myDayModel->itemModels.append(
+                    _CurrentActivityModel(
+                        new _CurrentActivityModelImpl(
+                            theCurrentActivity,
+                            theCurrentActivity.lastChangedAt().toLocalTime(),
+                            theCurrentActivity->displayName(_credentials),  //  may throw
+                            theCurrentActivity->type()->smallIcon())));     //  may throw
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            qCritical() << ex.errorMessage();
+            myDayModel->itemModels.clear();
+            //  TODO add a single "error" _ItemModel
+        }
+    }
+    _breakLongWorks(myDayModel);
+    _addDateIndicators(myDayModel);
+    _sortChronologically(myDayModel);
+    qDebug() << "==========";
+    for (auto itemModel : myDayModel->itemModels)
+    {
+        qDebug() << itemModel->toString();
+    }
+    return myDayModel;
+}
+
+MyDayManager::_WorkModel MyDayManager::_createWorkModel(tt3::ws::Work work)
+{
+    _WorkModel workModel
+        { new _WorkModelImpl(
+            work,
+            work->startedAt(_credentials).toLocalTime(),            //  may throw
+            work->finishedAt(_credentials).toLocalTime(),           //  may throw
+            work->activity(_credentials)->displayName(_credentials),//  may throw
+            work->activity(_credentials)->type()->smallIcon()) };   //  may throw
+    return workModel;
+}
+
+void MyDayManager::_breakLongWorks(_MyDayModel myDayModel)
+{
+    for (int i = 0; i < myDayModel->itemModels.size(); i++)
+    {
+        if (_WorkModel workModel = std::dynamic_pointer_cast<_WorkModelImpl>(myDayModel->itemModels[i]))
+        {
+            QDate startedOn = workModel->startedAt().date();
+            QDate finishedOn = workModel->finishedAt().date();
+            if (startedOn < finishedOn)
+            {   //  Limit to "startedOn" date, splitting the rest of the
+                //  work into the next date
+                QDateTime headStartedAt = workModel->startedAt();
+                QDateTime headFinishedAt(startedOn, QTime(23, 59, 59, 999));
+                _WorkModel head
+                    { new _WorkModelImpl(
+                        workModel->work(),
+                        headStartedAt,
+                        headFinishedAt,
+                        workModel->displayName(),
+                        workModel->icon()) };
+                QDateTime tailStartedAt(startedOn.addDays(1), QTime(0, 0));
+                QDateTime tailFinishedAt = workModel->finishedAt();
+                _WorkModel tail
+                    { new _WorkModelImpl(
+                        workModel->work(),
+                        tailStartedAt,
+                        tailFinishedAt,
+                        workModel->displayName(),
+                        workModel->icon())};
+                myDayModel->itemModels[i] = head;
+                myDayModel->itemModels.insert(i + 1, tail);
+            }
+        }
+    }
+}
+
+void MyDayManager::_addDateIndicators(_MyDayModel myDayModel)
+{
+    if (myDayModel->itemModels.isEmpty())
+    {   //  Nothing to do
+        return;
+    }
+    QDate today = QDateTime::currentDateTime().date();
+    QDate minDate = myDayModel->itemModels[0]->startedAt().date();
+    QDate maxDate = myDayModel->itemModels[0]->finishedAt().date();
+    QSet<QDate> datesWithWorks;
+    for (int i = 0; i < myDayModel->itemModels.size(); i++)
+    {
+        minDate = qMin(minDate, myDayModel->itemModels[i]->startedAt().date());
+        maxDate = qMax(maxDate, myDayModel->itemModels[i]->finishedAt().date());
+        datesWithWorks.insert(minDate);
+        datesWithWorks.insert(maxDate);
+    }
+    if (minDate == maxDate)
+    {   //  We need at most one date indicator...
+        if (minDate == today)
+        {   //  ...which is optional
+            return;
+        }
+        myDayModel->itemModels.append(
+            _DateModel(new _DateModelImpl(minDate)));
+        return;
+    }
+    Q_ASSERT(minDate < maxDate);
+    for (QDate d = minDate; d <= maxDate; d = d.addDays(1))
+    {
+        if (datesWithWorks.contains(d))
+        {
+            myDayModel->itemModels.append(
+                _DateModel(new _DateModelImpl(d)));
+        }
+    }
+}
+
+void MyDayManager::_sortChronologically(_MyDayModel myDayModel)
+{
+    std::sort(
+        myDayModel->itemModels.begin(),
+        myDayModel->itemModels.end(),
+        [](auto a, auto b)
+        {   //  We need REVERSE sorting!
+            return a->startedAt() > b->startedAt();
+        });
+}
+
+//////////
 //  Implementation helpers
 void MyDayManager::_startListeningToWorkspaceChanges()
 {
@@ -288,6 +445,7 @@ void MyDayManager::_clearAndDisableAllControls()
     _ui->filterLabel->setEnabled(false);
     _ui->filterComboBox->setEnabled(false);
     _ui->logEventPushButton->setEnabled(false);
+    _myDayModel->clear();
     //  TODO finish the implementation
 }
 
@@ -356,6 +514,23 @@ void MyDayManager::_recreateDynamicControls()
     _recreateQuickPickButtons();
 }
 
+void MyDayManager::_refreslLogList()
+{
+    while (_ui->logListWidget->count() < _myDayModel->itemModels.size())
+    {   //  Too few items in the log list
+        _ui->logListWidget->addItem(new QListWidgetItem());
+    }
+    while (_ui->logListWidget->count() > _myDayModel->itemModels.size())
+    {   //  Too many items in the log list
+        delete _ui->logListWidget->takeItem(_ui->logListWidget->count() - 1);
+    }
+    for (int i = 0; i < _myDayModel->itemModels.size(); i++)
+    {
+        _ui->logListWidget->item(i)->setText(_myDayModel->itemModels[i]->toString());
+        _ui->logListWidget->item(i)->setIcon(_myDayModel->itemModels[i]->icon());
+    }
+}
+
 //////////
 //  Signal handlers
 void MyDayManager::_currentThemeChanged(ITheme *, ITheme *)
@@ -367,24 +542,28 @@ void MyDayManager::_currentThemeChanged(ITheme *, ITheme *)
 void MyDayManager::_workspaceClosed(tt3::ws::WorkspaceClosedNotification /*notification*/)
 {
     _recreateDynamicControls();
+    _myDayModel = _createMyDayModel();
     requestRefresh();
 }
 
 void MyDayManager::_objectCreated(tt3::ws::ObjectCreatedNotification /*notification*/)
 {
     _recreateDynamicControls();
+    _myDayModel = _createMyDayModel();
     requestRefresh();
 }
 
 void MyDayManager::_objectDestroyed(tt3::ws::ObjectDestroyedNotification /*notification*/)
 {
     _recreateDynamicControls();
+    _myDayModel = _createMyDayModel();
     requestRefresh();
 }
 
 void MyDayManager::_objectModified(tt3::ws::ObjectModifiedNotification /*notification*/)
 {
     _recreateDynamicControls();
+    _myDayModel = _createMyDayModel();
     requestRefresh();
 }
 
@@ -441,6 +620,7 @@ void MyDayManager::_refreshTimerTimeout()
 
 void MyDayManager::_currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity)
 {
+    _myDayModel = _createMyDayModel();
     requestRefresh();
 }
 

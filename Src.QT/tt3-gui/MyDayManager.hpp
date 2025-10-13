@@ -111,12 +111,162 @@ namespace tt3::gui
         tt3::ws::Workspace      _workspace;
         tt3::ws::Credentials    _credentials;
 
+        //  View model
+        struct _MyDayModelImpl;
+        struct _ItemModelImpl;
+        struct _WorkModelImpl;
+        struct _EventModelImpl;
+        struct _CurrentActivityModelImpl;
+        struct _DateModelImpl;
+
+        using _MyDayModel = std::shared_ptr<_MyDayModelImpl>;
+        using _ItemModel = std::shared_ptr<_ItemModelImpl>;
+        using _WorkModel = std::shared_ptr<_WorkModelImpl>;
+        using _EventModel = std::shared_ptr<_EventModelImpl>;
+        using _CurrentActivityModel = std::shared_ptr<_CurrentActivityModelImpl>;
+        using _DateModel = std::shared_ptr<_DateModelImpl>;
+
+        using _ItemModels = QList<_ItemModel>;
+
+        struct TT3_GUI_PUBLIC _MyDayModelImpl
+        {
+            //  Associations
+            _ItemModels         itemModels; //  youngest first, oldest last
+            //  Operations
+            void                clear()
+            {
+                itemModels.clear();
+            }
+        };
+
+        struct TT3_GUI_PUBLIC _ItemModelImpl
+        {
+            virtual ~_ItemModelImpl() = default;
+
+            virtual QDateTime   startedAt() const = 0;  //  LOCAL TIME!
+            virtual QDateTime   finishedAt() const = 0; //  LOCAL TIME!
+            virtual QString     displayName() const = 0;
+            virtual QIcon       icon() const = 0;
+            virtual QString     toString() const = 0;
+        };
+
+        struct TT3_GUI_PUBLIC _WorkModelImpl : public _ItemModelImpl
+        {
+            _WorkModelImpl(
+                    tt3::ws::Work work,
+                    const QDateTime & startedAt,
+                    const QDateTime & finishedAt,
+                    const QString & displayName,
+                    const QIcon & icon
+                ) : _work(work),
+                    _startedAt(startedAt),
+                    _finishedAt(finishedAt),
+                    _displayName(displayName),
+                    _icon(icon)
+            {}
+
+            virtual QDateTime   startedAt() const override { return _startedAt; }
+            virtual QDateTime   finishedAt() const override { return _finishedAt; }
+            virtual QString     displayName() const override { return _displayName; }
+            virtual QIcon       icon() const override { return _icon; }
+
+            virtual QString     toString() const override
+            {
+                return "[" +
+                       _startedAt.time().toString() +
+                       ".." +
+                       _finishedAt.time().toString() +
+                       "] " +
+                       _displayName;
+            }
+            tt3::ws::Work       work() const { return _work; }
+
+        private:
+            const tt3::ws::Work _work;
+            const QDateTime     _startedAt;     //  LOCAL TIME!
+            const QDateTime     _finishedAt;    //  LOCAL TIME!
+            const QString       _displayName;
+            const QIcon         _icon;
+        };
+
+        struct TT3_GUI_PUBLIC _CurrentActivityModelImpl : public _ItemModelImpl
+        {
+            _CurrentActivityModelImpl(
+                    tt3::ws::Activity activity,
+                    const QDateTime & startedAt,
+                    const QString & displayName,
+                    const QIcon & icon
+                ) : _activity(activity),
+                    _startedAt(startedAt),
+                    _displayName(displayName),
+                    _icon(icon)
+            {}
+
+            virtual QDateTime   startedAt() const override { return _startedAt; }
+            virtual QDateTime   finishedAt() const override { return QDateTime::currentDateTime(); }
+            virtual QString     displayName() const override { return _displayName; }
+            virtual QIcon       icon() const override { return _icon; }
+
+            virtual QString     toString() const override
+            {   //  TODO we want the text in BOLD
+                qint64 secs = qMax(0, _startedAt.secsTo(QDateTime::currentDateTime()));
+                char s[32];
+                sprintf(s, "%d:%02d:%02d",
+                        int(secs / (60 * 60)),
+                        int((secs / 60) % 60),
+                        int(secs % 60));
+                return "[" +
+                       _startedAt.time().toString() +
+                       "..present, " +
+                       s + "] " +
+                       _displayName;
+            }
+        private:
+            const tt3::ws::Activity _activity;
+            const QDateTime     _startedAt;     //  LOCAL TIME!
+            const QString       _displayName;
+            const QIcon         _icon;
+        };
+
+        struct TT3_GUI_PUBLIC _DateModelImpl : public _ItemModelImpl
+        {
+            _DateModelImpl(const QDate & date)
+                :   _date(date),
+                    _occurredAt(date, QTime(23, 59, 59, 999))   //  sort in reverse
+            {}
+
+            virtual QDateTime   startedAt() const override { return _occurredAt; }
+            virtual QDateTime   finishedAt() const override { return _occurredAt; }
+            virtual QString     displayName() const override { return toString(); }
+            virtual QIcon       icon() const override { return _icon; }
+
+            virtual QString toString() const override
+            {
+                return "========== " + _date.toString() + " ==========";
+            }
+
+        private:
+            const QDate         _date;      //  LOCAL TIME!
+            const QDateTime     _occurredAt;//  LOCAL TIME!
+            const QIcon         _icon;
+        };
+
+        _MyDayModel     _myDayModel;    //  currently displayed
+
+        _MyDayModel     _createMyDayModel();
+        _WorkModel      _createWorkModel(tt3::ws::Work work);
+
+        void            _breakLongWorks(_MyDayModel myDayModel);
+        void            _addDateIndicators(_MyDayModel myDayModel);
+        void            _sortChronologically(_MyDayModel myDayModel);
+
         //  Helpers
         void            _startListeningToWorkspaceChanges();
         void            _stopListeningToWorkspaceChanges();
         void            _clearAndDisableAllControls();
         void            _recreateQuickPickButtons();
         void            _recreateDynamicControls();
+        void            _refreslLogList();
 
         //////////
         //  Controls
