@@ -147,6 +147,7 @@ namespace tt3::gui
             virtual QDateTime   finishedAt() const = 0; //  LOCAL TIME!
             virtual QString     displayName() const = 0;
             virtual QIcon       icon() const = 0;
+            virtual bool        isEmphasized() const { return false; }
             virtual QString     toString() const = 0;
         };
 
@@ -169,7 +170,6 @@ namespace tt3::gui
             virtual QDateTime   finishedAt() const override { return _finishedAt; }
             virtual QString     displayName() const override { return _displayName; }
             virtual QIcon       icon() const override { return _icon; }
-
             virtual QString     toString() const override
             {
                 return "[" +
@@ -206,9 +206,9 @@ namespace tt3::gui
             virtual QDateTime   finishedAt() const override { return QDateTime::currentDateTime(); }
             virtual QString     displayName() const override { return _displayName; }
             virtual QIcon       icon() const override { return _icon; }
-
+            virtual bool        isEmphasized() const { return true; }
             virtual QString     toString() const override
-            {   //  TODO we want the text in BOLD
+            {
                 qint64 secs = qMax(0, _startedAt.secsTo(QDateTime::currentDateTime()));
                 char s[32];
                 sprintf(s, "%d:%02d:%02d",
@@ -239,7 +239,6 @@ namespace tt3::gui
             virtual QDateTime   finishedAt() const override { return _occurredAt; }
             virtual QString     displayName() const override { return toString(); }
             virtual QIcon       icon() const override { return _icon; }
-
             virtual QString toString() const override
             {
                 return "========== " + _date.toString() + " ==========";
@@ -279,6 +278,7 @@ namespace tt3::gui
 
         //  Drawing resources
         PushButtonDecorations   _pushButtonDecorations;
+        ListWidgetDecorations   _listWidgetDecorations;
 
         //////////
         //  Signal handlers

@@ -232,6 +232,68 @@ namespace tt3::gui
                             const QFont & baseFont
                         );
     };
+
+    /// \class ListWidgetDecorations tt3-gui/API.hpp
+    /// \brief Decorations for a QListWidget.
+    class TT3_GUI_PUBLIC ListWidgetDecorations
+    {
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        /// \brief
+        ///     The class constructor.
+        /// \details
+        ///     Picks up initial values from app's palette.
+        ListWidgetDecorations();
+
+        /// \brief
+        ///     The class constructor.
+        /// \param listWidget
+        ///     The list widget to pick up decoration values from.
+        explicit ListWidgetDecorations(
+                QListWidget * listWidget
+            );
+
+        //  The default copy constructor, assignment and
+        //  destructors are all OK
+
+        //////////
+        //  Properties
+    public:
+        /// \brief
+        ///     The brush to use for text of "normal" list items.
+        QBrush      itemForeground;
+
+        /// \brief
+        ///     The brush to use for text of "disabled" list items.
+        QBrush      disabledItemForeground;
+
+        /// \brief
+        ///     The brush to use for text of "error" list items.
+        QBrush      errorItemForeground;
+
+        /// \brief
+        ///     The brush to use for text of "filter match" list items.
+        QBrush      filterMatchItemForeground;
+
+        /// \brief
+        ///     The font to use for text of "normal" list items.
+        QFont       itemFont;
+
+        /// \brief
+        ///     The font to use for text of "emphasized" list items (normally bold).
+        QFont       itemEmphasisFont;
+
+        //////////
+        //  Implementation
+    private:
+        //  Helpers
+        void        _initialize(
+                            const QColor & textColor,
+                            const QColor & backColor,
+                            const QFont & baseFont
+                        );
+    };
 }
 
 //  End of tt3-gui/WidgetDecorations.hpp

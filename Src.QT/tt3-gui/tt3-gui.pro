@@ -49,6 +49,7 @@ SOURCES += \
     GeneralStartupPreferences.cpp \
     GeneralStartupPreferencesEditor.cpp \
     LabelDecorations.cpp \
+    ListWidgetDecorations.cpp \
     LoginDialog.cpp \
     ManageActivityTypesDialog.cpp \
     ManageBeneficiariesDialog.cpp \

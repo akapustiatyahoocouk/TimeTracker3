@@ -42,6 +42,7 @@ MyDayManager::MyDayManager(
 {
     _ui->setupUi(this);
     _pushButtonDecorations = PushButtonDecorations(_ui->quickPicksPushButton);
+    _listWidgetDecorations = ListWidgetDecorations(_ui->logListWidget);
 
     //  Populate the "quick pick" buttons area
     _recreateDynamicControls();
@@ -282,11 +283,6 @@ MyDayManager::_MyDayModel MyDayManager::_createMyDayModel()
     _breakLongWorks(myDayModel);
     _addDateIndicators(myDayModel);
     _sortChronologically(myDayModel);
-    qDebug() << "==========";
-    for (auto itemModel : myDayModel->itemModels)
-    {
-        qDebug() << itemModel->toString();
-    }
     return myDayModel;
 }
 
@@ -528,6 +524,10 @@ void MyDayManager::_refreslLogList()
     {
         _ui->logListWidget->item(i)->setText(_myDayModel->itemModels[i]->toString());
         _ui->logListWidget->item(i)->setIcon(_myDayModel->itemModels[i]->icon());
+        _ui->logListWidget->item(i)->setFont(
+            _myDayModel->itemModels[i]->isEmphasized() ?
+                _listWidgetDecorations.itemEmphasisFont :
+                _listWidgetDecorations.itemFont);
     }
 }
 
@@ -536,6 +536,7 @@ void MyDayManager::_refreslLogList()
 void MyDayManager::_currentThemeChanged(ITheme *, ITheme *)
 {
     _pushButtonDecorations = PushButtonDecorations(_ui->quickPicksPushButton);
+    _listWidgetDecorations = ListWidgetDecorations(_ui->logListWidget);
     requestRefresh();
 }
 

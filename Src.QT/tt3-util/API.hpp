@@ -59,6 +59,7 @@
 #include <QIcon>
 #include <QLabel>
 #include <QLibrary>
+#include <QListWidget>
 #include <QMainWindow>
 #include <QMenu>
 #include <QMenuBar>

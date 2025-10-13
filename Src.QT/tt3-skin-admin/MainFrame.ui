@@ -374,9 +374,6 @@
    <property name="text">
     <string>C&amp;lose workspace</string>
    </property>
-   <property name="shortcut">
-    <string>Ctrl+L</string>
-   </property>
   </action>
   <action name="actionDestroyWorkspace">
    <property name="icon">
@@ -385,9 +382,6 @@
    </property>
    <property name="text">
     <string>&amp;Destroy workspace</string>
-   </property>
-   <property name="shortcut">
-    <string>Alt+D</string>
    </property>
   </action>
   <action name="actionRecentWorkspaces">
@@ -477,7 +471,7 @@
     <string>Manage users</string>
    </property>
    <property name="shortcut">
-    <string>Alt+1</string>
+    <string>1</string>
    </property>
   </action>
   <action name="actionManageActivityTypes">
@@ -495,7 +489,7 @@
     <string>Manage activity types</string>
    </property>
    <property name="shortcut">
-    <string>Alt+2</string>
+    <string>2</string>
    </property>
   </action>
   <action name="actionRefresh">
@@ -525,7 +519,7 @@
     <string>Manage public activities</string>
    </property>
    <property name="shortcut">
-    <string>Alt+3</string>
+    <string>3</string>
    </property>
   </action>
   <action name="actionManagePublicTasks">
@@ -543,7 +537,7 @@
     <string>Manage public tasks</string>
    </property>
    <property name="shortcut">
-    <string>Alt+4</string>
+    <string>4</string>
    </property>
   </action>
   <action name="actionManagePrivateActivities">
@@ -561,7 +555,7 @@
     <string>Manage private activities</string>
    </property>
    <property name="shortcut">
-    <string>Alt+5</string>
+    <string>5</string>
    </property>
   </action>
   <action name="actionManagePrivateTasks">
@@ -579,7 +573,7 @@
     <string>Manage private tasks</string>
    </property>
    <property name="shortcut">
-    <string>Alt+6</string>
+    <string>6</string>
    </property>
   </action>
   <action name="actionManageProjects">
@@ -597,7 +591,7 @@
     <string>Manage projects</string>
    </property>
    <property name="shortcut">
-    <string>Alt+7</string>
+    <string>7</string>
    </property>
   </action>
   <action name="actionManageWorkStreams">
@@ -615,7 +609,7 @@
     <string>Manage work streams</string>
    </property>
    <property name="shortcut">
-    <string>Alt+8</string>
+    <string>8</string>
    </property>
   </action>
   <action name="actionManageBeneficiaries">
@@ -633,7 +627,7 @@
     <string>Manage beneficiaries</string>
    </property>
    <property name="shortcut">
-    <string>Alt+9</string>
+    <string>9</string>
    </property>
   </action>
   <action name="actionManageMyDay">
@@ -651,7 +645,7 @@
     <string>Manage my day</string>
    </property>
    <property name="shortcut">
-    <string>Alt+0</string>
+    <string>0</string>
    </property>
   </action>
  </widget>
