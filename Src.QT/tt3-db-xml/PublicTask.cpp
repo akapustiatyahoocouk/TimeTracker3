@@ -282,6 +282,17 @@ PublicTask * PublicTask::_findChild(
     return nullptr;
 }
 
+void PublicTask::_collectParentClosure(PublicTasks & closure)
+{
+    Q_ASSERT(_database->_guard.isLockedByCurrentThread());
+
+    closure.insert(this);
+    if (_parent != nullptr && !closure.contains(_parent))
+    {
+        _parent->_collectParentClosure(closure);
+    }
+}
+
 //////////
 //  Serialization
 void PublicTask::_serializeProperties(
@@ -373,7 +384,13 @@ void PublicTask::_validate(
         {   //  OOPS!
             throw tt3::db::api::DatabaseCorruptException(_database->_address);
         }
-        //  TODO there must be no parent/child loops
+        //  There must be no parent/child loops
+        PublicTasks parentClosure;
+        _parent->_collectParentClosure(parentClosure);
+        if (parentClosure.contains(this))
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
     }
     for (PublicTask * child : _children)
     {

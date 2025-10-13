@@ -87,10 +87,10 @@ namespace tt3::db::xml
         //  Cache of known database addresses
         tt3::util::Mutex    _databaseAddressesGuard;
         QMap<QString, DatabaseAddress*> _databaseAddresses; //  key == full path
-        //  TODO how do we recycle Old DatabaseAddress instances ? Queue of Olds ?
 
         //  The "dead" database, which adopts all still-referenced
-        //  objects from the deleted Database instances
+        //  objects from the deleted Database instances until their
+        //  reference counts drop to zero
         DatabaseAddress *const  _deadDatabaseAddress;
         Database *const         _deadDatabase;
     };

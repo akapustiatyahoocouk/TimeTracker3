@@ -404,7 +404,7 @@ auto AccountImpl::createEvent(
         if (clientCapabilities.contains(Capability::Administrator))
         {   //  can log Events for any account/activity
         }
-        else if (clientCapabilities.contains(Capability::LogWork))
+        else if (clientCapabilities.contains(Capability::LogEvents))
         {   //  Can log Events aganst public Activities/Tasks and
             //  caller's own private Activities/Tasks
             tt3::db::api::IAccount * callerAccount =

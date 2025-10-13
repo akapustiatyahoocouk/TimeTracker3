@@ -74,6 +74,7 @@ namespace tt3::db::xml
         virtual bool    _siblingExists(const QString & displayName) const override;
         virtual void    _makeDead() override;
         PublicTask *    _findChild(const QString & displayName) const;
+        void            _collectParentClosure(PublicTasks & closure);
 
         //////////
         //  Serialization

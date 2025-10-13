@@ -140,14 +140,28 @@ auto DatabaseType::parseDatabaseAddress(
     {   //  An instance already exists
         databaseAddress = _databaseAddresses[path];
         if (databaseAddress->_state == DatabaseAddress::State::Old)
-        {   //  An instance is Old, but a client just
-            //  expressed interest in it, so promote
-            //  it to New
+        {   //  An instance is Old, but a client just expressed
+            //  interest in it, so promote it to New (recount == 0 for both)
+            Q_ASSERT(databaseAddress->_referenceCount == 0);
             databaseAddress->_state = DatabaseAddress::State::New;
         }
     }
     else
-    {   //  Need a new instance
+    {   //  Need a new instance...
+        QSet<QString> pathsToRelease;
+        for (auto [path, address] : _databaseAddresses.asKeyValueRange())
+        {
+            if (address->_state == DatabaseAddress::State::Old)
+            {   //  Release this one!
+                pathsToRelease.insert(path);
+            }
+        }
+        for (QString path : pathsToRelease)
+        {
+            delete _databaseAddresses[path];
+            _databaseAddresses.remove(path);
+        }
+        //  ...so create one
         databaseAddress = new DatabaseAddress(path);
         Q_ASSERT(databaseAddress->_referenceCount == 0 &&
                  databaseAddress->_state == DatabaseAddress::State::New);

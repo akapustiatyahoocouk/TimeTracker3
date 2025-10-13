@@ -272,6 +272,17 @@ Project * Project::_findChild(
     return nullptr;
 }
 
+void Project::_collectParentClosure(Projects & closure)
+{
+    Q_ASSERT(_database->_guard.isLockedByCurrentThread());
+
+    closure.insert(this);
+    if (_parent != nullptr && !closure.contains(_parent))
+    {
+        _parent->_collectParentClosure(closure);
+    }
+}
+
 //////////
 //  Serialization
 void Project::_serializeProperties(
@@ -361,7 +372,13 @@ void Project::_validate(
         {   //  OOPS!
             throw tt3::db::api::DatabaseCorruptException(_database->_address);
         }
-        //  TODO there must be no parent/child loops
+        //  There must be no parent/child loops
+        Projects parentClosure;
+        _parent->_collectParentClosure(parentClosure);
+        if (parentClosure.contains(this))
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
     }
     for (Project * child : _children)
     {
