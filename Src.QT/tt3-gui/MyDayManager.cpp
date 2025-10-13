@@ -304,6 +304,7 @@ MyDayManager::_MyDayModel MyDayManager::_createMyDayModel()
     _breakLongWorks(myDayModel);
     _addDateIndicators(myDayModel);
     _sortChronologically(myDayModel);
+    _breakWorksOnEvents(myDayModel);
     return myDayModel;
 }
 
@@ -446,6 +447,57 @@ void MyDayManager::_sortChronologically(_MyDayModel myDayModel)
                 return false;
             }
         });
+}
+
+void MyDayManager::_breakWorksOnEvents(_MyDayModel myDayModel)
+{
+#ifdef Q_DEBUG
+    for (int i = 0; i + 1 < myDayModel->itemModels.size(); i++)
+    {
+        Q_ASSERT(myDayModel->itemModels[i]->startedAt() <= myDayModel->itemModels[i + 1]->startedAt());
+    }
+#endif
+
+    for (qsizetype i = myDayModel->itemModels.size() - 1; i > 0; i--)
+    {
+        if (_WorkModel workModel =
+            std::dynamic_pointer_cast<_WorkModelImpl>(myDayModel->itemModels[i]))
+       {    //  A WorkModel...
+            if (_EventModel eventModel =
+                std::dynamic_pointer_cast<_EventModelImpl>(myDayModel->itemModels[i - 1]))
+            {   //  ...is preceeded by EventModel...
+                Q_ASSERT(eventModel->startedAt() == eventModel->finishedAt());
+                if (eventModel->startedAt() > workModel->startedAt() &&
+                    eventModel->startedAt() < workModel->finishedAt())
+                {   //  ...which is in the middle of the WorkModel - split the
+                    //  WorkModel into two around the event
+                    QDateTime headStartedAt = workModel->startedAt();
+                    QDateTime headFinishedAt = eventModel->startedAt();
+                    _WorkModel head =
+                        std::make_shared<_WorkModelImpl>(
+                            workModel->work(),
+                            headStartedAt,
+                            headFinishedAt,
+                            workModel->displayName(),
+                            workModel->icon(),
+                            workModel->tooltip());
+                    QDateTime tailStartedAt = eventModel->finishedAt();
+                    QDateTime tailFinishedAt = workModel->finishedAt();
+                    _WorkModel tail =
+                        std::make_shared<_WorkModelImpl>(
+                            workModel->work(),
+                            tailStartedAt,
+                            tailFinishedAt,
+                            workModel->displayName(),
+                            workModel->icon(),
+                            workModel->tooltip());
+                    myDayModel->itemModels[i] = head;
+                    myDayModel->itemModels.insert(i - 1, tail);
+                    //  Skip over the new "tail" at [i] and keep going
+                }
+            }
+        }
+    }
 }
 
 //////////
@@ -668,7 +720,24 @@ void MyDayManager::_quickPicksPushButtonClicked()
 
 void MyDayManager::_logEventPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    EnterCommentDialog dlg(this, _workspace);
+    if (dlg.doModal() == EnterCommentDialog::Result::Ok)
+    {
+        try
+        {
+            tt3::ws::Account callerAccount =
+                _workspace->login(_credentials);    //  may throw
+            callerAccount->createEvent( //  may throw
+                _credentials,
+                QDateTime::currentDateTimeUtc(),
+                dlg.comment(),
+                tt3::ws::Activities());
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & suppress
+            qCritical() << ex.errorMessage();
+        }
+    }
 }
 
 void MyDayManager::_quickPickPushButtonClicked()

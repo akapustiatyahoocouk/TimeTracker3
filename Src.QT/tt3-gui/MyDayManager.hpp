@@ -306,6 +306,7 @@ namespace tt3::gui
         void            _breakLongWorks(_MyDayModel myDayModel);
         void            _addDateIndicators(_MyDayModel myDayModel);
         void            _sortChronologically(_MyDayModel myDayModel);
+        void            _breakWorksOnEvents(_MyDayModel myDayModel);
 
         //  Helpers
         void            _startListeningToWorkspaceChanges();

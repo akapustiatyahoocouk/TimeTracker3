@@ -39,6 +39,7 @@ SOURCES += \
     EditStringDialog.cpp \
     EnterActivityStartCommentDialog.cpp \
     EnterActivityStopCommentDialog.cpp \
+    EnterCommentDialog.cpp \
     EnterTaskCompletionCommentDialog.cpp \
     ErrorDialog.cpp \
     GeneralAppearancePreferences.cpp \
@@ -132,6 +133,7 @@ HEADERS += \
     EditStringDialog.hpp \
     EnterActivityStartCommentDialog.hpp \
     EnterActivityStopCommentDialog.hpp \
+    EnterCommentDialog.hpp \
     EnterTaskCompletionCommentDialog.hpp \
     ErrorDialog.hpp \
     GeneralAppearancePreferencesEditor.hpp \

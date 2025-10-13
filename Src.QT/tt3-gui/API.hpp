@@ -104,6 +104,7 @@
 #include "tt3-gui/EnterActivityStartCommentDialog.hpp"
 #include "tt3-gui/EnterActivityStopCommentDialog.hpp"
 #include "tt3-gui/EnterTaskCompletionCommentDialog.hpp"
+#include "tt3-gui/EnterCommentDialog.hpp"
 
 #include "tt3-gui/ManageUsersDialog.hpp"
 #include "tt3-gui/ManageActivityTypesDialog.hpp"

@@ -376,11 +376,11 @@ void ModifyPublicTaskDialog::accept()
                 {
                     tt3::ws::Account callerAccount =
                         _publicTask->workspace()->login(_credentials);  //  may throw
-                    callerAccount->createEvent(
+                    callerAccount->createEvent( //  may throw
                         _credentials,
                         QDateTime::currentDateTimeUtc(),
                         completionComment + ": " + _publicTask->displayName(_credentials), //  may throw
-                        tt3::ws::Activities{_publicTask});  //  may throw
+                        tt3::ws::Activities{_publicTask});
                 }
                 catch (const tt3::util::Exception & ex)
                 {   //  OOPS! Log & suppress

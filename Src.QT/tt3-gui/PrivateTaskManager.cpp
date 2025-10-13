@@ -1052,11 +1052,11 @@ void PrivateTaskManager::_completePrivateTaskPushButtonClicked()
                 {
                     tt3::ws::Account callerAccount =
                         privateTask->workspace()->login(_credentials); //  may throw
-                    callerAccount->createEvent(
+                    callerAccount->createEvent( //  may throw
                         _credentials,
                         QDateTime::currentDateTimeUtc(),
                         completionComment + ": " +privateTask->displayName(_credentials),  //  may throw
-                        tt3::ws::Activities{privateTask});  //  may throw
+                        tt3::ws::Activities{privateTask});
                 }
                 catch (const tt3::util::Exception & ex)
                 {   //  OOPS! Log & suppress
