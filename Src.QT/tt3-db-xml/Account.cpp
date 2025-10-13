@@ -425,7 +425,11 @@ void Account::_makeDead()
         work->destroy();
     }
     Q_ASSERT(_works.isEmpty());
-    //  TODO events
+    for (Event * event : _events.values())
+    {
+        event->destroy();
+    }
+    Q_ASSERT(_events.isEmpty());
 
     //  Break associations
     _quickPicksList.clear(); //  The _quickPicksList is a one-way association

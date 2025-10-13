@@ -162,6 +162,7 @@ void MyDayManager::refresh()
             !_workspace->isReadOnly());
         _ui->filterLabel->setEnabled(true);
         _ui->filterComboBox->setEnabled(true);
+        _ui->logListWidget->setEnabled(true);
         try
         {
             _ui->logEventPushButton->setEnabled(
@@ -284,14 +285,14 @@ MyDayManager::_MyDayModel MyDayManager::_createMyDayModel()
             //  If there is a "current" activity add its item
             if (theCurrentActivity != nullptr)
             {
-                myDayModel->itemModels.append(
-                    _CurrentActivityModel(
-                        new _CurrentActivityModelImpl(
-                            theCurrentActivity,
-                            theCurrentActivity.lastChangedAt().toLocalTime(),
-                            theCurrentActivity->displayName(_credentials),  //  may throw
-                            theCurrentActivity->type()->smallIcon(),
-                            theCurrentActivity->description(_credentials))));     //  may throw
+                try
+                {
+                    myDayModel->itemModels.append(_createCurrentActivityModel());   //  may throw
+                }
+                catch (const tt3::util::Exception & ex)
+                {   //  OOPS! Log, but ignore
+                    qCritical() << ex.errorMessage();
+                }
             }
         }
         catch (const tt3::util::Exception & ex)
@@ -349,6 +350,23 @@ MyDayManager::_EventModel MyDayManager::_createEventModel(tt3::ws::Event event)
             event->type()->smallIcon(),
             tooltip);
     return eventModel;
+}
+
+auto MyDayManager::_createCurrentActivityModel(
+    ) -> _CurrentActivityModel
+{
+    QString displayName = theCurrentActivity->displayName(_credentials);  //  may throw
+    QString description = theCurrentActivity->description(_credentials).trimmed();    //  may throw
+    QString tooltip =
+        description.isEmpty() ?
+            displayName :
+            displayName + "\n\n" + description;
+    return std::make_shared<_CurrentActivityModelImpl>(
+                theCurrentActivity,
+                theCurrentActivity.lastChangedAt().toLocalTime(),
+                displayName,
+                theCurrentActivity->type()->smallIcon(),
+                tooltip);
 }
 
 void MyDayManager::_breakLongWorks(_MyDayModel myDayModel)
@@ -557,9 +575,10 @@ void MyDayManager::_clearAndDisableAllControls()
     _ui->quickPicksPushButton->setEnabled(false);
     _ui->filterLabel->setEnabled(false);
     _ui->filterComboBox->setEnabled(false);
+    _ui->logListWidget->clear();
+    _ui->logListWidget->setEnabled(false);
     _ui->logEventPushButton->setEnabled(false);
     _myDayModel->clear();
-    //  TODO finish the implementation
 }
 
 void MyDayManager::_recreateQuickPickButtons()

@@ -54,6 +54,7 @@ SOURCES += \
     LoginDialog.cpp \
     ManageActivityTypesDialog.cpp \
     ManageBeneficiariesDialog.cpp \
+    ManageMyDayDialog.cpp \
     ManagePrivateActivitiesDialog.cpp \
     ManagePrivateTasksDialog.cpp \
     ManageProjectsDialog.cpp \
@@ -143,6 +144,7 @@ HEADERS += \
     LoginDialog.hpp \
     ManageActivityTypesDialog.hpp \
     ManageBeneficiariesDialog.hpp \
+    ManageMyDayDialog.hpp \
     ManagePrivateActivitiesDialog.hpp \
     ManagePrivateTasksDialog.hpp \
     ManageProjectsDialog.hpp \
@@ -210,6 +212,7 @@ FORMS += \
     LoginDialog.ui \
     ManageActivityTypesDialog.ui \
     ManageBeneficiariesDialog.ui \
+    ManageMyDayDialog.ui \
     ManagePrivateActivitiesDialog.ui \
     ManagePrivateTasksDialog.ui \
     ManageProjectsDialog.ui \

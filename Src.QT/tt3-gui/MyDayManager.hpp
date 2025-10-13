@@ -302,6 +302,8 @@ namespace tt3::gui
         _MyDayModel     _createMyDayModel();
         _WorkModel      _createWorkModel(tt3::ws::Work work);
         _EventModel     _createEventModel(tt3::ws::Event event);
+        auto            _createCurrentActivityModel(
+                            ) -> _CurrentActivityModel;
 
         void            _breakLongWorks(_MyDayModel myDayModel);
         void            _addDateIndicators(_MyDayModel myDayModel);

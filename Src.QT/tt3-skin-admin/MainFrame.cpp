@@ -711,8 +711,12 @@ void MainFrame::_onActionManageBeneficiaries()
 }
 
 void MainFrame::_onActionManageMyDay()
-{
-    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+{   //  TODO switch to "Beneficiaries" tab instead
+    tt3::gui::ManageMyDayDialog dlg(
+        this,
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
 }
 
 void MainFrame::_onActionRefresh()

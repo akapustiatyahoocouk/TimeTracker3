@@ -115,6 +115,7 @@
 #include "tt3-gui/ManageProjectsDialog.hpp"
 #include "tt3-gui/ManageWorkStreamsDialog.hpp"
 #include "tt3-gui/ManageBeneficiariesDialog.hpp"
+#include "tt3-gui/ManageMyDayDialog.hpp"
 
 #include "tt3-gui/ManageQuickPicksListDialog.hpp"
 
