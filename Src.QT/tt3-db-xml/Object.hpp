@@ -40,6 +40,7 @@ namespace tt3::db::xml
         friend class WorkStream;
         friend class Beneficiary;
         friend class Work;
+        friend class Event;
 
         //////////
         //  Construction/destruction (from DB type only)

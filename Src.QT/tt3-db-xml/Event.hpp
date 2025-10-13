@@ -1,5 +1,5 @@
 //
-//  tt3-db-xml/Work.hpp - a work unit
+//  tt3-db-xml/Event.hpp - an event
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -17,50 +17,49 @@
 
 namespace tt3::db::xml
 {
-    /// \class Work tt3-db-xml/API.hpp
-    /// \brief A work unit in an XML database.
-    class TT3_DB_XML_PUBLIC Work final
+    /// \class Event tt3-db-xml/API.hpp
+    /// \brief An event in an XML database.
+    class TT3_DB_XML_PUBLIC Event final
         :   public Object,
-            public virtual tt3::db::api::IWork
+            public virtual tt3::db::api::IEvent
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Work)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Event)
 
         friend class Database;
         friend class Account;
-
         friend class Activity;
 
         //////////
         //  Construction/destruction (from DB type only)
     private:
-        Work(Account * account, tt3::db::api::Oid oid);
-        virtual ~Work();
+        Event(Account * account, tt3::db::api::Oid oid);
+        virtual ~Event();
 
         //////////
-        //  tt3::db::api::IWork (properties)
+        //  tt3::db::api::IEvent (properties)
     public:
-        virtual auto    startedAt(
+        virtual auto    occurredAt(
                             ) const -> QDateTime override;
-        virtual auto    finishedAt(
-                            ) const -> QDateTime override;
+        virtual auto    summary(
+                            ) const -> QString override;
 
         //////////
-        //  tt3::db::api::IWork (associations)
+        //  tt3::db::api::IEvent (associations)
     public:
         virtual auto    account(
                             ) const -> tt3::db::api::IAccount * override;
-        virtual auto    activity(
-                            ) const -> tt3::db::api::IActivity * override;
+        virtual auto    activities(
+                            ) const -> tt3::db::api::Activities override;
 
         //////////
         //  Implementation
     private:
         //  Properties
-        QDateTime       _startedAt;
-        QDateTime       _finishedAt;
+        QDateTime       _occurredAt;
+        QString         _summary;
         //  Associations
         Account *       _account;   //  counts as "reference"
-        Activity *      _activity;    //  counts as "reference"
+        Activities      _activities;//  count as "references"
 
         //  Helpers
         virtual void    _makeDead() override;

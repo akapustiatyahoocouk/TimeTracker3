@@ -385,11 +385,11 @@ bool DefaultValidator::_EventValidator::isValidOccurredAt(
     return _isValidDateTime(occurredAt);
 }
 
-bool DefaultValidator::_EventValidator::isValidComment(
-        const QString & comment
+bool DefaultValidator::_EventValidator::isValidSummary(
+        const QString & summary
     )
 {
-    return _isValidName(comment, 255);
+    return _isValidName(summary, 255);
 }
 
 //  End of tt3-db-api/DefaultValidator.cpp

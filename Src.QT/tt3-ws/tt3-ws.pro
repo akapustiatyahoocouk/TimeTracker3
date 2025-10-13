@@ -10,6 +10,7 @@ SOURCES += \
     BeneficiaryImpl.cpp \
     Component.cpp \
     Credentials.cpp \
+    EventImpl.cpp \
     Exceptions.cpp \
     ObjectImpl.cpp \
     PrincipalImpl.cpp \
@@ -37,6 +38,7 @@ HEADERS += \
     Classes.hpp \
     Components.hpp \
     Credentials.hpp \
+    Event.hpp \
     Exceptions.hpp \
     Linkage.hpp \
     Notifications.hpp \

@@ -1279,6 +1279,30 @@ Work WorkspaceImpl::_getProxy(
     return work;
 }
 
+Event WorkspaceImpl::_getProxy(
+        tt3::db::api::IEvent * dataEvent
+    ) const
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    Q_ASSERT(_isOpen);
+    Q_ASSERT(dataEvent != nullptr);
+
+    Oid oid = dataEvent->oid();
+    if (_proxyCache.contains(oid))
+    {
+        Event event = std::dynamic_pointer_cast<EventImpl>(_proxyCache[oid]);
+        Q_ASSERT(event != nullptr);   //  Objects do not change their types OR reuse OIDs
+        return event;
+    }
+    //  Must create a new proxy
+    Workspace workspace = _address->_workspaceType->_mapWorkspace(const_cast<WorkspaceImpl*>(this));
+    Event event(
+        new EventImpl(workspace, dataEvent),
+        [](EventImpl * p) { delete p; });
+    _proxyCache.insert(oid, event);
+    return event;
+}
+
 //////////
 //  Event handlers
 void WorkspaceImpl::_onDatabaseClosed(tt3::db::api::DatabaseClosedNotification notification)

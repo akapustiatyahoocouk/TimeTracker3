@@ -37,7 +37,8 @@ ManageQuickPicksListDialog::ManageQuickPicksListDialog(
 
     _ui->setupUi(this);
 
-    _decorations = TreeWidgetDecorations(_ui->publicTasksTreeWidget);
+    _treeWidgetDecorations = TreeWidgetDecorations(_ui->publicTasksTreeWidget);
+    _listWidgetDecorations = ListWidgetDecorations(_ui->quickPicksListWidget);
 
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
@@ -161,11 +162,11 @@ void ManageQuickPicksListDialog::_refillPublicActivitiesTree()
 {
     PublicActivityManager::_WorkspaceModel workspaceModel =
         PublicActivityManager::_createWorkspaceModel(
-        _account->workspace(), _credentials, _decorations);
+        _account->workspace(), _credentials, _treeWidgetDecorations);
     QString filter = _ui->publicActivitiesFilterLineEdit->text().trimmed();
     if (!filter.isEmpty())
     {
-        PublicActivityManager::_filterItems(workspaceModel, filter, _decorations);
+        PublicActivityManager::_filterItems(workspaceModel, filter, _treeWidgetDecorations);
     }
     PublicActivityManager::_refreshWorkspaceTree(
         _ui->publicActivitiesTreeWidget,
@@ -183,12 +184,12 @@ void ManageQuickPicksListDialog::_refillPublicTasksTree()
 {
     PublicTaskManager::_WorkspaceModel workspaceModel =
         PublicTaskManager::_createWorkspaceModel(
-            _account->workspace(), _credentials, _decorations);
+            _account->workspace(), _credentials, _treeWidgetDecorations);
     PublicTaskManager::_removeCompletedItems(workspaceModel, _credentials);
     QString filter = _ui->publicTasksFilterLineEdit->text().trimmed();
     if (!filter.isEmpty())
     {
-        PublicTaskManager::_filterItems(workspaceModel, filter, _decorations);
+        PublicTaskManager::_filterItems(workspaceModel, filter, _treeWidgetDecorations);
     }
     PublicTaskManager::_refreshWorkspaceTree(
         _ui->publicTasksTreeWidget,
@@ -207,11 +208,11 @@ void ManageQuickPicksListDialog::_refillPrivateActivitiesTree()
 {
     PrivateActivityManager::_UserModel userModel =
         PrivateActivityManager::_createUserModel(
-            _account->user(_credentials), _credentials, _decorations);  //  TODO may throw
+            _account->user(_credentials), _credentials, _treeWidgetDecorations);  //  TODO may throw
     QString filter = _ui->privateActivitiesFilterLineEdit->text().trimmed();
     if (!filter.isEmpty())
     {
-        PrivateActivityManager::_filterItems(userModel, filter, _decorations);
+        PrivateActivityManager::_filterItems(userModel, filter, _treeWidgetDecorations);
     }
     _refreshWorkspaceTree(userModel);
 
@@ -227,13 +228,13 @@ void ManageQuickPicksListDialog::_refillPrivateTasksTree()
 {
     PrivateTaskManager::_UserModel userModel =
         PrivateTaskManager::_createUserModel(
-            _account->user(_credentials), _credentials, _decorations);
+            _account->user(_credentials), _credentials, _treeWidgetDecorations);
     PrivateTaskManager::_removeCompletedItems(userModel, _credentials);
     QString filter = _ui->privateTasksFilterLineEdit->text().trimmed();
     if (!filter.isEmpty())
     {
         PrivateTaskManager::_filterItems(
-            userModel, filter, _decorations);
+            userModel, filter, _treeWidgetDecorations);
     }
     _refreshWorkspaceTree(userModel);
     //  TODO expand all ?
@@ -266,13 +267,26 @@ void ManageQuickPicksListDialog::_refillQuickPicksListWidget()
         QListWidgetItem * item = _ui->quickPicksListWidget->item(i);
         try
         {
-            item->setText(_quickPicksList[i]->displayName(_credentials));   //  may throw
-            item->setIcon(_quickPicksList[i]->type()->smallIcon());         //  may throw
+            QBrush foregrund = _treeWidgetDecorations.itemForeground;
+            QString suffix;
+            if (tt3::ws::Task task =
+                std::dynamic_pointer_cast<tt3::ws::TaskImpl>(_quickPicksList[i]))
+            {
+                if (task->completed(_credentials))
+                {
+                    suffix = " [completed]";
+                    foregrund = _treeWidgetDecorations.disabledItemForeground;
+                }
+            }
+            item->setText(_quickPicksList[i]->displayName(_credentials) + suffix);  //  may throw
+            item->setIcon(_quickPicksList[i]->type()->smallIcon()); //  may throw
+            item->setForeground(foregrund);
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS!
             item->setText(ex.errorMessage());
             item->setIcon(errorIcon);
+            item->setForeground(_listWidgetDecorations.errorItemForeground);
         }
         auto a = _quickPicksList[i];
         item->setData(Qt::ItemDataRole::UserRole, QVariant::fromValue(a));

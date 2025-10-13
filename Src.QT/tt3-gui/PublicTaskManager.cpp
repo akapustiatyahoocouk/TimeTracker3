@@ -878,8 +878,21 @@ void PublicTaskManager::_completePublicTaskPushButtonClicked()
             }
             //  Now we can enter the completion comment as an Event...
             if (!completionComment.isEmpty())
-            {   //  TODO properly
-                qDebug() << completionComment;
+            {
+                try
+                {
+                    tt3::ws::Account callerAccount =
+                        publicTask->workspace()->login(_credentials);   //  may throw
+                    callerAccount->createEvent(
+                        _credentials,
+                        QDateTime::currentDateTimeUtc(),
+                        completionComment + ": " + publicTask->displayName(_credentials),   //  may throw
+                        tt3::ws::Activities{publicTask});   //  may throw
+                }
+                catch (const tt3::util::Exception & ex)
+                {   //  OOPS! Log & suppress
+                    qCritical() << ex.errorMessage();
+                }
             }
             //  ...and complete the PublicTask
             publicTask->setCompleted(_credentials, true);

@@ -148,6 +148,7 @@ bool CurrentActivity::replaceWith(
         if (with != impl->activity)
         {   //  Enter the comment if necessary
             QString comment;
+            tt3::ws::Activities eventActivities;
             if (with != nullptr &&
                 with->requireCommentOnStart(credentials))  //  may throw
             {
@@ -157,6 +158,12 @@ bool CurrentActivity::replaceWith(
                     return false;
                 }
                 comment = dlg.comment();
+                eventActivities.insert(with);
+                if (impl->activity != nullptr &&
+                    impl->activity->requireCommentOnStop(credentials))   //  may throw
+                {   //  Need to link event with BOTH activities!
+                    eventActivities.insert(impl->activity);
+                }
             }
             else if (impl->activity != nullptr &&
                      impl->activity->requireCommentOnStop(credentials))   //  may throw
@@ -167,27 +174,36 @@ bool CurrentActivity::replaceWith(
                     return false;
                 }
                 comment = dlg.comment();
+                eventActivities.insert(impl->activity);
             }
             //  Log current activity, if there is one, as a Work item
+            QDateTime now = QDateTime::currentDateTimeUtc();
+            tt3::ws::Account callerAccount =
+                (with != nullptr) ?
+                    with->workspace()->login(credentials) : //  may throw
+                    (impl->activity != nullptr) ?
+                        impl->activity->workspace()->login(credentials) :   //  may throw
+                        nullptr;
             if (impl->activity != nullptr)
-            {   //  TODO properly
-                tt3::ws::Account callerAccount =
-                    impl->activity->workspace()->login(credentials);//  may throw
+            {
+                Q_ASSERT(callerAccount != nullptr);
                 callerAccount->createWork(
                     credentials,
                     impl->lastChangedAt,
-                    QDateTime::currentDateTimeUtc(),
+                    now,
                     impl->activity);
             }
             //  Log entered comment as an Event
             if (!comment.isEmpty())
             {
-                qDebug() << "Loging Event " << comment;
+                Q_ASSERT(callerAccount != nullptr);
+                callerAccount->createEvent( //  may throw
+                    credentials, now, comment, eventActivities);
             }
             //  Make the change
             before = impl->activity;
             impl->activity = with;
-            impl->lastChangedAt = QDateTime::currentDateTimeUtc();
+            impl->lastChangedAt = now;
             after = impl->activity;
         }
     }

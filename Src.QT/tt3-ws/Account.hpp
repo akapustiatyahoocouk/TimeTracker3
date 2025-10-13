@@ -175,6 +175,18 @@ namespace tt3::ws
                             const Credentials & credentials
                         ) const -> Works;
 
+        /// \brief
+        ///     Returns the set of all Events logged by this Account.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all Works logged by this Events.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        events(
+                            const Credentials & credentials
+                        ) const -> Events;
+
         //////////
         //  Operations (life cycle)
     public:
@@ -189,7 +201,7 @@ namespace tt3::ws
         ///     The UTC date+time when this unit of work has finished.
         /// \param activity
         ///     The activity associated with this unit of work;
-        ///     cann0t be nullptr.
+        ///     cannot be nullptr.
         /// \return
         ///     The newly created Work.
         /// \exception WorkspaceException
@@ -200,6 +212,29 @@ namespace tt3::ws
                             const QDateTime & finishedAt,
                             Activity activity
                         ) -> Work;
+
+        /// \brief
+        ///     Creates a new Event for this Account against
+        ///     the specified activity.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param occurredAt
+        ///     The UTC date+time when the event has occurred.
+        /// \param summary
+        ///     The brief 1-line summary for the new Event.
+        /// \param activities
+        ///     The set of activities associated with the new Event;
+        ///     can be empty.
+        /// \return
+        ///     The newly created Event.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        createEvent(
+                            const Credentials & credentials,
+                            const QDateTime & occurredAt,
+                            const QString & summary,
+                            const Activities & activities
+                        ) -> Event;
 
         //////////
         //  Implementation

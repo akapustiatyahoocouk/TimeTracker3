@@ -485,6 +485,14 @@ bool ActivityImpl::canStart(
                 return false;
             }
         }
+        if (auto dataTask =
+            dynamic_cast<tt3::db::api::ITask*>(_dataActivity))
+        {
+            if (dataTask->completed())
+            {
+                return false;
+            }
+        }
         return true;
     }
     catch (const tt3::util::Exception & ex)

@@ -167,7 +167,7 @@ namespace tt3::db::api
         ///     The UTC date+time when this unit of work has finished.
         /// \param activity
         ///     The activity associated with this unit of work;
-        ///     cann0t be nullptr.
+        ///     cannot be nullptr.
         /// \return
         ///     The newly created Work.
         /// \exception DatabaseException
@@ -185,8 +185,9 @@ namespace tt3::db::api
         ///     The UTC date+time when the event has occurred.
         /// \param summary
         ///     The brief 1-line summary for the new Event.
-        /// \param activity
-        ///     The activity associated with the new Event; nullptr == none.
+        /// \param activities
+        ///     The set of activities associated with the new Event;
+        ///     can be empty.
         /// \return
         ///     The newly created Event.
         /// \exception DatabaseException
@@ -194,7 +195,7 @@ namespace tt3::db::api
         virtual auto    createEvent(
                                 const QDateTime & occurredAt,
                                 const QString & summary,
-                                IActivity * activity
+                                const Activities & activities
                             ) -> IEvent * = 0;
     };
 }

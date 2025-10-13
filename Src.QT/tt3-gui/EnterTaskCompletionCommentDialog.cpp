@@ -28,7 +28,10 @@ EnterTaskCompletionCommentDialog::EnterTaskCompletionCommentDialog(
             _dialogTitle(task),
             "Enter task completion comment:",
             "",
-            [=](auto c) { return task->workspace()->validator()->event()->isValidComment(c); })
+            [=](auto s)
+            {
+                return task->workspace()->validator()->event()->isValidSummary(s);
+            })
 {
 }
 

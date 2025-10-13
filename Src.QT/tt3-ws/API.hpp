@@ -49,6 +49,7 @@
 #include "tt3-ws/WorkStream.hpp"
 #include "tt3-ws/Beneficiary.hpp"
 #include "tt3-ws/Work.hpp"
+#include "tt3-ws/Event.hpp"
 
 #include "tt3-ws/Notifications.hpp"
 #include "tt3-ws/Exceptions.hpp"

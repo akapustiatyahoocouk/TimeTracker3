@@ -41,6 +41,7 @@ namespace tt3::db::xml
         friend class WorkStream;
         friend class Beneficiary;
         friend class Work;
+        friend class Event;
 
         //////////
         //  Construction/destruction
@@ -503,6 +504,7 @@ namespace tt3::db::xml
         DECLARE_OBJECT_TYPE_TRAITS(WorkStream)
         DECLARE_OBJECT_TYPE_TRAITS(Beneficiary)
         DECLARE_OBJECT_TYPE_TRAITS(Work)
+        DECLARE_OBJECT_TYPE_TRAITS(Event)
 #undef DECLARE_OBJECT_TYPE_TRAITS
 
         //  Validation

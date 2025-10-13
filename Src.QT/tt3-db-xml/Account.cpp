@@ -272,7 +272,11 @@ auto Account::works(
 auto Account::events(
     ) const -> tt3::db::api::Events
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return tt3::db::api::Events(_events.cbegin(), _events.cend());
 }
 
 //////////
@@ -335,12 +339,77 @@ auto Account::createWork(
 }
 
 auto Account::createEvent(
-    const QDateTime & /*occurredAt*/,
-    const QString & /*summary*/,
-    tt3::db::api::IActivity * /*activity*/
+        const QDateTime & occurredAt,
+        const QString & summary,
+        const tt3::db::api::Activities & activities
     ) -> tt3::db::api::IEvent *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (!_database->_validator->event()->isValidOccurredAt(occurredAt))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Event::instance(),
+            "occurredAt",
+            tt3::util::toString(occurredAt));
+    }
+    if (!_database->_validator->event()->isValidSummary(summary))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Event::instance(),
+            "summary",
+            summary);
+    }
+    Activities xmlActivities;
+    for (tt3::db::api::IActivity * activity : activities)
+    {
+        Activity * xmlActivity = dynamic_cast<Activity*>(activity);
+        if (xmlActivity == nullptr ||
+            xmlActivity->_database != this->_database ||
+            !xmlActivity->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(
+                tt3::db::api::ObjectTypes::ActivityType::instance());
+        }
+        xmlActivities.insert(xmlActivity);
+    }
+    //  Do the work - create & initialize the Work...
+    Event * event = new Event(this, _database->_generateOid());   //  registers with User
+    event->_occurredAt = occurredAt;
+    event->_summary = summary;
+    //  Link with Activities
+    for (Activity * xmlActivity : xmlActivities)
+    {
+        event->_activities.insert(xmlActivity);
+        xmlActivity->_events.insert(event);
+        xmlActivity->addReference();
+        event->addReference();
+    }
+    _database->_markModified();
+    //  ...schedule change notifications...
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectModifiedNotification(
+            _database, this->type(), this->_oid));
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            _database, event->type(), event->_oid));
+    for (Activity * xmlActivity : xmlActivities)
+    {
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, xmlActivity->type(), xmlActivity->_oid));
+    }
+
+//  ...and we're done
+#ifdef Q_DEBUG
+    _validate();    //  may throw
+#endif
+    return event;
 }
 
 //////////
@@ -395,7 +464,10 @@ void Account::_serializeAggregations(
         objectElement,
         "Works",
         _works);
-    //  TODO Events          _events;        //  count as "reference"
+    _database->_serializeAggregation(
+        objectElement,
+        "Events",
+        _events);
 }
 
 void Account::_serializeAssociations(
@@ -435,7 +507,14 @@ void Account::_deserializeAggregations(
         {
             return new Work(this, oid);
         });
-    //  TODO Events          _events;        //  count as "reference"
+    _database->_deserializeAggregation<Event>(
+        objectElement,
+        "Events",
+        _events,
+        [&](auto oid)
+        {
+            return new Event(this, oid);
+        });
 }
 
 void Account::_deserializeAssociations(
@@ -475,7 +554,16 @@ void Account::_validate(
         }
         work->_validate(validatedObjects);
     }
-    //  TODO Events          _events;        //  count as "reference"
+    for (Event * event : _events)
+    {
+        if (event == nullptr || !event->_isLive ||
+            event->_database != _database ||
+            event->_account != this)
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
+        event->_validate(validatedObjects);
+    }
 
     //  Validate associations
     if (_user == nullptr || !_user->_isLive ||

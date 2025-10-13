@@ -303,7 +303,35 @@ auto AccountImpl::works(
     }
 }
 
-//////////
+auto AccountImpl::events(
+        const Credentials & credentials
+    ) const -> Events
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials)) //  may throw
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        Events result;
+        for (tt3::db::api::IEvent * dataEvent : _dataAccount->events())
+        {
+            result.insert(_workspace->_getProxy(dataEvent));
+        }
+        return result;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+/////////
 //  Operations (life cycle)
 auto AccountImpl::createWork(
         const Credentials & credentials,
@@ -352,6 +380,73 @@ auto AccountImpl::createWork(
                 finishedAt,
                 activity->_dataActivity);
         return _workspace->_getProxy(dataWork);
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+auto AccountImpl::createEvent(
+        const Credentials & credentials,
+        const QDateTime & occurredAt,
+        const QString & summary,
+        const Activities & activities
+    ) -> Event
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Check access rights
+        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        if (clientCapabilities.contains(Capability::Administrator))
+        {   //  can log Events for any account/activity
+        }
+        else if (clientCapabilities.contains(Capability::LogWork))
+        {   //  Can log Events aganst public Activities/Tasks and
+            //  caller's own private Activities/Tasks
+            tt3::db::api::IAccount * callerAccount =
+                _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
+            if (callerAccount == nullptr ||
+                callerAccount->user() != this->_dataAccount->user())
+            {   //  OOPS! Can't!
+                throw AccessDeniedException();
+            }
+            for (Activity activity : activities)
+            {
+                if (activity != nullptr)
+                {   //  OOPS! Can't!
+                    if (auto dataPrivateActivity =
+                        dynamic_cast<tt3::db::api::IPrivateActivity*>(activity->_dataActivity))
+                    {   //  The private Activity/Tak must belong to the caller!
+                        if (dataPrivateActivity->owner() != callerAccount->user())
+                        {   //  OOPS! Can't!
+                            throw AccessDeniedException();
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {   //  OOPS! Can't!
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        tt3::db::api::Activities dataActivities =
+            tt3::util::transform<tt3::db::api::IActivity *, Activity>(
+                activities,
+                [](auto a)
+                {   //  Be defensive when transforming nullptrs
+                    return (a != nullptr) ? a->_dataActivity : nullptr;
+                });
+        tt3::db::api::IEvent * dataEvent =
+            _dataAccount->createEvent(   //  may throw
+                occurredAt,
+                summary,
+                dataActivities);
+        return _workspace->_getProxy(dataEvent);
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw

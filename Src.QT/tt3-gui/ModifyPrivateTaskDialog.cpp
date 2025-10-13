@@ -416,8 +416,21 @@ void ModifyPrivateTaskDialog::accept()
                 _ui->requiresCommentOnCompletionCeckBox->isChecked());
             //  ...and record the completion comment if there is one
             if (!completionComment.isEmpty())
-            {   //  TODO properly
-                qDebug() << completionComment;
+            {
+                try
+                {
+                    tt3::ws::Account callerAccount =
+                        _privateTask->workspace()->login(_credentials); //  may throw
+                    callerAccount->createEvent(
+                        _credentials,
+                        QDateTime::currentDateTimeUtc(),
+                        completionComment + ": " + _privateTask->displayName(_credentials), //  may throw
+                        tt3::ws::Activities{_privateTask}); //  may throw
+                }
+                catch (const tt3::util::Exception & ex)
+                {   //  OOPS! Log & suppress
+                    qCritical() << ex.errorMessage();
+                }
             }
         }
         done(int(Result::Ok));

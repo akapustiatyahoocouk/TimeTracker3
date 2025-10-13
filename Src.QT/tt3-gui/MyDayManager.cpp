@@ -188,6 +188,15 @@ void MyDayManager::refresh()
         {
             try
             {
+                QString suffix;
+                if (tt3::ws::Task task =
+                    std::dynamic_pointer_cast<tt3::ws::TaskImpl>(_quickPicksList[i]))
+                {
+                    if (task->completed(_credentials))
+                    {
+                        suffix = "\n[completed]";
+                    }
+                }
                 if (theCurrentActivity == _quickPicksList[i])
                 {   //  Must adjust the button's text & UI style
                     qint64 secs = qMax(0, theCurrentActivity.lastChangedAt().secsTo(QDateTime::currentDateTimeUtc()));
@@ -197,7 +206,7 @@ void MyDayManager::refresh()
                             int((secs / 60) % 60),
                             int(secs % 60));
                     _quickPicksButtons[i]->setText(
-                        _quickPicksList[i]->displayName(_credentials) + s); //  may throw
+                        _quickPicksList[i]->displayName(_credentials) + s + suffix); //  may throw
                     bool canStop =
                         !_workspace->isReadOnly() &&
                         _quickPicksList[i]->canStop(_credentials); //  may throw
@@ -211,7 +220,7 @@ void MyDayManager::refresh()
                 else
                 {   //  Must adjust the button's text & UI style
                     _quickPicksButtons[i]->setText(
-                        _quickPicksList[i]->displayName(_credentials)); //  may throw
+                        _quickPicksList[i]->displayName(_credentials) + suffix); //  may throw
                     bool canStart =
                         !_workspace->isReadOnly() &&
                         _quickPicksList[i]->canStart(_credentials); //  may throw
@@ -244,7 +253,7 @@ void MyDayManager::requestRefresh()
 //  View model
 MyDayManager::_MyDayModel MyDayManager::_createMyDayModel()
 {
-    _MyDayModel myDayModel { new _MyDayModelImpl() };
+    _MyDayModel myDayModel = std::make_shared<_MyDayModelImpl>();
     if (_workspace != nullptr)
     {
         try
@@ -261,6 +270,17 @@ MyDayManager::_MyDayModel MyDayManager::_createMyDayModel()
                     qCritical() << ex.errorMessage();
                 }
             }
+            for (tt3::ws::Event event : account->events(_credentials)) //  may throw
+            {
+                try
+                {
+                    myDayModel->itemModels.append(_createEventModel(event));    //  may throw
+                }
+                catch (const tt3::util::Exception & ex)
+                {   //  OOPS! Log, but ignore
+                    qCritical() << ex.errorMessage();
+                }
+            }
             //  If there is a "current" activity add its item
             if (theCurrentActivity != nullptr)
             {
@@ -270,7 +290,8 @@ MyDayManager::_MyDayModel MyDayManager::_createMyDayModel()
                             theCurrentActivity,
                             theCurrentActivity.lastChangedAt().toLocalTime(),
                             theCurrentActivity->displayName(_credentials),  //  may throw
-                            theCurrentActivity->type()->smallIcon())));     //  may throw
+                            theCurrentActivity->type()->smallIcon(),
+                            theCurrentActivity->description(_credentials))));     //  may throw
             }
         }
         catch (const tt3::util::Exception & ex)
@@ -288,14 +309,45 @@ MyDayManager::_MyDayModel MyDayManager::_createMyDayModel()
 
 MyDayManager::_WorkModel MyDayManager::_createWorkModel(tt3::ws::Work work)
 {
-    _WorkModel workModel
-        { new _WorkModelImpl(
+    tt3::ws::Activity activity = work->activity(_credentials);  //  may throw
+    QString displayName = activity->displayName(_credentials);  //  may throw
+    QString description = activity->description(_credentials).trimmed();    //  may throw
+    QString tooltip =
+        description.isEmpty() ?
+            displayName :
+            displayName + "\n\n" + description;
+    _WorkModel workModel =
+        std::make_shared<_WorkModelImpl>(
             work,
-            work->startedAt(_credentials).toLocalTime(),            //  may throw
-            work->finishedAt(_credentials).toLocalTime(),           //  may throw
-            work->activity(_credentials)->displayName(_credentials),//  may throw
-            work->activity(_credentials)->type()->smallIcon()) };   //  may throw
+            work->startedAt(_credentials).toLocalTime(),                //  may throw
+            work->finishedAt(_credentials).toLocalTime(),               //  may throw
+            displayName,
+            activity->type()->smallIcon(),
+            tooltip);
     return workModel;
+}
+
+MyDayManager::_EventModel MyDayManager::_createEventModel(tt3::ws::Event event)
+{
+    QString summary = event->summary(_credentials); //  may throw
+    QString tooltip = summary;
+    for (tt3::ws::Activity activity : event->activities(_credentials))
+    {
+        QString description = activity->description(_credentials).trimmed();    //  may throw
+        if (!description.isEmpty())
+        {
+            tooltip += "\n\n";
+            tooltip += description;
+        }
+    }
+    _EventModel eventModel =
+        std::make_shared<_EventModelImpl>(
+            event,
+            event->occurredAt(_credentials).toLocalTime(),  //  may throw
+            summary,
+            event->type()->smallIcon(),
+            tooltip);
+    return eventModel;
 }
 
 void MyDayManager::_breakLongWorks(_MyDayModel myDayModel)
@@ -311,22 +363,24 @@ void MyDayManager::_breakLongWorks(_MyDayModel myDayModel)
                 //  work into the next date
                 QDateTime headStartedAt = workModel->startedAt();
                 QDateTime headFinishedAt(startedOn, QTime(23, 59, 59, 999));
-                _WorkModel head
-                    { new _WorkModelImpl(
+                _WorkModel head =
+                    std::make_shared<_WorkModelImpl>(
                         workModel->work(),
                         headStartedAt,
                         headFinishedAt,
                         workModel->displayName(),
-                        workModel->icon()) };
+                        workModel->icon(),
+                        workModel->tooltip());
                 QDateTime tailStartedAt(startedOn.addDays(1), QTime(0, 0));
                 QDateTime tailFinishedAt = workModel->finishedAt();
-                _WorkModel tail
-                    { new _WorkModelImpl(
+                _WorkModel tail =
+                    std::make_shared<_WorkModelImpl>(
                         workModel->work(),
                         tailStartedAt,
                         tailFinishedAt,
                         workModel->displayName(),
-                        workModel->icon())};
+                        workModel->icon(),
+                        workModel->tooltip());
                 myDayModel->itemModels[i] = head;
                 myDayModel->itemModels.insert(i + 1, tail);
             }
@@ -358,7 +412,7 @@ void MyDayManager::_addDateIndicators(_MyDayModel myDayModel)
             return;
         }
         myDayModel->itemModels.append(
-            _DateModel(new _DateModelImpl(minDate)));
+            std::make_shared<_DateModelImpl>(minDate));
         return;
     }
     Q_ASSERT(minDate < maxDate);
@@ -367,7 +421,7 @@ void MyDayManager::_addDateIndicators(_MyDayModel myDayModel)
         if (datesWithWorks.contains(d))
         {
             myDayModel->itemModels.append(
-                _DateModel(new _DateModelImpl(d)));
+                std::make_shared<_DateModelImpl>(d));
         }
     }
 }
@@ -379,7 +433,18 @@ void MyDayManager::_sortChronologically(_MyDayModel myDayModel)
         myDayModel->itemModels.end(),
         [](auto a, auto b)
         {   //  We need REVERSE sorting!
-            return a->startedAt() > b->startedAt();
+            if (a->startedAt() > b->startedAt())
+            {
+                return true;
+            }
+            else if (a->startedAt() == b->startedAt())
+            {
+                return a->finishedAt() > b->finishedAt();
+            }
+            else
+            {
+                return false;
+            }
         });
 }
 
@@ -466,9 +531,18 @@ void MyDayManager::_recreateQuickPickButtons()
         QPushButton * button;
         try
         {
+            QString suffix;
+            if (tt3::ws::Task task =
+                std::dynamic_pointer_cast<tt3::ws::TaskImpl>(_quickPicksList[i]))
+            {
+                if (task->completed(_credentials))
+                {
+                    suffix = "\n[completed]";
+                }
+            }
             button = new QPushButton(
                 _quickPicksList[i]->type()->smallIcon(),
-                _quickPicksList[i]->displayName(_credentials),   //  may throw
+                _quickPicksList[i]->displayName(_credentials) + suffix,   //  may throw
                 this);
         }
         catch (const tt3::util::Exception & ex)
@@ -528,6 +602,7 @@ void MyDayManager::_refreslLogList()
             _myDayModel->itemModels[i]->isEmphasized() ?
                 _listWidgetDecorations.itemEmphasisFont :
                 _listWidgetDecorations.itemFont);
+        _ui->logListWidget->item(i)->setToolTip(_myDayModel->itemModels[i]->tooltip());
     }
 }
 

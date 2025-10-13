@@ -147,6 +147,7 @@ namespace tt3::gui
             virtual QDateTime   finishedAt() const = 0; //  LOCAL TIME!
             virtual QString     displayName() const = 0;
             virtual QIcon       icon() const = 0;
+            virtual QString     tooltip() const = 0;
             virtual bool        isEmphasized() const { return false; }
             virtual QString     toString() const = 0;
         };
@@ -158,18 +159,21 @@ namespace tt3::gui
                     const QDateTime & startedAt,
                     const QDateTime & finishedAt,
                     const QString & displayName,
-                    const QIcon & icon
+                    const QIcon & icon,
+                    const QString & tooltip
                 ) : _work(work),
                     _startedAt(startedAt),
                     _finishedAt(finishedAt),
                     _displayName(displayName),
-                    _icon(icon)
+                    _icon(icon),
+                    _tooltip(tooltip)
             {}
 
             virtual QDateTime   startedAt() const override { return _startedAt; }
             virtual QDateTime   finishedAt() const override { return _finishedAt; }
             virtual QString     displayName() const override { return _displayName; }
             virtual QIcon       icon() const override { return _icon; }
+            virtual QString     tooltip() const override { return _tooltip; }
             virtual QString     toString() const override
             {
                 return "[" +
@@ -187,6 +191,44 @@ namespace tt3::gui
             const QDateTime     _finishedAt;    //  LOCAL TIME!
             const QString       _displayName;
             const QIcon         _icon;
+            const QString       _tooltip;
+        };
+
+        struct TT3_GUI_PUBLIC _EventModelImpl : public _ItemModelImpl
+        {
+            _EventModelImpl(
+                    tt3::ws::Event event,
+                    const QDateTime & occurredAt,
+                    const QString & summary,
+                    const QIcon & icon,
+                    const QString & tooltip
+                ) : _event(event),
+                    _occurredAt(occurredAt),
+                    _summary(summary),
+                    _icon(icon),
+                    _tooltip(tooltip)
+            {}
+
+            virtual QDateTime   startedAt() const override { return _occurredAt; }
+            virtual QDateTime   finishedAt() const override { return _occurredAt; }
+            virtual QString     displayName() const override { return _summary; }
+            virtual QIcon       icon() const override { return _icon; }
+            virtual QString     tooltip() const override { return _tooltip; }
+            virtual QString     toString() const override
+            {
+                return "[" +
+                       _occurredAt.time().toString() +
+                       "] " +
+                       _summary;
+            }
+            tt3::ws::Event      event() const { return _event; }
+
+        private:
+            const tt3::ws::Event _event;
+            const QDateTime     _occurredAt;     //  LOCAL TIME!
+            const QString       _summary;
+            const QIcon         _icon;
+            const QString       _tooltip;
         };
 
         struct TT3_GUI_PUBLIC _CurrentActivityModelImpl : public _ItemModelImpl
@@ -195,17 +237,20 @@ namespace tt3::gui
                     tt3::ws::Activity activity,
                     const QDateTime & startedAt,
                     const QString & displayName,
-                    const QIcon & icon
+                    const QIcon & icon,
+                    const QString & tooltip
                 ) : _activity(activity),
                     _startedAt(startedAt),
                     _displayName(displayName),
-                    _icon(icon)
+                    _icon(icon),
+                    _tooltip(tooltip)
             {}
 
             virtual QDateTime   startedAt() const override { return _startedAt; }
             virtual QDateTime   finishedAt() const override { return QDateTime::currentDateTime(); }
             virtual QString     displayName() const override { return _displayName; }
             virtual QIcon       icon() const override { return _icon; }
+            virtual QString     tooltip() const override { return _tooltip; }
             virtual bool        isEmphasized() const { return true; }
             virtual QString     toString() const override
             {
@@ -226,6 +271,7 @@ namespace tt3::gui
             const QDateTime     _startedAt;     //  LOCAL TIME!
             const QString       _displayName;
             const QIcon         _icon;
+            const QString       _tooltip;
         };
 
         struct TT3_GUI_PUBLIC _DateModelImpl : public _ItemModelImpl
@@ -239,7 +285,8 @@ namespace tt3::gui
             virtual QDateTime   finishedAt() const override { return _occurredAt; }
             virtual QString     displayName() const override { return toString(); }
             virtual QIcon       icon() const override { return _icon; }
-            virtual QString toString() const override
+            virtual QString     tooltip() const override { return ""; }
+            virtual QString     toString() const override
             {
                 return "========== " + _date.toString() + " ==========";
             }
@@ -254,6 +301,7 @@ namespace tt3::gui
 
         _MyDayModel     _createMyDayModel();
         _WorkModel      _createWorkModel(tt3::ws::Work work);
+        _EventModel     _createEventModel(tt3::ws::Event event);
 
         void            _breakLongWorks(_MyDayModel myDayModel);
         void            _addDateIndicators(_MyDayModel myDayModel);

@@ -23,12 +23,15 @@ EnterActivityStartCommentDialog::EnterActivityStartCommentDialog(
         ::QWidget * parent,
         tt3::ws::Activity activity
     ) : EditStringDialog(
-          parent,
-          _dialogIcon(activity),
-          _dialogTitle(activity),
-          "Enter start comment:",
-          "",
-          [=](auto c) { return activity->workspace()->validator()->event()->isValidComment(c); })
+            parent,
+            _dialogIcon(activity),
+            _dialogTitle(activity),
+            "Enter start comment:",
+            "",
+            [=](auto s)
+            {
+                return activity->workspace()->validator()->event()->isValidSummary(s);
+            })
 {
 }
 

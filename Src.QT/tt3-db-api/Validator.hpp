@@ -571,9 +571,9 @@ namespace tt3::db::api
             ///     The string to check.
             /// \return
             ///     True if the specified string is a valid
-            ///     "comment" for an Event.
-            virtual bool    isValidComment(
-                                    const QString & comment
+            ///     "summary" for an Event.
+            virtual bool    isValidSummary(
+                                    const QString & summary
                                 ) = 0;
         };
         /// \brief
@@ -588,6 +588,10 @@ namespace tt3::db::api
     /// \brief
     ///     The "default" validator, normally suitable
     ///     for all database [types].
+    /// \details
+    ///     It is recommended that concrete database types
+    ///     adhere to object property validation rules
+    ///     defined by the "default" validator.
     class TT3_DB_API_PUBLIC DefaultValidator final
         :   public virtual IValidator
     {
@@ -811,8 +815,8 @@ namespace tt3::db::api
             virtual bool    isValidOccurredAt(
                                     const QDateTime & occurredAt
                                 ) override;
-            virtual bool    isValidComment(
-                                    const QString & comment
+            virtual bool    isValidSummary(
+                                    const QString & summary
                                 ) override;
         };
     };

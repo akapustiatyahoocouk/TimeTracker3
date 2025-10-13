@@ -489,6 +489,7 @@ void Activity::_serializeAggregations(
     ) const
 {
     Object::_serializeAggregations(objectElement);
+    //  Works and Events are serialized via Account
 }
 
 void Activity::_serializeAssociations(
@@ -509,7 +510,10 @@ void Activity::_serializeAssociations(
         objectElement,
         "Works",
         _works);
-    //  TODO    Events          _events;    //  count as "references"
+    _database->_serializeAssociation(
+        objectElement,
+        "Events",
+        _events);
 }
 
 void Activity::_deserializeProperties(
@@ -545,6 +549,7 @@ void Activity::_deserializeAggregations(
     )
 {
     Object::_deserializeAggregations(objectElement);
+    //  Works and Events are deserialized via Account
 }
 
 void Activity::_deserializeAssociations(
@@ -565,7 +570,10 @@ void Activity::_deserializeAssociations(
         objectElement,
         "Works",
         _works);
-    //  TODO    Events          _events;    //  count as "references"
+    _database->_deserializeAssociation(
+        objectElement,
+        "Events",
+        _events);
 }
 
 //////////
@@ -612,7 +620,26 @@ void Activity::_validate(
             throw tt3::db::api::DatabaseCorruptException(_database->_address);
         }
     }
-    //  TODO works, events
+    for (Work * work : _works)
+    {
+        if (work == nullptr || !work->_isLive ||
+            work->_database != _database ||
+            work->_activity != this)
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
+        //  Works themselves are validated via Account
+    }
+    for (Event * event : _events)
+    {
+        if (event == nullptr || !event->_isLive ||
+            event->_database != _database ||
+            !event->_activities.contains(this))
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
+        //  Events themselves are validated via Account
+    }
 }
 
 //  End of tt3-db-xml/Activity.cpp

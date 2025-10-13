@@ -109,7 +109,8 @@ namespace tt3::gui
                             );
 
         //  Drawing resources
-        TreeWidgetDecorations   _decorations;
+        TreeWidgetDecorations   _treeWidgetDecorations;
+        ListWidgetDecorations   _listWidgetDecorations;
 
         //////////
         //  Controls

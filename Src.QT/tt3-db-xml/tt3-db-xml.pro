@@ -12,6 +12,7 @@ SOURCES += \
     Database.cpp \
     DatabaseAddress.cpp \
     DatabaseType.cpp \
+    Event.cpp \
     Object.cpp \
     Plugins.cpp \
     Principal.cpp \
@@ -37,6 +38,7 @@ HEADERS += \
     Database.hpp \
     DatabaseAddress.hpp \
     DatabaseType.hpp \
+    Event.hpp \
     Linkage.hpp \
     Object.hpp \
     Principal.hpp \

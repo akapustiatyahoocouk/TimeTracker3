@@ -31,6 +31,7 @@
     #pragma warning(disable:4355)   //  'this': used in base member initializer list
     #pragma warning(disable:4365)   //  '=': conversion from '<TYPE>' to '<TYPE>', signed/unsigned mismatch
     #pragma warning(disable:4371)   //  '<CLASS>': layout of class may have changed from a previous version of the compiler due to better packing of member '<MEMBER>'
+    #pragma warning(disable:4437)   //  dynamic_cast from virtual base '<CLASS>' to '<CLASS>' could fail in some contexts
     #pragma warning(disable:4710)   //  '<FUNCTION>': function not inlined
     #pragma warning(disable:4711)   //  '<FUNCTION>': function selected for automatic inline expansion
     #pragma warning(disable:4866)   //  compiler may not enforce left-to-right evaluation order for call to 'C++17 operator'

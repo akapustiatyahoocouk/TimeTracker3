@@ -47,5 +47,6 @@
 #include "tt3-db-xml/WorkStream.hpp"
 #include "tt3-db-xml/Beneficiary.hpp"
 #include "tt3-db-xml/Work.hpp"
+#include "tt3-db-xml/Event.hpp"
 
 //  End of tt3-db-xml/API.hpp

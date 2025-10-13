@@ -23,12 +23,15 @@ EnterActivityStopCommentDialog::EnterActivityStopCommentDialog(
         ::QWidget * parent,
         tt3::ws::Activity activity
     ) : EditStringDialog(
-          parent,
-          _dialogIcon(activity),
-          _dialogTitle(activity),
-          "Enter stop comment:",
-          "",
-          [=](auto c) { return activity->workspace()->validator()->event()->isValidComment(c); })
+            parent,
+            _dialogIcon(activity),
+            _dialogTitle(activity),
+            "Enter stop comment:",
+            "",
+            [=](auto s)
+            {
+                return activity->workspace()->validator()->event()->isValidSummary(s);
+            })
 {
 }
 

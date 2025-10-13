@@ -28,6 +28,7 @@ namespace tt3::ws
         friend class AccountImpl;
         friend class PrivateActivityImpl;
         friend class WorkImpl;
+        friend class EventImpl;
 
         //////////
         //  Constats

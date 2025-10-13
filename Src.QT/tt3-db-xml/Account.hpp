@@ -29,6 +29,7 @@ namespace tt3::db::xml
         friend class User;
         friend class Activity;
         friend class Work;
+        friend class Event;
 
         //////////
         //  Construction/destruction (from DB type only)
@@ -83,7 +84,7 @@ namespace tt3::db::xml
         virtual auto    createEvent(
                                 const QDateTime & occurredAt,
                                 const QString & summary,
-                                tt3::db::api::IActivity * activity
+                                const tt3::db::api::Activities & activities
                             ) -> tt3::db::api::IEvent * override;
         //////////
         //  Implementation
