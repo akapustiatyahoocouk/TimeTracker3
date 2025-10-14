@@ -63,7 +63,7 @@ namespace tt3::gui
         //  Operations
     public:
         /// \brief
-        ///     Rund the dialog modally.
+        ///     Runs the dialog modally.
         /// \return
         ///     The user's choice; on Ok the PrivateActivity has been destroyed.
         Result          doModal();

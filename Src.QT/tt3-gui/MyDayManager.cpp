@@ -1096,6 +1096,25 @@ void MyDayManager::_destroyObjectContextActionTriggered()
              << tt3::util::toString(_contextMenuObject->type()->mnemonic())
              << " "
              << tt3::util::toString(_contextMenuObject->oid());
+    if (auto work =
+        std::dynamic_pointer_cast<tt3::ws::WorkImpl>(_contextMenuObject))
+    {
+        try
+        {
+            DestroyWorkDialog dlg(this, work, _credentials);
+            if (dlg.doModal() == DestroyWorkDialog::Result::Ok)
+            {
+                _myDayModel = _createMyDayModel();
+                requestRefresh();
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
+            _myDayModel = _createMyDayModel();
+            requestRefresh();
+        }
+    }
 }
 
 //  End of tt3-gui/MyDayManager.cpp

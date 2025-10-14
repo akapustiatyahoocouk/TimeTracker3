@@ -35,6 +35,7 @@ SOURCES += \
     DestroyPublicActivityDialog.cpp \
     DestroyPublicTaskDialog.cpp \
     DestroyUserDialog.cpp \
+    DestroyWorkDialog.cpp \
     DestroyWorkStreamDialog.cpp \
     EditStringDialog.cpp \
     EnterActivityStartCommentDialog.cpp \
@@ -130,6 +131,7 @@ HEADERS += \
     DestroyPublicActivityDialog.hpp \
     DestroyPublicTaskDialog.hpp \
     DestroyUserDialog.hpp \
+    DestroyWorkDialog.hpp \
     DestroyWorkStreamDialog.hpp \
     EditStringDialog.hpp \
     EnterActivityStartCommentDialog.hpp \

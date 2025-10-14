@@ -98,6 +98,7 @@
 #include "tt3-gui/CreateBeneficiaryDialog.hpp"
 #include "tt3-gui/ModifyBeneficiaryDialog.hpp"
 #include "tt3-gui/DestroyBeneficiaryDialog.hpp"
+#include "tt3-gui/DestroyWorkDialog.hpp"
 
 #include "tt3-gui/AddEmailAddressDialog.hpp"
 #include "tt3-gui/ModifyEmailAddressDialog.hpp"

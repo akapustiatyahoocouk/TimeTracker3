@@ -63,7 +63,7 @@
         //  Operations
     public:
         /// \brief
-        ///     Rund the dialog modally.
+        ///     Runs the dialog modally.
         /// \return
         ///     The user's choice; on Ok the Project has been destroyed.
         Result          doModal();
