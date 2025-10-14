@@ -184,5 +184,9 @@
         <file>Resources/Images/Misc/QuickPicksSmall.png</file>
         <file>Resources/Images/Actions/RemoveLarge.png</file>
         <file>Resources/Images/Actions/RemoveSmall.png</file>
+        <file>Resources/Images/Actions/DestroyEventLarge.png</file>
+        <file>Resources/Images/Actions/DestroyEventSmall.png</file>
+        <file>Resources/Images/Actions/DestroyWorkLarge.png</file>
+        <file>Resources/Images/Actions/DestroyWorkSmall.png</file>
     </qresource>
 </RCC>

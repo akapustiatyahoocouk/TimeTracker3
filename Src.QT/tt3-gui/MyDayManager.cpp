@@ -590,6 +590,26 @@ void MyDayManager::_recreateQuickPickButtons()
         delete _quickPicksButtons[i];
     }
     _quickPicksButtons.clear();
+    //  Don't show "quick pick" buttons for completed tasks
+    for (qsizetype i = _quickPicksList.size() - 1; i >= 0; i--)
+    {
+        if (auto task =
+            std::dynamic_pointer_cast<tt3::ws::TaskImpl>(_quickPicksList[i]))
+        {
+            try
+            {
+                if (task->completed(_credentials))  //  may throw
+                {
+                    _quickPicksList.removeAt(i);
+                }
+            }
+            catch (const tt3::util::Exception & ex)
+            {   //  OOPS! Log & suppress
+                qCritical() << ex.errorMessage();
+                _quickPicksList.removeAt(i);
+            }
+        }
+    }
     //  No quick picks buttons is a special case
     if (_quickPicksList.isEmpty())
     {
@@ -630,6 +650,11 @@ void MyDayManager::_recreateQuickPickButtons()
                 &QPushButton::clicked,
                 this,
                 &MyDayManager::_quickPickPushButtonClicked);
+        button->setContextMenuPolicy(Qt::ContextMenuPolicy::CustomContextMenu);
+        connect(button,
+                &QWidget::customContextMenuRequested,
+                this,
+                &MyDayManager::_quickPickButtonCustomContextMenuRequested);
     }
     _ui->noQuickPicksLabel->setVisible(false);
 }
@@ -723,7 +748,7 @@ void MyDayManager::_quickPicksPushButtonClicked()
 {
     try
     {
-        tt3::ws::Account account = _workspace->login(_credentials);
+        tt3::ws::Account account = _workspace->login(_credentials);//   may throw
         ManageQuickPicksListDialog dlg(this, account, _credentials);
         if (dlg.doModal() == ManageQuickPicksListDialog::Result::Ok)
         {   //  Refresh quick picks buttons
@@ -786,6 +811,291 @@ void MyDayManager::_currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity)
 {
     _myDayModel = _createMyDayModel();
     requestRefresh();
+}
+
+void MyDayManager::_logListWidgetCustomContextMenuRequested(QPoint p)
+{
+    if (auto item = _ui->logListWidget->itemAt(p))
+    {
+        int n = _ui->logListWidget->row(item);
+        Q_ASSERT(n >= 0 && n < _myDayModel->itemModels.size());
+        _ui->logListWidget->setCurrentRow(n);
+        //  Re-create context menu
+        _contextMenu.reset(new QMenu());
+        QAction * destroyObjectAction = nullptr;
+        if (auto workModel =
+            std::dynamic_pointer_cast<_WorkModelImpl>(_myDayModel->itemModels[n]))
+        {
+            _contextMenuObject = workModel->work();
+            destroyObjectAction =
+                _contextMenu->addAction(
+                    QIcon(":/tt3-gui/Resources/Images/Actions/DestroyWorkSmall.png"),
+                    "Destroy work");
+        }
+        else if (auto eventModel =
+                 std::dynamic_pointer_cast<_EventModelImpl>(_myDayModel->itemModels[n]))
+        {
+            _contextMenuObject = eventModel->event();
+            destroyObjectAction =
+                _contextMenu->addAction(
+                    QIcon(":/tt3-gui/Resources/Images/Actions/DestroyEventSmall.png"),
+                    "Destroy event");
+        }
+        else
+        {   //  No context menu
+            return;
+        }
+        //  Adjust menu item states
+        try
+        {
+            destroyObjectAction->setEnabled(
+                !_workspace->isReadOnly() &&
+                _contextMenuObject->canDestroy(_credentials));
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            qCritical() << ex.errorMessage();
+            destroyObjectAction->setEnabled(false);
+        }
+        //  Set up signal handling
+        connect(destroyObjectAction,
+                &QAction::triggered,
+                this,
+                &MyDayManager::_destroyObjectContextActionTriggered);
+        //  Go!
+        _contextMenu->popup(_ui->logListWidget->mapToGlobal(p));
+    }
+}
+
+void MyDayManager::_quickPickButtonCustomContextMenuRequested(QPoint p)
+{
+    if (auto pushButton = dynamic_cast<QPushButton*>(sender()))
+    {
+        qsizetype n = _quickPicksButtons.indexOf(pushButton);
+        if (n >= 0 && n < _quickPicksButtons.size())
+        {   //  Re-create context menu
+            _contextMenu.reset(new QMenu());
+            QAction * modifyObjectAction = nullptr;
+            if (_contextMenuObject =
+                std::dynamic_pointer_cast<tt3::ws::PublicTaskImpl>(_quickPicksList[n]))
+            {
+                try
+                {
+                    if (_contextMenuObject->canModify(_credentials))    //  may throw
+                    {
+                        modifyObjectAction =
+                            _contextMenu->addAction(
+                                QIcon(":/tt3-gui/Resources/Images/Actions/DestroyPublicTaskSmall.png"),
+                                "Modify public task");
+                    }
+                }
+                catch (const tt3::util::Exception & ex)
+                {   //  OOPS! Log & tret as view-only
+                    qCritical() << ex.errorMessage();
+                }
+                if (modifyObjectAction == nullptr)
+                {
+                    modifyObjectAction =
+                        _contextMenu->addAction(
+                            QIcon(":/tt3-gui/Resources/Images/Actions/ViewPublicTaskSmall.png"),
+                            "View public task");
+                }
+            }
+            else if (_contextMenuObject =
+                     std::dynamic_pointer_cast<tt3::ws::PrivateTaskImpl>(_quickPicksList[n]))
+            {
+                try
+                {
+                    if (_contextMenuObject->canModify(_credentials))    //  may throw
+                    {
+                        modifyObjectAction =
+                            _contextMenu->addAction(
+                                QIcon(":/tt3-gui/Resources/Images/Actions/DestroyPrivateTaskSmall.png"),
+                                "Modify private task");
+                    }
+                }
+                catch (const tt3::util::Exception & ex)
+                {   //  OOPS! Log & tret as view-only
+                    qCritical() << ex.errorMessage();
+                }
+                if (modifyObjectAction == nullptr)
+                {
+                    modifyObjectAction =
+                        _contextMenu->addAction(
+                            QIcon(":/tt3-gui/Resources/Images/Actions/ViewPrivateTaskSmall.png"),
+                            "View private task");
+                }
+            }
+            else if (_contextMenuObject =
+                     std::dynamic_pointer_cast<tt3::ws::PublicActivityImpl>(_quickPicksList[n]))
+            {
+                try
+                {
+                    if (_contextMenuObject->canModify(_credentials))    //  may throw
+                    {
+                        modifyObjectAction =
+                            _contextMenu->addAction(
+                                QIcon(":/tt3-gui/Resources/Images/Actions/DestroyPublicActivitySmall.png"),
+                                "Modify public activity");
+                    }
+                }
+                catch (const tt3::util::Exception & ex)
+                {   //  OOPS! Log & tret as view-only
+                    qCritical() << ex.errorMessage();
+                }
+                if (modifyObjectAction == nullptr)
+                {
+                    modifyObjectAction =
+                        _contextMenu->addAction(
+                            QIcon(":/tt3-gui/Resources/Images/Actions/ViewPublicActivitySmall.png"),
+                            "View public activity");
+                }
+            }
+            else if (_contextMenuObject =
+                     std::dynamic_pointer_cast<tt3::ws::PrivateActivityImpl>(_quickPicksList[n]))
+            {
+                try
+                {
+                    if (_contextMenuObject->canModify(_credentials))    //  may throw
+                    {
+                        modifyObjectAction =
+                            _contextMenu->addAction(
+                                QIcon(":/tt3-gui/Resources/Images/Actions/DestroyPrivateActivitySmall.png"),
+                                "Modify private activity");
+                    }
+                }
+                catch (const tt3::util::Exception & ex)
+                {   //  OOPS! Log & tret as view-only
+                    qCritical() << ex.errorMessage();
+                }
+                if (modifyObjectAction == nullptr)
+                {
+                    modifyObjectAction =
+                        _contextMenu->addAction(
+                            QIcon(":/tt3-gui/Resources/Images/Actions/ViewPrivateActivitySmall.png"),
+                            "View private activity");
+                }
+            }
+            else
+            {   //  No context menu
+                return;
+            }
+            _contextMenu->addSeparator();
+            QAction * removeObjectAction =
+                _contextMenu->addAction(
+                    QIcon(":/tt3-gui/Resources/Images/Actions/RemoveSmall.png"),
+                    "Remove from quick picks list");
+            //  Adjust menu item states
+            removeObjectAction->setEnabled(!_workspace->isReadOnly());
+            //  Set up signal handling
+            connect(modifyObjectAction,
+                    &QAction::triggered,
+                    this,
+                    &MyDayManager::_modifyObjectContextActionTriggered);
+            connect(removeObjectAction,
+                    &QAction::triggered,
+                    this,
+                    &MyDayManager::_removeActivityFromQuickPicksContextActionTriggered);
+            //  Go!
+            _contextMenu->popup(pushButton->mapToGlobal(p));
+        }
+    }
+}
+
+void MyDayManager::_modifyObjectContextActionTriggered()
+{
+    if (auto publicTask =
+        std::dynamic_pointer_cast<tt3::ws::PublicTaskImpl>(_contextMenuObject))
+    {
+        try
+        {
+            ModifyPublicTaskDialog dlg(this, publicTask, _credentials); //  may throw
+            if (dlg.doModal() == ModifyPublicTaskDialog::Result::Ok)
+            {
+                _recreateDynamicControls();
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
+        }
+    }
+    else if (auto privateTask =
+             std::dynamic_pointer_cast<tt3::ws::PrivateTaskImpl>(_contextMenuObject))
+    {
+        try
+        {
+            ModifyPrivateTaskDialog dlg(this, privateTask, _credentials); //  may throw
+            if (dlg.doModal() == ModifyPrivateTaskDialog::Result::Ok)
+            {
+                _recreateDynamicControls();
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
+        }
+    }
+    else if (auto publicActivity =
+             std::dynamic_pointer_cast<tt3::ws::PublicActivityImpl>(_contextMenuObject))
+    {
+        try
+        {
+            ModifyPublicActivityDialog dlg(this, publicActivity, _credentials); //  may throw
+            if (dlg.doModal() == ModifyPublicActivityDialog::Result::Ok)
+            {
+                _recreateDynamicControls();
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
+        }
+    }
+    else if (auto privateActivity =
+             std::dynamic_pointer_cast<tt3::ws::PrivateActivityImpl>(_contextMenuObject))
+    {
+        try
+        {
+            ModifyPrivateActivityDialog dlg(this, privateActivity, _credentials); //  may throw
+            if (dlg.doModal() == ModifyPrivateActivityDialog::Result::Ok)
+            {
+                _recreateDynamicControls();
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
+        }
+    }
+}
+
+void MyDayManager::_removeActivityFromQuickPicksContextActionTriggered()
+{
+    if (auto activity =
+        std::dynamic_pointer_cast<tt3::ws::ActivityImpl>(_contextMenuObject))
+    {
+        try
+        {
+            _quickPicksList.removeOne(activity);
+            tt3::ws::Account account = _workspace->login(_credentials); //  may throw
+            account->setQuickPicksList(_credentials, _quickPicksList);  //  may throw
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
+        }
+        _recreateDynamicControls();
+    }
+}
+
+void MyDayManager::_destroyObjectContextActionTriggered()
+{
+    //  TODO implement properly
+    qDebug() << "Destroying "
+             << tt3::util::toString(_contextMenuObject->type()->mnemonic())
+             << " "
+             << tt3::util::toString(_contextMenuObject->oid());
 }
 
 //  End of tt3-gui/MyDayManager.cpp

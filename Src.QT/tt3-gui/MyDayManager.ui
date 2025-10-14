@@ -224,6 +224,9 @@
       </item>
       <item row="1" column="0">
        <widget class="QListWidget" name="logListWidget">
+        <property name="contextMenuPolicy">
+         <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+        </property>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
@@ -314,9 +317,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>logListWidget</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>tt3::gui::MyDayManager</receiver>
+   <slot>_logListWidgetCustomContextMenuRequested(QPoint)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>371</x>
+     <y>89</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>248</x>
+     <y>89</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_quickPicksPushButtonClicked()</slot>
   <slot>_logEventPushButtonClicked()</slot>
+  <slot>_logListWidgetCustomContextMenuRequested(QPoint)</slot>
  </slots>
 </ui>

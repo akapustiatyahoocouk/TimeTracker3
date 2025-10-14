@@ -331,6 +331,10 @@ namespace tt3::gui
         PushButtonDecorations   _pushButtonDecorations;
         ListWidgetDecorations   _listWidgetDecorations;
 
+        //  Context menu support
+        tt3::ws::Object     _contextMenuObject;
+        std::unique_ptr<QMenu>  _contextMenu;
+
         //////////
         //  Signal handlers
     private slots:
@@ -345,6 +349,11 @@ namespace tt3::gui
         void            _quickPickPushButtonClicked();
         void            _refreshTimerTimeout();
         void            _currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity);
+        void            _logListWidgetCustomContextMenuRequested(QPoint);
+        void            _quickPickButtonCustomContextMenuRequested(QPoint);
+        void            _modifyObjectContextActionTriggered();
+        void            _removeActivityFromQuickPicksContextActionTriggered();
+        void            _destroyObjectContextActionTriggered();
     };
 }
 
