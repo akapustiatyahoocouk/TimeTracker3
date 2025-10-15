@@ -26,17 +26,17 @@ QString ProductInformation::applicationName()
 
 QVersionNumber ProductInformation::applicationVersion()
 {
-    return fromString<QVersionNumber>(Component::Resources::instance()->string(RSID(ProductInformation), RID(ApplicationVersion)));
+    return fromString<QVersionNumber>(TT3_VERSION);
 }
 
 QString ProductInformation::applicationCopyright()
 {
-    return Component::Resources::instance()->string(RSID(ProductInformation), RID(ApplicationCopyright));
+    return Component::Resources::instance()->string(RSID(ProductInformation), RID(ApplicationCopyright), QString(TT3_BUILD_DATE).left(4));
 }
 
 QString ProductInformation::applicationBuildNumber()
 {
-    return Component::Resources::instance()->string(RSID(ProductInformation), RID(ApplicationBuildNumber));
+    return QString(TT3_BUILD_DATE) + "-" + QString(TT3_BUILD_TIME);
 }
 
 QString ProductInformation::applicationDisplayName()

@@ -1,8 +1,6 @@
 [ProductInformation]
 ApplicationName=TimeTracker3
-ApplicationVersion=1.0.0
-ApplicationCopyright=Авторское право (C) 2026, Андрей Капустин
-ApplicationBuildNumber=20260101
+ApplicationCopyright=Авторское право (C) {0}, Андрей Капустин
 ApplicationDisplayName=TimeTracker3
 OrganizationName=Андрей Капустин
 OrganizationDomain=https://github.com/akapustiatyahoocouk/TimeTracker3

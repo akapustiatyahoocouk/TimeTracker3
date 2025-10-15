@@ -19,7 +19,11 @@ RESOURCES += \
 
 RC_FILE = tt3.rc
 
-LIBS += -ltt3-gui -ltt3-ws -ltt3-db-api -ltt3-util
+LIBS += \
+    -ltt3-gui-$$TT3_VERSION \
+    -ltt3-ws-$$TT3_VERSION \
+    -ltt3-db-api-$$TT3_VERSION \
+    -ltt3-util-$$TT3_VERSION
 
 DISTFILES += \
     tt3.rc
