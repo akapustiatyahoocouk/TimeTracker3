@@ -1,5 +1,5 @@
 //
-//  tt3-gui/DestroyWorkDialog.cpp - tt3::gui::DestroyWorkDialog class implementation
+//  tt3-gui/DestroyEventDialog.cpp - tt3::gui::DestroyEventDialog class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,23 +19,23 @@ using namespace tt3::gui;
 
 //////////
 //  Construction/destrution
-DestroyWorkDialog::DestroyWorkDialog(
-            ::QWidget * parent,
-            tt3::ws::Work work,
-            const tt3::ws::Credentials & credentials
+DestroyEventDialog::DestroyEventDialog(
+        ::QWidget * parent,
+        tt3::ws::Event event,
+        const tt3::ws::Credentials & credentials
     ) : AskYesNoDialog(
             parent,
-            QIcon(":/tt3-gui/Resources/Images/Actions/DestroyWorkLarge.png"),
-            "Destroy work",
-            _prompt(work, credentials)),
-        _work(work),
+            QIcon(":/tt3-gui/Resources/Images/Actions/DestroyEventLarge.png"),
+            "Destroy event",
+            _prompt(event, credentials)),
+        _event(event),
         _credentials(credentials)
 {
 }
 
 //////////
 //  Operations
-DestroyWorkDialog::Result DestroyWorkDialog::doModal()
+DestroyEventDialog::Result DestroyEventDialog::doModal()
 {
     return (AskYesNoDialog::doModal() == AskYesNoDialog::Result::Yes) ?
                Result::Ok :
@@ -44,39 +44,36 @@ DestroyWorkDialog::Result DestroyWorkDialog::doModal()
 
 //////////
 //  Implementation helpers
-QString DestroyWorkDialog::_prompt(
-        tt3::ws::Work work,
+QString DestroyEventDialog::_prompt(
+        tt3::ws::Event event,
         const tt3::ws::Credentials & credentials
     )
 {
-    qint64 secs = qMax(0, work->startedAt(credentials).secsTo(work->finishedAt(credentials)));
-    char duration[32];
-    sprintf(duration, " [%d:%02d:%02d]",
-            int(secs / (60 * 60)),
-            int((secs / 60) % 60),
-            int(secs % 60));
     QString result =
-        "Are you sure you want to destroy work unit\n" +
-        work->startedAt(credentials).toLocalTime().toString() +
-        ".." +
-        work->finishedAt(credentials).toLocalTime().toString() +
-        "\n(duration " + duration + " logged by " +
-        work->account(credentials)->login(credentials) +
-        " against\n" +
-        work->activity(credentials)->type()->displayName().toLower() +
-        " " +
-        work->activity(credentials)->displayName(credentials) +
-        "?";
-    return result;
+        "Are you sure you want to destroy event\n" +
+        event->summary(credentials) +
+        "\nlogged at " +
+        event->occurredAt(credentials).toLocalTime().toString() +
+        "\nby " +
+        event->account(credentials)->login(credentials);
+    for (tt3::ws::Activity activity : event->activities(credentials))
+    {
+        result +=
+            "\nagainst " +
+            activity->type()->displayName().toLower() +
+            " " +
+            activity->displayName(credentials);
+    }
+    return result + "?";
 }
 
 //////////
 //  Signal handlers
-void DestroyWorkDialog::accept()
+void DestroyEventDialog::accept()
 {
     try
     {   //  Destroy!
-        _work->destroy(_credentials);
+        _event->destroy(_credentials);
         AskYesNoDialog::accept();
     }
     catch (const tt3::util::Exception & ex)
@@ -89,4 +86,4 @@ void DestroyWorkDialog::accept()
     }
 }
 
-//  End of tt3-gui/DestroyWorkDialog.cpp
+//  End of tt3-gui/DestroyEventDialog.cpp

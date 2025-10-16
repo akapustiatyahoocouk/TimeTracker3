@@ -29,6 +29,7 @@ SOURCES += \
     DestroyAccountDialog.cpp \
     DestroyActivityTypeDialog.cpp \
     DestroyBeneficiaryDialog.cpp \
+    DestroyEventDialog.cpp \
     DestroyPrivateActivityDialog.cpp \
     DestroyPrivateTaskDialog.cpp \
     DestroyProjectDialog.cpp \
@@ -125,6 +126,7 @@ HEADERS += \
     DestroyAccountDialog.hpp \
     DestroyActivityTypeDialog.hpp \
     DestroyBeneficiaryDialog.hpp \
+    DestroyEventDialog.hpp \
     DestroyPrivateActivityDialog.hpp \
     DestroyPrivateTaskDialog.hpp \
     DestroyProjectDialog.hpp \
@@ -254,6 +256,6 @@ RESOURCES += \
     tt3-gui.qrc
 
 LIBS += \
-    -ltt3-ws-$$TT3_VERSION \
-    -ltt3-db-api-$$TT3_VERSION \
-    -ltt3-util-$$TT3_VERSION
+    -ltt3-ws$$TARGET_SUFFIX \
+    -ltt3-db-api$$TARGET_SUFFIX \
+    -ltt3-util$$TARGET_SUFFIX

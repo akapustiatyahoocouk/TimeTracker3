@@ -27,7 +27,7 @@ FORMS += \
     MainFrame.ui
 
 LIBS += \
-    -ltt3-gui-$$TT3_VERSION \
-    -ltt3-ws-$$TT3_VERSION \
-    -ltt3-db-api-$$TT3_VERSION \
-    -ltt3-util-$$TT3_VERSION
+    -ltt3-gui$$TARGET_SUFFIX \
+    -ltt3-ws$$TARGET_SUFFIX \
+    -ltt3-db-api$$TARGET_SUFFIX \
+    -ltt3-util$$TARGET_SUFFIX

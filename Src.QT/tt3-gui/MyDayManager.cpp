@@ -1115,6 +1115,25 @@ void MyDayManager::_destroyObjectContextActionTriggered()
             requestRefresh();
         }
     }
+    else if (auto event =
+             std::dynamic_pointer_cast<tt3::ws::EventImpl>(_contextMenuObject))
+    {
+        try
+        {
+            DestroyEventDialog dlg(this, event, _credentials);
+            if (dlg.doModal() == DestroyEventDialog::Result::Ok)
+            {
+                _myDayModel = _createMyDayModel();
+                requestRefresh();
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            ErrorDialog::show(this, ex);
+            _myDayModel = _createMyDayModel();
+            requestRefresh();
+        }
+    }
 }
 
 //  End of tt3-gui/MyDayManager.cpp

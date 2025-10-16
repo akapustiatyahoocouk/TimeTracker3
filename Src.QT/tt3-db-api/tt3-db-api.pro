@@ -47,7 +47,7 @@ HEADERS += \
 PRECOMPILED_HEADER = API.hpp
 
 LIBS += \
-    -ltt3-util-$$TT3_VERSION
+    -ltt3-util$$TARGET_SUFFIX
 
 RESOURCES += \
     tt3-db-api.qrc
