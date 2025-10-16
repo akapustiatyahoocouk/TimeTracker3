@@ -1,0 +1,19 @@
+[Plugin]
+DisplayName=XML-Datenbanken
+Description=Ermöglicht das Speichern von TimeTracker3-Datenbanken als XML-Dateien (Einzelbenutzer)
+
+[Component]
+DisplayName=Unterstützung für TimeTracker3-XML-Datenbanken
+Description=Ermöglicht das Speichern von TimeTracker3-Datenbanken als XML-Dateien (Einzelbenutzer)
+
+[DatabaseType]
+DisplayName=XML-Datei
+Description=Der XML-Dateispeicher ist betriebsbereit.
+
+[EnterNewDatabaseAddressDialog]
+Title=XML-Datenbank erstellen
+Filter=XML-Datenbankdateien (*.tt3);;Alle Dateien (*.*)
+
+[EnterExistingDatabaseAddressDialog]
+Title=XML-Datenbank auswählen
+Filter=XML-Datenbankdateien (*.tt3);;Alle Dateien (*.*)

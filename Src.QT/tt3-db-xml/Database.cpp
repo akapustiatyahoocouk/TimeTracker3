@@ -43,8 +43,11 @@ Database::Database(
             //  Can't overwrite!
             if (QFile(_address->_path).exists())
             {   //  OOPS!
+
                 throw tt3::db::api::AlreadyExistsException(
-                    "XML file database", "location", _address->_path);
+                        DatabaseType::instance()->displayName(),
+                        "location",
+                        _address->_path);
             }
             //  Need to save empty DB content, but
             //  obtain the lock first

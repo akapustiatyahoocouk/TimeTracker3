@@ -33,12 +33,14 @@ auto Component::mnemonic(
 
 QString Component::displayName() const
 {
-    return "TimeTracker3 application";
+    static Resources * resources = Resources::instance();   //  idempotent
+    return resources->string(RSID(Component), RID(DisplayName));
 }
 
 QString Component::description() const
 {
-    return "Defines startup and top-level logic of TimeTracker3 application";
+    static Resources * resources = Resources::instance();   //  idempotent
+    return resources->string(RSID(Component), RID(Description));
 }
 
 QString Component::copyright() const

@@ -450,7 +450,7 @@ void Activity::_makeDead()
         _workload->removeReference();
         _workload = nullptr;
     }
-    //  remove from all "quick pick" lists
+    //  Remove from all "quick pick" lists
     for (User * user : _database->_users)
     {
         for (Account * account : user->_accounts)

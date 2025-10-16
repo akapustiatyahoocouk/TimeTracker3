@@ -45,7 +45,8 @@ tt3::util::Mnemonic DatabaseType::mnemonic() const
 
 QString DatabaseType::displayName() const
 {
-    return "XML file";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(DatabaseType), RID(DisplayName));
 }
 
 QIcon DatabaseType::smallIcon() const
@@ -67,7 +68,8 @@ bool DatabaseType::isOperational() const
 
 QString DatabaseType::shortStatusReport() const
 {
-    return "The XML file storage is operational";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(DatabaseType), RID(StatusReport));
 }
 
 QString DatabaseType::fullStatusReport() const
@@ -93,12 +95,14 @@ auto DatabaseType::enterNewDatabaseAddress(
         QWidget * parent
     ) -> tt3::db::api::IDatabaseAddress *
 {
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+
     QString path =
         QFileDialog::getSaveFileName(
             parent,
-            "Create XML file database",
+            resources->string(RSID(EnterNewDatabaseAddressDialog), RID(Title)),
             /*dir =*/ QString(),
-            "XML database files (*.tt3);;All files (*.*)");
+            resources->string(RSID(EnterNewDatabaseAddressDialog), RID(Filter)));
     if (path.isEmpty())
     {
         return nullptr;
@@ -110,12 +114,14 @@ auto DatabaseType::enterExistingDatabaseAddress(
         QWidget * parent
     ) -> tt3::db::api::IDatabaseAddress *
 {
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+
     QString path =
         QFileDialog::getOpenFileName(
             parent,
-            "Select XML file database",
+            resources->string(RSID(EnterExistingDatabaseAddressDialog), RID(Title)),
             /*dir =*/ QString(),
-            "XML database files (*.tt3);;All files (*.*)");
+            resources->string(RSID(EnterExistingDatabaseAddressDialog), RID(Filter)));
     if (path.isEmpty())
     {
         return nullptr;

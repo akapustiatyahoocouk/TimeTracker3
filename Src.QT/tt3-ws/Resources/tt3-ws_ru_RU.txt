@@ -1,0 +1,16 @@
+[Component]
+DisplayName=Слой рабочей области TimeTracker3
+Description=Определяет уровень доступа к данным рабочей области для TimeTracker3
+
+[Errors]
+InvalidWorkspaceAddressException=Недопустимый адрес рабочей области
+WorkspaceInUseException={0} {1} уже используется
+WorkspaceCorruptException={0} {1} недействителен или повреждён
+WorkspaceClosedException=Рабочая область закрыта
+AccessDeniedException=Отказано в доступе
+InvalidPropertyValueException=Свойство '{1}' для '{0}' не может быть установлено в '{2}'
+AlreadyExistsException={0} с '{1}' = '{2}' уже существует
+DoesNotExistException={0} с '{1}' = '{2}' не существует
+InstanceDeadException=Экземпляр мёртв
+AccessWouldBeLostException=Доступ будет потерян
+IncompatibleInstanceException=Несовместимый {0}

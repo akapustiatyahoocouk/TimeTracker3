@@ -39,6 +39,19 @@ Component::Component()
     qRegisterMetaType<Principal>();
     qRegisterMetaType<User>();
     qRegisterMetaType<Account>();
+    qRegisterMetaType<ActivityType>();
+    qRegisterMetaType<Activity>();
+    qRegisterMetaType<PublicActivity>();
+    qRegisterMetaType<PrivateActivity>();
+    qRegisterMetaType<Task>();
+    qRegisterMetaType<PublicTask>();
+    qRegisterMetaType<PrivateTask>();
+    qRegisterMetaType<Work>();
+    qRegisterMetaType<Event>();
+    qRegisterMetaType<Workload>();
+    qRegisterMetaType<Project>();
+    qRegisterMetaType<WorkStream>();
+    qRegisterMetaType<Beneficiary>();
 }
 
 Component::~Component()
@@ -54,12 +67,14 @@ Component::Mnemonic Component::mnemonic() const
 
 QString Component::displayName() const
 {
-    return "TimeTracker3 workspace layer";
+    static Resources * resources = Resources::instance();   //  idempotent
+    return resources->string(RSID(Component), RID(DisplayName));
 }
 
 QString Component::description() const
 {
-    return "Defines workspace data access layer for TimeTracker3";
+    static Resources * resources = Resources::instance();   //  idempotent
+    return resources->string(RSID(Component), RID(Description));
 }
 
 QString Component::copyright() const

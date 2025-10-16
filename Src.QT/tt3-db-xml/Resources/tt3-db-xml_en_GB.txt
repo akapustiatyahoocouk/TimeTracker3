@@ -1,0 +1,19 @@
+[Plugin]
+DisplayName=XML file databases
+Description=Enables storing TimeTracker3 databases as XML files (single-user)
+
+[Component]
+DisplayName=TimeTracker3 XML file database support
+Description=Enables storing TimeTracker3 databases as XML files (single-user)
+
+[DatabaseType]
+DisplayName=XML file
+StatusReport=The XML file storage is operational
+
+[EnterNewDatabaseAddressDialog]
+Title=Create XML file database
+Filter=XML database files (*.tt3);;All files (*.*)
+
+[EnterExistingDatabaseAddressDialog]
+Title=Select XML file database
+Filter=XML database files (*.tt3);;All files (*.*)

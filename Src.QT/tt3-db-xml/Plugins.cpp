@@ -19,7 +19,7 @@ using namespace tt3::db::xml;
 
 namespace
 {
-    class XmlDbPlugin final
+    class XmlDbPlugin final //  TODO just "Plugin"
         :   public virtual tt3::util::IPlugin
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(XmlDbPlugin)
@@ -42,12 +42,14 @@ namespace
 
         virtual QString         displayName() const override
         {
-            return "XML file databases";
+            static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+            return resources->string(RSID(Plugin), RID(DisplayName));
         }
 
         virtual QString         description() const override
         {
-            return "Enables storing TimeTracker3 databases as XML files (single-user)";
+            static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+            return resources->string(RSID(Plugin), RID(Description));
         }
 
         virtual QString         copyright() const override

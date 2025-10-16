@@ -102,7 +102,10 @@ InvalidWorkspaceAddressException::InvalidWorkspaceAddressException()
 
 QString InvalidWorkspaceAddressException::errorMessage() const
 {
-    return "Invalid workspace address";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+            RSID(Errors),
+            RID(InvalidWorkspaceAddressException));
 }
 
 //////////
@@ -110,26 +113,26 @@ QString InvalidWorkspaceAddressException::errorMessage() const
 WorkspaceInUseException::WorkspaceInUseException(
         const QString & workspaceTypeDisplayName,
         const QString & workspaceAddressDisplayForm
-    )
-    :   _workspaceTypeDisplayName(workspaceTypeDisplayName),
+    ) : _workspaceTypeDisplayName(workspaceTypeDisplayName),
         _workspaceAddressDisplayForm(workspaceAddressDisplayForm)
 {
 }
 
 WorkspaceInUseException::WorkspaceInUseException(
         const WorkspaceAddress & workspaceAddress
-    )
-    :   _workspaceTypeDisplayName(workspaceAddress->workspaceType()->displayName()),
+    ) : _workspaceTypeDisplayName(workspaceAddress->workspaceType()->displayName()),
         _workspaceAddressDisplayForm(workspaceAddress->displayForm())
 {
 }
 
 QString WorkspaceInUseException::errorMessage() const
 {
-    return _workspaceTypeDisplayName +
-           " "  +
-           _workspaceAddressDisplayForm +
-           " is already in use";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+            RSID(Errors),
+            RID(WorkspaceInUseException),
+            _workspaceTypeDisplayName,
+            _workspaceAddressDisplayForm);
 }
 
 //////////
@@ -137,26 +140,26 @@ QString WorkspaceInUseException::errorMessage() const
 WorkspaceCorruptException::WorkspaceCorruptException(
         const QString & workspaceTypeDisplayName,
         const QString & workspaceAddressDisplayForm
-    )
-    :   _workspaceTypeDisplayName(workspaceTypeDisplayName),
+    ) : _workspaceTypeDisplayName(workspaceTypeDisplayName),
         _workspaceAddressDisplayForm(workspaceAddressDisplayForm)
 {
 }
 
 WorkspaceCorruptException::WorkspaceCorruptException(
         const WorkspaceAddress & workspaceAddress
-    )
-    :   _workspaceTypeDisplayName(workspaceAddress->workspaceType()->displayName()),
+    ) : _workspaceTypeDisplayName(workspaceAddress->workspaceType()->displayName()),
         _workspaceAddressDisplayForm(workspaceAddress->displayForm())
 {
 }
 
 QString WorkspaceCorruptException::errorMessage() const
 {
-    return _workspaceTypeDisplayName +
-           " "  +
-           _workspaceAddressDisplayForm +
-           " is invalid or corrupt";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+            RSID(Errors),
+            RID(WorkspaceCorruptException),
+            _workspaceTypeDisplayName,
+            _workspaceAddressDisplayForm);
 }
 
 //////////
@@ -167,7 +170,10 @@ WorkspaceClosedException::WorkspaceClosedException()
 
 QString WorkspaceClosedException::errorMessage() const
 {
-    return "Workspace is closed";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+            RSID(Errors),
+            RID(WorkspaceClosedException));
 }
 
 //////////
@@ -178,7 +184,10 @@ AccessDeniedException::AccessDeniedException()
 
 QString AccessDeniedException::errorMessage() const
 {
-    return "Access denied";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+            RSID(Errors),
+            RID(AccessDeniedException));
 }
 
 //////////
@@ -187,8 +196,7 @@ InvalidPropertyValueException::InvalidPropertyValueException(
         const QString & objectTypeName,
         const QString & propertyName,
         const QString & propertyValueString
-    )
-    :   _objectTypeName(objectTypeName),
+    ) : _objectTypeName(objectTypeName),
         _propertyName(propertyName),
         _propertyValueString(propertyValueString)
 {
@@ -196,9 +204,13 @@ InvalidPropertyValueException::InvalidPropertyValueException(
 
 QString InvalidPropertyValueException::errorMessage() const
 {
-    return "Property '" + _propertyName +
-           "' of '" + _objectTypeName +
-           "' cannot be set to '" + _propertyValueString + "'";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+            RSID(Errors),
+            RID(InvalidPropertyValueException),
+            _objectTypeName,
+            _propertyName,
+            _propertyValueString);
 }
 
 //////////
@@ -207,8 +219,7 @@ AlreadyExistsException::AlreadyExistsException(
         const QString & objectTypeName,
         const QString & propertyName,
         const QString & propertyValueString
-    )
-    :   _objectTypeName(objectTypeName),
+    ) : _objectTypeName(objectTypeName),
         _propertyName(propertyName),
         _propertyValueString(propertyValueString)
 {
@@ -216,10 +227,13 @@ AlreadyExistsException::AlreadyExistsException(
 
 QString AlreadyExistsException::errorMessage() const
 {
-    return "The " + _objectTypeName +
-           " with '" + _propertyName +
-           "' = '" + _propertyValueString +
-           "' already exists";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+            RSID(Errors),
+            RID(AlreadyExistsException),
+            _objectTypeName,
+            _propertyName,
+            _propertyValueString);
 }
 
 //////////
@@ -228,8 +242,7 @@ DoesNotExistException::DoesNotExistException(
         const QString & objectTypeName,
         const QString & propertyName,
         const QString & propertyValueString
-    )
-    :   _objectTypeName(objectTypeName),
+    ) : _objectTypeName(objectTypeName),
         _propertyName(propertyName),
         _propertyValueString(propertyValueString)
 {
@@ -237,10 +250,13 @@ DoesNotExistException::DoesNotExistException(
 
 QString DoesNotExistException::errorMessage() const
 {
-    return "The " + _objectTypeName +
-           " with '" + _propertyName +
-           "' = '" + _propertyValueString +
-           "' does not exist";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+            RSID(Errors),
+            RID(DoesNotExistException),
+            _objectTypeName,
+            _propertyName,
+            _propertyValueString);
 }
 
 //////////
@@ -251,7 +267,10 @@ InstanceDeadException::InstanceDeadException()
 
 QString InstanceDeadException::errorMessage() const
 {
-    return "The instance is dead";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+            RSID(Errors),
+            RID(InstanceDeadException));
 }
 
 //////////
@@ -262,7 +281,10 @@ AccessWouldBeLostException::AccessWouldBeLostException()
 
 QString AccessWouldBeLostException::errorMessage() const
 {
-    return "Access would be lost";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+            RSID(Errors),
+            RID(AccessWouldBeLostException));
 }
 
 //////////
@@ -275,7 +297,11 @@ IncompatibleInstanceException::IncompatibleInstanceException(
 
 QString IncompatibleInstanceException::errorMessage() const
 {
-    return "Incompatible " + _objectTypeName;
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+            RSID(Errors),
+            RID(IncompatibleInstanceException),
+            _objectTypeName);
 }
 
 //////////

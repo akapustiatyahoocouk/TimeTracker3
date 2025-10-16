@@ -70,6 +70,8 @@ void Application::_selectActiveTheme()
 
 void Application::_selectActiveSkin()
 {
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+
     tt3::gui::ISkin * initialSkin =
         tt3::gui::SkinManager::findSkin(tt3::gui::Component::Settings::instance()->activeSkin);
     //  Use a default skin ?
@@ -93,7 +95,8 @@ void Application::_selectActiveSkin()
     //  A skin MUST be selected
     if (initialSkin == nullptr)
     {
-        tt3::gui::ErrorDialog::show("No UI skins defined.");
+        tt3::gui::ErrorDialog::show(
+            resources->string(RSID(Errors), RID(NoSkinsDefined)));
         QCoreApplication::quit();
     }
     tt3::gui::theCurrentSkin = initialSkin;

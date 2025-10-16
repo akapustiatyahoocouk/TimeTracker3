@@ -1,0 +1,6 @@
+[Component]
+DisplayName=TimeTracker3 application
+Description=Defines startup and top-level logic of TimeTracker3 application
+
+[Errors]
+NoSkinsDefined=No UI skins defined.

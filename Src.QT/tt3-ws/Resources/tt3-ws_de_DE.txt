@@ -1,0 +1,16 @@
+[Component]
+DisplayName=TimeTracker3-Arbeitsbereichsebene
+Description=Definiert die Datenzugriffsebene für den Arbeitsbereich von TimeTracker3
+
+[Errors]
+InvalidWorkspaceAddressException=Ungültige Arbeitsbereichsadresse
+WorkspaceInUseException={0} {1} wird bereits verwendet
+WorkspaceCorruptException={0} {1} ist ungültig oder beschädigt
+WorkspaceClosedException=Arbeitsbereich ist geschlossen
+AccessDeniedException=Zugriff verweigert
+InvalidPropertyValueException=Eigenschaft '{1}' von '{0}' kann nicht auf '{2}' gesetzt werden
+AlreadyExistsException=Die {0} mit '{1}' = '{2}' existiert bereits
+DoesNotExistException=Die {0} mit '{1}' = '{2}' existiert nicht
+InstanceDeadException=Die Instanz ist deaktiviert
+AccessWouldBeLostException=Der Zugriff würde verloren gehen
+IncompatibleInstanceException=Inkompatibel mit {0}

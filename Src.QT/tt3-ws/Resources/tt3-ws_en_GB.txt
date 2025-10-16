@@ -1,0 +1,16 @@
+[Component]
+DisplayName=TimeTracker3 workspace layer
+Description=Defines workspace data access layer for TimeTracker3
+
+[Errors]
+InvalidWorkspaceAddressException=Invalid workspace address
+WorkspaceInUseException={0} {1} is already in use
+WorkspaceCorruptException={0} {1} is invalid or corrupt
+WorkspaceClosedException=Workspace is closed
+AccessDeniedException=Access denied
+InvalidPropertyValueException=Property '{1}' of '{0}' cannot be set to '{2}'
+AlreadyExistsException=The {0} with '{1}' = '{2}' already exists
+DoesNotExistException=The {0} with '{1}' = '{2}' does not exist
+InstanceDeadException=The instance is dead
+AccessWouldBeLostException=Access would be lost
+IncompatibleInstanceException=Incompatible {0}

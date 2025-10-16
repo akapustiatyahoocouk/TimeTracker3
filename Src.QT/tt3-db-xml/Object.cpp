@@ -236,7 +236,7 @@ void Object::_deserializeProperties(
     {   //  OOPS! Deserialization implemented wrong!
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }
-    //  Add entry to "deserializatio map" - we'll need
+    //  Add entry to "deserialization map" - we'll need
     //  it when deserializing associations
     _database->_deserializationMap.insert(this, objectElement);
 }

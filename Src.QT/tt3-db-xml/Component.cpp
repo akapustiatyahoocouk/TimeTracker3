@@ -32,12 +32,14 @@ Component::Mnemonic Component::mnemonic() const
 
 QString Component::displayName() const
 {
-    return "TimeTracker3 XML file database support";
+    static Resources * resources = Resources::instance();   //  idempotent
+    return resources->string(RSID(Component), RID(DisplayName));
 }
 
 QString Component::description() const
 {
-    return "Enables storing TimeTracker3 databases as XML files (single-user)";
+    static Resources * resources = Resources::instance();   //  idempotent
+    return resources->string(RSID(Component), RID(Description));
 }
 
 QString Component::copyright() const

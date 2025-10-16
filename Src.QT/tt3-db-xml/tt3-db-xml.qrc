@@ -2,5 +2,8 @@
     <qresource prefix="/tt3-db-xml">
         <file>Resources/Images/Objects/XmlDatabaseTypeLarge.png</file>
         <file>Resources/Images/Objects/XmlDatabaseTypeSmall.png</file>
+        <file>Resources/tt3-db-xml_de_DE.txt</file>
+        <file>Resources/tt3-db-xml_en_GB.txt</file>
+        <file>Resources/tt3-db-xml_ru_RU.txt</file>
     </qresource>
 </RCC>
