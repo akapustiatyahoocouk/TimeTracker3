@@ -2,3 +2,10 @@
 DisplayName=Пользовательский интерфейс TimeTracker3
 Description=Определяет возможности графического интерфейса для TimeTracker3
 Copyright=Авторское право (C) {0}, Андрей Капустин
+
+[AboutDialog]
+Title=О TimeTracker3
+VersionLabel=Версия {0} (сборка {1})
+ShowLicensePushButton=Лицензия
+ShowConfigurationPushButton=Конфигурация
+OkPushButton=ОК

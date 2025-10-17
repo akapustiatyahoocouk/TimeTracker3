@@ -1,6 +1,6 @@
 //
 //  tt3-gui/AboutDialog.cpp - tt3::gui::AboutDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -24,18 +24,22 @@ AboutDialog::AboutDialog(QWidget * parent)
     :   QDialog(parent),
         _ui(new Ui::AboutDialog)
 {
+    static Component::Resources * resources = Component::Resources::instance(); //  idempotent
+
     _ui->setupUi(this);
+    setWindowTitle(resources->string(RSID(AboutDialog), RID(Title)));
 
-    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
-        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
-
-    _ui->productLabel->setText(tt3::util::ProductInformation::applicationDisplayName());
+    _ui->productLabel->setText(
+        tt3::util::ProductInformation::applicationDisplayName());
     _ui->versionLabel->setText(
-        "Version " + tt3::util::ProductInformation::applicationVersion().toString() +
-        " (build " + tt3::util::ProductInformation::applicationBuildNumber() +
-        ")");
-    _ui->copyrightLabel->setText(tt3::util::ProductInformation::applicationCopyright());
-    _ui->creditsLabel->setText(tt3::util::ProductInformation::credits());
+        resources->string(
+            RSID(AboutDialog), RID(VersionLabel),
+            tt3::util::ProductInformation::applicationVersion().toString(),
+            tt3::util::ProductInformation::applicationBuildNumber()));
+    _ui->copyrightLabel->setText(
+        tt3::util::ProductInformation::applicationCopyright());
+    _ui->creditsLabel->setText(
+        tt3::util::ProductInformation::credits());
 
     _ui->linkLabel->setText(
         "<a href=\"" +
@@ -46,6 +50,18 @@ AboutDialog::AboutDialog(QWidget * parent)
     _ui->linkLabel->setTextFormat(Qt::RichText);
     _ui->linkLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
     _ui->linkLabel->setOpenExternalLinks(true);    //  Done
+
+    _ui->showLicensePushButton->setText(
+        resources->string(RSID(AboutDialog), RID(ShowLicensePushButton)));
+    _ui->showConfigurationPushButton->setText(
+        resources->string(RSID(AboutDialog), RID(ShowConfigurationPushButton)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(resources->string(RSID(AboutDialog), RID(OkPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+
+    //  Done
     adjustSize();
 }
 

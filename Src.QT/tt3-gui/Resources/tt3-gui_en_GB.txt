@@ -2,3 +2,10 @@
 DisplayName=TimeTracker3 GUI
 Description=Defines GUI facilities for TimeTracker3
 Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[AboutDialog]
+Title=About TimeTracker3
+VersionLabel=Version {0} (build {1})
+ShowLicensePushButton=License
+ShowConfigurationPushButton=Configuration
+OkPushButton=OK
