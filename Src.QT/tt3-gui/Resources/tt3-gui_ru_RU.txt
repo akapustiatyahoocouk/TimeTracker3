@@ -16,3 +16,11 @@ CreateActivityTypePushButton=Создать тип активности
 ViewActivityTypePushButton=Просмотреть тип активности
 ModifyActivityTypePushButton=Изменить тип активности
 DestroyActivityTypePushButton=Удалить тип активности
+
+[AddEmailAddressDialog]
+Title=Добавить адрес электронной почты
+Prompt=Введите адрес электронной почты:
+
+[EditStringDialog]
+OkPushButton=OK
+CancelPushButton=Отмена

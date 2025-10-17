@@ -16,3 +16,11 @@ CreateActivityTypePushButton=Create activity type
 ViewActivityTypePushButton=View activity type
 ModifyActivityTypePushButton=Modify activity type
 DestroyActivityTypePushButton=Destroy activity type
+
+[AddEmailAddressDialog]
+Title=Add e-mail address
+Prompt=Enter e-mail address:
+
+[EditStringDialog]
+OkPushButton=OK
+CancelPushButton=Cancel

@@ -188,7 +188,7 @@ void MainFrame::refresh()
 
     //  Menu items
     _ui->actionCloseWorkspace->setEnabled(workspace != nullptr);
-    _ui->menuEdit->setEnabled(workspace != nullptr);
+    _ui->menuView->setEnabled(workspace != nullptr);
     _ui->actionManageUsers->setEnabled(workspace != nullptr);
     _ui->actionManageActivityTypes->setEnabled(workspace != nullptr);
     _ui->actionManagePublicActivities->setEnabled(workspace != nullptr);
@@ -630,93 +630,53 @@ void MainFrame::_onActionExit()
 }
 
 void MainFrame::_onActionManageUsers()
-{   //  TODO switch to "Users" tab instead
-    tt3::gui::ManageUsersDialog dlg(
-        this,
-        tt3::gui::theCurrentWorkspace,
-        tt3::gui::theCurrentCredentials);
-    dlg.doModal();
+{
+    _ui->managersTabWidget->setCurrentIndex(0);
 }
 
 void MainFrame::_onActionManageActivityTypes()
-{   //  TODO switch to "Activity types" tab instead
-    tt3::gui::ManageActivityTypesDialog dlg(
-        this,
-        tt3::gui::theCurrentWorkspace,
-        tt3::gui::theCurrentCredentials);
-    dlg.doModal();
+{
+    _ui->managersTabWidget->setCurrentIndex(1);
 }
 
 void MainFrame::_onActionManagePublicActivities()
-{   //  TODO switch to "Public activities" tab instead
-    tt3::gui::ManagePublicActivitiesDialog dlg(
-        this,
-        tt3::gui::theCurrentWorkspace,
-        tt3::gui::theCurrentCredentials);
-    dlg.doModal();
+{
+    _ui->managersTabWidget->setCurrentIndex(2);
 }
 
 void MainFrame::_onActionManagePublicTasks()
-{   //  TODO switch to "Public tasks" tab instead
-    tt3::gui::ManagePublicTasksDialog dlg(
-        this,
-        tt3::gui::theCurrentWorkspace,
-        tt3::gui::theCurrentCredentials);
-    dlg.doModal();
+{
+    _ui->managersTabWidget->setCurrentIndex(3);
 }
 
 void MainFrame::_onActionManagePrivateActivities()
-{   //  TODO switch to "Private activities" tab instead
-    tt3::gui::ManagePrivateActivitiesDialog dlg(
-        this,
-        tt3::gui::theCurrentWorkspace,
-        tt3::gui::theCurrentCredentials);
-    dlg.doModal();
+{
+    _ui->managersTabWidget->setCurrentIndex(4);
 }
 
 void MainFrame::_onActionManagePrivateTasks()
-{   //  TODO switch to "Private tasks" tab instead
-    tt3::gui::ManagePrivateTasksDialog dlg(
-        this,
-        tt3::gui::theCurrentWorkspace,
-        tt3::gui::theCurrentCredentials);
-    dlg.doModal();
+{
+    _ui->managersTabWidget->setCurrentIndex(5);
 }
 
 void MainFrame::_onActionManageProjects()
-{   //  TODO switch to "Projects" tab instead
-    tt3::gui::ManageProjectsDialog dlg(
-        this,
-        tt3::gui::theCurrentWorkspace,
-        tt3::gui::theCurrentCredentials);
-    dlg.doModal();
+{
+    _ui->managersTabWidget->setCurrentIndex(6);
 }
 
 void MainFrame::_onActionManageWorkStreams()
-{   //  TODO switch to "WorkStreams" tab instead
-    tt3::gui::ManageWorkStreamsDialog dlg(
-        this,
-        tt3::gui::theCurrentWorkspace,
-        tt3::gui::theCurrentCredentials);
-    dlg.doModal();
+{
+    _ui->managersTabWidget->setCurrentIndex(7);
 }
 
 void MainFrame::_onActionManageBeneficiaries()
-{   //  TODO switch to "Beneficiaries" tab instead
-    tt3::gui::ManageBeneficiariesDialog dlg(
-        this,
-        tt3::gui::theCurrentWorkspace,
-        tt3::gui::theCurrentCredentials);
-    dlg.doModal();
+{
+    _ui->managersTabWidget->setCurrentIndex(8);
 }
 
 void MainFrame::_onActionManageMyDay()
-{   //  TODO switch to "Beneficiaries" tab instead
-    tt3::gui::ManageMyDayDialog dlg(
-        this,
-        tt3::gui::theCurrentWorkspace,
-        tt3::gui::theCurrentCredentials);
-    dlg.doModal();
+{
+    _ui->managersTabWidget->setCurrentIndex(9);
 }
 
 void MainFrame::_onActionRefresh()

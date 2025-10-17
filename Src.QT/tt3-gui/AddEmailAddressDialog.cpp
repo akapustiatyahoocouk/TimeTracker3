@@ -1,6 +1,6 @@
 //
 //  tt3-gui/AddEmailAddressDialog.cpp - tt3::gui::AddEmailAddressDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -23,12 +23,16 @@ AddEmailAddressDialog::AddEmailAddressDialog(
         ::QWidget * parent,
         tt3::ws::Workspace workspace
     ) : EditStringDialog(
-          parent,
-          QIcon(":/tt3-gui/Resources/Images/Actions/AddEmailAddressLarge.png"),
-          "Add e-mail address",
-          "Enter e-mail address:",
-          "",
-          [=](auto a) { return workspace->validator()->principal()->isValidEmailAddress(a); })
+            parent,
+            QIcon(":/tt3-gui/Resources/Images/Actions/AddEmailAddressLarge.png"),
+            Component::Resources::instance()->string(
+                RSID(AddEmailAddressDialog),
+                RID(Title)),
+            Component::Resources::instance()->string(
+                RSID(AddEmailAddressDialog),
+                RID(Prompt)),
+            "",
+            [=](auto a) { return workspace->validator()->principal()->isValidEmailAddress(a); })
 {
 }
 

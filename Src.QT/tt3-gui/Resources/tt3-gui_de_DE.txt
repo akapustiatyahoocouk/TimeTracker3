@@ -16,3 +16,11 @@ CreateActivityTypePushButton=Aktivitätstyp erstellen
 ViewActivityTypePushButton=Aktivitätstyp anzeigen
 ModifyActivityTypePushButton=Aktivitätstyp ändern
 DestroyActivityTypePushButton=Aktivitätstyp zerstören
+
+[AddEmailAddressDialog]
+Title=E-Mail-Adresse hinzufügen
+Prompt=E-Mail-Adresse eingeben:
+
+[EditStringDialog]
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen

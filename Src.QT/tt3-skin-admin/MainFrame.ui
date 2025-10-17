@@ -227,9 +227,9 @@
     <addaction name="separator"/>
     <addaction name="actionPreferences"/>
    </widget>
-   <widget class="QMenu" name="menuEdit">
+   <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>&amp;Edit</string>
+     <string>&amp;View</string>
     </property>
     <addaction name="actionManageUsers"/>
     <addaction name="actionManageActivityTypes"/>
@@ -262,7 +262,7 @@
     </property>
    </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
    <addaction name="menuTools"/>
    <addaction name="menuReports"/>
    <addaction name="menuOptions"/>

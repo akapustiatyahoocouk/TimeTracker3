@@ -20,25 +20,37 @@ using namespace tt3::gui;
 
 //////////
 //  Construction/destruction
-EditStringDialog::EditStringDialog(QWidget * parent,
-                                   const QIcon & icon, const QString & title, const QString & prompt,
-                                   const QString & initialValue, Validator validator)
-    :   QDialog(parent),
+EditStringDialog::EditStringDialog(
+        QWidget * parent,
+        const QIcon & icon,
+        const QString & title,
+        const QString & prompt,
+        const QString & initialValue,
+        Validator validator
+    ) : QDialog(parent),
         _validator(validator),
         _ui(new Ui::EditStringDialog)
 {
+    static Component::Resources * resources = Component::Resources::instance(); //  idempotent
+
     _ui->setupUi(this);
-
-    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
-        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
-    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
-        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
-
     this->setWindowIcon(icon);
     this->setWindowTitle(title);
+
+    //  Set initial control values
     _ui->promptLabel->setText(prompt);
     _ui->lineEdit->setText(initialValue);
 
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(resources->string(RSID(EditStringDialog), RID(OkPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(resources->string(RSID(EditStringDialog), RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
+
+    //  Adjust control states
     if (!initialValue.isEmpty())
     {
         _ui->lineEdit->selectAll();

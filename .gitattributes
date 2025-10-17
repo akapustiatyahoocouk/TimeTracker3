@@ -21,9 +21,11 @@
 *.qrc  text diff=cpp
 *.ui   text diff=cpp
 *.txt  text diff=cpp
+*.htm  text diff=cpp
 *.html text diff=cpp
 *.css  text diff=cpp
 *.bat  text diff=cpp
+*.csv  text diff=cpp
 Doxyfile  text diff=cpp
 
 # Compiled Object files
