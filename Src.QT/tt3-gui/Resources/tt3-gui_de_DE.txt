@@ -21,6 +21,11 @@ DestroyActivityTypePushButton=Aktivitätstyp zerstören
 Title=E-Mail-Adresse hinzufügen
 Prompt=E-Mail-Adresse eingeben:
 
+[AskYesNoDialog]
+AssumeYesCheckBox=Diese Bestätigung nicht erneut anfordern (angenommen, die Antwort ist „Ja“)
+YesPushButton=Ja
+NoPushButton=Nein
+
 [EditStringDialog]
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen

@@ -21,6 +21,11 @@ DestroyActivityTypePushButton=Destroy activity type
 Title=Add e-mail address
 Prompt=Enter e-mail address:
 
+[AskYesNoDialog]
+AssumeYesCheckBox=Do not request this confirmation again (assume the answer is yes)
+YesPushButton=Yes
+NoPushButton=No
+
 [EditStringDialog]
 OkPushButton=OK
 CancelPushButton=Cancel

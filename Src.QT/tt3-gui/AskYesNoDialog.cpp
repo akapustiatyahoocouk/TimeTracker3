@@ -1,6 +1,6 @@
 //
 //  tt3-gui/AskYesNoDialog.cpp - tt3::gui::AskYesNoDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -20,23 +20,38 @@ using namespace tt3::gui;
 
 //////////
 //  Construction/destruction
-AskYesNoDialog::AskYesNoDialog(QWidget * parent, const QIcon & icon,
-                               const QString & title, const QString & prompt,
-                               tt3::util::Setting<bool> * confirmActionSetting)
-    :   QDialog(parent),
+AskYesNoDialog::AskYesNoDialog(
+        QWidget * parent,
+        const QIcon & icon,
+        const QString & title,
+        const QString & prompt,
+        tt3::util::Setting<bool> * confirmActionSetting
+    ) : QDialog(parent),
         _confirmActionSetting(confirmActionSetting),
         _ui(new Ui::AskYesNoDialog)
 {
-    _ui->setupUi(this);
+    static Component::Resources * resources = Component::Resources::instance(); //  idempotent
 
+    _ui->setupUi(this);
+    this->setWindowIcon(icon);
+    this->setWindowTitle(title);
+
+    //  Set initial control values
+    _ui->promptLabel->setText(prompt);
+
+    _ui->assumeYesCheckBox->setText(
+        resources->string(RSID(AskYesNoDialog), RID(AssumeYesCheckBox)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Yes)->
+        setText(resources->string(RSID(AskYesNoDialog), RID(YesPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Yes)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::No)->
+        setText(resources->string(RSID(AskYesNoDialog), RID(NoPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::No)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    this->setWindowIcon(icon);
-    this->setWindowTitle(title);
-    _ui->promptLabel->setText(prompt);
+    //  Adjust control states
     if (_confirmActionSetting != nullptr)
     {
         _ui->assumeYesCheckBox->setChecked(!_confirmActionSetting->value());

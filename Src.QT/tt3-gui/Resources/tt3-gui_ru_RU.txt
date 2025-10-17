@@ -21,6 +21,11 @@ DestroyActivityTypePushButton=Удалить тип активности
 Title=Добавить адрес электронной почты
 Prompt=Введите адрес электронной почты:
 
+[AskYesNoDialog]
+AssumeYesCheckBox=Больше не запрашивать это подтверждение (предполагаем, что ответ — да)
+YesPushButton=Да
+NoPushButton=Нет
+
 [EditStringDialog]
 OkPushButton=OK
 CancelPushButton=Отмена
