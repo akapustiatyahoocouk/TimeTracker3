@@ -327,7 +327,7 @@ void Workload::_validate(
         if (beneficiary == nullptr ||
             beneficiary->_database != this->_database ||
             !beneficiary->_isLive ||
-            !beneficiary->_workloads.contains(this))    //  TODO make sure ALL back associations are validated
+            !beneficiary->_workloads.contains(this))
         {   //  OOPS!
             throw tt3::db::api::DatabaseCorruptException(_database->_address);
         }

@@ -19,16 +19,16 @@ using namespace tt3::db::xml;
 
 namespace
 {
-    class XmlDbPlugin final //  TODO just "Plugin"
+    class Plugin final
         :   public virtual tt3::util::IPlugin
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(XmlDbPlugin)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Plugin)
 
         //////////
         //  Construction/destruction
     public:
-        XmlDbPlugin() = default;
-        virtual ~XmlDbPlugin() = default;
+        Plugin() = default;
+        virtual ~Plugin() = default;
 
         //////////
         //  util::IPlugin
@@ -77,7 +77,7 @@ namespace
 }
 
 BEGIN_PLUGIN_TABLE()
-    EXPORT_PLUGIN(XmlDbPlugin)
+    EXPORT_PLUGIN(Plugin)
 END_PLUGIN_TABLE()
 
 //  End of tt3-db-xml/Plugins.cpp

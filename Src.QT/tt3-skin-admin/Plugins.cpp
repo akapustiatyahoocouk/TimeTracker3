@@ -19,16 +19,16 @@ using namespace tt3::skin::admin;
 
 namespace
 {
-    class AdminSkinPlugin final
+    class Plugin final
         :   public virtual tt3::util::IPlugin
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AdminSkinPlugin)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Plugin)
 
         //////////
         //  Construction/destruction
     public:
-        AdminSkinPlugin() = default;
-        virtual ~AdminSkinPlugin() = default;
+        Plugin() = default;
+        virtual ~Plugin() = default;
 
         //////////
         //  util::IPlugin
@@ -77,7 +77,7 @@ namespace
 }
 
 BEGIN_PLUGIN_TABLE()
-    EXPORT_PLUGIN(AdminSkinPlugin)
+    EXPORT_PLUGIN(Plugin)
 END_PLUGIN_TABLE()
 
 //  End of tt3-skin-admin/Plugins.cpp

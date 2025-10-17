@@ -171,7 +171,7 @@
       <item row="0" column="0">
        <widget class="QWidget" name="filterPanel" native="true">
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(85, 0, 255);</string>
+         <string notr="true"/>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
          <property name="leftMargin">
@@ -333,10 +333,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>filterComboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>tt3::gui::MyDayManager</receiver>
+   <slot>_filterComboBoxCurrentIndexChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>334</x>
+     <y>17</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>248</x>
+     <y>89</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_quickPicksPushButtonClicked()</slot>
   <slot>_logEventPushButtonClicked()</slot>
   <slot>_logListWidgetCustomContextMenuRequested(QPoint)</slot>
+  <slot>_filterComboBoxCurrentIndexChanged(int)</slot>
  </slots>
 </ui>

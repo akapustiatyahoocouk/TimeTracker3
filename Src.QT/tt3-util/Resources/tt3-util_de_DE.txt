@@ -4,7 +4,7 @@ ApplicationCopyright=Copyright (C) {0}, Andrey Kapustin
 ApplicationDisplayName=TimeTracker3
 OrganizationName=Andrey Kapustin
 OrganizationDomain=https://github.com/akapustiatyahoocouk/TimeTracker3
-Credits=Idea by: Yuri Levdik
+Credits=Idee von: Yuri Levdik
 
 [Component]
 DisplayName=TimeTracker3 Dienstprogramm

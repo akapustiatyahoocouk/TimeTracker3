@@ -15,7 +15,6 @@
 //  GNU General Public License for more details.
 //////////
 
-//  TODO keep this file? Kill it?
 namespace tt3::util
 {
     /// \brief
@@ -32,6 +31,7 @@ namespace tt3::util
     ///     set elements.
     /// \return
     ///     The destination set.
+    //  TODO use wherever possible
     template <class D, class S>
     QSet<D> transform(const QSet<S> & src,
                       std::function<D(S)> op)

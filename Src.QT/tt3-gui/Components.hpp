@@ -112,6 +112,11 @@ namespace tt3::gui
             ///     completed Projects (false to hide them).
             tt3::util::Setting<bool>    showCompletedProjects;
 
+            /// \brief
+            ///     The number of days to limit the activities log
+            ///     in the "My Day" manager to.
+            tt3::util::Setting<int>     myDayLogDepth;
+
             //////////
             //  Properties (dialogs)
             /// \brief

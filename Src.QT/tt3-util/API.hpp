@@ -114,6 +114,7 @@
 //  Data types
 #include "tt3-util/DateTime.hpp"
 #include "tt3-util/Identifiers.hpp"
+#include "tt3-util/Exceptions.hpp"
 
 //  Algorithms
 #include "tt3-util/ToString.hpp"
@@ -132,6 +133,5 @@
 //  Misc
 #include "tt3-util/ProductInformation.hpp"
 #include "tt3-util/Components.hpp"
-#include "tt3-util/Exceptions.hpp"
 
 //  End of tt3-util/API.hpp

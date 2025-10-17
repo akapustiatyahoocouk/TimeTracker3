@@ -303,6 +303,36 @@ auto AccountImpl::works(
     }
 }
 
+auto AccountImpl::works(
+        const Credentials & credentials,
+        const QDateTime & from,
+        const QDateTime & to
+    ) const -> Works
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials)) //  may throw
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        Works result;
+        for (tt3::db::api::IWork * dataWork : _dataAccount->works(from, to))
+        {
+            result.insert(_workspace->_getProxy(dataWork));
+        }
+        return result;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
 auto AccountImpl::events(
         const Credentials & credentials
     ) const -> Events
@@ -320,6 +350,36 @@ auto AccountImpl::events(
         //  Do the work
         Events result;
         for (tt3::db::api::IEvent * dataEvent : _dataAccount->events())
+        {
+            result.insert(_workspace->_getProxy(dataEvent));
+        }
+        return result;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+auto AccountImpl::events(
+        const Credentials & credentials,
+        const QDateTime & from,
+        const QDateTime & to
+    ) const -> Events
+{
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials)) //  may throw
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        Events result;
+        for (tt3::db::api::IEvent * dataEvent : _dataAccount->events(from, to))
         {
             result.insert(_workspace->_getProxy(dataEvent));
         }

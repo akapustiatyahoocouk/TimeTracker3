@@ -53,8 +53,9 @@ MyDayManager::MyDayManager(
     _ui->filterComboBox->addItem("last 3 days", QVariant::fromValue(3));
     _ui->filterComboBox->addItem("last 7 days", QVariant::fromValue(7));
     _ui->filterComboBox->addItem("last 30 days", QVariant::fromValue(30));
+    _setLogDepth(Component::Settings::instance()->myDayLogDepth);
 
-    //  Populate the ",my day" view area
+    //  Populate the "my day" view area
     _myDayModel = _createMyDayModel();
 
     //  Theme change means widget decorations change
@@ -62,6 +63,13 @@ MyDayManager::MyDayManager(
             &CurrentTheme::changed,
             this,
             &MyDayManager::_currentThemeChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  View options changes should cause a refresh
+    connect(&Component::Settings::instance()->myDayLogDepth,
+            &tt3::util::AbstractSetting::valueChanged,
+            this,
+            &MyDayManager::_viewOptionSettingValueChanged,
             Qt::ConnectionType::QueuedConnection);
 
     //  Must listen to delayed refresh requests
@@ -88,6 +96,9 @@ MyDayManager::MyDayManager(
             this,
             &MyDayManager::_refreshTimerTimeout);
     _refreshTimer.start(1000);
+
+    //  Done
+    _constructed = true;
 }
 
 MyDayManager::~MyDayManager()
@@ -257,10 +268,14 @@ MyDayManager::_MyDayModel MyDayManager::_createMyDayModel()
     _MyDayModel myDayModel = std::make_shared<_MyDayModelImpl>();
     if (_workspace != nullptr)
     {
+        QDate localToday = QDateTime::currentDateTime().date();
+        QDateTime localFrom(localToday.addDays(-_logDepth() + 1), QTime(0, 0));
+        QDateTime localTo(localToday, QTime(23, 59, 59, 999));
+        QDateTime from = localFrom.toUTC(), to = localTo.toUTC();
         try
         {
             tt3::ws::Account account = _workspace->login(_credentials); //  may throw
-            for (tt3::ws::Work work : account->works(_credentials)) //  may throw
+            for (tt3::ws::Work work : account->works(_credentials, from, to)) //  may throw
             {
                 try
                 {
@@ -271,7 +286,7 @@ MyDayManager::_MyDayModel MyDayManager::_createMyDayModel()
                     qCritical() << ex.errorMessage();
                 }
             }
-            for (tt3::ws::Event event : account->events(_credentials)) //  may throw
+            for (tt3::ws::Event event : account->events(_credentials, from, to)) //  may throw
             {
                 try
                 {
@@ -702,6 +717,24 @@ void MyDayManager::_refreslLogList()
     }
 }
 
+int MyDayManager::_logDepth()
+{
+    return _ui->filterComboBox->currentData().value<int>();
+}
+
+void MyDayManager::_setLogDepth(int logDepth)
+{
+    for (int i = 0; i < _ui->filterComboBox->count(); i++)
+    {
+        if (_ui->filterComboBox->itemData(i).value<int>() == logDepth)
+        {   //  This one!
+            _ui->filterComboBox->setCurrentIndex(i);
+            break;
+        }
+    }
+}
+
+
 //////////
 //  Signal handlers
 void MyDayManager::_currentThemeChanged(ITheme *, ITheme *)
@@ -797,6 +830,23 @@ void MyDayManager::_quickPickPushButtonClicked()
             break;
         }
     }
+}
+
+void MyDayManager::_filterComboBoxCurrentIndexChanged(int)
+{
+    if (_constructed)
+    {
+        Component::Settings::instance()->myDayLogDepth = _logDepth();
+        _myDayModel = _createMyDayModel();
+        requestRefresh();
+    }
+}
+
+void MyDayManager::_viewOptionSettingValueChanged()
+{
+    _setLogDepth(Component::Settings::instance()->myDayLogDepth);
+    _myDayModel = _createMyDayModel();
+    requestRefresh();
 }
 
 void MyDayManager::_refreshTimerTimeout()

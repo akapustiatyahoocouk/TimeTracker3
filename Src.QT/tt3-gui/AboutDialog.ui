@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>293</width>
-    <height>240</height>
+    <width>373</width>
+    <height>203</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -27,27 +27,6 @@
    <bool>true</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="1" colspan="4">
-    <widget class="QLabel" name="versionLabel">
-     <property name="text">
-      <string>&lt;VERSION&gt;</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="0" rowspan="2" colspan="2">
-    <widget class="QPushButton" name="showLicensePushButton">
-     <property name="text">
-      <string>License</string>
-     </property>
-     <property name="icon">
-      <iconset resource="tt3-gui.qrc">
-       <normaloff>:/tt3-gui/Resources/Images/Actions/ShowLicenseSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/ShowLicenseSmall.png</iconset>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="0" rowspan="2">
     <widget class="QLabel" name="pictureLabel">
      <property name="sizePolicy">
@@ -70,26 +49,21 @@
      </property>
     </widget>
    </item>
-   <item row="7" column="3">
-    <spacer name="horizontalSpacer">
+   <item row="5" column="0" colspan="5">
+    <widget class="Line" name="line">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>31</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
+    </widget>
    </item>
-   <item row="4" column="0" colspan="5">
-    <widget class="QLabel" name="linkLabel">
+   <item row="6" column="0" rowspan="2" colspan="2">
+    <widget class="QPushButton" name="showLicensePushButton">
      <property name="text">
-      <string>LINK</string>
+      <string>License</string>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
+     <property name="icon">
+      <iconset resource="tt3-gui.qrc">
+       <normaloff>:/tt3-gui/Resources/Images/Actions/ShowLicenseSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/ShowLicenseSmall.png</iconset>
      </property>
     </widget>
    </item>
@@ -104,27 +78,33 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="0" colspan="5">
-    <widget class="Line" name="line">
+   <item row="7" column="3">
+    <spacer name="horizontalSpacer">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
      </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>31</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="7" column="4">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Ok</set>
+     </property>
     </widget>
    </item>
-   <item row="2" column="1" colspan="4">
-    <widget class="QLabel" name="copyrightLabel">
+   <item row="4" column="0" colspan="5">
+    <widget class="QLabel" name="linkLabel">
      <property name="text">
-      <string>&lt;COPYRIGHT&gt;</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1" colspan="4">
-    <widget class="QLabel" name="productLabel">
-     <property name="text">
-      <string>&lt;NAME&gt;</string>
+      <string>LINK</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -141,20 +121,33 @@
      </property>
     </widget>
    </item>
-   <item row="8" column="0" colspan="4">
-    <widget class="Line" name="line_2">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
+   <item row="2" column="1" colspan="4">
+    <widget class="QLabel" name="copyrightLabel">
+     <property name="text">
+      <string>&lt;COPYRIGHT&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
    </item>
-   <item row="9" column="0" colspan="4">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
+   <item row="1" column="1" colspan="4">
+    <widget class="QLabel" name="versionLabel">
+     <property name="text">
+      <string>&lt;VERSION&gt;</string>
      </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::StandardButton::Ok</set>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" colspan="4">
+    <widget class="QLabel" name="productLabel">
+     <property name="text">
+      <string>&lt;NAME&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
    </item>

@@ -110,6 +110,7 @@ namespace tt3::gui
     private:
         tt3::ws::Workspace      _workspace;
         tt3::ws::Credentials    _credentials;
+        bool                    _constructed = false;
 
         //  View model
         struct _MyDayModelImpl;
@@ -317,6 +318,8 @@ namespace tt3::gui
         void            _recreateQuickPickButtons();
         void            _recreateDynamicControls();
         void            _refreslLogList();
+        int             _logDepth();
+        void            _setLogDepth(int logDepth);
 
         //////////
         //  Controls
@@ -347,6 +350,8 @@ namespace tt3::gui
         void            _quickPicksPushButtonClicked();
         void            _logEventPushButtonClicked();
         void            _quickPickPushButtonClicked();
+        void            _filterComboBoxCurrentIndexChanged(int);
+        void            _viewOptionSettingValueChanged();
         void            _refreshTimerTimeout();
         void            _currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity);
         void            _logListWidgetCustomContextMenuRequested(QPoint);

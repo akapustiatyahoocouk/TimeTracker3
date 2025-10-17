@@ -269,6 +269,29 @@ auto Account::works(
     return tt3::db::api::Works(_works.cbegin(), _works.cend());
 }
 
+auto Account::works(
+        const QDateTime & from,
+        const QDateTime & to
+    ) const -> tt3::db::api::Works
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    tt3::db::api::Works result;
+    if (from.isValid() && to.isValid() && from <= to)
+    {
+        for (Work * work : _works)
+        {
+            if (!(work->_startedAt > to || work->_finishedAt < from))
+            {
+                result.insert(work);
+            }
+        }
+    }
+    return result;
+}
+
 auto Account::events(
     ) const -> tt3::db::api::Events
 {
@@ -277,6 +300,29 @@ auto Account::events(
     //  We assume database is consistent since last change
 
     return tt3::db::api::Events(_events.cbegin(), _events.cend());
+}
+
+auto Account::events(
+        const QDateTime & from,
+        const QDateTime & to
+    ) const -> tt3::db::api::Events
+{
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    tt3::db::api::Events result;
+    if (from.isValid() && to.isValid() && from <= to)
+    {
+        for (Event * event : _events)
+        {
+            if (event->_occurredAt >= from && event->_occurredAt <= to)
+            {
+                result.insert(event);
+            }
+        }
+    }
+    return result;
 }
 
 //////////

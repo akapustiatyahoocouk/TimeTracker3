@@ -26,6 +26,9 @@ ShowConfigurationDialog::ShowConfigurationDialog(QWidget * parent)
 {
     _ui->setupUi(this);
 
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+
     //  Fill the "components" tree
     QList<tt3::util::ISubsystem*> subsystems =
         tt3::util::SubsystemManager::allSubsystems().values();

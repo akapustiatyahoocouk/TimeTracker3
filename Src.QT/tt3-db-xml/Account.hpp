@@ -70,7 +70,15 @@ namespace tt3::db::xml
                             ) override;
         virtual auto    works(
                             ) const -> tt3::db::api::Works override;
+        virtual auto    works(
+                                const QDateTime & from,
+                                const QDateTime & to
+                            ) const -> tt3::db::api::Works override;
         virtual auto    events(
+                            ) const -> tt3::db::api::Events override;
+        virtual auto    events(
+                                const QDateTime & from,
+                                const QDateTime & to
                             ) const -> tt3::db::api::Events override;
 
         //////////

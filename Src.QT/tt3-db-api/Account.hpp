@@ -147,12 +147,45 @@ namespace tt3::db::api
                             ) const -> Works = 0;
 
         /// \brief
+        ///     Returns the set of all Works logged by this Account
+        ///     that fall, fully or partially, within the given UTC
+        ///     date+time range.
+        /// \param from
+        ///     The UTC date+time when the range begins (inclusive).
+        /// \param to
+        ///     The UTC date+time when the range ends (inclusive).
+        /// \return
+        ///     The set of all Works logged by this Account.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        virtual auto    works(
+                                const QDateTime & from,
+                                const QDateTime & to
+                            ) const -> Works = 0;
+
+        /// \brief
         ///     Returns the set of all Events logged by this Account.
         /// \return
         ///     The set of all Events logged by this Account.
         /// \exception DatabaseException
         ///     If an error occurs.
         virtual auto    events(
+                            ) const -> Events = 0;
+
+        /// \brief
+        ///     Returns the set of all Events logged by this Account
+        ///     that fall within the given UTC date+time range.
+        /// \param from
+        ///     The UTC date+time when the range begins (inclusive).
+        /// \param to
+        ///     The UTC date+time when the range ends (inclusive).
+        /// \return
+        ///     The set of all Events logged by this Account.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        virtual auto    events(
+                                const QDateTime & from,
+                                const QDateTime & to
                             ) const -> Events = 0;
 
         //////////

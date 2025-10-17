@@ -176,6 +176,26 @@ namespace tt3::ws
                         ) const -> Works;
 
         /// \brief
+        ///     Returns the set of all Works logged by this Account
+        ///     that fall, fully or partially, within the given UTC
+        ///     date+time range.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param from
+        ///     The UTC date+time when the range begins (inclusive).
+        /// \param to
+        ///     The UTC date+time when the range ends (inclusive).
+        /// \return
+        ///     The set of all Works logged by this Account.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        works(
+                            const Credentials & credentials,
+                            const QDateTime & from,
+                            const QDateTime & to
+                        ) const -> Works;
+
+        /// \brief
         ///     Returns the set of all Events logged by this Account.
         /// \param credentials
         ///     The credentials of the service caller.
@@ -185,6 +205,25 @@ namespace tt3::ws
         ///     If an error occurs.
         auto        events(
                             const Credentials & credentials
+                        ) const -> Events;
+
+        /// \brief
+        ///     Returns the set of all Events logged by this Account
+        ///     that fall within the given UTC date+time range.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param from
+        ///     The UTC date+time when the range begins (inclusive).
+        /// \param to
+        ///     The UTC date+time when the range ends (inclusive).
+        /// \return
+        ///     The set of all Events logged by this Account.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        events(
+                            const Credentials & credentials,
+                            const QDateTime & from,
+                            const QDateTime & to
                         ) const -> Events;
 
         //////////

@@ -908,7 +908,7 @@ void WorkspaceImpl::_markClosed()
     //  database will be missed, as database (along with
     //  its change notifier) no longer existsm so we
     //  need to fake a "workspace closed" signal
-    //  TODO uncomment & fix the bug emit workspaceClosed(WorkspacePtr(this));
+    emit workspaceClosed(type()->_mapWorkspace(const_cast<WorkspaceImpl*>(this)));
 }
 
 auto WorkspaceImpl::_validateAccessRights(

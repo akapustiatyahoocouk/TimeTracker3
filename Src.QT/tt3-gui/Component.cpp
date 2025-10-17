@@ -106,6 +106,7 @@ Component::Settings::Settings()
         showCompletedPublicTasks(this, M(ShowCompletedPublicTasks), true),
         showCompletedPrivateTasks(this, M(ShowCompletedPrivateTasks), true),
         showCompletedProjects(this, M(ShowCompletedProjects), true),
+        myDayLogDepth(this, M(MyDayLogDepth), 1),
         //  Properties (dialogs)
         manageQuickPicksListDialogTab(this, M(ManageQuickPicksListDialogTab), 0)
 {

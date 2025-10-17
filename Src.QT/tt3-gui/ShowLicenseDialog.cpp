@@ -24,9 +24,12 @@ ShowLicenseDialog::ShowLicenseDialog(QWidget * parent, tt3::util::ILicense * lic
     :   QDialog(parent),
         _ui(new Ui::ShowLicenseDialog)
 {
+    Q_ASSERT(license != nullptr);
+
     _ui->setupUi(this);
 
-    Q_ASSERT(license != nullptr);
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
 
     this->setWindowTitle(license->displayName());
     this->setWindowIcon(license->largeIcon());
