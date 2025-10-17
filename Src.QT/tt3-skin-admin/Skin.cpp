@@ -32,12 +32,14 @@ Skin::Mnemonic Skin::mnemonic() const
 
 QString Skin::displayName() const
 {
-    return "Administrator";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(Skin), RID(DisplayName));
 }
 
 QString Skin::description() const
 {
-    return "Provides full management facilities for TimeTracker3 workspaces";
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(Skin), RID(Description));
 }
 
 QIcon Skin::smallIcon() const

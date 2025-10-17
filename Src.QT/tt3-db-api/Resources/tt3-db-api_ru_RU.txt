@@ -1,6 +1,7 @@
 [Component]
 DisplayName=API базы данных TimeTracker3
 Description=Определяет общий API для баз данных TimeTracker3
+Copyright=Авторское право (C) {0}, Андрей Капустин
 
 [ObjectTypes]
 User.DisplayName=Пользователь

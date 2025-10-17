@@ -9,6 +9,7 @@ Credits=Идея: Юрий Левдик
 [Component]
 DisplayName=TimeTracker3 утилиты
 Description=Определяет вспомогательные службы для TimeTracker3
+Copyright=Авторское право (C) {0}, Андрей Капустин
 
 [StandardSubsystems]
 Applications.DisplayName=Приложения

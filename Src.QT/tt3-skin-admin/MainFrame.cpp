@@ -1,6 +1,6 @@
 //
 //  tt3-skin-admin/MainFrame.cpp - tt3::skin::admin::MainFrame class implementation
-//
+//  TODO translate UI via Resources
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //

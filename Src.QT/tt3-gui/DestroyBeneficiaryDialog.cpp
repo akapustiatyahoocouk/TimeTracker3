@@ -1,6 +1,6 @@
 //
 //  tt3-gui/DestroyBeneficiaryDialog.cpp - tt3::gui::DestroyBeneficiaryDialog class implementation
-//
+//  TODO translate UI via Resources
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //

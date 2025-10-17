@@ -32,6 +32,14 @@ namespace tt3::db::xml
         friend class Database;
 
         //////////
+        //  Constants
+    public:
+        /// \brief
+        ///     The preferred extension for TT3 XML
+        ///     database files; starts with '.'.
+        static const QString    PreferredFilenameExtension;
+
+        //////////
         //  tt3::db::api::IDatabaseType (general)
     public:
         virtual auto    mnemonic(
@@ -42,7 +50,8 @@ namespace tt3::db::xml
                             ) const override;
         virtual QIcon   largeIcon(
                             ) const override;
-        virtual bool    isOperational() const override;
+        virtual bool    isOperational(
+                            ) const override;
         virtual QString shortStatusReport(
                             ) const override;
         virtual QString fullStatusReport(

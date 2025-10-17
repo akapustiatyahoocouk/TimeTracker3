@@ -1,0 +1,4 @@
+[Component]
+DisplayName=Пользовательский интерфейс TimeTracker3
+Description=Определяет возможности графического интерфейса для TimeTracker3
+Copyright=Авторское право (C) {0}, Андрей Капустин

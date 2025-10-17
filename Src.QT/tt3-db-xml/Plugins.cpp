@@ -54,17 +54,18 @@ namespace
 
         virtual QString         copyright() const override
         {
-            return tt3::util::ProductInformation::applicationCopyright();
+            static Component::Resources * resources = Component::Resources::instance();  //  idempotent
+            return resources->string(RSID(Component), RID(Copyright), QString(TT3_BUILD_DATE).left(4));
         }
 
         virtual QVersionNumber  version() const override
         {
-            return tt3::util::ProductInformation::applicationVersion();
+            return tt3::util::fromString<QVersionNumber>(TT3_VERSION);
         }
 
         virtual QString         buildNumber() const override
         {
-            return tt3::util::ProductInformation::applicationBuildNumber();
+            return TT3_BUILD_DATE "-" TT3_BUILD_TIME;
         }
 
         virtual void            initialize() override

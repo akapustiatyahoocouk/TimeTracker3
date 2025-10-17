@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ManagePublicTasksDialog.cpp - tt3::gui::ManagePublicTasksDialog class implementation
-//
+//  TODO translate UI via Resources
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //

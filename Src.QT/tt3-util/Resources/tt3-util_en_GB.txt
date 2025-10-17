@@ -9,6 +9,7 @@ Credits=Idea by: Yuri Levdik
 [Component]
 DisplayName=TimeTracker3 utility
 Description=Defines utility services for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
 
 [StandardSubsystems]
 Applications.DisplayName=Applications

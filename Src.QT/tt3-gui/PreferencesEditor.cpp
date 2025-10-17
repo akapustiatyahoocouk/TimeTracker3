@@ -15,7 +15,6 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-gui/API.hpp"
-#include "ui_AboutDialog.h"
 using namespace tt3::gui;
 
 //////////

@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ProjectManager.cpp - tt3::gui::ProjectManager class implementation
-//
+//  TODO translate UI via Resources
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //

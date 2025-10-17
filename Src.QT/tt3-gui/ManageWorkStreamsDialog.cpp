@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ManageWorkStreamsDialog.cpp - tt3::gui::ManageWorkStreamsDialog class implementation
-//
+//  TODO translate UI via Resources
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //

@@ -1,0 +1,13 @@
+[Plugin]
+DisplayName=Скин администратора TimeTracker3
+Description=Определяет графический интерфейс администратора для TimeTracker3
+Copyright=Авторское право (C) {0}, Андрей Капустин
+
+[Component]
+DisplayName=Скин администратора TimeTracker3
+Description=Определяет графический интерфейс администратора для TimeTracker3
+Copyright=Авторское право (C) {0}, Андрей Капустин
+
+[Skin]
+DisplayName=Администратор
+Description=Обеспечивает полный набор функций управления рабочими пространствами TimeTracker3

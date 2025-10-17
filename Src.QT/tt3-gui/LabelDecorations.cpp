@@ -15,11 +15,11 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-gui/API.hpp"
-    using namespace tt3::gui;
+using namespace tt3::gui;
 
 namespace tt3::gui
 {
-extern CurrentTheme theCurrentTheme;
+    extern CurrentTheme theCurrentTheme;
 }
 
 //////////

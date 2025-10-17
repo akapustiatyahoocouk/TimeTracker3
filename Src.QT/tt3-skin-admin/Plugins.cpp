@@ -42,27 +42,30 @@ namespace
 
         virtual QString         displayName() const override
         {
-            return "Administrator skin";
+            static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+            return resources->string(RSID(Plugin), RID(DisplayName));
         }
 
         virtual QString         description() const override
         {
-            return "Enables administrator skin for TimeTracker3";
+            static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+            return resources->string(RSID(Plugin), RID(Description));
         }
 
         virtual QString         copyright() const override
         {
-            return "Copyright (C) 2026, Andrey Kapustin";
+            static Component::Resources * resources = Component::Resources::instance();  //  idempotent
+            return resources->string(RSID(Component), RID(Copyright), QString(TT3_BUILD_DATE).left(4));
         }
 
         virtual QVersionNumber  version() const override
         {
-            return QVersionNumber(1, 0, 0);
+            return tt3::util::fromString<QVersionNumber>(TT3_VERSION);
         }
 
         virtual QString         buildNumber() const override
         {
-            return tt3::util::ProductInformation::applicationBuildNumber();
+            return TT3_BUILD_DATE "-" TT3_BUILD_TIME;
         }
 
         virtual void            initialize() override

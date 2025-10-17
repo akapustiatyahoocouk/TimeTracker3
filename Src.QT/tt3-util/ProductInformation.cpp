@@ -36,7 +36,7 @@ QString ProductInformation::applicationCopyright()
 
 QString ProductInformation::applicationBuildNumber()
 {
-    return QString(TT3_BUILD_DATE) + "-" + QString(TT3_BUILD_TIME);
+    return TT3_BUILD_DATE "-" TT3_BUILD_TIME;
 }
 
 QString ProductInformation::applicationDisplayName()

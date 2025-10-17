@@ -1,6 +1,7 @@
 [Component]
 DisplayName=TimeTracker3-Arbeitsbereichsebene
 Description=Definiert die Datenzugriffsebene für den Arbeitsbereich von TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
 
 [Errors]
 InvalidWorkspaceAddressException=Ungültige Arbeitsbereichsadresse

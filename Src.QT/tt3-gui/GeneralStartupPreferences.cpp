@@ -1,6 +1,6 @@
 //
 //  tt3-gui/GeneralStartupPreferences.cpp - tt3::gui::GeneralStartupPreferences class implementation
-//
+//  TODO translate UI via Resources
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //

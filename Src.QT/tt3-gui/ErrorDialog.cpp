@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ErrorDialog.cpp - tt3::gui::ErrorDialog class implementation (+specializations)
-//
+//  TODO translate UI via Resources
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //

@@ -1,10 +1,12 @@
 [Plugin]
 DisplayName=Базы данных в формате XML
 Description=Позволяет хранить базы данных TimeTracker3 в формате XML (однопользовательский режим)
+Copyright=Авторское право (C) {0}, Андрей Капустин
 
 [Component]
 DisplayName=Поддержка баз данных TimeTracker3 в формате XML
 Description=Позволяет хранить базы данных TimeTracker3 в формате XML (однопользовательский режим)
+Copyright=Авторское право (C) {0}, Андрей Капустин
 
 [DatabaseType]
 DisplayName=XML-файл
@@ -12,8 +14,8 @@ StatusReport=Хранилище XML-файлов работает
 
 [EnterNewDatabaseAddressDialog]
 Title=Создать базу данных в формате XML
-Filter=Файлы базы данных XML (*.tt3);;Все файлы (*.*)
+Filter=Файлы базы данных XML (*{0});;Все файлы (*.*)
 
 [EnterExistingDatabaseAddressDialog]
 Title=Выбрать базу данных XML
-Filter=Файлы базы данных XML (*.tt3);;Все файлы (*.*)
+Filter=Файлы базы данных XML (*{0});;Все файлы (*.*)

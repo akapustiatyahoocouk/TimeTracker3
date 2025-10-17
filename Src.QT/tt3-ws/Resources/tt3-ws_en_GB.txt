@@ -1,6 +1,7 @@
 [Component]
 DisplayName=TimeTracker3 workspace layer
 Description=Defines workspace data access layer for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
 
 [Errors]
 InvalidWorkspaceAddressException=Invalid workspace address

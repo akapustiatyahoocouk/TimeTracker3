@@ -1,6 +1,6 @@
 //
 //  tt3-gui/DestroyEventDialog.cpp - tt3::gui::DestroyEventDialog class implementation
-//
+//  TODO translate UI via Resources
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //

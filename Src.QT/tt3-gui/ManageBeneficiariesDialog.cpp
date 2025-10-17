@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ManageBeneficiariesDialog.cpp - tt3::gui::ManageBeneficiariesDialog class implementation
-//
+//  TODO translate UI via Resources
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //

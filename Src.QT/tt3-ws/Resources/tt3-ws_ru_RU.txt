@@ -1,6 +1,7 @@
 [Component]
 DisplayName=Слой рабочей области TimeTracker3
 Description=Определяет уровень доступа к данным рабочей области для TimeTracker3
+Copyright=Авторское право (C) {0}, Андрей Капустин
 
 [Errors]
 InvalidWorkspaceAddressException=Недопустимый адрес рабочей области

@@ -19,7 +19,7 @@ using namespace tt3::gui;
 
 namespace tt3::gui
 {
-extern CurrentTheme theCurrentTheme;
+    extern CurrentTheme theCurrentTheme;
 }
 
 //////////

@@ -1,6 +1,7 @@
 [Component]
 DisplayName=TimeTracker3 database API
 Description=Defines common API for TimeTracker3 databases
+Copyright=Copyright (C) {0}, Andrey Kapustin
 
 [ObjectTypes]
 User.DisplayName=User

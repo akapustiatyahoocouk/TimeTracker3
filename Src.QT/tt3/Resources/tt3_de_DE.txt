@@ -1,6 +1,7 @@
 [Component]
 DisplayName=TimeTracker3-Anwendung
 Description=Definiert den Start und die Top-Level-Logik der TimeTracker3-Anwendung.
+Copyright=Copyright (C) {0}, Andrey Kapustin
 
 [Errors]
 NoSkinsDefined=Keine UI-Skins definiert.

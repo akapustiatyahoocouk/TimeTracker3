@@ -32,27 +32,30 @@ Component::Mnemonic Component::mnemonic() const
 
 QString Component::displayName() const
 {
-    return "TimeTracker3 Administrator skin";
+    static Resources * resources = Resources::instance();   //  idempotent
+    return resources->string(RSID(Component), RID(DisplayName));
 }
 
 QString Component::description() const
 {
-    return "Defines GUI Administrator skin for TimeTracker3";
+    static Resources * resources = Resources::instance();   //  idempotent
+    return resources->string(RSID(Component), RID(Description));
 }
 
 QString Component::copyright() const
 {
-    return tt3::util::ProductInformation::applicationCopyright();
+    static Resources * resources = Resources::instance();   //  idempotent
+    return resources->string(RSID(Component), RID(Copyright), QString(TT3_BUILD_DATE).left(4));
 }
 
 QVersionNumber Component::version() const
 {
-    return tt3::util::ProductInformation::applicationVersion();
+    return tt3::util::fromString<QVersionNumber>(TT3_VERSION);
 }
 
 QString Component::buildNumber() const
 {
-    return tt3::util::ProductInformation::applicationBuildNumber();
+    return TT3_BUILD_DATE "-" TT3_BUILD_TIME;
 }
 
 tt3::util::ISubsystem * Component::subsystem() const

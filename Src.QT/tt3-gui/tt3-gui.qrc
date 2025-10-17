@@ -188,5 +188,8 @@
         <file>Resources/Images/Actions/DestroyEventSmall.png</file>
         <file>Resources/Images/Actions/DestroyWorkLarge.png</file>
         <file>Resources/Images/Actions/DestroyWorkSmall.png</file>
+        <file>Resources/tt3-gui_de_DE.txt</file>
+        <file>Resources/tt3-gui_en_GB.txt</file>
+        <file>Resources/tt3-gui_ru_RU.txt</file>
     </qresource>
 </RCC>

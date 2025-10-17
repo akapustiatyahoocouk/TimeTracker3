@@ -1,0 +1,4 @@
+[Component]
+DisplayName=TimeTracker3 GUI
+Description=Defines GUI facilities for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin

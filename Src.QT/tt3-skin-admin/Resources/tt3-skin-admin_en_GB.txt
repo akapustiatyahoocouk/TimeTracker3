@@ -1,0 +1,13 @@
+[Plugin]
+DisplayName=TimeTracker3 Administrator skin
+Description=Defines GUI Administrator skin for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[Component]
+DisplayName=TimeTracker3 Administrator skin
+Description=Defines GUI Administrator skin for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[Skin]
+DisplayName=Administrator
+Description=Provides full management facilities for TimeTracker3 workspaces
