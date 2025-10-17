@@ -26,7 +26,7 @@ struct MessageDigestManager::_Impl
             Clazz::instance()->mnemonic(),  \
             Clazz::instance())
 
-        REGISTER(Sha1MessageDigest);
+        REGISTER(StandardMessageDigests::Sha1);
     }
 
     Mutex                           guard;

@@ -5,7 +5,7 @@ Copyright=Copyright (C) {0}, Andrey Kapustin
 
 [AboutDialog]
 Title=About TimeTracker3
-VersionLabel=Version {0} (build {1})
+VersionLabel=Version {0} (build {1} for Qt {2})
 ShowLicensePushButton=License
 ShowConfigurationPushButton=Configuration
 OkPushButton=OK

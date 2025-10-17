@@ -24,8 +24,8 @@ SOURCES += \
     PluginManager.cpp \
     ProductInformation.cpp \
     Settings.cpp \
-    Sha1MessageDigest.cpp \
     StandardLicenses.cpp \
+    StandardMessageDigests.Sha1.cpp \
     StandardSubsystems.cpp \
     SubsystemManager.cpp \
     TimeSpan.cpp \

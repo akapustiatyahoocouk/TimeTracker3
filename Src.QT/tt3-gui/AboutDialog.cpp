@@ -35,7 +35,8 @@ AboutDialog::AboutDialog(QWidget * parent)
         resources->string(
             RSID(AboutDialog), RID(VersionLabel),
             tt3::util::ProductInformation::applicationVersion().toString(),
-            tt3::util::ProductInformation::applicationBuildNumber()));
+            tt3::util::ProductInformation::applicationBuildNumber(),
+            QString(qVersion())));
     _ui->copyrightLabel->setText(
         tt3::util::ProductInformation::applicationCopyright());
     _ui->creditsLabel->setText(

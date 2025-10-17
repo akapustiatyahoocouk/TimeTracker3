@@ -137,62 +137,71 @@ namespace tt3::util
         virtual Builder *       createBuilder() = 0;
     };
 
-    /// \class Sha1MessageDigest tt3-util/API.hpp
-    /// \brief SHA-1 message digest.
-    /// TODO move to StandardMessageDigests::Sha1 class
-    class TT3_UTIL_PUBLIC Sha1MessageDigest final
-        :   public virtual IMessageDigest
+    /// \class StandardLicenses tt3-util/API.hpp
+    /// \brief The standard (predefined) licenses.
+    class TT3_UTIL_PUBLIC StandardMessageDigests final
     {
-        DECLARE_SINGLETON(Sha1MessageDigest)
+        UTILITY_CLASS(StandardMessageDigests)
 
         //////////
-        //  IMessageDigest
+        //  Members
     public:
-        virtual Mnemonic        mnemonic() const override;
-        virtual QString         displayName() const override;
-        virtual Builder *       createBuilder() override;
-
-        //////////
-        //  Implementation
-    private:
-        class TT3_UTIL_PUBLIC _Builder
-            :   public Builder
+        /// \class Sha1 tt3-util/API.hpp
+        /// \brief SHA-1 message digest.
+        class TT3_UTIL_PUBLIC Sha1 final
+            :   public virtual IMessageDigest
         {
-            CANNOT_ASSIGN_OR_COPY_CONSTRUCT(_Builder)
+            DECLARE_SINGLETON(Sha1)
 
             //////////
-            //  Construction/destruction
+            //  IMessageDigest
         public:
-            _Builder();
-            virtual ~_Builder();
-
-            //////////
-            //  Builder
-        public:
-            virtual IMessageDigest *messageDigest() const override;
-            virtual void        reset() override;
-            virtual void        digestFragment(const void * data, size_t numBytes) override;
-            virtual void        finalise() override;
-            virtual QByteArray  digestAsBytes() override;
+            virtual Mnemonic        mnemonic() const override;
+            virtual QString         displayName() const override;
+            virtual Builder *       createBuilder() override;
 
             //////////
             //  Implementation
         private:
-            bool                _finalised = false;
+            class TT3_UTIL_PUBLIC _Builder
+                :   public Builder
+            {
+                CANNOT_ASSIGN_OR_COPY_CONSTRUCT(_Builder)
 
-            uint32_t            _H[5];          //  Message digest buffers
-            uint32_t            _lengthLo = 0;  //  Message length in bits
-            uint32_t            _lengthHi = 0;  //  Message length in bits
+                //////////
+                //  Construction/destruction
+            public:
+                _Builder();
+                virtual ~_Builder();
 
-            uint8_t             _messageBlock[64];      //  512-bit message blocks
-            int                 _messageBlockIndex = 0; //  Index into message block array
+                //////////
+                //  Builder
+            public:
+                virtual IMessageDigest *messageDigest() const override;
+                virtual void        reset() override;
+                virtual void        digestFragment(const void * data, size_t numBytes) override;
+                virtual void        finalise() override;
+                virtual QByteArray  digestAsBytes() override;
 
-            QByteArray          _result = {};   //  empty unless finalized
+                //////////
+                //  Implementation
+            private:
+                bool                _finalised = false;
 
-            //  Helpers
-            void                _processMessageBlock();
-            void                _padMessage();
-            inline uint32_t     _circularShift(int bits, uint32_t word) { return (word << bits) | (word >> (32 - bits)); }
+                uint32_t            _H[5];          //  Message digest buffers
+                uint32_t            _lengthLo = 0;  //  Message length in bits
+                uint32_t            _lengthHi = 0;  //  Message length in bits
+
+                uint8_t             _messageBlock[64];      //  512-bit message blocks
+                int                 _messageBlockIndex = 0; //  Index into message block array
+
+                QByteArray          _result = {};   //  empty unless finalized
+
+                //  Helpers
+                void                _processMessageBlock();
+                void                _padMessage();
+                inline uint32_t     _circularShift(int bits, uint32_t word) { return (word << bits) | (word >> (32 - bits)); }
+            };
         };
     };
 

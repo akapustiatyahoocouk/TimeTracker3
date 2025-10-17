@@ -5,7 +5,7 @@ Copyright=Авторское право (C) {0}, Андрей Капустин
 
 [AboutDialog]
 Title=О TimeTracker3
-VersionLabel=Версия {0} (сборка {1})
+VersionLabel=Версия {0} (сборка {1} для Qt {2})
 ShowLicensePushButton=Лицензия
 ShowConfigurationPushButton=Конфигурация
 OkPushButton=ОК

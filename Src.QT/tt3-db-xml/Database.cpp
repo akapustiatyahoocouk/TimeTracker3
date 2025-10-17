@@ -428,7 +428,7 @@ auto Database::tryLogin(
         const QString & password
     ) const -> tt3::db::api::IAccount *
 {
-    static tt3::util::IMessageDigest * sha1 = tt3::util::Sha1MessageDigest::instance();  //  idempotent
+    static tt3::util::IMessageDigest * sha1 = tt3::util::StandardMessageDigests::Sha1::instance();  //  idempotent
 
     tt3::util::Lock lock(_guard);
     _ensureOpen();  //  may throw

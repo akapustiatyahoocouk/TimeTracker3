@@ -1,5 +1,5 @@
 //
-//  tt3-util/Sha1MessageDigest.cpp - The tt3::util::Sha1MessageDigest class implementation
+//  tt3-util/StandardMessageDigests.Sha1.cpp - The tt3::util::StandardMessageDigests.Sha1 class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,18 +19,18 @@ using namespace tt3::util;
 
 //////////
 //  Singleton
-IMPLEMENT_SINGLETON(Sha1MessageDigest)
-Sha1MessageDigest::Sha1MessageDigest() {}
-Sha1MessageDigest::~Sha1MessageDigest() {}
+IMPLEMENT_SINGLETON(StandardMessageDigests::Sha1)
+StandardMessageDigests::Sha1::Sha1() {}
+StandardMessageDigests::Sha1::~Sha1() {}
 
 //////////
 //  StockObject
-Mnemonic Sha1MessageDigest::mnemonic() const
+Mnemonic StandardMessageDigests::Sha1::mnemonic() const
 {
     return M(SHA-1);
 }
 
-QString Sha1MessageDigest::displayName() const
+QString StandardMessageDigests::Sha1::displayName() const
 {
     static Component::Resources * resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(MessageDigests), RID(Sha1.DisplayName));
@@ -38,28 +38,28 @@ QString Sha1MessageDigest::displayName() const
 
 //////////
 //  MessageDigest
-IMessageDigest::Builder * Sha1MessageDigest::createBuilder()
+IMessageDigest::Builder * StandardMessageDigests::Sha1::createBuilder()
 {
     return new _Builder();
 }
 
 //////////
-//  Sha1MessageDigest::_Builder
-Sha1MessageDigest::_Builder::_Builder()
+//  StandardMessageDigests::Sha1::_Builder
+StandardMessageDigests::Sha1::_Builder::_Builder()
 {
     reset();
 }
 
-Sha1MessageDigest::_Builder::~_Builder()
+StandardMessageDigests::Sha1::_Builder::~_Builder()
 {
 }
 
-IMessageDigest * Sha1MessageDigest::_Builder::messageDigest() const
+IMessageDigest * StandardMessageDigests::Sha1::_Builder::messageDigest() const
 {
-    return Sha1MessageDigest::instance();
+    return StandardMessageDigests::Sha1::instance();
 }
 
-void Sha1MessageDigest::_Builder::reset()
+void StandardMessageDigests::Sha1::_Builder::reset()
 {
     _lengthLo = 0;
     _lengthHi = 0;
@@ -75,7 +75,7 @@ void Sha1MessageDigest::_Builder::reset()
     _finalised = false;
 }
 
-void Sha1MessageDigest::_Builder::digestFragment(const void * data, size_t numBytes)
+void StandardMessageDigests::Sha1::_Builder::digestFragment(const void * data, size_t numBytes)
 {
     Q_ASSERT(!_finalised);
 
@@ -108,7 +108,7 @@ void Sha1MessageDigest::_Builder::digestFragment(const void * data, size_t numBy
     }
 }
 
-void Sha1MessageDigest::_Builder::finalise()
+void StandardMessageDigests::Sha1::_Builder::finalise()
 {
     Q_ASSERT(!_finalised);
 
@@ -124,7 +124,7 @@ void Sha1MessageDigest::_Builder::finalise()
     _finalised = true;
 }
 
-QByteArray Sha1MessageDigest::_Builder::digestAsBytes()
+QByteArray StandardMessageDigests::Sha1::_Builder::digestAsBytes()
 {
     if (!_finalised)
     {
@@ -135,7 +135,7 @@ QByteArray Sha1MessageDigest::_Builder::digestAsBytes()
     return _result;
 }
 
-void Sha1MessageDigest::_Builder::_processMessageBlock()
+void StandardMessageDigests::Sha1::_Builder::_processMessageBlock()
 {
     static const uint32_t K[] =
         {   // Constants defined for SHA-1
@@ -223,7 +223,7 @@ void Sha1MessageDigest::_Builder::_processMessageBlock()
     _messageBlockIndex = 0;
 }
 
-void Sha1MessageDigest::_Builder::_padMessage()
+void StandardMessageDigests::Sha1::_Builder::_padMessage()
 {
     //  Check to see if the current message block is too small to hold
     //  the initial padding bits and length.  If so, we will pad the
@@ -265,4 +265,4 @@ void Sha1MessageDigest::_Builder::_padMessage()
     _processMessageBlock();
 }
 
-//  End of tt3-util/Sha1MessageDigest.cpp
+//  End of tt3-util/StandardMessageDigests.Sha1.cpp

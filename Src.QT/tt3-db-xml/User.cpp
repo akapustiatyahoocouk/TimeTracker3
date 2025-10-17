@@ -287,7 +287,7 @@ auto User::createAccount(
 
     //  Do the work - create & initialize the Account...
     std::unique_ptr<tt3::util::IMessageDigest::Builder> digestBuilder
-        { tt3::util::Sha1MessageDigest::instance()->createBuilder() };
+        { tt3::util::StandardMessageDigests::Sha1::instance()->createBuilder() };
     digestBuilder->digestFragment(password);
     QString passwordHash = digestBuilder->digestAsString();
 
