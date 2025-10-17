@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ActivityTypeManager.cpp - tt3::gui::ActivityTypeManager class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -36,6 +36,7 @@ ActivityTypeManager::ActivityTypeManager(QWidget * parent)
         _ui(new Ui::ActivityTypeManager)
 {
     _ui->setupUi(this);
+    _applyCurrentLocale();
 
     _decorations = TreeWidgetDecorations(_ui->activityTypesTreeWidget);
 
@@ -44,6 +45,13 @@ ActivityTypeManager::ActivityTypeManager(QWidget * parent)
             &CurrentTheme::changed,
             this,
             &ActivityTypeManager::_currentThemeChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Locale change requires UI translation
+    connect(&tt3::util::theCurrentLocale,
+            &tt3::util::CurrentLocale::changed,
+            this,
+            &ActivityTypeManager::_currentLocaleChanged,
             Qt::ConnectionType::QueuedConnection);
 
     //  Must listen to delayed refresh requests
@@ -98,6 +106,7 @@ void ActivityTypeManager::setCredentials(const tt3::ws::Credentials & credential
 
 void ActivityTypeManager::refresh()
 {
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
     static const QIcon viewActivityTypeIcon(":/tt3-gui/Resources/Images/Actions/ViewActivityTypeLarge.png");
     static const QIcon modifyActivityTypeIcon(":/tt3-gui/Resources/Images/Actions/ModifyActivityTypeLarge.png");
 
@@ -176,19 +185,22 @@ void ActivityTypeManager::refresh()
                 selectedActivityType->canModify(_credentials))  //  may throw
             {   //  RW
                 _ui->modifyActivityTypePushButton->setIcon(modifyActivityTypeIcon);
-                _ui->modifyActivityTypePushButton->setText("Modify activity type");
+                _ui->modifyActivityTypePushButton->setText(
+                    resources->string(RSID(ActivityTypeManager), RID(ModifyActivityTypePushButton)));
             }
             else
             {   //  RO
                 _ui->modifyActivityTypePushButton->setIcon(viewActivityTypeIcon);
-                _ui->modifyActivityTypePushButton->setText("View activity type");
+                _ui->modifyActivityTypePushButton->setText(
+                    resources->string(RSID(ActivityTypeManager), RID(ViewActivityTypePushButton)));
             }
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & simulate RO
             qCritical() << ex.errorMessage();
             _ui->modifyActivityTypePushButton->setIcon(viewActivityTypeIcon);
-            _ui->modifyActivityTypePushButton->setText("View activity type");
+            _ui->modifyActivityTypePushButton->setText(
+                resources->string(RSID(ActivityTypeManager), RID(ViewActivityTypePushButton)));
         }
     }
 }
@@ -398,6 +410,20 @@ void ActivityTypeManager::_clearAndDisableAllControls()
     _ui->destroyActivityTypePushButton->setEnabled(false);
 }
 
+void ActivityTypeManager::_applyCurrentLocale()
+{
+    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+
+    _ui->filterLabel->setText(
+        resources->string(RSID(ActivityTypeManager), RID(FilterLabel)));
+    _ui->createActivityTypePushButton->setText(
+        resources->string(RSID(ActivityTypeManager), RID(CreateActivityTypePushButton)));
+    _ui->modifyActivityTypePushButton->setText(
+        resources->string(RSID(ActivityTypeManager), RID(ModifyActivityTypePushButton)));
+    _ui->destroyActivityTypePushButton->setText(
+        resources->string(RSID(ActivityTypeManager), RID(DestroyActivityTypePushButton)));
+}
+
 //////////
 //  Signal handlers
 void ActivityTypeManager::_currentThemeChanged(ITheme *, ITheme *)
@@ -405,6 +431,12 @@ void ActivityTypeManager::_currentThemeChanged(ITheme *, ITheme *)
     _ui->activityTypesTreeWidget->clear();
     _decorations = TreeWidgetDecorations(_ui->activityTypesTreeWidget);
     requestRefresh();
+}
+
+void ActivityTypeManager::_currentLocaleChanged(QLocale, QLocale)
+{
+    _applyCurrentLocale();
+    refresh();
 }
 
 void ActivityTypeManager::_activityTypesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)

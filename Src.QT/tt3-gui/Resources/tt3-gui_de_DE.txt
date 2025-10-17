@@ -9,3 +9,10 @@ VersionLabel=Version {0} (Build {1})
 ShowLicensePushButton=Lizenz
 ShowConfigurationPushButton=Konfiguration
 OkPushButton=Bestätigen
+
+[ActivityTypeManager]
+FilterLabel=Filter:
+CreateActivityTypePushButton=Aktivitätstyp erstellen
+ViewActivityTypePushButton=Aktivitätstyp anzeigen
+ModifyActivityTypePushButton=Aktivitätstyp ändern
+DestroyActivityTypePushButton=Aktivitätstyp zerstören

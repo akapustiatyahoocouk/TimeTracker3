@@ -9,3 +9,10 @@ VersionLabel=Версия {0} (сборка {1})
 ShowLicensePushButton=Лицензия
 ShowConfigurationPushButton=Конфигурация
 OkPushButton=ОК
+
+[ActivityTypeManager]
+FilterLabel=Фильтр:
+CreateActivityTypePushButton=Создать тип активности
+ViewActivityTypePushButton=Просмотреть тип активности
+ModifyActivityTypePushButton=Изменить тип активности
+DestroyActivityTypePushButton=Удалить тип активности
