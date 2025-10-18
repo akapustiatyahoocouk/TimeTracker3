@@ -131,12 +131,16 @@ void WorkStreamManager::refresh()
 
         //  ...while others are enabled based on current
         //  selection and permissions granted by Credentials
-        _WorkspaceModel workspaceModel = _createWorkspaceModel();
-        if (!_ui->filterLineEdit->text().trimmed().isEmpty())
+        _WorkspaceModel workspaceModel =
+            _createWorkspaceModel(_workspace, _credentials, _decorations);
+        QString filter = _ui->filterLineEdit->text().trimmed();
+        if (!filter.isEmpty())
         {
-            _filterItems(workspaceModel);
+            _filterItems(workspaceModel, filter, _decorations);
         }
-        _refreshWorkspaceTree(workspaceModel);
+        _refreshWorkspaceTree(
+            _ui->workStreamsTreeWidget,
+            workspaceModel);
 
         tt3::ws::WorkStream selectedWorkStream = _selectedWorkStream();
         bool readOnly = _workspace->isReadOnly();
@@ -201,14 +205,19 @@ void WorkStreamManager::requestRefresh()
 
 //////////
 //  View model
-WorkStreamManager::_WorkspaceModel WorkStreamManager::_createWorkspaceModel()
+auto WorkStreamManager::_createWorkspaceModel(
+        tt3::ws::Workspace workspace,
+        const tt3::ws::Credentials & credentials,
+        const TreeWidgetDecorations & decorations
+    ) -> WorkStreamManager::_WorkspaceModel
 {
     _WorkspaceModel workspaceModel { new _WorkspaceModelImpl() };
     try
     {
-        for (tt3::ws::WorkStream workStream : _workspace->workStreams(_credentials))    //  may throw
+        for (tt3::ws::WorkStream workStream : workspace->workStreams(credentials))    //  may throw
         {
-            workspaceModel->workStreamModels.append(_createWorkStreamModel(workStream));
+            workspaceModel->workStreamModels.append(
+                _createWorkStreamModel(workStream, credentials, decorations));
         }
         std::sort(workspaceModel->workStreamModels.begin(),
                   workspaceModel->workStreamModels.end(),
@@ -223,36 +232,41 @@ WorkStreamManager::_WorkspaceModel WorkStreamManager::_createWorkspaceModel()
     return workspaceModel;
 }
 
-WorkStreamManager::_WorkStreamModel WorkStreamManager::_createWorkStreamModel(
-        tt3::ws::WorkStream workStream
-    )
+auto WorkStreamManager::_createWorkStreamModel(
+        tt3::ws::WorkStream workStream,
+        const tt3::ws::Credentials & credentials,
+        const TreeWidgetDecorations & decorations
+    ) -> WorkStreamManager::_WorkStreamModel
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
 
     _WorkStreamModel workStreamModel { new _WorkStreamModelImpl(workStream) };
     try
     {
-        workStreamModel->text = workStream->displayName(_credentials);
+        workStreamModel->text = workStream->displayName(credentials);
         workStreamModel->icon = workStream->type()->smallIcon();
-        workStreamModel->brush = _decorations.itemForeground;
-        workStreamModel->font = _decorations.itemFont;
-        workStreamModel->tooltip = workStream->description(_credentials).trimmed();
+        workStreamModel->brush = decorations.itemForeground;
+        workStreamModel->font = decorations.itemFont;
+        workStreamModel->tooltip = workStream->description(credentials).trimmed();
     }
     catch (const tt3::util::Exception & ex)
     {
         qCritical() << ex.errorMessage();
         workStreamModel->text = ex.errorMessage();
         workStreamModel->icon = errorIcon;
-        workStreamModel->font = _decorations.itemFont;
-        workStreamModel->brush = _decorations.errorItemForeground;
+        workStreamModel->font = decorations.itemFont;
+        workStreamModel->brush = decorations.errorItemForeground;
         workStreamModel->tooltip = ex.errorMessage();
     }
     return workStreamModel;
 }
 
-void WorkStreamManager::_filterItems(_WorkspaceModel workspaceModel)
+void WorkStreamManager::_filterItems(
+        _WorkspaceModel workspaceModel,
+        const QString & filter,
+        const TreeWidgetDecorations & decorations
+    )
 {
-    QString filter = _ui->filterLineEdit->text().trimmed();
     Q_ASSERT(!filter.isEmpty());
 
     for (qsizetype i = workspaceModel->workStreamModels.size() - 1; i >= 0; i--)
@@ -260,7 +274,7 @@ void WorkStreamManager::_filterItems(_WorkspaceModel workspaceModel)
         _WorkStreamModel workStreamModel = workspaceModel->workStreamModels[i];
         if (workStreamModel->text.indexOf(filter, 0, Qt::CaseInsensitive) != -1)
         {   //  Item matches the filter - mark it as a match
-            workStreamModel->brush = _decorations.filterMatchItemForeground;
+            workStreamModel->brush = decorations.filterMatchItemForeground;
         }
         else
         {   //  Item does not match the filter
@@ -270,29 +284,30 @@ void WorkStreamManager::_filterItems(_WorkspaceModel workspaceModel)
 }
 
 void WorkStreamManager::_refreshWorkspaceTree(
-    _WorkspaceModel workspaceModel
+        QTreeWidget * workStreamsTreeWidget,
+        _WorkspaceModel workspaceModel
     )
 {
-    Q_ASSERT(_workspace != nullptr);
-    Q_ASSERT(_credentials.isValid());
+    Q_ASSERT(workStreamsTreeWidget != nullptr);
+    Q_ASSERT(workspaceModel != nullptr);
 
     //  Make sure the "activity types" tree contains
     //  a proper number of root (WorkStream) items...
-    while (_ui->workStreamsTreeWidget->topLevelItemCount() < workspaceModel->workStreamModels.size())
+    while (workStreamsTreeWidget->topLevelItemCount() < workspaceModel->workStreamModels.size())
     {   //  Too few root (WorkStream) items
-        _ui->workStreamsTreeWidget->addTopLevelItem(new QTreeWidgetItem());
+        workStreamsTreeWidget->addTopLevelItem(new QTreeWidgetItem());
     }
-    while (_ui->workStreamsTreeWidget->topLevelItemCount() > workspaceModel->workStreamModels.size())
+    while (workStreamsTreeWidget->topLevelItemCount() > workspaceModel->workStreamModels.size())
     {   //  Too many root (WorkStream) items
-        delete _ui->workStreamsTreeWidget->takeTopLevelItem(
-            _ui->workStreamsTreeWidget->topLevelItemCount() - 1);
+        delete workStreamsTreeWidget->takeTopLevelItem(
+            workStreamsTreeWidget->topLevelItemCount() - 1);
     }
     //  ...and that each top-level item represents
     //  a proper WorkStream and has proper children
     for (int i = 0; i < workspaceModel->workStreamModels.size(); i++)
     {
         _refreshWorkStreamItem(
-            _ui->workStreamsTreeWidget->topLevelItem(i),
+            workStreamsTreeWidget->topLevelItem(i),
             workspaceModel->workStreamModels[i]);
     }
 }
@@ -304,7 +319,6 @@ void WorkStreamManager::_refreshWorkStreamItem(
 {
     Q_ASSERT(workStreamItem != nullptr);
     Q_ASSERT(workStreamModel != nullptr);
-    Q_ASSERT(_credentials.isValid());
 
     //  Refresh WorkStream item properties
     workStreamItem->setText(0, workStreamModel->text);

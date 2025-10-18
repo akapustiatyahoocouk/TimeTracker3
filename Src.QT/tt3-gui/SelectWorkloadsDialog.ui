@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>tt3::gui::SelectWorkloadsDialog</class>
+ <widget class="QDialog" name="tt3::gui::SelectWorkloadsDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>286</width>
+    <height>473</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Select workloads</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="tt3-gui.qrc">
+    <normaloff>:/tt3-gui/Resources/Images/Objects/WorkStreamLarge.png</normaloff>:/tt3-gui/Resources/Images/Objects/WorkStreamLarge.png</iconset>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_3">
+   <item row="3" column="0" colspan="4">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="4">
+    <widget class="QTabWidget" name="workloadsTabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="projectsTab">
+      <attribute name="icon">
+       <iconset resource="tt3-gui.qrc">
+        <normaloff>:/tt3-gui/Resources/Images/Objects/ProjectSmall.png</normaloff>:/tt3-gui/Resources/Images/Objects/ProjectSmall.png</iconset>
+      </attribute>
+      <attribute name="title">
+       <string>Projects</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout">
+       <property name="leftMargin">
+        <number>2</number>
+       </property>
+       <property name="topMargin">
+        <number>2</number>
+       </property>
+       <property name="rightMargin">
+        <number>2</number>
+       </property>
+       <property name="bottomMargin">
+        <number>2</number>
+       </property>
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QWidget" name="projectsFilterWidget" native="true">
+         <layout class="QFormLayout" name="formLayout">
+          <property name="horizontalSpacing">
+           <number>4</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>4</number>
+          </property>
+          <property name="leftMargin">
+           <number>4</number>
+          </property>
+          <property name="topMargin">
+           <number>4</number>
+          </property>
+          <property name="rightMargin">
+           <number>4</number>
+          </property>
+          <property name="bottomMargin">
+           <number>4</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="projectsFilterLabel">
+            <property name="text">
+             <string>Filter:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="projectsFilterLineEdit"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QTreeWidget" name="projectsTreeWidget">
+         <attribute name="headerVisible">
+          <bool>false</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string notr="true">1</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QCheckBox" name="showCompletedProjectsCheckBox">
+         <property name="text">
+          <string>Show completed projects</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="workStreamsTab">
+      <attribute name="icon">
+       <iconset resource="tt3-gui.qrc">
+        <normaloff>:/tt3-gui/Resources/Images/Objects/WorkStreamSmall.png</normaloff>:/tt3-gui/Resources/Images/Objects/WorkStreamSmall.png</iconset>
+      </attribute>
+      <attribute name="title">
+       <string>Work streams</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <property name="leftMargin">
+        <number>2</number>
+       </property>
+       <property name="topMargin">
+        <number>2</number>
+       </property>
+       <property name="rightMargin">
+        <number>2</number>
+       </property>
+       <property name="bottomMargin">
+        <number>2</number>
+       </property>
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QWidget" name="workStreamsFilterWidget" native="true">
+         <layout class="QFormLayout" name="formLayout_2">
+          <property name="horizontalSpacing">
+           <number>4</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>4</number>
+          </property>
+          <property name="leftMargin">
+           <number>4</number>
+          </property>
+          <property name="topMargin">
+           <number>4</number>
+          </property>
+          <property name="rightMargin">
+           <number>4</number>
+          </property>
+          <property name="bottomMargin">
+           <number>4</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="workStreamsFilterLabel">
+            <property name="text">
+             <string>Filter:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="workStreamsFilterLineEdit"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QTreeWidget" name="workStreamsTreeWidget">
+         <attribute name="headerVisible">
+          <bool>false</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string notr="true">1</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="removePushButton">
+     <property name="text">
+      <string>Remove</string>
+     </property>
+     <property name="icon">
+      <iconset resource="tt3-gui.qrc">
+       <normaloff>:/tt3-gui/Resources/Images/Actions/RemoveSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/RemoveSmall.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="4">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="4">
+    <widget class="QListWidget" name="workloadsListWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>64</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>64</height>
+      </size>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>0</width>
+       <height>64</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QPushButton" name="addPushButton">
+     <property name="text">
+      <string>Add</string>
+     </property>
+     <property name="icon">
+      <iconset resource="tt3-gui.qrc">
+       <normaloff>:/tt3-gui/Resources/Images/Actions/AddSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/AddSmall.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <spacer name="horizontalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>workloadsTabWidget</tabstop>
+  <tabstop>projectsFilterLineEdit</tabstop>
+  <tabstop>projectsTreeWidget</tabstop>
+  <tabstop>showCompletedProjectsCheckBox</tabstop>
+  <tabstop>addPushButton</tabstop>
+  <tabstop>removePushButton</tabstop>
+  <tabstop>workloadsListWidget</tabstop>
+  <tabstop>workStreamsTreeWidget</tabstop>
+ </tabstops>
+ <resources>
+  <include location="tt3-gui.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>tt3::gui::SelectWorkloadsDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>tt3::gui::SelectWorkloadsDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>projectsTreeWidget</sender>
+   <signal>currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</signal>
+   <receiver>tt3::gui::SelectWorkloadsDialog</receiver>
+   <slot>_projectsTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>190</x>
+     <y>144</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>190</x>
+     <y>203</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>workStreamsTreeWidget</sender>
+   <signal>currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</signal>
+   <receiver>tt3::gui::SelectWorkloadsDialog</receiver>
+   <slot>_workStreamsTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>190</x>
+     <y>144</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>190</x>
+     <y>203</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>workloadsListWidget</sender>
+   <signal>currentRowChanged(int)</signal>
+   <receiver>tt3::gui::SelectWorkloadsDialog</receiver>
+   <slot>_workloadsListWidgetCurrentRowChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>190</x>
+     <y>318</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>190</x>
+     <y>203</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>projectsTreeWidget</sender>
+   <signal>itemChanged(QTreeWidgetItem*,int)</signal>
+   <receiver>tt3::gui::SelectWorkloadsDialog</receiver>
+   <slot>_projectsTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>190</x>
+     <y>144</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>190</x>
+     <y>203</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>workStreamsTreeWidget</sender>
+   <signal>itemChanged(QTreeWidgetItem*,int)</signal>
+   <receiver>tt3::gui::SelectWorkloadsDialog</receiver>
+   <slot>_workStreamsTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>190</x>
+     <y>144</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>190</x>
+     <y>203</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>projectsFilterLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::SelectWorkloadsDialog</receiver>
+   <slot>_projectsFilterLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>208</x>
+     <y>65</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>188</x>
+     <y>236</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>workStreamsFilterLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::SelectWorkloadsDialog</receiver>
+   <slot>_workStreamsFilterLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>208</x>
+     <y>65</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>188</x>
+     <y>236</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>showCompletedProjectsCheckBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>tt3::gui::SelectWorkloadsDialog</receiver>
+   <slot>_showCompletedProjectsCheckBoxStateChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>142</x>
+     <y>294</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>142</x>
+     <y>236</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_projectsTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+  <slot>_workStreamsTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+  <slot>_workloadsListWidgetCurrentRowChanged(int)</slot>
+  <slot>_projectsTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
+  <slot>_workStreamsTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
+  <slot>_projectsFilterLineEditTextChanged(QString)</slot>
+  <slot>_workStreamsFilterLineEditTextChanged(QString)</slot>
+  <slot>_showCompletedProjectsCheckBoxStateChanged(int)</slot>
+ </slots>
+</ui>

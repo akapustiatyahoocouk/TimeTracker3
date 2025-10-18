@@ -91,6 +91,7 @@ SOURCES += \
     SelectPrivateTaskParentDialog.cpp \
     SelectProjectParentDialog.cpp \
     SelectPublicTaskParentDialog.cpp \
+    SelectWorkloadsDialog.cpp \
     SelectWorkspaceDialog.cpp \
     ShowConfigurationDialog.cpp \
     ShowLicenseDialog.cpp \
@@ -181,6 +182,7 @@ HEADERS += \
     SelectPrivateTaskParentDialog.hpp \
     SelectProjectParentDialog.hpp \
     SelectPublicTaskParentDialog.hpp \
+    SelectWorkloadsDialog.hpp \
     SelectWorkspaceDialog.hpp \
     ShowConfigurationDialog.hpp \
     ShowLicenseDialog.hpp \
@@ -246,6 +248,7 @@ FORMS += \
     SelectPrivateTaskParentDialog.ui \
     SelectProjectParentDialog.ui \
     SelectPublicTaskParentDialog.ui \
+    SelectWorkloadsDialog.ui \
     SelectWorkspaceDialog.ui \
     ShowConfigurationDialog.ui \
     ShowLicenseDialog.ui \

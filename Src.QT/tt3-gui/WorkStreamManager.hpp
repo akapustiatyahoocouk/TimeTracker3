@@ -19,6 +19,8 @@
 
 namespace tt3::gui
 {
+    class TT3_GUI_PUBLIC SelectWorkloadsDialog;
+
     namespace Ui { class WorkStreamManager; }
 
     /// \class WorkStreamManager tt3-gui/API.hpp
@@ -28,6 +30,8 @@ namespace tt3::gui
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkStreamManager)
+
+        friend class SelectWorkloadsDialog;
 
         //////////
         //  Construction/destruction
@@ -110,6 +114,8 @@ namespace tt3::gui
         tt3::ws::Credentials    _credentials;
 
         //  View model
+        //  Model services are "static" because they are oiggybacked
+        //  on by e.g. "select workloads" dialog.
         struct _WorkspaceModelImpl;
         struct _WorkStreamModelImpl;
 
@@ -136,19 +142,29 @@ namespace tt3::gui
             QString             tooltip;        //  for WorkStream tree items' text
         };
 
-        auto        _createWorkspaceModel(
-                        ) -> _WorkspaceModel;
-        auto        _createWorkStreamModel(
-                            tt3::ws::WorkStream workStream
-                        ) -> _WorkStreamModel;
-        void        _filterItems(_WorkspaceModel workspaceModel);
-        void        _refreshWorkspaceTree(
-                            _WorkspaceModel workspaceModel
-                        );
-        void        _refreshWorkStreamItem(
-                            QTreeWidgetItem * workStreamItem,
-                            _WorkStreamModel workStreamModel
-                        );
+        static auto     _createWorkspaceModel(
+                                tt3::ws::Workspace workspace,
+                                const tt3::ws::Credentials & credentials,
+                                const TreeWidgetDecorations & decorations
+                            ) -> _WorkspaceModel;
+        static auto     _createWorkStreamModel(
+                                tt3::ws::WorkStream workStream,
+                                const tt3::ws::Credentials & credentials,
+                                const TreeWidgetDecorations & decorations
+                            ) -> _WorkStreamModel;
+        static void     _filterItems(
+                                _WorkspaceModel workspaceModel,
+                                const QString & filter,
+                                const TreeWidgetDecorations & decorations
+                            );
+        static void     _refreshWorkspaceTree(
+                                QTreeWidget * workStreamsTreeWidget,
+                                _WorkspaceModel workspaceModel
+                            );
+        static void     _refreshWorkStreamItem(
+                                QTreeWidgetItem * workStreamItem,
+                                _WorkStreamModel workStreamModel
+                            );
 
         //  Helpers
         auto        _selectedWorkStream(

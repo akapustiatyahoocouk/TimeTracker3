@@ -1,5 +1,5 @@
 //
-//  tt3-gui/SelectWorkspaceDialog.hpp - The modal "Open workspace" dialog
+//  tt3-gui/SelectWorkspaceDialog.hpp - The modal "Select workspace" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -22,7 +22,7 @@ namespace tt3::gui
     namespace Ui { class SelectWorkspaceDialog; }
 
     /// \class SelectWorkspaceDialog tt3-gui/API.hpp
-    /// \brief The modal "Open workspace" dialog.
+    /// \brief The modal "Select workspace" dialog.
     class TT3_GUI_PUBLIC SelectWorkspaceDialog final
         :   private QDialog
     {
@@ -109,8 +109,8 @@ namespace tt3::gui
     private slots:
         void            _workspaceTypeComboBoxCurrentIndexChanged(int);
         void            _browsePushButtonClicked();
-        void            accept() override;
-        void            reject() override;
+        virtual void    accept() override;
+        virtual void    reject() override;
     };
 }
 

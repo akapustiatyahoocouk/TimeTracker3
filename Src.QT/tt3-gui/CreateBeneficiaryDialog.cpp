@@ -64,14 +64,68 @@ CreateBeneficiaryDialog::Result CreateBeneficiaryDialog::doModal()
 //  Implementation helpers
 auto CreateBeneficiaryDialog::_selectedWorkloads(
     ) -> tt3::ws::Workloads
-{   //  TODO implement
-    return tt3::ws::Workloads();
+{
+    tt3::ws::Workloads result;
+    for (int i = 0; i < _ui->workloadsListWidget->count(); i++)
+    {
+        result.insert(
+            _ui->workloadsListWidget->item(i)->data(Qt::ItemDataRole::UserRole).value<tt3::ws::Workload>());
+    }
+    return result;
 }
 
 void CreateBeneficiaryDialog::_setSelectedWorkloads(
-        const tt3::ws::Workloads & /*workloads*/
+        const tt3::ws::Workloads & workloads
     )
-{   //  TODO implement
+{
+    static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+
+    QList<tt3::ws::Workload> workloadsList = workloads.values();
+    std::sort(
+        workloadsList.begin(),
+        workloadsList.end(),
+        [&](auto a, auto b)
+        {
+            try
+            {
+                return a->displayName(_credentials) < b->displayName(_credentials); //  may throw
+            }
+            catch (tt3::util::Exception & ex)
+            {   //  OOPS! Report & recover with a stable sort order
+                qCritical() << ex.errorMessage();
+                return a->oid() < b->oid();
+            }
+        });
+    //  Make sure a proper number of list widget items...
+    while (_ui->workloadsListWidget->count() < workloadsList.size())
+    {   //  Too few items in the list widget
+        _ui->workloadsListWidget->addItem("?");
+    }
+    while (_ui->workloadsListWidget->count() > workloadsList.size())
+    {   //  Too many items in the list widget
+        delete _ui->workloadsListWidget->takeItem(
+            _ui->workloadsListWidget->count() - 1);
+    }
+    //  ...each represent a proper Workload
+    for (int i = 0; i < workloadsList.count(); i++)
+    {
+        QListWidgetItem * item = _ui->workloadsListWidget->item(i);
+        tt3::ws::Workload workload = workloadsList[i];
+        try
+        {
+            item->setText(workload->displayName(_credentials)); //  may throw
+            item->setIcon(workload->type()->smallIcon());
+            //  TODO add suffix + gray text for completed projects
+        }
+        catch (tt3::util::Exception & ex)
+        {   //  OOPS! Report & recover
+            qCritical() << ex.errorMessage();
+            item->setText(ex.errorMessage());
+            item->setIcon(errorIcon);
+            //  TODO error text color
+        }
+        item->setData(Qt::ItemDataRole::UserRole, QVariant::fromValue(workload));
+    }
 }
 
 void CreateBeneficiaryDialog::_refresh()
@@ -95,7 +149,17 @@ void CreateBeneficiaryDialog::_descriptionPlainTextEditTextChanged()
 
 void CreateBeneficiaryDialog::_selectWorkloadsPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    try
+    {
+        SelectWorkloadsDialog dlg(this, _workspace, _credentials, _selectedWorkloads());
+        if (dlg.doModal() == SelectWorkloadsDialog::Result::Ok)
+        {   //  TODO finish the implementation
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        ErrorDialog::show(this, ex);
+    }
 }
 
 void CreateBeneficiaryDialog::accept()

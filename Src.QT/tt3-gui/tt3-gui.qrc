@@ -191,5 +191,7 @@
         <file>Resources/tt3-gui_de_DE.txt</file>
         <file>Resources/tt3-gui_en_GB.txt</file>
         <file>Resources/tt3-gui_ru_RU.txt</file>
+        <file>Resources/Images/Actions/AddLarge.png</file>
+        <file>Resources/Images/Actions/AddSmall.png</file>
     </qresource>
 </RCC>

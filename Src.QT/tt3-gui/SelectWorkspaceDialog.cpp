@@ -142,5 +142,4 @@ void SelectWorkspaceDialog::reject()
     done(int(Result::Cancel));
 }
 
-
 //  End of tt3-gui/SelectWorkspaceDialog.cpp

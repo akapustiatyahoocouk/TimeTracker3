@@ -100,6 +100,7 @@
 #include "tt3-gui/DestroyBeneficiaryDialog.hpp"
 #include "tt3-gui/DestroyWorkDialog.hpp"
 #include "tt3-gui/DestroyEventDialog.hpp"
+#include "tt3-gui/SelectWorkloadsDialog.hpp"
 
 #include "tt3-gui/AddEmailAddressDialog.hpp"
 #include "tt3-gui/ModifyEmailAddressDialog.hpp"

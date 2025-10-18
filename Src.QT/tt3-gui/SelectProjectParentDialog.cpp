@@ -95,7 +95,7 @@ auto SelectProjectParentDialog::doModal(
 //////////
 //  Model
 void SelectProjectParentDialog::_removeReparentedProject(
-    ProjectManager::_WorkspaceModel workspaceModel
+        ProjectManager::_WorkspaceModel workspaceModel
     )
 {
     for (qsizetype i = workspaceModel->projectModels.size() - 1; i >= 0; i--)
@@ -112,7 +112,7 @@ void SelectProjectParentDialog::_removeReparentedProject(
 }
 
 void SelectProjectParentDialog::_removeReparentedProject(
-    ProjectManager::_ProjectModel projectModel
+        ProjectManager::_ProjectModel projectModel
     )
 {
     for (qsizetype i = projectModel->childModels.size() - 1; i >= 0; i--)
@@ -257,7 +257,7 @@ QString SelectProjectParentDialog::_prompt(
 //////////
 //  Signal handlers
 void SelectProjectParentDialog::_projectsTreeWidgetItemChanged(
-    QTreeWidgetItem * item, int /*column*/)
+    QTreeWidgetItem * item, int)
 {
     if (_trackItemStateChanges)
     {
