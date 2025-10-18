@@ -151,9 +151,11 @@ namespace tt3::gui
                         );
 
         //  Helpers
-        auto        _selectedActivityType(
+        auto        _currentActivityType(
                         ) -> tt3::ws::ActivityType;
-        void        _setSelectedActivityType(tt3::ws::ActivityType activityType);
+        void        _setCurrentActivityType(
+                            tt3::ws::ActivityType activityType
+                        );
         void        _startListeningToWorkspaceChanges();
         void        _stopListeningToWorkspaceChanges();
         void        _clearAndDisableAllControls();

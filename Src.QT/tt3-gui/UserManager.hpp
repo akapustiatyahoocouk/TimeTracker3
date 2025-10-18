@@ -178,10 +178,10 @@ namespace tt3::gui
                                );
 
         //  Helpers
-        tt3::ws::User       _selectedUser();
-        void                _setSelectedUser(tt3::ws::User user);
-        tt3::ws::Account    _selectedAccount();
-        void                _setSelectedAccount(tt3::ws::Account account);
+        tt3::ws::User       _currentUser();
+        void                _setCurrentUser(tt3::ws::User user);
+        tt3::ws::Account    _currentAccount();
+        void                _setCurrentAccount(tt3::ws::Account account);
         void                _startListeningToWorkspaceChanges();
         void                _stopListeningToWorkspaceChanges();
         void                _clearAndDisableAllControls();

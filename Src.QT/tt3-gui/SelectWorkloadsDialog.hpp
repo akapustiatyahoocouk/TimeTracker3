@@ -83,13 +83,30 @@ namespace tt3::gui
         bool            _trackItemStateChanges = false;
 
         //  Helpers
+        auto            _currentWorkload(
+                            ) -> tt3::ws::Workload;
+        bool            _setCurrentWorkload(
+                                tt3::ws::Workload workload
+                            );
+        bool            _setCurrentProject(
+                                tt3::ws::Project project
+                            );
+        bool            _setCurrentProject(
+                                QTreeWidgetItem * projectItem,
+                                tt3::ws::Project project
+                            );
+        bool            _setCurrentWorkStream(
+                                tt3::ws::WorkStream workStream
+                            );
+        bool            _setCurrentWorkStream(
+                                QTreeWidgetItem * workStreamItem,
+                                tt3::ws::WorkStream workStream
+                            );
         auto            _selectedWorkloads(
                             ) -> tt3::ws::Workloads;
         void            _setSelectedWorkloads(
                                 const tt3::ws::Workloads & workloads
                             );
-        auto            _selectedWorkload(
-                            ) -> tt3::ws::Workload;
         void            _refresh();
         void            _refreshProjectCheckStates(
                                 const tt3::ws::Workloads & selectedWorkloads
@@ -116,6 +133,7 @@ namespace tt3::gui
         //////////
         //  Event handlers
     private slots:
+        void            _workloadsTabWidgetCurrentChanged(int);
         void            _projectsFilterLineEditTextChanged(QString);
         void            _workStreamsFilterLineEditTextChanged(QString);
         void            _projectsTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);

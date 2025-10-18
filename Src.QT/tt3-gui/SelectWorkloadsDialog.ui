@@ -21,14 +21,7 @@
    <bool>true</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
-   <item row="3" column="0" colspan="4">
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0" colspan="4">
+   <item row="0" column="0" colspan="3">
     <widget class="QTabWidget" name="workloadsTabWidget">
      <property name="currentIndex">
       <number>0</number>
@@ -186,18 +179,7 @@
      </widget>
     </widget>
    </item>
-   <item row="1" column="2">
-    <widget class="QPushButton" name="removePushButton">
-     <property name="text">
-      <string>Remove</string>
-     </property>
-     <property name="icon">
-      <iconset resource="tt3-gui.qrc">
-       <normaloff>:/tt3-gui/Resources/Images/Actions/RemoveSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/RemoveSmall.png</iconset>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0" colspan="4">
+   <item row="4" column="0" colspan="3">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
@@ -207,7 +189,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0" colspan="4">
+   <item row="2" column="0" colspan="3">
     <widget class="QListWidget" name="workloadsListWidget">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -229,29 +211,19 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QPushButton" name="addPushButton">
-     <property name="text">
-      <string>Add</string>
-     </property>
-     <property name="icon">
-      <iconset resource="tt3-gui.qrc">
-       <normaloff>:/tt3-gui/Resources/Images/Actions/AddSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/AddSmall.png</iconset>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <spacer name="horizontalSpacer_2">
+   <item row="3" column="0" colspan="3">
+    <widget class="Line" name="line">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="3">
+    <widget class="QLabel" name="selectedWorkloadsLabel">
+     <property name="text">
+      <string>Selected workloads:</string>
      </property>
-    </spacer>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -260,8 +232,6 @@
   <tabstop>projectsFilterLineEdit</tabstop>
   <tabstop>projectsTreeWidget</tabstop>
   <tabstop>showCompletedProjectsCheckBox</tabstop>
-  <tabstop>addPushButton</tabstop>
-  <tabstop>removePushButton</tabstop>
   <tabstop>workloadsListWidget</tabstop>
   <tabstop>workStreamsTreeWidget</tabstop>
  </tabstops>
@@ -429,6 +399,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>workloadsTabWidget</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>tt3::gui::SelectWorkloadsDialog</receiver>
+   <slot>_workloadsTabWidgetCurrentChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>142</x>
+     <y>160</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>142</x>
+     <y>236</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_projectsTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
@@ -439,5 +425,6 @@
   <slot>_projectsFilterLineEditTextChanged(QString)</slot>
   <slot>_workStreamsFilterLineEditTextChanged(QString)</slot>
   <slot>_showCompletedProjectsCheckBoxStateChanged(int)</slot>
+  <slot>_workloadsTabWidgetCurrentChanged(int)</slot>
  </slots>
 </ui>

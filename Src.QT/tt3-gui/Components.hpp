@@ -119,9 +119,14 @@ namespace tt3::gui
 
             //////////
             //  Properties (dialogs)
+        public:
             /// \brief
             ///     The "current" tab in the ManageQuickPicksListDialog.
             tt3::util::Setting<int>     manageQuickPicksListDialogTab;
+
+            /// \brief
+            ///     The "current" tab in the SelectWorkloadsDialog.
+            tt3::util::Setting<int>     selectWorkloadsDialogTab;
         };
 
         //////////

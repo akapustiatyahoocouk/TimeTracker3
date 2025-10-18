@@ -49,6 +49,7 @@ SelectWorkloadsDialog::SelectWorkloadsDialog(
 
     _refresh(); //  NOW, to adjust tree widget size to content
     _ui->projectsTreeWidget->expandAll();
+    _ui->workloadsTabWidget->setCurrentIndex(Component::Settings::instance()->selectWorkloadsDialogTab);
 
     //  Done
     _trackItemStateChanges = true;
@@ -69,6 +70,110 @@ SelectWorkloadsDialog::Result SelectWorkloadsDialog::doModal()
 
 //////////
 //  Implementation helpers
+auto SelectWorkloadsDialog::_currentWorkload(
+    ) -> tt3::ws::Workload
+{
+    switch (_ui->workloadsTabWidget->currentIndex())
+    {
+        case 0: //  Projects
+            if (QTreeWidgetItem * item = _ui->projectsTreeWidget->currentItem())
+            {
+                return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::Project>();
+            }
+            return nullptr;
+        case 1: //  Work streams
+            if (QTreeWidgetItem * item = _ui->workStreamsTreeWidget->currentItem())
+            {
+                return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::WorkStream>();
+            }
+            return nullptr;
+        default:
+            Q_ASSERT(false);
+            return nullptr; //  be defensive in release mode
+    }
+}
+
+bool SelectWorkloadsDialog::_setCurrentWorkload(
+        tt3::ws::Workload workload
+    )
+{
+    if (auto project =
+        std::dynamic_pointer_cast<tt3::ws::ProjectImpl>(workload))
+    {
+        return _setCurrentProject(project);
+    }
+    if (auto workStream =
+        std::dynamic_pointer_cast<tt3::ws::WorkStreamImpl>(workload))
+    {
+        return _setCurrentWorkStream(workStream);
+    }
+    return false;
+}
+
+bool SelectWorkloadsDialog::_setCurrentProject(
+        tt3::ws::Project project
+    )
+{
+    for (int i = 0; i < _ui->projectsTreeWidget->topLevelItemCount(); i++)
+    {
+        if (_setCurrentProject(_ui->projectsTreeWidget->topLevelItem(i), project))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool SelectWorkloadsDialog::_setCurrentProject(
+        QTreeWidgetItem * projectItem,
+        tt3::ws::Project project
+    )
+{
+    if (project == projectItem->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::Project>())
+    {
+        _ui->workloadsTabWidget->setCurrentIndex(0);
+        _ui->projectsTreeWidget->setCurrentItem(projectItem);
+        return true;
+    }
+    for (int i = 0; i < projectItem->childCount(); i++)
+    {
+        if (_setCurrentProject(projectItem->child(i), project))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool SelectWorkloadsDialog::_setCurrentWorkStream(
+        tt3::ws::WorkStream workStream
+    )
+{
+    for (int i = 0; i < _ui->workStreamsTreeWidget->topLevelItemCount(); i++)
+    {
+        if (_setCurrentWorkStream(_ui->workStreamsTreeWidget->topLevelItem(i), workStream))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool SelectWorkloadsDialog::_setCurrentWorkStream(
+        QTreeWidgetItem * workStreamItem,
+        tt3::ws::WorkStream workStream
+    )
+{
+    if (workStream == workStreamItem->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::WorkStream>())
+    {
+        _ui->workloadsTabWidget->setCurrentIndex(1);
+        _ui->workStreamsTreeWidget->setCurrentItem(workStreamItem);
+        return true;
+    }
+    //  No need to recurse!
+    return false;
+}
+
 auto SelectWorkloadsDialog::_selectedWorkloads(
     ) -> tt3::ws::Workloads
 {
@@ -150,33 +255,6 @@ void SelectWorkloadsDialog::_setSelectedWorkloads(
         }
         item->setData(Qt::ItemDataRole::UserRole, QVariant::fromValue(workload));
     }
-}
-
-auto SelectWorkloadsDialog::_selectedWorkload(
-    ) -> tt3::ws::Workload
-{
-    if (_ui->projectsTreeWidget->hasFocus())
-    {
-        if (QTreeWidgetItem * item = _ui->projectsTreeWidget->currentItem())
-        {
-            return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::Project>();
-        }
-    }
-    else if (_ui->workStreamsTreeWidget->hasFocus())
-    {
-        if (QTreeWidgetItem * item = _ui->workStreamsTreeWidget->currentItem())
-        {
-            return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::WorkStream>();
-        }
-    }
-    else if (_ui->workloadsListWidget->hasFocus())
-    {
-        if (QListWidgetItem * item = _ui->workloadsListWidget->currentItem())
-        {
-            return item->data(Qt::ItemDataRole::UserRole).value<tt3::ws::WorkStream>();
-        }
-    }
-    return nullptr;
 }
 
 void SelectWorkloadsDialog::_refresh()
@@ -286,6 +364,12 @@ void SelectWorkloadsDialog::_refreshWorkStreamCheckStates(
 
 //////////
 //  Event handlers
+void SelectWorkloadsDialog::_workloadsTabWidgetCurrentChanged(int)
+{
+    Component::Settings::instance()->selectWorkloadsDialogTab = _ui->workloadsTabWidget->currentIndex();
+    _refresh();
+}
+
 void SelectWorkloadsDialog::_projectsFilterLineEditTextChanged(QString)
 {
     _refresh();
@@ -308,6 +392,12 @@ void SelectWorkloadsDialog::_workStreamsTreeWidgetCurrentItemChanged(QTreeWidget
 
 void SelectWorkloadsDialog::_workloadsListWidgetCurrentRowChanged(int)
 {
+    if (QListWidgetItem * item = _ui->workloadsListWidget->currentItem())
+    {
+        tt3::ws::Workload w =
+            item->data(Qt::ItemDataRole::UserRole).value<tt3::ws::Workload>();
+        _setCurrentWorkload(w);
+    }
     _refresh();
 }
 

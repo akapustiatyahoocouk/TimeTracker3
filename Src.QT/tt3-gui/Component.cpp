@@ -108,7 +108,8 @@ Component::Settings::Settings()
         showCompletedProjects(this, M(ShowCompletedProjects), true),
         myDayLogDepth(this, M(MyDayLogDepth), 1),
         //  Properties (dialogs)
-        manageQuickPicksListDialogTab(this, M(ManageQuickPicksListDialogTab), 0)
+        manageQuickPicksListDialogTab(this, M(ManageQuickPicksListDialogTab), 0),
+        selectWorkloadsDialogTab(this, M(SelectWorkloadsDialogTab), 0)
 {
 }
 

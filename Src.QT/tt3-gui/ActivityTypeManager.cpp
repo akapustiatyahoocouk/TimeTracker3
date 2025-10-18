@@ -147,7 +147,7 @@ void ActivityTypeManager::refresh()
         }
         _refreshWorkspaceTree(workspaceModel);
 
-        tt3::ws::ActivityType selectedActivityType = _selectedActivityType();
+        tt3::ws::ActivityType currentActivityType = _currentActivityType();
         bool readOnly = _workspace->isReadOnly();
         try
         {
@@ -164,13 +164,13 @@ void ActivityTypeManager::refresh()
             _ui->createActivityTypePushButton->setEnabled(false);
         }
         _ui->modifyActivityTypePushButton->setEnabled(
-            selectedActivityType != nullptr);
+            currentActivityType != nullptr);
         try
         {
             _ui->destroyActivityTypePushButton->setEnabled(
                 !readOnly &&
-                selectedActivityType != nullptr &&
-                selectedActivityType->canDestroy(_credentials));    //  may throw
+                currentActivityType != nullptr &&
+                currentActivityType->canDestroy(_credentials));    //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -181,9 +181,9 @@ void ActivityTypeManager::refresh()
         //  Some buttons need to be adjusted for ReadOnoly mode
         try
         {
-            if (selectedActivityType != nullptr &&
-                !selectedActivityType->workspace()->isReadOnly() &&
-                selectedActivityType->canModify(_credentials))  //  may throw
+            if (currentActivityType != nullptr &&
+                !currentActivityType->workspace()->isReadOnly() &&
+                currentActivityType->canModify(_credentials))  //  may throw
             {   //  RW
                 _ui->modifyActivityTypePushButton->setIcon(modifyActivityTypeIcon);
                 _ui->modifyActivityTypePushButton->setText(
@@ -329,7 +329,7 @@ void ActivityTypeManager::_refreshActivityTypeItem(
 
 //////////
 //  Implementation helpers
-tt3::ws::ActivityType ActivityTypeManager::_selectedActivityType()
+tt3::ws::ActivityType ActivityTypeManager::_currentActivityType()
 {
     QTreeWidgetItem * item = _ui->activityTypesTreeWidget->currentItem();
     return (item != nullptr) ?
@@ -337,7 +337,7 @@ tt3::ws::ActivityType ActivityTypeManager::_selectedActivityType()
                nullptr;
 }
 
-void ActivityTypeManager::_setSelectedActivityType(tt3::ws::ActivityType activityType)
+void ActivityTypeManager::_setCurrentActivityType(tt3::ws::ActivityType activityType)
 {
     for (int i = 0; i < _ui->activityTypesTreeWidget->topLevelItemCount(); i++)
     {
@@ -490,7 +490,7 @@ void ActivityTypeManager::_createActivityTypePushButtonClicked()
         if (dlg.doModal() == CreateActivityTypeDialog::Result::Ok)
         {   //  ActivityType created
             refresh();  //  must refresh NOW
-            _setSelectedActivityType(dlg.createdActivityType());
+            _setCurrentActivityType(dlg.createdActivityType());
         }
     }
     catch (const tt3::util::Exception & ex)
@@ -501,7 +501,7 @@ void ActivityTypeManager::_createActivityTypePushButtonClicked()
 
 void ActivityTypeManager::_modifyActivityTypePushButtonClicked()
 {
-    if (auto activityType = _selectedActivityType())
+    if (auto activityType = _currentActivityType())
     {
         try
         {
@@ -509,7 +509,7 @@ void ActivityTypeManager::_modifyActivityTypePushButtonClicked()
             if (dlg.doModal() == ModifyActivityTypeDialog::Result::Ok)
             {   //  ActivityType modified - its position in the activity types tree may have changed
                 refresh();  //  must refresh NOW
-                _setSelectedActivityType(activityType);
+                _setCurrentActivityType(activityType);
             }
         }
         catch (const tt3::util::Exception & ex)
@@ -522,7 +522,7 @@ void ActivityTypeManager::_modifyActivityTypePushButtonClicked()
 
 void ActivityTypeManager::_destroyActivityTypePushButtonClicked()
 {
-    if (auto activityType = _selectedActivityType())
+    if (auto activityType = _currentActivityType())
     {
         try
         {

@@ -155,8 +155,8 @@ void UserManager::refresh()
             _ui->usersTreeWidget->expandAll();
         }
 
-        tt3::ws::User selectedUser = _selectedUser();
-        tt3::ws::Account selectedAccount = _selectedAccount();
+        tt3::ws::User currentUser = _currentUser();
+        tt3::ws::Account currentAccount = _currentAccount();
         bool readOnly = _workspace->isReadOnly();
         try
         {
@@ -173,13 +173,13 @@ void UserManager::refresh()
             _ui->createUserPushButton->setEnabled(false);
         }
         _ui->modifyUserPushButton->setEnabled(
-            selectedUser != nullptr);
+            currentUser != nullptr);
         try
         {
             _ui->destroyUserPushButton->setEnabled(
                 !readOnly &&
-                selectedUser != nullptr &&
-                selectedUser->canDestroy(_credentials));    //  may throw
+                currentUser != nullptr &&
+                currentUser->canDestroy(_credentials));    //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -194,7 +194,7 @@ void UserManager::refresh()
                     _credentials,
                     tt3::ws::Capability::Administrator |
                     tt3::ws::Capability::ManageUsers) &&
-                selectedUser != nullptr);
+                currentUser != nullptr);
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -202,13 +202,13 @@ void UserManager::refresh()
             _ui->createAccountPushButton->setEnabled(false);
         }
         _ui->modifyAccountPushButton->setEnabled(
-            selectedAccount != nullptr);
+            currentAccount != nullptr);
         try
         {
             _ui->destroyAccountPushButton->setEnabled(
                 !readOnly &&
-                selectedAccount != nullptr &&
-                selectedAccount->canDestroy(_credentials)); //  may throw
+                currentAccount != nullptr &&
+                currentAccount->canDestroy(_credentials)); //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -222,9 +222,9 @@ void UserManager::refresh()
         //  Some buttons need to be adjusted for ReadOnoly mode
         try
         {
-            if (selectedUser != nullptr &&
-                !selectedUser->workspace()->isReadOnly() &&
-                selectedUser->canModify(_credentials))  //  may throw
+            if (currentUser != nullptr &&
+                !currentUser->workspace()->isReadOnly() &&
+                currentUser->canModify(_credentials))  //  may throw
             {   //  RW
                 _ui->modifyUserPushButton->setIcon(modifyUserIcon);
                 _ui->modifyUserPushButton->setText("Modify user");
@@ -243,9 +243,9 @@ void UserManager::refresh()
         }
         try
         {
-            if (selectedAccount != nullptr &&
-                !selectedAccount->workspace()->isReadOnly() &&
-                selectedAccount->canModify(_credentials))   //  may throw
+            if (currentAccount != nullptr &&
+                !currentAccount->workspace()->isReadOnly() &&
+                currentAccount->canModify(_credentials))   //  may throw
             {   //  RW
                 _ui->modifyAccountPushButton->setIcon(modifyAccountIcon);
                 _ui->modifyAccountPushButton->setText("Modify account");
@@ -549,7 +549,7 @@ void UserManager::_refreshAccountItem(
 
 //////////
 //  Implementation helpers
-tt3::ws::User UserManager::_selectedUser()
+tt3::ws::User UserManager::_currentUser()
 {
     QTreeWidgetItem * item = _ui->usersTreeWidget->currentItem();
     return (item != nullptr && item->parent() == nullptr) ?
@@ -557,7 +557,7 @@ tt3::ws::User UserManager::_selectedUser()
                 nullptr;
 }
 
-void UserManager::_setSelectedUser(tt3::ws::User user)
+void UserManager::_setCurrentUser(tt3::ws::User user)
 {
     for (int i = 0; i < _ui->usersTreeWidget->topLevelItemCount(); i++)
     {
@@ -570,7 +570,7 @@ void UserManager::_setSelectedUser(tt3::ws::User user)
     }
 }
 
-tt3::ws::Account UserManager::_selectedAccount()
+tt3::ws::Account UserManager::_currentAccount()
 {
     QTreeWidgetItem * item = _ui->usersTreeWidget->currentItem();
     return (item != nullptr && item->parent() != nullptr) ?
@@ -578,7 +578,7 @@ tt3::ws::Account UserManager::_selectedAccount()
                nullptr;
 }
 
-void UserManager::_setSelectedAccount(tt3::ws::Account account)
+void UserManager::_setCurrentAccount(tt3::ws::Account account)
 {
     for (int i = 0; i < _ui->usersTreeWidget->topLevelItemCount(); i++)
     {
@@ -747,7 +747,7 @@ void UserManager::_createUserPushButtonClicked()
         if (dlg.doModal() == CreateUserDialog::Result::Ok)
         {   //  User created
             refresh();  //  must refresh NOW
-            _setSelectedUser(dlg.createdUser());
+            _setCurrentUser(dlg.createdUser());
         }
     }
     catch (const tt3::util::Exception & ex)
@@ -758,7 +758,7 @@ void UserManager::_createUserPushButtonClicked()
 
 void UserManager::_modifyUserPushButtonClicked()
 {
-    if (auto user = _selectedUser())
+    if (auto user = _currentUser())
     {
         try
         {
@@ -766,7 +766,7 @@ void UserManager::_modifyUserPushButtonClicked()
             if (dlg.doModal() == ModifyUserDialog::Result::Ok)
             {   //  User modified - its position in the users tree may have changed
                 refresh();  //  must refresh NOW
-                _setSelectedUser(user);
+                _setCurrentUser(user);
             }
         }
         catch (const tt3::util::Exception & ex)
@@ -779,7 +779,7 @@ void UserManager::_modifyUserPushButtonClicked()
 
 void UserManager::_destroyUserPushButtonClicked()
 {
-    if (auto user = _selectedUser())
+    if (auto user = _currentUser())
     {
         try
         {
@@ -799,7 +799,7 @@ void UserManager::_destroyUserPushButtonClicked()
 
 void UserManager::_createAccountPushButtonClicked()
 {
-    if (auto user = _selectedUser())
+    if (auto user = _currentUser())
     {
         try
         {
@@ -807,7 +807,7 @@ void UserManager::_createAccountPushButtonClicked()
             if (dlg.doModal() == CreateAccountDialog::Result::Ok)
             {   //  Account created
                 refresh();  //  must refresh NOW
-                _setSelectedAccount(dlg.createdAccount());
+                _setCurrentAccount(dlg.createdAccount());
             }
         }
         catch (const tt3::util::Exception & ex)
@@ -819,7 +819,7 @@ void UserManager::_createAccountPushButtonClicked()
 
 void UserManager::_modifyAccountPushButtonClicked()
 {
-    if (auto account = _selectedAccount())
+    if (auto account = _currentAccount())
     {
         try
         {
@@ -827,7 +827,7 @@ void UserManager::_modifyAccountPushButtonClicked()
             if (dlg.doModal() == ModifyAccountDialog::Result::Ok)
             {   //  User modified - its position in the users tree may have changed
                 refresh();  //  must refresh NOW
-                _setSelectedAccount(account);
+                _setCurrentAccount(account);
             }
         }
         catch (const tt3::util::Exception & ex)
@@ -840,7 +840,7 @@ void UserManager::_modifyAccountPushButtonClicked()
 
 void UserManager::_destroyAccountPushButtonClicked()
 {
-    if (auto account = _selectedAccount())
+    if (auto account = _currentAccount())
     {
         try
         {
