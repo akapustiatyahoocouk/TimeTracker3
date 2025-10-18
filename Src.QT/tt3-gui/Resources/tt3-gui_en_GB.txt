@@ -68,6 +68,15 @@ DescriptionLabel=Description:
 OkPushButton=OK
 CancelPushButton=Cancel
 
+[CreateBeneficiaryDialog]
+Title=Create beneficiary
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+WorkloadsLabel=Workloads:
+SelectWorkloadsPushButton=Select
+OkPushButton=OK
+CancelPushButton=Cancel
+
 [EditStringDialog]
 OkPushButton=OK
 CancelPushButton=Cancel

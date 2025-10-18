@@ -68,6 +68,15 @@ DescriptionLabel=Beschreibung:
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
 
+[CreateBeneficiaryDialog]
+Title=Begünstigten erstellen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+WorkloadsLabel=Arbeitslasten:
+SelectWorkloadsPushButton=Auswählen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
 [EditStringDialog]
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen

@@ -1,6 +1,6 @@
 //
 //  tt3-gui/CreateBeneficiaryDialog.cpp - tt3::gui::CreateBeneficiaryDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -32,14 +32,31 @@ CreateBeneficiaryDialog::CreateBeneficiaryDialog(
         //  Controls
         _ui(new Ui::CreateBeneficiaryDialog)
 {
+    static Component::Resources *const resources = Component::Resources::instance(); //  idempotent
+
     Q_ASSERT(_workspace != nullptr);
     Q_ASSERT(_credentials.isValid());
 
     _ui->setupUi(this);
+    setWindowTitle(resources->string(RSID(CreateBeneficiaryDialog), RID(Title)));
     _listWidgetDecorations = ListWidgetDecorations(_ui->workloadsListWidget);
 
+    //  Set up initial control values
+    _ui->displayNameLabel->setText(
+        resources->string(RSID(CreateBeneficiaryDialog), RID(DisplayNameLabel)));
+    _ui->descriptionLabel->setText(
+        resources->string(RSID(CreateBeneficiaryDialog), RID(DescriptionLabel)));
+    _ui->workloadsLabel->setText(
+        resources->string(RSID(CreateBeneficiaryDialog), RID(WorkloadsLabel)));
+    _ui->selectWorkloadsPushButton->setText(
+        resources->string(RSID(CreateBeneficiaryDialog), RID(SelectWorkloadsPushButton)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(resources->string(RSID(CreateBeneficiaryDialog), RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(resources->string(RSID(CreateBeneficiaryDialog), RID(CancelPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 

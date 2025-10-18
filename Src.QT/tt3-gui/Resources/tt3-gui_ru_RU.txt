@@ -68,6 +68,15 @@ DescriptionLabel=Описание:
 OkPushButton=ОК
 CancelPushButton=Отмена
 
+[CreateBeneficiaryDialog]
+Title=Создать бенефициара
+DisplayNameLabel=Имя:
+DescriptionLabel=Описание:
+WorkloadsLabel=Рабочие нагрузки:
+SelectWorkloadsPushButton=Выбрать
+OkPushButton=ОК
+CancelPushButton=Отмена
+
 [EditStringDialog]
 OkPushButton=OK
 CancelPushButton=Отмена
