@@ -73,60 +73,68 @@ namespace tt3::gui
         ///     Runs the dialog modally.
         /// \return
         ///     The user's choice.
-        Result          doModal();
+        Result      doModal();
+
+        /// \brief
+        ///     Returns the set of workloads selected by the user.
+        /// \return
+        ///     The set of workloads selected by the user.
+        auto        selectedWorkloads(
+                        ) -> tt3::ws::Workloads;
 
         //////////
         //  Implementation
     private:
         tt3::ws::Workspace      _workspace;
         tt3::ws::Credentials    _credentials;
-        bool            _trackItemStateChanges = false;
+        bool        _refreshUnderway = false;
 
         //  Helpers
-        auto            _currentWorkload(
-                            ) -> tt3::ws::Workload;
-        bool            _setCurrentWorkload(
-                                tt3::ws::Workload workload
-                            );
-        bool            _setCurrentProject(
-                                tt3::ws::Project project
-                            );
-        bool            _setCurrentProject(
-                                QTreeWidgetItem * projectItem,
-                                tt3::ws::Project project
-                            );
-        bool            _setCurrentWorkStream(
-                                tt3::ws::WorkStream workStream
-                            );
-        bool            _setCurrentWorkStream(
-                                QTreeWidgetItem * workStreamItem,
-                                tt3::ws::WorkStream workStream
-                            );
-        auto            _selectedWorkloads(
-                            ) -> tt3::ws::Workloads;
-        void            _setSelectedWorkloads(
-                                const tt3::ws::Workloads & workloads
-                            );
-        void            _refresh();
-        void            _refreshProjectCheckStates(
-                                const tt3::ws::Workloads & selectedWorkloads
-                            );
-        void            _refreshProjectCheckStates(
-                                QTreeWidgetItem * projectItem,
-                                const tt3::ws::Workloads & selectedWorkloads
-                            );
-        void            _refreshWorkStreamCheckStates(
-                                const tt3::ws::Workloads & selectedWorkloads
-                            );
-        void            _refreshWorkStreamCheckStates(
-                                QTreeWidgetItem * workStreamItem,
-                                const tt3::ws::Workloads & selectedWorkloads
-                            );
+        auto        _currentWorkload(
+                        ) -> tt3::ws::Workload;
+        bool        _setCurrentWorkload(
+                            tt3::ws::Workload workload
+                        );
+        bool        _setCurrentProject(
+                            tt3::ws::Project project
+                        );
+        bool        _setCurrentProject(
+                            QTreeWidgetItem * projectItem,
+                            tt3::ws::Project project
+                        );
+        bool        _setCurrentWorkStream(
+                            tt3::ws::WorkStream workStream
+                        );
+        bool        _setCurrentWorkStream(
+                            QTreeWidgetItem * workStreamItem,
+                            tt3::ws::WorkStream workStream
+                        );
+        auto        _selectedWorkloads(
+                        ) -> tt3::ws::Workloads;
+        void        _setSelectedWorkloads(
+                            const tt3::ws::Workloads & workloads
+                        );
+        void        _refresh();
+        void        _refreshProjectCheckStates(
+                            const tt3::ws::Workloads & selectedWorkloads
+                        );
+        void        _refreshProjectCheckStates(
+                            QTreeWidgetItem * projectItem,
+                            const tt3::ws::Workloads & selectedWorkloads
+                        );
+        void        _refreshWorkStreamCheckStates(
+                            const tt3::ws::Workloads & selectedWorkloads
+                        );
+        void        _refreshWorkStreamCheckStates(
+                            QTreeWidgetItem * workStreamItem,
+                            const tt3::ws::Workloads & selectedWorkloads
+                        );
 
         //////////
         //  Controls
     private:
         Ui::SelectWorkloadsDialog *const    _ui;
+        //  Drawing resources
         TreeWidgetDecorations   _treeWidgetDecorations;
         ListWidgetDecorations   _listWidgetDecorations;
 

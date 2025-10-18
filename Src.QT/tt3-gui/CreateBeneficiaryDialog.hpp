@@ -100,6 +100,8 @@ namespace tt3::gui
         //  Controls
     private:
         Ui::CreateBeneficiaryDialog *const  _ui;
+        //  Drawing resources
+        ListWidgetDecorations   _listWidgetDecorations;
 
         //////////
         //  Signal handlers

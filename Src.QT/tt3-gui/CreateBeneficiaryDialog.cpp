@@ -36,6 +36,7 @@ CreateBeneficiaryDialog::CreateBeneficiaryDialog(
     Q_ASSERT(_credentials.isValid());
 
     _ui->setupUi(this);
+    _listWidgetDecorations = ListWidgetDecorations(_ui->workloadsListWidget);
 
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
@@ -113,16 +114,33 @@ void CreateBeneficiaryDialog::_setSelectedWorkloads(
         tt3::ws::Workload workload = workloadsList[i];
         try
         {
-            item->setText(workload->displayName(_credentials)); //  may throw
+            QString text = workload->displayName(_credentials); //  may throw
             item->setIcon(workload->type()->smallIcon());
-            //  TODO add suffix + gray text for completed projects
+            if (auto project =
+                std::dynamic_pointer_cast<tt3::ws::ProjectImpl>(workload))
+            {
+                if (project->completed(_credentials))  //  may throw
+                {   //  Completed
+                    text += " [completed]";
+                    item->setForeground(_listWidgetDecorations.disabledItemForeground);
+                }
+                else
+                {   //  Not completed
+                    item->setForeground(_listWidgetDecorations.itemForeground);
+                }
+            }
+            else
+            {   //  Not a task
+                item->setForeground(_listWidgetDecorations.itemForeground);
+            }
+            item->setText(text);
         }
         catch (tt3::util::Exception & ex)
         {   //  OOPS! Report & recover
             qCritical() << ex.errorMessage();
             item->setText(ex.errorMessage());
             item->setIcon(errorIcon);
-            //  TODO error text color
+            item->setForeground(_listWidgetDecorations.errorItemForeground);
         }
         item->setData(Qt::ItemDataRole::UserRole, QVariant::fromValue(workload));
     }
@@ -153,7 +171,9 @@ void CreateBeneficiaryDialog::_selectWorkloadsPushButtonClicked()
     {
         SelectWorkloadsDialog dlg(this, _workspace, _credentials, _selectedWorkloads());
         if (dlg.doModal() == SelectWorkloadsDialog::Result::Ok)
-        {   //  TODO finish the implementation
+        {
+            _setSelectedWorkloads(dlg.selectedWorkloads());
+            _refresh();
         }
     }
     catch (const tt3::util::Exception & ex)

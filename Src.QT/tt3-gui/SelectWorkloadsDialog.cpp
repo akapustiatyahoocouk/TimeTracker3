@@ -33,6 +33,8 @@ SelectWorkloadsDialog::SelectWorkloadsDialog(
     Q_ASSERT(_workspace != nullptr);
 
     _ui->setupUi(this);
+    _treeWidgetDecorations = TreeWidgetDecorations(_ui->projectsTreeWidget);
+    _listWidgetDecorations = ListWidgetDecorations(_ui->workloadsListWidget);
 
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
@@ -40,9 +42,6 @@ SelectWorkloadsDialog::SelectWorkloadsDialog(
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
     //  Set initial control values
-    _treeWidgetDecorations = TreeWidgetDecorations(_ui->projectsTreeWidget);
-    _listWidgetDecorations = ListWidgetDecorations(_ui->workloadsListWidget);
-
     _setSelectedWorkloads(workloads);
     _ui->showCompletedProjectsCheckBox->setChecked(
         Component::Settings::instance()->showCompletedProjects);
@@ -52,7 +51,6 @@ SelectWorkloadsDialog::SelectWorkloadsDialog(
     _ui->workloadsTabWidget->setCurrentIndex(Component::Settings::instance()->selectWorkloadsDialogTab);
 
     //  Done
-    _trackItemStateChanges = true;
     adjustSize();
 }
 
@@ -63,9 +61,16 @@ SelectWorkloadsDialog::~SelectWorkloadsDialog()
 
 //////////
 //  Operations
-SelectWorkloadsDialog::Result SelectWorkloadsDialog::doModal()
+auto SelectWorkloadsDialog::doModal(
+    ) -> /* TODO use this optimization for all doModal()s SelectWorkloadsDialog::*/Result
 {
     return Result(this->exec());
+}
+
+auto SelectWorkloadsDialog::selectedWorkloads(
+    ) -> tt3::ws::Workloads
+{
+    return _selectedWorkloads();
 }
 
 //////////
@@ -187,7 +192,7 @@ auto SelectWorkloadsDialog::_selectedWorkloads(
 }
 
 void SelectWorkloadsDialog::_setSelectedWorkloads(
-    const tt3::ws::Workloads & workloads
+        const tt3::ws::Workloads & workloads
     )
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
@@ -260,8 +265,7 @@ void SelectWorkloadsDialog::_setSelectedWorkloads(
 void SelectWorkloadsDialog::_refresh()
 {
     //  We don't want a refresh() to trigger a recursive refresh()!
-    static bool refreshUnderway = false;
-    RefreshGuard refreshGuard(refreshUnderway);
+    RefreshGuard refreshGuard(_refreshUnderway);
     if (refreshGuard)   //  Don't recurse!
     {
         tt3::ws::Workloads selectedWorkloads = _selectedWorkloads();
@@ -280,11 +284,9 @@ void SelectWorkloadsDialog::_refresh()
             ProjectManager::_filterItems(
                 projectsModel, projectsFilter, _treeWidgetDecorations);
         }
-        _trackItemStateChanges = false;
         ProjectManager::_refreshWorkspaceTree(
             _ui->projectsTreeWidget, projectsModel);
         _refreshProjectCheckStates(selectedWorkloads);
-        _trackItemStateChanges = true;
         if (!_ui->projectsFilterLineEdit->text().trimmed().isEmpty())
         {   //  Filtered - show all
             _ui->projectsTreeWidget->expandAll();
@@ -300,11 +302,9 @@ void SelectWorkloadsDialog::_refresh()
             WorkStreamManager::_filterItems(
                 workStreamsModel, workStreamsFilter, _treeWidgetDecorations);
         }
-        _trackItemStateChanges = false;
         WorkStreamManager::_refreshWorkspaceTree(
             _ui->workStreamsTreeWidget, workStreamsModel);
         _refreshWorkStreamCheckStates(selectedWorkloads);
-        _trackItemStateChanges = true;
     }
 }
 
@@ -364,10 +364,11 @@ void SelectWorkloadsDialog::_refreshWorkStreamCheckStates(
 
 //////////
 //  Event handlers
-void SelectWorkloadsDialog::_workloadsTabWidgetCurrentChanged(int)
+void SelectWorkloadsDialog::_workloadsTabWidgetCurrentChanged(int n)
 {
     Component::Settings::instance()->selectWorkloadsDialogTab = _ui->workloadsTabWidget->currentIndex();
     _refresh();
+    _ui->workloadsTabWidget->setCurrentIndex(n);//  UI glitch if removed!
 }
 
 void SelectWorkloadsDialog::_projectsFilterLineEditTextChanged(QString)
@@ -403,7 +404,7 @@ void SelectWorkloadsDialog::_workloadsListWidgetCurrentRowChanged(int)
 
 void SelectWorkloadsDialog::_projectsTreeWidgetItemChanged(QTreeWidgetItem * item, int)
 {
-    if (_trackItemStateChanges)
+    if (!_refreshUnderway)
     {
         tt3::ws::Workloads selectedWorkloads = _selectedWorkloads();
         tt3::ws::Project project =
@@ -426,7 +427,7 @@ void SelectWorkloadsDialog::_projectsTreeWidgetItemChanged(QTreeWidgetItem * ite
 
 void SelectWorkloadsDialog::_workStreamsTreeWidgetItemChanged(QTreeWidgetItem * item, int)
 {
-    if (_trackItemStateChanges)
+    if (!_refreshUnderway)
     {
         tt3::ws::Workloads selectedWorkloads = _selectedWorkloads();
         tt3::ws::WorkStream workStream =
