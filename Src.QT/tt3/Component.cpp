@@ -33,19 +33,19 @@ auto Component::mnemonic(
 
 QString Component::displayName() const
 {
-    static Resources * resources = Resources::instance();   //  idempotent
+    static Resources *const resources = Resources::instance();   //  idempotent
     return resources->string(RSID(Component), RID(DisplayName));
 }
 
 QString Component::description() const
 {
-    static Resources * resources = Resources::instance();   //  idempotent
+    static Resources *const resources = Resources::instance();   //  idempotent
     return resources->string(RSID(Component), RID(Description));
 }
 
 QString Component::copyright() const
 {
-    static Resources * resources = Resources::instance();   //  idempotent
+    static Resources *const resources = Resources::instance();   //  idempotent
     return resources->string(RSID(Component), RID(Copyright), QString(TT3_BUILD_DATE).left(4));
 }
 

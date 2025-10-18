@@ -24,7 +24,7 @@ AboutDialog::AboutDialog(QWidget * parent)
     :   QDialog(parent),
         _ui(new Ui::AboutDialog)
 {
-    static Component::Resources * resources = Component::Resources::instance(); //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance(); //  idempotent
 
     _ui->setupUi(this);
     setWindowTitle(resources->string(RSID(AboutDialog), RID(Title)));

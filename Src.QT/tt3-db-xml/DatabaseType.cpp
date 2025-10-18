@@ -49,7 +49,7 @@ tt3::util::Mnemonic DatabaseType::mnemonic() const
 
 QString DatabaseType::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(DatabaseType), RID(DisplayName));
 }
 
@@ -72,7 +72,7 @@ bool DatabaseType::isOperational() const
 
 QString DatabaseType::shortStatusReport() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(DatabaseType), RID(StatusReport));
 }
 
@@ -99,7 +99,7 @@ auto DatabaseType::enterNewDatabaseAddress(
         QWidget * parent
     ) -> tt3::db::api::IDatabaseAddress *
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
 
     QString path =
         QFileDialog::getSaveFileName(
@@ -118,7 +118,7 @@ auto DatabaseType::enterExistingDatabaseAddress(
         QWidget * parent
     ) -> tt3::db::api::IDatabaseAddress *
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
 
     QString path =
         QFileDialog::getOpenFileName(

@@ -1,6 +1,6 @@
 //
 //  tt3-gui/CreateAccountDialog.cpp - tt3::gui::CreateAccountDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -32,14 +32,70 @@ CreateAccountDialog::CreateAccountDialog(
         //  Controls
         _ui(new Ui::CreateAccountDialog)
 {
+    static Component::Resources *const resources = Component::Resources::instance(); //  idempotent
+
     Q_ASSERT(_workspace != nullptr);
     Q_ASSERT(_credentials.isValid());
     Q_ASSERT(_validator != nullptr);
 
     _ui->setupUi(this);
+    setWindowTitle(resources->string(RSID(CreateAccountDialog), RID(Title)));
+
+    _ui->userLabel->setText(
+        resources->string(RSID(CreateAccountDialog), RID(UserLabel)));
+    _ui->loginLabel->setText(
+        resources->string(RSID(CreateAccountDialog), RID(LoginLabel)));
+    _ui->passwordLabel->setText(
+        resources->string(RSID(CreateAccountDialog), RID(PasswordLabel)));
+    _ui->confirmPasswordLabel->setText(
+        resources->string(RSID(CreateAccountDialog), RID(ConfirmPasswordLabel)));
+    _ui->emailAddressesLabel->setText(
+        resources->string(RSID(CreateAccountDialog), RID(EmailAddressesLabel)));
+    _ui->addEmailAddressPushButton->setText(
+        resources->string(RSID(CreateAccountDialog), RID(AddEmailAddressPushButton)));
+    _ui->modifyEmailAddressPushButton->setText(
+        resources->string(RSID(CreateAccountDialog), RID(ModifyEmailAddressPushButton)));
+    _ui->removeEmailAddressPushButton->setText(
+        resources->string(RSID(CreateAccountDialog), RID(RemoveEmailAddressPushButton)));
+
+    _ui->capabilitiesGroupBox->setTitle(
+        resources->string(RSID(CreateAccountDialog), RID(CapabilitiesGroupBox)));
+    _ui->administratorCheckBox->setText(
+        resources->string(RSID(CreateAccountDialog), RID(AdministratorCheckBox)));
+    _ui->manageUsersCheckBox->setText(
+        resources->string(RSID(CreateAccountDialog), RID(ManageUsersCheckBox)));
+    _ui->manageActivityTypesCheckBox->setText(
+        resources->string(RSID(CreateAccountDialog), RID(ManageActivityTypesCheckBox)));
+    _ui->manageBeneficiariesCheckBox->setText(
+        resources->string(RSID(CreateAccountDialog), RID(ManageBeneficiariesCheckBox)));
+    _ui->manageWorkloadsCheckBox->setText(
+        resources->string(RSID(CreateAccountDialog), RID(ManageWorkloadsCheckBox)));
+    _ui->managePublicActivitiesCheckBox->setText(
+        resources->string(RSID(CreateAccountDialog), RID(ManagePublicActivitiesCheckBox)));
+    _ui->managePublicTasksCheckBox->setText(
+        resources->string(RSID(CreateAccountDialog), RID(ManagePublicTasksCheckBox)));
+    _ui->managePrivateActivitiesCheckBox->setText(
+        resources->string(RSID(CreateAccountDialog), RID(ManagePrivateActivitiesCheckBox)));
+    _ui->managePrivateTasksCheckBox->setText(
+        resources->string(RSID(CreateAccountDialog), RID(ManagePrivateTasksCheckBox)));
+    _ui->logWorkCheckBox->setText(
+        resources->string(RSID(CreateAccountDialog), RID(LogWorkCheckBox)));
+    _ui->logEventsCheckBox->setText(
+        resources->string(RSID(CreateAccountDialog), RID(LogEventsCheckBox)));
+    _ui->generateReportsCheckBox->setText(
+        resources->string(RSID(CreateAccountDialog), RID(GenerateReportsCheckBox)));
+    _ui->backupAndRestoreCheckBox->setText(
+        resources->string(RSID(CreateAccountDialog), RID(BackupAndRestoreCheckBox)));
+
+    _ui->enabledCheckBox->setText(
+        resources->string(RSID(CreateAccountDialog), RID(EnabledCheckBox)));
 
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(resources->string(RSID(CreateAccountDialog), RID(OkPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(resources->string(RSID(CreateAccountDialog), RID(CancelPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 

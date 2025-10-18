@@ -32,13 +32,13 @@ Skin::Mnemonic Skin::mnemonic() const
 
 QString Skin::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(Skin), RID(DisplayName));
 }
 
 QString Skin::description() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(Skin), RID(Description));
 }
 

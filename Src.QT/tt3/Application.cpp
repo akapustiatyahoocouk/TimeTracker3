@@ -70,7 +70,7 @@ void Application::_selectActiveTheme()
 
 void Application::_selectActiveSkin()
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
 
     tt3::gui::ISkin * initialSkin =
         tt3::gui::SkinManager::findSkin(tt3::gui::Component::Settings::instance()->activeSkin);

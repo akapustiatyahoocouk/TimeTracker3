@@ -26,6 +26,48 @@ AssumeYesCheckBox=Diese Bestätigung nicht erneut anfordern (angenommen, die Ant
 YesPushButton=Ja
 NoPushButton=Nein
 
+[BeneficiaryManager]
+FilterLabel=Filter:
+CreateBeneficiaryPushButton=Begünstigten erstellen
+ViewBeneficiaryPushButton=Begünstigten anzeigen
+ModifyBeneficiaryPushButton=Begünstigten ändern
+DestroyBeneficiaryPushButton=Begünstigten löschen
+
+[CreateAccountDialog]
+Title=Konto erstellen
+UserLabel=Benutzer:
+LoginLabel=Anmelden:
+PasswordLabel=Passwort:
+ConfirmPasswordLabel=Bestätigen:
+EmailAddressesLabel=E-Mail-Adressen:
+AddEmailAddressPushButton=Hinzufügen
+ModifyEmailAddressPushButton=Ändern
+RemoveEmailAddressPushButton=Entfernen
+CapabilitiesGroupBox=Funktionen
+AdministratorCheckBox=Administrator
+ManageUsersCheckBox=Benutzer verwalten
+ManageActivityTypesCheckBox=Aktivitätstypen verwalten
+ManageBeneficiariesCheckBox=Begünstigte verwalten
+ManageWorkloadsCheckBox=Arbeitslasten verwalten
+ManagePublicActivitiesCheckBox=Öffentliche Aktivitäten verwalten
+ManagePublicTasksCheckBox=Öffentliche Aufgaben verwalten
+ManagePrivateActivitiesCheckBox=Private Aktivitäten verwalten
+ManagePrivateTasksCheckBox=Private Aufgaben verwalten
+LogWorkCheckBox=Arbeit protokollieren
+LogEventsCheckBox=Protokollieren Ereignisse
+GenerateReportsCheckBox=Berichte erstellen
+BackupAndRestoreCheckBox=Sichern und Wiederherstellen
+EnabledCheckBox=Konto ist aktiviert
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[CreateActivityTypeDialog]
+Title=Aktivitätstyp erstellen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
 [EditStringDialog]
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen

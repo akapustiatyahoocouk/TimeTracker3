@@ -27,8 +27,9 @@ namespace tt3::gui
 
 //////////
 //  Construction/destruction
-ActivityTypeManager::ActivityTypeManager(QWidget * parent)
-    :   QWidget(parent),
+ActivityTypeManager::ActivityTypeManager(
+        QWidget * parent
+    ) : QWidget(parent),
         //  Implementation
         _workspace(theCurrentWorkspace),
         _credentials(theCurrentCredentials),
@@ -106,7 +107,7 @@ void ActivityTypeManager::setCredentials(const tt3::ws::Credentials & credential
 
 void ActivityTypeManager::refresh()
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     static const QIcon viewActivityTypeIcon(":/tt3-gui/Resources/Images/Actions/ViewActivityTypeLarge.png");
     static const QIcon modifyActivityTypeIcon(":/tt3-gui/Resources/Images/Actions/ModifyActivityTypeLarge.png");
 
@@ -412,7 +413,7 @@ void ActivityTypeManager::_clearAndDisableAllControls()
 
 void ActivityTypeManager::_applyCurrentLocale()
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
 
     _ui->filterLabel->setText(
         resources->string(RSID(ActivityTypeManager), RID(FilterLabel)));

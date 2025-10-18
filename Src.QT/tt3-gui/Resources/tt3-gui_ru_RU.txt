@@ -26,6 +26,48 @@ AssumeYesCheckBox=Больше не запрашивать это подтвер
 YesPushButton=Да
 NoPushButton=Нет
 
+[BeneficiaryManager]
+FilterLabel=Фильтр:
+CreateBeneficiaryPushButton=Создать бенефициара
+ViewBeneficiaryPushButton=Просмотреть бенефициара
+ModifyBeneficiaryPushButton=Изменить бенефициара
+DestroyBeneficiaryPushButton=Удалить бенефициара
+
+[CreateAccountDialog]
+Title = Создать учетную запись
+UserLabel = Пользователь:
+LoginLabel = Учётная запись:
+PasswordLabel = Пароль:
+ConfirmPasswordLabel = Подтвердить:
+EmailAddressesLabel = Адреса электронной почты:
+AddEmailAddressPushButton = Добавить
+ModifyEmailAddressPushButton = Изменить
+RemoveEmailAddressPushButton = Удалить
+CapabilitiesGroupBox = Возможности
+AdministratorCheckBox = Администратор
+ManageUsersCheckBox = Управление пользователями
+ManageActivityTypesCheckBox = Управление типами активностей
+ManageBeneficiariesCheckBox = Управление бенефициарами
+ManageWorkloadsCheckBox = Управление рабочими нагрузками
+ManagePublicActivitiesCheckBox = Управление общедоступными активностями
+ManagePublicTasksCheckBox = Управление общедоступными задачами
+ManagePrivateActivitiesCheckBox=Управление личными активностями
+ManagePrivateTasksCheckBox=Управление личными задачами
+LogWorkCheckBox=Ведение журнала работы
+LogEventsCheckBox=Ведение журнала событий
+GenerateReportsCheckBox=Создание отчетов
+BackupAndRestoreCheckBox=Резервное копирование и восстановление
+EnabledCheckBox=Учетная запись включена
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[CreateActivityTypeDialog]
+Title=Создать тип активности
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+OkPushButton=ОК
+CancelPushButton=Отмена
+
 [EditStringDialog]
 OkPushButton=OK
 CancelPushButton=Отмена

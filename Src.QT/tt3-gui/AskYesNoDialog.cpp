@@ -30,7 +30,7 @@ AskYesNoDialog::AskYesNoDialog(
         _confirmActionSetting(confirmActionSetting),
         _ui(new Ui::AskYesNoDialog)
 {
-    static Component::Resources * resources = Component::Resources::instance(); //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance(); //  idempotent
 
     _ui->setupUi(this);
     this->setWindowIcon(icon);

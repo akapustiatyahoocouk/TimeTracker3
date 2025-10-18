@@ -31,7 +31,7 @@ InvalidDatabaseAddressException::InvalidDatabaseAddressException()
 
 QString InvalidDatabaseAddressException::errorMessage() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(
                 RSID(Errors),
                 RID(InvalidDatabaseAddressException));
@@ -48,7 +48,7 @@ DatabaseInUseException::DatabaseInUseException(
 
 QString DatabaseInUseException::errorMessage() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(
                 RSID(Errors),
                 RID(DatabaseInUseException),
@@ -76,7 +76,7 @@ DatabaseCorruptException::DatabaseCorruptException(
 
 QString DatabaseCorruptException::errorMessage() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(
                 RSID(Errors),
                 RID(DatabaseCorruptException),
@@ -92,7 +92,7 @@ DatabaseClosedException::DatabaseClosedException()
 
 QString DatabaseClosedException::errorMessage() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(
                 RSID(Errors),
                 RID(DatabaseClosedException));
@@ -106,7 +106,7 @@ AccessDeniedException::AccessDeniedException()
 
 QString AccessDeniedException::errorMessage() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(
                 RSID(Errors),
                 RID(AccessDeniedException));
@@ -126,7 +126,7 @@ InvalidPropertyValueException::InvalidPropertyValueException(
 
 QString InvalidPropertyValueException::errorMessage() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(
                 RSID(Errors),
                 RID(InvalidPropertyValueException),
@@ -149,7 +149,7 @@ AlreadyExistsException::AlreadyExistsException(
 
 QString AlreadyExistsException::errorMessage() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(
                 RSID(Errors),
                 RID(AlreadyExistsException),
@@ -172,7 +172,7 @@ DoesNotExistException::DoesNotExistException(
 
 QString DoesNotExistException::errorMessage() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(
                 RSID(Errors),
                 RID(DoesNotExistException),
@@ -189,7 +189,7 @@ InstanceDeadException::InstanceDeadException()
 
 QString InstanceDeadException::errorMessage() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(
                 RSID(Errors),
                 RID(InstanceDeadException));
@@ -205,7 +205,7 @@ IncompatibleInstanceException::IncompatibleInstanceException(
 
 QString IncompatibleInstanceException::errorMessage() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(
                 RSID(Errors),
                 RID(IncompatibleInstanceException),

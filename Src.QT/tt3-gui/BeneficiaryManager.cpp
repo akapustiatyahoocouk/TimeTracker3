@@ -1,6 +1,6 @@
 //
 //  tt3-gui/BeneficiaryManager.cpp - tt3::gui::BeneficiaryManager class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -37,6 +37,7 @@ BeneficiaryManager::BeneficiaryManager(
         _ui(new Ui::BeneficiaryManager)
 {
     _ui->setupUi(this);
+    _applyCurrentLocale();
 
     _decorations = TreeWidgetDecorations(_ui->beneficiariesTreeWidget);
 
@@ -45,6 +46,13 @@ BeneficiaryManager::BeneficiaryManager(
             &CurrentTheme::changed,
             this,
             &BeneficiaryManager::_currentThemeChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Locale change requires UI translation
+    connect(&tt3::util::theCurrentLocale,
+            &tt3::util::CurrentLocale::changed,
+            this,
+            &BeneficiaryManager::_currentLocaleChanged,
             Qt::ConnectionType::QueuedConnection);
 
     //  Must listen to delayed refresh requests
@@ -99,6 +107,7 @@ void BeneficiaryManager::setCredentials(const tt3::ws::Credentials & credentials
 
 void BeneficiaryManager::refresh()
 {
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     static const QIcon viewBeneficiaryIcon(":/tt3-gui/Resources/Images/Actions/ViewBeneficiaryLarge.png");
     static const QIcon modifyBeneficiaryIcon(":/tt3-gui/Resources/Images/Actions/ModifyBeneficiaryLarge.png");
 
@@ -177,19 +186,22 @@ void BeneficiaryManager::refresh()
                 selectedBeneficiary->canModify(_credentials))  //  may throw
             {   //  RW
                 _ui->modifyBeneficiaryPushButton->setIcon(modifyBeneficiaryIcon);
-                _ui->modifyBeneficiaryPushButton->setText("Modify beneficiary");
+                _ui->modifyBeneficiaryPushButton->setText(
+                    resources->string(RSID(BeneficiaryManager), RID(ModifyBeneficiaryPushButton)));
             }
             else
             {   //  RO
                 _ui->modifyBeneficiaryPushButton->setIcon(viewBeneficiaryIcon);
-                _ui->modifyBeneficiaryPushButton->setText("View beneficiary");
+                _ui->modifyBeneficiaryPushButton->setText(
+                    resources->string(RSID(BeneficiaryManager), RID(ViewBeneficiaryPushButton)));
             }
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & simulate RO
             qCritical() << ex.errorMessage();
             _ui->modifyBeneficiaryPushButton->setIcon(viewBeneficiaryIcon);
-            _ui->modifyBeneficiaryPushButton->setText("View beneficiary");
+            _ui->modifyBeneficiaryPushButton->setText(
+                resources->string(RSID(BeneficiaryManager), RID(ViewBeneficiaryPushButton)));
         }
     }
 }
@@ -399,6 +411,20 @@ void BeneficiaryManager::_clearAndDisableAllControls()
     _ui->destroyBeneficiaryPushButton->setEnabled(false);
 }
 
+void BeneficiaryManager::_applyCurrentLocale()
+{
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
+
+    _ui->filterLabel->setText(
+        resources->string(RSID(BeneficiaryManager), RID(FilterLabel)));
+    _ui->createBeneficiaryPushButton->setText(
+        resources->string(RSID(BeneficiaryManager), RID(CreateBeneficiaryPushButton)));
+    _ui->modifyBeneficiaryPushButton->setText(
+        resources->string(RSID(BeneficiaryManager), RID(ModifyBeneficiaryPushButton)));
+    _ui->destroyBeneficiaryPushButton->setText(
+        resources->string(RSID(BeneficiaryManager), RID(DestroyBeneficiaryPushButton)));
+}
+
 //////////
 //  Signal handlers
 void BeneficiaryManager::_currentThemeChanged(ITheme *, ITheme *)
@@ -406,6 +432,12 @@ void BeneficiaryManager::_currentThemeChanged(ITheme *, ITheme *)
     _ui->beneficiariesTreeWidget->clear();
     _decorations = TreeWidgetDecorations(_ui->beneficiariesTreeWidget);
     requestRefresh();
+}
+
+void BeneficiaryManager::_currentLocaleChanged(QLocale, QLocale)
+{
+    _applyCurrentLocale();
+    refresh();
 }
 
 void BeneficiaryManager::_beneficiariesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)

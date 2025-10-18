@@ -31,7 +31,7 @@ MissingResourceException::MissingResourceException(
 
 QString MissingResourceException::errorMessage() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(Errors), RID(MissingResourceException),
                              _resourceFactoryName, _sectionId, _resourceId);
 }
@@ -49,7 +49,7 @@ ParseException::ParseException(
 
 QString ParseException::errorMessage() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     QString s = (_string.length() < 129) ? _string : _string.left(128) + "...";
     return resources->string(RSID(Errors), RID(ParseException),
                              _string, _position);

@@ -31,7 +31,7 @@ auto ObjectTypes::User::mnemonic(
 
 QString ObjectTypes::User::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(ObjectTypes), RID(User.DisplayName));
 }
 
@@ -61,7 +61,7 @@ auto ObjectTypes::Account::mnemonic(
 
 QString ObjectTypes::Account::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(ObjectTypes), RID(Account.DisplayName));
 }
 
@@ -91,7 +91,7 @@ auto ObjectTypes::ActivityType::mnemonic(
 
 QString ObjectTypes::ActivityType::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(ObjectTypes), RID(ActivityType.DisplayName));
 }
 
@@ -121,7 +121,7 @@ auto ObjectTypes::PublicActivity::mnemonic(
 
 QString ObjectTypes::PublicActivity::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(ObjectTypes), RID(PublicActivity.DisplayName));
 }
 
@@ -151,7 +151,7 @@ auto ObjectTypes::PublicTask::mnemonic(
 
 QString ObjectTypes::PublicTask::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(ObjectTypes), RID(PublicTask.DisplayName));
 }
 
@@ -181,7 +181,7 @@ auto ObjectTypes::PrivateActivity::mnemonic(
 
 QString ObjectTypes::PrivateActivity::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(ObjectTypes), RID(PrivateActivity.DisplayName));
 }
 
@@ -211,7 +211,7 @@ auto ObjectTypes::PrivateTask::mnemonic(
 
 QString ObjectTypes::PrivateTask::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(ObjectTypes), RID(PrivateTask.DisplayName));
 }
 
@@ -241,7 +241,7 @@ auto ObjectTypes::Work::mnemonic(
 
 QString ObjectTypes::Work::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(ObjectTypes), RID(Work.DisplayName));
 }
 
@@ -271,7 +271,7 @@ auto ObjectTypes::Event::mnemonic(
 
 QString ObjectTypes::Event::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(ObjectTypes), RID(Event.DisplayName));
 }
 
@@ -301,7 +301,7 @@ auto ObjectTypes::Project::mnemonic(
 
 QString ObjectTypes::Project::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(ObjectTypes), RID(Project.DisplayName));
 }
 
@@ -331,7 +331,7 @@ auto ObjectTypes::WorkStream::mnemonic(
 
 QString ObjectTypes::WorkStream::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(ObjectTypes), RID(WorkStream.DisplayName));
 }
 
@@ -361,7 +361,7 @@ auto ObjectTypes::Beneficiary::mnemonic(
 
 QString ObjectTypes::Beneficiary::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(ObjectTypes), RID(Beneficiary.DisplayName));
 }
 

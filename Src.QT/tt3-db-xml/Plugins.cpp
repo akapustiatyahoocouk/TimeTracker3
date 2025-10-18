@@ -42,19 +42,19 @@ namespace
 
         virtual QString         displayName() const override
         {
-            static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+            static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
             return resources->string(RSID(Plugin), RID(DisplayName));
         }
 
         virtual QString         description() const override
         {
-            static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+            static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
             return resources->string(RSID(Plugin), RID(Description));
         }
 
         virtual QString         copyright() const override
         {
-            static Component::Resources * resources = Component::Resources::instance();  //  idempotent
+            static Component::Resources *const resources = Component::Resources::instance();  //  idempotent
             return resources->string(RSID(Component), RID(Copyright), QString(TT3_BUILD_DATE).left(4));
         }
 

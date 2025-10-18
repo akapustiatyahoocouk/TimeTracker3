@@ -32,7 +32,7 @@ Mnemonic StandardMessageDigests::Sha1::mnemonic() const
 
 QString StandardMessageDigests::Sha1::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(MessageDigests), RID(Sha1.DisplayName));
 }
 

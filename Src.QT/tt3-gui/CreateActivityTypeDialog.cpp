@@ -1,6 +1,6 @@
 //
 //  tt3-gui/CreateActivityTypeDialog.cpp - tt3::gui::CreateActivityTypeDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -32,13 +32,26 @@ CreateActivityTypeDialog::CreateActivityTypeDialog(
         //  Controls
         _ui(new Ui::CreateActivityTypeDialog)
 {
+    static Component::Resources *const resources = Component::Resources::instance(); //  idempotent
+
     Q_ASSERT(_workspace != nullptr);
     Q_ASSERT(_credentials.isValid());
 
     _ui->setupUi(this);
+    setWindowTitle(resources->string(RSID(CreateActivityTypeDialog), RID(Title)));
+
+    //  Set up initial control values
+    _ui->displayNameLabel->setText(
+        resources->string(RSID(CreateActivityTypeDialog), RID(DisplayNameLabel)));
+    _ui->descriptionLabel->setText(
+        resources->string(RSID(CreateActivityTypeDialog), RID(DescriptionLabel)));
 
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(resources->string(RSID(CreateActivityTypeDialog), RID(OkPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(resources->string(RSID(CreateActivityTypeDialog), RID(CancelPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 

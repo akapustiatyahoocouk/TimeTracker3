@@ -30,13 +30,13 @@ Mnemonic StandardLicenses::Gpl3::mnemonic() const
 
 QString StandardLicenses::Gpl3::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(StandardLicenses), RID(GPLv3.DisplayName));
 }
 
 QString StandardLicenses::Gpl3::description() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(StandardLicenses), RID(GPLv3.Description));
 }
 

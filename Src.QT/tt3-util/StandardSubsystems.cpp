@@ -30,13 +30,13 @@ Mnemonic StandardSubsystems::Applications::mnemonic() const
 
 QString StandardSubsystems::Applications::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(StandardSubsystems), RID(Applications.DisplayName));
 }
 
 QString StandardSubsystems::Applications::description() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(StandardSubsystems), RID(Applications.Description));
 }
 
@@ -53,13 +53,13 @@ Mnemonic StandardSubsystems::Storage::mnemonic() const
 
 QString StandardSubsystems::Storage::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(StandardSubsystems), RID(Storage.DisplayName));
 }
 
 QString StandardSubsystems::Storage::description() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(StandardSubsystems), RID(Storage.Description));
 }
 
@@ -76,13 +76,13 @@ Mnemonic StandardSubsystems::Gui::mnemonic() const
 
 QString StandardSubsystems::Gui::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(StandardSubsystems), RID(Gui.DisplayName));
 }
 
 QString StandardSubsystems::Gui::description() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(StandardSubsystems), RID(Gui.Description));
 }
 
@@ -99,13 +99,13 @@ Mnemonic StandardSubsystems::Reporting::mnemonic() const
 
 QString StandardSubsystems::Reporting::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(StandardSubsystems), RID(Reporting.DisplayName));
 }
 
 QString StandardSubsystems::Reporting::description() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(StandardSubsystems), RID(Reporting.Description));
 }
 
@@ -122,13 +122,13 @@ Mnemonic StandardSubsystems::Utility::mnemonic() const
 
 QString StandardSubsystems::Utility::displayName() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(StandardSubsystems), RID(Utility.DisplayName));
 }
 
 QString StandardSubsystems::Utility::description() const
 {
-    static Component::Resources * resources = Component::Resources::instance();   //  idempotent
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     return resources->string(RSID(StandardSubsystems), RID(Utility.Description));
 }
 
