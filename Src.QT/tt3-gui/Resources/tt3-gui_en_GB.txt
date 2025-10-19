@@ -148,6 +148,28 @@ FullScreenReminderCheckBox=Full-screen reminder
 OkPushButton=OK
 CancelPushButton=Cancel
 
+[CreatePublicTaskDialog]
+Title=Create public task
+ParentTaskLabel=Parent:
+NoParent=- (a root publlic task with no parent)
+SelectParentTaskPushButton=Select
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+ActivityTypeLabel=Activity type:
+WorkloadLabel=Workload:
+SelectWorkloadPushButton=Select
+TimeoutLabel=Timeout:
+TimeoutCheckBox=stop if unattended for
+HoursComboBoxItem={0} hrs
+MinutesComboBoxItem={0} min
+RequireCommentOnStartCheckBox=Require comment when starting this activity
+RequireCommentOnStopCheckBox=Require comment when stopping this activity
+FullScreenReminderCheckBox=Full-screen reminder
+RequiresCommentOnCompletionCeckBox=Requires comment on completion
+CompletedCheckBox=Task is completed
+OkPushButton=OK
+CancelPushButton=Cancel
+
 [EditStringDialog]
 OkPushButton=OK
 CancelPushButton=Cancel

@@ -455,6 +455,9 @@
    <property name="text">
     <string>&amp;Login as a different user</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
   </action>
   <action name="actionManageUsers">
    <property name="icon">

@@ -148,6 +148,28 @@ FullScreenReminderCheckBox=Vollbild-Erinnerung
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
 
+[CreatePublicTaskDialog]
+Title=Öffentliche Aufgabe erstellen
+ParentTaskLabel=Übergeordnet:
+NoParent=- (eine öffentliche Root-Aufgabe ohne übergeordnete Aufgabe)
+SelectParentTaskPushButton=Auswählen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+ActivityTypeLabel=Aktivitätstyp:
+WorkloadLabel=Arbeitslast:
+SelectWorkloadPushButton=Auswählen
+TimeoutLabel=Zeitüberschreitung:
+TimeoutCheckBox=Beenden, wenn unbeaufsichtigt für
+HoursComboBoxItem={0} Std.
+MinutesComboBoxItem={0} Min.
+RequireCommentOnStartCheckBox=Kommentar beim Starten dieser Aktivität erforderlich
+RequireCommentOnStopCheckBox=Kommentar bei Stopp dieser Aktivität erforderlich
+FullScreenReminderCheckBox=Vollbild-Erinnerung
+RequiresCommentOnCompletionCeckBox=Kommentar nach Abschluss erforderlich
+CompletedCheckBox=Aufgabe ist abgeschlossen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
 [EditStringDialog]
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen

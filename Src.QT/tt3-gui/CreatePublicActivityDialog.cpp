@@ -40,8 +40,6 @@ CreatePublicActivityDialog::CreatePublicActivityDialog(
     _ui->setupUi(this);
     setWindowTitle(rr.string(RID(Title)));
 
-    setWindowTitle(rr.string(RID(Title)));
-
     //  Set initial control values
     _ui->displayNameLabel->setText(
         rr.string(RID(DisplayNameLabel)));
@@ -73,7 +71,6 @@ CreatePublicActivityDialog::CreatePublicActivityDialog(
         setText(rr.string(RID(CancelPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
-
 
     //  Fill the "activity type" combo box (may throw)
     QList<tt3::ws::ActivityType> activityTypes =
