@@ -1,6 +1,6 @@
 //
 //  tt3-gui/DestroyAccountDialog.cpp - tt3::gui::DestroyAccountDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -26,7 +26,9 @@ DestroyAccountDialog::DestroyAccountDialog(
     ) : AskYesNoDialog(
             parent,
             QIcon(":/tt3-gui/Resources/Images/Actions/DestroyAccountLarge.png"),
-            "Destroy account",
+            Component::Resources::instance()->string(
+                RSID(DestroyAccountDialog),
+                RID(Title)),
             _prompt(account, credentials)),
         _account(account),
         _credentials(credentials)
@@ -49,10 +51,13 @@ QString DestroyAccountDialog::_prompt(
         const tt3::ws::Credentials & credentials
     )
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(DestroyAccountDialog));
+
     QString result =
-        "Are you sure you want to destroy account\n" +
-        account->login(credentials) + " of user " +
-        account->user(credentials)->realName(credentials) + " ?";
+        rr.string(
+            RID(Prompt),
+            account->login(credentials),
+            account->user(credentials)->realName(credentials));
     //  If there are works/events logged by destroyed
     //  Account, count them and add a line
     try
@@ -65,29 +70,27 @@ QString DestroyAccountDialog::_prompt(
             worksDurationMs);
         if (worksCount > 0 && eventsCount > 0)
         {
-            result += "\nThe account has ";
-            result += tt3::util::toString(worksCount);
-            result += " work unit(s) logged for it";
-            result += "\n(with total duration of ";
-            result += tt3::util::toString((worksDurationMs + 59999) / 60000);
-            result += " minute(s)) and ";
-            result += tt3::util::toString(eventsCount);
-            result += " event(s).";
+            result +=
+                rr.string(
+                    RID(DetailsWE),
+                    worksCount,
+                    (worksDurationMs + 59999) / 60000,
+                    eventsCount);
         }
         else if (worksCount > 0)
         {
-            result += "\nThe account has ";
-            result += tt3::util::toString(worksCount);
-            result += " work unit(s) logged for it";
-            result += "\n(with total duration of ";
-            result += tt3::util::toString((worksDurationMs + 59999) / 60000);
-            result += " minute(s)).";
+            result +=
+                rr.string(
+                    RID(DetailsW),
+                    worksCount,
+                    (worksDurationMs + 59999) / 60000);
         }
         else if (eventsCount > 0)
         {
-            result += "\nThe account has ";
-            result += tt3::util::toString(eventsCount);
-            result += " event(s) logged for it.";
+            result +=
+                rr.string(
+                    RID(DetailsE),
+                    eventsCount);
         }
     }
     catch (const tt3::util::Exception & ex)

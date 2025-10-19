@@ -198,6 +198,20 @@ SelectBeneficiariesPushButton=Select
 OkPushButton=OK
 CancelPushButton=Cancel
 
+[DestroyAccountDialog]
+Title=Destroy account
+Prompt=Are you sure you want to destroy account {0}\nof user {1}?
+DetailsWE=\nThe account has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)) and {2} event(s).
+DetailsW=\nThe account has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)).
+DetailsE=\nThe account has {0} event(s) logger for it.
+
+[DestroyAccountDialog]
+Title=Konto löschen
+Prompt=Möchten Sie Konto {0}\nvon Benutzer {1} wirklich löschen?
+DetailsWE=\nFür das Konto wurden {0} Arbeitseinheiten\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse protokolliert.
+DetailsW=\nFür das Konto wurden {0} Arbeitseinheiten\n(mit einer Gesamtdauer von {1} Minute(n)) protokolliert.
+DetailsE=\nFür das Konto wurden {0} Ereignisse protokolliert.
+
 [EditStringDialog]
 OkPushButton=OK
 CancelPushButton=Cancel

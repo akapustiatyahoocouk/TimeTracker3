@@ -93,7 +93,7 @@ Component::Settings::Settings()
     :   activeSkin(this, M(ActiveSkin), M(-), true),
         activeTheme(this, M(ActiveTheme), StandardThemes::System::instance()->mnemonic(), true),
         lastLogin(this, M(LastLogin), ""),
-        uiLocale(this, M(UiLocale), QLocale(QLocale::English, QLocale::UnitedKingdom), true),
+        uiLocale(this, M(UiLocale), QLocale(QLocale::English, QLocale::UnitedKingdom)),
         loadLastWorkspaceAtStartup(this, M(LoadLastWorkspaceAtStartup), false),
         rememberLastLogin(this, M(RememberLastLogin), true),
         currentPreferences(this, M(CurrentPreferences), M(-)),

@@ -198,6 +198,13 @@ SelectBeneficiariesPushButton=Выбрать
 OkPushButton=ОК
 CancelPushButton=Отмена
 
+[DestroyAccountDialog]
+Title=Удалить учётную запись
+Prompt=Вы уверены, что хотите удалить учётную запись {0}\nпользователя {1}?
+DetailsWE=\nДля учётной записи зарегистрировано {0} единиц работы\n(общей продолжительностью {1} минут) и {2} событий.
+DetailsW=\nДля учётной записи зарегистрировано {0} единиц работы\n(общей продолжительностью {1} минут).
+DetailsE=\nДля учётной записи зарегистрировано {0} событий.
+
 [EditStringDialog]
 OkPushButton=OK
 CancelPushButton=Отмена
