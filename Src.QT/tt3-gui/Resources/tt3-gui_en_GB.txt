@@ -203,14 +203,21 @@ Title=Destroy account
 Prompt=Are you sure you want to destroy account {0}\nof user {1}?
 DetailsWE=\nThe account has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)) and {2} event(s).
 DetailsW=\nThe account has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)).
-DetailsE=\nThe account has {0} event(s) logger for it.
+DetailsE=\nThe account has {0} event(s) logged for it.
 
-[DestroyAccountDialog]
-Title=Konto löschen
-Prompt=Möchten Sie Konto {0}\nvon Benutzer {1} wirklich löschen?
-DetailsWE=\nFür das Konto wurden {0} Arbeitseinheiten\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse protokolliert.
-DetailsW=\nFür das Konto wurden {0} Arbeitseinheiten\n(mit einer Gesamtdauer von {1} Minute(n)) protokolliert.
-DetailsE=\nFür das Konto wurden {0} Ereignisse protokolliert.
+[DestroyActivityTypeDialog]
+Title=Destroy activity type
+Prompt=Are you sure you want to destroy activity type\n{0} assigned to {1} activities ?
+DetailsWE=\nThese activities have {0} work unit(s) logged for it\n(with total duration of {1} minute(s)) and {2} event(s);\nall these will lose their attribution to the activity type.
+DetailsW=\nThese activities have {0} work unit(s) logged for it\n(with total duration of {1} minute(s));\nall these will lose their attribution to the activity type.
+DetailsE=\nThese activities have {0} event(s) logged for it;\nall these will lose their attribution to the activity type.
+
+[DestroyUserDialog]
+Title=Destroy user
+Prompt=Are you sure you want to destroy user {0} with {1} accounts?
+DetailsWE=\nThe user has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)) and {2} event(s).
+DetailsW=\nThe user has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)).
+DetailsE=\nThe user has {0} event(s) logged for it.
 
 [EditStringDialog]
 OkPushButton=OK

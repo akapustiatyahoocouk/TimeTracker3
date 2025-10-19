@@ -55,6 +55,17 @@ namespace tt3::gui
             );
 
         /// \brief
+        ///     Constructs the dialog
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// \param ex
+        ///     The error whose error message to display.
+        ErrorDialog(
+                QWidget * parent,
+                const tt3::util::Error & ex
+            );
+
+        /// \brief
         ///     The class destructor.
         virtual ~ErrorDialog();
 
@@ -75,6 +86,14 @@ namespace tt3::gui
 
         /// \brief
         ///     Shows the error dialog with the specified error message and no parent.
+        /// \param ex
+        ///     The error whose error message to display.
+        static void     show(
+                                const tt3::util::Error & ex
+                            );
+
+        /// \brief
+        ///     Shows the error dialog with the specified error message and no parent.
         /// \param errorMessage
         ///     The error message to display.
         static void     show(
@@ -90,6 +109,17 @@ namespace tt3::gui
         static void     show(
                                 QWidget * parent,
                                 const tt3::util::Exception & ex
+                            );
+
+        /// \brief
+        ///     Shows the error dialog with the specified error message and parent.
+        /// \param parent
+        ///     The parent widget for the dialog; nullptr == none.
+        /// \param ex
+        ///     The error whose error message to display.
+        static void     show(
+                                QWidget * parent,
+                                const tt3::util::Error & ex
                             );
 
         /// \brief

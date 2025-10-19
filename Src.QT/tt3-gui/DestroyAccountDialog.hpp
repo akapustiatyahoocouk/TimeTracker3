@@ -53,9 +53,9 @@ namespace tt3::gui
         /// @exception WorkspaceException
         ///     If an error occurs retrieving Account details.
         DestroyAccountDialog(
-            ::QWidget * parent,
-            tt3::ws::Account account,
-            const tt3::ws::Credentials & credentials
+                ::QWidget * parent,
+                tt3::ws::Account account,
+                const tt3::ws::Credentials & credentials
             );
         //  The default destructor is OK
 
@@ -80,7 +80,8 @@ namespace tt3::gui
         static void     _collectDestructionClosure(
                                 tt3::ws::Account account,
                                 const tt3::ws::Credentials & credentials,
-                                qsizetype & worksCount, qsizetype & eventsCount,
+                                qsizetype & worksCount,
+                                qsizetype & eventsCount,
                                 int64_t & worksDurationMs
                             );
 

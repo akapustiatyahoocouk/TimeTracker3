@@ -444,17 +444,67 @@ void ActivityImpl::setWorkload(
 }
 
 auto ActivityImpl::works(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const -> Works
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        Works result;
+        for (auto dataWork : _dataActivity->works())    //  may throw
+        {
+            Work work = _workspace->_getProxy(dataWork);
+            if (work->_canRead(credentials))    //  may throw
+            {
+                result.insert(work);
+            }
+        }
+        return result;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 auto ActivityImpl::events(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const -> Events
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        Events result;
+        for (auto dataEvent : _dataActivity->events())  //  may throw
+        {
+            Event event = _workspace->_getProxy(dataEvent);
+            if (event->_canRead(credentials))    //  may throw
+            {
+                result.insert(event);
+            }
+        }
+        return result;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 //////////

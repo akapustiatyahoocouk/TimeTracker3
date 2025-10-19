@@ -52,6 +52,7 @@ bool Application::notify(QObject * receiver, QEvent * event)
     catch (const tt3::util::Error & ex)
     {
         qCritical() << ex;
+        tt3::gui::ErrorDialog::show(ex);
         return false;
     }
     catch (...)

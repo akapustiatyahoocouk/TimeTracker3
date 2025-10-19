@@ -198,6 +198,27 @@ SelectBeneficiariesPushButton=Auswählen
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
 
+[DestroyAccountDialog]
+Title=Konto löschen
+Prompt=Möchten Sie Konto {0}\nvon Benutzer {1} wirklich löschen?
+DetailsWE=\nFür das Konto wurden {0} Arbeitseinheiten\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse protokolliert.
+DetailsW=\nFür das Konto wurden {0} Arbeitseinheiten\n(mit einer Gesamtdauer von {1} Minute(n)) protokolliert.
+DetailsE=\nFür das Konto wurden {0} Ereignisse protokolliert.
+
+[DestroyActivityTypeDialog]
+Title=Aktivitätstyp löschen
+Prompt=Möchten Sie den Aktivitätstyp \n{0}, der {1} Aktivitäten zugewiesen ist, wirklich löschen ?
+DetailsWE=\nFür diese Aktivitäten wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse;\nalle diese verlieren ihre Zuordnung zum Aktivitätstyp.
+DetailsW=\nFür diese Aktivitäten wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n));\nalle diese verlieren ihre Zuordnung zum Aktivitätstyp.
+DetailsE=\nFür diese Aktivitäten wurden {0} Ereignisse protokolliert;\nalle diese verlieren ihre Zuordnung zum Aktivitätstyp.
+
+[DestroyUserDialog]
+Title=Benutzer löschen
+Prompt=Möchten Sie Benutzer {0} mit {1} Konten wirklich löschen?
+DetailsWE=\nFür den Benutzer wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse.
+DetailsW=\nFür den Benutzer wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)).
+DetailsE=\nFür den Benutzer wurden {0} Ereignisse protokolliert.
+
 [EditStringDialog]
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen

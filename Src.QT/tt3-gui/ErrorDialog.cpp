@@ -38,6 +38,9 @@ ErrorDialog::ErrorDialog(QWidget * parent, const QString & errorMessage)
 ErrorDialog::ErrorDialog(QWidget * parent, const tt3::util::Exception & ex)
     :   ErrorDialog(parent, ex.errorMessage()) {}
 
+ErrorDialog::ErrorDialog(QWidget * parent, const tt3::util::Error & ex)
+    :   ErrorDialog(parent, ex.errorMessage()) {}
+
 ErrorDialog::~ErrorDialog()
 {
     delete _ui;
@@ -56,6 +59,12 @@ void ErrorDialog::show(const tt3::util::Exception & ex)
     dlg.doModal();
 }
 
+void ErrorDialog::show(const tt3::util::Error & ex)
+{
+    ErrorDialog dlg(nullptr, ex);
+    dlg.doModal();
+}
+
 void ErrorDialog::show(const QString & errorMessage)
 {
     ErrorDialog dlg(nullptr, errorMessage);
@@ -63,6 +72,12 @@ void ErrorDialog::show(const QString & errorMessage)
 }
 
 void ErrorDialog::show(QWidget * parent, const tt3::util::Exception & ex)
+{
+    ErrorDialog dlg(parent, ex);
+    dlg.doModal();
+}
+
+void ErrorDialog::show(QWidget * parent, const tt3::util::Error & ex)
 {
     ErrorDialog dlg(parent, ex);
     dlg.doModal();

@@ -132,10 +132,35 @@ void ActivityTypeImpl::setDescription(
 //////////
 //  Operations (associations)
 auto ActivityTypeImpl::activities(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const -> Activities
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        Activities result;
+        for (auto dataActivity : _dataActivityType->activities())   //  may throw
+        {
+            Activity activity = _workspace->_getProxy(dataActivity);
+            if (activity->_canRead(credentials))    //  may throw
+            {
+                result.insert(activity);
+            }
+        }
+        return result;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 //////////

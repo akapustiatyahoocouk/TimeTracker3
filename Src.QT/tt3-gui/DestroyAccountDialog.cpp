@@ -56,8 +56,8 @@ QString DestroyAccountDialog::_prompt(
     QString result =
         rr.string(
             RID(Prompt),
-            account->login(credentials),
-            account->user(credentials)->realName(credentials));
+            account->login(credentials),    //  may throw
+            account->user(credentials)->realName(credentials)); //  may throw
     //  If there are works/events logged by destroyed
     //  Account, count them and add a line
     try
@@ -111,7 +111,7 @@ void DestroyAccountDialog::_collectDestructionClosure(
     for (tt3::ws::Work work : account->works(credentials))  //  may throw
     {
         worksCount++;
-        worksDurationMs += work->startedAt(credentials).msecsTo(work->finishedAt(credentials));
+        worksDurationMs += work->startedAt(credentials).msecsTo(work->finishedAt(credentials)); //  may throw
     }
     eventsCount = account->events(credentials).size();  //  may throw
 }

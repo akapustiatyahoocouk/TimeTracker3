@@ -133,7 +133,11 @@ void ActivityType::setDescription(
 auto ActivityType::activities(
     ) const -> tt3::db::api::Activities
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return tt3::db::api::Activities(_activities.cbegin(), _activities.cend());
 }
 
 //////////
