@@ -719,6 +719,7 @@ void PrivateActivityManager::_createPrivateActivityPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         tt3::gui::ErrorDialog::show(this, ex);
     }
 }
@@ -738,6 +739,7 @@ void PrivateActivityManager::_modifyPrivateActivityPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -758,6 +760,7 @@ void PrivateActivityManager::_destroyPrivateActivityPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -778,6 +781,7 @@ void PrivateActivityManager::_startPrivateActivityPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
         }
         requestRefresh();
@@ -798,6 +802,7 @@ void PrivateActivityManager::_stopPrivateActivityPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
         }
         requestRefresh();

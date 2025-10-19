@@ -40,6 +40,11 @@ namespace tt3
         virtual ~Application();
 
         //////////
+        //  QGuiApplication
+    public:
+        virtual bool    notify(QObject * receiver, QEvent * event) override;
+
+        //////////
         //  QApplication
     public:
         /// \brief

@@ -5,3 +5,4 @@ Copyright=Copyright (C) {0}, Andrey Kapustin
 
 [Errors]
 NoSkinsDefined=Keine UI-Skins definiert.
+UncaughtException=Unbekannte Ausnahme in der Ereignisschleife

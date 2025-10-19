@@ -495,6 +495,7 @@ void ActivityTypeManager::_createActivityTypePushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         tt3::gui::ErrorDialog::show(this, ex);
     }
 }
@@ -514,6 +515,7 @@ void ActivityTypeManager::_modifyActivityTypePushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -534,6 +536,7 @@ void ActivityTypeManager::_destroyActivityTypePushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
             requestRefresh();
         }

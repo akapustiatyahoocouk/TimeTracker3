@@ -316,6 +316,7 @@ void ModifyPrivateTaskDialog::_selectParentTaskPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         ErrorDialog::show(this, ex);
     }
 }
@@ -437,6 +438,7 @@ void ModifyPrivateTaskDialog::accept()
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         ErrorDialog::show(this, ex);
     }
 }

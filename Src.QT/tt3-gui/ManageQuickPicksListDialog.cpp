@@ -284,6 +284,7 @@ void ManageQuickPicksListDialog::_refillQuickPicksListWidget()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS!
+            qCritical() << ex.errorMessage();
             item->setText(ex.errorMessage());
             item->setIcon(errorIcon);
             item->setForeground(_listWidgetDecorations.errorItemForeground);

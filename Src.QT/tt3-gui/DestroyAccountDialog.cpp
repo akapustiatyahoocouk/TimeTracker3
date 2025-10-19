@@ -124,6 +124,7 @@ void DestroyAccountDialog::accept()
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! We cannot cast "this" to "QDialog*" directly
+        qCritical() << ex.errorMessage();
         ::QDialog * me =
             reinterpret_cast<::QDialog*>(
                 reinterpret_cast<uintptr_t>(this));

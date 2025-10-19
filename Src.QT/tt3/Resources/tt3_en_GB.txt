@@ -5,3 +5,5 @@ Copyright=Copyright (C) {0}, Andrey Kapustin
 
 [Errors]
 NoSkinsDefined=No UI skins defined.
+UncaughtException=Unknown exception in event loop
+

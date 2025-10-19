@@ -195,6 +195,7 @@ void CreateBeneficiaryDialog::_selectWorkloadsPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         ErrorDialog::show(this, ex);
     }
 }
@@ -213,6 +214,7 @@ void CreateBeneficiaryDialog::accept()
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         ErrorDialog::show(this, ex);
     }
 }

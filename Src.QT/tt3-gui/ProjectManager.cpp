@@ -693,6 +693,7 @@ void ProjectManager::_createProjectPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         tt3::gui::ErrorDialog::show(this, ex);
     }
 }
@@ -712,6 +713,7 @@ void ProjectManager::_modifyProjectPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -732,6 +734,7 @@ void ProjectManager::_destroyProjectPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -752,6 +755,7 @@ void ProjectManager::_completeProjectPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
         }
         requestRefresh();

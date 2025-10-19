@@ -752,6 +752,7 @@ void UserManager::_createUserPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         tt3::gui::ErrorDialog::show(this, ex);
     }
 }
@@ -771,6 +772,7 @@ void UserManager::_modifyUserPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -791,8 +793,9 @@ void UserManager::_destroyUserPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
-           requestRefresh();
+            requestRefresh();
         }
     }
 }
@@ -812,6 +815,7 @@ void UserManager::_createAccountPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             tt3::gui::ErrorDialog::show(this, ex);
         }
     }
@@ -832,8 +836,9 @@ void UserManager::_modifyAccountPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
-           requestRefresh();
+            requestRefresh();
         }
     }
 }
@@ -852,8 +857,9 @@ void UserManager::_destroyAccountPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
-           requestRefresh();
+            requestRefresh();
         }
     }
 }

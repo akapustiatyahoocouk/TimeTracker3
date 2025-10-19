@@ -495,6 +495,7 @@ void BeneficiaryManager::_createBeneficiaryPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         tt3::gui::ErrorDialog::show(this, ex);
     }
 }
@@ -514,6 +515,7 @@ void BeneficiaryManager::_modifyBeneficiaryPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -534,6 +536,7 @@ void BeneficiaryManager::_destroyBeneficiaryPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
             requestRefresh();
         }

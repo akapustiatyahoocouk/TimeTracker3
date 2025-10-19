@@ -246,6 +246,7 @@ void MyDayManager::refresh()
             }
             catch (const tt3::util::Exception & ex)
             {
+                qCritical() << ex.errorMessage();
                 _quickPicksButtons[i]->setText(ex.errorMessage());
                 _pushButtonDecorations.applyTo(
                     _quickPicksButtons[i],
@@ -653,6 +654,7 @@ void MyDayManager::_recreateQuickPickButtons()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             button = new QPushButton(
                 errorIcon,
                 ex.errorMessage(),
@@ -791,6 +793,7 @@ void MyDayManager::_quickPicksPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         ErrorDialog::show(this, ex);
     }
 }
@@ -1067,6 +1070,7 @@ void MyDayManager::_modifyObjectContextActionTriggered()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
         }
     }
@@ -1083,6 +1087,7 @@ void MyDayManager::_modifyObjectContextActionTriggered()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
         }
     }
@@ -1099,6 +1104,7 @@ void MyDayManager::_modifyObjectContextActionTriggered()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
         }
     }
@@ -1115,6 +1121,7 @@ void MyDayManager::_modifyObjectContextActionTriggered()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
         }
     }
@@ -1133,6 +1140,7 @@ void MyDayManager::_removeActivityFromQuickPicksContextActionTriggered()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
         }
         _recreateDynamicControls();
@@ -1160,6 +1168,7 @@ void MyDayManager::_destroyObjectContextActionTriggered()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
             _myDayModel = _createMyDayModel();
             requestRefresh();
@@ -1179,6 +1188,7 @@ void MyDayManager::_destroyObjectContextActionTriggered()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
             _myDayModel = _createMyDayModel();
             requestRefresh();

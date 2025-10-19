@@ -565,6 +565,7 @@ void PublicActivityManager::_createPublicActivityPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         tt3::gui::ErrorDialog::show(this, ex);
     }
 }
@@ -584,6 +585,7 @@ void PublicActivityManager::_modifyPublicActivityPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -604,6 +606,7 @@ void PublicActivityManager::_destroyPublicActivityPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -624,6 +627,7 @@ void PublicActivityManager::_startPublicActivityPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
         }
         requestRefresh();
@@ -644,6 +648,7 @@ void PublicActivityManager::_stopPublicActivityPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
         }
         requestRefresh();

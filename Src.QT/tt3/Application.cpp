@@ -34,6 +34,34 @@ Application::~Application()
 }
 
 //////////
+//  QGuiApplication
+bool Application::notify(QObject * receiver, QEvent * event)
+{
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
+
+    try
+    {
+        return QApplication::notify(receiver, event);
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        qCritical() << ex.errorMessage();
+        tt3::gui::ErrorDialog::show(ex);
+        return false;
+    }
+    catch (const tt3::util::Error & ex)
+    {
+        qCritical() << ex.errorMessage();
+        return false;
+    }
+    catch (...)
+    {
+        qCritical() << resources->string(RSID(Errors), RID(UncaughtException));
+        return false;
+    }
+}
+
+//////////
 //  QApplication
 int Application::exec()
 {
@@ -158,6 +186,7 @@ void Application::_initialize()
             }
             catch (const tt3::util::Exception & ex)
             {   //  OOPS! Report
+                qCritical() << ex.errorMessage();
                 tt3::gui::ErrorDialog::show(tt3::gui::theCurrentSkin->mainWindow(), ex);
             }
         }
@@ -173,6 +202,7 @@ void Application::_cleanup()
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Report!
+        qCritical() << ex.errorMessage();
         tt3::gui::ErrorDialog::show(ex);
     }
 
@@ -187,6 +217,7 @@ void Application::_cleanup()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Report!
+            qCritical() << ex.errorMessage();
             tt3::gui::ErrorDialog::show(ex);
         }
     }

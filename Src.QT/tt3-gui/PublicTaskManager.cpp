@@ -761,6 +761,7 @@ void PublicTaskManager::_createPublicTaskPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         tt3::gui::ErrorDialog::show(this, ex);
     }
 }
@@ -780,6 +781,7 @@ void PublicTaskManager::_modifyPublicTaskPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -800,6 +802,7 @@ void PublicTaskManager::_destroyPublicTaskPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -820,6 +823,7 @@ void PublicTaskManager::_startPublicTaskPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
         }
         requestRefresh();
@@ -840,6 +844,7 @@ void PublicTaskManager::_stopPublicTaskPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
         }
         requestRefresh();
@@ -899,6 +904,7 @@ void PublicTaskManager::_completePublicTaskPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
+            qCritical() << ex.errorMessage();
             ErrorDialog::show(this, ex);
         }
         requestRefresh();

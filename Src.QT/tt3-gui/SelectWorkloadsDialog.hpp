@@ -87,7 +87,7 @@ namespace tt3::gui
     private:
         tt3::ws::Workspace      _workspace;
         tt3::ws::Credentials    _credentials;
-        bool        _refreshUnderway = false;
+        bool        _refreshUnderway = false;   //  TODO use the same design for all guarded refreshes
 
         //  Helpers
         auto        _currentWorkload(

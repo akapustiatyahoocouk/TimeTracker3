@@ -100,6 +100,7 @@ void CreateWorkStreamDialog::accept()
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         ErrorDialog::show(this, ex);
     }
 }

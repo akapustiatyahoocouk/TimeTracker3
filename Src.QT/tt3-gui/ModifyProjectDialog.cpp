@@ -143,6 +143,7 @@ void ModifyProjectDialog::_selectParentProjectPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         ErrorDialog::show(this, ex);
     }
 }
@@ -185,6 +186,7 @@ void ModifyProjectDialog::accept()
     }
     catch (const tt3::util::Exception & ex)
     {
+        qCritical() << ex.errorMessage();
         ErrorDialog::show(this, ex);
     }
 }
