@@ -30,28 +30,64 @@ CreateUserDialog::CreateUserDialog(QWidget * parent,
         //  Controls
         _ui(new Ui::CreateUserDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(CreateUserDialog));
+
     Q_ASSERT(_workspace != nullptr);
     Q_ASSERT(_credentials.isValid());
 
     _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
+
+    //  Set initial control values
+    _ui->realNameLabel->setText(
+        rr.string(RID(RealNameLabel)));
+    _ui->emailAddressesLabel->setText(
+        rr.string(RID(EmailAddressesLabel)));
+    _ui->addEmailAddressPushButton->setText(
+        rr.string(RID(AddEmailAddressPushButton)));
+    _ui->modifyEmailAddressPushButton->setText(
+        rr.string(RID(ModifyEmailAddressPushButton)));
+    _ui->removeEmailAddressPushButton->setText(
+        rr.string(RID(RemoveEmailAddressPushButton)));
+    _ui->inactivityTimeoutLabel->setText(
+        rr.string(RID(InactivityTimeoutLabel)));
+    _ui->inactivityTimeoutCheckBox->setText(
+        rr.string(RID(InactivityTimeoutCheckBox)));
+    _ui->uiLocaleLabel->setText(
+        rr.string(RID(UiLocaleLabel)));
+    _ui->workingOnLabel->setText(
+        rr.string(RID(WorkingOnLabel)));
+    _ui->workingOnPushButton->setText(
+        rr.string(RID(WorkingOnPushButton)));
+    _ui->enabledCheckBox->setText(
+        rr.string(RID(EnabledCheckBox)));
 
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
     //  Fill "hours" amd "minutes" combo boxes
     for (int h = 0; h < 12; h++)
     {
-        _ui->hoursComboBox->addItem(tt3::util::toString(h) + " hrs", QVariant::fromValue(h));
+        _ui->hoursComboBox->addItem(
+            rr.string(RID(HoursComboBoxItem), h),
+            QVariant::fromValue(h));
     }
     for (int m = 0; m < 60; m += 15)
     {
-        _ui->minutesComboBox->addItem(tt3::util::toString(m) + " min", QVariant::fromValue(m));
+        _ui->minutesComboBox->addItem(
+            rr.string(RID(MinutesComboBoxItem), m),
+            QVariant::fromValue(m));
     }
 
     //  Fill "UI locale" combo box
-    _ui->uiLocaleComboBox->addItem("- (system default)");
+    _ui->uiLocaleComboBox->addItem(
+        rr.string(RID(SystemDefaultLocale)));
     for (QLocale locale : tt3::util::ComponentManager::supportedLocales())
     {
         _locales.append(locale);

@@ -170,6 +170,25 @@ CompletedCheckBox=Task is completed
 OkPushButton=OK
 CancelPushButton=Cancel
 
+[CreateUserDialog]
+Title=Create user
+RealNameLabel=Real name:
+EmailAddressesLabel=E-mail addresses:
+AddEmailAddressPushButton=Add
+ModifyEmailAddressPushButton=Modify
+RemoveEmailAddressPushButton=Remove
+InactivityTimeoutLabel=Current activity:
+InactivityTimeoutCheckBox=stop if unattended for
+HoursComboBoxItem={0} hrs
+MinutesComboBoxItem={0} min
+UiLocaleLabel=UI locale:
+SystemDefaultLocale=- (system default)
+WorkingOnLabel=Working on:
+WorkingOnPushButton=Select
+EnabledCheckBox=User is enabled
+OkPushButton=OK
+CancelPushButton=Cancel
+
 [EditStringDialog]
 OkPushButton=OK
 CancelPushButton=Cancel
