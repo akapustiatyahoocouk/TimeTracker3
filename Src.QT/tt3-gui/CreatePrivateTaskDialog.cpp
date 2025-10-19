@@ -1,6 +1,6 @@
 //
 //  tt3-gui/CreatePrivateTaskDialog.cpp - tt3::gui::CreatePrivateTaskDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -32,15 +32,57 @@ CreatePrivateTaskDialog::CreatePrivateTaskDialog(
         //  Controls
         _ui(new Ui::CreatePrivateTaskDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(CreatePrivateTaskDialog));
+
     Q_ASSERT(_workspace != nullptr);
     Q_ASSERT(_credentials.isValid());
 
     _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
 
+    //  Set initial control values
+    _ui->userLabel->setText(
+        rr.string(RID(UserLabel)));
+    _ui->parentTaskLabel->setText(
+        rr.string(RID(ParentTaskLabel)));
+    _ui->selectParentTaskPushButton->setText(
+        rr.string(RID(SelectParentTaskPushButton)));
+    _ui->displayNameLabel->setText(
+        rr.string(RID(DisplayNameLabel)));
+    _ui->descriptionLabel->setText(
+        rr.string(RID(DescriptionLabel)));
+    _ui->activityTypeLabel->setText(
+        rr.string(RID(ActivityTypeLabel)));
+    _ui->workloadLabel->setText(
+        rr.string(RID(WorkloadLabel)));
+    _ui->selectWorkloadPushButton->setText(
+        rr.string(RID(SelectWorkloadPushButton)));
+    _ui->timeoutLabel->setText(
+        rr.string(RID(TimeoutLabel)));
+    _ui->timeoutCheckBox->setText(
+        rr.string(RID(TimeoutCheckBox)));
+
+    _ui->requireCommentOnStartCheckBox->setText(
+        rr.string(RID(RequireCommentOnStartCheckBox)));
+    _ui->requireCommentOnStopCheckBox->setText(
+        rr.string(RID(RequireCommentOnStopCheckBox)));
+    _ui->fullScreenReminderCheckBox->setText(
+        rr.string(RID(FullScreenReminderCheckBox)));
+    _ui->requiresCommentOnCompletionCeckBox->setText(
+        rr.string(RID(RequiresCommentOnCompletionCeckBox)));
+    _ui->completedCheckBox->setText(
+        rr.string(RID(CompletedCheckBox)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
+
+    _setSelectedParentTask(nullptr);
 
     //  Populate User combo box & select the proper user
     QList<tt3::ws::User> usersList =
@@ -84,15 +126,16 @@ CreatePrivateTaskDialog::CreatePrivateTaskDialog(
     //  Fill "hours" amd "minutes" combo boxes
     for (int h = 0; h < 12; h++)
     {
-        _ui->hoursComboBox->addItem(tt3::util::toString(h) + " hrs", QVariant::fromValue(h));
+        _ui->hoursComboBox->addItem(
+            rr.string(RID(HoursComboBoxItem), h),
+            QVariant::fromValue(h));
     }
     for (int m = 0; m < 60; m += 15)
     {
-        _ui->minutesComboBox->addItem(tt3::util::toString(m) + " min", QVariant::fromValue(m));
+        _ui->minutesComboBox->addItem(
+            rr.string(RID(MinutesComboBoxItem), m),
+            QVariant::fromValue(m));
     }
-
-    //  Set initial control values (may throw)
-    _setSelectedParentTask(nullptr);
 
     //  Done
     _ui->displayNameLineEdit->setFocus();
@@ -155,10 +198,12 @@ void CreatePrivateTaskDialog::_setSelectedParentTask(
         tt3::ws::PrivateTask parentTask
     )
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(CreatePrivateTaskDialog));
+
     //  Refill the "parent task" combo box
     _ui->parentTaskComboBox->clear();
     _ui->parentTaskComboBox->addItem(
-        "- (a root private task with no parent)",
+        rr.string(RID(NoParent)),
         QVariant::fromValue<tt3::ws::PrivateTask>(nullptr));
     if (parentTask != nullptr)
     {
