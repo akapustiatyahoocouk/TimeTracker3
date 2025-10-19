@@ -1,6 +1,6 @@
 //
 //  tt3-gui/CreateWorkStreamDialog.cpp - tt3::gui::CreateWorkStreamDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -32,13 +32,30 @@ CreateWorkStreamDialog::CreateWorkStreamDialog(
         //  Controls
         _ui(new Ui::CreateWorkStreamDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(CreateWorkStreamDialog));
+
     Q_ASSERT(_workspace != nullptr);
     Q_ASSERT(_credentials.isValid());
 
     _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
+
+    //  Set initial control values
+    _ui->displayNameLabel->setText(
+        rr.string(RID(DisplayNameLabel)));
+    _ui->descriptionLabel->setText(
+        rr.string(RID(DescriptionLabel)));
+    _ui->beneficiariesLabel->setText(
+        rr.string(RID(BeneficiariesLabel)));
+    _ui->selectBeneficiariesPushButton->setText(
+        rr.string(RID(SelectBeneficiariesPushButton)));
 
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 

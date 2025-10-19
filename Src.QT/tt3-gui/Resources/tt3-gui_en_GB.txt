@@ -189,6 +189,15 @@ EnabledCheckBox=User is enabled
 OkPushButton=OK
 CancelPushButton=Cancel
 
+[CreateWorkStreamDialog]
+Title=Create work stream
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+BeneficiariesLabel=Beneficiaries:
+SelectBeneficiariesPushButton=Select
+OkPushButton=OK
+CancelPushButton=Cancel
+
 [EditStringDialog]
 OkPushButton=OK
 CancelPushButton=Cancel

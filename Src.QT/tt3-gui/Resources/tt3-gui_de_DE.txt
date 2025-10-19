@@ -189,6 +189,15 @@ EnabledCheckBox=Benutzer ist aktiviert
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
 
+[CreateWorkStreamDialog]
+Title=Workstream erstellen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+BeneficiariesLabel=Begünstigte:
+SelectBeneficiariesPushButton=Auswählen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
 [EditStringDialog]
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen

@@ -189,6 +189,15 @@ EnabledCheckBox=Пользователь включён
 OkPushButton=ОК
 CancelPushButton=Отмена
 
+[CreateWorkStreamDialog]
+Title=Создать рабочий поток
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+BeneficiariesLabel=Бенефициары:
+SelectBeneficiariesPushButton=Выбрать
+OkPushButton=ОК
+CancelPushButton=Отмена
+
 [EditStringDialog]
 OkPushButton=OK
 CancelPushButton=Отмена
