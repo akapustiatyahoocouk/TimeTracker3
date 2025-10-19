@@ -117,7 +117,7 @@ CreatePrivateActivityDialog::CreatePrivateActivityDialog(
     //  Populate the "Workload" combo box
     _setSelectedWorkload(nullptr);
 
-    //  Fill "hours" amd "minutes" combo boxes
+    //  Fill "hours" and "minutes" combo boxes
     for (int h = 0; h < 12; h++)
     {
         _ui->hoursComboBox->addItem(
@@ -184,7 +184,7 @@ void CreatePrivateActivityDialog::_setSelectedWorkload(
         tt3::ws::Workload workload
     )
 {
-    //  Refill the "parent project" combo box
+    //  Refill the "workload" combo box
     _ui->workloadComboBox->clear();
     _ui->workloadComboBox->addItem(
         "-",
@@ -201,7 +201,7 @@ void CreatePrivateActivityDialog::_setSelectedWorkload(
         }
         catch (const tt3::util::Exception & ex)
         {  //  OOPS! Log & suppress
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
         }
     }
 }
@@ -280,7 +280,7 @@ void CreatePrivateActivityDialog::accept()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         ErrorDialog::show(this, ex);
     }
 }

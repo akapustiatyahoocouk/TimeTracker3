@@ -45,13 +45,13 @@ bool Application::notify(QObject * receiver, QEvent * event)
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         tt3::gui::ErrorDialog::show(ex);
         return false;
     }
     catch (const tt3::util::Error & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         return false;
     }
     catch (...)
@@ -186,7 +186,7 @@ void Application::_initialize()
             }
             catch (const tt3::util::Exception & ex)
             {   //  OOPS! Report
-                qCritical() << ex.errorMessage();
+                qCritical() << ex;
                 tt3::gui::ErrorDialog::show(tt3::gui::theCurrentSkin->mainWindow(), ex);
             }
         }
@@ -202,7 +202,7 @@ void Application::_cleanup()
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Report!
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         tt3::gui::ErrorDialog::show(ex);
     }
 
@@ -217,7 +217,7 @@ void Application::_cleanup()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Report!
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             tt3::gui::ErrorDialog::show(ex);
         }
     }

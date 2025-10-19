@@ -50,6 +50,7 @@
 #include <QAction>
 #include <QBoxLayout>
 #include <QDateTime>
+#include <QDebug>
 #include <QDialog>
 #include <QDir>
 #include <QDomDocument>
@@ -65,6 +66,7 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QMessageLogger>
 #include <QMoveEvent>
 #include <QMutex>
 #include <QMutexLocker>

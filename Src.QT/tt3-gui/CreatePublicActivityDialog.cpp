@@ -32,15 +32,48 @@ CreatePublicActivityDialog::CreatePublicActivityDialog(
         //  Controls
         _ui(new Ui::CreatePublicActivityDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(CreatePublicActivityDialog));
+
     Q_ASSERT(_workspace != nullptr);
     Q_ASSERT(_credentials.isValid());
 
     _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
 
+    setWindowTitle(rr.string(RID(Title)));
+
+    //  Set initial control values
+    _ui->displayNameLabel->setText(
+        rr.string(RID(DisplayNameLabel)));
+    _ui->descriptionLabel->setText(
+        rr.string(RID(DescriptionLabel)));
+    _ui->activityTypeLabel->setText(
+        rr.string(RID(ActivityTypeLabel)));
+    _ui->workloadLabel->setText(
+        rr.string(RID(WorkloadLabel)));
+    _ui->selectWorkloadPushButton->setText(
+        rr.string(RID(SelectWorkloadPushButton)));
+    _ui->timeoutLabel->setText(
+        rr.string(RID(TimeoutLabel)));
+    _ui->timeoutCheckBox->setText(
+        rr.string(RID(TimeoutCheckBox)));
+
+    _ui->requireCommentOnStartCheckBox->setText(
+        rr.string(RID(RequireCommentOnStartCheckBox)));
+    _ui->requireCommentOnStopCheckBox->setText(
+        rr.string(RID(RequireCommentOnStopCheckBox)));
+    _ui->fullScreenReminderCheckBox->setText(
+        rr.string(RID(FullScreenReminderCheckBox)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
+
 
     //  Fill the "activity type" combo box (may throw)
     QList<tt3::ws::ActivityType> activityTypes =
@@ -64,14 +97,21 @@ CreatePublicActivityDialog::CreatePublicActivityDialog(
             QVariant::fromValue(activityType));
     }
 
-    //  Fill "hours" amd "minutes" combo boxes
+    //  Populate the "Workload" combo box
+    _setSelectedWorkload(nullptr);
+
+    //  Fill "hours" and "minutes" combo boxes
     for (int h = 0; h < 12; h++)
     {
-        _ui->hoursComboBox->addItem(tt3::util::toString(h) + " hrs", QVariant::fromValue(h));
+        _ui->hoursComboBox->addItem(
+            rr.string(RID(HoursComboBoxItem), h),
+            QVariant::fromValue(h));
     }
     for (int m = 0; m < 60; m += 15)
     {
-        _ui->minutesComboBox->addItem(tt3::util::toString(m) + " min", QVariant::fromValue(m));
+        _ui->minutesComboBox->addItem(
+            rr.string(RID(MinutesComboBoxItem), m),
+            QVariant::fromValue(m));
     }
 
     //  Done
@@ -97,6 +137,38 @@ auto CreatePublicActivityDialog::_selectedActivityType(
     ) -> tt3::ws::ActivityType
 {
     return _ui->activityTypeComboBox->currentData().value<tt3::ws::ActivityType>();
+}
+
+auto CreatePublicActivityDialog::_selectedWorkload(
+    ) -> tt3::ws::Workload
+{
+    return _ui->workloadComboBox->currentData().value<tt3::ws::Workload>();
+}
+
+void CreatePublicActivityDialog::_setSelectedWorkload(
+        tt3::ws::Workload workload
+    )
+{
+    //  Refill the "workload" combo box
+    _ui->workloadComboBox->clear();
+    _ui->workloadComboBox->addItem(
+        "-",
+        QVariant::fromValue<tt3::ws::Workload>(nullptr));
+    if (workload != nullptr)
+    {
+        try
+        {
+            _ui->workloadComboBox->addItem(
+                workload->type()->smallIcon(),
+                workload->displayName(_credentials),    //  may throw
+                QVariant::fromValue(workload));
+            _ui->workloadComboBox->setCurrentIndex(1);
+        }
+        catch (const tt3::util::Exception & ex)
+        {  //  OOPS! Log & suppress
+            qCritical() << ex;
+        }
+    }
 }
 
 auto CreatePublicActivityDialog::_selectedTimeout(
@@ -166,12 +238,12 @@ void CreatePublicActivityDialog::accept()
             _ui->requireCommentOnStopCheckBox->isChecked(),
             _ui->fullScreenReminderCheckBox->isChecked(),
             _selectedActivityType(),
-            _selectedWorkload);
+            _selectedWorkload());
         done(int(Result::Ok));
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         ErrorDialog::show(this, ex);
     }
 }

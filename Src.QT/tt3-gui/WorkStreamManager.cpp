@@ -119,7 +119,7 @@ void WorkStreamManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! No point in proceesing.
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _clearAndDisableAllControls();
             return;
         }
@@ -155,7 +155,7 @@ void WorkStreamManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->createWorkStreamPushButton->setEnabled(false);
         }
         _ui->modifyWorkStreamPushButton->setEnabled(
@@ -169,7 +169,7 @@ void WorkStreamManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->destroyWorkStreamPushButton->setEnabled(false);
         }
 
@@ -191,7 +191,7 @@ void WorkStreamManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & simulate RO
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->modifyWorkStreamPushButton->setIcon(viewWorkStreamIcon);
             _ui->modifyWorkStreamPushButton->setText("View work stream");
         }
@@ -227,7 +227,7 @@ auto WorkStreamManager::_createWorkspaceModel(
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         workspaceModel->workStreamModels.clear();
     }
     return workspaceModel;
@@ -252,7 +252,7 @@ auto WorkStreamManager::_createWorkStreamModel(
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         workStreamModel->text = ex.errorMessage();
         workStreamModel->icon = errorIcon;
         workStreamModel->font = decorations.itemFont;
@@ -482,7 +482,7 @@ void WorkStreamManager::_createWorkStreamPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         tt3::gui::ErrorDialog::show(this, ex);
     }
 }
@@ -502,7 +502,7 @@ void WorkStreamManager::_modifyWorkStreamPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -523,7 +523,7 @@ void WorkStreamManager::_destroyWorkStreamPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
             requestRefresh();
         }

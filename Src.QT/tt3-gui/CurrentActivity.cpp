@@ -59,7 +59,7 @@ void CurrentActivity::operator = (
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
     }
 }
 

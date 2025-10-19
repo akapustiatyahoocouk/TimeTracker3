@@ -82,7 +82,7 @@ namespace tt3::util
         }
         catch (const ParseException & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             return defaultValue;
         }
     }
@@ -99,7 +99,7 @@ namespace tt3::util
         }
         catch (const ParseException & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             return defaultValue;
         }
     }

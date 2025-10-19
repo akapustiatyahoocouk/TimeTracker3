@@ -151,9 +151,9 @@ namespace tt3::gui
                         );
 
         //  Helpers
-        auto        _selectedBeneficiary(
+        auto        _currentBeneficiary(
                         ) -> tt3::ws::Beneficiary;
-        void        _setSelectedBeneficiary(
+        void        _setCurrentBeneficiary(
                             tt3::ws::Beneficiary beneficiary
                         );
         void        _startListeningToWorkspaceChanges();

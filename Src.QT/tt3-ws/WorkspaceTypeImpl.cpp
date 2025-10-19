@@ -162,7 +162,7 @@ auto WorkspaceTypeImpl::createWorkspace(
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log, though
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
         }
         WorkspaceException::translateAndThrow(ex);
     }

@@ -136,7 +136,7 @@ void PublicActivityManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! No point in proceesing.
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _clearAndDisableAllControls();
             return;
         }
@@ -172,7 +172,7 @@ void PublicActivityManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->createPublicActivityPushButton->setEnabled(false);
         }
         _ui->modifyPublicActivityPushButton->setEnabled(
@@ -186,7 +186,7 @@ void PublicActivityManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->destroyPublicActivityPushButton->setEnabled(false);
         }
 
@@ -200,7 +200,7 @@ void PublicActivityManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->startPublicActivityPushButton->setEnabled(false);
         }
         try
@@ -213,7 +213,7 @@ void PublicActivityManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->stopPublicActivityPushButton->setEnabled(false);
         }
 
@@ -235,7 +235,7 @@ void PublicActivityManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Simulate RO
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->modifyPublicActivityPushButton->setIcon(viewPublicActivityIcon);
             _ui->modifyPublicActivityPushButton->setText("View public activity");
         }
@@ -271,7 +271,7 @@ auto PublicActivityManager::_createWorkspaceModel(
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         workspaceModel->publicActivityModels.clear();
     }
     return workspaceModel;
@@ -309,7 +309,7 @@ auto PublicActivityManager::_createPublicActivityModel(
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         publicActivityModel->text = ex.errorMessage();
         publicActivityModel->icon = errorIcon;
         publicActivityModel->font = decorations.itemFont;
@@ -566,7 +566,7 @@ void PublicActivityManager::_createPublicActivityPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         tt3::gui::ErrorDialog::show(this, ex);
     }
 }
@@ -586,7 +586,7 @@ void PublicActivityManager::_modifyPublicActivityPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -607,7 +607,7 @@ void PublicActivityManager::_destroyPublicActivityPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -628,7 +628,7 @@ void PublicActivityManager::_startPublicActivityPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
         }
         requestRefresh();
@@ -649,7 +649,7 @@ void PublicActivityManager::_stopPublicActivityPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
         }
         requestRefresh();

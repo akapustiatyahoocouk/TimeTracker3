@@ -227,7 +227,7 @@ void ManageQuickPicksListDialog::_refillPrivateActivitiesTree()
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Log & suppress
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         _ui->privateActivitiesTreeWidget->clear();
     }
 }
@@ -258,7 +258,7 @@ void ManageQuickPicksListDialog::_refillPrivateTasksTree()
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Log & suppress
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         _ui->privateTasksTreeWidget->clear();
     }
 }
@@ -300,7 +300,7 @@ void ManageQuickPicksListDialog::_refillQuickPicksListWidget()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS!
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             item->setText(ex.errorMessage());
             item->setIcon(errorIcon);
             item->setForeground(_listWidgetDecorations.errorItemForeground);
@@ -329,7 +329,7 @@ void ManageQuickPicksListDialog::_refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! No point in proceesing.
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _clearAndDisableAllControls();
             return;
         }

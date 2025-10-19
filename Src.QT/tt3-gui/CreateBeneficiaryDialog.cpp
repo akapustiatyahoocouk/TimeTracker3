@@ -110,7 +110,7 @@ void CreateBeneficiaryDialog::_setSelectedWorkloads(
             }
             catch (tt3::util::Exception & ex)
             {   //  OOPS! Report & recover with a stable sort order
-                qCritical() << ex.errorMessage();
+                qCritical() << ex;
                 return a->oid() < b->oid();
             }
         });
@@ -154,7 +154,7 @@ void CreateBeneficiaryDialog::_setSelectedWorkloads(
         }
         catch (tt3::util::Exception & ex)
         {   //  OOPS! Report & recover
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             item->setText(ex.errorMessage());
             item->setIcon(errorIcon);
             item->setForeground(_listWidgetDecorations.errorItemForeground);
@@ -195,7 +195,7 @@ void CreateBeneficiaryDialog::_selectWorkloadsPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         ErrorDialog::show(this, ex);
     }
 }
@@ -214,7 +214,7 @@ void CreateBeneficiaryDialog::accept()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         ErrorDialog::show(this, ex);
     }
 }

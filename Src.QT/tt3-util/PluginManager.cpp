@@ -58,7 +58,7 @@ void PluginManager::loadPlugins()
                 }
                 catch (const Exception & ex)
                 {   //  OOPS! Plugin initialization failed. Maybe, next round ?
-                    qCritical() << ex.errorMessage();
+                    qCritical() << ex;
                 }
             }
         }

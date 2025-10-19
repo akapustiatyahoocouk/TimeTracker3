@@ -121,7 +121,7 @@ void ModifyProjectDialog::_setSelectedParentProject(
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & suppress
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             Q_ASSERT(_ui->parentProjectComboBox->count() == 1);
         }
     }
@@ -151,7 +151,7 @@ void ModifyProjectDialog::_selectParentProjectPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         ErrorDialog::show(this, ex);
     }
 }
@@ -194,7 +194,7 @@ void ModifyProjectDialog::accept()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         ErrorDialog::show(this, ex);
     }
 }

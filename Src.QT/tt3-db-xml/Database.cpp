@@ -59,7 +59,7 @@ Database::Database(
             }
             catch (const tt3::util::Exception & ex)
             {   //  Cleanup & re-throw
-                qCritical() << ex.errorMessage();
+                qCritical() << ex;
                 delete _lockRefresher;
                 if (dynamic_cast<const tt3::db::api::DatabaseException*>(&ex) != nullptr)
                 {   //  Can re-throw "as is"
@@ -77,7 +77,7 @@ Database::Database(
             }
             catch (const tt3::util::Exception & ex)
             {   //  e.g. ParseException, etc.
-                qCritical() << ex.errorMessage();
+                qCritical() << ex;
                 //  Cleanup & re-throw
                 if (dynamic_cast<const tt3::db::api::DatabaseException*>(&ex) != nullptr)
                 {   //  Can re-throw "as is"
@@ -102,7 +102,7 @@ Database::Database(
             }
             catch (const tt3::util::Exception & ex)
             {   //  e.g. ParseException, etc.
-                qCritical() << ex.errorMessage();
+                qCritical() << ex;
                 //  Cleanup & re-throw
                 delete _lockRefresher;
                 if (dynamic_cast<const tt3::db::api::DatabaseException*>(&ex) != nullptr)
@@ -134,7 +134,7 @@ Database::~Database()
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Suppress, but log.
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
     }
 
     //  All Objects should be in graveyard by now
@@ -220,7 +220,7 @@ void Database::close()
         }
         catch (const tt3::util::Exception & ex)
         {   //  Cleanup & re-throw
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _markClosed();
             throw;
         }

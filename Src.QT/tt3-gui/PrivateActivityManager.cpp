@@ -135,7 +135,7 @@ void PrivateActivityManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! No point in proceesing.
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _clearAndDisableAllControls();
             return;
         }
@@ -176,7 +176,7 @@ void PrivateActivityManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->createPrivateActivityPushButton->setEnabled(false);
         }
         _ui->modifyPrivateActivityPushButton->setEnabled(
@@ -190,7 +190,7 @@ void PrivateActivityManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->destroyPrivateActivityPushButton->setEnabled(false);
         }
 
@@ -204,7 +204,7 @@ void PrivateActivityManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->startPrivateActivityPushButton->setEnabled(false);
         }
         try
@@ -217,7 +217,7 @@ void PrivateActivityManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->stopPrivateActivityPushButton->setEnabled(false);
         }
 
@@ -239,7 +239,7 @@ void PrivateActivityManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Simulate RO
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->modifyPrivateActivityPushButton->setIcon(viewPrivateActivityIcon);
             _ui->modifyPrivateActivityPushButton->setText("View public activity");
         }
@@ -286,7 +286,7 @@ auto PrivateActivityManager::_createWorkspaceModel(
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         workspaceModel->userModels.clear();
     }
     return workspaceModel;
@@ -330,7 +330,7 @@ auto PrivateActivityManager::_createUserModel(
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         userModel->text = ex.errorMessage();
         userModel->icon = errorIcon;
         userModel->font = decorations.itemFont;
@@ -373,7 +373,7 @@ auto PrivateActivityManager::_createPrivateActivityModel(
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         privateActivityModel->text = ex.errorMessage();
         privateActivityModel->icon = errorIcon;
         privateActivityModel->font = decorations.itemFont;
@@ -721,7 +721,7 @@ void PrivateActivityManager::_createPrivateActivityPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         tt3::gui::ErrorDialog::show(this, ex);
     }
 }
@@ -741,7 +741,7 @@ void PrivateActivityManager::_modifyPrivateActivityPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -762,7 +762,7 @@ void PrivateActivityManager::_destroyPrivateActivityPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -783,7 +783,7 @@ void PrivateActivityManager::_startPrivateActivityPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
         }
         requestRefresh();
@@ -804,7 +804,7 @@ void PrivateActivityManager::_stopPrivateActivityPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
         }
         requestRefresh();

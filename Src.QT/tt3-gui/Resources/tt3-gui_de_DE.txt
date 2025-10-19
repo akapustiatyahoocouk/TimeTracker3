@@ -131,6 +131,23 @@ CompletedCheckBox=Projekt abgeschlossen
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
 
+[CreatePublicActivityDialog]
+Title=Öffentliche Aktivität erstellen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+ActivityTypeLabel=Aktivitätstyp:
+WorkloadLabel=Arbeitslast:
+SelectWorkloadPushButton=Auswählen
+TimeoutLabel=Zeitüberschreitung:
+TimeoutCheckBox=Beenden, wenn unbeaufsichtigt für
+HoursComboBoxItem={0} Std.
+MinutesComboBoxItem={0} Min.
+RequireCommentOnStartCheckBox=Kommentar beim Starten dieser Aktivität erforderlich
+RequireCommentOnStopCheckBox=Kommentar bei Stopp dieser Aktivität erforderlich
+FullScreenReminderCheckBox=Vollbild-Erinnerung
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
 [EditStringDialog]
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen

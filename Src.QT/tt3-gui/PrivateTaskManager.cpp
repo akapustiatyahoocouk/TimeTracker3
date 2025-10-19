@@ -141,7 +141,7 @@ void PrivateTaskManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! No point in proceesing.
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _clearAndDisableAllControls();
             return;
         }
@@ -185,7 +185,7 @@ void PrivateTaskManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->createPrivateTaskPushButton->setEnabled(false);
         }
         _ui->modifyPrivateTaskPushButton->setEnabled(
@@ -199,7 +199,7 @@ void PrivateTaskManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->destroyPrivateTaskPushButton->setEnabled(false);
         }
 
@@ -214,7 +214,7 @@ void PrivateTaskManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->startPrivateTaskPushButton->setEnabled(false);
         }
         try
@@ -227,7 +227,7 @@ void PrivateTaskManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->stopPrivateTaskPushButton->setEnabled(false);
         }
         try
@@ -240,7 +240,7 @@ void PrivateTaskManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Report & recover
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->completePrivateTaskPushButton->setEnabled(false);
         }
 
@@ -265,7 +265,7 @@ void PrivateTaskManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Simulate RO
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->modifyPrivateTaskPushButton->setIcon(viewPrivateTaskIcon);
             _ui->modifyPrivateTaskPushButton->setText("View private task");
         }
@@ -311,7 +311,7 @@ auto PrivateTaskManager::_createWorkspaceModel(
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         workspaceModel->userModels.clear();
     }
     return workspaceModel;
@@ -355,7 +355,7 @@ auto PrivateTaskManager::_createUserModel(
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         userModel->text = ex.errorMessage();
         userModel->icon = errorIcon;
         userModel->font = decorations.itemFont;
@@ -417,7 +417,7 @@ auto PrivateTaskManager::_createPrivateTaskModel(
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         privateTaskModel->text = ex.errorMessage();
         privateTaskModel->icon = errorIcon;
         privateTaskModel->font = decorations.itemFont;
@@ -465,7 +465,7 @@ void PrivateTaskManager::_removeCompletedItems(
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Suppress, but log
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
         }
     }
 }
@@ -494,7 +494,7 @@ void PrivateTaskManager::_removeCompletedItems(
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Suppress, but log
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
         }
     }
 }
@@ -933,7 +933,7 @@ void PrivateTaskManager::_createPrivateTaskPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         tt3::gui::ErrorDialog::show(this, ex);
     }
 }
@@ -953,7 +953,7 @@ void PrivateTaskManager::_modifyPrivateTaskPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -974,7 +974,7 @@ void PrivateTaskManager::_destroyPrivateTaskPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -995,7 +995,7 @@ void PrivateTaskManager::_startPrivateTaskPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
         }
         requestRefresh();
@@ -1016,7 +1016,7 @@ void PrivateTaskManager::_stopPrivateTaskPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
         }
         requestRefresh();
@@ -1068,7 +1068,7 @@ void PrivateTaskManager::_completePrivateTaskPushButtonClicked()
                 }
                 catch (const tt3::util::Exception & ex)
                 {   //  OOPS! Log & suppress
-                    qCritical() << ex.errorMessage();
+                    qCritical() << ex;
                 }
             }
             //  ...and complete the PrivateTask
@@ -1076,7 +1076,7 @@ void PrivateTaskManager::_completePrivateTaskPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
         }
         requestRefresh();

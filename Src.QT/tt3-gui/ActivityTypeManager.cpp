@@ -128,7 +128,7 @@ void ActivityTypeManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! No point in proceesing.
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _clearAndDisableAllControls();
             return;
         }
@@ -160,7 +160,7 @@ void ActivityTypeManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->createActivityTypePushButton->setEnabled(false);
         }
         _ui->modifyActivityTypePushButton->setEnabled(
@@ -174,7 +174,7 @@ void ActivityTypeManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->destroyActivityTypePushButton->setEnabled(false);
         }
 
@@ -198,7 +198,7 @@ void ActivityTypeManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & simulate RO
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->modifyActivityTypePushButton->setIcon(viewActivityTypeIcon);
             _ui->modifyActivityTypePushButton->setText(
                 rr.string(RID(ViewActivityTypePushButton)));
@@ -230,7 +230,7 @@ ActivityTypeManager::_WorkspaceModel ActivityTypeManager::_createWorkspaceModel(
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         workspaceModel->activityTypeModels.clear();
     }
     return workspaceModel;
@@ -251,7 +251,7 @@ ActivityTypeManager::_ActivityTypeModel ActivityTypeManager::_createActivityType
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         activityTypeModel->text = ex.errorMessage();
         activityTypeModel->icon = errorIcon;
         activityTypeModel->font = _decorations.itemFont;
@@ -496,7 +496,7 @@ void ActivityTypeManager::_createActivityTypePushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         tt3::gui::ErrorDialog::show(this, ex);
     }
 }
@@ -516,7 +516,7 @@ void ActivityTypeManager::_modifyActivityTypePushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -537,7 +537,7 @@ void ActivityTypeManager::_destroyActivityTypePushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
             requestRefresh();
         }

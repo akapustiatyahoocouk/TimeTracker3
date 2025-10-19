@@ -56,7 +56,7 @@ WorkspaceImpl::~WorkspaceImpl()
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Suppress, but log
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
     }
     delete _database;
 }
@@ -99,7 +99,7 @@ void WorkspaceImpl::close()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Ensure cleanup, translate & re-throw
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _markClosed();
             WorkspaceException::translateAndThrow(ex);
         }

@@ -127,7 +127,7 @@ void UserManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! No point in proceesing.
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _clearAndDisableAllControls();
             return;
         }
@@ -169,7 +169,7 @@ void UserManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->createUserPushButton->setEnabled(false);
         }
         _ui->modifyUserPushButton->setEnabled(
@@ -183,7 +183,7 @@ void UserManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->destroyUserPushButton->setEnabled(false);
         }
         try
@@ -198,7 +198,7 @@ void UserManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->createAccountPushButton->setEnabled(false);
         }
         _ui->modifyAccountPushButton->setEnabled(
@@ -212,7 +212,7 @@ void UserManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->destroyAccountPushButton->setEnabled(false);
         }
 
@@ -237,7 +237,7 @@ void UserManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & simulate RO
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->modifyUserPushButton->setIcon(viewUserIcon);
             _ui->modifyUserPushButton->setText("View user");
         }
@@ -258,7 +258,7 @@ void UserManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & simulate RO
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->modifyAccountPushButton->setIcon(viewAccountIcon);
             _ui->modifyAccountPushButton->setText("View account");
         }
@@ -289,7 +289,7 @@ UserManager::_WorkspaceModel UserManager::_createWorkspaceModel()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         workspaceModel->userModels.clear();
     }
     return workspaceModel;
@@ -317,7 +317,7 @@ UserManager::_UserModel UserManager::_createUserModel(tt3::ws::User user)
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         userModel->text = ex.errorMessage();
         userModel->icon = errorIcon;
         userModel->font = _decorations.itemFont;
@@ -337,7 +337,7 @@ UserManager::_UserModel UserManager::_createUserModel(tt3::ws::User user)
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         userModel->accountModels.clear();
     }
     return userModel;
@@ -365,7 +365,7 @@ UserManager::_AccountModel UserManager::_createAccountModel(tt3::ws::Account acc
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         accountModel->text = ex.errorMessage();
         accountModel->icon = errorIcon;
         accountModel->font = _decorations.itemFont;
@@ -395,7 +395,7 @@ void UserManager::_removeDisabledItems(_WorkspaceModel workspaceModel)
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Suppress, but log
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
         }
     }
 }
@@ -413,7 +413,7 @@ void UserManager::_removeDisabledItems(_UserModel userModel)
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Suppress, but log
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
         }
     }
 }
@@ -463,7 +463,7 @@ void UserManager::_filterItems(_UserModel userModel)
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Suppress, but log
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
         }
     }
 }
@@ -754,7 +754,7 @@ void UserManager::_createUserPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         tt3::gui::ErrorDialog::show(this, ex);
     }
 }
@@ -774,7 +774,7 @@ void UserManager::_modifyUserPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -795,7 +795,7 @@ void UserManager::_destroyUserPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -817,7 +817,7 @@ void UserManager::_createAccountPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             tt3::gui::ErrorDialog::show(this, ex);
         }
     }
@@ -838,7 +838,7 @@ void UserManager::_modifyAccountPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -859,7 +859,7 @@ void UserManager::_destroyAccountPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
             requestRefresh();
         }

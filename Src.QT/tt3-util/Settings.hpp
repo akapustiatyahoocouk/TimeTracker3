@@ -222,7 +222,7 @@ namespace tt3::util
             }
             catch (const ParseException & ex)
             {   //  OOPS! Log, but Ignore
-                qCritical() << ex.errorMessage();
+                qCritical() << ex;
             }
         }
 

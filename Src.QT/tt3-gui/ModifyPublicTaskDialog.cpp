@@ -172,7 +172,7 @@ void ModifyPublicTaskDialog::_setSelectedParentTask(
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & suppress
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             Q_ASSERT(_ui->parentTaskComboBox->count() == 1);
         }
     }
@@ -284,7 +284,7 @@ void ModifyPublicTaskDialog::_selectParentTaskPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         ErrorDialog::show(this, ex);
     }
 }
@@ -394,7 +394,7 @@ void ModifyPublicTaskDialog::accept()
                 }
                 catch (const tt3::util::Exception & ex)
                 {   //  OOPS! Log & suppress
-                    qCritical() << ex.errorMessage();
+                    qCritical() << ex;
                 }
             }
         }
@@ -402,7 +402,7 @@ void ModifyPublicTaskDialog::accept()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         ErrorDialog::show(this, ex);
     }
 }

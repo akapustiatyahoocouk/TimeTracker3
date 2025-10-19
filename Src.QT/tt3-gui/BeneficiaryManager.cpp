@@ -128,7 +128,7 @@ void BeneficiaryManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! No point in proceesing.
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _clearAndDisableAllControls();
             return;
         }
@@ -147,7 +147,7 @@ void BeneficiaryManager::refresh()
         }
         _refreshWorkspaceTree(workspaceModel);
 
-        tt3::ws::Beneficiary selectedBeneficiary = _selectedBeneficiary();
+        tt3::ws::Beneficiary currentBeneficiary = _currentBeneficiary();
         bool readOnly = _workspace->isReadOnly();
         try
         {
@@ -160,30 +160,30 @@ void BeneficiaryManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->createBeneficiaryPushButton->setEnabled(false);
         }
         _ui->modifyBeneficiaryPushButton->setEnabled(
-            selectedBeneficiary != nullptr);
+            currentBeneficiary != nullptr);
         try
         {
             _ui->destroyBeneficiaryPushButton->setEnabled(
                 !readOnly &&
-                selectedBeneficiary != nullptr &&
-                selectedBeneficiary->canDestroy(_credentials));    //  may throw
+                currentBeneficiary != nullptr &&
+                currentBeneficiary->canDestroy(_credentials));    //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->destroyBeneficiaryPushButton->setEnabled(false);
         }
 
         //  Some buttons need to be adjusted for ReadOnoly mode
         try
         {
-            if (selectedBeneficiary != nullptr &&
-                !selectedBeneficiary->workspace()->isReadOnly() &&
-                selectedBeneficiary->canModify(_credentials))  //  may throw
+            if (currentBeneficiary != nullptr &&
+                !currentBeneficiary->workspace()->isReadOnly() &&
+                currentBeneficiary->canModify(_credentials))  //  may throw
             {   //  RW
                 _ui->modifyBeneficiaryPushButton->setIcon(modifyBeneficiaryIcon);
                 _ui->modifyBeneficiaryPushButton->setText(
@@ -198,7 +198,7 @@ void BeneficiaryManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & simulate RO
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->modifyBeneficiaryPushButton->setIcon(viewBeneficiaryIcon);
             _ui->modifyBeneficiaryPushButton->setText(
                 rr.string(RID(ViewBeneficiaryPushButton)));
@@ -230,7 +230,7 @@ BeneficiaryManager::_WorkspaceModel BeneficiaryManager::_createWorkspaceModel()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         workspaceModel->beneficiaryModels.clear();
     }
     return workspaceModel;
@@ -251,7 +251,7 @@ BeneficiaryManager::_BeneficiaryModel BeneficiaryManager::_createBeneficiaryMode
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         beneficiaryModel->text = ex.errorMessage();
         beneficiaryModel->icon = errorIcon;
         beneficiaryModel->font = _decorations.itemFont;
@@ -330,7 +330,7 @@ void BeneficiaryManager::_refreshBeneficiaryItem(
 
 //////////
 //  Implementation helpers
-tt3::ws::Beneficiary BeneficiaryManager::_selectedBeneficiary()
+tt3::ws::Beneficiary BeneficiaryManager::_currentBeneficiary()
 {
     QTreeWidgetItem * item = _ui->beneficiariesTreeWidget->currentItem();
     return (item != nullptr) ?
@@ -338,7 +338,7 @@ tt3::ws::Beneficiary BeneficiaryManager::_selectedBeneficiary()
                nullptr;
 }
 
-void BeneficiaryManager::_setSelectedBeneficiary(tt3::ws::Beneficiary beneficiary)
+void BeneficiaryManager::_setCurrentBeneficiary(tt3::ws::Beneficiary beneficiary)
 {
     for (int i = 0; i < _ui->beneficiariesTreeWidget->topLevelItemCount(); i++)
     {
@@ -491,19 +491,19 @@ void BeneficiaryManager::_createBeneficiaryPushButtonClicked()
         if (dlg.doModal() == CreateBeneficiaryDialog::Result::Ok)
         {   //  Beneficiary created
             refresh();  //  must refresh NOW
-            _setSelectedBeneficiary(dlg.createdBeneficiary());
+            _setCurrentBeneficiary(dlg.createdBeneficiary());
         }
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         tt3::gui::ErrorDialog::show(this, ex);
     }
 }
 
 void BeneficiaryManager::_modifyBeneficiaryPushButtonClicked()
 {
-    if (auto beneficiary = _selectedBeneficiary())
+    if (auto beneficiary = _currentBeneficiary())
     {
         try
         {
@@ -511,12 +511,12 @@ void BeneficiaryManager::_modifyBeneficiaryPushButtonClicked()
             if (dlg.doModal() == ModifyBeneficiaryDialog::Result::Ok)
             {   //  Beneficiary modified - its position in the activity types tree may have changed
                 refresh();  //  must refresh NOW
-                _setSelectedBeneficiary(beneficiary);
+                _setCurrentBeneficiary(beneficiary);
             }
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -525,7 +525,7 @@ void BeneficiaryManager::_modifyBeneficiaryPushButtonClicked()
 
 void BeneficiaryManager::_destroyBeneficiaryPushButtonClicked()
 {
-    if (auto beneficiary = _selectedBeneficiary())
+    if (auto beneficiary = _currentBeneficiary())
     {
         try
         {
@@ -537,7 +537,7 @@ void BeneficiaryManager::_destroyBeneficiaryPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
             requestRefresh();
         }

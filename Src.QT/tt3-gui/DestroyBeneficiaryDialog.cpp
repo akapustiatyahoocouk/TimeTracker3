@@ -52,6 +52,7 @@ QString DestroyBeneficiaryDialog::_prompt(
     QString result =
         "Are you sure you want to destroy beneficiary\n" +
         beneficiary->displayName(credentials) + " ?";
+    //  TODO extend the message with more info ?
     return result;
 }
 
@@ -66,12 +67,8 @@ void DestroyBeneficiaryDialog::accept()
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! We cannot cast "this" to "QDialog*" directly
-        qCritical() << ex.errorMessage();
-        ::QDialog * me =
-            reinterpret_cast<::QDialog*>(
-                reinterpret_cast<uintptr_t>(this));
-        Q_ASSERT(reinterpret_cast<uintptr_t>(me) == reinterpret_cast<uintptr_t>(this));
-        ErrorDialog::show(me, ex);
+        qCritical() << ex;
+        ErrorDialog::show(meAsParent(), ex);
     }
 }
 

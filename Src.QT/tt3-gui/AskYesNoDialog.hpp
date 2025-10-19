@@ -88,6 +88,11 @@ namespace tt3::gui
         //  nullptr == question is not backed up by a setting
         tt3::util::Setting<bool> *const _confirmActionSetting;
 
+        //  Helpers
+    protected:
+        /// \brief For derived classes which need to display error messages
+        ::QDialog *     meAsParent() { return this; }
+
         //////////
         //  Controls
     private:

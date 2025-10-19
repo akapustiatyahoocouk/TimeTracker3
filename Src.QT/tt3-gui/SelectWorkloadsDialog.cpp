@@ -209,7 +209,7 @@ void SelectWorkloadsDialog::_setSelectedWorkloads(
             }
             catch (tt3::util::Exception & ex)
             {   //  OOPS! Report & recover with a stable sort order
-                qCritical() << ex.errorMessage();
+                qCritical() << ex;
                 return a->oid() < b->oid();
             }
         });
@@ -253,7 +253,7 @@ void SelectWorkloadsDialog::_setSelectedWorkloads(
         }
         catch (tt3::util::Exception & ex)
         {   //  OOPS! Report & recover
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             item->setText(ex.errorMessage());
             item->setIcon(errorIcon);
             item->setForeground(_listWidgetDecorations.errorItemForeground);

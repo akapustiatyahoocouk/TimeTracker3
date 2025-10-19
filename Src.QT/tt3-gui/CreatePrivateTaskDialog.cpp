@@ -125,6 +125,9 @@ CreatePrivateTaskDialog::CreatePrivateTaskDialog(
             QVariant::fromValue(activityType));
     }
 
+    //  Populate the "Workload" combo box
+    _setSelectedWorkload(nullptr);
+
     //  Fill "hours" amd "minutes" combo boxes
     for (int h = 0; h < 12; h++)
     {
@@ -219,7 +222,7 @@ void CreatePrivateTaskDialog::_setSelectedParentTask(
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & suppress
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             Q_ASSERT(_ui->parentTaskComboBox->count() == 1);
         }
     }
@@ -229,6 +232,38 @@ auto CreatePrivateTaskDialog::_selectedActivityType(
     ) -> tt3::ws::ActivityType
 {
     return _ui->activityTypeComboBox->currentData().value<tt3::ws::ActivityType>();
+}
+
+auto CreatePrivateTaskDialog::_selectedWorkload(
+    ) -> tt3::ws::Workload
+{
+    return _ui->workloadComboBox->currentData().value<tt3::ws::Workload>();
+}
+
+void CreatePrivateTaskDialog::_setSelectedWorkload(
+        tt3::ws::Workload workload
+    )
+{
+    //  Refill the "workload" combo box
+    _ui->workloadComboBox->clear();
+    _ui->workloadComboBox->addItem(
+        "-",
+        QVariant::fromValue<tt3::ws::Workload>(nullptr));
+    if (workload != nullptr)
+    {
+        try
+        {
+            _ui->workloadComboBox->addItem(
+                workload->type()->smallIcon(),
+                workload->displayName(_credentials),    //  may throw
+                QVariant::fromValue(workload));
+            _ui->workloadComboBox->setCurrentIndex(1);
+        }
+        catch (const tt3::util::Exception & ex)
+        {  //  OOPS! Log & suppress
+            qCritical() << ex;
+        }
+    }
 }
 
 auto CreatePrivateTaskDialog::_selectedTimeout(
@@ -274,7 +309,7 @@ void CreatePrivateTaskDialog::_selectParentTaskPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         ErrorDialog::show(this, ex);
     }
 }
@@ -325,7 +360,7 @@ void CreatePrivateTaskDialog::accept()
                     _ui->requireCommentOnStopCheckBox->isChecked(),
                     _ui->fullScreenReminderCheckBox->isChecked(),
                     _selectedActivityType(),
-                    _selectedWorkload,
+                    _selectedWorkload(),
                     _ui->completedCheckBox->isChecked(),
                     _ui->requiresCommentOnCompletionCeckBox->isChecked());
         }
@@ -341,7 +376,7 @@ void CreatePrivateTaskDialog::accept()
                     _ui->requireCommentOnStopCheckBox->isChecked(),
                     _ui->fullScreenReminderCheckBox->isChecked(),
                     _selectedActivityType(),
-                    _selectedWorkload,
+                    _selectedWorkload(),
                     _ui->completedCheckBox->isChecked(),
                     _ui->requiresCommentOnCompletionCeckBox->isChecked());
         }
@@ -349,7 +384,7 @@ void CreatePrivateTaskDialog::accept()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         ErrorDialog::show(this, ex);
     }
 }

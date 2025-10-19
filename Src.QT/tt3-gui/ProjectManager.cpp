@@ -134,7 +134,7 @@ void ProjectManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! No point in proceesing.
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _clearAndDisableAllControls();
             return;
         }
@@ -177,7 +177,7 @@ void ProjectManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Report & recover
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->createProjectPushButton->setEnabled(false);
         }
         _ui->modifyProjectPushButton->setEnabled(
@@ -191,7 +191,7 @@ void ProjectManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Report & recover
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->destroyProjectPushButton->setEnabled(false);
         }
 
@@ -205,7 +205,7 @@ void ProjectManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Report & disable
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->completeProjectPushButton->setEnabled(false);
         }
 
@@ -230,7 +230,7 @@ void ProjectManager::refresh()
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & simulate RO
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             _ui->modifyProjectPushButton->setIcon(viewProjectIcon);
             _ui->modifyProjectPushButton->setText("View project");
         }
@@ -267,7 +267,7 @@ auto ProjectManager::_createWorkspaceModel(
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         workspaceModel->projectModels.clear();
     }
     return workspaceModel;
@@ -312,7 +312,7 @@ auto ProjectManager::_createProjectModel(
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         projectModel->text = ex.errorMessage();
         projectModel->icon = errorIcon;
         projectModel->font = decorations.itemFont;
@@ -347,7 +347,7 @@ void ProjectManager::_removeCompletedItems(
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Suppress, but log
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
         }
     }
 }
@@ -376,7 +376,7 @@ void ProjectManager::_removeCompletedItems(
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Suppress, but log
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
         }
     }
 }
@@ -695,7 +695,7 @@ void ProjectManager::_createProjectPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         tt3::gui::ErrorDialog::show(this, ex);
     }
 }
@@ -715,7 +715,7 @@ void ProjectManager::_modifyProjectPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -736,7 +736,7 @@ void ProjectManager::_destroyProjectPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
             requestRefresh();
         }
@@ -757,7 +757,7 @@ void ProjectManager::_completeProjectPushButtonClicked()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             ErrorDialog::show(this, ex);
         }
         requestRefresh();

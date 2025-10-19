@@ -208,7 +208,7 @@ void ModifyPrivateTaskDialog::_setSelectedParentTask(
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & suppress
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             Q_ASSERT(_ui->parentTaskComboBox->count() == 1);
         }
     }
@@ -326,7 +326,7 @@ void ModifyPrivateTaskDialog::_selectParentTaskPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         ErrorDialog::show(this, ex);
     }
 }
@@ -440,7 +440,7 @@ void ModifyPrivateTaskDialog::accept()
                 }
                 catch (const tt3::util::Exception & ex)
                 {   //  OOPS! Log & suppress
-                    qCritical() << ex.errorMessage();
+                    qCritical() << ex;
                 }
             }
         }
@@ -448,7 +448,7 @@ void ModifyPrivateTaskDialog::accept()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         ErrorDialog::show(this, ex);
     }
 }

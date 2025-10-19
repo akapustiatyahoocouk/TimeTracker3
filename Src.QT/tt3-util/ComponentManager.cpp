@@ -118,7 +118,7 @@ void ComponentManager::loadComponentSettings()
                 }
                 catch (const ParseException & ex)
                 {
-                    qCritical() << ex.errorMessage();
+                    qCritical() << ex;
                     currentComponent = nullptr;
                     continue;
                 }

@@ -273,7 +273,7 @@ bool MainFrame::_createWorkspace(
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             tt3::gui::ErrorDialog::show(this, ex);
         }
         //  Replace the "current" workspace
@@ -292,7 +292,7 @@ bool MainFrame::_createWorkspace(
             {   //  OOPS! Close errors, however, don't stop us ay
                 //  this stage - a new workspace has already been
                 //  created & selected as "current"
-                qCritical() << ex.errorMessage();
+                qCritical() << ex;
                 tt3::gui::ErrorDialog::show(this, ex);
                 return false;
             }
@@ -306,7 +306,7 @@ bool MainFrame::_createWorkspace(
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         tt3::gui::ErrorDialog::show(this, ex);
         return false;
     }
@@ -346,7 +346,7 @@ bool MainFrame::_openWorkspace(
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             tt3::gui::ErrorDialog::show(this, ex);
         }
         //  Use the newly open workspace
@@ -365,7 +365,7 @@ bool MainFrame::_openWorkspace(
             {   //  OOPS! Close errors, however, don't stop us ay
                 //  this stage - a workspace has already been
                 //  opened & selected as "current"
-                qCritical() << ex.errorMessage();
+                qCritical() << ex;
                 tt3::gui::ErrorDialog::show(this, ex);
                 return false;
             }
@@ -376,7 +376,7 @@ bool MainFrame::_openWorkspace(
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         tt3::gui::ErrorDialog::show(this, ex);
         refresh();
         return false;
@@ -438,7 +438,7 @@ void MainFrame::_destroyWorkspace(tt3::ws::WorkspaceAddress workspaceAddress)
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         tt3::gui::ErrorDialog::show(this, ex);
     }
 }
@@ -501,7 +501,7 @@ void MainFrame::_refreshCurrentActivityControls()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             currentActivityLabelPalette.setColor(QPalette::Window, _labelDecorations.errorBackground);
             currentActivityLabelPalette.setColor(QPalette::WindowText, _labelDecorations.errorForeground);
             _ui->currentActivityLabel->setText(ex.errorMessage());
@@ -584,7 +584,7 @@ void MainFrame::_onActionCloseWorkspace()
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! close() error - report, but stay "closed"
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         tt3::gui::ErrorDialog::show(this, ex);
     }
     refresh();
@@ -697,7 +697,7 @@ void MainFrame::_onActionRefresh()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             tt3::gui::ErrorDialog::show(this, ex);
         }
     }
@@ -738,7 +738,7 @@ void MainFrame::_onActionLoginAsDifferentUser()
         }
         catch (const tt3::util::Exception & ex)
         {
-            qCritical() << ex.errorMessage();
+            qCritical() << ex;
             tt3::gui::ErrorDialog::show(this, ex);
         }
         refresh();
@@ -774,7 +774,7 @@ void MainFrame::_stopActivityPushButtonClicked()
     }
     catch (const tt3::util::Exception & ex)
     {
-        qCritical() << ex.errorMessage();
+        qCritical() << ex;
         tt3::gui::ErrorDialog::show(this, ex);
     }
     refresh();

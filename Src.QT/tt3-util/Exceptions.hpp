@@ -53,7 +53,7 @@ namespace tt3::util
         ///     The deep clone of this exception.
         Self *          clone() const override = 0;
 
-            //////////
+        //////////
         //  Operations
     public:
         /// \brief
@@ -308,6 +308,22 @@ namespace tt3::util
         virtual QString errorMessage(
                             ) const override;
     };
+}
+
+//////////
+//  Logging
+TT3_UTIL_PUBLIC inline
+QDebug & operator << (QDebug debug, const tt3::util::Exception & ex)
+{
+    debug << ex.errorMessage();
+    return debug;
+}
+
+TT3_UTIL_PUBLIC inline
+QDebug & operator << (QDebug debug, const tt3::util::Error & ex)
+{
+    debug << ex.errorMessage();
+    return debug;
 }
 
 //  End of tt3-util/Exceptions.cpp
