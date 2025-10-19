@@ -41,7 +41,7 @@ Licenses LicenseManager::allLicenses()
     tt3::util::Lock lock(impl->guard);
 
     QList<ILicense*> values = impl->registry.values();
-    return Licenses(values.begin(), values.end());
+    return Licenses(values.cbegin(), values.cend());
 }
 
 bool LicenseManager::registerLicense(ILicense * license)

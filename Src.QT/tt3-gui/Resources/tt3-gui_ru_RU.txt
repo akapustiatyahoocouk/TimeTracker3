@@ -118,6 +118,19 @@ CompletedCheckBox=Задача выполнена
 OkPushButton=ОК
 CancelPushButton=Отмена
 
+[CreateProjectDialog]
+Title=Создать проект
+ParentProjectLabel=Родитель:
+NoParent=- (корневой проект без родителя)
+SelectParentProjectPushButton=Выбрать
+DisplayNameLabel=Имя:
+DescriptionLabel=Описание:
+BeneficiariesLabel=Бенефициары:
+SelectBeneficiariesPushButton=Выбрать
+CompletedCheckBox=Проект завершён
+OkPushButton=ОК
+CancelPushButton=Отмена
+
 [EditStringDialog]
 OkPushButton=OK
 CancelPushButton=Отмена

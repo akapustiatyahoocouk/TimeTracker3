@@ -41,7 +41,7 @@ QSet<IMessageDigest*> MessageDigestManager::allMessageDigests()
     Lock lock(impl->guard);
 
     QList<IMessageDigest*> values = impl->registry.values();
-    return QSet<IMessageDigest*>(values.begin(), values.end());
+    return QSet<IMessageDigest*>(values.cbegin(), values.cend());
 }
 
 bool MessageDigestManager::registerMessageDigest(IMessageDigest * messageDigest)

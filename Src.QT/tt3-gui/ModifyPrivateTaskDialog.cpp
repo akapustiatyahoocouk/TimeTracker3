@@ -53,12 +53,13 @@ ModifyPrivateTaskDialog::ModifyPrivateTaskDialog(
     //  Populate User combo box & select the proper user
     QList<tt3::ws::User> usersList =
         _privateTask->workspace()->users(_credentials).values();   //  may throw
-    std::sort(usersList.begin(),
-              usersList.end(),
-              [&](auto a, auto b)
-              {
-                  return a->realName(_credentials) < b->realName(_credentials);   //  may throw
-              });
+    std::sort(
+        usersList.begin(),
+        usersList.end(),
+        [&](auto a, auto b)
+        {
+            return a->realName(_credentials) < b->realName(_credentials);   //  may throw
+        });
     for (tt3::ws::User u : usersList)
     {
         _ui->userComboBox->addItem(
@@ -72,12 +73,13 @@ ModifyPrivateTaskDialog::ModifyPrivateTaskDialog(
     //  Fill the "activity type" combo box (may throw)
     QList<tt3::ws::ActivityType> activityTypes =
         _privateTask->workspace()->activityTypes(_credentials).values();
-    std::sort(activityTypes.begin(),
-              activityTypes.end(),
-              [&](auto a, auto b)
-              {
-                  return a->displayName(_credentials) < b->displayName(_credentials);
-              });
+    std::sort(
+        activityTypes.begin(),
+        activityTypes.end(),
+        [&](auto a, auto b)
+        {
+            return a->displayName(_credentials) < b->displayName(_credentials);
+        });
 
     _ui->activityTypeComboBox->addItem(
         "-",
@@ -196,11 +198,19 @@ void ModifyPrivateTaskDialog::_setSelectedParentTask(
         QVariant::fromValue<tt3::ws::PrivateTask>(nullptr));
     if (parentTask != nullptr)
     {
-        _ui->parentTaskComboBox->addItem(
-            parentTask->type()->smallIcon(),
-            parentTask->displayName(_credentials),
-            QVariant::fromValue(parentTask));
-        _ui->parentTaskComboBox->setCurrentIndex(1);
+        try
+        {
+            _ui->parentTaskComboBox->addItem(
+                parentTask->type()->smallIcon(),
+                parentTask->displayName(_credentials),  //  may throw
+                QVariant::fromValue(parentTask));
+            _ui->parentTaskComboBox->setCurrentIndex(1);
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & suppress
+            qCritical() << ex.errorMessage();
+            Q_ASSERT(_ui->parentTaskComboBox->count() == 1);
+        }
     }
 }
 

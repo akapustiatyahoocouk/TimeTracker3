@@ -303,10 +303,11 @@ auto PrivateTaskManager::_createWorkspaceModel(
                     workspace->login(credentials)->user(credentials),
                         credentials, decorations));
         }
-        std::sort(workspaceModel->userModels.begin(),
-                  workspaceModel->userModels.end(),
-                  [&](auto a, auto b)
-                  { return a->text < b->text; });
+        std::sort(
+            workspaceModel->userModels.begin(),
+            workspaceModel->userModels.end(),
+            [&](auto a, auto b)
+            { return a->text < b->text; });
     }
     catch (const tt3::util::Exception & ex)
     {
@@ -346,10 +347,11 @@ auto PrivateTaskManager::_createUserModel(
             userModel->privateTaskModels.append(
                 _createPrivateTaskModel(privateTask, credentials, decorations));
         }
-        std::sort(userModel->privateTaskModels.begin(),
-                  userModel->privateTaskModels.end(),
-                  [&](auto a, auto b)
-                  { return a->text < b->text; });
+        std::sort(
+            userModel->privateTaskModels.begin(),
+            userModel->privateTaskModels.end(),
+            [&](auto a, auto b)
+            { return a->text < b->text; });
     }
     catch (const tt3::util::Exception & ex)
     {
@@ -407,10 +409,11 @@ auto PrivateTaskManager::_createPrivateTaskModel(
             privateTaskModel->childModels.append(
                 _createPrivateTaskModel(child, credentials, decorations));
         }
-        std::sort(privateTaskModel->childModels.begin(),
-                  privateTaskModel->childModels.end(),
-                  [&](auto a, auto b)
-                  { return a->text < b->text; });
+        std::sort(
+            privateTaskModel->childModels.begin(),
+            privateTaskModel->childModels.end(),
+            [&](auto a, auto b)
+            { return a->text < b->text; });
     }
     catch (const tt3::util::Exception & ex)
     {

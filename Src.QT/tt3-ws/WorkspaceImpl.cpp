@@ -233,9 +233,9 @@ Account WorkspaceImpl::findAccount(
             }
             else
             {   //  The caller can only see his own account
-                tt3::db::api::IAccount * dataClientAccount =
+                tt3::db::api::IAccount * dataCallerAccount =
                     _database->login(credentials._login, credentials._password);
-                tt3::db::api::IUser * dataUser = dataClientAccount->user();
+                tt3::db::api::IUser * dataUser = dataCallerAccount->user();
                 if (dataUser == dataAccount->user())
                 {   //  Yes!
                     return _getProxy(dataAccount);

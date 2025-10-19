@@ -295,10 +295,11 @@ auto PublicTaskManager::_createWorkspaceModel(
             workspaceModel->publicTaskModels.append(
                 _createPublicTaskModel(publicTask, credentials, decorations));
         }
-        std::sort(workspaceModel->publicTaskModels.begin(),
-                  workspaceModel->publicTaskModels.end(),
-                  [&](auto a, auto b)
-                  { return a->text < b->text; });
+        std::sort(
+            workspaceModel->publicTaskModels.begin(),
+            workspaceModel->publicTaskModels.end(),
+            [&](auto a, auto b)
+            { return a->text < b->text; });
     }
     catch (const tt3::util::Exception & ex)
     {
@@ -351,10 +352,11 @@ auto PublicTaskManager::_createPublicTaskModel(
             publicTaskModel->childModels.append(
                 _createPublicTaskModel(child, credentials, decorations));
         }
-        std::sort(publicTaskModel->childModels.begin(),
-                  publicTaskModel->childModels.end(),
-                  [&](auto a, auto b)
-                  { return a->text < b->text; });
+        std::sort(
+            publicTaskModel->childModels.begin(),
+            publicTaskModel->childModels.end(),
+            [&](auto a, auto b)
+            { return a->text < b->text; });
     }
     catch (const tt3::util::Exception & ex)
     {

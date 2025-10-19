@@ -56,9 +56,10 @@ CreateUserDialog::CreateUserDialog(QWidget * parent,
     {
         _locales.append(locale);
     }
-    std::sort(_locales.begin(),
-              _locales.end(),
-              [](auto a, auto b) { return _displayName(a) < _displayName(b); });
+    std::sort(
+        _locales.begin(),
+        _locales.end(),
+        [](auto a, auto b) { return _displayName(a) < _displayName(b); });
 
     for (QLocale locale : _locales)
     {

@@ -53,12 +53,13 @@ ModifyPublicTaskDialog::ModifyPublicTaskDialog(
     //  Fill the "activity type" combo box (may throw)
     QList<tt3::ws::ActivityType> activityTypes =
         _publicTask->workspace()->activityTypes(_credentials).values();
-    std::sort(activityTypes.begin(),
-              activityTypes.end(),
-              [&](auto a, auto b)
-              {
-                  return a->displayName(_credentials) < b->displayName(_credentials);
-              });
+    std::sort(
+        activityTypes.begin(),
+        activityTypes.end(),
+        [&](auto a, auto b)
+        {
+            return a->displayName(_credentials) < b->displayName(_credentials);
+        });
 
     _ui->activityTypeComboBox->addItem(
         "-",
@@ -161,11 +162,19 @@ void ModifyPublicTaskDialog::_setSelectedParentTask(
         QVariant::fromValue<tt3::ws::PublicTask>(nullptr));
     if (parentTask != nullptr)
     {
-        _ui->parentTaskComboBox->addItem(
-            parentTask->type()->smallIcon(),
-            parentTask->displayName(_credentials),
-            QVariant::fromValue(parentTask));
-        _ui->parentTaskComboBox->setCurrentIndex(1);
+        try
+        {
+            _ui->parentTaskComboBox->addItem(
+                parentTask->type()->smallIcon(),
+                parentTask->displayName(_credentials),  //  may throw
+                QVariant::fromValue(parentTask));
+            _ui->parentTaskComboBox->setCurrentIndex(1);
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & suppress
+            qCritical() << ex.errorMessage();
+            Q_ASSERT(_ui->parentTaskComboBox->count() == 1);
+        }
     }
 }
 

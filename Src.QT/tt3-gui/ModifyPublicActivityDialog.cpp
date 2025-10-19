@@ -48,12 +48,13 @@ ModifyPublicActivityDialog::ModifyPublicActivityDialog(
     //  Fill the "activity type" combo box (may throw)
     QList<tt3::ws::ActivityType> activityTypes =
         _publicActivity->workspace()->activityTypes(_credentials).values();
-    std::sort(activityTypes.begin(),
-              activityTypes.end(),
-              [&](auto a, auto b)
-              {
-                  return a->displayName(_credentials) < b->displayName(_credentials);
-              });
+    std::sort(
+        activityTypes.begin(),
+        activityTypes.end(),
+        [&](auto a, auto b)
+        {
+            return a->displayName(_credentials) < b->displayName(_credentials);
+        });
 
     _ui->activityTypeComboBox->addItem(
         "-",

@@ -269,12 +269,13 @@ namespace tt3::db::xml
             QList<T> result = objects.values();
             if (result.size() > 1)
             {
-                std::sort(result.begin(),
-                          result.end(),
-                          [](T a, T b)
-                          {
-                              return tt3::util::toString(a->_oid) < tt3::util::toString(b->_oid);
-                          });
+                std::sort(
+                    result.begin(),
+                    result.end(),
+                    [](T a, T b)
+                    {
+                        return tt3::util::toString(a->_oid) < tt3::util::toString(b->_oid);
+                    });
             }
             return result;
         }

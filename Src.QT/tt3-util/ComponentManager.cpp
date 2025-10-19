@@ -31,7 +31,7 @@ Components ComponentManager::allComponents()
     Lock lock(impl->guard);
 
     QList<IComponent*> values = impl->registry.values();
-    return Components(values.begin(), values.end());
+    return Components(values.cbegin(), values.cend());
 }
 
 bool ComponentManager::registerComponent(IComponent * component)
@@ -154,12 +154,13 @@ void ComponentManager::saveComponentSettings()
 
         QList<IComponent*> allComponents =
             ComponentManager::allComponents().values();
-        std::sort(allComponents.begin(),
-                  allComponents.end(),
-                  [](auto a, auto b)
-                  {
-                      return a->mnemonic() < b->mnemonic();
-                  });
+        std::sort(
+            allComponents.begin(),
+            allComponents.end(),
+            [](auto a, auto b)
+            {
+                return a->mnemonic() < b->mnemonic();
+            });
         for (IComponent * component : allComponents)
         {   //  Sorted by component mnemonic to simplify lookin text editor
             iniStream << "["
@@ -171,12 +172,13 @@ void ComponentManager::saveComponentSettings()
 
             QList<AbstractSetting*> componentSettings =
                 component->settings()->settings().values();
-            std::sort(componentSettings.begin(),
-                      componentSettings.end(),
-                      [](auto a, auto b)
-                      {
-                          return a->mnemonic() < b->mnemonic();
-                      });
+            std::sort(
+                componentSettings.begin(),
+                componentSettings.end(),
+                [](auto a, auto b)
+                {
+                    return a->mnemonic() < b->mnemonic();
+                });
             for (AbstractSetting * setting : componentSettings)
             {   //  Sorted by setting mnemonic to simplify lookin text editor
                 iniStream << setting->mnemonic().toString()

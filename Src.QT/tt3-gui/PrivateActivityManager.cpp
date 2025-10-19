@@ -278,10 +278,11 @@ auto PrivateActivityManager::_createWorkspaceModel(
                     credentials,
                     decorations));
         }
-        std::sort(workspaceModel->userModels.begin(),
-                  workspaceModel->userModels.end(),
-                  [&](auto a, auto b)
-                  { return a->text < b->text; });
+        std::sort(
+            workspaceModel->userModels.begin(),
+            workspaceModel->userModels.end(),
+            [&](auto a, auto b)
+            { return a->text < b->text; });
     }
     catch (const tt3::util::Exception & ex)
     {
@@ -321,10 +322,11 @@ auto PrivateActivityManager::_createUserModel(
             userModel->privateActivityModels.append(
                 _createPrivateActivityModel(privateActivity, credentials, decorations));
         }
-        std::sort(userModel->privateActivityModels.begin(),
-                  userModel->privateActivityModels.end(),
-                  [&](auto a, auto b)
-                  { return a->text < b->text; });
+        std::sort(
+            userModel->privateActivityModels.begin(),
+            userModel->privateActivityModels.end(),
+            [&](auto a, auto b)
+            { return a->text < b->text; });
     }
     catch (const tt3::util::Exception & ex)
     {

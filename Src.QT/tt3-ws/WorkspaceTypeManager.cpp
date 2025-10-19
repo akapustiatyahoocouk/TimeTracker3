@@ -50,7 +50,7 @@ WorkspaceTypes WorkspaceTypeManager::allWorkspaceTypes()
     tt3::util::Lock lock(impl->guard);
 
     QList<WorkspaceType> values = impl->registry.values();
-    return WorkspaceTypes(values.begin(), values.end());
+    return WorkspaceTypes(values.cbegin(), values.cend());
 }
 
 //////////

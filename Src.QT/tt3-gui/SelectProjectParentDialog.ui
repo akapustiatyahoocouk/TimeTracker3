@@ -185,9 +185,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>showCompletedProjectsCheckBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>tt3::gui::SelectProjectParentDialog</receiver>
+   <slot>_showCompletedProjectsCheckBoxStateChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>138</x>
+     <y>293</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>138</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_projectsTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
   <slot>_projectsTreeWidgetItemDoubleClicked(QTreeWidgetItem*)</slot>
+  <slot>_showCompletedProjectsCheckBoxStateChanged(int)</slot>
  </slots>
 </ui>

@@ -44,7 +44,7 @@ QSet<Preferences*> PreferencesManager::allPreferences()
     tt3::util::Lock lock(impl->guard);
 
     QList<Preferences*> values = impl->registry.values();
-    return QSet<Preferences*>(values.begin(), values.end());
+    return QSet<Preferences*>(values.cbegin(), values.cend());
 }
 
 QSet<Preferences*> PreferencesManager::rootPreferences()

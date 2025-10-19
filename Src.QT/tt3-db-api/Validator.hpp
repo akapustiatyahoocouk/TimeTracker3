@@ -77,7 +77,7 @@ namespace tt3::db::api
                         return false;
                     }
                 }
-                return QSet<QString>(emailAddresses.begin(), emailAddresses.end()).size() == emailAddresses.size();
+                return QSet<QString>(emailAddresses.cbegin(), emailAddresses.cend()).size() == emailAddresses.size();
             }
         };
         /// \brief

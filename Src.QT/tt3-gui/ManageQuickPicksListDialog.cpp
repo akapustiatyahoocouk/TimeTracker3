@@ -206,45 +206,61 @@ void ManageQuickPicksListDialog::_refillPublicTasksTree()
 
 void ManageQuickPicksListDialog::_refillPrivateActivitiesTree()
 {
-    PrivateActivityManager::_UserModel userModel =
-        PrivateActivityManager::_createUserModel(
-            _account->user(_credentials), _credentials, _treeWidgetDecorations);  //  TODO may throw
-    QString filter = _ui->privateActivitiesFilterLineEdit->text().trimmed();
-    if (!filter.isEmpty())
+    try
     {
-        PrivateActivityManager::_filterItems(userModel, filter, _treeWidgetDecorations);
-    }
-    _refreshWorkspaceTree(userModel);
-
-    _refreshCheckMarks(
-        _ui->privateActivitiesTreeWidget,
-        [](auto item)
+        PrivateActivityManager::_UserModel userModel =
+            PrivateActivityManager::_createUserModel(
+                _account->user(_credentials), _credentials, _treeWidgetDecorations);  //  may throw
+        QString filter = _ui->privateActivitiesFilterLineEdit->text().trimmed();
+        if (!filter.isEmpty())
         {
-            return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PrivateActivity>();
-        });
+            PrivateActivityManager::_filterItems(userModel, filter, _treeWidgetDecorations);
+        }
+        _refreshWorkspaceTree(userModel);
+
+        _refreshCheckMarks(
+            _ui->privateActivitiesTreeWidget,
+            [](auto item)
+            {
+                return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PrivateActivity>();
+            });
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Log & suppress
+        qCritical() << ex.errorMessage();
+        _ui->privateActivitiesTreeWidget->clear();
+    }
 }
 
 void ManageQuickPicksListDialog::_refillPrivateTasksTree()
 {
-    PrivateTaskManager::_UserModel userModel =
-        PrivateTaskManager::_createUserModel(
-            _account->user(_credentials), _credentials, _treeWidgetDecorations);
-    PrivateTaskManager::_removeCompletedItems(userModel, _credentials);
-    QString filter = _ui->privateTasksFilterLineEdit->text().trimmed();
-    if (!filter.isEmpty())
+    try
     {
-        PrivateTaskManager::_filterItems(
-            userModel, filter, _treeWidgetDecorations);
-    }
-    _refreshWorkspaceTree(userModel);
-    //  TODO expand all ?
-
-    _refreshCheckMarks(
-        _ui->privateTasksTreeWidget,
-        [](auto item)
+        PrivateTaskManager::_UserModel userModel =
+            PrivateTaskManager::_createUserModel(
+                _account->user(_credentials), _credentials, _treeWidgetDecorations);    //  may throw
+        PrivateTaskManager::_removeCompletedItems(userModel, _credentials);
+        QString filter = _ui->privateTasksFilterLineEdit->text().trimmed();
+        if (!filter.isEmpty())
         {
-            return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PrivateTask>();
-        });
+            PrivateTaskManager::_filterItems(
+                userModel, filter, _treeWidgetDecorations);
+        }
+        _refreshWorkspaceTree(userModel);
+        //  TODO expand all ?
+
+        _refreshCheckMarks(
+            _ui->privateTasksTreeWidget,
+            [](auto item)
+            {
+                return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PrivateTask>();
+            });
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Log & suppress
+        qCritical() << ex.errorMessage();
+        _ui->privateTasksTreeWidget->clear();
+    }
 }
 
 void ManageQuickPicksListDialog::_refillQuickPicksListWidget()

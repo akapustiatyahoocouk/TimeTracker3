@@ -144,6 +144,7 @@ namespace tt3::gui
     private slots:
         void            _projectsTreeWidgetItemChanged(QTreeWidgetItem * item, int column);
         void            _projectsTreeWidgetItemDoubleClicked(QTreeWidgetItem * item);
+        void            _showCompletedProjectsCheckBoxStateChanged(int);
         virtual void    accept() override;
         virtual void    reject() override;
     };

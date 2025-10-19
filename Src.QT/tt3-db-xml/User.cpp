@@ -175,7 +175,7 @@ auto User::accounts(
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
-    return tt3::db::api::Accounts(_accounts.begin(), _accounts.end());
+    return tt3::db::api::Accounts(_accounts.cbegin(), _accounts.cend());
 }
 
 auto User::privateActivities(
@@ -185,7 +185,7 @@ auto User::privateActivities(
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
-    return tt3::db::api::PrivateActivities(_privateActivities.begin(), _privateActivities.end());
+    return tt3::db::api::PrivateActivities(_privateActivities.cbegin(), _privateActivities.cend());
 }
 
 auto User::privateActivitiesAndTasks(
@@ -207,7 +207,7 @@ auto User::rootPrivateTasks(
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
-    return tt3::db::api::PrivateTasks(_rootPrivateTasks.begin(), _rootPrivateTasks.end());
+    return tt3::db::api::PrivateTasks(_rootPrivateTasks.cbegin(), _rootPrivateTasks.cend());
 }
 
 auto User::permittedWorkloads(

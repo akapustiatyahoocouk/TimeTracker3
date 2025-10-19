@@ -287,6 +287,11 @@ void SelectProjectParentDialog::_projectsTreeWidgetItemDoubleClicked(QTreeWidget
     accept();
 }
 
+void SelectProjectParentDialog::_showCompletedProjectsCheckBoxStateChanged(int)
+{
+    _refresh();
+}
+
 void SelectProjectParentDialog::accept()
 {
     done(int(Result::Ok));

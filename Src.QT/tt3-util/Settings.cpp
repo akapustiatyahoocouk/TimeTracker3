@@ -22,7 +22,7 @@ using namespace tt3::util;
 QSet<AbstractSetting*> Settings::settings() const
 {
     QList<AbstractSetting*> values = _settings.values();
-    return QSet<AbstractSetting*>(values.begin(), values.end());
+    return QSet<AbstractSetting*>(values.cbegin(), values.cend());
 }
 
 AbstractSetting * Settings::findSetting(const Mnemonic & mnemonic) const

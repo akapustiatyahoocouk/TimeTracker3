@@ -31,7 +31,7 @@ QSet<ISkin*> SkinManager::allSkins()
     tt3::util::Lock lock(impl->guard);
 
     QList<ISkin*> values = impl->registry.values();
-    return QSet<ISkin*>(values.begin(), values.end());
+    return QSet<ISkin*>(values.cbegin(), values.cend());
 }
 
 bool SkinManager::registerSkin(ISkin * skin)

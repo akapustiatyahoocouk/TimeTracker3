@@ -219,10 +219,11 @@ auto WorkStreamManager::_createWorkspaceModel(
             workspaceModel->workStreamModels.append(
                 _createWorkStreamModel(workStream, credentials, decorations));
         }
-        std::sort(workspaceModel->workStreamModels.begin(),
-                  workspaceModel->workStreamModels.end(),
-                  [&](auto a, auto b)
-                  { return a->text < b->text; });
+        std::sort(
+            workspaceModel->workStreamModels.begin(),
+            workspaceModel->workStreamModels.end(),
+            [&](auto a, auto b)
+            { return a->text < b->text; });
     }
     catch (const tt3::util::Exception & ex)
     {

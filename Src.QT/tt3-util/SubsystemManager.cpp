@@ -45,7 +45,7 @@ Subsystems SubsystemManager::allSubsystems()
     Lock lock(impl->guard);
 
     QList<ISubsystem*> values = impl->registry.values();
-    return Subsystems(values.begin(), values.end());
+    return Subsystems(values.cbegin(), values.cend());
 }
 
 bool SubsystemManager::registerSubsystem(ISubsystem * subsystem)

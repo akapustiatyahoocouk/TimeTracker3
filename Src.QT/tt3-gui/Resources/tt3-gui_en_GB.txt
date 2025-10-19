@@ -118,6 +118,19 @@ CompletedCheckBox=Task is completed
 OkPushButton=OK
 CancelPushButton=Cancel
 
+[CreateProjectDialog]
+Title=Create project
+ParentProjectLabel=Parent:
+NoParent=- (a root project with no parent)
+SelectParentProjectPushButton=Select
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+BeneficiariesLabel=Beneficiaries:
+SelectBeneficiariesPushButton=Select
+CompletedCheckBox=Project is completed
+OkPushButton=OK
+CancelPushButton=Cancel
+
 [EditStringDialog]
 OkPushButton=OK
 CancelPushButton=Cancel

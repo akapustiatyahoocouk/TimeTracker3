@@ -38,9 +38,10 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
     {
         _locales.append(locale);
     }
-    std::sort(_locales.begin(),
-              _locales.end(),
-              [](auto a, auto b) { return a.name() < b.name(); });
+    std::sort(
+        _locales.begin(),
+        _locales.end(),
+        [](auto a, auto b) { return a.name() < b.name(); });
 
     for (QLocale locale : _locales)
     {
@@ -52,9 +53,10 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
     //  Fill the skin combo box with available skins
     //  sorted by display name
     _skins.append(SkinManager::allSkins().values());
-    std::sort(_skins.begin(),
-              _skins.end(),
-              [](auto a, auto b) { return a->displayName() < b->displayName(); });
+    std::sort(
+        _skins.begin(),
+        _skins.end(),
+        [](auto a, auto b) { return a->displayName() < b->displayName(); });
 
     for (ISkin * skin : _skins)
     {
@@ -64,9 +66,10 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
     //  Fill the theme combo box with available themes
     //  sorted by display name
     _themes.append(ThemeManager::allThemes().values());
-    std::sort(_themes.begin(),
-              _themes.end(),
-              [](auto a, auto b) { return a->displayName() < b->displayName(); });
+    std::sort(
+        _themes.begin(),
+        _themes.end(),
+        [](auto a, auto b) { return a->displayName() < b->displayName(); });
 
     for (ITheme * theme : _themes)
     {

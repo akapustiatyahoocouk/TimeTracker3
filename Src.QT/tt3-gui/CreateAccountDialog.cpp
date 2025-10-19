@@ -99,15 +99,16 @@ CreateAccountDialog::CreateAccountDialog(
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    //  Populate User combo box & select the proper user
+    //  Populate User combo box & select the proper user (may throw)
     QList<tt3::ws::User> usersList =
-        _workspace->users(_credentials).values();   //  may throw
-    std::sort(usersList.begin(),
-              usersList.end(),
-              [&](auto a, auto b)
-              {
-                  return a->realName(_credentials) < b->realName(_credentials);   //  may throw
-              });
+        _workspace->users(_credentials).values();
+    std::sort(
+        usersList.begin(),
+        usersList.end(),
+        [&](auto a, auto b)
+        {
+            return a->realName(_credentials) < b->realName(_credentials);
+        });
     for (tt3::ws::User u : usersList)
     {
         _ui->userComboBox->addItem(

@@ -222,10 +222,11 @@ ActivityTypeManager::_WorkspaceModel ActivityTypeManager::_createWorkspaceModel(
         {
             workspaceModel->activityTypeModels.append(_createActivityTypeModel(activityType));
         }
-        std::sort(workspaceModel->activityTypeModels.begin(),
-                  workspaceModel->activityTypeModels.end(),
-                  [&](auto a, auto b)
-                    { return a->text < b->text; });
+        std::sort(
+            workspaceModel->activityTypeModels.begin(),
+            workspaceModel->activityTypeModels.end(),
+            [&](auto a, auto b)
+            { return a->text < b->text; });
     }
     catch (const tt3::util::Exception & ex)
     {

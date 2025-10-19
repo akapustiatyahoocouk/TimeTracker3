@@ -305,7 +305,7 @@ auto Database::accounts(
     tt3::db::api::Accounts result;
     for (User * user : _users)
     {
-        result += tt3::db::api::Accounts(user->_accounts.begin(), user->_accounts.end());
+        result += tt3::db::api::Accounts(user->_accounts.cbegin(), user->_accounts.cend());
     }
     return result;
 }

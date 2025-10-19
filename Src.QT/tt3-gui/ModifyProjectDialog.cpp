@@ -111,11 +111,19 @@ void ModifyProjectDialog::_setSelectedParentProject(
         QVariant::fromValue<tt3::ws::Project>(nullptr));
     if (parentProject != nullptr)
     {
-        _ui->parentProjectComboBox->addItem(
-            parentProject->type()->smallIcon(),
-            parentProject->displayName(_credentials),   //  TODO may throw
-            QVariant::fromValue(parentProject));
-        _ui->parentProjectComboBox->setCurrentIndex(1);
+        try
+        {
+            _ui->parentProjectComboBox->addItem(
+                parentProject->type()->smallIcon(),
+                parentProject->displayName(_credentials),   //  may throw
+                QVariant::fromValue(parentProject));
+            _ui->parentProjectComboBox->setCurrentIndex(1);
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & suppress
+            qCritical() << ex.errorMessage();
+            Q_ASSERT(_ui->parentProjectComboBox->count() == 1);
+        }
     }
 }
 

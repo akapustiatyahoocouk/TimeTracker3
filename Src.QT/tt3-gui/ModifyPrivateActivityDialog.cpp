@@ -48,12 +48,13 @@ ModifyPrivateActivityDialog::ModifyPrivateActivityDialog(
     //  Populate User combo box & select the proper user
     QList<tt3::ws::User> usersList =
         _privateActivity->workspace()->users(_credentials).values();   //  may throw
-    std::sort(usersList.begin(),
-              usersList.end(),
-              [&](auto a, auto b)
-              {
-                  return a->realName(_credentials) < b->realName(_credentials);   //  may throw
-              });
+    std::sort(
+        usersList.begin(),
+        usersList.end(),
+        [&](auto a, auto b)
+        {
+            return a->realName(_credentials) < b->realName(_credentials);   //  may throw
+        });
     for (tt3::ws::User u : usersList)
     {
         _ui->userComboBox->addItem(
@@ -67,12 +68,13 @@ ModifyPrivateActivityDialog::ModifyPrivateActivityDialog(
     //  Fill the "activity type" combo box (may throw)
     QList<tt3::ws::ActivityType> activityTypes =
         _privateActivity->workspace()->activityTypes(_credentials).values();
-    std::sort(activityTypes.begin(),
-              activityTypes.end(),
-              [&](auto a, auto b)
-              {
-                  return a->displayName(_credentials) < b->displayName(_credentials);
-              });
+    std::sort(
+        activityTypes.begin(),
+        activityTypes.end(),
+        [&](auto a, auto b)
+        {
+            return a->displayName(_credentials) < b->displayName(_credentials);
+        });
 
     _ui->activityTypeComboBox->addItem(
         "-",

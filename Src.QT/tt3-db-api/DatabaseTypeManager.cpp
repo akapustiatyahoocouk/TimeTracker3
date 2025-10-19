@@ -54,7 +54,7 @@ DatabaseTypes DatabaseTypeManager::allDatabaseTypes()
     tt3::util::Lock lock(impl->guard);
 
     QList<IDatabaseType*> values = impl->registry.values();
-    return DatabaseTypes(values.begin(), values.end());
+    return DatabaseTypes(values.cbegin(), values.cend());
 }
 
 //////////

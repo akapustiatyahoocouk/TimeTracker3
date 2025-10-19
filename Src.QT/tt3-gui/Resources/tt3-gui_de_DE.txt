@@ -118,6 +118,19 @@ CompletedCheckBox=Aufgabe ist abgeschlossen
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
 
+[CreateProjectDialog]
+Title=Projekt erstellen
+ParentProjectLabel=Übergeordnet:
+NoParent=- (ein Stammprojekt ohne übergeordnetes Projekt)
+SelectParentProjectPushButton=Auswählen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+BeneficiariesLabel=Begünstigte:
+SelectBeneficiariesPushButton=Auswählen
+CompletedCheckBox=Projekt abgeschlossen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
 [EditStringDialog]
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen

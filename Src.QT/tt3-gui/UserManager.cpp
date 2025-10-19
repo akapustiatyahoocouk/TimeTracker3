@@ -281,10 +281,11 @@ UserManager::_WorkspaceModel UserManager::_createWorkspaceModel()
         {
             workspaceModel->userModels.append(_createUserModel(user));
         }
-        std::sort(workspaceModel->userModels.begin(),
-                  workspaceModel->userModels.end(),
-                  [&](auto a, auto b)
-                  { return a->text < b->text; });
+        std::sort(
+            workspaceModel->userModels.begin(),
+            workspaceModel->userModels.end(),
+            [&](auto a, auto b)
+            { return a->text < b->text; });
     }
     catch (const tt3::util::Exception & ex)
     {
@@ -328,10 +329,11 @@ UserManager::_UserModel UserManager::_createUserModel(tt3::ws::User user)
         {
             userModel->accountModels.append(_createAccountModel(account));
         }
-        std::sort(userModel->accountModels.begin(),
-                  userModel->accountModels.end(),
-                  [&](auto a, auto b)
-                  { return a->text < b->text; });
+        std::sort(
+            userModel->accountModels.begin(),
+            userModel->accountModels.end(),
+            [&](auto a, auto b)
+            { return a->text < b->text; });
     }
     catch (const tt3::util::Exception & ex)
     {

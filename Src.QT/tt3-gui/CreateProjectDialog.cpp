@@ -1,6 +1,6 @@
 //
 //  tt3-gui/CreateProjectDialog.cpp - tt3::gui::CreateProjectDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -33,19 +33,41 @@ CreateProjectDialog::CreateProjectDialog(
         //  Controls
         _ui(new Ui::CreateProjectDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(CreateProjectDialog));
+
     Q_ASSERT(_credentials.isValid());
     Q_ASSERT(initialParentProject == nullptr ||
              initialParentProject->workspace() == _workspace);
 
     _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
 
+    //  Set initial control values
+    _ui->parentProjectLabel->setText(
+        rr.string(RID(ParentProjectLabel)));
+    _ui->selectParentProjectPushButton->setText(
+        rr.string(RID(SelectParentProjectPushButton)));
+    _ui->displayNameLabel->setText(
+        rr.string(RID(DisplayNameLabel)));
+    _ui->descriptionLabel->setText(
+        rr.string(RID(DescriptionLabel)));
+    _ui->beneficiariesLabel->setText(
+        rr.string(RID(BeneficiariesLabel)));
+    _ui->selectBeneficiariesPushButton->setText(
+        rr.string(RID(SelectBeneficiariesPushButton)));
+    _ui->completedCheckBox->setText(
+        rr.string(RID(CompletedCheckBox)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    //  Set initial control values (may throw)
-    _setSelectedParentProject(initialParentProject);
+    _setSelectedParentProject(initialParentProject);    //  may throw
 
     //  Done
     _ui->displayNameLineEdit->setFocus();
@@ -77,18 +99,28 @@ void CreateProjectDialog::_setSelectedParentProject(
         tt3::ws::Project parentProject
     )
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(CreateProjectDialog));
+
     //  Refill the "parent project" combo box
     _ui->parentProjectComboBox->clear();
     _ui->parentProjectComboBox->addItem(
-        "- (a root project with no parent)",
+        rr.string(RID(NoParent)),
         QVariant::fromValue<tt3::ws::Project>(nullptr));
     if (parentProject != nullptr)
     {
-        _ui->parentProjectComboBox->addItem(
-            parentProject->type()->smallIcon(),
-            parentProject->displayName(_credentials),   //  TODO may throw
-            QVariant::fromValue(parentProject));
-        _ui->parentProjectComboBox->setCurrentIndex(1);
+        try
+        {
+            _ui->parentProjectComboBox->addItem(
+                parentProject->type()->smallIcon(),
+                parentProject->displayName(_credentials),   //  may throw
+                QVariant::fromValue(parentProject));
+            _ui->parentProjectComboBox->setCurrentIndex(1);
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & suppress
+            qCritical() << ex.errorMessage();
+            Q_ASSERT(_ui->parentProjectComboBox->count() == 1);
+        }
     }
 }
 

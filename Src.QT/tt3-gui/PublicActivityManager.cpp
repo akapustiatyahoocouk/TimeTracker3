@@ -263,10 +263,11 @@ auto PublicActivityManager::_createWorkspaceModel(
             workspaceModel->publicActivityModels.append(
                 _createPublicActivityModel(publicActivity, credentials, decorations));
         }
-        std::sort(workspaceModel->publicActivityModels.begin(),
-                  workspaceModel->publicActivityModels.end(),
-                  [&](auto a, auto b)
-                  { return a->text < b->text; });
+        std::sort(
+            workspaceModel->publicActivityModels.begin(),
+            workspaceModel->publicActivityModels.end(),
+            [&](auto a, auto b)
+            { return a->text < b->text; });
     }
     catch (const tt3::util::Exception & ex)
     {

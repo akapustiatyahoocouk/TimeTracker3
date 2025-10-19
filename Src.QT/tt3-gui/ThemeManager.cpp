@@ -43,7 +43,7 @@ QSet<ITheme*> ThemeManager::allThemes()
     tt3::util::Lock lock(impl->guard);
 
     QList<ITheme*> values = impl->registry.values();
-    return QSet<ITheme*>(values.begin(), values.end());
+    return QSet<ITheme*>(values.cbegin(), values.cend());
 }
 
 bool ThemeManager::registerTheme(ITheme * theme)

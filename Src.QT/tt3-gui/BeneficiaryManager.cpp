@@ -222,10 +222,11 @@ BeneficiaryManager::_WorkspaceModel BeneficiaryManager::_createWorkspaceModel()
         {
             workspaceModel->beneficiaryModels.append(_createBeneficiaryModel(beneficiary));
         }
-        std::sort(workspaceModel->beneficiaryModels.begin(),
-                  workspaceModel->beneficiaryModels.end(),
-                  [&](auto a, auto b)
-                  { return a->text < b->text; });
+        std::sort(
+            workspaceModel->beneficiaryModels.begin(),
+            workspaceModel->beneficiaryModels.end(),
+            [&](auto a, auto b)
+            { return a->text < b->text; });
     }
     catch (const tt3::util::Exception & ex)
     {

@@ -259,10 +259,11 @@ auto ProjectManager::_createWorkspaceModel(
             workspaceModel->projectModels.append(
                 _createProjectModel(project, credentials, decorations));
         }
-        std::sort(workspaceModel->projectModels.begin(),
-                  workspaceModel->projectModels.end(),
-                  [&](auto a, auto b)
-                  { return a->text < b->text; });
+        std::sort(
+            workspaceModel->projectModels.begin(),
+            workspaceModel->projectModels.end(),
+            [&](auto a, auto b)
+            { return a->text < b->text; });
     }
     catch (const tt3::util::Exception & ex)
     {
@@ -303,10 +304,11 @@ auto ProjectManager::_createProjectModel(
             projectModel->childModels.append(
                 _createProjectModel(child, credentials, decorations));
         }
-        std::sort(projectModel->childModels.begin(),
-                  projectModel->childModels.end(),
-                  [&](auto a, auto b)
-                  { return a->text < b->text; });
+        std::sort(
+            projectModel->childModels.begin(),
+            projectModel->childModels.end(),
+            [&](auto a, auto b)
+            { return a->text < b->text; });
     }
     catch (const tt3::util::Exception & ex)
     {
