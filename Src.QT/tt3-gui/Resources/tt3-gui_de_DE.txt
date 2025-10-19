@@ -221,6 +221,13 @@ Title=Ereignis zerstören
 Prompt=Möchten Sie das Ereignis \n{0}\ndas am {1}\nvon {2} protokolliert wurde, wirklich zerstören ?
 Details=\nBezogen auf {0} {1}.
 
+[DestroyPrivateActivityDialog]
+Title=Private Aktivität zerstören
+Prompt=Möchten Sie die private Aktivität {0} wirklich zerstören?
+DetailsWE=\nFür die private Aktivität wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse.
+DetailsW=\nFür die private Aktivität wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)).
+DetailsE=\nFür die private Aktivität wurden {0} Ereignisse protokolliert.
+
 [DestroyUserDialog]
 Title=Benutzer löschen
 Prompt=Möchten Sie Benutzer {0} mit {1} Konten wirklich löschen?

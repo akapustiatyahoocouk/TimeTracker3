@@ -221,6 +221,13 @@ Title=Destroy event
 Prompt=Are you sure you want to destroy event\n{0}\nlogged at {1}\nby {2} ?
 Details=\nRelated to {0} {1}.
 
+[DestroyPrivateActivityDialog]
+Title=Destroy private activity
+Prompt=Are you sure you want to destroy private activity\n{0} ?
+DetailsWE=\nThe private activity has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)) and {2} event(s).
+DetailsW=\nThe private activity has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)).
+DetailsE=\nThe private activity has {0} event(s) logged for it.
+
 [DestroyUserDialog]
 Title=Destroy user
 Prompt=Are you sure you want to destroy user {0} with {1} accounts?

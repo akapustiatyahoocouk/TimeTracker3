@@ -104,7 +104,8 @@ QString DestroyAccountDialog::_prompt(
 void DestroyAccountDialog::_collectDestructionClosure(
         tt3::ws::Account account,
         const tt3::ws::Credentials & credentials,
-        qsizetype & worksCount, qsizetype & eventsCount,
+        qsizetype & worksCount,
+        qsizetype & eventsCount,
         int64_t & worksDurationMs
     )
 {

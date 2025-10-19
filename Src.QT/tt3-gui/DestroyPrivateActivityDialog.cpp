@@ -1,6 +1,6 @@
 //
 //  tt3-gui/DestroyPrivateActivityDialog.cpp - tt3::gui::DestroyPrivateActivityDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -31,7 +31,9 @@ DestroyPrivateActivityDialog::DestroyPrivateActivityDialog(
     ) : AskYesNoDialog(
             parent,
             QIcon(":/tt3-gui/Resources/Images/Actions/DestroyPrivateActivityLarge.png"),
-            "Destroy private activity",
+            Component::Resources::instance()->string(
+                RSID(DestroyPrivateActivityDialog),
+                RID(Title)),
             _prompt(privateActivity, credentials)),
     _privateActivity(privateActivity),
     _credentials(credentials)
@@ -54,12 +56,71 @@ QString DestroyPrivateActivityDialog::_prompt(
         const tt3::ws::Credentials & credentials
     )
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(DestroyPrivateActivityDialog));
+
     QString result =
-        "Are you sure you want to destroy private activity\n" +
-        privateActivity->displayName(credentials) + " ?";
-    //  TODO if there are Works/Events logged against this
+        rr.string(
+            RID(Prompt),
+            privateActivity->displayName(credentials)); //  may throw
+    //  If there are Works/Events logged against this
     //  activity, count them and add a line to the prompt.
+    try
+    {
+        qsizetype worksCount = 0, eventsCount = 0;
+        int64_t worksDurationMs = 0;
+        _collectDestructionClosure( //  may throw
+            privateActivity,
+            credentials,
+            worksCount,
+            eventsCount,
+            worksDurationMs);
+        if (worksCount > 0 && eventsCount > 0)
+        {
+            result +=
+                rr.string(
+                    RID(DetailsWE),
+                    worksCount,
+                    (worksDurationMs + 59999) / 60000,
+                    eventsCount);
+        }
+        else if (worksCount > 0)
+        {
+            result +=
+                rr.string(
+                    RID(DetailsW),
+                    worksCount,
+                    (worksDurationMs + 59999) / 60000);
+        }
+        else if (eventsCount > 0)
+        {
+            result +=
+                rr.string(
+                    RID(DetailsE),
+                    eventsCount);
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Log, but suppress
+        qCritical() << ex;
+    }
+    //  Done
     return result;
+}
+
+void DestroyPrivateActivityDialog::_collectDestructionClosure(
+        tt3::ws::PrivateActivity privateActivity,
+        const tt3::ws::Credentials & credentials,
+        qsizetype & worksCount,
+        qsizetype & eventsCount,
+        int64_t & worksDurationMs
+    )
+{
+    for (tt3::ws::Work work : privateActivity->works(credentials))  //  may throw
+    {
+        worksCount++;
+        worksDurationMs += work->startedAt(credentials).msecsTo(work->finishedAt(credentials)); //  may throw
+    }
+    eventsCount = privateActivity->events(credentials).size();  //  may throw
 }
 
 //////////
