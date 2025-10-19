@@ -24,16 +24,16 @@ AboutDialog::AboutDialog(QWidget * parent)
     :   QDialog(parent),
         _ui(new Ui::AboutDialog)
 {
-    static Component::Resources *const resources = Component::Resources::instance(); //  idempotent
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(AboutDialog));
 
     _ui->setupUi(this);
-    setWindowTitle(resources->string(RSID(AboutDialog), RID(Title)));
+    setWindowTitle(rr.string(RID(Title)));
 
     _ui->productLabel->setText(
         tt3::util::ProductInformation::applicationDisplayName());
     _ui->versionLabel->setText(
-        resources->string(
-            RSID(AboutDialog), RID(VersionLabel),
+        rr.string(
+            RID(VersionLabel),
             tt3::util::ProductInformation::applicationVersion().toString(),
             tt3::util::ProductInformation::applicationBuildNumber(),
             QString(qVersion())));
@@ -53,12 +53,12 @@ AboutDialog::AboutDialog(QWidget * parent)
     _ui->linkLabel->setOpenExternalLinks(true);    //  Done
 
     _ui->showLicensePushButton->setText(
-        resources->string(RSID(AboutDialog), RID(ShowLicensePushButton)));
+        rr.string(RID(ShowLicensePushButton)));
     _ui->showConfigurationPushButton->setText(
-        resources->string(RSID(AboutDialog), RID(ShowConfigurationPushButton)));
+        rr.string(RID(ShowConfigurationPushButton)));
 
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
-        setText(resources->string(RSID(AboutDialog), RID(OkPushButton)));
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
 

@@ -84,16 +84,6 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="1" colspan="2">
-    <widget class="QLabel" name="workloadValueLabel">
-     <property name="text">
-      <string>-</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
    <item row="4" column="3">
     <widget class="QPushButton" name="selectWorkloadPushButton">
      <property name="text">
@@ -163,6 +153,9 @@
      </property>
     </widget>
    </item>
+   <item row="4" column="1" colspan="2">
+    <widget class="QComboBox" name="workloadComboBox"/>
+   </item>
   </layout>
  </widget>
  <tabstops>
@@ -170,6 +163,7 @@
   <tabstop>displayNameLineEdit</tabstop>
   <tabstop>descriptionPlainTextEdit</tabstop>
   <tabstop>activityTypeComboBox</tabstop>
+  <tabstop>workloadComboBox</tabstop>
   <tabstop>selectWorkloadPushButton</tabstop>
   <tabstop>timeoutCheckBox</tabstop>
   <tabstop>hoursComboBox</tabstop>

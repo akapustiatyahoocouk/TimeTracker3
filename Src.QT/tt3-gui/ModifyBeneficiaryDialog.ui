@@ -93,7 +93,7 @@
      </property>
      <property name="icon">
       <iconset resource="tt3-gui.qrc">
-       <normaloff>:/tt3-gui/Resources/Images/Objects/WorkStreamSmall.png</normaloff>:/tt3-gui/Resources/Images/Objects/WorkStreamSmall.png</iconset>
+       <normaloff>:/tt3-gui/Resources/Images/Actions/ViewWorkStreamSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/ViewWorkStreamSmall.png</iconset>
      </property>
     </widget>
    </item>

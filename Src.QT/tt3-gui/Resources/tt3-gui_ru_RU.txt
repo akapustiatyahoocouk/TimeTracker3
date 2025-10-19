@@ -77,6 +77,24 @@ SelectWorkloadsPushButton=Выбрать
 OkPushButton=ОК
 CancelPushButton=Отмена
 
+[CreatePrivateActivityDialog]
+Title=Создать личную активность
+UserLabel=Пользователь:
+DisplayNameLabel=Имя:
+DescriptionLabel=Описание:
+ActivityTypeLabel=Тип актианости:
+WorkloadLabel=Рабочая нагрузка:
+SelectWorkloadPushButton=Выбрать
+TimeoutLabel=Время ожидания:
+TimeoutCheckBox=Остановить, если отсутствует в течение
+HoursComboBoxItem={0} час
+MinutesComboBoxItem={0} мин
+RequireCommentOnStartCheckBox=Требовать комментарий при запуске этого действия
+RequireCommentOnStopCheckBox=Требовать комментарий при остановке этого действия
+FullScreenReminderCheckBox=Полноэкранное напоминание
+OkPushButton=ОК
+CancelPushButton=Отмена
+
 [EditStringDialog]
 OkPushButton=OK
 CancelPushButton=Отмена

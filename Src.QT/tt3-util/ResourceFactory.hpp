@@ -372,6 +372,261 @@ namespace tt3::util
         static int      _xdigit(const QChar & c);
         static QString  _unescape(const QString & s);   //  throws ParseException on error
     };
+
+    /// \class ResourceReader tt3-util/API.hpp
+    /// \brief  A helper class for reading resources from a single section.
+    class TT3_UTIL_PUBLIC ResourceReader final
+    {
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ResourceReader)
+
+        //////////
+        //  Construction/destruction
+    public:
+        /// \brief
+        ///     Constructs the resource reader.
+        /// \param resourceFactory
+        ///     The resource factory to read resource from.
+        /// \param sectionId
+        ///     The resource section to read resource from.
+        ResourceReader(
+                IResourceFactory * resourceFactory,
+                const ResourceSectionId & sectionId
+            );
+        ~ResourceReader() = default;
+
+        //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Returns the string resource with the specified section
+        ///     ID and resource ID for the current default locale.
+        /// \details
+        ///     C++ - style escapes (e.g. '\n', etc.) in resource strings
+        ///     (but not the section/resource IDs!) are recognized and
+        ///     replaced with the corresponding control characters.
+        /// \param resourceId
+        ///     The resource ID within the section.
+        /// \return
+        ///     The string resource with the specified section
+        ///     ID and resource ID for the current default locale.
+        /// \exception MissingResourceException
+        ///     If an error occurs (specifically, resource does not exist).
+        QString         string(
+                                const ResourceId & resourceId
+                            ) const;
+
+        /// \brief
+        ///     Returns the string resource with the specified section
+        ///     ID and resource ID for the current default locale.
+        /// \details
+        ///     Within the resource:
+        ///     -   The placeholder strings {0}, {1}, etc. are replaced
+        ///         with the corresponding parameter.
+        ///     -   The escape sequences {{ and }} become single
+        ///         characters { and }.
+        /// \param resourceId
+        ///     The resource ID within the section.
+        /// \param params
+        ///     The parameters to replace placeholders {0}-{9} with.
+        /// \return
+        ///     The string resource with the specified section
+        ///     ID and resource ID for the current default locale,
+        ///     with parameter placeholders replaced with
+        ///     actual parameter vaolues..
+        /// \exception MissingResourceException
+        ///     If an error occurs (specifically, resource does not exist).
+        QString     string(
+                            const ResourceId & resourceId,
+                            const QStringList & params
+                        ) const;
+
+        /// \brief
+        ///     Returns the string resource with the specified section
+        ///     ID and resource ID for the current default locale.
+        /// \details
+        ///     Within the resource:
+        ///     -   The placeholder strings {0}, {1}, etc. are replaced
+        ///         with the corresponding parameter.
+        ///     -   The escape sequences {{ and }} become single
+        ///         characters { and }.
+        /// \param resourceId
+        ///     The resource ID within the section.
+        /// \param param0
+        ///     The parameter to replace placeholder {0} with.
+        /// \return
+        ///     The string resource with the specified section
+        ///     ID and resource ID for the current default locale,
+        ///     with parameter placeholders replaced with
+        ///     actual parameter vaolues..
+        /// \exception MissingResourceException
+        ///     If an error occurs (specifically, resource does not exist).
+        QString     string(
+                            const ResourceId & resourceId,
+                            const QString & param0
+                        ) const;
+
+        /// \brief
+        ///     Returns the string resource with the specified section
+        ///     ID and resource ID for the current default locale.
+        /// \details
+        ///     Within the resource:
+        ///     -   The placeholder strings {0}, {1}, etc. are replaced
+        ///         with the corresponding parameter.
+        ///     -   The escape sequences {{ and }} become single
+        ///         characters { and }.
+        /// \param resourceId
+        ///     The resource ID within the section.
+        /// \param param0
+        ///     The parameter to replace placeholder {0} with.
+        /// \param param1
+        ///     The parameter to replace placeholder {1} with.
+        /// \return
+        ///     The string resource with the specified section
+        ///     ID and resource ID for the current default locale,
+        ///     with parameter placeholders replaced with
+        ///     actual parameter vaolues..
+        /// \exception MissingResourceException
+        ///     If an error occurs (specifically, resource does not exist).
+        QString     string(
+                            const ResourceId & resourceId,
+                            const QString & param0,
+                            const QString & param1
+                        ) const;
+
+        /// \brief
+        ///     Returns the string resource with the specified section
+        ///     ID and resource ID for the current default locale.
+        /// \details
+        ///     Within the resource:
+        ///     -   The placeholder strings {0}, {1}, etc. are replaced
+        ///         with the corresponding parameter.
+        ///     -   The escape sequences {{ and }} become single
+        ///         characters { and }.
+        /// \param resourceId
+        ///     The resource ID within the section.
+        /// \param param0
+        ///     The parameter to replace placeholder {0} with.
+        /// \param param1
+        ///     The parameter to replace placeholder {1} with.
+        /// \param param2
+        ///     The parameter to replace placeholder {2} with.
+        /// \return
+        ///     The string resource with the specified section
+        ///     ID and resource ID for the current default locale,
+        ///     with parameter placeholders replaced with
+        ///     actual parameter vaolues..
+        /// \exception MissingResourceException
+        ///     If an error occurs (specifically, resource does not exist).
+        QString     string(
+                            const ResourceId & resourceId,
+                            const QString & param0,
+                            const QString & param1,
+                            const QString & param2
+                        ) const;
+
+        /// \brief
+        ///     Returns the string resource with the specified section
+        ///     ID and resource ID for the current default locale.
+        /// \details
+        ///     Within the resource:
+        ///     -   The placeholder strings {0}, {1}, etc. are replaced
+        ///         with the corresponding parameter.
+        ///     -   The escape sequences {{ and }} become single
+        ///         characters { and }.
+        /// \param resourceId
+        ///     The resource ID within the section.
+        /// \param param0
+        ///     The parameter to replace placeholder {0} with.
+        /// \return
+        ///     The string resource with the specified section
+        ///     ID and resource ID for the current default locale,
+        ///     with parameter placeholders replaced with
+        ///     actual parameter vaolues..
+        /// \exception MissingResourceException
+        ///     If an error occurs (specifically, resource does not exist).
+        template <class P0>
+        QString     string(
+                            const ResourceId & resourceId,
+                            const P0 & param0
+                        ) const
+        {
+            return string(resourceId, toString(param0));
+        }
+
+        /// \brief
+        ///     Returns the string resource with the specified section
+        ///     ID and resource ID for the current default locale.
+        /// \details
+        ///     Within the resource:
+        ///     -   The placeholder strings {0}, {1}, etc. are replaced
+        ///         with the corresponding parameter.
+        ///     -   The escape sequences {{ and }} become single
+        ///         characters { and }.
+        /// \param resourceId
+        ///     The resource ID within the section.
+        /// \param param0
+        ///     The parameter to replace placeholder {0} with.
+        /// \param param1
+        ///     The parameter to replace placeholder {1} with.
+        /// \return
+        ///     The string resource with the specified section
+        ///     ID and resource ID for the current default locale,
+        ///     with parameter placeholders replaced with
+        ///     actual parameter vaolues..
+        /// \exception MissingResourceException
+        ///     If an error occurs (specifically, resource does not exist).
+        template <class P0, class P1>
+        QString     string(
+                            const ResourceId & resourceId,
+                            const P0 & param0, const P1 & param1
+                        ) const
+        {
+            return string(resourceId,
+                          toString(param0), toString(param1));
+        }
+
+        /// \brief
+        ///     Returns the string resource with the specified section
+        ///     ID and resource ID for the current default locale.
+        /// \details
+        ///     Within the resource:
+        ///     -   The placeholder strings {0}, {1}, etc. are replaced
+        ///         with the corresponding parameter.
+        ///     -   The escape sequences {{ and }} become single
+        ///         characters { and }.
+        /// \param resourceId
+        ///     The resource ID within the section.
+        /// \param param0
+        ///     The parameter to replace placeholder {0} with.
+        /// \param param1
+        ///     The parameter to replace placeholder {1} with.
+        /// \param param2
+        ///     The parameter to replace placeholder {2} with.
+        /// \return
+        ///     The string resource with the specified section
+        ///     ID and resource ID for the current default locale,
+        ///     with parameter placeholders replaced with
+        ///     actual parameter vaolues..
+        /// \exception MissingResourceException
+        ///     If an error occurs (specifically, resource does not exist).
+        template <class P0, class P1, class P2>
+        QString     string(
+                            const ResourceId & resourceId,
+                            const P0 & param0,
+                            const P1 & param1,
+                            const P2 & param2
+                        ) const
+        {
+            return string(resourceId,
+                          toString(param0), toString(param1), toString(param2));
+        }
+
+        //////////
+        //  Implementation
+    private:
+        IResourceFactory *const _resourceFactory;
+        const ResourceSectionId _sectionId;
+    };
 }
 
 //  End of tt3-util/ResourceFactory.hpp

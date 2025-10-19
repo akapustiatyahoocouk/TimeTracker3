@@ -89,15 +89,20 @@ namespace tt3::gui
         const tt3::ws::Credentials  _credentials;
         tt3::ws::Validator::PrivateActivity *const _validator;
 
-        tt3::ws::Workload       _selectedWorkload;  //  currenty selected
-
         tt3::ws::PrivateActivity    _createdPrivateActivity;
 
         //  Helpers
         tt3::ws::User   _selectedUser();
-        void            _setSelectedUser(tt3::ws::User user);
+        void            _setSelectedUser(
+                                tt3::ws::User user
+                            );
         auto            _selectedActivityType(
                             ) -> tt3::ws::ActivityType;
+        auto            _selectedWorkload(
+                            ) -> tt3::ws::Workload;
+        void            _setSelectedWorkload(
+                                tt3::ws::Workload workload
+                            );
         auto            _selectedTimeout(
                             ) -> tt3::ws::InactivityTimeout;
         void            _refresh();

@@ -32,31 +32,31 @@ CreateBeneficiaryDialog::CreateBeneficiaryDialog(
         //  Controls
         _ui(new Ui::CreateBeneficiaryDialog)
 {
-    static Component::Resources *const resources = Component::Resources::instance(); //  idempotent
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(CreateBeneficiaryDialog));
 
     Q_ASSERT(_workspace != nullptr);
     Q_ASSERT(_credentials.isValid());
 
     _ui->setupUi(this);
-    setWindowTitle(resources->string(RSID(CreateBeneficiaryDialog), RID(Title)));
+    setWindowTitle(rr.string(RID(Title)));
     _listWidgetDecorations = ListWidgetDecorations(_ui->workloadsListWidget);
 
     //  Set up initial control values
     _ui->displayNameLabel->setText(
-        resources->string(RSID(CreateBeneficiaryDialog), RID(DisplayNameLabel)));
+        rr.string(RID(DisplayNameLabel)));
     _ui->descriptionLabel->setText(
-        resources->string(RSID(CreateBeneficiaryDialog), RID(DescriptionLabel)));
+        rr.string(RID(DescriptionLabel)));
     _ui->workloadsLabel->setText(
-        resources->string(RSID(CreateBeneficiaryDialog), RID(WorkloadsLabel)));
+        rr.string(RID(WorkloadsLabel)));
     _ui->selectWorkloadsPushButton->setText(
-        resources->string(RSID(CreateBeneficiaryDialog), RID(SelectWorkloadsPushButton)));
+        rr.string(RID(SelectWorkloadsPushButton)));
 
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
-        setText(resources->string(RSID(CreateBeneficiaryDialog), RID(OkPushButton)));
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
-        setText(resources->string(RSID(CreateBeneficiaryDialog), RID(CancelPushButton)));
+        setText(rr.string(RID(CancelPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 

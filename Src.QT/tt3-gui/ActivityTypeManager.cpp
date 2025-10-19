@@ -107,9 +107,9 @@ void ActivityTypeManager::setCredentials(const tt3::ws::Credentials & credential
 
 void ActivityTypeManager::refresh()
 {
-    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     static const QIcon viewActivityTypeIcon(":/tt3-gui/Resources/Images/Actions/ViewActivityTypeLarge.png");
     static const QIcon modifyActivityTypeIcon(":/tt3-gui/Resources/Images/Actions/ModifyActivityTypeLarge.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ActivityTypeManager));
 
     //  We don't want a refresh() to trigger a recursive refresh()!
     static bool refreshUnderway = false;
@@ -187,13 +187,13 @@ void ActivityTypeManager::refresh()
             {   //  RW
                 _ui->modifyActivityTypePushButton->setIcon(modifyActivityTypeIcon);
                 _ui->modifyActivityTypePushButton->setText(
-                    resources->string(RSID(ActivityTypeManager), RID(ModifyActivityTypePushButton)));
+                    rr.string(RID(ModifyActivityTypePushButton)));
             }
             else
             {   //  RO
                 _ui->modifyActivityTypePushButton->setIcon(viewActivityTypeIcon);
                 _ui->modifyActivityTypePushButton->setText(
-                    resources->string(RSID(ActivityTypeManager), RID(ViewActivityTypePushButton)));
+                    rr.string(RID(ViewActivityTypePushButton)));
             }
         }
         catch (const tt3::util::Exception & ex)
@@ -201,7 +201,7 @@ void ActivityTypeManager::refresh()
             qCritical() << ex.errorMessage();
             _ui->modifyActivityTypePushButton->setIcon(viewActivityTypeIcon);
             _ui->modifyActivityTypePushButton->setText(
-                resources->string(RSID(ActivityTypeManager), RID(ViewActivityTypePushButton)));
+                rr.string(RID(ViewActivityTypePushButton)));
         }
     }
 }
@@ -413,16 +413,16 @@ void ActivityTypeManager::_clearAndDisableAllControls()
 
 void ActivityTypeManager::_applyCurrentLocale()
 {
-    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ActivityTypeManager));
 
     _ui->filterLabel->setText(
-        resources->string(RSID(ActivityTypeManager), RID(FilterLabel)));
+        rr.string(RID(FilterLabel)));
     _ui->createActivityTypePushButton->setText(
-        resources->string(RSID(ActivityTypeManager), RID(CreateActivityTypePushButton)));
+        rr.string(RID(CreateActivityTypePushButton)));
     _ui->modifyActivityTypePushButton->setText(
-        resources->string(RSID(ActivityTypeManager), RID(ModifyActivityTypePushButton)));
+        rr.string(RID(ModifyActivityTypePushButton)));
     _ui->destroyActivityTypePushButton->setText(
-        resources->string(RSID(ActivityTypeManager), RID(DestroyActivityTypePushButton)));
+        rr.string(RID(DestroyActivityTypePushButton)));
 }
 
 //////////

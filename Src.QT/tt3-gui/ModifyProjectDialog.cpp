@@ -113,7 +113,7 @@ void ModifyProjectDialog::_setSelectedParentProject(
     {
         _ui->parentProjectComboBox->addItem(
             parentProject->type()->smallIcon(),
-            parentProject->displayName(_credentials),
+            parentProject->displayName(_credentials),   //  TODO may throw
             QVariant::fromValue(parentProject));
         _ui->parentProjectComboBox->setCurrentIndex(1);
     }

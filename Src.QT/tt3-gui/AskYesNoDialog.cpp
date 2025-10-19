@@ -30,7 +30,7 @@ AskYesNoDialog::AskYesNoDialog(
         _confirmActionSetting(confirmActionSetting),
         _ui(new Ui::AskYesNoDialog)
 {
-    static Component::Resources *const resources = Component::Resources::instance(); //  idempotent
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(AskYesNoDialog));
 
     _ui->setupUi(this);
     this->setWindowIcon(icon);
@@ -40,14 +40,14 @@ AskYesNoDialog::AskYesNoDialog(
     _ui->promptLabel->setText(prompt);
 
     _ui->assumeYesCheckBox->setText(
-        resources->string(RSID(AskYesNoDialog), RID(AssumeYesCheckBox)));
+        rr.string(RID(AssumeYesCheckBox)));
 
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Yes)->
-        setText(resources->string(RSID(AskYesNoDialog), RID(YesPushButton)));
+        setText(rr.string(RID(YesPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Yes)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::No)->
-        setText(resources->string(RSID(AskYesNoDialog), RID(NoPushButton)));
+        setText(rr.string(RID(NoPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::No)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 

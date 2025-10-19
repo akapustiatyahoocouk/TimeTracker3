@@ -32,70 +32,70 @@ CreateAccountDialog::CreateAccountDialog(
         //  Controls
         _ui(new Ui::CreateAccountDialog)
 {
-    static Component::Resources *const resources = Component::Resources::instance(); //  idempotent
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(CreateAccountDialog));
 
     Q_ASSERT(_workspace != nullptr);
     Q_ASSERT(_credentials.isValid());
     Q_ASSERT(_validator != nullptr);
 
     _ui->setupUi(this);
-    setWindowTitle(resources->string(RSID(CreateAccountDialog), RID(Title)));
+    setWindowTitle(rr.string(RID(Title)));
 
     _ui->userLabel->setText(
-        resources->string(RSID(CreateAccountDialog), RID(UserLabel)));
+        rr.string(RID(UserLabel)));
     _ui->loginLabel->setText(
-        resources->string(RSID(CreateAccountDialog), RID(LoginLabel)));
+        rr.string(RID(LoginLabel)));
     _ui->passwordLabel->setText(
-        resources->string(RSID(CreateAccountDialog), RID(PasswordLabel)));
+        rr.string(RID(PasswordLabel)));
     _ui->confirmPasswordLabel->setText(
-        resources->string(RSID(CreateAccountDialog), RID(ConfirmPasswordLabel)));
+        rr.string(RID(ConfirmPasswordLabel)));
     _ui->emailAddressesLabel->setText(
-        resources->string(RSID(CreateAccountDialog), RID(EmailAddressesLabel)));
+        rr.string(RID(EmailAddressesLabel)));
     _ui->addEmailAddressPushButton->setText(
-        resources->string(RSID(CreateAccountDialog), RID(AddEmailAddressPushButton)));
+        rr.string(RID(AddEmailAddressPushButton)));
     _ui->modifyEmailAddressPushButton->setText(
-        resources->string(RSID(CreateAccountDialog), RID(ModifyEmailAddressPushButton)));
+        rr.string(RID(ModifyEmailAddressPushButton)));
     _ui->removeEmailAddressPushButton->setText(
-        resources->string(RSID(CreateAccountDialog), RID(RemoveEmailAddressPushButton)));
+        rr.string(RID(RemoveEmailAddressPushButton)));
 
     _ui->capabilitiesGroupBox->setTitle(
-        resources->string(RSID(CreateAccountDialog), RID(CapabilitiesGroupBox)));
+        rr.string(RID(CapabilitiesGroupBox)));
     _ui->administratorCheckBox->setText(
-        resources->string(RSID(CreateAccountDialog), RID(AdministratorCheckBox)));
+        rr.string(RID(AdministratorCheckBox)));
     _ui->manageUsersCheckBox->setText(
-        resources->string(RSID(CreateAccountDialog), RID(ManageUsersCheckBox)));
+        rr.string(RID(ManageUsersCheckBox)));
     _ui->manageActivityTypesCheckBox->setText(
-        resources->string(RSID(CreateAccountDialog), RID(ManageActivityTypesCheckBox)));
+        rr.string(RID(ManageActivityTypesCheckBox)));
     _ui->manageBeneficiariesCheckBox->setText(
-        resources->string(RSID(CreateAccountDialog), RID(ManageBeneficiariesCheckBox)));
+        rr.string(RID(ManageBeneficiariesCheckBox)));
     _ui->manageWorkloadsCheckBox->setText(
-        resources->string(RSID(CreateAccountDialog), RID(ManageWorkloadsCheckBox)));
+        rr.string(RID(ManageWorkloadsCheckBox)));
     _ui->managePublicActivitiesCheckBox->setText(
-        resources->string(RSID(CreateAccountDialog), RID(ManagePublicActivitiesCheckBox)));
+        rr.string(RID(ManagePublicActivitiesCheckBox)));
     _ui->managePublicTasksCheckBox->setText(
-        resources->string(RSID(CreateAccountDialog), RID(ManagePublicTasksCheckBox)));
+        rr.string(RID(ManagePublicTasksCheckBox)));
     _ui->managePrivateActivitiesCheckBox->setText(
-        resources->string(RSID(CreateAccountDialog), RID(ManagePrivateActivitiesCheckBox)));
+        rr.string(RID(ManagePrivateActivitiesCheckBox)));
     _ui->managePrivateTasksCheckBox->setText(
-        resources->string(RSID(CreateAccountDialog), RID(ManagePrivateTasksCheckBox)));
+        rr.string(RID(ManagePrivateTasksCheckBox)));
     _ui->logWorkCheckBox->setText(
-        resources->string(RSID(CreateAccountDialog), RID(LogWorkCheckBox)));
+        rr.string(RID(LogWorkCheckBox)));
     _ui->logEventsCheckBox->setText(
-        resources->string(RSID(CreateAccountDialog), RID(LogEventsCheckBox)));
+        rr.string(RID(LogEventsCheckBox)));
     _ui->generateReportsCheckBox->setText(
-        resources->string(RSID(CreateAccountDialog), RID(GenerateReportsCheckBox)));
+        rr.string(RID(GenerateReportsCheckBox)));
     _ui->backupAndRestoreCheckBox->setText(
-        resources->string(RSID(CreateAccountDialog), RID(BackupAndRestoreCheckBox)));
+        rr.string(RID(BackupAndRestoreCheckBox)));
 
     _ui->enabledCheckBox->setText(
-        resources->string(RSID(CreateAccountDialog), RID(EnabledCheckBox)));
+        rr.string(RID(EnabledCheckBox)));
 
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
-        setText(resources->string(RSID(CreateAccountDialog), RID(OkPushButton)));
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
-        setText(resources->string(RSID(CreateAccountDialog), RID(CancelPushButton)));
+        setText(rr.string(RID(CancelPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 

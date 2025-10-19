@@ -77,6 +77,24 @@ SelectWorkloadsPushButton=Select
 OkPushButton=OK
 CancelPushButton=Cancel
 
+[CreatePrivateActivityDialog]
+Title=Create private activity
+UserLabel=User:
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+ActivityTypeLabel=Activity type:
+WorkloadLabel=Workload:
+SelectWorkloadPushButton=Select
+TimeoutLabel=Timeout:
+TimeoutCheckBox=stop if unattended for
+HoursComboBoxItem={0} hrs
+MinutesComboBoxItem={0} min
+RequireCommentOnStartCheckBox=Require comment when starting this activity
+RequireCommentOnStopCheckBox=Require comment when stopping this activity
+FullScreenReminderCheckBox=Full-screen reminder
+OkPushButton=OK
+CancelPushButton=Cancel
+
 [EditStringDialog]
 OkPushButton=OK
 CancelPushButton=Cancel

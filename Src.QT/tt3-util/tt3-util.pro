@@ -23,6 +23,7 @@ SOURCES += \
     Mutex.cpp \
     PluginManager.cpp \
     ProductInformation.cpp \
+    ResourceReader.cpp \
     Settings.cpp \
     StandardLicenses.cpp \
     StandardMessageDigests.Sha1.cpp \

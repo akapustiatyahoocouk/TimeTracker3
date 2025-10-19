@@ -107,9 +107,9 @@ void BeneficiaryManager::setCredentials(const tt3::ws::Credentials & credentials
 
 void BeneficiaryManager::refresh()
 {
-    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
     static const QIcon viewBeneficiaryIcon(":/tt3-gui/Resources/Images/Actions/ViewBeneficiaryLarge.png");
     static const QIcon modifyBeneficiaryIcon(":/tt3-gui/Resources/Images/Actions/ModifyBeneficiaryLarge.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(BeneficiaryManager));
 
     //  We don't want a refresh() to trigger a recursive refresh()!
     static bool refreshUnderway = false;
@@ -187,13 +187,13 @@ void BeneficiaryManager::refresh()
             {   //  RW
                 _ui->modifyBeneficiaryPushButton->setIcon(modifyBeneficiaryIcon);
                 _ui->modifyBeneficiaryPushButton->setText(
-                    resources->string(RSID(BeneficiaryManager), RID(ModifyBeneficiaryPushButton)));
+                    rr.string(RID(ModifyBeneficiaryPushButton)));
             }
             else
             {   //  RO
                 _ui->modifyBeneficiaryPushButton->setIcon(viewBeneficiaryIcon);
                 _ui->modifyBeneficiaryPushButton->setText(
-                    resources->string(RSID(BeneficiaryManager), RID(ViewBeneficiaryPushButton)));
+                    rr.string(RID(ViewBeneficiaryPushButton)));
             }
         }
         catch (const tt3::util::Exception & ex)
@@ -201,7 +201,7 @@ void BeneficiaryManager::refresh()
             qCritical() << ex.errorMessage();
             _ui->modifyBeneficiaryPushButton->setIcon(viewBeneficiaryIcon);
             _ui->modifyBeneficiaryPushButton->setText(
-                resources->string(RSID(BeneficiaryManager), RID(ViewBeneficiaryPushButton)));
+                rr.string(RID(ViewBeneficiaryPushButton)));
         }
     }
 }
@@ -413,16 +413,16 @@ void BeneficiaryManager::_clearAndDisableAllControls()
 
 void BeneficiaryManager::_applyCurrentLocale()
 {
-    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(BeneficiaryManager));
 
     _ui->filterLabel->setText(
-        resources->string(RSID(BeneficiaryManager), RID(FilterLabel)));
+        rr.string(RID(FilterLabel)));
     _ui->createBeneficiaryPushButton->setText(
-        resources->string(RSID(BeneficiaryManager), RID(CreateBeneficiaryPushButton)));
+        rr.string(RID(CreateBeneficiaryPushButton)));
     _ui->modifyBeneficiaryPushButton->setText(
-        resources->string(RSID(BeneficiaryManager), RID(ModifyBeneficiaryPushButton)));
+        rr.string(RID(ModifyBeneficiaryPushButton)));
     _ui->destroyBeneficiaryPushButton->setText(
-        resources->string(RSID(BeneficiaryManager), RID(DestroyBeneficiaryPushButton)));
+        rr.string(RID(DestroyBeneficiaryPushButton)));
 }
 
 //////////
