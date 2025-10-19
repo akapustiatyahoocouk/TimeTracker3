@@ -1,6 +1,6 @@
 //
 //  tt3-gui/DestroyBeneficiaryDialog.cpp - tt3::gui::DestroyBeneficiaryDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -26,7 +26,9 @@ DestroyBeneficiaryDialog::DestroyBeneficiaryDialog(
     ) : AskYesNoDialog(
             parent,
             QIcon(":/tt3-gui/Resources/Images/Actions/DestroyBeneficiaryLarge.png"),
-            "Destroy beneficiary",
+            Component::Resources::instance()->string(
+                RSID(DestroyBeneficiaryDialog),
+                RID(Title)),
             _prompt(beneficiary, credentials)),
         _beneficiary(beneficiary),
         _credentials(credentials)
@@ -49,9 +51,12 @@ QString DestroyBeneficiaryDialog::_prompt(
         const tt3::ws::Credentials & credentials
     )
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(DestroyBeneficiaryDialog));
+
     QString result =
-        "Are you sure you want to destroy beneficiary\n" +
-        beneficiary->displayName(credentials) + " ?";
+        rr.string(
+            RID(Prompt),
+            beneficiary->displayName(credentials)); //  may throw
     //  TODO extend the message with more info ?
     return result;
 }

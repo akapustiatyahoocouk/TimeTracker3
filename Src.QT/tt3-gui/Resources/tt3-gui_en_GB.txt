@@ -212,6 +212,15 @@ DetailsWE=\nThese activities have {0} work unit(s) logged for it\n(with total du
 DetailsW=\nThese activities have {0} work unit(s) logged for it\n(with total duration of {1} minute(s));\nall these will lose their attribution to the activity type.
 DetailsE=\nThese activities have {0} event(s) logged for it;\nall these will lose their attribution to the activity type.
 
+[DestroyBeneficiaryDialog]
+Title=Destroy beneficiary
+Prompt=Are you sure you want to destroy beneficiary\n{0} ?
+
+[DestroyEventDialog]
+Title=Destroy event
+Prompt=Are you sure you want to destroy event\n{0}\nlogged at {1}\nby {2} ?
+Details=\nRelated to {0} {1}.
+
 [DestroyUserDialog]
 Title=Destroy user
 Prompt=Are you sure you want to destroy user {0} with {1} accounts?

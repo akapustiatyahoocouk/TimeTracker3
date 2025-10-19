@@ -39,6 +39,7 @@ ModifyBeneficiaryDialog::ModifyBeneficiaryDialog(
     Q_ASSERT(_credentials.isValid());
 
     _ui->setupUi(this);
+    _listWidgetDecorations = ListWidgetDecorations(_ui->workloadsListWidget);
 
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
@@ -82,14 +83,85 @@ ModifyBeneficiaryDialog::Result ModifyBeneficiaryDialog::doModal()
 //  Implementation helpers
 auto ModifyBeneficiaryDialog::_selectedWorkloads(
     ) -> tt3::ws::Workloads
-{   //  TODO implement
-    return tt3::ws::Workloads();
+{
+    tt3::ws::Workloads result;
+    for (int i = 0; i < _ui->workloadsListWidget->count(); i++)
+    {
+        result.insert(
+            _ui->workloadsListWidget->item(i)->data(Qt::ItemDataRole::UserRole).value<tt3::ws::Workload>());
+    }
+    return result;
 }
 
 void ModifyBeneficiaryDialog::_setSelectedWorkloads(
-        const tt3::ws::Workloads & /*workloads*/
+        const tt3::ws::Workloads & workloads
     )
-{   //  TODO implement
+{
+    static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+
+    QList<tt3::ws::Workload> workloadsList = workloads.values();
+    std::sort(
+        workloadsList.begin(),
+        workloadsList.end(),
+        [&](auto a, auto b)
+        {
+            try
+            {
+                return a->displayName(_credentials) < b->displayName(_credentials); //  may throw
+            }
+            catch (tt3::util::Exception & ex)
+            {   //  OOPS! Report & recover with a stable sort order
+                qCritical() << ex;
+                return a->oid() < b->oid();
+            }
+        });
+    //  Make sure a proper number of list widget items...
+    while (_ui->workloadsListWidget->count() < workloadsList.size())
+    {   //  Too few items in the list widget
+        _ui->workloadsListWidget->addItem("?");
+    }
+    while (_ui->workloadsListWidget->count() > workloadsList.size())
+    {   //  Too many items in the list widget
+        delete _ui->workloadsListWidget->takeItem(
+            _ui->workloadsListWidget->count() - 1);
+    }
+    //  ...each represent a proper Workload
+    for (int i = 0; i < workloadsList.count(); i++)
+    {
+        QListWidgetItem * item = _ui->workloadsListWidget->item(i);
+        tt3::ws::Workload workload = workloadsList[i];
+        try
+        {
+            QString text = workload->displayName(_credentials); //  may throw
+            item->setIcon(workload->type()->smallIcon());
+            if (auto project =
+                std::dynamic_pointer_cast<tt3::ws::ProjectImpl>(workload))
+            {
+                if (project->completed(_credentials))  //  may throw
+                {   //  Completed
+                    text += " [completed]";
+                    item->setForeground(_listWidgetDecorations.disabledItemForeground);
+                }
+                else
+                {   //  Not completed
+                    item->setForeground(_listWidgetDecorations.itemForeground);
+                }
+            }
+            else
+            {   //  Not a task
+                item->setForeground(_listWidgetDecorations.itemForeground);
+            }
+            item->setText(text);
+        }
+        catch (tt3::util::Exception & ex)
+        {   //  OOPS! Report & recover
+            qCritical() << ex;
+            item->setText(ex.errorMessage());
+            item->setIcon(errorIcon);
+            item->setForeground(_listWidgetDecorations.errorItemForeground);
+        }
+        item->setData(Qt::ItemDataRole::UserRole, QVariant::fromValue(workload));
+    }
 }
 
 void ModifyBeneficiaryDialog::_refresh()
@@ -114,7 +186,20 @@ void ModifyBeneficiaryDialog::_descriptionPlainTextEditTextChanged()
 
 void ModifyBeneficiaryDialog::_selectWorkloadsPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    try
+    {
+        SelectWorkloadsDialog dlg(this, _beneficiary->workspace(), _credentials, _selectedWorkloads());
+        if (dlg.doModal() == SelectWorkloadsDialog::Result::Ok)
+        {
+            _setSelectedWorkloads(dlg.selectedWorkloads());
+            _refresh();
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        qCritical() << ex;
+        ErrorDialog::show(this, ex);
+    }
 }
 
 void ModifyBeneficiaryDialog::accept()

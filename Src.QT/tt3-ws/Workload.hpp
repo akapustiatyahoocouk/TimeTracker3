@@ -32,6 +32,7 @@ namespace tt3::ws
         friend class PrivateTaskImpl;
         friend class ProjectImpl;
         friend class WorkStreamImpl;
+        friend class BeneficiaryImpl;
 
         //////////
         //  Construction/destruction - from friends only

@@ -212,6 +212,15 @@ DetailsWE=\nFür diese Aktivitäten wurden {0} Arbeitseinheiten protokolliert\n(
 DetailsW=\nFür diese Aktivitäten wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n));\nalle diese verlieren ihre Zuordnung zum Aktivitätstyp.
 DetailsE=\nFür diese Aktivitäten wurden {0} Ereignisse protokolliert;\nalle diese verlieren ihre Zuordnung zum Aktivitätstyp.
 
+[DestroyBeneficiaryDialog]
+Title=Begünstigten löschen
+Prompt=Möchten Sie den Begünstigten wirklich löschen\n{0} ?
+
+[DestroyEventDialog]
+Title=Ereignis zerstören
+Prompt=Möchten Sie das Ereignis \n{0}\ndas am {1}\nvon {2} protokolliert wurde, wirklich zerstören ?
+Details=\nBezogen auf {0} {1}.
+
 [DestroyUserDialog]
 Title=Benutzer löschen
 Prompt=Möchten Sie Benutzer {0} mit {1} Konten wirklich löschen?

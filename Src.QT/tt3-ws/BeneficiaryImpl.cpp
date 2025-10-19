@@ -160,11 +160,35 @@ auto BeneficiaryImpl:: workloads(
 }
 
 void BeneficiaryImpl::setWorkloads(
-        const Credentials & /*credentials*/,
-        const Workloads & /*workloads*/
+        const Credentials & credentials,
+        const Workloads & workloads
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights.
+        if (!_canModify(credentials)) //  may throw
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        tt3::db::api::Workloads dataWorkloads;
+        for (Workload workload : workloads)
+        {
+            dataWorkloads.insert(
+                (workload != nullptr) ?
+                    workload->_dataWorkload :
+                    nullptr);
+        }
+        _dataBeneficiary->setWorkloads(dataWorkloads);  //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void BeneficiaryImpl::addWorkload(

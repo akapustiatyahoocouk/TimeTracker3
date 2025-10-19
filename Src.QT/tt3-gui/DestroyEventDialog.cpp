@@ -1,6 +1,6 @@
 //
 //  tt3-gui/DestroyEventDialog.cpp - tt3::gui::DestroyEventDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -26,7 +26,9 @@ DestroyEventDialog::DestroyEventDialog(
     ) : AskYesNoDialog(
             parent,
             QIcon(":/tt3-gui/Resources/Images/Actions/DestroyEventLarge.png"),
-            "Destroy event",
+            Component::Resources::instance()->string(
+                RSID(DestroyEventDialog),
+                RID(Title)),
             _prompt(event, credentials)),
         _event(event),
         _credentials(credentials)
@@ -49,22 +51,23 @@ QString DestroyEventDialog::_prompt(
         const tt3::ws::Credentials & credentials
     )
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(DestroyEventDialog));
+
     QString result =
-        "Are you sure you want to destroy event\n" +
-        event->summary(credentials) +
-        "\nlogged at " +
-        event->occurredAt(credentials).toLocalTime().toString() +
-        "\nby " +
-        event->account(credentials)->login(credentials);
+        rr.string(
+            RID(Prompt),
+            event->summary(credentials),    //  may throw
+            event->occurredAt(credentials).toLocalTime().toString(),    //  may throw
+            event->account(credentials)->login(credentials));           //  may throw
     for (tt3::ws::Activity activity : event->activities(credentials))
     {
         result +=
-            "\nagainst " +
-            activity->type()->displayName().toLower() +
-            " " +
-            activity->displayName(credentials);
+            rr.string(
+                RID(Details),
+                activity->type()->displayName().toLower(),
+                activity->displayName(credentials));    //  may throw
     }
-    return result + "?";
+    return result;
 }
 
 //////////
