@@ -63,8 +63,8 @@ QString DestroyWorkDialog::_prompt(
     QString result =
         rr.string(
             RID(Prompt),
-            work->startedAt(credentials).toLocalTime().toString(),
-            work->finishedAt(credentials).toLocalTime().toString(),
+            QLocale().toString(work->startedAt(credentials).toLocalTime(), QLocale::ShortFormat),
+            QLocale().toString(work->finishedAt(credentials).toLocalTime(), QLocale::ShortFormat),
             duration,
             work->account(credentials)->login(credentials),
             work->activity(credentials)->type()->displayName().toLower(),

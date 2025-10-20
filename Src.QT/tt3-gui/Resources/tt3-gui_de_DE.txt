@@ -288,3 +288,7 @@ Prompt=Startkommentar eingeben:
 [EnterActivityStopCommentDialog]
 Title={0} {1}
 Prompt=Stoppkommentar eingeben:
+
+[EnterCommentDialog]
+Title=Kommentar protokollieren
+Prompt=Kommentar eingeben:

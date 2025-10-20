@@ -288,3 +288,7 @@ Prompt=Введите комментарий к началу:
 [EnterActivityStopCommentDialog]
 Title={0} {1}
 Prompt=Введите комментарий к остановке:
+
+[EnterCommentDialog]
+Title=Добавить комментарий
+Prompt=Введите комментарий:

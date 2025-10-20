@@ -289,7 +289,7 @@ namespace tt3::gui
             virtual QString     tooltip() const override { return ""; }
             virtual QString     toString() const override
             {
-                return "========== " + _date.toString() + " ==========";
+                return "========== " + QLocale().toString(_date, QLocale::ShortFormat) + " ==========";
             }
 
         private:

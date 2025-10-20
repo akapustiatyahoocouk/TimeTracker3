@@ -1,6 +1,6 @@
 //
 //  tt3-gui/EnterCommentDialog.cpp - tt3::gui::EnterCommentDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -25,8 +25,12 @@ EnterCommentDialog::EnterCommentDialog(
     ) : EditStringDialog(
           parent,
           tt3::ws::ObjectTypes::Event::instance()->smallIcon(),
-          "Log a comment",
-          "Enter comment:",
+          Component::Resources::instance()->string(
+              RSID(EnterCommentDialog),
+              RID(Title)),
+          Component::Resources::instance()->string(
+              RSID(EnterCommentDialog),
+              RID(Prompt)),
           "",
           [=](auto c)
           {

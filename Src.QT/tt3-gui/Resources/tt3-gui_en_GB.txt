@@ -288,3 +288,7 @@ Prompt=Enter start comment:
 [EnterActivityStopCommentDialog]
 Title={0} {1}
 Prompt=Enter stop comment:
+
+[EnterCommentDialog]
+Title=Log a comment
+Prompt=Enter comment:
