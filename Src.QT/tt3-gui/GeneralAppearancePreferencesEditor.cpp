@@ -1,6 +1,6 @@
 //
 //  tt3-gui/GeneralStartupPreferencesEditor.cpp - tt3::gui::GeneralStartupPreferencesEditor class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -29,7 +29,16 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
     :   PreferencesEditor(parent),
         _ui(new Ui::GeneralAppearancePreferencesEditor)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(GeneralAppearancePreferencesEditor));
+
     _ui->setupUi(this);
+
+    _ui->languageLabel->setText(
+        rr.string(RID(LanguageLabel)));
+    _ui->skinLabel->setText(
+        rr.string(RID(SkinLabel)));
+    _ui->themeLabel->setText(
+        rr.string(RID(ThemeLabel)));
 
     //  Fill the language combo box with available locales
     //  from the set of locales supported by components and

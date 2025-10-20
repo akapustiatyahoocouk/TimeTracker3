@@ -300,3 +300,30 @@ Prompt=Enter task completion comment:
 [ErrorDialog]
 Title=ERROR
 OkPushButton=OK
+
+[GeneralAppearancePreferences]
+DisplayName=Appearance
+
+[GeneralAppearancePreferencesEditor]
+LanguageLabel=Language:
+SkinLabel=Skin:
+ThemeLabel=Theme:
+
+[GeneralDialogsPreferences]
+DisplayName=Dialogs
+
+[GeneralDialogsPreferencesEditor]
+ConfirmationsGroupBox=Confirmations
+ConfirmCloseWorkspaceCheckBox=Require confirmation when closing a workspace
+ConfirmRestartCheckBox=Require confirmation when restarting TimeTracker3
+ConfirmExitCheckBox=Require confirmation when exiting TimeTracker3
+
+[GeneralPreferences]
+DisplayName=General
+
+[GeneralStartupPreferences]
+DisplayName=Startup
+
+[GeneralStartupPreferencesEditor]
+LoadLastWorkspaceAtStartupCheckBox=Reload last workspace at startup
+RememnerLastLoginCheckBox=Remember last login

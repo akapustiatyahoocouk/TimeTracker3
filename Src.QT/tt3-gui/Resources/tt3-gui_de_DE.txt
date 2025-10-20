@@ -300,3 +300,30 @@ Prompt=Geben Sie einen Kommentar zur Aufgabenerledigung ein:
 [ErrorDialog]
 Title=FEHLER
 OkPushButton=Bestätigen
+
+[GeneralAppearancePreferences]
+DisplayName=Darstellung
+
+[GeneralAppearancePreferencesEditor]
+LanguageLabel=Sprache:
+SkinLabel=Skin:
+ThemeLabel=Farbpalette:
+
+[GeneralDialogsPreferences]
+DisplayName=Dialoge
+
+[GeneralDialogsPreferencesEditor]
+ConfirmationsGroupBox=Bestätigungen
+ConfirmCloseWorkspaceCheckBox=Bestätigung beim Schließen eines Arbeitsbereichs erforderlich
+ConfirmRestartCheckBox=Bestätigung beim Neustart von TimeTracker3 erforderlich
+ConfirmExitCheckBox=Bestätigung beim Beenden von TimeTracker3 erforderlich
+
+[GeneralPreferences]
+DisplayName=Allgemein
+
+[GeneralStartupPreferences]
+DisplayName=Startup
+
+[GeneralStartupPreferencesEditor]
+LoadLastWorkspaceAtStartupCheckBox=Letzten Arbeitsbereich beim Start neu laden
+RememnerLastLoginCheckBox=Letzte Anmeldung merken

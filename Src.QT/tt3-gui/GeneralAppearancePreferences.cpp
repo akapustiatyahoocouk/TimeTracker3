@@ -1,6 +1,6 @@
 //
 //  tt3-gui/GeneralAppearancePreferences.cpp - tt3::gui::GeneralAppearancePreferences class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -32,7 +32,8 @@ GeneralAppearancePreferences::Mnemonic GeneralAppearancePreferences::mnemonic() 
 
 QString GeneralAppearancePreferences::displayName() const
 {
-    return "Appearance";
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(GeneralAppearancePreferences));
+    return rr.string(RID(DisplayName));
 }
 
 Preferences * GeneralAppearancePreferences::parent() const

@@ -300,3 +300,30 @@ Prompt=Введите комментарий к завершению задач�
 [ErrorDialog]
 Title=ОШИБКА
 OkPushButton=ОК
+
+[GeneralAppearancePreferences]
+DisplayName=Внешний вид
+
+[GeneralAppearancePreferencesEditor]
+LanguageLabel=Язык:
+SkinLabel=Интерфейс:
+ThemeLabel=Палитра:
+
+[GeneralDialogsPreferences]
+DisplayName=Диалоги
+
+[GeneralDialogsPreferencesEditor]
+ConfirmationsGroupBox=Подтверждения
+ConfirmCloseWorkspaceCheckBox=Требовать подтверждение при закрытии рабочего пространства
+ConfirmRestartCheckBox=Требовать подтверждение при перезапуске TimeTracker3
+ConfirmExitCheckBox=Требовать подтверждение при выходе из TimeTracker3
+
+[GeneralPreferences]
+DisplayName=Общие
+
+[GeneralStartupPreferences]
+DisplayName=Автозагрузка
+
+[GeneralStartupPreferencesEditor]
+LoadLastWorkspaceAtStartupCheckBox=Перезагрузить последнее рабочее пространство при запуске
+RememnerLastLoginCheckBox=Запомнить последний вход в систему

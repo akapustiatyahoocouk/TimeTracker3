@@ -1,6 +1,6 @@
 //
 //  tt3-gui/GeneralStartupPreferencesEditor.cpp - tt3::gui::GeneralStartupPreferencesEditor class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -24,7 +24,14 @@ GeneralStartupPreferencesEditor::GeneralStartupPreferencesEditor(QWidget * paren
     :   PreferencesEditor(parent),
         _ui(new Ui::GeneralStartupPreferencesEditor)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(GeneralStartupPreferencesEditor));
+
     _ui->setupUi(this);
+
+    _ui->loadLastWorkspaceAtStartupCheckBox->setText(
+        rr.string(RID(LoadLastWorkspaceAtStartupCheckBox)));
+    _ui->rememnerLastLoginCheckBox->setText(
+        rr.string(RID(RememnerLastLoginCheckBox)));
 
     //  Start off with current values from Settings
     loadControlValues();

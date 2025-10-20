@@ -1,6 +1,6 @@
 //
 //  tt3-gui/GeneralStartupPreferences.cpp - tt3::gui::GeneralStartupPreferences class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -32,7 +32,8 @@ GeneralStartupPreferences::Mnemonic GeneralStartupPreferences::mnemonic() const
 
 QString GeneralStartupPreferences::displayName() const
 {
-    return "Startup";
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(GeneralStartupPreferences));
+    return rr.string(RID(DisplayName));
 }
 
 Preferences * GeneralStartupPreferences::parent() const

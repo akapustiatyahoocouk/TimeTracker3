@@ -1,6 +1,6 @@
 //
 //  tt3-gui/GeneralDialogsPreferences.cpp - tt3::gui::GeneralDialogsPreferences class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -32,7 +32,8 @@ GeneralDialogsPreferences::Mnemonic GeneralDialogsPreferences::mnemonic() const
 
 QString GeneralDialogsPreferences::displayName() const
 {
-    return "Dialogs";
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(GeneralDialogsPreferences));
+    return rr.string(RID(DisplayName));
 }
 
 Preferences * GeneralDialogsPreferences::parent() const

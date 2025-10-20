@@ -1,6 +1,6 @@
 //
 //  tt3-gui/GeneralPreferences.cpp - tt3::gui::GeneralPreferences class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -32,7 +32,8 @@ GeneralPreferences::Mnemonic GeneralPreferences::mnemonic() const
 
 QString GeneralPreferences::displayName() const
 {
-    return "General";
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(GeneralPreferences));
+    return rr.string(RID(DisplayName));
 }
 
 Preferences * GeneralPreferences::parent() const

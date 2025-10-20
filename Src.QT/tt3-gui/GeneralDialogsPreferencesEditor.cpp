@@ -1,6 +1,6 @@
 //
 //  tt3-gui/GeneralDialogsPreferencesEditor.cpp - tt3::gui::GeneralDialogsPreferencesEditor class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -24,7 +24,18 @@ GeneralDialogsPreferencesEditor::GeneralDialogsPreferencesEditor(QWidget * paren
     :   PreferencesEditor(parent),
         _ui(new Ui::GeneralDialogsPreferencesEditor)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(GeneralDialogsPreferencesEditor));
+
     _ui->setupUi(this);
+
+    _ui->confirmationsGroupBox->setTitle(
+        rr.string(RID(ConfirmationsGroupBox)));
+    _ui->confirmCloseWorkspaceCheckBox->setText(
+        rr.string(RID(ConfirmCloseWorkspaceCheckBox)));
+    _ui->confirmRestartCheckBox->setText(
+        rr.string(RID(ConfirmRestartCheckBox)));
+    _ui->confirmExitCheckBox->setText(
+        rr.string(RID(ConfirmExitCheckBox)));
 
     //  Start off with current values from Settings
     loadControlValues();
