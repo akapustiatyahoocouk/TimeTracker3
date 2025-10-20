@@ -244,6 +244,13 @@ DetailsWE=\nThe project has {0} work unit(s) logged for it\n(with total duration
 DetailsW=\nThe project has {0} work unit(s) logged for it\n(with total duration of {1} minute(s));\nall these will lose their attribution to the project.
 DetailsE=\nThe project has {0} event(s) logged for it;\nall these will lose their attribution to the project.
 
+[DestroyPublicActivityDialog]
+Title=Destroy public activity
+Prompt=Are you sure you want to destroy public activity\n{0} ?
+DetailsWE=\nThe public activity has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)) and {2} event(s).
+DetailsW=\nThe public activity has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)).
+DetailsE=\nThe public activity has {0} event(s) logged for it.
+
 [DestroyUserDialog]
 Title=Destroy user
 Prompt=Are you sure you want to destroy user {0} with {1} accounts?

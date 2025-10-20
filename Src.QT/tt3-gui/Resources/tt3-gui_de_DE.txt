@@ -244,6 +244,13 @@ DetailsWE=\nFür das Projekt wurden {0} Arbeitseinheiten protokolliert\n(mit ein
 DetailsW=\nFür das Projekt wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n));\nalle diese verlieren ihre Projektzuordnung.
 DetailsE=\nFür das Projekt wurden {0} Ereignisse protokolliert;\nalle diese verlieren ihre Projektzuordnung.
 
+[DestroyPublicActivityDialog]
+Title=Öffentliche Aktivität zerstören
+Prompt=Möchten Sie die öffentliche Aktivität {0} wirklich zerstören?
+DetailsWE=\nFür die öffentliche Aktivität wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse.
+DetailsW=\nFür die öffentliche Aktivität wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)).
+DetailsE=\nFür die öffentliche Aktivität wurden {0} Ereignisse protokolliert.
+
 [DestroyUserDialog]
 Title=Benutzer löschen
 Prompt=Möchten Sie Benutzer {0} mit {1} Konten wirklich löschen ?

@@ -19,7 +19,7 @@ using namespace tt3::gui;
 
 namespace tt3::gui
 {
-extern CurrentActivity theCurrentActivity;
+    extern CurrentActivity theCurrentActivity;
 }
 
 //////////
