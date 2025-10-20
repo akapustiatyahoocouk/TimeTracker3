@@ -19,7 +19,7 @@ using namespace tt3::db::xml;
 
 //////////
 //  Constants
-const QString DatabaseType::PreferredFilenameExtension = ".tt3";
+const QString DatabaseType::PreferredFilenameExtension = ".tt3-xml";
 
 //////////
 //  Sigleton

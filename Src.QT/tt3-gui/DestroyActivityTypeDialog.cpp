@@ -58,7 +58,7 @@ QString DestroyActivityTypeDialog::_prompt(
             RID(Prompt),
             activityType->displayName(credentials),         //  may throw
             activityType->activities(credentials).size());  //  may throw
-    //  If there are actuivities of this type, count their
+    //  If there are activities of this type, count their
     //  works/events, as these will lose their attribution to
     //  an activity type
     try

@@ -128,13 +128,21 @@ void Workload::setDescription(
 auto Workload::contributingActivities(
     ) const -> tt3::db::api::Activities
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return tt3::db::api::Activities(_contributingActivities.cbegin(), _contributingActivities.cend());
 }
 
 auto Workload::beneficiaries(
     ) const -> tt3::db::api::Beneficiaries
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return tt3::db::api::Beneficiaries(_beneficiaries.cbegin(), _beneficiaries.cend());
 }
 
 void Workload::setBeneficiaries(

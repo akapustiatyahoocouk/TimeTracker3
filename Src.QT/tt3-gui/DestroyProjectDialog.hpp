@@ -80,9 +80,11 @@
         static void     _collectDestructionClosure(
                                 tt3::ws::Project project,
                                 const tt3::ws::Credentials & credentials,
-                                int & projectsCount
+                                qsizetype & projectsCount,
+                                qsizetype & worksCount,
+                                tt3::ws::Events & events,
+                                int64_t & worksDurationMs
                             );
-        //  TODO add "_collectDestructionClosure" to all DestroyXXXDialogs
 
         //////////
         //  Signal handlers

@@ -23,6 +23,15 @@ struct ComponentManager::_Impl
     QMap<Mnemonic, IComponent*> registry;
 };
 
+namespace
+{
+    QString iniFileName()
+    {
+        QDir home = QDir::home();
+        return home.filePath(".tt3");
+    }
+}
+
 //////////
 //  Operations
 Components ComponentManager::allComponents()
@@ -88,10 +97,7 @@ void ComponentManager::loadComponentSettings()
     _Impl * impl = _impl();
     Lock lock(impl->guard);
 
-    QDir home = QDir::home();
-    QString iniFileName = home.filePath(".tt3");
-
-    QFile iniFile(iniFileName);
+    QFile iniFile(iniFileName());
     if (iniFile.open(QIODevice::ReadOnly))
     {
         IComponent * currentComponent = nullptr;
@@ -137,6 +143,10 @@ void ComponentManager::loadComponentSettings()
             }
         }
     }
+    else
+    {   //  OOPS! Log, but suppress
+        qCritical() << iniFile.errorString();
+    }
 }
 
 void ComponentManager::saveComponentSettings()
@@ -144,10 +154,7 @@ void ComponentManager::saveComponentSettings()
     _Impl * impl = _impl();
     Lock lock(impl->guard);
 
-    QDir home = QDir::home();
-    QString iniFileName = home.filePath(".tt3");
-
-    QFile iniFile(iniFileName);
+    QFile iniFile(iniFileName());
     if (iniFile.open(QIODevice::WriteOnly))
     {
         QTextStream iniStream(&iniFile);
@@ -188,6 +195,10 @@ void ComponentManager::saveComponentSettings()
             }
             iniStream << Qt::endl;
         }
+    }
+    else
+    {   //  OOPS! Log, but suppress
+        qCritical() << iniFile.errorString();
     }
 }
 

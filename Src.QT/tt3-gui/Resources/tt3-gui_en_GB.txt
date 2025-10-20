@@ -236,6 +236,14 @@ DetailsWE=\nThe private task has {0} work unit(s) logged for it\n(with total dur
 DetailsW=\nThe private task has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)).
 DetailsE=\nThe private task has {0} event(s) logged for it.
 
+[DestroyProjectDialog]
+Title=Destroy project
+Prompt=Are you sure you want to destroy project\n{0} ?
+Subprojects=\nAlong with it, its {0} subprojects will be destroyed.
+DetailsWE=\nThe project has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)) and {2} event(s);\nall these will lose their attribution to the project.
+DetailsW=\nThe project has {0} work unit(s) logged for it\n(with total duration of {1} minute(s));\nall these will lose their attribution to the project.
+DetailsE=\nThe project has {0} event(s) logged for it;\nall these will lose their attribution to the project.
+
 [DestroyUserDialog]
 Title=Destroy user
 Prompt=Are you sure you want to destroy user {0} with {1} accounts?
