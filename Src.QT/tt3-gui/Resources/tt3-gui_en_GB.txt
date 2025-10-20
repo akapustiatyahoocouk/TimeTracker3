@@ -228,6 +228,14 @@ DetailsWE=\nThe private activity has {0} work unit(s) logged for it\n(with total
 DetailsW=\nThe private activity has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)).
 DetailsE=\nThe private activity has {0} event(s) logged for it.
 
+[DestroyPrivateTaskDialog]
+Title=Destroy private task
+Prompt=Are you sure you want to destroy private task\n{0} ?
+Subtasks=\nAlong with it, its {0} subtasks will be destroyed.
+DetailsWE=\nThe private task has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)) and {2} event(s).
+DetailsW=\nThe private task has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)).
+DetailsE=\nThe private task has {0} event(s) logged for it.
+
 [DestroyUserDialog]
 Title=Destroy user
 Prompt=Are you sure you want to destroy user {0} with {1} accounts?

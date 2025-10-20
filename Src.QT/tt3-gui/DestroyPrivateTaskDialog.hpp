@@ -77,6 +77,14 @@ namespace tt3::gui
         //  Helpers
         static QString  _prompt(tt3::ws::PrivateTask privateTask,
                                 const tt3::ws::Credentials & credentials);
+        static void     _collectDestructionClosure(
+                                tt3::ws::PrivateTask privateTask,
+                                const tt3::ws::Credentials & credentials,
+                                qsizetype & tasksCount,
+                                qsizetype & worksCount,
+                                qsizetype & eventsCount,
+                                int64_t & worksDurationMs
+                            );
 
         //////////
         //  Signal handlers

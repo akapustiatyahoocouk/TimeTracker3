@@ -200,21 +200,21 @@ CancelPushButton=Abbrechen
 
 [DestroyAccountDialog]
 Title=Konto löschen
-Prompt=Möchten Sie Konto {0}\nvon Benutzer {1} wirklich löschen?
+Prompt=Möchten Sie Konto {0}\nvon Benutzer {1} wirklich löschen ?
 DetailsWE=\nFür das Konto wurden {0} Arbeitseinheiten\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse protokolliert.
 DetailsW=\nFür das Konto wurden {0} Arbeitseinheiten\n(mit einer Gesamtdauer von {1} Minute(n)) protokolliert.
 DetailsE=\nFür das Konto wurden {0} Ereignisse protokolliert.
 
 [DestroyActivityTypeDialog]
 Title=Aktivitätstyp löschen
-Prompt=Möchten Sie den Aktivitätstyp \n{0}, der {1} Aktivitäten zugewiesen ist, wirklich löschen ?
+Prompt=Möchten Sie den Aktivitätstyp {0}, der\n{1} Aktivitäten zugewiesen sind, wirklich löschen ?
 DetailsWE=\nFür diese Aktivitäten wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse;\nalle diese verlieren ihre Zuordnung zum Aktivitätstyp.
 DetailsW=\nFür diese Aktivitäten wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n));\nalle diese verlieren ihre Zuordnung zum Aktivitätstyp.
 DetailsE=\nFür diese Aktivitäten wurden {0} Ereignisse protokolliert;\nalle diese verlieren ihre Zuordnung zum Aktivitätstyp.
 
 [DestroyBeneficiaryDialog]
 Title=Begünstigten löschen
-Prompt=Möchten Sie den Begünstigten wirklich löschen\n{0} ?
+Prompt=Möchten Sie den Begünstigten {0}\nwirklich löschen ?
 
 [DestroyEventDialog]
 Title=Ereignis zerstören
@@ -228,9 +228,17 @@ DetailsWE=\nFür die private Aktivität wurden {0} Arbeitseinheiten protokollier
 DetailsW=\nFür die private Aktivität wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)).
 DetailsE=\nFür die private Aktivität wurden {0} Ereignisse protokolliert.
 
+[DestroyPrivateTaskDialog]
+Title=Private Aufgabe löschen
+Prompt=Möchten Sie die private Aufgabe\n{0} wirklich löschen ?
+Subtasks=\nZusammen mit der Aufgabe werden auch die {0} Unteraufgaben gelöscht.
+DetailsWE=\nFür die private Aufgabe wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse.
+DetailsW=\nFür die private Aufgabe wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)).
+DetailsE=\nFür die private Aufgabe wurden {0} Ereignisse protokolliert.
+
 [DestroyUserDialog]
 Title=Benutzer löschen
-Prompt=Möchten Sie Benutzer {0} mit {1} Konten wirklich löschen?
+Prompt=Möchten Sie Benutzer {0} mit {1} Konten wirklich löschen ?
 DetailsWE=\nFür den Benutzer wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse.
 DetailsW=\nFür den Benutzer wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)).
 DetailsE=\nFür den Benutzer wurden {0} Ereignisse protokolliert.
