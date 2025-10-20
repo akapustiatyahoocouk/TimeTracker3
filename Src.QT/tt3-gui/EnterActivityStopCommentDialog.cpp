@@ -1,6 +1,6 @@
 //
 //  tt3-gui/EnterActivityStopCommentDialog.cpp - tt3::gui::EnterActivityStopCommentDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -21,12 +21,15 @@ using namespace tt3::gui;
 //  Construction/destrution
 EnterActivityStopCommentDialog::EnterActivityStopCommentDialog(
         ::QWidget * parent,
-        tt3::ws::Activity activity
+        tt3::ws::Activity activity,
+        const tt3::ws::Credentials & credentials
     ) : EditStringDialog(
             parent,
             _dialogIcon(activity),
-            _dialogTitle(activity),
-            "Enter stop comment:",
+            _dialogTitle(activity, credentials),
+            Component::Resources::instance()->string(
+                RSID(EnterActivityStopCommentDialog),
+                RID(Prompt)),
             "",
             [=](auto s)
             {
@@ -61,26 +64,16 @@ QIcon EnterActivityStopCommentDialog::_dialogIcon(
 }
 
 QString EnterActivityStopCommentDialog::_dialogTitle(
-        tt3::ws::Activity activity
+        tt3::ws::Activity activity,
+        const tt3::ws::Credentials & credentials
     )
 {
-    if (std::dynamic_pointer_cast<tt3::ws::PrivateTaskImpl>(activity))
-    {
-        return "Stop private task";
-    }
-    else if (std::dynamic_pointer_cast<tt3::ws::PublicTaskImpl>(activity))
-    {
-        return "Stop public task";
-    }
-    else if (std::dynamic_pointer_cast<tt3::ws::PrivateActivityImpl>(activity))
-    {
-        return "Stop private activity";
-    }
-    else
-    {
-        Q_ASSERT(std::dynamic_pointer_cast<tt3::ws::PublicActivityImpl>(activity));
-        return "Stop public activity";
-    }
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(EnterActivityStopCommentDialog));
+
+    return rr.string(
+        RID(Title),
+        activity->type()->displayName(),
+        activity->displayName(credentials));
 }
 
-//  End of tt3-gui/EnterActivityStartCommentDialog.cpp
+//  End of tt3-gui/EnterActivityStopCommentDialog.cpp

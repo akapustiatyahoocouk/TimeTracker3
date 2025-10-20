@@ -270,6 +270,21 @@ DetailsE=\nThe user has {0} event(s) logged for it.
 Title=Destroy work
 Prompt=Are you sure you want to destroy work unit\n{0}..{1}\n(duration {2} logged by {3} against\n{4} {5} ?
 
+[DestroyWorkStreamDialog]
+Title=Destroy work stream
+Prompt=Are you sure you want to destroy work stream\n{0} ?
+DetailsWE=\nThe work stream has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)) and {2} event(s);\nall these will lose their attribution to the work stream.
+DetailsW=\nThe work stream has {0} work unit(s) logged for it\n(with total duration of {1} minute(s));\nall these will lose their attribution to the work stream.
+DetailsE=\nThe work stream has {0} event(s) logged for it;\nall these will lose their attribution to the work stream.
+
 [EditStringDialog]
 OkPushButton=OK
 CancelPushButton=Cancel
+
+[EnterActivityStartCommentDialog]
+Title={0} {1}
+Prompt=Enter start comment:
+
+[EnterActivityStopCommentDialog]
+Title={0} {1}
+Prompt=Enter stop comment:

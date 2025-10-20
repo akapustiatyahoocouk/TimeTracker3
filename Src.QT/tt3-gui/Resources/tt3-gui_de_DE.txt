@@ -270,6 +270,21 @@ DetailsE=\nFür den Benutzer wurden {0} Ereignisse protokolliert.
 Title=Arbeit zerstören
 Prompt=Möchten Sie die Arbeitseinheit\n{0}..{1}\n(Dauer {2}) wirklich zerstören, protokolliert von {3} gegen\n{4} {5}?
 
+[DestroyWorkStreamDialog]
+Title=Workstream löschen
+Prompt=Möchten Sie den Workstream {0} wirklich löschen ?
+DetailsWE=\nFür den Workstream wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse.\nAlle diese Ereignisse verlieren ihre Zuordnung zum Workstream.
+DetailsW=\nFür den Workstream wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)).\nAlle diese Ereignisse verlieren ihre Zuordnung zum Workstream.
+DetailsE=\nFür den Workstream wurden {0} Ereignisse protokolliert.\nAlle diese Ereignisse verlieren ihre Zuordnung zum Workstream.
+
 [EditStringDialog]
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
+
+[EnterActivityStartCommentDialog]
+Title={0} {1}
+Prompt=Startkommentar eingeben:
+
+[EnterActivityStopCommentDialog]
+Title={0} {1}
+Prompt=Stoppkommentar eingeben:

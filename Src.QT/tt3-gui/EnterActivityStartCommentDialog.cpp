@@ -1,6 +1,6 @@
 //
 //  tt3-gui/EnterActivityStartCommentDialog.cpp - tt3::gui::EnterActivityStartCommentDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -21,12 +21,15 @@
 //  Construction/destrution
 EnterActivityStartCommentDialog::EnterActivityStartCommentDialog(
         ::QWidget * parent,
-        tt3::ws::Activity activity
+        tt3::ws::Activity activity,
+        const tt3::ws::Credentials & credentials
     ) : EditStringDialog(
             parent,
             _dialogIcon(activity),
-            _dialogTitle(activity),
-            "Enter start comment:",
+            _dialogTitle(activity, credentials),
+            Component::Resources::instance()->string(
+                RSID(EnterActivityStartCommentDialog),
+                RID(Prompt)),
             "",
             [=](auto s)
             {
@@ -61,26 +64,16 @@ QIcon EnterActivityStartCommentDialog::_dialogIcon(
 }
 
 QString EnterActivityStartCommentDialog::_dialogTitle(
-        tt3::ws::Activity activity
+        tt3::ws::Activity activity,
+        const tt3::ws::Credentials & credentials
     )
 {
-    if (std::dynamic_pointer_cast<tt3::ws::PrivateTaskImpl>(activity))
-    {
-        return "Start private task";
-    }
-    else if (std::dynamic_pointer_cast<tt3::ws::PublicTaskImpl>(activity))
-    {
-        return "Start public task";
-    }
-    else if (std::dynamic_pointer_cast<tt3::ws::PrivateActivityImpl>(activity))
-    {
-        return "Start private activity";
-    }
-    else
-    {
-        Q_ASSERT(std::dynamic_pointer_cast<tt3::ws::PublicActivityImpl>(activity));
-        return "Start public activity";
-    }
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(EnterActivityStartCommentDialog));
+
+    return rr.string(
+        RID(Title),
+        activity->type()->displayName(),
+        activity->displayName(credentials));
 }
 
 //  End of tt3-gui/EnterActivityStartCommentDialog.cpp

@@ -44,11 +44,16 @@ namespace tt3::gui
         ///     Constructs the dialog
         /// \param parent
         ///     The parent widget for the dialog; nullptr == none.
-        /// \param task
+        /// \param activity
         ///     The Activity that is being "started".
+        /// \param credentials
+        ///     The credentials to use for data access.
+        /// \exception WorkspaceException
+        ///     If a data access error occurs.
         EnterActivityStartCommentDialog(
                 ::QWidget * parent,
-                tt3::ws::Activity activity
+                tt3::ws::Activity activity,
+                const tt3::ws::Credentials & credentials
             );
         //  The default destructor is OK
 
@@ -71,7 +76,8 @@ namespace tt3::gui
                                 tt3::ws::Activity activity
                             );
         static QString  _dialogTitle(
-                                tt3::ws::Activity activity
+                                tt3::ws::Activity activity,
+                                const tt3::ws::Credentials & credentials
                             );
     };
 }

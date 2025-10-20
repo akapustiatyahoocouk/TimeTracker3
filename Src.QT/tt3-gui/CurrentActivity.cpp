@@ -152,7 +152,7 @@ bool CurrentActivity::replaceWith(
             if (with != nullptr &&
                 with->requireCommentOnStart(credentials))  //  may throw
             {
-                EnterActivityStartCommentDialog dlg(theCurrentSkin->mainWindow(), with);
+                EnterActivityStartCommentDialog dlg(theCurrentSkin->mainWindow(), with, credentials);   //  may throw
                 if (dlg.doModal() != EnterActivityStartCommentDialog::Result::Ok)
                 {   //  OOPS! The user has cancelled the change
                     return false;
@@ -168,7 +168,7 @@ bool CurrentActivity::replaceWith(
             else if (impl->activity != nullptr &&
                      impl->activity->requireCommentOnStop(credentials))   //  may throw
             {
-                EnterActivityStopCommentDialog dlg(theCurrentSkin->mainWindow(), impl->activity);
+                EnterActivityStopCommentDialog dlg(theCurrentSkin->mainWindow(), impl->activity, credentials);  //  may throw
                 if (dlg.doModal() != EnterActivityStopCommentDialog::Result::Ok)
                 {   //  OOPS! The user has cancelled the change
                     return false;

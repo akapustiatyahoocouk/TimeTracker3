@@ -1,6 +1,6 @@
 //
 //  tt3-gui/EditStringDialog.cpp - tt3::gui::EditStringDialog class implementation (+specializations)
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -31,7 +31,7 @@ EditStringDialog::EditStringDialog(
         _validator(validator),
         _ui(new Ui::EditStringDialog)
 {
-    static Component::Resources *const resources = Component::Resources::instance(); //  idempotent
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(EditStringDialog));
 
     _ui->setupUi(this);
     this->setWindowIcon(icon);
@@ -42,11 +42,11 @@ EditStringDialog::EditStringDialog(
     _ui->lineEdit->setText(initialValue);
 
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
-        setText(resources->string(RSID(EditStringDialog), RID(OkPushButton)));
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
-        setText(resources->string(RSID(EditStringDialog), RID(CancelPushButton)));
+        setText(rr.string(RID(CancelPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
