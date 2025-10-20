@@ -292,3 +292,7 @@ Prompt=Введите комментарий к остановке:
 [EnterCommentDialog]
 Title=Добавить комментарий
 Prompt=Введите комментарий:
+
+[EnterTaskCompletionCommentDialog]
+Title={0} {1}
+Prompt=Введите комментарий к завершению задачи:

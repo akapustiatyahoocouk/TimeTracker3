@@ -73,7 +73,7 @@ QString EnterActivityStopCommentDialog::_dialogTitle(
     return rr.string(
         RID(Title),
         activity->type()->displayName(),
-        activity->displayName(credentials));
+        activity->displayName(credentials));    //  may throw
 }
 
 //  End of tt3-gui/EnterActivityStopCommentDialog.cpp

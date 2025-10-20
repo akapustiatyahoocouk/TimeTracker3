@@ -371,7 +371,7 @@ void ModifyPrivateTaskDialog::accept()
         {   //  Completing a PrivateTask
             if (_privateTask->requireCommentOnCompletion(_credentials))
             {   //  ...that requires a comment
-                EnterTaskCompletionCommentDialog dlg(this, _privateTask);
+                EnterTaskCompletionCommentDialog dlg(this, _privateTask, _credentials); //  may throw
                 if (dlg.doModal() != EnterTaskCompletionCommentDialog::Result::Ok)
                 {   //  OOPS! The user has cancelled!
                     return;

@@ -1037,7 +1037,7 @@ void PrivateTaskManager::_completePrivateTaskPushButtonClicked()
             QString completionComment;
             if (privateTask->requireCommentOnCompletion(_credentials))
             {
-                EnterTaskCompletionCommentDialog dlg(this, privateTask);
+                EnterTaskCompletionCommentDialog dlg(this, privateTask, _credentials);  //  may throw
                 if (dlg.doModal() != EnterTaskCompletionCommentDialog::Result::Ok)
                 {   //  OOPS! User has cancelled!
                     return;

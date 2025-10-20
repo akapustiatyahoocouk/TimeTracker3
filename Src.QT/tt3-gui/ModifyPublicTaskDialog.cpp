@@ -329,7 +329,7 @@ void ModifyPublicTaskDialog::accept()
         {   //  Completing a PublicTask
             if (_publicTask->requireCommentOnCompletion(_credentials))
             {   //  ...that requires a comment
-                EnterTaskCompletionCommentDialog dlg(this, _publicTask);
+                EnterTaskCompletionCommentDialog dlg(this, _publicTask, _credentials);  //  may throw
                 if (dlg.doModal() != EnterTaskCompletionCommentDialog::Result::Ok)
                 {   //  OOPS! The user has cancelled!
                     return;

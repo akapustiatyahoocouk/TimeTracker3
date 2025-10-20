@@ -46,9 +46,14 @@ namespace tt3::gui
         ///     The parent widget for the dialog; nullptr == none.
         /// \param task
         ///     The Task that is being "completed".
+        /// \param credentials
+        ///     The credentials to use for data access.
+        /// \exception WorkspaceException
+        ///     If a data access error occurs.
         EnterTaskCompletionCommentDialog(
                 ::QWidget * parent,
-                tt3::ws::Task task
+                tt3::ws::Task task,
+                const tt3::ws::Credentials & credentials
             );
         //  The default destructor is OK
 
@@ -71,7 +76,8 @@ namespace tt3::gui
             tt3::ws::Task task
             );
         static QString  _dialogTitle(
-                tt3::ws::Task task
+                tt3::ws::Task task,
+                const tt3::ws::Credentials & credentials
             );
     };
 }

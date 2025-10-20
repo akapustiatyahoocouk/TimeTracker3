@@ -1,6 +1,6 @@
 //
 //  tt3-gui/EnterTaskCompletionCommentDialog.cpp - tt3::gui::EnterTaskCompletionCommentDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -21,12 +21,15 @@
 //  Construction/destrution
 EnterTaskCompletionCommentDialog::EnterTaskCompletionCommentDialog(
         ::QWidget * parent,
-        tt3::ws::Task task
+        tt3::ws::Task task,
+        const tt3::ws::Credentials & credentials
     ) : EditStringDialog(
             parent,
             _dialogIcon(task),
-            _dialogTitle(task),
-            "Enter task completion comment:",
+            _dialogTitle(task, credentials),
+            Component::Resources::instance()->string(
+                RSID(EnterTaskCompletionCommentDialog),
+                RID(Prompt)),
             "",
             [=](auto s)
             {
@@ -53,18 +56,16 @@ QIcon EnterTaskCompletionCommentDialog::_dialogIcon(
 }
 
 QString EnterTaskCompletionCommentDialog::_dialogTitle(
-        tt3::ws::Task task
+        tt3::ws::Task task,
+        const tt3::ws::Credentials & credentials
     )
 {
-    if (std::dynamic_pointer_cast<tt3::ws::PrivateTaskImpl>(task))
-    {
-        return "Complete private task";
-    }
-    else
-    {
-        Q_ASSERT(std::dynamic_pointer_cast<tt3::ws::PublicTaskImpl>(task));
-        return "Complete public task";
-    }
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(EnterTaskCompletionCommentDialog));
+
+    return rr.string(
+        RID(Title),
+        task->type()->displayName(),
+        task->displayName(credentials));    //  may throw
 }
 
 //  End of tt3-gui/EnterTaskCompletionCommentDialog.cpp

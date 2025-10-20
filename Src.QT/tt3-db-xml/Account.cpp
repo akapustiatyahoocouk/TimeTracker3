@@ -220,7 +220,7 @@ void Account::setQuickPicksList(
     for (tt3::db::api::IActivity * activity : quickPicksList)
     {
         Q_ASSERT(activity != nullptr); //  should have been caught before!
-        Activity * xmlActivity = dynamic_cast<Activity*>(activity);
+        auto xmlActivity = dynamic_cast<Activity*>(activity);
         if (xmlActivity == nullptr ||
             xmlActivity->_database != this->_database ||
             !xmlActivity->_isLive)
@@ -348,7 +348,7 @@ auto Account::createWork(
             tt3::util::toString(startedAt) + "/" +
                 tt3::util::toString(finishedAt));
     }
-    Activity * xmlActivity = dynamic_cast<Activity*>(activity);
+    auto xmlActivity = dynamic_cast<Activity*>(activity);
     if (xmlActivity == nullptr ||
         xmlActivity->_database != this->_database ||
         !xmlActivity->_isLive)
@@ -414,7 +414,7 @@ auto Account::createEvent(
     Activities xmlActivities;
     for (tt3::db::api::IActivity * activity : activities)
     {
-        Activity * xmlActivity = dynamic_cast<Activity*>(activity);
+        auto xmlActivity = dynamic_cast<Activity*>(activity);
         if (xmlActivity == nullptr ||
             xmlActivity->_database != this->_database ||
             !xmlActivity->_isLive)

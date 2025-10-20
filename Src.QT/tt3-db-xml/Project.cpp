@@ -156,7 +156,7 @@ auto Project::createChild(
     for (tt3::db::api::IBeneficiary * beneficiary : beneficiaries)
     {
         Q_ASSERT(beneficiary != nullptr);   //  should have been caught earlier
-        Beneficiary * xmlBeneficiary = dynamic_cast<Beneficiary*>(beneficiary);
+        auto xmlBeneficiary = dynamic_cast<Beneficiary*>(beneficiary);
         if (xmlBeneficiary == nullptr ||
             xmlBeneficiary->_database != this->_database ||
             !xmlBeneficiary->_isLive)

@@ -867,7 +867,7 @@ void PublicTaskManager::_completePublicTaskPushButtonClicked()
             QString completionComment;
             if (publicTask->requireCommentOnCompletion(_credentials))
             {
-                EnterTaskCompletionCommentDialog dlg(this, publicTask);
+                EnterTaskCompletionCommentDialog dlg(this, publicTask, _credentials);   //  may throw
                 if (dlg.doModal() != EnterTaskCompletionCommentDialog::Result::Ok)
                 {   //  OOPS! User has cancelled!
                     return;

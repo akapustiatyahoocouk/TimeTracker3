@@ -864,7 +864,7 @@ auto Database::createProject(
     for (tt3::db::api::IBeneficiary * beneficiary : beneficiaries)
     {
         Q_ASSERT(beneficiary != nullptr);   //  should have been caught earlier
-        Beneficiary * xmlBeneficiary = dynamic_cast<Beneficiary*>(beneficiary);
+        auto xmlBeneficiary = dynamic_cast<Beneficiary*>(beneficiary);
         if (xmlBeneficiary == nullptr ||
             xmlBeneficiary->_database != this ||
             !xmlBeneficiary->_isLive)
@@ -952,7 +952,7 @@ auto Database::createWorkStream(
     for (tt3::db::api::IBeneficiary * beneficiary : beneficiaries)
     {
         Q_ASSERT(beneficiary != nullptr);   //  should have been caught earlier
-        Beneficiary * xmlBeneficiary = dynamic_cast<Beneficiary*>(beneficiary);
+        auto xmlBeneficiary = dynamic_cast<Beneficiary*>(beneficiary);
         if (xmlBeneficiary == nullptr ||
             xmlBeneficiary->_database != this ||
             !xmlBeneficiary->_isLive)
@@ -1039,7 +1039,7 @@ auto Database::createBeneficiary(
     for (tt3::db::api::IWorkload * workload : workloads)
     {
         Q_ASSERT(workload != nullptr); //  should have been caught before!
-        Workload * xmlWorkload = dynamic_cast<Workload*>(workload);
+        auto xmlWorkload = dynamic_cast<Workload*>(workload);
         if (xmlWorkload == nullptr ||
             xmlWorkload->_database != this ||
             !xmlWorkload->_isLive)
