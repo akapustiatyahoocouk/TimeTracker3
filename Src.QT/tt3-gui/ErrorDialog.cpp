@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ErrorDialog.cpp - tt3::gui::ErrorDialog class implementation (+specializations)
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -24,8 +24,13 @@ ErrorDialog::ErrorDialog(QWidget * parent, const QString & errorMessage)
     :   QDialog(parent),
         _ui(new Ui::ErrorDialog)
 {
-    _ui->setupUi(this);
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ErrorDialog));
 
+    _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
 

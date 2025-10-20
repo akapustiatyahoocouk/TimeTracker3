@@ -296,3 +296,7 @@ Prompt=Kommentar eingeben:
 [EnterTaskCompletionCommentDialog]
 Title={0} {1}
 Prompt=Geben Sie einen Kommentar zur Aufgabenerledigung ein:
+
+[ErrorDialog]
+Title=FEHLER
+OkPushButton=Bestätigen

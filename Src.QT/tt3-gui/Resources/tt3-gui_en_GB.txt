@@ -296,3 +296,7 @@ Prompt=Enter comment:
 [EnterTaskCompletionCommentDialog]
 Title={0} {1}
 Prompt=Enter task completion comment:
+
+[ErrorDialog]
+Title=ERROR
+OkPushButton=OK
