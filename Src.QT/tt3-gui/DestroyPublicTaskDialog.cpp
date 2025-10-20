@@ -1,6 +1,6 @@
 //
 //  tt3-gui/DestroyPublicTaskDialog.cpp - tt3::gui::DestroyPublicTaskDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -31,7 +31,9 @@ DestroyPublicTaskDialog::DestroyPublicTaskDialog(
     ) : AskYesNoDialog(
             parent,
             QIcon(":/tt3-gui/Resources/Images/Actions/DestroyPublicTaskLarge.png"),
-            "Destroy public task",
+            Component::Resources::instance()->string(
+                RSID(DestroyPublicTaskDialog),
+                RID(Title)),
             _prompt(publicTask, credentials)),
         _publicTask(publicTask),
         _credentials(credentials)
@@ -54,14 +56,93 @@ QString DestroyPublicTaskDialog::_prompt(
         const tt3::ws::Credentials & credentials
     )
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(DestroyPublicTaskDialog));
+
     QString result =
-        "Are you sure you want to destroy public task\n" +
-        publicTask->displayName(credentials) + " ?";
-    //  TODO if there are Works/Events logged against this
+        rr.string(
+            RID(Prompt),
+            publicTask->displayName(credentials)); //  may throw
+    //  If there are Works/Events logged against this
     //  task OR ITS DESCENDNTS, count them and add a line
     //  to the prompt, including the number of descendants -
     //  they all will be delete-cascaded.
+    try
+    {
+        qsizetype tasksCount = 0, worksCount = 0, eventsCount = 0;
+        int64_t worksDurationMs = 0;
+        _collectDestructionClosure( //  may throw
+            publicTask,
+            credentials,
+            tasksCount,
+            worksCount,
+            eventsCount,
+            worksDurationMs);
+        if (tasksCount > 1)
+        {
+            result +=
+                rr.string(
+                    RID(Subtasks),
+                    tasksCount - 1);
+        }
+        if (worksCount > 0 && eventsCount > 0)
+        {
+            result +=
+                rr.string(
+                    RID(DetailsWE),
+                    worksCount,
+                    (worksDurationMs + 59999) / 60000,
+                    eventsCount);
+        }
+        else if (worksCount > 0)
+        {
+            result +=
+                rr.string(
+                    RID(DetailsW),
+                    worksCount,
+                    (worksDurationMs + 59999) / 60000);
+        }
+        else if (eventsCount > 0)
+        {
+            result +=
+                rr.string(
+                    RID(DetailsE),
+                    eventsCount);
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Log, but suppress
+        qCritical() << ex;
+    }
+    //  Done
     return result;
+}
+
+void DestroyPublicTaskDialog::_collectDestructionClosure(
+        tt3::ws::PublicTask publicTask,
+        const tt3::ws::Credentials & credentials,
+        qsizetype & tasksCount,
+        qsizetype & worksCount,
+        qsizetype & eventsCount,
+        int64_t & worksDurationMs
+    )
+{
+    tasksCount++;
+    for (tt3::ws::Work work : publicTask->works(credentials))  //  may throw
+    {
+        worksCount++;
+        worksDurationMs += work->startedAt(credentials).msecsTo(work->finishedAt(credentials)); //  may throw
+    }
+    eventsCount = publicTask->events(credentials).size();  //  may throw
+    for (tt3::ws::PublicTask child : publicTask->children(credentials))   //  may throw
+    {
+        _collectDestructionClosure( //  may throw
+            child,
+            credentials,
+            tasksCount,
+            worksCount,
+            eventsCount,
+            worksDurationMs);
+    }
 }
 
 //////////

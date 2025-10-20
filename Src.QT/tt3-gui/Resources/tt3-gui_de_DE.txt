@@ -251,6 +251,14 @@ DetailsWE=\nFür die öffentliche Aktivität wurden {0} Arbeitseinheiten protoko
 DetailsW=\nFür die öffentliche Aktivität wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)).
 DetailsE=\nFür die öffentliche Aktivität wurden {0} Ereignisse protokolliert.
 
+[DestroyPublicTaskDialog]
+Title=Öffentliche Aufgabe löschen
+Prompt=Möchten Sie die öffentliche Aufgabe\n{0} wirklich löschen ?
+Subtasks=\nZusammen mit der Aufgabe werden auch die {0} Unteraufgaben gelöscht.
+DetailsWE=\nFür die öffentliche Aufgabe wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse.
+DetailsW=\nFür die öffentliche Aufgabe wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)).
+DetailsE=\nFür die öffentliche Aufgabe wurden {0} Ereignisse protokolliert.
+
 [DestroyUserDialog]
 Title=Benutzer löschen
 Prompt=Möchten Sie Benutzer {0} mit {1} Konten wirklich löschen ?
