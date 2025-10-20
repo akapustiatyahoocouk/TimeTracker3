@@ -50,7 +50,8 @@ QString ResourceReader::string(
         const QString & param0
     ) const
 {
-    return _resourceFactory->string(_sectionId, resourceId, param0);
+    return _resourceFactory->string(_sectionId, resourceId,
+                                    param0);
 }
 
 QString ResourceReader::string(
@@ -59,7 +60,8 @@ QString ResourceReader::string(
         const QString & param1
     ) const
 {
-    return _resourceFactory->string(_sectionId, resourceId, param0, param1);
+    return _resourceFactory->string(_sectionId, resourceId,
+                                    param0, param1);
 }
 
 QString ResourceReader::string(
@@ -69,7 +71,50 @@ QString ResourceReader::string(
         const QString & param2
     ) const
 {
-    return _resourceFactory->string(_sectionId, resourceId, param0, param1, param2);
+    return _resourceFactory->string(_sectionId, resourceId,
+                                    param0, param1, param2);
+}
+
+QString ResourceReader::string(
+        const ResourceId & resourceId,
+        const QString & param0,
+        const QString & param1,
+        const QString & param2,
+        const QString & param3
+    ) const
+{
+    return _resourceFactory->string(_sectionId, resourceId,
+                                    param0, param1, param2,
+                                    param3);
+}
+
+QString ResourceReader::string(
+        const ResourceId & resourceId,
+        const QString & param0,
+        const QString & param1,
+        const QString & param2,
+        const QString & param3,
+        const QString & param4
+    ) const
+{
+    return _resourceFactory->string(_sectionId, resourceId,
+                                    param0, param1, param2,
+                                    param3, param4);
+}
+
+QString ResourceReader::string(
+        const ResourceId & resourceId,
+        const QString & param0,
+        const QString & param1,
+        const QString & param2,
+        const QString & param3,
+        const QString & param4,
+        const QString & param5
+    ) const
+{
+    return _resourceFactory->string(_sectionId, resourceId,
+                                    param0, param1, param2,
+                                    param3, param4, param5);
 }
 
 //  End of tt3-util/ResourceReader.cpp

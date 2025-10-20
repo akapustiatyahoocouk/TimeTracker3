@@ -266,6 +266,10 @@ DetailsWE=\nThe user has {0} work unit(s) logged for it\n(with total duration of
 DetailsW=\nThe user has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)).
 DetailsE=\nThe user has {0} event(s) logged for it.
 
+[DestroyWorkDialog]
+Title=Destroy work
+Prompt=Are you sure you want to destroy work unit\n{0}..{1}\n(duration {2} logged by {3} against\n{4} {5} ?
+
 [EditStringDialog]
 OkPushButton=OK
 CancelPushButton=Cancel

@@ -96,4 +96,49 @@ QString IResourceFactory::string(
                   QStringList{param0, param1, param2});
 }
 
+QString IResourceFactory::string(
+        const ResourceSectionId & sectionId,
+        const ResourceId & resourceId,
+        const QString & param0,
+        const QString & param1,
+        const QString & param2,
+        const QString & param3
+    ) const
+{
+    return string(sectionId, resourceId,
+                  QStringList{param0, param1, param2,
+                              param3});
+}
+
+QString IResourceFactory::string(
+        const ResourceSectionId & sectionId,
+        const ResourceId & resourceId,
+        const QString & param0,
+        const QString & param1,
+        const QString & param2,
+        const QString & param3,
+        const QString & param4
+    ) const
+{
+    return string(sectionId, resourceId,
+                  QStringList{param0, param1, param2,
+                              param3, param4});
+}
+
+QString IResourceFactory::string(
+        const ResourceSectionId & sectionId,
+        const ResourceId & resourceId,
+        const QString & param0,
+        const QString & param1,
+        const QString & param2,
+        const QString & param3,
+        const QString & param4,
+        const QString & param5
+    ) const
+{
+    return string(sectionId, resourceId,
+                  QStringList{param0, param1, param2,
+                              param3, param4, param5});
+}
+
 //  End of tt3-util/IResourceFactory.cpp

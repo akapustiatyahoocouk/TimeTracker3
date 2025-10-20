@@ -266,6 +266,10 @@ DetailsWE=\nFür den Benutzer wurden {0} Arbeitseinheiten protokolliert\n(mit ei
 DetailsW=\nFür den Benutzer wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)).
 DetailsE=\nFür den Benutzer wurden {0} Ereignisse protokolliert.
 
+[DestroyWorkDialog]
+Title=Arbeit zerstören
+Prompt=Möchten Sie die Arbeitseinheit\n{0}..{1}\n(Dauer {2}) wirklich zerstören, protokolliert von {3} gegen\n{4} {5}?
+
 [EditStringDialog]
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen

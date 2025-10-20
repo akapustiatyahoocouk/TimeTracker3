@@ -26,7 +26,9 @@ DestroyWorkDialog::DestroyWorkDialog(
     ) : AskYesNoDialog(
             parent,
             QIcon(":/tt3-gui/Resources/Images/Actions/DestroyWorkLarge.png"),
-            "Destroy work",
+            Component::Resources::instance()->string(
+                RSID(DestroyWorkDialog),
+                RID(Title)),
             _prompt(work, credentials)),
         _work(work),
         _credentials(credentials)
@@ -49,24 +51,24 @@ QString DestroyWorkDialog::_prompt(
         const tt3::ws::Credentials & credentials
     )
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(DestroyWorkDialog));
+
     qint64 secs = qMax(0, work->startedAt(credentials).secsTo(work->finishedAt(credentials)));
     char duration[32];
     sprintf(duration, " [%d:%02d:%02d]",
             int(secs / (60 * 60)),
             int((secs / 60) % 60),
             int(secs % 60));
+
     QString result =
-        "Are you sure you want to destroy work unit\n" +
-        work->startedAt(credentials).toLocalTime().toString() +
-        ".." +
-        work->finishedAt(credentials).toLocalTime().toString() +
-        "\n(duration " + duration + " logged by " +
-        work->account(credentials)->login(credentials) +
-        " against\n" +
-        work->activity(credentials)->type()->displayName().toLower() +
-        " " +
-        work->activity(credentials)->displayName(credentials) +
-        "?";
+        rr.string(
+            RID(Prompt),
+            work->startedAt(credentials).toLocalTime().toString(),
+            work->finishedAt(credentials).toLocalTime().toString(),
+            duration,
+            work->account(credentials)->login(credentials),
+            work->activity(credentials)->type()->displayName().toLower(),
+            work->activity(credentials)->displayName(credentials));
     return result;
 }
 
