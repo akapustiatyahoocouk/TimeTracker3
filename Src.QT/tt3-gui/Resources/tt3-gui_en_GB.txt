@@ -367,6 +367,25 @@ OkPushButton=OK
 Title=Manage public tasks
 OkPushButton=OK
 
+[ManageQuickPicksListDialog]
+Title=Manage quick picks list
+PublicActivitiesTab=Public activities
+PublicTasksTab=Public tasks
+PrivateActivitiesTab=Private activities
+PrivateTasksTab=Private tasks
+PublicActivitiesFilterLabel=Filter:
+PublicTasksFilterLabel=Filter:
+PrivateActivitiesFilterLabel=Filter:
+PrivateTasksFilterLabel=Filter:
+MoveToTopPushButton=Move to top
+MoveUpPushButton=Move up
+MoveDownPushButton=Move down
+MoveToBottomPushButton=Move to bottom
+RemovePushButton=Remove
+TaskCompletedSuffix=[completed]
+OkPushButton=OK
+CancelPushButton=Cancel
+
 [ManageUsersDialog]
 Title=Manage users
 OkPushButton=OK

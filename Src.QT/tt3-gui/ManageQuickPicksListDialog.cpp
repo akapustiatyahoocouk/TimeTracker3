@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ManageQuickPicksListDialog.cpp - tt3::gui::ManageQuickPicksListDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -32,16 +32,51 @@ ManageQuickPicksListDialog::ManageQuickPicksListDialog(
         //  Controls
         _ui(new Ui::ManageQuickPicksListDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ManageQuickPicksListDialog));
+
     Q_ASSERT(_account != nullptr);
     Q_ASSERT(_credentials.isValid());
 
     _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
 
     _treeWidgetDecorations = TreeWidgetDecorations(_ui->publicTasksTreeWidget);
     _listWidgetDecorations = ListWidgetDecorations(_ui->quickPicksListWidget);
 
+    //  Set initial control values
+    _ui->tasksTabWidget->setTabText(
+        0, rr.string(RID(PublicActivitiesTab)));
+    _ui->tasksTabWidget->setTabText(
+        1, rr.string(RID(PublicTasksTab)));
+    _ui->tasksTabWidget->setTabText(
+        2, rr.string(RID(PrivateActivitiesTab)));
+    _ui->tasksTabWidget->setTabText(
+        3, rr.string(RID(PrivateTasksTab)));
+    _ui->publicActivitiesFilterLabel->setText(
+        rr.string(RID(PublicActivitiesFilterLabel)));
+    _ui->publicTasksFilterLabel->setText(
+        rr.string(RID(PublicTasksFilterLabel)));
+    _ui->privateActivitiesFilterLabel->setText(
+        rr.string(RID(PrivateActivitiesFilterLabel)));
+    _ui->privateTasksFilterLabel->setText(
+        rr.string(RID(PrivateTasksFilterLabel)));
+    _ui->moveToTopPushButton->setText(
+        rr.string(RID(MoveToTopPushButton)));
+    _ui->moveUpPushButton->setText(
+        rr.string(RID(MoveUpPushButton)));
+    _ui->moveDownPushButton->setText(
+        rr.string(RID(MoveDownPushButton)));
+    _ui->moveToBottomPushButton->setText(
+        rr.string(RID(MoveToBottomPushButton)));
+    _ui->removePushButton->setText(
+        rr.string(RID(RemovePushButton)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
@@ -266,6 +301,7 @@ void ManageQuickPicksListDialog::_refillPrivateTasksTree()
 void ManageQuickPicksListDialog::_refillQuickPicksListWidget()
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ManageQuickPicksListDialog));
 
     //  Make sure the list contains the proper number...
     while (_ui->quickPicksListWidget->count() < _quickPicksList.size())
@@ -290,7 +326,7 @@ void ManageQuickPicksListDialog::_refillQuickPicksListWidget()
             {
                 if (task->completed(_credentials))
                 {
-                    suffix = " [completed]";
+                    suffix = " " + rr.string(RID(TaskCompletedSuffix));
                     foregrund = _treeWidgetDecorations.disabledItemForeground;
                 }
             }
@@ -399,10 +435,11 @@ void ManageQuickPicksListDialog::_refreshCheckMarks(
 auto ManageQuickPicksListDialog::_selectedQuickPicksListItem(
     ) -> tt3::ws::Activity
 {
-    QListWidgetItem * item = _ui->quickPicksListWidget->currentItem();
-    if (item == nullptr) return nullptr;    //  TODO UGLY!!
-    auto a = item->data(Qt::ItemDataRole::UserRole).value<tt3::ws::Activity>();
-    return a;
+    if (QListWidgetItem * item = _ui->quickPicksListWidget->currentItem())
+    {
+        return item->data(Qt::ItemDataRole::UserRole).value<tt3::ws::Activity>();
+    }
+    return nullptr;
 }
 
 void ManageQuickPicksListDialog::_setSelectedQuickPicksListItem(

@@ -363,6 +363,25 @@ OkPushButton=Bestätigen
 Title=Öffentliche Aktivitäten verwalten
 OkPushButton=Bestätigen
 
+[ManageQuickPicksListDialog]
+Title=Schnellauswahlliste verwalten
+PublicActivitiesTab=Öffentliche Aktivitäten
+PublicTasksTab=Öffentliche Aufgaben
+PrivateActivitiesTab=Private Aktivitäten
+PrivateTasksTab=Private Aufgaben
+PublicActivitiesFilterLabel=Filter:
+PublicTasksFilterLabel=Filter:
+PrivateActivitiesFilterLabel=Filter:
+PrivateTasksFilterLabel=Filter:
+MoveToTopPushButton=Nach oben
+MoveUpPushButton=Nachrücken
+MoveDownPushButton=Untenrücken
+MoveToBottomPushButton=Nach unten
+RemovePushButton=Entfernen
+TaskCompletedSuffix=[Abgeschlossen]
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
 [ManagePublicTasksDialog]
 Title=Öffentliche Aufgaben verwalten
 OkPushButton=Bestätigen

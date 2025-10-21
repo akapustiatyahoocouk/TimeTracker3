@@ -367,6 +367,25 @@ OkPushButton=OK
 Title=Управление общедоступными задачами
 OkPushButton=OK
 
+[ManageQuickPicksListDialog]
+Title=Управление списком быстрого выбора
+PublicActivitiesTab=Общедоступные активности
+PublicTasksTab=Общедоступные задачи
+PrivateActivitiesTab=Личные активности
+PrivateTasksTab=Личные задачи
+PublicActivitiesFilterLabel=Фильтр:
+PublicTasksFilterLabel=Фильтр:
+PrivateActivitiesFilterLabel=Фильтр:
+PrivateTasksFilterLabel=Фильтр:
+MoveToTopPushButton=Переместить в начало
+MoveUpPushButton=Переместить вверх
+MoveDownPushButton=Переместить вниз
+MoveToBottomPushButton=Переместить в конец
+RemovePushButton=Удалить
+TaskCompletedSuffix=[завершено]
+OkPushButton=OK
+CancelPushButton=Отмена
+
 [ManageUsersDialog]
 Title=Управление пользователями
 OkPushButton=OK
