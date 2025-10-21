@@ -58,11 +58,11 @@ ModifyActivityTypeDialog::ModifyActivityTypeDialog(
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    //  Set editable control values
+    //  Set editable control values (may throw)
     _ui->displayNameLineEdit->setText(
-        _activityType->displayName(_credentials));  //  may throw
+        _activityType->displayName(_credentials));
     _ui->descriptionPlainTextEdit->setPlainText(
-        _activityType->description(_credentials));  //  may throw
+        _activityType->description(_credentials));
 
     //  Adjust controls
     if (_readOnly)

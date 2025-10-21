@@ -122,17 +122,17 @@ ModifyAccountDialog::ModifyAccountDialog(
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    //  Set editable control values
+    //  Set editable control values (may throw)
     _setSelectedUser(_account->user(_credentials));
-    _ui->loginLineEdit->setText(_account->login(_credentials)); //  may throw
-    _ui->passwordLineEdit->setText(_oldPasswordHash);   //  may throw
-    _ui->confirmPasswordLineEdit->setText(_oldPasswordHash);    //  may throw
-    _setSelectedEmailAddresses(_account->emailAddresses(_credentials)); //  may throw
-    _setSelectedCapabilities(_account->capabilities(_credentials)); //  may throw
-    _ui->enabledCheckBox->setChecked(_account->enabled(_credentials));  //  may throw
+    _ui->loginLineEdit->setText(_account->login(_credentials));
+    _ui->passwordLineEdit->setText(_oldPasswordHash);
+    _ui->confirmPasswordLineEdit->setText(_oldPasswordHash);
+    _setSelectedEmailAddresses(_account->emailAddresses(_credentials));
+    _setSelectedCapabilities(_account->capabilities(_credentials));
+    _ui->enabledCheckBox->setChecked(_account->enabled(_credentials));
 
     tt3::ws::Capabilities clientCapabilities =
-        _account->workspace()->capabilities(credentials);   //  may throw
+        _account->workspace()->capabilities(credentials);
 
     //  Adjust controls
     _ui->userComboBox->setEnabled(false);   //  TODO for now!

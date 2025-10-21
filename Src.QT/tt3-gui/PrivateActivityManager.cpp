@@ -229,19 +229,19 @@ void PrivateActivityManager::refresh()
                 selectedPrivateActivity->canModify(_credentials))    //  may throw
             {   //  RW
                 _ui->modifyPrivateActivityPushButton->setIcon(modifyPrivateActivityIcon);
-                _ui->modifyPrivateActivityPushButton->setText("Modify public activity");
+                _ui->modifyPrivateActivityPushButton->setText("Modify private activity");
             }
             else
             {   //  RO
                 _ui->modifyPrivateActivityPushButton->setIcon(viewPrivateActivityIcon);
-                _ui->modifyPrivateActivityPushButton->setText("View public activity");
+                _ui->modifyPrivateActivityPushButton->setText("View private activity");
             }
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Simulate RO
             qCritical() << ex;
             _ui->modifyPrivateActivityPushButton->setIcon(viewPrivateActivityIcon);
-            _ui->modifyPrivateActivityPushButton->setText("View public activity");
+            _ui->modifyPrivateActivityPushButton->setText("View provate activity");
         }
     }
 }

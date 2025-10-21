@@ -430,3 +430,36 @@ DisplayNameLabel=Name:
 DescriptionLabel=Beschreibung:
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
+
+[ModifyBeneficiaryDialog]
+Title=Begünstigten ändern
+ViewOnlyTitle=Begünstigten anzeigen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+WorkloadsLabel=Arbeitslasten:
+SelectWorkloadsPushButton=Auswählen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[ModifyEmailAddressDialog]
+Title=E-Mail-Adresse ändern
+Prompt=Neue E-Mail-Adresse eingeben:
+
+[ModifyPrivateActivityDialog]
+Title=Private Aktivität ändern
+ViewOnlyTitle=Private Aktivität anzeigen
+UserLabel=Benutzer:
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+ActivityTypeLabel=Aktivitätstyp:
+WorkloadLabel=Arbeitslast:
+SelectWorkloadPushButton=Auswählen
+TimeoutLabel=Zeitüberschreitung:
+TimeoutCheckBox=Beenden, wenn unbeaufsichtigt für
+HoursComboBoxItem={0} Std.
+MinutesComboBoxItem={0} Min.
+RequireCommentOnStartCheckBox=Kommentar beim Starten dieser Aktivität erforderlich
+RequireCommentOnStopCheckBox=Kommentar bei Stopp dieser Aktivität erforderlich
+FullScreenReminderCheckBox=Vollbild-Erinnerung
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen

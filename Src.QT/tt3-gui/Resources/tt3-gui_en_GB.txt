@@ -430,3 +430,36 @@ DisplayNameLabel=Name:
 DescriptionLabel=Description:
 OkPushButton=OK
 CancelPushButton=Cancel
+
+[ModifyBeneficiaryDialog]
+Title=Create beneficiary
+ViewOnlyTitle=View beneficiary
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+WorkloadsLabel=Workloads:
+SelectWorkloadsPushButton=Select
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[ModifyEmailAddressDialog]
+Title=Modify e-mail address
+Prompt=Enter new e-mail address:
+
+[ModifyPrivateActivityDialog]
+Title=Modify private activity
+ViewOnlyTitle=View private activity
+UserLabel=User:
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+ActivityTypeLabel=Activity type:
+WorkloadLabel=Workload:
+SelectWorkloadPushButton=Select
+TimeoutLabel=Timeout:
+TimeoutCheckBox=stop if unattended for
+HoursComboBoxItem={0} hrs
+MinutesComboBoxItem={0} min
+RequireCommentOnStartCheckBox=Require comment when starting this activity
+RequireCommentOnStopCheckBox=Require comment when stopping this activity
+FullScreenReminderCheckBox=Full-screen reminder
+OkPushButton=OK
+CancelPushButton=Cancel

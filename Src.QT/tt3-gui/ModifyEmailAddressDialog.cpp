@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ModifyEmailAddressDialog.cpp - tt3::gui::ModifyEmailAddressDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -26,8 +26,12 @@ ModifyEmailAddressDialog::ModifyEmailAddressDialog(
     ) : EditStringDialog(
             parent,
             QIcon(":/tt3-gui/Resources/Images/Actions/ModifyEmailAddressLarge.png"),
-            "Modify e-mail address",
-            "Enter e-mail address:",
+            Component::Resources::instance()->string(
+                RSID(ModifyEmailAddressDialog),
+                RID(Title)),
+            Component::Resources::instance()->string(
+                RSID(ModifyEmailAddressDialog),
+                RID(Prompt)),
             emailAddress,
             [=](auto a) { return workspace->validator()->principal()->isValidEmailAddress(a); })
 {

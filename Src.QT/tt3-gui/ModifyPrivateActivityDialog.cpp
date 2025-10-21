@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ModifyPrivateActivityDialog.cpp - tt3::gui::ModifyPrivateActivityDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -35,15 +35,13 @@ ModifyPrivateActivityDialog::ModifyPrivateActivityDialog(
         //  Controls
         _ui(new Ui::ModifyPrivateActivityDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ModifyPrivateActivityDialog));
+
     Q_ASSERT(_privateActivity != nullptr);
     Q_ASSERT(_credentials.isValid());
 
     _ui->setupUi(this);
-
-    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
-        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
-    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
-        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
+    setWindowTitle(rr.string(RID(Title)));
 
     //  Populate User combo box & select the proper user
     QList<tt3::ws::User> usersList =
@@ -62,8 +60,20 @@ ModifyPrivateActivityDialog::ModifyPrivateActivityDialog(
             u->realName(_credentials),  //  may throw
             QVariant::fromValue(u));
     }
-    _setSelectedUser(_privateActivity->owner(_credentials));
-    _ui->userComboBox->setEnabled(false);   //  TODO for now!
+
+    //  Fill "hours" and "minutes" combo boxes
+    for (int h = 0; h < 12; h++)
+    {
+        _ui->hoursComboBox->addItem(
+            rr.string(RID(HoursComboBoxItem), h),
+            QVariant::fromValue(h));
+    }
+    for (int m = 0; m < 60; m += 15)
+    {
+        _ui->minutesComboBox->addItem(
+            rr.string(RID(MinutesComboBoxItem), m),
+            QVariant::fromValue(m));
+    }
 
     //  Fill the "activity type" combo box (may throw)
     QList<tt3::ws::ActivityType> activityTypes =
@@ -75,7 +85,6 @@ ModifyPrivateActivityDialog::ModifyPrivateActivityDialog(
         {
             return a->displayName(_credentials) < b->displayName(_credentials);
         });
-
     _ui->activityTypeComboBox->addItem(
         "-",
         QVariant::fromValue<tt3::ws::ActivityType>(nullptr));
@@ -87,17 +96,42 @@ ModifyPrivateActivityDialog::ModifyPrivateActivityDialog(
             QVariant::fromValue(activityType));
     }
 
-    //  Fill "hours" amd "minutes" combo boxes
-    for (int h = 0; h < 12; h++)
-    {
-        _ui->hoursComboBox->addItem(tt3::util::toString(h) + " hrs", QVariant::fromValue(h));
-    }
-    for (int m = 0; m < 60; m += 15)
-    {
-        _ui->minutesComboBox->addItem(tt3::util::toString(m) + " min", QVariant::fromValue(m));
-    }
+    //  Set static control values
+    _ui->userLabel->setText(
+        rr.string(RID(UserLabel)));
+    _ui->displayNameLabel->setText(
+        rr.string(RID(DisplayNameLabel)));
+    _ui->descriptionLabel->setText(
+        rr.string(RID(DescriptionLabel)));
+    _ui->activityTypeLabel->setText(
+        rr.string(RID(ActivityTypeLabel)));
+    _ui->workloadLabel->setText(
+        rr.string(RID(WorkloadLabel)));
+    _ui->selectWorkloadPushButton->setText(
+        rr.string(RID(SelectWorkloadPushButton)));
+    _ui->timeoutLabel->setText(
+        rr.string(RID(TimeoutLabel)));
+    _ui->timeoutCheckBox->setText(
+        rr.string(RID(TimeoutCheckBox)));
 
-    //  Set initial control values (may throw)
+    _ui->requireCommentOnStartCheckBox->setText(
+        rr.string(RID(RequireCommentOnStartCheckBox)));
+    _ui->requireCommentOnStopCheckBox->setText(
+        rr.string(RID(RequireCommentOnStopCheckBox)));
+    _ui->fullScreenReminderCheckBox->setText(
+        rr.string(RID(FullScreenReminderCheckBox)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
+
+    //  Set editable control values (may throw)
+    _setSelectedUser(_privateActivity->owner(_credentials));
     _ui->displayNameLineEdit->setText(_privateActivity->displayName(_credentials));
     _ui->descriptionPlainTextEdit->setPlainText(_privateActivity->description(_credentials));
     _setSelectedActivityType(_privateActivity->activityType(_credentials));
@@ -107,11 +141,12 @@ ModifyPrivateActivityDialog::ModifyPrivateActivityDialog(
     _ui->requireCommentOnStopCheckBox->setChecked(_privateActivity->requireCommentOnStop(_credentials));
     _ui->fullScreenReminderCheckBox->setChecked(_privateActivity->fullScreenReminder(_credentials));
 
-    //  Adjust for "view only" mode
+    //  Adjust controls
+    _ui->userComboBox->setEnabled(false);   //  TODO for now!
     if (_readOnly)
-    {
-        this->setWindowTitle("View private activity");
-        this->setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewPrivateActivityLarge.png"));
+    {   //  Adjust for "view only" mode
+        setWindowTitle(rr.string(RID(ViewOnlyTitle)));
+        setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewPrivateActivityLarge.png"));
         _ui->displayNameLineEdit->setReadOnly(true);
         _ui->descriptionPlainTextEdit->setReadOnly(true);
         _ui->activityTypeComboBox->setEnabled(false);
@@ -125,9 +160,9 @@ ModifyPrivateActivityDialog::ModifyPrivateActivityDialog(
     }
 
     //  Done
-    _ui->displayNameLineEdit->setFocus();
-    adjustSize();
     _refresh();
+    adjustSize();
+    _ui->displayNameLineEdit->setFocus();
 }
 
 ModifyPrivateActivityDialog::~ModifyPrivateActivityDialog()

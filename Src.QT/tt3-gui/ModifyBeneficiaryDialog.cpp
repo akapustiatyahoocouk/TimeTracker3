@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ModifyBeneficiaryDialog.cpp - tt3::gui::ModifyBeneficiaryDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -35,27 +35,46 @@ ModifyBeneficiaryDialog::ModifyBeneficiaryDialog(
         //  Controls
         _ui(new Ui::ModifyBeneficiaryDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ModifyBeneficiaryDialog));
+
     Q_ASSERT(_beneficiary != nullptr);
     Q_ASSERT(_credentials.isValid());
 
     _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
     _listWidgetDecorations = ListWidgetDecorations(_ui->workloadsListWidget);
 
+    //  Set static control values
+    _ui->displayNameLabel->setText(
+        rr.string(RID(DisplayNameLabel)));
+    _ui->descriptionLabel->setText(
+        rr.string(RID(DescriptionLabel)));
+    _ui->workloadsLabel->setText(
+        rr.string(RID(WorkloadsLabel)));
+    _ui->selectWorkloadsPushButton->setText(
+        rr.string(RID(SelectWorkloadsPushButton)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    //  Set initial control values (may throw)
-    _ui->displayNameLineEdit->setText(_beneficiary->displayName(_credentials));
-    _ui->descriptionPlainTextEdit->setPlainText(_beneficiary->description(_credentials));
+    //  Set editable control values (may throw)
+    _ui->displayNameLineEdit->setText(
+        _beneficiary->displayName(_credentials));
+    _ui->descriptionPlainTextEdit->setPlainText(
+        _beneficiary->description(_credentials));
     _setSelectedWorkloads(_beneficiary->workloads(_credentials));
 
-    //  Adjust for "view only" mode
+    //  Adjust controls
     if (_readOnly)
-    {
-        this->setWindowTitle("View beneficiary");
-        this->setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewBeneficiaryLarge.png"));
+    {   //  Adjust for "view only" mode
+        setWindowTitle(rr.string(RID(ViewOnlyTitle)));
+        setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewBeneficiaryLarge.png"));
         _ui->displayNameLineEdit->setReadOnly(true);
         _ui->descriptionPlainTextEdit->setReadOnly(true);
         _ui->selectWorkloadsPushButton->setEnabled(false);

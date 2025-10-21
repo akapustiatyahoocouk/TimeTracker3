@@ -41,7 +41,7 @@ CreateBeneficiaryDialog::CreateBeneficiaryDialog(
     setWindowTitle(rr.string(RID(Title)));
     _listWidgetDecorations = ListWidgetDecorations(_ui->workloadsListWidget);
 
-    //  Set up initial control values
+    //  Set static control values
     _ui->displayNameLabel->setText(
         rr.string(RID(DisplayNameLabel)));
     _ui->descriptionLabel->setText(
@@ -60,7 +60,7 @@ CreateBeneficiaryDialog::CreateBeneficiaryDialog(
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    //  Done TODO use this sequence & explicit setFocus() in LL dialogs!
+    //  Done TODO use this sequence & explicit setFocus() in ALL dialogs!
     _refresh();
     adjustSize();
     _ui->displayNameLineEdit->setFocus();

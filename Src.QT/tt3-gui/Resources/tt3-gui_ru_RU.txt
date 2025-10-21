@@ -430,3 +430,36 @@ DisplayNameLabel=Название:
 DescriptionLabel=Описание:
 OkPushButton=ОК
 CancelPushButton=Отмена
+
+[ModifyBeneficiaryDialog]
+Title=Изменить бенефициара
+ViewOnlyTitle=Просмотреть бенефициара
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+WorkloadsLabel=Рабочие нагрузки:
+SelectWorkloadsPushButton=Выбрать
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[ModifyEmailAddressDialog]
+Title=Изменить адрес электронной почты
+Prompt=Введите новый адрес электронной почты:
+
+[ModifyPrivateActivityDialog]
+Title=Изменить личную активность
+ViewOnlyTitle=Просмотреть личную активность
+UserLabel=Пользователь:
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+ActivityTypeLabel=Тип активности:
+WorkloadLabel=Рабочая нагрузка:
+SelectWorkloadPushButton=Выбрать
+TimeoutLabel=Время ожидания:
+TimeoutCheckBox=Остановить, если отсутствует в течение
+HoursComboBoxItem={0} час
+MinutesComboBoxItem={0} мин
+RequireCommentOnStartCheckBox=Требовать комментарий при запуске этой активности
+RequireCommentOnStopCheckBox=Требовать комментарий при остановке этой активности
+FullScreenReminderCheckBox=Полноэкранное напоминание
+OkPushButton=ОК
+CancelPushButton=Отмена
