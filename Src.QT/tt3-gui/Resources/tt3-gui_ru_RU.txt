@@ -327,3 +327,50 @@ DisplayName=Автозагрузка
 [GeneralStartupPreferencesEditor]
 LoadLastWorkspaceAtStartupCheckBox=Перезагрузить последнее рабочее пространство при запуске
 RememnerLastLoginCheckBox=Запомнить последний вход в систему
+
+[LoginDialog]
+Title=Вход в TimeTracker3
+LoginLabel=Логин:
+PasswordLabel=Пароль:
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[ManageActivityTypesDialog]
+Title=Управление типами активности
+OkPushButton=ОК
+
+[ManageBeneficiariesDialog]
+Title=Управление бенефициарами
+OkPushButton=OK
+
+[ManageMyDayDialog]
+Title=Управление моим днём
+OkPushButton=OK
+
+[ManagePrivateActivitiesDialog]
+Title=Управление личными активностями
+OkPushButton=OK
+
+[ManagePrivateTasksDialog]
+Title=Управление личными задачами
+OkPushButton=OK
+
+[ManageProjectsDialog]
+Title=Управление проектами
+OkPushButton=OK
+
+[ManagePublicActivitiesDialog]
+Title=Управление общедоступными активностями
+OkPushButton=OK
+
+[ManagePublicTasksDialog]
+Title=Управление общедоступными задачами
+OkPushButton=OK
+
+[ManageUsersDialog]
+Title=Управление пользователями
+OkPushButton=OK
+
+[ManageWorkStreamsDialog]
+Title=Управление рабочими потоками
+OkPushButton=OK

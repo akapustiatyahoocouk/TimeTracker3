@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ManagePublicTasksDialog.cpp - tt3::gui::ManagePublicTasksDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -27,11 +27,16 @@ ManagePublicTasksDialog::ManagePublicTasksDialog(
     ) : QDialog(parent),
         _ui(new Ui::ManagePublicTasksDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ManagePublicTasksDialog));
+
     Q_ASSERT(workspace != nullptr);
     Q_ASSERT(credentials.isValid());
 
     _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
 
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
 

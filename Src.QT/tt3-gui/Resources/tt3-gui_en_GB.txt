@@ -327,3 +327,50 @@ DisplayName=Startup
 [GeneralStartupPreferencesEditor]
 LoadLastWorkspaceAtStartupCheckBox=Reload last workspace at startup
 RememnerLastLoginCheckBox=Remember last login
+
+[LoginDialog]
+Title=Login to TimeTracker3
+LoginLabel=Login:
+PasswordLabel=Password:
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[ManageActivityTypesDialog]
+Title=Manage activity types
+OkPushButton=OK
+
+[ManageBeneficiariesDialog]
+Title=Manage beneficiaries
+OkPushButton=OK
+
+[ManageMyDayDialog]
+Title=Manage my day
+OkPushButton=OK
+
+[ManagePrivateActivitiesDialog]
+Title=Manage private activities
+OkPushButton=OK
+
+[ManagePrivateTasksDialog]
+Title=Manage private tasks
+OkPushButton=OK
+
+[ManageProjectsDialog]
+Title=Manage projects
+OkPushButton=OK
+
+[ManagePublicActivitiesDialog]
+Title=Manage public activities
+OkPushButton=OK
+
+[ManagePublicTasksDialog]
+Title=Manage public tasks
+OkPushButton=OK
+
+[ManageUsersDialog]
+Title=Manage users
+OkPushButton=OK
+
+[ManageWorkStreamsDialog]
+Title=Manage work streams
+OkPushButton=OK

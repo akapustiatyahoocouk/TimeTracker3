@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ManageBeneficiariesDialog.cpp - tt3::gui::ManageBeneficiariesDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -27,11 +27,16 @@ ManageBeneficiariesDialog::ManageBeneficiariesDialog(
     ) : QDialog(parent),
         _ui(new Ui::ManageBeneficiariesDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ManageBeneficiariesDialog));
+
     Q_ASSERT(workspace != nullptr);
     Q_ASSERT(credentials.isValid());
 
     _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
 
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
 

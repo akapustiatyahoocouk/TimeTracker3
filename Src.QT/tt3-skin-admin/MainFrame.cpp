@@ -18,6 +18,8 @@
 #include "ui_MainFrame.h"
 using namespace tt3::skin::admin;
 
+#define USE_MODAL_MANAGERS
+
 //////////
 //  Construction/destruction
 MainFrame::MainFrame(QWidget * parent)
@@ -639,52 +641,132 @@ void MainFrame::_onActionExit()
 
 void MainFrame::_onActionManageUsers()
 {
+#ifdef USE_MODAL_MANAGERS
+    tt3::gui::ManageUsersDialog dlg(
+        this,
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+#else
     _ui->managersTabWidget->setCurrentIndex(0);
+#endif
 }
 
 void MainFrame::_onActionManageActivityTypes()
 {
+#ifdef USE_MODAL_MANAGERS   //  TODO all 10
+        tt3::gui::ManageActivityTypesDialog dlg(
+            this,
+            tt3::gui::theCurrentWorkspace,
+            tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+#else
     _ui->managersTabWidget->setCurrentIndex(1);
+#endif
 }
 
 void MainFrame::_onActionManagePublicActivities()
 {
+#ifdef USE_MODAL_MANAGERS
+    tt3::gui::ManagePublicActivitiesDialog dlg(
+        this,
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+#else
     _ui->managersTabWidget->setCurrentIndex(2);
+#endif
 }
 
 void MainFrame::_onActionManagePublicTasks()
 {
+#ifdef USE_MODAL_MANAGERS
+    tt3::gui::ManagePublicTasksDialog dlg(
+        this,
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+#else
     _ui->managersTabWidget->setCurrentIndex(3);
+#endif
 }
 
 void MainFrame::_onActionManagePrivateActivities()
 {
+#ifdef USE_MODAL_MANAGERS
+    tt3::gui::ManagePrivateActivitiesDialog dlg(
+        this,
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+#else
     _ui->managersTabWidget->setCurrentIndex(4);
+#endif
 }
 
 void MainFrame::_onActionManagePrivateTasks()
 {
+#ifdef USE_MODAL_MANAGERS
+    tt3::gui::ManagePrivateTasksDialog dlg(
+        this,
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+#else
     _ui->managersTabWidget->setCurrentIndex(5);
+#endif
 }
 
 void MainFrame::_onActionManageProjects()
 {
+#ifdef USE_MODAL_MANAGERS
+    tt3::gui::ManageProjectsDialog dlg(
+        this,
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+#else
     _ui->managersTabWidget->setCurrentIndex(6);
+#endif
 }
 
 void MainFrame::_onActionManageWorkStreams()
 {
+#ifdef USE_MODAL_MANAGERS
+    tt3::gui::ManageWorkStreamsDialog dlg(
+        this,
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+#else
     _ui->managersTabWidget->setCurrentIndex(7);
+#endif
 }
 
 void MainFrame::_onActionManageBeneficiaries()
 {
+#ifdef USE_MODAL_MANAGERS
+    tt3::gui::ManageBeneficiariesDialog dlg(
+        this,
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+#else
     _ui->managersTabWidget->setCurrentIndex(8);
+#endif
 }
 
 void MainFrame::_onActionManageMyDay()
 {
+#ifdef USE_MODAL_MANAGERS
+    tt3::gui::ManageMyDayDialog dlg(
+        this,
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+#else
     _ui->managersTabWidget->setCurrentIndex(9);
+#endif
 }
 
 void MainFrame::_onActionRefresh()

@@ -327,3 +327,50 @@ DisplayName=Startup
 [GeneralStartupPreferencesEditor]
 LoadLastWorkspaceAtStartupCheckBox=Letzten Arbeitsbereich beim Start neu laden
 RememnerLastLoginCheckBox=Letzte Anmeldung merken
+
+[LoginDialog]
+Title=Anmeldung bei TimeTracker3
+LoginLabel=Anmeldung:
+PasswordLabel=Passwort:
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[ManageActivityTypesDialog]
+Title=Aktivitätstypen verwalten
+OkPushButton=Bestätigen
+
+[ManageBeneficiariesDialog]
+Title=Begünstigte verwalten
+OkPushButton=Bestätigen
+
+[ManageMyDayDialog]
+Title=Meinen Tag organisieren
+OkPushButton=Bestätigen
+
+[ManagePrivateActivitiesDialog]
+Title=Private Aktivitäten verwalten
+OkPushButton=Bestätigen
+
+[ManagePrivateTasksDialog]
+Title=Private Aufgaben verwalten
+OkPushButton=Bestätigen
+
+[ManageProjectsDialog]
+Title=Projekte verwalten
+OkPushButton=Bestätigen
+
+[ManagePublicActivitiesDialog]
+Title=Öffentliche Aktivitäten verwalten
+OkPushButton=Bestätigen
+
+[ManagePublicTasksDialog]
+Title=Öffentliche Aufgaben verwalten
+OkPushButton=Bestätigen
+
+[ManageUsersDialog]
+Title=Benutzer verwalten
+OkPushButton=Bestätigen
+
+[ManageWorkStreamsDialog]
+Title=Arbeitsabläufe verwalten
+OkPushButton=Bestätigen
