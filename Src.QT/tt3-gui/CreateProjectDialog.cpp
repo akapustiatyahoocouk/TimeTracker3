@@ -42,7 +42,7 @@ CreateProjectDialog::CreateProjectDialog(
     _ui->setupUi(this);
     setWindowTitle(rr.string(RID(Title)));
 
-    //  Set initial control values
+    //  Set static control values
     _ui->parentProjectLabel->setText(
         rr.string(RID(ParentProjectLabel)));
     _ui->selectParentProjectPushButton->setText(
@@ -67,12 +67,13 @@ CreateProjectDialog::CreateProjectDialog(
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    _setSelectedParentProject(initialParentProject);    //  may throw
+    //  Set editable control values (may throw)
+    _setSelectedParentProject(initialParentProject);
 
     //  Done
-    _ui->displayNameLineEdit->setFocus();
-    adjustSize();
     _refresh();
+    adjustSize();
+    _ui->displayNameLineEdit->setFocus();
 }
 
 CreateProjectDialog::~CreateProjectDialog()

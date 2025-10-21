@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ModifyProjectDialog.cpp - tt3::gui::ModifyProjectDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -35,16 +35,39 @@ ModifyProjectDialog::ModifyProjectDialog(
         //  Controls
         _ui(new Ui::ModifyProjectDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ModifyProjectDialog));
+
     Q_ASSERT(_credentials.isValid());
 
     _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
 
+    //  Set static control values
+    _ui->parentProjectLabel->setText(
+        rr.string(RID(ParentProjectLabel)));
+    _ui->selectParentProjectPushButton->setText(
+        rr.string(RID(SelectParentProjectPushButton)));
+    _ui->displayNameLabel->setText(
+        rr.string(RID(DisplayNameLabel)));
+    _ui->descriptionLabel->setText(
+        rr.string(RID(DescriptionLabel)));
+    _ui->beneficiariesLabel->setText(
+        rr.string(RID(BeneficiariesLabel)));
+    _ui->selectBeneficiariesPushButton->setText(
+        rr.string(RID(SelectBeneficiariesPushButton)));
+    _ui->completedCheckBox->setText(
+        rr.string(RID(CompletedCheckBox)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    //  Set initial control values (may throw)
+    //  Set editable control values (may throw)
     _setSelectedParentProject(_project->parent(_credentials));
     _ui->displayNameLineEdit->setText(_project->displayName(_credentials));
     _ui->descriptionPlainTextEdit->setPlainText(_project->description(_credentials));
@@ -54,13 +77,13 @@ ModifyProjectDialog::ModifyProjectDialog(
     //  Adjust for "view only" mode
     if (_readOnly)
     {
-        this->setWindowTitle("View project");
-        this->setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewProjectLarge.png"));
+        setWindowTitle(rr.string(RID(ViewOnlyTitle)));
+        setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewProjectLarge.png"));
         _ui->parentProjectComboBox->setEnabled(false);
         _ui->selectParentProjectPushButton->setEnabled(false);
         _ui->displayNameLineEdit->setReadOnly(true);
         _ui->descriptionPlainTextEdit->setReadOnly(true);
-        _ui->beneficiariesValueLabel->setEnabled(false);
+        _ui->beneficiariesListWidget->setEnabled(false);
         _ui->selectBeneficiariesPushButton->setEnabled(false);
         _ui->completedCheckBox->setEnabled(false);
     }
@@ -75,9 +98,9 @@ ModifyProjectDialog::ModifyProjectDialog(
     }
 
     //  Done
-    _ui->displayNameLineEdit->setFocus();
-    adjustSize();
     _refresh();
+    adjustSize();
+    _ui->displayNameLineEdit->setFocus();
 }
 
 ModifyProjectDialog::~ModifyProjectDialog()
@@ -104,10 +127,12 @@ void ModifyProjectDialog::_setSelectedParentProject(
         tt3::ws::Project parentProject
     )
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ModifyProjectDialog));
+
     //  Refill the "parent project" combo box
     _ui->parentProjectComboBox->clear();
     _ui->parentProjectComboBox->addItem(
-        "- (a root project with no parent)",
+        rr.string(RID(NoParent)),
         QVariant::fromValue<tt3::ws::Project>(nullptr));
     if (parentProject != nullptr)
     {

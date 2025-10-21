@@ -487,3 +487,17 @@ RequiresCommentOnCompletionCeckBox=Requires comment on completion
 CompletedCheckBox=Task is completed
 OkPushButton=OK
 CancelPushButton=Cancel
+
+[ModifyProjectDialog]
+Title=Modify project
+ViewOnlyTitle=View project
+ParentProjectLabel=Parent:
+NoParent=- (a root project with no parent)
+SelectParentProjectPushButton=Select
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+BeneficiariesLabel=Beneficiaries:
+SelectBeneficiariesPushButton=Select
+CompletedCheckBox=Project is completed
+OkPushButton=OK
+CancelPushButton=Cancel

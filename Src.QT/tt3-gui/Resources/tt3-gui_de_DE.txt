@@ -487,3 +487,17 @@ RequiresCommentOnCompletionCeckBox=Kommentar nach Abschluss erforderlich
 CompletedCheckBox=Aufgabe ist abgeschlossen
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
+
+[ModifyProjectDialog]
+Title=Projekt ändern
+ViewOnlyTitle=Projekt anzeigen
+ParentProjectLabel=Übergeordnet:
+NoParent=- (ein Stammprojekt ohne übergeordnetes Projekt)
+SelectParentProjectPushButton=Auswählen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+BeneficiariesLabel=Begünstigte:
+SelectBeneficiariesPushButton=Auswählen
+CompletedCheckBox=Projekt abgeschlossen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen

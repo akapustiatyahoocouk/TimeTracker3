@@ -487,3 +487,17 @@ RequiresCommentOnCompletionCeckBox=Требуется комментарий п�
 CompletedCheckBox=Задача выполнена
 OkPushButton=ОК
 CancelPushButton=Отмена
+
+[ModifyProjectDialog]
+Title=Изменить проект
+ViewOnlyTitle=Просмотреть проект
+ParentProjectLabel=Родитель:
+NoParent=- (корневой проект без родителя)
+SelectParentProjectPushButton=Выбрать
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+BeneficiariesLabel=Бенефициары:
+SelectBeneficiariesPushButton=Выбрать
+CompletedCheckBox=Проект завершён
+OkPushButton=ОК
+CancelPushButton=Отмена
