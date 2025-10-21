@@ -40,7 +40,7 @@ CreateActivityTypeDialog::CreateActivityTypeDialog(
     _ui->setupUi(this);
     setWindowTitle(rr.string(RID(Title)));
 
-    //  Set up initial control values
+    //  Set static control values
     _ui->displayNameLabel->setText(
         rr.string(RID(DisplayNameLabel)));
     _ui->descriptionLabel->setText(
@@ -56,8 +56,9 @@ CreateActivityTypeDialog::CreateActivityTypeDialog(
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
     //  Done
-    adjustSize();
     _refresh();
+    adjustSize();
+    _ui->displayNameLineEdit->setFocus();
 }
 
 CreateActivityTypeDialog::~CreateActivityTypeDialog()

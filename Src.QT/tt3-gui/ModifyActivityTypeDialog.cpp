@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ModifyActivityTypeDialog.cpp - tt3::gui::ModifyActivityTypeDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -35,33 +35,48 @@ ModifyActivityTypeDialog::ModifyActivityTypeDialog(
         //  Controls
         _ui(new Ui::ModifyActivityTypeDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ModifyActivityTypeDialog));
+
     Q_ASSERT(_activityType != nullptr);
     Q_ASSERT(_credentials.isValid());
 
     _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
 
+    //  Set static control values   //  TODO same separation between setting static/editable control values in every dialog
+    _ui->displayNameLabel->setText(
+        rr.string(RID(DisplayNameLabel)));
+    _ui->descriptionLabel->setText(
+        rr.string(RID(DescriptionLabel)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    //  Set initial control values (may throw)
-    _ui->displayNameLineEdit->setText(_activityType->displayName(_credentials));
-    _ui->descriptionPlainTextEdit->setPlainText(_activityType->description(_credentials));
+    //  Set editable control values
+    _ui->displayNameLineEdit->setText(
+        _activityType->displayName(_credentials));  //  may throw
+    _ui->descriptionPlainTextEdit->setPlainText(
+        _activityType->description(_credentials));  //  may throw
 
-    //  Adjust for "view only" mode
+    //  Adjust controls
     if (_readOnly)
-    {
-        this->setWindowTitle("View activity type");
-        this->setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewActivityTypeLarge.png"));
+    {   //  Adjust for "view only" mode
+        setWindowTitle(rr.string(RID(ViewOnlyTitle)));
+        setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewActivityTypeLarge.png"));
         _ui->displayNameLineEdit->setReadOnly(true);
         _ui->descriptionPlainTextEdit->setReadOnly(true);
     }
 
     //  Done
-    _ui->displayNameLabel->setFocus();
-    adjustSize();
     _refresh();
+    adjustSize();
+    _ui->displayNameLineEdit->setFocus();
 }
 
 ModifyActivityTypeDialog::~ModifyActivityTypeDialog()

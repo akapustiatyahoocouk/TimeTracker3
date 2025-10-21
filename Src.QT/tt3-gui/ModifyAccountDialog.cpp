@@ -63,7 +63,7 @@ ModifyAccountDialog::ModifyAccountDialog(
             QVariant::fromValue(user));
     }
 
-    //  Set initial control values
+    //  Set static control values
     _ui->userLabel->setText(
         rr.string(RID(UserLabel)));
     _ui->loginLabel->setText(
@@ -122,6 +122,7 @@ ModifyAccountDialog::ModifyAccountDialog(
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
+    //  Set editable control values
     _setSelectedUser(_account->user(_credentials));
     _ui->loginLineEdit->setText(_account->login(_credentials)); //  may throw
     _ui->passwordLineEdit->setText(_oldPasswordHash);   //  may throw
@@ -135,10 +136,9 @@ ModifyAccountDialog::ModifyAccountDialog(
 
     //  Adjust controls
     _ui->userComboBox->setEnabled(false);   //  TODO for now!
-
     if (_readOnly)
     {   //  Adjust for "view only" mode
-        setWindowTitle(rr.string(RID(ReadOnlyTitle)));
+        setWindowTitle(rr.string(RID(ViewOnlyTitle)));
         setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewAccountLarge.png"));
         _ui->loginLineEdit->setReadOnly(true);
         _ui->passwordLineEdit->setReadOnly(true);

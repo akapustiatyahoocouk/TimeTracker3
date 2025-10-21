@@ -396,7 +396,7 @@ OkPushButton=OK
 
 [ModifyAccountDialog]
 Title=Modify account
-ReadOnlyTitle=View account
+ViewOnlyTitle=View account
 UserLabel=User:
 LoginLabel=Login:
 PasswordLabel=Password:
@@ -420,5 +420,13 @@ LogEventsCheckBox=Log events
 GenerateReportsCheckBox=Generate reports
 BackupAndRestoreCheckBox=Backup and restore
 EnabledCheckBox=Account is enabled
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[ModifyActivityTypeDialog]
+Title=Create activity type
+ViewOnlyTitle=View activity type
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
 OkPushButton=OK
 CancelPushButton=Cancel

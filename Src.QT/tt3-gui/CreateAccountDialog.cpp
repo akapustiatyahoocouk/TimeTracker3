@@ -59,7 +59,7 @@ CreateAccountDialog::CreateAccountDialog(
             QVariant::fromValue(u));
     }
 
-    //  Set initial control values
+    //  Set static control values
     _ui->userLabel->setText(
         rr.string(RID(UserLabel)));
     _ui->loginLabel->setText(
@@ -118,12 +118,13 @@ CreateAccountDialog::CreateAccountDialog(
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
+    //  Set editable control values
     _setSelectedUser(user);
 
     //  Done
-    _ui->loginLineEdit->setFocus();
-    adjustSize();
     _refresh();
+    adjustSize();
+    _ui->loginLineEdit->setFocus();
 }
 
 CreateAccountDialog::~CreateAccountDialog()

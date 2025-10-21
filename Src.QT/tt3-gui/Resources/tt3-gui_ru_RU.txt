@@ -70,7 +70,7 @@ CancelPushButton=Отмена
 
 [CreateBeneficiaryDialog]
 Title=Создать бенефициара
-DisplayNameLabel=Имя:
+DisplayNameLabel=Название:
 DescriptionLabel=Описание:
 WorkloadsLabel=Рабочие нагрузки:
 SelectWorkloadsPushButton=Выбрать
@@ -80,7 +80,7 @@ CancelPushButton=Отмена
 [CreatePrivateActivityDialog]
 Title=Создать личную активность
 UserLabel=Пользователь:
-DisplayNameLabel=Имя:
+DisplayNameLabel=Название:
 DescriptionLabel=Описание:
 ActivityTypeLabel=Тип активности:
 WorkloadLabel=Рабочая нагрузка:
@@ -101,7 +101,7 @@ UserLabel=Пользователь:
 ParentTaskLabel=Родитель:
 NoParent=- (корневая частная задача без родителя)
 SelectParentTaskPushButton=Выбрать
-DisplayNameLabel=Имя:
+DisplayNameLabel=Название:
 DescriptionLabel=Описание:
 ActivityTypeLabel=Тип активности:
 WorkloadLabel=Рабочая нагрузка:
@@ -123,7 +123,7 @@ Title=Создать проект
 ParentProjectLabel=Родитель:
 NoParent=- (корневой проект без родителя)
 SelectParentProjectPushButton=Выбрать
-DisplayNameLabel=Имя:
+DisplayNameLabel=Название:
 DescriptionLabel=Описание:
 BeneficiariesLabel=Бенефициары:
 SelectBeneficiariesPushButton=Выбрать
@@ -133,7 +133,7 @@ CancelPushButton=Отмена
 
 [CreatePublicActivityDialog]
 Title=Создать общедоступную активность
-DisplayNameLabel=Имя:
+DisplayNameLabel=Название:
 DescriptionLabel=Описание:
 ActivityTypeLabel=Тип активности:
 WorkloadLabel=Рабочая нагрузка:
@@ -153,7 +153,7 @@ Title=Создать общедоступную залачу
 ParentTaskLabel=Родитель:
 NoParent=- (корневая общедоступная задача без родителя)
 SelectParentTaskPushButton=Выбрать
-DisplayNameLabel=Имя:
+DisplayNameLabel=Название:
 DescriptionLabel=Описание:
 ActivityTypeLabel=Тип активности:
 WorkloadLabel=Рабочая нагрузка:
@@ -396,7 +396,7 @@ OkPushButton=OK
 
 [ModifyAccountDialog]
 Title=Изменить учетную запись
-ReadOnlyTitle=Просмотреть учетную запись
+ViewOnlyTitle=Просмотреть учетную запись
 UserLabel=Пользователь:
 LoginLabel=Учётная запись:
 PasswordLabel=Пароль:
@@ -420,5 +420,13 @@ LogEventsCheckBox=Ведение журнала событий
 GenerateReportsCheckBox=Создание отчетов
 BackupAndRestoreCheckBox=Резервное копирование и восстановление
 EnabledCheckBox=Учетная запись включена
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[ModifyActivityTypeDialog]
+Title=Изменить тип активности
+ViewOnlyTitle=Просмотреть тип активности
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
 OkPushButton=ОК
 CancelPushButton=Отмена
