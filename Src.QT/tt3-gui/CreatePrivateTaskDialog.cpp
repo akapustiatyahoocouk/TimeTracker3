@@ -40,7 +40,60 @@ CreatePrivateTaskDialog::CreatePrivateTaskDialog(
     _ui->setupUi(this);
     setWindowTitle(rr.string(RID(Title)));
 
-    //  Set initial control values
+    //  Populate User combo box
+    QList<tt3::ws::User> usersList =
+        _workspace->users(_credentials).values();
+    std::sort(
+        usersList.begin(),
+        usersList.end(),
+        [&](auto a, auto b)
+        {
+            return a->realName(_credentials) < b->realName(_credentials);
+        });
+    for (tt3::ws::User u : usersList)
+    {
+        _ui->userComboBox->addItem(
+            u->type()->smallIcon(),
+            u->realName(_credentials),  //  may throw
+            QVariant::fromValue(u));
+    }
+
+    //  Fill the "activity type" combo box (may throw)
+    QList<tt3::ws::ActivityType> activityTypes =
+        _workspace->activityTypes(_credentials).values();   //  may throw
+    std::sort(
+        activityTypes.begin(),
+        activityTypes.end(),
+        [&](auto a, auto b)
+        {
+            return a->displayName(_credentials) < b->displayName(_credentials); //  may throw
+        });
+    _ui->activityTypeComboBox->addItem(
+        "-",
+        QVariant::fromValue<tt3::ws::ActivityType>(nullptr));
+    for (tt3::ws::ActivityType activityType : activityTypes)
+    {
+        _ui->activityTypeComboBox->addItem(
+            activityType->type()->smallIcon(),
+            activityType->displayName(_credentials),
+            QVariant::fromValue(activityType));
+    }
+
+    //  Fill "hours" and "minutes" combo boxes
+    for (int h = 0; h < 12; h++)
+    {
+        _ui->hoursComboBox->addItem(
+            rr.string(RID(HoursComboBoxItem), h),
+            QVariant::fromValue(h));
+    }
+    for (int m = 0; m < 60; m += 15)
+    {
+        _ui->minutesComboBox->addItem(
+            rr.string(RID(MinutesComboBoxItem), m),
+            QVariant::fromValue(m));
+    }
+
+    //  Set static control values
     _ui->userLabel->setText(
         rr.string(RID(UserLabel)));
     _ui->parentTaskLabel->setText(
@@ -82,65 +135,10 @@ CreatePrivateTaskDialog::CreatePrivateTaskDialog(
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    _setSelectedParentTask(nullptr);
-
-    //  Populate User combo box & select the proper user (may throw)
-    QList<tt3::ws::User> usersList =
-        _workspace->users(_credentials).values();
-    std::sort(
-        usersList.begin(),
-        usersList.end(),
-        [&](auto a, auto b)
-        {
-            return a->realName(_credentials) < b->realName(_credentials);
-        });
-    for (tt3::ws::User u : usersList)
-    {
-        _ui->userComboBox->addItem(
-            u->type()->smallIcon(),
-            u->realName(_credentials),  //  may throw
-            QVariant::fromValue(u));
-    }
+    //  Set editable control values (may throw)
     _setSelectedUser(owner);
-
-    //  Fill the "activity type" combo box (may throw)
-    QList<tt3::ws::ActivityType> activityTypes =
-        _workspace->activityTypes(_credentials).values();   //  may throw
-    std::sort(
-        activityTypes.begin(),
-        activityTypes.end(),
-        [&](auto a, auto b)
-        {
-            return a->displayName(_credentials) < b->displayName(_credentials); //  may throw
-        });
-
-    _ui->activityTypeComboBox->addItem(
-        "-",
-        QVariant::fromValue<tt3::ws::ActivityType>(nullptr));
-    for (tt3::ws::ActivityType activityType : activityTypes)
-    {
-        _ui->activityTypeComboBox->addItem(
-            activityType->type()->smallIcon(),
-            activityType->displayName(_credentials),
-            QVariant::fromValue(activityType));
-    }
-
-    //  Populate the "Workload" combo box
+    _setSelectedParentTask(nullptr);
     _setSelectedWorkload(nullptr);
-
-    //  Fill "hours" amd "minutes" combo boxes
-    for (int h = 0; h < 12; h++)
-    {
-        _ui->hoursComboBox->addItem(
-            rr.string(RID(HoursComboBoxItem), h),
-            QVariant::fromValue(h));
-    }
-    for (int m = 0; m < 60; m += 15)
-    {
-        _ui->minutesComboBox->addItem(
-            rr.string(RID(MinutesComboBoxItem), m),
-            QVariant::fromValue(m));
-    }
 
     //  Done
     _ui->displayNameLineEdit->setFocus();

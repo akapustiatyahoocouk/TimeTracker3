@@ -463,3 +463,27 @@ RequireCommentOnStopCheckBox=Требовать комментарий при о
 FullScreenReminderCheckBox=Полноэкранное напоминание
 OkPushButton=ОК
 CancelPushButton=Отмена
+
+[ModifyPrivateTaskDialog]
+Title=Изменить личную залачу
+ViewOnlyTitle=Просмотреть личную залачу
+UserLabel=Пользователь:
+ParentTaskLabel=Родитель:
+NoParent=- (корневая частная задача без родителя)
+SelectParentTaskPushButton=Выбрать
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+ActivityTypeLabel=Тип активности:
+WorkloadLabel=Рабочая нагрузка:
+SelectWorkloadPushButton=Выбрать
+TimeoutLabel=Время ожидания:
+TimeoutCheckBox=Остановить, если отсутствует в течение
+HoursComboBoxItem={0} час
+MinutesComboBoxItem={0} мин
+RequireCommentOnStartCheckBox=Требовать комментарий при запуске этой задачи
+RequireCommentOnStopCheckBox=Требовать комментарий при остановке этой задачи
+FullScreenReminderCheckBox=Полноэкранное напоминание
+RequiresCommentOnCompletionCeckBox=Требуется комментарий после завершения
+CompletedCheckBox=Задача выполнена
+OkPushButton=ОК
+CancelPushButton=Отмена

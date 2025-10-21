@@ -217,13 +217,36 @@ void ModifyPrivateActivityDialog::_setSelectedActivityType(
     }
 }
 
+auto ModifyPrivateActivityDialog::_selectedWorkload(
+    ) -> tt3::ws::Workload
+{
+    return _ui->workloadComboBox->currentData().value<tt3::ws::Workload>();
+}
+
 void ModifyPrivateActivityDialog::_setSelectedWorkload(
         tt3::ws::Workload workload
     )
-{   //  TODO implement properly
-    Q_ASSERT(workload == nullptr);
-    _ui->workloadValueLabel->setText("-");
-    _selectedWorkload = workload;
+{
+    //  Refill the "workload" combo box
+    _ui->workloadComboBox->clear();
+    _ui->workloadComboBox->addItem(
+        "-",
+        QVariant::fromValue<tt3::ws::Workload>(nullptr));
+    if (workload != nullptr)
+    {
+        try
+        {
+            _ui->workloadComboBox->addItem(
+                workload->type()->smallIcon(),
+                workload->displayName(_credentials),    //  may throw
+                QVariant::fromValue(workload));
+            _ui->workloadComboBox->setCurrentIndex(1);
+        }
+        catch (const tt3::util::Exception & ex)
+        {  //  OOPS! Log & suppress
+            qCritical() << ex;
+        }
+    }
 }
 
 auto ModifyPrivateActivityDialog::_selectedTimeout(
@@ -348,7 +371,7 @@ void ModifyPrivateActivityDialog::accept()
                 _selectedActivityType());
             _privateActivity->setWorkload(
                 _credentials,
-                _selectedWorkload);
+                _selectedWorkload());
         }
         done(int(Result::Ok));
     }
