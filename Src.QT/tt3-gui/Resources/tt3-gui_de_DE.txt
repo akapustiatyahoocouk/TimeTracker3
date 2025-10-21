@@ -393,3 +393,32 @@ OkPushButton=Bestätigen
 [ManageWorkStreamsDialog]
 Title=Arbeitsabläufe verwalten
 OkPushButton=Bestätigen
+
+[ModifyAccountDialog]
+Title=Konto ändern
+ViewOnlyTitle=Konto anzeigen
+UserLabel=Benutzer:
+LoginLabel=Anmelden:
+PasswordLabel=Passwort:
+ConfirmPasswordLabel=Bestätigen:
+EmailAddressesLabel=E-Mail-Adressen:
+AddEmailAddressPushButton=Hinzufügen
+ModifyEmailAddressPushButton=Ändern
+RemoveEmailAddressPushButton=Entfernen
+CapabilitiesGroupBox=Funktionen
+AdministratorCheckBox=Administrator
+ManageUsersCheckBox=Benutzer verwalten
+ManageActivityTypesCheckBox=Aktivitätstypen verwalten
+ManageBeneficiariesCheckBox=Begünstigte verwalten
+ManageWorkloadsCheckBox=Arbeitslasten verwalten
+ManagePublicActivitiesCheckBox=Öffentliche Aktivitäten verwalten
+ManagePublicTasksCheckBox=Öffentliche Aufgaben verwalten
+ManagePrivateActivitiesCheckBox=Private Aktivitäten verwalten
+ManagePrivateTasksCheckBox=Private Aufgaben verwalten
+LogWorkCheckBox=Arbeit protokollieren
+LogEventsCheckBox=Protokollieren Ereignisse
+GenerateReportsCheckBox=Berichte erstellen
+BackupAndRestoreCheckBox=Sichern und Wiederherstellen
+EnabledCheckBox=Konto ist aktiviert
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen

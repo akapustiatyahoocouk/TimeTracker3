@@ -18,7 +18,7 @@
 #include "ui_MainFrame.h"
 using namespace tt3::skin::admin;
 
-#define USE_MODAL_MANAGERS
+//#define USE_MODAL_MANAGERS
 
 //////////
 //  Construction/destruction

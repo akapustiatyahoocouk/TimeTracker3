@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ModifyAccountDialog.cpp - tt3::gui::ModifyAccountDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -36,17 +36,16 @@ ModifyAccountDialog::ModifyAccountDialog(
         //  Controls
         _ui(new Ui::ModifyAccountDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ModifyAccountDialog));
+
     Q_ASSERT(_account != nullptr);
     Q_ASSERT(_credentials.isValid());
+    Q_ASSERT(_validator != nullptr);
 
     _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
 
-    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
-        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
-    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
-        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
-
-    //  Populate User combo box & select the proper user
+    //  Populate User combo box
     QList<tt3::ws::User> usersList =
         _account->workspace()->users(_credentials).values();   //  may throw
     std::sort(
@@ -56,26 +55,98 @@ ModifyAccountDialog::ModifyAccountDialog(
         {
             return a->realName(_credentials) < b->realName(_credentials);   //  may throw
         });
-    for (tt3::ws::User u : usersList)
+    for (tt3::ws::User user : usersList)
     {
         _ui->userComboBox->addItem(
-            u->type()->smallIcon(),
-            u->realName(_credentials),  //  may throw
-            QVariant::fromValue(u));
+            user->type()->smallIcon(),
+            user->realName(_credentials),  //  may throw
+            QVariant::fromValue(user));
     }
-    _setSelectedUser(_account->user(_credentials));
-    _ui->userComboBox->setEnabled(false);   //  TODO for now!
 
-    //  Set initial control values (may throw)
-    _ui->loginLineEdit->setText(_account->login(_credentials));
-    _ui->passwordLineEdit->setText(_oldPasswordHash);
-    _ui->confirmPasswordLineEdit->setText(_oldPasswordHash);
-    _setSelectedEmailAddresses(_account->emailAddresses(_credentials));
-    _setSelectedCapabilities(_account->capabilities(_credentials));
-    _ui->enabledCheckBox->setChecked(_account->enabled(_credentials));
+    //  Set initial control values
+    _ui->userLabel->setText(
+        rr.string(RID(UserLabel)));
+    _ui->loginLabel->setText(
+        rr.string(RID(LoginLabel)));
+    _ui->passwordLabel->setText(
+        rr.string(RID(PasswordLabel)));
+    _ui->confirmPasswordLabel->setText(
+        rr.string(RID(ConfirmPasswordLabel)));
+    _ui->emailAddressesLabel->setText(
+        rr.string(RID(EmailAddressesLabel)));
+    _ui->addEmailAddressPushButton->setText(
+        rr.string(RID(AddEmailAddressPushButton)));
+    _ui->modifyEmailAddressPushButton->setText(
+        rr.string(RID(ModifyEmailAddressPushButton)));
+    _ui->removeEmailAddressPushButton->setText(
+        rr.string(RID(RemoveEmailAddressPushButton)));
+
+    _ui->capabilitiesGroupBox->setTitle(
+        rr.string(RID(CapabilitiesGroupBox)));
+    _ui->administratorCheckBox->setText(
+        rr.string(RID(AdministratorCheckBox)));
+    _ui->manageUsersCheckBox->setText(
+        rr.string(RID(ManageUsersCheckBox)));
+    _ui->manageActivityTypesCheckBox->setText(
+        rr.string(RID(ManageActivityTypesCheckBox)));
+    _ui->manageBeneficiariesCheckBox->setText(
+        rr.string(RID(ManageBeneficiariesCheckBox)));
+    _ui->manageWorkloadsCheckBox->setText(
+        rr.string(RID(ManageWorkloadsCheckBox)));
+    _ui->managePublicActivitiesCheckBox->setText(
+        rr.string(RID(ManagePublicActivitiesCheckBox)));
+    _ui->managePublicTasksCheckBox->setText(
+        rr.string(RID(ManagePublicTasksCheckBox)));
+    _ui->managePrivateActivitiesCheckBox->setText(
+        rr.string(RID(ManagePrivateActivitiesCheckBox)));
+    _ui->managePrivateTasksCheckBox->setText(
+        rr.string(RID(ManagePrivateTasksCheckBox)));
+    _ui->logWorkCheckBox->setText(
+        rr.string(RID(LogWorkCheckBox)));
+    _ui->logEventsCheckBox->setText(
+        rr.string(RID(LogEventsCheckBox)));
+    _ui->generateReportsCheckBox->setText(
+        rr.string(RID(GenerateReportsCheckBox)));
+    _ui->backupAndRestoreCheckBox->setText(
+        rr.string(RID(BackupAndRestoreCheckBox)));
+
+    _ui->enabledCheckBox->setText(
+        rr.string(RID(EnabledCheckBox)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
+
+    _setSelectedUser(_account->user(_credentials));
+    _ui->loginLineEdit->setText(_account->login(_credentials)); //  may throw
+    _ui->passwordLineEdit->setText(_oldPasswordHash);   //  may throw
+    _ui->confirmPasswordLineEdit->setText(_oldPasswordHash);    //  may throw
+    _setSelectedEmailAddresses(_account->emailAddresses(_credentials)); //  may throw
+    _setSelectedCapabilities(_account->capabilities(_credentials)); //  may throw
+    _ui->enabledCheckBox->setChecked(_account->enabled(_credentials));  //  may throw
 
     tt3::ws::Capabilities clientCapabilities =
-        _account->workspace()->capabilities(credentials);
+        _account->workspace()->capabilities(credentials);   //  may throw
+
+    //  Adjust controls
+    _ui->userComboBox->setEnabled(false);   //  TODO for now!
+
+    if (_readOnly)
+    {   //  Adjust for "view only" mode
+        setWindowTitle(rr.string(RID(ReadOnlyTitle)));
+        setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewAccountLarge.png"));
+        _ui->loginLineEdit->setReadOnly(true);
+        _ui->passwordLineEdit->setReadOnly(true);
+        _ui->confirmPasswordLineEdit->setReadOnly(true);
+        _ui->capabilitiesGroupBox->setEnabled(false);
+        _ui->enabledCheckBox->setEnabled(false);
+    }
+
     //  An ordinary user cannot change their login,
     //  capabilities or enabled status - only password
     //  and e-mail addresses
@@ -87,21 +158,10 @@ ModifyAccountDialog::ModifyAccountDialog(
         _ui->enabledCheckBox->setEnabled(false);
     }
 
-    //  Adjust for "view only" mode
-    if (_readOnly)
-    {
-        this->setWindowTitle("View account");
-        this->setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewAccountLarge.png"));
-        _ui->loginLineEdit->setReadOnly(true);
-        _ui->passwordLineEdit->setReadOnly(true);
-        _ui->confirmPasswordLineEdit->setReadOnly(true);
-        _ui->capabilitiesGroupBox->setEnabled(false);
-        _ui->enabledCheckBox->setEnabled(false);
-    }
-
     //  Done
-    adjustSize();
     _refresh();
+    adjustSize();
+    _ui->loginLineEdit->setFocus();
 }
 
 ModifyAccountDialog::~ModifyAccountDialog()

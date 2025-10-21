@@ -393,3 +393,32 @@ OkPushButton=OK
 [ManageWorkStreamsDialog]
 Title=Manage work streams
 OkPushButton=OK
+
+[ModifyAccountDialog]
+Title=Modify account
+ReadOnlyTitle=View account
+UserLabel=User:
+LoginLabel=Login:
+PasswordLabel=Password:
+ConfirmPasswordLabel=Confirm:
+EmailAddressesLabel=E-mail addresses:
+AddEmailAddressPushButton=Add
+ModifyEmailAddressPushButton=Modify
+RemoveEmailAddressPushButton=Remove
+CapabilitiesGroupBox=Capabilities
+AdministratorCheckBox=Administrator
+ManageUsersCheckBox=Manage users
+ManageActivityTypesCheckBox=Manage activity types
+ManageBeneficiariesCheckBox=Manage beneficiaries
+ManageWorkloadsCheckBox=Manage workloads
+ManagePublicActivitiesCheckBox=Manage public activities
+ManagePublicTasksCheckBox=Manage public tasks
+ManagePrivateActivitiesCheckBox=Manage private activities
+ManagePrivateTasksCheckBox=Manage private tasks
+LogWorkCheckBox=Log work
+LogEventsCheckBox=Log events
+GenerateReportsCheckBox=Generate reports
+BackupAndRestoreCheckBox=Backup and restore
+EnabledCheckBox=Account is enabled
+OkPushButton=OK
+CancelPushButton=Cancel
