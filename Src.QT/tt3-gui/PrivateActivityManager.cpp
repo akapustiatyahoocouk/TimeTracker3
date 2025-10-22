@@ -30,8 +30,7 @@ namespace tt3::gui
 //  Construction/destruction
 PrivateActivityManager::PrivateActivityManager(
         QWidget * parent
-    )
-    :   QWidget(parent),
+    ) : QWidget(parent),
         //  Implementation
         _workspace(theCurrentWorkspace),
         _credentials(theCurrentCredentials),

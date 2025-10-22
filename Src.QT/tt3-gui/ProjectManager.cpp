@@ -641,6 +641,8 @@ void ProjectManager::_applyCurrentLocale()
         rr.string(RID(DestroyProjectPushButton)));
     _ui->completeProjectPushButton->setText(
         rr.string(RID(CompleteProjectPushButton)));
+    _ui->showCompletedCheckBox->setText(
+        rr.string(RID(ShowCompletedCheckBox)));
     refresh();
 }
 

@@ -1,6 +1,6 @@
 //
 //  tt3-gui/PublicActivityManager.cpp - tt3::gui::PublicActivityManager class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -39,14 +39,21 @@ PublicActivityManager::PublicActivityManager(
         _refreshTimer(this)
 {
     _ui->setupUi(this);
-
     _decorations = TreeWidgetDecorations(_ui->publicActivitiesTreeWidget);
+    _applyCurrentLocale();
 
     //  Theme change means widget decorations change
     connect(&theCurrentTheme,
             &CurrentTheme::changed,
             this,
             &PublicActivityManager::_currentThemeChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Locale change requires UI translation
+    connect(&tt3::util::theCurrentLocale,
+            &tt3::util::CurrentLocale::changed,
+            this,
+            &PublicActivityManager::_currentLocaleChanged,
             Qt::ConnectionType::QueuedConnection);
 
     //  Current activity change means, at least, a refresh
@@ -118,6 +125,7 @@ void PublicActivityManager::refresh()
 {
     static const QIcon viewPublicActivityIcon(":/tt3-gui/Resources/Images/Actions/ViewPublicActivityLarge.png");
     static const QIcon modifyPublicActivityIcon(":/tt3-gui/Resources/Images/Actions/ModifyPublicActivityLarge.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(PublicActivityManager));
 
     //  We don't want a refresh() to trigger a recursive refresh()!
     static bool refreshUnderway = false;
@@ -225,19 +233,22 @@ void PublicActivityManager::refresh()
                 selectedPublicActivity->canModify(_credentials))    //  may throw
             {   //  RW
                 _ui->modifyPublicActivityPushButton->setIcon(modifyPublicActivityIcon);
-                _ui->modifyPublicActivityPushButton->setText("Modify public activity");
+                _ui->modifyPublicActivityPushButton->setText(
+                    rr.string(RID(ModifyPublicActivityPushButton)));
             }
             else
             {   //  RO
                 _ui->modifyPublicActivityPushButton->setIcon(viewPublicActivityIcon);
-                _ui->modifyPublicActivityPushButton->setText("View public activity");
+                _ui->modifyPublicActivityPushButton->setText(
+                    rr.string(RID(ViewPublicActivityPushButton)));
             }
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Simulate RO
             qCritical() << ex;
             _ui->modifyPublicActivityPushButton->setIcon(viewPublicActivityIcon);
-            _ui->modifyPublicActivityPushButton->setText("View public activity");
+            _ui->modifyPublicActivityPushButton->setText(
+                rr.string(RID(ViewPublicActivityPushButton)));
         }
     }
 }
@@ -478,6 +489,25 @@ void PublicActivityManager::_clearAndDisableAllControls()
     _ui->stopPublicActivityPushButton->setEnabled(false);
 }
 
+void PublicActivityManager::_applyCurrentLocale()
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(PublicActivityManager));
+
+    _ui->filterLabel->setText(
+        rr.string(RID(FilterLabel)));
+    _ui->createPublicActivityPushButton->setText(
+        rr.string(RID(CreatePublicActivityPushButton)));
+    _ui->modifyPublicActivityPushButton->setText(
+        rr.string(RID(ModifyPublicActivityPushButton)));
+    _ui->destroyPublicActivityPushButton->setText(
+        rr.string(RID(DestroyPublicActivityPushButton)));
+    _ui->startPublicActivityPushButton->setText(
+        rr.string(RID(StartPublicActivityPushButton)));
+    _ui->stopPublicActivityPushButton->setText(
+        rr.string(RID(StopPublicActivityPushButton)));
+    refresh();
+}
+
 //////////
 //  Signal handlers
 void PublicActivityManager::_currentThemeChanged(ITheme *, ITheme *)
@@ -485,6 +515,12 @@ void PublicActivityManager::_currentThemeChanged(ITheme *, ITheme *)
     _ui->publicActivitiesTreeWidget->clear();
     _decorations = TreeWidgetDecorations(_ui->publicActivitiesTreeWidget);
     requestRefresh();
+}
+
+void PublicActivityManager::_currentLocaleChanged(QLocale, QLocale)
+{
+    _applyCurrentLocale();
+    refresh();
 }
 
 void PublicActivityManager::_currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity)

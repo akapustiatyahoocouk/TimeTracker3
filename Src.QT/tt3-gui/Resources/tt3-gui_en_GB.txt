@@ -614,6 +614,7 @@ StopPrivateTaskPushButton=Stop private task
 CompletePrivateTaskPushButton=Complete private task
 UserDisabledSuffix=[user is disabled]
 TaskCompletedSuffix=[task is completed]
+ShowCompletedCheckBox=Show completed tasks
 
 [ProjectManager]
 FilterLabel=Filter:
@@ -623,6 +624,16 @@ ViewProjectPushButton=View project
 DestroyProjectPushButton=Destroy project
 CompleteProjectPushButton=Complete project
 ProjectCompletedSuffix=[project is completed]
+ShowCompletedCheckBox=Show completed project
+
+[PublicActivityManager]
+FilterLabel=Filter:
+CreatePublicActivityPushButton=Create public activity
+ModifyPublicActivityPushButton=Modify public activity
+ViewPublicActivityPushButton=View public activity
+DestroyPublicActivityPushButton=Destroy public activity
+StartPublicActivityPushButton=Start public activity
+StopPublicActivityPushButton=Stop public activity
 
 [RestartRequiredDialog]
 Title=Restart required

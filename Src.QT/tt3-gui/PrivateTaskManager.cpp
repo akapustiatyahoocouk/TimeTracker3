@@ -856,6 +856,8 @@ void PrivateTaskManager::_applyCurrentLocale()
         rr.string(RID(StopPrivateTaskPushButton)));
     _ui->completePrivateTaskPushButton->setText(
         rr.string(RID(CompletePrivateTaskPushButton)));
+    _ui->showCompletedCheckBox->setText(
+        rr.string(RID(ShowCompletedCheckBox)));
     refresh();
 }
 
