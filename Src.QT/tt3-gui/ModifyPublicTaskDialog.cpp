@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ModifyPublicTaskDialog.cpp - tt3::gui::ModifyPublicTaskDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -40,15 +40,13 @@ ModifyPublicTaskDialog::ModifyPublicTaskDialog(
         //  Controls
         _ui(new Ui::ModifyPublicTaskDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ModifyPublicTaskDialog));
+
     Q_ASSERT(_publicTask != nullptr);
     Q_ASSERT(_credentials.isValid());
 
     _ui->setupUi(this);
-
-    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
-        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
-    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
-        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
+    setWindowTitle(rr.string(RID(Title)));
 
     //  Fill the "activity type" combo box (may throw)
     QList<tt3::ws::ActivityType> activityTypes =
@@ -60,7 +58,6 @@ ModifyPublicTaskDialog::ModifyPublicTaskDialog(
         {
             return a->displayName(_credentials) < b->displayName(_credentials);
         });
-
     _ui->activityTypeComboBox->addItem(
         "-",
         QVariant::fromValue<tt3::ws::ActivityType>(nullptr));
@@ -72,17 +69,61 @@ ModifyPublicTaskDialog::ModifyPublicTaskDialog(
             QVariant::fromValue(activityType));
     }
 
-    //  Fill "hours" amd "minutes" combo boxes
+    //  Fill "hours" and "minutes" combo boxes
     for (int h = 0; h < 12; h++)
     {
-        _ui->hoursComboBox->addItem(tt3::util::toString(h) + " hrs", QVariant::fromValue(h));
+        _ui->hoursComboBox->addItem(
+            rr.string(RID(HoursComboBoxItem), h),
+            QVariant::fromValue(h));
     }
     for (int m = 0; m < 60; m += 15)
     {
-        _ui->minutesComboBox->addItem(tt3::util::toString(m) + " min", QVariant::fromValue(m));
+        _ui->minutesComboBox->addItem(
+            rr.string(RID(MinutesComboBoxItem), m),
+            QVariant::fromValue(m));
     }
 
-    //  Set initial control values (may throw)
+    //  Set static control values
+    _ui->parentTaskLabel->setText(
+        rr.string(RID(ParentTaskLabel)));
+    _ui->selectParentTaskPushButton->setText(
+        rr.string(RID(SelectParentTaskPushButton)));
+    _ui->displayNameLabel->setText(
+        rr.string(RID(DisplayNameLabel)));
+    _ui->descriptionLabel->setText(
+        rr.string(RID(DescriptionLabel)));
+    _ui->activityTypeLabel->setText(
+        rr.string(RID(ActivityTypeLabel)));
+    _ui->workloadLabel->setText(
+        rr.string(RID(WorkloadLabel)));
+    _ui->selectWorkloadPushButton->setText(
+        rr.string(RID(SelectWorkloadPushButton)));
+    _ui->timeoutLabel->setText(
+        rr.string(RID(TimeoutLabel)));
+    _ui->timeoutCheckBox->setText(
+        rr.string(RID(TimeoutCheckBox)));
+
+    _ui->requireCommentOnStartCheckBox->setText(
+        rr.string(RID(RequireCommentOnStartCheckBox)));
+    _ui->requireCommentOnStopCheckBox->setText(
+        rr.string(RID(RequireCommentOnStopCheckBox)));
+    _ui->fullScreenReminderCheckBox->setText(
+        rr.string(RID(FullScreenReminderCheckBox)));
+    _ui->requiresCommentOnCompletionCeckBox->setText(
+        rr.string(RID(RequiresCommentOnCompletionCeckBox)));
+    _ui->completedCheckBox->setText(
+        rr.string(RID(CompletedCheckBox)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
+
+    //  Set editable control values (may throw)
     _setSelectedParentTask(_publicTask->parent(_credentials));
     _ui->displayNameLineEdit->setText(_publicTask->displayName(_credentials));
     _ui->descriptionPlainTextEdit->setPlainText(_publicTask->description(_credentials));
@@ -95,11 +136,11 @@ ModifyPublicTaskDialog::ModifyPublicTaskDialog(
     _ui->completedCheckBox->setChecked(_publicTask->completed(_credentials));
     _ui->requiresCommentOnCompletionCeckBox->setChecked(_publicTask->requireCommentOnCompletion(_credentials));
 
-    //  Adjust for "view only" mode
+    //  Adjust controls
     if (_readOnly)
-    {
-        this->setWindowTitle("View public task");
-        this->setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewPublicTaskLarge.png"));
+    {   //  Adjust for "view only" mode
+        setWindowTitle(rr.string(RID(ViewOnlyTitle)));
+        setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewPublicTaskLarge.png"));
         _ui->parentTaskComboBox->setEnabled(false);
         _ui->selectParentTaskPushButton->setEnabled(false);
         _ui->displayNameLineEdit->setReadOnly(true);
@@ -126,8 +167,9 @@ ModifyPublicTaskDialog::ModifyPublicTaskDialog(
     }
 
     //  Done
-    adjustSize();
     _refresh();
+    adjustSize();
+    _ui->displayNameLineEdit->setFocus();
 }
 
 ModifyPublicTaskDialog::~ModifyPublicTaskDialog()
@@ -155,10 +197,12 @@ void ModifyPublicTaskDialog::_setSelectedParentTask(
         tt3::ws::PublicTask parentTask
     )
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ModifyPublicTaskDialog));
+
     //  Refill the "parent task" combo box
     _ui->parentTaskComboBox->clear();
     _ui->parentTaskComboBox->addItem(
-        "- (a root public task with no parent)",
+        rr.string(RID(NoParent)),
         QVariant::fromValue<tt3::ws::PublicTask>(nullptr));
     if (parentTask != nullptr)
     {
@@ -198,13 +242,36 @@ void ModifyPublicTaskDialog::_setSelectedActivityType(
     }
 }
 
+auto ModifyPublicTaskDialog::_selectedWorkload(
+    ) -> tt3::ws::Workload
+{
+    return _ui->workloadComboBox->currentData().value<tt3::ws::Workload>();
+}
+
 void ModifyPublicTaskDialog::_setSelectedWorkload(
         tt3::ws::Workload workload
     )
-{   //  TODO implement properly
-    Q_ASSERT(workload == nullptr);
-    _ui->workloadValueLabel->setText("-");
-    _selectedWorkload = workload;
+{
+    //  Refill the "workload" combo box
+    _ui->workloadComboBox->clear();
+    _ui->workloadComboBox->addItem(
+        "-",
+        QVariant::fromValue<tt3::ws::Workload>(nullptr));
+    if (workload != nullptr)
+    {
+        try
+        {
+            _ui->workloadComboBox->addItem(
+                workload->type()->smallIcon(),
+                workload->displayName(_credentials),    //  may throw
+                QVariant::fromValue(workload));
+            _ui->workloadComboBox->setCurrentIndex(1);
+        }
+        catch (const tt3::util::Exception & ex)
+        {  //  OOPS! Log & suppress
+            qCritical() << ex;
+        }
+    }
 }
 
 auto ModifyPublicTaskDialog::_selectedTimeout(
@@ -372,7 +439,7 @@ void ModifyPublicTaskDialog::accept()
                 _selectedActivityType());
             _publicTask->setWorkload(
                 _credentials,
-                _selectedWorkload);
+                _selectedWorkload());
             _publicTask->setCompleted(
                 _credentials,
                 _ui->completedCheckBox->isChecked());

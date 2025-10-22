@@ -80,8 +80,6 @@ namespace tt3::gui
         tt3::ws::Validator::PublicTask *const   _validator;
         const bool      _readOnly;
 
-        tt3::ws::Workload   _selectedWorkload;  //  currenty selected
-
         //  Helpers
         auto            _selectedParentTask(
                             ) -> tt3::ws::PublicTask;
@@ -93,6 +91,8 @@ namespace tt3::gui
         void            _setSelectedActivityType(
                                 tt3::ws::ActivityType activityType
                             );
+        auto            _selectedWorkload(
+                            ) -> tt3::ws::Workload;
         void            _setSelectedWorkload(
                                 tt3::ws::Workload workload
                             );
