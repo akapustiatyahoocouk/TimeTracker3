@@ -38,7 +38,40 @@ CreateUserDialog::CreateUserDialog(QWidget * parent,
     _ui->setupUi(this);
     setWindowTitle(rr.string(RID(Title)));
 
-    //  Set initial control values
+    //  Fill "hours" amd "minutes" combo boxes
+    for (int h = 0; h < 12; h++)
+    {
+        _ui->hoursComboBox->addItem(
+            rr.string(RID(HoursComboBoxItem), h),
+            QVariant::fromValue(h));
+    }
+    for (int m = 0; m < 60; m += 15)
+    {
+        _ui->minutesComboBox->addItem(
+            rr.string(RID(MinutesComboBoxItem), m),
+            QVariant::fromValue(m));
+    }
+
+    //  Fill "UI locale" combo box
+    _ui->uiLocaleComboBox->addItem(
+        rr.string(RID(SystemDefaultLocale)));
+    for (QLocale locale : tt3::util::ComponentManager::supportedLocales())
+    {
+        _locales.append(locale);
+    }
+    std::sort(
+        _locales.begin(),
+        _locales.end(),
+        [](auto a, auto b) { return _displayName(a) < _displayName(b); });
+    for (QLocale locale : _locales)
+    {
+        _ui->uiLocaleComboBox->addItem(
+            tt3::util::LocaleManager::smallIcon(locale),
+            tt3::util::LocaleManager::displayName(locale));
+    }
+    _locales.insert(0, QLocale());  //  ...to make combo box and QList indexes match
+
+    //  Set static control values
     _ui->realNameLabel->setText(
         rr.string(RID(RealNameLabel)));
     _ui->emailAddressesLabel->setText(
@@ -71,43 +104,10 @@ CreateUserDialog::CreateUserDialog(QWidget * parent,
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    //  Fill "hours" amd "minutes" combo boxes
-    for (int h = 0; h < 12; h++)
-    {
-        _ui->hoursComboBox->addItem(
-            rr.string(RID(HoursComboBoxItem), h),
-            QVariant::fromValue(h));
-    }
-    for (int m = 0; m < 60; m += 15)
-    {
-        _ui->minutesComboBox->addItem(
-            rr.string(RID(MinutesComboBoxItem), m),
-            QVariant::fromValue(m));
-    }
-
-    //  Fill "UI locale" combo box
-    _ui->uiLocaleComboBox->addItem(
-        rr.string(RID(SystemDefaultLocale)));
-    for (QLocale locale : tt3::util::ComponentManager::supportedLocales())
-    {
-        _locales.append(locale);
-    }
-    std::sort(
-        _locales.begin(),
-        _locales.end(),
-        [](auto a, auto b) { return _displayName(a) < _displayName(b); });
-
-    for (QLocale locale : _locales)
-    {
-        _ui->uiLocaleComboBox->addItem(
-            tt3::util::LocaleManager::smallIcon(locale),
-            tt3::util::LocaleManager::displayName(locale));
-    }
-    _locales.insert(0, QLocale());  //  ...to make combo box and QList indexes match
-
     //  Done
-    adjustSize();
     _refresh();
+    adjustSize();
+    _ui->realNameLineEdit->setFocus();
 }
 
 CreateUserDialog::~CreateUserDialog()

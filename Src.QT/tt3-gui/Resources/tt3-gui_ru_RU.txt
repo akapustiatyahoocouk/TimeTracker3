@@ -543,3 +543,23 @@ RequiresCommentOnCompletionCeckBox=Требуется комментарий п�
 CompletedCheckBox=Задача выполнена
 OkPushButton=ОК
 CancelPushButton=Отмена
+
+[ModifyUserDialog]
+Title=Изменить пользователя
+ViewOnlyTitle=Просмотреть пользователя
+RealNameLabel=Настоящее имя:
+EmailAddressesLabel=Адреса электронной почты:
+AddEmailAddressPushButton=Добавить
+ModifyEmailAddressPushButton=Изменить
+RemoveEmailAddressPushButton=Удалить
+InactivityTimeoutLabel=Текущая активность:
+InactivityTimeoutCheckBox=остановить, если нет активности в течение
+HoursComboBoxItem={0} час
+MinutesComboBoxItem={0} мин
+UiLocaleLabel=Язык интерфейса:
+SystemDefaultLocale=- (системное значение по умолчанию)
+WorkingOnLabel=Работает над:
+WorkingOnPushButton=Выбрать
+EnabledCheckBox=Пользователь включён
+OkPushButton=ОК
+CancelPushButton=Отмена

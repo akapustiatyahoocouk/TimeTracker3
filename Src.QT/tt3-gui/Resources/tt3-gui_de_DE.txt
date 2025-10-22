@@ -522,7 +522,7 @@ CancelPushButton=Abbrechen
 
 [ModifyPublicTaskDialog]
 Title=Öffentliche Aufgabe ändern
-ViewOnlyTitle=Private Aufgabe anzeigen
+ViewOnlyTitle=Öffentliche Aufgabe anzeigen
 ParentTaskLabel=Übergeordnet:
 NoParent=- (eine öffentliche Root-Aufgabe ohne übergeordnete Aufgabe)
 SelectParentTaskPushButton=Auswählen
@@ -540,5 +540,25 @@ RequireCommentOnStopCheckBox=Kommentar bei Stopp dieser Aktivität erforderlich
 FullScreenReminderCheckBox=Vollbild-Erinnerung
 RequiresCommentOnCompletionCeckBox=Kommentar nach Abschluss erforderlich
 CompletedCheckBox=Aufgabe ist abgeschlossen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[ModifyUserDialog]
+Title=Benutzer ändern
+ViewOnlyTitle=Benutzer anzeigen
+RealNameLabel=Realname:
+EmailAddressesLabel=E-Mail-Adressen:
+AddEmailAddressPushButton=Hinzufügen
+ModifyEmailAddressPushButton=Ändern
+RemoveEmailAddressPushButton=Entfernen
+InactivityTimeoutLabel=Aktuelle Aktivität:
+InactivityTimeoutCheckBox=beenden nach
+HoursComboBoxItem={0} Std.
+MinutesComboBoxItem={0} Min.
+UiLocaleLabel=UI-Gebietsschema:
+SystemDefaultLocale=- (Systemstandard)
+WorkingOnLabel=Bearbeitet an:
+WorkingOnPushButton=Auswählen
+EnabledCheckBox=Benutzer ist aktiviert
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen

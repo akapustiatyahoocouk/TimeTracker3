@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ModifyUserDialog.cpp - tt3::gui::ModifyUserDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -35,28 +35,31 @@ ModifyUserDialog::ModifyUserDialog(
         //  Controls
         _ui(new Ui::ModifyUserDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ModifyUserDialog));
+
     Q_ASSERT(_user != nullptr);
     Q_ASSERT(_credentials.isValid());
 
     _ui->setupUi(this);
-
-    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
-        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
-    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
-        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
+    setWindowTitle(rr.string(RID(Title)));
 
     //  Fill "hours" amd "minutes" combo boxes
     for (int h = 0; h < 12; h++)
     {
-        _ui->hoursComboBox->addItem(tt3::util::toString(h) + " hrs", QVariant::fromValue(h));
+        _ui->hoursComboBox->addItem(
+            rr.string(RID(HoursComboBoxItem), h),
+            QVariant::fromValue(h));
     }
     for (int m = 0; m < 60; m += 15)
     {
-        _ui->minutesComboBox->addItem(tt3::util::toString(m) + " min", QVariant::fromValue(m));
+        _ui->minutesComboBox->addItem(
+            rr.string(RID(MinutesComboBoxItem), m),
+            QVariant::fromValue(m));
     }
 
     //  Fill "UI locale" combo box
-    _ui->uiLocaleComboBox->addItem("- (system default)");
+    _ui->uiLocaleComboBox->addItem(
+        rr.string(RID(SystemDefaultLocale)));
     for (QLocale locale : tt3::util::ComponentManager::supportedLocales())
     {
         _locales.append(locale);
@@ -65,7 +68,6 @@ ModifyUserDialog::ModifyUserDialog(
         _locales.begin(),
         _locales.end(),
         [](auto a, auto b) { return _displayName(a) < _displayName(b); });
-
     for (QLocale locale : _locales)
     {
         _ui->uiLocaleComboBox->addItem(
@@ -74,18 +76,51 @@ ModifyUserDialog::ModifyUserDialog(
     }
     _locales.insert(0, QLocale());  //  ...to make combo box and QList indexes match
 
-    //  Set initial control values (may throw)
+    //  Set static control values
+    _ui->realNameLabel->setText(
+        rr.string(RID(RealNameLabel)));
+    _ui->emailAddressesLabel->setText(
+        rr.string(RID(EmailAddressesLabel)));
+    _ui->addEmailAddressPushButton->setText(
+        rr.string(RID(AddEmailAddressPushButton)));
+    _ui->modifyEmailAddressPushButton->setText(
+        rr.string(RID(ModifyEmailAddressPushButton)));
+    _ui->removeEmailAddressPushButton->setText(
+        rr.string(RID(RemoveEmailAddressPushButton)));
+    _ui->inactivityTimeoutLabel->setText(
+        rr.string(RID(InactivityTimeoutLabel)));
+    _ui->inactivityTimeoutCheckBox->setText(
+        rr.string(RID(InactivityTimeoutCheckBox)));
+    _ui->uiLocaleLabel->setText(
+        rr.string(RID(UiLocaleLabel)));
+    _ui->workingOnLabel->setText(
+        rr.string(RID(WorkingOnLabel)));
+    _ui->workingOnPushButton->setText(
+        rr.string(RID(WorkingOnPushButton)));
+    _ui->enabledCheckBox->setText(
+        rr.string(RID(EnabledCheckBox)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
+
+    //  Set editable control values (may throw)
     _ui->realNameLineEdit->setText(_user->realName(_credentials));
     _setSelectedEmailAddresses(_user->emailAddresses(_credentials));
     _setSelectedInactivityTimeout(_user->inactivityTimeout(_credentials));
     _setSelectedUiLocale(_user->uiLocale(_credentials));
     _ui->enabledCheckBox->setChecked(_user->enabled(_credentials));
 
-    //  Adjust for "view only" mode
+    //  Adjust controls
     if (_readOnly)
-    {
-        this->setWindowTitle("View user");
-        this->setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewUserLarge.png"));
+    {   //  Adjust for "view only" mode
+        setWindowTitle(rr.string(RID(ViewOnlyTitle)));
+        setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewUserLarge.png"));
         _ui->realNameLineEdit->setReadOnly(true);
         _ui->inactivityTimeoutCheckBox->setEnabled(false);
         _ui->enabledCheckBox->setEnabled(false);
@@ -93,8 +128,9 @@ ModifyUserDialog::ModifyUserDialog(
     }
 
     //  Done
-    adjustSize();
     _refresh();
+    adjustSize();
+    _ui->realNameLineEdit->setFocus();
 }
 
 ModifyUserDialog::~ModifyUserDialog()
