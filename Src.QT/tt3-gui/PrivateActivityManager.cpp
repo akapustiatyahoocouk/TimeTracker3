@@ -1,6 +1,6 @@
 //
 //  tt3-gui/PrivateActivityManager.cpp - tt3::gui::PrivateActivityManager class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -40,12 +40,20 @@ PrivateActivityManager::PrivateActivityManager(
         _refreshTimer(this)
 {
     _ui->setupUi(this);
+    _applyCurrentLocale();
 
     //  Theme change means widget decorations change
     connect(&theCurrentTheme,
             &CurrentTheme::changed,
             this,
             &PrivateActivityManager::_currentThemeChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Locale change requires UI translation
+    connect(&tt3::util::theCurrentLocale,
+            &tt3::util::CurrentLocale::changed,
+            this,
+            &PrivateActivityManager::_currentLocaleChanged,
             Qt::ConnectionType::QueuedConnection);
 
     //  Current activity change means, at least, a refresh
@@ -117,6 +125,7 @@ void PrivateActivityManager::refresh()
 {
     static const QIcon viewPrivateActivityIcon(":/tt3-gui/Resources/Images/Actions/ViewPrivateActivityLarge.png");
     static const QIcon modifyPrivateActivityIcon(":/tt3-gui/Resources/Images/Actions/ModifyPrivateActivityLarge.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(PrivateActivityManager));
 
     //  We don't want a refresh() to trigger a recursive refresh()!
     static bool refreshUnderway = false;
@@ -229,19 +238,22 @@ void PrivateActivityManager::refresh()
                 selectedPrivateActivity->canModify(_credentials))    //  may throw
             {   //  RW
                 _ui->modifyPrivateActivityPushButton->setIcon(modifyPrivateActivityIcon);
-                _ui->modifyPrivateActivityPushButton->setText("Modify private activity");
+                _ui->modifyPrivateActivityPushButton->setText(
+                    rr.string(RID(ModifyPrivateActivityPushButton)));
             }
             else
             {   //  RO
                 _ui->modifyPrivateActivityPushButton->setIcon(viewPrivateActivityIcon);
-                _ui->modifyPrivateActivityPushButton->setText("View private activity");
+                _ui->modifyPrivateActivityPushButton->setText(
+                    rr.string(RID(ViewPrivateActivityPushButton)));
             }
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Simulate RO
             qCritical() << ex;
             _ui->modifyPrivateActivityPushButton->setIcon(viewPrivateActivityIcon);
-            _ui->modifyPrivateActivityPushButton->setText("View provate activity");
+            _ui->modifyPrivateActivityPushButton->setText(
+                rr.string(RID(ViewPrivateActivityPushButton)));
         }
     }
 }
@@ -299,6 +311,7 @@ auto PrivateActivityManager::_createUserModel(
     ) -> PrivateActivityManager::_UserModel
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(PrivateActivityManager));
 
     _UserModel userModel
         { new _UserModelImpl(user) };
@@ -307,7 +320,7 @@ auto PrivateActivityManager::_createUserModel(
         userModel->text = user->realName(credentials);
         if (!user->enabled(credentials))
         {
-            userModel->text += " [disabled]";
+            userModel->text += " " + rr.string(RID(UserDisabledSuffix));
             userModel->brush = decorations.disabledItemForeground;
         }
         else
@@ -630,6 +643,25 @@ void PrivateActivityManager::_clearAndDisableAllControls()
     _ui->stopPrivateActivityPushButton->setEnabled(false);
 }
 
+void PrivateActivityManager::_applyCurrentLocale()
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(PrivateActivityManager));
+
+    _ui->filterLabel->setText(
+        rr.string(RID(FilterLabel)));
+    _ui->createPrivateActivityPushButton->setText(
+        rr.string(RID(CreatePrivateActivityPushButton)));
+    _ui->modifyPrivateActivityPushButton->setText(
+        rr.string(RID(ModifyPrivateActivityPushButton)));
+    _ui->destroyPrivateActivityPushButton->setText(
+        rr.string(RID(DestroyPrivateActivityPushButton)));
+    _ui->startPrivateActivityPushButton->setText(
+        rr.string(RID(StartPrivateActivityPushButton)));
+    _ui->stopPrivateActivityPushButton->setText(
+        rr.string(RID(StopPrivateActivityPushButton)));
+    refresh();  //  TODO do it in _applyCurrentLocale()() of all XXXManagers
+}
+
 //////////
 //  Signal handlers
 void PrivateActivityManager::_currentThemeChanged(ITheme *, ITheme *)
@@ -637,6 +669,12 @@ void PrivateActivityManager::_currentThemeChanged(ITheme *, ITheme *)
     _ui->privateActivitiesTreeWidget->clear();
     _decorations = TreeWidgetDecorations(_ui->privateActivitiesTreeWidget);
     requestRefresh();
+}
+
+void PrivateActivityManager::_currentLocaleChanged(QLocale, QLocale)
+{
+    _applyCurrentLocale();
+    refresh();
 }
 
 void PrivateActivityManager::_currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity)

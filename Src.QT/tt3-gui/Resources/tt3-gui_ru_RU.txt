@@ -57,7 +57,7 @@ LogWorkCheckBox=Ведение журнала работы
 LogEventsCheckBox=Ведение журнала событий
 GenerateReportsCheckBox=Создание отчетов
 BackupAndRestoreCheckBox=Резервное копирование и восстановление
-EnabledCheckBox=Учетная запись включена
+EnabledCheckBox=Учетная запись активна
 OkPushButton=ОК
 CancelPushButton=Отмена
 
@@ -185,7 +185,7 @@ UiLocaleLabel=Язык интерфейса:
 SystemDefaultLocale=- (системное значение по умолчанию)
 WorkingOnLabel=Работает над:
 WorkingOnPushButton=Выбрать
-EnabledCheckBox=Пользователь включён
+EnabledCheckBox=Пользователь активен
 OkPushButton=ОК
 CancelPushButton=Отмена
 
@@ -419,7 +419,7 @@ LogWorkCheckBox=Ведение журнала работы
 LogEventsCheckBox=Ведение журнала событий
 GenerateReportsCheckBox=Создание отчетов
 BackupAndRestoreCheckBox=Резервное копирование и восстановление
-EnabledCheckBox=Учетная запись включена
+EnabledCheckBox=Учетная запись активна
 OkPushButton=ОК
 CancelPushButton=Отмена
 
@@ -560,7 +560,7 @@ UiLocaleLabel=Язык интерфейса:
 SystemDefaultLocale=- (системное значение по умолчанию)
 WorkingOnLabel=Работает над:
 WorkingOnPushButton=Выбрать
-EnabledCheckBox=Пользователь включён
+EnabledCheckBox=Пользователь активен
 OkPushButton=ОК
 CancelPushButton=Отмена
 
@@ -593,6 +593,16 @@ ResetPushButton=Сбросить страницу
 ResetAllPushButton=Сбросить все
 OkPushButton=ОК
 CancelPushButton=Отмена
+
+[PrivateActivityManager]
+FilterLabel=Фильтр:
+CreatePrivateActivityPushButton=Создать личную активность
+ModifyPrivateActivityPushButton=Изменить личную активность
+ViewPrivateActivityPushButton=Просмотреть личную активность
+DestroyPrivateActivityPushButton=Удалить личную активность
+StartPrivateActivityPushButton=Запустить личную активность
+StopPrivateActivityPushButton=Остановить личную активность
+UserDisabledSuffix=[пользователь неактивен]
 
 [RestartRequiredDialog]
 Title=Требуется перезапуск
