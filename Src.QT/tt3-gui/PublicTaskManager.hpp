@@ -201,6 +201,7 @@ namespace tt3::gui
         void            _startListeningToWorkspaceChanges();
         void            _stopListeningToWorkspaceChanges();
         void            _clearAndDisableAllControls();
+        void            _applyCurrentLocale();
 
         //////////
         //  Controls
@@ -216,6 +217,7 @@ namespace tt3::gui
         //  Signal handlers
     private slots:
         void            _currentThemeChanged(ITheme *, ITheme *);
+        void            _currentLocaleChanged(QLocale, QLocale);
         void            _currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity);
         void            _publicTasksTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
         void            _publicTasksTreeWidgetCustomContextMenuRequested(QPoint);

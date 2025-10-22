@@ -635,6 +635,18 @@ DestroyPublicActivityPushButton=Öffentliche Aktivität zerstören
 StartPublicActivityPushButton=Öffentliche Aktivität starten
 StopPublicActivityPushButton=Öffentliches Aktivität stoppen
 
+[PublicTaskManager]
+FilterLabel=Filter:
+CreatePublicTaskPushButton=Öffentliche Aufgabe erstellen
+ModifyPublicTaskPushButton=Öffentliche Aufgabe ändern
+ViewPublicTaskPushButton=Öffentliche Aufgabe anzeigen
+DestroyPublicTaskPushButton=Öffentliche Aufgabe zerstören
+StartPublicTaskPushButton=Öffentliche Aufgabe starten
+StopPublicTaskPushButton=Öffentliche Aufgabe stoppen
+CompletePublicTaskPushButton=Öffentliche Aufgabe abschließen
+TaskCompletedSuffix=[Aufgabe ist abgeschlossen]
+ShowCompletedCheckBox=Erledigte Aufgaben anzeigen
+
 [RestartRequiredDialog]
 Title=Neustart erforderlich
 Prompt=Eine der Änderungen an den Anwendungseinstellungen\nwird erst nach einem Neustart der Anwendung wirksam.\nMöchten Sie TimeTracker3 jetzt neu starten?

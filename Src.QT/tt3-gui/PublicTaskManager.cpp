@@ -1,6 +1,6 @@
 //
 //  tt3-gui/PublicTaskManager.cpp - tt3::gui::PublicTaskManager class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -39,14 +39,21 @@ PublicTaskManager::PublicTaskManager(
         _refreshTimer(this)
 {
     _ui->setupUi(this);
-
     _decorations = TreeWidgetDecorations(_ui->publicTasksTreeWidget);
+    _applyCurrentLocale();
 
     //  Theme change means widget decorations change
     connect(&theCurrentTheme,
             &CurrentTheme::changed,
             this,
             &PublicTaskManager::_currentThemeChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Locale change requires UI translation
+    connect(&tt3::util::theCurrentLocale,
+            &tt3::util::CurrentLocale::changed,
+            this,
+            &PublicTaskManager::_currentLocaleChanged,
             Qt::ConnectionType::QueuedConnection);
 
     //  Current activity change means, at least, a refresh
@@ -125,6 +132,7 @@ void PublicTaskManager::refresh()
 {
     static const QIcon viewPublicTaskIcon(":/tt3-gui/Resources/Images/Actions/ViewPublicTaskLarge.png");
     static const QIcon modifyPublicTaskIcon(":/tt3-gui/Resources/Images/Actions/ModifyPublicTaskLarge.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(PublicTaskManager));
 
     //  We don't want a refresh() to trigger a recursive refresh()!
     static bool refreshUnderway = false;
@@ -256,19 +264,22 @@ void PublicTaskManager::refresh()
                 selectedPublicTask->canModify(_credentials))    //  may throw
             {   //  RW
                 _ui->modifyPublicTaskPushButton->setIcon(modifyPublicTaskIcon);
-                _ui->modifyPublicTaskPushButton->setText("Modify public task");
+                _ui->modifyPublicTaskPushButton->setText(
+                    rr.string(RID(ModifyPublicTaskPushButton)));
             }
             else
             {   //  RO
                 _ui->modifyPublicTaskPushButton->setIcon(viewPublicTaskIcon);
-                _ui->modifyPublicTaskPushButton->setText("View public task");
+                _ui->modifyPublicTaskPushButton->setText(
+                    rr.string(RID(ViewPublicTaskPushButton)));
             }
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & simulate RO
             qCritical() << ex;
             _ui->modifyPublicTaskPushButton->setIcon(viewPublicTaskIcon);
-            _ui->modifyPublicTaskPushButton->setText("View public task");
+            _ui->modifyPublicTaskPushButton->setText(
+                rr.string(RID(ViewPublicTaskPushButton)));
         }
     }
 }
@@ -316,6 +327,7 @@ auto PublicTaskManager::_createPublicTaskModel(
     ) -> PublicTaskManager::_PublicTaskModel
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(PublicTaskManager));
 
     _PublicTaskModel publicTaskModel
         { new _PublicTaskModelImpl(publicTask) };
@@ -324,7 +336,7 @@ auto PublicTaskManager::_createPublicTaskModel(
         publicTaskModel->text = publicTask->displayName(credentials);
         if (publicTask->completed(credentials))
         {
-            publicTaskModel->text += " [completed]";
+            publicTaskModel->text += " " + rr.string(RID(TaskCompletedSuffix));
             publicTaskModel->brush = decorations.disabledItemForeground;
         }
         else
@@ -665,6 +677,29 @@ void PublicTaskManager::_clearAndDisableAllControls()
     _ui->showCompletedCheckBox->setEnabled(false);
 }
 
+void PublicTaskManager::_applyCurrentLocale()
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(PublicTaskManager));
+
+    _ui->filterLabel->setText(
+        rr.string(RID(FilterLabel)));
+    _ui->createPublicTaskPushButton->setText(
+        rr.string(RID(CreatePublicTaskPushButton)));
+    _ui->modifyPublicTaskPushButton->setText(
+        rr.string(RID(ModifyPublicTaskPushButton)));
+    _ui->destroyPublicTaskPushButton->setText(
+        rr.string(RID(DestroyPublicTaskPushButton)));
+    _ui->startPublicTaskPushButton->setText(
+        rr.string(RID(StartPublicTaskPushButton)));
+    _ui->stopPublicTaskPushButton->setText(
+        rr.string(RID(StopPublicTaskPushButton)));
+    _ui->completePublicTaskPushButton->setText(
+        rr.string(RID(CompletePublicTaskPushButton)));
+    _ui->showCompletedCheckBox->setText(
+        rr.string(RID(ShowCompletedCheckBox)));
+    refresh();
+}
+
 //////////
 //  Signal handlers
 void PublicTaskManager::_currentThemeChanged(ITheme *, ITheme *)
@@ -672,6 +707,12 @@ void PublicTaskManager::_currentThemeChanged(ITheme *, ITheme *)
     _ui->publicTasksTreeWidget->clear();
     _decorations = TreeWidgetDecorations(_ui->publicTasksTreeWidget);
     requestRefresh();
+}
+
+void PublicTaskManager::_currentLocaleChanged(QLocale, QLocale)
+{
+    _applyCurrentLocale();
+    refresh();
 }
 
 void PublicTaskManager::_currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity)

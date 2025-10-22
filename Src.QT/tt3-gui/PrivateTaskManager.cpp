@@ -396,7 +396,7 @@ auto PrivateTaskManager::_createPrivateTaskModel(
         privateTaskModel->text = privateTask->displayName(credentials);
         if (privateTask->completed(credentials))
         {
-            privateTaskModel->text +=  " " + rr.string(RID(TaskCompletedSuffix));
+            privateTaskModel->text += " " + rr.string(RID(TaskCompletedSuffix));
             privateTaskModel->brush = decorations.disabledItemForeground;
         }
         else

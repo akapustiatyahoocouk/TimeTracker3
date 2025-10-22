@@ -615,7 +615,7 @@ StopPrivateTaskPushButton=Остановить личную задачу
 CompletePrivateTaskPushButton=Завершить личную задачу
 UserDisabledSuffix=[пользователь неактивен]
 TaskCompletedSuffix=[задача выполнена]
-ShowCompletedCheckBox=Показать выполненные задачи
+ShowCompletedCheckBox=Показать завершенные задачи
 
 [ProjectManager]
 FilterLabel=Фильтр:
@@ -635,6 +635,18 @@ ViewPublicActivityPushButton=Просмотреть общедоступную �
 DestroyPublicActivityPushButton=Удалить общедоступную активность
 StartPublicActivityPushButton=Запустить общедоступную активность
 StopPublicActivityPushButton=Остановить общедоступную активность
+
+[PublicTaskManager]
+FilterLabel=Фильтр:
+CreatePublicTaskPushButton=Создать общедоступную задачу
+ModifyPublicTaskPushButton=Изменить общедоступную задачу
+ViewPublicTaskPushButton=Просмотреть общедоступную задачу
+DestroyPublicTaskPushButton=Удалить общедоступную задачу
+StartPublicTaskPushButton=Запустить общедоступную задачу
+StopPublicTaskPushButton=Остановить общедоступную задачу
+CompletePublicTaskPushButton=Завершить общедоступную задачу
+TaskCompletedSuffix=[задача выполнена]
+ShowCompletedCheckBox=Показать завершенные задачи
 
 [RestartRequiredDialog]
 Title=Требуется перезапуск

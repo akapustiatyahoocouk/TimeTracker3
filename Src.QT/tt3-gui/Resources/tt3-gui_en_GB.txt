@@ -635,6 +635,18 @@ DestroyPublicActivityPushButton=Destroy public activity
 StartPublicActivityPushButton=Start public activity
 StopPublicActivityPushButton=Stop public activity
 
+[PublicTaskManager]
+FilterLabel=Filter:
+CreatePublicTaskPushButton=Create public task
+ModifyPublicTaskPushButton=Modify public task
+ViewPublicTaskPushButton=View public task
+DestroyPublicTaskPushButton=Destroy public task
+StartPublicTaskPushButton=Start public task
+StopPublicTaskPushButton=Stop public task
+CompletePublicTaskPushButton=Complete public task
+TaskCompletedSuffix=[task is completed]
+ShowCompletedCheckBox=Show completed tasks
+
 [RestartRequiredDialog]
 Title=Restart required
 Prompt=One of the changes you have made to application settings\nwill take place only after the application is restarted.\nDo you want to restart TimeTracker3 now ?
