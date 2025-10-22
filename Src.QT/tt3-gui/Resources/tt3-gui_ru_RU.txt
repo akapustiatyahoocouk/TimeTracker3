@@ -661,3 +661,12 @@ ShowCompletedTasksCheckBox=Показать выполненные задачи
 SelectionLabel=Выбранная родительская задача
 OkPushButton=ОК
 CancelPushButton=Отмена
+
+[SelectProjectParentDialog]
+Title=Выбрать родительский проект
+PromptLabel=Выбрать новый родительский проект
+FilterLabel=Фильтр:
+ShowCompletedProjectsCheckBox=Показать завершённые проекты
+SelectionLabel=Выбранный родительский проект
+OkPushButton=ОК
+CancelPushButton=Отмена

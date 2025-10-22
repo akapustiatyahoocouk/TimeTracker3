@@ -1,6 +1,6 @@
 //
 //  tt3-gui/SelectProjectParentDialog.cpp - tt3::gui::SelectProjectParentDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -31,14 +31,19 @@ SelectProjectParentDialog::SelectProjectParentDialog(
             credentials,
             initialParentProject)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(SelectProjectParentDialog));
+
     _project = project;
     _refresh();
 
-    //  Set initial control values
+    //  Set static control values
     _ui->promptLabel->setText(
-        _prompt("Select new parent for project", _project));
+        _prompt(rr.string(RID(PromptLabel)), _project));
+
+    //  Set editable control values
     _ui->showCompletedProjectsCheckBox->setChecked(
         _project->completed(_credentials));
+    _refresh();
 }
 
 SelectProjectParentDialog::SelectProjectParentDialog(
@@ -55,28 +60,43 @@ SelectProjectParentDialog::SelectProjectParentDialog(
         //  Controls
         _ui(new Ui::SelectProjectParentDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(SelectProjectParentDialog));
+
     Q_ASSERT(workspace != nullptr);
 
     _ui->setupUi(this);
+    _decorations = TreeWidgetDecorations(_ui->projectsTreeWidget);
+    setWindowTitle(rr.string(RID(Title)));
 
+    //  Set static control values
+    _ui->promptLabel->setText(
+        rr.string(RID(PromptLabel)));
+    _ui->filterLabel->setText(
+        rr.string(RID(FilterLabel)));
+    _ui->showCompletedProjectsCheckBox->setText(
+        rr.string(RID(ShowCompletedProjectsCheckBox)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    //  Set initial control values
-    _ui->promptLabel->setText("Select new parent for project");
+    //  Set editable control values
     _ui->showCompletedProjectsCheckBox->setChecked(false);
-    _decorations = TreeWidgetDecorations(_ui->projectsTreeWidget);
 
+    //  Adjust controls
     _refresh(); //  NOW, to adjust tree widget size to content
     _ui->projectsTreeWidget->expandAll();
     _setSelectedProject(_selectedParentProject);
 
     //  Done
+    adjustSize();
     _ui->projectsTreeWidget->setFocus();
     _trackItemStateChanges = true;
-    adjustSize();
 }
 
 SelectProjectParentDialog::~SelectProjectParentDialog()
@@ -132,6 +152,8 @@ void SelectProjectParentDialog::_removeReparentedProject(
 //  Implementation helpers
 void SelectProjectParentDialog::_refresh()
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(SelectProjectParentDialog));
+
     //  We don't want a refresh() to trigger a recursive refresh()!
     static bool refreshUnderway = false;
     RefreshGuard refreshGuard(refreshUnderway);
@@ -162,7 +184,9 @@ void SelectProjectParentDialog::_refresh()
         }
 
         _ui->selectionLabel->setText(
-            _prompt("Selected parent project", _selectedParentProject));
+            _prompt(
+                rr.string(RID(SelectionLabel)),
+                _selectedParentProject));
     }
 }
 

@@ -38,9 +38,7 @@ SelectPrivateTaskParentDialog::SelectPrivateTaskParentDialog(
 
     //  Set static control values
     _ui->promptLabel->setText(
-        _prompt(
-            rr.string(RID(PromptLabel)),
-            _privateTask));
+        _prompt(rr.string(RID(PromptLabel)), _privateTask));
 
     //  Set editable control values
     _ui->showCompletedTasksCheckBox->setChecked(
@@ -68,6 +66,7 @@ SelectPrivateTaskParentDialog::SelectPrivateTaskParentDialog(
     Q_ASSERT(_owner != nullptr);
 
     _ui->setupUi(this);
+    _decorations = TreeWidgetDecorations(_ui->privateTasksTreeWidget);
     setWindowTitle(rr.string(RID(Title)));
 
     //  Populate User combo box
@@ -109,10 +108,10 @@ SelectPrivateTaskParentDialog::SelectPrivateTaskParentDialog(
 
     //  Set editable control values
     _setSelectedUser(_owner);
+    _ui->showCompletedTasksCheckBox->setChecked(false);
 
     //  Adjust controls
     _ui->userComboBox->setEnabled(false);
-    _ui->showCompletedTasksCheckBox->setChecked(false);
 
     _refresh(); //  NOW, to adjust tree widget size to content
     _ui->privateTasksTreeWidget->expandAll();

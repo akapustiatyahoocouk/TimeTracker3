@@ -660,3 +660,12 @@ ShowCompletedTasksCheckBox=Abgeschlossene Aufgaben anzeigen
 SelectionLabel=Übergeordnete Aufgabe auswählen
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
+
+[SelectProjectParentDialog]
+Title=Übergeordnetes Projekt auswählen
+PromptLabel=Neues übergeordnetes Projekt auswählen
+FilterLabel=Filter:
+ShowCompletedProjectsCheckBox=Abgeschlossene Projekte anzeigen
+SelectionLabel=Ausgewähltes übergeordnetes Projekt
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
