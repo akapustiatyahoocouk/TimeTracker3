@@ -616,6 +616,15 @@ CompletePrivateTaskPushButton=Завершить личную задачу
 UserDisabledSuffix=[пользователь неактивен]
 TaskCompletedSuffix=[задача выполнена]
 
+[ProjectManager]
+FilterLabel=Фильтр:
+CreateProjectPushButton=Создать проект
+ModifyProjectPushButton=Изменить проект
+ViewProjectPushButton=Просмотреть проект
+DestroyProjectPushButton=Удалить проект
+CompleteProjectPushButton=Завершить проект
+ProjectCompletedSuffix=[проект завершён]
+
 [RestartRequiredDialog]
 Title=Требуется перезапуск
 Prompt=Одно из изменений, внесённых вами в настройки приложения,\nвступит в силу только после перезапуска приложения.\nХотите перезапустить TimeTracker3 сейчас?

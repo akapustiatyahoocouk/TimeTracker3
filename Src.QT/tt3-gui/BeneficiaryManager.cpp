@@ -37,9 +37,8 @@ BeneficiaryManager::BeneficiaryManager(
         _ui(new Ui::BeneficiaryManager)
 {
     _ui->setupUi(this);
-    _applyCurrentLocale();
-
     _decorations = TreeWidgetDecorations(_ui->beneficiariesTreeWidget);
+    _applyCurrentLocale();
 
     //  Theme change means widget decorations change
     connect(&theCurrentTheme,

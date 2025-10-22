@@ -37,9 +37,8 @@ ActivityTypeManager::ActivityTypeManager(
         _ui(new Ui::ActivityTypeManager)
 {
     _ui->setupUi(this);
-    _applyCurrentLocale();
-
     _decorations = TreeWidgetDecorations(_ui->activityTypesTreeWidget);
+    _applyCurrentLocale();
 
     //  Theme change means widget decorations change
     connect(&theCurrentTheme,

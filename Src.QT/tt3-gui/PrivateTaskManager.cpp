@@ -39,6 +39,7 @@ PrivateTaskManager::PrivateTaskManager(
         _refreshTimer(this)
 {
     _ui->setupUi(this);
+    _decorations = TreeWidgetDecorations(_ui->privateTasksTreeWidget);
     _applyCurrentLocale();
 
     //  Theme change means widget decorations change

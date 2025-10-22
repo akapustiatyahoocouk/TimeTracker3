@@ -615,6 +615,15 @@ CompletePrivateTaskPushButton=Complete private task
 UserDisabledSuffix=[user is disabled]
 TaskCompletedSuffix=[task is completed]
 
+[ProjectManager]
+FilterLabel=Filter:
+CreateProjectPushButton=Create project
+ModifyProjectPushButton=Modify project
+ViewProjectPushButton=View project
+DestroyProjectPushButton=Destroy project
+CompleteProjectPushButton=Complete project
+ProjectCompletedSuffix=[project is completed]
+
 [RestartRequiredDialog]
 Title=Restart required
 Prompt=One of the changes you have made to application settings\nwill take place only after the application is restarted.\nDo you want to restart TimeTracker3 now ?

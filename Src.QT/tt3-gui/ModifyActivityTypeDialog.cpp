@@ -43,7 +43,7 @@ ModifyActivityTypeDialog::ModifyActivityTypeDialog(
     _ui->setupUi(this);
     setWindowTitle(rr.string(RID(Title)));
 
-    //  Set static control values   //  TODO same separation between setting static/editable control values in every dialog
+    //  Set static control values
     _ui->displayNameLabel->setText(
         rr.string(RID(DisplayNameLabel)));
     _ui->descriptionLabel->setText(

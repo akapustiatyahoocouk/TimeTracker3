@@ -615,6 +615,15 @@ CompletePrivateTaskPushButton=Private Aufgabe abschließen
 UserDisabledSuffix=[Benutzer ist deaktiviert]
 TaskCompletedSuffix=[Aufgabe ist abgeschlossen]
 
+[ProjectManager]
+FilterLabel=Filter:
+CreateProjectPushButton=Projekt erstellen
+ModifyProjectPushButton=Projekt ändern
+ViewProjectPushButton=Projekt anzeigen
+DestroyProjectPushButton=Projekt zerstören
+CompleteProjectPushButton=Projekt abschließen
+ProjectCompletedSuffix=[Projekt ist abgeschlossen]
+
 [RestartRequiredDialog]
 Title=Neustart erforderlich
 Prompt=Eine der Änderungen an den Anwendungseinstellungen\nwird erst nach einem Neustart der Anwendung wirksam.\nMöchten Sie TimeTracker3 jetzt neu starten?

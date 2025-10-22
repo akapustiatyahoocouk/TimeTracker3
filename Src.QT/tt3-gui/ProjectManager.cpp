@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ProjectManager.cpp - tt3::gui::ProjectManager class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -20,10 +20,10 @@ using namespace tt3::gui;
 
 namespace tt3::gui
 {
-extern CurrentTheme theCurrentTheme;
-extern CurrentActivity theCurrentActivity;
-extern CurrentCredentials theCurrentCredentials;
-extern CurrentWorkspace theCurrentWorkspace;
+    extern CurrentTheme theCurrentTheme;
+    extern CurrentActivity theCurrentActivity;
+    extern CurrentCredentials theCurrentCredentials;
+    extern CurrentWorkspace theCurrentWorkspace;
 }
 
 //////////
@@ -38,14 +38,21 @@ ProjectManager::ProjectManager(
         _ui(new Ui::ProjectManager)
 {
     _ui->setupUi(this);
-
     _decorations = TreeWidgetDecorations(_ui->projectsTreeWidget);
+    _applyCurrentLocale();
 
     //  Theme change means widget decorations change
     connect(&theCurrentTheme,
             &CurrentTheme::changed,
             this,
             &ProjectManager::_currentThemeChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Locale change requires UI translation
+    connect(&tt3::util::theCurrentLocale,
+            &tt3::util::CurrentLocale::changed,
+            this,
+            &ProjectManager::_currentLocaleChanged,
             Qt::ConnectionType::QueuedConnection);
 
     //  Current activity change means, at least, a refresh
@@ -116,6 +123,7 @@ void ProjectManager::refresh()
 {
     static const QIcon viewProjectIcon(":/tt3-gui/Resources/Images/Actions/ViewProjectLarge.png");
     static const QIcon modifyProjectIcon(":/tt3-gui/Resources/Images/Actions/ModifyProjectLarge.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ProjectManager));
 
     //  We don't want a refresh() to trigger a recursive refresh()!
     static bool refreshUnderway = false;
@@ -220,19 +228,22 @@ void ProjectManager::refresh()
                 selectedProject->canModify(_credentials))    //  may throw
             {   //  RW
                 _ui->modifyProjectPushButton->setIcon(modifyProjectIcon);
-                _ui->modifyProjectPushButton->setText("Modify project");
+                _ui->modifyProjectPushButton->setText(
+                    rr.string(RID(ModifyProjectPushButton)));
             }
             else
             {   //  RO
                 _ui->modifyProjectPushButton->setIcon(viewProjectIcon);
-                _ui->modifyProjectPushButton->setText("View project");
+                _ui->modifyProjectPushButton->setText(
+                    rr.string(RID(ViewProjectPushButton)));
             }
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & simulate RO
             qCritical() << ex;
             _ui->modifyProjectPushButton->setIcon(viewProjectIcon);
-            _ui->modifyProjectPushButton->setText("View project");
+            _ui->modifyProjectPushButton->setText(
+                rr.string(RID(ViewProjectPushButton)));
         }
     }
 }
@@ -280,6 +291,7 @@ auto ProjectManager::_createProjectModel(
     ) -> ProjectManager::_ProjectModel
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ProjectManager));
 
     _ProjectModel projectModel
         { new _ProjectModelImpl(project) };
@@ -288,7 +300,7 @@ auto ProjectManager::_createProjectModel(
         projectModel->text = project->displayName(credentials);
         if (project->completed(credentials))
         {
-            projectModel->text += " [completed]";
+            projectModel->text += " " + rr.string(RID(ProjectCompletedSuffix));
             projectModel->brush = decorations.disabledItemForeground;
         }
         else
@@ -615,6 +627,23 @@ void ProjectManager::_clearAndDisableAllControls()
     _ui->showCompletedCheckBox->setEnabled(false);
 }
 
+void ProjectManager::_applyCurrentLocale()
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ProjectManager));
+
+    _ui->filterLabel->setText(
+        rr.string(RID(FilterLabel)));
+    _ui->createProjectPushButton->setText(
+        rr.string(RID(CreateProjectPushButton)));
+    _ui->modifyProjectPushButton->setText(
+        rr.string(RID(ModifyProjectPushButton)));
+    _ui->destroyProjectPushButton->setText(
+        rr.string(RID(DestroyProjectPushButton)));
+    _ui->completeProjectPushButton->setText(
+        rr.string(RID(CompleteProjectPushButton)));
+    refresh();
+}
+
 //////////
 //  Signal handlers
 void ProjectManager::_currentThemeChanged(ITheme *, ITheme *)
@@ -622,6 +651,12 @@ void ProjectManager::_currentThemeChanged(ITheme *, ITheme *)
     _ui->projectsTreeWidget->clear();
     _decorations = TreeWidgetDecorations(_ui->projectsTreeWidget);
     requestRefresh();
+}
+
+void ProjectManager::_currentLocaleChanged(QLocale, QLocale)
+{
+    _applyCurrentLocale();
+    refresh();
 }
 
 void ProjectManager::_currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity)
