@@ -651,3 +651,13 @@ ShowCompletedCheckBox=Показать завершенные задачи
 [RestartRequiredDialog]
 Title=Требуется перезапуск
 Prompt=Одно из изменений, внесённых вами в настройки приложения,\nвступит в силу только после перезапуска приложения.\nХотите перезапустить TimeTracker3 сейчас?
+
+[SelectPrivateTaskParentDialog]
+Title=Выбрать родительскую задачу
+UserLabel=Пользователь:
+PromptLabel=Выбрать новую родительскую задачу для личной задачи
+FilterLabel=Фильтр:
+ShowCompletedTasksCheckBox=Показать выполненные задачи
+SelectionLabel=Выбранная родительская задача
+OkPushButton=ОК
+CancelPushButton=Отмена

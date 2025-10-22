@@ -650,3 +650,13 @@ ShowCompletedCheckBox=Erledigte Aufgaben anzeigen
 [RestartRequiredDialog]
 Title=Neustart erforderlich
 Prompt=Eine der Änderungen an den Anwendungseinstellungen\nwird erst nach einem Neustart der Anwendung wirksam.\nMöchten Sie TimeTracker3 jetzt neu starten?
+
+[SelectPrivateTaskParentDialog]
+Title=Übergeordnete Aufgabe auswählen
+UserLabel=Benutzer:
+PromptLabel=Neue übergeordnete Aufgabe für private Aufgabe auswählen
+FilterLabel=Filter:
+ShowCompletedTasksCheckBox=Abgeschlossene Aufgaben anzeigen
+SelectionLabel=Übergeordnete Aufgabe auswählen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen

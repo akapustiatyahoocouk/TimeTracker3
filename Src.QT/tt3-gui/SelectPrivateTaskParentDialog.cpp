@@ -1,6 +1,6 @@
 //
 //  tt3-gui/SelectPrivateTaskParentDialog.cpp - tt3::gui::SelectPrivateTaskParentDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -31,14 +31,21 @@ SelectPrivateTaskParentDialog::SelectPrivateTaskParentDialog(
             credentials,
             initialParentTask)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(SelectPrivateTaskParentDialog));
+
     _privateTask = privateTask;
     _refresh();
 
-    //  Set initial control values
+    //  Set static control values
     _ui->promptLabel->setText(
-        _prompt("Select new parent for private task", _privateTask));
+        _prompt(
+            rr.string(RID(PromptLabel)),
+            _privateTask));
+
+    //  Set editable control values
     _ui->showCompletedTasksCheckBox->setChecked(
         _privateTask->completed(_credentials));
+    _refresh();
 }
 
 SelectPrivateTaskParentDialog::SelectPrivateTaskParentDialog(
@@ -56,16 +63,14 @@ SelectPrivateTaskParentDialog::SelectPrivateTaskParentDialog(
         _ui(new Ui::SelectPrivateTaskParentDialog),
         _refreshTimer(this)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(SelectPrivateTaskParentDialog));
+
     Q_ASSERT(_owner != nullptr);
 
     _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
 
-    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
-        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
-    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
-        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
-
-    //  Populate User combo box & select the proper user
+    //  Populate User combo box
     QList<tt3::ws::User> usersList =
         _owner->workspace()->users(_credentials).values();   //  may throw
     std::sort(
@@ -82,13 +87,32 @@ SelectPrivateTaskParentDialog::SelectPrivateTaskParentDialog(
             u->realName(_credentials),  //  may throw
             QVariant::fromValue(u));
     }
-    _setSelectedUser(_owner);
-    _ui->userComboBox->setEnabled(false);
 
-    //  Set initial control values
-    _ui->promptLabel->setText("Select new parent for public task");
+    //  Set static control values
+    _ui->userLabel->setText(
+        rr.string(RID(UserLabel)));
+    _ui->promptLabel->setText(
+        rr.string(RID(PromptLabel)));
+    _ui->filterLabel->setText(
+        rr.string(RID(FilterLabel)));
+    _ui->showCompletedTasksCheckBox->setText(
+        rr.string(RID(ShowCompletedTasksCheckBox)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
+
+    //  Set editable control values
+    _setSelectedUser(_owner);
+
+    //  Adjust controls
+    _ui->userComboBox->setEnabled(false);
     _ui->showCompletedTasksCheckBox->setChecked(false);
-    _decorations = TreeWidgetDecorations(_ui->privateTasksTreeWidget);
 
     _refresh(); //  NOW, to adjust tree widget size to content
     _ui->privateTasksTreeWidget->expandAll();
@@ -104,9 +128,9 @@ SelectPrivateTaskParentDialog::SelectPrivateTaskParentDialog(
     _refreshTimer.start(1000);
 
     //  Done
+    adjustSize();
     _ui->privateTasksTreeWidget->setFocus();
     _trackItemStateChanges = true;
-    adjustSize();
 }
 
 SelectPrivateTaskParentDialog::~SelectPrivateTaskParentDialog()
@@ -200,6 +224,8 @@ void SelectPrivateTaskParentDialog::_refreshWorkspaceTree(
 //  Implementation helpers
 void SelectPrivateTaskParentDialog::_refresh()
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(SelectPrivateTaskParentDialog));
+
     //  We don't want a refresh() to trigger a recursive refresh()!
     static bool refreshUnderway = false;
     RefreshGuard refreshGuard(refreshUnderway);
@@ -229,7 +255,9 @@ void SelectPrivateTaskParentDialog::_refresh()
         }
 
         _ui->selectionLabel->setText(
-            _prompt("Selected parent task", _selectedParentTask));
+            _prompt(
+                rr.string(RID(SelectionLabel)),
+                _selectedParentTask));
     }
 }
 

@@ -654,7 +654,7 @@ void MainFrame::_onActionManageUsers()
 
 void MainFrame::_onActionManageActivityTypes()
 {
-#ifdef USE_MODAL_MANAGERS   //  TODO all 10
+#ifdef USE_MODAL_MANAGERS
         tt3::gui::ManageActivityTypesDialog dlg(
             this,
             tt3::gui::theCurrentWorkspace,
