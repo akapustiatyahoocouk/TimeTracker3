@@ -22,18 +22,32 @@ using namespace tt3::gui;
 //  Construction/destruction
 PreferencesDialog::PreferencesDialog(
         QWidget * parent
-    )
-    :   QDialog(parent),
+    ) : QDialog(parent),
         _ui(new Ui::PreferencesDialog)
 {
-    _ui->setupUi(this);
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(PreferencesDialog));
 
+    _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
+
+    //  Set static control values
+    _ui->resetPushButton->setText(
+        rr.string(RID(ResetPushButton)));
+    _ui->resetAllPushButton->setText(
+        rr.string(RID(ResetAllPushButton)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    _noPropertiesLabel = new QLabel("No properties to edit");
+    _noPropertiesLabel =
+        new QLabel(
+            rr.string(RID(NoPropertiesLabel)));
     _noPropertiesLabel->setAlignment(Qt::AlignmentFlag::AlignCenter);
     _editorsFrameLayout = new QStackedLayout();
     _ui->editorsFrame->setLayout(_editorsFrameLayout);

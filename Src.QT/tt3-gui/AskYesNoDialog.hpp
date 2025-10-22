@@ -105,6 +105,7 @@ namespace tt3::gui
         virtual void    reject() override;
     };
 
+    //  TODO split all dialgs below into dedicated .hpp/.cpp files - one pair for each dialog
     /// \class ConfirmForgetWorkspaceDialog tt3-gui/API.hpp
     /// \brief
     ///     The modal "confirm workspace removal from
@@ -297,26 +298,6 @@ namespace tt3::gui
         /// \param parent
         ///     The parent widget for the dialog; nullptr == none.
         explicit ConfirmResetAllSettingsDialog(
-                ::QWidget * parent
-            );
-        //  The default destructor is OK
-    };
-
-    /// \class RestartRequiredDialog tt3-gui/API.hpp
-    /// \brief The modal "restart required" dialog.
-    class TT3_GUI_PUBLIC RestartRequiredDialog final :
-        public AskYesNoDialog
-    {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(RestartRequiredDialog)
-
-        //////////
-        //  Construction/destruction
-    public:
-        /// \brief
-        ///     Constructs the dialog.
-        /// \param parent
-        ///     The parent widget for the dialog; nullptr == none.
-        explicit RestartRequiredDialog(
                 ::QWidget * parent
             );
         //  The default destructor is OK

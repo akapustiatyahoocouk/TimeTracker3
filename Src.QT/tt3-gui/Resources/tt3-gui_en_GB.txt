@@ -584,3 +584,15 @@ PasswordLabel=Password:
 ConfirmPasswordLabel=Confirm:
 OkPushButton=OK
 CancelPushButton=Cancel
+
+[PreferencesDialog]
+Title=Preferences
+NoPropertiesLabel=No properties to edit
+ResetPushButton=Reset Page
+ResetAllPushButton=Reset All
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[RestartRequiredDialog]
+Title=Restart required
+Prompt=One of the changes you have made to application settings\nwill take place only after the application is restarted.\nDo you want to restart TimeTracker3 now ?

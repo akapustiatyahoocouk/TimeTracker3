@@ -100,6 +100,7 @@ ConfirmForgetWorkspaceDialog::ConfirmForgetWorkspaceDialog(
     :   AskYesNoDialog(
             parent,
             QIcon(":/tt3-gui/Resources/Images/Actions/OpenWorkspaceLarge.png"),
+            //  TODO localize via Resources
             "Failed to open workspace",
             "Would you like to remove the workspace\n" +
                 workspaceAddress->displayForm() +
@@ -114,6 +115,7 @@ ConfirmCloseWorkspaceDialog::ConfirmCloseWorkspaceDialog(
     :   AskYesNoDialog(
           parent,
           QIcon(":/tt3-gui/Resources/Images/Actions/CloseWorkspaceLarge.png"),
+          //  TODO localize via Resources
           "Close workspace",
           "Are you sure you really want to close the workspace\n" +
               workspaceAddress->displayForm() + " ?",
@@ -128,6 +130,7 @@ ConfirmDropWorkspaceDialog::ConfirmDropWorkspaceDialog(
     :   AskYesNoDialog(
           parent,
           QIcon(":/tt3-gui/Resources/Images/Actions/LoginLarge.png"),
+          //  TODO localize via Resources
           "Drop workspace",
           "Your new credentials do not permit access to\n" +
               workspaceAddress->displayForm() +
@@ -142,6 +145,7 @@ ConfirmDestroyWorkspaceDialog::ConfirmDestroyWorkspaceDialog(
     :   AskYesNoDialog(
           parent,
           QIcon(":/tt3-gui/Resources/Images/Actions/DestroyWorkspaceLarge.png"),
+          //  TODO localize via Resources
           "Destroy workspace",
           "Are you sure you really want to destroy the workspace\n" +
               workspaceAddress->displayForm() + " ?\n" +
@@ -155,6 +159,7 @@ ConfirmRestartDialog::ConfirmRestartDialog(::QWidget * parent)
     :   AskYesNoDialog(
           parent,
           QIcon(":/tt3-gui/Resources/Images/Actions/RestartLarge.png"),
+          //  TODO localize via Resources
           "Restart TimeTracker3",
           "Are you sure you want to restart TimeTracker3 ?",
           &Component::Settings::instance()->confirmRestart)
@@ -167,6 +172,7 @@ ConfirmExitDialog::ConfirmExitDialog(::QWidget * parent)
     :   AskYesNoDialog(
           parent,
           QIcon(":/tt3-gui/Resources/Images/Actions/ExitLarge.png"),
+          //  TODO localize via Resources
           "Exit TimeTracker3",
           "Are you sure you want to exit TimeTracker3 ?",
           &Component::Settings::instance()->confirmExit)
@@ -180,6 +186,7 @@ ChooseReloginDialog::ChooseReloginDialog(
     :   AskYesNoDialog(
           parent,
           QIcon(":/tt3-gui/Resources/Images/Actions/LoginLarge.png"),
+          //  TODO localize via Resources
           "Access denied",
           "Current credentials do not allow access to\n" +
               workspaceAddress->displayForm() +
@@ -193,6 +200,7 @@ ConfirmResetPageSettingsDialog::ConfirmResetPageSettingsDialog(::QWidget * paren
     :   AskYesNoDialog(
           parent,
           QIcon(":/tt3-gui/Resources/Images/Actions/ResetLarge.png"),
+          //  TODO localize via Resources
           "Reset page settings",
           "Are you sure you want to reset page settings to their default values ?"
             "\nThe effects will not be permanent until you press 'OK' to close the dialog.")
@@ -205,22 +213,10 @@ ConfirmResetAllSettingsDialog::ConfirmResetAllSettingsDialog(::QWidget * parent)
     :   AskYesNoDialog(
           parent,
           QIcon(":/tt3-gui/Resources/Images/Actions/ResetLarge.png"),
+          //  TODO localize via Resources
           "Reset all settings",
           "Are you sure you want to reset all settings to their default values ?"
             "\nThe effects will not be permanent until you press 'OK' to close the dialog.")
-{
-}
-
-//////////
-//  RestartRequiredDialog
-RestartRequiredDialog::RestartRequiredDialog(::QWidget * parent)
-    :   AskYesNoDialog(
-          parent,
-          QIcon(":/tt3-gui/Resources/Images/Actions/RestartLarge.png"),
-          "Restart required",
-          "One of the changes you have made to application settings"
-            "\nwill take place only after the application is restarted."
-            "\nDo you want to restart TimeTracker3 now ?")
 {
 }
 

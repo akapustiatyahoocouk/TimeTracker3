@@ -74,7 +74,7 @@ NewWorkspaceDialog::NewWorkspaceDialog(QWidget * parent)
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
     //  Set editable control values
-    //  TODO select last user workspace type
+    //  TODO select last used workspace type
 
     //  Done
     _refresh();

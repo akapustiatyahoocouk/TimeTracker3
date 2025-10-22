@@ -585,3 +585,15 @@ PasswordLabel=Пароль:
 ConfirmPasswordLabel=Подтвердить:
 OkPushButton=ОК
 CancelPushButton=Отмена
+
+[PreferencesDialog]
+Title=Настройки
+NoPropertiesLabel=Нет свойств для редактирования
+ResetPushButton=Сбросить страницу
+ResetAllPushButton=Сбросить все
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[RestartRequiredDialog]
+Title=Требуется перезапуск
+Prompt=Одно из изменений, внесённых вами в настройки приложения,\nвступит в силу только после перезапуска приложения.\nХотите перезапустить TimeTracker3 сейчас?

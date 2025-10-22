@@ -102,6 +102,7 @@
 #include "tt3-gui/DestroyEventDialog.hpp"
 #include "tt3-gui/SelectWorkloadsDialog.hpp"
 
+#include "tt3-gui/RestartRequiredDialog.hpp"
 #include "tt3-gui/AddEmailAddressDialog.hpp"
 #include "tt3-gui/ModifyEmailAddressDialog.hpp"
 #include "tt3-gui/EnterActivityStartCommentDialog.hpp"

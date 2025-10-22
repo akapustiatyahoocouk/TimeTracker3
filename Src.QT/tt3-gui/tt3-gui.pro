@@ -88,6 +88,7 @@ SOURCES += \
     PublicActivityManager.cpp \
     PublicTaskManager.cpp \
     PushButtonDecorations.cpp \
+    RestartRequiredDialog.cpp \
     SelectPrivateTaskParentDialog.cpp \
     SelectProjectParentDialog.cpp \
     SelectPublicTaskParentDialog.cpp \
@@ -179,6 +180,7 @@ HEADERS += \
     ProjectManager.hpp \
     PublicActivityManager.hpp \
     PublicTaskManager.hpp \
+    RestartRequiredDialog.hpp \
     SelectPrivateTaskParentDialog.hpp \
     SelectProjectParentDialog.hpp \
     SelectPublicTaskParentDialog.hpp \

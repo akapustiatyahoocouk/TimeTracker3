@@ -584,3 +584,15 @@ PasswordLabel=Kennwort:
 ConfirmPasswordLabel=Wiederholen:
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
+
+[PreferencesDialog]
+Title=Einstellungen
+NoPropertiesLabel=Keine Eigenschaften zu bearbeiten
+ResetPushButton=Seite zurücksetzen
+ResetAllPushButton=Alle zurücksetzen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[RestartRequiredDialog]
+Title=Neustart erforderlich
+Prompt=Eine der Änderungen an den Anwendungseinstellungen\nwird erst nach einem Neustart der Anwendung wirksam.\nMöchten Sie TimeTracker3 jetzt neu starten?
