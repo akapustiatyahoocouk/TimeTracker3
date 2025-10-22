@@ -1,6 +1,6 @@
 //
 //  tt3-gui/NewWorkspaceDialog.cpp - tt3::gui::NewWorkspaceDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -24,12 +24,10 @@ NewWorkspaceDialog::NewWorkspaceDialog(QWidget * parent)
     :   QDialog(parent),
         _ui(new Ui::NewWorkspaceDialog)
 {
-    _ui->setupUi(this);
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(NewWorkspaceDialog));
 
-    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
-        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
-    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
-        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
+    _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
 
     //  Populate "Workspace type" combo box
     QList<tt3::ws::WorkspaceType> workspaceTypes =
@@ -37,7 +35,7 @@ NewWorkspaceDialog::NewWorkspaceDialog(QWidget * parent)
     std::sort(
         workspaceTypes.begin(),
         workspaceTypes.end(),
-        [](auto& a, auto& b)
+        [](auto a, auto b)
         {
             return a->displayName() < b->displayName(); // Example: ascending order
         }
@@ -50,9 +48,38 @@ NewWorkspaceDialog::NewWorkspaceDialog(QWidget * parent)
             QVariant::fromValue(workspaceType));
     }
 
+    //  Set static control values
+    _ui->workspaceTypeLabel->setText(
+        rr.string(RID(WorkspaceTypeLabel)));
+    _ui->locationLabel->setText(
+        rr.string(RID(LocationLabel)));
+    _ui->browsePushButton->setText(
+        rr.string(RID(BrowsePushButton)));
+    _ui->userNameLabel->setText(
+        rr.string(RID(UserNameLabel)));
+    _ui->loginLabel->setText(
+        rr.string(RID(LoginLabel)));
+    _ui->passwordLabel->setText(
+        rr.string(RID(PasswordLabel)));
+    _ui->confirmPasswordLabel->setText(
+        rr.string(RID(ConfirmPasswordLabel)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
+
+    //  Set editable control values
+    //  TODO select last user workspace type
+
     //  Done
-    adjustSize();
     _refresh();
+    adjustSize();
+    _ui->workspaceTypeComboBox->setFocus();
 }
 
 NewWorkspaceDialog::~NewWorkspaceDialog()

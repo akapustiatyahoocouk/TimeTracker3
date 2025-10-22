@@ -39,7 +39,7 @@ SelectWorkspaceDialog::SelectWorkspaceDialog(
     std::sort(
         workspaceTypes.begin(),
         workspaceTypes.end(),
-        [](auto& a, auto& b)
+        [](auto a, auto b)
         {
             return a->displayName() < b->displayName(); // Example: ascending order
         });

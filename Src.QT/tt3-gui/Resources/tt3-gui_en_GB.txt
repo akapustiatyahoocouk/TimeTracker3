@@ -562,3 +562,25 @@ WorkingOnPushButton=Select
 EnabledCheckBox=User is enabled
 OkPushButton=OK
 CancelPushButton=Cancel
+
+[ModifyWorkStreamDialog]
+Title=Modify work stream
+ViewOnlyTitle=View work stream
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+BeneficiariesLabel=Beneficiaries:
+SelectBeneficiariesPushButton=Select
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[NewWorkspaceDialog]
+Title=New workspace
+WorkspaceTypeLabel=Workspace type:
+LocationLabel=Location:
+BrowsePushButton=Browse
+UserNameLabel=Administrator:
+LoginLabel=Login:
+PasswordLabel=Password:
+ConfirmPasswordLabel=Confirm:
+OkPushButton=OK
+CancelPushButton=Cancel

@@ -40,7 +40,7 @@ CreateWorkStreamDialog::CreateWorkStreamDialog(
     _ui->setupUi(this);
     setWindowTitle(rr.string(RID(Title)));
 
-    //  Set initial control values
+    //  Set static control values
     _ui->displayNameLabel->setText(
         rr.string(RID(DisplayNameLabel)));
     _ui->descriptionLabel->setText(

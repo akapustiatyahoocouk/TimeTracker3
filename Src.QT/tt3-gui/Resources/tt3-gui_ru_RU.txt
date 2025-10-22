@@ -563,3 +563,25 @@ WorkingOnPushButton=Выбрать
 EnabledCheckBox=Пользователь включён
 OkPushButton=ОК
 CancelPushButton=Отмена
+
+[ModifyWorkStreamDialog]
+Title=Изменить рабочий поток
+ViewOnlyTitle=Просмотреть рабочий поток
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+BeneficiariesLabel=Бенефициары:
+SelectBeneficiariesPushButton=Выбрать
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[NewWorkspaceDialog]
+Title=Новое рабочее пространство
+WorkspaceTypeLabel=Тип рабочего пространства:
+LocationLabel=Местоположение:
+BrowsePushButton=Выбрать
+UserNameLabel=Администратор:
+LoginLabel=Имя пользователя:
+PasswordLabel=Пароль:
+ConfirmPasswordLabel=Подтвердить:
+OkPushButton=ОК
+CancelPushButton=Отмена

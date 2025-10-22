@@ -38,7 +38,7 @@ Title=Konto erstellen
 UserLabel=Benutzer:
 LoginLabel=Anmelden:
 PasswordLabel=Kennwort:
-ConfirmPasswordLabel=Bestätigen:
+ConfirmPasswordLabel=Wiederholen:
 EmailAddressesLabel=E-Mail-Adressen:
 AddEmailAddressPushButton=Hinzufügen
 ModifyEmailAddressPushButton=Ändern
@@ -190,7 +190,7 @@ OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
 
 [CreateWorkStreamDialog]
-Title=Workstream erstellen
+Title=Arbeitsablauf erstellen
 DisplayNameLabel=Name:
 DescriptionLabel=Beschreibung:
 BeneficiariesLabel=Begünstigte:
@@ -271,11 +271,11 @@ Title=Arbeit zerstören
 Prompt=Möchten Sie die Arbeitseinheit\n{0}..{1}\n(Dauer {2}) wirklich zerstören, protokolliert von {3} gegen\n{4} {5}?
 
 [DestroyWorkStreamDialog]
-Title=Workstream löschen
-Prompt=Möchten Sie den Workstream {0} wirklich löschen ?
-DetailsWE=\nFür den Workstream wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse.\nAlle diese Ereignisse verlieren ihre Zuordnung zum Workstream.
-DetailsW=\nFür den Workstream wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)).\nAlle diese Ereignisse verlieren ihre Zuordnung zum Workstream.
-DetailsE=\nFür den Workstream wurden {0} Ereignisse protokolliert.\nAlle diese Ereignisse verlieren ihre Zuordnung zum Workstream.
+Title=Arbeitsablauf löschen
+Prompt=Möchten Sie den Arbeitsablauf {0} wirklich löschen ?
+DetailsWE=\nFür den Arbeitsablauf wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse.\nAlle diese Ereignisse verlieren ihre Zuordnung zum Arbeitsablauf.
+DetailsW=\nFür den Arbeitsablauf wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)).\nAlle diese Ereignisse verlieren ihre Zuordnung zum Arbeitsablauf.
+DetailsE=\nFür den Arbeitsablauf wurden {0} Ereignisse protokolliert.\nAlle diese Ereignisse verlieren ihre Zuordnung zum Arbeitsablauf.
 
 [EditStringDialog]
 OkPushButton=Bestätigen
@@ -560,5 +560,27 @@ SystemDefaultLocale=- (Systemstandard)
 WorkingOnLabel=Bearbeitet an:
 WorkingOnPushButton=Auswählen
 EnabledCheckBox=Benutzer ist aktiviert
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[ModifyWorkStreamDialog]
+Title=Arbeitsablauf ändern
+ViewOnlyTitle=Arbeitsablauf anzeigen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+BeneficiariesLabel=Begünstigte:
+SelectBeneficiariesPushButton=Auswählen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[NewWorkspaceDialog]
+Title=Neuer Arbeitsbereich
+WorkspaceTypeLabel=Arbeitsbereichstyp:
+LocationLabel=Standort:
+BrowsePushButton=Durchsuchen
+UserNameLabel=Administrator:
+LoginLabel=Anmelden:
+PasswordLabel=Kennwort:
+ConfirmPasswordLabel=Wiederholen:
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen

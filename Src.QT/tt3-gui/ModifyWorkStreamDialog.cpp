@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ModifyWorkStreamDialog.cpp - tt3::gui::ModifyWorkStreamDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -35,26 +35,44 @@ ModifyWorkStreamDialog::ModifyWorkStreamDialog(
         //  Controls
         _ui(new Ui::ModifyWorkStreamDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ModifyWorkStreamDialog));
+
     Q_ASSERT(_workStream != nullptr);
     Q_ASSERT(_credentials.isValid());
+    Q_ASSERT(_validator != nullptr);
 
     _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
 
+    //  Set static control values
+    _ui->displayNameLabel->setText(
+        rr.string(RID(DisplayNameLabel)));
+    _ui->descriptionLabel->setText(
+        rr.string(RID(DescriptionLabel)));
+    _ui->beneficiariesLabel->setText(
+        rr.string(RID(BeneficiariesLabel)));
+    _ui->selectBeneficiariesPushButton->setText(
+        rr.string(RID(SelectBeneficiariesPushButton)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    //  Set initial control values (may throw)
+    //  Set editable control values (may throw)
     _ui->displayNameLineEdit->setText(_workStream->displayName(_credentials));
     _ui->descriptionPlainTextEdit->setPlainText(_workStream->description(_credentials));
     //  TODO Beneficiaries
 
-    //  Adjust for "view only" mode
+    //  Adjust controls
     if (_readOnly)
-    {
-        this->setWindowTitle("View work stream");
-        this->setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewWorkStreamLarge.png"));
+    {   //  Adjust for "view only" mode
+        setWindowTitle(rr.string(RID(ViewOnlyTitle)));
+        setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewWorkStreamLarge.png"));
         _ui->displayNameLineEdit->setReadOnly(true);
         _ui->descriptionPlainTextEdit->setReadOnly(true);
     }
