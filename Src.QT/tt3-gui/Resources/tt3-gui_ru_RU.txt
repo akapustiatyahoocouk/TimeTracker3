@@ -501,3 +501,21 @@ SelectBeneficiariesPushButton=Выбрать
 CompletedCheckBox=Проект завершён
 OkPushButton=ОК
 CancelPushButton=Отмена
+
+[ModifyPublicActivityDialog]
+Title=Изменить общедоступную активность
+ViewOnlyTitle=Просмотреть общедоступную активность
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+ActivityTypeLabel=Тип активности:
+WorkloadLabel=Рабочая нагрузка:
+SelectWorkloadPushButton=Выбрать
+TimeoutLabel=Время ожидания:
+TimeoutCheckBox=Остановить, если отсутствует в течение
+HoursComboBoxItem={0} час
+MinutesComboBoxItem={0} мин
+RequireCommentOnStartCheckBox=Требовать комментарий при запуске этой активности
+RequireCommentOnStopCheckBox=Требовать комментарий при остановке этой активности
+FullScreenReminderCheckBox=Полноэкранное напоминание
+OkPushButton=ОК
+CancelPushButton=Отмена

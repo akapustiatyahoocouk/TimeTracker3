@@ -40,7 +40,42 @@ CreatePublicActivityDialog::CreatePublicActivityDialog(
     _ui->setupUi(this);
     setWindowTitle(rr.string(RID(Title)));
 
-    //  Set initial control values
+    //  Fill the "activity type" combo box (may throw)
+    QList<tt3::ws::ActivityType> activityTypes =
+        _workspace->activityTypes(_credentials).values();   //  may throw
+    std::sort(
+        activityTypes.begin(),
+        activityTypes.end(),
+        [&](auto a, auto b)
+        {
+            return a->displayName(_credentials) < b->displayName(_credentials); //  may throw
+        });
+    _ui->activityTypeComboBox->addItem(
+        "-",
+        QVariant::fromValue<tt3::ws::ActivityType>(nullptr));
+    for (tt3::ws::ActivityType activityType : activityTypes)
+    {
+        _ui->activityTypeComboBox->addItem(
+            activityType->type()->smallIcon(),
+            activityType->displayName(_credentials),
+            QVariant::fromValue(activityType));
+    }
+
+    //  Fill "hours" and "minutes" combo boxes
+    for (int h = 0; h < 12; h++)
+    {
+        _ui->hoursComboBox->addItem(
+            rr.string(RID(HoursComboBoxItem), h),
+            QVariant::fromValue(h));
+    }
+    for (int m = 0; m < 60; m += 15)
+    {
+        _ui->minutesComboBox->addItem(
+            rr.string(RID(MinutesComboBoxItem), m),
+            QVariant::fromValue(m));
+    }
+
+    //  Set static control values
     _ui->displayNameLabel->setText(
         rr.string(RID(DisplayNameLabel)));
     _ui->descriptionLabel->setText(
@@ -72,48 +107,13 @@ CreatePublicActivityDialog::CreatePublicActivityDialog(
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    //  Fill the "activity type" combo box (may throw)
-    QList<tt3::ws::ActivityType> activityTypes =
-        _workspace->activityTypes(_credentials).values();   //  may throw
-    std::sort(
-        activityTypes.begin(),
-        activityTypes.end(),
-        [&](auto a, auto b)
-        {
-            return a->displayName(_credentials) < b->displayName(_credentials); //  may throw
-        });
-
-    _ui->activityTypeComboBox->addItem(
-        "-",
-        QVariant::fromValue<tt3::ws::ActivityType>(nullptr));
-    for (tt3::ws::ActivityType activityType : activityTypes)
-    {
-        _ui->activityTypeComboBox->addItem(
-            activityType->type()->smallIcon(),
-            activityType->displayName(_credentials),
-            QVariant::fromValue(activityType));
-    }
-
-    //  Populate the "Workload" combo box
+    //  Set editable control values
     _setSelectedWorkload(nullptr);
 
-    //  Fill "hours" and "minutes" combo boxes
-    for (int h = 0; h < 12; h++)
-    {
-        _ui->hoursComboBox->addItem(
-            rr.string(RID(HoursComboBoxItem), h),
-            QVariant::fromValue(h));
-    }
-    for (int m = 0; m < 60; m += 15)
-    {
-        _ui->minutesComboBox->addItem(
-            rr.string(RID(MinutesComboBoxItem), m),
-            QVariant::fromValue(m));
-    }
-
     //  Done
-    adjustSize();
     _refresh();
+    adjustSize();
+    _ui->displayNameLineEdit->setFocus();
 }
 
 CreatePublicActivityDialog::~CreatePublicActivityDialog()

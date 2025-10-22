@@ -80,14 +80,14 @@ namespace tt3::gui
         tt3::ws::Validator::PublicActivity *const _validator;
         const bool      _readOnly;
 
-        tt3::ws::Workload   _selectedWorkload;  //  currenty selected
-
         //  Helpers
         auto            _selectedActivityType(
                             ) -> tt3::ws::ActivityType;
         void            _setSelectedActivityType(
                                 tt3::ws::ActivityType activityType
                             );
+        auto            _selectedWorkload(
+                            ) -> tt3::ws::Workload;
         void            _setSelectedWorkload(
                                 tt3::ws::Workload workload
                             );
