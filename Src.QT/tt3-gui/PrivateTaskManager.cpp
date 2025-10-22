@@ -1,6 +1,6 @@
 //
 //  tt3-gui/PrivateTaskManager.cpp - tt3::gui::PrivateTaskManager class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -39,12 +39,20 @@ PrivateTaskManager::PrivateTaskManager(
         _refreshTimer(this)
 {
     _ui->setupUi(this);
+    _applyCurrentLocale();
 
     //  Theme change means widget decorations change
     connect(&theCurrentTheme,
             &CurrentTheme::changed,
             this,
             &PrivateTaskManager::_currentThemeChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Locale change requires UI translation
+    connect(&tt3::util::theCurrentLocale,
+            &tt3::util::CurrentLocale::changed,
+            this,
+            &PrivateTaskManager::_currentLocaleChanged,
             Qt::ConnectionType::QueuedConnection);
 
     //  Current activity change means, at least, a refresh
@@ -123,6 +131,7 @@ void PrivateTaskManager::refresh()
 {
     static const QIcon viewPrivateTaskIcon(":/tt3-gui/Resources/Images/Actions/ViewPrivateTaskLarge.png");
     static const QIcon modifyPrivateTaskIcon(":/tt3-gui/Resources/Images/Actions/ModifyPrivateTaskLarge.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(PrivateTaskManager));
 
     //  We don't want a refresh() to trigger a recursive refresh()!
     static bool refreshUnderway = false;
@@ -255,19 +264,22 @@ void PrivateTaskManager::refresh()
                 selectedPrivateTask->canModify(_credentials))    //  may throw
             {   //  RW
                 _ui->modifyPrivateTaskPushButton->setIcon(modifyPrivateTaskIcon);
-                _ui->modifyPrivateTaskPushButton->setText("Modify private task");
+                _ui->modifyPrivateTaskPushButton->setText(
+                    rr.string(RID(ModifyPrivateTaskPushButton)));
             }
             else
             {   //  RO
                 _ui->modifyPrivateTaskPushButton->setIcon(viewPrivateTaskIcon);
-                _ui->modifyPrivateTaskPushButton->setText("View private task");
+                _ui->modifyPrivateTaskPushButton->setText(
+                    rr.string(RID(ViewPrivateTaskPushButton)));
             }
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Simulate RO
             qCritical() << ex;
             _ui->modifyPrivateTaskPushButton->setIcon(viewPrivateTaskIcon);
-            _ui->modifyPrivateTaskPushButton->setText("View private task");
+            _ui->modifyPrivateTaskPushButton->setText(
+                rr.string(RID(ViewPrivateTaskPushButton)));
         }
     }
 }
@@ -324,6 +336,7 @@ auto PrivateTaskManager::_createUserModel(
     ) -> PrivateTaskManager::_UserModel
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(PrivateTaskManager));
 
     _UserModel userModel
         { new _UserModelImpl(user) };
@@ -332,7 +345,7 @@ auto PrivateTaskManager::_createUserModel(
         userModel->text = user->realName(credentials);
         if (!user->enabled(credentials))
         {
-            userModel->text += " [disabled]";
+            userModel->text += " " + rr.string(RID(UserDisabledSuffix));
             userModel->brush = decorations.disabledItemForeground;
         }
         else
@@ -373,6 +386,7 @@ auto PrivateTaskManager::_createPrivateTaskModel(
     ) -> PrivateTaskManager::_PrivateTaskModel
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(PrivateTaskManager));
 
     _PrivateTaskModel privateTaskModel
         { new _PrivateTaskModelImpl(privateTask) };
@@ -381,7 +395,7 @@ auto PrivateTaskManager::_createPrivateTaskModel(
         privateTaskModel->text = privateTask->displayName(credentials);
         if (privateTask->completed(credentials))
         {
-            privateTaskModel->text += " [completed]";
+            privateTaskModel->text +=  " " + rr.string(RID(TaskCompletedSuffix));
             privateTaskModel->brush = decorations.disabledItemForeground;
         }
         else
@@ -823,6 +837,26 @@ void PrivateTaskManager::_clearAndDisableAllControls()
     _ui->showCompletedCheckBox->setEnabled(false);
 }
 
+void PrivateTaskManager::_applyCurrentLocale()
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(PrivateTaskManager));
+
+    _ui->filterLabel->setText(
+        rr.string(RID(FilterLabel)));
+    _ui->createPrivateTaskPushButton->setText(
+        rr.string(RID(CreatePrivateTaskPushButton)));
+    _ui->modifyPrivateTaskPushButton->setText(
+        rr.string(RID(ModifyPrivateTaskPushButton)));
+    _ui->destroyPrivateTaskPushButton->setText(
+        rr.string(RID(DestroyPrivateTaskPushButton)));
+    _ui->startPrivateTaskPushButton->setText(
+        rr.string(RID(StartPrivateTaskPushButton)));
+    _ui->stopPrivateTaskPushButton->setText(
+        rr.string(RID(StopPrivateTaskPushButton)));
+    _ui->completePrivateTaskPushButton->setText(
+        rr.string(RID(CompletePrivateTaskPushButton)));
+    refresh();
+}
 
 //////////
 //  Signal handlers
@@ -831,6 +865,12 @@ void PrivateTaskManager::_currentThemeChanged(ITheme *, ITheme *)
     _ui->privateTasksTreeWidget->clear();
     _decorations = TreeWidgetDecorations(_ui->privateTasksTreeWidget);
     requestRefresh();
+}
+
+void PrivateTaskManager::_currentLocaleChanged(QLocale, QLocale)
+{
+    _applyCurrentLocale();
+    refresh();
 }
 
 void PrivateTaskManager::_currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity)

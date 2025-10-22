@@ -424,6 +424,7 @@ void ActivityTypeManager::_applyCurrentLocale()
         rr.string(RID(ModifyActivityTypePushButton)));
     _ui->destroyActivityTypePushButton->setText(
         rr.string(RID(DestroyActivityTypePushButton)));
+    refresh();
 }
 
 //////////

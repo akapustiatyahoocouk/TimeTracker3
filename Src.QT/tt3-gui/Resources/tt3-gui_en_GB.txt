@@ -382,7 +382,7 @@ MoveUpPushButton=Move up
 MoveDownPushButton=Move down
 MoveToBottomPushButton=Move to bottom
 RemovePushButton=Remove
-TaskCompletedSuffix=[completed]
+TaskCompletedSuffix=[task is completed]
 OkPushButton=OK
 CancelPushButton=Cancel
 
@@ -602,6 +602,18 @@ DestroyPrivateActivityPushButton=Destroy private activity
 StartPrivateActivityPushButton=Start private activity
 StopPrivateActivityPushButton=Stop private activity
 UserDisabledSuffix=[user is disabled]
+
+[PrivateTaskManager]
+FilterLabel=Filter:
+CreatePrivateTaskPushButton=Create private task
+ModifyPrivateTaskPushButton=Modify private task
+ViewPrivateTaskPushButton=View private task
+DestroyPrivateTaskPushButton=Destroy private task
+StartPrivateTaskPushButton=Start private task
+StopPrivateTaskPushButton=Stop private task
+CompletePrivateTaskPushButton=Complete private task
+UserDisabledSuffix=[user is disabled]
+TaskCompletedSuffix=[task is completed]
 
 [RestartRequiredDialog]
 Title=Restart required

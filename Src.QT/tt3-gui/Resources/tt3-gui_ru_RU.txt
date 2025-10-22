@@ -604,6 +604,18 @@ StartPrivateActivityPushButton=Запустить личную активнос�
 StopPrivateActivityPushButton=Остановить личную активность
 UserDisabledSuffix=[пользователь неактивен]
 
+[PrivateTaskManager]
+FilterLabel=Фильтр:
+CreatePrivateTaskPushButton=Создать личную задачу
+ModifyPrivateTaskPushButton=Изменить личную задачу
+ViewPrivateTaskPushButton=Просмотреть личную задачу
+DestroyPrivateTaskPushButton=Удалить личную задачу
+StartPrivateTaskPushButton=Запустить личную задачу
+StopPrivateTaskPushButton=Остановить личную задачу
+CompletePrivateTaskPushButton=Завершить личную задачу
+UserDisabledSuffix=[пользователь неактивен]
+TaskCompletedSuffix=[задача выполнена]
+
 [RestartRequiredDialog]
 Title=Требуется перезапуск
 Prompt=Одно из изменений, внесённых вами в настройки приложения,\nвступит в силу только после перезапуска приложения.\nХотите перезапустить TimeTracker3 сейчас?

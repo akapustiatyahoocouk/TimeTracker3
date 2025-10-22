@@ -659,7 +659,7 @@ void PrivateActivityManager::_applyCurrentLocale()
         rr.string(RID(StartPrivateActivityPushButton)));
     _ui->stopPrivateActivityPushButton->setText(
         rr.string(RID(StopPrivateActivityPushButton)));
-    refresh();  //  TODO do it in _applyCurrentLocale()() of all XXXManagers
+    refresh();
 }
 
 //////////

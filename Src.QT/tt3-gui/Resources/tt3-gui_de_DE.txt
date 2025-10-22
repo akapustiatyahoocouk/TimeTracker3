@@ -603,6 +603,18 @@ StartPrivateActivityPushButton=Private Aktivität starten
 StopPrivateActivityPushButton=Private Aktivität stoppen
 UserDisabledSuffix=[Benutzer ist deaktiviert]
 
+[PrivateTaskManager]
+FilterLabel=Filter:
+CreatePrivateTaskPushButton=Private Aufgabe erstellen
+ModifyPrivateTaskPushButton=Private Aufgabe ändern
+ViewPrivateTaskPushButton=Private Aufgabe anzeigen
+DestroyPrivateTaskPushButton=Private Aufgabe zerstören
+StartPrivateTaskPushButton=Private Aufgabe starten
+StopPrivateTaskPushButton=Private Aufgabe stoppen
+CompletePrivateTaskPushButton=Private Aufgabe abschließen
+UserDisabledSuffix=[Benutzer ist deaktiviert]
+TaskCompletedSuffix=[Aufgabe ist abgeschlossen]
+
 [RestartRequiredDialog]
 Title=Neustart erforderlich
 Prompt=Eine der Änderungen an den Anwendungseinstellungen\nwird erst nach einem Neustart der Anwendung wirksam.\nMöchten Sie TimeTracker3 jetzt neu starten?

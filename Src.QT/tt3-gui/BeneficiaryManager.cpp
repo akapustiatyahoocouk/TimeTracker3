@@ -424,6 +424,7 @@ void BeneficiaryManager::_applyCurrentLocale()
         rr.string(RID(ModifyBeneficiaryPushButton)));
     _ui->destroyBeneficiaryPushButton->setText(
         rr.string(RID(DestroyBeneficiaryPushButton)));
+    refresh();
 }
 
 //////////
