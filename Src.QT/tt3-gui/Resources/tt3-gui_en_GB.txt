@@ -713,3 +713,15 @@ LicenseLabel=License:
 VersionAndBuild={0} (build {1})
 ShowLicensePushButton=Show license
 OkPushButton=OK
+
+[ShowLicenseDialog]
+OkPushButton=OK
+
+[StandardThemes]
+System.DisplayName=System
+System.Description=The theme that uses current system colors
+Light.DisplayName=Light
+Light.Description=The theme that uses light colors
+Dark.DisplayName=Dark
+Dark.Description=The theme that uses dark colors
+

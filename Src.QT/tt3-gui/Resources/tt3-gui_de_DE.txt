@@ -713,3 +713,14 @@ LicenseLabel=Lizenz:
 VersionAndBuild={0} (Build {1})
 ShowLicensePushButton=Lizenz anzeigen
 OkPushButton=Bestätigen
+
+[ShowLicenseDialog]
+OkPushButton=Bestätigen
+
+[StandardThemes]
+System.DisplayName=System
+System.Description=Das Design mit den aktuellen Systemfarben
+Light.DisplayName=Hell
+Light.Description=Das Design mit hellen Farben
+Dark.DisplayName=Dunkel
+Dark.Description=Das Design mit dunklen Farben

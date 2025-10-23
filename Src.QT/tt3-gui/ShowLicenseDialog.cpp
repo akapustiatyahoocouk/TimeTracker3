@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ShowLicenseDialog.cpp - tt3::gui::ShowLicenseDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -19,20 +19,24 @@
 using namespace tt3::gui;
 
 //////////
-//  Construction/destruction#include "ShowLicenseDialog.hpp"
+//  Construction/destruction
 ShowLicenseDialog::ShowLicenseDialog(QWidget * parent, tt3::util::ILicense * license)
     :   QDialog(parent),
         _ui(new Ui::ShowLicenseDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ShowLicenseDialog));
+
     Q_ASSERT(license != nullptr);
 
     _ui->setupUi(this);
+    setWindowTitle(license->displayName());
+    setWindowIcon(license->largeIcon());
 
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
 
-    this->setWindowTitle(license->displayName());
-    this->setWindowIcon(license->largeIcon());
     _ui->contentTextEdit->setHtml(license->contentAsHtml());
 
     //  Done

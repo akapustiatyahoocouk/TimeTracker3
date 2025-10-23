@@ -714,3 +714,14 @@ LicenseLabel=Лицензия:
 VersionAndBuild={0} (сборка {1})
 ShowLicensePushButton=Показать лицензию
 OkPushButton=ОК
+
+[ShowLicenseDialog]
+OkPushButton=OK
+
+[StandardThemes]
+System.DisplayName=Системная
+System.Description=Тема, использующая текущие системные цвета
+Light.DisplayName=Светлая
+Light.Description=Тема, использующая светлые цвета
+Dark.DisplayName=Темная
+Dark.Description=Тема, использующая темные цвета

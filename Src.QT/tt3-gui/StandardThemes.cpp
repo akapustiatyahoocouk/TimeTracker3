@@ -1,6 +1,6 @@
 //
 //  tt3-gui/StandardThemes.cpp - tt3::gui::StandardThemes class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -30,12 +30,14 @@ StandardThemes::System::Mnemonic StandardThemes::System::mnemonic() const
 
 QString StandardThemes::System::displayName() const
 {
-    return "System";
+    return Component::Resources::instance()->string(
+        RSID(StandardThemes), RID(System.DisplayName));
 }
 
 QString StandardThemes::System::description() const
 {
-    return "The theme that uses current system colors";
+    return Component::Resources::instance()->string(
+        RSID(StandardThemes), RID(System.Description));
 }
 
 QIcon StandardThemes::System::smallIcon() const
@@ -83,12 +85,14 @@ StandardThemes::Light::Mnemonic StandardThemes::Light::mnemonic() const
 
 QString StandardThemes::Light::displayName() const
 {
-    return "Light";
+    return Component::Resources::instance()->string(
+        RSID(StandardThemes), RID(Light.DisplayName));
 }
 
 QString StandardThemes::Light::description() const
 {
-    return "The theme that uses light colors";
+    return Component::Resources::instance()->string(
+        RSID(StandardThemes), RID(Light.Description));
 }
 
 QIcon StandardThemes::Light::smallIcon() const
@@ -136,12 +140,14 @@ StandardThemes::Dark::Mnemonic StandardThemes::Dark::mnemonic() const
 
 QString StandardThemes::Dark::displayName() const
 {
-    return "Dark";
+    return Component::Resources::instance()->string(
+        RSID(StandardThemes), RID(Dark.DisplayName));
 }
 
 QString StandardThemes::Dark::description() const
 {
-    return "The theme that uses dark colors";
+    return Component::Resources::instance()->string(
+        RSID(StandardThemes), RID(Dark.Description));
 }
 
 QIcon StandardThemes::Dark::smallIcon() const
