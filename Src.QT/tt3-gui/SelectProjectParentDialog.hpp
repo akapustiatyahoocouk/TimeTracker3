@@ -114,7 +114,7 @@ namespace tt3::gui
         tt3::ws::Project        _project;
         tt3::ws::Credentials    _credentials;
         tt3::ws::Project        _selectedParentProject;
-        bool                    _trackItemStateChanges = false;
+        bool                    _refreshUnderway = false;
 
         //  Model
         void            _removeReparentedProject(

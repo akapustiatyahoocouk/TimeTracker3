@@ -129,7 +129,6 @@ SelectPrivateTaskParentDialog::SelectPrivateTaskParentDialog(
     //  Done
     adjustSize();
     _ui->privateTasksTreeWidget->setFocus();
-    _trackItemStateChanges = true;
 }
 
 SelectPrivateTaskParentDialog::~SelectPrivateTaskParentDialog()
@@ -226,8 +225,7 @@ void SelectPrivateTaskParentDialog::_refresh()
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(SelectPrivateTaskParentDialog));
 
     //  We don't want a refresh() to trigger a recursive refresh()!
-    static bool refreshUnderway = false;
-    RefreshGuard refreshGuard(refreshUnderway);
+    RefreshGuard refreshGuard(_refreshUnderway);
     if (refreshGuard)   //  Don't recurse!
     {
         PrivateTaskManager::_UserModel userModel =
@@ -244,10 +242,8 @@ void SelectPrivateTaskParentDialog::_refresh()
             PrivateTaskManager::_filterItems(
                 userModel, filter, _decorations);
         }
-        _trackItemStateChanges = false;
         _refreshWorkspaceTree(userModel);
         _refreshCheckStates();
-        _trackItemStateChanges = true;
         if (!_ui->filterLineEdit->text().trimmed().isEmpty())
         {   //  Filtered - show all
             _ui->privateTasksTreeWidget->expandAll();
@@ -364,7 +360,7 @@ QString SelectPrivateTaskParentDialog::_prompt(const QString & prompt, tt3::ws::
 void SelectPrivateTaskParentDialog::_privateTasksTreeWidgetItemChanged(
     QTreeWidgetItem * item, int /*column*/)
 {
-    if (_trackItemStateChanges)
+    if (!_refreshUnderway)
     {
         tt3::ws::PrivateTask privateTask =
             item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PrivateTask>();

@@ -158,7 +158,7 @@ ModifyPrivateTaskDialog::ModifyPrivateTaskDialog(
     _ui->requiresCommentOnCompletionCeckBox->setChecked(_privateTask->requireCommentOnCompletion(_credentials));
 
     //  Adjust controls
-    _ui->userComboBox->setEnabled(false);   //  TODO for now!
+    _ui->userComboBox->setEnabled(false);
     if (_readOnly)
     {   //  Adjust for "view only" mode
         setWindowTitle(rr.string(RID(ViewOnlyTitle)));
@@ -459,10 +459,6 @@ void ModifyPrivateTaskDialog::accept()
         //  Any of the setters may throw
         if (!_readOnly)
         {
-            if (_selectedUser() != _privateTask->owner(_credentials))
-            {   //  TODO confirm the owner change
-                //  TODO move PrivateTask to another User?
-            }
             //  TODO uncomment _privateTask->setParent(_credentials, _selectedParentTask);
             _privateTask->setDisplayName(
                 _credentials,

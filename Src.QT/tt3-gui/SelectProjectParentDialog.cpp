@@ -96,7 +96,6 @@ SelectProjectParentDialog::SelectProjectParentDialog(
     //  Done
     adjustSize();
     _ui->projectsTreeWidget->setFocus();
-    _trackItemStateChanges = true;
 }
 
 SelectProjectParentDialog::~SelectProjectParentDialog()
@@ -155,8 +154,7 @@ void SelectProjectParentDialog::_refresh()
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(SelectProjectParentDialog));
 
     //  We don't want a refresh() to trigger a recursive refresh()!
-    static bool refreshUnderway = false;
-    RefreshGuard refreshGuard(refreshUnderway);
+    RefreshGuard refreshGuard(_refreshUnderway);
     if (refreshGuard)   //  Don't recurse!
     {
         ProjectManager::_WorkspaceModel workspaceModel =
@@ -173,11 +171,9 @@ void SelectProjectParentDialog::_refresh()
             ProjectManager::_filterItems(
                 workspaceModel, filter, _decorations);
         }
-        _trackItemStateChanges = false;
         ProjectManager::_refreshWorkspaceTree(
             _ui->projectsTreeWidget, workspaceModel);
         _refreshCheckStates();
-        _trackItemStateChanges = true;
         if (!_ui->filterLineEdit->text().trimmed().isEmpty())
         {   //  Filtered - show all
             _ui->projectsTreeWidget->expandAll();
@@ -283,7 +279,7 @@ QString SelectProjectParentDialog::_prompt(
 void SelectProjectParentDialog::_projectsTreeWidgetItemChanged(
     QTreeWidgetItem * item, int)
 {
-    if (_trackItemStateChanges)
+    if (!_refreshUnderway)
     {
         tt3::ws::Project project =
             item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::Project>();

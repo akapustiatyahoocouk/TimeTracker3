@@ -114,7 +114,7 @@ namespace tt3::gui
         tt3::ws::PublicTask     _publicTask;
         tt3::ws::Credentials    _credentials;
         tt3::ws::PublicTask     _selectedParentTask;
-        bool                    _trackItemStateChanges = false;
+        bool                    _refreshUnderway = false;
 
         //  Model
         void            _removeReparentedTask(

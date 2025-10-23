@@ -31,14 +31,19 @@ SelectPublicTaskParentDialog::SelectPublicTaskParentDialog(
             credentials,
             initialParentTask)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(SelectPublicTaskParentDialog));
+
     _publicTask = publicTask;
     _refresh();
 
-    //  Set initial control values
+    //  Set static control values
     _ui->promptLabel->setText(
-        _prompt("Select new parent for public task", _publicTask));
+        _prompt(rr.string(RID(PromptLabel)), _publicTask));
+
+    //  Set editable control values
     _ui->showCompletedTasksCheckBox->setChecked(
         _publicTask->completed(_credentials));
+    _refresh();
 }
 
 SelectPublicTaskParentDialog::SelectPublicTaskParentDialog(
@@ -56,20 +61,35 @@ SelectPublicTaskParentDialog::SelectPublicTaskParentDialog(
         _ui(new Ui::SelectPublicTaskParentDialog),
         _refreshTimer(this)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(SelectPublicTaskParentDialog));
+
     Q_ASSERT(workspace != nullptr);
 
     _ui->setupUi(this);
+    _decorations = TreeWidgetDecorations(_ui->publicTasksTreeWidget);
+    setWindowTitle(rr.string(RID(Title)));
 
+    //  Set static control values
+    _ui->promptLabel->setText(
+        rr.string(RID(PromptLabel)));
+    _ui->filterLabel->setText(
+        rr.string(RID(FilterLabel)));
+    _ui->showCompletedTasksCheckBox->setText(
+        rr.string(RID(ShowCompletedTasksCheckBox)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    //  Set initial control values
-    _ui->promptLabel->setText("Select new parent for public task");
+    //  Set editable control values
     _ui->showCompletedTasksCheckBox->setChecked(false);
-    _decorations = TreeWidgetDecorations(_ui->publicTasksTreeWidget);
 
+    //  Adjust controls
     _refresh(); //  NOW, to adjust tree widget size to content
     _ui->publicTasksTreeWidget->expandAll();
     _setSelectedPublicTask(_selectedParentTask);
@@ -84,9 +104,8 @@ SelectPublicTaskParentDialog::SelectPublicTaskParentDialog(
     _refreshTimer.start(1000);
 
     //  Done
-    _ui->publicTasksTreeWidget->setFocus();
-    _trackItemStateChanges = true;
     adjustSize();
+    _ui->publicTasksTreeWidget->setFocus();
 }
 
 SelectPublicTaskParentDialog::~SelectPublicTaskParentDialog()
@@ -143,9 +162,10 @@ void SelectPublicTaskParentDialog::_removeReparentedTask(
 //  Implementation helpers
 void SelectPublicTaskParentDialog::_refresh()
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(SelectPublicTaskParentDialog));
+
     //  We don't want a refresh() to trigger a recursive refresh()!
-    static bool refreshUnderway = false;
-    RefreshGuard refreshGuard(refreshUnderway);
+    RefreshGuard refreshGuard(_refreshUnderway);
     if (refreshGuard)   //  Don't recurse!
     {
         PublicTaskManager::_WorkspaceModel workspaceModel =
@@ -162,18 +182,18 @@ void SelectPublicTaskParentDialog::_refresh()
             PublicTaskManager::_filterItems(
                 workspaceModel, filter, _decorations);
         }
-        _trackItemStateChanges = false;
         PublicTaskManager::_refreshWorkspaceTree(
             _ui->publicTasksTreeWidget, workspaceModel);
         _refreshCheckStates();
-        _trackItemStateChanges = true;
         if (!_ui->filterLineEdit->text().trimmed().isEmpty())
         {   //  Filtered - show all
             _ui->publicTasksTreeWidget->expandAll();
         }
 
         _ui->selectionLabel->setText(
-            _prompt("Selected parent task", _selectedParentTask));
+            _prompt(
+                rr.string(RID(SelectionLabel)),
+                _selectedParentTask));
     }
 }
 
@@ -267,7 +287,7 @@ QString SelectPublicTaskParentDialog::_prompt(const QString & prompt, tt3::ws::P
 void SelectPublicTaskParentDialog::_publicTasksTreeWidgetItemChanged(
         QTreeWidgetItem * item, int /*column*/)
 {
-    if (_trackItemStateChanges)
+    if (!_refreshUnderway)
     {
         tt3::ws::PublicTask publicTask =
             item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicTask>();

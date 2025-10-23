@@ -669,3 +669,12 @@ ShowCompletedProjectsCheckBox=Show completed projects
 SelectionLabel=Selected parent project
 OkPushButton=OK
 CancelPushButton=Cancel
+
+[SelectPublicTaskParentDialog]
+Title=Select parent task
+PromptLabel=Select new parent for public task
+FilterLabel=Filter:
+ShowCompletedTasksCheckBox=Show completed tasks
+SelectionLabel=Selected parent task
+OkPushButton=OK
+CancelPushButton=Cancel

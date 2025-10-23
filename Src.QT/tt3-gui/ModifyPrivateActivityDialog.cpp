@@ -142,7 +142,7 @@ ModifyPrivateActivityDialog::ModifyPrivateActivityDialog(
     _ui->fullScreenReminderCheckBox->setChecked(_privateActivity->fullScreenReminder(_credentials));
 
     //  Adjust controls
-    _ui->userComboBox->setEnabled(false);   //  TODO for now!
+    _ui->userComboBox->setEnabled(false);
     if (_readOnly)
     {   //  Adjust for "view only" mode
         setWindowTitle(rr.string(RID(ViewOnlyTitle)));
@@ -344,10 +344,6 @@ void ModifyPrivateActivityDialog::accept()
     {   //  Any of the setters may throw
         if (!_readOnly)
         {
-            if (_selectedUser() != _privateActivity->owner(_credentials))
-            {   //  TODO confirm the owner change
-                //  TODO move PrivateActivity to another User?
-            }
             _privateActivity->setDisplayName(
                 _credentials,
                 _ui->displayNameLineEdit->text());

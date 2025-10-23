@@ -669,3 +669,12 @@ ShowCompletedProjectsCheckBox=Abgeschlossene Projekte anzeigen
 SelectionLabel=Ausgewähltes übergeordnetes Projekt
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
+
+[SelectPublicTaskParentDialog]
+Title=Übergeordnete Aufgabe auswählen
+PromptLabel=Neue übergeordnete Aufgabe für öffentliche Aufgabe auswählen
+FilterLabel=Filter:
+ShowCompletedTasksCheckBox=Abgeschlossene Aufgaben anzeigen
+SelectionLabel=Übergeordnete Aufgabe auswählen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
