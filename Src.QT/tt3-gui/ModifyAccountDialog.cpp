@@ -135,7 +135,7 @@ ModifyAccountDialog::ModifyAccountDialog(
         _account->workspace()->capabilities(credentials);
 
     //  Adjust controls
-    _ui->userComboBox->setEnabled(false);   //  TODO for now!
+    _ui->userComboBox->setEnabled(false);
     if (_readOnly)
     {   //  Adjust for "view only" mode
         setWindowTitle(rr.string(RID(ViewOnlyTitle)));
@@ -171,7 +171,8 @@ ModifyAccountDialog::~ModifyAccountDialog()
 
 //////////
 //  Operations
-ModifyAccountDialog::Result ModifyAccountDialog::doModal()
+auto ModifyAccountDialog::doModal(
+    ) -> Result
 {
     return Result(this->exec());
 }
@@ -412,7 +413,6 @@ void ModifyAccountDialog::accept()
     {   //  Any of the setters may throw
         if (!_readOnly)
         {
-            //  TODO move account to another User?
             _account->setEnabled(   //  MUST come first!
                 _credentials,
                 _ui->enabledCheckBox->isChecked());

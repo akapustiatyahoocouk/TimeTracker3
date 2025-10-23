@@ -66,6 +66,10 @@ namespace tt3::gui
             tt3::util::Setting<bool>    loadLastWorkspaceAtStartup;
 
             /// \brief
+            ///     The mnemonic identifier of the last created or open workspace type.
+            tt3::util::Setting<tt3::util::Mnemonic> lastUsedWorkspaceType;
+
+            /// \brief
             ///     True if the last used login shall be remembered on startup.
             tt3::util::Setting<bool>    rememberLastLogin;
 

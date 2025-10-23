@@ -72,7 +72,8 @@ AskYesNoDialog::~AskYesNoDialog()
 
 //////////
 //  Operations
-AskYesNoDialog::Result AskYesNoDialog::doModal()
+auto AskYesNoDialog::doModal(
+    ) -> Result
 {
     return Result(this->exec());
 }

@@ -173,7 +173,7 @@ ModifyPrivateActivityDialog::~ModifyPrivateActivityDialog()
 //////////
 //  Operations
 auto ModifyPrivateActivityDialog::doModal(
-    ) -> ModifyPrivateActivityDialog::Result
+    ) -> Result
 {
     return Result(this->exec());
 }

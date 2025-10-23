@@ -117,7 +117,8 @@ CreateUserDialog::~CreateUserDialog()
 
 //////////
 //  Operations
-CreateUserDialog::Result CreateUserDialog::doModal()
+auto CreateUserDialog::doModal(
+    ) -> Result
 {
     return Result(this->exec());
 }

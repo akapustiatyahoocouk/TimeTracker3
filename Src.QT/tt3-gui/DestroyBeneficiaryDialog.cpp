@@ -37,7 +37,8 @@ DestroyBeneficiaryDialog::DestroyBeneficiaryDialog(
 
 //////////
 //  Operations
-DestroyBeneficiaryDialog::Result DestroyBeneficiaryDialog::doModal()
+auto DestroyBeneficiaryDialog::doModal(
+    ) -> Result
 {
     return (AskYesNoDialog::doModal() == AskYesNoDialog::Result::Yes) ?
                Result::Ok :

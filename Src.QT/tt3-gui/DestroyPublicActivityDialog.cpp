@@ -42,7 +42,8 @@ DestroyPublicActivityDialog::DestroyPublicActivityDialog(
 
 //////////
 //  Operations
-DestroyPublicActivityDialog::Result DestroyPublicActivityDialog::doModal()
+auto DestroyPublicActivityDialog::doModal(
+    ) -> Result
 {
     return (AskYesNoDialog::doModal() == AskYesNoDialog::Result::Yes) ?
                Result::Ok :

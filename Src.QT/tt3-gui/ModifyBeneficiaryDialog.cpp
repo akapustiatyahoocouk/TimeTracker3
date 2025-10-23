@@ -93,7 +93,8 @@ ModifyBeneficiaryDialog::~ModifyBeneficiaryDialog()
 
 //////////
 //  Operations
-ModifyBeneficiaryDialog::Result ModifyBeneficiaryDialog::doModal()
+auto ModifyBeneficiaryDialog::doModal(
+    ) -> Result
 {
     return Result(this->exec());
 }

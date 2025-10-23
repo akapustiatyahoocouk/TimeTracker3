@@ -151,7 +151,7 @@ ModifyPublicActivityDialog::~ModifyPublicActivityDialog()
 //////////
 //  Operations
 auto ModifyPublicActivityDialog::doModal(
-    ) -> ModifyPublicActivityDialog::Result
+    ) -> Result
 {
     return Result(this->exec());
 }

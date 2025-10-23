@@ -73,7 +73,9 @@ SelectWorkspaceDialog::SelectWorkspaceDialog(
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
     //  Set editable control values
-    //  TODO select last used workspace type
+    _setSelectedWorkspaceType(
+        tt3::ws::WorkspaceTypeManager::findWorkspaceType(
+            Component::Settings::instance()->lastUsedWorkspaceType));
 
     //  Hide optional controls if necessary
     if (optionalControls != OptionalControls::OpenModeSelection)
@@ -95,7 +97,8 @@ SelectWorkspaceDialog::~SelectWorkspaceDialog()
 
 //////////
 //  Operations
-SelectWorkspaceDialog::Result SelectWorkspaceDialog::doModal()
+auto SelectWorkspaceDialog::doModal(
+    ) -> Result
 {
     return Result(this->exec());
 }
@@ -117,15 +120,36 @@ void SelectWorkspaceDialog::_refresh()
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(_workspaceAddress != nullptr);
 }
 
+auto SelectWorkspaceDialog::_selectedWorkspaceType(
+    ) -> tt3::ws::WorkspaceType
+{
+    return (_ui->workspaceTypeComboBox->currentIndex() >= 0) ?
+               _ui->workspaceTypeComboBox->currentData(Qt::ItemDataRole::UserRole).value<tt3::ws::WorkspaceType>() :
+                nullptr;
+}
+
+void SelectWorkspaceDialog::_setSelectedWorkspaceType(
+        tt3::ws::WorkspaceType workspaceType
+    )
+{
+    for (int i = 0; i < _ui->workspaceTypeComboBox->count(); i++)
+    {
+        if (workspaceType == _ui->workspaceTypeComboBox->itemData(i, Qt::ItemDataRole::UserRole).value<tt3::ws::WorkspaceType>())
+        {
+            _ui->workspaceTypeComboBox->setCurrentIndex(i);
+            break;
+        }
+    }
+}
+
 //////////
 //  Event handlers
 void SelectWorkspaceDialog::_workspaceTypeComboBoxCurrentIndexChanged(int)
 {
     Q_ASSERT(_ui->workspaceTypeComboBox->currentIndex() != -1);
-    tt3::ws::WorkspaceType workspaceType =
-        _ui->workspaceTypeComboBox->currentData().value<tt3::ws::WorkspaceType>();
-    Q_ASSERT(workspaceType != nullptr);
-    if (_workspaceAddress != nullptr && _workspaceAddress->workspaceType() != workspaceType)
+    Q_ASSERT(_selectedWorkspaceType() != nullptr);
+    if (_workspaceAddress != nullptr &&
+        _workspaceAddress->workspaceType() != _selectedWorkspaceType())
     {   //  Need to reset the workspace address
         _workspaceAddress = nullptr;
     }
@@ -160,6 +184,7 @@ void SelectWorkspaceDialog::accept()
     {
         _openMode = tt3::ws::OpenMode::Default;
     }
+    Component::Settings::instance()->lastUsedWorkspaceType = _selectedWorkspaceType()->mnemonic();
     done(int(Result::Ok));
 }
 

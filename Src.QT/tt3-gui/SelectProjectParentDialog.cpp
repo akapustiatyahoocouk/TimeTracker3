@@ -106,7 +106,7 @@ SelectProjectParentDialog::~SelectProjectParentDialog()
 //////////
 //  Operations
 auto SelectProjectParentDialog::doModal(
-    ) -> SelectProjectParentDialog::Result
+    ) -> Result
 {
     return Result(this->exec());
 }

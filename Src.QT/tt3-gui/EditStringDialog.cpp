@@ -68,7 +68,8 @@ EditStringDialog::~EditStringDialog()
 
 //////////
 //  Operations
-EditStringDialog::Result EditStringDialog::doModal()
+auto EditStringDialog::doModal(
+    ) -> Result
 {
     return Result(this->exec());
 }

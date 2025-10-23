@@ -84,7 +84,7 @@ SelectWorkloadsDialog::~SelectWorkloadsDialog()
 //////////
 //  Operations
 auto SelectWorkloadsDialog::doModal(
-    ) -> /* TODO use this optimization for all doModal()s SelectWorkloadsDialog::*/Result
+    ) -> Result
 {
     return Result(this->exec());
 }

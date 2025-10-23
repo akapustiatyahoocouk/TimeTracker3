@@ -37,7 +37,8 @@ DestroyAccountDialog::DestroyAccountDialog(
 
 //////////
 //  Operations
-DestroyAccountDialog::Result DestroyAccountDialog::doModal()
+auto DestroyAccountDialog::doModal(
+    ) -> Result
 {
     return (AskYesNoDialog::doModal() == AskYesNoDialog::Result::Yes) ?
                Result::Ok :

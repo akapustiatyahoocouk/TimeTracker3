@@ -98,6 +98,11 @@ namespace tt3::gui
 
         //  Helpers
         void            _refresh();
+        auto            _selectedWorkspaceType(
+                            ) -> tt3::ws::WorkspaceType;
+        void            _setSelectedWorkspaceType(
+                                tt3::ws::WorkspaceType workspaceType
+                            );
 
         //////////
         //  Controls

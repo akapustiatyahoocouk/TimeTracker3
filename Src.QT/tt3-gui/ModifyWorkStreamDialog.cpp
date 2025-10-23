@@ -90,7 +90,8 @@ ModifyWorkStreamDialog::~ModifyWorkStreamDialog()
 
 //////////
 //  Operations
-ModifyWorkStreamDialog::Result ModifyWorkStreamDialog::doModal()
+auto ModifyWorkStreamDialog::doModal(
+    ) -> Result
 {
     return Result(this->exec());
 }

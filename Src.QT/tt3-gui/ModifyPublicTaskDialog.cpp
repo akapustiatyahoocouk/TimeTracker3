@@ -180,7 +180,7 @@ ModifyPublicTaskDialog::~ModifyPublicTaskDialog()
 //////////
 //  Operations
 auto ModifyPublicTaskDialog::doModal(
-    ) -> ModifyPublicTaskDialog::Result
+    ) -> Result
 {
     return Result(this->exec());
 }

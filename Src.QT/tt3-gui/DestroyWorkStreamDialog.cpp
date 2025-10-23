@@ -37,7 +37,8 @@ DestroyWorkStreamDialog::DestroyWorkStreamDialog(
 
 //////////
 //  Operations
-DestroyWorkStreamDialog::Result DestroyWorkStreamDialog::doModal()
+auto DestroyWorkStreamDialog::doModal(
+    ) -> Result
 {
     return (AskYesNoDialog::doModal() == AskYesNoDialog::Result::Yes) ?
                Result::Ok :

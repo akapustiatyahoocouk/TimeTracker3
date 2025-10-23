@@ -74,7 +74,9 @@ NewWorkspaceDialog::NewWorkspaceDialog(QWidget * parent)
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
     //  Set editable control values
-    //  TODO select last used workspace type
+    _setSelectedWorkspaceType(
+        tt3::ws::WorkspaceTypeManager::findWorkspaceType(
+            Component::Settings::instance()->lastUsedWorkspaceType));
 
     //  Done
     _refresh();
@@ -89,7 +91,8 @@ NewWorkspaceDialog::~NewWorkspaceDialog()
 
 //////////
 //  Operations
-NewWorkspaceDialog::Result NewWorkspaceDialog::doModal()
+auto NewWorkspaceDialog::doModal(
+    ) -> Result
 {
     return Result(this->exec());
 }
@@ -108,9 +111,7 @@ void NewWorkspaceDialog::_refresh()
         return;
     }
     //  General case
-    tt3::ws::WorkspaceType workspaceType =
-        _ui->workspaceTypeComboBox->currentData().value<tt3::ws::WorkspaceType>();
-    Q_ASSERT(workspaceType != nullptr);
+    tt3::ws::WorkspaceType workspaceType = _selectedWorkspaceType();
     tt3::ws::Validator::User * userValidator = workspaceType->validator()->user();
     tt3::ws::Validator::Account * accountValidator = workspaceType->validator()->account();
 
@@ -124,15 +125,35 @@ void NewWorkspaceDialog::_refresh()
             _ui->confirmPasswordLineEdit->text() == _ui->passwordLineEdit->text());
 }
 
+auto NewWorkspaceDialog::_selectedWorkspaceType(
+    ) -> tt3::ws::WorkspaceType
+{
+    return (_ui->workspaceTypeComboBox->currentIndex() >= 0) ?
+               _ui->workspaceTypeComboBox->currentData(Qt::ItemDataRole::UserRole).value<tt3::ws::WorkspaceType>() :
+               nullptr;
+}
+
+void NewWorkspaceDialog::_setSelectedWorkspaceType(
+        tt3::ws::WorkspaceType workspaceType
+    )
+{
+    for (int i = 0; i < _ui->workspaceTypeComboBox->count(); i++)
+    {
+        if (workspaceType == _ui->workspaceTypeComboBox->itemData(i, Qt::ItemDataRole::UserRole).value<tt3::ws::WorkspaceType>())
+        {
+            _ui->workspaceTypeComboBox->setCurrentIndex(i);
+            break;
+        }
+    }
+}
+
 //////////
 //  Event handlers
 void NewWorkspaceDialog::_workspaceTypeComboBoxCurrentIndexChanged(int)
 {
     Q_ASSERT(_ui->workspaceTypeComboBox->currentIndex() != -1);
-    tt3::ws::WorkspaceType workspaceType =
-        _ui->workspaceTypeComboBox->currentData().value<tt3::ws::WorkspaceType>();
-    Q_ASSERT(workspaceType != nullptr);
-    if (_workspaceAddress != nullptr && _workspaceAddress->workspaceType() != workspaceType)
+    if (_workspaceAddress != nullptr &&
+        _workspaceAddress->workspaceType() != _selectedWorkspaceType())
     {   //  Need to reset the workspace address
         _workspaceAddress = nullptr;
     }
@@ -178,6 +199,7 @@ void NewWorkspaceDialog::_confirmPasswordLineEditTextChanged(QString)
 
 void NewWorkspaceDialog::accept()
 {
+    Component::Settings::instance()->lastUsedWorkspaceType = _selectedWorkspaceType()->mnemonic();
     done(int(Result::Ok));
 }
 

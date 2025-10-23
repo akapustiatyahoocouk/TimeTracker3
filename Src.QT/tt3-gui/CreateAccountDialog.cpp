@@ -134,7 +134,8 @@ CreateAccountDialog::~CreateAccountDialog()
 
 //////////
 //  Operations
-CreateAccountDialog::Result CreateAccountDialog::doModal()
+auto CreateAccountDialog::doModal(
+    ) -> Result
 {
     return Result(this->exec());
 }

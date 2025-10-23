@@ -72,7 +72,8 @@ CreateWorkStreamDialog::~CreateWorkStreamDialog()
 
 //////////
 //  Operations
-CreateWorkStreamDialog::Result CreateWorkStreamDialog::doModal()
+auto CreateWorkStreamDialog::doModal(
+    ) -> Result
 {
     return Result(this->exec());
 }

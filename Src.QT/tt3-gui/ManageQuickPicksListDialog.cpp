@@ -105,7 +105,8 @@ ManageQuickPicksListDialog::~ManageQuickPicksListDialog()
 
 //////////
 //  Operations
-ManageQuickPicksListDialog::Result ManageQuickPicksListDialog::doModal()
+auto ManageQuickPicksListDialog::doModal(
+    ) -> Result
 {
     return Result(this->exec());
 }

@@ -42,7 +42,8 @@ DestroyProjectDialog::DestroyProjectDialog(
 
 //////////
 //  Operations
-DestroyProjectDialog::Result DestroyProjectDialog::doModal()
+auto DestroyProjectDialog::doModal(
+    ) -> Result
 {
     return (AskYesNoDialog::doModal() == AskYesNoDialog::Result::Yes) ?
                Result::Ok :
