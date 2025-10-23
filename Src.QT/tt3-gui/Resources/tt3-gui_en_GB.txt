@@ -573,6 +573,29 @@ SelectBeneficiariesPushButton=Select
 OkPushButton=OK
 CancelPushButton=Cancel
 
+[MyDayManager]
+NoQuickPicksLabel=The quick picks list is empty
+QuickPicksPushButton=Quick picks
+FilterLabel=Show:
+LogEventPushButton=Log comment
+FilterDays1=today
+FilterDays2=last 2 days
+FilterDays3=last 3 days
+FilterDays7=last 7 days
+FilterDays30=last 30 days
+TaskCompletedSuffix=[task is completed]
+DestroyWorkAction=Destroy work
+DestroyEventAction=Destroy event
+ModifyPublicActivityAction=Modify public activity
+ModifyPublicTaskAction=Modify public task
+ModifyPrivateActivityAction=Modify private activity
+ModifyPrivateTaskAction=Modify private task
+ViewPublicActivityAction=View public activity
+ViewPublicTaskAction=View public task
+ViewPrivateActivityAction=View private activity
+ViewPrivateTaskAction=View private task
+RemoveFromQuickPicksAction=Remove from quick picks list
+
 [NewWorkspaceDialog]
 Title=New workspace
 WorkspaceTypeLabel=Workspace type:

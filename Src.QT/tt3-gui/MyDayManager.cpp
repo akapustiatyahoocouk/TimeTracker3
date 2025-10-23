@@ -1,6 +1,6 @@
 //
 //  tt3-gui/MyDayManager.cpp - tt3::gui::MyDayManager class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -43,17 +43,11 @@ MyDayManager::MyDayManager(
     _ui->setupUi(this);
     _pushButtonDecorations = PushButtonDecorations(_ui->quickPicksPushButton);
     _listWidgetDecorations = ListWidgetDecorations(_ui->logListWidget);
+    _applyCurrentLocale();
+    _setLogDepth(Component::Settings::instance()->myDayLogDepth);
 
     //  Populate the "quick pick" buttons area
     _recreateDynamicControls();
-
-    //  Populate the "filter" combo box
-    _ui->filterComboBox->addItem("today", QVariant::fromValue(1));
-    _ui->filterComboBox->addItem("last 2 days", QVariant::fromValue(2));
-    _ui->filterComboBox->addItem("last 3 days", QVariant::fromValue(3));
-    _ui->filterComboBox->addItem("last 7 days", QVariant::fromValue(7));
-    _ui->filterComboBox->addItem("last 30 days", QVariant::fromValue(30));
-    _setLogDepth(Component::Settings::instance()->myDayLogDepth);
 
     //  Populate the "my day" view area
     _myDayModel = _createMyDayModel();
@@ -63,6 +57,13 @@ MyDayManager::MyDayManager(
             &CurrentTheme::changed,
             this,
             &MyDayManager::_currentThemeChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Locale change requires UI translation
+    connect(&tt3::util::theCurrentLocale,
+            &tt3::util::CurrentLocale::changed,
+            this,
+            &MyDayManager::_currentLocaleChanged,
             Qt::ConnectionType::QueuedConnection);
 
     //  View options changes should cause a refresh
@@ -146,6 +147,8 @@ void MyDayManager::setCredentials(const tt3::ws::Credentials & credentials)
 
 void MyDayManager::refresh()
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MyDayManager));
+
     //  We don't want a refresh() to trigger a recursive refresh()!
     if (auto _ = RefreshGuard(_refreshUnderway)) //  Don't recurse!
     {
@@ -204,7 +207,7 @@ void MyDayManager::refresh()
                 {
                     if (task->completed(_credentials))
                     {
-                        suffix = "\n[completed]";
+                        suffix = "\n" + rr.string(RID(TaskCompletedSuffix));
                     }
                 }
                 if (theCurrentActivity == _quickPicksList[i])
@@ -595,9 +598,45 @@ void MyDayManager::_clearAndDisableAllControls()
     _myDayModel->clear();
 }
 
+void MyDayManager::_applyCurrentLocale()
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MyDayManager));
+
+    _ui->noQuickPicksLabel->setText(
+        rr.string(RID(NoQuickPicksLabel)));
+    _ui->quickPicksPushButton->setText(
+        rr.string(RID(QuickPicksPushButton)));
+    _ui->filterLabel->setText(
+        rr.string(RID(FilterLabel)));
+    _ui->logEventPushButton->setText(
+        rr.string(RID(LogEventPushButton)));
+
+    //  [re]-populate the "filter" combo box
+    int logDepth = _logDepth();
+    _ui->filterComboBox->clear();
+    _ui->filterComboBox->addItem(
+        rr.string(RID(FilterDays1)),
+        QVariant::fromValue(1));
+    _ui->filterComboBox->addItem(
+        rr.string(RID(FilterDays2)),
+        QVariant::fromValue(2));
+    _ui->filterComboBox->addItem(
+        rr.string(RID(FilterDays3)),
+        QVariant::fromValue(3));
+    _ui->filterComboBox->addItem(
+        rr.string(RID(FilterDays7)),
+        QVariant::fromValue(7));
+    _ui->filterComboBox->addItem(
+        rr.string(RID(FilterDays30)),
+        QVariant::fromValue(30));
+    _setLogDepth(logDepth);
+    refresh();
+}
+
 void MyDayManager::_recreateQuickPickButtons()
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MyDayManager));
 
     for (int i = 0; i < _quickPicksButtons.size(); i++)
     {
@@ -642,7 +681,7 @@ void MyDayManager::_recreateQuickPickButtons()
             {
                 if (task->completed(_credentials))
                 {
-                    suffix = "\n[completed]";
+                    suffix = "\n" + rr.string(RID(TaskCompletedSuffix));
                 }
             }
             button = new QPushButton(
@@ -742,6 +781,12 @@ void MyDayManager::_currentThemeChanged(ITheme *, ITheme *)
     _pushButtonDecorations = PushButtonDecorations(_ui->quickPicksPushButton);
     _listWidgetDecorations = ListWidgetDecorations(_ui->logListWidget);
     requestRefresh();
+}
+
+void MyDayManager::_currentLocaleChanged(QLocale, QLocale)
+{
+    _applyCurrentLocale();
+    refresh();
 }
 
 void MyDayManager::_workspaceClosed(tt3::ws::WorkspaceClosedNotification /*notification*/)
@@ -866,6 +911,8 @@ void MyDayManager::_currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity)
 
 void MyDayManager::_logListWidgetCustomContextMenuRequested(QPoint p)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MyDayManager));
+
     if (auto item = _ui->logListWidget->itemAt(p))
     {
         int n = _ui->logListWidget->row(item);
@@ -881,7 +928,7 @@ void MyDayManager::_logListWidgetCustomContextMenuRequested(QPoint p)
             destroyObjectAction =
                 _contextMenu->addAction(
                     QIcon(":/tt3-gui/Resources/Images/Actions/DestroyWorkSmall.png"),
-                    "Destroy work");
+                    rr.string(RID(DestroyWorkAction)));
         }
         else if (auto eventModel =
                  std::dynamic_pointer_cast<_EventModelImpl>(_myDayModel->itemModels[n]))
@@ -890,7 +937,7 @@ void MyDayManager::_logListWidgetCustomContextMenuRequested(QPoint p)
             destroyObjectAction =
                 _contextMenu->addAction(
                     QIcon(":/tt3-gui/Resources/Images/Actions/DestroyEventSmall.png"),
-                    "Destroy event");
+                    rr.string(RID(DestroyEventAction)));
         }
         else
         {   //  No context menu
@@ -920,6 +967,8 @@ void MyDayManager::_logListWidgetCustomContextMenuRequested(QPoint p)
 
 void MyDayManager::_quickPickButtonCustomContextMenuRequested(QPoint p)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MyDayManager));
+
     if (auto pushButton = dynamic_cast<QPushButton*>(sender()))
     {
         qsizetype n = _quickPicksButtons.indexOf(pushButton);
@@ -937,7 +986,7 @@ void MyDayManager::_quickPickButtonCustomContextMenuRequested(QPoint p)
                         modifyObjectAction =
                             _contextMenu->addAction(
                                 QIcon(":/tt3-gui/Resources/Images/Actions/DestroyPublicTaskSmall.png"),
-                                "Modify public task");
+                                rr.string(RID(ModifyPublicTaskAction)));
                     }
                 }
                 catch (const tt3::util::Exception & ex)
@@ -949,7 +998,7 @@ void MyDayManager::_quickPickButtonCustomContextMenuRequested(QPoint p)
                     modifyObjectAction =
                         _contextMenu->addAction(
                             QIcon(":/tt3-gui/Resources/Images/Actions/ViewPublicTaskSmall.png"),
-                            "View public task");
+                            rr.string(RID(ViewPublicTaskAction)));
                 }
             }
             else if (_contextMenuObject =
@@ -962,7 +1011,7 @@ void MyDayManager::_quickPickButtonCustomContextMenuRequested(QPoint p)
                         modifyObjectAction =
                             _contextMenu->addAction(
                                 QIcon(":/tt3-gui/Resources/Images/Actions/DestroyPrivateTaskSmall.png"),
-                                "Modify private task");
+                                rr.string(RID(ModifyPrivateTaskAction)));
                     }
                 }
                 catch (const tt3::util::Exception & ex)
@@ -974,7 +1023,7 @@ void MyDayManager::_quickPickButtonCustomContextMenuRequested(QPoint p)
                     modifyObjectAction =
                         _contextMenu->addAction(
                             QIcon(":/tt3-gui/Resources/Images/Actions/ViewPrivateTaskSmall.png"),
-                            "View private task");
+                            rr.string(RID(ViewPrivateTaskAction)));
                 }
             }
             else if (_contextMenuObject =
@@ -987,7 +1036,7 @@ void MyDayManager::_quickPickButtonCustomContextMenuRequested(QPoint p)
                         modifyObjectAction =
                             _contextMenu->addAction(
                                 QIcon(":/tt3-gui/Resources/Images/Actions/DestroyPublicActivitySmall.png"),
-                                "Modify public activity");
+                                rr.string(RID(ModifyPublicActivityAction)));
                     }
                 }
                 catch (const tt3::util::Exception & ex)
@@ -999,7 +1048,7 @@ void MyDayManager::_quickPickButtonCustomContextMenuRequested(QPoint p)
                     modifyObjectAction =
                         _contextMenu->addAction(
                             QIcon(":/tt3-gui/Resources/Images/Actions/ViewPublicActivitySmall.png"),
-                            "View public activity");
+                            rr.string(RID(ViewPublicActivityAction)));
                 }
             }
             else if (_contextMenuObject =
@@ -1012,7 +1061,7 @@ void MyDayManager::_quickPickButtonCustomContextMenuRequested(QPoint p)
                         modifyObjectAction =
                             _contextMenu->addAction(
                                 QIcon(":/tt3-gui/Resources/Images/Actions/DestroyPrivateActivitySmall.png"),
-                                "Modify private activity");
+                                rr.string(RID(ModifyPrivateActivityAction)));
                     }
                 }
                 catch (const tt3::util::Exception & ex)
@@ -1024,7 +1073,7 @@ void MyDayManager::_quickPickButtonCustomContextMenuRequested(QPoint p)
                     modifyObjectAction =
                         _contextMenu->addAction(
                             QIcon(":/tt3-gui/Resources/Images/Actions/ViewPrivateActivitySmall.png"),
-                            "View private activity");
+                            rr.string(RID(ViewPrivateActivityAction)));
                 }
             }
             else
@@ -1035,7 +1084,7 @@ void MyDayManager::_quickPickButtonCustomContextMenuRequested(QPoint p)
             QAction * removeObjectAction =
                 _contextMenu->addAction(
                     QIcon(":/tt3-gui/Resources/Images/Actions/RemoveSmall.png"),
-                    "Remove from quick picks list");
+                    rr.string(RID(RemoveFromQuickPicksAction)));
             //  Adjust menu item states
             removeObjectAction->setEnabled(!_workspace->isReadOnly());
             //  Set up signal handling
@@ -1147,11 +1196,6 @@ void MyDayManager::_removeActivityFromQuickPicksContextActionTriggered()
 
 void MyDayManager::_destroyObjectContextActionTriggered()
 {
-    //  TODO implement properly
-    qDebug() << "Destroying "
-             << tt3::util::toString(_contextMenuObject->type()->mnemonic())
-             << " "
-             << tt3::util::toString(_contextMenuObject->oid());
     if (auto work =
         std::dynamic_pointer_cast<tt3::ws::WorkImpl>(_contextMenuObject))
     {

@@ -573,6 +573,29 @@ SelectBeneficiariesPushButton=Auswählen
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
 
+[MyDayManager]
+NoQuickPicksLabel=Die Schnellauswahlliste ist leer.
+QuickPicksPushButton=Schnellauswahl
+FilterLabel=Anzeigen:
+LogEventPushButton=Kommentar protokollieren
+FilterDays1=Heute
+FilterDays2=Letzte 2 Tage
+FilterDays3=Letzte 3 Tage
+FilterDays7=Letzte 7 Tage
+FilterDays30=Letzte 30 Tage
+TaskCompletedSuffix=[Aufgabe abgeschlossen]
+DestroyWorkAction=Arbeit zerstören
+DestroyEventAction=Ereignis zerstören
+ModifyPublicActivityAction=Öffentliche Aktivität ändern
+ModifyPublicTaskAction=Öffentliche Aufgabe ändern
+ModifyPrivateActivityAction=Private Aktivität ändern
+ModifyPrivateTaskAction=Private Aufgabe ändern
+ViewPublicActivityAction=Öffentliche Aktivität anzeigen
+ViewPublicTaskAction=Öffentliche Aufgabe anzeigen
+ViewPrivateActivityAction=Private Aktivität anzeigen
+ViewPrivateTaskAction=Private anzeigen Aufgabe
+RemoveFromQuickPicksAction=Aus der Schnellauswahlliste entfernen
+
 [NewWorkspaceDialog]
 Title=Neuer Arbeitsbereich
 WorkspaceTypeLabel=Arbeitsbereichstyp:

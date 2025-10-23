@@ -316,6 +316,7 @@ namespace tt3::gui
         void            _startListeningToWorkspaceChanges();
         void            _stopListeningToWorkspaceChanges();
         void            _clearAndDisableAllControls();
+        void            _applyCurrentLocale();
         void            _recreateQuickPickButtons();
         void            _recreateDynamicControls();
         void            _refreslLogList();
@@ -343,6 +344,7 @@ namespace tt3::gui
         //  Signal handlers
     private slots:
         void            _currentThemeChanged(ITheme *, ITheme *);
+        void            _currentLocaleChanged(QLocale, QLocale);
         void            _workspaceClosed(tt3::ws::WorkspaceClosedNotification notification);
         void            _objectCreated(tt3::ws::ObjectCreatedNotification notification);
         void            _objectDestroyed(tt3::ws::ObjectDestroyedNotification notification);

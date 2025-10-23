@@ -574,6 +574,29 @@ SelectBeneficiariesPushButton=Выбрать
 OkPushButton=ОК
 CancelPushButton=Отмена
 
+[MyDayManager]
+NoQuickPicksLabel=Список быстрого выбора пуст
+QuickPicksPushButton=Быстрый выбор
+FilterLabel=Показать:
+LogEventPushButton=Комментарий к журналу
+FilterDays1=сегодня
+FilterDays2=последние 2 дня
+FilterDays3=последние 3 дня
+FilterDays7=последние 7 дней
+FilterDays30=последние 30 дней
+TaskCompletedSuffix=[задача выполнена]
+DestroyWorkAction=Удалить работу
+DestroyEventAction=Удалить событие
+ModifyPublicActivityAction=Изменить общедоступную активность
+ModifyPublicTaskAction=Изменить общедоступную задачу
+ModifyPrivateActivityAction=Изменить личную активность
+ModifyPrivateTaskAction=Изменить личную задачу
+ViewPublicActivityAction=Просмотреть общедоступную активность
+ViewPublicTaskAction=Просмотреть общедоступную задачу
+ViewPrivateActivityAction=Просмотреть личную активность
+ViewPrivateTaskAction=Просмотреть личную задачу
+RemoveFromQuickPicksAction=Удалить из списка быстрого выбора
+
 [NewWorkspaceDialog]
 Title=Создать рабочую область
 WorkspaceTypeLabel=Тип рабочей области:
