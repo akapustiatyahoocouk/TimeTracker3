@@ -701,3 +701,15 @@ ShowCompletedProjectsCheckBox=Abgeschlossene Projekte anzeigen
 SelectedWorkloadsLabel=Ausgewählte Arbeitslasten:
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
+
+[ShowConfigurationDialog]
+Title=TimeTracker3-Konfiguration
+ComponentsTab=Komponenten
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+VersionLabel=Version:
+CopyrightLabel=Copyright:
+LicenseLabel=Lizenz:
+VersionAndBuild={0} (Build {1})
+ShowLicensePushButton=Lizenz anzeigen
+OkPushButton=Bestätigen

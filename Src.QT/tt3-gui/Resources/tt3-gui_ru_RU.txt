@@ -702,3 +702,15 @@ ShowCompletedProjectsCheckBox=Показать завершенные проек
 SelectedWorkloadsLabel=Выбранные рабочие нагрузки:
 OkPushButton=ОК
 CancelPushButton=Отмена
+
+[ShowConfigurationDialog]
+Title=Конфигурация TimeTracker3
+ComponentsTab=Компоненты
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+VersionLabel=Версия:
+CopyrightLabel=Авторское право:
+LicenseLabel=Лицензия:
+VersionAndBuild={0} (сборка {1})
+ShowLicensePushButton=Показать лицензию
+OkPushButton=ОК

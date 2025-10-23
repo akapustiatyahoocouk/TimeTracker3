@@ -1,6 +1,6 @@
 //
 //  tt3-gui/ShowConfigurationDialog.cpp - tt3::gui::ShowConfigurationDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -19,13 +19,33 @@
 using namespace tt3::gui;
 
 //////////
-//  Construction/destruction#include "ShowLicenseDialog.hpp"
+//  Construction/destruction
 ShowConfigurationDialog::ShowConfigurationDialog(QWidget * parent)
     :   QDialog(parent),
         _ui(new Ui::ShowConfigurationDialog)
 {
-    _ui->setupUi(this);
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ShowConfigurationDialog));
 
+    _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
+
+    _ui->tabWidget->setTabText(
+        0, rr.string(RID(ComponentsTab)));
+    _ui->displayNameLabel->setText(
+        rr.string(RID(DisplayNameLabel)));
+    _ui->descriptionLabel->setText(
+        rr.string(RID(DescriptionLabel)));
+    _ui->versionLabel->setText(
+        rr.string(RID(VersionLabel)));
+    _ui->copyrightLabel->setText(
+        rr.string(RID(CopyrightLabel)));
+    _ui->licenseLabel->setText(
+        rr.string(RID(LicenseLabel)));
+    _ui->showLicensePushButton->setText(
+        rr.string(RID(ShowLicensePushButton)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
 
@@ -81,6 +101,8 @@ void ShowConfigurationDialog::doModal()
 //  Implementation helpers
 void ShowConfigurationDialog::_refresh()
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ShowConfigurationDialog));
+
     QTreeWidgetItem * item = _ui->componentsTreeWidget->currentItem();
     if (item == nullptr)
     {   //  No selection
@@ -145,10 +167,10 @@ void ShowConfigurationDialog::_refresh()
         _ui->displayNameValue->setText(component->displayName());
         _ui->descriptionValue->setText(component->description());
         _ui->versionValue->setText(
-            component->version().toString() +
-            " (build " +
-            component->buildNumber() +
-            ")");
+            rr.string(
+                RID(VersionAndBuild),
+                component->version().toString(),
+                component->buildNumber()));
         _ui->copyrightValue->setText(component->copyright());
         _ui->licenseValue->setText(component->license()->description());
     }

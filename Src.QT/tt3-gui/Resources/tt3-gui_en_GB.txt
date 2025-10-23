@@ -701,3 +701,15 @@ ShowCompletedProjectsCheckBox=Show completed projects
 SelectedWorkloadsLabel=Selected workloads:
 OkPushButton=OK
 CancelPushButton=Cancel
+
+[ShowConfigurationDialog]
+Title=TimeTracker3 configuration
+ComponentsTab=Components
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+VersionLabel=Version:
+CopyrightLabel=Copyright:
+LicenseLabel=License:
+VersionAndBuild={0} (build {1})
+ShowLicensePushButton=Show license
+OkPushButton=OK
