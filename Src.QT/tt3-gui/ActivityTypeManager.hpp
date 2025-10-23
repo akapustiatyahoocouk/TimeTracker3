@@ -108,6 +108,7 @@ namespace tt3::gui
     private:
         tt3::ws::Workspace      _workspace;
         tt3::ws::Credentials    _credentials;
+        bool                    _refreshUnderway = false;
 
         //  View model
         struct _WorkspaceModelImpl;

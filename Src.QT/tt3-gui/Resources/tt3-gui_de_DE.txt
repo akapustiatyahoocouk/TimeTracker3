@@ -689,3 +689,15 @@ OpenAsReadOnlyRadioButton=Schreibgeschützt
 OpenAsReadWriteRadioButton=Lesen/Schreiben
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
+
+[SelectWorkloadsDialog]
+Title=Arbeitslasten auswählen
+ProjectsTab=Projekte
+WorkStreamsTab=Arbeitslasten
+ProjectsFilterLabel=Filter:
+WorkStreamsFilterLabel=Filter:
+ProjectCompletedSuffix=[Projekt abgeschlossen]
+ShowCompletedProjectsCheckBox=Abgeschlossene Projekte anzeigen
+SelectedWorkloadsLabel=Ausgewählte Arbeitslasten:
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen

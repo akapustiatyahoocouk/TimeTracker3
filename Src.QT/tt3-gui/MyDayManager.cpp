@@ -96,7 +96,7 @@ MyDayManager::MyDayManager(
             this,
             &MyDayManager::_refreshTimerTimeout);
     _refreshTimer.start(1000);
-
+    
     //  Done
     _constructed = true;
 }
@@ -147,8 +147,7 @@ void MyDayManager::setCredentials(const tt3::ws::Credentials & credentials)
 void MyDayManager::refresh()
 {
     //  We don't want a refresh() to trigger a recursive refresh()!
-    static bool refreshUnderway = false;
-    RefreshGuard refreshGuard(refreshUnderway);
+    RefreshGuard refreshGuard(_refreshUnderway);
     if (refreshGuard)   //  Don't recurse!
     {
         try

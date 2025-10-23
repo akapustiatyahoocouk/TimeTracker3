@@ -73,7 +73,7 @@ namespace tt3::gui
     private:
         tt3::ws::Account        _account;
         tt3::ws::Credentials    _credentials;
-        bool                    _trackItemStateChanges = false;
+        bool                    _refreshUnderway = false;
 
         QList<tt3::ws::Activity>_quickPicksList;
 

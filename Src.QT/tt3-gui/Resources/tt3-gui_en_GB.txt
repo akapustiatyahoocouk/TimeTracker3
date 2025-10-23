@@ -689,3 +689,15 @@ OpenAsReadOnlyRadioButton=Read Only
 OpenAsReadWriteRadioButton=Read/Write
 OkPushButton=OK
 CancelPushButton=Cancel
+
+[SelectWorkloadsDialog]
+Title=Select workloads
+ProjectsTab=Projects
+WorkStreamsTab=Work streams
+ProjectsFilterLabel=Filter:
+WorkStreamsFilterLabel=Filter:
+ProjectCompletedSuffix=[project is completed]
+ShowCompletedProjectsCheckBox=Show completed projects
+SelectedWorkloadsLabel=Selected workloads:
+OkPushButton=OK
+CancelPushButton=Cancel

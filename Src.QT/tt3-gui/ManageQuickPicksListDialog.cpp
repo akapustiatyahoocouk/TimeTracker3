@@ -81,11 +81,15 @@ ManageQuickPicksListDialog::ManageQuickPicksListDialog(
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
     //  Set up initial control values
-    _refillPublicActivitiesTree();
-    _refillPublicTasksTree();
-    _refillPrivateActivitiesTree();
-    _refillPrivateTasksTree();
-    _refillQuickPicksListWidget();
+    RefreshGuard refreshGuard(_refreshUnderway);
+    if (refreshGuard)   //  Don't track item state when initializing
+    {
+        _refillPublicActivitiesTree();
+        _refillPublicTasksTree();
+        _refillPrivateActivitiesTree();
+        _refillPrivateTasksTree();
+        _refillQuickPicksListWidget();
+    }
 
     _ui->tasksTabWidget->setCurrentIndex(
         Component::Settings::instance()->manageQuickPicksListDialogTab);
@@ -93,7 +97,6 @@ ManageQuickPicksListDialog::ManageQuickPicksListDialog(
     //  Done
     _refresh();
     adjustSize();
-    _trackItemStateChanges = true;
 }
 
 ManageQuickPicksListDialog::~ManageQuickPicksListDialog()
@@ -349,8 +352,7 @@ void ManageQuickPicksListDialog::_refillQuickPicksListWidget()
 void ManageQuickPicksListDialog::_refresh()
 {
     //  We don't want a refresh() to trigger a recursive refresh()!
-    static bool refreshUnderway = false;
-    RefreshGuard refreshGuard(refreshUnderway);
+    RefreshGuard refreshGuard(_refreshUnderway);
     if (refreshGuard)   //  Don't recurse!
     {
         try
@@ -462,7 +464,7 @@ void ManageQuickPicksListDialog::_setSelectedQuickPicksListItem(
 //  Signal handlers
 void ManageQuickPicksListDialog::_publicActivitiesTreeWidgetItemChanged(QTreeWidgetItem * item, int)
 {
-    if (_trackItemStateChanges)
+    if (!_refreshUnderway)
     {
         tt3::ws::PublicActivity publicActivity =
             item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicActivity>();
@@ -485,7 +487,7 @@ void ManageQuickPicksListDialog::_publicActivitiesTreeWidgetItemChanged(QTreeWid
 
 void ManageQuickPicksListDialog::_publicTasksTreeWidgetItemChanged(QTreeWidgetItem * item, int)
 {
-    if (_trackItemStateChanges)
+    if (!_refreshUnderway)
     {
         tt3::ws::PublicTask publicTask =
             item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicTask>();
@@ -508,7 +510,7 @@ void ManageQuickPicksListDialog::_publicTasksTreeWidgetItemChanged(QTreeWidgetIt
 
 void ManageQuickPicksListDialog::_privateActivitiesTreeWidgetItemChanged(QTreeWidgetItem * item, int)
 {
-    if (_trackItemStateChanges)
+    if (!_refreshUnderway)
     {
         tt3::ws::PrivateActivity privateActivity =
             item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PrivateActivity>();
@@ -531,7 +533,7 @@ void ManageQuickPicksListDialog::_privateActivitiesTreeWidgetItemChanged(QTreeWi
 
 void ManageQuickPicksListDialog::_privateTasksTreeWidgetItemChanged(QTreeWidgetItem * item, int)
 {
-    if (_trackItemStateChanges)
+    if (!_refreshUnderway)
     {
         tt3::ws::PrivateTask privateTask =
             item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PrivateTask>();
@@ -621,35 +623,37 @@ void ManageQuickPicksListDialog::_removePushButtonClicked()
 {
     if (tt3::ws::Activity activity = _selectedQuickPicksListItem())
     {
-        _quickPicksList.removeOne(activity);
-        _refillQuickPicksListWidget();
-        //  The check states of the tree items must be adjusted!
-        _trackItemStateChanges = false;
-        _refreshCheckMarks(
-            _ui->publicActivitiesTreeWidget,
-            [](auto item)
-            {
-                return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicActivity>();
-            });
-        _refreshCheckMarks(
-            _ui->publicTasksTreeWidget,
-            [](auto item)
-            {
-                return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicTask>();
-            });
-        _refreshCheckMarks(
-            _ui->privateActivitiesTreeWidget,
-            [](auto item)
-            {
-                return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PrivateActivity>();
-            });
-        _refreshCheckMarks(
-            _ui->privateTasksTreeWidget,
-            [](auto item)
-            {
-                return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PrivateTask>();
-            });
-        _trackItemStateChanges = true;
+        RefreshGuard refreshGuard(_refreshUnderway);
+        if (refreshGuard)   //  Don't track item state when updating
+        {
+            _quickPicksList.removeOne(activity);
+            _refillQuickPicksListWidget();
+            //  The check states of the tree items must be adjusted!
+            _refreshCheckMarks(
+                _ui->publicActivitiesTreeWidget,
+                [](auto item)
+                {
+                    return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicActivity>();
+                });
+            _refreshCheckMarks(
+                _ui->publicTasksTreeWidget,
+                [](auto item)
+                {
+                    return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicTask>();
+                });
+            _refreshCheckMarks(
+                _ui->privateActivitiesTreeWidget,
+                [](auto item)
+                {
+                    return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PrivateActivity>();
+                });
+            _refreshCheckMarks(
+                _ui->privateTasksTreeWidget,
+                [](auto item)
+                {
+                    return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PrivateTask>();
+                });
+        }
     }
 }
 

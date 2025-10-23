@@ -126,8 +126,7 @@ void ProjectManager::refresh()
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ProjectManager));
 
     //  We don't want a refresh() to trigger a recursive refresh()!
-    static bool refreshUnderway = false;
-    RefreshGuard refreshGuard(refreshUnderway);
+    RefreshGuard refreshGuard(_refreshUnderway);
     if (refreshGuard)   //  Don't recurse!
     {
         try

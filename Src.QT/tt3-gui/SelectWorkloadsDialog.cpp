@@ -1,6 +1,6 @@
 //
 //  tt3-gui/SelectWorkloadsDialog.cpp - tt3::gui::SelectWorkloadsDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -37,20 +37,40 @@ SelectWorkloadsDialog::SelectWorkloadsDialog(
     _ui->setupUi(this);
     _treeWidgetDecorations = TreeWidgetDecorations(_ui->projectsTreeWidget);
     _listWidgetDecorations = ListWidgetDecorations(_ui->workloadsListWidget);
+    setWindowTitle(rr.string(RID(Title)));
 
+    //  Set static control values
+    _ui->workloadsTabWidget->setTabText(
+        0, rr.string(RID(ProjectsTab)));
+    _ui->workloadsTabWidget->setTabText(
+        1, rr.string(RID(WorkStreamsTab)));
+    _ui->projectsFilterLabel->setText(
+        rr.string(RID(ProjectsFilterLabel)));
+    _ui->workStreamsFilterLabel->setText(
+        rr.string(RID(WorkStreamsFilterLabel)));
+    _ui->showCompletedProjectsCheckBox->setText(
+        rr.string(RID(ShowCompletedProjectsCheckBox)));
+    _ui->selectedWorkloadsLabel->setText(
+        rr.string(RID(SelectedWorkloadsLabel)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
-    //  Set initial control values
+    //  Set editable control values
     _setSelectedWorkloads(workloads);
     _ui->showCompletedProjectsCheckBox->setChecked(
         Component::Settings::instance()->showCompletedProjects);
 
     _refresh(); //  NOW, to adjust tree widget size to content
     _ui->projectsTreeWidget->expandAll();
-    _ui->workloadsTabWidget->setCurrentIndex(Component::Settings::instance()->selectWorkloadsDialogTab);
+    _ui->workloadsTabWidget->setCurrentIndex(
+        Component::Settings::instance()->selectWorkloadsDialogTab);
 
     //  Done
     adjustSize();
@@ -198,6 +218,7 @@ void SelectWorkloadsDialog::_setSelectedWorkloads(
     )
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(SelectWorkloadsDialog));
 
     QList<tt3::ws::Workload> workloadsList = workloads.values();
     std::sort(
@@ -239,7 +260,7 @@ void SelectWorkloadsDialog::_setSelectedWorkloads(
             {
                 if (project->completed(_credentials))  //  may throw
                 {   //  Completed
-                    text += " [completed]";
+                    text += " " + rr.string(RID(ProjectCompletedSuffix));
                     item->setForeground(_listWidgetDecorations.disabledItemForeground);
                 }
                 else
