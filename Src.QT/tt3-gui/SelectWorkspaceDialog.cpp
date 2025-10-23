@@ -1,6 +1,6 @@
 //
 //  tt3-gui/SelectWorkspaceDialog.cpp - tt3::gui::SelectWorkspaceDialog class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -26,12 +26,10 @@ SelectWorkspaceDialog::SelectWorkspaceDialog(
     ) : QDialog(parent),
         _ui(new Ui::SelectWorkspaceDialog)
 {
-    _ui->setupUi(this);
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(SelectWorkspaceDialog));
 
-    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
-        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
-    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
-        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
+    _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
 
     //  Populate "Workspace type" combo box
     QList<tt3::ws::WorkspaceType> workspaceTypes =
@@ -51,15 +49,43 @@ SelectWorkspaceDialog::SelectWorkspaceDialog(
             QVariant::fromValue(workspaceType));
     }
 
+    //  Set static control values
+    _ui->workspaceTypeLabel->setText(
+        rr.string(RID(WorkspaceTypeLabel)));
+    _ui->locationLabel->setText(
+        rr.string(RID(LocationLabel)));
+    _ui->browsePushButton->setText(
+        rr.string(RID(BrowsePushButton)));
+    _ui->openAsDefaultRadioButton->setText(
+        rr.string(RID(OpenAsDefaultRadioButton)));
+    _ui->openAsReadOnlyRadioButton->setText(
+        rr.string(RID(OpenAsReadOnlyRadioButton)));
+    _ui->openAsReadWriteRadioButton->setText(
+        rr.string(RID(OpenAsReadWriteRadioButton)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
+
+    //  Set editable control values
+    //  TODO select last used workspace type
+
     //  Hide optional controls if necessary
     if (optionalControls != OptionalControls::OpenModeSelection)
     {
         _ui->openAsLabel->setVisible(false);
         _ui->openAsPanel->setVisible(false);
     }
+
     //  Done
-    adjustSize();
     _refresh();
+    adjustSize();
+    _ui->workspaceTypeComboBox->setFocus();
 }
 
 SelectWorkspaceDialog::~SelectWorkspaceDialog()

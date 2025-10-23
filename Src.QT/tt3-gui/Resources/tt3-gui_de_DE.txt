@@ -678,3 +678,14 @@ ShowCompletedTasksCheckBox=Abgeschlossene Aufgaben anzeigen
 SelectionLabel=Übergeordnete Aufgabe auswählen
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
+
+[SelectWorkspaceDialog]
+Title=Arbeitsbereich auswählen
+WorkspaceTypeLabel=Arbeitsbereichstyp:
+LocationLabel=Standort:
+BrowsePushButton=Durchsuchen
+OpenAsDefaultRadioButton=Standard
+OpenAsReadOnlyRadioButton=Schreibgeschützt
+OpenAsReadWriteRadioButton=Lesen/Schreiben
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen

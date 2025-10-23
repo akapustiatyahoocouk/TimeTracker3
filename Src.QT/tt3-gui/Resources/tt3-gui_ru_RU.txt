@@ -575,8 +575,8 @@ OkPushButton=ОК
 CancelPushButton=Отмена
 
 [NewWorkspaceDialog]
-Title=Новое рабочее пространство
-WorkspaceTypeLabel=Тип рабочего пространства:
+Title=Создать рабочую область
+WorkspaceTypeLabel=Тип рабочей области:
 LocationLabel=Местоположение:
 BrowsePushButton=Выбрать
 UserNameLabel=Администратор:
@@ -677,5 +677,16 @@ PromptLabel=Выбрать новую родительскую задачу дл
 FilterLabel=Фильтр:
 ShowCompletedTasksCheckBox=Показать выполненные задачи
 SelectionLabel=Выбранная родительская задача
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[SelectWorkspaceDialog]
+Title=Выбор рабочей области
+WorkspaceTypeLabel=Тип рабочей области:
+LocationLabel=Местоположение:
+BrowsePushButton=Выбрать
+OpenAsDefaultRadioButton=По умолчанию
+OpenAsReadOnlyRadioButton=Только чтение
+OpenAsReadWriteRadioButton=Чтение/Запись
 OkPushButton=ОК
 CancelPushButton=Отмена

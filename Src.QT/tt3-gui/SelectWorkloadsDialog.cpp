@@ -30,6 +30,8 @@ SelectWorkloadsDialog::SelectWorkloadsDialog(
         _credentials(credentials),
         _ui(new Ui::SelectWorkloadsDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(SelectWorkloadsDialog));
+
     Q_ASSERT(_workspace != nullptr);
 
     _ui->setupUi(this);
