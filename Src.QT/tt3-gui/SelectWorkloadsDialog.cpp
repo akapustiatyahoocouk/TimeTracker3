@@ -288,8 +288,7 @@ void SelectWorkloadsDialog::_setSelectedWorkloads(
 void SelectWorkloadsDialog::_refresh()
 {
     //  We don't want a refresh() to trigger a recursive refresh()!
-    RefreshGuard refreshGuard(_refreshUnderway);
-    if (refreshGuard)   //  Don't recurse!
+    if (auto _ = RefreshGuard(_refreshUnderway)) //  Don't recurse!
     {
         tt3::ws::Workloads selectedWorkloads = _selectedWorkloads();
 

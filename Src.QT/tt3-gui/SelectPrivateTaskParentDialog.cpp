@@ -225,8 +225,7 @@ void SelectPrivateTaskParentDialog::_refresh()
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(SelectPrivateTaskParentDialog));
 
     //  We don't want a refresh() to trigger a recursive refresh()!
-    RefreshGuard refreshGuard(_refreshUnderway);
-    if (refreshGuard)   //  Don't recurse!
+    if (auto _ = RefreshGuard(_refreshUnderway)) //  Don't recurse!
     {
         PrivateTaskManager::_UserModel userModel =
             PrivateTaskManager::_createUserModel(

@@ -20,9 +20,9 @@ using namespace tt3::gui;
 
 namespace tt3::gui
 {
-extern CurrentTheme theCurrentTheme;
-extern CurrentCredentials theCurrentCredentials;
-extern CurrentWorkspace theCurrentWorkspace;
+    extern CurrentTheme theCurrentTheme;
+    extern CurrentCredentials theCurrentCredentials;
+    extern CurrentWorkspace theCurrentWorkspace;
 }
 
 //////////
@@ -37,14 +37,21 @@ WorkStreamManager::WorkStreamManager(
         _ui(new Ui::WorkStreamManager)
 {
     _ui->setupUi(this);
-
     _decorations = TreeWidgetDecorations(_ui->workStreamsTreeWidget);
+    _applyCurrentLocale();
 
     //  Theme change means widget decorations change
     connect(&theCurrentTheme,
             &CurrentTheme::changed,
             this,
             &WorkStreamManager::_currentThemeChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Locale change requires UI translation
+    connect(&tt3::util::theCurrentLocale,
+            &tt3::util::CurrentLocale::changed,
+            this,
+            &WorkStreamManager::_currentLocaleChanged,
             Qt::ConnectionType::QueuedConnection);
 
     //  Must listen to delayed refresh requests
@@ -101,10 +108,10 @@ void WorkStreamManager::refresh()
 {
     static const QIcon viewWorkStreamIcon(":/tt3-gui/Resources/Images/Actions/ViewWorkStreamLarge.png");
     static const QIcon modifyWorkStreamIcon(":/tt3-gui/Resources/Images/Actions/ModifyWorkStreamLarge.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(WorkStreamManager));
 
     //  We don't want a refresh() to trigger a recursive refresh()!
-    RefreshGuard refreshGuard(_refreshUnderway);
-    if (refreshGuard)   //  Don't recurse!
+    if (auto _ = RefreshGuard(_refreshUnderway)) //  Don't recurse!
     {
         try
         {
@@ -180,19 +187,22 @@ void WorkStreamManager::refresh()
                 selectedWorkStream->canModify(_credentials))  //  may throw
             {   //  RW
                 _ui->modifyWorkStreamPushButton->setIcon(modifyWorkStreamIcon);
-                _ui->modifyWorkStreamPushButton->setText("Modify work stream");
+                _ui->modifyWorkStreamPushButton->setText(
+                    rr.string(RID(ModifyWorkStreamPushButton)));
             }
             else
             {   //  RO
                 _ui->modifyWorkStreamPushButton->setIcon(viewWorkStreamIcon);
-                _ui->modifyWorkStreamPushButton->setText("View work stream");
+                _ui->modifyWorkStreamPushButton->setText(
+                    rr.string(RID(ViewWorkStreamPushButton)));
             }
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & simulate RO
             qCritical() << ex;
             _ui->modifyWorkStreamPushButton->setIcon(viewWorkStreamIcon);
-            _ui->modifyWorkStreamPushButton->setText("View work stream");
+            _ui->modifyWorkStreamPushButton->setText(
+                rr.string(RID(ViewWorkStreamPushButton)));
         }
     }
 }
@@ -417,6 +427,21 @@ void WorkStreamManager::_clearAndDisableAllControls()
     _ui->destroyWorkStreamPushButton->setEnabled(false);
 }
 
+void WorkStreamManager::_applyCurrentLocale()
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(WorkStreamManager));
+
+    _ui->filterLabel->setText(
+        rr.string(RID(FilterLabel)));
+    _ui->createWorkStreamPushButton->setText(
+        rr.string(RID(CreateWorkStreamPushButton)));
+    _ui->modifyWorkStreamPushButton->setText(
+        rr.string(RID(ModifyWorkStreamPushButton)));
+    _ui->destroyWorkStreamPushButton->setText(
+        rr.string(RID(DestroyWorkStreamPushButton)));
+    refresh();
+}
+
 //////////
 //  Signal handlers
 void WorkStreamManager::_currentThemeChanged(ITheme *, ITheme *)
@@ -424,6 +449,12 @@ void WorkStreamManager::_currentThemeChanged(ITheme *, ITheme *)
     _ui->workStreamsTreeWidget->clear();
     _decorations = TreeWidgetDecorations(_ui->workStreamsTreeWidget);
     requestRefresh();
+}
+
+void WorkStreamManager::_currentLocaleChanged(QLocale, QLocale)
+{
+    _applyCurrentLocale();
+    refresh();
 }
 
 void WorkStreamManager::_workStreamsTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)

@@ -211,14 +211,22 @@ namespace tt3::gui
         //////////
         //  Operations
     public:
-        //  TODO document all
+        /// \brief
+        ///     The role a button can play in a UI.
         enum class ButtonRole
         {
-            NormalButton,
-            DisabledButton,
-            LiveStatusButton,
-            ErrorButton
+            NormalButton,       ///< A "normal" button.
+            DisabledButton,     ///< A "disabled" button.
+            LiveStatusButton,   ///< A "live status" button, typically changing its text on timer.
+            ErrorButton         ///< A button displaying an error message.
         };
+
+        /// \brief
+        ///     Applies this decorations to a specific push button.
+        /// \param pushButton
+        ///     The push button to apply this decorations to.
+        /// \param buttonRole
+        ///     The role the push button plays in the UI.
         void        applyTo(QPushButton * pushButton,
                             ButtonRole buttonRole);
 

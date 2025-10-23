@@ -693,7 +693,7 @@ CancelPushButton=Abbrechen
 [SelectWorkloadsDialog]
 Title=Arbeitslasten auswählen
 ProjectsTab=Projekte
-WorkStreamsTab=Arbeitslasten
+WorkStreamsTab=Arbeitsablaufe
 ProjectsFilterLabel=Filter:
 WorkStreamsFilterLabel=Filter:
 ProjectCompletedSuffix=[Projekt abgeschlossen]
@@ -738,3 +738,10 @@ DestroyAccountPushButton=Konto löschen
 ShowDisabledCheckBox=Deaktivierte Benutzer und Konten anzeigen
 UserDisabledSuffix=[Benutzer ist deaktiviert]
 AccountDisabledSuffix=[Konto ist deaktiviert]
+
+[WorkStreamManager]
+FilterLabel=Filter:
+CreateWorkStreamPushButton=Arbeitsablauf erstellen
+ViewWorkStreamPushButton=Arbeitsablauf anzeigen
+ModifyWorkStreamPushButton=Arbeitsablauf ändern
+DestroyWorkStreamPushButton=Arbeitsablauf zerstören

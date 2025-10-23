@@ -739,3 +739,9 @@ ShowDisabledCheckBox=Show disabled users and accounts
 UserDisabledSuffix=[user is disabled]
 AccountDisabledSuffix=[account is disabled]
 
+[WorkStreamManager]
+FilterLabel=Filter:
+CreateWorkStreamPushButton=Create work stream
+ViewWorkStreamPushButton=View work stream
+ModifyWorkStreamPushButton=Modify work stream
+DestroyWorkStreamPushButton=Destroy work stream

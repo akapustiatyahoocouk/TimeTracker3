@@ -79,7 +79,7 @@ namespace tt3::gui
         ///     The credentials used by this widget to display
         ///     the workspace.
         auto        credentials(
-            ) const -> tt3::ws::Credentials;
+                        ) const -> tt3::ws::Credentials;
 
         /// \brief
         ///     Sets the credentials used by this widget to
@@ -88,8 +88,8 @@ namespace tt3::gui
         ///     The credentials to be used by this widget to
         ///     display the workspace.
         void        setCredentials(
-            const tt3::ws::Credentials & credentials
-            );
+                            const tt3::ws::Credentials & credentials
+                        );
 
         /// \brief
         ///     Refreshes the content of this widget.
@@ -176,6 +176,7 @@ namespace tt3::gui
         void        _startListeningToWorkspaceChanges();
         void        _stopListeningToWorkspaceChanges();
         void        _clearAndDisableAllControls();
+        void        _applyCurrentLocale();
 
         //////////
         //  Controls
@@ -190,6 +191,7 @@ namespace tt3::gui
         //  Signal handlers
     private slots:
         void        _currentThemeChanged(ITheme *, ITheme *);
+        void        _currentLocaleChanged(QLocale, QLocale);
         void        _workStreamsTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
         void        _workStreamsTreeWidgetCustomContextMenuRequested(QPoint);
         void        _createWorkStreamPushButtonClicked();

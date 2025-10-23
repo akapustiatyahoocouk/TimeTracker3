@@ -128,8 +128,7 @@ void PublicActivityManager::refresh()
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(PublicActivityManager));
 
     //  We don't want a refresh() to trigger a recursive refresh()!
-    RefreshGuard refreshGuard(_refreshUnderway);
-    if (refreshGuard)   //  Don't recurse!
+    if (auto _ = RefreshGuard(_refreshUnderway)) //  Don't recurse!
     {
         try
         {

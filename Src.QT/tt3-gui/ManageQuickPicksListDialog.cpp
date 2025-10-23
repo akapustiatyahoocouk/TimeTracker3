@@ -81,8 +81,7 @@ ManageQuickPicksListDialog::ManageQuickPicksListDialog(
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/CancelSmall.png"));
 
     //  Set up initial control values
-    RefreshGuard refreshGuard(_refreshUnderway);
-    if (refreshGuard)   //  Don't track item state when initializing
+    if (auto _ = RefreshGuard(_refreshUnderway)) //  Don't recurse!
     {
         _refillPublicActivitiesTree();
         _refillPublicTasksTree();
@@ -352,8 +351,7 @@ void ManageQuickPicksListDialog::_refillQuickPicksListWidget()
 void ManageQuickPicksListDialog::_refresh()
 {
     //  We don't want a refresh() to trigger a recursive refresh()!
-    RefreshGuard refreshGuard(_refreshUnderway);
-    if (refreshGuard)   //  Don't recurse!
+    if (auto _ = RefreshGuard(_refreshUnderway)) //  Don't recurse!
     {
         try
         {
@@ -623,8 +621,7 @@ void ManageQuickPicksListDialog::_removePushButtonClicked()
 {
     if (tt3::ws::Activity activity = _selectedQuickPicksListItem())
     {
-        RefreshGuard refreshGuard(_refreshUnderway);
-        if (refreshGuard)   //  Don't track item state when updating
+        if (auto _ = RefreshGuard(_refreshUnderway)) //  Don't recurse!
         {
             _quickPicksList.removeOne(activity);
             _refillQuickPicksListWidget();

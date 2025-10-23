@@ -739,3 +739,10 @@ DestroyAccountPushButton=Удалить учётную запись
 ShowDisabledCheckBox=Показать неактивных пользователей и неактивные учётные записи
 UserDisabledSuffix=[пользователь неактивен]
 AccountDisabledSuffix=[учётная запись неактивна]
+
+[WorkStreamManager]
+FilterLabel=Фильтр:
+CreateWorkStreamPushButton=Создать рабочий поток
+ViewWorkStreamPushButton=Просмотреть рабочий поток
+ModifyWorkStreamPushButton=Изменить рабочий поток
+DestroyWorkStreamPushButton=Удалить рабочий поток
