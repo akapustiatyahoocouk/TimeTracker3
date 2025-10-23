@@ -724,3 +724,17 @@ Light.DisplayName=Hell
 Light.Description=Das Design mit hellen Farben
 Dark.DisplayName=Dunkel
 Dark.Description=Das Design mit dunklen Farben
+
+[UserManager]
+FilterLabel=Filter:
+CreateUserPushButton=Benutzer erstellen
+ModifyUserPushButton=Benutzer ändern
+ViewUserPushButton=Benutzer anzeigen
+DestroyUserPushButton=Benutzer löschen
+CreateAccountPushButton=Konto erstellen
+ModifyAccountPushButton=Konto ändern
+ViewAccountPushButton=Konto anzeigen
+DestroyAccountPushButton=Konto löschen
+ShowDisabledCheckBox=Deaktivierte Benutzer und Konten anzeigen
+UserDisabledSuffix=[Benutzer ist deaktiviert]
+AccountDisabledSuffix=[Konto ist deaktiviert]

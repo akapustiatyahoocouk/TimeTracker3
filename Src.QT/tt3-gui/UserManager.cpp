@@ -1,6 +1,6 @@
 //
 //  tt3-gui/UserManager.cpp - tt3::gui::UserManager class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -36,14 +36,21 @@ UserManager::UserManager(QWidget * parent)
         _ui(new Ui::UserManager)
 {
     _ui->setupUi(this);
-
     _decorations = TreeWidgetDecorations(_ui->usersTreeWidget);
+    _applyCurrentLocale();
 
     //  Theme change means widget decorations change
     connect(&theCurrentTheme,
             &CurrentTheme::changed,
             this,
             &UserManager::_currentThemeChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Locale change requires UI translation
+    connect(&tt3::util::theCurrentLocale,
+            &tt3::util::CurrentLocale::changed,
+            this,
+            &UserManager::_currentLocaleChanged,
             Qt::ConnectionType::QueuedConnection);
 
     //  View options changes should cause a refresh
@@ -109,6 +116,7 @@ void UserManager::refresh()
     static const QIcon modifyUserIcon(":/tt3-gui/Resources/Images/Actions/ModifyUserLarge.png");
     static const QIcon viewAccountIcon(":/tt3-gui/Resources/Images/Actions/ViewAccountLarge.png");
     static const QIcon modifyAccountIcon(":/tt3-gui/Resources/Images/Actions/ModifyAccountLarge.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(UserManager));
 
     //  We don't want a refresh() to trigger a recursive refresh()!
     RefreshGuard refreshGuard(_refreshUnderway);
@@ -226,19 +234,22 @@ void UserManager::refresh()
                 currentUser->canModify(_credentials))  //  may throw
             {   //  RW
                 _ui->modifyUserPushButton->setIcon(modifyUserIcon);
-                _ui->modifyUserPushButton->setText("Modify user");
+                _ui->modifyUserPushButton->setText(
+                    rr.string(RID(ModifyUserPushButton)));
             }
             else
             {   //  RO
                 _ui->modifyUserPushButton->setIcon(viewUserIcon);
-                _ui->modifyUserPushButton->setText("View user");
+                _ui->modifyUserPushButton->setText(
+                    rr.string(RID(ViewUserPushButton)));
             }
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & simulate RO
             qCritical() << ex;
             _ui->modifyUserPushButton->setIcon(viewUserIcon);
-            _ui->modifyUserPushButton->setText("View user");
+            _ui->modifyUserPushButton->setText(
+                rr.string(RID(ViewUserPushButton)));
         }
         try
         {
@@ -247,19 +258,22 @@ void UserManager::refresh()
                 currentAccount->canModify(_credentials))   //  may throw
             {   //  RW
                 _ui->modifyAccountPushButton->setIcon(modifyAccountIcon);
-                _ui->modifyAccountPushButton->setText("Modify account");
+                _ui->modifyAccountPushButton->setText(
+                    rr.string(RID(ModifyAccountPushButton)));
             }
             else
             {   //  RO
                 _ui->modifyAccountPushButton->setIcon(viewAccountIcon);
-                _ui->modifyAccountPushButton->setText("View account");
+                _ui->modifyAccountPushButton->setText(
+                    rr.string(RID(ViewAccountPushButton)));
             }
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & simulate RO
             qCritical() << ex;
             _ui->modifyAccountPushButton->setIcon(viewAccountIcon);
-            _ui->modifyAccountPushButton->setText("View account");
+            _ui->modifyAccountPushButton->setText(
+                rr.string(RID(ViewAccountPushButton)));
         }
     }
 }
@@ -297,6 +311,7 @@ UserManager::_WorkspaceModel UserManager::_createWorkspaceModel()
 UserManager::_UserModel UserManager::_createUserModel(tt3::ws::User user)
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(UserManager));
 
     _UserModel userModel { new _UserModelImpl(user) };
     try
@@ -304,7 +319,7 @@ UserManager::_UserModel UserManager::_createUserModel(tt3::ws::User user)
         userModel->text = user->realName(_credentials);
         if (!user->enabled(_credentials))
         {
-            userModel->text += " [disabled]";
+            userModel->text += " " + rr.string(RID(UserDisabledSuffix));
             userModel->brush = _decorations.disabledItemForeground;
         }
         else
@@ -345,6 +360,7 @@ UserManager::_UserModel UserManager::_createUserModel(tt3::ws::User user)
 UserManager::_AccountModel UserManager::_createAccountModel(tt3::ws::Account account)
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(UserManager));
 
     _AccountModel accountModel { new _AccountModelImpl(account) };
     try
@@ -352,7 +368,7 @@ UserManager::_AccountModel UserManager::_createAccountModel(tt3::ws::Account acc
         accountModel->text = account->login(_credentials);
         if (!account->enabled(_credentials))
         {
-            accountModel->text += " [disabled]";
+            accountModel->text += " " + rr.string(RID(AccountDisabledSuffix));
             accountModel->brush = _decorations.disabledItemForeground;
         }
         else
@@ -661,6 +677,29 @@ void UserManager::_clearAndDisableAllControls()
     _ui->showDisabledCheckBox->setEnabled(false);
 }
 
+void UserManager::_applyCurrentLocale()
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(UserManager));
+
+    _ui->filterLabel->setText(
+        rr.string(RID(FilterLabel)));
+    _ui->createUserPushButton->setText(
+        rr.string(RID(CreateUserPushButton)));
+    _ui->modifyUserPushButton->setText(
+        rr.string(RID(ModifyUserPushButton)));
+    _ui->destroyUserPushButton->setText(
+        rr.string(RID(DestroyUserPushButton)));
+    _ui->createAccountPushButton->setText(
+        rr.string(RID(CreateAccountPushButton)));
+    _ui->modifyAccountPushButton->setText(
+        rr.string(RID(ModifyAccountPushButton)));
+    _ui->destroyAccountPushButton->setText(
+        rr.string(RID(DestroyAccountPushButton)));
+    _ui->showDisabledCheckBox->setText(
+        rr.string(RID(ShowDisabledCheckBox)));
+    refresh();
+}
+
 //////////
 //  Signal handlers
 void UserManager::_currentThemeChanged(ITheme *, ITheme *)
@@ -668,6 +707,12 @@ void UserManager::_currentThemeChanged(ITheme *, ITheme *)
     _ui->usersTreeWidget->clear();
     _decorations = TreeWidgetDecorations(_ui->usersTreeWidget);
    requestRefresh();
+}
+
+void UserManager::_currentLocaleChanged(QLocale, QLocale)
+{
+    _applyCurrentLocale();
+    refresh();
 }
 
 void UserManager::_usersTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)

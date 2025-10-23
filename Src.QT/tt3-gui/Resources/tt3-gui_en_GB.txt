@@ -725,3 +725,17 @@ Light.Description=The theme that uses light colors
 Dark.DisplayName=Dark
 Dark.Description=The theme that uses dark colors
 
+[UserManager]
+FilterLabel=Filter:
+CreateUserPushButton=Create user
+ModifyUserPushButton=Modify user
+ViewUserPushButton=View user
+DestroyUserPushButton=Destroy user
+CreateAccountPushButton=Create account
+ModifyAccountPushButton=Modify account
+ViewAccountPushButton=View account
+DestroyAccountPushButton=Destroy account
+ShowDisabledCheckBox=Show disabled users and accounts
+UserDisabledSuffix=[user is disabled]
+AccountDisabledSuffix=[account is disabled]
+

@@ -725,3 +725,17 @@ Light.DisplayName=Светлая
 Light.Description=Тема, использующая светлые цвета
 Dark.DisplayName=Темная
 Dark.Description=Тема, использующая темные цвета
+
+[UserManager]
+FilterLabel=Фильтр:
+CreateUserPushButton=Создать пользователя
+ModifyUserPushButton=Изменить пользователя
+ViewUserPushButton=Просмотреть пользователя
+DestroyUserPushButton=Удалить пользователя
+CreateAccountPushButton=Создать учётную запись
+ModifyAccountPushButton=Изменить учётную запись
+ViewAccountPushButton=Просмотреть учётной записи
+DestroyAccountPushButton=Удалить учётную запись
+ShowDisabledCheckBox=Показать неактивных пользователей и неактивные учётные записи
+UserDisabledSuffix=[пользователь неактивен]
+AccountDisabledSuffix=[учётная запись неактивна]
