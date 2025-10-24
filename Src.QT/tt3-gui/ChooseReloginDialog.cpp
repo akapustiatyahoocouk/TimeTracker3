@@ -1,0 +1,36 @@
+//
+//  tt3-gui/ChooseReloginDialog.cpp - tt3::gui::ChooseReloginDialog class implementation
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+#include "tt3-gui/API.hpp"
+using namespace tt3::gui;
+
+//////////
+//  Construction/destruction
+ChooseReloginDialog::ChooseReloginDialog(
+        ::QWidget * parent,
+        tt3::ws::WorkspaceAddress workspaceAddress
+    ) : AskYesNoDialog(
+          parent,
+          QIcon(":/tt3-gui/Resources/Images/Actions/LoginLarge.png"),
+          //  TODO localize via Resources
+          "Access denied",
+          "Current credentials do not allow access to\n" +
+              workspaceAddress->displayForm() +
+              "\nDo you want to log in with different credentials ?")
+{
+}
+
+//  End of tt3-gui/ChooseReloginDialog.cpp

@@ -24,7 +24,7 @@ namespace tt3::gui
     /// \class RestartRequiredDialog tt3-gui/API.hpp
     /// \brief The modal "restart required" dialog.
     class TT3_GUI_PUBLIC RestartRequiredDialog final
-        :   public AskYesNoDialog
+        :   public AskYesNoDialog  //  TODO private
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(RestartRequiredDialog)
 

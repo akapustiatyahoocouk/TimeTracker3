@@ -9,9 +9,17 @@ SOURCES += \
     AddEmailAddressDialog.cpp \
     AskYesNoDialog.cpp \
     BeneficiaryManager.cpp \
+    ChooseReloginDialog.cpp \
     ColorManager.cpp \
     Component.cpp \
+    ConfirmCloseWorkspaceDialog.cpp \
+    ConfirmDestroyWorkspaceDialog.cpp \
+    ConfirmDropWorkspaceDialog.cpp \
+    ConfirmExitDialog.cpp \
+    ConfirmForgetWorkspaceDialog.cpp \
     ConfirmResetAllSettingsDialog.cpp \
+    ConfirmResetPageSettingsDialog.cpp \
+    ConfirmRestartDialog.cpp \
     CreateAccountDialog.cpp \
     CreateActivityTypeDialog.cpp \
     CreateBeneficiaryDialog.cpp \
@@ -111,9 +119,17 @@ HEADERS += \
     AddEmailAddressDialog.hpp \
     AskYesNoDialog.hpp \
     BeneficiaryManager.hpp \
+    ChooseReloginDialog.hpp \
     Color.hpp \
     Components.hpp \
+    ConfirmCloseWorkspaceDialog.hpp \
+    ConfirmDestroyWorkspaceDialog.hpp \
+    ConfirmDropWorkspaceDialog.hpp \
+    ConfirmExitDialog.hpp \
+    ConfirmForgetWorkspaceDialog.hpp \
     ConfirmResetAllSettingsDialog.hpp \
+    ConfirmResetPageSettingsDialog.hpp \
+    ConfirmRestartDialog.hpp \
     CreateAccountDialog.hpp \
     CreateActivityTypeDialog.hpp \
     CreateBeneficiaryDialog.hpp \

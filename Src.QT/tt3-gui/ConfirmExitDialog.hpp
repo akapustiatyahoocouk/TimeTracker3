@@ -1,5 +1,5 @@
 //
-//  tt3-gui/ConfirmResetAllSettingsDialog.hpp - the modal "ask to reset all settings" dialog
+//  tt3-gui/ConfirmExitDialog.hpp - the modal "confirm exit" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -21,12 +21,12 @@
 
 namespace tt3::gui
 {
-    /// \class ConfirmResetAllSettingsDialog tt3-gui/API.hpp
-    /// \brief The modal "confirm resetting all settings" dialog.
-    class TT3_GUI_PUBLIC ConfirmResetAllSettingsDialog final
+    /// \class ConfirmExitDialog tt3-gui/API.hpp
+    /// \brief The modal "confirm exit" dialog.
+    class TT3_GUI_PUBLIC ConfirmExitDialog final
         :   public AskYesNoDialog  //  TODO private
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmResetAllSettingsDialog)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmExitDialog)
 
         //////////
         //  Construction/destruction
@@ -35,7 +35,7 @@ namespace tt3::gui
         ///     Constructs the dialog.
         /// \param parent
         ///     The parent widget for the dialog; nullptr == none.
-        explicit ConfirmResetAllSettingsDialog(
+        explicit ConfirmExitDialog(
                 ::QWidget * parent
             );
         //  The default destructor is OK
@@ -43,4 +43,4 @@ namespace tt3::gui
 }
 
 #endif  //  def TT3_GUI_ASK_YES_NO_DIALOG_DEFINED
-//  End of tt3-gui/ConfirmResetAllSettingsDialog.hpp
+//  End of tt3-gui/ConfirmExitDialog.hpp
