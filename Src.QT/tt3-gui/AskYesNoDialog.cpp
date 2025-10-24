@@ -208,17 +208,4 @@ ConfirmResetPageSettingsDialog::ConfirmResetPageSettingsDialog(::QWidget * paren
 {
 }
 
-//////////
-//  ConfirmResetAllSettingsDialog
-ConfirmResetAllSettingsDialog::ConfirmResetAllSettingsDialog(::QWidget * parent)
-    :   AskYesNoDialog(
-          parent,
-          QIcon(":/tt3-gui/Resources/Images/Actions/ResetLarge.png"),
-          //  TODO localize via Resources
-          "Reset all settings",
-          "Are you sure you want to reset all settings to their default values ?"
-            "\nThe effects will not be permanent until you press 'OK' to close the dialog.")
-{
-}
-
 //  End of tt3-gui/AskYesNoDialog.cpp

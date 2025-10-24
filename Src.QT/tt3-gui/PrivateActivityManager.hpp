@@ -254,4 +254,7 @@ namespace tt3::gui
     };
 }
 
+//  Macro needed for MOC-generated .cpp files
+#define TT3_GUI_PRIVATE_ACTIVITY_MANAGER_DEFINED
+
 //  End of tt3-gui/PrivateActivityManager.hpp

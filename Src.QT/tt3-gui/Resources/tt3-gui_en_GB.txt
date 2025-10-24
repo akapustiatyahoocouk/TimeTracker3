@@ -33,6 +33,10 @@ ViewBeneficiaryPushButton=View beneficiary
 ModifyBeneficiaryPushButton=Modify beneficiary
 DestroyBeneficiaryPushButton=Destroy beneficiary
 
+[ConfirmResetAllSettingsDialog]
+Title=Reset all settings
+Prompt=Are you sure you want to reset all settings to their default values ?\nThe effects will not be permanent until you press 'OK' to close the dialog.
+
 [CreateAccountDialog]
 Title=Create account
 UserLabel=User:

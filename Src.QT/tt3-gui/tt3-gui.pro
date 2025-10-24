@@ -11,6 +11,7 @@ SOURCES += \
     BeneficiaryManager.cpp \
     ColorManager.cpp \
     Component.cpp \
+    ConfirmResetAllSettingsDialog.cpp \
     CreateAccountDialog.cpp \
     CreateActivityTypeDialog.cpp \
     CreateBeneficiaryDialog.cpp \
@@ -112,6 +113,7 @@ HEADERS += \
     BeneficiaryManager.hpp \
     Color.hpp \
     Components.hpp \
+    ConfirmResetAllSettingsDialog.hpp \
     CreateAccountDialog.hpp \
     CreateActivityTypeDialog.hpp \
     CreateBeneficiaryDialog.hpp \

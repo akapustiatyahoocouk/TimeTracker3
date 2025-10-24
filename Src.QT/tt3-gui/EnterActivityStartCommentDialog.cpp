@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-gui/API.hpp"
-    using namespace tt3::gui;
+using namespace tt3::gui;
 
 //////////
 //  Construction/destrution

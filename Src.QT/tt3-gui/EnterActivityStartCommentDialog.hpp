@@ -82,5 +82,5 @@ namespace tt3::gui
     };
 }
 
-#endif//    def TT3_GUI_EDIT_STRING_DIALOG_DEFINED
+#endif  //  def TT3_GUI_EDIT_STRING_DIALOG_DEFINED
 //  End of tt3-gui/EnterActivityStartCommentDialog.hpp

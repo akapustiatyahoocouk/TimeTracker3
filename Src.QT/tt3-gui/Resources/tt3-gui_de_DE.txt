@@ -33,6 +33,10 @@ ViewBeneficiaryPushButton=Begünstigten anzeigen
 ModifyBeneficiaryPushButton=Begünstigten ändern
 DestroyBeneficiaryPushButton=Begünstigten löschen
 
+[ConfirmResetAllSettingsDialog]
+Title=Alle Einstellungen zurücksetzen
+Prompt=Möchten Sie wirklich alle Einstellungen auf die Standardwerte zurücksetzen?\nDie Auswirkungen sind erst dann dauerhaft, wenn Sie den Dialog mit „Bestätigen“ schließen.
+
 [CreateAccountDialog]
 Title=Konto erstellen
 UserLabel=Benutzer:

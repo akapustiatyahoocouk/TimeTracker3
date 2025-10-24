@@ -33,6 +33,10 @@ ViewBeneficiaryPushButton=Просмотреть бенефициара
 ModifyBeneficiaryPushButton=Изменить бенефициара
 DestroyBeneficiaryPushButton=Удалить бенефициара
 
+[ConfirmResetAllSettingsDialog]
+Title=Сбросить все настройки
+Prompt=Вы уверены, что хотите сбросить все настройки до значений по умолчанию?\nЭффект не сохранится, пока вы не нажмете «ОК», чтобы закрыть диалог.
+
 [CreateAccountDialog]
 Title=Создать учетную запись
 UserLabel=Пользователь:

@@ -282,30 +282,9 @@ namespace tt3::gui
             );
         //  The default destructor is OK
     };
-
-    /// \class ConfirmResetAllSettingsDialog tt3-gui/API.hpp
-    /// \brief The modal "confirm resetting all settings" dialog.
-    class TT3_GUI_PUBLIC ConfirmResetAllSettingsDialog final :
-        public AskYesNoDialog
-    {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmResetAllSettingsDialog)
-
-        //////////
-        //  Construction/destruction
-    public:
-        /// \brief
-        ///     Constructs the dialog.
-        /// \param parent
-        ///     The parent widget for the dialog; nullptr == none.
-        explicit ConfirmResetAllSettingsDialog(
-                ::QWidget * parent
-            );
-        //  The default destructor is OK
-    };
 }
 
 //  Macro needed for MOC-generated .cpp files
 #define TT3_GUI_ASK_YES_NO_DIALOG_DEFINED
 
 //  End of tt3-gui/AskYesNoDialog.hpp
-

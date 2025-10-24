@@ -17,6 +17,9 @@
 #pragma once
 #include "tt3-gui/API.hpp"
 
+#if defined(TT3_GUI_PRIVATE_ACTIVITY_MANAGER_DEFINED) && \
+    defined(TT3_GUI_PRIVATE_TASK_MANAGER_DEFINED)
+
 namespace tt3::gui
 {
     namespace Ui { class ManageQuickPicksListDialog; }
@@ -135,4 +138,5 @@ namespace tt3::gui
     };
 }
 
+#endif
 //  End of tt3-gui/ManageQuickPicksListDialog.hpp

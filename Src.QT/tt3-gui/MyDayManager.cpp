@@ -192,10 +192,6 @@ void MyDayManager::refresh()
 
         _refreslLogList();
 
-        //  TODO finish the implementation
-
-        //  TODO adjust for RO
-
         //  Adjust quick pick button states & appearance
         for (int i = 0; i < _quickPicksList.size(); i++)
         {
