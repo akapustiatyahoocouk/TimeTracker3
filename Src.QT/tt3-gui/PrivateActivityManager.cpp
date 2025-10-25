@@ -631,6 +631,7 @@ void PrivateActivityManager::_stopListeningToWorkspaceChanges()
 void PrivateActivityManager::_clearAndDisableAllControls()
 {
     _ui->privateActivitiesTreeWidget->clear();
+    _ui->filterLineEdit->setText("");
     _ui->filterLabel->setEnabled(false);
     _ui->filterLineEdit->setEnabled(false);
     _ui->privateActivitiesTreeWidget->setEnabled(false);

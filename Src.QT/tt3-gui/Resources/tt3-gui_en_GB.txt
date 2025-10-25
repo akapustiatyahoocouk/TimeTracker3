@@ -710,6 +710,13 @@ ShowCompletedCheckBox=Show completed tasks
 Title=Restart required
 Prompt=One of the changes you have made to application settings\nwill take place only after the application is restarted.\nDo you want to restart TimeTracker3 now ?
 
+[SelectBeneficiariesDialog]
+Title=Select beneficiaries
+FilterLabel=Filter:
+SelectedBeneficiariesLabel=Selected beneficiaries:
+OkPushButton=OK
+CancelPushButton=Cancel
+
 [SelectPrivateTaskParentDialog]
 Title=Select parent task
 UserLabel=User:

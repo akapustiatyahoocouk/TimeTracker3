@@ -172,7 +172,7 @@ void ManageQuickPicksListDialog::_refreshWorkspaceTree(
 void ManageQuickPicksListDialog::_clearAndDisableAllControls()
 {
     _ui->publicActivitiesTreeWidget->clear();
-    _ui->publicActivitiesFilterLabel->setText("");  //  TODO for all _clearAndDisableAllControls()s everywhere
+    _ui->publicActivitiesFilterLabel->setText("");
     _ui->publicActivitiesFilterLabel->setEnabled(false);
     _ui->publicActivitiesFilterLineEdit->setEnabled(false);
     _ui->publicActivitiesTreeWidget->setEnabled(false);
@@ -184,7 +184,7 @@ void ManageQuickPicksListDialog::_clearAndDisableAllControls()
     _ui->publicTasksTreeWidget->setEnabled(false);
 
     _ui->privateActivitiesTreeWidget->clear();
-    _ui->privateActivitiesFilterLabel->setText("");  //  TODO for all _clearAndDisableAllControls()s everywhere
+    _ui->privateActivitiesFilterLabel->setText("");
     _ui->privateActivitiesFilterLabel->setEnabled(false);
     _ui->privateActivitiesFilterLineEdit->setEnabled(false);
     _ui->privateActivitiesTreeWidget->setEnabled(false);

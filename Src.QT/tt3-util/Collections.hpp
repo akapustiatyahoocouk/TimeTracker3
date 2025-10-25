@@ -32,11 +32,10 @@ namespace tt3::util
     /// \return
     ///     The destination set.
     //  TODO use wherever possible
-    template <class D, class S>
-    QSet<D> transform(const QSet<S> & src,
-                      std::function<D(S)> op)
+    template <typename S, typename Func>
+    decltype(auto) transform(const QSet<S> & src, Func op)
     {
-        QSet<D> dst;
+        QSet<decltype(op(S()))> dst;
         for (auto e : src)
         {
             dst.insert(op(e));

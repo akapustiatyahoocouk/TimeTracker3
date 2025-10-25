@@ -710,6 +710,13 @@ ShowCompletedCheckBox=Erledigte Aufgaben anzeigen
 Title=Neustart erforderlich
 Prompt=Eine der Änderungen an den Anwendungseinstellungen\nwird erst nach einem Neustart der Anwendung wirksam.\nMöchten Sie TimeTracker3 jetzt neu starten?
 
+[SelectBeneficiariesDialog]
+Title=Begünstigte auswählen
+FilterLabel=Filter:
+SelectedBeneficiariesLabel=Ausgewählte Begünstigte:
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
 [SelectPrivateTaskParentDialog]
 Title=Übergeordnete Aufgabe auswählen
 UserLabel=Benutzer:

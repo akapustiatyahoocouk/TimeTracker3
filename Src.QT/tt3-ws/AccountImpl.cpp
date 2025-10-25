@@ -495,7 +495,7 @@ auto AccountImpl::createEvent(
         }
         //  Do the work
         tt3::db::api::Activities dataActivities =
-            tt3::util::transform<tt3::db::api::IActivity *, Activity>(
+            tt3::util::transform(
                 activities,
                 [](auto a)
                 {   //  Be defensive when transforming nullptrs

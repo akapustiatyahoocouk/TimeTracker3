@@ -86,12 +86,19 @@ namespace tt3::gui
         void            _setSelectedParentProject(
                                 tt3::ws::Project parentProject
                             );
+        auto            _selectedBeneficiaries(
+                            ) -> tt3::ws::Beneficiaries;
+        void            _setSelectedBeneficiaries(
+                                tt3::ws::Beneficiaries beneficiaries
+                            );
         void            _refresh();
 
         //////////
         //  Controls
     private:
         Ui::ModifyProjectDialog *const  _ui;
+        //  Drawing resources
+        ListWidgetDecorations   _listWidgetDecorations;
 
         //////////
         //  Signal handlers

@@ -664,6 +664,7 @@ void UserManager::_stopListeningToWorkspaceChanges()
 void UserManager::_clearAndDisableAllControls()
 {
     _ui->usersTreeWidget->clear();
+    _ui->filterLineEdit->setText("");
     _ui->filterLabel->setEnabled(false);
     _ui->filterLineEdit->setEnabled(false);
     _ui->usersTreeWidget->setEnabled(false);

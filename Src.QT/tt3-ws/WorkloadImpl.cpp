@@ -196,11 +196,34 @@ auto WorkloadImpl::beneficiaries(
 }
 
 void WorkloadImpl::setBeneficiaries(
-        const Credentials & /*credentials*/,
-        const Beneficiaries & /*beneficiaries*/
+        const Credentials & credentials,
+        const Beneficiaries & beneficiaries
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights.
+        if (!_canModify(credentials)) //  may throw
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        tt3::db::api::Beneficiaries dataBeneficiaries =
+            tt3::util::transform(
+                beneficiaries,
+                [](auto b)
+                {   //  Be defensive when transforming nullptrs
+                    return (b != nullptr) ? b->_dataBeneficiary : nullptr;
+                });
+        _dataWorkload->setBeneficiaries(dataBeneficiaries); //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void WorkloadImpl::addBeneficiary(

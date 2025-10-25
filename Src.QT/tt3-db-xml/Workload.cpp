@@ -146,10 +146,76 @@ auto Workload::beneficiaries(
 }
 
 void Workload::setBeneficiaries(
-        const tt3::db::api::Beneficiaries & /*beneficiaries*/
+        const tt3::db::api::Beneficiaries & beneficiaries
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (beneficiaries.contains(nullptr))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "beneficiaries",
+            nullptr);
+    }
+
+    Beneficiaries xmlBeneficiaries =
+        tt3::util::transform(
+            beneficiaries,
+            [&](auto b)
+            {
+                Q_ASSERT(b != nullptr); //  should have been caught before!
+                auto xmlBeneficiary = dynamic_cast<Beneficiary*>(b);
+                if (xmlBeneficiary == nullptr ||
+                    xmlBeneficiary->_database != this->_database ||
+                    !xmlBeneficiary->_isLive)
+                {   //  OOPS!
+                    throw tt3::db::api::IncompatibleInstanceException(b->type());
+                }
+                return xmlBeneficiary;
+            });
+    if (xmlBeneficiaries != _beneficiaries)
+    {   //  Make the changes
+        Beneficiaries addedBeneficiaroes = xmlBeneficiaries - _beneficiaries;
+        Beneficiaries removedBeneficiaroes = _beneficiaries - xmlBeneficiaries;
+        //  link the added beneficiaries...
+        for (Beneficiary * xmlBeneficiary : addedBeneficiaroes)
+        {
+            _beneficiaries.insert(xmlBeneficiary);
+            xmlBeneficiary->_workloads.insert(this);
+            xmlBeneficiary->addReference();
+            this->addReference();
+        }
+        //  ...un-link the removed beneficiaries...
+        for (Beneficiary * xmlBeneficiary : removedBeneficiaroes)
+        {
+            _beneficiaries.remove(xmlBeneficiary);
+            xmlBeneficiary->_workloads.remove(this);
+            xmlBeneficiary->removeReference();
+            this->removeReference();
+        }
+        //  ...ensure the changes are saved...
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        for (Beneficiary * xmlBeneficiary : addedBeneficiaroes + removedBeneficiaroes)
+        {
+            _database->_changeNotifier.post(
+                new tt3::db::api::ObjectModifiedNotification(
+                    _database, xmlBeneficiary->type(), xmlBeneficiary->_oid));
+        }
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 void Workload::addBeneficiary(

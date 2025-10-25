@@ -137,12 +137,14 @@ void BeneficiaryManager::refresh()
 
         //  ...while others are enabled based on current
         //  selection and permissions granted by Credentials
-        _WorkspaceModel workspaceModel = _createWorkspaceModel();
-        if (!_ui->filterLineEdit->text().trimmed().isEmpty())
+        _WorkspaceModel workspaceModel =
+            _createWorkspaceModel(_workspace, _credentials, _decorations);
+        QString filter = _ui->filterLineEdit->text().trimmed();
+        if (!filter.isEmpty())
         {
-            _filterItems(workspaceModel);
+            _filterItems(workspaceModel, filter, _decorations);
         }
-        _refreshWorkspaceTree(workspaceModel);
+        _refreshWorkspaceTree(_ui->beneficiariesTreeWidget, workspaceModel);
 
         tt3::ws::Beneficiary currentBeneficiary = _currentBeneficiary();
         bool readOnly = _workspace->isReadOnly();
@@ -210,14 +212,19 @@ void BeneficiaryManager::requestRefresh()
 
 //////////
 //  View model
-BeneficiaryManager::_WorkspaceModel BeneficiaryManager::_createWorkspaceModel()
+auto BeneficiaryManager::_createWorkspaceModel(
+        tt3::ws::Workspace workspace,
+        const tt3::ws::Credentials & credentials,
+        const TreeWidgetDecorations & decorations
+    ) -> _WorkspaceModel
 {
     _WorkspaceModel workspaceModel { new _WorkspaceModelImpl() };
     try
     {
-        for (tt3::ws::Beneficiary beneficiary : _workspace->beneficiaries(_credentials))    //  may throw
+        for (tt3::ws::Beneficiary beneficiary : workspace->beneficiaries(credentials))    //  may throw
         {
-            workspaceModel->beneficiaryModels.append(_createBeneficiaryModel(beneficiary));
+            workspaceModel->beneficiaryModels.append(
+                _createBeneficiaryModel(beneficiary, credentials, decorations));
         }
         std::sort(
             workspaceModel->beneficiaryModels.begin(),
@@ -233,34 +240,41 @@ BeneficiaryManager::_WorkspaceModel BeneficiaryManager::_createWorkspaceModel()
     return workspaceModel;
 }
 
-BeneficiaryManager::_BeneficiaryModel BeneficiaryManager::_createBeneficiaryModel(tt3::ws::Beneficiary beneficiary)
+auto BeneficiaryManager::_createBeneficiaryModel(
+        tt3::ws::Beneficiary beneficiary,
+        const tt3::ws::Credentials & credentials,
+        const TreeWidgetDecorations & decorations
+    ) -> _BeneficiaryModel
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
 
     _BeneficiaryModel beneficiaryModel { new _BeneficiaryModelImpl(beneficiary) };
     try
     {
-        beneficiaryModel->text = beneficiary->displayName(_credentials);
+        beneficiaryModel->text = beneficiary->displayName(credentials);
         beneficiaryModel->icon = beneficiary->type()->smallIcon();
-        beneficiaryModel->brush = _decorations.itemForeground;
-        beneficiaryModel->font = _decorations.itemFont;
-        beneficiaryModel->tooltip = beneficiary->description(_credentials).trimmed();
+        beneficiaryModel->brush = decorations.itemForeground;
+        beneficiaryModel->font = decorations.itemFont;
+        beneficiaryModel->tooltip = beneficiary->description(credentials).trimmed();
     }
     catch (const tt3::util::Exception & ex)
     {
         qCritical() << ex;
         beneficiaryModel->text = ex.errorMessage();
         beneficiaryModel->icon = errorIcon;
-        beneficiaryModel->font = _decorations.itemFont;
-        beneficiaryModel->brush = _decorations.errorItemForeground;
+        beneficiaryModel->font = decorations.itemFont;
+        beneficiaryModel->brush = decorations.errorItemForeground;
         beneficiaryModel->tooltip = ex.errorMessage();
     }
     return beneficiaryModel;
 }
 
-void BeneficiaryManager::_filterItems(_WorkspaceModel workspaceModel)
+void BeneficiaryManager::_filterItems(
+        _WorkspaceModel workspaceModel,
+        const QString & filter,
+        const TreeWidgetDecorations & decorations
+    )
 {
-    QString filter = _ui->filterLineEdit->text().trimmed();
     Q_ASSERT(!filter.isEmpty());
 
     for (qsizetype i = workspaceModel->beneficiaryModels.size() - 1; i >= 0; i--)
@@ -268,7 +282,7 @@ void BeneficiaryManager::_filterItems(_WorkspaceModel workspaceModel)
         _BeneficiaryModel beneficiaryModel = workspaceModel->beneficiaryModels[i];
         if (beneficiaryModel->text.indexOf(filter, 0, Qt::CaseInsensitive) != -1)
         {   //  Item matches the filter - mark it as a match
-            beneficiaryModel->brush = _decorations.filterMatchItemForeground;
+            beneficiaryModel->brush = decorations.filterMatchItemForeground;
         }
         else
         {   //  Item does not match the filter
@@ -278,29 +292,30 @@ void BeneficiaryManager::_filterItems(_WorkspaceModel workspaceModel)
 }
 
 void BeneficiaryManager::_refreshWorkspaceTree(
-    _WorkspaceModel workspaceModel
+        QTreeWidget * beneficiariesTreeWidget,
+        _WorkspaceModel workspaceModel
     )
 {
-    Q_ASSERT(_workspace != nullptr);
-    Q_ASSERT(_credentials.isValid());
+    Q_ASSERT(beneficiariesTreeWidget != nullptr);
+    Q_ASSERT(workspaceModel != nullptr);
 
     //  Make sure the "beneficiaries" tree contains
     //  a proper number of root (Beneficiary) items...
-    while (_ui->beneficiariesTreeWidget->topLevelItemCount() < workspaceModel->beneficiaryModels.size())
+    while (beneficiariesTreeWidget->topLevelItemCount() < workspaceModel->beneficiaryModels.size())
     {   //  Too few root (Beneficiary) items
-        _ui->beneficiariesTreeWidget->addTopLevelItem(new QTreeWidgetItem());
+        beneficiariesTreeWidget->addTopLevelItem(new QTreeWidgetItem());
     }
-    while (_ui->beneficiariesTreeWidget->topLevelItemCount() > workspaceModel->beneficiaryModels.size())
+    while (beneficiariesTreeWidget->topLevelItemCount() > workspaceModel->beneficiaryModels.size())
     {   //  Too many root (Beneficiary) items
-        delete _ui->beneficiariesTreeWidget->takeTopLevelItem(
-            _ui->beneficiariesTreeWidget->topLevelItemCount() - 1);
+        delete beneficiariesTreeWidget->takeTopLevelItem(
+            beneficiariesTreeWidget->topLevelItemCount() - 1);
     }
     //  ...and that each top-level item represents
     //  a proper Beneficiary and has proper children
     for (int i = 0; i < workspaceModel->beneficiaryModels.size(); i++)
     {
         _refreshBeneficiaryItem(
-            _ui->beneficiariesTreeWidget->topLevelItem(i),
+            beneficiariesTreeWidget->topLevelItem(i),
             workspaceModel->beneficiaryModels[i]);
     }
 }
@@ -312,7 +327,6 @@ void BeneficiaryManager::_refreshBeneficiaryItem(
 {
     Q_ASSERT(beneficiaryItem != nullptr);
     Q_ASSERT(beneficiaryModel != nullptr);
-    Q_ASSERT(_credentials.isValid());
 
     //  Refresh Beneficiary item properties
     beneficiaryItem->setText(0, beneficiaryModel->text);
@@ -401,6 +415,7 @@ void BeneficiaryManager::_stopListeningToWorkspaceChanges()
 void BeneficiaryManager::_clearAndDisableAllControls()
 {
     _ui->beneficiariesTreeWidget->clear();
+    _ui->filterLineEdit->setText("");
     _ui->filterLabel->setEnabled(false);
     _ui->filterLineEdit->setEnabled(false);
     _ui->beneficiariesTreeWidget->setEnabled(false);

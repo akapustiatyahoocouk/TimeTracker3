@@ -824,6 +824,7 @@ void PrivateTaskManager::_stopListeningToWorkspaceChanges()
 void PrivateTaskManager::_clearAndDisableAllControls()
 {
     _ui->privateTasksTreeWidget->clear();
+    _ui->filterLineEdit->setText("");
     _ui->filterLabel->setEnabled(false);
     _ui->filterLineEdit->setEnabled(false);
     _ui->privateTasksTreeWidget->setEnabled(false);

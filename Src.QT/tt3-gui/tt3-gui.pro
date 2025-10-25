@@ -98,6 +98,7 @@ SOURCES += \
     PublicTaskManager.cpp \
     PushButtonDecorations.cpp \
     RestartRequiredDialog.cpp \
+    SelectBeneficiariesDialog.cpp \
     SelectPrivateTaskParentDialog.cpp \
     SelectProjectParentDialog.cpp \
     SelectPublicTaskParentDialog.cpp \
@@ -199,6 +200,7 @@ HEADERS += \
     PublicActivityManager.hpp \
     PublicTaskManager.hpp \
     RestartRequiredDialog.hpp \
+    SelectBeneficiariesDialog.hpp \
     SelectPrivateTaskParentDialog.hpp \
     SelectProjectParentDialog.hpp \
     SelectPublicTaskParentDialog.hpp \
@@ -265,6 +267,7 @@ FORMS += \
     ProjectManager.ui \
     PublicActivityManager.ui \
     PublicTaskManager.ui \
+    SelectBeneficiariesDialog.ui \
     SelectPrivateTaskParentDialog.ui \
     SelectProjectParentDialog.ui \
     SelectPublicTaskParentDialog.ui \

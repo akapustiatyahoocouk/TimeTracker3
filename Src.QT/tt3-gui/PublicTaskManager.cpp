@@ -663,6 +663,7 @@ void PublicTaskManager::_stopListeningToWorkspaceChanges()
 void PublicTaskManager::_clearAndDisableAllControls()
 {
     _ui->publicTasksTreeWidget->clear();
+    _ui->filterLineEdit->setText("");
     _ui->filterLabel->setEnabled(false);
     _ui->filterLineEdit->setEnabled(false);
     _ui->publicTasksTreeWidget->setEnabled(false);

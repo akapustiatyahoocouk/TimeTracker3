@@ -419,6 +419,7 @@ void WorkStreamManager::_stopListeningToWorkspaceChanges()
 void WorkStreamManager::_clearAndDisableAllControls()
 {
     _ui->workStreamsTreeWidget->clear();
+    _ui->filterLineEdit->setText("");
     _ui->filterLabel->setEnabled(false);
     _ui->filterLineEdit->setEnabled(false);
     _ui->workStreamsTreeWidget->setEnabled(false);

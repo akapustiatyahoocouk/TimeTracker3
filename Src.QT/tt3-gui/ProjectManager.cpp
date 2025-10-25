@@ -615,6 +615,7 @@ void ProjectManager::_stopListeningToWorkspaceChanges()
 void ProjectManager::_clearAndDisableAllControls()
 {
     _ui->projectsTreeWidget->clear();
+    _ui->filterLineEdit->setText("");
     _ui->filterLabel->setEnabled(false);
     _ui->filterLineEdit->setEnabled(false);
     _ui->projectsTreeWidget->setEnabled(false);

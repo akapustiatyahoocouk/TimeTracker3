@@ -401,6 +401,7 @@ void ActivityTypeManager::_stopListeningToWorkspaceChanges()
 void ActivityTypeManager::_clearAndDisableAllControls()
 {
     _ui->activityTypesTreeWidget->clear();
+    _ui->filterLineEdit->setText("");
     _ui->filterLabel->setEnabled(false);
     _ui->filterLineEdit->setEnabled(false);
     _ui->activityTypesTreeWidget->setEnabled(false);

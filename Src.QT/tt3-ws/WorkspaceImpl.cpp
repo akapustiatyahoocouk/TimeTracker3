@@ -860,7 +860,7 @@ auto WorkspaceImpl::createBeneficiary(
         }
         //  Do the work
         tt3::db::api::Workloads dataWorkloads =
-            tt3::util::transform<tt3::db::api::IWorkload *, Workload>(
+            tt3::util::transform(
                 workloads,
                 [](auto w)
                 {   //  Be defensive when transforming nullptrs

@@ -477,6 +477,7 @@ void PublicActivityManager::_stopListeningToWorkspaceChanges()
 void PublicActivityManager::_clearAndDisableAllControls()
 {
     _ui->publicActivitiesTreeWidget->clear();
+    _ui->filterLineEdit->setText("");
     _ui->filterLabel->setEnabled(false);
     _ui->filterLineEdit->setEnabled(false);
     _ui->publicActivitiesTreeWidget->setEnabled(false);
