@@ -20,15 +20,18 @@ using namespace tt3::gui;
 //////////
 //  Construction/destruction
 ConfirmDestroyWorkspaceDialog::ConfirmDestroyWorkspaceDialog(
-        ::QWidget * parent, tt3::ws::WorkspaceAddress workspaceAddress)
-    :   AskYesNoDialog(
-          parent,
-          QIcon(":/tt3-gui/Resources/Images/Actions/DestroyWorkspaceLarge.png"),
-          //  TODO localize via Resources
-          "Destroy workspace",
-          "Are you sure you really want to destroy the workspace\n" +
-              workspaceAddress->displayForm() + " ?\n" +
-              "IMPORTANT: YOU WILL NOT BE ABLE TO UNDO THIS ACTION LATER!")
+        ::QWidget * parent,
+        tt3::ws::WorkspaceAddress workspaceAddress
+    ) : AskYesNoDialog(
+            parent,
+            QIcon(":/tt3-gui/Resources/Images/Actions/DestroyWorkspaceLarge.png"),
+            Component::Resources::instance()->string(
+                RSID(ConfirmDestroyWorkspaceDialog),
+                RID(Title)),
+            Component::Resources::instance()->string(
+                RSID(ConfirmDestroyWorkspaceDialog),
+                RID(Prompt),
+                workspaceAddress->displayForm()))
 {
 }
 

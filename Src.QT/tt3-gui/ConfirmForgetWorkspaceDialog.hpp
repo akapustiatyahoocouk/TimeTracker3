@@ -26,7 +26,7 @@
     ///     The modal "confirm workspace removal from
     ///     MRU workspaces list" dialog.
     class TT3_GUI_PUBLIC ConfirmForgetWorkspaceDialog final
-        :   public AskYesNoDialog  //  TODO private
+        :   private AskYesNoDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmForgetWorkspaceDialog)
 
@@ -44,6 +44,12 @@
             tt3::ws::WorkspaceAddress workspaceAddress
             );
         //  The default destructor is OK
+
+        //////////
+        //  Operations
+    public:
+        using Result = AskYesNoDialog::Result;
+        using AskYesNoDialog::doModal;
     };
 }
 

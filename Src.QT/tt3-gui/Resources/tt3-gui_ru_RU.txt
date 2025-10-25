@@ -33,9 +33,41 @@ ViewBeneficiaryPushButton=Просмотреть бенефициара
 ModifyBeneficiaryPushButton=Изменить бенефициара
 DestroyBeneficiaryPushButton=Удалить бенефициара
 
+[ChooseReloginDialog]
+Title=Доступ запрещён
+Prompt=Текущие учётные данные не позволяют доступ к\n{0}\nВы хотите войти с другими учётными данными ?
+
+[ConfirmCloseWorkspaceDialog]
+Title=Закрыть рабочую область
+Prompt=Вы уверены, что действительно хотите закрыть рабочую область\n{0} ?
+
+[ConfirmDestroyWorkspaceDialog]
+Title=Удалить рабочую область
+Prompt=Вы уверены, что действительно хотите удалить рабочую область\n{0} ?\nВАЖНО: ВЫ НЕ СМОЖЕТЕ ОТМЕНИТЬ ЭТО ДЕЙСТВИЕ ПОЗЖЕ!
+
+[ConfirmDropWorkspaceDialog]
+Title=Удалить рабочее пространство
+Prompt=Ваши новые учётные данные не разрешают доступ к\n{0}.\nВы хотите закрыть рабочую область ?
+
+[ConfirmExitDialog]
+Title=Выйти из TimeTracker3
+Prompt=Вы уверены, что хотите выйти из TimeTracker3 ?
+
+[ConfirmForgetWorkspaceDialog]
+Title=Не удалось открыть рабочую область
+Prompt=Удалить рабочую область\n{0}\nиз списка недавних рабочих областей ?
+
 [ConfirmResetAllSettingsDialog]
 Title=Сбросить все настройки
 Prompt=Вы уверены, что хотите сбросить все настройки до значений по умолчанию?\nЭффект не сохранится, пока вы не нажмете «ОК», чтобы закрыть диалог.
+
+[ConfirmResetPageSettingsDialog]
+Title=Сброс настроек страницы
+Prompt=Вы уверены, что хотите сбросить настройки страницы до значений по умолчанию?\nЭффект не сохранится, пока вы не нажмете «ОК», чтобы закрыть диалог.
+
+[ConfirmRestartDialog]
+Title=Перезапустить TimeTracker3
+Prompt=Вы уверены, что хотите перезапустить TimeTracker3 ?
 
 [CreateAccountDialog]
 Title=Создать учетную запись

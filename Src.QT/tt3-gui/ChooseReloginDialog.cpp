@@ -23,13 +23,15 @@ ChooseReloginDialog::ChooseReloginDialog(
         ::QWidget * parent,
         tt3::ws::WorkspaceAddress workspaceAddress
     ) : AskYesNoDialog(
-          parent,
-          QIcon(":/tt3-gui/Resources/Images/Actions/LoginLarge.png"),
-          //  TODO localize via Resources
-          "Access denied",
-          "Current credentials do not allow access to\n" +
-              workspaceAddress->displayForm() +
-              "\nDo you want to log in with different credentials ?")
+            parent,
+            QIcon(":/tt3-gui/Resources/Images/Actions/LoginLarge.png"),
+            Component::Resources::instance()->string(
+                RSID(ChooseReloginDialog),
+                RID(Title)),
+            Component::Resources::instance()->string(
+                RSID(ChooseReloginDialog),
+                RID(Prompt),
+                workspaceAddress->displayForm()))
 {
 }
 

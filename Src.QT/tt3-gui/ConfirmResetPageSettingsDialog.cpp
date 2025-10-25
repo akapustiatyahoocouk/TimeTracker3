@@ -19,14 +19,17 @@ using namespace tt3::gui;
 
 //////////
 //  Construction/destruction
-ConfirmResetPageSettingsDialog::ConfirmResetPageSettingsDialog(::QWidget * parent)
-    :   AskYesNoDialog(
-          parent,
-          QIcon(":/tt3-gui/Resources/Images/Actions/ResetLarge.png"),
-          //  TODO localize via Resources
-          "Reset page settings",
-          "Are you sure you want to reset page settings to their default values ?"
-          "\nThe effects will not be permanent until you press 'OK' to close the dialog.")
+ConfirmResetPageSettingsDialog::ConfirmResetPageSettingsDialog(
+        ::QWidget * parent
+    ) : AskYesNoDialog(
+            parent,
+            QIcon(":/tt3-gui/Resources/Images/Actions/ResetLarge.png"),
+            Component::Resources::instance()->string(
+                RSID(ConfirmResetPageSettingsDialog),
+                RID(Title)),
+            Component::Resources::instance()->string(
+                RSID(ConfirmResetPageSettingsDialog),
+                RID(Prompt)))
 {
 }
 

@@ -622,7 +622,7 @@ void MainFrame::_onActionRestart()
         }
     }
     //  ...and restart
-    QApplication::exit(-1);
+    QApplication::exit(-1); //  TODO throw a "special action" request
 }
 
 void MainFrame::_onActionExit()

@@ -24,7 +24,7 @@
     /// \class ChooseReloginDialog tt3-gui/API.hpp
     /// \brief The modal "choose relogin to access workspace" dialog.
     class TT3_GUI_PUBLIC ChooseReloginDialog final
-        :   public AskYesNoDialog  //  TODO private
+        :   private AskYesNoDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ChooseReloginDialog)
 
@@ -43,6 +43,12 @@
                 tt3::ws::WorkspaceAddress workspaceAddress
             );
         //  The default destructor is OK
+
+        //////////
+        //  Operations
+    public:
+        using Result = AskYesNoDialog::Result;
+        using AskYesNoDialog::doModal;
     };
 }
 

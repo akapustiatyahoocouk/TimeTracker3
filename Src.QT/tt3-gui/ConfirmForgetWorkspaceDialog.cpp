@@ -20,15 +20,18 @@ using namespace tt3::gui;
 //////////
 //  Construction/destruction
 ConfirmForgetWorkspaceDialog::ConfirmForgetWorkspaceDialog(
-        ::QWidget * parent, tt3::ws::WorkspaceAddress workspaceAddress)
-    :   AskYesNoDialog(
-          parent,
-          QIcon(":/tt3-gui/Resources/Images/Actions/OpenWorkspaceLarge.png"),
-          //  TODO localize via Resources
-          "Failed to open workspace",
-          "Would you like to remove the workspace\n" +
-              workspaceAddress->displayForm() +
-              "\nfrom the recent workspaces list ?")
+        ::QWidget * parent,
+        tt3::ws::WorkspaceAddress workspaceAddress
+    ) : AskYesNoDialog(
+            parent,
+            QIcon(":/tt3-gui/Resources/Images/Actions/OpenWorkspaceLarge.png"),
+            Component::Resources::instance()->string(
+                RSID(ConfirmForgetWorkspaceDialog),
+                RID(Title)),
+            Component::Resources::instance()->string(
+                RSID(ConfirmForgetWorkspaceDialog),
+                RID(Prompt),
+                workspaceAddress->displayForm()))
 {
 }
 

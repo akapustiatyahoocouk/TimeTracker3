@@ -24,7 +24,7 @@ namespace tt3::gui
     /// \class RestartRequiredDialog tt3-gui/API.hpp
     /// \brief The modal "restart required" dialog.
     class TT3_GUI_PUBLIC RestartRequiredDialog final
-        :   public AskYesNoDialog  //  TODO private
+        :   private AskYesNoDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(RestartRequiredDialog)
 
@@ -39,6 +39,12 @@ namespace tt3::gui
                 ::QWidget * parent
             );
         //  The default destructor is OK
+
+        //////////
+        //  Operations
+    public:
+        using Result = AskYesNoDialog::Result;
+        using AskYesNoDialog::doModal;
     };
 }
 

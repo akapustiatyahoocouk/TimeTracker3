@@ -20,15 +20,18 @@ using namespace tt3::gui;
 //////////
 //  Construction/destruction
 ConfirmCloseWorkspaceDialog::ConfirmCloseWorkspaceDialog(
-        ::QWidget * parent, tt3::ws::WorkspaceAddress workspaceAddress)
-    :   AskYesNoDialog(
-          parent,
-          QIcon(":/tt3-gui/Resources/Images/Actions/CloseWorkspaceLarge.png"),
-          //  TODO localize via Resources
-          "Close workspace",
-          "Are you sure you really want to close the workspace\n" +
-              workspaceAddress->displayForm() + " ?",
-          &Component::Settings::instance()->confirmCloseWorkspace)
+        ::QWidget * parent,
+        tt3::ws::WorkspaceAddress workspaceAddress
+    ) : AskYesNoDialog(
+            parent,
+            QIcon(":/tt3-gui/Resources/Images/Actions/CloseWorkspaceLarge.png"),
+            Component::Resources::instance()->string(
+                RSID(ConfirmCloseWorkspaceDialog),
+                RID(Title)),
+            Component::Resources::instance()->string(
+                RSID(ConfirmCloseWorkspaceDialog),
+                RID(Prompt),
+                workspaceAddress->displayForm()))
 {
 }
 

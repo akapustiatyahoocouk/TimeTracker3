@@ -19,14 +19,18 @@ using namespace tt3::gui;
 
 //////////
 //  ConfirmResetAllSettingsDialog
-ConfirmRestartDialog::ConfirmRestartDialog(::QWidget * parent)
-    :   AskYesNoDialog(
-          parent,
-          QIcon(":/tt3-gui/Resources/Images/Actions/RestartLarge.png"),
-          //  TODO localize via Resources
-          "Restart TimeTracker3",
-          "Are you sure you want to restart TimeTracker3 ?",
-          &Component::Settings::instance()->confirmRestart)
+ConfirmRestartDialog::ConfirmRestartDialog(
+        ::QWidget * parent
+    ) : AskYesNoDialog(
+            parent,
+            QIcon(":/tt3-gui/Resources/Images/Actions/RestartLarge.png"),
+            Component::Resources::instance()->string(
+                RSID(ConfirmRestartDialog),
+                RID(Title)),
+            Component::Resources::instance()->string(
+                RSID(ConfirmRestartDialog),
+                RID(Prompt)),
+            &Component::Settings::instance()->confirmRestart)
 {
 }
 

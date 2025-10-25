@@ -33,9 +33,41 @@ ViewBeneficiaryPushButton=Begünstigten anzeigen
 ModifyBeneficiaryPushButton=Begünstigten ändern
 DestroyBeneficiaryPushButton=Begünstigten löschen
 
+[ChooseReloginDialog]
+Title=Zugriff verweigert
+Prompt=Aktuelle Anmeldedaten erlauben keinen Zugriff auf\n{0}\nMöchten Sie sich mit anderen Anmeldedaten anmelden ?
+
+[ConfirmCloseWorkspaceDialog]
+Title=Arbeitsbereich schließen
+Prompt=Möchten Sie den Arbeitsbereich wirklich schließen\n{0} ?
+
+[ConfirmDestroyWorkspaceDialog]
+Title=Arbeitsbereich zerstören
+Prompt=Möchten Sie den Arbeitsbereich\n{0} wirklich zerstören ?\nWICHTIG: DIESE AKTION KANN SPÄTER NICHT RÜCKGÄNGIG GEMACHT WERDEN!
+
+[ConfirmDropWorkspaceDialog]
+Title=Arbeitsbereich löschen
+Prompt=Ihre neuen Anmeldeinformationen erlauben keinen Zugriff auf \n{0}.\nMöchten Sie den Arbeitsbereich schließen ?
+
+[ConfirmExitDialog]
+Title=TimeTracker3 beenden
+Prompt=Möchten Sie TimeTracker3 wirklich beenden ?
+
+[ConfirmForgetWorkspaceDialog]
+Title=Arbeitsbereich konnte nicht geöffnet werden
+Prompt=Möchten Sie den Arbeitsbereich \n{0}\naus der Liste der zuletzt verwendeten Arbeitsbereiche entfernen ?
+
 [ConfirmResetAllSettingsDialog]
 Title=Alle Einstellungen zurücksetzen
 Prompt=Möchten Sie wirklich alle Einstellungen auf die Standardwerte zurücksetzen?\nDie Auswirkungen sind erst dann dauerhaft, wenn Sie den Dialog mit „Bestätigen“ schließen.
+
+[ConfirmResetPageSettingsDialog]
+Title=Seiteneinstellungen zurücksetzen
+Prompt=Möchten Sie die Seiteneinstellungen wirklich auf die Standardwerte zurücksetzen?\nDie Auswirkungen werden erst wirksam, wenn Sie den Dialog mit „OK“ schließen.
+
+[ConfirmRestartDialog]
+Title=TimeTracker3 neu starten
+Prompt=Möchten Sie TimeTracker3 wirklich neu starten ?
 
 [CreateAccountDialog]
 Title=Konto erstellen

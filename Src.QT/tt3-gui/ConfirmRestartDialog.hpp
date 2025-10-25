@@ -24,7 +24,7 @@
     /// \class ConfirmRestartDialog tt3-gui/API.hpp
     /// \brief The modal "confirm restart" dialog.
     class TT3_GUI_PUBLIC ConfirmRestartDialog final
-        :   public AskYesNoDialog  //  TODO private
+        :   private AskYesNoDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmRestartDialog)
 
@@ -39,6 +39,12 @@
             ::QWidget * parent
             );
         //  The default destructor is OK
+
+        //////////
+        //  Operations
+    public:
+        using Result = AskYesNoDialog::Result;
+        using AskYesNoDialog::doModal;
     };
 }
 

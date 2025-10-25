@@ -33,9 +33,41 @@ ViewBeneficiaryPushButton=View beneficiary
 ModifyBeneficiaryPushButton=Modify beneficiary
 DestroyBeneficiaryPushButton=Destroy beneficiary
 
+[ChooseReloginDialog]
+Title=Access denied
+Prompt=Current credentials do not allow access to\n{0}\nDo you want to log in with different credentials ?
+
+[ConfirmCloseWorkspaceDialog]
+Title=Close workspace
+Prompt=Are you sure you really want to close the workspace\n{0} ?
+
+[ConfirmDestroyWorkspaceDialog]
+Title=Destroy workspace
+Prompt=Are you sure you really want to destroy the workspace\n{0} ?\nIMPORTANT: YOU WILL NOT BE ABLE TO UNDO THIS ACTION LATER!
+
+[ConfirmDropWorkspaceDialog]
+Title=Drop workspace
+Prompt=Your new credentials do not permit access to\n{0}.\nWould you like to close the workspace ?
+
+[ConfirmExitDialog]
+Title=Exit TimeTracker3
+Prompt=Are you sure you want to exit TimeTracker3 ?
+
+[ConfirmForgetWorkspaceDialog]
+Title=Failed to open workspace
+Prompt=Would you like to remove the workspace\n{0}\nfrom the recent workspaces list ?
+
 [ConfirmResetAllSettingsDialog]
 Title=Reset all settings
 Prompt=Are you sure you want to reset all settings to their default values ?\nThe effects will not be permanent until you press 'OK' to close the dialog.
+
+[ConfirmResetPageSettingsDialog]
+Title=Reset page settings
+Prompt=Are you sure you want to reset page settings to their default values ?\nThe effects will not be permanent until you press 'OK' to close the dialog.
+
+[ConfirmRestartDialog]
+Title=Restart TimeTracker3
+Prompt=Are you sure you want to restart TimeTracker3 ?
 
 [CreateAccountDialog]
 Title=Create account

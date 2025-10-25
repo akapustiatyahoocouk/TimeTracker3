@@ -20,15 +20,18 @@ using namespace tt3::gui;
 //////////
 //  Construction/destruction
 ConfirmDropWorkspaceDialog::ConfirmDropWorkspaceDialog(
-    ::QWidget * parent, tt3::ws::WorkspaceAddress workspaceAddress)
-    :   AskYesNoDialog(
-          parent,
-          QIcon(":/tt3-gui/Resources/Images/Actions/LoginLarge.png"),
-          //  TODO localize via Resources
-          "Drop workspace",
-          "Your new credentials do not permit access to\n" +
-              workspaceAddress->displayForm() +
-              "\nWould you like to close the workspace ?")
+        ::QWidget * parent,
+        tt3::ws::WorkspaceAddress workspaceAddress
+    ) : AskYesNoDialog(
+            parent,
+            QIcon(":/tt3-gui/Resources/Images/Actions/LoginLarge.png"),
+            Component::Resources::instance()->string(
+                RSID(ConfirmDropWorkspaceDialog),
+                RID(Title)),
+            Component::Resources::instance()->string(
+                RSID(ConfirmDropWorkspaceDialog),
+                RID(Prompt),
+                workspaceAddress->displayForm()))
 {
 }
 

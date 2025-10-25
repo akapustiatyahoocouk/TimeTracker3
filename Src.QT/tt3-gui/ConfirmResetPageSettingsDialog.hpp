@@ -24,7 +24,7 @@ namespace tt3::gui
     /// \class ConfirmResetPageSettingsDialog tt3-gui/API.hpp
     /// \brief The modal "confirm resetting page settings" dialog.
     class TT3_GUI_PUBLIC ConfirmResetPageSettingsDialog final
-        :   public AskYesNoDialog  //  TODO private
+        :   private AskYesNoDialog
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmResetPageSettingsDialog)
 
@@ -36,9 +36,15 @@ namespace tt3::gui
         /// \param parent
         ///     The parent widget for the dialog; nullptr == none.
         explicit ConfirmResetPageSettingsDialog(
-            ::QWidget * parent
+                ::QWidget * parent
             );
         //  The default destructor is OK
+
+        //////////
+        //  Operations
+    public:
+        using Result = AskYesNoDialog::Result;
+        using AskYesNoDialog::doModal;
     };
 }
 

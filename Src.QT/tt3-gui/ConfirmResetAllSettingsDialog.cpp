@@ -19,8 +19,9 @@ using namespace tt3::gui;
 
 //////////
 //  ConfirmResetAllSettingsDialog
-ConfirmResetAllSettingsDialog::ConfirmResetAllSettingsDialog(::QWidget * parent)
-    :   AskYesNoDialog(
+ConfirmResetAllSettingsDialog::ConfirmResetAllSettingsDialog(
+        ::QWidget * parent
+    ) : AskYesNoDialog(
             parent,
             QIcon(":/tt3-gui/Resources/Images/Actions/ResetLarge.png"),
             Component::Resources::instance()->string(
