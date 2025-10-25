@@ -133,20 +133,21 @@ auto WorkspaceTypeImpl::createWorkspace(
         std::unique_ptr<tt3::db::api::IDatabase> database
             { address->_databaseAddress->databaseType()->createDatabase(address->_databaseAddress) };
         //  Create admin user...
-        tt3::db::api::IUser * user =
+        tt3::db::api::IUser * dataUser =
             database->createUser(
                 true,
                 QStringList(),
                 adminUser,
                 InactivityTimeout(),
-                UiLocale());
+                UiLocale(),
+                tt3::db::api::Workloads());
         //  ...and account...
-            user->createAccount(
-                true,
-                QStringList(),
-                adminLogin,
-                adminPassword,
-                tt3::db::api::Capability::Administrator);
+        dataUser->createAccount(
+            true,
+            QStringList(),
+            adminLogin,
+            adminPassword,
+            tt3::db::api::Capability::Administrator);
         /*  NOTE that database change notifications caused
             by creating admin user and account (above) are
             NOT forwarded to the Workspace, as the Workspace

@@ -184,6 +184,67 @@ namespace tt3::ws
                             const Credentials & credentials
                         ) const -> PrivateTasks;
 
+        /// \brief
+        ///     Returns the set of all Workload permitted for
+        ///     this User.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all Workload permitted for
+        ///     this User.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        permittedWorkloads(
+                            const Credentials & credentials
+                        ) const -> Workloads;
+
+        /// \brief
+        ///     Sets the set of all Workload permitted for
+        ///     this User.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param workloads
+        ///     The new set of all Workload permitted for
+        ///     this User.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        setPermittedWorkloads(
+                            const Credentials & credentials,
+                            const Workloads & workloads
+                        );
+
+        /// \brief
+        ///     Adds the specified Workload to the
+        ///     set of Workloads permitted to this User.
+        /// \details
+        ///     The call has no effect if already there.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param workload
+        ///     The workload to add.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        addPermittedWorkload(
+                            const Credentials & credentials,
+                            Workload workload
+                        );
+
+        /// \brief
+        ///     Removes the specified Workload from the
+        ///     set of Workloads permitted to this User.
+        /// \details
+        ///     The call has no effect if already not there.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param workload
+        ///     The workload to remove.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        removePermittedWorkload(
+                            const Credentials & credentials,
+                            Workload workload
+                        );
+
         //////////
         //  Operations (life cycle)
     public:

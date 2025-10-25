@@ -144,8 +144,6 @@ namespace tt3::gui
         void            _workloadsTabWidgetCurrentChanged(int);
         void            _projectsFilterLineEditTextChanged(QString);
         void            _workStreamsFilterLineEditTextChanged(QString);
-        void            _projectsTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
-        void            _workStreamsTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
         void            _workloadsListWidgetCurrentRowChanged(int);
         void            _projectsTreeWidgetItemChanged(QTreeWidgetItem * item, int);
         void            _workStreamsTreeWidgetItemChanged(QTreeWidgetItem * item, int);

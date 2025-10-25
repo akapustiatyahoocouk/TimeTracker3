@@ -608,7 +608,8 @@ auto WorkspaceImpl::createUser(
         const QStringList & emailAddresses,
         const QString & realName,
         const InactivityTimeout & inactivityTimeout,
-        const UiLocale & uiLocale
+        const UiLocale & uiLocale,
+        const Workloads & permittedWorkloads
     ) -> User
 {
     tt3::util::Lock lock(_guard);
@@ -624,10 +625,18 @@ auto WorkspaceImpl::createUser(
             throw AccessDeniedException();
         }
         //  Do the work
+        tt3::db::api::Workloads dataPermittedWorkloads =
+            tt3::util::transform(
+                permittedWorkloads,
+                [](auto w)
+                {   //  Be defensive when transforming nullptrs
+                    return (w != nullptr) ? w->_dataWorkload : nullptr;
+                });
         tt3::db::api::IUser * dataUser =
             _database->createUser(
                 enabled, emailAddresses,
-                realName, inactivityTimeout, uiLocale);
+                realName, inactivityTimeout, uiLocale,
+                dataPermittedWorkloads);
         return _getProxy(dataUser);;
     }
     catch (const tt3::util::Exception & ex)

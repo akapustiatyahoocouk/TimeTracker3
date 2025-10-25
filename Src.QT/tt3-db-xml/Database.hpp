@@ -129,7 +129,8 @@ namespace tt3::db::xml
                                 const QStringList & emailAddresses,
                                 const QString & realName,
                                 const tt3::db::api::InactivityTimeout & inactivityTimeout,
-                                const tt3::db::api::UiLocale & uiLocale
+                                const tt3::db::api::UiLocale & uiLocale,
+                                const tt3::db::api::Workloads & permittedWorkloads
                             ) -> tt3::db::api::IUser * override;
         virtual auto    createActivityType(
                                 const QString & displayName,

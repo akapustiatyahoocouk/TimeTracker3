@@ -474,7 +474,8 @@ auto Database::createUser(
         const QStringList & emailAddresses,
         const QString & realName,
         const tt3::db::api::InactivityTimeout & inactivityTimeout,
-        const tt3::db::api::UiLocale & uiLocale
+        const tt3::db::api::UiLocale & uiLocale,
+        const tt3::db::api::Workloads & permittedWorkloads
     ) -> tt3::db::api::IUser *
 {
     tt3::util::Lock lock(_guard);
@@ -512,6 +513,29 @@ auto Database::createUser(
             "uiLocale",
             uiLocale.value());
     }
+    if (permittedWorkloads.contains(nullptr))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::User::instance(),
+            "workloads",
+            nullptr);
+    }
+
+    Workloads xmlPermittedWorkloads =
+        tt3::util::transform(
+            permittedWorkloads,
+            [&](auto w)
+            {
+                Q_ASSERT(w != nullptr); //  should have been caught before!
+                auto xmlWorkload = dynamic_cast<Workload*>(w);
+                if (xmlWorkload == nullptr ||
+                    xmlWorkload->_database != this ||
+                    !xmlWorkload->_isLive)
+                {   //  OOPS!
+                    throw tt3::db::api::IncompatibleInstanceException(w->type());
+                }
+                return xmlWorkload;
+            });
 
     //  Do the work - create & initialize the User...
     User * user = new User(this, _generateOid()); //  registers with Database
@@ -520,11 +544,24 @@ auto Database::createUser(
     user->_realName = realName;
     user->_inactivityTimeout = inactivityTimeout;
     user->_uiLocale = uiLocale;
+    for (Workload * xmlWorkload : xmlPermittedWorkloads)
+    {
+        user->_permittedWorkloads.insert(xmlWorkload);
+        xmlWorkload->_assignedUsers.insert(user);
+        user->addReference();
+        xmlWorkload->addReference();
+    }
     _markModified();
     //  ...schedule change notifications...
     _changeNotifier.post(
         new tt3::db::api::ObjectCreatedNotification(
             this, user->type(), user->_oid));
+    for (Workload * xmlWorkload : xmlPermittedWorkloads)
+    {
+        _changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                this, xmlWorkload->type(), xmlWorkload->_oid));
+    }
     //  ...and we're done
 #ifdef Q_DEBUG
     _validate();    //  may throw

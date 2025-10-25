@@ -395,6 +395,8 @@ namespace tt3::ws
         ///     The inactivity timeout for the new User; absent == default.
         /// \param uiLocale
         ///     The preferred UI locale for the new User; absent == default.
+        /// \param workloads
+        ///     The set of Workloads the new User will be allowed to work on.
         /// \return
         ///     The newly created User.
         /// \exception WorkspaceException
@@ -405,7 +407,8 @@ namespace tt3::ws
                             const QStringList & emailAddresses,
                             const QString & realName,
                             const InactivityTimeout & inactivityTimeout,
-                            const UiLocale & uiLocale
+                            const UiLocale & uiLocale,
+                            const Workloads & permittedWorkloads
                         ) -> User;
 
         /// \brief

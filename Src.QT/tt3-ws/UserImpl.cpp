@@ -387,6 +387,37 @@ auto UserImpl::rootPrivateTasks(
     }
 }
 
+auto UserImpl::permittedWorkloads(
+        const Credentials & /*credentials*/
+    ) const -> Workloads
+{
+    throw tt3::util::NotImplementedError();
+}
+
+void UserImpl::setPermittedWorkloads(
+        const Credentials & /*credentials*/,
+        const Workloads & /*workloads*/
+    )
+{
+    throw tt3::util::NotImplementedError();
+}
+
+void UserImpl::addPermittedWorkload(
+        const Credentials & /*credentials*/,
+        Workload /*workload*/
+    )
+{
+    throw tt3::util::NotImplementedError();
+}
+
+void UserImpl::removePermittedWorkload(
+        const Credentials & /*credentials*/,
+        Workload /*workload*/
+    )
+{
+    throw tt3::util::NotImplementedError();
+}
+
 //////////
 //  Operations (life cycle)
 auto UserImpl::createAccount(

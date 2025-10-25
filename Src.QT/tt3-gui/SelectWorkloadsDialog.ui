@@ -272,38 +272,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>projectsTreeWidget</sender>
-   <signal>currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</signal>
-   <receiver>tt3::gui::SelectWorkloadsDialog</receiver>
-   <slot>_projectsTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>190</x>
-     <y>144</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>190</x>
-     <y>203</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>workStreamsTreeWidget</sender>
-   <signal>currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</signal>
-   <receiver>tt3::gui::SelectWorkloadsDialog</receiver>
-   <slot>_workStreamsTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>190</x>
-     <y>144</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>190</x>
-     <y>203</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>workloadsListWidget</sender>
    <signal>currentRowChanged(int)</signal>
    <receiver>tt3::gui::SelectWorkloadsDialog</receiver>
@@ -417,8 +385,6 @@
   </connection>
  </connections>
  <slots>
-  <slot>_projectsTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
-  <slot>_workStreamsTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
   <slot>_workloadsListWidgetCurrentRowChanged(int)</slot>
   <slot>_projectsTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
   <slot>_workStreamsTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>

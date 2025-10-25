@@ -90,19 +90,28 @@ namespace tt3::gui
         tt3::ws::User       _createdUser;
 
         //  Helpers
-        static QString      _displayName(const QLocale & locale);
-        QStringList         _selectedEmailAddresses();
-        void                _setSelectedEmailAddresses(const QStringList & emailAddresses);
-        QString             _selectedEmailAddress();
-        void                _setSelectedEmailAddress(const QString & emailAddress);
-        tt3::ws::InactivityTimeout  _selectedInactivityTimeout();
-        tt3::ws::UiLocale   _selectedUiLocale();
-        void                _refresh();
+        static QString  _displayName(const QLocale & locale);   //  TODO move to tt3::util::LocaleManager
+        QStringList     _selectedEmailAddresses();
+        void            _setSelectedEmailAddresses(const QStringList & emailAddresses);
+        QString         _selectedEmailAddress();
+        void            _setSelectedEmailAddress(const QString & emailAddress);
+        auto            _selectedInactivityTimeout(
+                            ) -> tt3::ws::InactivityTimeout;
+        auto            _selectedUiLocale(
+                            ) -> tt3::ws::UiLocale;
+        auto            _selectedWorkloads(
+                            ) -> tt3::ws::Workloads;
+        void            _setSelectedWorkloads(
+                                const tt3::ws::Workloads & workloads
+                            );
+        void            _refresh();
 
         //////////
         //  Controls
     private:
         Ui::CreateUserDialog *const _ui;
+        //  Drawing resources
+        ListWidgetDecorations   _listWidgetDecorations;
 
         //////////
         //  Signal handlers

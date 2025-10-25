@@ -403,18 +403,6 @@ void SelectWorkloadsDialog::_workStreamsFilterLineEditTextChanged(QString)
     _refresh();
 }
 
-void SelectWorkloadsDialog::_projectsTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)
-{   //  TODO kill this method altogether
-    //  TODO including signalslot connection in the .ui file
-    //  _refresh();
-}
-
-void SelectWorkloadsDialog::_workStreamsTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)
-{   //  TODO kill this method altogether
-    //  TODO including signalslot connection in the .ui file
-    //  _refresh();
-}
-
 void SelectWorkloadsDialog::_workloadsListWidgetCurrentRowChanged(int)
 {
     if (QListWidgetItem * item = _ui->workloadsListWidget->currentItem())

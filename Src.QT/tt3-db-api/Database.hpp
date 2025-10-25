@@ -293,6 +293,8 @@ namespace tt3::db::api
         ///     The inactivity timeout for the new User; absent == default.
         /// \param uiLocale
         ///     The preferred UI locale for the new User; absent == default.
+        /// \param permittedWorkloads
+        ///     The set of Workloads the new User will be permitted to work on.
         /// \return
         ///     The newly created User.
         /// \exception DatabaseException
@@ -301,8 +303,9 @@ namespace tt3::db::api
                                 bool enabled,
                                 const QStringList & emailAddresses,
                                 const QString & realName,
-                                const tt3::db::api::InactivityTimeout & inactivityTimeout,
-                                const tt3::db::api::UiLocale & uiLocale
+                                const InactivityTimeout & inactivityTimeout,
+                                const UiLocale & uiLocale,
+                                const Workloads & permittedWorkloads
                             ) -> IUser * = 0;
 
         /// \brief
