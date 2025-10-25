@@ -232,7 +232,10 @@ void ManageQuickPicksListDialog::_refillPublicTasksTree()
     PublicTaskManager::_refreshWorkspaceTree(
         _ui->publicTasksTreeWidget,
         workspaceModel);
-    //  TODO expand all ?
+    if (!filter.isEmpty())
+    {
+        _ui->publicTasksTreeWidget->expandAll();
+    }
 
     _refreshCheckMarks(
         _ui->publicTasksTreeWidget,
@@ -285,7 +288,10 @@ void ManageQuickPicksListDialog::_refillPrivateTasksTree()
                 userModel, filter, _treeWidgetDecorations);
         }
         _refreshWorkspaceTree(userModel);
-        //  TODO expand all ?
+        if (!filter.isEmpty())
+        {
+            _ui->privateTasksTreeWidget->expandAll();
+        }
 
         _refreshCheckMarks(
             _ui->privateTasksTreeWidget,
@@ -653,6 +659,30 @@ void ManageQuickPicksListDialog::_removePushButtonClicked()
                 });
         }
     }
+}
+
+void ManageQuickPicksListDialog::_publicActivitiesFilterLineEditTextChanged(QString)
+{
+    _refillPublicActivitiesTree();
+    _refresh();
+}
+
+void ManageQuickPicksListDialog::_publicTasksFilterLineEditTextChanged(QString)
+{
+    _refillPublicTasksTree();
+    _refresh();
+}
+
+void ManageQuickPicksListDialog::_privateActivitiesFilterLineEditTextChanged(QString)
+{
+    _refillPrivateActivitiesTree();
+    _refresh();
+}
+
+void ManageQuickPicksListDialog::_privateTasksFilterLineEditTextChanged(QString)
+{
+    _refillPrivateTasksTree();
+    _refresh();
 }
 
 void ManageQuickPicksListDialog::accept()

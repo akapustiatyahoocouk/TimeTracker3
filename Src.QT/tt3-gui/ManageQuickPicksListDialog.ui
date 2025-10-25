@@ -54,7 +54,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="publicActivitiesTab">
       <attribute name="icon">
@@ -635,6 +635,70 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>publicActivitiesFilterLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::ManageQuickPicksListDialog</receiver>
+   <slot>_publicActivitiesFilterLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>351</x>
+     <y>63</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>332</x>
+     <y>300</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>privateTasksFilterLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::ManageQuickPicksListDialog</receiver>
+   <slot>_privateTasksFilterLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>351</x>
+     <y>63</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>332</x>
+     <y>300</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>privateActivitiesFilterLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::ManageQuickPicksListDialog</receiver>
+   <slot>_privateActivitiesFilterLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>351</x>
+     <y>63</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>332</x>
+     <y>300</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>publicTasksFilterLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::ManageQuickPicksListDialog</receiver>
+   <slot>_publicTasksFilterLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>351</x>
+     <y>63</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>332</x>
+     <y>300</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_publicActivitiesTreeWidgetItemChanged(QTreeWidgetItem*,int)</slot>
@@ -647,5 +711,9 @@
   <slot>_moveDownPushButtonClicked()</slot>
   <slot>_moveToTopPushButtonClicked()</slot>
   <slot>_moveToBottomPushButtonClicked()</slot>
+  <slot>_publicActivitiesFilterLineEditTextChanged(QString)</slot>
+  <slot>_publicTasksFilterLineEditTextChanged(QString)</slot>
+  <slot>_privateActivitiesFilterLineEditTextChanged(QString)</slot>
+  <slot>_privateTasksFilterLineEditTextChanged(QString)</slot>
  </slots>
 </ui>

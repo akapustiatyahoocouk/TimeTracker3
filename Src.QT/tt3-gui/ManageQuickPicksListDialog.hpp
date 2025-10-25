@@ -133,6 +133,10 @@ namespace tt3::gui
         void            _moveToTopPushButtonClicked();
         void            _moveToBottomPushButtonClicked();
         void            _removePushButtonClicked();
+        void            _publicActivitiesFilterLineEditTextChanged(QString);
+        void            _publicTasksFilterLineEditTextChanged(QString);
+        void            _privateActivitiesFilterLineEditTextChanged(QString);
+        void            _privateTasksFilterLineEditTextChanged(QString);
         void            accept() override;
         void            reject() override;
     };
