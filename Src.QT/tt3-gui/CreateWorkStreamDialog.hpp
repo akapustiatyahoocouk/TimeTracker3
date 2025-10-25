@@ -93,12 +93,19 @@ namespace tt3::gui
         tt3::ws::WorkStream _createdWorkStream;
 
         //  Helpers
+        auto            _selectedBeneficiaries(
+                            ) -> tt3::ws::Beneficiaries;
+        void            _setSelectedBeneficiaries(
+                                tt3::ws::Beneficiaries beneficiaries
+                            );
         void            _refresh();
 
         //////////
         //  Controls
     private:
         Ui::CreateWorkStreamDialog *const  _ui;
+        //  Drawing resources
+        ListWidgetDecorations   _listWidgetDecorations;
 
         //////////
         //  Signal handlers

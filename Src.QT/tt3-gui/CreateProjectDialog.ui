@@ -49,9 +49,6 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="displayNameLineEdit"/>
-   </item>
    <item row="2" column="0">
     <widget class="QLabel" name="descriptionLabel">
      <property name="text">
@@ -160,6 +157,9 @@
       <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
      </property>
     </widget>
+   </item>
+   <item row="1" column="1" colspan="2">
+    <widget class="QLineEdit" name="displayNameLineEdit"/>
    </item>
   </layout>
  </widget>

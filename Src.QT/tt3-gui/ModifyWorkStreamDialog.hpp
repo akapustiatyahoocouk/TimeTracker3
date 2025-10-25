@@ -81,12 +81,19 @@ namespace tt3::gui
         const bool      _readOnly;
 
         //  Helpers
+        auto            _selectedBeneficiaries(
+                            ) -> tt3::ws::Beneficiaries;
+        void            _setSelectedBeneficiaries(
+                                tt3::ws::Beneficiaries beneficiaries
+                            );
         void            _refresh();
 
         //////////
         //  Controls
     private:
         Ui::ModifyWorkStreamDialog *const   _ui;
+        //  Drawing resources
+        ListWidgetDecorations   _listWidgetDecorations;
 
         //////////
         //  Signal handlers

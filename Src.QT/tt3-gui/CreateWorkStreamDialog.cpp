@@ -38,6 +38,7 @@ CreateWorkStreamDialog::CreateWorkStreamDialog(
     Q_ASSERT(_credentials.isValid());
 
     _ui->setupUi(this);
+    _listWidgetDecorations = ListWidgetDecorations(_ui->beneficiariesListWidget);
     setWindowTitle(rr.string(RID(Title)));
 
     //  Set static control values
@@ -80,6 +81,72 @@ auto CreateWorkStreamDialog::doModal(
 
 //////////
 //  Implementation helpers
+auto CreateWorkStreamDialog::_selectedBeneficiaries(
+    ) -> tt3::ws::Beneficiaries
+{
+    tt3::ws::Beneficiaries result;
+    for (int i = 0; i < _ui->beneficiariesListWidget->count(); i++)
+    {
+        result.insert(
+            _ui->beneficiariesListWidget->item(i)->data(Qt::ItemDataRole::UserRole).value<tt3::ws::Beneficiary>());
+    }
+    return result;
+}
+
+void CreateWorkStreamDialog::_setSelectedBeneficiaries(
+        tt3::ws::Beneficiaries beneficiaries
+    )
+{
+    static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+
+    QList<tt3::ws::Beneficiary> beneficiariesList = beneficiaries.values();
+    std::sort(
+        beneficiariesList.begin(),
+        beneficiariesList.end(),
+        [&](auto a, auto b)
+        {
+            try
+            {
+                return a->displayName(_credentials) < b->displayName(_credentials); //  may throw
+            }
+            catch (tt3::util::Exception & ex)
+            {   //  OOPS! Report & recover with a stable sort order
+                qCritical() << ex;
+                return a->oid() < b->oid();
+            }
+        });
+    //  Make sure a proper number of list widget items...
+    while (_ui->beneficiariesListWidget->count() < beneficiariesList.size())
+    {   //  Too few items in the list widget
+        _ui->beneficiariesListWidget->addItem("?");
+    }
+    while (_ui->beneficiariesListWidget->count() > beneficiariesList.size())
+    {   //  Too many items in the list widget
+        delete _ui->beneficiariesListWidget->takeItem(
+            _ui->beneficiariesListWidget->count() - 1);
+    }
+    //  ...each represent a proper Workload
+    for (int i = 0; i < beneficiariesList.count(); i++)
+    {
+        QListWidgetItem * item = _ui->beneficiariesListWidget->item(i);
+        tt3::ws::Beneficiary beneficiary = beneficiariesList[i];
+        try
+        {
+            item->setText(beneficiary->displayName(_credentials));  //  may throw
+            item->setIcon(beneficiary->type()->smallIcon());
+            item->setForeground(_listWidgetDecorations.itemForeground);
+        }
+        catch (tt3::util::Exception & ex)
+        {   //  OOPS! Report & recover
+            qCritical() << ex;
+            item->setText(ex.errorMessage());
+            item->setIcon(errorIcon);
+            item->setForeground(_listWidgetDecorations.errorItemForeground);
+        }
+        item->setData(Qt::ItemDataRole::UserRole, QVariant::fromValue(beneficiary));
+    }
+}
+
 void CreateWorkStreamDialog::_refresh()
 {
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(
@@ -101,7 +168,21 @@ void CreateWorkStreamDialog::_descriptionPlainTextEditTextChanged()
 
 void CreateWorkStreamDialog::_selectBeneficiariesPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    try
+    {
+        SelectBeneficiariesDialog dlg(
+            this, _workspace, _credentials, _selectedBeneficiaries());
+        if (dlg.doModal() == SelectBeneficiariesDialog::Result::Ok)
+        {
+            _setSelectedBeneficiaries(dlg.selectedBeneficiaries());
+            _refresh();
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        qCritical() << ex;
+        ErrorDialog::show(this, ex);
+    }
 }
 
 void CreateWorkStreamDialog::accept()
@@ -113,7 +194,7 @@ void CreateWorkStreamDialog::accept()
                 _credentials,
                 _ui->displayNameLineEdit->text(),
                 _ui->descriptionPlainTextEdit->toPlainText(),
-                tt3::ws::Beneficiaries());  //  TODO for now
+                _selectedBeneficiaries());
         done(int(Result::Ok));
     }
     catch (const tt3::util::Exception & ex)
