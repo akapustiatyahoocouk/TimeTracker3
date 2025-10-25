@@ -90,7 +90,6 @@ namespace tt3::gui
         tt3::ws::User       _createdUser;
 
         //  Helpers
-        static QString  _displayName(const QLocale & locale);   //  TODO move to tt3::util::LocaleManager
         QStringList     _selectedEmailAddresses();
         void            _setSelectedEmailAddresses(const QStringList & emailAddresses);
         QString         _selectedEmailAddress();

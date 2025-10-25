@@ -181,10 +181,10 @@ void Workload::setBeneficiaries(
             });
     if (xmlBeneficiaries != _beneficiaries)
     {   //  Make the changes
-        Beneficiaries addedBeneficiaroes = xmlBeneficiaries - _beneficiaries;
-        Beneficiaries removedBeneficiaroes = _beneficiaries - xmlBeneficiaries;
+        Beneficiaries addedBeneficiaries = xmlBeneficiaries - _beneficiaries;
+        Beneficiaries removedBeneficiaries = _beneficiaries - xmlBeneficiaries;
         //  link the added beneficiaries...
-        for (Beneficiary * xmlBeneficiary : addedBeneficiaroes)
+        for (Beneficiary * xmlBeneficiary : addedBeneficiaries)
         {
             _beneficiaries.insert(xmlBeneficiary);
             xmlBeneficiary->_workloads.insert(this);
@@ -192,7 +192,7 @@ void Workload::setBeneficiaries(
             this->addReference();
         }
         //  ...un-link the removed beneficiaries...
-        for (Beneficiary * xmlBeneficiary : removedBeneficiaroes)
+        for (Beneficiary * xmlBeneficiary : removedBeneficiaries)
         {
             _beneficiaries.remove(xmlBeneficiary);
             xmlBeneficiary->_workloads.remove(this);
@@ -205,7 +205,7 @@ void Workload::setBeneficiaries(
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
-        for (Beneficiary * xmlBeneficiary : addedBeneficiaroes + removedBeneficiaroes)
+        for (Beneficiary * xmlBeneficiary : addedBeneficiaries + removedBeneficiaries)
         {
             _database->_changeNotifier.post(
                 new tt3::db::api::ObjectModifiedNotification(

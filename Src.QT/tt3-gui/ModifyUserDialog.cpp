@@ -42,6 +42,7 @@ ModifyUserDialog::ModifyUserDialog(
 
     _ui->setupUi(this);
     setWindowTitle(rr.string(RID(Title)));
+    _listWidgetDecorations = ListWidgetDecorations(_ui->workloadsListWidget);
 
     //  Fill "hours" amd "minutes" combo boxes
     for (int h = 0; h < 12; h++)
@@ -67,7 +68,10 @@ ModifyUserDialog::ModifyUserDialog(
     std::sort(
         _locales.begin(),
         _locales.end(),
-        [](auto a, auto b) { return _displayName(a) < _displayName(b); });
+        [](auto a, auto b)
+        {
+            return tt3::util::LocaleManager::displayName(a) < tt3::util::LocaleManager::displayName(b);
+        });
     for (QLocale locale : _locales)
     {
         _ui->uiLocaleComboBox->addItem(
@@ -114,6 +118,7 @@ ModifyUserDialog::ModifyUserDialog(
     _setSelectedEmailAddresses(_user->emailAddresses(_credentials));
     _setSelectedInactivityTimeout(_user->inactivityTimeout(_credentials));
     _setSelectedUiLocale(_user->uiLocale(_credentials));
+    _setSelectedWorkloads(_user->permittedWorkloads(_credentials));
     _ui->enabledCheckBox->setChecked(_user->enabled(_credentials));
 
     //  Adjust controls
@@ -148,14 +153,6 @@ auto ModifyUserDialog::doModal(
 
 //////////
 //  Implementation helpers
-QString ModifyUserDialog::_displayName(const QLocale & locale)
-{
-    return QLocale::languageToString(locale.language()) +
-           " (" +
-           QLocale::territoryToString(locale.territory()) +
-           ")";
-}
-
 QStringList ModifyUserDialog::_selectedEmailAddresses()
 {
     QStringList result;
@@ -261,6 +258,89 @@ void ModifyUserDialog::_setSelectedUiLocale(const tt3::ws::UiLocale & uiLocale)
         }
     }
     _refresh();
+}
+
+auto ModifyUserDialog::_selectedWorkloads(
+    ) -> tt3::ws::Workloads
+{
+    tt3::ws::Workloads result;
+    for (int i = 0; i < _ui->workloadsListWidget->count(); i++)
+    {
+        result.insert(
+            _ui->workloadsListWidget->item(i)->data(Qt::ItemDataRole::UserRole).value<tt3::ws::Workload>());
+    }
+    return result;
+}
+
+void ModifyUserDialog::_setSelectedWorkloads(
+        const tt3::ws::Workloads & workloads
+    )
+{
+    static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+
+    QList<tt3::ws::Workload> workloadsList = workloads.values();
+    std::sort(
+        workloadsList.begin(),
+        workloadsList.end(),
+        [&](auto a, auto b)
+        {
+            try
+            {
+                return a->displayName(_credentials) < b->displayName(_credentials); //  may throw
+            }
+            catch (tt3::util::Exception & ex)
+            {   //  OOPS! Report & recover with a stable sort order
+                qCritical() << ex;
+                return a->oid() < b->oid();
+            }
+        });
+    //  Make sure a proper number of list widget items...
+    while (_ui->workloadsListWidget->count() < workloadsList.size())
+    {   //  Too few items in the list widget
+        _ui->workloadsListWidget->addItem("?");
+    }
+    while (_ui->workloadsListWidget->count() > workloadsList.size())
+    {   //  Too many items in the list widget
+        delete _ui->workloadsListWidget->takeItem(
+            _ui->workloadsListWidget->count() - 1);
+    }
+    //  ...each represent a proper Workload
+    for (int i = 0; i < workloadsList.count(); i++)
+    {
+        QListWidgetItem * item = _ui->workloadsListWidget->item(i);
+        tt3::ws::Workload workload = workloadsList[i];
+        try
+        {
+            QString text = workload->displayName(_credentials); //  may throw
+            item->setIcon(workload->type()->smallIcon());
+            if (auto project =
+                std::dynamic_pointer_cast<tt3::ws::ProjectImpl>(workload))
+            {
+                if (project->completed(_credentials))  //  may throw
+                {   //  Completed
+                    text += " [completed]"; //  TODO translate ALL inlined suffixes
+                    item->setForeground(_listWidgetDecorations.disabledItemForeground);
+                }
+                else
+                {   //  Not completed
+                    item->setForeground(_listWidgetDecorations.itemForeground);
+                }
+            }
+            else
+            {   //  Not a task
+                item->setForeground(_listWidgetDecorations.itemForeground);
+            }
+            item->setText(text);
+        }
+        catch (tt3::util::Exception & ex)
+        {   //  OOPS! Report & recover
+            qCritical() << ex;
+            item->setText(ex.errorMessage());
+            item->setIcon(errorIcon);
+            item->setForeground(_listWidgetDecorations.errorItemForeground);
+        }
+        item->setData(Qt::ItemDataRole::UserRole, QVariant::fromValue(workload));
+    }
 }
 
 void ModifyUserDialog::_refresh()
@@ -371,7 +451,21 @@ void ModifyUserDialog::_uiLocaleComboBoxCurrentIndexChanged(int)
 
 void ModifyUserDialog::_workingOnPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    try
+    {
+        SelectWorkloadsDialog dlg(
+            this, _user->workspace(), _credentials, _selectedWorkloads());
+        if (dlg.doModal() == SelectWorkloadsDialog::Result::Ok)
+        {
+            _setSelectedWorkloads(dlg.selectedWorkloads());
+            _refresh();
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        qCritical() << ex;
+        ErrorDialog::show(this, ex);
+    }
 }
 
 void ModifyUserDialog::accept()
@@ -395,6 +489,9 @@ void ModifyUserDialog::accept()
             _user->setUiLocale(
                 _credentials,
                 _selectedUiLocale());
+            _user->setPermittedWorkloads(
+                _credentials,
+                _selectedWorkloads());
         }
         done(int(Result::Ok));
     }

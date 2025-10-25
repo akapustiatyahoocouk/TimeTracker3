@@ -70,33 +70,43 @@ namespace tt3::gui
         ///     Runs the dialog modally.
         /// @return
         ///     The dialog result; Ok means "changes saved".
-        Result              doModal();
+        Result          doModal();
 
         //////////
         //  Implementation
     private:
-        tt3::ws::User       _user;
+        tt3::ws::User   _user;
         const tt3::ws::Credentials      _credentials;
         tt3::ws::Validator::User *const _validator;
-        const bool          _readOnly;
-        QList<QLocale>      _locales;   //  parallel to combo box items
+        const bool      _readOnly;
+        QList<QLocale>  _locales;   //  parallel to combo box items
 
         //  Helpers
-        static QString      _displayName(const QLocale & locale);
-        QStringList         _selectedEmailAddresses();
-        void                _setSelectedEmailAddresses(const QStringList & emailAddresses);
-        QString             _selectedEmailAddress();
-        void                _setSelectedEmailAddress(const QString & emailAddress);
-        tt3::ws::InactivityTimeout  _selectedInactivityTimeout();
-        void                _setSelectedInactivityTimeout(const tt3::ws::InactivityTimeout & inactivityTimeout);
-        tt3::ws::UiLocale   _selectedUiLocale();
-        void                _setSelectedUiLocale(const tt3::ws::UiLocale & uiLocale);
-        void                _refresh();
+        QStringList     _selectedEmailAddresses();
+        void            _setSelectedEmailAddresses(const QStringList & emailAddresses);
+        QString         _selectedEmailAddress();
+        void            _setSelectedEmailAddress(const QString & emailAddress);
+        auto            _selectedInactivityTimeout(
+                            ) -> tt3::ws::InactivityTimeout;
+        void            _setSelectedInactivityTimeout(const tt3::ws::InactivityTimeout & inactivityTimeout);
+        auto            _selectedUiLocale(
+                            ) -> tt3::ws::UiLocale;
+        void            _setSelectedUiLocale(
+                                const tt3::ws::UiLocale & uiLocale
+                            );
+        auto            _selectedWorkloads(
+                            ) -> tt3::ws::Workloads;
+        void            _setSelectedWorkloads(
+                                const tt3::ws::Workloads & workloads
+                            );
+        void            _refresh();
 
         //////////
         //  Controls
     private:
         Ui::ModifyUserDialog *const _ui;
+        //  Drawing resources
+        ListWidgetDecorations   _listWidgetDecorations;
 
         //////////
         //  Signal handlers

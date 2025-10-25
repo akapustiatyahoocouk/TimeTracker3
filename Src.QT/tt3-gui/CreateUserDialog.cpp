@@ -63,7 +63,10 @@ CreateUserDialog::CreateUserDialog(QWidget * parent,
     std::sort(
         _locales.begin(),
         _locales.end(),
-        [](auto a, auto b) { return _displayName(a) < _displayName(b); });
+        [](auto a, auto b)
+        {
+            return tt3::util::LocaleManager::displayName(a) < tt3::util::LocaleManager::displayName(b);
+        });
     for (QLocale locale : _locales)
     {
         _ui->uiLocaleComboBox->addItem(
@@ -126,14 +129,6 @@ auto CreateUserDialog::doModal(
 
 //////////
 //  Implementation helpers
-QString CreateUserDialog::_displayName(const QLocale & locale)
-{
-    return QLocale::languageToString(locale.language()) +
-           " (" +
-           QLocale::territoryToString(locale.territory()) +
-           ")";
-}
-
 QStringList CreateUserDialog::_selectedEmailAddresses()
 {
     QStringList result;
