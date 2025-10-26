@@ -194,6 +194,11 @@ namespace tt3::db::xml
         bool            _isOpen;
         bool            _isReadOnly;    //  not "const" - will be faked as "false" during close()
 
+        static const int    _SaveIntervalMs = 60 * 1000;
+        QDateTime       _nextSaveAt;    //  UTC
+        qint64          _lastSaveDurationMs;
+        QTimer          _saveTimer;
+
         //  Primary object caches - these contain all live
         //  objects, either directly (like Users) or indirectly
         //  (like Accounts, accessible through Users).
@@ -261,6 +266,7 @@ namespace tt3::db::xml
         Project *           _findRootProject(const QString & displayName) const;
         WorkStream *        _findWorkStream(const QString & displayName) const;
         Beneficiary *       _findBeneficiary(const QString & displayName) const;
+        void                _savePeriodically();
 
         //  Serialization
         void            _save();    //  throws tt3::util::Exception

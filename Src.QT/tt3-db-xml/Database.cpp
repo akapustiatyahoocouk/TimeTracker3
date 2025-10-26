@@ -26,7 +26,10 @@ Database::Database(
         _validator(tt3::db::api::DefaultValidator::instance()),
         _needsSaving(false),
         _isOpen(true),
-        _isReadOnly(openMode == _OpenMode::_OpenReadOnly)
+        _isReadOnly(openMode == _OpenMode::_OpenReadOnly),
+        _nextSaveAt(QDateTime::currentDateTimeUtc().addMSecs(_SaveIntervalMs)),
+        _lastSaveDurationMs(0),
+        _saveTimer()
 {
     Q_ASSERT(_address != nullptr);
     if (openMode != _OpenMode::_Dead)
@@ -122,6 +125,28 @@ Database::Database(
             Q_ASSERT(false);
     }
     Q_ASSERT(!_needsSaving);
+
+    //  Start save timer IF this Database is writable
+    if (_lockRefresher != nullptr)
+    {
+        _saveTimer.setInterval(1000);   //  ms
+        QObject::connect(
+            &_saveTimer,
+            &QTimer::timeout,
+            [&]()
+            {
+                tt3::util::Lock lock(_guard);
+                try
+                {
+                    _savePeriodically();    //  may throw
+                }
+                catch (const tt3::util::Exception & ex)
+                {   //  OOPS! Log, but ignore
+                    qCritical() << ex;
+                }
+            });
+        _saveTimer.start();
+    }
 }
 
 Database::~Database()
@@ -206,6 +231,7 @@ void Database::close()
     {   //  Already closed
         return;
     }
+    _saveTimer.stop();
 
     //  Emit "database is closed" change notification
     //  directly - all signal/slot connections wibb
@@ -1176,7 +1202,6 @@ void Database::_markModified()
     Q_ASSERT(_guard.isLockedByCurrentThread());
 
     _needsSaving = true;
-    //  TODO save periodically
 }
 
 void Database::_markClosed()
@@ -1325,6 +1350,24 @@ Beneficiary * Database::_findBeneficiary(const QString & displayName) const
     return nullptr;
 }
 
+void Database::_savePeriodically()
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+
+    if (_needsSaving)
+    {
+        QDateTime now = QDateTime::currentDateTimeUtc();
+        if (now >= _nextSaveAt)
+        {   //  It's time to save
+            _save();    //  may throw
+            _needsSaving = false;
+            QDateTime then = QDateTime::currentDateTimeUtc();
+            _lastSaveDurationMs = now.msecsTo(then);
+            _nextSaveAt = then.addMSecs(_SaveIntervalMs);
+        }
+    }
+}
+
 //////////
 //  Serialization
 void Database::_save()
@@ -1374,14 +1417,61 @@ void Database::_save()
         _beneficiaries);
 
     //  Save DOM
+    //  Use the renaming scheme for data safety:
+    //  1.  Generate "old" and "new" XML file name
+    //      from the "_address", making sure neither one exists.
+    //  2.  Save XML to "new" file.
+    //      If an error occurs, we throw, but the file
+    //      at "_address" remains intact.
+    //  3.  Rename "_address" file to "old" file.
+    //      If an error occurs, delete the "new" file and throw.
+    //      The file at "_address" remains intact.
+    //  4.  Rename "new" file to "_address" file.
+    //      If an error occurs, delete the "new" file
+    //      and attempt to rename "old" file to "address"
+    //      file, then throw.
+    //  5.  Delete the "old" file.
+
+    //  Step 1
     QFile file(_address->_path);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+    QFile oldFile(_address->_path + ".old");
+    QFile newFile(_address->_path + ".new");
+    oldFile.remove();
+    newFile.remove();
+    //  Step 2
+    if (!newFile.open(QIODevice::WriteOnly | QIODevice::Text))
     {   //  OOPS!
-        throw tt3::db::api::CustomDatabaseException(_address->displayForm() + ": " +  file.errorString());
+        throw tt3::db::api::CustomDatabaseException(newFile.fileName() + ": " +  newFile.errorString());
     }
-    QTextStream stream(&file);
+    QTextStream stream(&newFile);
     document.save(stream, 4);
-    file.close();
+    newFile.close();
+    //  Step 3
+    {
+        QFile f(file.fileName());
+        if (!f.rename(oldFile.fileName()))  //  changes "f" on success
+        {   //  OOPS! Cleanup & throw
+            newFile.remove();
+            throw tt3::db::api::CustomDatabaseException(f.fileName() + ": " +  f.errorString());
+        }
+    }
+    //  Step 4
+    {
+        QFile f(newFile.fileName());
+        if (!f.rename(file.fileName())) //  changes "f" on success
+        {   //  OOPS! Cleanup & throw
+            newFile.remove();
+            if (!oldFile.rename(file.fileName()))   //  may fail
+            {   //  No recovery possible, but we still can log
+                qCritical() << oldFile.fileName() + ": " +  oldFile.errorString();
+            }
+            throw tt3::db::api::CustomDatabaseException(f.fileName() + ": " +  f.errorString());
+        }
+    }
+    //  Step 5
+    oldFile.remove();
+
+    //  All done
     _needsSaving = false;
 }
 
