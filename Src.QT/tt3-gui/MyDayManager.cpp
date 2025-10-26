@@ -312,7 +312,9 @@ MyDayManager::_MyDayModel MyDayManager::_createMyDayModel()
         {
             qCritical() << ex;
             myDayModel->itemModels.clear();
-            //  TODO add a single "error" _ItemModel
+            //  Add a single "error" _ItemModel
+            myDayModel->itemModels.append(
+                std::make_shared<_ErrorModelImpl>(ex.errorMessage()));
         }
     }
     _breakLongWorks(myDayModel);

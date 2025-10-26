@@ -27,10 +27,13 @@ Application::Application(int & argc, char ** argv)
     //  Don't setApplicationDisplayName() - will mess up dialog titles!
     setOrganizationName(tt3::util::ProductInformation::organizationName());
     setOrganizationDomain(tt3::util::ProductInformation::organizationDomain());
+
+    _initialize();
 }
 
 Application::~Application()
 {
+    _cleanup();
 }
 
 //////////
@@ -42,6 +45,10 @@ bool Application::notify(QObject * receiver, QEvent * event)
     try
     {
         return QApplication::notify(receiver, event);
+    }
+    catch (const tt3::gui::RestartRequest &)
+    {   //  Allow through
+        throw;
     }
     catch (const tt3::util::Exception & ex)
     {
@@ -60,16 +67,6 @@ bool Application::notify(QObject * receiver, QEvent * event)
         qCritical() << resources->string(RSID(Errors), RID(UncaughtException));
         return false;
     }
-}
-
-//////////
-//  QApplication
-int Application::exec()
-{
-    _initialize();
-    int result = QApplication::exec();
-    _cleanup();
-    return result;
 }
 
 //////////

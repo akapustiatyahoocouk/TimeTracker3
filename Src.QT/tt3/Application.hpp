@@ -45,16 +45,6 @@ namespace tt3
         virtual bool    notify(QObject * receiver, QEvent * event) override;
 
         //////////
-        //  QApplication
-    public:
-        /// \brief
-        ///     Runs this application's message loop.
-        /// \return
-        ///     The application exit code.
-        ///     Negative exit code means "restart TT3".
-        int         exec();
-
-        //////////
         //  Implementation
     private:
         //  Helpers

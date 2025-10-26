@@ -120,6 +120,7 @@ namespace tt3::gui
         struct _EventModelImpl;
         struct _CurrentActivityModelImpl;
         struct _DateModelImpl;
+        struct _ErrorModelImpl;
 
         using _MyDayModel = std::shared_ptr<_MyDayModelImpl>;
         using _ItemModel = std::shared_ptr<_ItemModelImpl>;
@@ -127,6 +128,7 @@ namespace tt3::gui
         using _EventModel = std::shared_ptr<_EventModelImpl>;
         using _CurrentActivityModel = std::shared_ptr<_CurrentActivityModelImpl>;
         using _DateModel = std::shared_ptr<_DateModelImpl>;
+        using _ErrorModel = std::shared_ptr<_ErrorModelImpl>;
 
         using _ItemModels = QList<_ItemModel>;
 
@@ -296,6 +298,27 @@ namespace tt3::gui
         private:
             const QDate         _date;      //  LOCAL TIME!
             const QDateTime     _occurredAt;//  LOCAL TIME!
+            const QIcon         _icon;
+        };
+
+        struct TT3_GUI_PUBLIC _ErrorModelImpl : public _ItemModelImpl
+        {
+            _ErrorModelImpl(const QString & errorMessage)
+                :   _occurredAt(QDateTime::currentDateTime()),
+                    _errorMessage(errorMessage),
+                    _icon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png")
+            {}
+
+            virtual QDateTime   startedAt() const override { return _occurredAt; }
+            virtual QDateTime   finishedAt() const override { return _occurredAt; }
+            virtual QString     displayName() const override { return toString(); }
+            virtual QIcon       icon() const override { return _icon; }
+            virtual QString     tooltip() const override { return _errorMessage; }
+            virtual QString     toString() const override { return _errorMessage; }
+
+        private:
+            const QDateTime     _occurredAt;//  LOCAL TIME!
+            const QString       _errorMessage;
             const QIcon         _icon;
         };
 

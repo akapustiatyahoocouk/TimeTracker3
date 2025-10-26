@@ -21,16 +21,20 @@ using namespace tt3;
 //  TT3 entry point
 int main(int argc, char *argv[])
 {
+    qDebug() << QStyleFactory::keys();  //  TODO kill off when tuned for Linux as well as Windows
     Application a(argc, argv);
-    a.setStyle(QStyleFactory::create("Fusion"));
-    int exitCode = a.exec();
-    if (exitCode < 0)
+    a.setStyle(QStyleFactory::create("Fusion"));    //  TODO what about Linux?
+    try
+    {
+        return a.exec();
+    }
+    catch (const tt3::gui::RestartRequest &)
     {   //  The following line does not work in e.g. QT Creator's
         //  debugger, but after using windeployqt on the .exe AND /DLLS
         //  the tool will bring in all dependencies from QT distrib
         QProcess::startDetached(a.arguments()[0], a.arguments().mid(1));
+        return 0;
     }
-    return exitCode;
 }
 
 //  End of tt3/Main.cpp

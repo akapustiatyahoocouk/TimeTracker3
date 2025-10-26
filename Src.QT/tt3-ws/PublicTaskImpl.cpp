@@ -65,11 +65,38 @@ auto PublicTaskImpl::parent(
 }
 
 void PublicTaskImpl::setParent(
-        const Credentials & /*credentials*/,
-        PublicTask /*parent*/
+        const Credentials & credentials,
+        PublicTask parent
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+    if (parent != nullptr)
+    {
+        if (parent->_workspace != this->_workspace)
+        {   //  OOPS! Not in the same workspace!
+            throw IncompatibleInstanceException(parent->type());
+        }
+        parent->_ensureLive();    //  may throw
+    }
+
+    try
+    {
+        //  Validate access rights
+        if (!_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataPublicTask->setParent(
+            (parent != nullptr) ?
+                parent->_dataPublicTask :
+                nullptr);   //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 auto PublicTaskImpl::children(

@@ -622,7 +622,7 @@ void MainFrame::_onActionRestart()
         }
     }
     //  ...and restart
-    QApplication::exit(-1); //  TODO throw a "special action" request
+    throw tt3::gui::RestartRequest();
 }
 
 void MainFrame::_onActionExit()

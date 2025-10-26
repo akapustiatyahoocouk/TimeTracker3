@@ -35,6 +35,7 @@
 #include "tt3-gui/CurrentWorkspace.hpp"
 #include "tt3-gui/CurrentActivity.hpp"
 #include "tt3-gui/UiHelpers.hpp"
+#include "tt3-gui/Exceptions.hpp"
 
 //  Controls
 #include "tt3-gui/WidgetDecorations.hpp"

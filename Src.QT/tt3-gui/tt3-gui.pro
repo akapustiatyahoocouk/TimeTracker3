@@ -163,6 +163,7 @@ HEADERS += \
     EnterCommentDialog.hpp \
     EnterTaskCompletionCommentDialog.hpp \
     ErrorDialog.hpp \
+    Exceptions.hpp \
     GeneralAppearancePreferencesEditor.hpp \
     GeneralDialogsPreferencesEditor.hpp \
     GeneralStartupPreferencesEditor.hpp \

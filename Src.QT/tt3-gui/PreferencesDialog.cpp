@@ -266,7 +266,7 @@ void PreferencesDialog::accept()
         RestartRequiredDialog dlg(this);
         if (dlg.doModal() == RestartRequiredDialog::Result::Yes)
         {
-            QApplication::exit(-1); //  TODO throw a "special action" request
+            throw tt3::gui::RestartRequest();
         }
         else
         {

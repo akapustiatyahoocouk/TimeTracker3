@@ -429,7 +429,9 @@ void ModifyPublicTaskDialog::accept()
         //  Any of the setters may throw
         if (!_readOnly)
         {
-            //  TODO uncomment _publicTask->setParent(_credentials, _selectedParentTask);
+            _publicTask->setParent(
+                _credentials,
+                _selectedParentTask());
             _publicTask->setDisplayName(
                 _credentials,
                 _ui->displayNameLineEdit->text());
