@@ -27,13 +27,28 @@ Application::Application(int & argc, char ** argv)
     //  Don't setApplicationDisplayName() - will mess up dialog titles!
     setOrganizationName(tt3::util::ProductInformation::organizationName());
     setOrganizationDomain(tt3::util::ProductInformation::organizationDomain());
-
-    _initialize();
 }
 
 Application::~Application()
 {
-    _cleanup();
+}
+
+//////////
+//  QApplication
+int Application::exec()
+{
+    try
+    {
+        _initialize();
+        int exitCode = QApplication::exec();    //  may throw
+        _cleanup();
+        return exitCode;
+    }
+    catch (...)
+    {   //  OOPS! Cleanup & re-throw
+        _cleanup();
+        throw;
+    }
 }
 
 //////////

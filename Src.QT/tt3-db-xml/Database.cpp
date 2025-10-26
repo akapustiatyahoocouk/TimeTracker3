@@ -31,7 +31,6 @@ Database::Database(
     Q_ASSERT(_address != nullptr);
     if (openMode != _OpenMode::_Dead)
     {   //  ...because the DatabaseType holds that reference
-        //  TODO this is UGLY!!!
         _address->addReference();
     }
 
@@ -208,7 +207,29 @@ void Database::close()
         return;
     }
 
-    //  TODO Disconnect all slots from notification signals
+    //  Emit "database is closed" change notification
+    //  directly - all signal/slot connections wibb
+    //  soon be broken
+    tt3::db::api::DatabaseClosedNotification n(this);
+    emit _changeNotifier.databaseClosed(n);
+
+    //  Disconnect all slots from notification signals
+    QObject::disconnect(
+        &_changeNotifier,
+        &tt3::db::api::ChangeNotifier::databaseClosed,
+        nullptr, nullptr);
+    QObject::disconnect(
+        &_changeNotifier,
+        &tt3::db::api::ChangeNotifier::objectCreated,
+        nullptr, nullptr);
+    QObject::disconnect(
+        &_changeNotifier,
+        &tt3::db::api::ChangeNotifier::objectDestroyed,
+        nullptr, nullptr);
+    QObject::disconnect(
+        &_changeNotifier,
+        &tt3::db::api::ChangeNotifier::objectModified,
+        nullptr, nullptr);
 
     //  Save ?
     if (_needsSaving)
@@ -1172,10 +1193,6 @@ void Database::_markClosed()
         }
         delete _lockRefresher;
         _lockRefresher = nullptr;
-        //  Schedule "database is closed" change notification
-        //  TODO keep? kill? _changeNotifier.post(new tt3::db::api::DatabaseClosedNotification(this));
-        tt3::db::api::DatabaseClosedNotification n(this);
-        _changeNotifier.databaseClosed(n);
     }
     _isOpen = false;
 }

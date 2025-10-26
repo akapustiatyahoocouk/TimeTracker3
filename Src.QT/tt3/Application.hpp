@@ -40,6 +40,15 @@ namespace tt3
         virtual ~Application();
 
         //////////
+        //  QApplication
+    public:
+        /// \brief
+        ///     Runs the application's event loop.
+        /// \return
+        ///     The application exit code.
+        int             exec();
+
+        //////////
         //  QGuiApplication
     public:
         virtual bool    notify(QObject * receiver, QEvent * event) override;
@@ -48,11 +57,11 @@ namespace tt3
         //  Implementation
     private:
         //  Helpers
-        void        _registerStandardComponents();
-        void        _selectActiveTheme();
-        void        _selectActiveSkin();
-        void        _initialize();
-        void        _cleanup();
+        void            _registerStandardComponents();
+        void            _selectActiveTheme();
+        void            _selectActiveSkin();
+        void            _initialize();
+        void            _cleanup();
     };
 }
 
