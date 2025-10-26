@@ -98,10 +98,79 @@ auto Project::parent(
 }
 
 void Project::setParent(
-        IProject * /*parent*/
+        IProject * parent
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    Project * xmlParent = nullptr;
+    if (parent != nullptr)
+    {
+        xmlParent = dynamic_cast<Project*>(parent);
+        if (xmlParent == nullptr ||
+            !xmlParent->_isLive ||
+            xmlParent->_database != this->_database)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(parent->type());
+        }
+    }
+    if (xmlParent != _parent)
+    {   //  Make sure we're not creating a oarent/child loop...
+        if (xmlParent != nullptr)
+        {
+            Projects parentClosure;
+            xmlParent->_collectParentClosure(parentClosure);
+            if (parentClosure.contains(this))
+            {   //  OOPS!
+                throw tt3::db::api::IncompatibleInstanceException(xmlParent->type());
+            }
+        }
+        //  ...and make the change...
+        if (_parent != nullptr)
+        {
+            _parent->_children.remove(this);
+            this->removeReference();
+            _parent->removeReference();
+            _database->_changeNotifier.post(
+                new tt3::db::api::ObjectModifiedNotification(
+                    _database, _parent->type(), _parent->_oid));
+        }
+        else
+        {
+            Q_ASSERT(_database->_rootProjects.contains(this));
+            _database->_rootProjects.remove(this);
+            this->removeReference();
+        }
+        _parent = xmlParent;
+        if (_parent != nullptr)
+        {
+            _parent->_children.insert(this);
+            this->addReference();
+            _parent->addReference();
+            _database->_changeNotifier.post(
+                new tt3::db::api::ObjectModifiedNotification(
+                    _database, _parent->type(), _parent->_oid));
+        }
+        else
+        {
+            Q_ASSERT(!_database->_rootProjects.contains(this));
+            _database->_rootProjects.insert(this);
+            this->removeReference();
+        }
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 auto Project::children(

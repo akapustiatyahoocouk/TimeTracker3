@@ -285,7 +285,9 @@ void ModifyProjectDialog::accept()
         //  Any of the setters may throw
         if (!_readOnly)
         {
-            //  TODO uncomment _project->setParent(_credentials, _selectedParentTask);
+            _project->setParent(
+                _credentials,
+                _selectedParentProject());
             _project->setDisplayName(
                 _credentials,
                 _ui->displayNameLineEdit->text());

@@ -112,11 +112,35 @@ auto ProjectImpl::parent(
 }
 
 void ProjectImpl::setParent(
-        const Credentials & /*credentials*/,
-        Project /*parent*/
+        const Credentials & credentials,
+        Project parent
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+    if (parent != nullptr)
+    {   //  If in different Workspace, then in different
+        //  Database, so don't need to check at this level
+        parent->_ensureLive();    //  may throw
+    }
+
+    try
+    {
+        //  Validate access rights
+        if (!_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataProject->setParent(
+            (parent != nullptr) ?
+                parent->_dataProject :
+                nullptr);   //  may throw
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 auto ProjectImpl::children(
