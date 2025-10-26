@@ -72,11 +72,8 @@ void PublicTaskImpl::setParent(
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
     if (parent != nullptr)
-    {
-        if (parent->_workspace != this->_workspace)
-        {   //  OOPS! Not in the same workspace!
-            throw IncompatibleInstanceException(parent->type());
-        }
+    {   //  If in different Workspace, then in different
+        //  Database, so don't need to check at this level
         parent->_ensureLive();    //  may throw
     }
 

@@ -354,11 +354,8 @@ void ActivityImpl::setActivityType(
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
     if (activityType != nullptr)
-    {
-        if (activityType->_workspace != this->_workspace)
-        {   //  OOPS! Not in the same workspace!
-            throw IncompatibleInstanceException(activityType->type());
-        }
+    {   //  If in different Workspace, then in different
+        //  Database, so don't need to check at this level
         activityType->_ensureLive();    //  may throw
     }
 
@@ -416,11 +413,8 @@ void ActivityImpl::setWorkload(
     tt3::util::Lock lock(_workspace->_guard);
     _ensureLive();  //  may throw
     if (workload != nullptr)
-    {
-        if (workload->_workspace != this->_workspace)
-        {   //  OOPS! Not in the same workspace!
-            throw IncompatibleInstanceException(workload->type());
-        }
+    {   //  If in different Workspace, then in different
+        //  Database, so don't need to check at this level
         workload->_ensureLive();    //  may throw
     }
 

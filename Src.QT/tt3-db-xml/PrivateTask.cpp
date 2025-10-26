@@ -75,10 +75,83 @@ auto PrivateTask::parent(
 }
 
 void PrivateTask::setParent(
-        IPrivateTask * /*parent*/
+        IPrivateTask * parent
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    PrivateTask * xmlParent = nullptr;
+    if (parent != nullptr)
+    {
+        xmlParent = dynamic_cast<PrivateTask*>(parent);
+        if (xmlParent == nullptr ||
+            !xmlParent->_isLive ||
+            xmlParent->_database != this->_database ||
+            xmlParent->_owner != this->_owner)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(parent->type());
+        }
+    }
+    if (xmlParent != _parent)
+    {   //  Make sure we're not creating a oarent/child loop...
+        if (xmlParent != nullptr)
+        {
+            PrivateTasks parentClosure;
+            xmlParent->_collectParentClosure(parentClosure);
+            if (parentClosure.contains(this))
+            {   //  OOPS!
+                throw tt3::db::api::IncompatibleInstanceException(xmlParent->type());
+            }
+        }
+        //  ...and make the change...
+        if (_parent != nullptr)
+        {
+            _parent->_children.remove(this);
+            this->removeReference();
+            _parent->removeReference();
+            _database->_changeNotifier.post(
+                new tt3::db::api::ObjectModifiedNotification(
+                    _database, _parent->type(), _parent->_oid));
+        }
+        else
+        {
+            Q_ASSERT(_owner->_rootPrivateTasks.contains(this));
+            _owner->_rootPrivateTasks.remove(this);
+            this->removeReference();
+        }
+        _parent = xmlParent;
+        if (_parent != nullptr)
+        {
+            _parent->_children.insert(this);
+            this->addReference();
+            _parent->addReference();
+            _database->_changeNotifier.post(
+                new tt3::db::api::ObjectModifiedNotification(
+                    _database, _parent->type(), _parent->_oid));
+        }
+        else
+        {
+            Q_ASSERT(!_owner->_rootPrivateTasks.contains(this));
+            _owner->_rootPrivateTasks.insert(this);
+            this->removeReference();
+        }
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, _owner->type(), _owner->_oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 auto PrivateTask::children(
