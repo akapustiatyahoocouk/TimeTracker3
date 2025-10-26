@@ -234,6 +234,10 @@ SelectBeneficiariesPushButton=Auswählen
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
 
+[DailyWorkQuickReport]
+DisplayName=Tägliche Arbeit
+Description=Zeigt tägliche Aktivitäten nach Kategorie und Typ an
+
 [DestroyAccountDialog]
 Title=Konto löschen
 Prompt=Möchten Sie Konto {0}\nvon Benutzer {1} wirklich löschen ?
@@ -795,10 +799,6 @@ OkPushButton=Bestätigen
 
 [ShowLicenseDialog]
 OkPushButton=Bestätigen
-
-[StandardQuickReports]
-DailyWork.DisplayName=Tägliche Arbeit
-DailyWork.Description=Zeigt tägliche Aktivitäten nach Kategorie und Typ an
 
 [StandardThemes]
 System.DisplayName=System

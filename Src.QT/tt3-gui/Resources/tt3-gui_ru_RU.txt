@@ -234,6 +234,10 @@ SelectBeneficiariesPushButton=Выбрать
 OkPushButton=ОК
 CancelPushButton=Отмена
 
+[DailyWorkQuickReport]
+DisplayName=Ежедневная работа
+Description=Показывает ежедневные действия по категориям и типам
+
 [DestroyAccountDialog]
 Title=Удалить учётную запись
 Prompt=Вы уверены, что хотите удалить учётную запись {0}\nпользователя {1}?
@@ -796,10 +800,6 @@ OkPushButton=ОК
 
 [ShowLicenseDialog]
 OkPushButton=OK
-
-[StandardQuickReports]
-DailyWork.DisplayName=Ежедневная работа
-DailyWork.Description=Показывает ежедневные действия по категориям и типам
 
 [StandardThemes]
 System.DisplayName=Системная

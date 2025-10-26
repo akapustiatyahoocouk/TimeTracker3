@@ -25,8 +25,7 @@ struct QuickReportManager::_Impl
         registry.insert(                        \
                                                 Subsystem::instance()->mnemonic(),  \
                                                 Subsystem::instance())
-
-        REGISTER(StandardQuickReports::DailyWork);
+        REGISTER(DailyWorkQuickReport);
     }
 
     tt3::util::Mutex                    guard;

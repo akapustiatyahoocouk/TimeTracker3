@@ -35,6 +35,7 @@ SOURCES += \
     CurrentSkin.cpp \
     CurrentTheme.cpp \
     CurrentWorkspace.cpp \
+    DailyWorkQuickReport.cpp \
     DailyWorkQuickReportView.cpp \
     DestroyAccountDialog.cpp \
     DestroyActivityTypeDialog.cpp \
@@ -111,7 +112,6 @@ SOURCES += \
     ShowConfigurationDialog.cpp \
     ShowLicenseDialog.cpp \
     SkinManager.cpp \
-    StandardQuickReports.cpp \
     StandardThemes.cpp \
     ThemeManager.cpp \
     TreeWidgetDecorations.cpp \

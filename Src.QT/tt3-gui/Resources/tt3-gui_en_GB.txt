@@ -234,6 +234,10 @@ SelectBeneficiariesPushButton=Select
 OkPushButton=OK
 CancelPushButton=Cancel
 
+[DailyWorkQuickReport]
+DisplayName=Daily work
+Description=Shows daily activities by category and type
+
 [DestroyAccountDialog]
 Title=Destroy account
 Prompt=Are you sure you want to destroy account {0}\nof user {1}?
@@ -795,10 +799,6 @@ OkPushButton=OK
 
 [ShowLicenseDialog]
 OkPushButton=OK
-
-[StandardQuickReports]
-DailyWork.DisplayName=Daily work
-DailyWork.Description=Shows daily activities by category and type
 
 [StandardThemes]
 System.DisplayName=System

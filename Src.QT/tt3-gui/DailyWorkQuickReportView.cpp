@@ -42,7 +42,7 @@ DailyWorkQuickReportView::~DailyWorkQuickReportView()
 //  QuickReportView
 IQuickReport * DailyWorkQuickReportView::quickReport() const
 {
-    return StandardQuickReports::DailyWork::instance();
+    return DailyWorkQuickReport::instance();
 }
 
 //  End of tt3-gui/DailyWorkQuickReportView.cpp

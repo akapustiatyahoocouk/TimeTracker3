@@ -1,5 +1,5 @@
 //
-//  tt3-gui/StandardQuickReports.cpp - tt3::gui::StandardQuickReports class implementation
+//  tt3-gui/DailyWorkQuickReport.cpp - tt3::gui::DailyWorkQuickReport class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -18,45 +18,45 @@
 using namespace tt3::gui;
 
 //////////
-//  StandardQuickReports::DailyWork
-IMPLEMENT_SINGLETON(StandardQuickReports::DailyWork)
-StandardQuickReports::DailyWork::DailyWork() {}
-StandardQuickReports::DailyWork::~DailyWork() {}
+//  DailyWorkQuickReport
+IMPLEMENT_SINGLETON(DailyWorkQuickReport)
+DailyWorkQuickReport::DailyWorkQuickReport() {}
+DailyWorkQuickReport::~DailyWorkQuickReport() {}
 
-StandardQuickReports::DailyWork::Mnemonic StandardQuickReports::DailyWork::mnemonic() const
+DailyWorkQuickReport::Mnemonic DailyWorkQuickReport::mnemonic() const
 {
     return M(DailyWork);
 }
 
-QString StandardQuickReports::DailyWork::displayName() const
+QString DailyWorkQuickReport::displayName() const
 {
     return Component::Resources::instance()->string(
-        RSID(StandardQuickReports), RID(DailyWork.DisplayName));
+        RSID(DailyWorkQuickReport), RID(DisplayName));
 }
 
-QString StandardQuickReports::DailyWork::description() const
+QString DailyWorkQuickReport::description() const
 {
     return Component::Resources::instance()->string(
-        RSID(StandardQuickReports), RID(DailyWork.Description));
+        RSID(DailyWorkQuickReport), RID(Description));
 }
 
-QIcon StandardQuickReports::DailyWork::smallIcon() const
+QIcon DailyWorkQuickReport::smallIcon() const
 {
     static const QIcon icon(":/tt3-gui/Resources/Images/Reports/DailyWorkLarge.png");
     return icon;
 }
 
-QIcon StandardQuickReports::DailyWork::largeIcon() const
+QIcon DailyWorkQuickReport::largeIcon() const
 {
     static const QIcon icon(":/tt3-gui/Resources/Images/Reports/DailyWorkSmall.png");
     return icon;
 }
 
-auto StandardQuickReports::DailyWork::createView(
+auto DailyWorkQuickReport::createView(
         QWidget * parent
     ) -> QuickReportView *
 {
     return new DailyWorkQuickReportView(parent);
 }
 
-//  End of tt3-gui/StandardQuickReports.cpp
+//  End of tt3-gui/DailyWorkQuickReport.cpp

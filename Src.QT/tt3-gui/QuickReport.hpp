@@ -91,36 +91,6 @@ namespace tt3::gui
                                 ) -> QuickReportView * = 0;
     };
 
-    /// \class StandardQuickReports tt3-gui/API.hpp
-    /// \brief The standard (predefined) QuickReports.
-    class TT3_GUI_PUBLIC StandardQuickReports final
-    {
-        UTILITY_CLASS(StandardQuickReports)
-
-        //////////
-        //  QuickReports
-    public:
-        /// \class DailyWork tt3-gui/API.hpp
-        /// \brief The "daily work" quick report.
-        class TT3_GUI_PUBLIC DailyWork final
-            :   public virtual IQuickReport
-        {
-            DECLARE_SINGLETON(DailyWork)
-
-            //////////
-            //  IQuickReport
-        public:
-            virtual Mnemonic    mnemonic() const override;
-            virtual QString     displayName() const override;
-            virtual QString     description() const override;
-            virtual QIcon       smallIcon() const override;
-            virtual QIcon       largeIcon() const override;
-            virtual auto        createView(
-                                        QWidget * parent
-                                    ) -> QuickReportView * override;
-        };
-    };
-
     /// \class QuickReportManager tt3-gui/API.hpp
     /// \brief The manager of known QuickReports.
     class TT3_GUI_PUBLIC QuickReportManager final
@@ -162,6 +132,26 @@ namespace tt3::gui
 
         //  Helpers
         static _Impl *      _impl();
+    };
+
+    /// \class DailyWorkQuickReport tt3-gui/API.hpp
+    /// \brief The "daily work" quick report.
+    class TT3_GUI_PUBLIC DailyWorkQuickReport final
+        :   public virtual IQuickReport
+    {
+        DECLARE_SINGLETON(DailyWorkQuickReport)
+
+        //////////
+        //  IQuickReport
+    public:
+        virtual Mnemonic    mnemonic() const override;
+        virtual QString     displayName() const override;
+        virtual QString     description() const override;
+        virtual QIcon       smallIcon() const override;
+        virtual QIcon       largeIcon() const override;
+        virtual auto        createView(
+                                    QWidget * parent
+                                ) -> QuickReportView * override;
     };
 }
 
