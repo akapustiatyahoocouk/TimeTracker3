@@ -797,6 +797,10 @@ OkPushButton=ОК
 [ShowLicenseDialog]
 OkPushButton=OK
 
+[StandardQuickReports]
+DailyWork.DisplayName=Ежедневная работа
+DailyWork.Description=Показывает ежедневные действия по категориям и типам
+
 [StandardThemes]
 System.DisplayName=Системная
 System.Description=Тема, использующая текущие системные цвета

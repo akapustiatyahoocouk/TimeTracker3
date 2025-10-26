@@ -35,6 +35,7 @@ SOURCES += \
     CurrentSkin.cpp \
     CurrentTheme.cpp \
     CurrentWorkspace.cpp \
+    DailyWorkQuickReportView.cpp \
     DestroyAccountDialog.cpp \
     DestroyActivityTypeDialog.cpp \
     DestroyBeneficiaryDialog.cpp \
@@ -97,6 +98,8 @@ SOURCES += \
     PublicActivityManager.cpp \
     PublicTaskManager.cpp \
     PushButtonDecorations.cpp \
+    QuickReportManager.cpp \
+    QuickReportView.cpp \
     RestartRequiredDialog.cpp \
     SelectBeneficiariesDialog.cpp \
     SelectPrivateTaskParentDialog.cpp \
@@ -108,6 +111,7 @@ SOURCES += \
     ShowConfigurationDialog.cpp \
     ShowLicenseDialog.cpp \
     SkinManager.cpp \
+    StandardQuickReports.cpp \
     StandardThemes.cpp \
     ThemeManager.cpp \
     TreeWidgetDecorations.cpp \
@@ -145,6 +149,7 @@ HEADERS += \
     CurrentActivity.hpp \
     CurrentCredentials.hpp \
     CurrentWorkspace.hpp \
+    DailyWorkQuickReportView.hpp \
     DestroyAccountDialog.hpp \
     DestroyActivityTypeDialog.hpp \
     DestroyBeneficiaryDialog.hpp \
@@ -201,6 +206,8 @@ HEADERS += \
     ProjectManager.hpp \
     PublicActivityManager.hpp \
     PublicTaskManager.hpp \
+    QuickReport.hpp \
+    QuickReportView.hpp \
     RestartRequiredDialog.hpp \
     SelectBeneficiariesDialog.hpp \
     SelectPrivateTaskParentDialog.hpp \
@@ -235,6 +242,7 @@ FORMS += \
     CreatePublicTaskDialog.ui \
     CreateUserDialog.ui \
     CreateWorkStreamDialog.ui \
+    DailyWorkQuickReportView.ui \
     EditStringDialog.ui \
     ErrorDialog.ui \
     GeneralAppearancePreferencesEditor.ui \

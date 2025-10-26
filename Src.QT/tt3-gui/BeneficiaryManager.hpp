@@ -96,7 +96,7 @@ class TT3_GUI_PUBLIC SelectBeneficiariesDialog;
         void        refresh();
 
         /// \brief
-        ///     Requests that refresh() br called as soon as
+        ///     Requests that refresh() be called as soon as
         ///     practicable on this widget's event loop thread.
         void        requestRefresh();
 

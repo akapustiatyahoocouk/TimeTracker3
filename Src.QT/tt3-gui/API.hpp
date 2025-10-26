@@ -27,6 +27,7 @@
 #include "tt3-gui/Components.hpp"
 
 //  Miscellaneous helpers
+#include "tt3-gui/Exceptions.hpp"
 #include "tt3-gui/Skin.hpp"
 #include "tt3-gui/Theme.hpp"
 #include "tt3-gui/Preferences.hpp"
@@ -35,7 +36,7 @@
 #include "tt3-gui/CurrentWorkspace.hpp"
 #include "tt3-gui/CurrentActivity.hpp"
 #include "tt3-gui/UiHelpers.hpp"
-#include "tt3-gui/Exceptions.hpp"
+#include "tt3-gui/QuickReport.hpp"
 
 //  Controls
 #include "tt3-gui/WidgetDecorations.hpp"
@@ -43,6 +44,8 @@
 #include "tt3-gui/GeneralAppearancePreferencesEditor.hpp"
 #include "tt3-gui/GeneralStartupPreferencesEditor.hpp"
 #include "tt3-gui/GeneralDialogsPreferencesEditor.hpp"
+#include "tt3-gui/QuickReportView.hpp"
+#include "tt3-gui/DailyWorkQuickReportView.hpp"
 
 #include "tt3-gui/UserManager.hpp"
 #include "tt3-gui/ActivityTypeManager.hpp"

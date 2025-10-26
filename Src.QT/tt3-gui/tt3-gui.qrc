@@ -193,5 +193,7 @@
         <file>Resources/tt3-gui_ru_RU.txt</file>
         <file>Resources/Images/Actions/AddLarge.png</file>
         <file>Resources/Images/Actions/AddSmall.png</file>
+        <file>Resources/Images/Reports/DailyWorkLarge.png</file>
+        <file>Resources/Images/Reports/DailyWorkSmall.png</file>
     </qresource>
 </RCC>

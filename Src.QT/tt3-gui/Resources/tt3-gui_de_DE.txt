@@ -796,6 +796,10 @@ OkPushButton=Bestätigen
 [ShowLicenseDialog]
 OkPushButton=Bestätigen
 
+[StandardQuickReports]
+DailyWork.DisplayName=Tägliche Arbeit
+DailyWork.Description=Zeigt tägliche Aktivitäten nach Kategorie und Typ an
+
 [StandardThemes]
 System.DisplayName=System
 System.Description=Das Design mit den aktuellen Systemfarben
