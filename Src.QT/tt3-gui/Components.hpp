@@ -129,7 +129,7 @@ namespace tt3::gui
             tt3::util::Setting<int>     manageQuickPicksListDialogTab;
 
             /// \brief
-            ///     The "current" tab in the SelectWorkloadsDialog.
+            ///     The "current" tab in the SelectWorkload(s)Dialog.
             tt3::util::Setting<int>     selectWorkloadsDialogTab;
         };
 

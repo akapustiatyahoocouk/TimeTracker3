@@ -757,6 +757,18 @@ OpenAsReadWriteRadioButton=Lesen/Schreiben
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
 
+[SelectWorkloadDialog]
+Title=Arbeitslast auswählen
+ProjectsTab=Projekte
+WorkStreamsTab=Arbeitsablaufe
+ProjectsFilterLabel=Filter:
+WorkStreamsFilterLabel=Filter:
+ProjectCompletedSuffix=[Projekt abgeschlossen]
+ShowCompletedProjectsCheckBox=Abgeschlossene Projekte anzeigen
+SelectionLabel=Ausgewählte Arbeitslast:\n
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
 [SelectWorkloadsDialog]
 Title=Arbeitslasten auswählen
 ProjectsTab=Projekte

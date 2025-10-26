@@ -758,6 +758,18 @@ OpenAsReadWriteRadioButton=Чтение/Запись
 OkPushButton=ОК
 CancelPushButton=Отмена
 
+[SelectWorkloadDialog]
+Title=Выбрать рабочую нагрузку
+ProjectsTab=Проекты
+WorkStreamsTab=Рабочие потоки
+ProjectsFilterLabel=Фильтр:
+WorkStreamsFilterLabel=Фильтр:
+ProjectCompletedSuffix=[проект завершен]
+ShowCompletedProjectsCheckBox=Показать завершенные проекты
+SelectionLabel=Выбранная рабочая нагрузка:\n
+OkPushButton=ОК
+CancelPushButton=Отмена
+
 [SelectWorkloadsDialog]
 Title=Выбрать рабочие нагрузки
 ProjectsTab=Проекты

@@ -20,6 +20,7 @@
 namespace tt3::gui
 {
     class TT3_GUI_PUBLIC SelectProjectParentDialog;
+    class TT3_GUI_PUBLIC SelectWorkloadDialog;
     class TT3_GUI_PUBLIC SelectWorkloadsDialog;
 
     namespace Ui { class ProjectManager; }
@@ -32,6 +33,7 @@ namespace tt3::gui
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ProjectManager)
 
         friend class SelectProjectParentDialog;
+        friend class SelectWorkloadDialog;
         friend class SelectWorkloadsDialog;
 
         //////////

@@ -757,6 +757,18 @@ OpenAsReadWriteRadioButton=Read/Write
 OkPushButton=OK
 CancelPushButton=Cancel
 
+[SelectWorkloadDialog]
+Title=Select workload
+ProjectsTab=Projects
+WorkStreamsTab=Work streams
+ProjectsFilterLabel=Filter:
+WorkStreamsFilterLabel=Filter:
+ProjectCompletedSuffix=[project is completed]
+ShowCompletedProjectsCheckBox=Show completed projects
+SelectionLabel=Selected workload:\n
+OkPushButton=OK
+CancelPushButton=Cancel
+
 [SelectWorkloadsDialog]
 Title=Select workloads
 ProjectsTab=Projects

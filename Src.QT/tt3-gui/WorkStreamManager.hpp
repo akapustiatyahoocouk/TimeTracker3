@@ -19,6 +19,7 @@
 
 namespace tt3::gui
 {
+    class TT3_GUI_PUBLIC SelectWorkloadDialog;
     class TT3_GUI_PUBLIC SelectWorkloadsDialog;
 
     namespace Ui { class WorkStreamManager; }
@@ -31,6 +32,7 @@ namespace tt3::gui
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkStreamManager)
 
+        friend class SelectWorkloadDialog;
         friend class SelectWorkloadsDialog;
 
         //////////
