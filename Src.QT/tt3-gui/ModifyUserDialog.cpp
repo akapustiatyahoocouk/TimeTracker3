@@ -277,6 +277,7 @@ void ModifyUserDialog::_setSelectedWorkloads(
     )
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ModifyUserDialog));
 
     QList<tt3::ws::Workload> workloadsList = workloads.values();
     std::sort(
@@ -318,7 +319,7 @@ void ModifyUserDialog::_setSelectedWorkloads(
             {
                 if (project->completed(_credentials))  //  may throw
                 {   //  Completed
-                    text += " [completed]"; //  TODO translate ALL inlined suffixes
+                    text += " " + rr.string(RID(ProjectCompletedSuffix));
                     item->setForeground(_listWidgetDecorations.disabledItemForeground);
                 }
                 else

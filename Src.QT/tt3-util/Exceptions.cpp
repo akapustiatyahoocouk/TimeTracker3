@@ -41,8 +41,7 @@ QString MissingResourceException::errorMessage() const
 ParseException::ParseException(
         const QString & string,
         qsizetype position
-    )
-    :   _string(string),
+    ) : _string(string),
         _position(position)
 {
 }
@@ -72,7 +71,8 @@ NotImplementedError::NotImplementedError()
 
 QString NotImplementedError::errorMessage() const
 {
-    return "Not yet implemented";
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(Errors), RID(NotImplementedError));
 }
 
 //  End of tt3-util/Exceptions.cpp

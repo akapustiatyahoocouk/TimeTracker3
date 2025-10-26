@@ -33,3 +33,4 @@ GPLv3.Description=Стандартная общественная лицензи
 [Errors]
 MissingResourceException=Отсутствует ресурс [{1}]{2} в {0}
 ParseException=Ошибка анализа "{0}" в позиции {1}
+NotImplementedError=Еще не реализовано

@@ -215,23 +215,29 @@ void Account::setQuickPicksList(
             "quickPicksList",
             nullptr);
     }
-
-    QList<Activity*> xmlQuickPicksList;
-    for (tt3::db::api::IActivity * activity : quickPicksList)
+    if (quickPicksList.size() != tt3::util::unique(quickPicksList).size())
     {
-        Q_ASSERT(activity != nullptr); //  should have been caught before!
-        auto xmlActivity = dynamic_cast<Activity*>(activity);
-        if (xmlActivity == nullptr ||
-            xmlActivity->_database != this->_database ||
-            !xmlActivity->_isLive)
-        {   //  OOPS!
-            throw tt3::db::api::IncompatibleInstanceException(activity->type());
-        }
-        if (!xmlQuickPicksList.contains(xmlActivity))
-        {
-            xmlQuickPicksList.append(xmlActivity);
-        }
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "quickPicksList",
+            "?");
     }
+
+    QList<Activity*> xmlQuickPicksList =
+        tt3::util::transform(
+            quickPicksList,
+            [&](auto a)
+            {
+                Q_ASSERT(a != nullptr); //  should have been caught before!
+                auto xmlActivity = dynamic_cast<Activity*>(a);
+                if (xmlActivity == nullptr ||
+                    xmlActivity->_database != this->_database ||
+                    !xmlActivity->_isLive)
+                {   //  OOPS!
+                    throw tt3::db::api::IncompatibleInstanceException(a->type());
+                }
+                return xmlActivity;
+            });
 
     if (xmlQuickPicksList != _quickPicksList)
     {   //  Make the change -

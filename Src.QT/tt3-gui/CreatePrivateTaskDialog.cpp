@@ -325,7 +325,7 @@ void CreatePrivateTaskDialog::_descriptionPlainTextEditTextChanged()
 
 void CreatePrivateTaskDialog::_selectWorkloadPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 void CreatePrivateTaskDialog::_timeoutCheckBoxStateChanged(int)

@@ -412,7 +412,7 @@ void ModifyPrivateTaskDialog::_descriptionPlainTextEditTextChanged()
 
 void ModifyPrivateTaskDialog::_selectWorkloadPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 void ModifyPrivateTaskDialog::_timeoutCheckBoxStateChanged(int)

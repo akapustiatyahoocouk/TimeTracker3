@@ -596,6 +596,7 @@ SystemDefaultLocale=- (Systemstandard)
 WorkingOnLabel=Bearbeitet an:
 WorkingOnPushButton=Auswählen
 EnabledCheckBox=Benutzer ist aktiviert
+ProjectCompletedSuffix=[Projekt ist abgeschlossen]
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
 

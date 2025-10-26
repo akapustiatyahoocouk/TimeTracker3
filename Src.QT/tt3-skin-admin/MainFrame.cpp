@@ -829,17 +829,17 @@ void MainFrame::_onActionLoginAsDifferentUser()
 
 void MainFrame::_onActionHelpContent()
 {
-    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 void MainFrame::_onActionHelpIndex()
 {
-    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 void MainFrame::_onActionHelpSearch()
 {
-    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 void MainFrame::_onActionAbout()

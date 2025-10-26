@@ -597,6 +597,7 @@ SystemDefaultLocale=- (системное значение по умолчани
 WorkingOnLabel=Работает над:
 WorkingOnPushButton=Выбрать
 EnabledCheckBox=Пользователь активен
+ProjectCompletedSuffix=[проект завершен]
 OkPushButton=ОК
 CancelPushButton=Отмена
 

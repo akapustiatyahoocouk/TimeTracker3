@@ -46,13 +46,13 @@ bool Application::notify(QObject * receiver, QEvent * event)
     catch (const tt3::util::Exception & ex)
     {
         qCritical() << ex;
-        tt3::gui::ErrorDialog::show(ex);
+        tt3::gui::ErrorDialog::show(QApplication::activeWindow(), ex);
         return false;
     }
     catch (const tt3::util::Error & ex)
     {
         qCritical() << ex;
-        tt3::gui::ErrorDialog::show(ex);
+        tt3::gui::ErrorDialog::show(QApplication::activeWindow(), ex);
         return false;
     }
     catch (...)

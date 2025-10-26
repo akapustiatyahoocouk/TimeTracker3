@@ -285,7 +285,7 @@ void ModifyPublicActivityDialog::_descriptionPlainTextEditTextChanged()
 
 void ModifyPublicActivityDialog::_selectWorkloadPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 void ModifyPublicActivityDialog::_timeoutCheckBoxStateChanged(int)

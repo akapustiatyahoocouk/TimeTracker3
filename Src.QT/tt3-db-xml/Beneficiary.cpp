@@ -141,10 +141,76 @@ auto Beneficiary::workloads(
 }
 
 void Beneficiary::setWorkloads(
-        const tt3::db::api::Workloads & /*workloads*/
+        const tt3::db::api::Workloads & workloads
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (workloads.contains(nullptr))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "workloads",
+            nullptr);
+    }
+
+    Workloads xmlWorkloads =
+        tt3::util::transform(
+            workloads,
+            [&](auto w)
+            {
+                Q_ASSERT(w != nullptr); //  should have been caught before!
+                auto xmlWorkload = dynamic_cast<Workload*>(w);
+                if (xmlWorkload == nullptr ||
+                    xmlWorkload->_database != this->_database ||
+                    !xmlWorkload->_isLive)
+                {   //  OOPS!
+                    throw tt3::db::api::IncompatibleInstanceException(w->type());
+                }
+                return xmlWorkload;
+            });
+    if (xmlWorkloads != _workloads)
+    {   //  Make the changes
+        Workloads addedWorkloads = xmlWorkloads - _workloads;
+        Workloads removedWorkloads = _workloads - xmlWorkloads;
+        //  link the added workloads...
+        for (Workload * xmlWorkload : addedWorkloads)
+        {
+            _workloads.insert(xmlWorkload);
+            xmlWorkload->_beneficiaries.insert(this);
+            xmlWorkload->addReference();
+            this->addReference();
+        }
+        //  ...un-link the removed workloads...
+        for (Workload * xmlWorkload : removedWorkloads)
+        {
+            _workloads.remove(xmlWorkload);
+            xmlWorkload->_beneficiaries.remove(this);
+            xmlWorkload->removeReference();
+            this->removeReference();
+        }
+        //  ...ensure the changes are saved...
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        for (Workload * xmlWorkload : addedWorkloads + removedWorkloads)
+        {
+            _database->_changeNotifier.post(
+                new tt3::db::api::ObjectModifiedNotification(
+                    _database, xmlWorkload->type(), xmlWorkload->_oid));
+        }
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 void Beneficiary::addWorkload(

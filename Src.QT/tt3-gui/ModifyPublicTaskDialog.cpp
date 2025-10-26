@@ -368,7 +368,7 @@ void ModifyPublicTaskDialog::_descriptionPlainTextEditTextChanged()
 
 void ModifyPublicTaskDialog::_selectWorkloadPushButtonClicked()
 {
-    ErrorDialog::show(this, "Not yet implemented");
+    throw tt3::util::NotImplementedError();
 }
 
 void ModifyPublicTaskDialog::_timeoutCheckBoxStateChanged(int)

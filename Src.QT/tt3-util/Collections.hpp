@@ -36,9 +36,53 @@ namespace tt3::util
     decltype(auto) transform(const QSet<S> & src, Func op)
     {
         QSet<decltype(op(S()))> dst;
+        dst.reserve(src.size());
         for (auto e : src)
         {
             dst.insert(op(e));
+        }
+        return dst;
+    }
+
+    /// \brief
+    ///     Transforms a QList by applying the specified
+    ///     operation to its every element.
+    /// \param src
+    ///     The source list.
+    /// \param op
+    ///     The operation that maps source list elements to destination
+    ///     list elements.
+    /// \return
+    ///     The destination list.
+    template <typename S, typename Func>
+    decltype(auto) transform(const QList<S> & src, Func op)
+    {
+        QList<decltype(op(S()))> dst;
+        dst.reserve(src.size());
+        for (auto e : src)
+        {
+            dst.append(op(e));
+        }
+        return dst;
+    }
+
+    /// \brief
+    ///     Returns all dulicates from the list, returning the result.
+    /// \param
+    ///     The original list, possible containing duplicates.
+    /// \return
+    ///     The result of duplicates removal.
+    template <typename T>
+    QList<T> unique(const QList<T> & src)
+    {
+        QList<T> dst;
+        dst.reserve(src.size());
+        for (auto e : src)
+        {
+            if (!dst.contains(e))
+            {
+                dst.append(e);
+            }
         }
         return dst;
     }

@@ -230,12 +230,12 @@ auto AccountImpl::quickPicksList(
             throw AccessDeniedException();
         }
         //  Do the work
-        QList<Activity> result;
-        for (tt3::db::api::IActivity * dataActivity : _dataAccount->quickPicksList())
-        {
-            result.append(_workspace->_getProxy(dataActivity));
-        }
-        return result;
+        return tt3::util::transform(
+            _dataAccount->quickPicksList(),
+            [&](auto dataActivity)
+            {
+                return _workspace->_getProxy(dataActivity);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -259,15 +259,14 @@ void AccountImpl::setQuickPicksList(
             throw AccessDeniedException();
         }
         //  Do the work
-        QList<tt3::db::api::IActivity*> dataQuickPicksList;
-        for (Activity activity : quickPicksList)
-        {
-            dataQuickPicksList.append(
-                (activity != nullptr) ?
-                    activity->_dataActivity :
-                    nullptr);
-        }
-        _dataAccount->setQuickPicksList(dataQuickPicksList);//  may throw
+        _dataAccount->setQuickPicksList(    //  may throw
+            tt3::util::transform(
+                quickPicksList,
+                [](auto a)
+                {   //  Be defensive when transforming nullptrs
+                    return (a != nullptr) ? a->_dataActivity : nullptr;
+                })
+            );
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw

@@ -33,3 +33,4 @@ GPLv3.Description=GNU General Public License (version 3)
 [Errors]
 MissingResourceException=Missing resource [{1}]{2} in {0}
 ParseException=Error parsing "{0}" at position {1}
+NotImplementedError=Not yet implemented
