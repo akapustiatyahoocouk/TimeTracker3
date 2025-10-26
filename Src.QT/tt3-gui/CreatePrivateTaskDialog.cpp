@@ -325,7 +325,21 @@ void CreatePrivateTaskDialog::_descriptionPlainTextEditTextChanged()
 
 void CreatePrivateTaskDialog::_selectWorkloadPushButtonClicked()
 {
-    throw tt3::util::NotImplementedError();
+    try
+    {
+        SelectWorkloadDialog dlg(
+            this, _selectedUser()->workspace(), _credentials, _selectedWorkload());
+        if (dlg.doModal() == SelectWorkloadDialog::Result::Ok)
+        {
+            _setSelectedWorkload(dlg.selectedWorkload());
+            _refresh();
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        qCritical() << ex;
+        ErrorDialog::show(this, ex);
+    }
 }
 
 void CreatePrivateTaskDialog::_timeoutCheckBoxStateChanged(int)

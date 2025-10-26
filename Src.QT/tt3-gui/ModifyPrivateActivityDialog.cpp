@@ -320,7 +320,21 @@ void ModifyPrivateActivityDialog::_descriptionPlainTextEditTextChanged()
 
 void ModifyPrivateActivityDialog::_selectWorkloadPushButtonClicked()
 {
-    throw tt3::util::NotImplementedError();
+    try
+    {
+        SelectWorkloadDialog dlg(
+            this, _privateActivity->workspace(), _credentials, _selectedWorkload());
+        if (dlg.doModal() == SelectWorkloadDialog::Result::Ok)
+        {
+            _setSelectedWorkload(dlg.selectedWorkload());
+            _refresh();
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        qCritical() << ex;
+        ErrorDialog::show(this, ex);
+    }
 }
 
 void ModifyPrivateActivityDialog::_timeoutCheckBoxStateChanged(int)

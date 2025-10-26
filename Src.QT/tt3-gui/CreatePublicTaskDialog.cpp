@@ -271,7 +271,21 @@ void CreatePublicTaskDialog::_descriptionPlainTextEditTextChanged()
 
 void CreatePublicTaskDialog::_selectWorkloadPushButtonClicked()
 {
-    throw tt3::util::NotImplementedError();
+    try
+    {
+        SelectWorkloadDialog dlg(
+            this, _workspace, _credentials, _selectedWorkload());
+        if (dlg.doModal() == SelectWorkloadDialog::Result::Ok)
+        {
+            _setSelectedWorkload(dlg.selectedWorkload());
+            _refresh();
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        qCritical() << ex;
+        ErrorDialog::show(this, ex);
+    }
 }
 
 void CreatePublicTaskDialog::_timeoutCheckBoxStateChanged(int)

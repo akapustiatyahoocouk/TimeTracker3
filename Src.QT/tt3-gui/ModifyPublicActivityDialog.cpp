@@ -287,8 +287,8 @@ void ModifyPublicActivityDialog::_selectWorkloadPushButtonClicked()
 {
     try
     {
-        SelectWorkloadDialog dlg
-            (this, _publicActivity->workspace(), _credentials, _selectedWorkload());
+        SelectWorkloadDialog dlg(
+            this, _publicActivity->workspace(), _credentials, _selectedWorkload());
         if (dlg.doModal() == SelectWorkloadDialog::Result::Ok)
         {
             _setSelectedWorkload(dlg.selectedWorkload());
