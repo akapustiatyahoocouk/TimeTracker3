@@ -110,6 +110,13 @@ QuickReportBrowser::QuickReportBrowser(
     _quickReportView->setCredentials(_credentials);
     refresh();
 
+    //  Must listen to delayed refresh requests
+    connect(this,
+            &QuickReportBrowser::refreshRequested,
+            this,
+            &QuickReportBrowser::_refreshRequested,
+            Qt::ConnectionType::QueuedConnection);
+
     //  Start refresing on timer
     connect(
         &_refreshTimer,
@@ -157,8 +164,6 @@ void QuickReportBrowser::refresh()
     //  We don't want a refresh() to trigger a recursive refresh()!
     if (auto _ = RefreshGuard(_refreshUnderway)) //  Don't recurse!
     {
-        qDebug() << "QuickReportBrowser::refresh() @ "
-                 << QDateTime::currentDateTime();
         try
         {
             if (_workspace == nullptr || !_credentials.isValid() ||
@@ -278,6 +283,11 @@ void QuickReportBrowser::_refreshPushButtonClicked()
 }
 
 void QuickReportBrowser::_refreshTimerTimeout()
+{
+    refresh();
+}
+
+void QuickReportBrowser::_refreshRequested()
 {
     refresh();
 }

@@ -48,9 +48,71 @@ namespace tt3::gui
         virtual void    refresh() override;
 
         //////////
+        //  Implementation
+    private:
+        bool            _refreshUnderway = false;
+
+        QSet<QColor>    _seedColors;
+        QSet<QColor>    _usedPieColors;
+
+        //  Helpers
+        void            _clearAndDisableAllControls();
+        void            _resetUsedPieColors();
+        QColor          _generateUnusedPieColor();
+        int             _distance(const QColor & a, const QColor & b);
+
+        //  View model
+        struct _DayModelImpl;
+        struct _ActivityTypeModelImpl;
+        struct _ActivityModelImpl;
+
+        using _DayModel = std::shared_ptr<_DayModelImpl>;
+        using _ActivityTypeModel = std::shared_ptr<_ActivityTypeModelImpl>;
+        using _ActivityModel = std::shared_ptr<_ActivityModelImpl>;
+
+        using _ActivityTypeModels = QList<_ActivityTypeModel>;
+        using _ActivityModels = QList<_ActivityModel>;
+
+        struct _DayModelImpl
+        {
+            _ActivityTypeModels activityTypes;  //  in display order
+        };
+
+        struct _ActivityTypeModelImpl
+        {
+            _ActivityTypeModelImpl(tt3::ws::ActivityType t)
+                :   activityType(t) {}
+            tt3::ws::ActivityType   activityType;   //  can be nullptr
+            _ActivityModels         activities;     //  in display order
+            int64_t                 durationMs = 0; //  ...of all relevat Works for the day
+        };
+
+        struct _ActivityModelImpl
+        {
+            _ActivityModelImpl(tt3::ws::Activity a)
+                :   activity(a) {}
+            tt3::ws::Activity       activity;       //  never nullptr
+            int64_t                 durationMs = 0; //  ...of all relevat Works for the day
+        };
+
+        _DayModel       _createDayModel(const QDate & date);    //  local date
+
+        //////////
         //  Controls
     private:
         Ui::DailyWorkQuickReportView *const _ui;
+        //  Dynamic controls are created at runtime
+        QStackedLayout *    _chartPanelLayout;
+        QChartView *        _chartView;
+        //  Drawing resoutces
+        TreeWidgetDecorations   _decorations;   //  piggyback on it for colors
+
+        //////////
+        //  Signal handlers
+    private slots:
+        void            _currentThemeChanged(ITheme*, ITheme*);
+        void            _dateRatioButtonClicked();
+        void            _dateEditDateChanged(QDate);
     };
 }
 

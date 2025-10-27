@@ -49,6 +49,8 @@
 #include <QApplication>
 #include <QAction>
 #include <QBoxLayout>
+#include <QChart>
+#include <QChartView>
 #include <QDateTime>
 #include <QDebug>
 #include <QDialog>
@@ -57,6 +59,7 @@
 #include <QDomElement>
 #include <QException>
 #include <QFileDialog>
+#include <QGraphicsLayout>
 #include <QGridLayout>
 #include <QIcon>
 #include <QLabel>
@@ -70,6 +73,8 @@
 #include <QMoveEvent>
 #include <QMutex>
 #include <QMutexLocker>
+#include <QPieLegendMarker>
+#include <QPieSeries>
 #include <QProcess>
 #include <QPushButton>
 #include <QQueue>

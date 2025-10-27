@@ -32,6 +32,12 @@ QuickReportView::QuickReportView(
         _workspace(theCurrentWorkspace),
         _credentials(theCurrentCredentials)
 {
+    //  Must listen to delayed refresh requests
+    connect(this,
+            &QuickReportView::refreshRequested,
+            this,
+            &QuickReportView::_refreshRequested,
+            Qt::ConnectionType::QueuedConnection);
 }
 
 QuickReportView::~QuickReportView()
@@ -73,6 +79,13 @@ void QuickReportView::setCredentials(const tt3::ws::Credentials & credentials)
 void QuickReportView::requestRefresh()
 {
     emit refreshRequested();
+}
+
+//////////
+//  Signal handlers
+void QuickReportView::_refreshRequested()
+{
+    refresh();
 }
 
 //  End of tt3-gui/QuickReportView.cpp

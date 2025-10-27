@@ -45,6 +45,10 @@ namespace tt3::gui
         //  Properties
     public:
         /// \brief
+        ///     The brush to use for background of tree widget.
+        QBrush      background;
+
+        /// \brief
         ///     The brush to use for text of "normal" tree items.
         QBrush      itemForeground;
 
@@ -72,6 +76,8 @@ namespace tt3::gui
         //  Implementation
     private:
         //  Helpers
+        void        _adjustTextColor(QColor & textColor);
+        void        _adjustBackColor(QColor & backColor);
         void        _initialize(
                             const QColor & textColor,
                             const QColor & backColor,

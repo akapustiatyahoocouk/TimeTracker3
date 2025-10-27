@@ -70,4 +70,11 @@ namespace tt3::gui
     };
 }
 
+//////////
+//  Algorithms
+TT3_GUI_PUBLIC inline size_t qHash(const QColor & key, size_t seed)
+{
+    return key.red() + key.green() + key.blue() + seed;
+}
+
 //  End of tt3-gui/Color.hpp

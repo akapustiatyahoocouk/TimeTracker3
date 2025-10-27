@@ -112,7 +112,7 @@ auto tt3::util::fromString<tt3::db::api::Oid>(
 }
 
 //////////
-//  Alforithms
+//  Algorithms
 TT3_DB_API_PUBLIC size_t tt3::db::api::qHash(const Oid & key, size_t seed)
 {
     return qHash(key._impl, seed);

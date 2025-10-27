@@ -6,32 +6,171 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>193</width>
-    <height>140</height>
+    <width>360</width>
+    <height>166</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(0, 0, 255);</string>
+   <string notr="true"/>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QPushButton" name="pushButton">
+  <layout class="QGridLayout" name="gridLayout_2">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <item row="1" column="0">
+    <widget class="QWidget" name="chartPanel" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="text">
-      <string>PushButton</string>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 0, 255);</string>
      </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QWidget" name="controlsPanel" native="true">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <property name="horizontalSpacing">
+       <number>4</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="1">
+       <widget class="QLabel" name="showLabel">
+        <property name="text">
+         <string>Show:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="5">
+       <widget class="QDateEdit" name="dateEdit">
+        <property name="calendarPopup">
+         <bool>true</bool>
+        </property>
+        <property name="timeSpec">
+         <enum>Qt::TimeSpec::LocalTime</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QRadioButton" name="todayRadioButton">
+        <property name="text">
+         <string>Today</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QRadioButton" name="forDateRadioButton">
+        <property name="text">
+         <string>For date:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>todayRadioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::DailyWorkQuickReportView</receiver>
+   <slot>_dateRatioButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>123</x>
+     <y>14</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>82</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>forDateRadioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::DailyWorkQuickReportView</receiver>
+   <slot>_dateRatioButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>204</x>
+     <y>14</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>82</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dateEdit</sender>
+   <signal>dateChanged(QDate)</signal>
+   <receiver>tt3::gui::DailyWorkQuickReportView</receiver>
+   <slot>_dateEditDateChanged(QDate)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>305</x>
+     <y>14</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>82</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_dateRatioButtonClicked()</slot>
+  <slot>_dateEditDateChanged(QDate)</slot>
+ </slots>
 </ui>

@@ -28,7 +28,8 @@ TreeWidgetDecorations::TreeWidgetDecorations()
 {
     QColor textColor = QApplication::palette().color(QPalette::ColorRole::Text);
     QColor backColor = QApplication::palette().color(QPalette::ColorRole::Base);
-
+    _adjustTextColor(textColor);
+    _adjustBackColor(backColor);
     _initialize(textColor, backColor,QApplication::font());
 }
 
@@ -37,38 +38,43 @@ TreeWidgetDecorations::TreeWidgetDecorations(QTreeWidget * treeWidget)
     Q_ASSERT(treeWidget != nullptr);
 
     QColor textColor = treeWidget->palette().color(QPalette::ColorRole::Text);
-    {
-        QRegularExpression regex("QTreeWidget[^{]*\\{[^}]*\\s+color:\\s*([^;]+);");
-        QRegularExpressionMatch match = regex.match(theCurrentTheme->css());
-        if (match.hasMatch())
-        {
-            QString colorSpec = match.captured(1).trimmed();
-            textColor = tt3::util::fromString(colorSpec, textColor);
-        }
-    }
-
     QColor backColor = treeWidget->palette().color(QPalette::ColorRole::Base);
-    {
-        QRegularExpression regex("QTreeWidget[^{]*\\{[^}]*\\s+background-color:\\s*([^;]+);");
-        QRegularExpressionMatch match = regex.match(theCurrentTheme->css());
-        if (match.hasMatch())
-        {
-            QString colorSpec = match.captured(1).trimmed();
-            backColor = tt3::util::fromString(colorSpec, backColor);
-        }
-    }
-
+    _adjustTextColor(textColor);
+    _adjustBackColor(backColor);
     _initialize(textColor, backColor, treeWidget->font());
 }
 
 //////////
 //  Implementation helpers
+void TreeWidgetDecorations::_adjustTextColor(QColor & textColor)
+{
+    QRegularExpression regex("QTreeWidget[^{]*\\{[^}]*\\s+color:\\s*([^;]+);");
+    QRegularExpressionMatch match = regex.match(theCurrentTheme->css());
+    if (match.hasMatch())
+    {
+        QString colorSpec = match.captured(1).trimmed();
+        textColor = tt3::util::fromString(colorSpec, textColor);
+    }
+}
+
+void TreeWidgetDecorations::_adjustBackColor(QColor & backColor)
+{
+    QRegularExpression regex("QTreeWidget[^{]*\\{[^}]*\\s+background-color:\\s*([^;]+);");
+    QRegularExpressionMatch match = regex.match(theCurrentTheme->css());
+    if (match.hasMatch())
+    {
+        QString colorSpec = match.captured(1).trimmed();
+        backColor = tt3::util::fromString(colorSpec, backColor);
+    }
+}
+
 void TreeWidgetDecorations::_initialize(
         const QColor & textColor,
         const QColor & backColor,
         const QFont & baseFont
     )
 {
+    background = QBrush(backColor);
     itemForeground = QBrush(textColor);
     disabledItemForeground = ColorManager::mid(textColor, backColor);
     errorItemForeground = QBrush(ColorManager::redder(textColor));

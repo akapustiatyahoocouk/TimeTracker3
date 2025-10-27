@@ -139,6 +139,7 @@ namespace tt3::gui
         void                _refreshIntervalComboBoxCurrentIndexChanged(int);
         void                _refreshPushButtonClicked();
         void                _refreshTimerTimeout();
+        void                _refreshRequested();
     };
 }
 
