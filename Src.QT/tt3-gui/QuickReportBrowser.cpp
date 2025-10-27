@@ -1,6 +1,6 @@
 //
 //  tt3-gui/QuickReportBrowser.cpp - tt3::gui::QuickReportBrowser class implementation
-//
+//  TODO localize UI via Resources
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -33,32 +33,75 @@ QuickReportBrowser::QuickReportBrowser(
         _workspace(theCurrentWorkspace),
         _credentials(theCurrentCredentials),
         //  Controls
-        _ui(new Ui::QuickReportBrowser)
+        _ui(new Ui::QuickReportBrowser),
+        _refreshTimer(this)
 {
     _ui->setupUi(this);
 
-    //  Populate the "quick report" combo box and select
-    //  the "current" quick report
-    QList<IQuickReport*> quickReportsList = QuickReportManager::allQuickReports().values();
-    std::sort(
-        quickReportsList.begin(),
-        quickReportsList.end(),
-        [](auto a, auto b)
+    //  Populate the "quick report" combo box...
+    if (auto _ = RefreshGuard(_refreshUnderway))
+    {   //  We don't want combo box current item change events handled
+        //  while the combo box is initialized
+        QList<IQuickReport*> quickReportsList = QuickReportManager::allQuickReports().values();
+        std::sort(
+            quickReportsList.begin(),
+            quickReportsList.end(),
+            [](auto a, auto b)
+            {
+                return a->displayName() < b->displayName();
+            });
+        for (IQuickReport * quickReport : quickReportsList)
         {
-            return a->displayName() < b->displayName();
-        });
-    for (IQuickReport * quickReport : quickReportsList)
-    {
-        _ui->quickReportComboBox->addItem(
-            quickReport->smallIcon(),
-            quickReport->displayName(),
-            QVariant::fromValue(quickReport));
+            _ui->quickReportComboBox->addItem(
+                quickReport->smallIcon(),
+                quickReport->displayName(),
+                QVariant::fromValue(quickReport));
+        }
+        //  ...and select the "current" quick report
+        IQuickReport * quickReport =
+            QuickReportManager::findQuickReport(
+            Component::Settings::instance()->quickReport);
+        _setSelectedQuickReport(
+            (quickReport != nullptr) ?
+                quickReport :
+                DailyWorkQuickReport::instance());
     }
 
-    //  Create dynamic controls
-    //  TODO instantiate last used quick report if possible
+    //  Pupulate the "refresh interval" combo box...
+    if (auto _ = RefreshGuard(_refreshUnderway))
+    {   //  We don't want combo box current item change events handled
+        //  while the combo box is initialized
+        _ui->refreshIntervalComboBox->addItem(
+            "every second",
+            QVariant::fromValue<int>(1));
+        _ui->refreshIntervalComboBox->addItem(
+            "every 5 seconds",
+            QVariant::fromValue<int>(5));
+        _ui->refreshIntervalComboBox->addItem(
+            "every 10 seconds",
+            QVariant::fromValue<int>(10));
+        _ui->refreshIntervalComboBox->addItem(
+            "every 15 seconds",
+            QVariant::fromValue<int>(15));
+        _ui->refreshIntervalComboBox->addItem(
+            "every 30 seconds",
+            QVariant::fromValue<int>(30));
+        _ui->refreshIntervalComboBox->addItem(
+            "every minute",
+            QVariant::fromValue<int>(60));
+        _ui->refreshIntervalComboBox->addItem(
+            "manually",
+            QVariant::fromValue<int>(0));
+        //  ...and select the last used value
+        _setSelectedRefreshInterval(
+            Component::Settings::instance()->quickReportRefreshInterval);
+    }
+
+    //  Create dynamic controls -
+    //  Instantiate last used quick report if possible
+    Q_ASSERT(_selectedQuickReport() != nullptr);
     _quickReportPanelLayout = new QStackedLayout();
-    _quickReportView = DailyWorkQuickReport::instance()->createView(_ui->quickReportPanel);
+    _quickReportView = _selectedQuickReport()->createView(_ui->quickReportPanel);
     _quickReportPanelLayout->addWidget(_quickReportView);
     _ui->quickReportPanel->setLayout(_quickReportPanelLayout);
 
@@ -66,6 +109,17 @@ QuickReportBrowser::QuickReportBrowser(
     _quickReportView->setWorkspace(_workspace);
     _quickReportView->setCredentials(_credentials);
     refresh();
+
+    //  Start refresing on timer
+    connect(
+        &_refreshTimer,
+        &QTimer::timeout,
+        this,
+        &QuickReportBrowser::_refreshTimerTimeout);
+    if (_selectedRefreshInterval() > 0)
+    {
+        _refreshTimer.start(_selectedRefreshInterval() * 1000);
+    }
 }
 
 QuickReportBrowser::~QuickReportBrowser()
@@ -103,6 +157,8 @@ void QuickReportBrowser::refresh()
     //  We don't want a refresh() to trigger a recursive refresh()!
     if (auto _ = RefreshGuard(_refreshUnderway)) //  Don't recurse!
     {
+        qDebug() << "QuickReportBrowser::refresh() @ "
+                 << QDateTime::currentDateTime();
         try
         {
             if (_workspace == nullptr || !_credentials.isValid() ||
@@ -146,7 +202,41 @@ IQuickReport * QuickReportBrowser::_selectedQuickReport()
 }
 
 void QuickReportBrowser::_setSelectedQuickReport(IQuickReport * quickReport)
-{   //  TODO implement
+{
+    Q_ASSERT(quickReport != nullptr);
+
+    if (_selectedQuickReport() != quickReport)
+    {   //  There IS actually a change
+        for (int i = 0; i < _ui->quickReportComboBox->count(); i++)
+        {
+            if (quickReport == _ui->quickReportComboBox->itemData(i).value<IQuickReport*>())
+            {   //  This one!
+                _ui->quickReportComboBox->setCurrentIndex(i);
+                break;
+            }
+        }
+
+    }
+}
+
+int QuickReportBrowser::_selectedRefreshInterval()
+{
+    return _ui->refreshIntervalComboBox->currentData().value<int>();
+}
+
+void QuickReportBrowser::_setSelectedRefreshInterval(int seconds)
+{
+    if (_selectedRefreshInterval() != seconds)
+    {   //  There IS actually a change
+        for (int i = 0; i < _ui->refreshIntervalComboBox->count(); i++)
+        {
+            if (_ui->refreshIntervalComboBox->itemData(i).value<int>() == seconds)
+            {   //  This one!
+                _ui->refreshIntervalComboBox->setCurrentIndex(i);
+                break;
+            }
+        }
+    }
 }
 
 void QuickReportBrowser::_clearAndDisableAllControls()
@@ -156,6 +246,40 @@ void QuickReportBrowser::_clearAndDisableAllControls()
     _ui->refreshLabel->setEnabled(false);
     _ui->refreshIntervalComboBox->setEnabled(false);
     _ui->refreshPushButton->setEnabled(false);
+}
+
+//////////
+//  Signal handlers
+void QuickReportBrowser::_quickReportComboBoxCurrentIndexhanged(int)
+{
+    if (!_refreshUnderway)
+    {
+        Q_ASSERT(_selectedQuickReport() != nullptr);    //  because "daily work" is always present
+        Component::Settings::instance()->quickReport = _selectedQuickReport()->mnemonic();
+    }
+}
+
+void QuickReportBrowser::_refreshIntervalComboBoxCurrentIndexChanged(int)
+{
+    if (!_refreshUnderway)
+    {
+        _refreshTimer.stop();
+        Component::Settings::instance()->quickReportRefreshInterval = _selectedRefreshInterval();
+        if (_selectedRefreshInterval() > 0)
+        {
+            _refreshTimer.start(_selectedRefreshInterval() * 1000);
+        }
+    }
+}
+
+void QuickReportBrowser::_refreshPushButtonClicked()
+{
+    refresh();
+}
+
+void QuickReportBrowser::_refreshTimerTimeout()
+{
+    refresh();
 }
 
 //  End of tt3-gui/QuickReportBrowser.cpp

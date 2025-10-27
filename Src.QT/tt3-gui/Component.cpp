@@ -110,7 +110,10 @@ Component::Settings::Settings()
         myDayLogDepth(this, M(MyDayLogDepth), 1),
         //  Properties (dialogs)
         manageQuickPicksListDialogTab(this, M(ManageQuickPicksListDialogTab), 0),
-        selectWorkloadsDialogTab(this, M(SelectWorkloadsDialogTab), 0)
+        selectWorkloadsDialogTab(this, M(SelectWorkloadsDialogTab), 0),
+        //  Properties (quick reports)
+        quickReport(this, M(QuickReport), M(-)),
+        quickReportRefreshInterval(this, M(QuickReportRefreshInterval), 0)
 {
 }
 

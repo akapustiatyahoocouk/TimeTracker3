@@ -131,6 +131,17 @@ namespace tt3::gui
             /// \brief
             ///     The "current" tab in the SelectWorkload(s)Dialog.
             tt3::util::Setting<int>     selectWorkloadsDialogTab;
+
+            //////////
+            //  Properties (quick reports)
+        public:
+            /// \brief
+            ///     The mnemonic identifier of the "current" quick report.
+            tt3::util::Setting<tt3::util::Mnemonic> quickReport;
+
+            /// \brief
+            ///     The refresh interval of the quick report, in seconds; 0 == never.
+            tt3::util::Setting<int>     quickReportRefreshInterval;
         };
 
         //////////

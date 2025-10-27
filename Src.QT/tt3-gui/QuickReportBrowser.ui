@@ -115,5 +115,59 @@
  <resources>
   <include location="tt3-gui.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>quickReportComboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>tt3::gui::QuickReportBrowser</receiver>
+   <slot>_quickReportComboBoxCurrentIndexhanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>83</x>
+     <y>15</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>79</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>refreshIntervalComboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>tt3::gui::QuickReportBrowser</receiver>
+   <slot>_refreshIntervalComboBoxCurrentIndexChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>265</x>
+     <y>15</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>79</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>refreshPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::QuickReportBrowser</receiver>
+   <slot>_refreshPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>353</x>
+     <y>15</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>79</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_quickReportComboBoxCurrentIndexhanged(int)</slot>
+  <slot>_refreshIntervalComboBoxCurrentIndexChanged(int)</slot>
+  <slot>_refreshPushButtonClicked()</slot>
+ </slots>
 </ui>

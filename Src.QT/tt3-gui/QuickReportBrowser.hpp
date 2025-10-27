@@ -118,6 +118,8 @@ namespace tt3::gui
         //  Helpers
         IQuickReport *  _selectedQuickReport();
         void            _setSelectedQuickReport(IQuickReport * quickReport);
+        int             _selectedRefreshInterval(); //  0 == manual refresh only
+        void            _setSelectedRefreshInterval(int seconds);   //  0 == manual refresh only
         void            _clearAndDisableAllControls();
 
         //////////
@@ -127,6 +129,16 @@ namespace tt3::gui
         //  Dynamic controls are created at runtime
         QStackedLayout *    _quickReportPanelLayout;
         QuickReportView *   _quickReportView;   //  Never nullptr!
+
+        QTimer              _refreshTimer;
+
+        //////////
+        //  Signal handlers
+    private slots:
+        void                _quickReportComboBoxCurrentIndexhanged(int);
+        void                _refreshIntervalComboBoxCurrentIndexChanged(int);
+        void                _refreshPushButtonClicked();
+        void                _refreshTimerTimeout();
     };
 }
 
