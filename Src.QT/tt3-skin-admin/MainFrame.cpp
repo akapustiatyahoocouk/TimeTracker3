@@ -85,6 +85,11 @@ MainFrame::MainFrame(QWidget * parent)
     _manageMyDayTabLayout->addWidget(_myDayManager);
     _ui->manageMyDayTab->setLayout(_manageMyDayTabLayout);
 
+    _quickReportsTabLayout = new QStackedLayout();
+    _quickReportBrowser = new tt3::gui::QuickReportBrowser(_ui->quickReportsTab);
+    _quickReportsTabLayout->addWidget(_quickReportBrowser);
+    _ui->quickReportsTab->setLayout(_quickReportsTabLayout);
+
     //  Set up signal handlers
     _savePositionTimer.setSingleShot(true);
     connect(&_savePositionTimer,
@@ -200,7 +205,10 @@ void MainFrame::refresh()
     _ui->actionManageProjects->setEnabled(workspace != nullptr);
     _ui->actionManageWorkStreams->setEnabled(workspace != nullptr);
     _ui->actionManageBeneficiaries->setEnabled(workspace != nullptr);
+    _ui->actionManageMyDay->setEnabled(workspace != nullptr);
     _ui->actionRefresh->setEnabled(workspace != nullptr);
+    _ui->menuTools->setEnabled(workspace != nullptr);
+    _ui->menuReports->setEnabled(workspace != nullptr);
 
     //  Controls
     _userManager->refresh();
@@ -213,6 +221,7 @@ void MainFrame::refresh()
     _workStreamManager->refresh();
     _beneficiaryManager->refresh();
     _myDayManager->refresh();
+    _quickReportBrowser->refresh();
 
     _refreshCurrentActivityControls();
 }
@@ -879,6 +888,7 @@ void MainFrame::_currentWorkspaceChanged(tt3::ws::Workspace, tt3::ws::Workspace)
     _workStreamManager->setWorkspace(tt3::gui::theCurrentWorkspace);
     _beneficiaryManager->setWorkspace(tt3::gui::theCurrentWorkspace);
     _myDayManager->setWorkspace(tt3::gui::theCurrentWorkspace);
+    _quickReportBrowser->setWorkspace(tt3::gui::theCurrentWorkspace);
     refresh();
 }
 
@@ -894,6 +904,7 @@ void MainFrame::_currentCredentialsChanged(tt3::ws::Credentials, tt3::ws::Creden
     _workStreamManager->setCredentials(tt3::gui::theCurrentCredentials);
     _beneficiaryManager->setCredentials(tt3::gui::theCurrentCredentials);
     _myDayManager->setCredentials(tt3::gui::theCurrentCredentials);
+    _quickReportBrowser->setCredentials(tt3::gui::theCurrentCredentials);
     refresh();
 }
 

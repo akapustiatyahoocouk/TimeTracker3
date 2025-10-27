@@ -40,9 +40,14 @@ DailyWorkQuickReportView::~DailyWorkQuickReportView()
 
 //////////
 //  QuickReportView
-IQuickReport * DailyWorkQuickReportView::quickReport() const
+auto DailyWorkQuickReportView::quickReport(
+    ) -> IQuickReport * const
 {
     return DailyWorkQuickReport::instance();
+}
+
+void DailyWorkQuickReportView::refresh()
+{   //  TODO implement
 }
 
 //  End of tt3-gui/DailyWorkQuickReportView.cpp

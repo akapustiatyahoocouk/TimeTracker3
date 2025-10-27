@@ -38,4 +38,41 @@ QuickReportView::~QuickReportView()
 {
 }
 
+//////////
+//  Operaions
+tt3::ws::Workspace QuickReportView::workspace() const
+{
+    return _workspace;
+}
+
+void QuickReportView::setWorkspace(tt3::ws::Workspace workspace)
+{
+    if (workspace != _workspace)
+    {
+        //  TODO _stopListeningToWorkspaceChanges();
+        _workspace = workspace;
+        //  TODO _startListeningToWorkspaceChanges();
+        requestRefresh();
+    }
+}
+
+tt3::ws::Credentials QuickReportView::credentials() const
+{
+    return _credentials;
+}
+
+void QuickReportView::setCredentials(const tt3::ws::Credentials & credentials)
+{
+    if (credentials != _credentials)
+    {
+        _credentials = credentials;
+        requestRefresh();
+    }
+}
+
+void QuickReportView::requestRefresh()
+{
+    emit refreshRequested();
+}
+
 //  End of tt3-gui/QuickReportView.cpp

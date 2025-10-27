@@ -1,5 +1,5 @@
 //
-//  tt3-gui/QuickReportView.hpp - QuickReport View widget
+//  tt3-gui/QuickReportBrowser.hpp - The Quick Report Browser widget
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,15 +19,15 @@
 
 namespace tt3::gui
 {
-    class TT3_GUI_PUBLIC QuickReport;
+    namespace Ui { class QuickReportBrowser; }
 
-    /// \class QuickReportView tt3-gui/API.hpp
-    /// \brief The common base class for all "QuickReport View" widgets.
-    class TT3_GUI_PUBLIC QuickReportView
+    /// \class QuickReportBrowser tt3-gui/API.hpp
+    /// \brief The Quick Report Browser widget
+    class TT3_GUI_PUBLIC QuickReportBrowser final
         :   public QWidget
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(QuickReportView)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(QuickReportBrowser)
 
         //////////
         //  Construction/destruction
@@ -35,25 +35,18 @@ namespace tt3::gui
         /// \brief
         ///     Constructs the widget.
         /// \param parent
-        ///     The parent for the new widget; nullptr == none.
-        explicit QuickReportView(
+        ///     The parent for this widget; nullptr == none.
+        explicit QuickReportBrowser(
                 QWidget * parent
             );
 
         /// \brief
         ///     The class destructor.
-        virtual ~QuickReportView();
+        virtual ~QuickReportBrowser();
 
         //////////
-        //  Operations
+        //  Operaions
     public:
-        /// \brief
-        ///     Returns the QuickReport viewed by this widget.
-        /// \return
-        ///     The QuickReport viewed by this widget.
-        virtual auto        quickReport(
-                                ) -> IQuickReport * const = 0;
-
         /// \brief
         ///     Returns the workspace currently viewed in this widget.
         /// \details
@@ -101,7 +94,7 @@ namespace tt3::gui
 
         /// \brief
         ///     Refreshes the content of this widget.
-        virtual void    refresh() = 0;
+        void            refresh();
 
         /// \brief
         ///     Requests that refresh() be called as soon as
@@ -120,8 +113,22 @@ namespace tt3::gui
     private:
         tt3::ws::Workspace      _workspace;
         tt3::ws::Credentials    _credentials;
+        bool                    _refreshUnderway = false;
+
+        //  Helpers
+        IQuickReport *  _selectedQuickReport();
+        void            _setSelectedQuickReport(IQuickReport * quickReport);
+        void            _clearAndDisableAllControls();
+
+        //////////
+        //  Controls
+    private:
+        Ui::QuickReportBrowser *const   _ui;
+        //  Dynamic controls are created at runtime
+        QStackedLayout *    _quickReportPanelLayout;
+        QuickReportView *   _quickReportView;   //  Never nullptr!
     };
 }
 
-//  End of tt3-gui/QuickReportView.hpp
+//  End of tt3-gui/QuickReportBrowser.hpp
 

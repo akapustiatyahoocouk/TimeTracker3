@@ -43,7 +43,9 @@ namespace tt3::gui
         //////////
         //  QuickReportView
     public:
-        virtual IQuickReport *  quickReport() const override;
+        virtual auto    quickReport(
+                            ) -> IQuickReport * const override;
+        virtual void    refresh() override;
 
         //////////
         //  Controls

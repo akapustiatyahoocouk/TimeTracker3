@@ -42,7 +42,7 @@
        <enum>QTabWidget::TabPosition::North</enum>
       </property>
       <property name="currentIndex">
-       <number>9</number>
+       <number>10</number>
       </property>
       <widget class="QWidget" name="manageUsersTab">
        <attribute name="icon">
@@ -132,6 +132,15 @@
        </attribute>
        <attribute name="title">
         <string>My day</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="quickReportsTab">
+       <attribute name="icon">
+        <iconset resource="tt3-skin-admin.qrc">
+         <normaloff>:/tt3-skin-admin/Resources/Images/Misc/QuickReportSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Misc/QuickReportSmall.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Quick reports</string>
        </attribute>
       </widget>
      </widget>

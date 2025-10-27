@@ -57,5 +57,7 @@
         <file>Resources/tt3-skin-admin_de_DE.txt</file>
         <file>Resources/tt3-skin-admin_en_GB.txt</file>
         <file>Resources/tt3-skin-admin_ru_RU.txt</file>
+        <file>Resources/Images/Misc/QuickReportLarge.png</file>
+        <file>Resources/Images/Misc/QuickReportSmall.png</file>
     </qresource>
 </RCC>

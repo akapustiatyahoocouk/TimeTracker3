@@ -195,5 +195,9 @@
         <file>Resources/Images/Actions/AddSmall.png</file>
         <file>Resources/Images/Reports/DailyWorkLarge.png</file>
         <file>Resources/Images/Reports/DailyWorkSmall.png</file>
+        <file>Resources/Images/Misc/QuickReportLarge.png</file>
+        <file>Resources/Images/Misc/QuickReportSmall.png</file>
+        <file>Resources/Images/Actions/RefreshLarge.png</file>
+        <file>Resources/Images/Actions/RefreshSmall.png</file>
     </qresource>
 </RCC>

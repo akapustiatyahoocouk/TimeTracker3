@@ -99,6 +99,7 @@ SOURCES += \
     PublicActivityManager.cpp \
     PublicTaskManager.cpp \
     PushButtonDecorations.cpp \
+    QuickReportBrowser.cpp \
     QuickReportManager.cpp \
     QuickReportView.cpp \
     RestartRequiredDialog.cpp \
@@ -207,6 +208,7 @@ HEADERS += \
     PublicActivityManager.hpp \
     PublicTaskManager.hpp \
     QuickReport.hpp \
+    QuickReportBrowser.hpp \
     QuickReportView.hpp \
     RestartRequiredDialog.hpp \
     SelectBeneficiariesDialog.hpp \
@@ -278,6 +280,7 @@ FORMS += \
     ProjectManager.ui \
     PublicActivityManager.ui \
     PublicTaskManager.ui \
+    QuickReportBrowser.ui \
     SelectBeneficiariesDialog.ui \
     SelectPrivateTaskParentDialog.ui \
     SelectProjectParentDialog.ui \

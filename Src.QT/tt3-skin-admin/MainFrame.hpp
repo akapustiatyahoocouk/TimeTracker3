@@ -142,6 +142,9 @@ namespace tt3::skin::admin
         QStackedLayout *        _manageMyDayTabLayout = nullptr;
         tt3::gui::MyDayManager *_myDayManager = nullptr;
 
+        QStackedLayout *        _quickReportsTabLayout = nullptr;
+        tt3::gui::QuickReportBrowser *  _quickReportBrowser = nullptr;
+
         //////////
         //  Signal handlers
     private slots:
