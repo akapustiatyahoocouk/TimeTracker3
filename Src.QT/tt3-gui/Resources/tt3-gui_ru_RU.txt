@@ -235,7 +235,7 @@ OkPushButton=ОК
 CancelPushButton=Отмена
 
 [DailyWorkQuickReport]
-DisplayName=Ежедневная работа
+DisplayName=Рабочий день
 Description=Показывает ежедневные действия по категориям и типам
 
 [DestroyAccountDialog]
@@ -711,6 +711,18 @@ StopPublicTaskPushButton=Остановить общедоступную зад�
 CompletePublicTaskPushButton=Завершить общедоступную задачу
 TaskCompletedSuffix=[задача выполнена]
 ShowCompletedCheckBox=Показать завершенные задачи
+
+[QuickReportBrowser]
+ShowLabel=Показывать:
+RefreshLabel=Обновлять
+RefreshPushButton=Обновить
+RefreshInterval1=каждую секунду
+RefreshInterval5=каждые 5 секунд
+RefreshInterval10=каждые 10 секунд
+RefreshInterval15=каждые 15 секунд
+RefreshInterval30=каждые 30 секунд
+RefreshInterval60=каждую минуту
+RefreshInterval0=вручную
 
 [RestartRequiredDialog]
 Title=Требуется перезапуск

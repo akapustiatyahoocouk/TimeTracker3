@@ -13,7 +13,8 @@ msvc {
     QMAKE_CXXFLAGS += /Wall /D_CRT_SECURE_NO_WARNINGS
     TT3_BUILD_DATE=$$system(c:\\cygwin64\\bin\\date '+%Y%m%d')
     TT3_BUILD_TIME=$$system(c:\\cygwin64\\bin\\date '+%H%M')
-}
+    QMAKE_CXXFLAGS += /wd4996
+ }
 TARGET_SUFFIX=-$$TT3_VERSION
 DEFINES += TT3_VERSION=\\\"$$TT3_VERSION\\\"
 DEFINES += TT3_BUILD_DATE=\\\"$$TT3_BUILD_DATE\\\"

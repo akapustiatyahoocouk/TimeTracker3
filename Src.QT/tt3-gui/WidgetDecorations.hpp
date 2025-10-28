@@ -76,6 +76,7 @@ namespace tt3::gui
         //  Implementation
     private:
         //  Helpers
+        //  TODO use the same "_adjustXXX()" for LL decoration classes
         void        _adjustTextColor(QColor & textColor);
         void        _adjustBackColor(QColor & backColor);
         void        _initialize(

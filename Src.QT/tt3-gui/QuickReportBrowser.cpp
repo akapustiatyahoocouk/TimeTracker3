@@ -1,6 +1,6 @@
 //
 //  tt3-gui/QuickReportBrowser.cpp - tt3::gui::QuickReportBrowser class implementation
-//  TODO localize UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -37,65 +37,7 @@ QuickReportBrowser::QuickReportBrowser(
         _refreshTimer(this)
 {
     _ui->setupUi(this);
-
-    //  Populate the "quick report" combo box...
-    if (auto _ = RefreshGuard(_refreshUnderway))
-    {   //  We don't want combo box current item change events handled
-        //  while the combo box is initialized
-        QList<IQuickReport*> quickReportsList = QuickReportManager::allQuickReports().values();
-        std::sort(
-            quickReportsList.begin(),
-            quickReportsList.end(),
-            [](auto a, auto b)
-            {
-                return a->displayName() < b->displayName();
-            });
-        for (IQuickReport * quickReport : quickReportsList)
-        {
-            _ui->quickReportComboBox->addItem(
-                quickReport->smallIcon(),
-                quickReport->displayName(),
-                QVariant::fromValue(quickReport));
-        }
-        //  ...and select the "current" quick report
-        IQuickReport * quickReport =
-            QuickReportManager::findQuickReport(
-            Component::Settings::instance()->quickReport);
-        _setSelectedQuickReport(
-            (quickReport != nullptr) ?
-                quickReport :
-                DailyWorkQuickReport::instance());
-    }
-
-    //  Pupulate the "refresh interval" combo box...
-    if (auto _ = RefreshGuard(_refreshUnderway))
-    {   //  We don't want combo box current item change events handled
-        //  while the combo box is initialized
-        _ui->refreshIntervalComboBox->addItem(
-            "every second",
-            QVariant::fromValue<int>(1));
-        _ui->refreshIntervalComboBox->addItem(
-            "every 5 seconds",
-            QVariant::fromValue<int>(5));
-        _ui->refreshIntervalComboBox->addItem(
-            "every 10 seconds",
-            QVariant::fromValue<int>(10));
-        _ui->refreshIntervalComboBox->addItem(
-            "every 15 seconds",
-            QVariant::fromValue<int>(15));
-        _ui->refreshIntervalComboBox->addItem(
-            "every 30 seconds",
-            QVariant::fromValue<int>(30));
-        _ui->refreshIntervalComboBox->addItem(
-            "every minute",
-            QVariant::fromValue<int>(60));
-        _ui->refreshIntervalComboBox->addItem(
-            "manually",
-            QVariant::fromValue<int>(0));
-        //  ...and select the last used value
-        _setSelectedRefreshInterval(
-            Component::Settings::instance()->quickReportRefreshInterval);
-    }
+    _applyCurrentLocale();
 
     //  Create dynamic controls -
     //  Instantiate last used quick report if possible
@@ -109,6 +51,13 @@ QuickReportBrowser::QuickReportBrowser(
     _quickReportView->setWorkspace(_workspace);
     _quickReportView->setCredentials(_credentials);
     refresh();
+
+    //  Locale change requires UI translation
+    connect(&tt3::util::theCurrentLocale,
+            &tt3::util::CurrentLocale::changed,
+            this,
+            &QuickReportBrowser::_currentLocaleChanged,
+            Qt::ConnectionType::QueuedConnection);
 
     //  Must listen to delayed refresh requests
     connect(this,
@@ -253,8 +202,87 @@ void QuickReportBrowser::_clearAndDisableAllControls()
     _ui->refreshPushButton->setEnabled(false);
 }
 
+void QuickReportBrowser::_applyCurrentLocale()
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(QuickReportBrowser));
+
+    _ui->showLabel->setText(
+        rr.string(RID(ShowLabel)));
+    _ui->refreshLabel->setText(
+        rr.string(RID(RefreshLabel)));
+    _ui->refreshPushButton->setText(
+        rr.string(RID(RefreshPushButton)));
+
+    //  [re]populate the "quick report" combo box...
+    if (auto _ = RefreshGuard(_refreshUnderway))
+    {   //  We don't want combo box current item change events handled
+        //  while the combo box is initialized
+        QList<IQuickReport*> quickReportsList = QuickReportManager::allQuickReports().values();
+        std::sort(
+            quickReportsList.begin(),
+            quickReportsList.end(),
+            [](auto a, auto b)
+            {
+                return a->displayName() < b->displayName();
+            });
+        _ui->quickReportComboBox->clear();
+        for (IQuickReport * quickReport : quickReportsList)
+        {
+            _ui->quickReportComboBox->addItem(
+                quickReport->smallIcon(),
+                quickReport->displayName(),
+                QVariant::fromValue(quickReport));
+        }
+        //  ...and select the "current" quick report
+        IQuickReport * quickReport =
+            QuickReportManager::findQuickReport(
+                Component::Settings::instance()->quickReport);
+        _setSelectedQuickReport(
+            (quickReport != nullptr) ?
+                quickReport :
+                DailyWorkQuickReport::instance());
+    }
+
+    //  [Pu]re]populate the "refresh interval" combo box...
+    if (auto _ = RefreshGuard(_refreshUnderway))
+    {   //  We don't want combo box current item change events handled
+        //  while the combo box is initialized
+        _ui->refreshIntervalComboBox->clear();
+        _ui->refreshIntervalComboBox->addItem(
+            rr.string(RID(RefreshInterval1)),
+            QVariant::fromValue<int>(1));
+        _ui->refreshIntervalComboBox->addItem(
+            rr.string(RID(RefreshInterval5)),
+            QVariant::fromValue<int>(5));
+        _ui->refreshIntervalComboBox->addItem(
+            rr.string(RID(RefreshInterval10)),
+            QVariant::fromValue<int>(10));
+        _ui->refreshIntervalComboBox->addItem(
+            rr.string(RID(RefreshInterval15)),
+            QVariant::fromValue<int>(15));
+        _ui->refreshIntervalComboBox->addItem(
+            rr.string(RID(RefreshInterval30)),
+            QVariant::fromValue<int>(30));
+        _ui->refreshIntervalComboBox->addItem(
+            rr.string(RID(RefreshInterval60)),
+            QVariant::fromValue<int>(60));
+        _ui->refreshIntervalComboBox->addItem(
+            rr.string(RID(RefreshInterval0)),
+            QVariant::fromValue<int>(0));
+        //  ...and select the last used value
+        _setSelectedRefreshInterval(
+            Component::Settings::instance()->quickReportRefreshInterval);
+    }
+}
+
 //////////
 //  Signal handlers
+void QuickReportBrowser::_currentLocaleChanged(QLocale, QLocale)
+{
+    _applyCurrentLocale();
+    refresh();
+}
+
 void QuickReportBrowser::_quickReportComboBoxCurrentIndexhanged(int)
 {
     if (!_refreshUnderway)

@@ -199,5 +199,7 @@
         <file>Resources/Images/Misc/QuickReportSmall.png</file>
         <file>Resources/Images/Actions/RefreshLarge.png</file>
         <file>Resources/Images/Actions/RefreshSmall.png</file>
+        <file>Resources/Images/Actions/CopyLarge.png</file>
+        <file>Resources/Images/Actions/CopySmall.png</file>
     </qresource>
 </RCC>

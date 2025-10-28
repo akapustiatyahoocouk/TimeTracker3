@@ -60,6 +60,8 @@ namespace tt3::gui
         void            _resetUsedPieColors();
         QColor          _generateUnusedPieColor();
         int             _distance(const QColor & a, const QColor & b);
+        QString         _shorten(const QString & s);
+        void            _setChart(QChart * chart);
 
         //  View model
         struct _DayModelImpl;
@@ -113,6 +115,7 @@ namespace tt3::gui
         void            _currentThemeChanged(ITheme*, ITheme*);
         void            _dateRatioButtonClicked();
         void            _dateEditDateChanged(QDate);
+        void            _copyPushButtonClicked();
     };
 }
 

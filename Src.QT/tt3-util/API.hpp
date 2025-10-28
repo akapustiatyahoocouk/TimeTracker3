@@ -51,6 +51,7 @@
 #include <QBoxLayout>
 #include <QChart>
 #include <QChartView>
+#include <QClipboard>
 #include <QDateTime>
 #include <QDebug>
 #include <QDialog>
@@ -75,6 +76,7 @@
 #include <QMutexLocker>
 #include <QPieLegendMarker>
 #include <QPieSeries>
+#include <QPixmap>
 #include <QProcess>
 #include <QPushButton>
 #include <QQueue>

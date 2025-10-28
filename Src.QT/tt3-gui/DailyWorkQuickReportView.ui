@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>360</width>
-    <height>166</height>
+    <width>456</width>
+    <height>154</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -41,7 +41,7 @@
       </sizepolicy>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(0, 0, 255);</string>
+      <string notr="true"/>
      </property>
     </widget>
    </item>
@@ -70,37 +70,6 @@
        <number>0</number>
       </property>
       <item row="0" column="1">
-       <widget class="QLabel" name="showLabel">
-        <property name="text">
-         <string>Show:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="5">
-       <widget class="QDateEdit" name="dateEdit">
-        <property name="calendarPopup">
-         <bool>true</bool>
-        </property>
-        <property name="timeSpec">
-         <enum>Qt::TimeSpec::LocalTime</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QRadioButton" name="todayRadioButton">
-        <property name="text">
-         <string>Today</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="4">
-       <widget class="QRadioButton" name="forDateRadioButton">
-        <property name="text">
-         <string>For date:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Orientation::Horizontal</enum>
@@ -113,12 +82,62 @@
         </property>
        </spacer>
       </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="showLabel">
+        <property name="text">
+         <string>Show:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="5">
+       <widget class="QRadioButton" name="forDateRadioButton">
+        <property name="text">
+         <string>For date:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="6">
+       <widget class="QDateEdit" name="dateEdit">
+        <property name="calendarPopup">
+         <bool>true</bool>
+        </property>
+        <property name="timeSpec">
+         <enum>Qt::TimeSpec::LocalTime</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QRadioButton" name="todayRadioButton">
+        <property name="text">
+         <string>Today</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="copyPushButton">
+        <property name="text">
+         <string>Copy</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/CopySmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/CopySmall.png</iconset>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
   </layout>
  </widget>
- <resources/>
+ <tabstops>
+  <tabstop>copyPushButton</tabstop>
+  <tabstop>todayRadioButton</tabstop>
+  <tabstop>forDateRadioButton</tabstop>
+  <tabstop>dateEdit</tabstop>
+ </tabstops>
+ <resources>
+  <include location="tt3-gui.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>todayRadioButton</sender>
@@ -168,9 +187,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>copyPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::DailyWorkQuickReportView</receiver>
+   <slot>_copyPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>39</x>
+     <y>14</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>227</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_dateRatioButtonClicked()</slot>
   <slot>_dateEditDateChanged(QDate)</slot>
+  <slot>_copyPushButtonClicked()</slot>
  </slots>
 </ui>

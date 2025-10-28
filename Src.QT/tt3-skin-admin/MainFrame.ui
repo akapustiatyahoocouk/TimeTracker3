@@ -264,11 +264,13 @@
    </widget>
    <widget class="QMenu" name="menuReports">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="title">
      <string>&amp;Reports</string>
     </property>
+    <addaction name="separator"/>
+    <addaction name="actionQuickReports"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -313,6 +315,7 @@
    <addaction name="actionManageBeneficiaries"/>
    <addaction name="separator"/>
    <addaction name="actionManageMyDay"/>
+   <addaction name="actionQuickReports"/>
    <addaction name="separator"/>
    <addaction name="actionRefresh"/>
    <addaction name="separator"/>
@@ -513,7 +516,7 @@
     <string>&amp;Refresh</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+R</string>
+    <string>F5</string>
    </property>
   </action>
   <action name="actionManagePublicActivities">
@@ -658,6 +661,18 @@
    </property>
    <property name="shortcut">
     <string>0</string>
+   </property>
+  </action>
+  <action name="actionQuickReports">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Misc/QuickReportSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Misc/QuickReportSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Quick reports</string>
+   </property>
+   <property name="shortcut">
+    <string>Q</string>
    </property>
   </action>
  </widget>
@@ -1066,6 +1081,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionQuickReports</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionQuickReports()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_onActionExit()</slot>
@@ -1093,5 +1124,6 @@
   <slot>_onActionManageWorkStreams()</slot>
   <slot>_onActionManageBeneficiaries()</slot>
   <slot>_onActionManageMyDay()</slot>
+  <slot>_onActionQuickReports()</slot>
  </slots>
 </ui>

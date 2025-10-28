@@ -206,6 +206,7 @@ void MainFrame::refresh()
     _ui->actionManageWorkStreams->setEnabled(workspace != nullptr);
     _ui->actionManageBeneficiaries->setEnabled(workspace != nullptr);
     _ui->actionManageMyDay->setEnabled(workspace != nullptr);
+    _ui->actionQuickReports->setEnabled(workspace != nullptr);
     _ui->actionRefresh->setEnabled(workspace != nullptr);
     _ui->menuTools->setEnabled(workspace != nullptr);
     _ui->menuReports->setEnabled(workspace != nullptr);
@@ -566,6 +567,10 @@ void MainFrame::_onActionOpenWorkspace()
 
 void MainFrame::_onActionCloseWorkspace()
 {
+    //  TODO if would bw nice if the "cinform close"
+    //  dialog was displayed BEFORE the "current" workspace
+    //  was replaced with nullptr - this will emiminate
+    //  the UI flicker.
     //  Get the "current workspace: out of the way
     tt3::ws::Workspace workspace = nullptr;
     tt3::gui::theCurrentWorkspace.swap(workspace);
@@ -775,6 +780,19 @@ void MainFrame::_onActionManageMyDay()
     dlg.doModal();
 #else
     _ui->managersTabWidget->setCurrentIndex(9);
+#endif
+}
+
+void MainFrame::_onActionQuickReports()
+{
+#ifdef USE_MODAL_MANAGERS
+    tt3::gui::QuickReportsDialog dlg(
+        this,
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+#else
+    _ui->managersTabWidget->setCurrentIndex(10);
 #endif
 }
 

@@ -165,6 +165,7 @@ namespace tt3::skin::admin
         void            _onActionManageWorkStreams();
         void            _onActionManageBeneficiaries();
         void            _onActionManageMyDay();
+        void            _onActionQuickReports();
         void            _onActionRefresh();
         void            _onActionPreferences();
         void            _onActionLoginAsDifferentUser();

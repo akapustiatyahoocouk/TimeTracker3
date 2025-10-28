@@ -121,6 +121,7 @@ namespace tt3::gui
         int             _selectedRefreshInterval(); //  0 == manual refresh only
         void            _setSelectedRefreshInterval(int seconds);   //  0 == manual refresh only
         void            _clearAndDisableAllControls();
+        void            _applyCurrentLocale();
 
         //////////
         //  Controls
@@ -135,6 +136,7 @@ namespace tt3::gui
         //////////
         //  Signal handlers
     private slots:
+        void                _currentLocaleChanged(QLocale, QLocale);
         void                _quickReportComboBoxCurrentIndexhanged(int);
         void                _refreshIntervalComboBoxCurrentIndexChanged(int);
         void                _refreshPushButtonClicked();

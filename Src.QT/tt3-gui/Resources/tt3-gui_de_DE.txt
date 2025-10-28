@@ -711,6 +711,18 @@ CompletePublicTaskPushButton=Öffentliche Aufgabe abschließen
 TaskCompletedSuffix=[Aufgabe ist abgeschlossen]
 ShowCompletedCheckBox=Erledigte Aufgaben anzeigen
 
+[QuickReportBrowser]
+ShowLabel=Anzeigen:
+RefreshLabel=Aktualisieren
+RefreshPushButton=Aktualisieren
+RefreshInterval1=jede Sekunde
+RefreshInterval5=jede 5 Sekunden
+RefreshInterval10=jede 10 Sekunden
+RefreshInterval15=jede 15 Sekunden
+RefreshInterval30=jede 30 Sekunden
+RefreshInterval60=jede Minute
+RefreshInterval0=manuell
+
 [RestartRequiredDialog]
 Title=Neustart erforderlich
 Prompt=Eine der Änderungen an den Anwendungseinstellungen\nwird erst nach einem Neustart der Anwendung wirksam.\nMöchten Sie TimeTracker3 jetzt neu starten?

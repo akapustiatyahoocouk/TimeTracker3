@@ -1,6 +1,6 @@
 //
 //  tt3-gui/DailyWorkQuickReportView.cpp - tt3::gui::DailyWorkQuickReportView class implementation
-//  TODO cleanup the code - it has been lifted apiece from Internel
+//  TODO translate using UI resources
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -30,103 +30,99 @@ namespace
 {
     class DonutBreakdownMainSlice : public QPieSlice
     {
-        QPieSeries *    m_breakdownSeries;
     public:
-        DonutBreakdownMainSlice(QPieSeries *breakdownSeries, QObject *parent)
+        DonutBreakdownMainSlice(QPieSeries * breakdownSeries, QObject * parent)
             :   QPieSlice(parent),
-                m_breakdownSeries(breakdownSeries)
+                breakdownSeries(breakdownSeries)
         {
         }
 
-        QPieSeries * breakdownSeries()
-        {
-            return m_breakdownSeries;
-        }
+        QPieSeries *const breakdownSeries;
     };
 
     class DonutBreakdownChart : public QChart
     {
-        QPieSeries *    m_mainSeries;
     public:
         DonutBreakdownChart(/*QGraphicsItem * parent, Qt::WindowFlags wFlags*/)
             :   QChart(/*QChart::ChartTypeCartesian, parent, wFlags*/)
         {
             // create the series for main center pie
-            m_mainSeries = new QPieSeries;
-            m_mainSeries->setPieSize(0.5);
-            QChart::addSeries(m_mainSeries);
+            _mainSeries = new QPieSeries;
+            _mainSeries->setPieSize(0.5);
+            QChart::addSeries(_mainSeries);
         }
 
-        void addBreakdownSeries(QPieSeries *breakdownSeries, const QString & label, QColor pieColor, QColor labelColor)
+        void addBreakdownSeries(
+                QPieSeries * breakdownSeries,
+                const QString & label,
+                const QColor & pieColor,
+                const QColor & labelColor
+            )
         {
             QFont font("Arial", 8);
 
-            // add breakdown series as a slice to center pie
+            //  Add breakdown series as a slice to center pie
             auto mainSlice = new DonutBreakdownMainSlice(breakdownSeries, this);
-            //  TODO mainSlice->setName(breakdownSeries->name());
             mainSlice->setLabel(label);
             mainSlice->setValue(breakdownSeries->sum());
-            m_mainSeries->append(mainSlice);
+            _mainSeries->append(mainSlice);
 
-            // customize the slice
+            //  Customize the slice
             mainSlice->setBrush(pieColor);
             mainSlice->setLabelVisible();
-            mainSlice->setLabelColor(/*labelColor*/Qt::white);
+            mainSlice->setLabelColor(Qt::white);    //  pie slice color is NEVER close to white!
             mainSlice->setLabelPosition(QPieSlice::LabelInsideHorizontal);
             mainSlice->setLabelFont(font);
 
-            // position and customize the breakdown series
+            //  Position and customize the breakdown series
             breakdownSeries->setPieSize(0.65);
             breakdownSeries->setHoleSize(0.5);
             breakdownSeries->setLabelsVisible();
-            const auto slices = breakdownSeries->slices();
-            for (QPieSlice * slice : slices)
+            QColor sliceColor = pieColor;
+            for (QPieSlice * slice : breakdownSeries->slices())
             {
-                pieColor = pieColor.lighter(115);
-                slice->setBrush(pieColor);
+                sliceColor = sliceColor.lighter(115);   //  +15% lightness for each slice
+                slice->setBrush(sliceColor);
                 slice->setLabelFont(font);
             }
 
-            // add the series to the chart
+            //  add the series to the chart...
             QChart::addSeries(breakdownSeries);
-
-            // recalculate breakdown donut segments
-            recalculateAngles();
-
-            // update customize legend markers
-            updateLegendMarkers(labelColor);
+            //  ...and adjust the chart
+            _recalculateAngles();               //  ...for breakdown donut segments
+            _updateLegendMarkers(labelColor);   //  ...to customize legend markers
         }
 
-        void recalculateAngles()
+    private:
+        QPieSeries *    _mainSeries;
+
+        void _recalculateAngles()
         {
             qreal angle = 0;
-            const auto slices = m_mainSeries->slices();
-            for (QPieSlice *slice : slices)
+            for (QPieSlice * slice : _mainSeries->slices())
             {
-                QPieSeries *breakdownSeries = dynamic_cast<DonutBreakdownMainSlice *>(slice)->breakdownSeries();
+                QPieSeries * breakdownSeries = dynamic_cast<DonutBreakdownMainSlice *>(slice)->breakdownSeries;
                 breakdownSeries->setPieStartAngle(angle);
                 angle += slice->percentage() * 360.0; // full pie is 360.0
                 breakdownSeries->setPieEndAngle(angle);
             }
         }
 
-        void updateLegendMarkers(QBrush textColor)
+        void _updateLegendMarkers(QBrush textColor)
         {
-            // go through all markers
-            const auto allseries = series();
-            for (QAbstractSeries *series : allseries)
-            {
-                const auto markers = legend()->markers(series);
-                for (QLegendMarker  *marker : markers)
-                {
+            for (QAbstractSeries * series : series())
+            {   //  Go through all series...
+                for (QLegendMarker * marker : legend()->markers(series))
+                {   //  ...and markers
                     auto pieMarker = dynamic_cast<QPieLegendMarker *>(marker);
-                    if (series == m_mainSeries) {
-                        // modify markers from main series
+                    if (series == _mainSeries)
+                    {   //  ...to modify legend markers from main series...
                         pieMarker->setLabel(pieMarker->slice()->label());
                         pieMarker->setFont(QFont("Arial", 8));
                         pieMarker->setLabelBrush(textColor);
-                    } else {
-                        // hide markers from breakdown series
+                    }
+                    else
+                    {   //  ...and hide legend markers from breakdown series
                         pieMarker->setVisible(false);
                     }
                 }
@@ -142,9 +138,11 @@ DailyWorkQuickReportView::DailyWorkQuickReportView(QWidget *parent)
         //  Implementation
         _seedColors
         {
-            QColor(0, 128, 0)/*,
-            QColor(0, 0, 128),
-            QColor(128, 0, 128)*/
+            QColor(0, 128, 0),
+            QColor(128, 0, 128),
+            QColor(128, 0, 0),
+            QColor(128, 128, 0),
+            QColor(128, 0, 128)
         },
         //  Controls
         _ui(new Ui::DailyWorkQuickReportView)
@@ -175,6 +173,8 @@ DailyWorkQuickReportView::DailyWorkQuickReportView(QWidget *parent)
 
 DailyWorkQuickReportView::~DailyWorkQuickReportView()
 {
+    delete _chartView;
+    delete _chartPanelLayout;
     delete _ui;
 }
 
@@ -209,13 +209,17 @@ void DailyWorkQuickReportView::refresh()
         }
 
         //  Otherwise browser controls are enabled
+        _ui->copyPushButton->setEnabled(true);
         _ui->showLabel->setEnabled(true);
         _ui->todayRadioButton->setEnabled(true);
         _ui->forDateRadioButton->setEnabled(true);
         _ui->dateEdit->setEnabled(_ui->forDateRadioButton->isChecked());
 
-        _DayModel dayModel =
-            _createDayModel(QDateTime::currentDateTime().date());   //  TODO make date selectable
+        QDate date =
+            _ui->forDateRadioButton->isChecked() ?
+                _ui->dateEdit->date() :
+                QDateTime::currentDateTime().date();
+        _DayModel dayModel = _createDayModel(date);
 
         //  Convert day model to pie chart data
         _resetUsedPieColors();
@@ -226,8 +230,6 @@ void DailyWorkQuickReportView::refresh()
         for (auto activityTypeModel : dayModel->activityTypes)
         {
             QPieSeries * breakdownSeries = new QPieSeries();
-            auto series = new DonutBreakdownMainSlice(breakdownSeries, nullptr);
-            //  TODO ? series->setName(activityTypeModel->activityType->displayName(credentials()));   //  TODO may throw
             for (auto activityModel : activityTypeModel->activities)
             {
                 int64_t secs = (activityModel->durationMs + 999) / 1000;
@@ -239,7 +241,7 @@ void DailyWorkQuickReportView::refresh()
                 QString label = "<html><body>";
                 label += duration;
                 label += "<br>";
-                label += activityModel->activity->displayName(credentials());
+                label += _shorten(activityModel->activity->displayName(credentials()).toHtmlEscaped());
                 label += "</body></html>";
                 QPieSlice * pieSlice = breakdownSeries->append(label, qreal(activityModel->durationMs));
                 pieSlice->setLabelBrush(_decorations.itemForeground);
@@ -256,7 +258,7 @@ void DailyWorkQuickReportView::refresh()
                 label += "<br>";
                 if (activityTypeModel->activityType != nullptr)
                 {
-                    label += activityTypeModel->activityType->displayName(credentials());
+                    label += _shorten(activityTypeModel->activityType->displayName(credentials()).toHtmlEscaped());
                 }
                 else
                 {
@@ -271,10 +273,8 @@ void DailyWorkQuickReportView::refresh()
             }
         }
 
-        //  TODO finish the implementation
-        donutBreakdown->setBackgroundBrush(_decorations.background);
-        donutBreakdown->layout()->setContentsMargins(0, 0, 0, 0);
-        _chartView->setChart(donutBreakdown);
+        //  Use the chart we've just created
+        _setChart(donutBreakdown);
     }
 }
 
@@ -282,15 +282,13 @@ void DailyWorkQuickReportView::refresh()
 //  Implementation helpers
 void DailyWorkQuickReportView::_clearAndDisableAllControls()
 {
+    _ui->copyPushButton->setEnabled(false);
     _ui->showLabel->setEnabled(false);
     _ui->todayRadioButton->setEnabled(false);
     _ui->forDateRadioButton->setEnabled(false);
     _ui->dateEdit->setEnabled(false);
 
-    auto donutBreakdown = new DonutBreakdownChart();
-    donutBreakdown->setBackgroundBrush(_decorations.background);
-    donutBreakdown->layout()->setContentsMargins(0, 0, 0, 0);
-    _chartView->setChart(donutBreakdown);
+    _setChart(nullptr);
 }
 
 void DailyWorkQuickReportView::_resetUsedPieColors()
@@ -345,6 +343,24 @@ int DailyWorkQuickReportView::_distance(const QColor & a, const QColor & b)
     int dg = a.green() - b.green();
     int db = a.blue() - b.blue();
     return dr * dr + dg * dg + db * db;
+}
+
+QString DailyWorkQuickReportView::_shorten(const QString & s)
+{
+    return (s.length() <= 20) ? s : (s.left(18) + "...");
+}
+
+void DailyWorkQuickReportView::_setChart(QChart * chart)
+{
+    if (chart == nullptr)
+    {   //  Fake an empty chart
+        chart = new DonutBreakdownChart();
+    }
+    chart->setBackgroundBrush(_decorations.background);
+    chart->layout()->setContentsMargins(0, 0, 0, 0);
+    QChart * oldChart = _chartView->chart();
+    _chartView->setChart(chart);
+    delete oldChart;
 }
 
 //////////
@@ -451,6 +467,17 @@ void DailyWorkQuickReportView::_dateRatioButtonClicked()
 void DailyWorkQuickReportView::_dateEditDateChanged(QDate)
 {
     refresh();
+}
+
+void DailyWorkQuickReportView::_copyPushButtonClicked()
+{
+    QPixmap pixmap = _chartView->grab();
+    QClipboard * clipboard = QApplication::clipboard();
+    clipboard->setPixmap(pixmap);
+    QMessageBox::information(   //  TODO use dedicated MessageDialog
+        this,
+        "Image copied",
+        "The image has been copied to the system clipboard");
 }
 
 //  End of tt3-gui/DailyWorkQuickReportView.cpp
