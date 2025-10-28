@@ -238,6 +238,15 @@ CancelPushButton=Cancel
 DisplayName=Daily work
 Description=Shows daily activities by category and type
 
+[DailyWorkQuickReportView]
+CopyPushButton=Copy
+ScaleLabel=Scale:
+ShowLabel=Show:
+TodayRadioButton=Today
+ForDateRadioButton=For date
+ConfirmCopyTitle=Image copied
+ConfirmCopyMessage=The image has been copied to the system clipboard
+
 [DestroyAccountDialog]
 Title=Destroy account
 Prompt=Are you sure you want to destroy account {0}\nof user {1}?

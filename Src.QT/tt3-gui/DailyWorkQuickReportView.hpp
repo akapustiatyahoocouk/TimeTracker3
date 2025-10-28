@@ -57,6 +57,7 @@ namespace tt3::gui
 
         //  Helpers
         void            _clearAndDisableAllControls();
+        void            _applyCurrentLocale();
         void            _resetUsedPieColors();
         QColor          _generateUnusedPieColor();
         int             _distance(const QColor & a, const QColor & b);
@@ -113,6 +114,7 @@ namespace tt3::gui
         //  Signal handlers
     private slots:
         void            _currentThemeChanged(ITheme*, ITheme*);
+        void            _currentLocaleChanged(QLocale, QLocale);
         void            _scaleSliderValueChanged(int);
         void            _dateRatioButtonClicked();
         void            _dateEditDateChanged(QDate);

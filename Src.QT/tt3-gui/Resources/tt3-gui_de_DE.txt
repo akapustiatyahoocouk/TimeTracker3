@@ -238,6 +238,15 @@ CancelPushButton=Abbrechen
 DisplayName=Tägliche Arbeit
 Description=Zeigt tägliche Aktivitäten nach Kategorie und Typ an
 
+[DailyWorkQuickReportView]
+CopyPushButton=Kopieren
+ScaleLabel=Skalierung:
+ShowLabel=Anzeigen:
+TodayRadioButton=Heute
+ForDateRadioButton=Für Datum
+ConfirmCopyTitle=Bild kopiert
+ConfirmCopyMessage=Das Bild wurde in die Zwischenablage kopiert
+
 [DestroyAccountDialog]
 Title=Konto löschen
 Prompt=Möchten Sie Konto {0}\nvon Benutzer {1} wirklich löschen ?

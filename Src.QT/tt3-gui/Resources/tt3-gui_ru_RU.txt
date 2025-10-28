@@ -238,6 +238,15 @@ CancelPushButton=Отмена
 DisplayName=Рабочий день
 Description=Показывает ежедневные действия по категориям и типам
 
+[DailyWorkQuickReportView]
+CopyPushButton=Копировать
+ScaleLabel=Масштаб:
+ShowLabel=Показать:
+TodayRadioButton=Сегодня
+ForDateRadioButton=Для даты
+ConfirmCopyTitle=Изображение скопировано
+ConfirmCopyMessage=Изображение скопировано в системный буфер обмена
+
 [DestroyAccountDialog]
 Title=Удалить учётную запись
 Prompt=Вы уверены, что хотите удалить учётную запись {0}\nпользователя {1}?

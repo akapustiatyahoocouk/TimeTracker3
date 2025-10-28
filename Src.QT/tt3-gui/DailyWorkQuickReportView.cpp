@@ -122,7 +122,6 @@ namespace
                             QString("%1 %2%")
                                 .arg(pieMarker->slice()->label())
                                 .arg(pieMarker->slice()->percentage() * 100, 0, 'f', 1));
-                            // TODO pieMarker->slice()->label());
                         pieMarker->setFont(QFont("Arial", (12 * scale + 50) / 100));
                         pieMarker->setLabelBrush(textColor);
                     }
@@ -154,6 +153,7 @@ DailyWorkQuickReportView::DailyWorkQuickReportView(QWidget *parent)
         _ui(new Ui::DailyWorkQuickReportView)
 {
     _ui->setupUi(this);
+    _applyCurrentLocale();
 
     //  Create dynamic controls
     _chartPanelLayout = new QStackedLayout();
@@ -173,6 +173,13 @@ DailyWorkQuickReportView::DailyWorkQuickReportView(QWidget *parent)
             &CurrentTheme::changed,
             this,
             &DailyWorkQuickReportView::_currentThemeChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Locale change requires UI translation
+    connect(&tt3::util::theCurrentLocale,
+            &tt3::util::CurrentLocale::changed,
+            this,
+            &DailyWorkQuickReportView::_currentLocaleChanged,
             Qt::ConnectionType::QueuedConnection);
 
     //  Done
@@ -305,6 +312,25 @@ void DailyWorkQuickReportView::_clearAndDisableAllControls()
     _setChart(nullptr);
 }
 
+void DailyWorkQuickReportView::_applyCurrentLocale()
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(DailyWorkQuickReportView));
+
+    _ui->copyPushButton->setText(
+        rr.string(RID(CopyPushButton)));
+    _ui->scaleLabel->setText(
+        rr.string(RID(ScaleLabel)));
+    _ui->showLabel->setText(
+        rr.string(RID(ShowLabel)));
+    _ui->todayRadioButton->setText(
+        rr.string(RID(TodayRadioButton)));
+    _ui->forDateRadioButton->setText(
+        rr.string(RID(ForDateRadioButton)));
+
+    _ui->dateEdit->setLocale(QLocale());
+    _ui->dateEdit->setDisplayFormat(QLocale().dateFormat(QLocale::ShortFormat));
+}
+
 void DailyWorkQuickReportView::_resetUsedPieColors()
 {
     _usedPieColors.clear();
@@ -383,7 +409,7 @@ auto DailyWorkQuickReportView::_createDayModel(
         const QDate & date
     ) -> _DayModel
 {   //  TODO handle errors by creating a "pie chart"
-    //  with a single"100% error" message
+    //  with a single "100% error" message
     tt3::ws::Account clientAccount = workspace()->login(credentials());
     //  Determine the start/end times for the "date"
     QDateTime localDayStart(date, QTime(0, 0));
@@ -473,6 +499,12 @@ void DailyWorkQuickReportView::_currentThemeChanged(ITheme*, ITheme*)
     refresh();
 }
 
+void DailyWorkQuickReportView::_currentLocaleChanged(QLocale, QLocale)
+{
+    _applyCurrentLocale();
+    refresh();
+}
+
 void DailyWorkQuickReportView::_scaleSliderValueChanged(int)
 {
     //  TODO save to Settings
@@ -493,13 +525,15 @@ void DailyWorkQuickReportView::_dateEditDateChanged(QDate)
 
 void DailyWorkQuickReportView::_copyPushButtonClicked()
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(DailyWorkQuickReportView));
+
     QPixmap pixmap = _chartView->grab();
     QClipboard * clipboard = QApplication::clipboard();
     clipboard->setPixmap(pixmap);
     QMessageBox::information(   //  TODO use dedicated MessageDialog
         this,
-        "Image copied",
-        "The image has been copied to the system clipboard");
+        rr.string(RID(ConfirmCopyTitle)),
+        rr.string(RID(ConfirmCopyMessage)));
 }
 
 //  End of tt3-gui/DailyWorkQuickReportView.cpp
