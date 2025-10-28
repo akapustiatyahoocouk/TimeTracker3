@@ -443,6 +443,9 @@ OkPushButton=OK
 Title=Управление рабочими потоками
 OkPushButton=OK
 
+[MessageDialog]
+OkPushButton=OK
+
 [ModifyAccountDialog]
 Title=Изменить учетную запись
 ViewOnlyTitle=Просмотреть учетную запись

@@ -60,6 +60,7 @@
 #include "tt3-gui/QuickReportBrowser.hpp"
 
 //  Dialogs
+#include "tt3-gui/MessageDialog.hpp"
 #include "tt3-gui/ErrorDialog.hpp"
 #include "tt3-gui/AskYesNoDialog.hpp"
 #include "tt3-gui/EditStringDialog.hpp"

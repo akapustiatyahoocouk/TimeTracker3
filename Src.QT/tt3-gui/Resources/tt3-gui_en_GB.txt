@@ -443,6 +443,9 @@ OkPushButton=OK
 Title=Manage work streams
 OkPushButton=OK
 
+[MessageDialog]
+OkPushButton=OK
+
 [ModifyAccountDialog]
 Title=Modify account
 ViewOnlyTitle=View account

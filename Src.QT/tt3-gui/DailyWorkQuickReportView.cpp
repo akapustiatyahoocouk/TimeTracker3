@@ -545,7 +545,7 @@ void DailyWorkQuickReportView::_copyPushButtonClicked()
     QPixmap pixmap = _chartView->grab();
     QClipboard * clipboard = QApplication::clipboard();
     clipboard->setPixmap(pixmap);
-    QMessageBox::information(   //  TODO use dedicated MessageDialog
+    MessageDialog::show(
         this,
         rr.string(RID(ConfirmCopyTitle)),
         rr.string(RID(ConfirmCopyMessage)));

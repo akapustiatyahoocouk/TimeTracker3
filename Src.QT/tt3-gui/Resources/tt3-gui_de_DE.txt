@@ -443,6 +443,9 @@ OkPushButton=Bestätigen
 Title=Arbeitsabläufe verwalten
 OkPushButton=Bestätigen
 
+[MessageDialog]
+OkPushButton=Bestätigen
+
 [ModifyAccountDialog]
 Title=Konto ändern
 ViewOnlyTitle=Konto anzeigen

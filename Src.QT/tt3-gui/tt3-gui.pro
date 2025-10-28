@@ -76,6 +76,7 @@ SOURCES += \
     ManageQuickPicksListDialog.cpp \
     ManageUsersDialog.cpp \
     ManageWorkStreamsDialog.cpp \
+    MessageDialog.cpp \
     ModifyAccountDialog.cpp \
     ModifyActivityTypeDialog.cpp \
     ModifyBeneficiaryDialog.cpp \
@@ -186,6 +187,7 @@ HEADERS += \
     ManageQuickPicksListDialog.hpp \
     ManageUsersDialog.hpp \
     ManageWorkStreamsDialog.hpp \
+    MessageDialog.hpp \
     ModifyAccountDialog.hpp \
     ModifyActivityTypeDialog.hpp \
     ModifyBeneficiaryDialog.hpp \
@@ -262,6 +264,7 @@ FORMS += \
     ManageQuickPicksListDialog.ui \
     ManageUsersDialog.ui \
     ManageWorkStreamsDialog.ui \
+    MessageDialog.ui \
     ModifyAccountDialog.ui \
     ModifyActivityTypeDialog.ui \
     ModifyBeneficiaryDialog.ui \
