@@ -214,17 +214,101 @@ void Beneficiary::setWorkloads(
 }
 
 void Beneficiary::addWorkload(
-        tt3::db::api::IWorkload * /*workload*/
+        tt3::db::api::IWorkload * workload
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (workload == nullptr)
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "workload",
+            nullptr);
+    }
+
+    Workload * xmlWorkload = dynamic_cast<Workload*>(workload);
+    if (xmlWorkload == nullptr ||
+        xmlWorkload->_database != this->_database ||
+        !xmlWorkload->_isLive)
+    {   //  OOPS!
+        throw tt3::db::api::IncompatibleInstanceException(workload->type());
+    }
+    if (!_workloads.contains(xmlWorkload))
+    {   //  Make the changes
+        Q_ASSERT(!xmlWorkload->_beneficiaries.contains(this));
+        _workloads.insert(xmlWorkload);
+        xmlWorkload->_beneficiaries.insert(this);
+        xmlWorkload->addReference();
+        this->addReference();
+        //  ...ensure the changes are saved...
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, xmlWorkload->type(), xmlWorkload->_oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 void Beneficiary::removeWorkload(
-        tt3::db::api::IWorkload * /*workload*/
+        tt3::db::api::IWorkload * workload
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (workload == nullptr)
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "workload",
+            nullptr);
+    }
+
+    Workload * xmlWorkload = dynamic_cast<Workload*>(workload);
+    if (xmlWorkload == nullptr ||
+        xmlWorkload->_database != this->_database ||
+        !xmlWorkload->_isLive)
+    {   //  OOPS!
+        throw tt3::db::api::IncompatibleInstanceException(workload->type());
+    }
+    if (_workloads.contains(xmlWorkload))
+    {   //  Make the changes
+        Q_ASSERT(xmlWorkload->_beneficiaries.contains(this));
+        _workloads.remove(xmlWorkload);
+        xmlWorkload->_beneficiaries.remove(this);
+        xmlWorkload->removeReference();
+        this->removeReference();
+        //  ...ensure the changes are saved...
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, xmlWorkload->type(), xmlWorkload->_oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 //////////

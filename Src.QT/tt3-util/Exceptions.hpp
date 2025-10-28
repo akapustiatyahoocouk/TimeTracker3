@@ -313,14 +313,14 @@ namespace tt3::util
 //////////
 //  Logging
 TT3_UTIL_PUBLIC inline
-QDebug & operator << (QDebug debug, const tt3::util::Exception & ex)
+QDebug operator << (QDebug debug, const tt3::util::Exception & ex)
 {
     debug << ex.errorMessage();
     return debug;
 }
 
 TT3_UTIL_PUBLIC inline
-QDebug & operator << (QDebug debug, const tt3::util::Error & ex)
+QDebug operator << (QDebug debug, const tt3::util::Error & ex)
 {
     debug << ex.errorMessage();
     return debug;

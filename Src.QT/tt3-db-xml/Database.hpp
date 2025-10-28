@@ -90,24 +90,24 @@ namespace tt3::db::xml
                                 const QString & displayName
                             ) -> tt3::db::api::IActivityType * override;
         virtual auto    publicActivities(
-                            ) const -> tt3::db::api::PublicActivities;
+                            ) const -> tt3::db::api::PublicActivities override;
         virtual auto    findPublicActivity(
                                 const QString & displayName
                             ) -> tt3::db::api::IPublicActivity * override;
         virtual auto    publicActivitiesAndTasks(
-                            ) const -> tt3::db::api::PublicActivities;
+                            ) const -> tt3::db::api::PublicActivities override;
         virtual auto    publicTasks(
-                            ) const -> tt3::db::api::PublicTasks;
+                            ) const -> tt3::db::api::PublicTasks override;
         virtual auto    rootPublicTasks(
-                            ) const -> tt3::db::api::PublicTasks;
+                            ) const -> tt3::db::api::PublicTasks override;
         virtual auto    projects(
-                            ) const -> tt3::db::api::Projects;
+                            ) const -> tt3::db::api::Projects override;
         virtual auto    rootProjects(
-                            ) const -> tt3::db::api::Projects;
+                            ) const -> tt3::db::api::Projects override;
         virtual auto    workStreams(
-                            ) const -> tt3::db::api::WorkStreams;
+                            ) const -> tt3::db::api::WorkStreams override;
         virtual auto    beneficiaries(
-                            ) const -> tt3::db::api::Beneficiaries;
+                            ) const -> tt3::db::api::Beneficiaries override;
 
         //////////
         //  tt3::db::api::IDatabase (access control)

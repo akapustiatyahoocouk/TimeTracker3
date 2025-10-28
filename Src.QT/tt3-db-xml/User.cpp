@@ -191,13 +191,29 @@ auto User::privateActivities(
 auto User::privateActivitiesAndTasks(
     ) const -> tt3::db::api::PrivateActivities
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    PrivateTasks closure;
+    _collectPrivateTasksClosure(closure, _rootPrivateTasks);
+    return
+        tt3::db::api::PrivateActivities(
+            _privateActivities.cbegin(), _privateActivities.cend()) +
+        tt3::db::api::PrivateActivities(
+            closure.cbegin(), closure.cend());
 }
 
 auto User::privateTasks(
     ) const -> tt3::db::api::PrivateTasks
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    PrivateTasks closure;
+    _collectPrivateTasksClosure(closure, _rootPrivateTasks);
+    return tt3::db::api::PrivateTasks(closure.cbegin(), closure.cend());
 }
 
 auto User::rootPrivateTasks(
@@ -294,17 +310,101 @@ void User::setPermittedWorkloads(
 }
 
 void User::addPermittedWorkload(
-        tt3::db::api::IWorkload * /*workload*/
+        tt3::db::api::IWorkload * workload
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (workload == nullptr)
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "workload",
+            nullptr);
+    }
+
+    Workload * xmlWorkload = dynamic_cast<Workload*>(workload);
+    if (xmlWorkload == nullptr ||
+        xmlWorkload->_database != this->_database ||
+        !xmlWorkload->_isLive)
+    {   //  OOPS!
+        throw tt3::db::api::IncompatibleInstanceException(workload->type());
+    }
+    if (!_permittedWorkloads.contains(xmlWorkload))
+    {   //  Make the changes
+        Q_ASSERT(!xmlWorkload->_assignedUsers.contains(this));
+        _permittedWorkloads.insert(xmlWorkload);
+        xmlWorkload->_assignedUsers.insert(this);
+        xmlWorkload->addReference();
+        this->addReference();
+        //  ...ensure the changes are saved...
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, xmlWorkload->type(), xmlWorkload->_oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 void User::removePermittedWorkload(
-    tt3::db::api::IWorkload * /*workload*/
+        tt3::db::api::IWorkload * workload
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (workload == nullptr)
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "workload",
+            nullptr);
+    }
+
+    Workload * xmlWorkload = dynamic_cast<Workload*>(workload);
+    if (xmlWorkload == nullptr ||
+        xmlWorkload->_database != this->_database ||
+        !xmlWorkload->_isLive)
+    {   //  OOPS!
+        throw tt3::db::api::IncompatibleInstanceException(workload->type());
+    }
+    if (_permittedWorkloads.contains(xmlWorkload))
+    {   //  Make the changes
+        Q_ASSERT(xmlWorkload->_assignedUsers.contains(this));
+        _permittedWorkloads.remove(xmlWorkload);
+        xmlWorkload->_assignedUsers.remove(this);
+        xmlWorkload->removeReference();
+        this->removeReference();
+        //  ...ensure the changes are saved...
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, xmlWorkload->type(), xmlWorkload->_oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 //////////
@@ -691,6 +791,17 @@ auto User::_findRootPrivateTask(
         }
     }
     return nullptr;
+}
+
+void User::_collectPrivateTasksClosure(PrivateTasks & closure, const PrivateTasks & addend) const
+{
+    Q_ASSERT(_database->_guard.isLockedByCurrentThread());
+
+    closure += addend;
+    for (auto privateTask : addend)
+    {   //  We rely on no-parent-child-loops!
+        _collectPrivateTasksClosure(closure, privateTask->_children);
+    }
 }
 
 //////////

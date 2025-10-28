@@ -219,17 +219,101 @@ void Workload::setBeneficiaries(
 }
 
 void Workload::addBeneficiary(
-        tt3::db::api::IBeneficiary * /*beneficiary*/
+        tt3::db::api::IBeneficiary * beneficiary
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (beneficiary == nullptr)
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "beneficiary",
+            nullptr);
+    }
+
+    Beneficiary * xmlBeneficiary = dynamic_cast<Beneficiary*>(beneficiary);
+    if (xmlBeneficiary == nullptr ||
+        xmlBeneficiary->_database != this->_database ||
+        !xmlBeneficiary->_isLive)
+    {   //  OOPS!
+        throw tt3::db::api::IncompatibleInstanceException(beneficiary->type());
+    }
+    if (!_beneficiaries.contains(xmlBeneficiary))
+    {   //  Make the changes
+        Q_ASSERT(!xmlBeneficiary->_workloads.contains(this));
+        _beneficiaries.insert(xmlBeneficiary);
+        xmlBeneficiary->_workloads.insert(this);
+        xmlBeneficiary->addReference();
+        this->addReference();
+        //  ...ensure the changes are saved...
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, xmlBeneficiary->type(), xmlBeneficiary->_oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 void Workload::removeBeneficiary(
-        tt3::db::api::IBeneficiary * /*beneficiary*/
+        tt3::db::api::IBeneficiary * beneficiary
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (beneficiary == nullptr)
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "beneficiary",
+            nullptr);
+    }
+
+    Beneficiary * xmlBeneficiary = dynamic_cast<Beneficiary*>(beneficiary);
+    if (xmlBeneficiary == nullptr ||
+        xmlBeneficiary->_database != this->_database ||
+        !xmlBeneficiary->_isLive)
+    {   //  OOPS!
+        throw tt3::db::api::IncompatibleInstanceException(beneficiary->type());
+    }
+    if (_beneficiaries.contains(xmlBeneficiary))
+    {   //  Make the changes
+        Q_ASSERT(xmlBeneficiary->_workloads.contains(this));
+        _beneficiaries.remove(xmlBeneficiary);
+        xmlBeneficiary->_workloads.remove(this);
+        xmlBeneficiary->removeReference();
+        this->removeReference();
+        //  ...ensure the changes are saved...
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, xmlBeneficiary->type(), xmlBeneficiary->_oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 auto Workload::assignedUsers(
@@ -243,24 +327,174 @@ auto Workload::assignedUsers(
 }
 
 void Workload::setAssignedUsers(
-        const tt3::db::api::Users & /*users*/
+        const tt3::db::api::Users & users
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (users.contains(nullptr))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "users",
+            nullptr);
+    }
+
+    Users xmlUsers =
+        tt3::util::transform(
+            users,
+            [&](auto u)
+            {
+                Q_ASSERT(u != nullptr); //  should have been caught before!
+                auto xmlUser = dynamic_cast<User*>(u);
+                if (xmlUser == nullptr ||
+                    xmlUser->_database != this->_database ||
+                    !xmlUser->_isLive)
+                {   //  OOPS!
+                    throw tt3::db::api::IncompatibleInstanceException(u->type());
+                }
+                return xmlUser;
+            });
+    if (xmlUsers != _assignedUsers)
+    {   //  Make the changes
+        Users addedUsers = xmlUsers - _assignedUsers;
+        Users removedUsers = _assignedUsers - xmlUsers;
+        //  link the added Users...
+        for (User * xmlUser : addedUsers)
+        {
+            _assignedUsers.insert(xmlUser);
+            xmlUser->_permittedWorkloads.insert(this);
+            xmlUser->addReference();
+            this->addReference();
+        }
+        //  ...un-link the removed Users...
+        for (User * xmlUser : removedUsers)
+        {
+            _assignedUsers.remove(xmlUser);
+            xmlUser->_permittedWorkloads.remove(this);
+            xmlUser->removeReference();
+            this->removeReference();
+        }
+        //  ...ensure the changes are saved...
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        for (User * xmlUser : addedUsers + removedUsers)
+        {
+            _database->_changeNotifier.post(
+                new tt3::db::api::ObjectModifiedNotification(
+                    _database, xmlUser->type(), xmlUser->_oid));
+        }
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 void Workload::addAssignedUser(
-        tt3::db::api::IUser * /*user*/
+        tt3::db::api::IUser * user
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (user == nullptr)
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "user",
+            nullptr);
+    }
+
+    User * xmlUser = dynamic_cast<User*>(user);
+    if (xmlUser == nullptr ||
+        xmlUser->_database != this->_database ||
+        !xmlUser->_isLive)
+    {   //  OOPS!
+        throw tt3::db::api::IncompatibleInstanceException(user->type());
+    }
+    if (!_assignedUsers.contains(xmlUser))
+    {   //  Make the changes
+        Q_ASSERT(!xmlUser->_permittedWorkloads.contains(this));
+        _assignedUsers.insert(xmlUser);
+        xmlUser->_permittedWorkloads.insert(this);
+        xmlUser->addReference();
+        this->addReference();
+        //  ...ensure the changes are saved...
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, xmlUser->type(), xmlUser->_oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 void Workload::removeAssignedUser(
-        tt3::db::api::IUser * /*user*/
+        tt3::db::api::IUser * user
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (user == nullptr)
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "user",
+            nullptr);
+    }
+
+    User * xmlUser = dynamic_cast<User*>(user);
+    if (xmlUser == nullptr ||
+        xmlUser->_database != this->_database ||
+        !xmlUser->_isLive)
+    {   //  OOPS!
+        throw tt3::db::api::IncompatibleInstanceException(user->type());
+    }
+    if (_assignedUsers.contains(xmlUser))
+    {   //  Make the changes
+        Q_ASSERT(xmlUser->_permittedWorkloads.contains(this));
+        _assignedUsers.remove(xmlUser);
+        xmlUser->_permittedWorkloads.remove(this);
+        xmlUser->removeReference();
+        this->removeReference();
+        //  ...ensure the changes are saved...
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, xmlUser->type(), xmlUser->_oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
 }
 
 //////////

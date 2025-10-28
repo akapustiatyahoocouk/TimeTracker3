@@ -137,6 +137,10 @@ namespace tt3::db::xml
         auto            _findRootPrivateTask(
                                 const QString & displayName
                             ) const -> PrivateTask *;
+        void            _collectPrivateTasksClosure(
+                                PrivateTasks & closure,
+                                const PrivateTasks & addend
+            ) const;
 
         //////////
         //  Serialization
