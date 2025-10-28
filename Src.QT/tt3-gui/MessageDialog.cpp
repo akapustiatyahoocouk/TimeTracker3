@@ -1,6 +1,6 @@
 //
 //  tt3-gui/MessageDialog.cpp - tt3::gui::MessageDialog class implementation (+specializations)
-//  TODO localize via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //

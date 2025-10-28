@@ -246,6 +246,7 @@ TodayRadioButton=Heute
 ForDateRadioButton=Für Datum
 ConfirmCopyTitle=Bild kopiert
 ConfirmCopyMessage=Das Bild wurde in die Zwischenablage kopiert
+NoDataLabel=Keine Daten zum Anzeigen
 
 [DestroyAccountDialog]
 Title=Konto löschen

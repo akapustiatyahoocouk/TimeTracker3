@@ -246,6 +246,7 @@ TodayRadioButton=Today
 ForDateRadioButton=For date
 ConfirmCopyTitle=Image copied
 ConfirmCopyMessage=The image has been copied to the system clipboard
+NoDataLabel=No data to display
 
 [DestroyAccountDialog]
 Title=Destroy account

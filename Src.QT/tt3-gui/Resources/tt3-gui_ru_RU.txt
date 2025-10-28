@@ -246,6 +246,7 @@ TodayRadioButton=Сегодня
 ForDateRadioButton=Для даты
 ConfirmCopyTitle=Изображение скопировано
 ConfirmCopyMessage=Изображение скопировано в системный буфер обмена
+NoDataLabel=Нет данных для отображения
 
 [DestroyAccountDialog]
 Title=Удалить учётную запись

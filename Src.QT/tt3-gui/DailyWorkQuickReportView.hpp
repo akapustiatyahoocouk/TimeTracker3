@@ -111,8 +111,11 @@ namespace tt3::gui
         //  Dynamic controls are created at runtime
         QStackedLayout *    _chartPanelLayout;
         QChartView *        _chartView;
+        QLabel *            _noDataLabel;
+        QLabel *            _errorLabel;
         //  Drawing resoutces
         TreeWidgetDecorations   _decorations;   //  piggyback on it for colors
+        LabelDecorations    _labelDecorations;
 
         //////////
         //  Signal handlers
