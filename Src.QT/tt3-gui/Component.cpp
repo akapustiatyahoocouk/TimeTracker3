@@ -113,7 +113,10 @@ Component::Settings::Settings()
         selectWorkloadsDialogTab(this, M(SelectWorkloadsDialogTab), 0),
         //  Properties (quick reports)
         quickReport(this, M(QuickReport), M(-)),
-        quickReportRefreshInterval(this, M(QuickReportRefreshInterval), 0)
+        quickReportRefreshInterval(this, M(QuickReportRefreshInterval), 0),
+        dailyWorkQuickReportScale(this, M(DailyWorkQuickReportScale), 70),
+        dailyWorkQuickReportShowCustomDate(this, M(DailyWorkQuickReportShowCustomDate), false),
+        dailyWorkQuickReportCustomDate(this, M(DailyWorkQuickReportCustomDate), QDate::currentDate())
 {
 }
 

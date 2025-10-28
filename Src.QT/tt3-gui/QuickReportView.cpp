@@ -54,10 +54,10 @@ tt3::ws::Workspace QuickReportView::workspace() const
 void QuickReportView::setWorkspace(tt3::ws::Workspace workspace)
 {
     if (workspace != _workspace)
-    {
-        //  TODO _stopListeningToWorkspaceChanges();
+    {   //  We do NOT listen to changes made within the
+        //  workspace, as these do NOT cause automatic refresh.
+        //  Refreshes are either a) manual or b) on timer.
         _workspace = workspace;
-        //  TODO _startListeningToWorkspaceChanges();
         requestRefresh();
     }
 }

@@ -1,6 +1,6 @@
 //
 //  tt3-gui/DailyWorkQuickReportView.cpp - tt3::gui::DailyWorkQuickReportView class implementation
-//  TODO translate using UI resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -163,10 +163,14 @@ DailyWorkQuickReportView::DailyWorkQuickReportView(QWidget *parent)
     _ui->chartPanel->setLayout(_chartPanelLayout);
 
     //  Set editable control values
-    _ui->scaleSlider->setValue(100);    //  TODO from Settings
-    _ui->todayRadioButton->setChecked(true);    //  TODO from settings
-    _ui->forDateRadioButton->setChecked(false); //  TODO from settings
-    _ui->dateEdit->setDate(QDateTime::currentDateTime().date());    //  TODO from Settings
+    _ui->scaleSlider->setValue(
+        Component::Settings::instance()->dailyWorkQuickReportScale);
+    _ui->todayRadioButton->setChecked(
+        !Component::Settings::instance()->dailyWorkQuickReportShowCustomDate);
+    _ui->forDateRadioButton->setChecked(
+        Component::Settings::instance()->dailyWorkQuickReportShowCustomDate);
+    _ui->dateEdit->setDate(
+        Component::Settings::instance()->dailyWorkQuickReportCustomDate);
 
     //  Theme change means widget decorations change
     connect(&theCurrentTheme,
@@ -507,19 +511,22 @@ void DailyWorkQuickReportView::_currentLocaleChanged(QLocale, QLocale)
 
 void DailyWorkQuickReportView::_scaleSliderValueChanged(int)
 {
-    //  TODO save to Settings
+    Component::Settings::instance()->dailyWorkQuickReportScale =
+        _ui->scaleSlider->value();
     refresh();
 }
 
 void DailyWorkQuickReportView::_dateRatioButtonClicked()
 {
-    //  TODO save to Settings
+    Component::Settings::instance()->dailyWorkQuickReportShowCustomDate =
+        _ui->forDateRadioButton->isChecked();
     refresh();
 }
 
 void DailyWorkQuickReportView::_dateEditDateChanged(QDate)
 {
-    //  TODO save to Settings
+    Component::Settings::instance()->dailyWorkQuickReportCustomDate =
+        _ui->dateEdit->date();
     refresh();
 }
 

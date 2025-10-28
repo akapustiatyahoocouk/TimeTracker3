@@ -142,6 +142,19 @@ namespace tt3::gui
             /// \brief
             ///     The refresh interval of the quick report, in seconds; 0 == never.
             tt3::util::Setting<int>     quickReportRefreshInterval;
+
+            /// \brief
+            ///     The scale, in %, for the DailyWork quick report.
+            tt3::util::Setting<int>     dailyWorkQuickReportScale;
+
+            /// \brief
+            ///     True if DailyWork quick report shows a custom date,
+            ///     false if current date.
+            tt3::util::Setting<bool>    dailyWorkQuickReportShowCustomDate;
+
+            /// \brief
+            ///     The custom date for DailyWork quick report.
+            tt3::util::Setting<QDate>   dailyWorkQuickReportCustomDate;
         };
 
         //////////

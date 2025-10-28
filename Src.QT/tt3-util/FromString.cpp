@@ -444,7 +444,18 @@ template <> TT3_UTIL_PUBLIC QDateTime tt3::util::fromString<QDateTime>(const QSt
 {
     static QRegularExpression regex("([0-9]{4})([0-9]{2})([0-9]{2})T([0-9]{2})([0-9]{2})([0-9]{2})\\.([0-9]{3})");
 
-    if (scan < 0 || scan + 19 > s.length())
+    if (scan < 0 || scan >= s.length())
+    {
+        throw ParseException(s, scan);
+    }
+    //  Special cases
+    if (scan < s.length() && s[scan] == '-')
+    {   //  Invalid QDateTime!
+        scan++;
+        return QDateTime();
+    }
+    //  General case
+    if (scan + 19 > s.length())
     {
         throw ParseException(s, scan);
     }
@@ -466,6 +477,42 @@ template <> TT3_UTIL_PUBLIC QDateTime tt3::util::fromString<QDateTime>(const QSt
             throw ParseException(s, scan);
         }
         scan += 19;
+        return result;
+    }
+    throw ParseException(s, scan);
+}
+
+template <> TT3_UTIL_PUBLIC QDate tt3::util::fromString<QDate>(const QString & s, qsizetype & scan)
+{
+    static QRegularExpression regex("([0-9]{4})([0-9]{2})([0-9]{2})");
+
+    if (scan < 0 || scan >= s.length())
+    {
+        throw ParseException(s, scan);
+    }
+    //  Special cases
+    if (scan < s.length() && s[scan] == '-')
+    {   //  Invalid QDate!
+        scan++;
+        return QDate();
+    }
+    //  General case
+    if (scan + 8 > s.length())
+    {
+        throw ParseException(s, scan);
+    }
+    QRegularExpressionMatch regexMatch = regex.match(s.mid(scan));
+    if (regexMatch.hasMatch())
+    {
+        int year = fromString<int>(regexMatch.captured(1), 0);
+        int month = fromString<int>(regexMatch.captured(2), 0);
+        int day = fromString<int>(regexMatch.captured(3), 0);
+        QDate result(year, month, day);
+        if (!result.isValid())
+        {
+            throw ParseException(s, scan);
+        }
+        scan += 8;
         return result;
     }
     throw ParseException(s, scan);
