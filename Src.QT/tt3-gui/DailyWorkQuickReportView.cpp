@@ -43,12 +43,12 @@ namespace
     class DonutBreakdownChart : public QChart
     {
     public:
-        DonutBreakdownChart(/*QGraphicsItem * parent, Qt::WindowFlags wFlags*/)
-            :   QChart(/*QChart::ChartTypeCartesian, parent, wFlags*/)
+        DonutBreakdownChart(int scale)
+            :   QChart()
         {
             // create the series for main center pie
             _mainSeries = new QPieSeries;
-            _mainSeries->setPieSize(0.5);
+            _mainSeries->setPieSize(0.8 * scale / 100);
             QChart::addSeries(_mainSeries);
         }
 
@@ -56,10 +56,11 @@ namespace
                 QPieSeries * breakdownSeries,
                 const QString & label,
                 const QColor & pieColor,
-                const QColor & labelColor
+                const QColor & labelColor,
+                int scale
             )
         {
-            QFont font("Arial", 8);
+            QFont font("Arial", (12 * scale + 50) / 100);
 
             //  Add breakdown series as a slice to center pie
             auto mainSlice = new DonutBreakdownMainSlice(breakdownSeries, this);
@@ -75,8 +76,8 @@ namespace
             mainSlice->setLabelFont(font);
 
             //  Position and customize the breakdown series
-            breakdownSeries->setPieSize(0.65);
-            breakdownSeries->setHoleSize(0.5);
+            breakdownSeries->setPieSize(1.0 * scale / 100);
+            breakdownSeries->setHoleSize(0.8 * scale / 100);
             breakdownSeries->setLabelsVisible();
             QColor sliceColor = pieColor;
             for (QPieSlice * slice : breakdownSeries->slices())
@@ -90,7 +91,7 @@ namespace
             QChart::addSeries(breakdownSeries);
             //  ...and adjust the chart
             _recalculateAngles();               //  ...for breakdown donut segments
-            _updateLegendMarkers(labelColor);   //  ...to customize legend markers
+            _updateLegendMarkers(labelColor, scale);   //  ...to customize legend markers
         }
 
     private:
@@ -108,7 +109,7 @@ namespace
             }
         }
 
-        void _updateLegendMarkers(QBrush textColor)
+        void _updateLegendMarkers(QBrush textColor, int scale)
         {
             for (QAbstractSeries * series : series())
             {   //  Go through all series...
@@ -117,8 +118,12 @@ namespace
                     auto pieMarker = dynamic_cast<QPieLegendMarker *>(marker);
                     if (series == _mainSeries)
                     {   //  ...to modify legend markers from main series...
-                        pieMarker->setLabel(pieMarker->slice()->label());
-                        pieMarker->setFont(QFont("Arial", 8));
+                        pieMarker->setLabel(
+                            QString("%1 %2%")
+                                .arg(pieMarker->slice()->label())
+                                .arg(pieMarker->slice()->percentage() * 100, 0, 'f', 1));
+                            // TODO pieMarker->slice()->label());
+                        pieMarker->setFont(QFont("Arial", (12 * scale + 50) / 100));
                         pieMarker->setLabelBrush(textColor);
                     }
                     else
@@ -139,10 +144,11 @@ DailyWorkQuickReportView::DailyWorkQuickReportView(QWidget *parent)
         _seedColors
         {
             QColor(0, 128, 0),
-            QColor(128, 0, 128),
+            QColor(0, 0, 128),
             QColor(128, 0, 0),
             QColor(128, 128, 0),
-            QColor(128, 0, 128)
+            QColor(128, 0, 128),
+            QColor(0, 128, 128)
         },
         //  Controls
         _ui(new Ui::DailyWorkQuickReportView)
@@ -157,8 +163,10 @@ DailyWorkQuickReportView::DailyWorkQuickReportView(QWidget *parent)
     _ui->chartPanel->setLayout(_chartPanelLayout);
 
     //  Set editable control values
-    _ui->dateEdit->setDate(QDateTime::currentDateTime().date());    //  TODO from Settings
+    _ui->scaleSlider->setValue(100);    //  TODO from Settings
     _ui->todayRadioButton->setChecked(true);    //  TODO from settings
+    _ui->forDateRadioButton->setChecked(false); //  TODO from settings
+    _ui->dateEdit->setDate(QDateTime::currentDateTime().date());    //  TODO from Settings
 
     //  Theme change means widget decorations change
     connect(&theCurrentTheme,
@@ -210,6 +218,8 @@ void DailyWorkQuickReportView::refresh()
 
         //  Otherwise browser controls are enabled
         _ui->copyPushButton->setEnabled(true);
+        _ui->scaleLabel->setEnabled(true);
+        _ui->scaleSlider->setEnabled(true);
         _ui->showLabel->setEnabled(true);
         _ui->todayRadioButton->setEnabled(true);
         _ui->forDateRadioButton->setEnabled(true);
@@ -224,7 +234,8 @@ void DailyWorkQuickReportView::refresh()
         //  Convert day model to pie chart data
         _resetUsedPieColors();
 
-        auto donutBreakdown = new DonutBreakdownChart();
+        auto donutBreakdown =
+            new DonutBreakdownChart(_ui->scaleSlider->value());
         donutBreakdown->setAnimationOptions(QChart::NoAnimation);
         donutBreakdown->legend()->setAlignment(Qt::AlignRight);
         for (auto activityTypeModel : dayModel->activityTypes)
@@ -269,7 +280,8 @@ void DailyWorkQuickReportView::refresh()
                     breakdownSeries,
                     label,
                     _generateUnusedPieColor(),
-                    _decorations.itemForeground.color());
+                    _decorations.itemForeground.color(),
+                    _ui->scaleSlider->value());
             }
         }
 
@@ -283,6 +295,8 @@ void DailyWorkQuickReportView::refresh()
 void DailyWorkQuickReportView::_clearAndDisableAllControls()
 {
     _ui->copyPushButton->setEnabled(false);
+    _ui->scaleLabel->setEnabled(false);
+    _ui->scaleSlider->setEnabled(false);
     _ui->showLabel->setEnabled(false);
     _ui->todayRadioButton->setEnabled(false);
     _ui->forDateRadioButton->setEnabled(false);
@@ -354,7 +368,7 @@ void DailyWorkQuickReportView::_setChart(QChart * chart)
 {
     if (chart == nullptr)
     {   //  Fake an empty chart
-        chart = new DonutBreakdownChart();
+        chart = new DonutBreakdownChart(_ui->scaleSlider->value());
     }
     chart->setBackgroundBrush(_decorations.background);
     chart->layout()->setContentsMargins(0, 0, 0, 0);
@@ -459,13 +473,21 @@ void DailyWorkQuickReportView::_currentThemeChanged(ITheme*, ITheme*)
     refresh();
 }
 
+void DailyWorkQuickReportView::_scaleSliderValueChanged(int)
+{
+    //  TODO save to Settings
+    refresh();
+}
+
 void DailyWorkQuickReportView::_dateRatioButtonClicked()
 {
+    //  TODO save to Settings
     refresh();
 }
 
 void DailyWorkQuickReportView::_dateEditDateChanged(QDate)
 {
+    //  TODO save to Settings
     refresh();
 }
 

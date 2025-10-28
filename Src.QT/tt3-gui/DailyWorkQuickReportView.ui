@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>456</width>
-    <height>154</height>
+    <width>586</width>
+    <height>201</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -70,33 +70,52 @@
        <number>0</number>
       </property>
       <item row="0" column="1">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="2">
-       <widget class="QLabel" name="showLabel">
+       <widget class="QLabel" name="scaleLabel">
         <property name="text">
-         <string>Show:</string>
+         <string>Scale:</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="5">
+      <item row="0" column="2">
+       <widget class="QSlider" name="scaleSlider">
+        <property name="minimum">
+         <number>10</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>50</number>
+        </property>
+        <property name="sliderPosition">
+         <number>50</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="tickPosition">
+         <enum>QSlider::TickPosition::TicksBelow</enum>
+        </property>
+        <property name="tickInterval">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="6">
        <widget class="QRadioButton" name="forDateRadioButton">
         <property name="text">
          <string>For date:</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="6">
+      <item row="0" column="3">
+       <widget class="QLabel" name="showLabel">
+        <property name="text">
+         <string>Show:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="7">
        <widget class="QDateEdit" name="dateEdit">
         <property name="calendarPopup">
          <bool>true</bool>
@@ -106,7 +125,7 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="3">
+      <item row="0" column="4">
        <widget class="QRadioButton" name="todayRadioButton">
         <property name="text">
          <string>Today</string>
@@ -203,10 +222,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>scaleSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>tt3::gui::DailyWorkQuickReportView</receiver>
+   <slot>_scaleSliderValueChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>189</x>
+     <y>14</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>292</x>
+     <y>100</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_dateRatioButtonClicked()</slot>
   <slot>_dateEditDateChanged(QDate)</slot>
   <slot>_copyPushButtonClicked()</slot>
+  <slot>_scaleSliderValueChanged(int)</slot>
  </slots>
 </ui>

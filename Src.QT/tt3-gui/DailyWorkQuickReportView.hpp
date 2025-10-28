@@ -113,6 +113,7 @@ namespace tt3::gui
         //  Signal handlers
     private slots:
         void            _currentThemeChanged(ITheme*, ITheme*);
+        void            _scaleSliderValueChanged(int);
         void            _dateRatioButtonClicked();
         void            _dateEditDateChanged(QDate);
         void            _copyPushButtonClicked();
