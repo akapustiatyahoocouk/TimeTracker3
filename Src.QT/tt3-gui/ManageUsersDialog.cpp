@@ -51,8 +51,8 @@ ManageUsersDialog::ManageUsersDialog(
     _userManager->setCredentials(credentials);
 
     //  Done
-    adjustSize();
     _userManager->refresh();
+    adjustSize();
 }
 
 ManageUsersDialog::~ManageUsersDialog()

@@ -446,19 +446,53 @@ void UserImpl::setPermittedWorkloads(
 }
 
 void UserImpl::addPermittedWorkload(
-        const Credentials & /*credentials*/,
-        Workload /*workload*/
+        const Credentials & credentials,
+        Workload workload
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights.
+        if (!_canModify(credentials)) //  may throw
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataUser->addPermittedWorkload(    //  may throw
+            (workload != nullptr) ? workload->_dataWorkload : nullptr);
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void UserImpl::removePermittedWorkload(
-        const Credentials & /*credentials*/,
-        Workload /*workload*/
+        const Credentials & credentials,
+        Workload workload
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights.
+        if (!_canModify(credentials)) //  may throw
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataUser->removePermittedWorkload(    //  may throw
+            (workload != nullptr) ? workload->_dataWorkload : nullptr);
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 //////////

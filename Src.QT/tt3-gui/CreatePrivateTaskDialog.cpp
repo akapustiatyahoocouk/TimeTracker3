@@ -141,9 +141,9 @@ CreatePrivateTaskDialog::CreatePrivateTaskDialog(
     _setSelectedWorkload(nullptr);
 
     //  Done
-    _ui->displayNameLineEdit->setFocus();
-    adjustSize();
     _refresh();
+    adjustSize();
+    _ui->displayNameLineEdit->setFocus();
 }
 
 CreatePrivateTaskDialog::CreatePrivateTaskDialog(

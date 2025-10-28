@@ -51,8 +51,8 @@ ManageActivityTypesDialog::ManageActivityTypesDialog(
     _activityTypeManager->setCredentials(credentials);
 
     //  Done
-    adjustSize();
     _activityTypeManager->refresh();
+    adjustSize();
 }
 
 ManageActivityTypesDialog::~ManageActivityTypesDialog()

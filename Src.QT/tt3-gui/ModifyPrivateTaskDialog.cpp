@@ -189,9 +189,9 @@ ModifyPrivateTaskDialog::ModifyPrivateTaskDialog(
     }
 
     //  Done
-    _ui->displayNameLineEdit->setFocus();
-    adjustSize();
     _refresh();
+    adjustSize();
+    _ui->displayNameLineEdit->setFocus();
 }
 
 ModifyPrivateTaskDialog::~ModifyPrivateTaskDialog()

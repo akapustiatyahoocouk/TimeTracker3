@@ -51,8 +51,8 @@ ManagePublicTasksDialog::ManagePublicTasksDialog(
     _publicTaskManager->setCredentials(credentials);
 
     //  Done
-    adjustSize();
     _publicTaskManager->refresh();
+    adjustSize();
 }
 
 ManagePublicTasksDialog::~ManagePublicTasksDialog()

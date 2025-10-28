@@ -51,8 +51,8 @@ ManagePrivateActivitiesDialog::ManagePrivateActivitiesDialog(
     _privateActivityManager->setCredentials(credentials);
 
     //  Done
-    adjustSize();
     _privateActivityManager->refresh();
+    adjustSize();
 }
 
 ManagePrivateActivitiesDialog::~ManagePrivateActivitiesDialog()

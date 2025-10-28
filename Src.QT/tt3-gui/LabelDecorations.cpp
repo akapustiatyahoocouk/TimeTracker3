@@ -28,7 +28,8 @@ LabelDecorations::LabelDecorations()
 {
     QColor textColor = QApplication::palette().color(QPalette::ColorRole::Text);
     QColor backColor = QApplication::palette().color(QPalette::ColorRole::Base);
-
+    _adjustTextColor(textColor);
+    _adjustBackColor(backColor);
     _initialize(textColor, backColor,QApplication::font());
 }
 
@@ -38,32 +39,36 @@ LabelDecorations::LabelDecorations(
     Q_ASSERT(label != nullptr);
 
     QColor textColor = label->palette().color(QPalette::ColorRole::Text);
-    {
-        QRegularExpression regex("QLabel[^{]*\\{[^}]*\\s+color:\\s*([^;]+);");
-        QRegularExpressionMatch match = regex.match(theCurrentTheme->css());
-        if (match.hasMatch())
-        {
-            QString colorSpec = match.captured(1).trimmed();
-            textColor = tt3::util::fromString(colorSpec, textColor);
-        }
-    }
-
     QColor backColor = label->palette().color(QPalette::ColorRole::Base);
-    {
-        QRegularExpression regex("QLabel[^{]*\\{[^}]*\\s+background-color:\\s*([^;]+);");
-        QRegularExpressionMatch match = regex.match(theCurrentTheme->css());
-        if (match.hasMatch())
-        {
-            QString colorSpec = match.captured(1).trimmed();
-            backColor = tt3::util::fromString(colorSpec, backColor);
-        }
-    }
-
+    _adjustTextColor(textColor);
+    _adjustBackColor(backColor);
     _initialize(textColor, backColor, label->font());
 }
 
 //////////
 //  Implementation helpers
+void LabelDecorations::_adjustTextColor(QColor & textColor)
+{
+    QRegularExpression regex("QLabel[^{]*\\{[^}]*\\s+color:\\s*([^;]+);");
+    QRegularExpressionMatch match = regex.match(theCurrentTheme->css());
+    if (match.hasMatch())
+    {
+        QString colorSpec = match.captured(1).trimmed();
+        textColor = tt3::util::fromString(colorSpec, textColor);
+    }
+}
+
+void LabelDecorations::_adjustBackColor(QColor & backColor)
+{
+    QRegularExpression regex("QLabel[^{]*\\{[^}]*\\s+background-color:\\s*([^;]+);");
+    QRegularExpressionMatch match = regex.match(theCurrentTheme->css());
+    if (match.hasMatch())
+    {
+        QString colorSpec = match.captured(1).trimmed();
+        backColor = tt3::util::fromString(colorSpec, backColor);
+    }
+}
+
 void LabelDecorations::_initialize(
         const QColor & textColor,
         const QColor & backColor,

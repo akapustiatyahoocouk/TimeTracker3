@@ -51,8 +51,8 @@ ManagePublicActivitiesDialog::ManagePublicActivitiesDialog(
     _publicActivityManager->setCredentials(credentials);
 
     //  Done
-    adjustSize();
     _publicActivityManager->refresh();
+    adjustSize();
 }
 
 ManagePublicActivitiesDialog::~ManagePublicActivitiesDialog()

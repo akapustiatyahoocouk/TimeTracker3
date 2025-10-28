@@ -412,87 +412,95 @@ void DailyWorkQuickReportView::_setChart(QChart * chart)
 auto DailyWorkQuickReportView::_createDayModel(
         const QDate & date
     ) -> _DayModel
-{   //  TODO handle errors by creating a "pie chart"
-    //  with a single "100% error" message
-    tt3::ws::Account clientAccount = workspace()->login(credentials());
-    //  Determine the start/end times for the "date"
-    QDateTime localDayStart(date, QTime(0, 0));
-    QDateTime localDayEnd(date, QTime(23, 59, 59, 999));
-    QDateTime utcDayStart = localDayStart.toUTC();
-    QDateTime utcDayEnd = localDayEnd.toUTC();
-    //  Record relevant Works
-    QMap<tt3::ws::Activity, int64_t> activityDurationsMs;
-    QMap<tt3::ws::Activity, tt3::ws::ActivityType> activityTypes;
-    for (auto work : clientAccount->works(credentials(), utcDayStart, utcDayEnd))
+{
+    try
     {
-        QDateTime utcWorkStart = qMax(work->startedAt(credentials()), utcDayStart);
-        QDateTime utcWorkEnd = qMin(work->finishedAt(credentials()), utcDayEnd);
-        Q_ASSERT(utcWorkStart <= utcWorkEnd);
-        tt3::ws::Activity activity = work->activity(credentials());
-        if (!activityDurationsMs.contains(activity))
+        tt3::ws::Account clientAccount = workspace()->login(credentials());
+        //  Determine the start/end times for the "date"
+        QDateTime localDayStart(date, QTime(0, 0));
+        QDateTime localDayEnd(date, QTime(23, 59, 59, 999));
+        QDateTime utcDayStart = localDayStart.toUTC();
+        QDateTime utcDayEnd = localDayEnd.toUTC();
+        //  Record relevant Works
+        QMap<tt3::ws::Activity, int64_t> activityDurationsMs;
+        QMap<tt3::ws::Activity, tt3::ws::ActivityType> activityTypes;
+        for (auto work : clientAccount->works(credentials(), utcDayStart, utcDayEnd))
         {
-            activityDurationsMs[activity] = 0;
-        }
-        activityDurationsMs[activity] += utcWorkStart.msecsTo(utcWorkEnd);
-        activityTypes[activity] = activity->activityType(credentials());
-    }
-    //  Record "current" activity, if applicable
-    if (theCurrentActivity != nullptr)
-    {
-        QDateTime utcWorkStart = qMax(theCurrentActivity.lastChangedAt(), utcDayStart);
-        QDateTime utcWorkEnd = qMin(QDateTime::currentDateTime(), utcDayEnd);
-        if (utcWorkStart <= utcWorkEnd)
-        {
-            if (!activityDurationsMs.contains(theCurrentActivity))
+            QDateTime utcWorkStart = qMax(work->startedAt(credentials()), utcDayStart);
+            QDateTime utcWorkEnd = qMin(work->finishedAt(credentials()), utcDayEnd);
+            Q_ASSERT(utcWorkStart <= utcWorkEnd);
+            tt3::ws::Activity activity = work->activity(credentials());
+            if (!activityDurationsMs.contains(activity))
             {
-                activityDurationsMs[theCurrentActivity] = 0;
+                activityDurationsMs[activity] = 0;
             }
-            activityDurationsMs[theCurrentActivity] += utcWorkStart.msecsTo(utcWorkEnd);
-            activityTypes[theCurrentActivity] = theCurrentActivity->activityType(credentials());
+            activityDurationsMs[activity] += utcWorkStart.msecsTo(utcWorkEnd);
+            activityTypes[activity] = activity->activityType(credentials());
         }
-    }
+        //  Record "current" activity, if applicable
+        if (theCurrentActivity != nullptr)
+        {
+            QDateTime utcWorkStart = qMax(theCurrentActivity.lastChangedAt(), utcDayStart);
+            QDateTime utcWorkEnd = qMin(QDateTime::currentDateTime(), utcDayEnd);
+            if (utcWorkStart <= utcWorkEnd)
+            {
+                if (!activityDurationsMs.contains(theCurrentActivity))
+                {
+                    activityDurationsMs[theCurrentActivity] = 0;
+                }
+                activityDurationsMs[theCurrentActivity] += utcWorkStart.msecsTo(utcWorkEnd);
+                activityTypes[theCurrentActivity] = theCurrentActivity->activityType(credentials());
+            }
+        }
 
-    //  Build the model
-    _DayModel dayModel = std::make_shared<_DayModelImpl>();
-    for (tt3::ws::ActivityType activityType :
-            tt3::util::unique(activityTypes.values()))
-    {
-        _ActivityTypeModel activityTypeModel =
-            std::make_shared<_ActivityTypeModelImpl>(activityType);
-        dayModel->activityTypes.append(activityTypeModel);
-        for (auto [activity, durationMs] : activityDurationsMs.asKeyValueRange())
+        //  Build the model
+        _DayModel dayModel = std::make_shared<_DayModelImpl>();
+        for (tt3::ws::ActivityType activityType :
+                tt3::util::unique(activityTypes.values()))
         {
-            if (activityTypes[activity] == activityType)
+            _ActivityTypeModel activityTypeModel =
+                std::make_shared<_ActivityTypeModelImpl>(activityType);
+            dayModel->activityTypes.append(activityTypeModel);
+            for (auto [activity, durationMs] : activityDurationsMs.asKeyValueRange())
             {
-                _ActivityModel activityModel =
-                    std::make_shared<_ActivityModelImpl>(activity);
-                activityModel->durationMs = durationMs;
-                activityTypeModel->activities.append(activityModel);
-                activityTypeModel->durationMs += durationMs;
+                if (activityTypes[activity] == activityType)
+                {
+                    _ActivityModel activityModel =
+                        std::make_shared<_ActivityModelImpl>(activity);
+                    activityModel->durationMs = durationMs;
+                    activityTypeModel->activities.append(activityModel);
+                    activityTypeModel->durationMs += durationMs;
+                }
             }
         }
-    }
-    //  Sort the model(s) in display order
-    std::sort(
-        dayModel->activityTypes.begin(),
-        dayModel->activityTypes.end(),
-        [](auto a, auto b)
-        {
-            return a->durationMs > b->durationMs;
-        });
-    for (auto activityTypeModel : dayModel->activityTypes)
-    {
+        //  Sort the model(s) in display order
         std::sort(
-            activityTypeModel->activities.begin(),
-            activityTypeModel->activities.end(),
+            dayModel->activityTypes.begin(),
+            dayModel->activityTypes.end(),
             [](auto a, auto b)
             {
                 return a->durationMs > b->durationMs;
             });
-    }
+        for (auto activityTypeModel : dayModel->activityTypes)
+        {
+            std::sort(
+                activityTypeModel->activities.begin(),
+                activityTypeModel->activities.end(),
+                [](auto a, auto b)
+                {
+                    return a->durationMs > b->durationMs;
+                });
+        }
 
-    //  Done
-    return dayModel;
+        //  Done
+        return dayModel;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  TODO handle errors by creating a "pie chart"
+        //  with a single "100% error" message
+        qCritical() << ex;
+        return std::make_shared<_DayModelImpl>();
+    }
 }
 
 //////////

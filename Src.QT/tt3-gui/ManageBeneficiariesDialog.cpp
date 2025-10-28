@@ -51,8 +51,8 @@ ManageBeneficiariesDialog::ManageBeneficiariesDialog(
     _beneficiaryManager->setCredentials(credentials);
 
     //  Done
-    adjustSize();
     _beneficiaryManager->refresh();
+    adjustSize();
 }
 
 ManageBeneficiariesDialog::~ManageBeneficiariesDialog()

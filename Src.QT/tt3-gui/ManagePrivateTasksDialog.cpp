@@ -51,8 +51,8 @@ ManagePrivateTasksDialog::ManagePrivateTasksDialog(
     _privateTaskManager->setCredentials(credentials);
 
     //  Done
-    adjustSize();
     _privateTaskManager->refresh();
+    adjustSize();
 }
 
 ManagePrivateTasksDialog::~ManagePrivateTasksDialog()

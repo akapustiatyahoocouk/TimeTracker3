@@ -51,8 +51,8 @@ ManageMyDayDialog::ManageMyDayDialog(
     _myDayManager->setCredentials(credentials);
 
     //  Done
-    adjustSize();
     _myDayManager->refresh();
+    adjustSize();
 }
 
 ManageMyDayDialog::~ManageMyDayDialog()

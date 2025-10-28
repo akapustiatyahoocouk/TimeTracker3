@@ -57,8 +57,9 @@ EditStringDialog::EditStringDialog(
     }
 
     //  Done
-    adjustSize();
     _refresh();
+    adjustSize();
+    _ui->lineEdit->setFocus();
 }
 
 EditStringDialog::~EditStringDialog()

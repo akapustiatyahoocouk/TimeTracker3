@@ -28,7 +28,8 @@ PushButtonDecorations::PushButtonDecorations()
 {
     QColor textColor = QApplication::palette().color(QPalette::ColorRole::ButtonText);
     QColor backColor = QApplication::palette().color(QPalette::ColorRole::Button);
-
+    _adjustTextColor(textColor);
+    _adjustBackColor(backColor);
     _initialize(textColor, backColor,QApplication::font());
 }
 
@@ -39,27 +40,9 @@ PushButtonDecorations::PushButtonDecorations(
     Q_ASSERT(pushButton != nullptr);
 
     QColor textColor = pushButton->palette().color(QPalette::ColorRole::ButtonText);
-    {
-        QRegularExpression regex("QPushButton[^{]*\\{[^}]*\\s+color:\\s*([^;]+);");
-        QRegularExpressionMatch match = regex.match(theCurrentTheme->css());
-        if (match.hasMatch())
-        {
-            QString colorSpec = match.captured(1).trimmed();
-            textColor = tt3::util::fromString(colorSpec, textColor);
-        }
-    }
-
     QColor backColor = pushButton->palette().color(QPalette::ColorRole::Button);
-    {
-        QRegularExpression regex("QPushButton[^{]*\\{[^}]*\\s+background-color:\\s*([^;]+);");
-        QRegularExpressionMatch match = regex.match(theCurrentTheme->css());
-        if (match.hasMatch())
-        {
-            QString colorSpec = match.captured(1).trimmed();
-            backColor = tt3::util::fromString(colorSpec, backColor);
-        }
-    }
-
+    _adjustTextColor(textColor);
+    _adjustBackColor(backColor);
     _initialize(textColor, backColor, pushButton->font());
 }
 
@@ -109,6 +92,28 @@ void PushButtonDecorations::applyTo(
 
 //////////
 //  Implementation helpers
+void PushButtonDecorations::_adjustTextColor(QColor & textColor)
+{
+    QRegularExpression regex("QPushButton[^{]*\\{[^}]*\\s+color:\\s*([^;]+);");
+    QRegularExpressionMatch match = regex.match(theCurrentTheme->css());
+    if (match.hasMatch())
+    {
+        QString colorSpec = match.captured(1).trimmed();
+        textColor = tt3::util::fromString(colorSpec, textColor);
+    }
+}
+
+void PushButtonDecorations::_adjustBackColor(QColor & backColor)
+{
+    QRegularExpression regex("QPushButton[^{]*\\{[^}]*\\s+background-color:\\s*([^;]+);");
+    QRegularExpressionMatch match = regex.match(theCurrentTheme->css());
+    if (match.hasMatch())
+    {
+        QString colorSpec = match.captured(1).trimmed();
+        backColor = tt3::util::fromString(colorSpec, backColor);
+    }
+}
+
 void PushButtonDecorations::_initialize(
         const QColor & textColor,
         const QColor & backColor,

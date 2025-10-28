@@ -19,8 +19,6 @@
 
 namespace tt3::skin::admin
 {
-    class TT3_SKIN_ADMIN_PUBLIC RecentWorkspaceOpener;
-
     namespace Ui { class MainFrame; }
 
     /// \class MainFrame tt3-skin-admin/API.hpp
@@ -30,8 +28,6 @@ namespace tt3::skin::admin
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(MainFrame)
-
-        friend class RecentWorkspaceOpener;
 
         //////////
         //  Construction
@@ -97,11 +93,6 @@ namespace tt3::skin::admin
 
         void            _updateMruWorkspaces();
         void            _refreshCurrentActivityControls();
-
-        //////////
-        //  Implementation
-    private:
-        QList<RecentWorkspaceOpener*>   _recentWorkspaceOpeners;
 
         //////////
         //  Controls
@@ -182,34 +173,6 @@ namespace tt3::skin::admin
         void            _currentThemeChanged(tt3::gui::ITheme*, tt3::gui::ITheme*);
         void            _managersTabWidgetCurrentChanged(int);
         void            _refreshTimerTimeout();
-    };
-
-    /// \class RecentWorkspaceOpener tt3-skin-admin/API.hpp
-    /// \brief A helper class for opening recent workspaces.
-    class TT3_SKIN_ADMIN_PUBLIC RecentWorkspaceOpener final
-        :   public QObject
-    {
-        Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(RecentWorkspaceOpener)
-
-        friend class MainFrame;
-
-        //////////
-        //  Construction/destruction - from friends only
-    private:
-        RecentWorkspaceOpener(MainFrame * mainFrame, const tt3::ws::WorkspaceAddress & workspaceAddress);
-        virtual ~RecentWorkspaceOpener();
-
-        //////////
-        //  Implementation
-    private:
-        MainFrame *const    _mainFrame;
-        const tt3::ws::WorkspaceAddress _workspaceAddress;
-
-        //////////
-        //  Event handlers
-    private slots:
-        void            _onTriggered();
     };
 }
 

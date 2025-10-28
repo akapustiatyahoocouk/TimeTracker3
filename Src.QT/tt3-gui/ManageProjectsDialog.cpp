@@ -51,8 +51,8 @@ ManageProjectsDialog::ManageProjectsDialog(
     _projectManager->setCredentials(credentials);
 
     //  Done
-    adjustSize();
     _projectManager->refresh();
+    adjustSize();
 }
 
 ManageProjectsDialog::~ManageProjectsDialog()

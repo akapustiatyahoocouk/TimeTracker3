@@ -413,13 +413,29 @@ auto Database::findPublicActivity(
 auto Database::publicActivitiesAndTasks(
     ) const -> tt3::db::api::PublicActivities
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+    //  We assume database is consistent since last change
+
+    PublicTasks closure;
+    _collectPublicTasksClosure(closure, _rootPublicTasks);
+    return
+        tt3::db::api::PublicActivities(
+            _publicActivities.cbegin(), _publicActivities.cend()) +
+        tt3::db::api::PublicActivities(
+           closure.cbegin(), closure.cend());
 }
 
 auto Database::publicTasks(
     ) const -> tt3::db::api::PublicTasks
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+    //  We assume database is consistent since last change
+
+    PublicTasks closure;
+    _collectPublicTasksClosure(closure, _rootPublicTasks);
+    return tt3::db::api::PublicTasks(closure.cbegin(), closure.cend());
 }
 
 auto Database::rootPublicTasks(
@@ -435,7 +451,13 @@ auto Database::rootPublicTasks(
 auto Database::projects(
     ) const -> tt3::db::api::Projects
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_guard);
+    _ensureOpen();  //  may throw
+    //  We assume database is consistent since last change
+
+    Projects closure;
+    _collectProjectsClosure(closure, _rootProjects);
+    return tt3::db::api::Projects(closure.cbegin(), closure.cend());
 }
 
 auto Database::rootProjects(
@@ -1365,6 +1387,28 @@ void Database::_savePeriodically()
             _lastSaveDurationMs = now.msecsTo(then);
             _nextSaveAt = then.addMSecs(_SaveIntervalMs);
         }
+    }
+}
+
+void Database::_collectPublicTasksClosure(PublicTasks & closure, const PublicTasks & addend) const
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+
+    closure += addend;
+    for (auto publicTask : addend)
+    {   //  We rely on no-parent-child-loops!
+        _collectPublicTasksClosure(closure, publicTask->_children);
+    }
+}
+
+void Database::_collectProjectsClosure(Projects & closure, const Projects & addend) const
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+
+    closure += addend;
+    for (auto project : addend)
+    {   //  We rely on no-parent-child-loops!
+        _collectProjectsClosure(closure, project->_children);
     }
 }
 

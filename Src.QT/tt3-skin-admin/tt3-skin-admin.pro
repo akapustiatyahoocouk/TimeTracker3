@@ -7,7 +7,6 @@ SOURCES += \
     Component.cpp \
     MainFrame.cpp \
     Plugins.cpp \
-    RecentWorkspaceOpener.cpp \
     Skin.cpp
 
 HEADERS += \

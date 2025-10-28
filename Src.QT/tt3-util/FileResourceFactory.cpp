@@ -140,7 +140,7 @@ void FileResourceFactory::_loadResourceFile(const QLocale & locale, const QStrin
             catch (const tt3::util::ParseException & ex)
             {   //  OOPS! _unescape() failed!
                 qCritical() << ex;
-                throw;  //  TODO for now...
+                throw;  //  will be caught by Application::notify()
             }
         }
     }

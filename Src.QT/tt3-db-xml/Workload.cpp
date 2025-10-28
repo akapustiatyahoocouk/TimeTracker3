@@ -235,7 +235,11 @@ void Workload::removeBeneficiary(
 auto Workload::assignedUsers(
     ) const -> tt3::db::api::Users
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return tt3::db::api::Users(_assignedUsers.cbegin(), _assignedUsers.cend());
 }
 
 void Workload::setAssignedUsers(

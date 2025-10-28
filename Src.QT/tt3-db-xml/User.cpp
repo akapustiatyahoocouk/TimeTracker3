@@ -294,7 +294,7 @@ void User::setPermittedWorkloads(
 }
 
 void User::addPermittedWorkload(
-    tt3::db::api::IWorkload * /*workload*/
+        tt3::db::api::IWorkload * /*workload*/
     )
 {
     throw tt3::util::NotImplementedError();

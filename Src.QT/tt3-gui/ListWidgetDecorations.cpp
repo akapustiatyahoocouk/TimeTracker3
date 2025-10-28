@@ -28,7 +28,8 @@ ListWidgetDecorations::ListWidgetDecorations()
 {
     QColor textColor = QApplication::palette().color(QPalette::ColorRole::Text);
     QColor backColor = QApplication::palette().color(QPalette::ColorRole::Base);
-
+    _adjustTextColor(textColor);
+    _adjustBackColor(backColor);
     _initialize(textColor, backColor,QApplication::font());
 }
 
@@ -37,32 +38,36 @@ ListWidgetDecorations::ListWidgetDecorations(QListWidget * listWidget)
     Q_ASSERT(listWidget != nullptr);
 
     QColor textColor = listWidget->palette().color(QPalette::ColorRole::Text);
-    {
-        QRegularExpression regex("QListWidget[^{]*\\{[^}]*\\s+color:\\s*([^;]+);");
-        QRegularExpressionMatch match = regex.match(theCurrentTheme->css());
-        if (match.hasMatch())
-        {
-            QString colorSpec = match.captured(1).trimmed();
-            textColor = tt3::util::fromString(colorSpec, textColor);
-        }
-    }
-
     QColor backColor = listWidget->palette().color(QPalette::ColorRole::Base);
-    {
-        QRegularExpression regex("QListWidget[^{]*\\{[^}]*\\s+background-color:\\s*([^;]+);");
-        QRegularExpressionMatch match = regex.match(theCurrentTheme->css());
-        if (match.hasMatch())
-        {
-            QString colorSpec = match.captured(1).trimmed();
-            backColor = tt3::util::fromString(colorSpec, backColor);
-        }
-    }
-
+    _adjustTextColor(textColor);
+    _adjustBackColor(backColor);
     _initialize(textColor, backColor, listWidget->font());
 }
 
 //////////
 //  Implementation helpers
+void ListWidgetDecorations::_adjustTextColor(QColor & textColor)
+{
+    QRegularExpression regex("QListWidget[^{]*\\{[^}]*\\s+color:\\s*([^;]+);");
+    QRegularExpressionMatch match = regex.match(theCurrentTheme->css());
+    if (match.hasMatch())
+    {
+        QString colorSpec = match.captured(1).trimmed();
+        textColor = tt3::util::fromString(colorSpec, textColor);
+    }
+}
+
+void ListWidgetDecorations::_adjustBackColor(QColor & backColor)
+{
+    QRegularExpression regex("QListWidget[^{]*\\{[^}]*\\s+background-color:\\s*([^;]+);");
+    QRegularExpressionMatch match = regex.match(theCurrentTheme->css());
+    if (match.hasMatch())
+    {
+        QString colorSpec = match.captured(1).trimmed();
+        backColor = tt3::util::fromString(colorSpec, backColor);
+    }
+}
+
 void ListWidgetDecorations::_initialize(
         const QColor & textColor,
         const QColor & backColor,

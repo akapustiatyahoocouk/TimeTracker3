@@ -135,11 +135,6 @@ MainFrame::~MainFrame()
 {
     _refreshTimer.stop();
     delete _ui;
-
-    for (RecentWorkspaceOpener * o : _recentWorkspaceOpeners)
-    {
-        delete o;
-    }
 }
 
 //////////
@@ -464,11 +459,6 @@ void MainFrame::_updateMruWorkspaces()
         _ui->actionRecentWorkspaces->setMenu(menu);
     }
     menu->clear();
-    for (RecentWorkspaceOpener * o : _recentWorkspaceOpeners)
-    {
-        delete o;
-    }
-    _recentWorkspaceOpeners.clear();
 
     tt3::ws::WorkspaceAddressesList mru =
         tt3::ws::Component::Settings::instance()->recentWorkspaces;
@@ -478,13 +468,23 @@ void MainFrame::_updateMruWorkspaces()
         QAction * action = menu->addAction(
             a->workspaceType()->smallIcon(),
             "&" + QString(QChar('1' + i)) + " - " + a->displayForm());
-        //  Handle "action triggered" signal
-        RecentWorkspaceOpener * opener = new RecentWorkspaceOpener(this, a);
-        _recentWorkspaceOpeners.append(opener);
-        connect(action,
-                &QAction::triggered,
-                opener,
-                &RecentWorkspaceOpener::_onTriggered);
+        connect(
+            action,
+            &QAction::triggered,
+            this,
+            [&,a]()
+            {
+                if (!_openWorkspace(a, tt3::ws::OpenMode::Default))
+                {   //  May want to remove this workspace from the MRU
+                    tt3::gui::ConfirmForgetWorkspaceDialog dlg(this, a);
+                    if (dlg.doModal() == tt3::gui::ConfirmForgetWorkspaceDialog::Result::Yes)
+                    {   //  Do it!
+                        tt3::ws::Component::Settings::instance()->removeRecentWorkspace(a);
+                        _updateMruWorkspaces();  //  will delete "*this" instance!
+                        refresh();
+                    }
+                }
+            });
     }
     _ui->actionRecentWorkspaces->setEnabled(!menu->isEmpty());
 }
@@ -567,7 +567,7 @@ void MainFrame::_onActionOpenWorkspace()
 
 void MainFrame::_onActionCloseWorkspace()
 {
-    //  TODO if would bw nice if the "cinform close"
+    //  TODO if would bw nice if the "confirm close"
     //  dialog was displayed BEFORE the "current" workspace
     //  was replaced with nullptr - this will emiminate
     //  the UI flicker.

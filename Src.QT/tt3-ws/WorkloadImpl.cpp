@@ -227,50 +227,161 @@ void WorkloadImpl::setBeneficiaries(
 }
 
 void WorkloadImpl::addBeneficiary(
-        const Credentials & /*credentials*/,
-        Beneficiary /*beneficiary*/
+        const Credentials & credentials,
+        Beneficiary beneficiary
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights.
+        if (!_canModify(credentials)) //  may throw
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataWorkload->addBeneficiary(  //  may throw
+            (beneficiary != nullptr) ? beneficiary->_dataBeneficiary : nullptr);
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void WorkloadImpl::removeBeneficiary(
-        const Credentials & /*credentials*/,
-        Beneficiary /*beneficiary*/
+        const Credentials & credentials,
+        Beneficiary beneficiary
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights.
+        if (!_canModify(credentials)) //  may throw
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataWorkload->removeBeneficiary(  //  may throw
+            (beneficiary != nullptr) ? beneficiary->_dataBeneficiary : nullptr);
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 auto WorkloadImpl::assignedUsers(
-        const Credentials & /*credentials*/
+        const Credentials & credentials
     ) const -> Users
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        return tt3::util::transform(
+            _dataWorkload->assignedUsers(),
+            [&](auto dataUser)
+            {
+                return _workspace->_getProxy(dataUser);
+            });
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void WorkloadImpl::setAssignedUsers(
-        const Credentials & /*credentials*/,
-        const Users & /*users*/
+        const Credentials & credentials,
+        const Users & users
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights.
+        if (!_canModify(credentials)) //  may throw
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataWorkload->setAssignedUsers(    //  may throw
+            tt3::util::transform(
+                users,
+                [](auto u)
+                {   //  Be defensive when transforming nullptrs
+                    return (u != nullptr) ? u->_dataUser : nullptr;
+                }));
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void WorkloadImpl::addAssignedUser(
-        const Credentials & /*credentials*/,
-        User /*user*/
+        const Credentials & credentials,
+        User user
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights.
+        if (!_canModify(credentials)) //  may throw
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataWorkload->addAssignedUser(  //  may throw
+            (user != nullptr) ? user->_dataUser : nullptr);
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 void WorkloadImpl::removeAssignedUser(
-        const Credentials & /*credentials*/,
-        User /*user*/
+        const Credentials & credentials,
+        User user
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock lock(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights.
+        if (!_canModify(credentials)) //  may throw
+        {
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        _dataWorkload->removeAssignedUser(  //  may throw
+            (user != nullptr) ? user->_dataUser : nullptr);
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
 }
 
 //  End of tt3-ws/WorkloadImpl.cpp

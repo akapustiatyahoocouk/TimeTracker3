@@ -267,6 +267,8 @@ namespace tt3::db::xml
         WorkStream *        _findWorkStream(const QString & displayName) const;
         Beneficiary *       _findBeneficiary(const QString & displayName) const;
         void                _savePeriodically();
+        void                _collectPublicTasksClosure(PublicTasks & closure, const PublicTasks & addend) const;
+        void                _collectProjectsClosure(Projects & closure, const Projects & addend) const;
 
         //  Serialization
         void            _save();    //  throws tt3::util::Exception
