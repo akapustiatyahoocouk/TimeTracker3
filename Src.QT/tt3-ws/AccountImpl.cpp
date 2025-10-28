@@ -289,12 +289,12 @@ auto AccountImpl::works(
             throw AccessDeniedException();
         }
         //  Do the work
-        Works result;
-        for (tt3::db::api::IWork * dataWork : _dataAccount->works())
-        {
-            result.insert(_workspace->_getProxy(dataWork));
-        }
-        return result;
+        return tt3::util::transform(
+            _dataAccount->works(),
+            [&](auto dw)
+            {
+                return _workspace->_getProxy(dw);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -319,12 +319,12 @@ auto AccountImpl::works(
             throw AccessDeniedException();
         }
         //  Do the work
-        Works result;
-        for (tt3::db::api::IWork * dataWork : _dataAccount->works(from, to))
-        {
-            result.insert(_workspace->_getProxy(dataWork));
-        }
-        return result;
+        return tt3::util::transform(
+            _dataAccount->works(from, to),
+            [&](auto dw)
+            {
+                return _workspace->_getProxy(dw);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -347,12 +347,12 @@ auto AccountImpl::events(
             throw AccessDeniedException();
         }
         //  Do the work
-        Events result;
-        for (tt3::db::api::IEvent * dataEvent : _dataAccount->events())
-        {
-            result.insert(_workspace->_getProxy(dataEvent));
-        }
-        return result;
+        return tt3::util::transform(
+            _dataAccount->events(),
+            [&](auto de)
+            {
+                return _workspace->_getProxy(de);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -377,12 +377,12 @@ auto AccountImpl::events(
             throw AccessDeniedException();
         }
         //  Do the work
-        Events result;
-        for (tt3::db::api::IEvent * dataEvent : _dataAccount->events(from, to))
-        {
-            result.insert(_workspace->_getProxy(dataEvent));
-        }
-        return result;
+        return tt3::util::transform(
+            _dataAccount->events(from, to),
+            [&](auto de)
+            {
+                return _workspace->_getProxy(de);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw

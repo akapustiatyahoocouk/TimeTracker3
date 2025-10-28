@@ -146,12 +146,12 @@ auto BeneficiaryImpl:: workloads(
             throw AccessDeniedException();
         }
         //  Do the work
-        Workloads result;
-        for (auto dataWorkload : _dataBeneficiary->workloads()) //  may throw
-        {
-            result.insert(_workspace->_getProxy(dataWorkload));
-        }
-        return result;
+        return tt3::util::transform(
+            _dataBeneficiary->workloads(),
+            [&](auto dw)
+            {
+                return _workspace->_getProxy(dw);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -175,15 +175,13 @@ void BeneficiaryImpl::setWorkloads(
             throw AccessDeniedException();
         }
         //  Do the work
-        tt3::db::api::Workloads dataWorkloads;
-        for (Workload workload : workloads)
-        {
-            dataWorkloads.insert(
-                (workload != nullptr) ?
-                    workload->_dataWorkload :
-                    nullptr);
-        }
-        _dataBeneficiary->setWorkloads(dataWorkloads);  //  may throw
+        _dataBeneficiary->setWorkloads( //  may throw
+            tt3::util::transform(
+                workloads,
+                [](auto w)
+                {
+                    return (w != nullptr) ? w->_dataWorkload : nullptr;
+                }));
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw

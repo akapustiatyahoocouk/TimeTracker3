@@ -164,7 +164,7 @@ void Beneficiary::setWorkloads(
             workloads,
             [&](auto w)
             {
-                Q_ASSERT(w != nullptr); //  should have been caught before!
+                Q_ASSERT(w != nullptr); //  should have been caught earlier!
                 auto xmlWorkload = dynamic_cast<Workload*>(w);
                 if (xmlWorkload == nullptr ||
                     xmlWorkload->_database != this->_database ||

@@ -228,7 +228,7 @@ void Account::setQuickPicksList(
             quickPicksList,
             [&](auto a)
             {
-                Q_ASSERT(a != nullptr); //  should have been caught before!
+                Q_ASSERT(a != nullptr); //  should have been caught earlier!
                 auto xmlActivity = dynamic_cast<Activity*>(a);
                 if (xmlActivity == nullptr ||
                     xmlActivity->_database != this->_database ||
@@ -417,19 +417,22 @@ auto Account::createEvent(
             "summary",
             summary);
     }
-    Activities xmlActivities;
-    for (tt3::db::api::IActivity * activity : activities)
-    {
-        auto xmlActivity = dynamic_cast<Activity*>(activity);
-        if (xmlActivity == nullptr ||
-            xmlActivity->_database != this->_database ||
-            !xmlActivity->_isLive)
-        {   //  OOPS!
-            throw tt3::db::api::IncompatibleInstanceException(
-                tt3::db::api::ObjectTypes::ActivityType::instance());
-        }
-        xmlActivities.insert(xmlActivity);
-    }
+
+    Activities xmlActivities =
+        tt3::util::transform(
+            activities,
+            [&](auto a)
+            {
+                auto xmlActivity = dynamic_cast<Activity*>(a);
+                if (xmlActivity == nullptr ||
+                    xmlActivity->_database != this->_database ||
+                    !xmlActivity->_isLive)
+                {   //  OOPS!
+                    throw tt3::db::api::IncompatibleInstanceException(
+                        tt3::db::api::ObjectTypes::ActivityType::instance());
+                }
+                return xmlActivity;
+            });
     //  Do the work - create & initialize the Work...
     Event * event = new Event(this, _database->_generateOid());   //  registers with User
     event->_occurredAt = occurredAt;

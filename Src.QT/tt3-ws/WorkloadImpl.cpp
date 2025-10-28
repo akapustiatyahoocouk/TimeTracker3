@@ -211,14 +211,13 @@ void WorkloadImpl::setBeneficiaries(
             throw AccessDeniedException();
         }
         //  Do the work
-        tt3::db::api::Beneficiaries dataBeneficiaries =
-            tt3::util::transform(
+        _dataWorkload->setBeneficiaries(
+            tt3::util::transform(   //  may throw
                 beneficiaries,
                 [](auto b)
                 {   //  Be defensive when transforming nullptrs
                     return (b != nullptr) ? b->_dataBeneficiary : nullptr;
-                });
-        _dataWorkload->setBeneficiaries(dataBeneficiaries); //  may throw
+                }));
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw

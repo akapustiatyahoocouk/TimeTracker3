@@ -121,12 +121,12 @@ auto EventImpl::activities(
             throw AccessDeniedException();
         }
         //  Do the work
-        Activities result;
-        for (tt3::db::api::IActivity * dataActivity : _dataEvent->activities())
-        {
-            result.insert(_workspace->_getProxy(dataActivity)); //  may throw
-        }
-        return result;
+        return tt3::util::transform(
+            _dataEvent->activities(),   //  may throw
+            [&](auto da)
+            {
+                return _workspace->_getProxy(da);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw

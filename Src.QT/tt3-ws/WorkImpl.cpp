@@ -161,7 +161,7 @@ bool WorkImpl::_canRead(
 }
 
 bool WorkImpl::_canModify(
-    const Credentials & credentials
+        const Credentials & credentials
     ) const
 {
     Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());

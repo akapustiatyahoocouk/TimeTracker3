@@ -111,12 +111,12 @@ auto PrivateTaskImpl::children(
             throw AccessDeniedException();
         }
         //  Do the work
-        PrivateTasks result;
-        for (auto dataChild : _dataPrivateTask->children())  //  may throw
-        {
-            result.insert(_workspace->_getProxy(dataChild));
-        }
-        return result;
+        return tt3::util::transform(
+            _dataPrivateTask->children(),   //  may thr
+            [&](auto dc)
+            {
+                return _workspace->_getProxy(dc);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw

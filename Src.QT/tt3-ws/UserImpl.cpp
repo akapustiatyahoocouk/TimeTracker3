@@ -189,12 +189,12 @@ auto UserImpl::accounts(
         if (capabilities.contains(Capability::Administrator) ||
             capabilities.contains(Capability::ManageUsers))
         {   //  The caller can see all accounts of all users
-            Accounts result;
-            for (tt3::db::api::IAccount * dataAccount : _dataUser->accounts())  //  may throw
-            {
-                result.insert(_workspace->_getProxy(dataAccount));
-            }
-            return result;
+            return tt3::util::transform(
+                _dataUser->accounts(),  //  may throw
+                [&](auto da)
+                {
+                    return _workspace->_getProxy(da);
+                });
         }
         else
         {   //  The caller can only see his own accounts
@@ -202,12 +202,12 @@ auto UserImpl::accounts(
                 _workspace->_database->login(credentials._login, credentials._password);    //  may throw
             if (dataAccount->user() == _dataUser)
             {
-                Accounts result;
-                for (tt3::db::api::IAccount * dataAccount : _dataUser->accounts())  //  may throw
-                {
-                    result.insert(_workspace->_getProxy(dataAccount));
-                }
-                return result;
+                return tt3::util::transform(
+                    _dataUser->accounts(),  //  may throw
+                    [&](auto da)
+                    {
+                        return _workspace->_getProxy(da);
+                    });
             }
             //  OOPS! The caller is trying to see someone else
             throw AccessDeniedException();
@@ -231,12 +231,12 @@ auto UserImpl::privateActivities(
         Capabilities capabilities = _workspace->_validateAccessRights(credentials);
         if (capabilities.contains(Capability::Administrator))
         {   //  The caller can see all private activities of all users
-            PrivateActivities result;
-            for (tt3::db::api::IPrivateActivity * dataPrivateActivity : _dataUser->privateActivities()) //  may throw
-            {
-                result.insert(_workspace->_getProxy(dataPrivateActivity));
-            }
-            return result;
+            return tt3::util::transform(
+                _dataUser->privateActivities(), //  may throw
+                [&](auto da)
+                {
+                    return _workspace->_getProxy(da);
+                });
         }
         else
         {   //  The caller can only see his own private activities
@@ -244,12 +244,12 @@ auto UserImpl::privateActivities(
                 _workspace->_database->login(credentials._login, credentials._password);    //  may throw
             if (dataAccount->user() == _dataUser)
             {
-                PrivateActivities result;
-                for (tt3::db::api::IPrivateActivity * dataPrivateActivity : _dataUser->privateActivities()) //  may throw
-                {
-                    result.insert(_workspace->_getProxy(dataPrivateActivity));
-                }
-                return result;
+                return tt3::util::transform(
+                    _dataUser->privateActivities(), //  may throw
+                    [&](auto da)
+                    {
+                        return _workspace->_getProxy(da);
+                    });
             }
             //  OOPS! The caller is trying to see someone else's private activities
             throw AccessDeniedException();
@@ -273,12 +273,12 @@ auto UserImpl::privateActivitiesAndTasks(
         Capabilities capabilities = _workspace->_validateAccessRights(credentials);
         if (capabilities.contains(Capability::Administrator))
         {   //  The caller can see all private activities and tasks of all users
-            PrivateActivities result;
-            for (tt3::db::api::IPrivateActivity * dataPrivateActivity : _dataUser->privateActivitiesAndTasks()) //  may throw
-            {
-                result.insert(_workspace->_getProxy(dataPrivateActivity));
-            }
-            return result;
+            return tt3::util::transform(
+                _dataUser->privateActivitiesAndTasks(), //  may throw
+                [&](auto da)
+                {
+                    return _workspace->_getProxy(da);
+                });
         }
         else
         {   //  The caller can only see his own private activities and tasks
@@ -286,12 +286,12 @@ auto UserImpl::privateActivitiesAndTasks(
                 _workspace->_database->login(credentials._login, credentials._password);    //  may throw
             if (dataAccount->user() == _dataUser)
             {
-                PrivateActivities result;
-                for (tt3::db::api::IPrivateActivity * dataPrivateActivity : _dataUser->privateActivitiesAndTasks()) //  may throw
-                {
-                    result.insert(_workspace->_getProxy(dataPrivateActivity));
-                }
-                return result;
+                return tt3::util::transform(
+                    _dataUser->privateActivitiesAndTasks(), //  may throw
+                    [&](auto da)
+                    {
+                        return _workspace->_getProxy(da);
+                    });
             }
             //  OOPS! The caller is trying to see someone else's private activities and tasks
             throw AccessDeniedException();
@@ -315,12 +315,12 @@ auto UserImpl::privateTasks(
         Capabilities capabilities = _workspace->_validateAccessRights(credentials);
         if (capabilities.contains(Capability::Administrator))
         {   //  The caller can see all private tasks of all users
-            PrivateTasks result;
-            for (tt3::db::api::IPrivateTask * dataPrivateTask : _dataUser->privateTasks()) //  may throw
-            {
-                result.insert(_workspace->_getProxy(dataPrivateTask));
-            }
-            return result;
+            return tt3::util::transform(
+                _dataUser->privateTasks(), //  may throw
+                [&](auto dt)
+                {
+                    return _workspace->_getProxy(dt);
+                });
         }
         else
         {   //  The caller can only see his own private tasks
@@ -328,12 +328,12 @@ auto UserImpl::privateTasks(
                 _workspace->_database->login(credentials._login, credentials._password);    //  may throw
             if (dataAccount->user() == _dataUser)
             {
-                PrivateTasks result;
-                for (tt3::db::api::IPrivateTask * dataPrivateTask : _dataUser->privateTasks())  //  may throw
-                {
-                    result.insert(_workspace->_getProxy(dataPrivateTask));
-                }
-                return result;
+                return tt3::util::transform(
+                    _dataUser->privateTasks(), //  may throw
+                    [&](auto dt)
+                    {
+                        return _workspace->_getProxy(dt);
+                    });
             }
             //  OOPS! The caller is trying to see someone else's private tasks
             throw AccessDeniedException();
@@ -357,12 +357,12 @@ auto UserImpl::rootPrivateTasks(
         Capabilities capabilities = _workspace->_validateAccessRights(credentials);
         if (capabilities.contains(Capability::Administrator))
         {   //  The caller can see all private tasks of all users
-            PrivateTasks result;
-            for (tt3::db::api::IPrivateTask * dataPrivateTask : _dataUser->rootPrivateTasks()) //  may throw
-            {
-                result.insert(_workspace->_getProxy(dataPrivateTask));
-            }
-            return result;
+            return tt3::util::transform(
+                _dataUser->rootPrivateTasks(),  //  may throw
+                [&](auto dt)
+                {
+                    return _workspace->_getProxy(dt);
+                });
         }
         else
         {   //  The caller can only see his own private tasks
@@ -370,12 +370,12 @@ auto UserImpl::rootPrivateTasks(
                 _workspace->_database->login(credentials._login, credentials._password);    //  may throw
             if (dataAccount->user() == _dataUser)
             {
-                PrivateTasks result;
-                for (tt3::db::api::IPrivateTask * dataPrivateTask : _dataUser->rootPrivateTasks())  //  may throw
-                {
-                    result.insert(_workspace->_getProxy(dataPrivateTask));
-                }
-                return result;
+                return tt3::util::transform(
+                    _dataUser->rootPrivateTasks(),  //  may throw
+                    [&](auto dt)
+                    {
+                        return _workspace->_getProxy(dt);
+                    });
             }
             //  OOPS! The caller is trying to see someone else's private tasks
             throw AccessDeniedException();
@@ -404,9 +404,9 @@ auto UserImpl::permittedWorkloads(
         //  Do the work
         return tt3::util::transform(
             _dataUser->permittedWorkloads(),
-            [&](auto dataWorkload)
+            [&](auto dw)
             {
-                return _workspace->_getProxy(dataWorkload);
+                return _workspace->_getProxy(dw);
             });
     }
     catch (const tt3::util::Exception & ex)

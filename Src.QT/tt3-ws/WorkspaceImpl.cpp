@@ -262,12 +262,12 @@ auto WorkspaceImpl::activityTypes(
     {
         _validateAccessRights(credentials);
         //  The caller can see all activity types
-        ActivityTypes result;
-        for (tt3::db::api::IActivityType * dataActivityType : _database->activityTypes())
-        {
-            result.insert(_getProxy(dataActivityType));
-        }
-        return result;
+        return tt3::util::transform(
+            _database->activityTypes(), //  may throw
+            [&](auto dt)
+            {
+                return _getProxy(dt);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -286,12 +286,12 @@ auto WorkspaceImpl::publicActivities(
     {
         _validateAccessRights(credentials);
         //  The caller can see all public activities
-        PublicActivities result;
-        for (tt3::db::api::IPublicActivity * dataPublicActivity : _database->publicActivities())
-        {
-            result.insert(_getProxy(dataPublicActivity));
-        }
-        return result;
+        return tt3::util::transform(
+            _database->publicActivities(),  //  may throw
+            [&](auto da)
+            {
+                return _getProxy(da);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -310,12 +310,12 @@ auto WorkspaceImpl::publicActivitiesAndTasks(
     {
         _validateAccessRights(credentials);
         //  The caller can see all public activities
-        PublicActivities result;
-        for (tt3::db::api::IPublicActivity * dataPublicActivity : _database->publicActivitiesAndTasks())
-        {
-            result.insert(_getProxy(dataPublicActivity));
-        }
-        return result;
+        return tt3::util::transform(
+            _database->publicActivitiesAndTasks(),  //  may throw
+            [&](auto da)
+            {
+                return _getProxy(da);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -334,12 +334,12 @@ auto WorkspaceImpl::publicTasks(
     {
         _validateAccessRights(credentials);
         //  The caller can see all public tasks
-        PublicTasks result;
-        for (tt3::db::api::IPublicTask * dataPublicTask : _database->publicTasks())
-        {
-            result.insert(_getProxy(dataPublicTask));
-        }
-        return result;
+        return tt3::util::transform(
+            _database->publicTasks(),   //  may throw
+            [&](auto dt)
+            {
+                return _getProxy(dt);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -358,12 +358,12 @@ auto WorkspaceImpl::rootPublicTasks(
     {
         _validateAccessRights(credentials);
         //  The caller can see all public tasks
-        PublicTasks result;
-        for (tt3::db::api::IPublicTask * dataPublicTask : _database->rootPublicTasks())
-        {
-            result.insert(_getProxy(dataPublicTask));
-        }
-        return result;
+        return tt3::util::transform(
+            _database->rootPublicTasks(),   //  may throw
+            [&](auto dt)
+            {
+                return _getProxy(dt);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -382,12 +382,12 @@ auto WorkspaceImpl::projects(
     {
         _validateAccessRights(credentials);
         //  The caller can see all projects
-        Projects result;
-        for (tt3::db::api::IProject * dataProject : _database->rootProjects())
-        {
-            result.insert(_getProxy(dataProject));
-        }
-        return result;
+        return tt3::util::transform(
+            _database->projects(),  //  may throw
+            [&](auto dp)
+            {
+                return _getProxy(dp);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -406,12 +406,12 @@ auto WorkspaceImpl::rootProjects(
     {
         _validateAccessRights(credentials);
         //  The caller can see all projects
-        Projects result;
-        for (tt3::db::api::IProject * dataProject : _database->rootProjects())
-        {
-            result.insert(_getProxy(dataProject));
-        }
-        return result;
+        return tt3::util::transform(
+            _database->rootProjects(),  //  may throw
+            [&](auto dp)
+            {
+                return _getProxy(dp);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -430,12 +430,12 @@ auto WorkspaceImpl::workStreams(
     {
         _validateAccessRights(credentials);
         //  The caller can see all WorkStreams
-        WorkStreams result;
-        for (tt3::db::api::IWorkStream * dataWorkStream : _database->workStreams())
-        {
-            result.insert(_getProxy(dataWorkStream));
-        }
-        return result;
+        return tt3::util::transform(
+            _database->workStreams(),   //  may throw
+            [&](auto dw)
+            {
+                return _getProxy(dw);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -454,12 +454,12 @@ auto WorkspaceImpl::beneficiaries(
     {
         _validateAccessRights(credentials);
         //  The caller can see all Beneficiaries
-        Beneficiaries result;
-        for (tt3::db::api::IBeneficiary * dataBeneficiary : _database->beneficiaries())
-        {
-            result.insert(_getProxy(dataBeneficiary));
-        }
-        return result;
+        return tt3::util::transform(
+            _database->beneficiaries(), //  may throw
+            [&](auto db)
+            {
+                return _getProxy(db);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -784,15 +784,15 @@ auto WorkspaceImpl::createProject(
         {   //  OOPS! Can't!
             throw AccessDeniedException();
         }
+
         //  Do the work
-        tt3::db::api::Beneficiaries dataBeneficiaries;
-        for (Beneficiary beneficiary : beneficiaries)
-        {
-            dataBeneficiaries.insert(
-                (beneficiary != nullptr) ?
-                    beneficiary->_dataBeneficiary :
-                    nullptr);
-        }
+        tt3::db::api::Beneficiaries dataBeneficiaries =
+            tt3::util::transform(
+                beneficiaries,
+                [](auto b)
+                {   //  Be defensive when transforming nullptrs
+                    return (b != nullptr) ? b->_dataBeneficiary : nullptr;
+                });
         tt3::db::api::IProject * dataProject =
             _database->createProject(
                 displayName,
@@ -826,15 +826,15 @@ auto WorkspaceImpl::createWorkStream(
         {   //  OOPS! Can't!
             throw AccessDeniedException();
         }
+
         //  Do the work
-        tt3::db::api::Beneficiaries dataBeneficiaries;
-        for (Beneficiary beneficiary : beneficiaries)
-        {
-            dataBeneficiaries.insert(
-                (beneficiary != nullptr) ?
-                    beneficiary->_dataBeneficiary :
-                    nullptr);
-        }
+        tt3::db::api::Beneficiaries dataBeneficiaries =
+            tt3::util::transform(
+                beneficiaries,
+                [](auto b)
+                {   //  Be defensive when transforming nullptrs
+                    return (b != nullptr) ? b->_dataBeneficiary : nullptr;
+                });
         tt3::db::api::IWorkStream * dataWorkStream =
             _database->createWorkStream(
                 displayName,

@@ -92,7 +92,7 @@ void WorkStream::_deserializeProperties(
 }
 
 void WorkStream::_deserializeAggregations(
-    const QDomElement & objectElement
+        const QDomElement & objectElement
     )
 {
     Workload::_deserializeAggregations(objectElement);

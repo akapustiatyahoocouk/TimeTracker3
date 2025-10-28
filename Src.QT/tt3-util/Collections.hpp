@@ -31,7 +31,6 @@ namespace tt3::util
     ///     set elements.
     /// \return
     ///     The destination set.
-    //  TODO use wherever possible
     template <typename S, typename Func>
     decltype(auto) transform(const QSet<S> & src, Func op)
     {

@@ -169,7 +169,7 @@ void Workload::setBeneficiaries(
             beneficiaries,
             [&](auto b)
             {
-                Q_ASSERT(b != nullptr); //  should have been caught before!
+                Q_ASSERT(b != nullptr); //  should have been caught earlier!
                 auto xmlBeneficiary = dynamic_cast<Beneficiary*>(b);
                 if (xmlBeneficiary == nullptr ||
                     xmlBeneficiary->_database != this->_database ||
@@ -350,7 +350,7 @@ void Workload::setAssignedUsers(
             users,
             [&](auto u)
             {
-                Q_ASSERT(u != nullptr); //  should have been caught before!
+                Q_ASSERT(u != nullptr); //  should have been caught earlier!
                 auto xmlUser = dynamic_cast<User*>(u);
                 if (xmlUser == nullptr ||
                     xmlUser->_database != this->_database ||

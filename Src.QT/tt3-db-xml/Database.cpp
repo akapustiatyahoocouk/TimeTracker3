@@ -595,7 +595,7 @@ auto Database::createUser(
             permittedWorkloads,
             [&](auto w)
             {
-                Q_ASSERT(w != nullptr); //  should have been caught before!
+                Q_ASSERT(w != nullptr); //  should have been caught earlier!
                 auto xmlWorkload = dynamic_cast<Workload*>(w);
                 if (xmlWorkload == nullptr ||
                     xmlWorkload->_database != this ||
@@ -966,19 +966,21 @@ auto Database::createProject(
             nullptr);
     }
 
-    Beneficiaries xmlBeneficiaries;
-    for (tt3::db::api::IBeneficiary * beneficiary : beneficiaries)
-    {
-        Q_ASSERT(beneficiary != nullptr);   //  should have been caught earlier
-        auto xmlBeneficiary = dynamic_cast<Beneficiary*>(beneficiary);
-        if (xmlBeneficiary == nullptr ||
-            xmlBeneficiary->_database != this ||
-            !xmlBeneficiary->_isLive)
-        {   //  OOPS!
-            throw tt3::db::api::IncompatibleInstanceException(beneficiary->type());
-        }
-        xmlBeneficiaries.insert(xmlBeneficiary);
-    }
+    Beneficiaries xmlBeneficiaries =
+        tt3::util::transform(
+            beneficiaries,
+            [&](auto b)
+            {
+                Q_ASSERT(b != nullptr);   //  should have been caught earlier
+                auto xmlBeneficiary = dynamic_cast<Beneficiary*>(b);
+                if (xmlBeneficiary == nullptr ||
+                    xmlBeneficiary->_database != this ||
+                    !xmlBeneficiary->_isLive)
+                {   //  OOPS!
+                    throw tt3::db::api::IncompatibleInstanceException(b->type());
+                }
+                return xmlBeneficiary;
+            });
 
     //  Display names must be unique
     if (_findRootProject(displayName) != nullptr)
@@ -1054,19 +1056,21 @@ auto Database::createWorkStream(
             nullptr);
     }
 
-    Beneficiaries xmlBeneficiaries;
-    for (tt3::db::api::IBeneficiary * beneficiary : beneficiaries)
-    {
-        Q_ASSERT(beneficiary != nullptr);   //  should have been caught earlier
-        auto xmlBeneficiary = dynamic_cast<Beneficiary*>(beneficiary);
-        if (xmlBeneficiary == nullptr ||
-            xmlBeneficiary->_database != this ||
-            !xmlBeneficiary->_isLive)
-        {   //  OOPS!
-            throw tt3::db::api::IncompatibleInstanceException(beneficiary->type());
-        }
-        xmlBeneficiaries.insert(xmlBeneficiary);
-    }
+    Beneficiaries xmlBeneficiaries =
+        tt3::util::transform(
+            beneficiaries,
+            [&](auto b)
+            {
+                Q_ASSERT(b != nullptr);   //  should have been caught earlier
+                auto xmlBeneficiary = dynamic_cast<Beneficiary*>(b);
+                if (xmlBeneficiary == nullptr ||
+                    xmlBeneficiary->_database != this ||
+                    !xmlBeneficiary->_isLive)
+                {   //  OOPS!
+                    throw tt3::db::api::IncompatibleInstanceException(b->type());
+                }
+                return xmlBeneficiary;
+            });
 
     //  Display names must be unique
     if (_findWorkStream(displayName) != nullptr)
@@ -1141,19 +1145,21 @@ auto Database::createBeneficiary(
             nullptr);
     }
 
-    Workloads xmlWorkloads;
-    for (tt3::db::api::IWorkload * workload : workloads)
-    {
-        Q_ASSERT(workload != nullptr); //  should have been caught before!
-        auto xmlWorkload = dynamic_cast<Workload*>(workload);
-        if (xmlWorkload == nullptr ||
-            xmlWorkload->_database != this ||
-            !xmlWorkload->_isLive)
-        {   //  OOPS!
-            throw tt3::db::api::IncompatibleInstanceException(workload->type());
-        }
-        xmlWorkloads.insert(xmlWorkload);
-    }
+    Workloads xmlWorkloads =
+        tt3::util::transform(
+            workloads,
+            [&](auto w)
+            {
+                Q_ASSERT(w != nullptr); //  should have been caught earlier!
+                auto xmlWorkload = dynamic_cast<Workload*>(w);
+                if (xmlWorkload == nullptr ||
+                    xmlWorkload->_database != this ||
+                    !xmlWorkload->_isLive)
+                {   //  OOPS!
+                    throw tt3::db::api::IncompatibleInstanceException(w->type());
+                }
+                return xmlWorkload;
+            });
 
     //  Display names must be unique
     if (_findBeneficiary(displayName) != nullptr)
