@@ -295,8 +295,7 @@ auto PublicTaskManager::_createWorkspaceModel(
         const TreeWidgetDecorations & decorations
     ) -> PublicTaskManager::_WorkspaceModel
 {
-    _WorkspaceModel workspaceModel
-        { new _WorkspaceModelImpl() };
+    auto workspaceModel = std::make_shared<_WorkspaceModelImpl>();
     try
     {
         for (auto publicTask : workspace->rootPublicTasks(credentials))  //  may throw
@@ -327,8 +326,7 @@ auto PublicTaskManager::_createPublicTaskModel(
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(PublicTaskManager));
 
-    _PublicTaskModel publicTaskModel
-        { new _PublicTaskModelImpl(publicTask) };
+    auto publicTaskModel = std::make_shared<_PublicTaskModelImpl>(publicTask);
     try
     {
         publicTaskModel->text = publicTask->displayName(credentials);

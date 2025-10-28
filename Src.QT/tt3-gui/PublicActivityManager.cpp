@@ -264,7 +264,7 @@ auto PublicActivityManager::_createWorkspaceModel(
         const TreeWidgetDecorations & decorations
     )   -> PublicActivityManager::_WorkspaceModel
 {
-    _WorkspaceModel workspaceModel { new _WorkspaceModelImpl() };
+    auto workspaceModel = std::make_shared<_WorkspaceModelImpl>();
     try
     {
         for (tt3::ws::PublicActivity publicActivity : workspace->publicActivities(credentials)) //  may throw
@@ -294,8 +294,7 @@ auto PublicActivityManager::_createPublicActivityModel(
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
 
-    _PublicActivityModel publicActivityModel
-        { new _PublicActivityModelImpl(publicActivity) };
+    auto publicActivityModel = std::make_shared<_PublicActivityModelImpl>(publicActivity);
     try
     {
         publicActivityModel->text = publicActivity->displayName(credentials);

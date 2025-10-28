@@ -220,7 +220,7 @@ auto WorkStreamManager::_createWorkspaceModel(
         const TreeWidgetDecorations & decorations
     ) -> WorkStreamManager::_WorkspaceModel
 {
-    _WorkspaceModel workspaceModel { new _WorkspaceModelImpl() };
+    auto workspaceModel = std::make_shared<_WorkspaceModelImpl>();
     try
     {
         for (tt3::ws::WorkStream workStream : workspace->workStreams(credentials))    //  may throw
@@ -250,7 +250,7 @@ auto WorkStreamManager::_createWorkStreamModel(
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
 
-    _WorkStreamModel workStreamModel { new _WorkStreamModelImpl(workStream) };
+    auto workStreamModel = std::make_shared<_WorkStreamModelImpl>(workStream);
     try
     {
         workStreamModel->text = workStream->displayName(credentials);

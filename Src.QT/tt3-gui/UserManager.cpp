@@ -286,7 +286,7 @@ void UserManager::requestRefresh()
 //  View model
 UserManager::_WorkspaceModel UserManager::_createWorkspaceModel()
 {
-    _WorkspaceModel workspaceModel { new _WorkspaceModelImpl() };
+    auto workspaceModel = std::make_shared<_WorkspaceModelImpl>();
     try
     {
         for (tt3::ws::User user : _workspace->users(_credentials))    //  may throw
@@ -312,7 +312,7 @@ UserManager::_UserModel UserManager::_createUserModel(tt3::ws::User user)
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(UserManager));
 
-    _UserModel userModel { new _UserModelImpl(user) };
+    auto userModel = std::make_shared<_UserModelImpl>(user);
     try
     {
         userModel->text = user->realName(_credentials);
@@ -361,7 +361,7 @@ UserManager::_AccountModel UserManager::_createAccountModel(tt3::ws::Account acc
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(UserManager));
 
-    _AccountModel accountModel { new _AccountModelImpl(account) };
+    auto accountModel = std::make_shared<_AccountModelImpl>(account);
     try
     {
         accountModel->text = account->login(_credentials);

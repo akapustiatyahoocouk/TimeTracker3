@@ -212,7 +212,7 @@ void ActivityTypeManager::requestRefresh()
 //  View model
 ActivityTypeManager::_WorkspaceModel ActivityTypeManager::_createWorkspaceModel()
 {
-    _WorkspaceModel workspaceModel { new _WorkspaceModelImpl() };
+    auto workspaceModel = std::make_shared<_WorkspaceModelImpl>();
     try
     {
         for (tt3::ws::ActivityType activityType : _workspace->activityTypes(_credentials))    //  may throw
@@ -237,7 +237,7 @@ ActivityTypeManager::_ActivityTypeModel ActivityTypeManager::_createActivityType
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
 
-    _ActivityTypeModel activityTypeModel { new _ActivityTypeModelImpl(activityType) };
+    auto activityTypeModel =std::make_shared<_ActivityTypeModelImpl>(activityType);
     try
     {
         activityTypeModel->text = activityType->displayName(_credentials);

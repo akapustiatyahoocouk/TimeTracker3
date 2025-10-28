@@ -296,7 +296,7 @@ auto PrivateTaskManager::_createWorkspaceModel(
         const TreeWidgetDecorations & decorations
     ) -> PrivateTaskManager::_WorkspaceModel
 {
-    _WorkspaceModel workspaceModel { new _WorkspaceModelImpl() };
+    auto workspaceModel = std::make_shared<_WorkspaceModelImpl>();
     try
     {
         if (workspace->grantsAll(credentials, tt3::ws::Capability::Administrator))
@@ -337,8 +337,7 @@ auto PrivateTaskManager::_createUserModel(
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(PrivateTaskManager));
 
-    _UserModel userModel
-        { new _UserModelImpl(user) };
+    auto userModel = std::make_shared<_UserModelImpl>(user);
     try
     {
         userModel->text = user->realName(credentials);
@@ -387,8 +386,7 @@ auto PrivateTaskManager::_createPrivateTaskModel(
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(PrivateTaskManager));
 
-    _PrivateTaskModel privateTaskModel
-        { new _PrivateTaskModelImpl(privateTask) };
+    auto privateTaskModel = std::make_shared<_PrivateTaskModelImpl>(privateTask);
     try
     {
         privateTaskModel->text = privateTask->displayName(credentials);

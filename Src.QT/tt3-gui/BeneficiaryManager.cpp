@@ -218,7 +218,7 @@ auto BeneficiaryManager::_createWorkspaceModel(
         const TreeWidgetDecorations & decorations
     ) -> _WorkspaceModel
 {
-    _WorkspaceModel workspaceModel { new _WorkspaceModelImpl() };
+    auto workspaceModel = std::make_shared<_WorkspaceModelImpl>();
     try
     {
         for (tt3::ws::Beneficiary beneficiary : workspace->beneficiaries(credentials))    //  may throw
@@ -248,7 +248,7 @@ auto BeneficiaryManager::_createBeneficiaryModel(
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
 
-    _BeneficiaryModel beneficiaryModel { new _BeneficiaryModelImpl(beneficiary) };
+    auto beneficiaryModel = std::make_shared<_BeneficiaryModelImpl>(beneficiary);
     try
     {
         beneficiaryModel->text = beneficiary->displayName(credentials);

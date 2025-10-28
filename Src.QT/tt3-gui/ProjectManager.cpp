@@ -259,8 +259,7 @@ auto ProjectManager::_createWorkspaceModel(
         const TreeWidgetDecorations & decorations
     ) -> ProjectManager::_WorkspaceModel
 {
-    _WorkspaceModel workspaceModel
-        { new _WorkspaceModelImpl() };
+    auto workspaceModel = std::make_shared<_WorkspaceModelImpl>();
     try
     {
         for (auto project : workspace->rootProjects(credentials))  //  may throw
@@ -291,8 +290,7 @@ auto ProjectManager::_createProjectModel(
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ProjectManager));
 
-    _ProjectModel projectModel
-        { new _ProjectModelImpl(project) };
+    auto projectModel = std::make_shared<_ProjectModelImpl>(project);
     try
     {
         projectModel->text = project->displayName(credentials);
