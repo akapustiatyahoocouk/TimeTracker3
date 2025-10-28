@@ -37,7 +37,7 @@ struct WorkspaceTypeManager::_Impl
 WorkspaceType WorkspaceTypeManager::findWorkspaceType(const tt3::util::Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
 
     tt3::db::api::IDatabaseType * databaseType =
         tt3::db::api::DatabaseTypeManager::findDatabaseType(mnemonic);
@@ -47,7 +47,7 @@ WorkspaceType WorkspaceTypeManager::findWorkspaceType(const tt3::util::Mnemonic 
 WorkspaceTypes WorkspaceTypeManager::allWorkspaceTypes()
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
 
     QList<WorkspaceType> values = impl->registry.values();
     return WorkspaceTypes(values.cbegin(), values.cend());

@@ -53,7 +53,7 @@ Object::~Object()
 //  tt3::db::api::IObject (general)
 bool Object::isLive() const
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     return _isLive;
 }
 
@@ -61,7 +61,7 @@ bool Object::isLive() const
 //  tt3::db::api::IObject (life cycle)
 void Object::destroy()
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -78,19 +78,19 @@ void Object::destroy()
 //  tt3::db::api::IObject (reference counting)
 Object::State Object::state() const
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     return _state;
 }
 
 int Object::referenceCount() const
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     return _referenceCount;
 }
 
 void Object::addReference()
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
 
     Q_ASSERT((_isLive &&
               _database->_liveObjects.contains(_oid) &&
@@ -125,7 +125,7 @@ void Object::addReference()
 
 void Object::removeReference()
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
 
     Q_ASSERT((_isLive &&
               _database->_liveObjects.contains(_oid) &&

@@ -30,6 +30,16 @@ Sha1.DisplayName=SHA-1
 GPLv3.DisplayName=GNU GPL (version 3)
 GPLv3.Description=GNU General Public License (version 3)
 
+[Language]
+de=German
+en=English
+ru=Russian
+
+[Country]
+GB=United Kingdom
+DE=Germany
+RU=Russia
+
 [Errors]
 MissingResourceException=Missing resource [{1}]{2} in {0}
 ParseException=Error parsing "{0}" at position {1}

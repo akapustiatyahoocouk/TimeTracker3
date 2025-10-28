@@ -39,7 +39,7 @@ QString ActivityImpl::displayName(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -63,7 +63,7 @@ void ActivityImpl::setDisplayName(
         const QString & displayName
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -86,7 +86,7 @@ QString ActivityImpl::description(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -110,7 +110,7 @@ void ActivityImpl::setDescription(
         const QString & description
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -133,7 +133,7 @@ auto ActivityImpl::timeout(
         const Credentials & credentials
     ) const -> InactivityTimeout
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -157,7 +157,7 @@ void ActivityImpl::setTimeout(
         const InactivityTimeout & timeout
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -180,7 +180,7 @@ bool ActivityImpl::requireCommentOnStart(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -204,7 +204,7 @@ void ActivityImpl::setRequireCommentOnStart(
         bool requireCommentOnStart
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -227,7 +227,7 @@ bool ActivityImpl::requireCommentOnStop(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -251,7 +251,7 @@ void ActivityImpl::setRequireCommentOnStop(
         bool requireCommentOnStop
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -274,7 +274,7 @@ bool ActivityImpl::fullScreenReminder(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -298,7 +298,7 @@ void ActivityImpl::setFullScreenReminder(
         bool fullScreenReminder
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -323,7 +323,7 @@ auto ActivityImpl::activityType(
         const Credentials & credentials
     ) const -> ActivityType
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -351,7 +351,7 @@ void ActivityImpl::setActivityType(
         ActivityType activityType
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
     if (activityType != nullptr)
     {   //  If in different Workspace, then in different
@@ -382,7 +382,7 @@ auto ActivityImpl::workload(
         const Credentials & credentials
     ) const -> Workload
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -410,7 +410,7 @@ void ActivityImpl::setWorkload(
         Workload workload
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
     if (workload != nullptr)
     {   //  If in different Workspace, then in different
@@ -441,7 +441,7 @@ auto ActivityImpl::works(
         const Credentials & credentials
     ) const -> Works
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -473,7 +473,7 @@ auto ActivityImpl::events(
         const Credentials & credentials
     ) const -> Events
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -507,7 +507,7 @@ bool ActivityImpl::canStart(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -549,7 +549,7 @@ bool ActivityImpl::canStop(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try

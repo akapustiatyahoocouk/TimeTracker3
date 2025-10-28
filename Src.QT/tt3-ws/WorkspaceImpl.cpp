@@ -76,7 +76,7 @@ auto WorkspaceImpl::address(
 
 bool WorkspaceImpl::isOpen() const
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
 
     return _isOpen;
 }
@@ -88,7 +88,7 @@ bool WorkspaceImpl::isReadOnly() const
 
 void WorkspaceImpl::close()
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
 
     if (_isOpen)
     {
@@ -113,7 +113,7 @@ void WorkspaceImpl::close()
 
 void WorkspaceImpl::refresh()
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
 
     try
     {
@@ -145,7 +145,7 @@ auto WorkspaceImpl::users(
         const Credentials & credentials
     ) const -> Users
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
 
     try
@@ -179,7 +179,7 @@ Accounts WorkspaceImpl::accounts(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
 
     try
@@ -217,7 +217,7 @@ Account WorkspaceImpl::findAccount(
         const QString & login
     ) const
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
 
     try
@@ -255,7 +255,7 @@ auto WorkspaceImpl::activityTypes(
         const Credentials & credentials
     ) const -> ActivityTypes
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
 
     try
@@ -279,7 +279,7 @@ auto WorkspaceImpl::publicActivities(
         const Credentials & credentials
     ) const -> PublicActivities
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
 
     try
@@ -303,7 +303,7 @@ auto WorkspaceImpl::publicActivitiesAndTasks(
         const Credentials & credentials
     ) const -> PublicActivities
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
 
     try
@@ -327,7 +327,7 @@ auto WorkspaceImpl::publicTasks(
         const Credentials & credentials
     ) const -> PublicTasks
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
 
     try
@@ -351,7 +351,7 @@ auto WorkspaceImpl::rootPublicTasks(
         const Credentials & credentials
     ) const -> PublicTasks
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
 
     try
@@ -375,7 +375,7 @@ auto WorkspaceImpl::projects(
         const Credentials & credentials
     ) const -> Projects
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
 
     try
@@ -399,7 +399,7 @@ auto WorkspaceImpl::rootProjects(
         const Credentials & credentials
     ) const -> Projects
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
 
     try
@@ -423,7 +423,7 @@ auto WorkspaceImpl::workStreams(
         const Credentials & credentials
     ) const -> WorkStreams
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
 
     try
@@ -447,7 +447,7 @@ auto WorkspaceImpl::beneficiaries(
         const Credentials & credentials
     ) const -> Beneficiaries
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
 
     try
@@ -473,7 +473,7 @@ bool WorkspaceImpl::canAccess(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();
 
     try
@@ -495,7 +495,7 @@ auto WorkspaceImpl::capabilities(
         const Credentials & credentials
     ) const -> Capabilities
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();
 
     try
@@ -513,7 +513,7 @@ bool WorkspaceImpl::grantsAll(
         Capabilities requiredCapabilities
     ) const
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();
 
     try
@@ -539,7 +539,7 @@ bool WorkspaceImpl::grantsAny(
         Capabilities requiredCapabilities
     ) const
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();
 
     try
@@ -564,7 +564,7 @@ auto WorkspaceImpl::tryLogin(
         const Credentials & credentials
     ) const -> Account
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();
 
     try
@@ -585,7 +585,7 @@ auto WorkspaceImpl::login(
         const Credentials & credentials
     ) const -> Account
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();
 
     try
@@ -612,7 +612,7 @@ auto WorkspaceImpl::createUser(
         const Workloads & permittedWorkloads
     ) -> User
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();
 
     try
@@ -651,7 +651,7 @@ auto WorkspaceImpl::createActivityType(
         const QString & description
     ) -> ActivityType
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();
 
     try
@@ -686,7 +686,7 @@ auto WorkspaceImpl::createPublicActivity(
         Workload workload
     ) -> PublicActivity
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();
 
     try
@@ -731,7 +731,7 @@ auto WorkspaceImpl::createPublicTask(
         bool requireCommentOnCompletion
     ) -> PublicTask
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();
 
     try
@@ -772,7 +772,7 @@ auto WorkspaceImpl::createProject(
         bool completed
     ) -> Project
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();
 
     try
@@ -814,7 +814,7 @@ auto WorkspaceImpl::createWorkStream(
         const Beneficiaries & beneficiaries
     ) -> WorkStream
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();
 
     try
@@ -855,7 +855,7 @@ auto WorkspaceImpl::createBeneficiary(
         const Workloads & workloads
     ) -> Beneficiary
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();
 
     try
@@ -1347,7 +1347,7 @@ void WorkspaceImpl::_onObjectCreated(tt3::db::api::ObjectCreatedNotification not
     if (notification.objectType() == ObjectTypes::User::instance() ||
         notification.objectType() == ObjectTypes::Account::instance())
     {
-        tt3::util::Lock lock(_guard);
+        tt3::util::Lock _(_guard);
         _goodCredentialsCache.clear();
         _badCredentialsCache.clear();
     }
@@ -1366,7 +1366,7 @@ void WorkspaceImpl::_onObjectDestroyed(tt3::db::api::ObjectDestroyedNotification
     if (notification.objectType() == ObjectTypes::User::instance() ||
         notification.objectType() == ObjectTypes::Account::instance())
     {
-        tt3::util::Lock lock(_guard);
+        tt3::util::Lock _(_guard);
         _goodCredentialsCache.clear();
         _badCredentialsCache.clear();
         //  There's no need to cache destroyed objects
@@ -1374,7 +1374,7 @@ void WorkspaceImpl::_onObjectDestroyed(tt3::db::api::ObjectDestroyedNotification
     }
     else
     {   //  There's no need to cache destroyed objects
-        tt3::util::Lock lock(_guard);
+        tt3::util::Lock _(_guard);
         _proxyCache.remove(notification.oid());
     }
     //  Translate & re-issue
@@ -1392,7 +1392,7 @@ void WorkspaceImpl::_onObjectModified(tt3::db::api::ObjectModifiedNotification n
     if (notification.objectType() == ObjectTypes::User::instance() ||
         notification.objectType() == ObjectTypes::Account::instance())
     {
-        tt3::util::Lock lock(_guard);
+        tt3::util::Lock _(_guard);
         _goodCredentialsCache.clear();
         _badCredentialsCache.clear();
     }

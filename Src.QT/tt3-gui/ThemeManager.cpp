@@ -40,7 +40,7 @@ struct ThemeManager::_Impl
 QSet<ITheme*> ThemeManager::allThemes()
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
 
     QList<ITheme*> values = impl->registry.values();
     return QSet<ITheme*>(values.cbegin(), values.cend());
@@ -51,7 +51,7 @@ bool ThemeManager::registerTheme(ITheme * theme)
     Q_ASSERT(theme != nullptr);
 
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
 
     if (impl->registry.contains(theme->mnemonic()))
     {
@@ -64,7 +64,7 @@ bool ThemeManager::registerTheme(ITheme * theme)
 ITheme * ThemeManager::findTheme(const tt3::util::Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
 
     return impl->registry.contains(mnemonic) ? impl->registry[mnemonic] : nullptr;
 }

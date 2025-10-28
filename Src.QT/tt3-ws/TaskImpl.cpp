@@ -39,7 +39,7 @@ bool TaskImpl::completed(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -63,7 +63,7 @@ void TaskImpl::setCompleted(
         bool completed
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -86,7 +86,7 @@ bool TaskImpl::requireCommentOnCompletion(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -110,7 +110,7 @@ void TaskImpl::setRequireCommentOnCompletion(
         bool requireCommentOnCompletion
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try

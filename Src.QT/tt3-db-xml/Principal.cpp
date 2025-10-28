@@ -33,7 +33,7 @@ Principal::~Principal()
 bool Principal::enabled(
     ) const
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -44,7 +44,7 @@ void Principal::setEnabled(
         bool enabled
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -68,7 +68,7 @@ void Principal::setEnabled(
 auto Principal::emailAddresses(
     ) const -> QStringList
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -79,7 +79,7 @@ void Principal::setEmailAddresses(
         const QStringList & emailAddresses
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw

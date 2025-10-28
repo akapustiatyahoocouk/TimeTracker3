@@ -42,7 +42,7 @@ struct SubsystemManager::_Impl
 Subsystems SubsystemManager::allSubsystems()
 {
     _Impl * impl = _impl();
-    Lock lock(impl->guard);
+    Lock _(impl->guard);
 
     QList<ISubsystem*> values = impl->registry.values();
     return Subsystems(values.cbegin(), values.cend());
@@ -53,7 +53,7 @@ bool SubsystemManager::registerSubsystem(ISubsystem * subsystem)
     Q_ASSERT(subsystem != nullptr);
 
     _Impl * impl = _impl();
-    Lock lock(impl->guard);
+    Lock _(impl->guard);
 
     if (impl->registry.contains(subsystem->mnemonic()))
     {
@@ -66,7 +66,7 @@ bool SubsystemManager::registerSubsystem(ISubsystem * subsystem)
 ISubsystem * SubsystemManager::findSubsystem(const Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();
-    Lock lock(impl->guard);
+    Lock _(impl->guard);
 
     return impl->registry.contains(mnemonic) ? impl->registry[mnemonic] : nullptr;
 }

@@ -39,7 +39,7 @@ QString BeneficiaryImpl::displayName(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -63,7 +63,7 @@ void BeneficiaryImpl::setDisplayName(
         const QString & displayName
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -86,7 +86,7 @@ QString BeneficiaryImpl::description(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -110,7 +110,7 @@ void BeneficiaryImpl::setDescription(
         const QString & description
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -135,7 +135,7 @@ auto BeneficiaryImpl:: workloads(
         const Credentials & credentials
     ) const -> Workloads
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -164,7 +164,7 @@ void BeneficiaryImpl::setWorkloads(
         const Workloads & workloads
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -194,7 +194,7 @@ void BeneficiaryImpl::addWorkload(
         Workload workload
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -219,7 +219,7 @@ void BeneficiaryImpl::removeWorkload(
         Workload workload
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try

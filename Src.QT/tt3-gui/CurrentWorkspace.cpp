@@ -53,7 +53,7 @@ void CurrentWorkspace::operator = (
     //  Change is effected in a "locked" state
     {
         _Impl * impl = _impl();
-        tt3::util::Lock lock(impl->guard);
+        tt3::util::Lock _(impl->guard);
         Q_ASSERT(impl->instanceCount == 1);
 
         if (workspace != impl->workspace)
@@ -73,7 +73,7 @@ void CurrentWorkspace::operator = (
 tt3::ws::Workspace CurrentWorkspace::operator -> () const
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
     return impl->workspace;
@@ -82,7 +82,7 @@ tt3::ws::Workspace CurrentWorkspace::operator -> () const
 CurrentWorkspace::operator tt3::ws::Workspace() const
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
     return impl->workspace;
@@ -91,7 +91,7 @@ CurrentWorkspace::operator tt3::ws::Workspace() const
 bool CurrentWorkspace::operator == (nullptr_t /*null*/) const
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
     return impl->workspace.get() == nullptr;
@@ -100,7 +100,7 @@ bool CurrentWorkspace::operator == (nullptr_t /*null*/) const
 bool CurrentWorkspace::operator != (nullptr_t /*null*/) const
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
     return impl->workspace.get() != nullptr;
@@ -117,7 +117,7 @@ void CurrentWorkspace::swap(
     //  Change is effected in a "locked" state
     {
         _Impl * impl = _impl();
-        tt3::util::Lock lock(impl->guard);
+        tt3::util::Lock _(impl->guard);
         Q_ASSERT(impl->instanceCount == 1);
 
         if (other != impl->workspace)

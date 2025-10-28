@@ -37,7 +37,7 @@ namespace
 Components ComponentManager::allComponents()
 {
     _Impl * impl = _impl();
-    Lock lock(impl->guard);
+    Lock _(impl->guard);
 
     QList<IComponent*> values = impl->registry.values();
     return Components(values.cbegin(), values.cend());
@@ -48,7 +48,7 @@ bool ComponentManager::registerComponent(IComponent * component)
     Q_ASSERT(component != nullptr);
 
     _Impl * impl = _impl();
-    Lock lock(impl->guard);
+    Lock _(impl->guard);
 
     if (IComponent * registeredComponent = findComponent(component->mnemonic(), component->version()))
     {
@@ -66,7 +66,7 @@ bool ComponentManager::registerComponent(IComponent * component)
 IComponent * ComponentManager::findComponent(const tt3::util::Mnemonic & mnemonic, const QVersionNumber & version)
 {
     _Impl * impl = _impl();
-    Lock lock(impl->guard);
+    Lock _(impl->guard);
 
     Mnemonic key = mnemonic + "|" + toString(version);
     return impl->registry.contains(key) ? impl->registry[key] : nullptr;
@@ -75,7 +75,7 @@ IComponent * ComponentManager::findComponent(const tt3::util::Mnemonic & mnemoni
 IComponent * ComponentManager::findComponent(const Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();
-    Lock lock(impl->guard);
+    Lock _(impl->guard);
 
     IComponent * result = nullptr;
     for (IComponent * component : impl->registry.values())
@@ -95,7 +95,7 @@ IComponent * ComponentManager::findComponent(const Mnemonic & mnemonic)
 void ComponentManager::loadComponentSettings()
 {
     _Impl * impl = _impl();
-    Lock lock(impl->guard);
+    Lock _(impl->guard);
 
     QFile iniFile(iniFileName());
     if (iniFile.open(QIODevice::ReadOnly))
@@ -152,7 +152,7 @@ void ComponentManager::loadComponentSettings()
 void ComponentManager::saveComponentSettings()
 {
     _Impl * impl = _impl();
-    Lock lock(impl->guard);
+    Lock _(impl->guard);
 
     QFile iniFile(iniFileName());
     if (iniFile.open(QIODevice::WriteOnly))
@@ -205,7 +205,7 @@ void ComponentManager::saveComponentSettings()
 Locales ComponentManager::supportedLocales()
 {
     _Impl * impl = _impl();
-    Lock lock(impl->guard);
+    Lock _(impl->guard);
 
     Locales result;
     for (IComponent * component : impl->registry.values())
@@ -218,7 +218,7 @@ Locales ComponentManager::supportedLocales()
 Locales ComponentManager::fullySupportedLocales()
 {
     _Impl * impl = _impl();
-    Lock lock(impl->guard);
+    Lock _(impl->guard);
 
     Locales result;
     bool firstTime = true;

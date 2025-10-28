@@ -38,7 +38,7 @@ User::~User()
 //  tt3::db::api::IUser (properties)
 QString User::realName() const
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -49,7 +49,7 @@ void User::setRealName(
         const QString & realName
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -81,7 +81,7 @@ void User::setRealName(
 auto User::inactivityTimeout(
     ) const -> tt3::db::api::InactivityTimeout
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -92,7 +92,7 @@ void User::setInactivityTimeout(
         const tt3::db::api::InactivityTimeout & inactivityTimeout
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -125,7 +125,7 @@ void User::setInactivityTimeout(
 auto User::uiLocale(
     ) const -> tt3::db::api::UiLocale
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -136,7 +136,7 @@ void User::setUiLocale(
         const tt3::db::api::UiLocale & uiLocale
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -171,7 +171,7 @@ void User::setUiLocale(
 auto User::accounts(
     ) const -> tt3::db::api::Accounts
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -181,7 +181,7 @@ auto User::accounts(
 auto User::privateActivities(
     ) const -> tt3::db::api::PrivateActivities
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -191,7 +191,7 @@ auto User::privateActivities(
 auto User::privateActivitiesAndTasks(
     ) const -> tt3::db::api::PrivateActivities
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -207,7 +207,7 @@ auto User::privateActivitiesAndTasks(
 auto User::privateTasks(
     ) const -> tt3::db::api::PrivateTasks
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -219,7 +219,7 @@ auto User::privateTasks(
 auto User::rootPrivateTasks(
     ) const -> tt3::db::api::PrivateTasks
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -229,7 +229,7 @@ auto User::rootPrivateTasks(
 auto User::permittedWorkloads(
     ) const -> tt3::db::api::Workloads
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -240,7 +240,7 @@ void User::setPermittedWorkloads(
         const tt3::db::api::Workloads & workloads
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -313,7 +313,7 @@ void User::addPermittedWorkload(
         tt3::db::api::IWorkload * workload
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -362,7 +362,7 @@ void User::removePermittedWorkload(
         tt3::db::api::IWorkload * workload
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -417,7 +417,7 @@ auto User::createAccount(
         tt3::db::api::Capabilities capabilities
     ) -> tt3::db::api::IAccount *
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -493,7 +493,7 @@ auto User::createPrivateActivity(
         tt3::db::api::IWorkload * workload
     ) -> tt3::db::api::IPrivateActivity *
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -617,7 +617,7 @@ auto User::createPrivateTask(
         bool requireCommentOnCompletion
     ) -> tt3::db::api::IPrivateTask *
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw

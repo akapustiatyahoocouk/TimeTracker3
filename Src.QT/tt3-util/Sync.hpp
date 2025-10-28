@@ -77,7 +77,7 @@ namespace tt3::util
     /// \class Mutex tt3-util/API.hpp
     /// \brief An extended mutex - only one thread can
     ///        have it "grabbed"/"locked" at a time.
-    class TT3_UTIL_PUBLIC Mutex
+    class TT3_UTIL_PUBLIC Mutex final
         :   public SynchronisationObject
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Mutex)

@@ -39,7 +39,7 @@ bool ProjectImpl::completed(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -63,7 +63,7 @@ void ProjectImpl::setCompleted(
         bool completed
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -88,7 +88,7 @@ auto ProjectImpl::parent(
         const Credentials & credentials
     ) const -> Project
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -116,7 +116,7 @@ void ProjectImpl::setParent(
         Project parent
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
     if (parent != nullptr)
     {   //  If in different Workspace, then in different
@@ -147,7 +147,7 @@ auto ProjectImpl::children(
         const Credentials & credentials
     ) const -> Projects
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -181,7 +181,7 @@ auto ProjectImpl::createChild(
         bool completed
     ) -> Project
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();
 
     try

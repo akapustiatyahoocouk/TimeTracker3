@@ -53,7 +53,7 @@ void CurrentCredentials::operator = (
     //  Change is effected i n a "locked" state
     {
         _Impl * impl = _impl();
-        tt3::util::Lock lock(impl->guard);
+        tt3::util::Lock _(impl->guard);
 
         Q_ASSERT(impl->instanceCount == 1);
         if (credentials != impl->credentials)
@@ -73,7 +73,7 @@ void CurrentCredentials::operator = (
 CurrentCredentials::operator const tt3::ws::Credentials & () const
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
     return impl->credentials;
@@ -84,7 +84,7 @@ CurrentCredentials::operator const tt3::ws::Credentials & () const
 bool CurrentCredentials::isValid() const
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
     return impl->credentials.isValid();
@@ -93,7 +93,7 @@ bool CurrentCredentials::isValid() const
 QString CurrentCredentials::login() const
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
     return impl->credentials.login();

@@ -39,7 +39,7 @@ auto PrivateActivityImpl::owner(
         const Credentials & credentials
     ) const -> User
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try

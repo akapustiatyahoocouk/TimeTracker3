@@ -39,7 +39,7 @@ auto WorkImpl::startedAt(
         const tt3::ws::Credentials & credentials
     ) const -> QDateTime
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -62,7 +62,7 @@ auto WorkImpl::finishedAt(
         const tt3::ws::Credentials & credentials
     ) const -> QDateTime
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -87,7 +87,7 @@ auto WorkImpl::account(
         const tt3::ws::Credentials & credentials
     ) const -> Account
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -110,7 +110,7 @@ auto WorkImpl::activity(
         const tt3::ws::Credentials & credentials
     ) const -> Activity
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try

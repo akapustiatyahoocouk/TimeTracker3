@@ -39,7 +39,7 @@ QString ActivityTypeImpl::displayName(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -63,7 +63,7 @@ void ActivityTypeImpl::setDisplayName(
         const QString & displayName
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -86,7 +86,7 @@ QString ActivityTypeImpl::description(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -110,7 +110,7 @@ void ActivityTypeImpl::setDescription(
         const QString & description
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -135,7 +135,7 @@ auto ActivityTypeImpl::activities(
         const Credentials & credentials
     ) const -> Activities
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try

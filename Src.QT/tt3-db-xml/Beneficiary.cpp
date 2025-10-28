@@ -39,7 +39,7 @@ Beneficiary::~Beneficiary()
 //  tt3::db::api::IBeneficiary (properties)
 QString Beneficiary::displayName() const
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -50,7 +50,7 @@ void Beneficiary::setDisplayName(
         const QString & displayName
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -88,7 +88,7 @@ void Beneficiary::setDisplayName(
 
 QString Beneficiary::description() const
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -99,7 +99,7 @@ void Beneficiary::setDescription(
         const QString & description
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -133,7 +133,7 @@ void Beneficiary::setDescription(
 auto Beneficiary::workloads(
     ) const -> tt3::db::api::Workloads
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -144,7 +144,7 @@ void Beneficiary::setWorkloads(
         const tt3::db::api::Workloads & workloads
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -217,7 +217,7 @@ void Beneficiary::addWorkload(
         tt3::db::api::IWorkload * workload
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -266,7 +266,7 @@ void Beneficiary::removeWorkload(
         tt3::db::api::IWorkload * workload
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw

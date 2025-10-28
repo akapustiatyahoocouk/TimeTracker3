@@ -51,7 +51,7 @@ void CurrentTheme::operator = (ITheme * theme)
     //  Change is effected in a "locked" state
     {
         _Impl * impl = _impl();
-        tt3::util::Lock lock(impl->guard);
+        tt3::util::Lock _(impl->guard);
         Q_ASSERT(impl->instanceCount == 1);
 
         if (theme != impl->theme)
@@ -72,7 +72,7 @@ void CurrentTheme::operator = (ITheme * theme)
 ITheme * CurrentTheme::operator -> () const
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
 
     Q_ASSERT(impl->instanceCount == 1);
     return impl->theme;
@@ -81,7 +81,7 @@ ITheme * CurrentTheme::operator -> () const
 bool CurrentTheme::operator == (nullptr_t /*null*/) const
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
     return impl->theme == nullptr;
@@ -90,7 +90,7 @@ bool CurrentTheme::operator == (nullptr_t /*null*/) const
 bool CurrentTheme::operator != (nullptr_t /*null*/) const
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
     return impl->theme != nullptr;

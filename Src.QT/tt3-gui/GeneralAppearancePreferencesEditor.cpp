@@ -50,7 +50,10 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
     std::sort(
         _locales.begin(),
         _locales.end(),
-        [](auto a, auto b) { return a.name() < b.name(); });
+        [](auto a, auto b)
+        {
+            return tt3::util::LocaleManager::displayName(a) < tt3::util::LocaleManager::displayName(b);
+        });
 
     for (QLocale locale : _locales)
     {

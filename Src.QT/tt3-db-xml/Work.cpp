@@ -43,7 +43,7 @@ Work::~Work()
 auto Work::startedAt(
     ) const -> QDateTime
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -53,7 +53,7 @@ auto Work::startedAt(
 auto Work::finishedAt(
     ) const -> QDateTime
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -65,7 +65,7 @@ auto Work::finishedAt(
 auto Work::account(
     ) const -> tt3::db::api::IAccount *
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -75,7 +75,7 @@ auto Work::account(
 auto Work::activity(
     ) const -> tt3::db::api::IActivity *
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 

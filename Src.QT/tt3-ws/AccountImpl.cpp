@@ -37,7 +37,7 @@ QString AccountImpl::login(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -61,7 +61,7 @@ void AccountImpl::setLogin(
         const QString & login
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -87,7 +87,7 @@ QString AccountImpl::passwordHash(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -111,7 +111,7 @@ void AccountImpl::setPassword(
         const QString & password
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -134,7 +134,7 @@ auto AccountImpl::capabilities(
         const Credentials & credentials
     ) const -> Capabilities
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -158,7 +158,7 @@ void AccountImpl::setCapabilities(
         Capabilities capabilities
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -196,7 +196,7 @@ auto AccountImpl::user(
         const Credentials & credentials
     ) const -> User
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -219,7 +219,7 @@ auto AccountImpl::quickPicksList(
         const Credentials & credentials
     ) const -> QList<Activity>
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -248,7 +248,7 @@ void AccountImpl::setQuickPicksList(
         const QList<Activity> & quickPicksList
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -278,7 +278,7 @@ auto AccountImpl::works(
         const Credentials & credentials
     ) const -> Works
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -308,7 +308,7 @@ auto AccountImpl::works(
         const QDateTime & to
     ) const -> Works
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -336,7 +336,7 @@ auto AccountImpl::events(
         const Credentials & credentials
     ) const -> Events
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -366,7 +366,7 @@ auto AccountImpl::events(
         const QDateTime & to
     ) const -> Events
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -399,7 +399,7 @@ auto AccountImpl::createWork(
         Activity activity
     ) -> Work
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -453,7 +453,7 @@ auto AccountImpl::createEvent(
         const Activities & activities
     ) -> Event
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try

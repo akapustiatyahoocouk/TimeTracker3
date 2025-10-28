@@ -35,7 +35,7 @@ Task::~Task()
 bool Task::completed(
     ) const
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -46,7 +46,7 @@ void Task::setCompleted(
         bool completed
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -70,7 +70,7 @@ void Task::setCompleted(
 bool Task::requireCommentOnCompletion(
     ) const
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -81,7 +81,7 @@ void Task::setRequireCommentOnCompletion(
         bool requireCommentOnCompletion
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw

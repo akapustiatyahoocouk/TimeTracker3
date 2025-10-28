@@ -39,7 +39,7 @@ QString WorkloadImpl::displayName(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -63,7 +63,7 @@ void WorkloadImpl::setDisplayName(
         const QString & displayName
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -86,7 +86,7 @@ QString WorkloadImpl::description(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -110,7 +110,7 @@ void WorkloadImpl::setDescription(
         const QString & description
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -135,7 +135,7 @@ auto WorkloadImpl::contributingActivities(
         const Credentials & credentials
     ) const -> Activities
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -167,7 +167,7 @@ auto WorkloadImpl::beneficiaries(
         const Credentials & credentials
     ) const -> Beneficiaries
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -200,7 +200,7 @@ void WorkloadImpl::setBeneficiaries(
         const Beneficiaries & beneficiaries
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -230,7 +230,7 @@ void WorkloadImpl::addBeneficiary(
         Beneficiary beneficiary
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -255,7 +255,7 @@ void WorkloadImpl::removeBeneficiary(
         Beneficiary beneficiary
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -279,7 +279,7 @@ auto WorkloadImpl::assignedUsers(
         const Credentials & credentials
     ) const -> Users
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -308,7 +308,7 @@ void WorkloadImpl::setAssignedUsers(
         const Users & users
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -338,7 +338,7 @@ void WorkloadImpl::addAssignedUser(
         User user
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -363,7 +363,7 @@ void WorkloadImpl::removeAssignedUser(
         User user
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try

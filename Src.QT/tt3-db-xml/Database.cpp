@@ -37,7 +37,7 @@ Database::Database(
         _address->addReference();
     }
 
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
 
     switch (openMode)
     {
@@ -135,7 +135,7 @@ Database::Database(
             &QTimer::timeout,
             [&]()
             {
-                tt3::util::Lock lock(_guard);
+                tt3::util::Lock _(_guard);
                 try
                 {
                     _savePeriodically();    //  may throw
@@ -163,7 +163,7 @@ Database::~Database()
 
     //  All Objects should be in graveyard by now
     {
-        tt3::util::Lock lock(_guard);
+        tt3::util::Lock _(_guard);
         Q_ASSERT(_liveObjects.isEmpty());
         for (Object * object : _graveyard.values())
         {
@@ -213,7 +213,7 @@ auto Database::validator(
 
 bool Database::isOpen() const
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
 
     return _isOpen;
 }
@@ -225,7 +225,7 @@ bool Database::isReadOnly() const
 
 void Database::close()
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
 
     if (!_isOpen)
     {   //  Already closed
@@ -321,7 +321,7 @@ void Database::close()
 
 void Database::refresh()
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
 
     _ensureOpen();  //  may throw
 #ifdef Q_DEBUG
@@ -335,7 +335,7 @@ void Database::refresh()
 auto Database::users(
     ) const -> tt3::db::api::Users
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
     //  We assume database is consistent since last change
 
@@ -345,7 +345,7 @@ auto Database::users(
 auto Database::accounts(
     ) const -> tt3::db::api::Accounts
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
     //  We assume database is consistent since last change
 
@@ -361,7 +361,7 @@ auto Database::findAccount(
         const QString & login
     ) const -> tt3::db::api::IAccount *
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
     //  We assume database is consistent since last change
 
@@ -371,7 +371,7 @@ auto Database::findAccount(
 auto Database::activityTypes(
     ) const -> tt3::db::api::ActivityTypes
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
     //  We assume database is consistent since last change
 
@@ -382,7 +382,7 @@ auto Database::findActivityType(
         const QString & displayName
     ) -> tt3::db::api::IActivityType *
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
     //  We assume database is consistent since last change
 
@@ -392,7 +392,7 @@ auto Database::findActivityType(
 auto Database::publicActivities(
     ) const -> tt3::db::api::PublicActivities
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
     //  We assume database is consistent since last change
 
@@ -403,7 +403,7 @@ auto Database::findPublicActivity(
         const QString & displayName
     ) -> tt3::db::api::IPublicActivity *
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
     //  We assume database is consistent since last change
 
@@ -413,7 +413,7 @@ auto Database::findPublicActivity(
 auto Database::publicActivitiesAndTasks(
     ) const -> tt3::db::api::PublicActivities
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
     //  We assume database is consistent since last change
 
@@ -429,7 +429,7 @@ auto Database::publicActivitiesAndTasks(
 auto Database::publicTasks(
     ) const -> tt3::db::api::PublicTasks
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
     //  We assume database is consistent since last change
 
@@ -441,7 +441,7 @@ auto Database::publicTasks(
 auto Database::rootPublicTasks(
     ) const -> tt3::db::api::PublicTasks
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
     //  We assume database is consistent since last change
 
@@ -451,7 +451,7 @@ auto Database::rootPublicTasks(
 auto Database::projects(
     ) const -> tt3::db::api::Projects
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
     //  We assume database is consistent since last change
 
@@ -463,7 +463,7 @@ auto Database::projects(
 auto Database::rootProjects(
     ) const -> tt3::db::api::Projects
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
     //  We assume database is consistent since last change
 
@@ -473,7 +473,7 @@ auto Database::rootProjects(
 auto Database::workStreams(
     ) const -> tt3::db::api::WorkStreams
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
     //  We assume database is consistent since last change
 
@@ -483,7 +483,7 @@ auto Database::workStreams(
 auto Database::beneficiaries(
     ) const -> tt3::db::api::Beneficiaries
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
     //  We assume database is consistent since last change
 
@@ -499,7 +499,7 @@ auto Database::tryLogin(
 {
     static tt3::util::IMessageDigest * sha1 = tt3::util::StandardMessageDigests::Sha1::instance();  //  idempotent
 
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpen();  //  may throw
     //  We assume database is consistent since last change
 
@@ -547,7 +547,7 @@ auto Database::createUser(
         const tt3::db::api::Workloads & permittedWorkloads
     ) -> tt3::db::api::IUser *
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpenAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _validate();    //  may throw
@@ -643,7 +643,7 @@ auto Database::createActivityType(
         const QString & description
     ) -> tt3::db::api::IActivityType *
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpenAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _validate();    //  may throw
@@ -701,7 +701,7 @@ auto Database::createPublicActivity(
         tt3::db::api::IWorkload * workload
     ) -> tt3::db::api::IPublicActivity *
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpenAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _validate();    //  may throw
@@ -821,7 +821,7 @@ auto Database::createPublicTask(
         bool requireCommentOnCompletion
     ) -> tt3::db::api::IPublicTask *
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpenAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _validate();    //  may throw
@@ -937,7 +937,7 @@ auto Database::createProject(
         bool completed
     ) -> tt3::db::api::IProject *
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpenAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _validate();    //  may throw
@@ -1027,7 +1027,7 @@ auto Database::createWorkStream(
         const tt3::db::api::Beneficiaries & beneficiaries
     ) -> tt3::db::api::IWorkStream *
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpenAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _validate();    //  may throw
@@ -1116,7 +1116,7 @@ auto Database::createBeneficiary(
         const tt3::db::api::Workloads & workloads
     ) -> tt3::db::api::IBeneficiary *
 {
-    tt3::util::Lock lock(_guard);
+    tt3::util::Lock _(_guard);
     _ensureOpenAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _validate();    //  may throw

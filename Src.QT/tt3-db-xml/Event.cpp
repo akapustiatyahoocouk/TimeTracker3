@@ -42,7 +42,7 @@ Event::~Event()
 auto Event::occurredAt(
     ) const -> QDateTime
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -52,7 +52,7 @@ auto Event::occurredAt(
 auto Event::summary(
     ) const -> QString
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -64,7 +64,7 @@ auto Event::summary(
 auto Event::account(
     ) const -> tt3::db::api::IAccount *
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -74,7 +74,7 @@ auto Event::account(
 auto Event::activities(
     ) const -> tt3::db::api::Activities
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 

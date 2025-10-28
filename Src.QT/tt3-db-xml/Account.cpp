@@ -40,7 +40,7 @@ Account::~Account()
 //  tt3::db::api::IAccount (properties)
 QString Account::login() const
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -51,7 +51,7 @@ void Account::setLogin(
         const QString & login
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -93,7 +93,7 @@ void Account::setLogin(
 
 QString Account::passwordHash() const
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -104,7 +104,7 @@ void Account::setPassword(
         const QString & password
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -143,7 +143,7 @@ void Account::setPassword(
 auto Account::capabilities(
     ) const -> tt3::db::api::Capabilities
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -154,7 +154,7 @@ void Account::setCapabilities(
         tt3::db::api::Capabilities capabilities
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -180,7 +180,7 @@ void Account::setCapabilities(
 auto Account::user(
     ) const -> tt3::db::api::IUser *
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -190,7 +190,7 @@ auto Account::user(
 auto Account::quickPicksList(
     ) const -> QList<tt3::db::api::IActivity*>
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -201,7 +201,7 @@ void Account::setQuickPicksList(
         const QList<tt3::db::api::IActivity*> & quickPicksList
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -268,7 +268,7 @@ void Account::setQuickPicksList(
 auto Account::works(
     ) const -> tt3::db::api::Works
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -280,7 +280,7 @@ auto Account::works(
         const QDateTime & to
     ) const -> tt3::db::api::Works
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -301,7 +301,7 @@ auto Account::works(
 auto Account::events(
     ) const -> tt3::db::api::Events
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -313,7 +313,7 @@ auto Account::events(
         const QDateTime & to
     ) const -> tt3::db::api::Events
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -339,7 +339,7 @@ auto Account::createWork(
         tt3::db::api::IActivity * activity
     ) -> tt3::db::api::IWork *
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -396,7 +396,7 @@ auto Account::createEvent(
         const tt3::db::api::Activities & activities
     ) -> tt3::db::api::IEvent *
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw

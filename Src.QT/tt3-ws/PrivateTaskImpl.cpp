@@ -41,7 +41,7 @@ auto PrivateTaskImpl::parent(
         const Credentials & credentials
     ) const -> PrivateTask
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -69,7 +69,7 @@ void PrivateTaskImpl::setParent(
         PrivateTask parent
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
     if (parent != nullptr)
     {   //  If in different Workspace, then in different
@@ -100,7 +100,7 @@ auto PrivateTaskImpl::children(
         const Credentials & credentials
     ) const -> PrivateTasks
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -140,7 +140,7 @@ auto PrivateTaskImpl::createChild(
         bool requireCommentOnCompletion
     ) -> PrivateTask
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();
 
     try

@@ -34,7 +34,7 @@ Activity::~Activity()
 //  tt3::db::api::IActivity (general)
 QString Activity::displayName() const
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -45,7 +45,7 @@ void Activity::setDisplayName(
         const QString & displayName
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -83,7 +83,7 @@ void Activity::setDisplayName(
 
 QString Activity::description() const
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -94,7 +94,7 @@ void Activity::setDescription(
         const QString & description
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -126,7 +126,7 @@ void Activity::setDescription(
 auto Activity::timeout(
     ) const -> tt3::db::api::InactivityTimeout
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -137,7 +137,7 @@ void Activity::setTimeout(
         const tt3::db::api::InactivityTimeout & timeout
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -170,7 +170,7 @@ void Activity::setTimeout(
 bool Activity::requireCommentOnStart(
     ) const
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -181,7 +181,7 @@ void Activity::setRequireCommentOnStart(
         bool requireCommentOnStart
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -205,7 +205,7 @@ void Activity::setRequireCommentOnStart(
 bool Activity::requireCommentOnStop(
     ) const
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -216,7 +216,7 @@ void Activity::setRequireCommentOnStop(
         bool requireCommentOnStop
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -240,7 +240,7 @@ void Activity::setRequireCommentOnStop(
 bool Activity::fullScreenReminder(
     ) const
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -251,7 +251,7 @@ void Activity::setFullScreenReminder(
         bool fullScreenReminder
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -277,7 +277,7 @@ void Activity::setFullScreenReminder(
 auto Activity::activityType(
     ) const -> tt3::db::api::IActivityType *
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -288,7 +288,7 @@ void Activity::setActivityType(
         tt3::db::api::IActivityType * activityType
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -341,7 +341,7 @@ void Activity::setActivityType(
 auto Activity::workload(
     ) const -> tt3::db::api::IWorkload *
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -352,7 +352,7 @@ void Activity::setWorkload(
         tt3::db::api::IWorkload * workload
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -405,7 +405,7 @@ void Activity::setWorkload(
 auto Activity::works(
     ) const -> tt3::db::api::Works
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -415,7 +415,7 @@ auto Activity::works(
 auto Activity::events(
     ) const -> tt3::db::api::Events
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 

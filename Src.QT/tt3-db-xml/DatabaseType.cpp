@@ -143,7 +143,7 @@ auto DatabaseType::parseDatabaseAddress(
         throw tt3::db::api::InvalidDatabaseAddressException();
     }
 
-    tt3::util::Lock lock(_databaseAddressesGuard);
+    tt3::util::Lock _(_databaseAddressesGuard);
 
     DatabaseAddress * databaseAddress;
     if (_databaseAddresses.contains(path))

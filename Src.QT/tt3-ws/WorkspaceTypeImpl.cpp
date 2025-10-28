@@ -224,7 +224,7 @@ void WorkspaceTypeImpl::destroyWorkspace(
 //  Implementation helpers
 WorkspaceAddress WorkspaceTypeImpl::_mapDatabaseAddress(tt3::db::api::IDatabaseAddress * databaseAddress)
 {
-    tt3::util::Lock lock(_cacheGuard);  //  protect the cache!
+    tt3::util::Lock _(_cacheGuard);  //  protect the cache!
 
     if (_workspaceAddressCache.contains(databaseAddress))
     {   //  Already mapped
@@ -245,7 +245,7 @@ WorkspaceAddress WorkspaceTypeImpl::_mapDatabaseAddress(tt3::db::api::IDatabaseA
 
 void WorkspaceTypeImpl::_pruneWorkspaceAddressCache()
 {
-    tt3::util::Lock lock(_cacheGuard);  //  protect the cache!
+    tt3::util::Lock _(_cacheGuard);  //  protect the cache!
 
     for (tt3::db::api::IDatabaseAddress * key : _workspaceAddressCache.keys())
     {
@@ -259,7 +259,7 @@ void WorkspaceTypeImpl::_pruneWorkspaceAddressCache()
 
 Workspace WorkspaceTypeImpl::_mapWorkspace(WorkspaceImpl * impl)
 {
-    tt3::util::Lock lock(_cacheGuard);  //  protect the cache!
+    tt3::util::Lock _(_cacheGuard);  //  protect the cache!
 
     if (_workspaceCache.contains(impl))
     {   //  Already mapped
@@ -280,7 +280,7 @@ Workspace WorkspaceTypeImpl::_mapWorkspace(WorkspaceImpl * impl)
 
 void WorkspaceTypeImpl::_pruneWorkspaceCache()
 {
-    tt3::util::Lock lock(_cacheGuard);  //  protect the cache!
+    tt3::util::Lock _(_cacheGuard);  //  protect the cache!
 
     for (WorkspaceImpl * key : _workspaceCache.keys())
     {

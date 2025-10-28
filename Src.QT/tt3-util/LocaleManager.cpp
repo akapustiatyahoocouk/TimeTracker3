@@ -29,7 +29,7 @@ struct LocaleManager::_Impl
 QIcon LocaleManager::smallIcon(const QLocale & locale)
 {
     _Impl * impl = _impl();
-    Lock lock(impl->guard);
+    Lock _(impl->guard);
 
     if (!impl->smallIcons.contains(locale))
     {
@@ -51,7 +51,7 @@ QIcon LocaleManager::smallIcon(const QLocale & locale)
 QIcon LocaleManager::largeIcon(const QLocale & locale)
 {
     _Impl * impl = _impl();
-    Lock lock(impl->guard);
+    Lock _(impl->guard);
 
     if (!impl->largeIcons.contains(locale))
     {
@@ -72,10 +72,28 @@ QIcon LocaleManager::largeIcon(const QLocale & locale)
 
 QString LocaleManager::displayName(const QLocale & locale)
 {
-    return QLocale::languageToString(locale.language()) +
-           " (" +
-           QLocale::territoryToString(locale.territory()) +
-           ")";
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
+
+    QString ll = QLocale::languageToCode(locale.language());
+    QString cc = QLocale::territoryToCode(locale.territory());
+    QString language, country;
+    try
+    {
+        language = resources->string(RSID(Language), ResourceId(ll));
+    }
+    catch (...)
+    {
+        language = QLocale::languageToString(locale.language());
+    }
+    try
+    {
+        country = resources->string(RSID(Country), ResourceId(cc));
+    }
+    catch (...)
+    {
+        country = QLocale::territoryToString(locale.territory());
+    }
+    return language + " (" + country + ")";
 }
 
 //////////

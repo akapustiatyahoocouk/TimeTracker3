@@ -67,7 +67,7 @@ PrivateTask::~PrivateTask()
 auto PrivateTask::parent(
     ) const -> IPrivateTask *
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -78,7 +78,7 @@ void PrivateTask::setParent(
         IPrivateTask * parent
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -157,7 +157,7 @@ void PrivateTask::setParent(
 auto PrivateTask::children(
     ) const -> tt3::db::api::PrivateTasks
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -179,7 +179,7 @@ auto PrivateTask::createChild(
         bool requireCommentOnCompletion
     ) -> tt3::db::api::IPrivateTask *
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable(); //  may throw
 #ifdef Q_DEBUG
     _database->_validate();    //  may throw

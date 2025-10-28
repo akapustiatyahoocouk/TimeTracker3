@@ -67,7 +67,7 @@ PublicTask::~PublicTask()
 auto PublicTask::parent(
     ) const -> IPublicTask *
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -78,7 +78,7 @@ void PublicTask::setParent(
         IPublicTask * parent
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -153,7 +153,7 @@ void PublicTask::setParent(
 auto PublicTask::children(
     ) const -> tt3::db::api::PublicTasks
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -175,7 +175,7 @@ auto PublicTask::createChild(
         bool requireCommentOnCompletion
     ) -> tt3::db::api::IPublicTask *
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable(); //  may throw
 #ifdef Q_DEBUG
     _database->_validate();    //  may throw

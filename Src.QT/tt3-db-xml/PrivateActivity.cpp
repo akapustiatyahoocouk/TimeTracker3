@@ -41,7 +41,7 @@ PrivateActivity::~PrivateActivity()
 auto PrivateActivity::owner(
     ) const -> tt3::db::api::IUser *
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 

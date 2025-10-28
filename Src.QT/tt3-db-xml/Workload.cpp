@@ -34,7 +34,7 @@ Workload::~Workload()
 //  tt3::db::api::IWorkload (properties)
 QString Workload::displayName() const
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -45,7 +45,7 @@ void Workload::setDisplayName(
         const QString & displayName
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -83,7 +83,7 @@ void Workload::setDisplayName(
 
 QString Workload::description() const
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -94,7 +94,7 @@ void Workload::setDescription(
         const QString & description
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -128,7 +128,7 @@ void Workload::setDescription(
 auto Workload::contributingActivities(
     ) const -> tt3::db::api::Activities
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -138,7 +138,7 @@ auto Workload::contributingActivities(
 auto Workload::beneficiaries(
     ) const -> tt3::db::api::Beneficiaries
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -149,7 +149,7 @@ void Workload::setBeneficiaries(
         const tt3::db::api::Beneficiaries & beneficiaries
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -222,7 +222,7 @@ void Workload::addBeneficiary(
         tt3::db::api::IBeneficiary * beneficiary
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -271,7 +271,7 @@ void Workload::removeBeneficiary(
         tt3::db::api::IBeneficiary * beneficiary
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -319,7 +319,7 @@ void Workload::removeBeneficiary(
 auto Workload::assignedUsers(
     ) const -> tt3::db::api::Users
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -330,7 +330,7 @@ void Workload::setAssignedUsers(
         const tt3::db::api::Users & users
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -403,7 +403,7 @@ void Workload::addAssignedUser(
         tt3::db::api::IUser * user
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -452,7 +452,7 @@ void Workload::removeAssignedUser(
         tt3::db::api::IUser * user
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw

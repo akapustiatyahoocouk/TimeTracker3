@@ -39,7 +39,7 @@ ActivityType::~ActivityType()
 //  tt3::db::api::IActivityType (properties)
 QString ActivityType::displayName() const
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -50,7 +50,7 @@ void ActivityType::setDisplayName(
         const QString & displayName
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -88,7 +88,7 @@ void ActivityType::setDisplayName(
 
 QString ActivityType::description() const
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 
@@ -99,7 +99,7 @@ void ActivityType::setDescription(
         const QString & description
     )
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
 #ifdef Q_DEBUG
     _database->_validate(); //  may throw
@@ -133,7 +133,7 @@ void ActivityType::setDescription(
 auto ActivityType::activities(
     ) const -> tt3::db::api::Activities
 {
-    tt3::util::Lock lock(_database->_guard);
+    tt3::util::Lock _(_database->_guard);
     _ensureLive();  //  may throw
     //  We assume database is consistent since last change
 

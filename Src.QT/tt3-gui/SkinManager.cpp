@@ -28,7 +28,7 @@ struct SkinManager::_Impl
 QSet<ISkin*> SkinManager::allSkins()
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
 
     QList<ISkin*> values = impl->registry.values();
     return QSet<ISkin*>(values.cbegin(), values.cend());
@@ -39,7 +39,7 @@ bool SkinManager::registerSkin(ISkin * skin)
     Q_ASSERT(skin != nullptr);
 
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
 
     if (impl->registry.contains(skin->mnemonic()))
     {
@@ -52,7 +52,7 @@ bool SkinManager::registerSkin(ISkin * skin)
 ISkin * SkinManager::findSkin(const tt3::util::Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
 
     return impl->registry.contains(mnemonic) ? impl->registry[mnemonic] : nullptr;
 }

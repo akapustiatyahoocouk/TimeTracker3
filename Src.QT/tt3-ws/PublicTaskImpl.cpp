@@ -41,7 +41,7 @@ auto PublicTaskImpl::parent(
         const Credentials & credentials
     ) const -> PublicTask
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -69,7 +69,7 @@ void PublicTaskImpl::setParent(
         PublicTask parent
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
     if (parent != nullptr)
     {   //  If in different Workspace, then in different
@@ -100,7 +100,7 @@ auto PublicTaskImpl::children(
         const Credentials & credentials
     ) const -> PublicTasks
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -140,7 +140,7 @@ auto PublicTaskImpl::createChild(
         bool requireCommentOnCompletion
     ) -> PublicTask
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();
 
     try

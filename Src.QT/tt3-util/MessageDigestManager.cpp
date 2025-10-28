@@ -38,7 +38,7 @@ struct MessageDigestManager::_Impl
 QSet<IMessageDigest*> MessageDigestManager::allMessageDigests()
 {
     _Impl * impl = _impl();
-    Lock lock(impl->guard);
+    Lock _(impl->guard);
 
     QList<IMessageDigest*> values = impl->registry.values();
     return QSet<IMessageDigest*>(values.cbegin(), values.cend());
@@ -49,7 +49,7 @@ bool MessageDigestManager::registerMessageDigest(IMessageDigest * messageDigest)
     Q_ASSERT(messageDigest != nullptr);
 
     _Impl * impl = _impl();
-    Lock lock(impl->guard);
+    Lock _(impl->guard);
 
     if (impl->registry.contains(messageDigest->mnemonic()))
     {
@@ -62,7 +62,7 @@ bool MessageDigestManager::registerMessageDigest(IMessageDigest * messageDigest)
 IMessageDigest * MessageDigestManager::findMessageDigest(const Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();
-    Lock lock(impl->guard);
+    Lock _(impl->guard);
 
     return impl->registry.contains(mnemonic) ? impl->registry[mnemonic] : nullptr;
 }

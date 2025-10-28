@@ -30,7 +30,7 @@ bool DatabaseTypeManager::registerDatabaseType(IDatabaseType * databaseType)
     Q_ASSERT(databaseType != nullptr);
 
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
 
     if (impl->registry.contains(databaseType->mnemonic()))
     {
@@ -43,7 +43,7 @@ bool DatabaseTypeManager::registerDatabaseType(IDatabaseType * databaseType)
 IDatabaseType * DatabaseTypeManager::findDatabaseType(const tt3::util::Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
 
     return impl->registry.contains(mnemonic) ? impl->registry[mnemonic] : nullptr;
 }
@@ -51,7 +51,7 @@ IDatabaseType * DatabaseTypeManager::findDatabaseType(const tt3::util::Mnemonic 
 DatabaseTypes DatabaseTypeManager::allDatabaseTypes()
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
 
     QList<IDatabaseType*> values = impl->registry.values();
     return DatabaseTypes(values.cbegin(), values.cend());

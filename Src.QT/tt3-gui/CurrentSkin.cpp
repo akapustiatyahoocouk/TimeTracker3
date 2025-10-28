@@ -51,7 +51,7 @@ void CurrentSkin::operator = (ISkin * skin)
     //  Change is effected in a "locked" state
     {
         _Impl * impl = _impl();
-        tt3::util::Lock lock(impl->guard);
+        tt3::util::Lock _(impl->guard);
         Q_ASSERT(impl->instanceCount == 1);
 
         if (skin != impl->skin)
@@ -71,7 +71,7 @@ void CurrentSkin::operator = (ISkin * skin)
 ISkin * CurrentSkin::operator -> () const
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
     return impl->skin;
@@ -80,7 +80,7 @@ ISkin * CurrentSkin::operator -> () const
 bool CurrentSkin::operator == (nullptr_t /*null*/) const
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
     return impl->skin == nullptr;
@@ -89,7 +89,7 @@ bool CurrentSkin::operator == (nullptr_t /*null*/) const
 bool CurrentSkin::operator != (nullptr_t /*null*/) const
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
     return impl->skin != nullptr;

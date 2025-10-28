@@ -63,7 +63,7 @@ void ObjectImpl::destroy(
         const Credentials & credentials
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();
 
     try
@@ -92,7 +92,7 @@ bool ObjectImpl::canRead(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();
 
     return _canRead(credentials);
@@ -102,7 +102,7 @@ bool ObjectImpl::canModify(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();
 
     return _canModify(credentials);
@@ -112,7 +112,7 @@ bool ObjectImpl::canDestroy(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();
 
     return _canDestroy(credentials);

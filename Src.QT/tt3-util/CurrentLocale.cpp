@@ -50,7 +50,7 @@ void CurrentLocale::operator = (const QLocale & locale)
     //  Change is effected in a "locked" state
     {
         _Impl * impl = _impl();
-        Lock lock(impl->guard);
+        Lock _(impl->guard);
 
         Q_ASSERT(impl->instanceCount == 1);
         QLocale defaultLocale;
@@ -71,7 +71,7 @@ void CurrentLocale::operator = (const QLocale & locale)
 CurrentLocale::operator QLocale () const
 {
     _Impl * impl = _impl();
-    Lock lock(impl->guard);
+    Lock _(impl->guard);
 
     return QLocale();
 }

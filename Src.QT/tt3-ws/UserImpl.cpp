@@ -37,7 +37,7 @@ QString UserImpl::realName(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -61,7 +61,7 @@ void UserImpl::setRealName(
         const QString & realName
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -84,7 +84,7 @@ auto UserImpl::inactivityTimeout(
         const Credentials & credentials
     ) const -> InactivityTimeout
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -108,7 +108,7 @@ void UserImpl::setInactivityTimeout(
         const InactivityTimeout & inactivityTimeout
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -131,7 +131,7 @@ auto UserImpl::uiLocale(
         const Credentials & credentials
     ) const -> UiLocale
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -155,7 +155,7 @@ void UserImpl::setUiLocale(
         const UiLocale & uiLocale
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -180,7 +180,7 @@ auto UserImpl::accounts(
         const Credentials & credentials
     ) const -> Accounts
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -223,7 +223,7 @@ auto UserImpl::privateActivities(
         const Credentials & credentials
     ) const -> PrivateActivities
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -265,7 +265,7 @@ auto UserImpl::privateActivitiesAndTasks(
         const Credentials & credentials
     ) const -> PrivateActivities
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -307,7 +307,7 @@ auto UserImpl::privateTasks(
         const Credentials & credentials
     ) const -> PrivateTasks
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -349,7 +349,7 @@ auto UserImpl::rootPrivateTasks(
         const Credentials & credentials
     ) const -> PrivateTasks
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -391,7 +391,7 @@ auto UserImpl::permittedWorkloads(
         const Credentials & credentials
     ) const -> Workloads
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -420,7 +420,7 @@ void UserImpl::setPermittedWorkloads(
         const Workloads & workloads
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -450,7 +450,7 @@ void UserImpl::addPermittedWorkload(
         Workload workload
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -475,7 +475,7 @@ void UserImpl::removePermittedWorkload(
         Workload workload
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -506,7 +506,7 @@ auto UserImpl::createAccount(
         Capabilities capabilities
     ) -> Account
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();
 
     try
@@ -546,7 +546,7 @@ auto UserImpl::createPrivateActivity(
         Workload workload
     ) -> PrivateActivity
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();
 
     try
@@ -601,7 +601,7 @@ auto UserImpl::createPrivateTask(
         bool requireCommentOnCompletion
     ) -> PrivateTask
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();
 
     try

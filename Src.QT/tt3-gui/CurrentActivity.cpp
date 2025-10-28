@@ -66,7 +66,7 @@ void CurrentActivity::operator = (
 tt3::ws::Activity CurrentActivity::operator -> () const
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
     return impl->activity;
@@ -75,7 +75,7 @@ tt3::ws::Activity CurrentActivity::operator -> () const
 CurrentActivity::operator tt3::ws::Activity() const
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
     return impl->activity;
@@ -84,7 +84,7 @@ CurrentActivity::operator tt3::ws::Activity() const
 bool CurrentActivity::operator == (nullptr_t /*null*/) const
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
     return impl->activity.get() == nullptr;
@@ -93,7 +93,7 @@ bool CurrentActivity::operator == (nullptr_t /*null*/) const
 bool CurrentActivity::operator != (nullptr_t /*null*/) const
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
     return impl->activity.get() != nullptr;
@@ -104,7 +104,7 @@ bool CurrentActivity::operator == (
     ) const
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
     return impl->activity == activity;
@@ -115,7 +115,7 @@ bool CurrentActivity::operator != (
     ) const
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
     return impl->activity != activity;
@@ -126,7 +126,7 @@ bool CurrentActivity::operator != (
 QDateTime CurrentActivity::lastChangedAt() const
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
     return impl->lastChangedAt;
@@ -142,7 +142,7 @@ bool CurrentActivity::replaceWith(
     //  Change is effected in a "locked" state
     {
         _Impl * impl = _impl();
-        tt3::util::Lock lock(impl->guard);
+        tt3::util::Lock _(impl->guard);
         Q_ASSERT(impl->instanceCount == 1);
 
         if (with != impl->activity)
@@ -230,7 +230,7 @@ void CurrentActivity::drop()
     //  Change is effected in a "locked" state
     {
         _Impl * impl = _impl();
-        tt3::util::Lock lock(impl->guard);
+        tt3::util::Lock _(impl->guard);
         Q_ASSERT(impl->instanceCount == 1);
 
         if (impl->activity != nullptr)

@@ -37,7 +37,7 @@ struct QuickReportManager::_Impl
 QSet<IQuickReport*> QuickReportManager::allQuickReports()
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
 
     QList<IQuickReport*> values = impl->registry.values();
     return QSet<IQuickReport*>(values.cbegin(), values.cend());
@@ -48,7 +48,7 @@ bool QuickReportManager::registerQuickReport(IQuickReport * quickReport)
     Q_ASSERT(quickReport != nullptr);
 
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
 
     if (impl->registry.contains(quickReport->mnemonic()))
     {
@@ -61,7 +61,7 @@ bool QuickReportManager::registerQuickReport(IQuickReport * quickReport)
 IQuickReport * QuickReportManager::findQuickReport(const tt3::util::Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
 
     return impl->registry.contains(mnemonic) ? impl->registry[mnemonic] : nullptr;
 }

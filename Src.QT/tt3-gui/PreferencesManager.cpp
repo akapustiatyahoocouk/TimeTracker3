@@ -41,7 +41,7 @@ struct PreferencesManager::_Impl
 QSet<Preferences*> PreferencesManager::allPreferences()
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
 
     QList<Preferences*> values = impl->registry.values();
     return QSet<Preferences*>(values.cbegin(), values.cend());
@@ -50,7 +50,7 @@ QSet<Preferences*> PreferencesManager::allPreferences()
 QSet<Preferences*> PreferencesManager::rootPreferences()
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
 
     QList<Preferences*> values = impl->registry.values();
     QSet<Preferences*> result;
@@ -69,7 +69,7 @@ bool PreferencesManager::registerPreferences(Preferences * preferences)
     Q_ASSERT(preferences != nullptr);
 
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
 
     if (preferences->parent() != nullptr &&
         !registerPreferences(preferences->parent()))
@@ -88,7 +88,7 @@ bool PreferencesManager::registerPreferences(Preferences * preferences)
 Preferences * PreferencesManager::findPreferences(const tt3::util::Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();
-    tt3::util::Lock lock(impl->guard);
+    tt3::util::Lock _(impl->guard);
 
     return impl->registry.contains(mnemonic) ? impl->registry[mnemonic] : nullptr;
 }

@@ -37,7 +37,7 @@ bool PrincipalImpl::enabled(
         const Credentials & credentials
     ) const
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -61,7 +61,7 @@ void PrincipalImpl::setEnabled(
         bool enabled
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -94,7 +94,7 @@ auto PrincipalImpl::emailAddresses(
         const Credentials & credentials
     ) const -> QStringList
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
@@ -118,7 +118,7 @@ void PrincipalImpl::setEmailAddresses(
         const QStringList & emailAddresses
     )
 {
-    tt3::util::Lock lock(_workspace->_guard);
+    tt3::util::Lock _(_workspace->_guard);
     _ensureLive();  //  may throw
 
     try
