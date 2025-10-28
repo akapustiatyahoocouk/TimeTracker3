@@ -82,7 +82,7 @@ namespace tt3::gui
 
         /// \brief
         ///     Creates a new View for this QuickReport.
-        /// \param
+        /// \param parent
         ///     The parent widget for the new View, nullptr == none.
         /// \return
         ///     The new View for this QuickReport.

@@ -51,9 +51,6 @@ namespace tt3::gui
         ///     The User to create a new PrivateTask for.
         /// \param credentials
         ///     The credentials to use for data access.
-        /// \param initialParentTask
-        ///     The proposed parent PublicTask for the new
-        ///     PublicTask; nullptr == none.
         /// \exception WorkspaceException
         ///     If a data access error occurs.
         CreatePrivateTaskDialog(
@@ -70,9 +67,6 @@ namespace tt3::gui
         ///     The proposed parent for the new PrivateTask.
         /// \param credentials
         ///     The credentials to use for data access.
-        /// \param initialParentTask
-        ///     The proposed parent PublicTask for the new
-        ///     PublicTask; nullptr == none.
         /// \exception WorkspaceException
         ///     If a data access error occurs.
         CreatePrivateTaskDialog(
@@ -107,6 +101,7 @@ namespace tt3::gui
 
         //////////
         //  Implementation
+    private:
         tt3::ws::Workspace  _workspace;
         const tt3::ws::Credentials  _credentials;
         tt3::ws::Validator::PrivateTask *const  _validator;

@@ -566,8 +566,8 @@ namespace tt3::db::api
 
             /// \brief
             ///     Checks whether the specified string is a valid
-            ///     "comment" for an Event.
-            /// \param comment
+            ///     "summary" for an Event.
+            /// \param summary
             ///     The string to check.
             /// \return
             ///     True if the specified string is a valid

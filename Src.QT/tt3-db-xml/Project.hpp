@@ -48,12 +48,12 @@ namespace tt3::db::xml
         //  tt3::db::api::IProject (associations)
     public:
         virtual auto    parent(
-                            ) const -> IProject * override;
+                            ) const -> tt3::db::api::IProject * override;
         virtual void    setParent(
-                                IProject * parent
+                                tt3::db::api::IProject * parent
                             ) override;
         virtual auto    children(
-            ) const -> tt3::db::api::Projects override;
+                            ) const -> tt3::db::api::Projects override;
 
         //////////
         //  tt3::db::api::IProject (life cycle)

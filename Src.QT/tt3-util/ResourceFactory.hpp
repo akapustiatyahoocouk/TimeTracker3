@@ -764,8 +764,6 @@ namespace tt3::util
         ///         with the corresponding parameter.
         ///     -   The escape sequences {{ and }} become single
         ///         characters { and }.
-        /// \param sectionId
-        ///     The resource section ID.
         /// \param resourceId
         ///     The resource ID within the section.
         /// \param params

@@ -85,6 +85,7 @@ namespace tt3::gui
 
         //////////
         //  Implementation
+    private:
         tt3::ws::Workspace  _workspace;
         const tt3::ws::Credentials  _credentials;
         tt3::ws::Validator::PrivateActivity *const _validator;

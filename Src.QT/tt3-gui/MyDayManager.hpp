@@ -21,8 +21,8 @@ namespace tt3::gui
 {
     namespace Ui { class MyDayManager; }
 
-    /// \class UserManager tt3-gui/API.hpp
-    /// \brief The User Manager widget.
+    /// \class MyDayManager tt3-gui/API.hpp
+    /// \brief The My Day Manager widget.
     class TT3_GUI_PUBLIC MyDayManager final
         :   public QWidget
     {

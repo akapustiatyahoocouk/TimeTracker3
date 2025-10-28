@@ -51,6 +51,14 @@ namespace tt3
         //////////
         //  QGuiApplication
     public:
+        /// \brief
+        ///     Handles an event.
+        /// \param receiver
+        ///     The intended receiver for the event.
+        /// \param event
+        ///     The event yo deliver to the receiver.
+        /// \return
+        ///     True if the receiver was interested in this event, else false.
         virtual bool    notify(QObject * receiver, QEvent * event) override;
 
         //////////

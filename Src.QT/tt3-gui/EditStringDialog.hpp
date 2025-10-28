@@ -109,7 +109,9 @@ namespace tt3::gui
         void            _lineEditTextChanged(QString);
         //  protected" for derived classes to override
     protected slots:
+        /// \brief  The user has accepted the choice.
         virtual void    accept() override;
+        /// \brief  The user has cancelled the dialog.
         virtual void    reject() override;
     };
 }

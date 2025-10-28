@@ -90,7 +90,8 @@ namespace tt3::gui
 
         //  Helpers
     protected:
-        /// \brief For derived classes which need to display error messages
+        /// \brief   For derived classes which need to display error messages.
+        /// \returns "this" as a QDialog*.
         ::QDialog *     meAsParent() { return this; }
 
         //////////
@@ -101,7 +102,9 @@ namespace tt3::gui
         //////////
         //  Signal handlers - "protected" for derived classes to override
     protected slots:
+        /// \brief Accepts the user's choice (user says Yes).
         virtual void    accept() override;
+        /// \brief Rejects the user's choice (user says No).
         virtual void    reject() override;
     };
 }

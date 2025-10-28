@@ -72,6 +72,9 @@ namespace tt3::gui
         ///     The dialog result; Ok means "changes saved".
         Result          doModal();
 
+        //////////
+        //  Implementation
+    private:
         tt3::ws::PrivateActivity    _privateActivity;
         const tt3::ws::Credentials  _credentials;
         tt3::ws::Validator::PrivateActivity *const _validator;

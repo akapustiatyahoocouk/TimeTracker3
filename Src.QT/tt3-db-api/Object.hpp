@@ -221,7 +221,7 @@ namespace tt3::db::api
                             ) const -> IObjectType * = 0;
 
         /// \brief
-        ///     Returns he database where the corresponding data
+        ///     Returns the database where the corresponding data
         ///     object resides (if live) or used to reside (if dead).
         /// \details
         ///     Can be safely obtained for both live and dead objects.

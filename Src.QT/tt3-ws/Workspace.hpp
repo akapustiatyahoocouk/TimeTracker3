@@ -395,7 +395,7 @@ namespace tt3::ws
         ///     The inactivity timeout for the new User; absent == default.
         /// \param uiLocale
         ///     The preferred UI locale for the new User; absent == default.
-        /// \param workloads
+        /// \param permittedWorkloads
         ///     The set of Workloads the new User will be allowed to work on.
         /// \return
         ///     The newly created User.

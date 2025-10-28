@@ -40,9 +40,9 @@ namespace tt3::db::xml
         //  tt3::db::api::IPrivateTask (associations)
     public:
         virtual auto    parent(
-                            ) const -> IPrivateTask * override;
+                            ) const -> tt3::db::api::IPrivateTask * override;
         virtual void    setParent(
-                                IPrivateTask * parent
+                                tt3::db::api::IPrivateTask * parent
                             ) override;
         virtual auto    children(
                             ) const -> tt3::db::api::PrivateTasks override;

@@ -42,7 +42,7 @@ namespace tt3::gui
         /// \param parent
         ///     The parent for this widget; nullptr == none.
         explicit PublicTaskManager(
-                QWidget * parentr
+                QWidget * parent
             );
 
         /// \brief

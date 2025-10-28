@@ -32,6 +32,10 @@ namespace tt3::gui
         //////////
         //  Construction/destruction
     public:
+        /// \brief
+        ///     Constructs the widget.
+        /// \param parent
+        ///     The parent for the qwidget; nullptr == none.
         explicit DailyWorkQuickReportView(
                 QWidget * parent
             );
