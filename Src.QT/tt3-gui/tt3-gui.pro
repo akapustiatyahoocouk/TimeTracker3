@@ -62,6 +62,8 @@ SOURCES += \
     GeneralPreferences.cpp \
     GeneralStartupPreferences.cpp \
     GeneralStartupPreferencesEditor.cpp \
+    HelpClient.cpp \
+    HelpSiteBuilder.cpp \
     LabelDecorations.cpp \
     ListWidgetDecorations.cpp \
     LoginDialog.cpp \
@@ -174,6 +176,8 @@ HEADERS += \
     GeneralAppearancePreferencesEditor.hpp \
     GeneralDialogsPreferencesEditor.hpp \
     GeneralStartupPreferencesEditor.hpp \
+    HelpClient.hpp \
+    HelpSiteBuilder.hpp \
     Linkage.hpp \
     LoginDialog.hpp \
     ManageActivityTypesDialog.hpp \
@@ -300,7 +304,6 @@ RESOURCES += \
     tt3-gui.qrc
 
 LIBS += \
-    -ltt3-help-client$$TARGET_SUFFIX \
     -ltt3-ws$$TARGET_SUFFIX \
     -ltt3-db-api$$TARGET_SUFFIX \
     -ltt3-util$$TARGET_SUFFIX

@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/tt3-help-client">
-        <file>Resources/tt3-help-client_de_DE.txt</file>
-        <file>Resources/tt3-help-client_en_GB.txt</file>
-        <file>Resources/tt3-help-client_ru_RU.txt</file>
-    </qresource>
-</RCC>

@@ -856,17 +856,17 @@ void MainFrame::_onActionLoginAsDifferentUser()
 
 void MainFrame::_onActionHelpContent()
 {
-    tt3::help::client::HelpClient::showContents();
+    tt3::gui::HelpClient::showContents();
 }
 
 void MainFrame::_onActionHelpIndex()
 {
-    tt3::help::client::HelpClient::showIndex();
+    tt3::gui::HelpClient::showIndex();
 }
 
 void MainFrame::_onActionHelpSearch()
 {
-    tt3::help::client::HelpClient::showSearch();
+    tt3::gui::HelpClient::showSearch();
 }
 
 void MainFrame::_onActionAbout()

@@ -26,7 +26,6 @@ FORMS += \
     MainFrame.ui
 
 LIBS += \
-    -ltt3-help-client$$TARGET_SUFFIX \
     -ltt3-gui$$TARGET_SUFFIX \
     -ltt3-ws$$TARGET_SUFFIX \
     -ltt3-db-api$$TARGET_SUFFIX \

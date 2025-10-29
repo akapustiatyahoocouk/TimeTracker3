@@ -18,7 +18,6 @@
 
 //////////
 //  Dependencies
-#include "tt3-help-client/API.hpp"
 #include "tt3-gui/API.hpp"
 #include "tt3-ws/API.hpp"
 #include "tt3-db-api/API.hpp"

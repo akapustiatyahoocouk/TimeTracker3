@@ -137,7 +137,11 @@
 #include "tt3-gui/ManageWorkStreamsDialog.hpp"
 #include "tt3-gui/ManageBeneficiariesDialog.hpp"
 #include "tt3-gui/ManageMyDayDialog.hpp"
+//  TODO QuickReportsDialog
 
 #include "tt3-gui/ManageQuickPicksListDialog.hpp"
+
+#include "tt3-gui/HelpClient.hpp"
+#include "tt3-gui/HelpSiteBuilder.hpp"
 
 //  End of tt3-gui/API.hpp

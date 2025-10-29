@@ -1,4 +1,0 @@
-[Component]
-DisplayName=TimeTracker3-Hilfeclient
-Description=Definiert clientseitige Dienste für die integrierte TimeTracker3-Hilfe
-Copyright=Copyright (C) {0}, Andrey Kapustin
