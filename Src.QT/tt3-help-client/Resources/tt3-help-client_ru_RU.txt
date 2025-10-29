@@ -1,0 +1,4 @@
+[Component]
+DisplayName=Клиент справки TimeTracker3
+Description=Определяет клиентские службы для интегрированной справки TimeTracker3
+Copyright=Авторское право (C) {0}, Андрей Капустин

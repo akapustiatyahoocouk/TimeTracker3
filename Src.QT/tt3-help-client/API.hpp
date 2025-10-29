@@ -1,5 +1,5 @@
 //
-//  tt3/API.hpp - tt3 master header
+//  tt3-help-client/API.hpp - tt3 help client
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -18,15 +18,12 @@
 
 //////////
 //  Dependencies
-#include "tt3-help-client/API.hpp"
-#include "tt3-gui/API.hpp"
-#include "tt3-ws/API.hpp"
-#include "tt3-db-api/API.hpp"
 #include "tt3-util/API.hpp"
 
 //////////
-//  tt3 components
-#include "tt3/Components.hpp"
-#include "tt3/Application.hpp"
+//  tt3-help-client components
+#include "tt3-help-client/Linkage.hpp"
+#include "tt3-help-client/Components.hpp"
 
-//  End of tt3/API.hpp
+//  End of tt3-help-client/API.hpp
+

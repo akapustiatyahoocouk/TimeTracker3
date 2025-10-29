@@ -1,5 +1,5 @@
 //
-//  tt3-skin-admin/Component.cpp - Component class implementation
+//  tt3-help-client/Component.cpp - Component class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-skin-admin/API.hpp"
-using namespace tt3::skin::admin;
+using namespace tt3::help::client;
 
 //////////
 //  Singleton
@@ -27,7 +27,7 @@ Component::~Component() {}
 //  IComponent
 Component::Mnemonic Component::mnemonic() const
 {
-    return M(tt3-skin-admin);
+    return M(tt3-help-client);
 }
 
 QString Component::displayName() const
@@ -60,7 +60,7 @@ QString Component::buildNumber() const
 
 tt3::util::ISubsystem * Component::subsystem() const
 {
-    return tt3::util::StandardSubsystems::Gui::instance();
+    return tt3::util::StandardSubsystems::Utility::instance();
 }
 
 Component::Resources * Component::resources() const
@@ -82,7 +82,7 @@ const Component::Settings * Component::settings() const
 //  Component::Resources
 IMPLEMENT_SINGLETON(Component::Resources)
 Component::Resources::Resources()
-    :   FileResourceFactory(":/tt3-skin-admin/Resources/tt3-skin-admin.txt") {}
+    :   FileResourceFactory(":/tt3-help-client/Resources/tt3-help-client.txt") {}
 Component::Resources::~Resources() {}
 
 //////////
@@ -90,9 +90,6 @@ Component::Resources::~Resources() {}
 IMPLEMENT_SINGLETON(Component::Settings)
 
 Component::Settings::Settings()
-    :   mainFrameBounds(this, M(MainFrameBounds), QRect(32, 32, 480, 320)),
-        mainFrameMaximized(this, M(MainFrameMaximized), false),
-        mainFrameCurrentTab(this, M(MainFrameCurrentTab), 0)
 {
 }
 
@@ -100,4 +97,4 @@ Component::Settings::~Settings()
 {
 }
 
-//  End of tt3-skin-admin/Component.cpp
+//  End of tt3-help-client/Component.cpp

@@ -90,6 +90,7 @@ void Application::_registerStandardComponents()
 {   //  Some components form the TT3 skeleton
     //  and, therefore, are NOT registered by plugins
     tt3::util::ComponentManager::registerComponent(tt3::Component::instance());
+    tt3::util::ComponentManager::registerComponent(tt3::help::client::Component::instance());
     tt3::util::ComponentManager::registerComponent(tt3::gui::Component::instance());
     tt3::util::ComponentManager::registerComponent(tt3::ws::Component::instance());
     tt3::util::ComponentManager::registerComponent(tt3::db::api::Component::instance());
