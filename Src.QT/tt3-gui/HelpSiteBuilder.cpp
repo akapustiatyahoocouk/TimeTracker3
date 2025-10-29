@@ -16,6 +16,9 @@
 //////////
 #include "tt3-gui/API.hpp"
 using namespace tt3::gui;
+#if defined(_MSC_VER)
+    #pragma warning(disable: 4275)  //  non dll-interface class '<CLASS>' used as base for dll-interface class '<CLASS>'
+#endif
 #include <private/qzipreader_p.h>
 
 //////////
@@ -103,12 +106,34 @@ void HelpSiteBuilder::_processHelpSource(const _HelpSource & helpSource)
                 "Analyzing " + QFileInfo(helpSource.zipFileName).fileName(),
                 "Extracting " + entryInfo.filePath);
             QThread::msleep(100);
+            QString helpFile = QDir(_helpSiteDirectory).filePath(entryInfo.filePath);
             if (entryInfo.isFile)
-            {
-                QString helpFile = QDir(_helpSiteDirectory).filePath(entryInfo.filePath);
+            {   //  Extrac data...
                 QByteArray data = zipReader.fileData(entryInfo.filePath);
                 //qDebug() << entryInfo.filePath << " -> " << helpFile;
                 //qDebug() << data;
+                //  ...prepare the destination location...
+                QString dir = QFileInfo(helpFile).absolutePath();
+                qDebug() << dir;
+                if (!QDir().mkpath(dir))
+                {   //  OOPS! TODO throw...
+                    continue;
+                }
+                //  ...and save
+                QFile file(helpFile);
+                if (file.exists())
+                {   //  OOPS! TODO throw
+                    continue;
+                }
+                if (file.open(QIODevice::WriteOnly))
+                {
+                    file.write(data);
+                    file.close();
+                }
+                else
+                {   //  OOPS! TODO Throw...
+                    continue;
+                }
             }
         }
     }
@@ -119,8 +144,9 @@ void HelpSiteBuilder::_rebuildHelpSite(_RebuildHelpRequest & request)
     emit siteBuildingStarted();
     try
     {
-        _HelpSources helpSources = _detectHelpSources();
-        for (auto helpSource : helpSources)
+        QDir(_helpSiteDirectory).removeRecursively();
+        const _HelpSources helpSources = _detectHelpSources();
+        for (const auto & helpSource : helpSources)
         {
             emit siteBuildingProgress(
                 "Analyzing " + QFileInfo(helpSource.zipFileName).fileName(),
@@ -128,8 +154,6 @@ void HelpSiteBuilder::_rebuildHelpSite(_RebuildHelpRequest & request)
             QThread::msleep(100);
             _processHelpSource(helpSource);
         }
-        throw tt3::util::NotImplementedError();
-        //  TODO void        siteBuildingProgress(const QString & action);
         emit siteBuildingCompleted(true);
     }
     catch (const tt3::util::Exception & ex)
