@@ -60,3 +60,20 @@ ActionManageMyDay.Text=&0 – Meinen Tag verwalten
 ActionManageMyDay.Tooltip=Meinen Tag verwalten
 ActionRefresh.Text=&Aktualisieren
 ActionRefresh.Tooltip=Aktualisieren
+
+ActionQuickReports.Text=&Schnellberichte
+ActionQuickReports.Tooltip=Schnellberichte
+
+ActionLoginAsDifferentUser.Text=&Als anderer Benutzer anmelden
+ActionLoginAsDifferentUser.Tooltip=Als anderer Benutzer anmelden
+ActionPreferences.Text=&Einstellungen
+ActionPreferences.Tooltip=Einstellungen
+
+ActionHelpContent.Text=&Hilfeinhalt
+ActionHelpContent.Tooltip=Hilfeinhalt
+ActionHelpIndex.Text=&Hilfeindex
+ActionHelpIndex.Tooltip=Hilfeindex
+ActionHelpSearch.Text=&Hilfesuche
+ActionHelpSearch.Tooltip=Hilfesuche
+ActionAbout.Text=Ü&ber TimeTracker3
+ActionAbout.Tooltip=Über TimeTracker3

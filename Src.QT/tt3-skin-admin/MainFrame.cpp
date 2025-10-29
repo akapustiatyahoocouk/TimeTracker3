@@ -637,6 +637,37 @@ void MainFrame::_applyCurrentLocale()
         rr.string(RID(ActionRefresh.Text)));
     _ui->actionRefresh->setToolTip(
         rr.string(RID(ActionRefresh.Tooltip)));
+
+    _ui->actionQuickReports->setText(
+        rr.string(RID(ActionQuickReports.Text)));
+    _ui->actionQuickReports->setToolTip(
+        rr.string(RID(ActionQuickReports.Tooltip)));
+
+    _ui->actionLoginAsDifferentUser->setText(
+        rr.string(RID(ActionLoginAsDifferentUser.Text)));
+    _ui->actionLoginAsDifferentUser->setToolTip(
+        rr.string(RID(ActionLoginAsDifferentUser.Tooltip)));
+    _ui->actionPreferences->setText(
+        rr.string(RID(ActionPreferences.Text)));
+    _ui->actionPreferences->setToolTip(
+        rr.string(RID(ActionPreferences.Tooltip)));
+
+    _ui->actionHelpContent->setText(
+        rr.string(RID(ActionHelpContent.Text)));
+    _ui->actionHelpContent->setToolTip(
+        rr.string(RID(ActionHelpContent.Tooltip)));
+    _ui->actionHelpIndex->setText(
+        rr.string(RID(ActionHelpIndex.Text)));
+    _ui->actionHelpIndex->setToolTip(
+        rr.string(RID(ActionHelpIndex.Tooltip)));
+    _ui->actionHelpSearch->setText(
+        rr.string(RID(ActionHelpSearch.Text)));
+    _ui->actionHelpSearch->setToolTip(
+        rr.string(RID(ActionHelpSearch.Tooltip)));
+    _ui->actionAbout->setText(
+        rr.string(RID(ActionAbout.Text)));
+    _ui->actionAbout->setToolTip(
+        rr.string(RID(ActionAbout.Tooltip)));
 }
 
 //////////

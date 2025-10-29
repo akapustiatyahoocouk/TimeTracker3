@@ -60,3 +60,20 @@ ActionManageMyDay.Text=&0 - Управление моим днём
 ActionManageMyDay.Tooltip=Управление моим днём
 ActionRefresh.Text=&Обновить
 ActionRefresh.Tooltip=Обновить
+
+ActionQuickReports.Text=&Быстрые отчёты
+ActionQuickReports.Tooltip=Быстрые отчёты
+
+ActionLoginAsDifferentUser.Text=&Войти как другой пользователь
+ActionLoginAsDifferentUser.Tooltip=Войти как другой пользователь
+ActionPreferences.Text=&Настройки
+ActionPreferences.Tooltip=Настройки
+
+ActionHelpContent.Text=&Содержание
+ActionHelpContent.Tooltip=Содержание справки
+ActionHelpIndex.Text=&Индекс
+ActionHelpIndex.Tooltip=Индекс справки
+ActionHelpSearch.Text=&Поиск
+ActionHelpSearch.Tooltip=Поиск справки
+ActionAbout.Text=&О TimeTracker3
+ActionAbout.Tooltip=О TimeTracker3

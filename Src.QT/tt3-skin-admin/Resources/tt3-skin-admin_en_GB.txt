@@ -60,3 +60,20 @@ ActionManageMyDay.Text=&0 - Manage my day
 ActionManageMyDay.Tooltip=Manage my day
 ActionRefresh.Text=&Refresh
 ActionRefresh.Tooltip=Refresh
+
+ActionQuickReports.Text=&Quick reports
+ActionQuickReports.Tooltip=Quick reports
+
+ActionLoginAsDifferentUser.Text=&Login as a different user
+ActionLoginAsDifferentUser.Tooltip=Login as a different user
+ActionPreferences.Text=&Preferences
+ActionPreferences.Tooltip=Preferences
+
+ActionHelpContent.Text=&Content
+ActionHelpContent.Tooltip=Help content
+ActionHelpIndex.Text=&Index
+ActionHelpIndex.Tooltip=Help index
+ActionHelpSearch.Text=&Search
+ActionHelpSearch.Tooltip=Help search
+ActionAbout.Text=A&bout TimeTracker3
+ActionAbout.Tooltip=About TimeTracker3
