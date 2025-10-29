@@ -4,11 +4,13 @@ TEMPLATE = lib
 DEFINES += TT3_HELP_CLIENT_LIBRARY
 
 SOURCES += \
-    Component.cpp
+    Component.cpp \
+    HelpClient.cpp
 
 HEADERS += \
     API.hpp \
     Components.hpp \
+    HelpClient.hpp \
     Linkage.hpp
 
 LIBS += \

@@ -856,17 +856,17 @@ void MainFrame::_onActionLoginAsDifferentUser()
 
 void MainFrame::_onActionHelpContent()
 {
-    throw tt3::util::NotImplementedError();
+    tt3::help::client::HelpClient::showContents();
 }
 
 void MainFrame::_onActionHelpIndex()
 {
-    throw tt3::util::NotImplementedError();
+    tt3::help::client::HelpClient::showIndex();
 }
 
 void MainFrame::_onActionHelpSearch()
 {
-    throw tt3::util::NotImplementedError();
+    tt3::help::client::HelpClient::showSearch();
 }
 
 void MainFrame::_onActionAbout()

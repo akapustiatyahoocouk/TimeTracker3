@@ -29,13 +29,3 @@ LIBS += \
 DISTFILES += \
     tt3.rc
 
-QMAKE_POST_LINK += pwd $$escape_expand(\\n\\t)
-QMAKE_POST_LINK += cd $$shell_path($${PWD}/Help) $$escape_expand(\\n\\t)
-QMAKE_POST_LINK += pwd $$escape_expand(\\n\\t)
-QMAKE_POST_LINK += rm -f $$shell_path($${DESTDIR}/Help/$${TARGET}.zip) $$escape_expand(\\n\\t)
-QMAKE_POST_LINK += $$sprintf($${QMAKE_MKDIR_CMD}, $$shell_path($${DESTDIR}/Help)) $$escape_expand(\\n\\t)
-QMAKE_POST_LINK += "zip -r $$shell_path($${DESTDIR}/Help/$${TARGET}.zip) . -x \"_vti_cnf/*\" -x \"*/_vti_cnf/*\" -x \"_vti_pvt/*\" -x \"*/_vti_pvt/*\" -x desktop.ini" $$escape_expand(\\n\\t)
-QMAKE_POST_LINK += cd $${OUT_PWD} $$escape_expand(\\n\\t)
-QMAKE_POST_LINK += pwd $$escape_expand(\\n\\t)
-
-

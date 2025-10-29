@@ -300,6 +300,7 @@ RESOURCES += \
     tt3-gui.qrc
 
 LIBS += \
+    -ltt3-help-client$$TARGET_SUFFIX \
     -ltt3-ws$$TARGET_SUFFIX \
     -ltt3-db-api$$TARGET_SUFFIX \
     -ltt3-util$$TARGET_SUFFIX

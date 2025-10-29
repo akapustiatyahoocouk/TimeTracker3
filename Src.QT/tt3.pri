@@ -20,7 +20,7 @@ DEFINES += TT3_VERSION=\\\"$$TT3_VERSION\\\"
 DEFINES += TT3_BUILD_DATE=\\\"$$TT3_BUILD_DATE\\\"
 DEFINES += TT3_BUILD_TIME=\\\"$$TT3_BUILD_TIME\\\"
 INCLUDEPATH += ..
-BARE_TARGET = $$TARGET
+COMPONENT_NAME = $$TARGET
 TARGET = $$TARGET$$TARGET_SUFFIX
 
 CONFIG(debug, debug|release) {
@@ -32,3 +32,21 @@ CONFIG(debug, debug|release) {
     unix:LIBS += -L../../../Bin.QT/Release
     win32:LIBPATH += ../../../Bin.QT/Release
 }
+
+exists($${PWD}/$${COMPONENT_NAME}/Help) {
+    #   Pick up project-specific help as a .zip file
+    QMAKE_POST_LINK += pwd $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += cd $$shell_path($${PWD}/$${COMPONENT_NAME}/Help) $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += pwd $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += rm -f $$shell_path($${DESTDIR}/Help/$${TARGET}.zip) $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += $$sprintf($${QMAKE_MKDIR_CMD}, $$shell_path($${DESTDIR}/Help)) $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += "zip -r $$shell_path($${DESTDIR}/Help/$${TARGET}.zip) . -x \"_vti_cnf/*\" -x \"*/_vti_cnf/*\" -x \"_vti_pvt/*\" -x \"*/_vti_pvt/*\" -x desktop.ini" $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += cd $${OUT_PWD} $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += pwd $$escape_expand(\\n\\t)
+    #   Schedule proper cleanup
+    QMAKE_CLEAN += $$shell_path($${DESTDIR}/Help/$${TARGET}.zip)
+} else {
+    #   Make sure there is no project-specific help
+    QMAKE_POST_LINK += rm -f $$shell_path($${DESTDIR}/Help/$${TARGET}.zip) $$escape_expand(\\n\\t)
+}
+QMAKE_CLEAN += $$shell_path($${DESTDIR}/$${TARGET}.*)

@@ -1,5 +1,5 @@
 //
-//  tt3-help-client/API.hpp - tt3 help client
+//  tt3-help-client/HelpClient.cpp - HelpClient class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,18 +14,29 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
+#include "tt3-skin-admin/API.hpp"
+using namespace tt3::help::client;
 
 //////////
-//  Dependencies
-#include "tt3-util/API.hpp"
+//  Operations
+void HelpClient::showContents()
+{
+    throw tt3::util::NotImplementedError();
+}
 
-//////////
-//  tt3-help-client components
-#include "tt3-help-client/Linkage.hpp"
-#include "tt3-help-client/Components.hpp"
+void HelpClient::showIndex()
+{
+    throw tt3::util::NotImplementedError();
+}
 
-#include "tt3-help-client/HelpClient.hpp"
+void HelpClient::showSearch()
+{
+    throw tt3::util::NotImplementedError();
+}
 
-//  End of tt3-help-client/API.hpp
+void HelpClient::showTopic(const QString & /*name*/)
+{
+    throw tt3::util::NotImplementedError();
+}
 
+//  End of tt3-help-client/HelpClient.cpp
