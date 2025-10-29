@@ -1,5 +1,5 @@
 //
-//  tt3-help-client/HelpClient.hpp - tt3-help-client help client API
+//  tt3-gui/HelpClient.hpp - tt3 help client API
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,11 +15,11 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace tt3::help::client
+namespace tt3::gui
 {
-    /// \class HelpClient tt3-help-client/API.hpp
+    /// \class HelpClient tt3-gui/API.hpp
     /// \brief The TT3 help client API.
-    class TT3_HELP_CLIENT_PUBLIC HelpClient final
+    class TT3_GUI_PUBLIC HelpClient final
     {
         UTILITY_CLASS(HelpClient)
 
@@ -27,12 +27,21 @@ namespace tt3::help::client
         //  Operations
     public:
         //  TODO document
-        //  TODO all services throw if an error occurs
+        //  TODO all services throw tt3::util::Exception
+        //  if an error occurs
         static void     showContents();
         static void     showIndex();
         static void     showSearch();
         static void     showTopic(const QString & name);
+
+        //////////
+        //  Implementation
+    private:
+        struct _Impl;
+        static _Impl *  _impl();
+
+        //  Helpers
     };
 }
 
-//  End of tt3-help-client/HelpClient.hpp
+//  End of tt3-gui/HelpClient.hpp
