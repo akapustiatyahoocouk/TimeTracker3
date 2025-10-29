@@ -201,5 +201,7 @@
         <file>Resources/Images/Actions/RefreshSmall.png</file>
         <file>Resources/Images/Actions/CopyLarge.png</file>
         <file>Resources/Images/Actions/CopySmall.png</file>
+        <file>Resources/Images/Actions/HelpContentLarge.png</file>
+        <file>Resources/Images/Actions/HelpContentSmall.png</file>
     </qresource>
 </RCC>

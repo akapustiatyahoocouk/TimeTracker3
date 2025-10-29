@@ -83,6 +83,7 @@
 #include <QSemaphore>
 #include <QSharedPointer>
 #include <QStackedLayout>
+#include <QStandardPaths>
 #include <QStatusBar>
 #include <QStyleFactory>
 #include <QThread>

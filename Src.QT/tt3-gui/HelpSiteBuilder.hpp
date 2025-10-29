@@ -47,22 +47,106 @@ namespace tt3::gui
         //////////
         //  Operations
     public:
-        //  TODO document
+        /// \brief
+        ///     [re]builds the help site from .zipped
+        ///     help sources available in exedir/Help.
+        /// \details
+        ///     All work is done on the hidden worker thread.
+        ///     Progress is reported by emitting signals below.
+        /// \return
+        ///     True if the help site was rebuilt
+        ///     successfully, else false.
         bool        buildHelpSite();
 
         //////////
-        //  Signals
+        //  Signals - emitted in ths order only!
     signals:
-        //  TODO document
-        void        siteBuildingProgress(const QString & action);
-        void        siteBuildingCompleted();
-        void        siteBuildingError(const QString & errorMessage);
+        /// \brief
+        ///     Always emitted when [re]building of the help site starts.
+        void        siteBuildingStarted();
+
+        /// \brief
+        ///     Emitted to report the progress of help site building.
+        void        siteBuildingProgress(QString context, QString action);
+
+        /// \brief
+        ///     Always emitted when [re]building of the help site stops.
+        void        siteBuildingCompleted(bool success);
+
+        /// \brief
+        ///     Emitted after help site [re]building is
+        ///     completed with an error.
+        void        siteBuildingError(QString errorMessage);
 
         //////////
         //  Implementation
     private:
         QString         _zipFilesDirectory; //  where was the .exe launched from + "/Help"
         QString         _helpSiteDirectory; //  underneath user's temp directory
+
+        //  Requests sent to the worker thread
+        struct _ServiceRequest
+        {
+            virtual ~_ServiceRequest() = default;
+        };
+
+        struct _RebuildHelpRequest : public _ServiceRequest
+        {
+            _RebuildHelpRequest(std::atomic<bool> & cs)
+                :   comletionStatus(cs) {}
+            std::atomic<bool> & comletionStatus;
+        };
+
+        //  Helpers - all called on the WorkerThread
+        struct _HelpSource
+        {
+            QString     zipFileName;    //  full path
+            QDateTime   zipFileTime;    //  modification time stamp, UTC
+            qint64      zipFileSize;
+        };
+        using _HelpSources = QList<_HelpSource>;
+        _HelpSources    _detectHelpSources();
+        void            _processHelpSource(const _HelpSource & helpSource);
+        void            _rebuildHelpSite(_RebuildHelpRequest & request);
+
+        //  The worker thread is where work is done and
+        //  signals are emitted
+        class TT3_GUI_PUBLIC _WorkerThread
+            :   public QThread
+        {
+            CANNOT_ASSIGN_OR_COPY_CONSTRUCT(_WorkerThread)
+
+            //////////
+            //  Constants
+        public:
+            static inline int   WaitChunkMs = 250;
+
+            //////////
+            //  Construction/destruction
+        public:
+            explicit _WorkerThread(HelpSiteBuilder * helpSiteBuilder)
+                :   _helpSiteBuilder(helpSiteBuilder) {}
+            virtual ~_WorkerThread() = default;
+
+            //////////
+            //  QThread
+        protected:
+            virtual void    run() override;
+
+            //////////
+            //  Operations
+        public:
+            void        post(_ServiceRequest * request) { _requestQueue.enqueue(request); }
+            void        requestStop() { _stopRequested = true; }
+
+            //////////
+            //  Implementation
+        private:
+            HelpSiteBuilder *const  _helpSiteBuilder;
+            std::atomic<bool>   _stopRequested = false;
+            tt3::util::BlockingQueue<_ServiceRequest*>  _requestQueue;
+        };
+        _WorkerThread   _workerThread;
     };
 }
 

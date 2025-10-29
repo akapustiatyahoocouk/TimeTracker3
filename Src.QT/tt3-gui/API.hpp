@@ -143,5 +143,6 @@
 
 #include "tt3-gui/HelpClient.hpp"
 #include "tt3-gui/HelpSiteBuilder.hpp"
+#include "tt3-gui/HelpBuilderProgressWindow.hpp"
 
 //  End of tt3-gui/API.hpp

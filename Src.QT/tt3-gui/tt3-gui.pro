@@ -62,6 +62,7 @@ SOURCES += \
     GeneralPreferences.cpp \
     GeneralStartupPreferences.cpp \
     GeneralStartupPreferencesEditor.cpp \
+    HelpBuilderProgressWindow.cpp \
     HelpClient.cpp \
     HelpSiteBuilder.cpp \
     LabelDecorations.cpp \
@@ -176,6 +177,7 @@ HEADERS += \
     GeneralAppearancePreferencesEditor.hpp \
     GeneralDialogsPreferencesEditor.hpp \
     GeneralStartupPreferencesEditor.hpp \
+    HelpBuilderProgressWindow.hpp \
     HelpClient.hpp \
     HelpSiteBuilder.hpp \
     Linkage.hpp \
@@ -256,6 +258,7 @@ FORMS += \
     GeneralAppearancePreferencesEditor.ui \
     GeneralDialogsPreferencesEditor.ui \
     GeneralStartupPreferencesEditor.ui \
+    HelpBuilderProgressWindow.ui \
     LoginDialog.ui \
     ManageActivityTypesDialog.ui \
     ManageBeneficiariesDialog.ui \
