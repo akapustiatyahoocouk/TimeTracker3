@@ -121,7 +121,7 @@ void HelpSiteBuilder::_processHelpSource(const _HelpSource & helpSource)
                 }
                 //  ...and save
                 QFile file(helpFile);
-                if (file.exists())
+                if (file.exists() && file.size() != entryInfo.size)
                 {   //  OOPS! TODO throw
                     continue;
                 }

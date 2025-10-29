@@ -11,3 +11,52 @@ Copyright=Copyright (C) {0}, Andrey Kapustin
 [Skin]
 DisplayNme=Administrator
 Description=Bietet umfassende Verwaltungsfunktionen für TimeTracker3-Arbeitsbereiche
+
+[MainFrame]
+Title=TimeTracker3
+Title.ReadOnlySuffix=[schreibgeschützt]
+
+MenuFile.Title=&Datei
+MenuView.Title=&Ansicht
+MenuTools.Title=&Werkzeuge
+MenuReports.Title=&Berichte
+MenuOptions.Title=&Optionen
+MenuHelp.Title=&Hilfe
+
+ActionNewWorkspace.Text=&Neuer Arbeitsbereich
+ActionNewWorkspace.Tooltip=Neuer Arbeitsbereich
+ActionOpenWorkspace.Text=Arbeitsbereich ö&ffnen
+ActionOpenWorkspace.Tooltip=Arbeitsbereich öffnen
+ActionCloseWorkspace.Text=Arbeitsbereich sch&ließen
+ActionCloseWorkspace.Tooltip=Arbeitsbereich schließen
+ActionDestroyWorkspace.Text=Arbeitsbereich lös&chen
+ActionDestroyWorkspace.Tooltip=Arbeitsbereich löschen
+ActionRecentWorkspaces.Text=&Zuletzt Arbeitsbereiche
+ActionRecentWorkspaces.Tooltip=Zuletzt Arbeitsbereiche
+ActionRestart.Text=TimeTracker3 neu s&tarten
+ActionRestart.Tooltip=TimeTracker3 neu starten
+ActionExit.Text=Be&enden
+ActionExit.Tooltip=Beenden
+
+ActionManageUsers.Text=&1 – Benutzer verwalten
+ActionManageUsers.Tooltip=Benutzer verwalten
+ActionManageActivityTypes.Text=&2 – Aktivitätstypen verwalten
+ActionManageActivityTypes.Tooltip=Aktivitätstypen verwalten
+ActionManagePublicActivities.Text=&3 – Öffentliche Aktivitäten verwalten
+ActionManagePublicActivities.Tooltip=Öffentliche Aktivitäten verwalten
+ActionManagePublicTasks.Text=&4 – Öffentliche Aufgaben verwalten
+ActionManagePublicTasks.Tooltip=Öffentliche Aufgaben verwalten
+ActionManagePrivateActivities.Text=&5 – Private Aktivitäten verwalten
+ActionManagePrivateActivities.Tooltip=Private Aktivitäten verwalten
+ActionManagePrivateTasks.Text=&6 – Private Aufgaben verwalten
+ActionManagePrivateTasks.Tooltip=Private Aufgaben verwalten
+ActionManageProjects.Text=&7 – Projekte verwalten
+ActionManageProjects.Tooltip=Projekte verwalten
+ActionManageWorkStreams.Text=&8 – Arbeitsströme verwalten
+ActionManageWorkStreams.Tooltip=Arbeitsströme verwalten Streams
+ActionManageBeneficiaries.Text=&9 – Begünstigte verwalten
+ActionManageBeneficiaries.Tooltip=Begünstigte verwalten
+ActionManageMyDay.Text=&0 – Meinen Tag verwalten
+ActionManageMyDay.Tooltip=Meinen Tag verwalten
+ActionRefresh.Text=&Aktualisieren
+ActionRefresh.Tooltip=Aktualisieren

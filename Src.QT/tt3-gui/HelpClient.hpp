@@ -38,9 +38,9 @@ namespace tt3::gui
         //  Implementation
     private:
         struct _Impl;
-        static _Impl *  _impl();
 
         //  Helpers
+        static _Impl *  _impl();
     };
 }
 

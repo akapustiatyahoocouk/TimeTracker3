@@ -30,7 +30,8 @@ SOURCES += \
     StandardSubsystems.cpp \
     SubsystemManager.cpp \
     TimeSpan.cpp \
-    ToString.cpp
+    ToString.cpp \
+    ToolManager.cpp
 
 HEADERS += \
     API.hpp \
@@ -53,7 +54,8 @@ HEADERS += \
     Settings.hpp \
     Subsystem.hpp \
     Sync.hpp \
-    ToString.hpp
+    ToString.hpp \
+    Tool.hpp
 
 PRECOMPILED_HEADER = API.hpp
 

@@ -1,4 +1,4 @@
-QT += core gui widgets widgets-private xml charts
+QT += core gui widgets xml charts
 
 TT3_VERSION=1.0.0
 

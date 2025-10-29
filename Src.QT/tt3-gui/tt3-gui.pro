@@ -1,4 +1,5 @@
 include(../tt3.pri)
+QT += widgets-private
 
 TEMPLATE = lib
 DEFINES += TT3_GUI_LIBRARY

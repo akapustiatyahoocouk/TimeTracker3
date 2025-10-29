@@ -23,6 +23,7 @@ namespace tt3::util
     class TT3_UTIL_PUBLIC IMessageDigest;
     class TT3_UTIL_PUBLIC ILicense;
     class TT3_UTIL_PUBLIC IPlugin;
+    class TT3_UTIL_PUBLIC ITool;
 
     //  Collections
     using Subsystems = QSet<ISubsystem*>;
@@ -30,6 +31,7 @@ namespace tt3::util
     using MessageDigests = QSet<IMessageDigest*>;
     using Licenses = QSet<ILicense*>;
     using Plugins = QSet<IPlugin*>;
+    using Tools = QSet<ITool*>;
 
     //  Exceptions
     class TT3_UTIL_PUBLIC ParseException;

@@ -79,4 +79,4 @@ SubsystemManager::_Impl * SubsystemManager::_impl()
     return &impl;
 }
 
-//  End of tt3-util/MessageDigestManager.cpp
+//  End of tt3-util/SubsystemManager.cpp

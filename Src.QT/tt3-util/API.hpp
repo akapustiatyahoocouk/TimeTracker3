@@ -139,6 +139,7 @@
 #include "tt3-util/ResourceFactory.hpp"
 #include "tt3-util/Component.hpp"
 #include "tt3-util/Subsystem.hpp"
+#include "tt3-util/Tool.hpp"
 
 //  Misc
 #include "tt3-util/ProductInformation.hpp"

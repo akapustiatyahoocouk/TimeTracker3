@@ -93,6 +93,7 @@ namespace tt3::skin::admin
 
         void            _updateMruWorkspaces();
         void            _refreshCurrentActivityControls();
+        void            _applyCurrentLocale();
 
         //////////
         //  Controls
@@ -171,6 +172,7 @@ namespace tt3::skin::admin
         void            _currentCredentialsChanged(tt3::ws::Credentials, tt3::ws::Credentials);
         void            _currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity);
         void            _currentThemeChanged(tt3::gui::ITheme*, tt3::gui::ITheme*);
+        void            _currentLocaleChanged(QLocale, QLocale);
         void            _managersTabWidgetCurrentChanged(int);
         void            _refreshTimerTimeout();
     };

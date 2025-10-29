@@ -30,6 +30,7 @@ MainFrame::MainFrame(QWidget * parent)
 {
     _ui->setupUi(this);
     _labelDecorations = tt3::gui::LabelDecorations(_ui->currentActivityLabel);
+    _applyCurrentLocale();
 
     _loadPosition();
     _updateMruWorkspaces();
@@ -112,10 +113,19 @@ MainFrame::MainFrame(QWidget * parent)
             this,
             &MainFrame::_currentActivityChanged,
             Qt::ConnectionType::QueuedConnection);
+
+    //  Theme change means widget decorations change
     connect(&tt3::gui::theCurrentTheme,
             &tt3::gui::CurrentTheme::changed,
             this,
             &MainFrame::_currentThemeChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Locale change requires UI translation
+    connect(&tt3::util::theCurrentLocale,
+            &tt3::util::CurrentLocale::changed,
+            this,
+            &MainFrame::_currentLocaleChanged,
             Qt::ConnectionType::QueuedConnection);
 
     //  Done
@@ -167,10 +177,12 @@ void MainFrame::closeEvent(QCloseEvent * event)
 //  Operations
 void MainFrame::refresh()
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     tt3::ws::Workspace workspace = tt3::gui::theCurrentWorkspace;
     tt3::ws::Credentials credentials = tt3::gui::theCurrentCredentials;
     //  Frame title
-    QString title = "TimeTracker3";
+    QString title = rr.string(RID(Title));
     if (credentials.isValid())
     {
         title += " [";
@@ -183,7 +195,7 @@ void MainFrame::refresh()
         title += workspace->address()->displayForm();
         if (workspace->isReadOnly())
         {
-            title += " [read-only]";
+            title += " " + rr.string(RID(Title.ReadOnlySuffix));
         }
     }
     this->setWindowTitle(title);
@@ -531,6 +543,100 @@ void MainFrame::_refreshCurrentActivityControls()
         _ui->stopActivityPushButton->setEnabled(false);
     }
     _ui->currentActivityLabel->setPalette(currentActivityLabelPalette);
+}
+
+void MainFrame::_applyCurrentLocale()
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
+    _ui->menuFile->setTitle(
+        rr.string(RID(MenuFile.Title)));
+    _ui->menuFile->setTitle(
+        rr.string(RID(MenuFile.Title)));
+    _ui->menuView->setTitle(
+        rr.string(RID(MenuView.Title)));
+    _ui->menuTools->setTitle(
+        rr.string(RID(MenuTools.Title)));
+    _ui->menuReports->setTitle(
+        rr.string(RID(MenuReports.Title)));
+    _ui->menuOptions->setTitle(
+        rr.string(RID(MenuOptions.Title)));
+    _ui->menuHelp->setTitle(
+        rr.string(RID(MenuHelp.Title)));
+
+    _ui->actionNewWorkspace->setText(
+        rr.string(RID(ActionNewWorkspace.Text)));
+    _ui->actionNewWorkspace->setToolTip(
+        rr.string(RID(ActionNewWorkspace.Tooltip)));
+    _ui->actionOpenWorkspace->setText(
+        rr.string(RID(ActionOpenWorkspace.Text)));
+    _ui->actionOpenWorkspace->setToolTip(
+        rr.string(RID(ActionOpenWorkspace.Tooltip)));
+    _ui->actionCloseWorkspace->setText(
+        rr.string(RID(ActionCloseWorkspace.Text)));
+    _ui->actionCloseWorkspace->setToolTip(
+        rr.string(RID(ActionCloseWorkspace.Tooltip)));
+    _ui->actionDestroyWorkspace->setText(
+        rr.string(RID(ActionDestroyWorkspace.Text)));
+    _ui->actionDestroyWorkspace->setToolTip(
+        rr.string(RID(ActionDestroyWorkspace.Tooltip)));
+    _ui->actionRecentWorkspaces->setText(
+        rr.string(RID(ActionRecentWorkspaces.Text)));
+    _ui->actionRecentWorkspaces->setToolTip(
+        rr.string(RID(ActionRecentWorkspaces.Tooltip)));
+    _ui->actionRestart->setText(
+        rr.string(RID(ActionRestart.Text)));
+    _ui->actionRestart->setToolTip(
+        rr.string(RID(ActionRestart.Tooltip)));
+    _ui->actionExit->setText(
+        rr.string(RID(ActionExit.Text)));
+    _ui->actionExit->setToolTip(
+        rr.string(RID(ActionExit.Tooltip)));
+
+    _ui->actionManageUsers->setText(
+        rr.string(RID(ActionManageUsers.Text)));
+    _ui->actionManageUsers->setToolTip(
+        rr.string(RID(ActionManageUsers.Tooltip)));
+    _ui->actionManageActivityTypes->setText(
+        rr.string(RID(ActionManageActivityTypes.Text)));
+    _ui->actionManageActivityTypes->setToolTip(
+        rr.string(RID(ActionManageActivityTypes.Tooltip)));
+    _ui->actionManagePublicActivities->setText(
+        rr.string(RID(ActionManagePublicActivities.Text)));
+    _ui->actionManagePublicActivities->setToolTip(
+        rr.string(RID(ActionManagePublicActivities.Tooltip)));
+    _ui->actionManagePublicTasks->setText(
+        rr.string(RID(ActionManagePublicTasks.Text)));
+    _ui->actionManagePublicTasks->setToolTip(
+        rr.string(RID(ActionManagePublicTasks.Tooltip)));
+    _ui->actionManagePrivateActivities->setText(
+        rr.string(RID(ActionManagePrivateActivities.Text)));
+    _ui->actionManagePrivateActivities->setToolTip(
+        rr.string(RID(ActionManagePrivateActivities.Tooltip)));
+    _ui->actionManagePrivateTasks->setText(
+        rr.string(RID(ActionManagePrivateTasks.Text)));
+    _ui->actionManagePrivateTasks->setToolTip(
+        rr.string(RID(ActionManagePrivateTasks.Tooltip)));
+    _ui->actionManageProjects->setText(
+        rr.string(RID(ActionManageProjects.Text)));
+    _ui->actionManageProjects->setToolTip(
+        rr.string(RID(ActionManageProjects.Tooltip)));
+    _ui->actionManageWorkStreams->setText(
+        rr.string(RID(ActionManageWorkStreams.Text)));
+    _ui->actionManageWorkStreams->setToolTip(
+        rr.string(RID(ActionManageWorkStreams.Tooltip)));
+    _ui->actionManageBeneficiaries->setText(
+        rr.string(RID(ActionManageBeneficiaries.Text)));
+    _ui->actionManageBeneficiaries->setToolTip(
+        rr.string(RID(ActionManageBeneficiaries.Tooltip)));
+    _ui->actionManageMyDay->setText(
+        rr.string(RID(ActionManageMyDay.Text)));
+    _ui->actionManageMyDay->setToolTip(
+        rr.string(RID(ActionManageMyDay.Tooltip)));
+    _ui->actionRefresh->setText(
+        rr.string(RID(ActionRefresh.Text)));
+    _ui->actionRefresh->setToolTip(
+        rr.string(RID(ActionRefresh.Tooltip)));
 }
 
 //////////
@@ -934,6 +1040,12 @@ void MainFrame::_currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity)
 void MainFrame::_currentThemeChanged(tt3::gui::ITheme*, tt3::gui::ITheme*)
 {
     _labelDecorations = tt3::gui::LabelDecorations(_ui->currentActivityLabel);
+    refresh();
+}
+
+void MainFrame::_currentLocaleChanged(QLocale, QLocale)
+{
+    _applyCurrentLocale();
     refresh();
 }
 

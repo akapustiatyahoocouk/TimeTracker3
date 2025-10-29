@@ -11,3 +11,52 @@ Copyright=Авторское право (C) {0}, Андрей Капустин
 [Skin]
 DisplayName=Администратор
 Description=Обеспечивает полный набор функций управления рабочими пространствами TimeTracker3
+
+[MainFrame]
+Title=TimeTracker3
+Title.ReadOnlySuffix=[только для чтения]
+
+MenuFile.Title=&Файл
+MenuView.Title=&Вид
+MenuTools.Title=&Инструменты
+MenuReports.Title=&Отчёты
+MenuOptions.Title=&Параметры
+MenuHelp.Title=&Справка
+
+ActionNewWorkspace.Text=&Новая рабочая область
+ActionNewWorkspace.Tooltip=Новая рабочая область
+ActionOpenWorkspace.Text=&Открыть рабочую область
+ActionOpenWorkspace.Tooltip=Открыть рабочую область
+ActionCloseWorkspace.Text=&Закрыть рабочую область
+ActionCloseWorkspace.Tooltip=Закрыть рабочую область
+ActionDestroyWorkspace.Text=&Удалить рабочую область
+ActionDestroyWorkspace.Tooltip=Удалить рабочую область
+ActionRecentWorkspaces.Text=Не&давние рабочие области
+ActionRecentWorkspaces.Tooltip=Недавние рабочие области
+ActionRestart.Text=&Перезапустить TimeTracker3
+ActionRestart.Tooltip=Перезапустить TimeTracker3
+ActionExit.Text=&Выход
+ActionExit.Tooltip=Выход
+
+ActionManageUsers.Text=&1 - Управление пользователями
+ActionManageUsers.Tooltip=Управление пользователями
+ActionManageActivityTypes.Text=&2 - Управление типами активности
+ActionManageActivityTypes.Tooltip=Управление типами активности
+ActionManagePublicActivities.Text=&3 - Управление общедоступными активностями
+ActionManagePublicActivities.Tooltip=Управление общедоступными активностями
+ActionManagePublicTasks.Text=&4 - Управление общедоступными задачами
+ActionManagePublicTasks.Tooltip=Управление общедоступными задачами
+ActionManagePrivateActivities.Text=&5 - Управление личными активностями
+ActionManagePrivateActivities.Tooltip=Управление личными активностями
+ActionManagePrivateTasks.Text=&6 - Управление личными задачами
+ActionManagePrivateTasks.Tooltip=Управление личными Задачи
+ActionManageProjects.Text=&7 - Управление проектами
+ActionManageProjects.Tooltip=Управление проектами
+ActionManageWorkStreams.Text=&8 - Управление рабочими потоками
+ActionManageWorkStreams.Tooltip=Управление рабочими потоками
+ActionManageBeneficiaries.Text=&9 - Управление бенефициарами
+ActionManageBeneficiaries.Tooltip=Управление бенефициарами
+ActionManageMyDay.Text=&0 - Управление моим днём
+ActionManageMyDay.Tooltip=Управление моим днём
+ActionRefresh.Text=&Обновить
+ActionRefresh.Tooltip=Обновить
