@@ -740,6 +740,10 @@ RefreshInterval30=каждые 30 секунд
 RefreshInterval60=каждую минуту
 RefreshInterval0=вручную
 
+[QuickReportsDialog]
+Title=Быстрые отчёты
+OkPushButton=ОК
+
 [RestartRequiredDialog]
 Title=Требуется перезапуск
 Prompt=Одно из изменений, внесённых вами в настройки приложения,\nвступит в силу только после перезапуска приложения.\nХотите перезапустить TimeTracker3 сейчас?

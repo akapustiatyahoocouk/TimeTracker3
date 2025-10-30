@@ -107,6 +107,7 @@ SOURCES += \
     QuickReportBrowser.cpp \
     QuickReportManager.cpp \
     QuickReportView.cpp \
+    QuickReportsDialog.cpp \
     RestartRequiredDialog.cpp \
     SelectBeneficiariesDialog.cpp \
     SelectPrivateTaskParentDialog.cpp \
@@ -219,6 +220,7 @@ HEADERS += \
     QuickReport.hpp \
     QuickReportBrowser.hpp \
     QuickReportView.hpp \
+    QuickReportsDialog.hpp \
     RestartRequiredDialog.hpp \
     SelectBeneficiariesDialog.hpp \
     SelectPrivateTaskParentDialog.hpp \
@@ -292,6 +294,7 @@ FORMS += \
     PublicActivityManager.ui \
     PublicTaskManager.ui \
     QuickReportBrowser.ui \
+    QuickReportsDialog.ui \
     SelectBeneficiariesDialog.ui \
     SelectPrivateTaskParentDialog.ui \
     SelectProjectParentDialog.ui \

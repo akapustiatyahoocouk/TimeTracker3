@@ -45,7 +45,7 @@ struct HelpClient::_Impl
             &siteBuilder,
             &HelpSiteBuilder::siteBuildingCompleted,
             &siteBuilder,
-            [&](bool success)
+            [&](bool /*success*/)
             {
                 progressWindow->setVisible(false);
                 delete progressWindow;

@@ -739,6 +739,10 @@ RefreshInterval30=jede 30 Sekunden
 RefreshInterval60=jede Minute
 RefreshInterval0=manuell
 
+[QuickReportsDialog]
+Title=Schnellberichte
+OkPushButton=Bestätigen
+
 [RestartRequiredDialog]
 Title=Neustart erforderlich
 Prompt=Eine der Änderungen an den Anwendungseinstellungen\nwird erst nach einem Neustart der Anwendung wirksam.\nMöchten Sie TimeTracker3 jetzt neu starten?
