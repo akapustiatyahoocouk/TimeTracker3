@@ -93,6 +93,7 @@ void Application::_registerStandardComponents()
     tt3::util::ComponentManager::registerComponent(tt3::gui::Component::instance());
     tt3::util::ComponentManager::registerComponent(tt3::ws::Component::instance());
     tt3::util::ComponentManager::registerComponent(tt3::db::api::Component::instance());
+    tt3::util::ComponentManager::registerComponent(tt3::help::Component::instance());
     tt3::util::ComponentManager::registerComponent(tt3::util::Component::instance());
 }
 

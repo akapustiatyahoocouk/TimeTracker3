@@ -654,8 +654,8 @@ namespace tt3::db::api
 
         //  Per-type validators
     private:
-        class TT3_DB_API_PUBLIC _PrincipalValidator final :
-            public virtual IPrincipalValidator
+        class TT3_DB_API_PUBLIC _PrincipalValidator final
+            :   public virtual IPrincipalValidator
         {
             DECLARE_SINGLETON(_PrincipalValidator)
 

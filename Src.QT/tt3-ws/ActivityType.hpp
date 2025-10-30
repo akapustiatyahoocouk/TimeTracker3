@@ -19,8 +19,8 @@ namespace tt3::ws
 {
     /// \class ActivityTypeImpl tt3-ws/API.hpp
     /// \brief An activity type.
-    class TT3_WS_PUBLIC ActivityTypeImpl final :
-        public ObjectImpl
+    class TT3_WS_PUBLIC ActivityTypeImpl final
+        :   public ObjectImpl
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ActivityTypeImpl)
 

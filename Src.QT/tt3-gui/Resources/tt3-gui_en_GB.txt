@@ -379,7 +379,7 @@ LoadLastWorkspaceAtStartupCheckBox=Reload last workspace at startup
 RememnerLastLoginCheckBox=Remember last login
 
 [HelpBuilderProgressWindow]
-BuildingHelpLabel=Building help...
+BuildingHelpLabel=Building the help collection...
 
 [LoginDialog]
 Title=Login to TimeTracker3

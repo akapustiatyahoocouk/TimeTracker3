@@ -242,8 +242,8 @@ namespace tt3::db::api
 
         /// \class WorkStream tt3-db-api/API.hpp
         /// \brief The type of the "WorkStream" objects.
-        class TT3_DB_API_PUBLIC WorkStream final :
-        public virtual IObjectType
+        class TT3_DB_API_PUBLIC WorkStream final
+            :   public virtual IObjectType
         {
             DECLARE_SINGLETON(WorkStream)
 

@@ -19,8 +19,8 @@ namespace tt3::ws
 {
     /// \class UserImpl tt3-ws/API.hpp
     /// \brief A named user.
-    class TT3_WS_PUBLIC UserImpl final :
-        public PrincipalImpl
+    class TT3_WS_PUBLIC UserImpl final
+        :   public PrincipalImpl
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(UserImpl)
 

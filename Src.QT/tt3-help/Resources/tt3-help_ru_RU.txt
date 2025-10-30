@@ -1,0 +1,4 @@
+[Component]
+DisplayName=Справка TimeTracker3
+Description=Определяет службы справки для TimeTracker3
+Copyright=Авторское право (C) {0}, Андрей Капустин

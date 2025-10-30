@@ -18,8 +18,8 @@
 namespace tt3::ws
 {
     /// A login account.
-    class TT3_WS_PUBLIC AccountImpl final :
-        public PrincipalImpl
+    class TT3_WS_PUBLIC AccountImpl final
+        :   public PrincipalImpl
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AccountImpl)
 

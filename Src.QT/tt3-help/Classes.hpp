@@ -1,5 +1,5 @@
 //
-//  tt3/API.hpp - tt3 master header
+//  tt3-help/Classes.hpp - forward declarations and typedefs
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,19 +14,10 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
 
-//////////
-//  Dependencies
-#include "tt3-gui/API.hpp"
-#include "tt3-ws/API.hpp"
-#include "tt3-db-api/API.hpp"
-#include "tt3-help/API.hpp"
-#include "tt3-util/API.hpp"
+namespace tt3::help
+{
+}
 
-//////////
-//  tt3 components
-#include "tt3/Components.hpp"
-#include "tt3/Application.hpp"
+//  End of tt3-help/Classes.hpp
 
-//  End of tt3/API.hpp
