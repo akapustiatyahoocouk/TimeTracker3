@@ -47,6 +47,9 @@ namespace tt3::gui
         //////////
         //  Operations
     public:
+        QString         zipFilesDirectory() const { return _zipFilesDirectory; }
+        QString         helpSiteDirectory() const { return _helpSiteDirectory; }
+
         /// \brief
         ///     [re]builds the help site from .zipped
         ///     help sources available in exedir/Help.

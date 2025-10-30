@@ -78,6 +78,9 @@ void HelpClient::showContents()
         return;
     }
     //  TODO finish the implementation
+    tt3::help::LocalSiteHelpLoader::loadHelpCollection(
+        impl->siteBuilder.helpSiteDirectory(),
+        nullptr);
 }
 
 void HelpClient::showIndex()

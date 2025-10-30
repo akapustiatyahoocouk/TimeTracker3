@@ -29,7 +29,7 @@ namespace tt3::help
 
         //////////
         //  Construction/destruction
-    protected:
+    private:
         SimpleHelpTopic(
                 const QString & name,
                 const QString & path,
@@ -89,6 +89,8 @@ namespace tt3::help
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(SimpleHelpTopicCollection)
 
+        friend class SimpleHelpCollection;
+
         //////////
         //  Types
     public:
@@ -115,14 +117,25 @@ namespace tt3::help
             //////////
             //  Operators
         public:
-            SimpleHelpTopic*operator ->() const;
-                            operator SimpleHelpTopic *() const;
+            SimpleHelpTopic*operator ->() const
+            {
+                auto result = dynamic_cast<SimpleHelpTopic*>(Base::operator->());
+                Q_ASSERT(result != nullptr);
+                return result;
+            }
+
+                            operator SimpleHelpTopic *() const
+            {
+                auto result = dynamic_cast<SimpleHelpTopic*>(Base::operator->());
+                Q_ASSERT(result != nullptr);
+                return result;
+            }
         };
         using const_iterator = iterator;
 
         //////////
         //  Construction/destruction
-    protected:
+    private:
         SimpleHelpTopicCollection();
         virtual ~SimpleHelpTopicCollection();
 
@@ -191,9 +204,43 @@ namespace tt3::help
 
         //////////
         //  Construction/destruction
-    protected:
+    public:
         SimpleHelpCollection();
         virtual ~SimpleHelpCollection();
+
+        //////////
+        //  Properties
+    public:
+        class TT3_HELP_PUBLIC Roots final
+            :   public virtual SimpleHelpTopicCollection
+        {
+            friend class SimpleHelpCollection;
+
+            //////////
+            //  Construction/destruction
+        private:
+            explicit Roots(SimpleHelpCollection * helpCollection)
+                :   _helpCollection(helpCollection) {}
+
+            //////////
+            //  IHelpTopicCollection
+        public:
+            virtual SimpleHelpTopic *   operator[](int index) const override
+            {
+                return _helpCollection->root(index);
+            }
+
+            virtual int     size() const override
+            {
+                return _helpCollection->rootCount();
+            }
+
+            //////////
+            //  Implementation
+        private:
+            SimpleHelpCollection *  _helpCollection;    //  whose roots this collection represents
+        };
+        Roots           roots { this }; //  parallel to <base>::roots
 
         //////////
         //  IHelpCollection

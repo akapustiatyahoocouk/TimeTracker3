@@ -1,5 +1,5 @@
 //
-//  tt3-help/Intrerfaces.hpp - Help system interfaces
+//  tt3-help/Help.hpp - Help system interfaces
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -268,4 +268,4 @@ namespace tt3::help
     };
 }
 
-//  End of tt3-help/Intrerfaces.hpp
+//  End of tt3-help/Help.hpp

@@ -313,4 +313,5 @@ RESOURCES += \
 LIBS += \
     -ltt3-ws$$TARGET_SUFFIX \
     -ltt3-db-api$$TARGET_SUFFIX \
+    -ltt3-help$$TARGET_SUFFIX \
     -ltt3-util$$TARGET_SUFFIX

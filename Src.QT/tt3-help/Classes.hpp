@@ -30,6 +30,9 @@ namespace tt3::help
 
     //  Collections
     using ContentTypes = QSet<IContentType*>;
+
+    //  Helpers
+    class TT3_HELP_PUBLIC LocalSiteHelpLoader;
 }
 
 //  End of tt3-help/Classes.hpp

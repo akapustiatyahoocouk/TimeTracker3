@@ -6,6 +6,7 @@ DEFINES += TT3_HELP_LIBRARY
 SOURCES += \
     Component.cpp \
     LocalFileContentLoader.cpp \
+    LocalSiteHelpLoader.cpp \
     SimpleHelpCollection.cpp \
     SimpleHelpTopic.cpp \
     SimpleHelpTopicCollection.cpp
@@ -17,8 +18,9 @@ HEADERS += \
     ContentLoader.hpp \
     ContentType.hpp \
     Exceptions.hpp \
-    Intrerfaces.hpp \
+    Help.hpp \
     Linkage.hpp \
+    LocalSiteHelpLoader.hpp \
     SimpleHelp.hpp
 
 PRECOMPILED_HEADER = API.hpp
