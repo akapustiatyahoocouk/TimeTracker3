@@ -1,6 +1,6 @@
 //
 //  tt3-gui/HelpBuilderProgressWindow.cpp - tt3::gui::HelpBuilderProgressWindow class implementation
-//  //  TODO localize via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -24,6 +24,8 @@ HelpBuilderProgressWindow::HelpBuilderProgressWindow()
     :   QDialog(QApplication::activeWindow()),
         _ui(new Ui::HelpBuilderProgressWindow)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(HelpBuilderProgressWindow));
+
     _ui->setupUi(this);
     Qt::WindowFlags flags = windowFlags();
     flags |= Qt::CustomizeWindowHint;
@@ -33,6 +35,8 @@ HelpBuilderProgressWindow::HelpBuilderProgressWindow()
     flags &= ~Qt::WindowCloseButtonHint;
     setWindowFlags(flags);
 
+    _ui->buildingHelpLabel->setText(
+        rr.string(RID(BuildingHelpLabel)));
     _ui->contextLabel->setText("");
     _ui->actionLabel->setText("");
 }

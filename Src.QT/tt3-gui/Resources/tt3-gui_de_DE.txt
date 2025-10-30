@@ -378,6 +378,9 @@ DisplayName=Startup
 LoadLastWorkspaceAtStartupCheckBox=Letzten Arbeitsbereich beim Start neu laden
 RememnerLastLoginCheckBox=Letzte Anmeldung merken
 
+[HelpBuilderProgressWindow]
+BuildingHelpLabel=Hilfe zum Erstellen...
+
 [LoginDialog]
 Title=Anmeldung bei TimeTracker3
 LoginLabel=Anmeldung:

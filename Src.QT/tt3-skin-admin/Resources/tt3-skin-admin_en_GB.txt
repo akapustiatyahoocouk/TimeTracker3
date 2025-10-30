@@ -77,3 +77,20 @@ ActionHelpSearch.Text=&Search
 ActionHelpSearch.Tooltip=Help search
 ActionAbout.Text=A&bout TimeTracker3
 ActionAbout.Tooltip=About TimeTracker3
+
+ManageUsersTab.Text=Users
+ManageActivityTypesTab.Text=Activity types
+ManagePublicActivitiesTab.Text=Public activities
+ManagePublicTasksTab.Text=Public tasks
+ManagePrivateActivitiesTab.Text=Private activities
+ManagePrivateTasksTab.Text=Private tasks
+ManageProjectsTab.Text=Projects
+ManageWorkStreamsTab.Text=Work streams
+ManageBeneficiariesTab.Text=Beneficiaries
+ManageMyDayTab.Text=My day
+QuickReportsTab.Text=Quick reports
+
+NoCurrentActivityLabel=There is no current activity
+StopActivityPushButton=Stop
+
+CannotDestroyWorkspaceError=Cannot destroy workspace\n{0}\n because it is currently in use.

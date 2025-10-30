@@ -378,6 +378,9 @@ DisplayName=Автозагрузка
 LoadLastWorkspaceAtStartupCheckBox=Перезагрузить последнее рабочее пространство при запуске
 RememnerLastLoginCheckBox=Запомнить последний вход в систему
 
+[HelpBuilderProgressWindow]
+BuildingHelpLabel=Готовится справочная система...
+
 [LoginDialog]
 Title=Вход в TimeTracker3
 LoginLabel=Логин:

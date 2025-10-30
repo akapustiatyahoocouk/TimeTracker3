@@ -1,6 +1,6 @@
 //
 //  tt3-skin-admin/MainFrame.cpp - tt3::skin::admin::MainFrame class implementation
-//  TODO translate UI via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -435,6 +435,7 @@ bool MainFrame::_reconcileCurrntCredentials(const tt3::ws::Workspace & workspace
 void MainFrame::_destroyWorkspace(tt3::ws::WorkspaceAddress workspaceAddress)
 {
     Q_ASSERT(workspaceAddress != nullptr);
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
 
     //  If the workspaceAddress refers to the currently
     //  open workspace, we can't destroy it
@@ -443,9 +444,9 @@ void MainFrame::_destroyWorkspace(tt3::ws::WorkspaceAddress workspaceAddress)
     {
         tt3::gui::ErrorDialog::show(
             this,
-            "Cannot destroy workspace\n" +
-                workspaceAddress->displayForm() +
-                "\n because it is currently in use");
+            rr.string(
+                RID(CannotDestroyWorkspaceError),
+                workspaceAddress->displayForm()));
         return;
     }
 
@@ -503,6 +504,8 @@ void MainFrame::_updateMruWorkspaces()
 
 void MainFrame::_refreshCurrentActivityControls()
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QPalette currentActivityLabelPalette = _ui->currentActivityLabel->palette();
     if (tt3::gui::theCurrentActivity != nullptr)
     {
@@ -538,7 +541,8 @@ void MainFrame::_refreshCurrentActivityControls()
         currentActivityLabelPalette.setColor(QPalette::Window, _labelDecorations.background);
         currentActivityLabelPalette.setColor(QPalette::WindowText, _labelDecorations.disabledForeground);
 
-        _ui->currentActivityLabel->setText("There is no current activity");
+        _ui->currentActivityLabel->setText(
+            rr.string(RID(NoCurrentActivityLabel)));
         _ui->currentActivityLabel->setFont(_labelDecorations.font);
         _ui->stopActivityPushButton->setEnabled(false);
     }
@@ -668,6 +672,32 @@ void MainFrame::_applyCurrentLocale()
         rr.string(RID(ActionAbout.Text)));
     _ui->actionAbout->setToolTip(
         rr.string(RID(ActionAbout.Tooltip)));
+
+    _ui->managersTabWidget->setTabText(
+        0, rr.string(RID(ManageUsersTab.Text)));
+    _ui->managersTabWidget->setTabText(
+        1, rr.string(RID(ManageActivityTypesTab.Text)));
+    _ui->managersTabWidget->setTabText(
+        2, rr.string(RID(ManagePublicActivitiesTab.Text)));
+    _ui->managersTabWidget->setTabText(
+        3, rr.string(RID(ManagePublicTasksTab.Text)));
+    _ui->managersTabWidget->setTabText(
+        4, rr.string(RID(ManagePrivateActivitiesTab.Text)));
+    _ui->managersTabWidget->setTabText(
+        5, rr.string(RID(ManagePrivateTasksTab.Text)));
+    _ui->managersTabWidget->setTabText(
+        6, rr.string(RID(ManageProjectsTab.Text)));
+    _ui->managersTabWidget->setTabText(
+        7, rr.string(RID(ManageWorkStreamsTab.Text)));
+    _ui->managersTabWidget->setTabText(
+        8, rr.string(RID(ManageBeneficiariesTab.Text)));
+    _ui->managersTabWidget->setTabText(
+        9, rr.string(RID(ManageMyDayTab.Text)));
+    _ui->managersTabWidget->setTabText(
+        10, rr.string(RID(QuickReportsTab.Text)));
+
+    _ui->stopActivityPushButton->setText(
+        rr.string(RID(StopActivityPushButton)));
 }
 
 //////////

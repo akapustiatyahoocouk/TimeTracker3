@@ -77,3 +77,20 @@ ActionHelpSearch.Text=&Поиск
 ActionHelpSearch.Tooltip=Поиск справки
 ActionAbout.Text=&О TimeTracker3
 ActionAbout.Tooltip=О TimeTracker3
+
+ManageUsersTab.Text=Пользователи
+ManageActivityTypesTab.Text=Типы активности
+ManagePublicActivitiesTab.Text=Открытые активности
+ManagePublicTasksTab.Text=Открытые задачи
+ManagePrivateActivitiesTab.Text=Личные активности
+ManagePrivateTasksTab.Text=Личные задачи
+ManageProjectsTab.Text=Проекты
+ManageWorkStreamsTab.Text=Рабочие потоки
+ManageBeneficiariesTab.Text=Бенефициары
+ManageMyDayTab.Text=Мой день
+QuickReportsTab.Text=Быстрые отчёты
+
+NoCurrentActivityLabel=Текущие действия отсутствуют
+StopActivityPushButton=Остановить
+
+CannotDestroyWorkspaceError=Невозможно удалить рабочую область\n{0}\nтак как она в настоящее время используется.

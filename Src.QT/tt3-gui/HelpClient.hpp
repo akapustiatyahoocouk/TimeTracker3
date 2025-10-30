@@ -26,13 +26,31 @@ namespace tt3::gui
         //////////
         //  Operations
     public:
-        //  TODO document
-        //  TODO all services throw tt3::util::Exception
-        //  if an error occurs
+        /// \brief
+        ///     Shows the "Help contents".
+        /// \exceptions HelpException
+        ///     If an error occurs.
         static void     showContents();
+
+        /// \brief
+        ///     Shows the "Help index".
+        /// \exceptions HelpException
+        ///     If an error occurs.
         static void     showIndex();
+
+        /// \brief
+        ///     Shows the "Help search".
+        /// \exceptions HelpException
+        ///     If an error occurs.
         static void     showSearch();
-        static void     showTopic(const QString & name);
+
+        /// \brief
+        ///     Shows the specified Help topic.
+        /// \param topic
+        ///     The help topic ID of the form "/x/y/.../z/topic[.html]".
+        /// \exceptions HelpException
+        ///     If an error occurs.
+        static void     showTopic(const QString & topic);
 
         //////////
         //  Implementation

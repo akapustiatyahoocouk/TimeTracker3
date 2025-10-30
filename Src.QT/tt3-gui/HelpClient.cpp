@@ -27,8 +27,7 @@ struct HelpClient::_Impl
             &HelpSiteBuilder::siteBuildingStarted,
             &siteBuilder,
             [&]()
-            {   //  TODO show modeless progress dialog
-                qDebug() << "HelpSiteBuilder::siteBuildingStarted()";
+            {
                 progressWindow = new HelpBuilderProgressWindow();
                 progressWindow->setVisible(true);
             },
@@ -38,8 +37,7 @@ struct HelpClient::_Impl
             &HelpSiteBuilder::siteBuildingProgress,
             &siteBuilder,
             [&](QString context, QString action)
-            {   //  TODO show modeless progress dialog
-                qDebug() << "HelpSiteBuilder::siteBuildingProgress(" << context << "," << action << ")";
+            {
                 progressWindow->reportProgress(context, action);
             },
             Qt::QueuedConnection);
@@ -48,8 +46,7 @@ struct HelpClient::_Impl
             &HelpSiteBuilder::siteBuildingCompleted,
             &siteBuilder,
             [&](bool success)
-            {   //  TODO hide progress dialog
-                qDebug() << "HelpSiteBuilder::siteBuildingCompleted(" << success << ")";
+            {
                 progressWindow->setVisible(false);
                 delete progressWindow;
                 progressWindow = nullptr;
@@ -60,8 +57,7 @@ struct HelpClient::_Impl
             &HelpSiteBuilder::siteBuildingError,
             &siteBuilder,
             [](QString errorMessage)
-            {   //  TODO show modeless progress dialog
-                qDebug() << "HelpSiteBuilder::siteBuildingError(" << errorMessage << ")";
+            {
                 ErrorDialog::show(QApplication::activeWindow(), errorMessage);
             },
             Qt::QueuedConnection);
@@ -94,7 +90,7 @@ void HelpClient::showSearch()
     throw tt3::util::NotImplementedError();
 }
 
-void HelpClient::showTopic(const QString & /*name*/)
+void HelpClient::showTopic(const QString & /*topic*/)
 {
     throw tt3::util::NotImplementedError();
 }

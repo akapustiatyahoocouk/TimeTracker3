@@ -77,3 +77,20 @@ ActionHelpSearch.Text=&Hilfesuche
 ActionHelpSearch.Tooltip=Hilfesuche
 ActionAbout.Text=Ü&ber TimeTracker3
 ActionAbout.Tooltip=Über TimeTracker3
+
+ManageUsersTab.Text=Benutzer
+ManageActivityTypesTab.Text=Aktivitätstypen
+ManagePublicActivitiesTab.Text=Öffentliche Aktivitäten
+ManagePublicTasksTab.Text=Öffentliche Aufgaben
+ManagePrivateActivitiesTab.Text=Private Aktivitäten
+ManagePrivateTasksTab.Text=Private Aufgaben
+ManageProjectsTab.Text=Projekte
+ManageWorkStreamsTab.Text=Arbeitsabläufe
+ManageBeneficiariesTab.Text=Begünstigte
+ManageMyDayTab.Text=Mein Tag
+QuickReportsTab.Text=Schnellberichte
+
+NoCurrentActivityLabel=Keine aktuelle Aktivität
+StopActivityPushButton=Stoppen
+
+CannotDestroyWorkspaceError=Arbeitsbereich {0}\nkann nicht gelöscht werden, da\ner aktuell verwendet wird.
