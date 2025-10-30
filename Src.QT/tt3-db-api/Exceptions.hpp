@@ -674,10 +674,10 @@ namespace tt3::db::api
     public:
         /// \brief
         ///     Constructs the exception.
-        /// \param cerrorMessage
+        /// \param errorMessage
         ///     The custom error message.
         explicit CustomDatabaseException(
-                const QString & cerrorMessage
+                const QString & errorMessage
             );
 
         //////////

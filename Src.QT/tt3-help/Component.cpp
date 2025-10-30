@@ -1,5 +1,5 @@
 //
-//  tt3-help/Component.cpp - tt3::db::api::Component class implementation
+//  tt3-help/Component.cpp - tt3::help::Component class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -60,7 +60,7 @@ QString Component::buildNumber() const
 
 tt3::util::ISubsystem * Component::subsystem() const
 {
-    return tt3::util::StandardSubsystems::Storage::instance();
+    return tt3::util::StandardSubsystems::Utility::instance();
 }
 
 Component::Resources * Component::resources() const

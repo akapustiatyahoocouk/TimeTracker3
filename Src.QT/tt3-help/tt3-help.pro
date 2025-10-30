@@ -4,13 +4,22 @@ TEMPLATE = lib
 DEFINES += TT3_HELP_LIBRARY
 
 SOURCES += \
-    Component.cpp
+    Component.cpp \
+    LocalFileContentLoader.cpp \
+    SimpleHelpCollection.cpp \
+    SimpleHelpTopic.cpp \
+    SimpleHelpTopicCollection.cpp
 
 HEADERS += \
     API.hpp \
     Classes.hpp \
     Components.hpp \
-    Linkage.hpp
+    ContentLoader.hpp \
+    ContentType.hpp \
+    Exceptions.hpp \
+    Intrerfaces.hpp \
+    Linkage.hpp \
+    SimpleHelp.hpp
 
 PRECOMPILED_HEADER = API.hpp
 

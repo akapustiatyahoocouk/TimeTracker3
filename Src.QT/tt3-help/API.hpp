@@ -25,5 +25,10 @@
 #include "tt3-help/Linkage.hpp"
 #include "tt3-help/Classes.hpp"
 #include "tt3-help/Components.hpp"
+#include "tt3-help/Exceptions.hpp"
 
+#include "tt3-help/ContentType.hpp"
+#include "tt3-help/ContentLoader.hpp"
+#include "tt3-help/Intrerfaces.hpp"
+#include "tt3-help/SimpleHelp.hpp"
 //  End of tt3-help/API.hpp

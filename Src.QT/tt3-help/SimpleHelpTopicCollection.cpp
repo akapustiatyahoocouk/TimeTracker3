@@ -1,5 +1,5 @@
 //
-//  tt3-help/Classes.hpp - forward declarations and typedefs
+//  tt3-help/SimpleHelpTopicCollection.cpp - tt3::help::SimpleHelpTopicCollection class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,23 +14,21 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
+#include "tt3-help/API.hpp"
+using namespace tt3::help;
 
-namespace tt3::help
+//////////
+//  Construction/destruction
+SimpleHelpTopicCollection::SimpleHelpTopicCollection()
 {
-    class TT3_HELP_PUBLIC IContentType;
-    class TT3_HELP_PUBLIC IContentLoader;
-
-    class TT3_HELP_PUBLIC IHelpTopic;
-    class TT3_HELP_PUBLIC IHelpTopicCollection;
-    class TT3_HELP_PUBLIC IHelpCollection;
-
-    class TT3_HELP_PUBLIC SimpleHelpTopic;
-    class TT3_HELP_PUBLIC SimpleHelpTopicCollection;
-    class TT3_HELP_PUBLIC SimpleHelpCollection;
-
-    //  Collections
-    using ContentTypes = QSet<IContentType*>;
 }
 
-//  End of tt3-help/Classes.hpp
+SimpleHelpTopicCollection::~SimpleHelpTopicCollection()
+{
+    for (auto member : _members)
+    {
+        delete member;
+    }
+}
 
+//  End of tt3-help/SimpleHelpTopicCollection.cpp
