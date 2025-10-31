@@ -17,18 +17,4 @@
 #include "tt3-help/API.hpp"
 using namespace tt3::help;
 
-//////////
-//  Construction/destruction
-SimpleHelpTopicCollection::SimpleHelpTopicCollection()
-{
-}
-
-SimpleHelpTopicCollection::~SimpleHelpTopicCollection()
-{
-    for (auto member : _members)
-    {
-        delete member;
-    }
-}
-
 //  End of tt3-help/SimpleHelpTopicCollection.cpp

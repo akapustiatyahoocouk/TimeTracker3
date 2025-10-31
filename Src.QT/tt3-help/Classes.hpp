@@ -20,12 +20,10 @@ namespace tt3::help
     class TT3_HELP_PUBLIC IContentType;
     class TT3_HELP_PUBLIC IContentLoader;
 
-    class TT3_HELP_PUBLIC IHelpTopic;
-    class TT3_HELP_PUBLIC IHelpTopicCollection;
-    class TT3_HELP_PUBLIC IHelpCollection;
+    class TT3_HELP_PUBLIC HelpTopic;
+    class TT3_HELP_PUBLIC HelpCollection;
 
     class TT3_HELP_PUBLIC SimpleHelpTopic;
-    class TT3_HELP_PUBLIC SimpleHelpTopicCollection;
     class TT3_HELP_PUBLIC SimpleHelpCollection;
 
     //  Collections

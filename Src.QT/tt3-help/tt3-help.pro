@@ -8,8 +8,7 @@ SOURCES += \
     LocalFileContentLoader.cpp \
     LocalSiteHelpLoader.cpp \
     SimpleHelpCollection.cpp \
-    SimpleHelpTopic.cpp \
-    SimpleHelpTopicCollection.cpp
+    SimpleHelpTopic.cpp
 
 HEADERS += \
     API.hpp \

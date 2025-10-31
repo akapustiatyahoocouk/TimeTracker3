@@ -22,7 +22,7 @@ using namespace tt3::help;
 auto LocalSiteHelpLoader::loadHelpCollection(
         const QString siteDirectory,
         ProgressListener /*progressListener*/
-    ) -> IHelpCollection *
+    ) -> HelpCollection *
 {
     QDir absSiteDirectory(QFileInfo(siteDirectory).absoluteFilePath());
     if (!absSiteDirectory.exists())
@@ -48,14 +48,21 @@ auto LocalSiteHelpLoader::loadHelpCollection(
     {   //  A sigle simpe help collection
         return _loadSimpleHelpCollection(absSiteDirectory.absolutePath());
     }
+    else if (dirsForLocales.size() == 1)
+    {   //  1 locale only - no point in creating localized help
+        return _loadSimpleHelpCollection(dirsForLocales.values()[0]);
+    }
     else
     {   //  A localized help collection
+        throw tt3::util::NotImplementedError();
+        /*  TODO uncomment & implement
         QMap<QLocale, SimpleHelpCollection*> collectionsForLocales;
         for (QLocale locale : dirsForLocales.keys())
         {
             collectionsForLocales[locale] =
                 _loadSimpleHelpCollection(dirsForLocales[locale]);
         }
+        */
     }
     return nullptr;
 }
@@ -67,16 +74,14 @@ auto LocalSiteHelpLoader::_loadSimpleHelpCollection(
     ) -> SimpleHelpCollection *
 {
     std::unique_ptr<SimpleHelpCollection> helpCollection
-        { new SimpleHelpCollection() };
-    _loadTopicsFromDirectory(
-        rootDirectory,
-        helpCollection->roots);
+    { new SimpleHelpCollection("", "", nullptr) };
+    _loadTopicFromDirectory(helpCollection.get(), rootDirectory);
     return helpCollection.release();
 }
 
-void LocalSiteHelpLoader::_loadTopicsFromDirectory(
-        const QString & directoty,
-        SimpleHelpTopicCollection & topics
+void LocalSiteHelpLoader::_loadTopicFromDirectory(
+        SimpleHelpTopic * topic,
+        const QString & directoty
     )
 {
     QDir dir(directoty);
@@ -86,13 +91,65 @@ void LocalSiteHelpLoader::_loadTopicsFromDirectory(
         QString fileOrDirPath = dir.filePath(entry);
         QFileInfo fileOrDirInfo(fileOrDirPath);
         if (fileOrDirInfo.isFile())
-        {
+        {   //  The .html file becomes a help topic
+            //  UNLESS it's "index.html", in which case it
+            //  specifies content & properties for the
+            //  owner of "topics"
             qDebug() << "File:" << fileOrDirPath;
+            if (entry == "index.html")
+            {   //  This file is content for the enclising directory
+                QString displayName;
+                _analyzeHtmlFile(fileOrDirPath, displayName);
+            }
+            else
+            {   //  This file becomes a separate help topic
+                topic->children.createTopic(
+                    entry,
+                    "", //  displayName will be loaded from index.html
+                    new LocalFileContentLoader(fileOrDirPath));
+            }
         }
         else if (fileOrDirInfo.isDir())
-        {
+        {   //  The dir becomes a .html topic; the
+            //  index.html within the dir gives the topic's
+            //  properties and the dir itself is further
+            //  analyzed for the topic's children
             qDebug() << "Dir:" << fileOrDirPath;
+            auto childTopic =
+                topic->children.createTopic(
+                    entry,
+                    "", //  displayName will be loaded from index.html
+                    nullptr);
+            _loadTopicFromDirectory(childTopic, fileOrDirPath);
         }
+    }
+}
+
+void LocalSiteHelpLoader::_analyzeHtmlBytes(
+        const QByteArray & htmlBytes,
+        QString & displayName
+    )
+{
+    QString html = QString::fromUtf8(htmlBytes);
+
+    static const QRegularExpression titleRegex("<title[^>]*>(.*?)</title>");
+    QRegularExpressionMatch titleMatch = titleRegex.match(html);
+    if (titleMatch.hasMatch())
+    {
+        displayName = QTextDocumentFragment::fromHtml(titleMatch.captured(1)).toPlainText();
+    }
+}
+
+void LocalSiteHelpLoader::_analyzeHtmlFile(
+        const QString & htmlFileName,
+        QString & displayName
+    )
+{
+    QFile htmlFile(htmlFileName);
+    if (htmlFile.open(QIODevice::ReadOnly))
+    {
+        _analyzeHtmlBytes(htmlFile.readAll(), displayName);
+        htmlFile.close();
     }
 }
 

@@ -20,19 +20,18 @@ namespace tt3::help
     /// \class SimpleHelpTopic tt3-help/API.hpp
     /// \brief A help topic that carries its poroperties directly.
     class TT3_HELP_PUBLIC SimpleHelpTopic
-        :   public virtual IHelpTopic
+        :   public virtual HelpTopic
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(SimpleHelpTopic)
 
-        friend class SimpleHelpTopicCollection;
         friend class SimpleHelpCollection;
 
         //////////
         //  Construction/destruction
     private:
         SimpleHelpTopic(
+                SimpleHelpTopic * parent,
                 const QString & name,
-                const QString & path,
                 const QString & displayName,
                 IContentLoader * contentLoader
             );
@@ -46,18 +45,13 @@ namespace tt3::help
             return _name;
         }
 
-        virtual QString path() const override
-        {
-            return _path;
-        }
-
         virtual QString displayName() const override
         {
             return _displayName;
         }
 
-        virtual auto        contentLoader(
-                                ) const -> IContentLoader * override
+        virtual auto    contentLoader(
+                            ) const -> IContentLoader * override
         {
             return _contentLoader;
         }
@@ -73,192 +67,193 @@ namespace tt3::help
         }
 
         //////////
+        //  Properties
+    public:
+        class TT3_HELP_PUBLIC Children final
+        {
+            friend class SimpleHelpTopic;
+
+            //////////
+            //  Types
+        public:
+            class TT3_HELP_PUBLIC iterator final
+            {
+                //////////
+                //  Construction/destruction/assignment
+            public:
+                iterator()
+                    :   _helpTopic(nullptr),
+                        _currentIndex(0) {}
+                iterator(const SimpleHelpTopic * helpTopic, int startIndex)
+                    :   _helpTopic(helpTopic),
+                        _currentIndex(startIndex)
+                {
+                    Q_ASSERT(_helpTopic != nullptr);
+                    Q_ASSERT(_currentIndex >= 0 &&
+                             _currentIndex <= _helpTopic->childCount());
+                }
+                iterator(const iterator & src)
+                    :   _helpTopic(src._helpTopic),
+                        _currentIndex(src._currentIndex) {}
+                virtual ~iterator() {}
+
+                iterator &  operator = (const iterator & src)
+                {
+                    _helpTopic = src._helpTopic;
+                    _currentIndex = src._currentIndex;
+                    return *this;
+                }
+
+                //////////
+                //  Operators
+            public:
+                bool        operator == (const iterator & op2) const
+                {
+                    if (_finished())
+                    {
+                        return op2._finished();
+                    }
+                    else if (op2._finished())
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return (_helpTopic == op2._helpTopic) &&
+                               (_currentIndex == op2._currentIndex);
+                    }
+                }
+
+                bool        operator != (const iterator & op2) const
+                {
+                    return !(*this == op2);
+                }
+
+                auto        operator ->(
+                                ) const -> SimpleHelpTopic*
+                {
+                    Q_ASSERT(!_finished());
+                    return _helpTopic->child(_currentIndex);
+                }
+
+                operator SimpleHelpTopic *() const
+                {
+                    Q_ASSERT(!_finished());
+                    return _helpTopic->child(_currentIndex);
+                }
+
+                void        operator++();
+                void        operator++(int);
+                void        operator--();
+                void        operator--(int);
+
+                //////////
+                //  Implementation
+            private:
+                const SimpleHelpTopic * _helpTopic; //  nullptr == invalid iterator, considered finished
+                int         _currentIndex;  //  0 for invalid iterators
+                //  Helpers
+                bool        _finished() const
+                {
+                    return (_helpTopic == nullptr) ||
+                           (_currentIndex >= _helpTopic->childCount());
+                }
+            };
+            using const_iterator = iterator;
+
+            //////////
+            //  Construction/destruction
+        private:
+            explicit Children(SimpleHelpTopic * helpTopic)
+                :   _helpTopic(helpTopic) { Q_ASSERT(_helpTopic != nullptr); }
+
+            //////////
+            //  Operations
+        public:
+            SimpleHelpTopic*operator[](int index) const
+            {
+                return _helpTopic->child(index);
+            }
+
+            int             size() const
+            {
+                return _helpTopic->childCount();
+            }
+
+            auto            createTopic(
+                                    const QString & name,
+                                    const QString & displayName,
+                                    IContentLoader * contentLoader
+                                ) -> SimpleHelpTopic *;
+
+            //////////
+            //  Iteration support
+        public:
+            iterator        begin()
+            {
+                return iterator(_helpTopic, 0);
+            }
+
+            const_iterator  end() const
+            {
+                return const_iterator(_helpTopic, _helpTopic->childCount());
+            }
+
+            const_iterator  begin() const
+            {
+                return const_iterator(_helpTopic, 0);
+            }
+
+            iterator        end()
+            {
+                return iterator(_helpTopic, _helpTopic->childCount());
+            }
+
+            const_iterator  cbegin() const
+            {
+                return const_iterator(_helpTopic, 0);
+            }
+
+            const_iterator  cend() const
+            {
+                return const_iterator(_helpTopic, _helpTopic->childCount());
+            }
+
+            //////////
+            //  Implementation
+        private:
+            SimpleHelpTopic *   _helpTopic; //  whose children this collection represents
+        };
+        SimpleHelpTopic *const  parent;
+        Children            children { this };
+
+        //////////
         //  Implementation
     private:
         QString             _name;
-        QString             _path;
         QString             _displayName;
-        IContentLoader *    _contentLoader; //  owned by this SimpleHelpTopic
+        IContentLoader *    _contentLoader; //  owned by this SimpleHelpTopic, nullptr == none
         QList<SimpleHelpTopic*> _children;  //  all owned by this SimpleHelpTopic
-    };
-
-    /// \class SimpleHelpTopicCollection tt3-help/API.hpp
-    /// \brief A collection of SimpleHelpTopics.
-    class TT3_HELP_PUBLIC SimpleHelpTopicCollection
-        :   public virtual IHelpTopicCollection
-    {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(SimpleHelpTopicCollection)
-
-        friend class SimpleHelpCollection;
-
-        //////////
-        //  Types
-    public:
-        class TT3_HELP_PUBLIC iterator
-                :   public IHelpTopicCollection::iterator
-        {
-            using Base = IHelpTopicCollection::iterator;
-
-            //////////
-            //  Construction/destruction/assignment
-        public:
-            iterator() : Base() {}
-            iterator(const SimpleHelpTopicCollection * collection, int startIndex)
-                :   Base(collection, startIndex) {}
-            iterator(const iterator & src) : Base(src) {}
-            virtual ~iterator() {}
-
-            iterator &      operator = (const iterator & src)
-            {
-                Base::operator = (src);
-                return *this;
-            }
-
-            //////////
-            //  Operators
-        public:
-            SimpleHelpTopic*operator ->() const
-            {
-                auto result = dynamic_cast<SimpleHelpTopic*>(Base::operator->());
-                Q_ASSERT(result != nullptr);
-                return result;
-            }
-
-                            operator SimpleHelpTopic *() const
-            {
-                auto result = dynamic_cast<SimpleHelpTopic*>(Base::operator->());
-                Q_ASSERT(result != nullptr);
-                return result;
-            }
-        };
-        using const_iterator = iterator;
-
-        //////////
-        //  Construction/destruction
-    private:
-        SimpleHelpTopicCollection();
-        virtual ~SimpleHelpTopicCollection();
-
-        //////////
-        //  Operators
-    public:
-        virtual auto    operator[](int index) const -> SimpleHelpTopic * override
-        {
-            return _members[index];
-        }
-
-        //////////
-        //  IHelpTopicCollection
-    public:
-        virtual int   size() const override
-        {
-            return static_cast<int>(_members.size());
-        }
-
-        //////////
-        //  Iteration support
-    public:
-        iterator        begin()
-        {
-            return iterator(this, 0);
-        }
-
-        const_iterator  end() const
-        {
-            return const_iterator(this, static_cast<int>(_members.size()));
-        }
-
-        const_iterator  begin() const
-        {
-            return const_iterator(this, 0);
-        }
-
-        iterator        end()
-        {
-            return iterator(this, static_cast<int>(_members.size()));
-        }
-
-        const_iterator  cbegin() const
-        {
-            return const_iterator(this, 0);
-        }
-
-        const_iterator  cend() const
-        {
-            return const_iterator(this, static_cast<int>(_members.size()));
-        }
-
-        //////////
-        //  Implementation
-    private:
-        QList<SimpleHelpTopic*> _members;   //  owned by this SimpleHelpTopicCollection
     };
 
     /// \class SimpleHelpCollection tt3-help/API.hpp
     /// \brief A help collection that carries its poroperties directly.
     class TT3_HELP_PUBLIC SimpleHelpCollection
-        :   public SimpleHelpTopicCollection,
-            public IHelpCollection
+        :   public HelpCollection,
+            public SimpleHelpTopic
+
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(SimpleHelpCollection)
 
         //////////
         //  Construction/destruction
     public:
-        SimpleHelpCollection();
+        SimpleHelpCollection(
+                const QString & name,
+                const QString & displayName,
+                IContentLoader * contentLoader
+            );
         virtual ~SimpleHelpCollection();
-
-        //////////
-        //  Properties
-    public:
-        class TT3_HELP_PUBLIC Roots final
-            :   public virtual SimpleHelpTopicCollection
-        {
-            friend class SimpleHelpCollection;
-
-            //////////
-            //  Construction/destruction
-        private:
-            explicit Roots(SimpleHelpCollection * helpCollection)
-                :   _helpCollection(helpCollection) {}
-
-            //////////
-            //  IHelpTopicCollection
-        public:
-            virtual SimpleHelpTopic *   operator[](int index) const override
-            {
-                return _helpCollection->root(index);
-            }
-
-            virtual int     size() const override
-            {
-                return _helpCollection->rootCount();
-            }
-
-            //////////
-            //  Implementation
-        private:
-            SimpleHelpCollection *  _helpCollection;    //  whose roots this collection represents
-        };
-        Roots           roots { this }; //  parallel to <base>::roots
-
-        //////////
-        //  IHelpCollection
-    public:
-        virtual int     rootCount() const override
-        {
-            return static_cast<int>(_roots.size());
-        }
-
-        virtual auto    root(int index) -> SimpleHelpTopic * const override
-        {
-            return _roots[index];
-        }
-
-        //////////
-        //  Implementation
-    private:
-        QList<SimpleHelpTopic*> _roots; //  owned by this SimpleHelpTopicCollection
     };
 }
 

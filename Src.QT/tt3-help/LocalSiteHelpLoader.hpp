@@ -34,7 +34,7 @@ namespace tt3::help
         static auto     loadHelpCollection(
                                 const QString siteDirectory,
                                 ProgressListener progressListener
-                            ) -> IHelpCollection *;
+                            ) -> HelpCollection *;
 
         //////////
         //  Implementation
@@ -43,9 +43,17 @@ namespace tt3::help
         static auto     _loadSimpleHelpCollection(
                                 const QString & rootDirectory
                             ) -> SimpleHelpCollection *;
-        static void     _loadTopicsFromDirectory(
-                                const QString & directoty,
-                                SimpleHelpTopicCollection & topics
+        static void     _loadTopicFromDirectory(
+                                SimpleHelpTopic * topic,
+                                const QString & directoty
+                            );
+        static void     _analyzeHtmlBytes(
+                                const QByteArray & htmlBytes,
+                                QString & displayName
+                            );
+        static void     _analyzeHtmlFile(
+                                const QString & htmlFileName,
+                                QString & displayName
                             );
     };
 }

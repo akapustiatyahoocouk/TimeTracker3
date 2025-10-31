@@ -20,17 +20,16 @@ using namespace tt3::help;
 //////////
 //  Construction/destruction
 SimpleHelpTopic::SimpleHelpTopic(
+        SimpleHelpTopic * parent_,
         const QString & name,
-        const QString & path,
         const QString & displayName,
         IContentLoader * contentLoader
-    ) : IHelpTopic(),
+    ) : HelpTopic(parent_),
+        parent(parent_),
         _name(name),
-        _path(path),
         _displayName(displayName),
         _contentLoader(contentLoader)
 {
-    Q_ASSERT(_contentLoader != nullptr);
 }
 
 SimpleHelpTopic::~SimpleHelpTopic()
@@ -40,6 +39,19 @@ SimpleHelpTopic::~SimpleHelpTopic()
         delete child;
     }
     delete _contentLoader;
+}
+
+//////////
+//  SimpleHelpTopic::Children
+auto SimpleHelpTopic::Children::createTopic(
+        const QString & name,
+        const QString & displayName,
+        IContentLoader * contentLoader
+    ) -> SimpleHelpTopic *
+{
+    auto topic = new SimpleHelpTopic(_helpTopic, name, displayName, contentLoader);
+    _helpTopic->_children.append(topic);
+    return topic;
 }
 
 //  End of tt3-help/SimpleHelpTopic.cpp

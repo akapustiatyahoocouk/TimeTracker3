@@ -86,6 +86,7 @@
 #include <QStandardPaths>
 #include <QStatusBar>
 #include <QStyleFactory>
+#include <QTextDocumentFragment>
 #include <QThread>
 #include <QTimer>
 #include <QTreeWidgetItem>

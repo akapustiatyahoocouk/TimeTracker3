@@ -19,16 +19,18 @@ using namespace tt3::help;
 
 //////////
 //  Construction/destruction
-SimpleHelpCollection::SimpleHelpCollection()
+SimpleHelpCollection::SimpleHelpCollection(
+        const QString & name,
+        const QString & displayName,
+        IContentLoader * contentLoader
+    ) : HelpTopic(nullptr),
+        HelpCollection(),
+        SimpleHelpTopic(nullptr, name, displayName, contentLoader)
 {
 }
 
 SimpleHelpCollection::~SimpleHelpCollection()
 {
-    for (auto root : _roots)
-    {
-        delete root;
-    }
 }
 
 //  End of tt3-help/SimpleHelpCollection.cpp
