@@ -133,14 +133,14 @@ h1
 h2
 {
   color: #FFFFFF;
-	font-size: 130%;
+	font-size: 125%;
 	margin: 0;
 }
 
 h3
 {
   color: #FFFFFF;
-	font-size: 110%;
+	font-size: 100%;
 	margin: 0;
 }
 
@@ -156,6 +156,10 @@ ul {
   padding-left: 64px;
 }
 
+ol {
+  padding-left: 64px;
+}
+  
 p.seealso {
   padding-left: 0;
 	font-size: 75%;
@@ -181,7 +185,7 @@ a.toc1 {
   padding: 0;
   display: block;
   color: #00FF00;
-  font-size: 100%;
+  font-size: 90%;
 }
 
 a.toc2 {
@@ -189,7 +193,7 @@ a.toc2 {
   padding: 0 0 0 0px;
   display: block;
   color: #00FF00;
-  font-size: 80%;
+  font-size: 85%;
 }
 
 a.toc3 {
@@ -197,7 +201,7 @@ a.toc3 {
   padding: 0 0 0 0px;
   display: block;
   color: #00FF00;
-  font-size: 70%;
+  font-size: 80%;
 }
 
 a.toc4 {
@@ -205,7 +209,7 @@ a.toc4 {
   padding: 0 0 0 0px;
   display: block;
   color: #00FF00;
-  font-size: 60%;
+  font-size: 75%;
 }
 
 ul.toc {

@@ -113,9 +113,11 @@ void LocalSiteHelpLoader::_loadTopicFromDirectory(
             }
             else if (entry.endsWith(".html"))
             {   //  This HTML file becomes a separate help topic
+                QString displayName;
+                _analyzeHtmlFile(fileOrDirPath, displayName);
                 topic->children.createTopic(
                     entry,
-                    QString(),  //  displayName will be loaded from index.html
+                    displayName,
                     new LocalFileContentLoader(fileOrDirPath));
             }
         }

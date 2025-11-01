@@ -34,7 +34,7 @@
     <p>Before TimeTracker3 was born, a prototype (TimeTracker) was created and used in 
 	real-life projects, both commercial and open source, for several years. That 
 	gave a unique perspective to what was done right in the first place, what 
-	featurtes needed to be added, and what features needed to change to better 
+	features needed to be added, and what features needed to change to better 
 	suit the needs of a TimeTracker3 user.</p>
     
     <h2>Portability</h2>
@@ -47,6 +47,29 @@
 	<p>TimeTracker3 is designed from the ground up to be usable internationally. It will 
 	"speak" the language of your choice; additional language packs can be added 
 	to a TimeTracker3 installation as needed.</p>
+<h2>A tool, not a web application</h2>
+<p>TimeTracker3 is a locally installed tool (and not a web application, which 
+are popular) because:</p>
+<ul>
+	<li>It is specifically required to handle the "offline" situations, where 
+	someone may need to temporarily work in an environment where access to 
+	Internet is absent (no connection at all) or limited (blocked depending on 
+	e.g. country). For a web application these situations are a showstopper. 
+	TimeTracker3 will allow its user to continue recording the daily work 
+	locally and later, when it becomes possible, to "merge" their records into 
+	the "main/organisation" workspace.</li>
+	<li>It requires tight integration with the underlying platform for several 
+	of its key features. One example is detecting when the user has left the 
+	computer (AFK, away-from-keyboard") - simply recognising the fact that user 
+	has not interacted with TimeTracker3 for a long time is not enough - the 
+	user may be busy doing their daily work, such as "development" or 
+	"dev-testing"), which TimeTracker3 must remain ticking in the background, 
+	recording the time.</li>
+	<li>A web application will not work in an environment where heightened 
+	security is required, such as an organisation where internal security policy 
+	prohibits enabling client-side JavaScript, or a situation where certain key 
+	computers are not connected to a network at all.</li>
+</ul>
 	<p class="seealso">
         See also:
         -

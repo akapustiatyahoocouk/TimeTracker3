@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Users and accounts</title>
+<link href="../../css/tt3.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<h1>Users and accounts</h1>
+    <hr>
+    
+    <p>In TimeTracker3 Users and Accounts provide basis for access control.</p>
+	<ul>
+	  <li><strong>Users </strong>represent real people or groups of people that 
+	  are authorised to access specific TimeTracker3 workspaces, while.</li>
+	  <li><strong>Accounts</strong> represent the roles that a TimeTracker3 User 
+	  can play within a given TimeTracker3 workspace. </li>
+	</ul>
+    
+    <h2>Users</h2>
+<p>A User will normally represent a real person (e.g. "John Doe") but may 
+sometimes also represent a group of related person (e.g. "Guest"). In either 
+case, the following information is kept for a User:</p>
+<ul>
+	<li>The User's "real name".</li>
+	<li>The list of the User's e-mail addresses.</li>
+	<li>The language preferred by that User when working with TimeTracker3 (if 
+	different from the host OS' default language).</li>
+	<li>The list of activities and tasks that User can "work on".</li>
+	<li>The "inactivity time" limit, which specifies how long the user can be 
+	inactive (i.e. no mouse or keyboard activity) before TimeTracker3 assumes 
+	that the user has left for good and will e.g. stop recording the activity 
+	that is "currently underway" for that user.</li>
+	<li>The User's enabled/disabled status.</li>
+</ul>
+<h2>Accounts</h2>
+<p>An Account represents a specific role a User can play in the TimeTracker3 
+universe and always belongs to a specific User. It is not uncommon for a single 
+User to have multiple Accounts, in situations like:</p>
+<ul>
+	<li>A User representing a person who, apart from recording their daily 
+	activities like any other User would, can also perform e.g. administrative 
+	or backup operator activities. In this case, such User will have several 
+	Accounts - one for everyday work and another for e.g. Administrator access.</li>
+	<li>A User representing a group of related people, such as "Guests", with 
+	each Account representing a different person with a separate login 
+	credentials. This allows TimeTracker3 to record the daily activities of 
+	these people separately.</li>
+</ul>
+<p>The following information is kept for an Account:</p>
+<ul>
+	<li>The Account's login identifier and password.</li>
+	<li>The list of the Account's e-mail addresses.</li>
+	<li>The Accounts "capabilities", which specify what sorts of actions the 
+	owner of that Account can perform in a TimeTracker3 workspace (things like 
+	"log daily work", "manage available projects", "generate reports", and so 
+	on).</li>
+	<li>The Account's enabled/disabled status.</li>
+</ul>
+<h2>Enabling and disabling </h2>
+<p>Both Users and Accounts start off as "enabled", but can later be "disabled".</p>
+<p>Disabling an Account disallows logging in to a TimeTracker3 workspace with 
+that Account's login credentials. Similarly, disabling a User disallows logging 
+in using any of that User's Accounts.</p>
+<p>Disabling outdated Users and Accounts, as opposed to deleting them, allows 
+TimeTracker3 to keep accurate historical records of e.g. the effort spent on any 
+specific Project.</p>
+<p>So, if somebody is no longer expected to be active within a given 
+TimeTracker3 workspace:</p>
+<ul>
+	<li>Disable the corresponding User, if that User represents the person in 
+	question (such as "John Doe"), or</li>
+	<li>Disable the corresponding Account if e.g. the User represents a group of 
+	related roles (such as "Guests").</li>
+</ul>
+<p>Note that a disabled User or Account can be re-enabled again, but doing so 
+will require an "administrator" capability in the TimeTracker3 workspace where 
+the User/Account is re-enabled.</p>
+<h2>The workspace administrator</h2>
+<p>In every TimeTracker3 workspace there always exists at least one (but maybe 
+more) "workspace administrators". This is:</p>
+<ol>
+	<li>An enabled User, which has</li>
+	<li>At least one enabled Account, which has</li>
+	<li>At least the "administrator" capability.</li>
+</ol>
+
+<p>Any attempt to disable (or delete) the last available "workspace 
+administrator" will be blocked by TimeTracker3, as will an attempt to remove the 
+"administrator" capability from the Account in question.</p>
+    
+    <hr/>
+    <p class="seealso">
+        See also:
+        -
+    	</p>
+
+<p>&nbsp;</p>
+
+</body>
+
+</html>
