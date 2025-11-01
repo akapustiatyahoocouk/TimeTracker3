@@ -8,7 +8,7 @@ PxPlus_IBM_EGA_8x14.ttf
 PxPlus_IBM_VGA_8x14.ttf
 */
     font-family: 'MyFontName'; /*a name to be used later*/
-    src: url('../fonts/PxPlus_IBM_VGA_8x14.ttf'); /*URL to font*/
+    src: url('../fonts/Consolas15.fon'); /*URL to font*/
 }
 
 body
@@ -17,7 +17,7 @@ body
   color: #00FF00;
 	line-height: 100%;
 	font-family: MyFontName, monospace;
-	font-size: 100%;
+	font-size: 150%;
 	
 	background-image: url("../images/body_background.jpg");
   background-repeat: repeat;
@@ -47,7 +47,7 @@ body.toc
   padding-left: 1cm;
   padding-right: 1cm;
   color: #FFFFE0;
-  font-size: 48px;
+  font-size: 40px;
   /*font-style: italic;*/
   white-space: nowrap;
   vertical-align: middle;
@@ -159,7 +159,7 @@ ul {
 p.seealso {
   padding-left: 0;
 	font-size: 75%;
-  color: #008000;
+  color: #00F000;
 }
 
 a {
@@ -167,7 +167,7 @@ a {
 }
 
 a.seealso {
-  color: #008000;
+  color: #00F000;
 }
 
 p.footer {
@@ -180,7 +180,7 @@ a.toc1 {
   margin: 0;
   padding: 0;
   display: block;
-  color: #FFFFFF;
+  color: #00FF00;
 	font-size: 100%;
 }
 
@@ -188,7 +188,7 @@ a.toc2 {
   margin: 0;
   padding: 0 0 0 20px;
   display: block;
-  color: #FFFFFF;
+  color: #00FF00;
 	font-size: 80%;
 }
 
@@ -196,6 +196,15 @@ a.toc3 {
   margin: 0;
   padding: 0 0 0 40px;
   display: block;
-  color: #FFFFFF;
+  color: #00FF00;
 	font-size: 60%;
 }
+
+a.toc4 {
+  margin: 0;
+  padding: 0 0 0 50px;
+  display: block;
+  color: #00FF00;
+  font-size: 55%;
+}
+

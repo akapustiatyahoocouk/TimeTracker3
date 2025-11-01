@@ -23,7 +23,7 @@ resize_iframes();
 
 //////////
 //  Determine the pages to display in "toc" and "content" iframes...
-const tocUrl = "toc.html";
+const tocUrl = "toc.htm";
 const contentUrl = "index.html";
 console.log(tocUrl);
 console.log(contentUrl);

@@ -24,7 +24,7 @@ struct HelpClient::_Impl
         //  Listen to help site builder events
         QObject::connect(
             &siteBuilder,
-            &HelpSiteBuilder::siteBuildingStarted,
+            &tt3::help::HelpSiteBuilder::siteBuildingStarted,
             &siteBuilder,
             [&]()
             {
@@ -34,7 +34,7 @@ struct HelpClient::_Impl
             Qt::QueuedConnection);
         QObject::connect(
             &siteBuilder,
-            &HelpSiteBuilder::siteBuildingProgress,
+            &tt3::help::HelpSiteBuilder::siteBuildingProgress,
             &siteBuilder,
             [&](QString context, QString action)
             {
@@ -43,7 +43,7 @@ struct HelpClient::_Impl
             Qt::QueuedConnection);
         QObject::connect(
             &siteBuilder,
-            &HelpSiteBuilder::siteBuildingCompleted,
+            &tt3::help::HelpSiteBuilder::siteBuildingCompleted,
             &siteBuilder,
             [&](bool /*success*/)
             {
@@ -54,7 +54,7 @@ struct HelpClient::_Impl
             Qt::QueuedConnection);
         QObject::connect(
             &siteBuilder,
-            &HelpSiteBuilder::siteBuildingError,
+            &tt3::help::HelpSiteBuilder::siteBuildingError,
             &siteBuilder,
             [](QString errorMessage)
             {
@@ -63,7 +63,7 @@ struct HelpClient::_Impl
             Qt::QueuedConnection);
     }
 
-    HelpSiteBuilder siteBuilder;
+    tt3::help::HelpSiteBuilder siteBuilder;
     HelpBuilderProgressWindow * progressWindow = nullptr;
 };
 
@@ -86,7 +86,7 @@ void HelpClient::showContents()
         helpCollection,
         QDir(impl->siteBuilder.helpSiteDirectory()).filePath("tt3.hlp"));
     QString contentFilePath =
-        QDir(impl->siteBuilder.helpSiteDirectory()).filePath("en_GB/content.html");
+        QDir(impl->siteBuilder.helpSiteDirectory()).filePath("en_GB/content.htm");
     if (!QDesktopServices::openUrl(QUrl::fromLocalFile(contentFilePath)))
     {
         ErrorDialog::show("Could not open " + contentFilePath);

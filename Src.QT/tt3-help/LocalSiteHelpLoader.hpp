@@ -41,11 +41,13 @@ namespace tt3::help
     private:
         //  Helpers
         static auto     _loadSimpleHelpCollection(
-                                const QString & rootDirectory
+                                const QString & rootDirectory,
+                                ProgressListener progressListener
                             ) -> SimpleHelpCollection *;
         static void     _loadTopicFromDirectory(
                                 SimpleHelpTopic * topic,
-                                const QString & directoty
+                                const QString & directory,
+                                ProgressListener progressListener
                             );
         static void     _analyzeHtmlBytes(
                                 const QByteArray & htmlBytes,

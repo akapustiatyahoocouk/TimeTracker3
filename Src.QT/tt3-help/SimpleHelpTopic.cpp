@@ -26,6 +26,7 @@ SimpleHelpTopic::SimpleHelpTopic(
         IContentLoader * contentLoader
     ) : HelpTopic(parent_),
         parent(parent_),
+        children(this),
         _name(name),
         _displayName(displayName),
         _contentLoader(contentLoader)
@@ -39,6 +40,26 @@ SimpleHelpTopic::~SimpleHelpTopic()
         delete child;
     }
     delete _contentLoader;
+}
+
+//////////
+//  Operations
+void SimpleHelpTopic::setName(const QString name)
+{
+    _name = name;
+}
+
+void SimpleHelpTopic::setDisplayName(const QString & displayName)
+{
+    _displayName = displayName;
+}
+
+void SimpleHelpTopic::setContentUrl(const QUrl & contentUrl)
+{
+    delete _contentLoader;  //  in case it's not nullptr
+    _contentLoader = nullptr;
+    _contentLoader =
+        ContentLoaderFactory::createContentLoader(contentUrl);  //  may throw
 }
 
 //////////

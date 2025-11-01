@@ -1,10 +1,13 @@
 include(../tt3.pri)
+QT += widgets-private
 
 TEMPLATE = lib
 DEFINES += TT3_HELP_LIBRARY
 
 SOURCES += \
     Component.cpp \
+    ContentLoaderFactory.cpp \
+    HelpSiteBuilder.cpp \
     LocalFileContentLoader.cpp \
     LocalSiteHelpLoader.cpp \
     Serializer.cpp \
@@ -16,9 +19,9 @@ HEADERS += \
     Classes.hpp \
     Components.hpp \
     ContentLoader.hpp \
-    ContentType.hpp \
     Exceptions.hpp \
     Help.hpp \
+    HelpSiteBuilder.hpp \
     Linkage.hpp \
     LocalSiteHelpLoader.hpp \
     Serialization.hpp \

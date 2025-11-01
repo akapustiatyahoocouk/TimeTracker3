@@ -25,7 +25,7 @@ namespace tt3::help
         //  Construction/destruction
     protected:
         explicit HelpTopic(HelpTopic * parent)
-            :   parent(parent) {}
+            :   parent(parent), children(this) {}
         virtual ~HelpTopic() = default;
 
         //////////
@@ -102,10 +102,14 @@ namespace tt3::help
                     return _helpTopic->child(_currentIndex);
                 }
 
-                void            operator++();
-                void            operator++(int);
-                void            operator--();
-                void            operator--(int);
+                void        operator++()
+                {
+                    if (!_finished())
+                    {
+                        _currentIndex++;
+                    }
+                }
+                void        operator++(int) { operator++(); }
 
                 //////////
                 //  Implementation
@@ -179,7 +183,7 @@ namespace tt3::help
             HelpTopic *     _helpTopic; //  whose children this collection represents
         };
         HelpTopic *const    parent;
-        Children            children { this };
+        Children            children;
 
         //////////
         //  Operations
@@ -207,6 +211,7 @@ namespace tt3::help
         //  Construction/destruction
     protected:
         HelpCollection() : HelpTopic(nullptr) {}
+    public:
         virtual ~HelpCollection() = default;
 
         //////////

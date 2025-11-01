@@ -1,5 +1,5 @@
 //
-//  tt3-gui/HelpSiteBuilder.cpp - tt3::gui::HelpSiteBuilder class implementation
+//  tt3-help/HelpSiteBuilder.cpp - tt3::help::HelpSiteBuilder class implementation
 //  TODO localize via Resources
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,8 +14,8 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#include "tt3-gui/API.hpp"
-using namespace tt3::gui;
+#include "tt3-help/API.hpp"
+using namespace tt3::help;
 #if defined(_MSC_VER)
     #pragma warning(disable: 4275)  //  non dll-interface class '<CLASS>' used as base for dll-interface class '<CLASS>'
 #endif
@@ -28,14 +28,10 @@ HelpSiteBuilder::HelpSiteBuilder()
 {
     //  Determine the directory where help .zips reside
     QString startupDirectory = QCoreApplication::applicationDirPath();
-    qDebug() << "startupDirectory=" << startupDirectory;
     _zipFilesDirectory = QDir(startupDirectory).filePath("Help");
-    qDebug() << "_zipFilesDirectory" << _zipFilesDirectory;
 
     QString tempDirectory = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
-    qDebug() << "tempDirectory=" << tempDirectory;
     _helpSiteDirectory = QDir(tempDirectory).filePath(".tt3-help-" TT3_VERSION);
-    qDebug() << "_helpSiteDirectory=" << _helpSiteDirectory;
 
     //  Move signals to worker thread to ensure queued
     //  connections to all slots
@@ -110,11 +106,8 @@ void HelpSiteBuilder::_processHelpSource(const _HelpSource & helpSource)
             if (entryInfo.isFile)
             {   //  Extrac data...
                 QByteArray data = zipReader.fileData(entryInfo.filePath);
-                //qDebug() << entryInfo.filePath << " -> " << helpFile;
-                //qDebug() << data;
                 //  ...prepare the destination location...
                 QString dir = QFileInfo(helpFile).absolutePath();
-                qDebug() << dir;
                 if (!QDir().mkpath(dir))
                 {   //  OOPS! TODO throw...
                     continue;
@@ -157,7 +150,7 @@ void HelpSiteBuilder::_rebuildHelpSite(_RebuildHelpRequest & request)
         }
         //  Look at the "ll_CC" per-locale subdirectories
         //  in the help site directory - each of them needs
-        //  a dynamically generated toc.html, etc.
+        //  a dynamically generated toc.htm, etc.
         for (QString subdir : QDir(_helpSiteDirectory).entryList(QDir::Dirs | QDir::NoDotAndDotDot))
         {
             QLocale locale = tt3::util::fromString(subdir, QLocale::c());
@@ -189,26 +182,25 @@ void HelpSiteBuilder::_rebuildHelpSite(_RebuildHelpRequest & request)
 
 void HelpSiteBuilder::_buildToc(const QString & helpCollectionDirectory)
 {
-    std::unique_ptr<tt3::help::HelpCollection> helpCollection
-    {
-        tt3::help::LocalSiteHelpLoader::loadHelpCollection(
-            helpCollectionDirectory,
-            [&](QString currentPath)
-            {
-                emit siteBuildingProgress(
-                    "TODO",
-                    currentPath);
-                QThread::sleep(1000);
-            })
-    };
+    std::unique_ptr<HelpCollection> helpCollection
+        {
+            LocalSiteHelpLoader::loadHelpCollection(
+                helpCollectionDirectory,
+                [&](QString currentPath)
+                {
+                    emit siteBuildingProgress(
+                        "Building table of content",
+                        currentPath);
+                    QThread::msleep(1000);
+                })
+        };
     QString tocFileName =
-        QDir(helpCollectionDirectory).filePath("toc.html");
-    qDebug() << "tocFileName=" << tocFileName;
+        QDir(helpCollectionDirectory).filePath("toc.htm");
     //  Read toc/html template
     QFile tocFile(tocFileName);
     if (!tocFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {   //  OOPS!
-        throw tt3::help::CustomHelpException(
+        throw CustomHelpException(
             tocFileName + ": " + tocFile.errorString());
     }
     QByteArray tocBytes = tocFile.readAll();
@@ -221,7 +213,7 @@ void HelpSiteBuilder::_buildToc(const QString & helpCollectionDirectory)
     //  Write toc file back
     if (!tocFile.open(QIODevice::WriteOnly | QIODevice::Text))
     {   //  OOPS!
-        throw tt3::help::CustomHelpException(
+        throw CustomHelpException(
             tocFileName + ": " + tocFile.errorString());
     }
     QTextStream tocStream(&tocFile);
@@ -229,24 +221,22 @@ void HelpSiteBuilder::_buildToc(const QString & helpCollectionDirectory)
     tocFile.close();
 }
 
-void HelpSiteBuilder::_writeTocEntry(QString & tocHtml, tt3::help::HelpTopic * helpTopic, int level)
+void HelpSiteBuilder::_writeTocEntry(QString & tocHtml, HelpTopic * helpTopic, int level)
 {
-    qDebug() << "helpTopic="
-             << helpTopic
-             << ", parent="
-             << helpTopic->parent;
+    tocHtml += "<tr><td>\n";
     tocHtml += "<a class=\"toc";
     tocHtml += tt3::util::toString(qMax(level, 1));
     tocHtml += "\" href=\"";
+    /* TODO kill off */auto sht =  dynamic_cast<SimpleHelpTopic*>(helpTopic);
     if (helpTopic->contentLoader() != nullptr)
     {
         tocHtml += helpTopic->contentLoader()->contentUrl().toString();
     }
     tocHtml += "\">";
     tocHtml += helpTopic->displayName();
-    tocHtml += "</a>";
-    tocHtml += "<br/>";
-    for (tt3::help::HelpTopic * child : helpTopic->children)
+    tocHtml += "</a>\n";
+    tocHtml += "</td></tr>\n";
+    for (HelpTopic * child : sht->children)
     {
         _writeTocEntry(tocHtml, child, level + 1);
     }
@@ -270,4 +260,4 @@ void HelpSiteBuilder::_WorkerThread::run()
     }
 }
 
-//  End of tt3-gui/HelpSiteBuilder.cpp
+//  End of tt3-help/HelpSiteBuilder.cpp

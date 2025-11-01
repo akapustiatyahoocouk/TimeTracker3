@@ -1,5 +1,5 @@
 //
-//  tt3-help/API.hpp - tt3-help master header
+//  tt3-help/ContentLoaderFactory.cpp - tt3::help::ContentLoaderFactory class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,26 +14,21 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
+#include "tt3-help/API.hpp"
+using namespace tt3::help;
 
 //////////
-//  Dependencies
-#include "tt3-util/API.hpp"
+//  Operations
+IContentLoader * ContentLoaderFactory::createContentLoader(const QUrl & url)
+{
+    QString urlString = url.toString();
+    if (urlString.startsWith(LocalFileContentLoader::Protocol + "///"))
+    {   //  file:///...
+        return new LocalFileContentLoader(
+            urlString.mid(LocalFileContentLoader::Protocol.length() + 3));
+    }
+    //  OOPS! TODO throw
+    return nullptr;
+}
 
-//////////
-//  tt3-help components
-#include "tt3-help/Linkage.hpp"
-#include "tt3-help/Classes.hpp"
-#include "tt3-help/Components.hpp"
-#include "tt3-help/Exceptions.hpp"
-
-#include "tt3-help/ContentLoader.hpp"
-#include "tt3-help/Help.hpp"
-#include "tt3-help/SimpleHelp.hpp"
-
-#include "tt3-help/Serialization.hpp"
-
-#include "tt3-help/HelpSiteBuilder.hpp"
-#include "tt3-help/LocalSiteHelpLoader.hpp"
-
-//  End of tt3-help/API.hpp
+//  End of tt3-help/ContentLoaderFactory.cpp

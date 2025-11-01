@@ -229,20 +229,14 @@ namespace tt3::help
             SimpleHelpTopic *   _helpTopic; //  whose children this collection represents
         };
         SimpleHelpTopic *const  parent;
-        Children            children { this };
+        Children            children;
 
         //////////
         //  Operations
     public:
-        void                setName(const QString name)
-        {
-            _name = name;
-        }
-
-        void                setDisplayName(const QString & displayName)
-        {
-            _displayName = displayName;
-        }
+        void                setName(const QString name);
+        void                setDisplayName(const QString & displayName);
+        void                setContentUrl(const QUrl & contentUrl);
 
         //////////
         //  Implementation

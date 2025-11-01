@@ -1,5 +1,5 @@
 //
-//  tt3-gui/HelpSiteBuilder.hpp - tt3 "help site" builder
+//  tt3-help/HelpSiteBuilder.hpp - tt3 "help site" builder
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,11 +15,11 @@
 //  GNU General Public License for more details.
 //////////
 #pragma once
-#include "tt3-gui/API.hpp"
+#include "tt3-help/API.hpp"
 
-namespace tt3::gui
+namespace tt3::help
 {
-    /// \class HelpSiteBuilder tt3-gui/API.hpp
+    /// \class HelpSiteBuilder tt3-help/API.hpp
     /// \brief The tt3 help site "builder"
     /// \details
     ///     -   Analyzes the .zip files available in the
@@ -27,8 +27,7 @@ namespace tt3::gui
     ///         the current process was started from.
     ///     -   Creates, in a temporary location, the "help
     ///         site" by joining all files extracted from these .zips.
-    //  TODO move to tt3-help
-    class TT3_GUI_PUBLIC HelpSiteBuilder final
+    class TT3_HELP_PUBLIC HelpSiteBuilder final
         :   public QObject
     {
         Q_OBJECT
@@ -117,7 +116,7 @@ namespace tt3::gui
 
         //  The worker thread is where work is done and
         //  signals are emitted
-        class TT3_GUI_PUBLIC _WorkerThread
+        class TT3_HELP_PUBLIC _WorkerThread
             :   public QThread
         {
             CANNOT_ASSIGN_OR_COPY_CONSTRUCT(_WorkerThread)
@@ -156,4 +155,4 @@ namespace tt3::gui
     };
 }
 
-//  End of tt3-gui/HelpSiteBuilder.hpp
+//  End of tt3-help/HelpSiteBuilder.hpp

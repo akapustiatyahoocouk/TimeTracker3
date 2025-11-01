@@ -21,7 +21,7 @@ using namespace tt3::help;
 //  Operations
 auto LocalSiteHelpLoader::loadHelpCollection(
         const QString siteDirectory,
-        ProgressListener /*progressListener*/
+        ProgressListener progressListener
     ) -> HelpCollection *
 {
     QDir absSiteDirectory(QFileInfo(siteDirectory).absoluteFilePath());
@@ -41,16 +41,19 @@ auto LocalSiteHelpLoader::loadHelpCollection(
         if (locale != QLocale::c())
         {
             dirsForLocales[locale] = absSiteDirectory.filePath(subdir);
-            qDebug() << locale << " -> " << dirsForLocales[locale];
         }
     }
     if (dirsForLocales.isEmpty())
     {   //  A sigle simpe help collection
-        return _loadSimpleHelpCollection(absSiteDirectory.absolutePath());
+        return _loadSimpleHelpCollection(
+            absSiteDirectory.absolutePath(),
+            progressListener);
     }
     else if (dirsForLocales.size() == 1)
     {   //  1 locale only - no point in creating localized help
-        return _loadSimpleHelpCollection(dirsForLocales.values()[0]);
+        return _loadSimpleHelpCollection(
+            dirsForLocales.values()[0],
+            progressListener);
     }
     else
     {   //  A localized help collection
@@ -70,43 +73,49 @@ auto LocalSiteHelpLoader::loadHelpCollection(
 //////////
 //  Implementation
 auto LocalSiteHelpLoader::_loadSimpleHelpCollection(
-        const QString & rootDirectory
+        const QString & rootDirectory,
+        ProgressListener progressListener
     ) -> SimpleHelpCollection *
 {
     std::unique_ptr<SimpleHelpCollection> helpCollection
     { new SimpleHelpCollection("", "", nullptr) };
-    _loadTopicFromDirectory(helpCollection.get(), rootDirectory);
+    _loadTopicFromDirectory(helpCollection.get(), rootDirectory, progressListener);
     return helpCollection.release();
 }
 
 void LocalSiteHelpLoader::_loadTopicFromDirectory(
         SimpleHelpTopic * topic,
-        const QString & directoty
+        const QString & directory,
+        ProgressListener progressListener
     )
 {
-    QDir dir(directoty);
+    QDir dir(directory);
     QStringList entries = dir.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
     for (auto entry : entries)
     {
         QString fileOrDirPath = dir.filePath(entry);
+        if (progressListener != nullptr)
+        {
+            progressListener(fileOrDirPath);
+        }
         QFileInfo fileOrDirInfo(fileOrDirPath);
         if (fileOrDirInfo.isFile())
         {   //  The .html file becomes a help topic
             //  UNLESS it's "index.html", in which case it
             //  specifies content & properties for the
             //  owner of "topics"
-            qDebug() << "File:" << fileOrDirPath;
             if (entry == "index.html")
             {   //  This file is content for the enclising directory
                 QString displayName;
                 _analyzeHtmlFile(fileOrDirPath, displayName);
                 topic->setDisplayName(displayName);
+                topic->setContentUrl(QUrl::fromLocalFile(fileOrDirPath));
             }
-            else
-            {   //  This file becomes a separate help topic
+            else if (entry.endsWith(".html"))
+            {   //  This HTML file becomes a separate help topic
                 topic->children.createTopic(
                     entry,
-                    "", //  displayName will be loaded from index.html
+                    QString(),  //  displayName will be loaded from index.html
                     new LocalFileContentLoader(fileOrDirPath));
             }
         }
@@ -115,13 +124,12 @@ void LocalSiteHelpLoader::_loadTopicFromDirectory(
             //  index.html within the dir gives the topic's
             //  properties and the dir itself is further
             //  analyzed for the topic's children
-            qDebug() << "Dir:" << fileOrDirPath;
             auto childTopic =
                 topic->children.createTopic(
                     entry,
                     "", //  displayName will be loaded from index.html
                     nullptr);
-            _loadTopicFromDirectory(childTopic, fileOrDirPath);
+            _loadTopicFromDirectory(childTopic, fileOrDirPath, progressListener);
         }
     }
 }

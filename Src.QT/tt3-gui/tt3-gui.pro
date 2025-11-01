@@ -1,5 +1,4 @@
 include(../tt3.pri)
-QT += widgets-private
 
 TEMPLATE = lib
 DEFINES += TT3_GUI_LIBRARY
@@ -65,7 +64,6 @@ SOURCES += \
     GeneralStartupPreferencesEditor.cpp \
     HelpBuilderProgressWindow.cpp \
     HelpClient.cpp \
-    HelpSiteBuilder.cpp \
     LabelDecorations.cpp \
     ListWidgetDecorations.cpp \
     LoginDialog.cpp \
@@ -181,7 +179,6 @@ HEADERS += \
     GeneralStartupPreferencesEditor.hpp \
     HelpBuilderProgressWindow.hpp \
     HelpClient.hpp \
-    HelpSiteBuilder.hpp \
     Linkage.hpp \
     LoginDialog.hpp \
     ManageActivityTypesDialog.hpp \
