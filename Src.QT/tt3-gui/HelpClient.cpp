@@ -77,20 +77,9 @@ void HelpClient::showContents()
     {   //  OOPS! Can't proceed
         return;
     }
-    //  TODO finish the implementation
-    auto helpCollection =
-        tt3::help::LocalSiteHelpLoader::loadHelpCollection(
-            impl->siteBuilder.helpSiteDirectory(),
-            nullptr);
-    tt3::help::Serializer::saveToFile(
-        helpCollection,
-        QDir(impl->siteBuilder.helpSiteDirectory()).filePath("tt3.hlp"));
-    QString contentFilePath =
-        QDir(impl->siteBuilder.helpSiteDirectory()).filePath("en_GB/content.htm");
-    if (!QDesktopServices::openUrl(QUrl::fromLocalFile(contentFilePath)))
-    {
-        ErrorDialog::show("Could not open " + contentFilePath);
-    }
+    //  Otherwise, open the content.htm for
+    //  the current/default locale
+    _openHelpFile("/content.htm");
 }
 
 void HelpClient::showIndex()
@@ -114,6 +103,39 @@ HelpClient::_Impl * HelpClient::_impl()
 {
     static _Impl impl;
     return &impl;
+}
+
+bool HelpClient::_openHelpFile(const QString & fileName)
+{
+    _Impl * impl = _impl();
+    QDir helpDir(impl->siteBuilder.helpSiteDirectory());
+    QString contentFilePath1 =
+        helpDir.filePath(tt3::util::toString(QLocale()) + fileName);
+    QString contentFilePath2 =
+        helpDir.filePath(tt3::util::toString(Component::Resources::instance()->baseLocale()) + fileName);
+    if (QFile(contentFilePath1).exists())
+    {
+        if (!QDesktopServices::openUrl(QUrl::fromLocalFile(contentFilePath1)))
+        {
+            ErrorDialog::show("Could not open " + contentFilePath1);
+            return false;
+        }
+        return true;
+    }
+    else if (QFile(contentFilePath2).exists())
+    {
+        if (!QDesktopServices::openUrl(QUrl::fromLocalFile(contentFilePath2)))
+        {
+            ErrorDialog::show("Could not open " + contentFilePath2);
+            return false;
+        }
+        return true;
+    }
+    else
+    {
+        ErrorDialog::show("Don't know how to open help content");
+        return false;
+    }
 }
 
 //  End of tt3-gui/HelpClient.cpp

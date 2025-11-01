@@ -2,3 +2,8 @@
 DisplayName=Справка TimeTracker3
 Description=Определяет службы справки для TimeTracker3
 Copyright=Авторское право (C) {0}, Андрей Капустин
+
+[HelpSiteBuilder]
+AnalyzingMessage=Анализ {0}
+ExtractingMessage=Распаковка {0}
+BuildingTocMessage=Создание таблицы содержания

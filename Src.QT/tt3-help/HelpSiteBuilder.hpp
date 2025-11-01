@@ -111,7 +111,10 @@ namespace tt3::help
         _HelpSources    _detectHelpSources();
         void            _processHelpSource(const _HelpSource & helpSource);
         void            _rebuildHelpSite(_RebuildHelpRequest & request);
-        void            _buildToc(const QString & helpCollectionDirectory);
+        void            _buildToc(
+                                const QString & helpCollectionDirectory,
+                                const QString & buildingTocMessage
+                            );
         void            _writeTocEntry(QString & tocHtml, tt3::help::HelpTopic * helpTopic, int level);
 
         //  The worker thread is where work is done and

@@ -95,8 +95,8 @@ namespace tt3::help
                     Q_ASSERT(!_finished());
                     return _helpTopic->child(_currentIndex);
                 }
-                using TODO = HelpTopic *;
-                TODO operator *() const
+
+                HelpTopic * operator *() const
                 {
                     Q_ASSERT(!_finished());
                     return _helpTopic->child(_currentIndex);

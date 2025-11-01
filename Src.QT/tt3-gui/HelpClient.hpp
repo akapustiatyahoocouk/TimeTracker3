@@ -59,6 +59,7 @@ namespace tt3::gui
 
         //  Helpers
         static _Impl *  _impl();
+        static bool     _openHelpFile(const QString & fileName);
     };
 }
 

@@ -2,3 +2,8 @@
 DisplayName=TimeTracker3-Hilfe
 Description=Definiert Hilfedienste für TimeTracker3
 Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[HelpSiteBuilder]
+AnalyzingMessage=Analysiere {0}
+ExtractingMessage=Extrahiere {0}
+BuildingTocMessage=Erstelle Inhaltsverzeichnis
