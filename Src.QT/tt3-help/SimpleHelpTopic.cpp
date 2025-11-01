@@ -54,4 +54,23 @@ auto SimpleHelpTopic::Children::createTopic(
     return topic;
 }
 
+//////////
+//  Serialization
+void SimpleHelpTopic::_serialize(QDomElement topicElement)
+{
+    topicElement.setAttribute("Name", _name);
+    topicElement.setAttribute("DisplayName", _displayName);
+    if (_contentLoader != nullptr)
+    {
+        topicElement.setAttribute("ContentUrl", _contentLoader->contentUrl().toString());
+    }
+    for (auto child : children)
+    {
+        QDomElement childElement =
+            topicElement.ownerDocument().createElement("Topic");
+        topicElement.appendChild(childElement);
+        child->_serialize(childElement);
+    }
+}
+
 //  End of tt3-help/SimpleHelpTopic.cpp

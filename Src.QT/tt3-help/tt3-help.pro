@@ -7,6 +7,7 @@ SOURCES += \
     Component.cpp \
     LocalFileContentLoader.cpp \
     LocalSiteHelpLoader.cpp \
+    Serializer.cpp \
     SimpleHelpCollection.cpp \
     SimpleHelpTopic.cpp
 
@@ -20,6 +21,7 @@ HEADERS += \
     Help.hpp \
     Linkage.hpp \
     LocalSiteHelpLoader.hpp \
+    Serialization.hpp \
     SimpleHelp.hpp
 
 PRECOMPILED_HEADER = API.hpp

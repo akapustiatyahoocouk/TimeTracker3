@@ -100,6 +100,7 @@ void LocalSiteHelpLoader::_loadTopicFromDirectory(
             {   //  This file is content for the enclising directory
                 QString displayName;
                 _analyzeHtmlFile(fileOrDirPath, displayName);
+                topic->setDisplayName(displayName);
             }
             else
             {   //  This file becomes a separate help topic
@@ -136,7 +137,7 @@ void LocalSiteHelpLoader::_analyzeHtmlBytes(
     QRegularExpressionMatch titleMatch = titleRegex.match(html);
     if (titleMatch.hasMatch())
     {
-        displayName = QTextDocumentFragment::fromHtml(titleMatch.captured(1)).toPlainText();
+        displayName = QTextDocumentFragment::fromHtml(titleMatch.captured(1)).toPlainText().trimmed();
     }
 }
 

@@ -32,6 +32,8 @@
 #include "tt3-help/Help.hpp"
 #include "tt3-help/SimpleHelp.hpp"
 
+#include "tt3-help/Serialization.hpp"
+
 #include "tt3-help/LocalSiteHelpLoader.hpp"
 
 //  End of tt3-help/API.hpp

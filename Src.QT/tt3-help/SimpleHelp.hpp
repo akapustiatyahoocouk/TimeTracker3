@@ -136,16 +136,20 @@ namespace tt3::help
                     return _helpTopic->child(_currentIndex);
                 }
 
-                operator SimpleHelpTopic *() const
+                SimpleHelpTopic *   operator *() const
                 {
                     Q_ASSERT(!_finished());
                     return _helpTopic->child(_currentIndex);
                 }
 
-                void        operator++();
-                void        operator++(int);
-                void        operator--();
-                void        operator--(int);
+                void        operator++()
+                {
+                    if (!_finished())
+                    {
+                        _currentIndex++;
+                    }
+                }
+                void        operator++(int) { operator++(); }
 
                 //////////
                 //  Implementation
@@ -228,12 +232,28 @@ namespace tt3::help
         Children            children { this };
 
         //////////
+        //  Operations
+    public:
+        void                setName(const QString name)
+        {
+            _name = name;
+        }
+
+        void                setDisplayName(const QString & displayName)
+        {
+            _displayName = displayName;
+        }
+
+        //////////
         //  Implementation
     private:
         QString             _name;
         QString             _displayName;
         IContentLoader *    _contentLoader; //  owned by this SimpleHelpTopic, nullptr == none
         QList<SimpleHelpTopic*> _children;  //  all owned by this SimpleHelpTopic
+
+        //  Serialization
+        void                _serialize(QDomElement topisElement);
     };
 
     /// \class SimpleHelpCollection tt3-help/API.hpp
@@ -254,6 +274,14 @@ namespace tt3::help
                 IContentLoader * contentLoader
             );
         virtual ~SimpleHelpCollection();
+
+        //////////
+        //  Serialization
+    protected:
+        static inline const QString CollectionElementTag = "SimpleHelpCollection";
+
+        virtual QString collectionElementTag() const override;
+        virtual void    serialize(QDomElement collectionElement) override;
     };
 }
 

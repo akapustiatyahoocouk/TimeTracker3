@@ -95,8 +95,8 @@ namespace tt3::help
                     Q_ASSERT(!_finished());
                     return _helpTopic->child(_currentIndex);
                 }
-
-                operator HelpTopic *() const
+                using TODO = HelpTopic *;
+                TODO operator *() const
                 {
                     Q_ASSERT(!_finished());
                     return _helpTopic->child(_currentIndex);
@@ -201,11 +201,19 @@ namespace tt3::help
     {
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(HelpCollection)
 
+        friend class Serializer;
+
         //////////
         //  Construction/destruction
     protected:
         HelpCollection() : HelpTopic(nullptr) {}
         virtual ~HelpCollection() = default;
+
+        //////////
+        //  Serialization
+    protected:
+        virtual QString collectionElementTag() const = 0;
+        virtual void    serialize(QDomElement collectionElement) = 0;
     };
 }
 

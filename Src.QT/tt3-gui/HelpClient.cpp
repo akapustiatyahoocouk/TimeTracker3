@@ -1,6 +1,6 @@
 //
 //  tt3-gui/HelpClient.cpp - HelpClient class implementation
-//
+//  TOO translate via resourcess
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -78,9 +78,19 @@ void HelpClient::showContents()
         return;
     }
     //  TODO finish the implementation
-    tt3::help::LocalSiteHelpLoader::loadHelpCollection(
-        impl->siteBuilder.helpSiteDirectory(),
-        nullptr);
+    auto helpCollection =
+        tt3::help::LocalSiteHelpLoader::loadHelpCollection(
+            impl->siteBuilder.helpSiteDirectory(),
+            nullptr);
+    tt3::help::Serializer::saveToFile(
+        helpCollection,
+        QDir(impl->siteBuilder.helpSiteDirectory()).filePath("tt3.hlp"));
+    QString contentFilePath =
+        QDir(impl->siteBuilder.helpSiteDirectory()).filePath("en_GB/content.html");
+    if (!QDesktopServices::openUrl(QUrl::fromLocalFile(contentFilePath)))
+    {
+        ErrorDialog::show("Could not open " + contentFilePath);
+    }
 }
 
 void HelpClient::showIndex()

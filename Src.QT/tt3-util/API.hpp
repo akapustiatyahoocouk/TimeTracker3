@@ -54,6 +54,7 @@
 #include <QClipboard>
 #include <QDateTime>
 #include <QDebug>
+#include <QDesktopServices>
 #include <QDialog>
 #include <QDir>
 #include <QDomDocument>

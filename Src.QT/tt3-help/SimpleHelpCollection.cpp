@@ -33,4 +33,20 @@ SimpleHelpCollection::~SimpleHelpCollection()
 {
 }
 
+//////////
+//  Serialization
+QString SimpleHelpCollection::collectionElementTag() const
+{
+    return CollectionElementTag;
+}
+
+void SimpleHelpCollection::serialize(QDomElement collectionElement)
+{
+    SimpleHelpTopic::_serialize(collectionElement);
+    for (SimpleHelpTopic * topic : children)
+    {
+        topic->_serialize(collectionElement);
+    }
+}
+
 //  End of tt3-help/SimpleHelpCollection.cpp

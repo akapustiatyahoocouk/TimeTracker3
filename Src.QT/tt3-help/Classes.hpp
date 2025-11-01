@@ -31,6 +31,8 @@ namespace tt3::help
 
     //  Helpers
     class TT3_HELP_PUBLIC LocalSiteHelpLoader;
+
+    class TT3_HELP_PUBLIC Serializer;
 }
 
 //  End of tt3-help/Classes.hpp
