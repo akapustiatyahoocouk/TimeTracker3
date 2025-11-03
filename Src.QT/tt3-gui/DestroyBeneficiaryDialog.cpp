@@ -58,8 +58,152 @@ QString DestroyBeneficiaryDialog::_prompt(
         rr.string(
             RID(Prompt),
             beneficiary->displayName(credentials)); //  may throw
-    //  TODO extend the message with more info ?
+    try
+    {
+        qsizetype projectsCount = 0, workStreamsCount = 0, worksCount = 0;
+        tt3::ws::Events events;
+        int64_t worksDurationMs = 0;
+        _collectDestructionClosure(
+            beneficiary,
+            credentials,
+            projectsCount,
+            workStreamsCount,
+            worksCount,
+            events,
+            worksDurationMs);
+        if (projectsCount > 0 || workStreamsCount > 0)
+        {
+            result +=
+                rr.string(
+                    RID(ProjectsAndWorkStreams),
+                    projectsCount,
+                    workStreamsCount);
+        }
+        if (worksCount > 0 && events.size() > 0)
+        {
+            result +=
+                rr.string(
+                    RID(DetailsWE),
+                    worksCount,
+                    (worksDurationMs + 59999) / 60000,
+                    events.size());
+        }
+        else if (worksCount > 0)
+        {
+            result +=
+                rr.string(
+                    RID(DetailsW),
+                    worksCount,
+                    (worksDurationMs + 59999) / 60000);
+        }
+        else if (events.size() > 0)
+        {
+            result +=
+                rr.string(
+                    RID(DetailsE),
+                    events.size());
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Log, but suppress
+        qCritical() << ex;
+    }
+    //  Done
     return result;
+}
+
+void DestroyBeneficiaryDialog::_collectDestructionClosure(
+        tt3::ws::Beneficiary beneficiary,
+        const tt3::ws::Credentials & credentials,
+        qsizetype & projectsCount,
+        qsizetype & workStreamsCount,
+        qsizetype & worksCount,
+        tt3::ws::Events & events,
+        int64_t & worksDurationMs
+    )
+{
+    for (auto workload : beneficiary->workloads(credentials))
+    {
+        if (auto project =
+            std::dynamic_pointer_cast<tt3::ws::ProjectImpl>(workload))
+        {
+            _collectDestructionClosure(
+                project,
+                credentials,
+                projectsCount,
+                worksCount,
+                events,
+                worksDurationMs);
+        }
+        else if (auto workStream =
+                 std::dynamic_pointer_cast<tt3::ws::WorkStreamImpl>(workload))
+        {
+            _collectDestructionClosure(
+                workStream,
+                credentials,
+                workStreamsCount,
+                worksCount,
+                events,
+                worksDurationMs);
+        }
+    }
+}
+
+void DestroyBeneficiaryDialog::_collectDestructionClosure(
+        tt3::ws::Project project,
+        const tt3::ws::Credentials & credentials,
+        qsizetype & projectsCount,
+        qsizetype & worksCount,
+        tt3::ws::Events & events,
+        int64_t & worksDurationMs
+    )
+{   //  Measure this item...
+    projectsCount++;
+    for (tt3::ws::Activity activity : project->contributingActivities(credentials))    //  may throw
+    {
+        for (tt3::ws::Work work : activity->works(credentials)) //  may throw
+        {
+            worksCount++;
+            worksDurationMs += work->startedAt(credentials).msecsTo(work->finishedAt(credentials)); //  may throw
+        }
+        //  Some events may be related to more tha one
+        //  activity, so DON'T count them twice
+        events += activity->events(credentials);
+    }
+    //  ...and children, recursively
+    for (tt3::ws::Project child : project->children(credentials))
+    {
+        _collectDestructionClosure(
+            child,
+            credentials,
+            projectsCount,
+            worksCount,
+            events,
+            worksDurationMs);
+    }
+}
+
+void DestroyBeneficiaryDialog::_collectDestructionClosure(
+        tt3::ws::WorkStream workStream,
+        const tt3::ws::Credentials & credentials,
+        qsizetype & workStreamsCount,
+        qsizetype & worksCount,
+        tt3::ws::Events & events,
+        int64_t & worksDurationMs
+    )
+{
+    workStreamsCount++;
+    for (tt3::ws::Activity activity : workStream->contributingActivities(credentials))    //  may throw
+    {
+        for (tt3::ws::Work work : activity->works(credentials)) //  may throw
+        {
+            worksCount++;
+            worksDurationMs += work->startedAt(credentials).msecsTo(work->finishedAt(credentials)); //  may throw
+        }
+        //  Some events may be related to more tha one
+        //  activity, so DON'T count them twice
+        events += activity->events(credentials);
+    }
 }
 
 //////////

@@ -265,6 +265,10 @@ DetailsE=\nThese activities have {0} event(s) logged for it;\nall these will los
 [DestroyBeneficiaryDialog]
 Title=Destroy beneficiary
 Prompt=Are you sure you want to destroy beneficiary\n{0} ?
+ProjectsAndWorkStreams=\nThe beneficiary is associated with {0} projects and {1} work streams.
+DetailsWE=\nThese have {0} work unit(s) logged for them\n(with total duration of {1} minute(s)) and {2} event(s);\nall these will lose their attribution to the beneficiary.
+DetailsW=\nThese have {0} work unit(s) logged for them\n(with total duration of {1} minute(s));\nall these will lose their attribution to the beneficiary.
+DetailsE=\nThese have {0} event(s) logged for them;\nall these will lose their attribution to the beneficiary.
 
 [DestroyEventDialog]
 Title=Destroy event

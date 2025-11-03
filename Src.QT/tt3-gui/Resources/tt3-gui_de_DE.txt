@@ -15,7 +15,7 @@ FilterLabel=Filter:
 CreateActivityTypePushButton=Aktivitätstyp erstellen
 ViewActivityTypePushButton=Aktivitätstyp anzeigen
 ModifyActivityTypePushButton=Aktivitätstyp ändern
-DestroyActivityTypePushButton=Aktivitätstyp zerstören
+DestroyActivityTypePushButton=Aktivitätstyp löschen
 
 [AddEmailAddressDialog]
 Title=E-Mail-Adresse hinzufügen
@@ -42,8 +42,8 @@ Title=Arbeitsbereich schließen
 Prompt=Möchten Sie den Arbeitsbereich wirklich schließen\n{0} ?
 
 [ConfirmDestroyWorkspaceDialog]
-Title=Arbeitsbereich zerstören
-Prompt=Möchten Sie den Arbeitsbereich\n{0} wirklich zerstören ?\nWICHTIG: DIESE AKTION KANN SPÄTER NICHT RÜCKGÄNGIG GEMACHT WERDEN!
+Title=Arbeitsbereich löschen
+Prompt=Möchten Sie den Arbeitsbereich\n{0} wirklich löschen ?\nWICHTIG: DIESE AKTION KANN SPÄTER NICHT RÜCKGÄNGIG GEMACHT WERDEN!
 
 [ConfirmDropWorkspaceDialog]
 Title=Arbeitsbereich löschen
@@ -265,15 +265,19 @@ DetailsE=\nFür diese Aktivitäten wurden {0} Ereignisse protokolliert;\nalle di
 [DestroyBeneficiaryDialog]
 Title=Begünstigten löschen
 Prompt=Möchten Sie den Begünstigten {0}\nwirklich löschen ?
+ProjectsAndWorkStreams=\nDer Begünstigte ist {0} Projekten und {1} Arbeitsabläufen zugeordnet.
+DetailsWE=\nFür diese wurden {0} Arbeitseinheiten (mit einer Gesamtdauer von {1} Minute(n))\nund {2} Ereignisse protokolliert; alle diese verlieren ihre Zuordnung zum Begünstigten.
+DetailsW=\nFür diese wurden {0} Arbeitseinheiten (mit einer Gesamtdauer von {1} Minute(n)) protokolliert;\nalle diese verlieren ihre Zuordnung zum Begünstigten.
+DetailsE=\nFür diese wurden {0} Ereignisse protokolliert;\nalle diese verlieren ihre Zuordnung zum Begünstigten.
 
 [DestroyEventDialog]
-Title=Ereignis zerstören
-Prompt=Möchten Sie das Ereignis \n{0}\ndas am {1}\nvon {2} protokolliert wurde, wirklich zerstören ?
+Title=Ereignis löschen
+Prompt=Möchten Sie das Ereignis \n{0}\ndas am {1}\nvon {2} protokolliert wurde, wirklich löschen ?
 Details=\nBezogen auf {0} {1}.
 
 [DestroyPrivateActivityDialog]
-Title=Private Aktivität zerstören
-Prompt=Möchten Sie die private Aktivität {0} wirklich zerstören?
+Title=Private Aktivität löschen
+Prompt=Möchten Sie die private Aktivität {0} wirklich löschen?
 DetailsWE=\nFür die private Aktivität wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse.
 DetailsW=\nFür die private Aktivität wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)).
 DetailsE=\nFür die private Aktivität wurden {0} Ereignisse protokolliert.
@@ -287,16 +291,16 @@ DetailsW=\nFür die private Aufgabe wurden {0} Arbeitseinheiten protokolliert\n(
 DetailsE=\nFür die private Aufgabe wurden {0} Ereignisse protokolliert.
 
 [DestroyProjectDialog]
-Title=Projekt zerstören
-Prompt=Möchten Sie das Projekt\n{0} wirklich zerstören ?
+Title=Projekt löschen
+Prompt=Möchten Sie das Projekt\n{0} wirklich löschen ?
 Subprojects=\nDabei werden auch die {0} Unterprojekte zerstört.
 DetailsWE=\nFür das Projekt wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse;\nalle diese verlieren ihre Projektzuordnung.
 DetailsW=\nFür das Projekt wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n));\nalle diese verlieren ihre Projektzuordnung.
 DetailsE=\nFür das Projekt wurden {0} Ereignisse protokolliert;\nalle diese verlieren ihre Projektzuordnung.
 
 [DestroyPublicActivityDialog]
-Title=Öffentliche Aktivität zerstören
-Prompt=Möchten Sie die öffentliche Aktivität {0} wirklich zerstören?
+Title=Öffentliche Aktivität löschen
+Prompt=Möchten Sie die öffentliche Aktivität {0} wirklich löschen?
 DetailsWE=\nFür die öffentliche Aktivität wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse.
 DetailsW=\nFür die öffentliche Aktivität wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)).
 DetailsE=\nFür die öffentliche Aktivität wurden {0} Ereignisse protokolliert.
@@ -317,8 +321,8 @@ DetailsW=\nFür den Benutzer wurden {0} Arbeitseinheiten protokolliert\n(mit ein
 DetailsE=\nFür den Benutzer wurden {0} Ereignisse protokolliert.
 
 [DestroyWorkDialog]
-Title=Arbeit zerstören
-Prompt=Möchten Sie die Arbeitseinheit\n{0}..{1}\n(Dauer {2}) wirklich zerstören, protokolliert von {3} gegen\n{4} {5}?
+Title=Arbeit löschen
+Prompt=Möchten Sie die Arbeitseinheit\n{0}..{1}\n(Dauer {2}) wirklich löschen, protokolliert von {3} gegen\n{4} {5}?
 
 [DestroyWorkStreamDialog]
 Title=Arbeitsablauf löschen
@@ -644,8 +648,8 @@ FilterDays3=Letzte 3 Tage
 FilterDays7=Letzte 7 Tage
 FilterDays30=Letzte 30 Tage
 TaskCompletedSuffix=[Aufgabe abgeschlossen]
-DestroyWorkAction=Arbeit zerstören
-DestroyEventAction=Ereignis zerstören
+DestroyWorkAction=Arbeit löschen
+DestroyEventAction=Ereignis löschen
 ModifyPublicActivityAction=Öffentliche Aktivität ändern
 ModifyPublicTaskAction=Öffentliche Aufgabe ändern
 ModifyPrivateActivityAction=Private Aktivität ändern
@@ -681,7 +685,7 @@ FilterLabel=Filter:
 CreatePrivateActivityPushButton=Private Aktivität erstellen
 ModifyPrivateActivityPushButton=Private Aktivität ändern
 ViewPrivateActivityPushButton=Private Aktivität anzeigen
-DestroyPrivateActivityPushButton=Private Aktivität zerstören
+DestroyPrivateActivityPushButton=Private Aktivität löschen
 StartPrivateActivityPushButton=Private Aktivität starten
 StopPrivateActivityPushButton=Private Aktivität stoppen
 UserDisabledSuffix=[Benutzer ist deaktiviert]
@@ -691,7 +695,7 @@ FilterLabel=Filter:
 CreatePrivateTaskPushButton=Private Aufgabe erstellen
 ModifyPrivateTaskPushButton=Private Aufgabe ändern
 ViewPrivateTaskPushButton=Private Aufgabe anzeigen
-DestroyPrivateTaskPushButton=Private Aufgabe zerstören
+DestroyPrivateTaskPushButton=Private Aufgabe löschen
 StartPrivateTaskPushButton=Private Aufgabe starten
 StopPrivateTaskPushButton=Private Aufgabe stoppen
 CompletePrivateTaskPushButton=Private Aufgabe abschließen
@@ -704,7 +708,7 @@ FilterLabel=Filter:
 CreateProjectPushButton=Projekt erstellen
 ModifyProjectPushButton=Projekt ändern
 ViewProjectPushButton=Projekt anzeigen
-DestroyProjectPushButton=Projekt zerstören
+DestroyProjectPushButton=Projekt löschen
 CompleteProjectPushButton=Projekt abschließen
 ProjectCompletedSuffix=[Projekt ist abgeschlossen]
 ShowCompletedCheckBox=Abgeschlossene Projekte anzeigen
@@ -714,7 +718,7 @@ FilterLabel=Filter:
 CreatePublicActivityPushButton=Öffentliche Aktivität erstellen
 ModifyPublicActivityPushButton=Öffentliche Aktivität ändern
 ViewPublicActivityPushButton=Öffentliche Aktivität anzeigen
-DestroyPublicActivityPushButton=Öffentliche Aktivität zerstören
+DestroyPublicActivityPushButton=Öffentliche Aktivität löschen
 StartPublicActivityPushButton=Öffentliche Aktivität starten
 StopPublicActivityPushButton=Öffentliches Aktivität stoppen
 
@@ -723,7 +727,7 @@ FilterLabel=Filter:
 CreatePublicTaskPushButton=Öffentliche Aufgabe erstellen
 ModifyPublicTaskPushButton=Öffentliche Aufgabe ändern
 ViewPublicTaskPushButton=Öffentliche Aufgabe anzeigen
-DestroyPublicTaskPushButton=Öffentliche Aufgabe zerstören
+DestroyPublicTaskPushButton=Öffentliche Aufgabe löschen
 StartPublicTaskPushButton=Öffentliche Aufgabe starten
 StopPublicTaskPushButton=Öffentliche Aufgabe stoppen
 CompletePublicTaskPushButton=Öffentliche Aufgabe abschließen
@@ -862,4 +866,4 @@ FilterLabel=Filter:
 CreateWorkStreamPushButton=Arbeitsablauf erstellen
 ViewWorkStreamPushButton=Arbeitsablauf anzeigen
 ModifyWorkStreamPushButton=Arbeitsablauf ändern
-DestroyWorkStreamPushButton=Arbeitsablauf zerstören
+DestroyWorkStreamPushButton=Arbeitsablauf löschen

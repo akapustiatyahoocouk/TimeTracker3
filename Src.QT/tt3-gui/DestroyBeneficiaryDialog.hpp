@@ -77,6 +77,31 @@ namespace tt3::gui
         //  Helpers
         static QString  _prompt(tt3::ws::Beneficiary beneficiary,
                                const tt3::ws::Credentials & credentials);
+        static void     _collectDestructionClosure(
+                                tt3::ws::Beneficiary beneficiary,
+                                const tt3::ws::Credentials & credentials,
+                                qsizetype & projectsCount,
+                                qsizetype & workStreamsCount,
+                                qsizetype & worksCount,
+                                tt3::ws::Events & events,
+                                int64_t & worksDurationMs
+                            );
+        static void     _collectDestructionClosure(
+                                tt3::ws::Project project,
+                                const tt3::ws::Credentials & credentials,
+                                qsizetype & projectsCount,
+                                qsizetype & worksCount,
+                                tt3::ws::Events & events,
+                                int64_t & worksDurationMs
+                            );
+        static void     _collectDestructionClosure(
+                                tt3::ws::WorkStream workStream,
+                                const tt3::ws::Credentials & credentials,
+                                qsizetype & workStreamsCount,
+                                qsizetype & worksCount,
+                                tt3::ws::Events & events,
+                                int64_t & worksDurationMs
+                            );
 
         //////////
         //  Signal handlers
