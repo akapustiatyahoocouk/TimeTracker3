@@ -351,6 +351,9 @@ Prompt=Введите комментарий к завершению задач�
 Title=ОШИБКА
 OkPushButton=ОК
 
+[FullScreenReminderWindow]
+StopPushButton=Остановить
+
 [GeneralAppearancePreferences]
 DisplayName=Внешний вид
 

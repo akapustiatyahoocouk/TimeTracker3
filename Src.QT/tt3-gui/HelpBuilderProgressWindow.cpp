@@ -27,7 +27,6 @@ HelpBuilderProgressWindow::HelpBuilderProgressWindow()
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(HelpBuilderProgressWindow));
 
     _ui->setupUi(this);
-    /*  TODO
     Qt::WindowFlags flags = windowFlags();
     flags |= Qt::CustomizeWindowHint;
     flags |= Qt::WindowStaysOnTopHint;
@@ -35,7 +34,6 @@ HelpBuilderProgressWindow::HelpBuilderProgressWindow()
     flags &= ~Qt::WindowTitleHint;
     flags &= ~Qt::WindowCloseButtonHint;
     setWindowFlags(flags);
-    */
 
     _ui->buildingHelpLabel->setText(
         rr.string(RID(BuildingHelpLabel)));
@@ -55,6 +53,16 @@ void HelpBuilderProgressWindow::reportProgress(const QString & context, const QS
     _ui->contextLabel->setText(context);
     _ui->actionLabel->setText(action);
     QApplication::processEvents();
+}
+
+//////////
+//  Signal handlers
+void HelpBuilderProgressWindow::accept()
+{   //  Don't close on Enter
+}
+
+void HelpBuilderProgressWindow::reject()
+{   //  Don't close on Esc or Alt+F4
 }
 
 //  End of tt3-gui/HelpBuilderProgressWindow.cpp

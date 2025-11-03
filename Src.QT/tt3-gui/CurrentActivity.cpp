@@ -29,6 +29,7 @@ struct CurrentActivity::_Impl
     tt3::util::Mutex    guard;
     tt3::ws::Activity   activity = nullptr;
     QDateTime           lastChangedAt = QDateTime::currentDateTimeUtc();
+    FullScreenReminderWindow *  reminderWindow = nullptr;
 };
 
 //////////
@@ -152,7 +153,10 @@ bool CurrentActivity::replaceWith(
             if (with != nullptr &&
                 with->requireCommentOnStart(credentials))  //  may throw
             {
-                EnterActivityStartCommentDialog dlg(theCurrentSkin->mainWindow(), with, credentials);   //  may throw
+                EnterActivityStartCommentDialog dlg(
+                    QApplication::activeWindow(),
+                    with,
+                    credentials);   //  may throw
                 if (dlg.doModal() != EnterActivityStartCommentDialog::Result::Ok)
                 {   //  OOPS! The user has cancelled the change
                     return false;
@@ -168,7 +172,10 @@ bool CurrentActivity::replaceWith(
             else if (impl->activity != nullptr &&
                      impl->activity->requireCommentOnStop(credentials))   //  may throw
             {
-                EnterActivityStopCommentDialog dlg(theCurrentSkin->mainWindow(), impl->activity, credentials);  //  may throw
+                EnterActivityStopCommentDialog dlg(
+                    QApplication::activeWindow(),
+                    impl->activity,
+                    credentials);  //  may throw
                 if (dlg.doModal() != EnterActivityStopCommentDialog::Result::Ok)
                 {   //  OOPS! The user has cancelled the change
                     return false;
@@ -201,10 +208,26 @@ bool CurrentActivity::replaceWith(
                     credentials, now, comment, eventActivities);
             }
             //  Make the change
+            if (impl->reminderWindow != nullptr)
+            {   //  Must hide the reminder window
+                impl->reminderWindow->hide();
+            }
+
             before = impl->activity;
             impl->activity = with;
             impl->lastChangedAt = now;
             after = impl->activity;
+
+            if (with != nullptr && with->fullScreenReminder(credentials))   //  may throw
+            {   //  Must show the reminder window...
+                if (impl->reminderWindow == nullptr)
+                {   //  ...creating it first ONCE
+                    impl->reminderWindow = new FullScreenReminderWindow();
+                }
+                impl->reminderWindow->refresh();
+                impl->reminderWindow->showFullScreen();
+                impl->reminderWindow->show();
+            }
         }
     }
     //  Signal is sent in a "not locked" state

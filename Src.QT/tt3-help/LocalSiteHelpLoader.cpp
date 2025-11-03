@@ -116,7 +116,7 @@ void LocalSiteHelpLoader::_loadTopicFromDirectory(
                 QString displayName;
                 _analyzeHtmlFile(fileOrDirPath, displayName);
                 topic->children.createTopic(
-                    entry,
+                    entry.left(entry.length() - 5),
                     displayName,
                     new LocalFileContentLoader(fileOrDirPath));
             }

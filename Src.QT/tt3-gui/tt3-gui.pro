@@ -55,6 +55,7 @@ SOURCES += \
     EnterCommentDialog.cpp \
     EnterTaskCompletionCommentDialog.cpp \
     ErrorDialog.cpp \
+    FullScreenReminderWindow.cpp \
     GeneralAppearancePreferences.cpp \
     GeneralAppearancePreferencesEditor.cpp \
     GeneralDialogsPreferences.cpp \
@@ -174,6 +175,7 @@ HEADERS += \
     EnterTaskCompletionCommentDialog.hpp \
     ErrorDialog.hpp \
     Exceptions.hpp \
+    FullScreenReminderWindow.hpp \
     GeneralAppearancePreferencesEditor.hpp \
     GeneralDialogsPreferencesEditor.hpp \
     GeneralStartupPreferencesEditor.hpp \
@@ -255,6 +257,7 @@ FORMS += \
     DailyWorkQuickReportView.ui \
     EditStringDialog.ui \
     ErrorDialog.ui \
+    FullScreenReminderWindow.ui \
     GeneralAppearancePreferencesEditor.ui \
     GeneralDialogsPreferencesEditor.ui \
     GeneralStartupPreferencesEditor.ui \

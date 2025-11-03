@@ -103,7 +103,7 @@ void HelpSiteBuilder::_processHelpSource(const _HelpSource & helpSource)
                 rr.string(
                     RID(ExtractingMessage),
                     entryInfo.filePath));
-            QThread::msleep(100);
+            QThread::msleep(_ProgressMessageDelayMs);
             QString helpFile = QDir(_helpSiteDirectory).filePath(entryInfo.filePath);
             if (entryInfo.isFile)
             {   //  Extrac data...
@@ -151,7 +151,7 @@ void HelpSiteBuilder::_rebuildHelpSite(_RebuildHelpRequest & request)
                     RID(AnalyzingMessage),
                     QFileInfo(helpSource.zipFileName).fileName()),
                 "");
-            QThread::msleep(100);
+            QThread::msleep(_ProgressMessageDelayMs);
             _processHelpSource(helpSource);
         }
         //  Write the HelpCollection XML to a .hlp file
@@ -225,7 +225,7 @@ void HelpSiteBuilder::_buildToc(
                     emit siteBuildingProgress(
                         buildingTocMessage,
                         path);
-                    QThread::msleep(1000);
+                    QThread::msleep(_ProgressMessageDelayMs);
                 })
         };
     QString tocFileName =
@@ -257,13 +257,19 @@ void HelpSiteBuilder::_buildToc(
 
 void HelpSiteBuilder::_writeTocEntry(QString & tocHtml, HelpTopic * helpTopic, int level)
 {
-    tocHtml += "<li class=\"toc";
+    tocHtml += "<li ";
+    if (!helpTopic->path().isEmpty())
+    {
+        tocHtml += "id=\"";
+        tocHtml += helpTopic->path().toHtmlEscaped();
+        tocHtml += "\" ";
+    }
+    tocHtml += "class=\"toc";
     tocHtml += tt3::util::toString(qMax(level, 1));
     tocHtml += "\">\n";
     tocHtml += "<a class=\"toc";
     tocHtml += tt3::util::toString(qMax(level, 1));
     tocHtml += "\" href=\"";
-    /* TODO kill off */auto sht =  dynamic_cast<SimpleHelpTopic*>(helpTopic);
     if (helpTopic->contentLoader() != nullptr)
     {
         tocHtml += helpTopic->contentLoader()->contentUrl().toString();
@@ -272,6 +278,7 @@ void HelpSiteBuilder::_writeTocEntry(QString & tocHtml, HelpTopic * helpTopic, i
     tocHtml += helpTopic->displayName();
     tocHtml += "</a>\n";
     tocHtml += "</li>\n";
+    /* TODO kill off and use helpTopic */auto sht =  dynamic_cast<SimpleHelpTopic*>(helpTopic);
     for (HelpTopic * child : sht->children)
     {
         _writeTocEntry(tocHtml, child, level + 1);

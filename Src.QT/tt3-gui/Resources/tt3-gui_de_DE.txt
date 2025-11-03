@@ -351,6 +351,9 @@ Prompt=Geben Sie einen Kommentar zur Aufgabenerledigung ein:
 Title=FEHLER
 OkPushButton=Bestätigen
 
+[FullScreenReminderWindow]
+StopPushButton=Stopp
+
 [GeneralAppearancePreferences]
 DisplayName=Darstellung
 

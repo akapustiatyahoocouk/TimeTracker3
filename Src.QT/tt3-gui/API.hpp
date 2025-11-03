@@ -141,6 +141,7 @@
 #include "tt3-gui/QuickReportsDialog.hpp"
 
 #include "tt3-gui/ManageQuickPicksListDialog.hpp"
+#include "tt3-gui/FullScreenReminderWindow.hpp"
 
 #include "tt3-gui/HelpClient.hpp"
 #include "tt3-gui/HelpBuilderProgressWindow.hpp"

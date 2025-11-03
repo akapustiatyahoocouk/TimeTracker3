@@ -44,6 +44,12 @@ namespace tt3::gui
         //  Controls
     private:
         Ui::HelpBuilderProgressWindow *const    _ui;
+
+        //////////
+        //  Signal handlers
+    private slots:
+        void            accept();
+        void            reject();
     };
 }
 

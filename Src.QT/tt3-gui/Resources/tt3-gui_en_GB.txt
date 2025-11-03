@@ -351,6 +351,9 @@ Prompt=Enter task completion comment:
 Title=ERROR
 OkPushButton=OK
 
+[FullScreenReminderWindow]
+StopPushButton=Stop
+
 [GeneralAppearancePreferences]
 DisplayName=Appearance
 

@@ -91,6 +91,6 @@ ManageMyDayTab.Text=Mein Tag
 QuickReportsTab.Text=Schnellberichte
 
 NoCurrentActivityLabel=Keine aktuelle Aktivität
-StopActivityPushButton=Stoppen
+StopActivityPushButton=Stopp
 
 CannotDestroyWorkspaceError=Arbeitsbereich {0}\nkann nicht gelöscht werden, da\ner aktuell verwendet wird.

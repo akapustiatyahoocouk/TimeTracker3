@@ -86,6 +86,7 @@ namespace tt3::help
     private:
         QString         _zipFilesDirectory; //  where was the .exe launched from + "/Help"
         QString         _helpSiteDirectory; //  underneath user's temp directory
+        static const int _ProgressMessageDelayMs = 100;
 
         //  Requests sent to the worker thread
         struct _ServiceRequest
