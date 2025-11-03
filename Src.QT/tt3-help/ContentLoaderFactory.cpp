@@ -27,8 +27,8 @@ IContentLoader * ContentLoaderFactory::createContentLoader(const QUrl & url)
         return new LocalFileContentLoader(
             urlString.mid(LocalFileContentLoader::Protocol.length() + 3));
     }
-    //  OOPS! TODO throw
-    return nullptr;
+    //  OOPS!
+    throw UnsupportedProtocolException(urlString);
 }
 
 //  End of tt3-help/ContentLoaderFactory.cpp

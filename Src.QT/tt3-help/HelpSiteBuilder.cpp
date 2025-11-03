@@ -106,19 +106,19 @@ void HelpSiteBuilder::_processHelpSource(const _HelpSource & helpSource)
             QThread::msleep(_ProgressMessageDelayMs);
             QString helpFile = QDir(_helpSiteDirectory).filePath(entryInfo.filePath);
             if (entryInfo.isFile)
-            {   //  Extrac data...
+            {   //  Extract data...
                 QByteArray data = zipReader.fileData(entryInfo.filePath);
                 //  ...prepare the destination location...
                 QString dir = QFileInfo(helpFile).absolutePath();
                 if (!QDir().mkpath(dir))
-                {   //  OOPS! TODO throw...
-                    continue;
+                {   //  OOPS!
+                    throw CannotCreateDirectoryException(dir);
                 }
                 //  ...and save
                 QFile file(helpFile);
                 if (file.exists() && file.size() != entryInfo.size)
-                {   //  OOPS! TODO throw
-                    continue;
+                {   //  OOPS!
+                    throw FileAlreadyExistsException(helpFile);
                 }
                 if (file.open(QIODevice::WriteOnly))
                 {
@@ -126,8 +126,8 @@ void HelpSiteBuilder::_processHelpSource(const _HelpSource & helpSource)
                     file.close();
                 }
                 else
-                {   //  OOPS! TODO Throw...
-                    continue;
+                {   //  OOPS!
+                    throw CustomHelpException(helpFile + ": " + file.errorString());
                 }
             }
         }

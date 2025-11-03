@@ -7,3 +7,9 @@ Copyright=Авторское право (C) {0}, Андрей Капустин
 AnalyzingMessage=Анализ {0}
 ExtractingMessage=Распаковка {0}
 BuildingTocMessage=Создание таблицы содержания
+
+[Errors]
+HelpSiteDoesNotExistException=Сайт справки\n{0}\nне существует или повреждён.
+CannotCreateDirectoryException=Невозможно создать каталог {0}.
+FileAlreadyExistsException=Файл {0} уже существует и не может быть перезаписан,
+UnsupportedProtocolException=Неподдерживаемый протокол в {0}.

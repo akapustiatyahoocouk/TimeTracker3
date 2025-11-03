@@ -7,3 +7,9 @@ Copyright=Copyright (C) {0}, Andrey Kapustin
 AnalyzingMessage=Analysiere {0}
 ExtractingMessage=Extrahiere {0}
 BuildingTocMessage=Erstelle Inhaltsverzeichnis
+
+[Errors]
+HelpSiteDoesNotExistException=Die Hilfeseite\n{0}\nist nicht vorhanden oder beschädigt.
+CannotCreateDirectoryException=Verzeichnis {0} kann nicht erstellt werden.
+FileAlreadyExistsException=Die Datei {0} existiert bereits und kann nicht überschrieben werden,
+UnsupportedProtocolException=Nicht unterstütztes Protokoll in {0}.

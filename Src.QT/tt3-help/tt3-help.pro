@@ -7,6 +7,7 @@ DEFINES += TT3_HELP_LIBRARY
 SOURCES += \
     Component.cpp \
     ContentLoaderFactory.cpp \
+    Exceptions.cpp \
     HelpSiteBuilder.cpp \
     LocalFileContentLoader.cpp \
     LocalSiteHelpLoader.cpp \

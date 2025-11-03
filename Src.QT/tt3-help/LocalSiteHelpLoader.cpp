@@ -26,8 +26,8 @@ auto LocalSiteHelpLoader::loadHelpCollection(
 {
     QDir absSiteDirectory(QFileInfo(siteDirectory).absoluteFilePath());
     if (!absSiteDirectory.exists())
-    {   //  OOPS! TODO throw
-        throw new tt3::util::NotImplementedError();
+    {   //  OOPS!
+        throw HelpSiteDoesNotExistException(absSiteDirectory.path());
     }
     //  There are 2 possibilities here:
     //  1.  The absSiteDirectory contains a help tree, or
