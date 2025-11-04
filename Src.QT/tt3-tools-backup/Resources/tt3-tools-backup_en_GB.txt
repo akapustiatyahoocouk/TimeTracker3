@@ -1,0 +1,13 @@
+[Plugin]
+DisplayName=TimeTracker3 Backup
+Description=Defines data backup solution for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[Component]
+DisplayName=TimeTracker3 Backup
+Description=Defines data backup solution for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[BackupTool]
+DisplayName=Backup
+Description=Performs database backup

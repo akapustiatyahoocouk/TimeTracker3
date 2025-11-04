@@ -1,5 +1,5 @@
 //
-//  tt3-skin-admin/AdminSkin.cpp - AdminSkin class implementation
+//  tt3-skin-admin/AdminSkin.cpp - tt3::skin::admin::Skin class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -92,4 +92,4 @@ QMainWindow * Skin::mainWindow()
     return _mainFrame;
 }
 
-//  End of tt3-gui/Skin.cpp
+//  End of tt3-skin-admin/Skin.cpp

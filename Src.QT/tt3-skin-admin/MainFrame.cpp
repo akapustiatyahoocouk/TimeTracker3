@@ -217,6 +217,7 @@ void MainFrame::refresh()
     _ui->actionRefresh->setEnabled(workspace != nullptr);
     _ui->menuTools->setEnabled(workspace != nullptr);
     _ui->menuReports->setEnabled(workspace != nullptr);
+    _refreshToolsMenuItemAvailability();
 
     //  Controls
     _userManager->refresh();
@@ -502,6 +503,17 @@ void MainFrame::_updateMruWorkspaces()
     _ui->actionRecentWorkspaces->setEnabled(!menu->isEmpty());
 }
 
+void MainFrame::_refreshToolsMenu()
+{
+    _ui->menuTools->clear();
+    //  TODO ...and refill
+    _refreshToolsMenuItemAvailability();
+}
+
+void MainFrame::_refreshToolsMenuItemAvailability()
+{
+}
+
 void MainFrame::_refreshCurrentActivityControls()
 {
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
@@ -698,6 +710,8 @@ void MainFrame::_applyCurrentLocale()
 
     _ui->stopActivityPushButton->setText(
         rr.string(RID(StopActivityPushButton)));
+
+    _refreshToolsMenu();
 }
 
 //////////

@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/tt3-tools-backup">
+        <file>Resources/tt3-tools-backup_de_DE.txt</file>
+        <file>Resources/tt3-tools-backup_en_GB.txt</file>
+        <file>Resources/tt3-tools-backup_ru_RU.txt</file>
+        <file>Resources/Images/Misc/BackupLarge.png</file>
+        <file>Resources/Images/Misc/BackupSmall.png</file>
+    </qresource>
+</RCC>

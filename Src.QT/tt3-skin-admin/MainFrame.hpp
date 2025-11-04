@@ -92,6 +92,8 @@ namespace tt3::skin::admin
         void            _destroyWorkspace(tt3::ws::WorkspaceAddress workspaceAddress);
 
         void            _updateMruWorkspaces();
+        void            _refreshToolsMenu();
+        void            _refreshToolsMenuItemAvailability();
         void            _refreshCurrentActivityControls();
         void            _applyCurrentLocale();
 
