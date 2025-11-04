@@ -61,7 +61,7 @@ ModifyUserDialog::ModifyUserDialog(
     //  Fill "UI locale" combo box
     _ui->uiLocaleComboBox->addItem(
         rr.string(RID(SystemDefaultLocale)));
-    for (QLocale locale : tt3::util::ComponentManager::supportedLocales())
+    for (const QLocale & locale : tt3::util::ComponentManager::supportedLocales())
     {
         _locales.append(locale);
     }
@@ -72,7 +72,7 @@ ModifyUserDialog::ModifyUserDialog(
         {
             return tt3::util::LocaleManager::displayName(a) < tt3::util::LocaleManager::displayName(b);
         });
-    for (QLocale locale : _locales)
+    for (const QLocale & locale : qAsConst(_locales))
     {
         _ui->uiLocaleComboBox->addItem(
             tt3::util::LocaleManager::smallIcon(locale),
@@ -166,7 +166,7 @@ QStringList ModifyUserDialog::_selectedEmailAddresses()
 void ModifyUserDialog::_setSelectedEmailAddresses(const QStringList & emailAddresses)
 {
     _ui->emailAddressesListWidget->clear();
-    for (QString emailAddress : emailAddresses)
+    for (const QString & emailAddress : emailAddresses)
     {
         _ui->emailAddressesListWidget->addItem(emailAddress);
     }

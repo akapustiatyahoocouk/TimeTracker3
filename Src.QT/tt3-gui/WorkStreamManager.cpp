@@ -223,7 +223,7 @@ auto WorkStreamManager::_createWorkspaceModel(
     auto workspaceModel = std::make_shared<_WorkspaceModelImpl>();
     try
     {
-        for (tt3::ws::WorkStream workStream : workspace->workStreams(credentials))    //  may throw
+        for (const auto & workStream : workspace->workStreams(credentials))    //  may throw
         {
             workspaceModel->workStreamModels.append(
                 _createWorkStreamModel(workStream, credentials, decorations));

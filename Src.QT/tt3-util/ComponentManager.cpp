@@ -168,7 +168,7 @@ void ComponentManager::saveComponentSettings()
             {
                 return a->mnemonic() < b->mnemonic();
             });
-        for (IComponent * component : allComponents)
+        for (IComponent * component : qAsConst(allComponents))
         {   //  Sorted by component mnemonic to simplify lookin text editor
             iniStream << "["
                       << component->mnemonic().toString()
@@ -186,7 +186,7 @@ void ComponentManager::saveComponentSettings()
                 {
                     return a->mnemonic() < b->mnemonic();
                 });
-            for (AbstractSetting * setting : componentSettings)
+            for (AbstractSetting * setting : qAsConst(componentSettings))
             {   //  Sorted by setting mnemonic to simplify lookin text editor
                 iniStream << setting->mnemonic().toString()
                           << "="

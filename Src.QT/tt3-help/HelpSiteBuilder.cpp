@@ -94,7 +94,7 @@ void HelpSiteBuilder::_processHelpSource(const _HelpSource & helpSource)
     QZipReader zipReader(helpSource.zipFileName);
     if (zipReader.exists())
     {
-        for (auto entryInfo : zipReader.fileInfoList())
+        for (const auto & entryInfo : zipReader.fileInfoList())
         {
             emit siteBuildingProgress(
                 rr.string(
@@ -165,7 +165,7 @@ void HelpSiteBuilder::_rebuildHelpSite(_RebuildHelpRequest & request)
         //  Look at the "ll_CC" per-locale subdirectories
         //  in the help site directory - each of them needs
         //  a dynamically generated toc.htm, etc.
-        for (QString subdir : QDir(_helpSiteDirectory).entryList(QDir::Dirs | QDir::NoDotAndDotDot))
+        for (const QString & subdir : QDir(_helpSiteDirectory).entryList(QDir::Dirs | QDir::NoDotAndDotDot))
         {
             QLocale locale = tt3::util::fromString(subdir, QLocale::c());
             if (locale != QLocale::c())
@@ -278,6 +278,10 @@ void HelpSiteBuilder::_writeTocEntry(QString & tocHtml, HelpTopic * helpTopic, i
     tocHtml += helpTopic->displayName();
     tocHtml += "</a>\n";
     tocHtml += "</li>\n";
+    for (HelpTopic * child : helpTopic->children)
+    {
+        qDebug() << child->displayName();
+    }
     /* TODO kill off and use helpTopic */auto sht =  dynamic_cast<SimpleHelpTopic*>(helpTopic);
     for (HelpTopic * child : sht->children)
     {

@@ -43,7 +43,7 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
     //  Fill the language combo box with available locales
     //  from the set of locales supported by components and
     //  sorted by display name
-    for (QLocale locale : tt3::util::ComponentManager::supportedLocales())
+    for (const QLocale & locale : tt3::util::ComponentManager::supportedLocales())
     {
         _locales.append(locale);
     }
@@ -55,7 +55,7 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
             return tt3::util::LocaleManager::displayName(a) < tt3::util::LocaleManager::displayName(b);
         });
 
-    for (QLocale locale : _locales)
+    for (const QLocale & locale : qAsConst(_locales))
     {
         _ui->languageComboBox->addItem(
             tt3::util::LocaleManager::smallIcon(locale),
@@ -70,7 +70,7 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
         _skins.end(),
         [](auto a, auto b) { return a->displayName() < b->displayName(); });
 
-    for (ISkin * skin : _skins)
+    for (ISkin * skin : qAsConst(_skins))
     {
         _ui->skinComboBox->addItem(skin->smallIcon(), skin->displayName());
     }
@@ -83,7 +83,7 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
         _themes.end(),
         [](auto a, auto b) { return a->displayName() < b->displayName(); });
 
-    for (ITheme * theme : _themes)
+    for (ITheme * theme : qAsConst(_themes))
     {
         _ui->themeComboBox->addItem(theme->smallIcon(), theme->displayName());
     }

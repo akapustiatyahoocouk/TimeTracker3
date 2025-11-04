@@ -482,7 +482,7 @@ namespace tt3::db::xml
             Q_ASSERT(aggregation.isEmpty());
             QDomElement aggregationElement = _childElement(parentElement, aggregationName); //  may throw
             tt3::db::api::IObjectType * objectType = _objectTypeTraits<T>();
-            for (QDomElement objectElement : _childElements(aggregationElement, objectType->mnemonic().toString()))
+            for (const QDomElement & objectElement : _childElements(aggregationElement, objectType->mnemonic().toString()))
             {
                 T * object = nullptr;
                 _deserializeObject<T>(

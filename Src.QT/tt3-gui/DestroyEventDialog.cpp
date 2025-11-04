@@ -60,7 +60,7 @@ QString DestroyEventDialog::_prompt(
             event->summary(credentials),    //  may throw
             QLocale().toString(event->occurredAt(credentials).toLocalTime(), QLocale::ShortFormat), //  may throw
             event->account(credentials)->login(credentials));           //  may throw
-    for (tt3::ws::Activity activity : event->activities(credentials))
+    for (const auto & activity : event->activities(credentials))
     {
         result +=
             rr.string(

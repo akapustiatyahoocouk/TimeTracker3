@@ -258,7 +258,7 @@ void ActivityType::_validate(
     //  Validate aggregations
 
     //  Validate associations
-    for (Activity * activity : _activities)
+    for (Activity * activity : qAsConst(_activities))
     {
         if (activity == nullptr ||
             activity->_database != this->_database ||

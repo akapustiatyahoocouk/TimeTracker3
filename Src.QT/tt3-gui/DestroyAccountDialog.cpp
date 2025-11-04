@@ -110,7 +110,7 @@ void DestroyAccountDialog::_collectDestructionClosure(
         int64_t & worksDurationMs
     )
 {
-    for (tt3::ws::Work work : account->works(credentials))  //  may throw
+    for (const auto & work : account->works(credentials))  //  may throw
     {
         worksCount++;
         worksDurationMs += work->startedAt(credentials).msecsTo(work->finishedAt(credentials)); //  may throw

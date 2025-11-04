@@ -122,7 +122,7 @@ void DestroyBeneficiaryDialog::_collectDestructionClosure(
         int64_t & worksDurationMs
     )
 {
-    for (auto workload : beneficiary->workloads(credentials))
+    for (const auto & workload : beneficiary->workloads(credentials))
     {
         if (auto project =
             std::dynamic_pointer_cast<tt3::ws::ProjectImpl>(workload))
@@ -159,9 +159,9 @@ void DestroyBeneficiaryDialog::_collectDestructionClosure(
     )
 {   //  Measure this item...
     projectsCount++;
-    for (tt3::ws::Activity activity : project->contributingActivities(credentials))    //  may throw
+    for (const auto & activity : project->contributingActivities(credentials))    //  may throw
     {
-        for (tt3::ws::Work work : activity->works(credentials)) //  may throw
+        for (const auto & work : activity->works(credentials)) //  may throw
         {
             worksCount++;
             worksDurationMs += work->startedAt(credentials).msecsTo(work->finishedAt(credentials)); //  may throw
@@ -171,7 +171,7 @@ void DestroyBeneficiaryDialog::_collectDestructionClosure(
         events += activity->events(credentials);
     }
     //  ...and children, recursively
-    for (tt3::ws::Project child : project->children(credentials))
+    for (const auto & child : project->children(credentials))
     {
         _collectDestructionClosure(
             child,
@@ -193,9 +193,9 @@ void DestroyBeneficiaryDialog::_collectDestructionClosure(
     )
 {
     workStreamsCount++;
-    for (tt3::ws::Activity activity : workStream->contributingActivities(credentials))    //  may throw
+    for (const auto & activity : workStream->contributingActivities(credentials))    //  may throw
     {
-        for (tt3::ws::Work work : activity->works(credentials)) //  may throw
+        for (const auto & work : activity->works(credentials)) //  may throw
         {
             worksCount++;
             worksDurationMs += work->startedAt(credentials).msecsTo(work->finishedAt(credentials)); //  may throw

@@ -113,9 +113,9 @@ void DestroyWorkStreamDialog::_collectDestructionClosure(
     )
 {   //  Measure this item...
     tt3::ws::Events events;
-    for (tt3::ws::Activity activity : workStream->contributingActivities(credentials))    //  may throw
+    for (const auto & activity : workStream->contributingActivities(credentials))    //  may throw
     {
-        for (tt3::ws::Work work : activity->works(credentials)) //  may throw
+        for (const auto & work : activity->works(credentials)) //  may throw
         {
             worksCount++;
             worksDurationMs += work->startedAt(credentials).msecsTo(work->finishedAt(credentials)); //  may throw

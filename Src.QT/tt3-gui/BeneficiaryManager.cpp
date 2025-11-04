@@ -221,7 +221,7 @@ auto BeneficiaryManager::_createWorkspaceModel(
     auto workspaceModel = std::make_shared<_WorkspaceModelImpl>();
     try
     {
-        for (tt3::ws::Beneficiary beneficiary : workspace->beneficiaries(credentials))    //  may throw
+        for (const auto & beneficiary : workspace->beneficiaries(credentials))    //  may throw
         {
             workspaceModel->beneficiaryModels.append(
                 _createBeneficiaryModel(beneficiary, credentials, decorations));

@@ -215,7 +215,7 @@ ActivityTypeManager::_WorkspaceModel ActivityTypeManager::_createWorkspaceModel(
     auto workspaceModel = std::make_shared<_WorkspaceModelImpl>();
     try
     {
-        for (tt3::ws::ActivityType activityType : _workspace->activityTypes(_credentials))    //  may throw
+        for (const auto & activityType : _workspace->activityTypes(_credentials))    //  may throw
         {
             workspaceModel->activityTypeModels.append(_createActivityTypeModel(activityType));
         }

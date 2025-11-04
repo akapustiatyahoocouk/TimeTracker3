@@ -79,7 +79,7 @@ SelectPrivateTaskParentDialog::SelectPrivateTaskParentDialog(
         {
             return a->realName(_credentials) < b->realName(_credentials);   //  may throw
         });
-    for (tt3::ws::User u : usersList)
+    for (const auto & u : qAsConst(usersList))
     {
         _ui->userComboBox->addItem(
             u->type()->smallIcon(),

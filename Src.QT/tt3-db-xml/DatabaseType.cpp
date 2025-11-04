@@ -166,7 +166,7 @@ auto DatabaseType::parseDatabaseAddress(
                 pathsToRelease.insert(path);
             }
         }
-        for (QString path : pathsToRelease)
+        for (const QString & path : pathsToRelease)
         {
             delete _databaseAddresses[path];
             _databaseAddresses.remove(path);

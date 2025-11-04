@@ -54,7 +54,7 @@ QSet<Preferences*> PreferencesManager::rootPreferences()
 
     QList<Preferences*> values = impl->registry.values();
     QSet<Preferences*> result;
-    for (Preferences * preferences : values)
+    for (Preferences * preferences : qAsConst(values))
     {
         if (preferences->parent() == nullptr)
         {

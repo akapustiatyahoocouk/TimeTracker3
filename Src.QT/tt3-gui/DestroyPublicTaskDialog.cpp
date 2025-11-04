@@ -128,13 +128,13 @@ void DestroyPublicTaskDialog::_collectDestructionClosure(
     )
 {
     tasksCount++;
-    for (tt3::ws::Work work : publicTask->works(credentials))  //  may throw
+    for (const auto & work : publicTask->works(credentials))  //  may throw
     {
         worksCount++;
         worksDurationMs += work->startedAt(credentials).msecsTo(work->finishedAt(credentials)); //  may throw
     }
     eventsCount = publicTask->events(credentials).size();  //  may throw
-    for (tt3::ws::PublicTask child : publicTask->children(credentials))   //  may throw
+    for (const auto & child : publicTask->children(credentials))   //  may throw
     {
         _collectDestructionClosure( //  may throw
             child,

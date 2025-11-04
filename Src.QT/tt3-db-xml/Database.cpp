@@ -512,7 +512,7 @@ auto Database::tryLogin(
     {
         if (user->_enabled)
         {
-            for (Account * account : user->_accounts)
+            for (Account * account : qAsConst(user->_accounts))
             {
                 if (account->_enabled && account->_login == login && account->_passwordHash == passwordHash)
                 {
@@ -613,7 +613,7 @@ auto Database::createUser(
     user->_realName = realName;
     user->_inactivityTimeout = inactivityTimeout;
     user->_uiLocale = uiLocale;
-    for (Workload * xmlWorkload : xmlPermittedWorkloads)
+    for (Workload * xmlWorkload : qAsConst(xmlPermittedWorkloads))
     {
         user->_permittedWorkloads.insert(xmlWorkload);
         xmlWorkload->_assignedUsers.insert(user);
@@ -625,7 +625,7 @@ auto Database::createUser(
     _changeNotifier.post(
         new tt3::db::api::ObjectCreatedNotification(
             this, user->type(), user->_oid));
-    for (Workload * xmlWorkload : xmlPermittedWorkloads)
+    for (Workload * xmlWorkload : qAsConst(xmlPermittedWorkloads))
     {
         _changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
@@ -996,7 +996,7 @@ auto Database::createProject(
     project->_displayName = displayName;
     project->_description = description;
     project->_completed = completed;
-    for (Beneficiary * xmlBeneficiary : xmlBeneficiaries)
+    for (Beneficiary * xmlBeneficiary : qAsConst(xmlBeneficiaries))
     {   //  Link with Beneficiary
         project->_beneficiaries.insert(xmlBeneficiary);
         xmlBeneficiary->_workloads.insert(project);
@@ -1008,7 +1008,7 @@ auto Database::createProject(
     _changeNotifier.post(
         new tt3::db::api::ObjectCreatedNotification(
             this, project->type(), project->_oid));
-    for (Beneficiary * xmlBeneficiary : xmlBeneficiaries)
+    for (Beneficiary * xmlBeneficiary : qAsConst(xmlBeneficiaries))
     {
         _changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
@@ -1085,7 +1085,7 @@ auto Database::createWorkStream(
     WorkStream * workStream = new WorkStream(this, _generateOid()); //  registers with Database
     workStream->_displayName = displayName;
     workStream->_description = description;
-    for (Beneficiary * xmlBeneficiary : xmlBeneficiaries)
+    for (Beneficiary * xmlBeneficiary : qAsConst(xmlBeneficiaries))
     {   //  Link with Beneficiary
         workStream->_beneficiaries.insert(xmlBeneficiary);
         xmlBeneficiary->_workloads.insert(workStream);
@@ -1097,7 +1097,7 @@ auto Database::createWorkStream(
     _changeNotifier.post(
         new tt3::db::api::ObjectCreatedNotification(
             this, workStream->type(), workStream->_oid));
-    for (Beneficiary * xmlBeneficiary : xmlBeneficiaries)
+    for (Beneficiary * xmlBeneficiary : qAsConst(xmlBeneficiaries))
     {
         _changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
@@ -1174,7 +1174,7 @@ auto Database::createBeneficiary(
     Beneficiary * beneficiary = new Beneficiary(this, _generateOid()); //  registers with Database
     beneficiary->_displayName = displayName;
     beneficiary->_description = description;
-    for (Workload * xmlWorkload : xmlWorkloads)
+    for (Workload * xmlWorkload : qAsConst(xmlWorkloads))
     {   //  Link with Workload
         beneficiary->_workloads.insert(xmlWorkload);
         xmlWorkload->_beneficiaries.insert(beneficiary);
@@ -1186,7 +1186,7 @@ auto Database::createBeneficiary(
     _changeNotifier.post(
         new tt3::db::api::ObjectCreatedNotification(
             this, beneficiary->type(), beneficiary->_oid));
-    for (Workload * xmlWorkload : xmlWorkloads)
+    for (Workload * xmlWorkload : qAsConst(xmlWorkloads))
     {
         _changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
@@ -1271,7 +1271,7 @@ Account * Database::_findAccount(const QString & login) const
 
     for (User * user : _users)
     {
-        for (Account * account : user->_accounts)
+        for (Account * account : qAsConst(user->_accounts))
         {
             if (account->_login == login)
             {
@@ -1664,7 +1664,7 @@ void Database::_validate()
 {
     Objects validatedObjects;
 
-    for (User * user : _users)
+    for (User * user : qAsConst(_users))
     {
         if (user == nullptr || !user->_isLive ||
             user->_database != this)
@@ -1673,7 +1673,7 @@ void Database::_validate()
         }
         user->_validate(validatedObjects);
     }
-    for (ActivityType * activityType : _activityTypes)
+    for (ActivityType * activityType : qAsConst(_activityTypes))
     {
         if (activityType == nullptr || !activityType->_isLive ||
             activityType->_database != this)
@@ -1686,7 +1686,7 @@ void Database::_validate()
             throw tt3::db::api::DatabaseCorruptException(this->_address);
         }
     }
-    for (PublicActivity * publicActivity : _publicActivities)
+    for (PublicActivity * publicActivity : qAsConst(_publicActivities))
     {
         if (publicActivity == nullptr || !publicActivity->_isLive ||
             publicActivity->_database != this ||
@@ -1700,7 +1700,7 @@ void Database::_validate()
             throw tt3::db::api::DatabaseCorruptException(this->_address);
         }
     }
-    for (PublicTask * publicTask : _rootPublicTasks)
+    for (PublicTask * publicTask : qAsConst(_rootPublicTasks))
     {
         if (publicTask == nullptr || !publicTask->_isLive ||
             publicTask->_database != this ||
@@ -1714,7 +1714,7 @@ void Database::_validate()
             throw tt3::db::api::DatabaseCorruptException(this->_address);
         }
     }
-    for (Project * project : _rootProjects)
+    for (Project * project : qAsConst(_rootProjects))
     {
         if (project == nullptr || !project->_isLive ||
             project->_database != this ||
@@ -1728,7 +1728,7 @@ void Database::_validate()
             throw tt3::db::api::DatabaseCorruptException(this->_address);
         }
     }
-    for (WorkStream * workStream : _workStreams)
+    for (WorkStream * workStream : qAsConst(_workStreams))
     {
         if (workStream == nullptr || !workStream->_isLive ||
             workStream->_database != this)
@@ -1741,7 +1741,7 @@ void Database::_validate()
             throw tt3::db::api::DatabaseCorruptException(this->_address);
         }
     }
-    for (Beneficiary * beneficiary : _beneficiaries)
+    for (Beneficiary * beneficiary : qAsConst(_beneficiaries))
     {
         if (beneficiary == nullptr || !beneficiary->_isLive ||
             beneficiary->_database != this)

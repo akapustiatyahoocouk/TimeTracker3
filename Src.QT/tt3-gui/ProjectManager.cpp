@@ -262,7 +262,7 @@ auto ProjectManager::_createWorkspaceModel(
     auto workspaceModel = std::make_shared<_WorkspaceModelImpl>();
     try
     {
-        for (auto project : workspace->rootProjects(credentials))  //  may throw
+        for (const auto & project : workspace->rootProjects(credentials))  //  may throw
         {
             workspaceModel->projectModels.append(
                 _createProjectModel(project, credentials, decorations));
@@ -307,7 +307,7 @@ auto ProjectManager::_createProjectModel(
         projectModel->font = decorations.itemFont;
         projectModel->tooltip = project->description(credentials).trimmed();
         //  Do the children
-        for (tt3::ws::Project child : project->children(credentials)) //  may throw
+        for (const auto & child : project->children(credentials)) //  may throw
         {
             projectModel->childModels.append(
                 _createProjectModel(child, credentials, decorations));

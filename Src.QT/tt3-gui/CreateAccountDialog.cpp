@@ -51,7 +51,7 @@ CreateAccountDialog::CreateAccountDialog(
         {
             return a->realName(_credentials) < b->realName(_credentials);
         });
-    for (tt3::ws::User u : usersList)
+    for (const auto & u : qAsConst(usersList))
     {
         _ui->userComboBox->addItem(
             u->type()->smallIcon(),
@@ -172,7 +172,7 @@ QStringList CreateAccountDialog::_selectedEmailAddresses()
 void CreateAccountDialog::_setSelectedEmailAddresses(const QStringList & emailAddresses)
 {
     _ui->emailAddressesListWidget->clear();
-    for (QString emailAddress : emailAddresses)
+    for (const QString & emailAddress : emailAddresses)
     {
         _ui->emailAddressesListWidget->addItem(emailAddress);
     }

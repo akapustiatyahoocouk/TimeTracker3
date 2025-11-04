@@ -23,7 +23,7 @@ namespace tt3::gui
 
     /// \class DailyWorkQuickReportView tt3-gui/API.hpp
     /// \brief The "daily work" quick report view.
-    class TT3_GUI_PUBLIC DailyWorkQuickReportView
+    class TT3_GUI_PUBLIC DailyWorkQuickReportView final
         :   public QuickReportView
     {
         Q_OBJECT

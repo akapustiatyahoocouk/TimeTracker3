@@ -269,10 +269,10 @@ void DailyWorkQuickReportView::refresh()
                 new DonutBreakdownChart(_ui->scaleSlider->value());
             donutBreakdown->setAnimationOptions(QChart::NoAnimation);
             donutBreakdown->legend()->setAlignment(Qt::AlignRight);
-            for (auto activityTypeModel : dayModel->activityTypes)
+            for (const auto & activityTypeModel : qAsConst(dayModel->activityTypes))
             {
                 QPieSeries * breakdownSeries = new QPieSeries();
-                for (auto activityModel : activityTypeModel->activities)
+                for (const auto & activityModel : qAsConst(activityTypeModel->activities))
                 {
                     int64_t secs = (activityModel->durationMs + 999) / 1000;
                     char duration[32];
@@ -379,7 +379,7 @@ void DailyWorkQuickReportView::_resetUsedPieColors()
 QColor DailyWorkQuickReportView::_generateUnusedPieColor()
 {
     //  Can we use one of the "seed" color ?
-    for (QColor c : _seedColors)
+    for (const QColor & c : qAsConst(_seedColors))
     {
         if (!_usedPieColors.contains(c))
         {   //  Use this one!
@@ -396,7 +396,7 @@ QColor DailyWorkQuickReportView::_generateUnusedPieColor()
     {
         QColor candidateColor(rand() & 0x7F, rand() & 0x7F, rand() & 0x7F);
         int candidateDistance = INT_MAX;
-        for (QColor c : _usedPieColors)
+        for (const QColor & c : qAsConst(_usedPieColors))
         {
             int d = _distance(candidateColor, c);
             candidateDistance = qMin(candidateDistance, d);
@@ -453,7 +453,7 @@ auto DailyWorkQuickReportView::_createDayModel(
     //  Record relevant Works
     QMap<tt3::ws::Activity, int64_t> activityDurationsMs;
     QMap<tt3::ws::Activity, tt3::ws::ActivityType> activityTypes;
-    for (auto work : clientAccount->works(credentials(), utcDayStart, utcDayEnd))
+    for (const auto & work : clientAccount->works(credentials(), utcDayStart, utcDayEnd))
     {
         QDateTime utcWorkStart = qMax(work->startedAt(credentials()), utcDayStart);
         QDateTime utcWorkEnd = qMin(work->finishedAt(credentials()), utcDayEnd);
@@ -510,7 +510,7 @@ auto DailyWorkQuickReportView::_createDayModel(
         {
             return a->durationMs > b->durationMs;
         });
-    for (auto activityTypeModel : dayModel->activityTypes)
+    for (const auto & activityTypeModel : qAsConst(dayModel->activityTypes))
     {
         std::sort(
             activityTypeModel->activities.begin(),

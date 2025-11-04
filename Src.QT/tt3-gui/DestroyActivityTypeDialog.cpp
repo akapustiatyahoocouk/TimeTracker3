@@ -114,9 +114,9 @@ void DestroyActivityTypeDialog::_collectDestructionClosure(
     )
 {
     tt3::ws::Events events;
-    for (tt3::ws::Activity activity : activityType->activities(credentials))    //  may throw
+    for (const auto & activity : activityType->activities(credentials))    //  may throw
     {
-        for (tt3::ws::Work work : activity->works(credentials)) //  may throw
+        for (const auto & work : activity->works(credentials)) //  may throw
         {
             worksCount++;
             worksDurationMs += work->startedAt(credentials).msecsTo(work->finishedAt(credentials)); //  may throw

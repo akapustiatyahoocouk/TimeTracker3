@@ -184,7 +184,7 @@ void Workload::setBeneficiaries(
         Beneficiaries addedBeneficiaries = xmlBeneficiaries - _beneficiaries;
         Beneficiaries removedBeneficiaries = _beneficiaries - xmlBeneficiaries;
         //  link the added beneficiaries...
-        for (Beneficiary * xmlBeneficiary : addedBeneficiaries)
+        for (Beneficiary * xmlBeneficiary : qAsConst(addedBeneficiaries))
         {
             _beneficiaries.insert(xmlBeneficiary);
             xmlBeneficiary->_workloads.insert(this);
@@ -192,7 +192,7 @@ void Workload::setBeneficiaries(
             this->addReference();
         }
         //  ...un-link the removed beneficiaries...
-        for (Beneficiary * xmlBeneficiary : removedBeneficiaries)
+        for (Beneficiary * xmlBeneficiary : qAsConst(removedBeneficiaries))
         {
             _beneficiaries.remove(xmlBeneficiary);
             xmlBeneficiary->_workloads.remove(this);
@@ -365,7 +365,7 @@ void Workload::setAssignedUsers(
         Users addedUsers = xmlUsers - _assignedUsers;
         Users removedUsers = _assignedUsers - xmlUsers;
         //  link the added Users...
-        for (User * xmlUser : addedUsers)
+        for (User * xmlUser : qAsConst(addedUsers))
         {
             _assignedUsers.insert(xmlUser);
             xmlUser->_permittedWorkloads.insert(this);
@@ -373,7 +373,7 @@ void Workload::setAssignedUsers(
             this->addReference();
         }
         //  ...un-link the removed Users...
-        for (User * xmlUser : removedUsers)
+        for (User * xmlUser : qAsConst(removedUsers))
         {
             _assignedUsers.remove(xmlUser);
             xmlUser->_permittedWorkloads.remove(this);
@@ -634,7 +634,7 @@ void Workload::_validate(
     //  Validate aggregations
 
     //  Validate associations
-    for (Beneficiary * beneficiary : _beneficiaries)
+    for (Beneficiary * beneficiary : qAsConst(_beneficiaries))
     {
         if (beneficiary == nullptr ||
             beneficiary->_database != this->_database ||
@@ -644,7 +644,7 @@ void Workload::_validate(
             throw tt3::db::api::DatabaseCorruptException(_database->_address);
         }
     }
-    for (User * user : _assignedUsers)
+    for (User * user : qAsConst(_assignedUsers))
     {
         if (user == nullptr ||
             user->_database != this->_database ||
@@ -654,7 +654,7 @@ void Workload::_validate(
             throw tt3::db::api::DatabaseCorruptException(_database->_address);
         }
     }
-    for (Activity * activity : _contributingActivities)
+    for (Activity * activity : qAsConst(_contributingActivities))
     {
         if (activity == nullptr ||
             activity->_database != this->_database ||

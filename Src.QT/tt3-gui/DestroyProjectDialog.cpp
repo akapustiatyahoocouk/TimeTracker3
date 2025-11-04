@@ -129,9 +129,9 @@ void DestroyProjectDialog::_collectDestructionClosure(
     )
 {   //  Measure this item...
     projectsCount++;
-    for (tt3::ws::Activity activity : project->contributingActivities(credentials))    //  may throw
+    for (const auto & activity : project->contributingActivities(credentials))    //  may throw
     {
-        for (tt3::ws::Work work : activity->works(credentials)) //  may throw
+        for (const auto & work : activity->works(credentials)) //  may throw
         {
             worksCount++;
             worksDurationMs += work->startedAt(credentials).msecsTo(work->finishedAt(credentials)); //  may throw
@@ -141,7 +141,7 @@ void DestroyProjectDialog::_collectDestructionClosure(
         events += activity->events(credentials);
     }
     //  ...and children, recursively
-    for (tt3::ws::Project child : project->children(credentials))
+    for (const auto & child : project->children(credentials))
     {
         _collectDestructionClosure(
             child,

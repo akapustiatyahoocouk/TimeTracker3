@@ -289,7 +289,7 @@ UserManager::_WorkspaceModel UserManager::_createWorkspaceModel()
     auto workspaceModel = std::make_shared<_WorkspaceModelImpl>();
     try
     {
-        for (tt3::ws::User user : _workspace->users(_credentials))    //  may throw
+        for (const auto & user : _workspace->users(_credentials))    //  may throw
         {
             workspaceModel->userModels.append(_createUserModel(user));
         }
@@ -338,7 +338,7 @@ UserManager::_UserModel UserManager::_createUserModel(tt3::ws::User user)
     }
     try
     {
-        for (tt3::ws::Account account : user->accounts(_credentials))    //  may throw
+        for (const auto & account : user->accounts(_credentials))    //  may throw
         {
             userModel->accountModels.append(_createAccountModel(account));
         }

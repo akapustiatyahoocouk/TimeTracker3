@@ -273,7 +273,7 @@ MyDayManager::_MyDayModel MyDayManager::_createMyDayModel()
         try
         {
             tt3::ws::Account account = _workspace->login(_credentials); //  may throw
-            for (tt3::ws::Work work : account->works(_credentials, from, to)) //  may throw
+            for (const auto & work : account->works(_credentials, from, to)) //  may throw
             {
                 try
                 {
@@ -284,7 +284,7 @@ MyDayManager::_MyDayModel MyDayManager::_createMyDayModel()
                     qCritical() << ex;
                 }
             }
-            for (tt3::ws::Event event : account->events(_credentials, from, to)) //  may throw
+            for (const auto & event : account->events(_credentials, from, to)) //  may throw
             {
                 try
                 {
@@ -348,7 +348,7 @@ MyDayManager::_EventModel MyDayManager::_createEventModel(tt3::ws::Event event)
 {
     QString summary = event->summary(_credentials); //  may throw
     QString tooltip = summary;
-    for (tt3::ws::Activity activity : event->activities(_credentials))
+    for (const auto & activity : event->activities(_credentials))
     {
         QString description = activity->description(_credentials).trimmed();    //  may throw
         if (!description.isEmpty())

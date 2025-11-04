@@ -58,7 +58,7 @@ ModifyPrivateTaskDialog::ModifyPrivateTaskDialog(
         {
             return a->realName(_credentials) < b->realName(_credentials);   //  may throw
         });
-    for (tt3::ws::User u : usersList)
+    for (const auto & u : qAsConst(usersList))
     {
         _ui->userComboBox->addItem(
             u->type()->smallIcon(),
@@ -79,7 +79,7 @@ ModifyPrivateTaskDialog::ModifyPrivateTaskDialog(
     _ui->activityTypeComboBox->addItem(
         "-",
         QVariant::fromValue<tt3::ws::ActivityType>(nullptr));
-    for (tt3::ws::ActivityType activityType : activityTypes)
+    for (const auto & activityType : qAsConst(activityTypes))
     {
         _ui->activityTypeComboBox->addItem(
             activityType->type()->smallIcon(),

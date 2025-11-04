@@ -242,12 +242,12 @@ void Account::setQuickPicksList(
     if (xmlQuickPicksList != _quickPicksList)
     {   //  Make the change -
         //  link the new quick picks list...
-        for (Activity * xmlActivity : xmlQuickPicksList)
+        for (Activity * xmlActivity : qAsConst(xmlQuickPicksList))
         {
             xmlActivity->addReference();
         }
         //  ...un-link the old quick picks list...
-        for (Activity * xmlActivity : _quickPicksList)
+        for (Activity * xmlActivity : qAsConst(_quickPicksList))
         {
             xmlActivity->removeReference();
         }
@@ -438,7 +438,7 @@ auto Account::createEvent(
     event->_occurredAt = occurredAt;
     event->_summary = summary;
     //  Link with Activities
-    for (Activity * xmlActivity : xmlActivities)
+    for (Activity * xmlActivity : qAsConst(xmlActivities))
     {
         event->_activities.insert(xmlActivity);
         xmlActivity->_events.insert(event);
@@ -453,7 +453,7 @@ auto Account::createEvent(
     _database->_changeNotifier.post(
         new tt3::db::api::ObjectCreatedNotification(
             _database, event->type(), event->_oid));
-    for (Activity * xmlActivity : xmlActivities)
+    for (Activity * xmlActivity : qAsConst(xmlActivities))
     {
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
@@ -603,7 +603,7 @@ void Account::_validate(
     }
 
     //  Validate aggregations
-    for (Work * work : _works)
+    for (Work * work : qAsConst(_works))
     {
         if (work == nullptr || !work->_isLive ||
             work->_database != _database ||
@@ -613,7 +613,7 @@ void Account::_validate(
         }
         work->_validate(validatedObjects);
     }
-    for (Event * event : _events)
+    for (Event * event : qAsConst(_events))
     {
         if (event == nullptr || !event->_isLive ||
             event->_database != _database ||
@@ -631,7 +631,7 @@ void Account::_validate(
     {   //  OOPS!
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }
-    for (Activity * activity : _quickPicksList)
+    for (Activity * activity : qAsConst(_quickPicksList))
     {
         if (activity == nullptr ||
             activity->_database != this->_database ||

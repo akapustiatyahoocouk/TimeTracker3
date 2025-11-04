@@ -301,7 +301,7 @@ auto PrivateTaskManager::_createWorkspaceModel(
     {
         if (workspace->grantsAll(credentials, tt3::ws::Capability::Administrator))
         {   //  See private tasks of all users
-            for (tt3::ws::User user : workspace->users(credentials))    //  may throw
+            for (const auto & user : workspace->users(credentials))    //  may throw
             {
                 workspaceModel->userModels.append(
                     _createUserModel(user, credentials, decorations));
@@ -353,7 +353,7 @@ auto PrivateTaskManager::_createUserModel(
         userModel->icon = user->type()->smallIcon();
         userModel->font = decorations.itemFont;
         //  Do the children
-        for (tt3::ws::PrivateTask privateTask : user->rootPrivateTasks(credentials))    //  may throw
+        for (const auto & privateTask : user->rootPrivateTasks(credentials))    //  may throw
         {
             userModel->privateTaskModels.append(
                 _createPrivateTaskModel(privateTask, credentials, decorations));
@@ -415,7 +415,7 @@ auto PrivateTaskManager::_createPrivateTaskModel(
             privateTaskModel->font = decorations.itemEmphasisFont;
         }
         //  Do the children
-        for (tt3::ws::PrivateTask child : privateTask->children(credentials)) //  may throw
+        for (const auto & child : privateTask->children(credentials)) //  may throw
         {
             privateTaskModel->childModels.append(
                 _createPrivateTaskModel(child, credentials, decorations));

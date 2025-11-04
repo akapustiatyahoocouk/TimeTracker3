@@ -195,7 +195,7 @@ void Event::_validate(
     {   //  OOPS!
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }
-    for (Activity * activity : _activities)
+    for (Activity * activity : qAsConst(_activities))
     {
         if (activity == nullptr || !activity->_isLive ||
             activity->_database != _database ||

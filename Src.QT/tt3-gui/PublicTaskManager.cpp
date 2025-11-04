@@ -298,7 +298,7 @@ auto PublicTaskManager::_createWorkspaceModel(
     auto workspaceModel = std::make_shared<_WorkspaceModelImpl>();
     try
     {
-        for (auto publicTask : workspace->rootPublicTasks(credentials))  //  may throw
+        for (const auto & publicTask : workspace->rootPublicTasks(credentials))  //  may throw
         {
             workspaceModel->publicTaskModels.append(
                 _createPublicTaskModel(publicTask, credentials, decorations));
@@ -355,7 +355,7 @@ auto PublicTaskManager::_createPublicTaskModel(
             publicTaskModel->font = decorations.itemEmphasisFont;
         }
         //  Do the children
-        for (tt3::ws::PublicTask child : publicTask->children(credentials)) //  may throw
+        for (const auto & child : publicTask->children(credentials)) //  may throw
         {
             publicTaskModel->childModels.append(
                 _createPublicTaskModel(child, credentials, decorations));

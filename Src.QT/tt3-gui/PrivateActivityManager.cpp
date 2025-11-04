@@ -274,7 +274,7 @@ auto PrivateActivityManager::_createWorkspaceModel(
     {
         if (workspace->grantsAll(credentials, tt3::ws::Capability::Administrator))
         {   //  See private activities of all users
-            for (tt3::ws::User user : workspace->users(credentials))    //  may throw
+            for (const auto & user : workspace->users(credentials))    //  may throw
             {
                 workspaceModel->userModels.append(
                     _createUserModel(user, credentials, decorations));
@@ -327,7 +327,7 @@ auto PrivateActivityManager::_createUserModel(
         userModel->icon = user->type()->smallIcon();
         userModel->font = decorations.itemFont;
         //  Do the children
-        for (tt3::ws::PrivateActivity privateActivity : user->privateActivities(credentials))    //  may throw
+        for (const auto & privateActivity : user->privateActivities(credentials))    //  may throw
         {
             userModel->privateActivityModels.append(
                 _createPrivateActivityModel(privateActivity, credentials, decorations));

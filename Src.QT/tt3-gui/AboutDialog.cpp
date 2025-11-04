@@ -111,7 +111,7 @@ void AboutDialog::_showLicensePushButtonClicked()
     //  Prepare the popup menu containing all applicable licenses
     delete _licensesPopupMenu;  //  delete nullptr is safe
     _licensesPopupMenu = new QMenu(this);
-    for (tt3::util::ILicense * license : _licenses)
+    for (tt3::util::ILicense * license : qAsConst(_licenses))
     {
         QAction * action = new QAction(license->smallIcon(), license->displayName());
         _licensesPopupMenu->addAction(action);

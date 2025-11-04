@@ -226,7 +226,7 @@ void QuickReportBrowser::_applyCurrentLocale()
                 return a->displayName() < b->displayName();
             });
         _ui->quickReportComboBox->clear();
-        for (IQuickReport * quickReport : quickReportsList)
+        for (IQuickReport * quickReport : qAsConst(quickReportsList))
         {
             _ui->quickReportComboBox->addItem(
                 quickReport->smallIcon(),

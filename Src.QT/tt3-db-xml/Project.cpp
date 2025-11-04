@@ -449,7 +449,7 @@ void Project::_validate(
             throw tt3::db::api::DatabaseCorruptException(_database->_address);
         }
     }
-    for (Project * child : _children)
+    for (Project * child : qAsConst(_children))
     {
         if (child == nullptr || !child->_isLive ||
             child->_database != _database ||

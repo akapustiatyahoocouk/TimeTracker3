@@ -267,7 +267,7 @@ auto PublicActivityManager::_createWorkspaceModel(
     auto workspaceModel = std::make_shared<_WorkspaceModelImpl>();
     try
     {
-        for (tt3::ws::PublicActivity publicActivity : workspace->publicActivities(credentials)) //  may throw
+        for (const auto & publicActivity : workspace->publicActivities(credentials)) //  may throw
         {
             workspaceModel->publicActivityModels.append(
                 _createPublicActivityModel(publicActivity, credentials, decorations));

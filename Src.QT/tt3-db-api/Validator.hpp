@@ -70,7 +70,7 @@ namespace tt3::db::api
                                     const QStringList & emailAddresses
                                 )
             {
-                for (QString emailAddress : emailAddresses)
+                for (const QString & emailAddress : emailAddresses)
                 {
                     if (!isValidEmailAddress(emailAddress))
                     {
