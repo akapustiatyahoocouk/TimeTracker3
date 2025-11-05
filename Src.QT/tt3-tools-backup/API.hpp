@@ -27,5 +27,6 @@
 #include "tt3-tools-backup/Components.hpp"
 
 #include "tt3-tools-backup/BackupTool.hpp"
+#include "tt3-tools-backup/SelectWorkspaceDialog.hpp"
 
 //  End of tt3-tools-backup/API.hpp

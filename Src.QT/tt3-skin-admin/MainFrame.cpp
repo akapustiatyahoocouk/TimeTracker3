@@ -215,7 +215,6 @@ void MainFrame::refresh()
     _ui->actionManageMyDay->setEnabled(workspace != nullptr);
     _ui->actionQuickReports->setEnabled(workspace != nullptr);
     _ui->actionRefresh->setEnabled(workspace != nullptr);
-    _ui->menuTools->setEnabled(workspace != nullptr);
     _ui->menuReports->setEnabled(workspace != nullptr);
     _refreshToolsMenuItemAvailability();
 
@@ -506,12 +505,58 @@ void MainFrame::_updateMruWorkspaces()
 void MainFrame::_refreshToolsMenu()
 {
     _ui->menuTools->clear();
-    //  TODO ...and refill
+    QList<tt3::util::ITool*> tools =
+        tt3::util::ToolManager::allTools().values();
+    std::sort(
+        tools.begin(),
+        tools.end(),
+        [](auto a, auto b)
+        {
+            return a->displayName() < b->displayName();
+        });
+    for (auto tool : qAsConst(tools))
+    {
+        QAction * action = new QAction(tool->smallIcon(), tool->displayName());
+        action->setData(QVariant::fromValue(tool));
+        _ui->menuTools->addAction(action);
+        connect(action,
+                &QAction::triggered,
+                this,
+                [&]()
+                {
+                    if (QAction * action = qobject_cast<QAction*>( sender()))
+                    {
+                        auto tool = action->data().value<tt3::util::ITool*>();
+                        try
+                        {
+                            tool->run(this);    //  may throw
+                        }
+                        catch (const tt3::util::Exception & ex)
+                        {
+                            qCritical() << ex;
+                            tt3::gui::ErrorDialog::show(this, ex);
+                        }
+                        refresh();
+                    }
+                });
+        //  TODO add signal handler
+    }
     _refreshToolsMenuItemAvailability();
 }
 
 void MainFrame::_refreshToolsMenuItemAvailability()
 {
+    bool someToolEnabled = false;
+    for (QAction * action : _ui->menuTools->actions())
+    {
+        auto tool = action->data().value<tt3::util::ITool*>();
+        action->setEnabled(tool->enabled());
+        if (tool->enabled())
+        {
+            someToolEnabled = true;
+        }
+    }
+    _ui->menuTools->setEnabled(someToolEnabled);
 }
 
 void MainFrame::_refreshCurrentActivityControls()

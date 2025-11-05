@@ -68,6 +68,23 @@ namespace tt3::util
         /// \return
         ///     The large (32x32) icon representing this tool.
         virtual QIcon       largeIcon() const = 0;
+
+        /// \brief
+        ///     Checks if this Tool is "enabled" (i.e. can be
+        ///     used) given the current state of the application.
+        /// \return
+        ///     True if this Tool is currently "enabled", else false.
+        virtual bool        enabled() const = 0;
+
+        /// \brief
+        ///     Runs the tool to completion (or error).
+        /// \param parent
+        ///     The widget to use as parent for any e.g. popup
+        ///     windows, dialogs, etc. that appear while the
+        ///     Tool is running; nullptr == select automatically.
+        /// \exception Exception
+        ///     If an error occurs running the tool.
+        virtual void        run(QWidget * parent) = 0;
     };
 
     /// \class ToolManager tt3-util/API.hpp

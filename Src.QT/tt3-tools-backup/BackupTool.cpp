@@ -54,4 +54,19 @@ QIcon BackupTool::largeIcon() const
     return icon;
 }
 
+bool BackupTool::enabled() const
+{
+    return true;
+}
+
+void BackupTool::run(QWidget * parent)
+{
+    SelectWorkspaceDialog dlg(parent);
+    if (dlg.doModal() != SelectWorkspaceDialog::Result::Ok)
+    {
+        return;
+    }
+    //  TODO implement
+}
+
 //  End of tt3-tools-backup/BackupTool.cpp
