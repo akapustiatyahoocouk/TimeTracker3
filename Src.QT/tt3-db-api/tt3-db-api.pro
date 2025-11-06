@@ -24,6 +24,7 @@ HEADERS += \
     Components.hpp \
     Database.hpp \
     DatabaseAddress.hpp \
+    DatabaseLock.hpp \
     DatabaseType.hpp \
     Event.hpp \
     Exceptions.hpp \

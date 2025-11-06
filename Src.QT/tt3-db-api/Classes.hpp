@@ -20,6 +20,7 @@ namespace tt3::db::api
     class TT3_DB_API_PUBLIC IDatabaseType;
     class TT3_DB_API_PUBLIC IDatabaseAddress;
     class TT3_DB_API_PUBLIC IDatabase;
+    class TT3_DB_API_PUBLIC IDatabaseLock;
     class TT3_DB_API_PUBLIC IObject;
     class TT3_DB_API_PUBLIC IPrincipal;
     class TT3_DB_API_PUBLIC IUser;

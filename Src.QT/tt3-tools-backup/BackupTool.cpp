@@ -61,12 +61,74 @@ bool BackupTool::enabled() const
 
 void BackupTool::run(QWidget * parent)
 {
-    SelectWorkspaceDialog dlg(parent);
-    if (dlg.doModal() != SelectWorkspaceDialog::Result::Ok)
+    //  Select workspace to backup
+    ConfigureBackupDialog dlg(parent);
+    if (dlg.doModal() != ConfigureBackupDialog::Result::Ok)
     {
         return;
     }
-    //  TODO implement
+    tt3::ws::WorkspaceAddress workspaceAddress = dlg.selectedWorkspaceAddress();
+    tt3::ws::Workspace workspace;
+    if (tt3::gui::theCurrentWorkspace != nullptr &&
+        tt3::gui::theCurrentWorkspace->address() == workspaceAddress)
+    {   //  Use current workspace
+        workspace = tt3::gui::theCurrentWorkspace;
+    }
+    else
+    {   //  Use custom workspace
+        workspace =
+            workspaceAddress->workspaceType()->openWorkspace(   //  may throw
+                workspaceAddress,
+                tt3::ws::OpenMode::ReadOnly);
+    }
+    //  Make sure we're using the Credentials that grant
+    //  the BackupAndRestore (or Administrator) capability
+    tt3::ws::Credentials credentials = tt3::gui::theCurrentCredentials;
+    while (!credentials.isValid() ||
+           !workspace->grantsAny(   //  may throw
+                credentials,
+                tt3::ws::Capability::Administrator |
+                tt3::ws::Capability::BackupAndRestore))
+    {   //  Need to use different credentials
+        tt3::gui::ChooseReloginDialog dlg1(parent, workspaceAddress);
+        if (dlg1.doModal() != tt3::gui::ChooseReloginDialog::Result::Yes)
+        {   //  Cleanup & abort
+            if (workspace != tt3::gui::theCurrentWorkspace.operator ->())
+            {
+                workspace->close();     //  may throw, but irrelevant at this point
+            }
+            return;
+        }
+        //  The user has confirmed they want to re-login
+        tt3::gui::LoginDialog dlg2(parent, QString());
+        if (dlg2.doModal() != tt3::gui::LoginDialog::Result::Ok)
+        {   //  Cleanup & abort
+            if (workspace != tt3::gui::theCurrentWorkspace.operator ->())
+            {
+                workspace->close();     //  may throw, but irrelevant at this point
+            }
+            return;
+        }
+        credentials = dlg2.credentials();
+    }
+    //  At this point, we have a) the workspace to backup
+    //  and b) the credentials that allow to do so
+    try
+    {
+        //  TODO do the work
+        //  Cleanup before returning
+        if (workspace != tt3::gui::theCurrentWorkspace.operator ->())
+        {
+            workspace->close();     //  may throw, but irrelevant at this point
+        }
+    }
+    catch (...)
+    {   //  Cleanup, then re-throw
+        if (workspace != tt3::gui::theCurrentWorkspace.operator ->())
+        {
+            workspace->close();     //  may throw, but irrelevant at this point
+        }
+    }
 }
 
 //  End of tt3-tools-backup/BackupTool.cpp

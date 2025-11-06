@@ -184,6 +184,7 @@ void Object::_ensureLiveAndWritable() const
 void Object::_makeDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
+    Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
     Q_ASSERT(_database->_liveObjects.contains(_oid));
 
@@ -198,7 +199,8 @@ void Object::_makeDead()
         new tt3::db::api::ObjectDestroyedNotification(
             _database, type(), _oid));
     //  Can we recycle now ?
-    if (_referenceCount == 0)
+    if (_referenceCount == 0 &&
+        _database->_activeDatabaseLocks.isEmpty())
     {   //  Yes!
         delete this;
     }

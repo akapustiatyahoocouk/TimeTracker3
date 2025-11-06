@@ -480,6 +480,35 @@ namespace tt3::db::api
                             ) -> IBeneficiary * = 0;
 
         //////////
+        //  Operations (locking)
+    public:
+        /// \brief
+        ///     Places a lock of the specified type on
+        ///     this database.
+        /// \details
+        ///     As guaranteed destruction of the locks is
+        ///     important for database consistency and overall
+        ///     operation, it is recommended that the returned
+        ///     value be immediately wrapped into std::unique_ptr.
+        /// \param lockType
+        ///     The required lock type.
+        /// \return
+        ///     The newly created DatabaseLock. The caller
+        ///     is responsible for destroyig it when the
+        ///     Lock needs to be released.
+        /// \param timeoutMs
+        ///     The timeouy, in milliseconds, to wait befpre
+        ///     giving up on a lock attempt; ULONG_MAX == wait
+        ///     forever.
+        /// \exception DatabaseException
+        ///     If an error occurs (including the situations when
+        ///     the locking attempr times out or would create a
+        ///     lock conflict).
+        virtual auto    lock(IDatabaseLock::LockType lockType,
+                                unsigned long timeoutMs = ULONG_MAX
+                            ) -> IDatabaseLock * = 0;
+
+        //////////
         //  Operations (change notification handling)
     public:
         /// \brief

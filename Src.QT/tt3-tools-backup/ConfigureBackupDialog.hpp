@@ -1,5 +1,5 @@
 //
-//  tt3-tools-backup/SelectWorkspaceDialog.hpp - The "select workspace to backup" dialog.
+//  tt3-tools-backup/ConfigureBackupDialog.hpp - The "select workspace to backup" dialog.
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,15 +19,15 @@
 
 namespace tt3::tools::backup
 {
-    namespace Ui { class SelectWorkspaceDialog; }
+    namespace Ui { class ConfigureBackupDialog; }
 
-    /// \class SelectWorkspaceDialog tt3-tools-backup/API.hpp
+    /// \class ConfigureBackupDialog tt3-tools-backup/API.hpp
     /// \brief The "select workspace to backup" dialog.
-    class TT3_TOOLS_BACKUP_PUBLIC SelectWorkspaceDialog final
+    class TT3_TOOLS_BACKUP_PUBLIC ConfigureBackupDialog final
         :   private QDialog
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(SelectWorkspaceDialog)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfigureBackupDialog)
 
         //////////
         //  Types
@@ -47,11 +47,11 @@ namespace tt3::tools::backup
         ///     Constructs the dialog.
         /// \param parent
         ///     The parent for the dialog; nullptr == none.
-        explicit SelectWorkspaceDialog(QWidget * parent);
+        explicit ConfigureBackupDialog(QWidget * parent);
 
         /// \brief
         ///     The class destructor.
-        virtual ~SelectWorkspaceDialog();
+        virtual ~ConfigureBackupDialog();
 
         //////////
         //  Operations
@@ -70,11 +70,20 @@ namespace tt3::tools::backup
         auto            selectedWorkspaceAddress(
                             ) const -> tt3::ws::WorkspaceAddress;
 
+        /// \brief
+        ///     Returns the backup destination selected by the user.
+        /// \details
+        ///     This is the full path of the file where backup shall be written.
+        /// \return
+        ///     The backup destination selected by the user.
+        QString         selectedBackupDestination() const;
+
         //////////
         //  Implementation
     private:
         tt3::ws::WorkspaceAddress   _customWorkspaceAddress = nullptr;  //  nullptr == not selected
         tt3::ws::WorkspaceAddress   _workspaceAddress = nullptr;  //  nullptr == not selected
+        QString         _backupDestination;
 
         //  Helpers
         void            _refresh();
@@ -87,7 +96,7 @@ namespace tt3::tools::backup
         //////////
         //  Controls
     private:
-        Ui::SelectWorkspaceDialog *const    _ui;
+        Ui::ConfigureBackupDialog *const    _ui;
 
         //////////
         //  Signal handlers
@@ -95,10 +104,11 @@ namespace tt3::tools::backup
         void            _workspaceSourceRadioButtonClicked();
         void            _workspaceTypeComboBoxCurrentIndexChanged(int);
         void            _browsePushButtonClicked();
+        void            _backupTpLineEditTextChanged(QString);
         virtual void    accept() override;
         virtual void    reject() override;
     };
 }
 
-//  End of tt3-tools-backup/SelectWorkspaceDialog.hpp
+//  End of tt3-tools-backup/ConfigureBackupDialog.hpp
 

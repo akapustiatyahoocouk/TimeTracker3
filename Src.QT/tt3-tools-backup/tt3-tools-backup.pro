@@ -5,15 +5,15 @@ DEFINES += TT3_TOOLS_BACKUP_LIBRARY
 SOURCES += \
     BackupTool.cpp \
     Component.cpp \
-    Plugins.cpp \
-    SelectWorkspaceDialog.cpp
+    ConfigureBackupDialog.cpp \
+    Plugins.cpp
 
 HEADERS += \
     API.hpp \
     BackupTool.hpp \
     Components.hpp \
-    Linkage.hpp \
-    SelectWorkspaceDialog.hpp
+    ConfigureBackupDialog.hpp \
+    Linkage.hpp
 
 PRECOMPILED_HEADER = API.hpp
 
@@ -21,7 +21,7 @@ RESOURCES += \
     tt3-tools-backup.qrc
 
 FORMS += \
-    SelectWorkspaceDialog.ui
+    ConfigureBackupDialog.ui
 
 LIBS += \
     -ltt3-gui$$TARGET_SUFFIX \

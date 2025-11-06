@@ -1,5 +1,5 @@
 //
-//  tt3-tools-backup/SelectWorkspaceDialog.cpp - tt3::tools::backup::SelectWorkspaceDialog class implementation
+//  tt3-tools-backup/ConfigureBackupDialog.cpp - tt3::tools::backup::ConfigureBackupDialog class implementation
 //  TODO translate via Resources
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,15 +15,15 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-tools-backup/API.hpp"
-#include "ui_SelectWorkspaceDialog.h"
+#include "ui_ConfigureBackupDialog.h"
 using namespace tt3::tools::backup;
 
 //////////
 //  Construction/destruction
-SelectWorkspaceDialog::SelectWorkspaceDialog(
+ConfigureBackupDialog::ConfigureBackupDialog(
         QWidget * parent
     ) : QDialog(parent),
-        _ui(new Ui::SelectWorkspaceDialog)
+        _ui(new Ui::ConfigureBackupDialog)
 {
     _ui->setupUi(this);
 
@@ -68,28 +68,33 @@ SelectWorkspaceDialog::SelectWorkspaceDialog(
     //  _ui->workspaceTypeComboBox->setFocus();
 }
 
-SelectWorkspaceDialog::~SelectWorkspaceDialog()
+ConfigureBackupDialog::~ConfigureBackupDialog()
 {
     delete _ui;
 }
 
 //////////
 //  Operations
-auto SelectWorkspaceDialog::doModal(
+auto ConfigureBackupDialog::doModal(
     ) -> Result
 {
     return Result(this->exec());
 }
 
-auto SelectWorkspaceDialog::selectedWorkspaceAddress(
+auto ConfigureBackupDialog::selectedWorkspaceAddress(
     ) const -> tt3::ws::WorkspaceAddress
 {
     return _workspaceAddress;
 }
 
+QString ConfigureBackupDialog::selectedBackupDestination() const
+{
+    return _backupDestination;
+}
+
 //////////
 //  Implementation helpers
-void SelectWorkspaceDialog::_refresh()
+void ConfigureBackupDialog::_refresh()
 {
     if (_ui->backupCurrentWorkspaceRadioButton->isChecked())
     {   //  Choosing the "current" workspace
@@ -98,7 +103,8 @@ void SelectWorkspaceDialog::_refresh()
         _ui->locationLabel->setEnabled(false);
         _ui->locationLineEdit->setEnabled(false);
         _ui->browsePushButton->setEnabled(false);
-        _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(true);
+        _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(
+            !_ui->backupToLineEdit->text().trimmed().isEmpty());
     }
     else
     {   //  Choosing the "custom" workspace
@@ -122,12 +128,14 @@ void SelectWorkspaceDialog::_refresh()
                 (_customWorkspaceAddress == nullptr) ?
                     "" :
                     _customWorkspaceAddress->displayForm());
-            _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(_customWorkspaceAddress != nullptr);
+            _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(
+                _customWorkspaceAddress != nullptr &&
+                !_ui->backupToLineEdit->text().trimmed().isEmpty());
         }
     }
 }
 
-auto SelectWorkspaceDialog::_selectedWorkspaceType(
+auto ConfigureBackupDialog::_selectedWorkspaceType(
     ) -> tt3::ws::WorkspaceType
 {
     return (_ui->workspaceTypeComboBox->currentIndex() >= 0) ?
@@ -135,7 +143,7 @@ auto SelectWorkspaceDialog::_selectedWorkspaceType(
                nullptr;
 }
 
-void SelectWorkspaceDialog::_setSelectedWorkspaceType(
+void ConfigureBackupDialog::_setSelectedWorkspaceType(
     tt3::ws::WorkspaceType workspaceType
     )
 {
@@ -151,12 +159,12 @@ void SelectWorkspaceDialog::_setSelectedWorkspaceType(
 
 //////////
 //  Signal handlers
-void SelectWorkspaceDialog::_workspaceSourceRadioButtonClicked()
+void ConfigureBackupDialog::_workspaceSourceRadioButtonClicked()
 {
     _refresh();
 }
 
-void SelectWorkspaceDialog::_workspaceTypeComboBoxCurrentIndexChanged(int)
+void ConfigureBackupDialog::_workspaceTypeComboBoxCurrentIndexChanged(int)
 {
     Q_ASSERT(_ui->workspaceTypeComboBox->currentIndex() != -1);
     Q_ASSERT(_selectedWorkspaceType() != nullptr);
@@ -168,7 +176,7 @@ void SelectWorkspaceDialog::_workspaceTypeComboBoxCurrentIndexChanged(int)
     _refresh();
 }
 
-void SelectWorkspaceDialog::_browsePushButtonClicked()
+void ConfigureBackupDialog::_browsePushButtonClicked()
 {
     Q_ASSERT(_ui->workspaceTypeComboBox->currentIndex() != -1);
     tt3::ws::WorkspaceType workspaceType =
@@ -182,7 +190,12 @@ void SelectWorkspaceDialog::_browsePushButtonClicked()
     }
 }
 
-void SelectWorkspaceDialog::accept()
+void ConfigureBackupDialog::_backupTpLineEditTextChanged(QString)
+{
+    _refresh();
+}
+
+void ConfigureBackupDialog::accept()
 {
     if (_ui->backupCurrentWorkspaceRadioButton->isChecked())
     {
@@ -194,12 +207,14 @@ void SelectWorkspaceDialog::accept()
         tt3::gui::Component::Settings::instance()->lastUsedWorkspaceType =
             _selectedWorkspaceType()->mnemonic();
     }
+    _backupDestination =
+        QFileInfo(_ui->backupToLineEdit->text().trimmed()).absoluteFilePath();
     done(int(Result::Ok));
 }
 
-void SelectWorkspaceDialog::reject()
+void ConfigureBackupDialog::reject()
 {
     done(int(Result::Cancel));
 }
 
-//  End of tt3-tools-backup/SelectWorkspaceDialog.cpp
+//  End of tt3-tools-backup/ConfigureBackupDialog.cpp

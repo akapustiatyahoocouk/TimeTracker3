@@ -42,6 +42,7 @@ namespace tt3::db::xml
         friend class Beneficiary;
         friend class Work;
         friend class Event;
+        friend class DatabaseLock;
 
         //////////
         //  Construction/destruction
@@ -176,6 +177,13 @@ namespace tt3::db::xml
                             ) -> tt3::db::api::IBeneficiary * override;
 
         //////////
+        //  IDatabase (locking)
+    public:
+        virtual auto    lock(tt3::db::api::IDatabaseLock::LockType lockType,
+                             unsigned long timeoutMs = ULONG_MAX
+                            ) -> tt3::db::api::IDatabaseLock * override;
+
+        //////////
         //  tt3::db::api::IDatabase (change notification handling)
     public:
         virtual auto    changeNotifier(
@@ -210,7 +218,7 @@ namespace tt3::db::xml
         WorkStreams         _workStreams;       //  count as "references"
         Beneficiaries       _beneficiaries;     //  count as "references"
 
-        //  Seconsary caches - these do NOT count as "references"
+        //  Secondary caches - these do NOT count as "references"
         QMap<tt3::db::api::Oid, Object*> _liveObjects;  //  All "live" objects
         QMap<tt3::db::api::Oid, Object*> _graveyard;    //  All "dead" objects
 
@@ -253,11 +261,15 @@ namespace tt3::db::xml
 
         tt3::db::api::ChangeNotifier    _changeNotifier;
 
+        //  Databas locking
+        QSet<DatabaseLock*> _activeDatabaseLocks;
+
         //  Helpers
         void                _ensureOpen() const;    //  throws tt3::db::api::DatabaseException
         void                _ensureOpenAndWritable() const; //  throws tt3::db::api::DatabaseException
         void                _markModified();
         void                _markClosed();
+        void                _clearOrphanedDatabaseLocks();
         tt3::db::api::Oid   _generateOid();
         Account *           _findAccount(const QString & login) const;
         ActivityType *      _findActivityType(const QString & displayName) const;

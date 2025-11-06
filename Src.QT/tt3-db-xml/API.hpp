@@ -29,6 +29,7 @@
 
 #include "tt3-db-xml/DatabaseType.hpp"
 #include "tt3-db-xml/DatabaseAddress.hpp"
+#include "tt3-db-xml/DatabaseLock.hpp"
 #include "tt3-db-xml/Database.hpp"
 
 #include "tt3-db-xml/Object.hpp"

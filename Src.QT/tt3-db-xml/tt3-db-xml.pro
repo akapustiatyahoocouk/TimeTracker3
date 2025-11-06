@@ -11,6 +11,7 @@ SOURCES += \
     Component.cpp \
     Database.cpp \
     DatabaseAddress.cpp \
+    DatabaseLock.cpp \
     DatabaseType.cpp \
     Event.cpp \
     Object.cpp \
@@ -37,6 +38,7 @@ HEADERS += \
     Components.hpp \
     Database.hpp \
     DatabaseAddress.hpp \
+    DatabaseLock.hpp \
     DatabaseType.hpp \
     Event.hpp \
     Linkage.hpp \

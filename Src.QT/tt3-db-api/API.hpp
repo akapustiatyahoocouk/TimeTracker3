@@ -29,6 +29,7 @@
 #include "tt3-db-api/Validator.hpp"
 #include "tt3-db-api/DatabaseType.hpp"
 #include "tt3-db-api/DatabaseAddress.hpp"
+#include "tt3-db-api/DatabaseLock.hpp"
 #include "tt3-db-api/Database.hpp"
 #include "tt3-db-api/Capabilities.hpp"
 
