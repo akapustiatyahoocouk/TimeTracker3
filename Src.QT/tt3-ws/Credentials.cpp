@@ -72,4 +72,20 @@ int Credentials::compare2(const BackupCredentials & op2) const
     return typeid(*this).before(typeid(op2)) ? -1 : 1;  //  can't be equal!
 }
 
+int Credentials::compare2(const RestoreCredentials & op2) const
+{   //  Credentialc <=> RestoreCredentials
+    Q_ASSERT(typeid(*this) == typeid(Credentials));
+    Q_ASSERT(typeid(op2) == typeid(RestoreCredentials));
+
+    return typeid(*this).before(typeid(op2)) ? -1 : 1;  //  can't be equal!
+}
+
+int Credentials::compare2(const ReportCredentials & op2) const
+{   //  Credentialc <=> ReportCredentials
+    Q_ASSERT(typeid(*this) == typeid(Credentials));
+    Q_ASSERT(typeid(op2) == typeid(ReportCredentials));
+
+    return typeid(*this).before(typeid(op2)) ? -1 : 1;  //  can't be equal!
+}
+
 //  End of tt3-ws/Credentials.cpp

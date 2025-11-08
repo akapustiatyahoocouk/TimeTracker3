@@ -20,6 +20,8 @@ SOURCES += \
     ProjectImpl.cpp \
     PublicActivityImpl.cpp \
     PublicTaskImpl.cpp \
+    ReportCredentials.cpp \
+    RestoreCredentials.cpp \
     TaskImpl.cpp \
     UserImpl.cpp \
     WorkImpl.cpp \

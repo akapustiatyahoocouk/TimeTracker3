@@ -698,7 +698,7 @@ namespace tt3::ws
         mutable QMap<Oid, Object>   _proxyCache;
 
         //  Special access caches
-        QMap<BackupCredentials, tt3::db::api::IDatabaseLock*>   _backupCredentials;
+        mutable QMap<BackupCredentials, tt3::db::api::IDatabaseLock*>   _backupCredentials;
 
         //  Helpers
         void        _ensureOpen() const;    //  throws WorkspaceException
@@ -749,6 +749,31 @@ namespace tt3::ws
         auto        _getProxy(  //  throws WorkspaceException
                             tt3::db::api::IEvent * dataEvent
                         ) const -> Event;
+
+        bool        _isBackupCredentials(const Credentials & credentials) const
+        {
+            Q_ASSERT(_guard.isLockedByCurrentThread());
+
+            if (!_backupCredentials.isEmpty())
+            {   //  The "if" takes fast care of most accsses
+                if (auto backupCredentialsPtr =
+                    dynamic_cast<const BackupCredentials*>(&credentials))
+                {
+                    if (_backupCredentials.contains(*backupCredentialsPtr))
+                    {   //  Cached...
+                        if (QDateTime::currentDateTimeUtc() > backupCredentialsPtr->_expireAt)
+                        {   //  ...but expired
+                            delete _backupCredentials[*backupCredentialsPtr];  //  release the Read lock
+                            _backupCredentials.remove(*backupCredentialsPtr);
+                            return false;
+                        }
+                        //  ...and not yet expired
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
 
         //////////
         //  Event handlers

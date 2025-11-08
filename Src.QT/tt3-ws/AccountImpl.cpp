@@ -523,6 +523,10 @@ bool AccountImpl::_canRead(
 
     try
     {
+        if (_workspace->_isBackupCredentials(credentials))
+        {   //  Can read any accounts
+            return true;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         if (clientCapabilities.contains(Capability::Administrator) ||
             clientCapabilities.contains(Capability::ManageUsers))

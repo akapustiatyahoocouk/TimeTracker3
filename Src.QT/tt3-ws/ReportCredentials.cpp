@@ -1,5 +1,5 @@
 //
-//  tt3-ws/BackupCredentials.cpp - tt3::ws::BackupCredentials class implementation
+//  tt3-ws/ReportCredentials.cpp - tt3::ws::ReportCredentials class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,11 +15,11 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-ws/API.hpp"
-using namespace tt3::ws;
+    using namespace tt3::ws;
 
 //////////
 //  Construction/destruction/assignment
-BackupCredentials::BackupCredentials(
+ReportCredentials::ReportCredentials(
         const QString & login,
         const QString & password,
         const QDateTime & issuedAt,
@@ -32,7 +32,7 @@ BackupCredentials::BackupCredentials(
 
 //////////
 //  Credentials
-bool BackupCredentials::isValid() const
+bool ReportCredentials::isValid() const
 {
     return Credentials::isValid() &&
            _issuedAt.isValid() && _expireAt.isValid();
@@ -40,23 +40,39 @@ bool BackupCredentials::isValid() const
 
 //////////
 //  Comparison and order
-int BackupCredentials::compare(const Credentials & op2) const
+int ReportCredentials::compare(const Credentials & op2) const
 {
     return -op2.compare2(*this);
 }
 
-int BackupCredentials::compare2(const Credentials & op2) const
-{   //  BackupCredentials <=> Credentials
-    Q_ASSERT(typeid(*this) == typeid(BackupCredentials));
+int ReportCredentials::compare2(const Credentials & op2) const
+{   //  ReportCredentials <=> Credentials
+    Q_ASSERT(typeid(*this) == typeid(ReportCredentials));
     Q_ASSERT(typeid(op2) == typeid(Credentials));
 
     return typeid(*this).before(typeid(op2)) ? -1 : 1;  //  can't be equal!
 }
 
-int BackupCredentials::compare2(const BackupCredentials & op2) const
-{   //  BackupCredentials <=> BackupCredentials
-    Q_ASSERT(typeid(*this) == typeid(BackupCredentials));
+int ReportCredentials::compare2(const BackupCredentials & op2) const
+{   //  ReportCredentials <=> BackupCredentials
+    Q_ASSERT(typeid(*this) == typeid(ReportCredentials));
     Q_ASSERT(typeid(op2) == typeid(BackupCredentials));
+
+    return typeid(*this).before(typeid(op2)) ? -1 : 1;  //  can't be equal!
+}
+
+int ReportCredentials::compare2(const RestoreCredentials & op2) const
+{   //  ReportCredentials <=> RestoreCredentials
+    Q_ASSERT(typeid(*this) == typeid(ReportCredentials));
+    Q_ASSERT(typeid(op2) == typeid(RestoreCredentials));
+
+    return typeid(*this).before(typeid(op2)) ? -1 : 1;  //  can't be equal!
+}
+
+int ReportCredentials::compare2(const ReportCredentials & op2) const
+{   //  ReportCredentials <=> ReportCredentials
+    Q_ASSERT(typeid(*this) == typeid(ReportCredentials));
+    Q_ASSERT(typeid(op2) == typeid(ReportCredentials));
 
     if (_login < op2._login)
     {
@@ -96,20 +112,4 @@ int BackupCredentials::compare2(const BackupCredentials & op2) const
     return 0;
 }
 
-int BackupCredentials::compare2(const RestoreCredentials & op2) const
-{   //  BackupCredentials <=> RestoreCredentials
-    Q_ASSERT(typeid(*this) == typeid(BackupCredentials));
-    Q_ASSERT(typeid(op2) == typeid(RestoreCredentials));
-
-    return typeid(*this).before(typeid(op2)) ? -1 : 1;  //  can't be equal!
-}
-
-int BackupCredentials::compare2(const ReportCredentials & op2) const
-{   //  BackupCredentials <=> ReportCredentials
-    Q_ASSERT(typeid(*this) == typeid(BackupCredentials));
-    Q_ASSERT(typeid(op2) == typeid(ReportCredentials));
-
-    return typeid(*this).before(typeid(op2)) ? -1 : 1;  //  can't be equal!
-}
-
-//  End of tt3-ws/bACKUPCredentials.cpp
+//  End of tt3-ws/ReportCredentials.cpp

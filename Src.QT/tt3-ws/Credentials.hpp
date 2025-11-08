@@ -31,6 +31,8 @@ namespace tt3::ws
         friend class EventImpl;
 
         friend class BackupCredentials;
+        friend class RestoreCredentials;
+        friend class ReportCredentials;
 
         //////////
         //  Constats
@@ -171,6 +173,7 @@ namespace tt3::ws
         ///     on whether these Credentials are "less then",
         ///     "equal to" or "greater then" the 2ns Credentials.
         virtual int     compare(const Credentials & op2) const;
+
     protected:
         /// \brief
         ///     Compares these Credentials with another Credentials.
@@ -196,6 +199,30 @@ namespace tt3::ws
         ///     "equal to" or "greater then" the 2ns Credentials.
         virtual int     compare2(const BackupCredentials & op2) const;
 
+        /// \brief
+        ///     Compares these Credentials with another Credentials.
+        /// \details
+        ///     This is an implementation of a compare-via-double-dispatch.
+        /// \param op2
+        ///     The 2nd Credentials to compare these Credentials to.
+        /// \return
+        ///     A negative, zero or positive value, depending
+        ///     on whether these Credentials are "less then",
+        ///     "equal to" or "greater then" the 2ns Credentials.
+        virtual int     compare2(const RestoreCredentials & op2) const;
+
+        /// \brief
+        ///     Compares these Credentials with another Credentials.
+        /// \details
+        ///     This is an implementation of a compare-via-double-dispatch.
+        /// \param op2
+        ///     The 2nd Credentials to compare these Credentials to.
+        /// \return
+        ///     A negative, zero or positive value, depending
+        ///     on whether these Credentials are "less then",
+        ///     "equal to" or "greater then" the 2ns Credentials.
+        virtual int     compare2(const ReportCredentials & op2) const;
+
         //////////
         //  Implementation
     private:
@@ -213,6 +240,8 @@ namespace tt3::ws
     class TT3_WS_PUBLIC BackupCredentials final
         :   public Credentials
     {
+        friend class WorkspaceImpl;
+
         //////////
         //  Construction/destruction/assignment
     public:
@@ -349,6 +378,314 @@ namespace tt3::ws
     protected:
         virtual int     compare2(const Credentials & op2) const override;
         virtual int     compare2(const BackupCredentials & op2) const override;
+        virtual int     compare2(const RestoreCredentials & op2) const override;
+        virtual int     compare2(const ReportCredentials & op2) const override;
+
+        //////////
+        //  Implementation
+    private:
+        QDateTime       _issuedAt;  //  UTC
+        QDateTime       _expireAt;  //  UTC
+    };
+
+    /// \class RestoreCredentials tt3-ws/API.hpp
+    /// \brief Special credentials that allow restoring a database.
+    class TT3_WS_PUBLIC RestoreCredentials final
+        :   public Credentials
+    {
+        friend class WorkspaceImpl;
+
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        /// \brief
+        ///     Constructs an invalid restoreCredentials.
+        RestoreCredentials();
+
+        /// \brief
+        ///     Constructs the credentials.
+        /// \param login
+        ///     The login identifier.
+        /// \param password
+        ///     The password.
+        /// \param issuedAt
+        ///     The UTC date+time when these RestoreCredentials were issued.
+        /// \param expireAt
+        ///     The UTC date+time when these RestoreCredentials will expire.
+        RestoreCredentials(
+                const QString & login,
+                const QString & password,
+                const QDateTime & issuedAt,
+                const QDateTime & expireAt
+            );
+
+        //  The default destructor, copy constructor and
+        //  assignment operators are all OK
+
+        //////////
+        //  Operators
+    public:
+        /// \brief
+        ///     Checks two RestoreCredentials for equality.
+        /// \details
+        ///     Two RestoreCredentials are equal if all their details are equal.
+        /// \param op2
+        ///     The RestoreCredentials to compare this RestoreCredentials yo.
+        /// \return
+        ///     True if thw two RestoreCredentials are equal, else false.
+        bool            operator == (const RestoreCredentials & op2) const
+        {
+            return compare(op2) == 0;
+        }
+
+        /// \brief
+        ///     Checks two RestoreCredentials for inequality.
+        /// \details
+        ///     Two RestoreCredentials are equal if all their details are equal.
+        /// \param op2
+        ///     The RestoreCredentials to compare this RestoreCredentials yo.
+        /// \return
+        ///     False if thw two RestoreCredentials are equal, else true.
+        bool            operator != (const RestoreCredentials & op2) const
+        {
+            return compare(op2) != 0;
+        }
+
+        /// \brief
+        ///     Checks two RestoreCredentials for order.
+        /// \param op2
+        ///     The 2nd RestoreCredentials to compare this RestoreCredentials to.
+        /// \return
+        ///     True if this RestoreCredentials is lexicographically
+        ///     "less than" the 2nd C5redentials, else false.
+        bool            operator <  (const RestoreCredentials & op2) const
+        {
+            return compare(op2) < 0;
+        }
+
+        /// \brief
+        ///     Checks two RestoreCredentials for order.
+        /// \param op2
+        ///     The 2nd RestoreCredentials to compare this RestoreCredentials to.
+        /// \return
+        ///     True if this RestoreCredentials is lexicographically
+        ///     "less than or equal to" the 2nd C5redentials, else false.
+        bool            operator <= (const RestoreCredentials & op2) const
+        {
+            return compare(op2) <= 0;
+        }
+
+        /// \brief
+        ///     Checks two RestoreCredentials for order.
+        /// \param op2
+        ///     The 2nd RestoreCredentials to compare this RestoreCredentials to.
+        /// \return
+        ///     True if this RestoreCredentials is lexicographically
+        ///     "greater than" the 2nd C5redentials, else false.
+        bool            operator >  (const RestoreCredentials & op2) const
+        {
+            return compare(op2) > 0;
+        }
+
+        /// \brief
+        ///     Checks two RestoreCredentials for order.
+        /// \param op2
+        ///     The 2nd RestoreCredentials to compare this RestoreCredentials to.
+        /// \return
+        ///     True if this RestoreCredentials is lexicographically
+        ///     "greater than or equal to" the 2nd C5redentials, else false.
+        bool            operator >= (const RestoreCredentials & op2) const
+        {
+            return compare(op2) >= 0;
+        }
+
+        //////////
+        //  Credentials
+    public:
+        /// \brief
+        ///     Checks whether these Credentials are "valid"
+        ///     (its the "login" is not empty.
+        /// \return
+        ///     True if this Credentials are "vaolid" else false.
+        virtual bool    isValid() const override;
+
+        //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Returns the UTC date+time when these RestoreCredentials were issued.
+        /// \return
+        ///     The UTC date+time when these RestoreCredentials were issued.
+        QDateTime       issuedAt() const { return _issuedAt; }
+
+        /// \brief
+        ///     Returns the UTC date+time when these RestoreCredentials will expire.
+        /// \return
+        ///     The UTC date+time when these RestoreCredentials will expire.
+        QDateTime       expireAt() const { return _expireAt; }
+
+        //////////
+        //  Comparison and order
+    public:
+        virtual int     compare(const Credentials & op2) const override;
+    protected:
+        virtual int     compare2(const Credentials & op2) const override;
+        virtual int     compare2(const BackupCredentials & op2) const override;
+        virtual int     compare2(const RestoreCredentials & op2) const override;
+        virtual int     compare2(const ReportCredentials & op2) const override;
+
+        //////////
+        //  Implementation
+    private:
+        QDateTime       _issuedAt;  //  UTC
+        QDateTime       _expireAt;  //  UTC
+    };
+
+    /// \class ReportCredentials tt3-ws/API.hpp
+    /// \brief Special credentials that allow reporting from a database.
+    class TT3_WS_PUBLIC ReportCredentials final
+        :   public Credentials
+    {
+        friend class WorkspaceImpl;
+
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        /// \brief
+        ///     Constructs an invalid ReportCredentials.
+        ReportCredentials();
+
+        /// \brief
+        ///     Constructs the credentials.
+        /// \param login
+        ///     The login identifier.
+        /// \param password
+        ///     The password.
+        /// \param issuedAt
+        ///     The UTC date+time when these ReportCredentials were issued.
+        /// \param expireAt
+        ///     The UTC date+time when these ReportCredentials will expire.
+        ReportCredentials(
+                const QString & login,
+                const QString & password,
+                const QDateTime & issuedAt,
+                const QDateTime & expireAt
+            );
+
+        //  The default destructor, copy constructor and
+        //  assignment operators are all OK
+
+        //////////
+        //  Operators
+    public:
+        /// \brief
+        ///     Checks two ReportCredentials for equality.
+        /// \details
+        ///     Two ReportCredentials are equal if all their details are equal.
+        /// \param op2
+        ///     The ReportCredentials to compare this ReportCredentials yo.
+        /// \return
+        ///     True if thw two ReportCredentials are equal, else false.
+        bool            operator == (const ReportCredentials & op2) const
+        {
+            return compare(op2) == 0;
+        }
+
+        /// \brief
+        ///     Checks two ReportCredentials for inequality.
+        /// \details
+        ///     Two ReportCredentials are equal if all their details are equal.
+        /// \param op2
+        ///     The ReportCredentials to compare this ReportCredentials yo.
+        /// \return
+        ///     False if thw two ReportCredentials are equal, else true.
+        bool            operator != (const ReportCredentials & op2) const
+        {
+            return compare(op2) != 0;
+        }
+
+        /// \brief
+        ///     Checks two ReportCredentials for order.
+        /// \param op2
+        ///     The 2nd ReportCredentials to compare this ReportCredentials to.
+        /// \return
+        ///     True if this ReportCredentials is lexicographically
+        ///     "less than" the 2nd C5redentials, else false.
+        bool            operator <  (const ReportCredentials & op2) const
+        {
+            return compare(op2) < 0;
+        }
+
+        /// \brief
+        ///     Checks two ReportCredentials for order.
+        /// \param op2
+        ///     The 2nd ReportCredentials to compare this ReportCredentials to.
+        /// \return
+        ///     True if this ReportCredentials is lexicographically
+        ///     "less than or equal to" the 2nd C5redentials, else false.
+        bool            operator <= (const ReportCredentials & op2) const
+        {
+            return compare(op2) <= 0;
+        }
+
+        /// \brief
+        ///     Checks two ReportCredentials for order.
+        /// \param op2
+        ///     The 2nd ReportCredentials to compare this ReportCredentials to.
+        /// \return
+        ///     True if this ReportCredentials is lexicographically
+        ///     "greater than" the 2nd C5redentials, else false.
+        bool            operator >  (const ReportCredentials & op2) const
+        {
+            return compare(op2) > 0;
+        }
+
+        /// \brief
+        ///     Checks two ReportCredentials for order.
+        /// \param op2
+        ///     The 2nd ReportCredentials to compare this ReportCredentials to.
+        /// \return
+        ///     True if this ReportCredentials is lexicographically
+        ///     "greater than or equal to" the 2nd C5redentials, else false.
+        bool            operator >= (const ReportCredentials & op2) const
+        {
+            return compare(op2) >= 0;
+        }
+
+        //////////
+        //  Credentials
+    public:
+        /// \brief
+        ///     Checks whether these Credentials are "valid"
+        ///     (its the "login" is not empty.
+        /// \return
+        ///     True if this Credentials are "vaolid" else false.
+        virtual bool    isValid() const override;
+
+        //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Returns the UTC date+time when these ReportCredentials were issued.
+        /// \return
+        ///     The UTC date+time when these ReportCredentials were issued.
+        QDateTime       issuedAt() const { return _issuedAt; }
+
+        /// \brief
+        ///     Returns the UTC date+time when these ReportCredentials will expire.
+        /// \return
+        ///     The UTC date+time when these ReportCredentials will expire.
+        QDateTime       expireAt() const { return _expireAt; }
+
+        //////////
+        //  Comparison and order
+    public:
+        virtual int     compare(const Credentials & op2) const override;
+    protected:
+        virtual int     compare2(const Credentials & op2) const override;
+        virtual int     compare2(const BackupCredentials & op2) const override;
+        virtual int     compare2(const RestoreCredentials & op2) const override;
+        virtual int     compare2(const ReportCredentials & op2) const override;
 
         //////////
         //  Implementation
