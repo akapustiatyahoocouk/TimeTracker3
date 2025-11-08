@@ -17,6 +17,15 @@
 
 namespace tt3::ws
 {
+    //////////
+    //  Comparing and ordering
+    TT3_WS_PUBLIC bool operator == (const Credentials & a, const Credentials & b);
+    TT3_WS_PUBLIC bool operator != (const Credentials & a, const Credentials & b);
+    TT3_WS_PUBLIC bool operator <  (const Credentials & a, const Credentials & b);
+    TT3_WS_PUBLIC bool operator <= (const Credentials & a, const Credentials & b);
+    TT3_WS_PUBLIC bool operator >  (const Credentials & a, const Credentials & b);
+    TT3_WS_PUBLIC bool operator >= (const Credentials & a, const Credentials & b);
+
     /// \class Credentials tt3-ws/API.hpp
     /// \brief The login credentials.
     class TT3_WS_PUBLIC Credentials
@@ -29,6 +38,9 @@ namespace tt3::ws
         friend class PrivateActivityImpl;
         friend class WorkImpl;
         friend class EventImpl;
+
+        friend bool tt3::ws::operator == (const Credentials & a, const Credentials & b);
+        friend bool tt3::ws::operator <  (const Credentials & a, const Credentials & b);
 
         //////////
         //  Constats
@@ -66,6 +78,7 @@ namespace tt3::ws
         //////////
         //  Operators
     public:
+        /*  TODO kill off
         /// \brief
         ///     Checks two Credentials for equality.
         /// \details
@@ -121,6 +134,7 @@ namespace tt3::ws
         ///     True if this Credentials is lexicographically
         ///     "greater than or equal to" the 2nd C5redentials, else false.
         bool            operator >= (const Credentials & op2) const;
+        */
 
         //////////
         //  Operations
@@ -156,6 +170,9 @@ namespace tt3::ws
     class TT3_WS_PUBLIC BackupCredentials
         :   public Credentials
     {
+        friend bool tt3::ws::operator == (const Credentials & a, const Credentials & b);
+        friend bool tt3::ws::operator <  (const Credentials & a, const Credentials & b);
+
         //////////
         //  Construction/destruction/assignment
     public:
@@ -174,6 +191,7 @@ namespace tt3::ws
         //////////
         //  Operators
     public:
+        /*  TODO kill off
         /// \brief
         ///     Checks two BackupCredentials for equality.
         /// \details
@@ -229,6 +247,7 @@ namespace tt3::ws
         ///     True if this BackupCredentials is lexicographically
         ///     "greater than or equal to" the 2nd C5redentials, else false.
         bool            operator >= (const BackupCredentials & op2) const;
+        */
 
         //////////
         //  Credentials

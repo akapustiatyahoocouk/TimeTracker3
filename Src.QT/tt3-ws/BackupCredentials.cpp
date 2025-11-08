@@ -32,6 +32,7 @@ BackupCredentials::BackupCredentials(
 
 //////////
 //  Operators
+/*  TODO kill off
 bool BackupCredentials::operator == (const BackupCredentials & op2) const
 {
     return Credentials::operator == (op2) ? //  types are equal on true!
@@ -81,6 +82,7 @@ bool BackupCredentials::operator >= (const BackupCredentials & op2) const
 {
     return !(*this < op2);
 }
+*/
 
 //////////
 //  Credentials
