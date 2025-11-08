@@ -21,24 +21,21 @@ using namespace tt3::db::xml;
 //  Construction/destruction
 DatabaseLock::DatabaseLock(
         Database * database,
-        LockType lockType,
-        QThread * lockingThread
+        LockType lockType
     ) : _database(database),
-        _lockType(lockType),
-        _lockingThread(lockingThread)
+        _lockType(lockType)
 {
     Q_ASSERT(_database != nullptr);
-    Q_ASSERT(_lockingThread != nullptr);
 }
 
 DatabaseLock::~DatabaseLock()
 {
-    if (_database != nullptr)
-    {   //  This lock is NOT stale
-        tt3::util::Lock _(_database->_guard);
-        _database->_activeDatabaseLocks.remove(this);
-        _database->_clearOrphanedDatabaseLocks();
-        //  No need to crear _database or _lockingThread
+    if (Database * database = _database)
+    {   //  This lock is NOT stale. The atomicity of access
+        //  is ensured by _database being std::atomic
+        tt3::util::Lock _(database->_guard);
+        database->_activeDatabaseLocks.remove(this);
+        database->_clearOrphanedDatabaseLocks();
     }
 }
 

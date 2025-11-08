@@ -163,7 +163,7 @@ namespace tt3::util
             //////////
             //  Implementation
         private:
-            class TT3_UTIL_PUBLIC _Builder
+            class TT3_UTIL_PUBLIC _Builder final
                 :   public Builder
             {
                 CANNOT_ASSIGN_OR_COPY_CONSTRUCT(_Builder)

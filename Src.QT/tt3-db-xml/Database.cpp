@@ -237,7 +237,6 @@ void Database::close()
     for (DatabaseLock * databaseLock : qAsConst(_activeDatabaseLocks))
     {
         databaseLock->_database = nullptr;
-        databaseLock->_lockingThread = nullptr;
     }
     _activeDatabaseLocks.clear();
 
@@ -1218,77 +1217,34 @@ auto Database::lock(
     QDateTime giveUpAt = startedAt.addMSecs(
         (timeoutMs > LONG_MAX) ? LONG_MAX : timeoutMs);
 
-    QThread * currentThread = QThread::currentThread();
-    //  Keep trying until timeout
-    do
+    QThread::yieldCurrentThread();  //  give other threads a chance
+    tt3::util::Lock _(_guard);  //  lock manipulation needs to be guarded
+
+    DatabaseLock * databaseLock;
+    switch (lockType)
     {
-        QThread::yieldCurrentThread();  //  give other threads a chance
-        tt3::util::Lock _(_guard);  //  lock manipulation needs to be guarded
-
-        switch (lockType)
-        {
-            case tt3::db::api::IDatabaseLock::LockType::ReadOnly:
-                {
-                    _ensureOpen();   //  may throw
-                    //  If there are no Write locks from a different
-                    //  thread, we CAN place a new Read lock for the
-                    //  current thread
-                    bool conflictingLocksExist = false;
-                    if (!_activeDatabaseLocks.isEmpty())
-                    {
-                        for (DatabaseLock * databaseLock : qAsConst(_activeDatabaseLocks))
-                        {
-                            if (databaseLock->_lockType == DatabaseLock::LockType::ReadWrite &&
-                                databaseLock->_lockingThread != currentThread)
-                            {   //  OOPS!
-                                conflictingLocksExist = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (!conflictingLocksExist)
-                    {   //  We're good to go!
-                        DatabaseLock * databaseLock =
-                            new DatabaseLock(this, DatabaseLock::LockType::ReadOnly, currentThread);
-                        _activeDatabaseLocks.insert(databaseLock);
-                        return databaseLock;
-                    }   //  Otherwise keep waiting
-                }
-                break;
-            case tt3::db::api::IDatabaseLock::LockType::ReadWrite:
-            default:    //  be defensive
-                {
-                    _ensureOpenAndWritable();   //  may throw
-                    //  If there are no locks from threads other than
-                    //  the current thread, we can place a Write lock
-                    //  for the current thread
-                    bool conflictingLocksExist = false;
-                    if (!_activeDatabaseLocks.isEmpty())
-                    {
-                        for (DatabaseLock * databaseLock : qAsConst(_activeDatabaseLocks))
-                        {
-                            if (databaseLock->_lockingThread != currentThread)
-                            {   //  OOPS!
-                                conflictingLocksExist = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (!conflictingLocksExist)
-                    {   //  We're good to go!
-                        DatabaseLock * databaseLock =
-                            new DatabaseLock(this, DatabaseLock::LockType::ReadWrite, currentThread);
-                        _activeDatabaseLocks.insert(databaseLock);
-                        return databaseLock;
-                    }   //  Otherwise keep waiting
-                }
-                break;
-        }
-    }   while (QDateTime::currentDateTimeUtc() < giveUpAt);
-    //  OOPS! Lock timeout!
-    //  TODO throw
-
-    throw tt3::db::api::CustomDatabaseException("Not yet implemented");
+        case tt3::db::api::IDatabaseLock::LockType::Read:
+            _ensureOpen();   //  may throw
+            //  Any existing DatabaseLock would have been
+            //  placed by the same process.
+             databaseLock = new DatabaseLock(this, lockType);
+            break;
+        case tt3::db::api::IDatabaseLock::LockType::Write:
+            _ensureOpenAndWritable();   //  may throw
+            //  Any existing DatabaseLock would have been
+            //  placed by the same process.
+            databaseLock = new DatabaseLock(this, lockType);
+            break;
+        default:    //  OOPS!
+            Q_ASSERT(false);
+            //  Be defensive in release mode
+            databaseLock =
+                new DatabaseLock(this, DatabaseLock::LockType::Read);
+            break;
+    }
+    //  Register the lock & we're done
+    _activeDatabaseLocks.insert(databaseLock);
+    return databaseLock;
 }
 
 //////////

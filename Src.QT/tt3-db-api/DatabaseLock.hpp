@@ -20,31 +20,36 @@ namespace tt3::db::api
     /// \class IDatabaseLock tt3-db-api/API.hpp
     /// \brief Represents a whole-database lock.
     /// \details
+    ///     Locks are granted to processes, not threads.
+    ///     Access to the database from within different threads
+    ///     of the same process are syncheonized internally.
+    ///
     ///     While the database is "locked" by one process,
-    ///     another process may place a non-onflicting lock
+    ///     another process may place a non-conflicting lock
     ///     on it. While the database is "locked" (and regardless
     ///     of the lock type) thr datbase object recycling is
     ///     temporarily suspended, even if the object becomes
     ///     Old. This means that all pointers to objects that
     ///     reside in the database remain valid until the lock
     ///     is released.
+    ///
     ///     Database locks are useful for backup, restore and
     ///     reporting purposes.
     ///
     /// *   If a Database has no Locks placed upon it, then
-    ///     all operations by any thread of any process accessing
-    ///     the database are permitted (subject to the Database
-    ///     itself being read-only).
+    ///     all operations by any process accessing the database
+    ///     are permitted (subject to the Database itself being
+    ///     read-only).
     /// *   If a Database has only Read locks placed on it,
-    ///     then these can belong to any thread of any process.
-    ///     Any thread of any process can read from the database;
-    ///     threads that attempt to write to the database will stall
-    ///     will stall until all Write locks are released.
+    ///     then these can belong to any process. Any process can
+    ///     read from the database; procsses that attempt to write
+    ///     to the database will stall will stall until all Write
+    ///     locks are released.
     /// *   If a atabase has at least one Write lock placed on it, then
-    ///     all its locks must belong to the same thread of the same Process.
-    ///     Only this thread will be allowed to read and write from/to
-    ///     the Database; all other threads and processes will stall
-    ///     until all Write locks are released.
+    ///     all its locks (Read AND Write) must belong to the same process.
+    ///     Only this process will be allowed to read and write from/to
+    ///     the Database; all other processes will stall until all
+    ///     Write locks are released.
     ///
     /// If a database is closed (or deleted) while it is
     /// "locked", all locks become "orphan locks" which are
@@ -59,8 +64,8 @@ namespace tt3::db::api
         ///     The supported lock types.
         enum class LockType
         {
-            ReadOnly,   ///< The lock owner can read from database, but not write to it.
-            ReadWrite   ///< The lock owner can read and write from/to the database.
+            Read,   ///< The lock owner can read from database, but not write to it.
+            Write   ///< The lock owner can read and write from/to the database.
         };
 
         //////////

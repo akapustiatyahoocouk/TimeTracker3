@@ -889,6 +889,71 @@ auto WorkspaceImpl::createBeneficiary(
 }
 
 //////////
+//  Operations (special access)
+auto WorkspaceImpl::beginBackup(
+        const Credentials & credentials
+    ) -> BackupCredentials
+{
+    tt3::util::Lock _(_guard);
+    _ensureOpen();
+
+    try
+    {
+        //  Check access rights
+        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+        if (!clientCapabilities.contains(Capability::Administrator) &&
+            !clientCapabilities.contains(Capability::BackupAndRestore))
+        {   //  OOPS! Can't!
+            throw AccessDeniedException();
+        }
+        //  Do the work
+        std::unique_ptr<tt3::db::api::IDatabaseLock> dataLock
+            { _database->lock(tt3::db::api::IDatabaseLock::LockType::Read) };   //  may throw
+        //  Determine lease period TODO based on database size
+        for (; ; )
+        {   //  Loop, on the off-chance of duplicate credentials
+            QString login = QUuid::createUuid().toString();     //  be random
+            QString password = QUuid::createUuid().toString();  //  be random
+            long leasePeriodMs = 24 * 60 * 60 * 1000;
+            QDateTime now = QDateTime::currentDateTimeUtc();
+            BackupCredentials backupCredentials(login, password, now, now.addMSecs(leasePeriodMs));
+            if (_database->findAccount(login) == nullptr &&     //  may throw!
+                !_backupCredentials.contains(backupCredentials))
+            {   //  Np conflict
+                _backupCredentials[backupCredentials] = dataLock.release();
+                return backupCredentials;
+            }
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+void WorkspaceImpl::releaseCredentials(
+        const BackupCredentials & backupCredentials
+    )
+{
+    tt3::util::Lock _(_guard);
+    _ensureOpen();
+
+    try
+    {
+        //  Do the work
+        if (_backupCredentials.contains(backupCredentials))
+        {
+            delete _backupCredentials[backupCredentials];
+            _backupCredentials.remove(backupCredentials);
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+//////////
 //  Implementation helpers
 void WorkspaceImpl::_ensureOpen() const
 {
@@ -913,6 +978,11 @@ void WorkspaceImpl::_markClosed()
     _goodCredentialsCache.clear();
     _badCredentialsCache.clear();
     _proxyCache.clear();
+    for (auto dataDatabaseLock : _backupCredentials.values())
+    {
+        delete dataDatabaseLock;
+    }
+    _backupCredentials.clear();
     //  The "database closed" notification fro m the
     //  database will be missed, as database (along with
     //  its change notifier) no longer existsm so we

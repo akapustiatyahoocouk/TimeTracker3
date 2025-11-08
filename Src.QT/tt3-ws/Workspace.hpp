@@ -591,7 +591,7 @@ namespace tt3::ws
         ///     The workloads to associate the new Beneficiary with.
         /// \return
         ///     The newly created Beneficiary.
-        /// \exception DatabaseException
+        /// \exception WorkspaceException
         ///     If an error occurs.
         auto        createBeneficiary(
                             const Credentials & credentials,
@@ -599,6 +599,45 @@ namespace tt3::ws
                             const QString & description,
                             const Workloads & workloads
                         ) -> Beneficiary;
+
+        //////////
+        //  Operations (special access)
+    public:
+        /// \brief
+        ///     Starts a backup session,
+        /// \details
+        ///     The lease interval for the created "backup
+        ///     credentials", which should then be used for data
+        ///     access dueing the backup session is determined
+        ///     automatically based on e.g. the database size.
+        ///     Once the "backup credentials" are created, the
+        ///     workspace is placed under a "read lock", which
+        ///     means no process can modify the worksoace (not
+        ///     even the process that caused the creation of the
+        ///     lock) until the "backup credentials" are released
+        ///     or until they expire, whichever comes first.
+        /// \return
+        ///     The special "backup credentials" that should
+        ///     be used for data access during the backup session.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        beginBackup(
+                            const Credentials & credentials
+                        ) -> BackupCredentials;
+
+        /// \brief
+        ///     Releases a "backup credentials" obtained at
+        ///     the beginning of a backup session.
+        /// \details
+        ///     If the "backup credentials" have already
+        ///     veen released, the call has no effect. Normally,
+        ///     the creation of "backup credentials" places
+        ///     a "read lock" on the workspace; this "read
+        ///     lock" is released when the "backup credentials"
+        ///     that caused the lock to appear are released.
+        void        releaseCredentials(
+                            const BackupCredentials & backupCredentials
+                        );
 
         //////////
         //  Signals
@@ -657,6 +696,9 @@ namespace tt3::ws
 
         //  Object proxy cache
         mutable QMap<Oid, Object>   _proxyCache;
+
+        //  Special access caches
+        QMap<BackupCredentials, tt3::db::api::IDatabaseLock*>   _backupCredentials;
 
         //  Helpers
         void        _ensureOpen() const;    //  throws WorkspaceException

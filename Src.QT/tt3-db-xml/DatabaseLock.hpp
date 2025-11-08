@@ -34,8 +34,7 @@ namespace tt3::db::xml
     private:    //  construction is from friends only
         DatabaseLock(
                 Database * database,
-                LockType lockType,
-                QThread * lockingThread
+                LockType lockType
             );
     public:
         virtual ~DatabaseLock();
@@ -48,9 +47,8 @@ namespace tt3::db::xml
         //////////
         //  Implementation
     private:
-        Database *      _database;  //  nullptr == lock is an orphan
-        const LockType  _lockType;
-        QThread *       _lockingThread; //  nullptr for orphan locks
+        std::atomic<Database*>  _database;  //  nullptr == lock is an orphan
+        const LockType      _lockType;
     };
 }
 
