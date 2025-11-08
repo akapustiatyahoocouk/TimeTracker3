@@ -626,6 +626,53 @@ namespace tt3::ws
                         ) -> BackupCredentials;
 
         /// \brief
+        ///     Starts a restore session,
+        /// \details
+        ///     The lease interval for the created "restore
+        ///     credentials", which should then be used for data
+        ///     access dueing the restore session is determined
+        ///     automatically based on e.g. the database size.
+        ///     Once the "restore credentials" are created, the
+        ///     workspace is placed under a "write lock", which
+        ///     means no other process can read or modify the
+        ///     worksoace except for the process that caused
+        ///     the creation of the lock) until the "restore
+        ///     credentials" are released or until they expire,
+        ///     whichever comes first.
+        /// \return
+        ///     The special "restore credentials" that should
+        ///     be used for data access during the restore session.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        beginRestore(
+                            const Credentials & credentials
+                        ) -> RestoreCredentials;
+
+        /// \brief
+        ///     Starts a report generation session,
+        /// \details
+        ///     The lease interval for the created "report
+        ///     credentials", which should then be used for data
+        ///     access dueing the report generation session is
+        ///     determined automatically based on e.g. the
+        ///     database size.
+        ///     Once the "report credentials" are created, the
+        ///     workspace is placed under a "read lock", which
+        ///     means no process can modify the worksoace (not
+        ///     even the process that caused the creation of the
+        ///     lock) until the "report credentials" are released
+        ///     or until they expire, whichever comes first.
+        /// \return
+        ///     The special "report credentials" that should
+        ///     be used for data access during the report generation
+        ///     session.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        beginReport(
+                            const Credentials & credentials
+                        ) -> ReportCredentials;
+
+        /// \brief
         ///     Releases a "backup credentials" obtained at
         ///     the beginning of a backup session.
         /// \details
@@ -635,8 +682,44 @@ namespace tt3::ws
         ///     a "read lock" on the workspace; this "read
         ///     lock" is released when the "backup credentials"
         ///     that caused the lock to appear are released.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
         void        releaseCredentials(
                             const BackupCredentials & backupCredentials
+                        );
+
+
+        /// \brief
+        ///     Releases a "restore credentials" obtained at
+        ///     the beginning of a restore session.
+        /// \details
+        ///     If the "restore credentials" have already
+        ///     veen released, the call has no effect. Normally,
+        ///     the creation of "restore credentials" places
+        ///     a "read lock" on the workspace; this "read
+        ///     lock" is released when the "restore credentials"
+        ///     that caused the lock to appear are released.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        releaseCredentials(
+                            const RestoreCredentials & restoreCredentials
+                        );
+
+
+        /// \brief
+        ///     Releases a "report credentials" obtained at
+        ///     the beginning of a report session.
+        /// \details
+        ///     If the "report credentials" have already
+        ///     veen released, the call has no effect. Normally,
+        ///     the creation of "report credentials" places
+        ///     a "read lock" on the workspace; this "read
+        ///     lock" is released when the "report credentials"
+        ///     that caused the lock to appear are released.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        releaseCredentials(
+                            const ReportCredentials & reportCredentials
                         );
 
         //////////
@@ -699,6 +782,8 @@ namespace tt3::ws
 
         //  Special access caches
         mutable QMap<BackupCredentials, tt3::db::api::IDatabaseLock*>   _backupCredentials;
+        mutable QMap<RestoreCredentials, tt3::db::api::IDatabaseLock*>  _restoreCredentials;
+        mutable QMap<ReportCredentials, tt3::db::api::IDatabaseLock*>   _reportCredentials;
 
         //  Helpers
         void        _ensureOpen() const;    //  throws WorkspaceException

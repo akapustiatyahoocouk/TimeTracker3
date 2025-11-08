@@ -894,27 +894,27 @@ auto WorkspaceImpl::beginBackup(
         const Credentials & credentials
     ) -> BackupCredentials
 {
-    tt3::util::Lock _(_guard);
-    _ensureOpen();
-
     try
-    {
+    {   //  We need to obtain the db::api-level
+        //  lock in an UNGUARDED state!
+        std::unique_ptr<tt3::db::api::IDatabaseLock> dataLock
+            { _database->lock(tt3::db::api::IDatabaseLock::LockType::Read) };   //  may throw
+        //  Lock obtained - the rest is guarded
+        tt3::util::Lock _(_guard);
+        _ensureOpen();
         //  Check access rights
         Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
         if (!clientCapabilities.contains(Capability::Administrator) &&
             !clientCapabilities.contains(Capability::BackupAndRestore))
         {   //  OOPS! Can't!
-            throw AccessDeniedException();
+            throw AccessDeniedException();  //  releases the dataLock
         }
-        //  Do the work
-        std::unique_ptr<tt3::db::api::IDatabaseLock> dataLock
-            { _database->lock(tt3::db::api::IDatabaseLock::LockType::Read) };   //  may throw
         //  Determine lease period TODO based on database size
         for (; ; )
         {   //  Loop, on the off-chance of duplicate credentials
             QString login = QUuid::createUuid().toString();     //  be random
             QString password = QUuid::createUuid().toString();  //  be random
-            long leasePeriodMs = 24 * 60 * 60 * 1000;
+            long leasePeriodMs = 24 * 60 * 60 * 1000;   //  TODO depending on database size!
             QDateTime now = QDateTime::currentDateTimeUtc();
             BackupCredentials backupCredentials(login, password, now, now.addMSecs(leasePeriodMs));
             if (_database->findAccount(login) == nullptr &&     //  may throw!
@@ -922,7 +922,89 @@ auto WorkspaceImpl::beginBackup(
             {   //  Np conflict
                 _backupCredentials[backupCredentials] = dataLock.release();
                 return backupCredentials;
-            }
+            }   //  else keep randomizing
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+auto WorkspaceImpl::beginRestore(
+    const Credentials & credentials
+    ) -> RestoreCredentials
+{
+    try
+    {   //  We need to obtain the db::api-level
+        //  lock in an UNGUARDED state!
+        std::unique_ptr<tt3::db::api::IDatabaseLock> dataLock
+            { _database->lock(tt3::db::api::IDatabaseLock::LockType::Write) };   //  may throw
+        //  Lock obtained - the rest is guarded
+        tt3::util::Lock _(_guard);
+        _ensureOpen();
+        //  Check access rights
+        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+        if (!clientCapabilities.contains(Capability::Administrator) &&
+            !clientCapabilities.contains(Capability::BackupAndRestore))
+        {   //  OOPS! Can't!
+            throw AccessDeniedException();  //  releases the dataLock
+        }
+        //  Determine lease period TODO based on database size
+        for (; ; )
+        {   //  Loop, on the off-chance of duplicate credentials
+            QString login = QUuid::createUuid().toString();     //  be random
+            QString password = QUuid::createUuid().toString();  //  be random
+            long leasePeriodMs = 24 * 60 * 60 * 1000;   //  TODO depending on database size!
+            QDateTime now = QDateTime::currentDateTimeUtc();
+            RestoreCredentials restoreCredentials(login, password, now, now.addMSecs(leasePeriodMs));
+            if (_database->findAccount(login) == nullptr &&     //  may throw!
+                !_restoreCredentials.contains(restoreCredentials))
+            {   //  Np conflict
+                _restoreCredentials[restoreCredentials] = dataLock.release();
+                return restoreCredentials;
+            }   //  else keep randomizing
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+auto WorkspaceImpl::beginReport(
+        const Credentials & credentials
+    ) -> ReportCredentials
+{
+    try
+    {   //  We need to obtain the db::api-level
+        //  lock in an UNGUARDED state!
+        std::unique_ptr<tt3::db::api::IDatabaseLock> dataLock
+            { _database->lock(tt3::db::api::IDatabaseLock::LockType::Read) };   //  may throw
+        //  Lock obtained - the rest is guarded
+        tt3::util::Lock _(_guard);
+        _ensureOpen();
+        //  Check access rights
+        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+        if (!clientCapabilities.contains(Capability::Administrator) &&
+            !clientCapabilities.contains(Capability::GenerateReports))
+        {   //  OOPS! Can't!
+            throw AccessDeniedException();  //  releases the dataLock
+        }
+        //  Determine lease period TODO based on database size
+        for (; ; )
+        {   //  Loop, on the off-chance of duplicate credentials
+            QString login = QUuid::createUuid().toString();     //  be random
+            QString password = QUuid::createUuid().toString();  //  be random
+            long leasePeriodMs = 24 * 60 * 60 * 1000;   //  TODO depending on database size!
+            QDateTime now = QDateTime::currentDateTimeUtc();
+            ReportCredentials reportCredentials(login, password, now, now.addMSecs(leasePeriodMs));
+            if (_database->findAccount(login) == nullptr &&     //  may throw!
+                !_reportCredentials.contains(reportCredentials))
+            {   //  Np conflict
+                _reportCredentials[reportCredentials] = dataLock.release();
+                return reportCredentials;
+            }   //  else keep randomizing
         }
     }
     catch (const tt3::util::Exception & ex)
@@ -945,6 +1027,50 @@ void WorkspaceImpl::releaseCredentials(
         {
             delete _backupCredentials[backupCredentials];
             _backupCredentials.remove(backupCredentials);
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+void WorkspaceImpl::releaseCredentials(
+        const RestoreCredentials & restoreCredentials
+    )
+{
+    tt3::util::Lock _(_guard);
+    _ensureOpen();
+
+    try
+    {
+        //  Do the work
+        if (_restoreCredentials.contains(restoreCredentials))
+        {
+            delete _restoreCredentials[restoreCredentials];
+            _restoreCredentials.remove(restoreCredentials);
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+void WorkspaceImpl::releaseCredentials(
+        const ReportCredentials & reportCredentials
+    )
+{
+    tt3::util::Lock _(_guard);
+    _ensureOpen();
+
+    try
+    {
+        //  Do the work
+        if (_reportCredentials.contains(reportCredentials))
+        {
+            delete _reportCredentials[reportCredentials];
+            _reportCredentials.remove(reportCredentials);
         }
     }
     catch (const tt3::util::Exception & ex)
@@ -982,7 +1108,17 @@ void WorkspaceImpl::_markClosed()
     {
         delete dataDatabaseLock;
     }
+    for (auto dataDatabaseLock : _restoreCredentials.values())
+    {
+        delete dataDatabaseLock;
+    }
+    for (auto dataDatabaseLock : _reportCredentials.values())
+    {
+        delete dataDatabaseLock;
+    }
     _backupCredentials.clear();
+    _restoreCredentials.clear();
+    _reportCredentials.clear();
     //  The "database closed" notification fro m the
     //  database will be missed, as database (along with
     //  its change notifier) no longer existsm so we
