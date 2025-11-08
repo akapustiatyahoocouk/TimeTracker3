@@ -68,6 +68,22 @@ namespace tt3::gui
                     operator tt3::ws::Workspace() const;
 
         /// \brief
+        ///     Checks whether the "current" workspace is op2.
+        /// \param op2
+        ///     The workspace to check the "current" workspace against.
+        /// \return
+        ///     True if the "current" workspace is op2, else false.
+        bool        operator == (tt3::ws::Workspace op2) const;
+
+        /// \brief
+        ///     Checks whether the "current" workspace is op2.
+        /// \param op2
+        ///     The workspace to check the "current" workspace against.
+        /// \return
+        ///     False if the "current" workspace is op2, else true.
+        bool        operator != (tt3::ws::Workspace op2) const;
+
+        /// \brief
         ///     Checks whether the "current" workspace is set (is not nullptr).
         /// \return
         ///     True if the "current" workspaceis set, else false.

@@ -93,7 +93,7 @@ void BackupTool::run(QWidget * parent)
         tt3::gui::ChooseReloginDialog dlg1(parent, workspaceAddress);
         if (dlg1.doModal() != tt3::gui::ChooseReloginDialog::Result::Yes)
         {   //  Cleanup & abort
-            if (workspace != tt3::gui::theCurrentWorkspace.operator ->())
+            if (tt3::gui::theCurrentWorkspace != workspace)
             {
                 workspace->close();     //  may throw, but irrelevant at this point
             }
@@ -103,7 +103,7 @@ void BackupTool::run(QWidget * parent)
         tt3::gui::LoginDialog dlg2(parent, QString());
         if (dlg2.doModal() != tt3::gui::LoginDialog::Result::Ok)
         {   //  Cleanup & abort
-            if (workspace != tt3::gui::theCurrentWorkspace.operator ->())
+            if (tt3::gui::theCurrentWorkspace != workspace)
             {
                 workspace->close();     //  may throw, but irrelevant at this point
             }
@@ -117,7 +117,7 @@ void BackupTool::run(QWidget * parent)
     {
         //  TODO do the work
         //  Cleanup before returning
-        if (workspace != tt3::gui::theCurrentWorkspace.operator ->())
+        if (tt3::gui::theCurrentWorkspace != workspace)
         {
             workspace->close();     //  may throw, but irrelevant at this point
         }

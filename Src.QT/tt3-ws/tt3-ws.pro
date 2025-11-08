@@ -7,6 +7,7 @@ SOURCES += \
     AccountImpl.cpp \
     ActivityImpl.cpp \
     ActivityTypeImpl.cpp \
+    BackupCredentials.cpp \
     BeneficiaryImpl.cpp \
     Component.cpp \
     Credentials.cpp \

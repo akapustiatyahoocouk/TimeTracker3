@@ -88,6 +88,24 @@ CurrentWorkspace::operator tt3::ws::Workspace() const
     return impl->workspace;
 }
 
+bool CurrentWorkspace::operator == (tt3::ws::Workspace op2) const
+{
+    _Impl * impl = _impl();
+    tt3::util::Lock _(impl->guard);
+    Q_ASSERT(impl->instanceCount == 1);
+
+    return impl->workspace == op2;
+}
+
+bool CurrentWorkspace::operator != (tt3::ws::Workspace op2) const
+{
+    _Impl * impl = _impl();
+    tt3::util::Lock _(impl->guard);
+    Q_ASSERT(impl->instanceCount == 1);
+
+    return impl->workspace != op2;
+}
+
 bool CurrentWorkspace::operator == (nullptr_t /*null*/) const
 {
     _Impl * impl = _impl();

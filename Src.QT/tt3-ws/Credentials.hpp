@@ -19,7 +19,7 @@ namespace tt3::ws
 {
     /// \class Credentials tt3-ws/API.hpp
     /// \brief The login credentials.
-    class TT3_WS_PUBLIC Credentials final
+    class TT3_WS_PUBLIC Credentials
     {
         friend class WorkspaceTypeImpl;
         friend class WorkspaceImpl;
@@ -57,7 +57,9 @@ namespace tt3::ws
 
         /// \brief
         ///     The class destructor.
-        ~Credentials() = default;
+        /// \details
+        ///     Made virtual to enable RTTI for the class.
+        virtual ~Credentials() = default;
 
         //  Default copy constructor and assignment are both OK
 
@@ -128,7 +130,7 @@ namespace tt3::ws
         ///     (its the "login" is not empty.
         /// \return
         ///     True if this Credentials are "vaolid" else false.
-        bool            isValid() const { return !_login.isEmpty(); }
+        virtual bool    isValid() const { return !_login.isEmpty(); }
 
         /// \brief
         ///     Returns the login identifier of these Credentials.
@@ -148,6 +150,109 @@ namespace tt3::ws
     {
         return qHash(key.login(), seed);
     }
+
+    /// \class BackupCredentials tt3-ws/API.hpp
+    /// \brief Special credentials that allow backing up a database.
+    class TT3_WS_PUBLIC BackupCredentials
+        :   public Credentials
+    {
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        //  TODO document
+        BackupCredentials();
+        BackupCredentials(
+                const QString & login,
+                const QString & password,
+                const QDateTime & issuedAt,
+                const QDateTime & expireAt
+            );
+
+        //  The default destructor, copy constructor and
+        //  assignment operators are all OK
+
+        //////////
+        //  Operators
+    public:
+        /// \brief
+        ///     Checks two BackupCredentials for equality.
+        /// \details
+        ///     Two BackupCredentials are equal if all their details are equal.
+        /// \param op2
+        ///     The BackupCredentials to compare this BackupCredentials yo.
+        /// \return
+        ///     True if thw two BackupCredentials are equal, else false.
+        bool            operator == (const BackupCredentials & op2) const;
+
+        /// \brief
+        ///     Checks two BackupCredentials for inequality.
+        /// \details
+        ///     Two BackupCredentials are equal if all their details are equal.
+        /// \param op2
+        ///     The BackupCredentials to compare this BackupCredentials yo.
+        /// \return
+        ///     False if thw two BackupCredentials are equal, else true.
+        bool            operator != (const BackupCredentials & op2) const;
+
+        /// \brief
+        ///     Checks two BackupCredentials for order.
+        /// \param op2
+        ///     The 2nd BackupCredentials to compare this BackupCredentials to.
+        /// \return
+        ///     True if this BackupCredentials is lexicographically
+        ///     "less than" the 2nd C5redentials, else false.
+        bool            operator <  (const BackupCredentials & op2) const;
+
+        /// \brief
+        ///     Checks two BackupCredentials for order.
+        /// \param op2
+        ///     The 2nd BackupCredentials to compare this BackupCredentials to.
+        /// \return
+        ///     True if this BackupCredentials is lexicographically
+        ///     "less than or equal to" the 2nd C5redentials, else false.
+        bool            operator <= (const BackupCredentials & op2) const;
+
+        /// \brief
+        ///     Checks two BackupCredentials for order.
+        /// \param op2
+        ///     The 2nd BackupCredentials to compare this BackupCredentials to.
+        /// \return
+        ///     True if this BackupCredentials is lexicographically
+        ///     "greater than" the 2nd C5redentials, else false.
+        bool            operator >  (const BackupCredentials & op2) const;
+
+        /// \brief
+        ///     Checks two BackupCredentials for order.
+        /// \param op2
+        ///     The 2nd BackupCredentials to compare this BackupCredentials to.
+        /// \return
+        ///     True if this BackupCredentials is lexicographically
+        ///     "greater than or equal to" the 2nd C5redentials, else false.
+        bool            operator >= (const BackupCredentials & op2) const;
+
+        //////////
+        //  Credentials
+    public:
+        /// \brief
+        ///     Checks whether these Credentials are "valid"
+        ///     (its the "login" is not empty.
+        /// \return
+        ///     True if this Credentials are "vaolid" else false.
+        virtual bool    isValid() const override;
+
+        //////////
+        //  Operations
+    public:
+        //  TODO document
+        QDateTime       issuedAt() const { return _issuedAt; }
+        QDateTime       expireAt() const { return _expireAt; }
+
+        //////////
+        //  Implementation
+    private:
+        QDateTime       _issuedAt;  //  UTC
+        QDateTime       _expireAt;  //  UTC
+    };
 }
 
 //  End of tt3-ws/Credentials.hpp
