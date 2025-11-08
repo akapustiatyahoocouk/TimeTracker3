@@ -92,6 +92,7 @@ namespace tt3::ws
 
     //  Helper types
     class TT3_WS_PUBLIC Credentials;
+    class TT3_WS_PUBLIC BackupCredentials;
     class TT3_WS_PUBLIC WorkspaceTypeManager;
 
     //  We can piggyback on some DB API types

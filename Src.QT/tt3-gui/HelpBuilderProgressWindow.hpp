@@ -38,6 +38,14 @@ namespace tt3::gui
         //////////
         //  Operations
     public:
+        /// \brief
+        ///     Reports the progress of the help building operation.
+        /// \param context
+        ///     The short user-readable description of the context
+        ///     in which a help building action is performed.
+        /// \param action
+        ///     The short user-readable name of the action that
+        ///     is being performed within the specified context.
         void            reportProgress(const QString & context, const QString & action);
 
         //////////

@@ -28,19 +28,19 @@ namespace tt3::gui
     public:
         /// \brief
         ///     Shows the "Help contents".
-        /// \exceptions HelpException
+        /// \exception HelpException
         ///     If an error occurs.
         static void     showContents();
 
         /// \brief
         ///     Shows the "Help index".
-        /// \exceptions HelpException
+        /// \exception HelpException
         ///     If an error occurs.
         static void     showIndex();
 
         /// \brief
         ///     Shows the "Help search".
-        /// \exceptions HelpException
+        /// \exception HelpException
         ///     If an error occurs.
         static void     showSearch();
 
@@ -48,7 +48,7 @@ namespace tt3::gui
         ///     Shows the specified Help topic.
         /// \param topic
         ///     The help topic ID of the form "/x/y/.../z/topic[.html]".
-        /// \exceptions HelpException
+        /// \exception HelpException
         ///     If an error occurs.
         static void     showTopic(const QString & topic);
 

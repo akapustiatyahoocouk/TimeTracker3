@@ -31,65 +31,69 @@ BackupCredentials::BackupCredentials(
 }
 
 //////////
-//  Operators
-/*  TODO kill off
-bool BackupCredentials::operator == (const BackupCredentials & op2) const
-{
-    return Credentials::operator == (op2) ? //  types are equal on true!
-            (this->_issuedAt == op2._issuedAt &&
-             this->_expireAt == op2._expireAt) :
-            false;
-}
-
-bool BackupCredentials::operator != (const BackupCredentials & op2) const
-{
-    return !(*this == op2);
-}
-
-bool BackupCredentials::operator < (const BackupCredentials & op2) const
-{
-    if (typeid(*this) == typeid(op2))
-    {   //  Types are equal)
-        if (Credentials::operator < (op2))
-        {
-            return true;
-        }
-        else if (Credentials::operator ==(op2))
-        {
-            return (_issuedAt < op2._issuedAt) ||
-                   (_issuedAt == op2._issuedAt && _expireAt < op2._expireAt);
-        }
-        else
-        {
-            return false;
-        }
-    }
-    //  Else types are different
-    return typeid(*this).before(typeid(op2));
-}
-
-bool BackupCredentials::operator <= (const BackupCredentials & op2) const
-{
-    return !(op2 < *this);
-}
-
-bool BackupCredentials::operator > (const BackupCredentials & op2) const
-{
-    return op2 < *this;
-}
-
-bool BackupCredentials::operator >= (const BackupCredentials & op2) const
-{
-    return !(*this < op2);
-}
-*/
-
-//////////
 //  Credentials
 bool BackupCredentials::isValid() const
 {
     return Credentials::isValid() &&
            _issuedAt.isValid() && _expireAt.isValid();
+}
+
+//////////
+//  Comparison and order
+int BackupCredentials::compare(const Credentials & op2) const
+{
+    return -op2.compare2(*this);
+}
+
+int BackupCredentials::compare2(const Credentials & op2) const
+{   //  BackupCredentials <=> Credentials
+    Q_ASSERT(typeid(*this) == typeid(BackupCredentials));
+    Q_ASSERT(typeid(op2) == typeid(Credentials));
+
+    return typeid(*this).before(typeid(op2)) ? -1 : 1;  //  can't be equal!
+}
+
+int BackupCredentials::compare2(const BackupCredentials & op2) const
+{   //  BackupCredentials <=> BackupCredentials
+    Q_ASSERT(typeid(*this) == typeid(BackupCredentials));
+    Q_ASSERT(typeid(op2) == typeid(BackupCredentials));
+
+    if (_login < op2._login)
+    {
+        return -1;
+    }
+    if (_login > op2._login)
+    {
+        return 1;
+    }
+    if (_password < op2._password)
+    {
+        return -1;
+    }
+    if (_password > op2._password)
+    {
+        return 1;
+    }
+
+    if (_issuedAt < op2._issuedAt)
+    {
+        return -1;
+    }
+    if (_issuedAt > op2._issuedAt)
+    {
+        return 1;
+    }
+
+    if (_expireAt < op2._expireAt)
+    {
+        return -1;
+    }
+    if (_expireAt > op2._expireAt)
+    {
+        return 1;
+    }
+
+    return 0;
 }
 
 //  End of tt3-ws/Credentials.cpp

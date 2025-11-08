@@ -22,7 +22,7 @@ namespace tt3::gui
     namespace Ui { class QuickReportsDialog; }
 
     /// \class QuickReportsDialog tt3-gui/API.hpp
-    /// \bried The "view quick reports" dialog.
+    /// \brief The "view quick reports" dialog.
     class TT3_GUI_PUBLIC QuickReportsDialog
         :   private QDialog
     {
