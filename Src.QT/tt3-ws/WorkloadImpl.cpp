@@ -49,6 +49,7 @@ QString WorkloadImpl::displayName(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataWorkload->displayName();   //  may throw
     }
@@ -73,6 +74,7 @@ void WorkloadImpl::setDisplayName(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataWorkload->setDisplayName(displayName); //  may throw
     }
@@ -96,6 +98,7 @@ QString WorkloadImpl::description(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataWorkload->description();    //  may throw
     }
@@ -120,6 +123,7 @@ void WorkloadImpl::setDescription(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataWorkload->setDescription(description); //  may throw
     }
@@ -145,6 +149,7 @@ auto WorkloadImpl::contributingActivities(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         Activities result;
         for (auto dataActivity : _dataWorkload->contributingActivities())   //  may throw
@@ -177,6 +182,7 @@ auto WorkloadImpl::beneficiaries(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         Beneficiaries result;
         for (auto dataBeneficiary : _dataWorkload->beneficiaries())   //  may throw
@@ -210,6 +216,15 @@ void WorkloadImpl::setBeneficiaries(
         {
             throw AccessDeniedException();
         }
+        for (Beneficiary beneficiary : beneficiaries)
+        {
+            if (beneficiary != nullptr &&
+                !beneficiary->_canModify(credentials))
+            {
+                throw AccessDeniedException();
+            }
+        }
+
         //  Do the work
         _dataWorkload->setBeneficiaries(
             tt3::util::transform(   //  may throw
@@ -240,6 +255,12 @@ void WorkloadImpl::addBeneficiary(
         {
             throw AccessDeniedException();
         }
+        if (beneficiary != nullptr &&
+            !beneficiary->_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+
         //  Do the work
         _dataWorkload->addBeneficiary(  //  may throw
             (beneficiary != nullptr) ? beneficiary->_dataBeneficiary : nullptr);
@@ -265,6 +286,12 @@ void WorkloadImpl::removeBeneficiary(
         {
             throw AccessDeniedException();
         }
+        if (beneficiary != nullptr &&
+            !beneficiary->_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+
         //  Do the work
         _dataWorkload->removeBeneficiary(  //  may throw
             (beneficiary != nullptr) ? beneficiary->_dataBeneficiary : nullptr);
@@ -289,7 +316,8 @@ auto WorkloadImpl::assignedUsers(
         {
             throw AccessDeniedException();
         }
-        //  Do the work
+
+        //  Do the work TODO only Users that can be read!
         return tt3::util::transform(
             _dataWorkload->assignedUsers(),
             [&](auto dataUser)
@@ -318,6 +346,15 @@ void WorkloadImpl::setAssignedUsers(
         {
             throw AccessDeniedException();
         }
+        for (User user : users)
+        {
+            if (user != nullptr &&
+                !user->_canModify(credentials))
+            {
+                throw AccessDeniedException();
+            }
+        }
+
         //  Do the work
         _dataWorkload->setAssignedUsers(    //  may throw
             tt3::util::transform(
@@ -348,6 +385,12 @@ void WorkloadImpl::addAssignedUser(
         {
             throw AccessDeniedException();
         }
+        if (user != nullptr &&
+            !user->_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+
         //  Do the work
         _dataWorkload->addAssignedUser(  //  may throw
             (user != nullptr) ? user->_dataUser : nullptr);
@@ -373,6 +416,12 @@ void WorkloadImpl::removeAssignedUser(
         {
             throw AccessDeniedException();
         }
+        if (user != nullptr &&
+            !user->_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
+
         //  Do the work
         _dataWorkload->removeAssignedUser(  //  may throw
             (user != nullptr) ? user->_dataUser : nullptr);

@@ -47,6 +47,7 @@ bool PrincipalImpl::enabled(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataPrincipal->enabled();   //  may throw
     }
@@ -81,6 +82,7 @@ void PrincipalImpl::setEnabled(
                 throw AccessWouldBeLostException();
             }
         }
+
         //  Do the work
         _dataPrincipal->setEnabled(enabled);   //  may throw
     }
@@ -104,6 +106,7 @@ auto PrincipalImpl::emailAddresses(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataPrincipal->emailAddresses();   //  may throw
     }
@@ -128,8 +131,7 @@ void PrincipalImpl::setEmailAddresses(
         {
             throw AccessDeniedException();
         }
-        //  When disabling a user will leave workspace
-        //  without an enabled admin account, don't do it
+
         //  Do the work
         _dataPrincipal->setEmailAddresses(emailAddresses);  //  may throw
     }

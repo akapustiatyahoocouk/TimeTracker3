@@ -49,6 +49,7 @@ QString BeneficiaryImpl::displayName(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataBeneficiary->displayName();   //  may throw
     }
@@ -73,6 +74,7 @@ void BeneficiaryImpl::setDisplayName(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataBeneficiary->setDisplayName(displayName); //  may throw
     }
@@ -96,6 +98,7 @@ QString BeneficiaryImpl::description(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataBeneficiary->description();   //  may throw
     }
@@ -120,6 +123,7 @@ void BeneficiaryImpl::setDescription(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataBeneficiary->setDescription(description); //  may throw
     }
@@ -145,6 +149,7 @@ auto BeneficiaryImpl:: workloads(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return tt3::util::transform(
             _dataBeneficiary->workloads(),
@@ -169,11 +174,20 @@ void BeneficiaryImpl::setWorkloads(
 
     try
     {
-        //  Validate access rights.
+        //  Validate access rights
         if (!_canModify(credentials)) //  may throw
         {
             throw AccessDeniedException();
         }
+        for (Workload workload : workloads)
+        {
+            if (workload != nullptr &&
+                !workload->_canModify(credentials))
+            {   //  OOPS!
+                throw AccessDeniedException();
+            }
+        }
+
         //  Do the work
         _dataBeneficiary->setWorkloads( //  may throw
             tt3::util::transform(
@@ -204,6 +218,12 @@ void BeneficiaryImpl::addWorkload(
         {
             throw AccessDeniedException();
         }
+        if (workload != nullptr &&
+            !workload->_canModify(credentials))
+        {   //  OOPS!
+            throw AccessDeniedException();
+        }
+
         //  Do the work
         _dataBeneficiary->addWorkload(  //  may throw
             (workload != nullptr) ? workload->_dataWorkload : nullptr);
@@ -229,6 +249,12 @@ void BeneficiaryImpl::removeWorkload(
         {
             throw AccessDeniedException();
         }
+        if (workload != nullptr &&
+            !workload->_canModify(credentials))
+        {   //  OOPS!
+            throw AccessDeniedException();
+        }
+
         //  Do the work
         _dataBeneficiary->removeWorkload(  //  may throw
             (workload != nullptr) ? workload->_dataWorkload : nullptr);
@@ -249,6 +275,12 @@ bool BeneficiaryImpl::_canRead(
 
     try
     {
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isRestoreCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - can read anything
+            return true;
+        }
         _workspace->_validateAccessRights(credentials); //  may throw
         //  Anyone authorized to access workspace can see all activity types
         return true;
@@ -271,6 +303,15 @@ bool BeneficiaryImpl::_canModify(
 
     try
     {
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can modify anything
+            return true;
+        }
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
+            return false;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         if (clientCapabilities.contains(Capability::Administrator) ||
             clientCapabilities.contains(Capability::ManageBeneficiaries))
@@ -293,6 +334,15 @@ bool BeneficiaryImpl::_canDestroy(
 
     try
     {
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can destroy anything
+            return true;
+        }
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot destroy anything
+            return false;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         if (clientCapabilities.contains(Capability::Administrator) ||
             clientCapabilities.contains(Capability::ManageBeneficiaries))

@@ -27,6 +27,7 @@ namespace tt3::ws
         friend class UserImpl;
         friend class AccountImpl;
         friend class PrivateActivityImpl;
+        friend class PrivateTaskImpl;
         friend class WorkImpl;
         friend class EventImpl;
 

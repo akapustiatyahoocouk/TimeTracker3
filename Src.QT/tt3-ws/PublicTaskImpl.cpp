@@ -51,6 +51,7 @@ auto PublicTaskImpl::parent(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         if (auto dataParent = _dataPublicTask->parent())  //  may throw
         {
@@ -84,6 +85,7 @@ void PublicTaskImpl::setParent(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataPublicTask->setParent(
             (parent != nullptr) ?
@@ -110,6 +112,7 @@ auto PublicTaskImpl::children(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return tt3::util::transform(
             _dataPublicTask->children(),    //  may throw
@@ -145,14 +148,23 @@ auto PublicTaskImpl::createChild(
 
     try
     {
-        //  Check access rights
-        Capabilities clientCapabilities =
-            _workspace->_validateAccessRights(credentials); //  may throw
-        if (!clientCapabilities.contains(Capability::Administrator) &&
-            !clientCapabilities.contains(Capability::ManagePublicTasks))
-        {   //  OOPS! Can't!
+        //  Validate access rights
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
             throw AccessDeniedException();
         }
+        if (!_workspace->_isRestoreCredentials(credentials))
+        {   //  No special access - use standard access rules
+            Capabilities clientCapabilities =
+                _workspace->_validateAccessRights(credentials); //  may throw
+            if (!clientCapabilities.contains(Capability::Administrator) &&
+                !clientCapabilities.contains(Capability::ManagePublicTasks))
+            {   //  OOPS! Can't!
+                throw AccessDeniedException();
+            }
+        }   //  Else special access - can modify anything
+
         //  Do the work
         tt3::db::api::IPublicTask * dataPublicTask =
             _dataPublicTask->createChild(
@@ -183,7 +195,14 @@ bool PublicTaskImpl::_canRead(
     Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
 
     try
-    {   //  Anyone authorized to access a Workspace
+    {
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isRestoreCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - can read anything
+            return true;
+        }
+        //  Anyone authorized to access a Workspace
         //  can see all PublicActivities there
         _workspace->_validateAccessRights(credentials); //  may throw
         return true;
@@ -206,6 +225,15 @@ bool PublicTaskImpl::_canModify(
 
     try
     {
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can modify anything
+            return true;
+        }
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
+            return false;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         return clientCapabilities.contains(Capability::Administrator) ||
                clientCapabilities.contains(Capability::ManagePublicTasks);
@@ -228,6 +256,15 @@ bool PublicTaskImpl::_canDestroy(
 
     try
     {
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can destroy anything
+            return true;
+        }
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot destroy anything
+            return false;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         return clientCapabilities.contains(Capability::Administrator) ||
                clientCapabilities.contains(Capability::ManagePublicTasks);

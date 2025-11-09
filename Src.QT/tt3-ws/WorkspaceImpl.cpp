@@ -617,7 +617,7 @@ auto WorkspaceImpl::createUser(
 
     try
     {
-        //  Check access rights
+        //  Validate access rights
         Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
         if (!clientCapabilities.contains(Capability::Administrator) &&
             !clientCapabilities.contains(Capability::ManageUsers))
@@ -656,7 +656,7 @@ auto WorkspaceImpl::createActivityType(
 
     try
     {
-        //  Check access rights
+        //  Validate access rights
         Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
         if (!clientCapabilities.contains(Capability::Administrator) &&
             !clientCapabilities.contains(Capability::ManageActivityTypes))
@@ -691,7 +691,7 @@ auto WorkspaceImpl::createPublicActivity(
 
     try
     {
-        //  Check access rights
+        //  Validate access rights
         Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
         if (!clientCapabilities.contains(Capability::Administrator) &&
             !clientCapabilities.contains(Capability::ManagePublicActivities))
@@ -736,7 +736,7 @@ auto WorkspaceImpl::createPublicTask(
 
     try
     {
-        //  Check access rights
+        //  Validate access rights
         Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
         if (!clientCapabilities.contains(Capability::Administrator) &&
             !clientCapabilities.contains(Capability::ManagePublicTasks))
@@ -777,7 +777,7 @@ auto WorkspaceImpl::createProject(
 
     try
     {
-        //  Check access rights
+        //  Validate access rights
         Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
         if (!clientCapabilities.contains(Capability::Administrator) &&
             !clientCapabilities.contains(Capability::ManageWorkloads))
@@ -819,7 +819,7 @@ auto WorkspaceImpl::createWorkStream(
 
     try
     {
-        //  Check access rights
+        //  Validate access rights
         Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
         if (!clientCapabilities.contains(Capability::Administrator) &&
             !clientCapabilities.contains(Capability::ManageWorkloads))
@@ -860,7 +860,7 @@ auto WorkspaceImpl::createBeneficiary(
 
     try
     {
-        //  Check access rights
+        //  Validate access rights
         Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
         if (!clientCapabilities.contains(Capability::Administrator) &&
             !clientCapabilities.contains(Capability::ManageWorkloads))
@@ -902,7 +902,7 @@ auto WorkspaceImpl::beginBackup(
         //  Lock obtained - the rest is guarded
         tt3::util::Lock _(_guard);
         _ensureOpen();
-        //  Check access rights
+        //  Validate access rights
         Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
         if (!clientCapabilities.contains(Capability::Administrator) &&
             !clientCapabilities.contains(Capability::BackupAndRestore))
@@ -943,7 +943,7 @@ auto WorkspaceImpl::beginRestore(
         //  Lock obtained - the rest is guarded
         tt3::util::Lock _(_guard);
         _ensureOpen();
-        //  Check access rights
+        //  Validate access rights
         Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
         if (!clientCapabilities.contains(Capability::Administrator) &&
             !clientCapabilities.contains(Capability::BackupAndRestore))
@@ -984,7 +984,7 @@ auto WorkspaceImpl::beginReport(
         //  Lock obtained - the rest is guarded
         tt3::util::Lock _(_guard);
         _ensureOpen();
-        //  Check access rights
+        //  Validate access rights
         Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
         if (!clientCapabilities.contains(Capability::Administrator) &&
             !clientCapabilities.contains(Capability::GenerateReports))

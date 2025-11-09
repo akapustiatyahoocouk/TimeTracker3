@@ -77,6 +77,7 @@ void ObjectImpl::destroy(
         {
             throw AccessWouldBeLostException();
         }
+
         //  Do the work
         _dataObject->destroy(); //  may throw
     }

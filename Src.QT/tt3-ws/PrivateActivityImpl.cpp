@@ -49,8 +49,14 @@ auto PrivateActivityImpl::owner(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
-        return _workspace->_getProxy(_dataPrivateActivity->owner()); //  may throw
+        User result = _workspace->_getProxy(_dataPrivateActivity->owner()); //  may throw
+        if (!result->_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        return result;
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -68,29 +74,22 @@ bool PrivateActivityImpl::_canRead(
 
     try
     {
-        Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
-
-        try
-        {
-            Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-            if (clientCapabilities.contains(Capability::Administrator))
-            {   //  Can read private activities of all users
-                return true;
-            }
-            //  The caller can only see his own private activities
-            tt3::db::api::IAccount * callerAccount =
-                _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
-            return callerAccount != nullptr &&
-                   callerAccount->user() == _dataPrivateActivity->owner();   //  may throw
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isRestoreCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - can read anything
+            return true;
         }
-        catch (const AccessDeniedException &)
-        {   //  This is a special case!
-            return false;
+        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        if (clientCapabilities.contains(Capability::Administrator))
+        {   //  Can read private activities of all users
+            return true;
         }
-        catch (const tt3::util::Exception & ex)
-        {   //  OOPS! Translate & re-throw
-            WorkspaceException::translateAndThrow(ex);
-        }
+        //  The caller can only see his own private activities
+        tt3::db::api::IAccount * callerAccount =
+            _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
+        return callerAccount != nullptr &&
+               callerAccount->user() == _dataPrivateActivity->owner();   //  may throw
     }
     catch (const AccessDeniedException &)
     {   //  This is a special case!
@@ -110,31 +109,27 @@ bool PrivateActivityImpl::_canModify(
 
     try
     {
-        Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
-
-        try
-        {
-            Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-            if (clientCapabilities.contains(Capability::Administrator))
-            {   //  Can modify private activities of all users
-                return true;
-            }
-            //  The caller can only modify his own private activities
-            //  IF they ALSO have the corresponding capability
-            tt3::db::api::IAccount * callerAccount =
-                _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
-            return clientCapabilities.contains(Capability::ManagePrivateActivities) &&
-                   callerAccount != nullptr &&
-                   callerAccount->user() == _dataPrivateActivity->owner();   //  may throw
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can modify anything
+            return true;
         }
-        catch (const AccessDeniedException &)
-        {   //  This is a special case!
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
             return false;
         }
-        catch (const tt3::util::Exception & ex)
-        {   //  OOPS! Translate & re-throw
-            WorkspaceException::translateAndThrow(ex);
+        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        if (clientCapabilities.contains(Capability::Administrator))
+        {   //  Can modify private activities of all users
+            return true;
         }
+        //  The caller can only modify his own private activities
+        //  IF they ALSO have the corresponding capability
+        tt3::db::api::IAccount * callerAccount =
+            _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
+        return clientCapabilities.contains(Capability::ManagePrivateActivities) &&
+               callerAccount != nullptr &&
+               callerAccount->user() == _dataPrivateActivity->owner();   //  may throw
     }
     catch (const AccessDeniedException &)
     {   //  This is a special case!
@@ -154,31 +149,27 @@ bool PrivateActivityImpl::_canDestroy(
 
     try
     {
-        Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
-
-        try
-        {
-            Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-            if (clientCapabilities.contains(Capability::Administrator))
-            {   //  Can destroy private activities of all users
-                return true;
-            }
-            //  The caller can only destroy his own private activities
-            //  IF they ALSO have the corresponding capability
-            tt3::db::api::IAccount * callerAccount =
-                _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
-            return clientCapabilities.contains(Capability::ManagePrivateActivities) &&
-                   callerAccount != nullptr &&
-                   callerAccount->user() == _dataPrivateActivity->owner();   //  may throw
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can destroy anything
+            return true;
         }
-        catch (const AccessDeniedException &)
-        {   //  This is a special case!
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot destroy anything
             return false;
         }
-        catch (const tt3::util::Exception & ex)
-        {   //  OOPS! Translate & re-throw
-            WorkspaceException::translateAndThrow(ex);
+        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        if (clientCapabilities.contains(Capability::Administrator))
+        {   //  Can destroy private activities of all users
+            return true;
         }
+        //  The caller can only destroy his own private activities
+        //  IF they ALSO have the corresponding capability
+        tt3::db::api::IAccount * callerAccount =
+            _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
+        return clientCapabilities.contains(Capability::ManagePrivateActivities) &&
+               callerAccount != nullptr &&
+               callerAccount->user() == _dataPrivateActivity->owner();   //  may throw
     }
     catch (const AccessDeniedException &)
     {   //  This is a special case!

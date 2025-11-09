@@ -51,6 +51,7 @@ auto PrivateTaskImpl::parent(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         if (auto dataParent = _dataPrivateTask->parent())  //  may throw
         {
@@ -84,6 +85,10 @@ void PrivateTaskImpl::setParent(
         {
             throw AccessDeniedException();
         }
+        //  If caller can modify this private task,
+        //  the caller can also modify its old
+        //  and new parents
+
         //  Do the work
         _dataPrivateTask->setParent(
             (parent != nullptr) ?
@@ -110,6 +115,9 @@ auto PrivateTaskImpl::children(
         {
             throw AccessDeniedException();
         }
+        //  If the caller can read this private task,
+        //  the caller can also read all its children
+
         //  Do the work
         return tt3::util::transform(
             _dataPrivateTask->children(),   //  may thr
@@ -145,13 +153,21 @@ auto PrivateTaskImpl::createChild(
 
     try
     {
-        //  Check access rights
-        Capabilities clientCapabilities =
-            _workspace->_validateAccessRights(credentials); //  may throw
-        if (!clientCapabilities.contains(Capability::Administrator) &&
-            !clientCapabilities.contains(Capability::ManagePublicTasks))
-        {   //  OOPS! Can't!
+        //  Validate access rights
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
             throw AccessDeniedException();
+        }
+        if (!_workspace->_isRestoreCredentials(credentials))
+        {   //  No special access - use standard access rules
+            Capabilities clientCapabilities =
+                _workspace->_validateAccessRights(credentials); //  may throw
+            if (!clientCapabilities.contains(Capability::Administrator) &&
+                !clientCapabilities.contains(Capability::ManagePrivateTasks))
+            {   //  OOPS! Can't!
+                throw AccessDeniedException();
+            }   //  Else special access - can modify anything
         }
         //  Do the work
         tt3::db::api::IPrivateTask * dataPrivateTask =
@@ -183,10 +199,23 @@ bool PrivateTaskImpl::_canRead(
     Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
 
     try
-    {   //  Anyone authorized to access a Workspace
-        //  can see all PublicActivities there
-        _workspace->_validateAccessRights(credentials); //  may throw
-        return true;
+    {
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isRestoreCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - can read anything
+            return true;
+        }
+        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        if (clientCapabilities.contains(Capability::Administrator))
+        {   //  Can read private activities of all users
+            return true;
+        }
+        //  The caller can only see his own private tasks
+        tt3::db::api::IAccount * callerAccount =
+            _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
+        return callerAccount != nullptr &&
+               callerAccount->user() == _dataPrivateActivity->owner();   //  may throw
     }
     catch (const AccessDeniedException &)
     {   //  This is a special case!
@@ -206,9 +235,27 @@ bool PrivateTaskImpl::_canModify(
 
     try
     {
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can modify anything
+            return true;
+        }
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
+            return false;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        return clientCapabilities.contains(Capability::Administrator) ||
-               clientCapabilities.contains(Capability::ManagePrivateTasks);
+        if (clientCapabilities.contains(Capability::Administrator))
+        {   //  Can modify private tasks of all users
+            return true;
+        }
+        //  The caller can only modify his own private tasks
+        //  IF they ALSO have the corresponding capability
+        tt3::db::api::IAccount * callerAccount =
+            _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
+        return clientCapabilities.contains(Capability::ManagePrivateTasks) &&
+               callerAccount != nullptr &&
+               callerAccount->user() == _dataPrivateActivity->owner();   //  may throw
     }
     catch (const AccessDeniedException &)
     {   //  This is a special case!
@@ -228,9 +275,27 @@ bool PrivateTaskImpl::_canDestroy(
 
     try
     {
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can destroy anything
+            return true;
+        }
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot destroy anything
+            return false;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        return clientCapabilities.contains(Capability::Administrator) ||
-               clientCapabilities.contains(Capability::ManagePrivateTasks);
+        if (clientCapabilities.contains(Capability::Administrator))
+        {   //  Can destroy private tasks of all users
+            return true;
+        }
+        //  The caller can only destroy his own private tasks
+        //  IF they ALSO have the corresponding capability
+        tt3::db::api::IAccount * callerAccount =
+            _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
+        return clientCapabilities.contains(Capability::ManagePrivateTasks) &&
+               callerAccount != nullptr &&
+               callerAccount->user() == _dataPrivateActivity->owner();   //  may throw
     }
     catch (const AccessDeniedException &)
     {   //  This is a special case!

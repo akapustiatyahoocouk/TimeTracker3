@@ -25,6 +25,8 @@ namespace tt3::ws
 
         friend class WorkspaceImpl;
         friend std::shared_ptr<AccountImpl>;
+        friend class EventImpl;
+        friend class WorkImpl;
 
         //////////
         //  Construction/destruction - from friends only

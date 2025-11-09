@@ -440,6 +440,11 @@ void ActivityImpl::setWorkload(
         {
             throw AccessDeniedException();
         }
+        if (workload != nullptr &&
+           !workload->_canModify(credentials))
+        {
+            throw AccessDeniedException();
+        }
 
         //  Do the work
         _dataActivity->setWorkload(

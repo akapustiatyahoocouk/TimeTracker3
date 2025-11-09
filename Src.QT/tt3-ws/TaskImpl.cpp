@@ -49,6 +49,7 @@ bool TaskImpl::completed(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataTask->completed();  //  may throw
     }
@@ -73,6 +74,7 @@ void TaskImpl::setCompleted(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataTask->setCompleted(completed); //  may throw
     }
@@ -96,6 +98,7 @@ bool TaskImpl::requireCommentOnCompletion(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataTask->requireCommentOnCompletion(); //  may throw
     }
@@ -120,6 +123,7 @@ void TaskImpl::setRequireCommentOnCompletion(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataTask->setRequireCommentOnCompletion(requireCommentOnCompletion);   //  may throw
     }

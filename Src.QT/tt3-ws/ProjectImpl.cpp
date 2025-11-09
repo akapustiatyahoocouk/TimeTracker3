@@ -49,6 +49,7 @@ bool ProjectImpl::completed(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataProject->completed();   //  may throw
     }
@@ -73,6 +74,7 @@ void ProjectImpl::setCompleted(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataProject->setCompleted(completed); //  may throw
     }
@@ -98,6 +100,7 @@ auto ProjectImpl::parent(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         if (auto dataParent = _dataProject->parent())  //  may throw
         {
@@ -131,6 +134,7 @@ void ProjectImpl::setParent(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataProject->setParent(
             (parent != nullptr) ?
@@ -157,6 +161,7 @@ auto ProjectImpl::children(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return tt3::util::transform(
             _dataProject->children(),   //  may throw
@@ -186,14 +191,23 @@ auto ProjectImpl::createChild(
 
     try
     {
-        //  Check access rights
-        Capabilities clientCapabilities =
-            _workspace->_validateAccessRights(credentials); //  may throw
-        if (!clientCapabilities.contains(Capability::Administrator) &&
-            !clientCapabilities.contains(Capability::ManageWorkloads))
-        {   //  OOPS! Can't!
+        //  Validate access rights
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
             throw AccessDeniedException();
         }
+        if (!_workspace->_isRestoreCredentials(credentials))
+        {   //  No special access - use standard access rules
+            Capabilities clientCapabilities =
+                _workspace->_validateAccessRights(credentials); //  may throw
+            if (!clientCapabilities.contains(Capability::Administrator) &&
+                !clientCapabilities.contains(Capability::ManageWorkloads))
+            {   //  OOPS! Can't!
+                throw AccessDeniedException();
+            }
+        }   //  Else special access - can modify anything
+
         //  Do the work
         tt3::db::api::Beneficiaries dataBeneficiaries;
         for (Beneficiary beneficiary : beneficiaries)
@@ -226,7 +240,14 @@ bool ProjectImpl::_canRead(
     Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
 
     try
-    {   //  Anyone authorized to access a Workspace
+    {
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isRestoreCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - can read anything
+            return true;
+        }
+        //  Anyone authorized to access a Workspace
         //  can see all PublicActivities there
         _workspace->_validateAccessRights(credentials); //  may throw
         return true;
@@ -249,6 +270,15 @@ bool ProjectImpl::_canModify(
 
     try
     {
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can modify anything
+            return true;
+        }
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
+            return false;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         return clientCapabilities.contains(Capability::Administrator) ||
                clientCapabilities.contains(Capability::ManageWorkloads);
@@ -271,6 +301,15 @@ bool ProjectImpl::_canDestroy(
 
     try
     {
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can destroy anything
+            return true;
+        }
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot destroy anything
+            return false;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         return clientCapabilities.contains(Capability::Administrator) ||
                clientCapabilities.contains(Capability::ManageWorkloads);

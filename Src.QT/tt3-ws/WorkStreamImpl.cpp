@@ -42,7 +42,14 @@ bool WorkStreamImpl::_canRead(
     Q_ASSERT(_workspace->_guard.isLockedByCurrentThread());
 
     try
-    {   //  Anyone authorized to access a Workspace
+    {
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isRestoreCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - can read anything
+            return true;
+        }
+        //  Anyone authorized to access a Workspace
         //  can see all PublicActivities there
         _workspace->_validateAccessRights(credentials); //  may throw
         return true;
@@ -65,6 +72,15 @@ bool WorkStreamImpl::_canModify(
 
     try
     {
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can modify anything
+            return true;
+        }
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
+            return false;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         return clientCapabilities.contains(Capability::Administrator) ||
                clientCapabilities.contains(Capability::ManageWorkloads);
@@ -87,6 +103,15 @@ bool WorkStreamImpl::_canDestroy(
 
     try
     {
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can destroy anything
+            return true;
+        }
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot destroy anything
+            return false;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         return clientCapabilities.contains(Capability::Administrator) ||
                clientCapabilities.contains(Capability::ManageWorkloads);

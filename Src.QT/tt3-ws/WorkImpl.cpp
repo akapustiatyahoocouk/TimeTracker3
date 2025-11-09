@@ -49,6 +49,7 @@ auto WorkImpl::startedAt(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataWork->startedAt();  //  may throw
     }
@@ -72,6 +73,7 @@ auto WorkImpl::finishedAt(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataWork->finishedAt(); //  may throw
     }
@@ -97,8 +99,14 @@ auto WorkImpl::account(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
-        return _workspace->_getProxy(_dataWork->account()); //  may throw
+        Account result = _workspace->_getProxy(_dataWork->account()); //  may throw
+        if (!result->_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        return result;
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -120,8 +128,14 @@ auto WorkImpl::activity(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
-        return _workspace->_getProxy(_dataWork->activity()); //  may throw
+        Activity result = _workspace->_getProxy(_dataWork->activity()); //  may throw
+        if (!result->_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+        return result;
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -139,6 +153,12 @@ bool WorkImpl::_canRead(
 
     try
     {
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isRestoreCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - can read anything
+            return true;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         if (clientCapabilities.contains(Capability::Administrator))
         {   //  Can read any Works
@@ -168,6 +188,15 @@ bool WorkImpl::_canModify(
 
     try
     {
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can modify anything
+            return false;   //  Events are immutable!
+        }
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
+            return false;
+        }
         _workspace->_validateAccessRights(credentials); //  may throw
         return false;   //  Works are immutable!
     }
@@ -185,7 +214,15 @@ bool WorkImpl::_canDestroy(
 
     try
     {
-        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can destroy anything
+            return true;
+        }
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot destroy anything
+            return false;
+        }        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         if (clientCapabilities.contains(Capability::Administrator))
         {   //  Can destroy any Works
             return true;

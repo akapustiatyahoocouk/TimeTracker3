@@ -97,8 +97,14 @@ auto EventImpl::account(
         {
             throw AccessDeniedException();
         }
+        Account result = _workspace->_getProxy(_dataEvent->account()); //  may thro;
+        if (!result->_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+
         //  Do the work
-        return _workspace->_getProxy(_dataEvent->account()); //  may throw
+        return result;
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -121,12 +127,16 @@ auto EventImpl::activities(
             throw AccessDeniedException();
         }
         //  Do the work
-        return tt3::util::transform(
-            _dataEvent->activities(),   //  may throw
-            [&](auto da)
+        Activities result;
+        for (auto dataActivity : _dataEvent->activities())
+        {
+            Activity activity = _workspace->_getProxy(dataActivity);
+            if (activity->_canRead(credentials))
             {
-                return _workspace->_getProxy(da);
-            });
+                result.insert(activity);
+            }
+        }
+        return result;
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw
@@ -144,6 +154,12 @@ bool EventImpl::_canRead(
 
     try
     {
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isRestoreCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - can read anything
+            return true;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         if (clientCapabilities.contains(Capability::Administrator))
         {   //  Can read any Events
@@ -173,6 +189,15 @@ bool EventImpl::_canModify(
 
     try
     {
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can modify anything
+            return false;   //  Events are immutable!
+        }
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
+            return false;
+        }
         _workspace->_validateAccessRights(credentials); //  may throw
         return false;   //  Events are immutable!
     }
@@ -190,6 +215,15 @@ bool EventImpl::_canDestroy(
 
     try
     {
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can destroy anything
+            return true;
+        }
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot destroy anything
+            return false;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         if (clientCapabilities.contains(Capability::Administrator))
         {   //  Can destroy any Events

@@ -572,7 +572,6 @@ auto UserImpl::createAccount(
 
     try
     {
-        //  Check access rights
         //  Validate access rights
         if (_workspace->_isBackupCredentials(credentials) ||
             _workspace->_isReportCredentials(credentials))
@@ -622,7 +621,7 @@ auto UserImpl::createPrivateActivity(
 
     try
     {
-        //  Check access rights
+        //  Validate access rights
         //  Validate access rights
         if (_workspace->_isBackupCredentials(credentials) ||
             _workspace->_isReportCredentials(credentials))
@@ -686,7 +685,7 @@ auto UserImpl::createPrivateTask(
 
     try
     {
-        //  Check access rights
+        //  Validate access rights
         //  Validate access rights
         if (_workspace->_isBackupCredentials(credentials) ||
             _workspace->_isReportCredentials(credentials))
