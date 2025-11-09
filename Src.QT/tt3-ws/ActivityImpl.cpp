@@ -49,6 +49,7 @@ QString ActivityImpl::displayName(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataActivity->displayName();   //  may throw
     }
@@ -73,6 +74,7 @@ void ActivityImpl::setDisplayName(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataActivity->setDisplayName(displayName); //  may throw
     }
@@ -96,6 +98,7 @@ QString ActivityImpl::description(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataActivity->description();    //  may throw
     }
@@ -120,6 +123,7 @@ void ActivityImpl::setDescription(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataActivity->setDescription(description); //  may throw
     }
@@ -143,6 +147,7 @@ auto ActivityImpl::timeout(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataActivity->timeout();   //  may throw
     }
@@ -167,6 +172,7 @@ void ActivityImpl::setTimeout(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataActivity->setTimeout(timeout); //  may throw
     }
@@ -190,6 +196,7 @@ bool ActivityImpl::requireCommentOnStart(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataActivity->requireCommentOnStart();   //  may throw
     }
@@ -214,6 +221,7 @@ void ActivityImpl::setRequireCommentOnStart(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataActivity->setRequireCommentOnStart(requireCommentOnStart); //  may throw
     }
@@ -237,6 +245,7 @@ bool ActivityImpl::requireCommentOnStop(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataActivity->requireCommentOnStop();   //  may throw
     }
@@ -261,6 +270,7 @@ void ActivityImpl::setRequireCommentOnStop(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataActivity->setRequireCommentOnStop(requireCommentOnStop); //  may throw
     }
@@ -284,6 +294,7 @@ bool ActivityImpl::fullScreenReminder(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataActivity->fullScreenReminder();   //  may throw
     }
@@ -308,6 +319,7 @@ void ActivityImpl::setFullScreenReminder(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataActivity->setFullScreenReminder(fullScreenReminder);   //  may throw
     }
@@ -333,6 +345,7 @@ auto ActivityImpl::activityType(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         if (auto dataActivityType = _dataActivity->activityType())  //  may throw
         {
@@ -366,6 +379,7 @@ void ActivityImpl::setActivityType(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataActivity->setActivityType(
             (activityType != nullptr) ?
@@ -392,6 +406,7 @@ auto ActivityImpl::workload(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         if (auto dataWorkload = _dataActivity->workload())  //  may throw
         {
@@ -425,6 +440,7 @@ void ActivityImpl::setWorkload(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataActivity->setWorkload(
             (workload != nullptr) ?
@@ -451,6 +467,7 @@ auto ActivityImpl::works(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         Works result;
         for (auto dataWork : _dataActivity->works())    //  may throw
@@ -483,6 +500,7 @@ auto ActivityImpl::events(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         Events result;
         for (auto dataEvent : _dataActivity->events())  //  may throw
@@ -513,30 +531,38 @@ bool ActivityImpl::canStart(
     try
     {
         //  Validate access rights
-        Capabilities capabilities =
-            _workspace->_validateAccessRights(credentials);
-        if (!capabilities.contains(Capability::Administrator) &&
-            !capabilities.contains(Capability::LogWork))
-        {   //  OOPS! The caller won't be able to record the Work unit
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
             return false;
         }
-        if (_dataActivity->requireCommentOnStart() ||
-            _dataActivity->requireCommentOnStop())
-        {   //  Will need to log an Event before/after a Work item...
+        if (!_workspace->_isRestoreCredentials(credentials))
+        {   //  No special access - use standard access rules
+            Capabilities capabilities =
+                _workspace->_validateAccessRights(credentials);
             if (!capabilities.contains(Capability::Administrator) &&
-                !capabilities.contains(Capability::LogEvents))
-            {   //  ...but won't be able to!
+                !capabilities.contains(Capability::LogWork))
+            {   //  OOPS! The caller won't be able to record the Work unit
                 return false;
             }
-        }
-        if (auto dataTask =
-            dynamic_cast<tt3::db::api::ITask*>(_dataActivity))
-        {
-            if (dataTask->completed())
+            if (_dataActivity->requireCommentOnStart() ||
+                _dataActivity->requireCommentOnStop())
+            {   //  Will need to log an Event before/after a Work item...
+                if (!capabilities.contains(Capability::Administrator) &&
+                    !capabilities.contains(Capability::LogEvents))
+                {   //  ...but won't be able to!
+                    return false;
+                }
+            }
+            if (auto dataTask =
+                dynamic_cast<tt3::db::api::ITask*>(_dataActivity))
             {
-                return false;
+                if (dataTask->completed())
+                {
+                    return false;
+                }
             }
-        }
+        }   //  Else special access - can modify anything
         return true;
     }
     catch (const tt3::util::Exception & ex)
@@ -555,21 +581,29 @@ bool ActivityImpl::canStop(
     try
     {
         //  Validate access rights
-        Capabilities capabilities =
-            _workspace->_validateAccessRights(credentials);
-        if (!capabilities.contains(Capability::Administrator) &&
-            !capabilities.contains(Capability::LogWork))
-        {   //  OOPS! The caller won't be able to record the Work unit
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
             return false;
         }
-        if (_dataActivity->requireCommentOnStop())
-        {   //  Will need to log an Event after a Work item...
+        if (!_workspace->_isRestoreCredentials(credentials))
+        {   //  No special access - use standard access rules
+            Capabilities capabilities =
+                _workspace->_validateAccessRights(credentials);
             if (!capabilities.contains(Capability::Administrator) &&
-                !capabilities.contains(Capability::LogEvents))
-            {   //  ...but won't be able to!
+                !capabilities.contains(Capability::LogWork))
+            {   //  OOPS! The caller won't be able to record the Work unit
                 return false;
             }
-        }
+            if (_dataActivity->requireCommentOnStop())
+            {   //  Will need to log an Event after a Work item...
+                if (!capabilities.contains(Capability::Administrator) &&
+                    !capabilities.contains(Capability::LogEvents))
+                {   //  ...but won't be able to!
+                    return false;
+                }
+            }
+        }   //  Else special access - can modify anything
         return true;
     }
     catch (const tt3::util::Exception & ex)

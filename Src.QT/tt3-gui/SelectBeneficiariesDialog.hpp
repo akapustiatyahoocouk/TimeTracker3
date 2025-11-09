@@ -117,7 +117,7 @@ namespace tt3::gui
         ListWidgetDecorations   _listWidgetDecorations;
 
         //////////
-        //  Event handlers
+        //  Signal handlers
     private slots:
         void            _filterLineEditTextChanged(QString);
         void            _beneficiariesTreeWidgetItemChanged(QTreeWidgetItem * item, int);

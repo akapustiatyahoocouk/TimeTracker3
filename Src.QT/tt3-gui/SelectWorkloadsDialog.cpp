@@ -385,7 +385,7 @@ void SelectWorkloadsDialog::_refreshWorkStreamCheckStates(
 }
 
 //////////
-//  Event handlers
+//  Signal handlers
 void SelectWorkloadsDialog::_workloadsTabWidgetCurrentChanged(int n)
 {
     Component::Settings::instance()->selectWorkloadsDialogTab = _ui->workloadsTabWidget->currentIndex();

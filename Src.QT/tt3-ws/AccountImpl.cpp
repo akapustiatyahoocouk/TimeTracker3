@@ -47,6 +47,7 @@ QString AccountImpl::login(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataAccount->login();   //  may throw
     }
@@ -67,13 +68,22 @@ void AccountImpl::setLogin(
     try
     {
         //  Validate access rights.
-        //  Note that a user CANNOT modify their own login!
-        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        if (!clientCapabilities.contains(Capability::Administrator) &&
-            !clientCapabilities.contains(Capability::ManageUsers))
-        {
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
             throw AccessDeniedException();
         }
+        if (!_workspace->_isRestoreCredentials(credentials))
+        {   //  No special access - use standard access rules
+            //  Note that a user CANNOT modify their own login!
+            Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+            if (!clientCapabilities.contains(Capability::Administrator) &&
+                !clientCapabilities.contains(Capability::ManageUsers))
+            {
+                throw AccessDeniedException();
+            }
+        }   //  Else special access - can modify anything
+
         //  Do the work
         return _dataAccount->setLogin(login);   //  may throw
     }
@@ -97,6 +107,7 @@ QString AccountImpl::passwordHash(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataAccount->passwordHash();    //  may throw
     }
@@ -121,6 +132,7 @@ void AccountImpl::setPassword(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataAccount->setPassword(password); //  may throw
     }
@@ -144,6 +156,7 @@ auto AccountImpl::capabilities(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataAccount->capabilities();    //  may throw
     }
@@ -164,14 +177,22 @@ void AccountImpl::setCapabilities(
     try
     {
         //  Validate access rights.
-        //  Note that a user CANNOT modify their own capabilities...
-        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        if (!clientCapabilities.contains(Capability::Administrator) &&
-            !clientCapabilities.contains(Capability::ManageUsers))
-        {
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
             throw AccessDeniedException();
         }
-        //  ...or leave workspace without an enabled admin user+account
+        if (!_workspace->_isRestoreCredentials(credentials))
+        {   //  No special access - use standard access rules
+            //  Note that a user CANNOT modify their own capabilities...
+            Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+            if (!clientCapabilities.contains(Capability::Administrator) &&
+                !clientCapabilities.contains(Capability::ManageUsers))
+            {
+                throw AccessDeniedException();
+            }
+        }   //  Else special access - can modify anything
+        //  Cannot leave workspace without an enabled admin user+account
         if (_dataAccount->capabilities().contains(Capability::Administrator) &&
             !capabilities.contains(Capability::Administrator))
         {   //  This account is losing its Administrator capability
@@ -206,6 +227,7 @@ auto AccountImpl::user(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _workspace->_getProxy(_dataAccount->user()); //  may throw
     }
@@ -229,6 +251,7 @@ auto AccountImpl::quickPicksList(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return tt3::util::transform(
             _dataAccount->quickPicksList(),
@@ -258,6 +281,7 @@ void AccountImpl::setQuickPicksList(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataAccount->setQuickPicksList(    //  may throw
             tt3::util::transform(
@@ -288,6 +312,7 @@ auto AccountImpl::works(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return tt3::util::transform(
             _dataAccount->works(),
@@ -318,6 +343,7 @@ auto AccountImpl::works(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return tt3::util::transform(
             _dataAccount->works(from, to),
@@ -346,6 +372,7 @@ auto AccountImpl::events(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return tt3::util::transform(
             _dataAccount->events(),
@@ -376,6 +403,7 @@ auto AccountImpl::events(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return tt3::util::transform(
             _dataAccount->events(from, to),
@@ -404,34 +432,43 @@ auto AccountImpl::createWork(
 
     try
     {
-        //  Check access rights
-        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        if (clientCapabilities.contains(Capability::Administrator))
-        {   //  can log Work items for any account/activity
+        //  Validate access rights
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
+            throw AccessDeniedException();
         }
-        else if (clientCapabilities.contains(Capability::LogWork))
-        {   //  Can log Work items aganst public Activities/Tasks and
-            //  caller's own private Activities/Tasks
-            tt3::db::api::IAccount * callerAccount =
-                _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
-            if (callerAccount == nullptr ||
-                callerAccount->user() != this->_dataAccount->user())
-            {   //  OOPS! Can't!
-                throw AccessDeniedException();
+        if (!_workspace->_isRestoreCredentials(credentials))
+        {   //  No special access - use standard access rules
+            Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+            if (clientCapabilities.contains(Capability::Administrator))
+            {   //  can log Work items for any account/activity
             }
-            if (auto dataPrivateActivity =
-                dynamic_cast<tt3::db::api::IPrivateActivity*>(activity->_dataActivity))
-            {   //  The private Activity/Tak must belong to the caller!
-                if (dataPrivateActivity->owner() != callerAccount->user())
+            else if (clientCapabilities.contains(Capability::LogWork))
+            {   //  Can log Work items aganst public Activities/Tasks and
+                //  caller's own private Activities/Tasks
+                tt3::db::api::IAccount * callerAccount =
+                    _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
+                if (callerAccount == nullptr ||
+                    callerAccount->user() != this->_dataAccount->user())
                 {   //  OOPS! Can't!
                     throw AccessDeniedException();
                 }
+                if (auto dataPrivateActivity =
+                    dynamic_cast<tt3::db::api::IPrivateActivity*>(activity->_dataActivity))
+                {   //  The private Activity/Tak must belong to the caller!
+                    if (dataPrivateActivity->owner() != callerAccount->user())
+                    {   //  OOPS! Can't!
+                        throw AccessDeniedException();
+                    }
+                }
             }
-        }
-        else
-        {   //  OOPS! Can't!
-            throw AccessDeniedException();
-        }
+            else
+            {   //  OOPS! Can't!
+                throw AccessDeniedException();
+            }
+        }   //  Else special access - can modify anything
+
         //  Do the work
         tt3::db::api::IWork * dataWork =
             _dataAccount->createWork(   //  may throw
@@ -458,40 +495,49 @@ auto AccountImpl::createEvent(
 
     try
     {
-        //  Check access rights
-        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        if (clientCapabilities.contains(Capability::Administrator))
-        {   //  can log Events for any account/activity
+        //  Validate access rights
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
+            throw AccessDeniedException();
         }
-        else if (clientCapabilities.contains(Capability::LogEvents))
-        {   //  Can log Events aganst public Activities/Tasks and
-            //  caller's own private Activities/Tasks
-            tt3::db::api::IAccount * callerAccount =
-                _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
-            if (callerAccount == nullptr ||
-                callerAccount->user() != this->_dataAccount->user())
-            {   //  OOPS! Can't!
-                throw AccessDeniedException();
+        if (!_workspace->_isRestoreCredentials(credentials))
+        {   //  No special access - use standard access rules
+            Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+            if (clientCapabilities.contains(Capability::Administrator))
+            {   //  can log Events for any account/activity
             }
-            for (Activity activity : activities)
-            {
-                if (activity != nullptr)
+            else if (clientCapabilities.contains(Capability::LogEvents))
+            {   //  Can log Events aganst public Activities/Tasks and
+                //  caller's own private Activities/Tasks
+                tt3::db::api::IAccount * callerAccount =
+                    _workspace->_database->tryLogin(credentials._login, credentials._password); //  may throw
+                if (callerAccount == nullptr ||
+                    callerAccount->user() != this->_dataAccount->user())
                 {   //  OOPS! Can't!
-                    if (auto dataPrivateActivity =
-                        dynamic_cast<tt3::db::api::IPrivateActivity*>(activity->_dataActivity))
-                    {   //  The private Activity/Tak must belong to the caller!
-                        if (dataPrivateActivity->owner() != callerAccount->user())
-                        {   //  OOPS! Can't!
-                            throw AccessDeniedException();
+                    throw AccessDeniedException();
+                }
+                for (Activity activity : activities)
+                {
+                    if (activity != nullptr)
+                    {   //  OOPS! Can't!
+                        if (auto dataPrivateActivity =
+                            dynamic_cast<tt3::db::api::IPrivateActivity*>(activity->_dataActivity))
+                        {   //  The private Activity/Tak must belong to the caller!
+                            if (dataPrivateActivity->owner() != callerAccount->user())
+                            {   //  OOPS! Can't!
+                                throw AccessDeniedException();
+                            }
                         }
                     }
                 }
             }
-        }
-        else
-        {   //  OOPS! Can't!
-            throw AccessDeniedException();
-        }
+            else
+            {   //  OOPS! Can't!
+                throw AccessDeniedException();
+            }
+        }   //  Else special access - can modify anything
+
         //  Do the work
         tt3::db::api::Activities dataActivities =
             tt3::util::transform(
@@ -523,8 +569,10 @@ bool AccountImpl::_canRead(
 
     try
     {
-        if (_workspace->_isBackupCredentials(credentials))
-        {   //  Can read any accounts
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isRestoreCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - can read anything
             return true;
         }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
@@ -557,6 +605,15 @@ bool AccountImpl::_canModify(
 
     try
     {
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can modify anything
+            return true;
+        }
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
+            return false;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         if (clientCapabilities.contains(Capability::Administrator) ||
             clientCapabilities.contains(Capability::ManageUsers))
@@ -587,6 +644,15 @@ bool AccountImpl::_canDestroy(
 
     try
     {
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can destroy anything
+            return true;
+        }
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot destrpy anything
+            return false;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         return clientCapabilities.contains(Capability::Administrator) ||
                clientCapabilities.contains(Capability::ManageUsers);

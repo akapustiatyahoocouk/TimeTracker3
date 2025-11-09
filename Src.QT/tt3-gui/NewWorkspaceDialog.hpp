@@ -111,7 +111,7 @@ namespace tt3::gui
         Ui::NewWorkspaceDialog *const   _ui;
 
         //////////
-        //  Event handlers
+        //  Signal handlers
     private slots:
         void            _workspaceTypeComboBoxCurrentIndexChanged(int);
         void            _browsePushButtonClicked();

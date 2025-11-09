@@ -836,7 +836,7 @@ namespace tt3::ws
                         ) const -> Event;
 
         bool        _isBackupCredentials(const Credentials & credentials) const
-        {
+        {   //  Inlined definition for better chance of inlining
             Q_ASSERT(_guard.isLockedByCurrentThread());
 
             if (!_backupCredentials.isEmpty())
@@ -848,8 +848,8 @@ namespace tt3::ws
                     {   //  Cached...
                         if (QDateTime::currentDateTimeUtc() > backupCredentialsPtr->_expireAt)
                         {   //  ...but expired
-                            delete _backupCredentials[*backupCredentialsPtr];  //  release the Read lock
-                            _backupCredentials.remove(*backupCredentialsPtr);
+                            const_cast<WorkspaceImpl*>(this)->  //  we are working with an internal cache
+                                _clearExpiredBackupCredentials();
                             return false;
                         }
                         //  ...and not yet expired
@@ -860,8 +860,62 @@ namespace tt3::ws
             return false;
         }
 
+        bool        _isRestoreCredentials(const Credentials & credentials) const
+        {   //  Inlined definition for better chance of inlining
+            Q_ASSERT(_guard.isLockedByCurrentThread());
+
+            if (!_restoreCredentials.isEmpty())
+            {   //  The "if" takes fast care of most accsses
+                if (auto restoreCredentialsPtr =
+                    dynamic_cast<const RestoreCredentials*>(&credentials))
+                {
+                    if (_restoreCredentials.contains(*restoreCredentialsPtr))
+                    {   //  Cached...
+                        if (QDateTime::currentDateTimeUtc() > restoreCredentialsPtr->_expireAt)
+                        {   //  ...but expired
+                            const_cast<WorkspaceImpl*>(this)->  //  we are working with an internal cache
+                                _clearExpiredRestoreCredentials();
+                            return false;
+                        }
+                        //  ...and not yet expired
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        bool        _isReportCredentials(const Credentials & credentials) const
+        {   //  Inlined definition for better chance of inlining
+            Q_ASSERT(_guard.isLockedByCurrentThread());
+
+            if (!_reportCredentials.isEmpty())
+            {   //  The "if" takes fast care of most accsses
+                if (auto reportCredentialsPtr =
+                    dynamic_cast<const ReportCredentials*>(&credentials))
+                {
+                    if (_reportCredentials.contains(*reportCredentialsPtr))
+                    {   //  Cached...
+                        if (QDateTime::currentDateTimeUtc() > reportCredentialsPtr->_expireAt)
+                        {   //  ...but expired
+                            const_cast<WorkspaceImpl*>(this)->  //  we are working with an internal cache
+                                _clearExpiredReportCredentials();
+                            return false;
+                        }
+                        //  ...and not yet expired
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        void        _clearExpiredBackupCredentials();
+        void        _clearExpiredRestoreCredentials();
+        void        _clearExpiredReportCredentials();
+
         //////////
-        //  Event handlers
+        //  Signal handlers
     private slots:
         void        _onDatabaseClosed(
                             tt3::db::api::DatabaseClosedNotification notification

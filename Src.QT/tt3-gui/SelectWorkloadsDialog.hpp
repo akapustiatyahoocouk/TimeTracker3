@@ -139,7 +139,7 @@ namespace tt3::gui
         ListWidgetDecorations   _listWidgetDecorations;
 
         //////////
-        //  Event handlers
+        //  Signal handlers
     private slots:
         void            _workloadsTabWidgetCurrentChanged(int);
         void            _projectsFilterLineEditTextChanged(QString);

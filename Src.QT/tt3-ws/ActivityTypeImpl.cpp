@@ -49,6 +49,7 @@ QString ActivityTypeImpl::displayName(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataActivityType->displayName();   //  may throw
     }
@@ -73,6 +74,7 @@ void ActivityTypeImpl::setDisplayName(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataActivityType->setDisplayName(displayName); //  may throw
     }
@@ -96,6 +98,7 @@ QString ActivityTypeImpl::description(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataActivityType->description();   //  may throw
     }
@@ -120,6 +123,7 @@ void ActivityTypeImpl::setDescription(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         _dataActivityType->setDescription(description); //  may throw
     }
@@ -145,6 +149,7 @@ auto ActivityTypeImpl::activities(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         Activities result;
         for (auto dataActivity : _dataActivityType->activities())   //  may throw
@@ -173,6 +178,12 @@ bool ActivityTypeImpl::_canRead(
 
     try
     {
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isRestoreCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - can read anything
+            return true;
+        }
         _workspace->_validateAccessRights(credentials); //  may throw
         //  Anyone authorized to access workspace can see all activity types
         return true;
@@ -195,6 +206,15 @@ bool ActivityTypeImpl::_canModify(
 
     try
     {
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can modify anything
+            return true;
+        }
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
+            return false;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         if (clientCapabilities.contains(Capability::Administrator) ||
             clientCapabilities.contains(Capability::ManageActivityTypes))
@@ -217,6 +237,15 @@ bool ActivityTypeImpl::_canDestroy(
 
     try
     {
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can destroy anything
+            return true;
+        }
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot destroy anything
+            return false;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         if (clientCapabilities.contains(Capability::Administrator) ||
             clientCapabilities.contains(Capability::ManageActivityTypes))

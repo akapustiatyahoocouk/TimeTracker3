@@ -218,7 +218,7 @@ void SelectBeneficiariesDialog::_refreshBeneficiaryCheckStates(
 }
 
 //////////
-//  Event handlers
+//  Signal handlers
 void SelectBeneficiariesDialog::_filterLineEditTextChanged(QString)
 {
     _refresh();

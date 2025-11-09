@@ -1518,8 +1518,47 @@ Event WorkspaceImpl::_getProxy(
     return event;
 }
 
+void WorkspaceImpl::_clearExpiredBackupCredentials()
+{
+    QDateTime now = QDateTime::currentDateTimeUtc();
+    for (auto key : _backupCredentials.keys())
+    {
+        if (now >= key._expireAt)
+        {
+            delete _backupCredentials[key]; //  release the lock
+            _backupCredentials.remove(key);
+        }
+    }
+}
+
+void WorkspaceImpl::_clearExpiredRestoreCredentials()
+{
+    QDateTime now = QDateTime::currentDateTimeUtc();
+    for (auto key : _restoreCredentials.keys())
+    {
+        if (now >= key._expireAt)
+        {
+            delete _restoreCredentials[key]; //  release the lock
+            _restoreCredentials.remove(key);
+        }
+    }
+}
+
+void WorkspaceImpl::_clearExpiredReportCredentials()
+{
+    QDateTime now = QDateTime::currentDateTimeUtc();
+    for (auto key : _reportCredentials.keys())
+    {
+        if (now >= key._expireAt)
+        {
+            delete _reportCredentials[key]; //  release the lock
+            _reportCredentials.remove(key);
+        }
+    }
+}
+
 //////////
-//  Event handlers
+//  Signal handlers
 void WorkspaceImpl::_onDatabaseClosed(tt3::db::api::DatabaseClosedNotification notification)
 {
     Q_ASSERT(notification.database() == _database);

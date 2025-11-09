@@ -91,7 +91,7 @@ namespace tt3::gui
         Ui::LoginDialog *       _ui;
 
         //////////
-        //  Event handlers
+        //  Signal handlers
     private slots:
         void            _loginLineEditTextChanged(QString);
         void            _passwordLineEditTextChanged(QString);

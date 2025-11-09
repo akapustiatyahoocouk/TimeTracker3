@@ -80,7 +80,7 @@ void LoginDialog::_refresh()
 }
 
 //////////
-//  Event handlers
+//  Signal handlers
 void LoginDialog::_loginLineEditTextChanged(QString)
 {
     _refresh();

@@ -134,7 +134,7 @@ namespace tt3::gui
         TreeWidgetDecorations   _treeWidgetDecorations;
 
         //////////
-        //  Event handlers
+        //  Signal handlers
     private slots:
         void            _workloadsTabWidgetCurrentChanged(int);
         void            _projectsFilterLineEditTextChanged(QString);

@@ -143,7 +143,7 @@ void SelectWorkspaceDialog::_setSelectedWorkspaceType(
 }
 
 //////////
-//  Event handlers
+//  Signal handlers
 void SelectWorkspaceDialog::_workspaceTypeComboBoxCurrentIndexChanged(int)
 {
     Q_ASSERT(_ui->workspaceTypeComboBox->currentIndex() != -1);

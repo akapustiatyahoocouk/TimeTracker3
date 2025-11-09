@@ -47,6 +47,7 @@ QString UserImpl::realName(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataUser->realName();   //  may throw
     }
@@ -71,6 +72,7 @@ void UserImpl::setRealName(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataUser->setRealName(realName);    //  may throw
     }
@@ -94,6 +96,7 @@ auto UserImpl::inactivityTimeout(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataUser->inactivityTimeout();  //  may throw
     }
@@ -118,6 +121,7 @@ void UserImpl::setInactivityTimeout(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataUser->setInactivityTimeout(inactivityTimeout);  //  may throw
     }
@@ -141,6 +145,7 @@ auto UserImpl::uiLocale(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataUser->uiLocale();   //  may throw
     }
@@ -165,6 +170,7 @@ void UserImpl::setUiLocale(
         {
             throw AccessDeniedException();
         }
+
         //  Do the work
         return _dataUser->setUiLocale(uiLocale);    //  may throw
     }
@@ -185,6 +191,17 @@ auto UserImpl::accounts(
 
     try
     {
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isRestoreCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - can read anything
+            return tt3::util::transform(
+                _dataUser->accounts(),  //  may throw
+                [&](auto da)
+                {
+                    return _workspace->_getProxy(da);
+                });
+        }
         Capabilities capabilities = _workspace->_validateAccessRights(credentials);
         if (capabilities.contains(Capability::Administrator) ||
             capabilities.contains(Capability::ManageUsers))
@@ -228,6 +245,17 @@ auto UserImpl::privateActivities(
 
     try
     {
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isRestoreCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - can read anything
+            return tt3::util::transform(
+                _dataUser->privateActivities(), //  may throw
+                [&](auto da)
+                {
+                    return _workspace->_getProxy(da);
+                });
+        }
         Capabilities capabilities = _workspace->_validateAccessRights(credentials);
         if (capabilities.contains(Capability::Administrator))
         {   //  The caller can see all private activities of all users
@@ -270,6 +298,17 @@ auto UserImpl::privateActivitiesAndTasks(
 
     try
     {
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isRestoreCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - can read anything
+            return tt3::util::transform(
+                _dataUser->privateActivitiesAndTasks(), //  may throw
+                [&](auto da)
+                {
+                    return _workspace->_getProxy(da);
+                });
+        }
         Capabilities capabilities = _workspace->_validateAccessRights(credentials);
         if (capabilities.contains(Capability::Administrator))
         {   //  The caller can see all private activities and tasks of all users
@@ -312,6 +351,17 @@ auto UserImpl::privateTasks(
 
     try
     {
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isRestoreCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - can read anything
+            return tt3::util::transform(
+                _dataUser->privateTasks(), //  may throw
+                [&](auto dt)
+                {
+                    return _workspace->_getProxy(dt);
+                });
+        }
         Capabilities capabilities = _workspace->_validateAccessRights(credentials);
         if (capabilities.contains(Capability::Administrator))
         {   //  The caller can see all private tasks of all users
@@ -354,6 +404,17 @@ auto UserImpl::rootPrivateTasks(
 
     try
     {
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isRestoreCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - can read anything
+            return tt3::util::transform(
+                _dataUser->rootPrivateTasks(),  //  may throw
+                [&](auto dt)
+                {
+                    return _workspace->_getProxy(dt);
+                });
+        }
         Capabilities capabilities = _workspace->_validateAccessRights(credentials);
         if (capabilities.contains(Capability::Administrator))
         {   //  The caller can see all private tasks of all users
@@ -512,12 +573,22 @@ auto UserImpl::createAccount(
     try
     {
         //  Check access rights
-        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        if (!clientCapabilities.contains(Capability::Administrator) &&
-            !clientCapabilities.contains(Capability::ManageUsers))
-        {   //  OOPS! Can't!
+        //  Validate access rights
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
             throw AccessDeniedException();
         }
+        if (!_workspace->_isRestoreCredentials(credentials))
+        {   //  No special access - use standard access rules
+            Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+            if (!clientCapabilities.contains(Capability::Administrator) &&
+                !clientCapabilities.contains(Capability::ManageUsers))
+            {   //  OOPS! Can't!
+                throw AccessDeniedException();
+            }
+        }   //  Else special access - can modify anything
+
         //  Do the work
         tt3::db::api::IAccount * dataAccount =
             _dataUser->createAccount(
@@ -552,22 +623,31 @@ auto UserImpl::createPrivateActivity(
     try
     {
         //  Check access rights
-        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        if (clientCapabilities.contains(Capability::Administrator))
-        {   //  Can create PrivateActivities for any User
-        }
-        else if (clientCapabilities.contains(Capability::ManagePrivateActivities))
-        {   //  Can ONLY create their own PrivateActivities
-            if (_workspace->_database->login(   //  may throw
-                    credentials._login, credentials._password)->user() != _dataUser)
-            {
-                throw AccessDeniedException();
-            }
-        }
-        else
-        {   //  OOPS! Can't!
+        //  Validate access rights
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
             throw AccessDeniedException();
         }
+        if (!_workspace->_isRestoreCredentials(credentials))
+        {   //  No special access - use standard access rules
+            Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+            if (clientCapabilities.contains(Capability::Administrator))
+            {   //  Can create PrivateActivities for any User
+            }
+            else if (clientCapabilities.contains(Capability::ManagePrivateActivities))
+            {   //  Can ONLY create their own PrivateActivities
+                if (_workspace->_database->login(   //  may throw
+                        credentials._login, credentials._password)->user() != _dataUser)
+                {
+                    throw AccessDeniedException();
+                }
+            }
+            else
+            {   //  OOPS! Can't!
+                throw AccessDeniedException();
+            }
+        }   //  Else special access - can modify anything
         //  Do the work
         tt3::db::api::IPrivateActivity * dataPrivateActivity =
             _dataUser->createPrivateActivity(
@@ -607,22 +687,31 @@ auto UserImpl::createPrivateTask(
     try
     {
         //  Check access rights
-        Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
-        if (clientCapabilities.contains(Capability::Administrator))
-        {   //  Can create PrivateTasks for any User
-        }
-        else if (clientCapabilities.contains(Capability::ManagePrivateTasks))
-        {   //  Can ONLY create their own PrivateTasks
-            if (_workspace->_database->login(   //  may throw
-                    credentials._login, credentials._password)->user() != _dataUser)
-            {
-                throw AccessDeniedException();
-            }
-        }
-        else
-        {   //  OOPS! Can't!
+        //  Validate access rights
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
             throw AccessDeniedException();
         }
+        if (!_workspace->_isRestoreCredentials(credentials))
+        {   //  No special access - use standard access rules
+            Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
+            if (clientCapabilities.contains(Capability::Administrator))
+            {   //  Can create PrivateTasks for any User
+            }
+            else if (clientCapabilities.contains(Capability::ManagePrivateTasks))
+            {   //  Can ONLY create their own PrivateTasks
+                if (_workspace->_database->login(   //  may throw
+                        credentials._login, credentials._password)->user() != _dataUser)
+                {
+                    throw AccessDeniedException();
+                }
+            }
+            else
+            {   //  OOPS! Can't!
+                throw AccessDeniedException();
+            }
+        }   //  Else special acess - can modify anything
         //  Do the work
         tt3::db::api::IPrivateTask * dataPrivateTask =
             _dataUser->createPrivateTask(
@@ -654,6 +743,12 @@ bool UserImpl::_canRead(
 
     try
     {
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isRestoreCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - can read anything
+            return true;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         if (clientCapabilities.contains(Capability::Administrator) ||
             clientCapabilities.contains(Capability::ManageUsers))
@@ -684,6 +779,15 @@ bool UserImpl::_canModify(
 
     try
     {
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can modify anything
+            return true;
+        }
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
+            return false;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         if (clientCapabilities.contains(Capability::Administrator) ||
             clientCapabilities.contains(Capability::ManageUsers))
@@ -714,6 +818,15 @@ bool UserImpl::_canDestroy(
 
     try
     {
+        if (_workspace->_isRestoreCredentials(credentials))
+        {   //  Special access - can destroy anything
+            return true;
+        }
+        if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isReportCredentials(credentials))
+        {   //  Special access - cannot destrpy anything
+            return false;
+        }
         Capabilities clientCapabilities = _workspace->_validateAccessRights(credentials); //  may throw
         return clientCapabilities.contains(Capability::Administrator) ||
                clientCapabilities.contains(Capability::ManageUsers);

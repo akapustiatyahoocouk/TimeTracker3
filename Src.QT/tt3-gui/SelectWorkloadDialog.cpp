@@ -337,7 +337,7 @@ QString SelectWorkloadDialog::_prompt(
 }
 
 //////////
-//  Event handlers
+//  Signal handlers
 void SelectWorkloadDialog::_workloadsTabWidgetCurrentChanged(int n)
 {
     Component::Settings::instance()->selectWorkloadsDialogTab = _ui->workloadsTabWidget->currentIndex();
