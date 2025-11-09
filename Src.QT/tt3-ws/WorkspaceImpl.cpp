@@ -150,22 +150,34 @@ auto WorkspaceImpl::users(
 
     try
     {
-        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
         Users result;
-        if (clientCapabilities.contains(Capability::Administrator) ||
-            clientCapabilities.contains(Capability::ManageUsers))
-        {   //  The caller can see all users
-            for (tt3::db::api::IUser * dataUser : _database->users())
+        if (_isBackupCredentials(credentials) ||
+            _isRestoreCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - can read anything
+            for (auto dataUser : _database->users())
             {
                 result.insert(_getProxy(dataUser));
             }
         }
         else
-        {   //  The caller can only see himself
-            tt3::db::api::IAccount * dataAccount =
-                _database->login(credentials._login, credentials._password);
-            tt3::db::api::IUser * dataUser = dataAccount->user();
-            result.insert(_getProxy(dataUser));
+        {
+            Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+            if (clientCapabilities.contains(Capability::Administrator) ||
+                clientCapabilities.contains(Capability::ManageUsers))
+            {   //  The caller can see all users
+                for (auto dataUser : _database->users())
+                {
+                    result.insert(_getProxy(dataUser));
+                }
+            }
+            else
+            {   //  The caller can only see himself
+                tt3::db::api::IAccount * dataAccount =
+                    _database->login(credentials._login, credentials._password);
+                tt3::db::api::IUser * dataUser = dataAccount->user();
+                result.insert(_getProxy(dataUser));
+            }
         }
         return result;
     }
@@ -184,24 +196,36 @@ Accounts WorkspaceImpl::accounts(
 
     try
     {
-        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
         Accounts result;
-        if (clientCapabilities.contains(Capability::Administrator) ||
-            clientCapabilities.contains(Capability::ManageUsers))
-        {   //  The caller can see all accounts if all users
-            for (tt3::db::api::IAccount * dataAccount : _database->accounts())
+        if (_isBackupCredentials(credentials) ||
+            _isRestoreCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - can read anything
+            for (auto dataAccount : _database->accounts())
             {
                 result.insert(_getProxy(dataAccount));
             }
         }
         else
-        {   //  The caller can only see his own account
-            tt3::db::api::IAccount * dataAccount =
-                _database->login(credentials._login, credentials._password);
-            tt3::db::api::IUser * dataUser = dataAccount->user();
-            for (tt3::db::api::IAccount * da : dataUser->accounts())
-            {
-                result.insert(_getProxy(da));
+        {
+            Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+            if (clientCapabilities.contains(Capability::Administrator) ||
+                clientCapabilities.contains(Capability::ManageUsers))
+            {   //  The caller can see all accounts if all users
+                for (auto dataAccount : _database->accounts())
+                {
+                    result.insert(_getProxy(dataAccount));
+                }
+            }
+            else
+            {   //  The caller can only see his own account
+                tt3::db::api::IAccount * dataAccount =
+                    _database->login(credentials._login, credentials._password);
+                tt3::db::api::IUser * dataUser = dataAccount->user();
+                for (tt3::db::api::IAccount * da : dataUser->accounts())
+                {
+                    result.insert(_getProxy(da));
+                }
             }
         }
         return result;
@@ -222,23 +246,34 @@ Account WorkspaceImpl::findAccount(
 
     try
     {
-        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
-        tt3::db::api::IAccount * dataAccount = _database->findAccount(login);
-        if (dataAccount != nullptr)
-        {   //  Something found - but is it visible ?
-            if (clientCapabilities.contains(Capability::Administrator) ||
-                clientCapabilities.contains(Capability::ManageUsers))
-            {   //  The caller can see all accounts if all users
-                return _getProxy(dataAccount);
-            }
-            else
-            {   //  The caller can only see his own account
-                tt3::db::api::IAccount * dataCallerAccount =
-                    _database->login(credentials._login, credentials._password);
-                tt3::db::api::IUser * dataUser = dataCallerAccount->user();
-                if (dataUser == dataAccount->user())
-                {   //  Yes!
+        tt3::db::api::IAccount * dataAccount;
+        if (_isBackupCredentials(credentials) ||
+            _isRestoreCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - can read anything
+            dataAccount = _database->findAccount(login);
+            return (dataAccount != nullptr) ? _getProxy(dataAccount) : nullptr;
+        }
+        else
+        {
+            Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+            dataAccount = _database->findAccount(login);
+            if (dataAccount != nullptr)
+            {   //  Something found - but is it visible ?
+                if (clientCapabilities.contains(Capability::Administrator) ||
+                    clientCapabilities.contains(Capability::ManageUsers))
+                {   //  The caller can see all accounts if all users
                     return _getProxy(dataAccount);
+                }
+                else
+                {   //  The caller can only see his own account
+                    tt3::db::api::IAccount * dataCallerAccount =
+                        _database->login(credentials._login, credentials._password);
+                    tt3::db::api::IUser * dataUser = dataCallerAccount->user();
+                    if (dataUser == dataAccount->user())
+                    {   //  Yes!
+                        return _getProxy(dataAccount);
+                    }
                 }
             }
         }
@@ -260,7 +295,15 @@ auto WorkspaceImpl::activityTypes(
 
     try
     {
-        _validateAccessRights(credentials);
+        if (_isBackupCredentials(credentials) ||
+            _isRestoreCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - can read anything
+        }
+        else
+        {
+            _validateAccessRights(credentials);
+        }
         //  The caller can see all activity types
         return tt3::util::transform(
             _database->activityTypes(), //  may throw
@@ -284,7 +327,15 @@ auto WorkspaceImpl::publicActivities(
 
     try
     {
-        _validateAccessRights(credentials);
+        if (_isBackupCredentials(credentials) ||
+            _isRestoreCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - can read anything
+        }
+        else
+        {
+            _validateAccessRights(credentials);
+        }
         //  The caller can see all public activities
         return tt3::util::transform(
             _database->publicActivities(),  //  may throw
@@ -308,7 +359,15 @@ auto WorkspaceImpl::publicActivitiesAndTasks(
 
     try
     {
-        _validateAccessRights(credentials);
+        if (_isBackupCredentials(credentials) ||
+            _isRestoreCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - can read anything
+        }
+        else
+        {
+            _validateAccessRights(credentials);
+        }
         //  The caller can see all public activities
         return tt3::util::transform(
             _database->publicActivitiesAndTasks(),  //  may throw
@@ -332,7 +391,15 @@ auto WorkspaceImpl::publicTasks(
 
     try
     {
-        _validateAccessRights(credentials);
+        if (_isBackupCredentials(credentials) ||
+            _isRestoreCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - can read anything
+        }
+        else
+        {
+            _validateAccessRights(credentials);
+        }
         //  The caller can see all public tasks
         return tt3::util::transform(
             _database->publicTasks(),   //  may throw
@@ -356,7 +423,15 @@ auto WorkspaceImpl::rootPublicTasks(
 
     try
     {
-        _validateAccessRights(credentials);
+        if (_isBackupCredentials(credentials) ||
+            _isRestoreCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - can read anything
+        }
+        else
+        {
+            _validateAccessRights(credentials);
+        }
         //  The caller can see all public tasks
         return tt3::util::transform(
             _database->rootPublicTasks(),   //  may throw
@@ -380,7 +455,15 @@ auto WorkspaceImpl::projects(
 
     try
     {
-        _validateAccessRights(credentials);
+        if (_isBackupCredentials(credentials) ||
+            _isRestoreCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - can read anything
+        }
+        else
+        {
+            _validateAccessRights(credentials);
+        }
         //  The caller can see all projects
         return tt3::util::transform(
             _database->projects(),  //  may throw
@@ -404,7 +487,15 @@ auto WorkspaceImpl::rootProjects(
 
     try
     {
-        _validateAccessRights(credentials);
+        if (_isBackupCredentials(credentials) ||
+            _isRestoreCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - can read anything
+        }
+        else
+        {
+            _validateAccessRights(credentials);
+        }
         //  The caller can see all projects
         return tt3::util::transform(
             _database->rootProjects(),  //  may throw
@@ -428,7 +519,15 @@ auto WorkspaceImpl::workStreams(
 
     try
     {
-        _validateAccessRights(credentials);
+        if (_isBackupCredentials(credentials) ||
+            _isRestoreCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - can read anything
+        }
+        else
+        {
+            _validateAccessRights(credentials);
+        }
         //  The caller can see all WorkStreams
         return tt3::util::transform(
             _database->workStreams(),   //  may throw
@@ -452,7 +551,15 @@ auto WorkspaceImpl::beneficiaries(
 
     try
     {
-        _validateAccessRights(credentials);
+        if (_isBackupCredentials(credentials) ||
+            _isRestoreCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - can read anything
+        }
+        else
+        {
+            _validateAccessRights(credentials);
+        }
         //  The caller can see all Beneficiaries
         return tt3::util::transform(
             _database->beneficiaries(), //  may throw
@@ -478,8 +585,17 @@ bool WorkspaceImpl::canAccess(
 
     try
     {
-        _validateAccessRights(credentials); //  may throw
-        return true;
+        if (_isBackupCredentials(credentials) ||
+            _isRestoreCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - can at least read anything
+            return true;
+        }
+        else
+        {
+            _validateAccessRights(credentials); //  may throw
+            return true;
+        }
     }
     catch (const AccessDeniedException &)
     {
@@ -500,6 +616,7 @@ auto WorkspaceImpl::capabilities(
 
     try
     {
+        //  TODO what about special access for e.g. BackupCredentials?
         return _validateAccessRights(credentials);  //  may throw
     }
     catch (const tt3::util::Exception & ex)
@@ -520,6 +637,7 @@ bool WorkspaceImpl::grantsAll(
     {
         Q_ASSERT(!requiredCapabilities.isEmpty());
 
+        //  TODO what about special access for e.g. BackupCredentials?
         //  Do the work; be defensive in release mode
         Capabilities c = _validateAccessRights(credentials);  //  may throw
         return (c & requiredCapabilities) == requiredCapabilities;
@@ -546,6 +664,7 @@ bool WorkspaceImpl::grantsAny(
     {
         Q_ASSERT(!requiredCapabilities.isEmpty());
 
+        //  TODO what about special access for e.g. BackupCredentials?
         //  Do the work; be defensive in release mode
         Capabilities c = _validateAccessRights(credentials);  //  may throw
         return !(c & requiredCapabilities).isEmpty();
@@ -569,6 +688,7 @@ auto WorkspaceImpl::tryLogin(
 
     try
     {
+        //  Special access credentials do not allow to login
         tt3::db::api::IAccount * dataAccount =
             _database->tryLogin(credentials._login, credentials._password);
         return (dataAccount != nullptr) ?
@@ -590,6 +710,7 @@ auto WorkspaceImpl::login(
 
     try
     {
+        //  Special access credentials do not allow to login
         tt3::db::api::IAccount * dataAccount =
             _database->login(credentials._login, credentials._password);
         return _getProxy(dataAccount);
@@ -618,12 +739,21 @@ auto WorkspaceImpl::createUser(
     try
     {
         //  Validate access rights
-        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
-        if (!clientCapabilities.contains(Capability::Administrator) &&
-            !clientCapabilities.contains(Capability::ManageUsers))
-        {   //  OOPS! Can't!
+        if (_isBackupCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
             throw AccessDeniedException();
         }
+        if (!_isRestoreCredentials(credentials))
+        {   //  No special access - use standard access rules
+            Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+            if (!clientCapabilities.contains(Capability::Administrator) &&
+                !clientCapabilities.contains(Capability::ManageUsers))
+            {   //  OOPS! Can't!
+                throw AccessDeniedException();
+            }
+        }
+
         //  Do the work
         tt3::db::api::Workloads dataPermittedWorkloads =
             tt3::util::transform(
@@ -657,12 +787,21 @@ auto WorkspaceImpl::createActivityType(
     try
     {
         //  Validate access rights
-        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
-        if (!clientCapabilities.contains(Capability::Administrator) &&
-            !clientCapabilities.contains(Capability::ManageActivityTypes))
-        {   //  OOPS! Can't!
+        if (_isBackupCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
             throw AccessDeniedException();
         }
+        if (!_isRestoreCredentials(credentials))
+        {   //  No special access - use standard access rules
+            Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+            if (!clientCapabilities.contains(Capability::Administrator) &&
+                !clientCapabilities.contains(Capability::ManageActivityTypes))
+            {   //  OOPS! Can't!
+                throw AccessDeniedException();
+            }
+        }
+
         //  Do the work
         tt3::db::api::IActivityType * dataActivityType =
             _database->createActivityType(displayName, description);
@@ -692,12 +831,21 @@ auto WorkspaceImpl::createPublicActivity(
     try
     {
         //  Validate access rights
-        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
-        if (!clientCapabilities.contains(Capability::Administrator) &&
-            !clientCapabilities.contains(Capability::ManagePublicActivities))
-        {   //  OOPS! Can't!
+        if (_isBackupCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
             throw AccessDeniedException();
         }
+        if (!_isRestoreCredentials(credentials))
+        {   //  No special access - use standard access rules
+            Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+            if (!clientCapabilities.contains(Capability::Administrator) &&
+                !clientCapabilities.contains(Capability::ManagePublicActivities))
+            {   //  OOPS! Can't!
+                throw AccessDeniedException();
+            }
+        }
+
         //  Do the work
         tt3::db::api::IPublicActivity * dataPublicActivity =
             _database->createPublicActivity(
@@ -737,12 +885,21 @@ auto WorkspaceImpl::createPublicTask(
     try
     {
         //  Validate access rights
-        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
-        if (!clientCapabilities.contains(Capability::Administrator) &&
-            !clientCapabilities.contains(Capability::ManagePublicTasks))
-        {   //  OOPS! Can't!
+        if (_isBackupCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
             throw AccessDeniedException();
         }
+        if (!_isRestoreCredentials(credentials))
+        {   //  No special access - use standard access rules
+            Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+            if (!clientCapabilities.contains(Capability::Administrator) &&
+                !clientCapabilities.contains(Capability::ManagePublicTasks))
+            {   //  OOPS! Can't!
+                throw AccessDeniedException();
+            }
+        }
+
         //  Do the work
         tt3::db::api::IPublicTask * dataPublicTask =
             _database->createPublicTask(
@@ -778,11 +935,19 @@ auto WorkspaceImpl::createProject(
     try
     {
         //  Validate access rights
-        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
-        if (!clientCapabilities.contains(Capability::Administrator) &&
-            !clientCapabilities.contains(Capability::ManageWorkloads))
-        {   //  OOPS! Can't!
+        if (_isBackupCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
             throw AccessDeniedException();
+        }
+        if (!_isRestoreCredentials(credentials))
+        {   //  No special access - use standard access rules
+            Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+            if (!clientCapabilities.contains(Capability::Administrator) &&
+                !clientCapabilities.contains(Capability::ManageWorkloads))
+            {   //  OOPS! Can't!
+                throw AccessDeniedException();
+            }
         }
 
         //  Do the work
@@ -820,11 +985,19 @@ auto WorkspaceImpl::createWorkStream(
     try
     {
         //  Validate access rights
-        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
-        if (!clientCapabilities.contains(Capability::Administrator) &&
-            !clientCapabilities.contains(Capability::ManageWorkloads))
-        {   //  OOPS! Can't!
+        if (_isBackupCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
             throw AccessDeniedException();
+        }
+        if (!_isRestoreCredentials(credentials))
+        {   //  No special access - use standard access rules
+            Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+            if (!clientCapabilities.contains(Capability::Administrator) &&
+                !clientCapabilities.contains(Capability::ManageWorkloads))
+            {   //  OOPS! Can't!
+                throw AccessDeniedException();
+            }
         }
 
         //  Do the work
@@ -861,12 +1034,21 @@ auto WorkspaceImpl::createBeneficiary(
     try
     {
         //  Validate access rights
-        Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
-        if (!clientCapabilities.contains(Capability::Administrator) &&
-            !clientCapabilities.contains(Capability::ManageWorkloads))
-        {   //  OOPS! Can't!
+        if (_isBackupCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - cannot modify anything
             throw AccessDeniedException();
         }
+        if (!_isRestoreCredentials(credentials))
+        {   //  No special access - use standard access rules
+            Capabilities clientCapabilities = _validateAccessRights(credentials); //  may throw
+            if (!clientCapabilities.contains(Capability::Administrator) &&
+                !clientCapabilities.contains(Capability::ManageWorkloads))
+            {   //  OOPS! Can't!
+                throw AccessDeniedException();
+            }
+        }
+
         //  Do the work
         tt3::db::api::Workloads dataWorkloads =
             tt3::util::transform(
