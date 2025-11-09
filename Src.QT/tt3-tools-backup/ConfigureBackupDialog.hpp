@@ -105,6 +105,7 @@ namespace tt3::tools::backup
         void            _workspaceTypeComboBoxCurrentIndexChanged(int);
         void            _browsePushButtonClicked();
         void            _backupTpLineEditTextChanged(QString);
+        void            _backupToPushButtonClicked();
         virtual void    accept() override;
         virtual void    reject() override;
     };

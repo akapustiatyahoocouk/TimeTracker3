@@ -4,6 +4,7 @@ TEMPLATE = lib
 DEFINES += TT3_TOOLS_BACKUP_LIBRARY
 SOURCES += \
     BackupTool.cpp \
+    BackupWriter.cpp \
     Component.cpp \
     ConfigureBackupDialog.cpp \
     Plugins.cpp
@@ -11,6 +12,7 @@ SOURCES += \
 HEADERS += \
     API.hpp \
     BackupTool.hpp \
+    BackupWriter.hpp \
     Components.hpp \
     ConfigureBackupDialog.hpp \
     Linkage.hpp

@@ -141,6 +141,33 @@ void WorkspaceImpl::refresh()
 
 //////////
 //  Operations (associations)
+quint64 WorkspaceImpl::objectCount(
+        const Credentials & credentials
+    ) const
+{
+    tt3::util::Lock _(_guard);
+    _ensureOpen();  //  may throw
+
+    try
+    {
+        if (_isBackupCredentials(credentials) ||
+            _isRestoreCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - can read anything
+            return _database->objectCount();
+        }
+        else
+        {
+            _validateAccessRights(credentials); //  may throw
+            return _database->objectCount();
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
 auto WorkspaceImpl::users(
         const Credentials & credentials
     ) const -> Users

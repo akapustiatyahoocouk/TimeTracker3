@@ -517,7 +517,7 @@ auto AccountImpl::createEvent(
                 {   //  OOPS! Can't!
                     throw AccessDeniedException();
                 }
-                for (Activity activity : activities)
+                for (const auto & activity : activities)
                 {
                     if (activity != nullptr)
                     {   //  OOPS! Can't!

@@ -78,6 +78,8 @@ namespace tt3::db::xml
         //////////
         //  tt3::db::api::IDatabase (associations)
     public:
+        virtual quint64 objectCount(
+                            ) const override;
         virtual auto    users(
                             ) const -> tt3::db::api::Users override;
         virtual auto    accounts(

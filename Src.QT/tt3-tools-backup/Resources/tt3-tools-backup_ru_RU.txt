@@ -11,3 +11,7 @@ Copyright=Авторское право (C) {0}, Андрей Капустин
 [BackupTool]
 DisplayName=Резервное копирование
 Description=Выполняет резервное копирование базы данных
+
+[ConfigureBackupDialog]
+BackupToDialogTitle=Выберите фвйо резервной копии
+BackupToDialogFilter=Файлы резервной копии TimeTracker3 (*{0});;Все файлы (*.*)

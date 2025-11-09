@@ -25,6 +25,14 @@ namespace tt3::tools::backup
         DECLARE_SINGLETON(BackupTool)
 
         //////////
+        //  Constants
+    public:
+        /// \brief
+        ///     The preferred extension for TT3 database
+        ///     backup files; starts with '.'.
+        static const QString    PreferredFilenameExtension;
+
+        //////////
         //  ITool
     public:
         /// \brief A type alias to improve code readability.
@@ -40,4 +48,4 @@ namespace tt3::tools::backup
     };
 }
 
-//  End of tt3-tools-backup/Components.hpp
+//  End of tt3-tools-backup/BackupTool.hpp

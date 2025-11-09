@@ -195,6 +195,23 @@ void ConfigureBackupDialog::_backupTpLineEditTextChanged(QString)
     _refresh();
 }
 
+void ConfigureBackupDialog::_backupToPushButtonClicked()
+{
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
+
+    QString path =
+        QFileDialog::getSaveFileName(
+            this,
+            resources->string(RSID(ConfigureBackupDialog), RID(BackupToDialogTitle)),
+            /*dir =*/ QString(),
+            resources->string(RSID(ConfigureBackupDialog), RID(BackupToDialogFilter), BackupTool::PreferredFilenameExtension));
+    if (!path.isEmpty())
+    {
+        _ui->backupToLineEdit->setText(path);
+        _refresh();
+    }
+}
+
 void ConfigureBackupDialog::accept()
 {
     if (_ui->backupCurrentWorkspaceRadioButton->isChecked())

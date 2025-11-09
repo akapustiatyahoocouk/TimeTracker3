@@ -267,11 +267,28 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>backupToPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::tools::backup::ConfigureBackupDialog</receiver>
+   <slot>_backupToPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>399</x>
+     <y>209</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>227</x>
+     <y>140</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_workspaceSourceRadioButtonClicked()</slot>
   <slot>_workspaceTypeComboBoxCurrentIndexChanged(int)</slot>
   <slot>_browsePushButtonClicked()</slot>
   <slot>_backupTpLineEditTextChanged(QString)</slot>
+  <slot>_backupToPushButtonClicked()</slot>
  </slots>
 </ui>

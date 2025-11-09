@@ -339,6 +339,16 @@ void Database::refresh()
 
 //////////
 //  tt3::db::api::IDatabase (associations)
+quint64 Database::objectCount(
+    ) const
+{
+    tt3::util::Lock _(_guard);
+    _ensureOpen();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _liveObjects.size();
+}
+
 auto Database::users(
     ) const -> tt3::db::api::Users
 {

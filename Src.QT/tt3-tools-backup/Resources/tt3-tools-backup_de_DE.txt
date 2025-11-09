@@ -11,3 +11,7 @@ Copyright=Copyright (C) {0}, Andrey Kapustin
 [BackupTool]
 DisplayName=Backup
 Description=Erstellt eine Datenbanksicherung
+
+[ConfigureBackupDialog]
+BackupToDialogTitle=Sicherungsziel auswählen
+BackupToDialogFilter=TimeTracker3-Sicherungsdateien (*{0});;Alle Dateien (*.*)

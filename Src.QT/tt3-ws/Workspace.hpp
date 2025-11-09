@@ -128,6 +128,16 @@ namespace tt3::ws
         //  Operations (associations)
     public:
         /// \brief
+        ///     Returns the number of live objects in this Database.
+        /// \return
+        ///     The number of live objects in this Database.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        quint64     objectCount(
+                            const Credentials & credentials
+                        ) const;
+
+        /// \brief
         ///     Returns the set of all users in this workspace.
         /// \param credentials
         ///     The credentials of the service caller.

@@ -11,3 +11,7 @@ Copyright=Copyright (C) {0}, Andrey Kapustin
 [BackupTool]
 DisplayName=Backup
 Description=Performs database backup
+
+[ConfigureBackupDialog]
+BackupToDialogTitle=Select backup destinayion
+BackupToDialogFilter=TimeTracker3 backup files (*{0});;All files (*.*)

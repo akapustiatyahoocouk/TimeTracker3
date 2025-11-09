@@ -94,6 +94,14 @@ namespace tt3::db::api
         //  Operations (associations)
     public:
         /// \brief
+        ///     Returns the number of live objects in this Database.
+        /// \return
+        ///     The number of live objects in this Database.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        virtual quint64 objectCount() const = 0;
+
+        /// \brief
         ///     Returns the set of all users in this database.
         /// \return
         ///     The set of all users in this database.

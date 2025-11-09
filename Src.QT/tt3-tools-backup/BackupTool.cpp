@@ -18,6 +18,10 @@
 using namespace tt3::tools::backup;
 
 //////////
+//  Constants
+const QString BackupTool::PreferredFilenameExtension = ".tt3-backup";
+
+//////////
 //  Singleton
 IMPLEMENT_SINGLETON(BackupTool)
 BackupTool::BackupTool() {}
@@ -115,7 +119,11 @@ void BackupTool::run(QWidget * parent)
     //  and b) the credentials that allow to do so
     try
     {
-        //  TODO do the work
+        BackupWriter backupWriter;
+        backupWriter.backupWorkspace(   //  may throw
+            workspace,
+            credentials,
+            dlg.selectedBackupDestination());
         //  Cleanup before returning
         if (tt3::gui::theCurrentWorkspace != workspace)
         {
@@ -128,6 +136,7 @@ void BackupTool::run(QWidget * parent)
         {
             workspace->close();     //  may throw, but irrelevant at this point
         }
+        throw;
     }
 }
 
