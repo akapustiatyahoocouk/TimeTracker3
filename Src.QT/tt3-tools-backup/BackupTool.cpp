@@ -119,16 +119,12 @@ void BackupTool::run(QWidget * parent)
     //  and b) the credentials that allow to do so
     try
     {
-        BackupWriter backupWriter;
-        backupWriter.backupWorkspace(   //  may throw
+        BackupWriter backupWriter(
             workspace,
             credentials,
             dlg.selectedBackupDestination());
-        //  Cleanup before returning
-        if (tt3::gui::theCurrentWorkspace != workspace)
-        {
-            workspace->close();     //  may throw, but irrelevant at this point
-        }
+        backupWriter.backupWorkspace(); //  may throw
+        //  BackupWriter's destructor closes the backup file
     }
     catch (...)
     {   //  Cleanup, then re-throw
@@ -137,6 +133,11 @@ void BackupTool::run(QWidget * parent)
             workspace->close();     //  may throw, but irrelevant at this point
         }
         throw;
+    }
+    //  Cleanup before returning
+    if (tt3::gui::theCurrentWorkspace != workspace)
+    {
+        workspace->close();     //  may throw, but irrelevant at this point
     }
 }
 

@@ -1730,7 +1730,7 @@ Event WorkspaceImpl::_getProxy(
 void WorkspaceImpl::_clearExpiredBackupCredentials()
 {
     QDateTime now = QDateTime::currentDateTimeUtc();
-    for (auto key : _backupCredentials.keys())
+    for (const auto & key : _backupCredentials.keys())
     {
         if (now >= key._expireAt)
         {
@@ -1743,7 +1743,7 @@ void WorkspaceImpl::_clearExpiredBackupCredentials()
 void WorkspaceImpl::_clearExpiredRestoreCredentials()
 {
     QDateTime now = QDateTime::currentDateTimeUtc();
-    for (auto key : _restoreCredentials.keys())
+    for (const auto & key : _restoreCredentials.keys())
     {
         if (now >= key._expireAt)
         {
@@ -1756,7 +1756,7 @@ void WorkspaceImpl::_clearExpiredRestoreCredentials()
 void WorkspaceImpl::_clearExpiredReportCredentials()
 {
     QDateTime now = QDateTime::currentDateTimeUtc();
-    for (auto key : _reportCredentials.keys())
+    for (const auto & key : _reportCredentials.keys())
     {
         if (now >= key._expireAt)
         {

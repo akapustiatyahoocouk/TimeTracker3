@@ -26,22 +26,133 @@ namespace tt3::tools::backup
         //////////
         //  Construction/destruction
     public:
-        /// \brief
-        ///     The class constructor.
-        BackupWriter();
-
-        /// \brief
-        ///     The class destructor.
+        BackupWriter(
+                tt3::ws::Workspace workspace,
+                const tt3::ws::Credentials & credentials,
+                const QString & backupFileName
+            );
         ~BackupWriter();
 
         //////////
         //  Operations
     public:
-        void        backupWorkspace(
-                            tt3::ws::Workspace workspace,
-                            const tt3::ws::Credentials & credentials,
-                            const QString & backupFileName
+        void        backupWorkspace();
+
+        //////////
+        //  Implementation
+    private:
+        tt3::ws::Workspace  _workspace;
+        tt3::ws::BackupCredentials  _credentials;
+        QFile           _backupFile;
+        QTextStream     _backupStream;
+
+        const quint64   _objectsToWrite;
+        const quint64   _associationsToWrite;
+        quint64         _objectsWritten = 0;
+        quint64         _associationsWritten = 0;
+
+        //  Helpers
+        //  All methods may throw
+        void        _onObjectWritten();
+        void        _onAssociationWritten();
+
+        template <class T>
+        void        _backupObjects(
+                            const QSet<T> & objects
+                        )
+        {
+            for (const auto & object : _sortedByOid(objects))
+            {
+                _backupObject(object);
+                _onObjectWritten();
+            }
+        }
+
+        void        _backupObject(  //  incl. Accounts
+                            tt3::ws::User user
                         );
+        void        _backupObject(
+                            tt3::ws::Account account
+                        );
+        void        _backupObject(
+                            tt3::ws::ActivityType activityType
+                        );
+        void        _backupObject(  //  Not Task!
+                            tt3::ws::PublicActivity publicActivity
+                        );
+        void        _backupObject(  //  incl. children
+                            tt3::ws::PublicTask publicTask
+                        );
+        void        _backupObject(  //  Not Task!
+                            tt3::ws::PrivateActivity privateActivity
+                        );
+        void        _backupObject(  //  incl. children
+                            tt3::ws::PrivateTask privateTask
+                        );
+        void        _backupObject(  //  incl. children
+                            tt3::ws::Project project
+                        );
+        void        _backupObject(
+                            tt3::ws::WorkStream workStream
+                        );
+        void        _backupObject(
+                            tt3::ws::Beneficiary beneficiary
+                        );
+        void        _backupObject(
+                            tt3::ws::Work work
+                        );
+        void        _backupObject(
+                            tt3::ws::Event event
+                        );
+
+        void        _writeObjectHeader(
+                            const tt3::ws::Object & object
+                        );
+        void        _writeObjectProperty(
+                            const QString & propertyName,
+                            const tt3::ws::Oid & propertyValue
+                        );
+        void        _writeObjectProperty(
+                            const QString & propertyName,
+                            bool propertyValue
+                        );
+        void        _writeObjectProperty(
+                            const QString & propertyName,
+                            const QString & propertyValue
+                        );
+        void        _writeObjectProperty(
+                            const QString & propertyName,
+                            const QStringList & propertyValue
+                        );
+        void        _writeObjectProperty(
+                            const QString & propertyName,
+                            const tt3::ws::UiLocale & propertyValue
+                        );
+        void        _writeObjectProperty(
+                            const QString & propertyName,
+                            const tt3::ws::InactivityTimeout & propertyValue
+                        );
+        void        _writeObjectProperty(
+                            const QString & propertyName,
+                            const tt3::ws::Capabilities & propertyValue
+                        );
+
+        template <class T>
+        QList<T>        _sortedByOid(const QSet<T> & objects)
+        {
+            QList<T> result = objects.values();
+            if (result.size() > 1)
+            {
+                std::sort(
+                    result.begin(),
+                    result.end(),
+                    [](const T & a, const T & b)
+                    {
+                        return tt3::util::toString(a->oid()) < tt3::util::toString(b->oid());
+                    });
+            }
+            return result;
+        }
     };
 }
 

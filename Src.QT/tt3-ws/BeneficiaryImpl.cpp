@@ -179,7 +179,7 @@ void BeneficiaryImpl::setWorkloads(
         {
             throw AccessDeniedException();
         }
-        for (Workload workload : workloads)
+        for (const auto & workload : workloads)
         {
             if (workload != nullptr &&
                 !workload->_canModify(credentials))

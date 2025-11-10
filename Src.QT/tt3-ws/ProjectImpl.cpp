@@ -210,7 +210,7 @@ auto ProjectImpl::createChild(
 
         //  Do the work
         tt3::db::api::Beneficiaries dataBeneficiaries;
-        for (Beneficiary beneficiary : beneficiaries)
+        for (const auto & beneficiary : beneficiaries)
         {
             dataBeneficiaries.insert(
                 (beneficiary != nullptr) ?
