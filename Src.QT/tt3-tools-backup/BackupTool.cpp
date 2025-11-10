@@ -139,6 +139,9 @@ void BackupTool::run(QWidget * parent)
     {
         workspace->close();     //  may throw, but irrelevant at this point
     }
+
+    //  TODO pop up the "backup completed" message
+    //  TODO with an option to go to the filw in system file manager
 }
 
 //  End of tt3-tools-backup/BackupTool.cpp

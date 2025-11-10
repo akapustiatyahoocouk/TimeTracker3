@@ -129,8 +129,40 @@ void BackupWriter::backupWorkspace()
             _workspace->users(_credentials));
         _backupObjects( //  ActivityTypes
             _workspace->activityTypes(_credentials));
+        _backupObjects( //  PublicActivities
+            _workspace->publicActivities(_credentials));
+        _backupObjects( //  PublicTasks incl. children
+            _workspace->rootPublicTasks(_credentials));
+        for (const auto & user :
+             _sortedByOid(_workspace->users(_credentials)))
+        {
+            _backupObjects( //  PrivateActivities
+                user->privateActivities(_credentials));
+            _backupObjects( //  PrivateTasks incl. children
+                user->rootPrivateTasks(_credentials));
+        }
+        _backupObjects( //  Projects incl. children
+            _workspace->rootProjects(_credentials));
+        _backupObjects( //  WorkStreams
+            _workspace->workStreams(_credentials));
+        _backupObjects( //  Beneficiaries
+            _workspace->beneficiaries(_credentials));
+        for (const auto & user :
+             _sortedByOid(_workspace->users(_credentials)))
+        {
+            for (const auto & account : user->accounts(_credentials))
+            {
+                _backupObjects( //  Works
+                    account->works(_credentials));
+                _backupObjects( //  Events
+                    account->events(_credentials));
+            }
+        }
 
         //  TODO ...and associations
+
+        Q_ASSERT(_objectsWritten == _objectsToWrite);
+        //  TODO uncomment Q_ASSERT(_associationsWritten == _associationsToWrite);
 
         //  Cleanup & we're done.
         //  Note, that these will be called from
@@ -181,8 +213,7 @@ void BackupWriter::_backupObject(
     _writeObjectProperty("InactivityTimeout", user->inactivityTimeout(_credentials));
     _writeObjectProperty("UiLocale", user->uiLocale(_credentials));
 
-    _backupObjects(
-        user->accounts(_credentials));
+    _backupObjects(user->accounts(_credentials));
 }
 
 void BackupWriter::_backupObject(
@@ -190,6 +221,7 @@ void BackupWriter::_backupObject(
     )
 {
     _writeObjectHeader(account);
+    _writeObjectProperty("UserOID", account->user(_credentials)->oid());
     _writeObjectProperty("OID", account->oid());
     _writeObjectProperty("Enabled", account->enabled(_credentials));
     _writeObjectProperty("EmailAddresses", account->emailAddresses(_credentials));
@@ -206,6 +238,152 @@ void BackupWriter::_backupObject(
     _writeObjectProperty("OID", activityType->oid());
     _writeObjectProperty("DisplayName", activityType->displayName(_credentials));
     _writeObjectProperty("Description", activityType->description(_credentials));
+}
+
+void BackupWriter::_backupObject(
+        tt3::ws::PublicActivity publicActivity
+    )
+{
+    Q_ASSERT(std::dynamic_pointer_cast<tt3::ws::TaskImpl>(publicActivity) == nullptr);
+
+    _writeObjectHeader(publicActivity);
+    _writeObjectProperty("OID", publicActivity->oid());
+    _writeObjectProperty("DisplayName", publicActivity->displayName(_credentials));
+    _writeObjectProperty("Description", publicActivity->description(_credentials));
+    _writeObjectProperty("Timeout", publicActivity->timeout(_credentials));
+    _writeObjectProperty("RequireCommentOnStart", publicActivity->requireCommentOnStart(_credentials));
+    _writeObjectProperty("RequireCommentOnStop", publicActivity->requireCommentOnStop(_credentials));
+    _writeObjectProperty("FullScreenReminder", publicActivity->fullScreenReminder(_credentials));
+}
+
+void BackupWriter::_backupObject(
+        tt3::ws::PublicTask publicTask
+    )
+{
+    _writeObjectHeader(publicTask);
+    if (publicTask->parent(_credentials) != nullptr)
+    {
+        _writeObjectProperty("ParentOID", publicTask->parent(_credentials)->oid());
+    }
+    _writeObjectProperty("OID", publicTask->oid());
+    _writeObjectProperty("DisplayName", publicTask->displayName(_credentials));
+    _writeObjectProperty("Description", publicTask->description(_credentials));
+    _writeObjectProperty("Timeout", publicTask->timeout(_credentials));
+    _writeObjectProperty("RequireCommentOnStart", publicTask->requireCommentOnStart(_credentials));
+    _writeObjectProperty("RequireCommentOnStop", publicTask->requireCommentOnStop(_credentials));
+    _writeObjectProperty("FullScreenReminder", publicTask->fullScreenReminder(_credentials));
+    _writeObjectProperty("RequireCommentOnCompletion", publicTask->requireCommentOnCompletion(_credentials));
+    _writeObjectProperty("Completed", publicTask->completed(_credentials));
+
+    _backupObjects(publicTask->children(_credentials));
+}
+
+void BackupWriter::_backupObject(
+        tt3::ws::PrivateActivity privateActivity
+    )
+{
+    Q_ASSERT(std::dynamic_pointer_cast<tt3::ws::TaskImpl>(privateActivity) == nullptr);
+
+    _writeObjectHeader(privateActivity);
+    _writeObjectProperty("OwnerOID", privateActivity->owner(_credentials)->oid());
+    _writeObjectProperty("OID", privateActivity->oid());
+    _writeObjectProperty("DisplayName", privateActivity->displayName(_credentials));
+    _writeObjectProperty("Description", privateActivity->description(_credentials));
+    _writeObjectProperty("Timeout", privateActivity->timeout(_credentials));
+    _writeObjectProperty("RequireCommentOnStart", privateActivity->requireCommentOnStart(_credentials));
+    _writeObjectProperty("RequireCommentOnStop", privateActivity->requireCommentOnStop(_credentials));
+    _writeObjectProperty("FullScreenReminder", privateActivity->fullScreenReminder(_credentials));
+}
+
+void BackupWriter::_backupObject(
+        tt3::ws::PrivateTask privateTask
+    )
+{
+    _writeObjectHeader(privateTask);
+    _writeObjectProperty("OwnerOID", privateTask->owner(_credentials)->oid());
+    if (privateTask->parent(_credentials) != nullptr)
+    {
+        _writeObjectProperty("ParentOID", privateTask->parent(_credentials)->oid());
+    }
+    _writeObjectProperty("OID", privateTask->oid());
+    _writeObjectProperty("DisplayName", privateTask->displayName(_credentials));
+    _writeObjectProperty("Description", privateTask->description(_credentials));
+    _writeObjectProperty("Timeout", privateTask->timeout(_credentials));
+    _writeObjectProperty("RequireCommentOnStart", privateTask->requireCommentOnStart(_credentials));
+    _writeObjectProperty("RequireCommentOnStop", privateTask->requireCommentOnStop(_credentials));
+    _writeObjectProperty("FullScreenReminder", privateTask->fullScreenReminder(_credentials));
+    _writeObjectProperty("RequireCommentOnCompletion", privateTask->requireCommentOnCompletion(_credentials));
+    _writeObjectProperty("Completed", privateTask->completed(_credentials));
+
+    _backupObjects(privateTask->children(_credentials));
+}
+
+void BackupWriter::_backupObject(
+        tt3::ws::Project project
+    )
+{
+    _writeObjectHeader(project);
+    if (project->parent(_credentials) != nullptr)
+    {
+        _writeObjectProperty("ParentOID", project->parent(_credentials)->oid());
+    }
+    _writeObjectProperty("OID", project->oid());
+    _writeObjectProperty("DisplayName", project->displayName(_credentials));
+    _writeObjectProperty("Description", project->description(_credentials));
+    _writeObjectProperty("Completed", project->completed(_credentials));
+
+    _backupObjects(project->children(_credentials));
+}
+
+void BackupWriter::_backupObject(
+        tt3::ws::WorkStream workStream
+    )
+{
+    _writeObjectHeader(workStream);
+    _writeObjectProperty("OID", workStream->oid());
+    _writeObjectProperty("DisplayName", workStream->displayName(_credentials));
+    _writeObjectProperty("Description", workStream->description(_credentials));
+}
+
+void BackupWriter::_backupObject(
+        tt3::ws::Beneficiary beneficiary
+    )
+{
+    _writeObjectHeader(beneficiary);
+    _writeObjectProperty("OID", beneficiary->oid());
+    _writeObjectProperty("DisplayName", beneficiary->displayName(_credentials));
+    _writeObjectProperty("Description", beneficiary->description(_credentials));
+}
+
+void BackupWriter::_backupObject(
+        tt3::ws::Work work
+    )
+{
+    _writeObjectHeader(work);
+    _writeObjectProperty("OID", work->oid());
+    _writeObjectProperty("ActivityOID", work->activity(_credentials)->oid());
+    _writeObjectProperty("AccountOID", work->account(_credentials)->oid());
+    _writeObjectProperty("StartedAt", work->startedAt(_credentials));
+    _writeObjectProperty("FinishedAt", work->finishedAt(_credentials));
+}
+
+void BackupWriter::_backupObject(
+        tt3::ws::Event event
+    )
+{
+    QList<tt3::ws::Oid> activityOids =
+    tt3::util::transform(
+        _sortedByOid(event->activities(_credentials)),
+        [](auto a)
+        {
+            return a->oid();
+        });
+    _writeObjectHeader(event);
+    _writeObjectProperty("OID", event->oid());
+    _writeObjectProperty("ActivityOIDS", activityOids);
+    _writeObjectProperty("AccountOID", event->account(_credentials)->oid());
+    _writeObjectProperty("OccurredAt", event->occurredAt(_credentials));
+    _writeObjectProperty("Summary", event->summary(_credentials));
 }
 
 void BackupWriter::_writeObjectHeader(
@@ -231,6 +409,27 @@ void BackupWriter::_writeObjectProperty(
                   << '='
                   << tt3::util::toString(propertyValue)
                   << '\n';
+}
+
+void BackupWriter::_writeObjectProperty(
+        const QString & propertyName,
+        const QList<tt3::ws::Oid> & propertyValue
+    )
+{
+    if (!propertyValue.isEmpty())
+    {
+        _backupStream << propertyName
+                      << '=';
+        for (int i = 0; i < propertyValue.size(); i++)
+        {
+            if (i != 0)
+            {
+                _backupStream << '+';
+            }
+            _backupStream << tt3::util::toString(propertyValue[i]);
+        }
+        _backupStream << '\n';
+    }
 }
 
 void BackupWriter::_writeObjectProperty(
@@ -308,6 +507,17 @@ void BackupWriter::_writeObjectProperty(
 void BackupWriter::_writeObjectProperty(
         const QString & propertyName,
         const tt3::ws::Capabilities & propertyValue
+    )
+{
+    _backupStream << propertyName
+                  << '='
+                  << tt3::util::toString(propertyValue)
+                  << '\n';
+}
+
+void BackupWriter::_writeObjectProperty(
+        const QString & propertyName,
+        const QDateTime & propertyValue
     )
 {
     _backupStream << propertyName

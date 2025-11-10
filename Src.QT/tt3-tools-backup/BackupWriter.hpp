@@ -114,6 +114,10 @@ namespace tt3::tools::backup
                         );
         void        _writeObjectProperty(
                             const QString & propertyName,
+                            const QList<tt3::ws::Oid> & propertyValue
+                        );
+        void        _writeObjectProperty(
+                            const QString & propertyName,
                             bool propertyValue
                         );
         void        _writeObjectProperty(
@@ -135,6 +139,10 @@ namespace tt3::tools::backup
         void        _writeObjectProperty(
                             const QString & propertyName,
                             const tt3::ws::Capabilities & propertyValue
+                        );
+        void        _writeObjectProperty(
+                            const QString & propertyName,
+                            const QDateTime & propertyValue
                         );
 
         template <class T>
