@@ -171,10 +171,43 @@ bool BackupWriter::backupWorkspace()
             }
         }
 
-        //  TODO ...and associations
+        //  ...and associations
+        _backupOutgoingAssociations( //  Users + Accounts
+            _workspace->users(_credentials));
+        _backupOutgoingAssociations( //  ActivityTypes
+            _workspace->activityTypes(_credentials));
+        _backupOutgoingAssociations( //  PublicActivities
+            _workspace->publicActivities(_credentials));
+        _backupOutgoingAssociations( //  PublicTasks incl. children
+            _workspace->rootPublicTasks(_credentials));
+        for (const auto & user :
+             _sortedByOid(_workspace->users(_credentials)))
+        {
+            _backupOutgoingAssociations( //  PrivateActivities
+                user->privateActivities(_credentials));
+            _backupOutgoingAssociations( //  PrivateTasks incl. children
+                user->rootPrivateTasks(_credentials));
+        }
+        _backupOutgoingAssociations( //  Projects incl. children
+            _workspace->rootProjects(_credentials));
+        _backupOutgoingAssociations( //  WorkStreams
+            _workspace->workStreams(_credentials));
+        _backupOutgoingAssociations( //  Beneficiaries
+            _workspace->beneficiaries(_credentials));
+        for (const auto & user :
+             _sortedByOid(_workspace->users(_credentials)))
+        {
+            for (const auto & account : user->accounts(_credentials))
+            {
+                _backupOutgoingAssociations( //  Works
+                    account->works(_credentials));
+                _backupOutgoingAssociations( //  Events
+                    account->events(_credentials));
+            }
+        }
 
         Q_ASSERT(_objectsWritten == _objectsToWrite);
-        //  TODO uncomment Q_ASSERT(_associationsWritten == _associationsToWrite);
+        Q_ASSERT(_associationsWritten == _associationsToWrite);
 
         //  Cleanup & we're done.
         //  Note, that these will be called from
@@ -439,6 +472,178 @@ void BackupWriter::_backupObject(
     _writeObjectProperty("Summary", event->summary(_credentials));
 }
 
+void BackupWriter::_backupOutgoingAssociations(    //  incl. Accounts
+        tt3::ws::User user
+    )
+{
+    //  User -> Workload (PermittedWorkloads)
+    for (const auto & workload :
+         _sortedByOid(user->permittedWorkloads(_credentials)))
+    {
+        _writeAssociation(
+            "PermittedWorkloads",
+            user,
+            workload);
+    }
+
+    _backupOutgoingAssociations(user->accounts(_credentials));
+}
+
+void BackupWriter::_backupOutgoingAssociations(    //  incl. Accounts
+        tt3::ws::Account account
+    )
+{
+    //  Account -> Activity (QuickPicksList)
+    for (const auto & activity :
+         account->quickPicksList(_credentials))
+    {
+        _writeAssociation(
+            "QuickPicksList",
+            account,
+            activity);
+    }
+}
+
+void BackupWriter::_backupOutgoingAssociations(    //  incl. Accounts
+        tt3::ws::ActivityType /*activityType*/
+    )
+{   //  No outgoing associations
+}
+
+void BackupWriter::_backupOutgoingAssociations(    //  incl. Accounts
+        tt3::ws::PublicActivity publicActivity
+    )
+{
+    if (auto activityType = publicActivity->activityType(_credentials))
+    {
+        _writeAssociation(
+            "ActivityType",
+            publicActivity,
+            activityType);
+    }
+    if (auto workload = publicActivity->workload(_credentials))
+    {
+        _writeAssociation(
+            "ActivityWorkload",
+            publicActivity,
+            workload);
+    }
+}
+
+void BackupWriter::_backupOutgoingAssociations(    //  incl. Accounts
+        tt3::ws::PublicTask publicTask
+    )
+{
+    if (auto activityType = publicTask->activityType(_credentials))
+    {
+        _writeAssociation(
+            "ActivityType",
+            publicTask,
+            activityType);
+    }
+    if (auto workload = publicTask->workload(_credentials))
+    {
+        _writeAssociation(
+            "ActivityWorkload",
+            publicTask,
+            workload);
+    }
+
+    _backupOutgoingAssociations(publicTask->children(_credentials));
+}
+
+void BackupWriter::_backupOutgoingAssociations(    //  incl. Accounts
+        tt3::ws::PrivateActivity privateActivity
+    )
+{
+    if (auto activityType = privateActivity->activityType(_credentials))
+    {
+        _writeAssociation(
+            "ActivityType",
+            privateActivity,
+            activityType);
+    }
+    if (auto workload = privateActivity->workload(_credentials))
+    {
+        _writeAssociation(
+            "ActivityWorkload",
+            privateActivity,
+            workload);
+    }
+}
+
+void BackupWriter::_backupOutgoingAssociations(    //  incl. Accounts
+        tt3::ws::PrivateTask privateTask
+    )
+{
+    if (auto activityType = privateTask->activityType(_credentials))
+    {
+        _writeAssociation(
+            "ActivityType",
+            privateTask,
+            activityType);
+    }
+    if (auto workload = privateTask->workload(_credentials))
+    {
+        _writeAssociation(
+            "ActivityWorkload",
+            privateTask,
+            workload);
+    }
+
+    _backupOutgoingAssociations(privateTask->children(_credentials));
+}
+
+void BackupWriter::_backupOutgoingAssociations(    //  incl. Accounts
+        tt3::ws::Project project
+    )
+{
+    //  Project -> Beneficiary (WorkloadBeneficiaries)
+    for (const auto & beneficiary :
+         _sortedByOid(project->beneficiaries(_credentials)))
+    {
+        _writeAssociation(
+            "WorkloadBeneficiaries",
+            project,
+            beneficiary);
+    }
+
+    _backupOutgoingAssociations(project->children(_credentials));
+}
+
+void BackupWriter::_backupOutgoingAssociations(    //  incl. Accounts
+        tt3::ws::WorkStream workStream
+    )
+{
+    //  WorkStream -> Beneficiary (WorkloadBeneficiaries)
+    for (const auto & beneficiary :
+         _sortedByOid(workStream->beneficiaries(_credentials)))
+    {
+        _writeAssociation(
+            "WorkloadBeneficiaries",
+            workStream,
+            beneficiary);
+    }
+}
+
+void BackupWriter::_backupOutgoingAssociations(    //  incl. Accounts
+        tt3::ws::Beneficiary /*beneficiary*/
+    )
+{   //  No outgoing associations
+}
+
+void BackupWriter::_backupOutgoingAssociations(    //  incl. Accounts
+        tt3::ws::Work /*work*/
+    )
+{   //  No outgoing associations
+}
+
+void BackupWriter::_backupOutgoingAssociations(    //  incl. Accounts
+        tt3::ws::Event /*event*/
+    )
+{   //  No outgoing associations
+}
+
 void BackupWriter::_writeObjectHeader(
         const tt3::ws::Object & object
     )
@@ -447,7 +652,7 @@ void BackupWriter::_writeObjectHeader(
     {   //  Don't put newline before the 1st object
         _backupStream << '\n';
     }
-    _backupStream << '['
+    _backupStream << "[Object:"
                   << object->type()->mnemonic().toString()
                   << ']'
                   << '\n';
@@ -576,6 +781,25 @@ void BackupWriter::_writeObjectProperty(
     _backupStream << propertyName
                   << '='
                   << tt3::util::toString(propertyValue)
+                  << '\n';
+}
+
+void BackupWriter::_writeAssociation(
+        const QString & associationName,
+        tt3::ws::Object from,
+        tt3::ws::Object to
+    )
+{
+    _backupStream << "\n[Association:"
+                  << associationName
+                  << "]\n";
+    _backupStream << from->type()->mnemonic().toString()
+                  << "OID="
+                  << tt3::util::toString(from->oid())
+                  << '\n';
+    _backupStream << to->type()->mnemonic().toString()
+                  << "OID="
+                  << tt3::util::toString(to->oid())
                   << '\n';
 }
 

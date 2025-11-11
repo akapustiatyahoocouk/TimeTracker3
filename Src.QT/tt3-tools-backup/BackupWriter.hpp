@@ -74,6 +74,18 @@ namespace tt3::tools::backup
             }
         }
 
+        template <class T>
+        void        _backupOutgoingAssociations(
+                            const QSet<T> & objects
+                        )
+        {
+            for (const auto & object : _sortedByOid(objects))
+            {
+                _backupOutgoingAssociations(object);
+                _onAssociationWritten();
+            }
+        }
+
         void        _backupObject(  //  incl. Accounts
                             tt3::ws::User user
                         );
@@ -108,6 +120,43 @@ namespace tt3::tools::backup
                             tt3::ws::Work work
                         );
         void        _backupObject(
+                            tt3::ws::Event event
+                        );
+
+        void        _backupOutgoingAssociations(    //  incl. Accounts
+                            tt3::ws::User user
+                        );
+        void        _backupOutgoingAssociations(
+                            tt3::ws::Account account
+                        );
+        void        _backupOutgoingAssociations(
+                            tt3::ws::ActivityType activityType
+                        );
+        void        _backupOutgoingAssociations(
+                            tt3::ws::PublicActivity publicActivity
+                        );
+        void        _backupOutgoingAssociations(    //  incl. children
+                            tt3::ws::PublicTask publicTask
+                        );
+        void        _backupOutgoingAssociations(
+                            tt3::ws::PrivateActivity privateActivity
+                        );
+        void        _backupOutgoingAssociations(    //  incl. children
+                            tt3::ws::PrivateTask privateTask
+                        );
+        void        _backupOutgoingAssociations(    //  incl. children
+                            tt3::ws::Project project
+                        );
+        void        _backupOutgoingAssociations(
+                            tt3::ws::WorkStream workStream
+                        );
+        void        _backupOutgoingAssociations(
+                            tt3::ws::Beneficiary beneficiary
+                        );
+        void        _backupOutgoingAssociations(
+                            tt3::ws::Work work
+                        );
+        void        _backupOutgoingAssociations(
                             tt3::ws::Event event
                         );
 
@@ -149,6 +198,11 @@ namespace tt3::tools::backup
         void        _writeObjectProperty(
                             const QString & propertyName,
                             const QDateTime & propertyValue
+                        );
+        void        _writeAssociation(
+                            const QString & associationName,
+                            tt3::ws::Object from,
+                            tt3::ws::Object to
                         );
 
         template <class T>
