@@ -278,10 +278,6 @@ void HelpSiteBuilder::_writeTocEntry(QString & tocHtml, HelpTopic * helpTopic, i
     tocHtml += helpTopic->displayName();
     tocHtml += "</a>\n";
     tocHtml += "</li>\n";
-    for (HelpTopic * child : helpTopic->children)
-    {
-        qDebug() << child->displayName();
-    }
     /* TODO kill off and use helpTopic */auto sht =  dynamic_cast<SimpleHelpTopic*>(helpTopic);
     for (HelpTopic * child : sht->children)
     {

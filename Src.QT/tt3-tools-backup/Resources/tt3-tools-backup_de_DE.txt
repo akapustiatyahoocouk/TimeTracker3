@@ -31,3 +31,11 @@ BackupToDialogFilter=TimeTracker3-Sicherungsdateien (*{0});;Alle Dateien (*.*)
 BackupLabel=Sicherung wird erstellt:
 ToLabel=Ziel:
 CancelPushButton=Abbrechen
+
+[BackupCompletedDialog]
+Title=Sicherung abgeschlossen
+Message=Der Arbeitsbereich\n{0}\nwurde erfolgreich gesichert in\n{1}.
+
+[BackupCancelledDialog]
+Title=Sicherung abgebrochen
+Message=Die Sicherung wurde abgebrochen.

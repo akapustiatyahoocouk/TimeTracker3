@@ -71,6 +71,8 @@ struct HelpClient::_Impl
 //  Operations
 void HelpClient::showContents()
 {
+    Q_ASSERT(QThread::currentThread()->eventDispatcher() != nullptr);
+
     _Impl * impl = _impl();
 
     if (!impl->siteBuilder.buildHelpSite())
@@ -84,16 +86,19 @@ void HelpClient::showContents()
 
 void HelpClient::showIndex()
 {
+    Q_ASSERT(QThread::currentThread()->eventDispatcher() != nullptr);
     throw tt3::util::NotImplementedError();
 }
 
 void HelpClient::showSearch()
 {
+    Q_ASSERT(QThread::currentThread()->eventDispatcher() != nullptr);
     throw tt3::util::NotImplementedError();
 }
 
 void HelpClient::showTopic(const QString & /*topic*/)
 {
+    Q_ASSERT(QThread::currentThread()->eventDispatcher() != nullptr);
     throw tt3::util::NotImplementedError();
 }
 

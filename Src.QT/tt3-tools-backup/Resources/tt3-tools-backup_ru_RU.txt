@@ -31,3 +31,11 @@ BackupToDialogFilter=Файлы резервной копии TimeTracker3 (*{0}
 BackupLabel=Резервное копирование:
 ToLabel=В файл:
 CancelPushButton=Отмена
+
+[BackupCompletedDialog]
+Title=Резервное копирование завершено
+Message=Рабочая обламть\n{0}\nбыла успешно скопирована в\n{1}.
+
+[BackupCancelledDialog]
+Title=Резервное копирование прервано
+Message=Операция резервного копирования прервана

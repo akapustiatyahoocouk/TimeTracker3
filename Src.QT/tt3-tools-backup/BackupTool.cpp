@@ -65,6 +65,8 @@ bool BackupTool::enabled() const
 
 void BackupTool::run(QWidget * parent)
 {
+    Q_ASSERT(QThread::currentThread()->eventDispatcher() != nullptr);
+
     //  Select workspace to backup
     ConfigureBackupDialog dlg(parent);
     if (dlg.doModal() != ConfigureBackupDialog::Result::Ok)
@@ -117,13 +119,14 @@ void BackupTool::run(QWidget * parent)
     }
     //  At this point, we have a) the workspace to backup
     //  and b) the credentials that allow to do so
+    QString backupDestination = dlg.selectedBackupDestination();
     bool backupSuccessful = false;
     try
     {
         BackupWriter backupWriter(
             workspace,
             credentials,
-            dlg.selectedBackupDestination());
+            backupDestination);
         backupSuccessful =
             backupWriter.backupWorkspace(); //  may throw
         //  BackupWriter's destructor closes the backup file
@@ -143,11 +146,22 @@ void BackupTool::run(QWidget * parent)
     }
 
     if (backupSuccessful)
-    {   //  TODO pop up the "backup completed" message
-        //  TODO with an option to go to the filw in system file manager
+    {   //  Pop up the "backup completed" message
+        tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(BackupCompletedDialog));
+        tt3::gui::MessageDialog::show(
+            parent,
+            rr.string(RID(Title)),
+            rr.string(RID(Message),
+                      workspaceAddress->displayForm(),
+                      backupDestination));
     }
     else
-    {   //  TODO pop up the "backup cancelled" message
+    {   //  Pop up the "backup cancelled" message
+        tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(BackupCancelledDialog));
+        tt3::gui::MessageDialog::show(
+            parent,
+            rr.string(RID(Title)),
+            rr.string(RID(Message)));
     }
 }
 

@@ -78,6 +78,10 @@ namespace tt3::util
 
         /// \brief
         ///     Runs the tool to completion (or error).
+        /// \details
+        ///     The methos must be called from a thread that
+        ///     has a running event loop, even if the tool
+        ///     uses helper threads internally.
         /// \param parent
         ///     The widget to use as parent for any e.g. popup
         ///     windows, dialogs, etc. that appear while the

@@ -36,6 +36,15 @@ namespace tt3::tools::backup
         //////////
         //  Operations
     public:
+        /// \brief
+        ///     Performs the workspace backup.
+        /// \details
+        ///     If called from a thread that currently runs
+        ///     an event loop, will display a popup "backup
+        ///     progress" window that allows cancelling the
+        ///     bakup process while it is underwau.
+        /// \exception Exception
+        ///     If an error occurs.
         bool        backupWorkspace();
 
         //////////

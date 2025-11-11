@@ -19,7 +19,11 @@ namespace tt3::gui
 {
     /// \class HelpClient tt3-gui/API.hpp
     /// \brief The TT3 help client API.
+    /// \details
+    ///     All services must be called
+    ///     from an event loop thread.
     class TT3_GUI_PUBLIC HelpClient final
+
     {
         UTILITY_CLASS(HelpClient)
 

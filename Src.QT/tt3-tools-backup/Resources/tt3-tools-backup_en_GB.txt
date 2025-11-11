@@ -31,3 +31,11 @@ BackupToDialogFilter=TimeTracker3 backup files (*{0});;All files (*.*)
 BackupLabel=Backing up:
 ToLabel=To:
 CancelPushButton=Cancel
+
+[BackupCompletedDialog]
+Title=Backup completed
+Message=The workspace\n{0}\nhas been successfully vacked up yo\n{1}.
+
+[BackupCancelledDialog]
+Title=Backup cancelled
+Message=The backup operation has been cancelled
