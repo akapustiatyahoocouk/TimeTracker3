@@ -70,6 +70,7 @@ void BackupProgressDialog::accept()
 
 void BackupProgressDialog::reject()
 {   //  Book a cancellation request
+    _cancelRequested = true;
 }
 
 //  End of tt3-tools-backup/BackupProgressDialog.cpp

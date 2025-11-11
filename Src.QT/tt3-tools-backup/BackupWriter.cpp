@@ -110,7 +110,7 @@ BackupWriter::~BackupWriter()
 
 //////////
 //  Operations
-void BackupWriter::backupWorkspace()
+bool BackupWriter::backupWorkspace()
 {
     Q_ASSERT(_objectsWritten == 0 && _associationsWritten == 0);
 
@@ -191,10 +191,20 @@ void BackupWriter::backupWorkspace()
             throw tt3::ws::CustomWorkspaceException(
                 _backupFile.fileName() + ": " + _backupFile.errorString());
         }
+        return true;
+    }
+    catch (const _CancelRequest &)
+    {   //  Cleanup & cancel
+        _progressDialog.reset(nullptr);
+        _backupFile.close();
+        QFile::remove(_backupFile.fileName());  //  may fail, but who cares at this point...
+        _workspace->releaseCredentials(_credentials);
+        return false;
     }
     catch (...)
     {   //  OOPS! Cleamup, then re-throw
         _progressDialog.reset(nullptr);
+        _backupFile.close();
         QFile::remove(_backupFile.fileName());  //  may fail, but who cares at this point...
         _workspace->releaseCredentials(_credentials);
         throw;
@@ -230,6 +240,10 @@ void BackupWriter::_reportProgress()
         {
             QCoreApplication::processEvents();
         }   while (QDateTime::currentDateTimeUtc() < continueAt);
+        if (_progressDialog->cancelRequested())
+        {
+            throw _CancelRequest();
+        }
     }
 }
 

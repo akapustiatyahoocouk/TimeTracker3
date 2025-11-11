@@ -45,6 +45,12 @@ namespace tt3::tools::backup
         using QDialog::setVisible;
 
         void        reportProgress(double ratioCompleted);
+        bool        cancelRequested() const { return _cancelRequested; }
+
+        //////////
+        //  Implementation
+    private:
+        std::atomic<bool>   _cancelRequested = false;
 
         //////////
         //  Controls

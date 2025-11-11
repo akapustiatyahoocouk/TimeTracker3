@@ -117,13 +117,15 @@ void BackupTool::run(QWidget * parent)
     }
     //  At this point, we have a) the workspace to backup
     //  and b) the credentials that allow to do so
+    bool backupSuccessful = false;
     try
     {
         BackupWriter backupWriter(
             workspace,
             credentials,
             dlg.selectedBackupDestination());
-        backupWriter.backupWorkspace(); //  may throw
+        backupSuccessful =
+            backupWriter.backupWorkspace(); //  may throw
         //  BackupWriter's destructor closes the backup file
     }
     catch (...)
@@ -140,8 +142,13 @@ void BackupTool::run(QWidget * parent)
         workspace->close();     //  may throw, but irrelevant at this point
     }
 
-    //  TODO pop up the "backup completed" message
-    //  TODO with an option to go to the filw in system file manager
+    if (backupSuccessful)
+    {   //  TODO pop up the "backup completed" message
+        //  TODO with an option to go to the filw in system file manager
+    }
+    else
+    {   //  TODO pop up the "backup cancelled" message
+    }
 }
 
 //  End of tt3-tools-backup/BackupTool.cpp

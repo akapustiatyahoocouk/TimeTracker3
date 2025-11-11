@@ -36,7 +36,7 @@ namespace tt3::tools::backup
         //////////
         //  Operations
     public:
-        void        backupWorkspace();
+        bool        backupWorkspace();
 
         //////////
         //  Implementation
@@ -53,6 +53,8 @@ namespace tt3::tools::backup
         const int       _oneObjectDelayMs;
 
         std::unique_ptr<BackupProgressDialog>   _progressDialog = nullptr;
+
+        struct _CancelRequest {};
 
         //  Helpers
         //  All methods may throw
