@@ -539,7 +539,6 @@ void MainFrame::_refreshToolsMenu()
                         refresh();
                     }
                 });
-        //  TODO add signal handler
     }
     _refreshToolsMenuItemAvailability();
 }

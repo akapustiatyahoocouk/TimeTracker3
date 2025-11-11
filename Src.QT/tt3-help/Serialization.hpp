@@ -17,6 +17,8 @@
 
 namespace tt3::help
 {
+    /// \class Serializer tt3-help/API.hpp
+    /// \brief An agent that saves a help collection to a file.
     class TT3_HELP_PUBLIC Serializer final
     {
         UTILITY_CLASS(Serializer)
@@ -36,10 +38,6 @@ namespace tt3::help
                                 HelpCollection * helpCollection,
                                 const QString & fileName
                             );
-
-        //////////
-        //  Implementation
-    private:
     };
 }
 

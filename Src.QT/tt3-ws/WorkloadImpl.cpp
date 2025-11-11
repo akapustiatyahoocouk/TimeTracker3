@@ -317,13 +317,17 @@ auto WorkloadImpl::assignedUsers(
             throw AccessDeniedException();
         }
 
-        //  Do the work TODO only Users that can be read!
-        return tt3::util::transform(
-            _dataWorkload->assignedUsers(),
-            [&](auto dataUser)
-            {
-                return _workspace->_getProxy(dataUser);
-            });
+        //  Do the work
+        Users result;
+        for (auto dataUser : _dataWorkload->assignedUsers())
+        {
+            User user = _workspace->_getProxy(dataUser);
+            if (user->_canRead(credentials))
+            {   //  Include only Users that can be read!
+                result.insert(user);
+            }
+        }
+        return result;
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Translate & re-throw

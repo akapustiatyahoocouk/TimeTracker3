@@ -1118,12 +1118,14 @@ auto WorkspaceImpl::beginBackup(
         {   //  OOPS! Can't!
             throw AccessDeniedException();  //  releases the dataLock
         }
-        //  Determine lease period TODO based on database size
+        //  Determine lease period based on database size
+        quint64 objectCount =_database->objectCount();
         for (; ; )
         {   //  Loop, on the off-chance of duplicate credentials
             QString login = QUuid::createUuid().toString();     //  be random
             QString password = QUuid::createUuid().toString();  //  be random
-            long leasePeriodMs = 24 * 60 * 60 * 1000;   //  TODO depending on database size!
+            quint64 leasePeriodMs = objectCount * 85 + //  1,000,000 objects -> 1 day lease...
+                                    60 * 60 * 1000;    //  ...+ 1 hour
             QDateTime now = QDateTime::currentDateTimeUtc();
             BackupCredentials backupCredentials(login, password, now, now.addMSecs(leasePeriodMs));
             if (_database->findAccount(login) == nullptr &&     //  may throw!
@@ -1141,7 +1143,7 @@ auto WorkspaceImpl::beginBackup(
 }
 
 auto WorkspaceImpl::beginRestore(
-    const Credentials & credentials
+        const Credentials & credentials
     ) -> RestoreCredentials
 {
     try
@@ -1159,7 +1161,7 @@ auto WorkspaceImpl::beginRestore(
         {   //  OOPS! Can't!
             throw AccessDeniedException();  //  releases the dataLock
         }
-        //  Determine lease period TODO based on database size
+        //  Determine lease period based on database size
         for (; ; )
         {   //  Loop, on the off-chance of duplicate credentials
             QString login = QUuid::createUuid().toString();     //  be random
@@ -1200,12 +1202,14 @@ auto WorkspaceImpl::beginReport(
         {   //  OOPS! Can't!
             throw AccessDeniedException();  //  releases the dataLock
         }
-        //  Determine lease period TODO based on database size
+        //  Determine lease period based on database size
+        quint64 objectCount =_database->objectCount();
         for (; ; )
         {   //  Loop, on the off-chance of duplicate credentials
             QString login = QUuid::createUuid().toString();     //  be random
             QString password = QUuid::createUuid().toString();  //  be random
-            long leasePeriodMs = 24 * 60 * 60 * 1000;   //  TODO depending on database size!
+            quint64 leasePeriodMs = objectCount * 85 + //  1,000,000 objects -> 1 day lease...
+                                    60 * 60 * 1000;    //  ...+ 1 hour
             QDateTime now = QDateTime::currentDateTimeUtc();
             ReportCredentials reportCredentials(login, password, now, now.addMSecs(leasePeriodMs));
             if (_database->findAccount(login) == nullptr &&     //  may throw!

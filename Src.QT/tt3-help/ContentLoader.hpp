@@ -17,6 +17,8 @@
 
 namespace tt3::help
 {
+    /// \class IContentLoader tt3-help/API.hpp
+    /// \brief The generic agent loading help content.
     class TT3_HELP_PUBLIC IContentLoader
     {
         friend class SimpleHelpTopic;
@@ -50,6 +52,8 @@ namespace tt3::help
         virtual QByteArray  loadContent() = 0;
     };
 
+    /// \class LocalFileContentLoader tt3-help/API.hpp
+    /// \brief The agent loading help content from local file system.
     class TT3_HELP_PUBLIC LocalFileContentLoader final
         :   public virtual IContentLoader
     {
@@ -80,6 +84,8 @@ namespace tt3::help
         QString         _path;  //  full path to local file
     };
 
+    /// \class ContentLoaderFactory tt3-help/API.hpp
+    /// \brief The factory for help content loaders.
     class TT3_HELP_PUBLIC ContentLoaderFactory final
     {
         UTILITY_CLASS(ContentLoaderFactory)

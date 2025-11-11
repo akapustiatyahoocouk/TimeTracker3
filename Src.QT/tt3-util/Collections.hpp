@@ -66,7 +66,7 @@ namespace tt3::util
     }
 
     /// \brief
-    ///     Returns all dulicates from the list, returning the result.
+    ///     Returns all duplicates from the list, returning the result.
     /// \param
     ///     The original list, possible containing duplicates.
     /// \return

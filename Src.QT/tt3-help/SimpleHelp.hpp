@@ -69,6 +69,8 @@ namespace tt3::help
         //////////
         //  Properties
     public:
+        /// \class Children tt3-help/API.hpp
+        /// \brief The ordered list of children of a SimpleHelpTopic.
         class TT3_HELP_PUBLIC Children final
         {
             friend class SimpleHelpTopic;
@@ -76,27 +78,48 @@ namespace tt3::help
             //////////
             //  Types
         public:
+            /// \class iterator tt3=help/API.hpp
+            /// \brief The iterator over a collection of help topics.
             class TT3_HELP_PUBLIC iterator final
             {
+                friend class Children;
+
                 //////////
                 //  Construction/destruction/assignment
-            public:
-                iterator()
-                    :   _helpTopic(nullptr),
-                        _currentIndex(0) {}
+            private:
                 iterator(const SimpleHelpTopic * helpTopic, int startIndex)
                     :   _helpTopic(helpTopic),
-                        _currentIndex(startIndex)
+                    _currentIndex(startIndex)
                 {
                     Q_ASSERT(_helpTopic != nullptr);
                     Q_ASSERT(_currentIndex >= 0 &&
                              _currentIndex <= _helpTopic->childCount());
                 }
+            public:
+                /// \brief
+                ///     Constructs a finished iterator.
+                iterator()
+                    :   _helpTopic(nullptr),
+                        _currentIndex(0) {}
+
+                /// \brief
+                ///     The copy constructor.
+                /// \param src
+                ///     The source to copu from.
                 iterator(const iterator & src)
                     :   _helpTopic(src._helpTopic),
                         _currentIndex(src._currentIndex) {}
-                virtual ~iterator() {}
 
+                /// \brief
+                ///     The class destructor.
+                ~iterator() = default;
+
+                /// \brief
+                ///     Performs assignment.
+                /// \param src
+                ///     The source to assign from.
+                /// \return
+                ///     The assigned-to iterator.
                 iterator &  operator = (const iterator & src)
                 {
                     _helpTopic = src._helpTopic;
@@ -107,6 +130,16 @@ namespace tt3::help
                 //////////
                 //  Operators
             public:
+                /// \brief
+                ///     Compares two iterators for equality.
+                /// \details
+                ///     Two iterators atr considered "equal" is they
+                ///     a) point to the same member of the same gelp
+                ///     topics collection oe b) are all "finished".
+                /// \param op2
+                ///     The 2nd iterator to compare this one to.
+                /// \return
+                ///     True if the two iterators are "equal@, else false.
                 bool        operator == (const iterator & op2) const
                 {
                     if (_finished())
@@ -124,11 +157,30 @@ namespace tt3::help
                     }
                 }
 
+                /// \brief
+                ///     Compares two iterators for equality.
+                /// \details
+                ///     Two iterators atr considered "equal" is they
+                ///     a) point to the same member of the same gelp
+                ///     topics collection oe b) are all "finished".
+                /// \param op2
+                ///     The 2nd iterator to compare this one to.
+                /// \return
+                ///     False if the two iterators are "equal@, else true.
                 bool        operator != (const iterator & op2) const
                 {
                     return !(*this == op2);
                 }
 
+                /// \brief
+                ///     Returns the SimpleHelpTopic currently
+                ///     pointed-to by this oterator.
+                /// \details
+                ///     If the iterator is "finished", the
+                ///     call is an error.
+                /// \return
+                ///     The SimpleHelpTopic currently pointed-to
+                ///     by this oterator.
                 auto        operator ->(
                                 ) const -> SimpleHelpTopic*
                 {
@@ -136,12 +188,26 @@ namespace tt3::help
                     return _helpTopic->child(_currentIndex);
                 }
 
+                /// \brief
+                ///     Returns the SimpleHelpTopic currently
+                ///     pointed-to by this oterator.
+                /// \details
+                ///     If the iterator is "finished", the
+                ///     call is an error.
+                /// \return
+                ///     The SimpleHelpTopic currently pointed-to
+                ///     by this oterator.
                 SimpleHelpTopic *   operator *() const
                 {
                     Q_ASSERT(!_finished());
                     return _helpTopic->child(_currentIndex);
                 }
 
+                /// \brief
+                ///     Advances this iterator to the next element
+                ///     of the HelpTopics collection.
+                /// \brief
+                ///     If the iterator is "finished", the call has no effect.
                 void        operator++()
                 {
                     if (!_finished())
@@ -149,6 +215,12 @@ namespace tt3::help
                         _currentIndex++;
                     }
                 }
+
+                /// \brief
+                ///     Advances this iterator to the next element
+                ///     of the HelpTopics collection.
+                /// \brief
+                ///     If the iterator is "finished", the call has no effect.
                 void        operator++(int) { operator++(); }
 
                 //////////
@@ -156,6 +228,7 @@ namespace tt3::help
             private:
                 const SimpleHelpTopic * _helpTopic; //  nullptr == invalid iterator, considered finished
                 int         _currentIndex;  //  0 for invalid iterators
+
                 //  Helpers
                 bool        _finished() const
                 {
@@ -163,6 +236,11 @@ namespace tt3::help
                            (_currentIndex >= _helpTopic->childCount());
                 }
             };
+
+            /// \class const_iterator tt3-help/API.hpp
+            /// \brief
+            ///     The iterator over a help topic collection that
+            ///     does not permit modifying that collection.
             using const_iterator = iterator;
 
             //////////
@@ -174,11 +252,21 @@ namespace tt3::help
             //////////
             //  Operations
         public:
+            /// \brief
+            ///     Returns the specific element from yhis collection.
+            /// \param index
+            ///     The 0-based index of the required element.
+            /// \return
+            ///     The element at "index" in this collectiom.
             SimpleHelpTopic*operator[](int index) const
             {
                 return _helpTopic->child(index);
             }
 
+            /// \brief
+            ///     Returns the size of this collection.
+            /// \return
+            ///     The size of this collection.
             int             size() const
             {
                 return _helpTopic->childCount();
@@ -193,31 +281,76 @@ namespace tt3::help
             //////////
             //  Iteration support
         public:
+            /// \brief
+            ///     Returns the iterator to the starting
+            ///     element of this collection.
+            /// \details
+            ///     If the collection is empyu, this will be
+            ///     the same as the finished "end()" iterator.
+            /// \return
+            ///     The iterator to the starting
+            ///     element of this collection.
             iterator        begin()
             {
                 return iterator(_helpTopic, 0);
             }
 
-            const_iterator  end() const
-            {
-                return const_iterator(_helpTopic, _helpTopic->childCount());
-            }
-
-            const_iterator  begin() const
-            {
-                return const_iterator(_helpTopic, 0);
-            }
-
+            /// \brief
+            ///     Returns a "finished: iterator to just beyouf
+            ///     the last element od this collection.
+            /// \return
+            ///     A "finished: iterator to just beyouf
+            ///     the last element od this collection.
             iterator        end()
             {
                 return iterator(_helpTopic, _helpTopic->childCount());
             }
 
+            /// \brief
+            ///     Returns the iterator to the starting
+            ///     element of this collection.
+            /// \details
+            ///     If the collection is empyu, this will be
+            ///     the same as the finished "end()" iterator.
+            /// \return
+            ///     The iterator to the starting
+            ///     element of this collection.
+            const_iterator  begin() const
+            {
+                return const_iterator(_helpTopic, 0);
+            }
+
+            /// \brief
+            ///     Returns a "finished: iterator to just beyouf
+            ///     the last element od this collection.
+            /// \return
+            ///     A "finished: iterator to just beyouf
+            ///     the last element od this collection.
+            const_iterator  end() const
+            {
+                return const_iterator(_helpTopic, _helpTopic->childCount());
+            }
+
+            /// \brief
+            ///     Returns the iterator to the starting
+            ///     element of this collection.
+            /// \details
+            ///     If the collection is empyu, this will be
+            ///     the same as the finished "end()" iterator.
+            /// \return
+            ///     The iterator to the starting
+            ///     element of this collection.
             const_iterator  cbegin() const
             {
                 return const_iterator(_helpTopic, 0);
             }
 
+            /// \brief
+            ///     Returns a "finished: iterator to just beyouf
+            ///     the last element od this collection.
+            /// \return
+            ///     A "finished: iterator to just beyouf
+            ///     the last element od this collection.
             const_iterator  cend() const
             {
                 return const_iterator(_helpTopic, _helpTopic->childCount());
@@ -228,7 +361,15 @@ namespace tt3::help
         private:
             SimpleHelpTopic *   _helpTopic; //  whose children this collection represents
         };
+
+        /// \brief
+        ///     The immediate parent of this SimpleHelpToopic;
+        ///     nullptr == none.
         SimpleHelpTopic *const  parent;
+
+        /// \brief
+        ///     The ordered list of immediate children
+        ///     of this SimpleHelpTopic.
         Children            children;
 
         //////////
@@ -262,11 +403,23 @@ namespace tt3::help
         //////////
         //  Construction/destruction
     public:
+        /// \brief
+        ///     Constructs the simple help collection
+        /// \param name
+        ///     The internal name of the help collection.
+        /// \param displayName
+        ///     The user-readable display name of the help collection.
+        /// \param contentLoader
+        ///     The content loader for the help collection's root
+        ///     topic, nullptr == nonr.
         SimpleHelpCollection(
                 const QString & name,
                 const QString & displayName,
                 IContentLoader * contentLoader
             );
+
+        /// \brief
+        ///     The class destructor.
         virtual ~SimpleHelpCollection();
 
         //////////

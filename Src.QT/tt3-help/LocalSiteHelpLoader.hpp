@@ -17,6 +17,8 @@
 
 namespace tt3::help
 {
+    /// \class LocalSiteHelpLoader tt3-help/API.hpp
+    /// \brief Loader of help content from a local help site.
     class TT3_HELP_PUBLIC LocalSiteHelpLoader final
     {
         UTILITY_CLASS(LocalSiteHelpLoader)
@@ -31,6 +33,16 @@ namespace tt3::help
         //////////
         //  Operations
     public:
+        /// \brief
+        ///     Loads a help collection from a local help site.
+        /// \param siteDirectory
+        ///     The directory where the local help site resides.
+        /// \param progressListener
+        ///     The listener to the progress of help collection
+        ///     loading process; nullptr == none.
+        /// \return
+        ///     The loaded HelpCollection; the caller is responsible
+        ///     for deleting it when it is no longer required.
         static auto     loadHelpCollection(
                                 const QString siteDirectory,
                                 ProgressListener progressListener
