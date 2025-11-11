@@ -13,6 +13,7 @@ DisplayName=Backup
 Description=Performs database backup
 
 [ConfigureBackupDialog]
+Title=Backup workspace
 BackupCurrentWorkspaceRadioButton=Backup current workspace
 OrLabel=--- Or ---
 BackupCustomWorkspaceRadioButton=Backup custom workspace
@@ -25,3 +26,8 @@ OkPushButton=OK
 CancelPushButton=Cancel
 BackupToDialogTitle=Select backup destinayion
 BackupToDialogFilter=TimeTracker3 backup files (*{0});;All files (*.*)
+
+[BackupProgressDialog]
+BackupLabel=Backing up:
+ToLabel=To:
+CancelPushButton=Cancel

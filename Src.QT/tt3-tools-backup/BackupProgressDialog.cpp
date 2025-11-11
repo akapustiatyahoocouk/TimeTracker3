@@ -1,6 +1,6 @@
 //
 //  tt3-tools-backup/BackupProgressDialog.cpp - tt3::tools::backup::BackupProgressDialog class implementation
-//  TODO translate via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -27,6 +27,8 @@ BackupProgressDialog::BackupProgressDialog(
     ) : QDialog(parent),
         _ui(new Ui::BackupProgressDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(BackupProgressDialog));
+
     _ui->setupUi(this);
     Qt::WindowFlags flags = windowFlags();
     flags |= Qt::CustomizeWindowHint;
@@ -35,6 +37,17 @@ BackupProgressDialog::BackupProgressDialog(
     flags &= ~Qt::WindowTitleHint;
     flags &= ~Qt::WindowCloseButtonHint;
     setWindowFlags(flags);
+
+    //  Set static control values
+    _ui->backupLabel->setText(
+        rr.string(RID(BackupLabel)));
+    _ui->toLabel->setText(
+        rr.string(RID(ToLabel)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setIcon(QIcon(":/tt3-tools-backup/Resources/Images/Actions/CancelSmall.png"));
 
     //  Adjust controls
     _ui->backupSourceLabel->setText(backupSource);

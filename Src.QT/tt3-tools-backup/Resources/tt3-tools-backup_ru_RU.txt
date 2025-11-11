@@ -13,6 +13,7 @@ DisplayName=Резервное копирование
 Description=Выполняет резервное копирование базы данных
 
 [ConfigureBackupDialog]
+Title=Резервное копирование
 BackupCurrentWorkspaceRadioButton=Резервное копирование текущей рабочей области
 OrLabel=--- Или ---
 BackupCustomWorkspaceRadioButton=Резервное копирование пользовательской рабочей области
@@ -25,3 +26,8 @@ OkPushButton=ОК
 CancelPushButton=Отмена
 BackupToDialogTitle=Выберите фвйо резервной копии
 BackupToDialogFilter=Файлы резервной копии TimeTracker3 (*{0});;Все файлы (*.*)
+
+[BackupProgressDialog]
+BackupLabel=Резервное копирование:
+ToLabel=В файл:
+CancelPushButton=Отмена

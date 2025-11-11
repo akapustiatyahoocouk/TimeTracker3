@@ -28,6 +28,7 @@ ConfigureBackupDialog::ConfigureBackupDialog(
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ConfigureBackupDialog));
 
     _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
 
     //  Populate "Workspace type" combo box
     QList<tt3::ws::WorkspaceType> workspaceTypes =

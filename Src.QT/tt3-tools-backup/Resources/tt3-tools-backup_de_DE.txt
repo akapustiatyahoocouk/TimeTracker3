@@ -13,6 +13,7 @@ DisplayName=Backup
 Description=Erstellt eine Datenbanksicherung
 
 [ConfigureBackupDialog]
+Title=Arbeitsbereich sichern
 BackupCurrentWorkspaceRadioButton=Aktuellen Arbeitsbereich sichern
 OrLabel=--- Oder ---
 BackupCustomWorkspaceRadioButton=Benutzerdefinierten Arbeitsbereich sichern
@@ -25,3 +26,8 @@ OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
 BackupToDialogTitle=Sicherungsziel auswählen
 BackupToDialogFilter=TimeTracker3-Sicherungsdateien (*{0});;Alle Dateien (*.*)
+
+[BackupProgressDialog]
+BackupLabel=Sicherung wird erstellt:
+ToLabel=Ziel:
+CancelPushButton=Abbrechen
