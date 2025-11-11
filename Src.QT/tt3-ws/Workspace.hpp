@@ -626,13 +626,19 @@ namespace tt3::ws
         ///     even the process that caused the creation of the
         ///     lock) until the "backup credentials" are released
         ///     or until they expire, whichever comes first.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param leaseDurationMs
+        ///     The maximum duration, in milliseconds, of the lease
+        ///     for the created backup credentials.
         /// \return
         ///     The special "backup credentials" that should
         ///     be used for data access during the backup session.
         /// \exception WorkspaceException
         ///     If an error occurs.
         auto        beginBackup(
-                            const Credentials & credentials
+                            const Credentials & credentials,
+                            quint64 leaseDurationMs
                         ) -> BackupCredentials;
 
         /// \brief
@@ -649,13 +655,19 @@ namespace tt3::ws
         ///     the creation of the lock) until the "restore
         ///     credentials" are released or until they expire,
         ///     whichever comes first.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param leaseDurationMs
+        ///     The maximum duration, in milliseconds, of the lease
+        ///     for the created restore credentials.
         /// \return
         ///     The special "restore credentials" that should
         ///     be used for data access during the restore session.
         /// \exception WorkspaceException
         ///     If an error occurs.
         auto        beginRestore(
-                            const Credentials & credentials
+                            const Credentials & credentials,
+                            quint64 leaseDurationMs
                         ) -> RestoreCredentials;
 
         /// \brief
@@ -672,6 +684,11 @@ namespace tt3::ws
         ///     even the process that caused the creation of the
         ///     lock) until the "report credentials" are released
         ///     or until they expire, whichever comes first.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param leaseDurationMs
+        ///     The maximum duration, in milliseconds, of the lease
+        ///     for the created report credentials.
         /// \return
         ///     The special "report credentials" that should
         ///     be used for data access during the report generation
@@ -679,7 +696,8 @@ namespace tt3::ws
         /// \exception WorkspaceException
         ///     If an error occurs.
         auto        beginReport(
-                            const Credentials & credentials
+                            const Credentials & credentials,
+                            quint64 leaseDurationMs
                         ) -> ReportCredentials;
 
         /// \brief

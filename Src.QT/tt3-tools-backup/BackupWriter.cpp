@@ -85,7 +85,12 @@ BackupWriter::BackupWriter(
         const tt3::ws::Credentials & credentials,
         const QString & backupFileName
     ) : _workspace(workspace),
-        _credentials(workspace->beginBackup(credentials)),   //  may throw
+        _credentials(
+            workspace->beginBackup(   //  may throw
+                credentials,
+                workspace->objectCount(credentials) * 85 + //  1,000,000 objects -> 1 day lease...
+                60 * 60 * 1000  //  ...+ 1 hour
+              )),
         _backupFile(backupFileName),
         _backupStream(&_backupFile),
         _objectsToWrite(_workspace->objectCount(_credentials)),

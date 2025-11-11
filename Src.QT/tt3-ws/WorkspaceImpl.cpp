@@ -643,7 +643,12 @@ auto WorkspaceImpl::capabilities(
 
     try
     {
-        //  TODO what about special access for e.g. BackupCredentials?
+        if (_isBackupCredentials(credentials) ||
+            _isRestoreCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - no actual Workspace capabilities
+            return Capabilities();  //  nonr
+        }
         return _validateAccessRights(credentials);  //  may throw
     }
     catch (const tt3::util::Exception & ex)
@@ -664,7 +669,12 @@ bool WorkspaceImpl::grantsAll(
     {
         Q_ASSERT(!requiredCapabilities.isEmpty());
 
-        //  TODO what about special access for e.g. BackupCredentials?
+        if (_isBackupCredentials(credentials) ||
+            _isRestoreCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - no actual Workspace capabilities
+            return false;
+        }
         //  Do the work; be defensive in release mode
         Capabilities c = _validateAccessRights(credentials);  //  may throw
         return (c & requiredCapabilities) == requiredCapabilities;
@@ -691,7 +701,12 @@ bool WorkspaceImpl::grantsAny(
     {
         Q_ASSERT(!requiredCapabilities.isEmpty());
 
-        //  TODO what about special access for e.g. BackupCredentials?
+        if (_isBackupCredentials(credentials) ||
+            _isRestoreCredentials(credentials) ||
+            _isReportCredentials(credentials))
+        {   //  Special access - no actual Workspace capabilities
+            return false;
+        }
         //  Do the work; be defensive in release mode
         Capabilities c = _validateAccessRights(credentials);  //  may throw
         return !(c & requiredCapabilities).isEmpty();
@@ -1100,7 +1115,8 @@ auto WorkspaceImpl::createBeneficiary(
 //////////
 //  Operations (special access)
 auto WorkspaceImpl::beginBackup(
-        const Credentials & credentials
+        const Credentials & credentials,
+        quint64 leaseDurationMs
     ) -> BackupCredentials
 {
     try
@@ -1118,16 +1134,12 @@ auto WorkspaceImpl::beginBackup(
         {   //  OOPS! Can't!
             throw AccessDeniedException();  //  releases the dataLock
         }
-        //  Determine lease period based on database size
-        quint64 objectCount =_database->objectCount();
         for (; ; )
         {   //  Loop, on the off-chance of duplicate credentials
             QString login = QUuid::createUuid().toString();     //  be random
             QString password = QUuid::createUuid().toString();  //  be random
-            quint64 leasePeriodMs = objectCount * 85 + //  1,000,000 objects -> 1 day lease...
-                                    60 * 60 * 1000;    //  ...+ 1 hour
             QDateTime now = QDateTime::currentDateTimeUtc();
-            BackupCredentials backupCredentials(login, password, now, now.addMSecs(leasePeriodMs));
+            BackupCredentials backupCredentials(login, password, now, now.addMSecs(leaseDurationMs));
             if (_database->findAccount(login) == nullptr &&     //  may throw!
                 !_backupCredentials.contains(backupCredentials))
             {   //  Np conflict
@@ -1143,7 +1155,8 @@ auto WorkspaceImpl::beginBackup(
 }
 
 auto WorkspaceImpl::beginRestore(
-        const Credentials & credentials
+        const Credentials & credentials,
+        quint64 leaseDurationMs
     ) -> RestoreCredentials
 {
     try
@@ -1161,14 +1174,12 @@ auto WorkspaceImpl::beginRestore(
         {   //  OOPS! Can't!
             throw AccessDeniedException();  //  releases the dataLock
         }
-        //  Determine lease period based on database size
         for (; ; )
         {   //  Loop, on the off-chance of duplicate credentials
             QString login = QUuid::createUuid().toString();     //  be random
             QString password = QUuid::createUuid().toString();  //  be random
-            long leasePeriodMs = 24 * 60 * 60 * 1000;   //  TODO depending on database size!
             QDateTime now = QDateTime::currentDateTimeUtc();
-            RestoreCredentials restoreCredentials(login, password, now, now.addMSecs(leasePeriodMs));
+            RestoreCredentials restoreCredentials(login, password, now, now.addMSecs(leaseDurationMs));
             if (_database->findAccount(login) == nullptr &&     //  may throw!
                 !_restoreCredentials.contains(restoreCredentials))
             {   //  Np conflict
@@ -1184,7 +1195,8 @@ auto WorkspaceImpl::beginRestore(
 }
 
 auto WorkspaceImpl::beginReport(
-        const Credentials & credentials
+        const Credentials & credentials,
+        quint64 leaseDurationMs
     ) -> ReportCredentials
 {
     try
@@ -1202,16 +1214,12 @@ auto WorkspaceImpl::beginReport(
         {   //  OOPS! Can't!
             throw AccessDeniedException();  //  releases the dataLock
         }
-        //  Determine lease period based on database size
-        quint64 objectCount =_database->objectCount();
         for (; ; )
         {   //  Loop, on the off-chance of duplicate credentials
             QString login = QUuid::createUuid().toString();     //  be random
             QString password = QUuid::createUuid().toString();  //  be random
-            quint64 leasePeriodMs = objectCount * 85 + //  1,000,000 objects -> 1 day lease...
-                                    60 * 60 * 1000;    //  ...+ 1 hour
             QDateTime now = QDateTime::currentDateTimeUtc();
-            ReportCredentials reportCredentials(login, password, now, now.addMSecs(leasePeriodMs));
+            ReportCredentials reportCredentials(login, password, now, now.addMSecs(leaseDurationMs));
             if (_database->findAccount(login) == nullptr &&     //  may throw!
                 !_reportCredentials.contains(reportCredentials))
             {   //  Np conflict
