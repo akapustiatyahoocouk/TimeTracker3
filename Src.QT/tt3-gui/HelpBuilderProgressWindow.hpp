@@ -24,7 +24,7 @@ namespace tt3::gui
     /// \class HelpBuilderProgressWindow tt3-gui/API.hpp
     /// \brief The HelpSiteBuilder progress window.
     class TT3_GUI_PUBLIC HelpBuilderProgressWindow
-        :   public QDialog
+        :   private QDialog
     {
         Q_OBJECT
         CANNOT_ASSIGN_OR_COPY_CONSTRUCT(HelpBuilderProgressWindow)
@@ -33,11 +33,13 @@ namespace tt3::gui
         //  Construction/destruction
     public:
         HelpBuilderProgressWindow();
-        ~HelpBuilderProgressWindow();
+        virtual ~HelpBuilderProgressWindow();
 
         //////////
         //  Operations
     public:
+        using QDialog::setVisible;
+
         /// \brief
         ///     Reports the progress of the help building operation.
         /// \param context

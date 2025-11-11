@@ -1,6 +1,6 @@
 //
 //  tt3-tools-backup/ConfigureBackupDialog.cpp - tt3::tools::backup::ConfigureBackupDialog class implementation
-//  TODO translate via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -25,6 +25,8 @@ ConfigureBackupDialog::ConfigureBackupDialog(
     ) : QDialog(parent),
         _ui(new Ui::ConfigureBackupDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ConfigureBackupDialog));
+
     _ui->setupUi(this);
 
     //  Populate "Workspace type" combo box
@@ -44,6 +46,33 @@ ConfigureBackupDialog::ConfigureBackupDialog(
             workspaceType->displayName(),
             QVariant::fromValue(workspaceType));
     }
+
+    //  Set static control values
+    _ui->backupCurrentWorkspaceRadioButton->setText(
+        rr.string(RID(BackupCurrentWorkspaceRadioButton)));
+    _ui->orLabel->setText(
+        rr.string(RID(OrLabel)));
+    _ui->backupCustomWorkspaceRadioButton->setText(
+        rr.string(RID(BackupCustomWorkspaceRadioButton)));
+    _ui->workspaceTypeLabel->setText(
+        rr.string(RID(WorkspaceTypeLabel)));
+    _ui->locationLabel->setText(
+        rr.string(RID(LocationLabel)));
+    _ui->browsePushButton->setText(
+        rr.string(RID(BrowsePushButton)));
+    _ui->backupToLabel->setText(
+        rr.string(RID(BackupToLabel)));
+    _ui->backupToPushButton->setText(
+        rr.string(RID(BackupToPushButton)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setIcon(QIcon(":/tt3-tools-backup/Resources/Images/Actions/OkSmall.png"));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setIcon(QIcon(":/tt3-tools-backup/Resources/Images/Actions/CancelSmall.png"));
 
     //  Set editable control values
     _setSelectedWorkspaceType(

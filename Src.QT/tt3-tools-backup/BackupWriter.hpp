@@ -50,11 +50,15 @@ namespace tt3::tools::backup
         const quint64   _associationsToWrite;
         quint64         _objectsWritten = 0;
         quint64         _associationsWritten = 0;
+        const int       _oneObjectDelayMs;
+
+        std::unique_ptr<BackupProgressDialog>   _progressDialog = nullptr;
 
         //  Helpers
         //  All methods may throw
         void        _onObjectWritten();
         void        _onAssociationWritten();
+        void        _reportProgress();
 
         template <class T>
         void        _backupObjects(

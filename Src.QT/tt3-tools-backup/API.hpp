@@ -28,6 +28,7 @@
 
 #include "tt3-tools-backup/BackupTool.hpp"
 #include "tt3-tools-backup/ConfigureBackupDialog.hpp"
+#include "tt3-tools-backup/BackupProgressDialog.hpp"
 #include "tt3-tools-backup/BackupWriter.hpp"
 
 //  End of tt3-tools-backup/API.hpp

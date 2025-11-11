@@ -89,7 +89,8 @@ BackupWriter::BackupWriter(
         _backupFile(backupFileName),
         _backupStream(&_backupFile),
         _objectsToWrite(_workspace->objectCount(_credentials)),
-        _associationsToWrite(_workspace->objectCount(_credentials))
+        _associationsToWrite(_workspace->objectCount(_credentials)),
+        _oneObjectDelayMs(int(5000 / (_objectsToWrite + 1) + 1))
 {
 }
 
@@ -117,6 +118,17 @@ void BackupWriter::backupWorkspace()
     if (!_backupFile.open(QIODevice::WriteOnly))
     {   //  OOPS!
         throw tt3::ws::CustomWorkspaceException(_backupFile.fileName() + ": " + _backupFile.errorString());
+    }
+
+    //  Do we need a progress dialog ?
+    if (QThread::currentThread()->eventDispatcher() != nullptr)
+    {
+        _progressDialog.reset(
+            new BackupProgressDialog(
+                QApplication::activeWindow(),
+                _workspace->address()->displayForm(),
+                _backupFile.fileName()));
+        _progressDialog->setVisible(true);
     }
 
     //  Go!
@@ -169,6 +181,7 @@ void BackupWriter::backupWorkspace()
         //  destructor as a last resort, but calling
         //  them leads to earlier lock release and
         //  better error diagnostics.
+        _progressDialog.reset(nullptr);
         _backupStream.flush();
         _backupFile.close();
         _workspace->releaseCredentials(_credentials);   //  may throw
@@ -181,6 +194,7 @@ void BackupWriter::backupWorkspace()
     }
     catch (...)
     {   //  OOPS! Cleamup, then re-throw
+        _progressDialog.reset(nullptr);
         QFile::remove(_backupFile.fileName());  //  may fail, but who cares at this point...
         _workspace->releaseCredentials(_credentials);
         throw;
@@ -193,12 +207,30 @@ void BackupWriter::_onObjectWritten()
 {
     _objectsWritten++;
     Q_ASSERT(_objectsWritten <= _objectsToWrite);
+    _reportProgress();
 }
 
 void BackupWriter::_onAssociationWritten()
 {
     _associationsWritten++;
     Q_ASSERT(_associationsWritten <= _associationsToWrite);
+    _reportProgress();
+}
+
+void BackupWriter::_reportProgress()
+{
+    if (_progressDialog != nullptr)
+    {
+        _progressDialog->reportProgress(
+            double(_objectsWritten + _associationsWritten) /
+            double(_objectsToWrite + _associationsToWrite));
+        QDateTime continueAt =
+            QDateTime::currentDateTimeUtc().addMSecs(_oneObjectDelayMs);
+        do
+        {
+            QCoreApplication::processEvents();
+        }   while (QDateTime::currentDateTimeUtc() < continueAt);
+    }
 }
 
 void BackupWriter::_backupObject(
@@ -380,7 +412,14 @@ void BackupWriter::_backupObject(
         });
     _writeObjectHeader(event);
     _writeObjectProperty("OID", event->oid());
-    _writeObjectProperty("ActivityOIDS", activityOids);
+    if (activityOids.size() == 1)
+    {
+        _writeObjectProperty("ActivityOID", activityOids[0]);
+    }
+    else if (activityOids.size() > 1)
+    {
+        _writeObjectProperty("ActivityOIDS", activityOids);
+    }
     _writeObjectProperty("AccountOID", event->account(_credentials)->oid());
     _writeObjectProperty("OccurredAt", event->occurredAt(_credentials));
     _writeObjectProperty("Summary", event->summary(_credentials));

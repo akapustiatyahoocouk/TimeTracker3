@@ -3,6 +3,7 @@ include(../tt3.pri)
 TEMPLATE = lib
 DEFINES += TT3_TOOLS_BACKUP_LIBRARY
 SOURCES += \
+    BackupProgressDialog.cpp \
     BackupTool.cpp \
     BackupWriter.cpp \
     Component.cpp \
@@ -11,6 +12,7 @@ SOURCES += \
 
 HEADERS += \
     API.hpp \
+    BackupProgressDialog.hpp \
     BackupTool.hpp \
     BackupWriter.hpp \
     Components.hpp \
@@ -23,6 +25,7 @@ RESOURCES += \
     tt3-tools-backup.qrc
 
 FORMS += \
+    BackupProgressDialog.ui \
     ConfigureBackupDialog.ui
 
 LIBS += \

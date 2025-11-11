@@ -1,0 +1,75 @@
+//
+//  tt3-tools-backup/BackupProgressDialog.cpp - tt3::tools::backup::BackupProgressDialog class implementation
+//  TODO translate via Resources
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+#include "tt3-tools-backup/API.hpp"
+#include "ui_BackupProgressDialog.h"
+using namespace tt3::tools::backup;
+
+//////////
+//  Construction/destruction
+BackupProgressDialog::BackupProgressDialog(
+        QWidget * parent,
+        const QString & backupSource,
+        const QString & backupDestination
+    ) : QDialog(parent),
+        _ui(new Ui::BackupProgressDialog)
+{
+    _ui->setupUi(this);
+    Qt::WindowFlags flags = windowFlags();
+    flags |= Qt::CustomizeWindowHint;
+    flags |= Qt::WindowStaysOnTopHint;
+    flags &= ~Qt::WindowSystemMenuHint;
+    flags &= ~Qt::WindowTitleHint;
+    flags &= ~Qt::WindowCloseButtonHint;
+    setWindowFlags(flags);
+
+    //  Adjust controls
+    _ui->backupSourceLabel->setText(backupSource);
+    _ui->backupDestinationLabel->setText(backupDestination);
+    _ui->progressBar->setValue(0);
+
+    //  Done
+    adjustSize();
+}
+
+BackupProgressDialog::~BackupProgressDialog()
+{
+    delete _ui;
+}
+
+//////////
+//  Operations
+void BackupProgressDialog::reportProgress(double ratioCompleted)
+{
+    int newValue = qMax(0, qMin(100, int(ratioCompleted * 100)));
+    if (newValue != _ui->progressBar->value())
+    {
+        _ui->progressBar->setValue(newValue);
+        QCoreApplication::processEvents();
+    }
+}
+
+//////////
+//  Signal handlers
+void BackupProgressDialog::accept()
+{   //  Don't close on Enter
+}
+
+void BackupProgressDialog::reject()
+{   //  Book a cancellation request
+}
+
+//  End of tt3-tools-backup/BackupProgressDialog.cpp

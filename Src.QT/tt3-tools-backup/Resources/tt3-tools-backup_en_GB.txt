@@ -13,5 +13,15 @@ DisplayName=Backup
 Description=Performs database backup
 
 [ConfigureBackupDialog]
+BackupCurrentWorkspaceRadioButton=Backup current workspace
+OrLabel=--- Or ---
+BackupCustomWorkspaceRadioButton=Backup custom workspace
+WorkspaceTypeLabel=Workspace type:
+LocationLabel=Location:
+BrowsePushButton=Browse
+BackupToLabel=Backup to:
+BackupToPushButton=Browse
+OkPushButton=OK
+CancelPushButton=Cancel
 BackupToDialogTitle=Select backup destinayion
 BackupToDialogFilter=TimeTracker3 backup files (*{0});;All files (*.*)

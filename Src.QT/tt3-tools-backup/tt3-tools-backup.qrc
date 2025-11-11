@@ -9,5 +9,9 @@
         <file>Resources/Images/Actions/OpenWorkspaceSmall.png</file>
         <file>Resources/Images/Actions/BrowseLarge.png</file>
         <file>Resources/Images/Actions/BrowseSmall.png</file>
+        <file>Resources/Images/Actions/CancelLarge.png</file>
+        <file>Resources/Images/Actions/CancelSmall.png</file>
+        <file>Resources/Images/Actions/OkLarge.png</file>
+        <file>Resources/Images/Actions/OkSmall.png</file>
     </qresource>
 </RCC>
