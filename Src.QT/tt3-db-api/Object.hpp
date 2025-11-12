@@ -240,6 +240,14 @@ namespace tt3::db::api
         virtual Oid     oid() const = 0;
 
         /// \brief
+        ///     Sets the OID of this object.
+        /// \param oid
+        ///     Thr new OID for this object.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        virtual void    setOid(const Oid & oid) = 0;
+
+        /// \brief
         ///     Checks whether this instance represents an
         ///     existing data object residing in a database.
         /// \return

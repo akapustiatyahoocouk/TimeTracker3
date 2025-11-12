@@ -74,6 +74,21 @@ namespace tt3::ws
         Oid         oid() const;
 
         /// \brief
+        ///     Sets the OID of this object.
+        /// \details
+        ///     Requires unexpired RestoreCredentials.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param oid
+        ///     Thr new OID for this object.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        setOid(
+                            const Credentials & credentials,
+                            const Oid & oid
+                        );
+
+        /// \brief
         ///     Checks whether this instance represents an existing
         ///     data object residing in a database.
         /// \return

@@ -52,6 +52,40 @@ Oid ObjectImpl::oid() const
     return _dataObject->oid();
 }
 
+void ObjectImpl::setOid(
+        const Credentials & credentials,
+        const Oid & oid
+    )
+{
+    tt3::util::Lock _(_workspace->_guard);
+    _ensureLive();
+
+    try
+    {
+        //  Validate access rights
+        if (!_workspace->_isReportCredentials(credentials))
+        {
+            throw AccessDeniedException();
+        }
+
+        //  Do the work
+        auto oldOid = _dataObject->oid();
+        _dataObject->setOid(oid);   //  may throw
+        //  Database change has been successful - must
+        //  update Workspace caches
+        if (_workspace->_proxyCache.contains(oldOid))
+        {
+            Object proxy = _workspace->_proxyCache[oldOid];
+            _workspace->_proxyCache.remove(oldOid);
+            _workspace->_proxyCache[oid] = proxy;
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
 bool ObjectImpl::isLive() const
 {   //  No need to synchronize
     return _dataObject->isLive();

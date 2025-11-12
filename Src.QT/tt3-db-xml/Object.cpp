@@ -51,6 +51,47 @@ Object::~Object()
 
 //////////
 //  tt3::db::api::IObject (general)
+void Object::setOid(
+        const tt3::db::api::Oid & oid
+    )
+{
+    tt3::util::Lock _(_database->_guard);
+    _ensureLiveAndWritable();
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    if (oid != _oid)
+    {   //  There IS actually a change
+        //  Disallow OID duplication
+        if (_database->_liveObjects.contains(oid) ||
+            _database->_graveyard.contains(oid))    //  can't reuse OIDs!
+        {   //  OOPS!
+            throw tt3::db::api::AlreadyExistsException(
+                "Object",
+                "OID",
+                oid);
+        }
+        //  Make the change
+        auto oldOid = _oid;
+        _database->_liveObjects.remove(_oid);
+        _oid = oid;
+        _database->_liveObjects[oid] = this;
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), oldOid));
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
+}
+
 bool Object::isLive() const
 {
     tt3::util::Lock _(_database->_guard);

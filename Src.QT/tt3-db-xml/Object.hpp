@@ -53,6 +53,9 @@ namespace tt3::db::xml
     public:
         virtual Database *  database() const override { return _database; }
         virtual tt3::db::api::Oid   oid() const override { return _oid; }
+        virtual void        setOid(
+                                    const tt3::db::api::Oid & oid
+                                ) override;
         virtual bool        isLive() const override;
 
         //////////
@@ -71,7 +74,7 @@ namespace tt3::db::xml
         //  Implementation
     private:
         Database *const     _database;
-        const tt3::db::api::Oid _oid;
+        tt3::db::api::Oid   _oid;
 
         State           _state = State::New;
         int             _referenceCount = 0;
