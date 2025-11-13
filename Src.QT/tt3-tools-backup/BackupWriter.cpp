@@ -470,7 +470,7 @@ void BackupWriter::_backupObject(
     }
     else if (activityOids.size() > 1)
     {
-        _writeObjectProperty("ActivityOIDS", activityOids);
+        _writeObjectProperty("ActivityOIDs", activityOids);
     }
     _writeObjectProperty("AccountOID", event->account(_credentials)->oid());
     _writeObjectProperty("OccurredAt", event->occurredAt(_credentials));
@@ -682,16 +682,16 @@ void BackupWriter::_writeObjectProperty(
     if (!propertyValue.isEmpty())
     {
         _backupStream << propertyName
-                      << '=';
+                      << "=[";
         for (int i = 0; i < propertyValue.size(); i++)
         {
             if (i != 0)
             {
-                _backupStream << '+';
+                _backupStream << ',';
             }
             _backupStream << tt3::util::toString(propertyValue[i]);
         }
-        _backupStream << '\n';
+        _backupStream << "]\n";
     }
 }
 
