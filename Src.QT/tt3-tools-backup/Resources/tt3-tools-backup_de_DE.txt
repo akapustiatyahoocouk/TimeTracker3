@@ -9,7 +9,7 @@ Description=Definiert eine Datensicherungslösung für TimeTracker3
 Copyright=Copyright (C) {0}, Andrey Kapustin
 
 [BackupTool]
-DisplayName=Backup
+DisplayName=Sicherung
 Description=Erstellt eine Datenbanksicherung
 
 [ConfigureBackupDialog]

@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/tt3-tools-restore">
+        <file>Resources/tt3-tools-restore_de_DE.txt</file>
+        <file>Resources/tt3-tools-restore_en_GB.txt</file>
+        <file>Resources/tt3-tools-restore_ru_RU.txt</file>
+        <file>Resources/Images/Actions/BrowseLarge.png</file>
+        <file>Resources/Images/Actions/BrowseSmall.png</file>
+        <file>Resources/Images/Actions/CancelLarge.png</file>
+        <file>Resources/Images/Actions/CancelSmall.png</file>
+        <file>Resources/Images/Actions/OkLarge.png</file>
+        <file>Resources/Images/Actions/OkSmall.png</file>
+        <file>Resources/Images/Misc/RestoreLarge.png</file>
+        <file>Resources/Images/Misc/RestoreSmall.png</file>
+    </qresource>
+</RCC>

@@ -54,7 +54,7 @@ QIcon BackupTool::smallIcon() const
 
 QIcon BackupTool::largeIcon() const
 {
-    static const QIcon icon(":/tt3-tools-vackup/Resources/Images/Misc/BackupLarge.png");
+    static const QIcon icon(":/tt3-tools-backup/Resources/Images/Misc/BackupLarge.png");
     return icon;
 }
 

@@ -1,5 +1,5 @@
 //
-//  tt3-tools-backup/Component.cpp - Component class implementation
+//  tt3-tools-restore/Component.cpp - Component class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,8 +14,8 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#include "tt3-tools-backup/API.hpp"
-using namespace tt3::tools::backup;
+#include "tt3-tools-restore/API.hpp"
+using namespace tt3::tools::restore;
 
 //////////
 //  Singleton
@@ -27,7 +27,7 @@ Component::~Component() {}
 //  IComponent
 Component::Mnemonic Component::mnemonic() const
 {
-    return M(tt3-tools-backup);
+    return M(tt3-tools-restore);
 }
 
 QString Component::displayName() const
@@ -82,7 +82,7 @@ const Component::Settings * Component::settings() const
 //  Component::Resources
 IMPLEMENT_SINGLETON(Component::Resources)
 Component::Resources::Resources()
-    :   FileResourceFactory(":/tt3-tools-backup/Resources/tt3-tools-backup.txt") {}
+    :   FileResourceFactory(":/tt3-tools-restore/Resources/tt3-tools-restore.txt") {}
 Component::Resources::~Resources() {}
 
 //////////
@@ -91,4 +91,4 @@ IMPLEMENT_SINGLETON(Component::Settings)
 Component::Settings::Settings() {}
 Component::Settings::~Settings() {}
 
-//  End of tt3-tools-backup/Component.cpp
+//  End of tt3-tools-restore/Component.cpp

@@ -1,0 +1,13 @@
+[Plugin]
+DisplayName=TimeTracker3 Restore
+Description=Defines data restore solution for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[Component]
+DisplayName=TimeTracker3 Restore
+Description=Defines data restore solution for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[RestoreTool]
+DisplayName=Restore
+Description=Performs database backup

@@ -1,5 +1,5 @@
 //
-//  tt3-tools-backup/Components.hpp - tt3-tools-backup Components
+//  tt3-tools-restore/Components.hpp - tt3-tools-restore Components
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,11 +15,11 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace tt3::tools::backup
+namespace tt3::tools::restore
 {
-    /// \class Component tt3-tools-backup/API.hpp
-    /// \brief The "TT3 Backup" component.
-    class TT3_TOOLS_BACKUP_PUBLIC Component final
+    /// \class Component tt3-tools-restore/API.hpp
+    /// \brief The "TT3 Restore" component.
+    class TT3_TOOLS_RESTORE_PUBLIC Component final
         :   public virtual tt3::util::IComponent
     {
         DECLARE_SINGLETON(Component)
@@ -27,17 +27,17 @@ namespace tt3::tools::backup
         //////////
         //  Types
     public:
-        /// \class Resources tt3-tools-backup/API.hpp
+        /// \class Resources tt3-tools-restore/API.hpp
         /// \brief The component's resources.
-        class TT3_TOOLS_BACKUP_PUBLIC Resources final
+        class TT3_TOOLS_RESTORE_PUBLIC Resources final
             :   public tt3::util::FileResourceFactory
         {
             DECLARE_SINGLETON(Resources)
         };
 
-        /// \class Settings tt3-tools-backup/API.hpp
+        /// \class Settings tt3-tools-restore/API.hpp
         /// \brief The component's settings.
-        class TT3_TOOLS_BACKUP_PUBLIC Settings final
+        class TT3_TOOLS_RESTORE_PUBLIC Settings final
             :   public tt3::util::Settings
         {
             DECLARE_SINGLETON(Settings)
@@ -64,4 +64,4 @@ namespace tt3::tools::backup
     };
 }
 
-//  End of tt3-tools-backup/Components.hpp
+//  End of tt3-tools-restore/Components.hpp
