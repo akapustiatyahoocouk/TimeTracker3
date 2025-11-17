@@ -24,7 +24,7 @@ BackupToLabel=Backup to:
 BackupToPushButton=Browse
 OkPushButton=OK
 CancelPushButton=Cancel
-BackupToDialogTitle=Select backup destinayion
+BackupToDialogTitle=Backup to file
 BackupToDialogFilter=TimeTracker3 backup files (*{0});;All files (*.*)
 
 [BackupProgressDialog]

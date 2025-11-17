@@ -66,6 +66,12 @@ bool RestoreTool::enabled() const
 void RestoreTool::run(QWidget * parent)
 {
     Q_ASSERT(QThread::currentThread()->eventDispatcher() != nullptr);
+
+    ConfigureRestoreDialog dlg(parent);
+    if (dlg.doModal() != ConfigureRestoreDialog::Result::Ok)
+    {
+        return;
+    }
 }
 
 //  End of tt3-tools-restore/RestoreTool.cpp

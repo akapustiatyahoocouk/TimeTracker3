@@ -1,5 +1,5 @@
 //
-//  tt3-tools-backup/ConfigureBackupDialog.hpp - The "configure backup job" dialog.
+//  tt3-tools-restore/ConfigureRestoreDialog.hpp - The "configure restore job" dialog.
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,19 +15,19 @@
 //  GNU General Public License for more details.
 //////////
 #pragma once
-#include "tt3-tools-backup/API.hpp"
+#include "tt3-tools-restore/API.hpp"
 
-namespace tt3::tools::backup
+namespace tt3::tools::restore
 {
-    namespace Ui { class ConfigureBackupDialog; }
+    namespace Ui { class ConfigureRestoreDialog; }
 
-    /// \class ConfigureBackupDialog tt3-tools-backup/API.hpp
-    /// \brief The "configure backup job" dialog.
-    class TT3_TOOLS_BACKUP_PUBLIC ConfigureBackupDialog final
+    /// \class ConfigureRestoreDialog tt3-tools-restore/API.hpp
+    /// \brief The "configure restore job" dialog..
+    class TT3_TOOLS_RESTORE_PUBLIC ConfigureRestoreDialog final
         :   private QDialog
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfigureBackupDialog)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfigureRestoreDialog)
 
         //////////
         //  Types
@@ -47,11 +47,11 @@ namespace tt3::tools::backup
         ///     Constructs the dialog.
         /// \param parent
         ///     The parent for the dialog; nullptr == none.
-        explicit ConfigureBackupDialog(QWidget * parent);
+        explicit ConfigureRestoreDialog(QWidget * parent);
 
         /// \brief
         ///     The class destructor.
-        virtual ~ConfigureBackupDialog();
+        virtual ~ConfigureRestoreDialog();
 
         //////////
         //  Operations
@@ -63,27 +63,28 @@ namespace tt3::tools::backup
         Result          doModal();
 
         /// \brief
-        ///     Returns the workspace address selected by the user.
+        ///     Returns the full path to the backup file to restore
+        ///     a backed up workspace from.
         /// \return
-        ///     The workspace address selected by the user or
-        ///     nullptr if the user has cancelled the dialog.
-        auto            selectedWorkspaceAddress(
-                            ) const -> tt3::ws::WorkspaceAddress;
+        ///     The full path to the backup file to restore
+        ///     a backed up workspace from.
+        QString         restoreSource() const;
 
         /// \brief
-        ///     Returns the backup destination selected by the user.
+        ///     Returns the workspace address to restore into.
         /// \details
-        ///     This is the full path of the file where backup shall be written.
+        ///     The workspace will be created anew. If it already
+        ///     exists, the restore operation fails.
         /// \return
-        ///     The backup destination selected by the user.
-        QString         selectedBackupDestination() const;
+        ///     The workspace address to restore into.
+        auto            workspaceAddress(
+            ) const -> tt3::ws::WorkspaceAddress;
 
         //////////
         //  Implementation
     private:
-        tt3::ws::WorkspaceAddress   _customWorkspaceAddress = nullptr;  //  nullptr == not selected
+        QString         _restoreSource;
         tt3::ws::WorkspaceAddress   _workspaceAddress = nullptr;  //  nullptr == not selected
-        QString         _backupDestination;
 
         //  Helpers
         void            _refresh();
@@ -96,19 +97,18 @@ namespace tt3::tools::backup
         //////////
         //  Controls
     private:
-        Ui::ConfigureBackupDialog *const    _ui;
+        Ui::ConfigureRestoreDialog *const   _ui;
 
         //////////
         //  Signal handlers
     private slots:
-        void            _workspaceSourceRadioButtonClicked();
+        void            _restoreFromPushButtonClicked();
         void            _workspaceTypeComboBoxCurrentIndexChanged(int);
         void            _browsePushButtonClicked();
-        void            _backupToPushButtonClicked();
         virtual void    accept() override;
         virtual void    reject() override;
     };
 }
 
-//  End of tt3-tools-backup/ConfigureBackupDialog.hpp
+//  End of tt3-tools-restore/ConfigureRestoreDialog.hpp
 

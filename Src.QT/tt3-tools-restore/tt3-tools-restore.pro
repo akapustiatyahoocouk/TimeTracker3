@@ -5,12 +5,14 @@ DEFINES += TT3_TOOLS_RESTORE_LIBRARY
 
 SOURCES += \
     Component.cpp \
+    ConfigureRestoreDialog.cpp \
     Plugins.cpp \
     RestoreTool.cpp
 
 HEADERS += \
     API.hpp \
     Components.hpp \
+    ConfigureRestoreDialog.hpp \
     Linkage.hpp \
     RestoreTool.hpp
 
@@ -24,3 +26,6 @@ LIBS += \
 
 RESOURCES += \
     tt3-tools-restore.qrc
+
+FORMS += \
+    ConfigureRestoreDialog.ui

@@ -11,3 +11,16 @@ Copyright=Copyright (C) {0}, Andrey Kapustin
 [RestoreTool]
 DisplayName=Restore
 Description=Performs database backup
+
+[ConfigureRestoreDialog]
+Title=Restore workspace
+RestoreFromLabel=Restore from:
+RestoreFromPushButton=Browse
+RestoreIntoLabel=--- Into ---
+WorkspaceTypeLabel=Workspace type:
+LocationLabel=Location:
+BrowsePushButton=Browse
+OkPushButton=OK
+CancelPushButton=Cancel
+RestoreFromDialogTitle=Restore from file
+RestoreFromDialogFilter=TimeTracker3 backup files (*{0});;All files (*.*)

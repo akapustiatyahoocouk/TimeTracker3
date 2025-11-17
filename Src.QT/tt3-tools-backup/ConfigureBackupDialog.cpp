@@ -95,7 +95,6 @@ ConfigureBackupDialog::ConfigureBackupDialog(
     //  Done
     _refresh();
     adjustSize();
-    //  _ui->workspaceTypeComboBox->setFocus();
 }
 
 ConfigureBackupDialog::~ConfigureBackupDialog()
@@ -174,7 +173,7 @@ auto ConfigureBackupDialog::_selectedWorkspaceType(
 }
 
 void ConfigureBackupDialog::_setSelectedWorkspaceType(
-    tt3::ws::WorkspaceType workspaceType
+        tt3::ws::WorkspaceType workspaceType
     )
 {
     for (int i = 0; i < _ui->workspaceTypeComboBox->count(); i++)
@@ -218,11 +217,6 @@ void ConfigureBackupDialog::_browsePushButtonClicked()
         _customWorkspaceAddress = workspaceAddress;
         _refresh();
     }
-}
-
-void ConfigureBackupDialog::_backupTpLineEditTextChanged(QString)
-{
-    _refresh();
 }
 
 void ConfigureBackupDialog::_backupToPushButtonClicked()

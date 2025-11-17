@@ -1,11 +1,11 @@
 [Plugin]
 DisplayName=Резервное копирование TimeTracker3
-Description=Определяет решение для резервного копирования данных TimeTracker3
+Description=Поддержка резервного копирования данных TimeTracker3
 Copyright=Авторское право (C) {0}, Андрей Капустин
 
 [Component]
 DisplayName=Резервное копирование TimeTracker3
-Description=Определяет решение для резервного копирования данных TimeTracker3
+Description=Поддержка резервного копирования данных TimeTracker3
 Copyright=Авторское право (C) {0}, Андрей Капустин
 
 [BackupTool]
@@ -24,7 +24,7 @@ BackupToLabel=Записать в:
 BackupToPushButton=Выбрать
 OkPushButton=ОК
 CancelPushButton=Отмена
-BackupToDialogTitle=Выберите фвйо резервной копии
+BackupToDialogTitle=Резервное копирование в файл
 BackupToDialogFilter=Файлы резервной копии TimeTracker3 (*{0});;Все файлы (*.*)
 
 [BackupProgressDialog]

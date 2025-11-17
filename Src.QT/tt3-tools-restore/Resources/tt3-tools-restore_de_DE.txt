@@ -11,3 +11,16 @@ Copyright=Copyright (C) {0}, Andrey Kapustin
 [RestoreTool]
 DisplayName=Wiederherstellen
 Description=Erstellt eine Datenwiederherstellungslösung
+
+[ConfigureRestoreDialog]
+Title=Arbeitsbereich wiederherstellen
+RestoreFromLabel=Wiederherstellen von:
+RestoreFromPushButton=Durchsuchen
+RestoreIntoLabel=--- In ---
+WorkspaceTypeLabel=Arbeitsbereichstyp:
+LocationLabel=Speicherort:
+BrowsePushButton=Durchsuchen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+RestoreFromDialogTitle=Wiederherstellen aus Datei
+RestoreFromDialogFilter=TimeTracker3-Sicherungsdateien (*{0});;Alle Dateien (*.*)

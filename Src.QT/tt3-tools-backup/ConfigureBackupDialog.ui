@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>455</width>
-    <height>281</height>
+    <width>490</width>
+    <height>279</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -62,6 +62,12 @@
       </item>
       <item row="1" column="1">
        <widget class="QLineEdit" name="locationLineEdit">
+        <property name="minimumSize">
+         <size>
+          <width>160</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -89,7 +95,11 @@
     </widget>
    </item>
    <item row="4" column="1">
-    <widget class="QLineEdit" name="backupToLineEdit"/>
+    <widget class="QLineEdit" name="backupToLineEdit">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item row="4" column="2">
     <widget class="QPushButton" name="backupToPushButton">
@@ -252,22 +262,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>backupToLineEdit</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>tt3::tools::backup::ConfigureBackupDialog</receiver>
-   <slot>_backupTpLineEditTextChanged(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>217</x>
-     <y>209</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>227</x>
-     <y>140</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>backupToPushButton</sender>
    <signal>clicked()</signal>
    <receiver>tt3::tools::backup::ConfigureBackupDialog</receiver>
@@ -288,7 +282,6 @@
   <slot>_workspaceSourceRadioButtonClicked()</slot>
   <slot>_workspaceTypeComboBoxCurrentIndexChanged(int)</slot>
   <slot>_browsePushButtonClicked()</slot>
-  <slot>_backupTpLineEditTextChanged(QString)</slot>
   <slot>_backupToPushButtonClicked()</slot>
  </slots>
 </ui>

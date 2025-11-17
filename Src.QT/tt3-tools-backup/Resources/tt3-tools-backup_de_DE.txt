@@ -24,7 +24,7 @@ BackupToLabel=Sichern in:
 BackupToPushButton=Durchsuchen
 OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
-BackupToDialogTitle=Sicherungsziel auswählen
+BackupToDialogTitle=Sicherung in Datei
 BackupToDialogFilter=TimeTracker3-Sicherungsdateien (*{0});;Alle Dateien (*.*)
 
 [BackupProgressDialog]
