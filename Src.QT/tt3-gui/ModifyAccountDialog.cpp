@@ -55,7 +55,7 @@ ModifyAccountDialog::ModifyAccountDialog(
         {
             return a->realName(_credentials) < b->realName(_credentials);   //  may throw
         });
-    for (const auto & user : qAsConst(usersList))
+    for (const auto & user : std::as_const(usersList))
     {
         _ui->userComboBox->addItem(
             user->type()->smallIcon(),

@@ -179,7 +179,7 @@ void Beneficiary::setWorkloads(
         Workloads addedWorkloads = xmlWorkloads - _workloads;
         Workloads removedWorkloads = _workloads - xmlWorkloads;
         //  link the added workloads...
-        for (Workload * xmlWorkload : qAsConst(addedWorkloads))
+        for (Workload * xmlWorkload : std::as_const(addedWorkloads))
         {
             _workloads.insert(xmlWorkload);
             xmlWorkload->_beneficiaries.insert(this);
@@ -187,7 +187,7 @@ void Beneficiary::setWorkloads(
             this->addReference();
         }
         //  ...un-link the removed workloads...
-        for (Workload * xmlWorkload : qAsConst(removedWorkloads))
+        for (Workload * xmlWorkload : std::as_const(removedWorkloads))
         {
             _workloads.remove(xmlWorkload);
             xmlWorkload->_beneficiaries.remove(this);
@@ -429,7 +429,7 @@ void Beneficiary::_validate(
     //  Validate aggregations
 
     //  Validate associations
-    for (Workload * workload : qAsConst(_workloads))
+    for (Workload * workload : std::as_const(_workloads))
     {
         if (workload == nullptr ||
             workload->_database != this->_database ||

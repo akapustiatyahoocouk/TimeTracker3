@@ -61,7 +61,7 @@ ModifyPublicTaskDialog::ModifyPublicTaskDialog(
     _ui->activityTypeComboBox->addItem(
         "-",
         QVariant::fromValue<tt3::ws::ActivityType>(nullptr));
-    for (const auto & activityType : qAsConst(activityTypes))
+    for (const auto & activityType : std::as_const(activityTypes))
     {
         _ui->activityTypeComboBox->addItem(
             activityType->type()->smallIcon(),

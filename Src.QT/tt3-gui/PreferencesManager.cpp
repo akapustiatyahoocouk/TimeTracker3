@@ -54,7 +54,7 @@ QSet<Preferences*> PreferencesManager::rootPreferences()
 
     QList<Preferences*> values = impl->registry.values();
     QSet<Preferences*> result;
-    for (Preferences * preferences : qAsConst(values))
+    for (Preferences * preferences : std::as_const(values))
     {
         if (preferences->parent() == nullptr)
         {

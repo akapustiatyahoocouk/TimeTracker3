@@ -35,7 +35,7 @@ auto LocalSiteHelpLoader::loadHelpCollection(
     //      supported by the help site, named after the locale ("en_GB", etc.)
     QStringList subdirs = absSiteDirectory.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
     QMap<QLocale, QString> dirsForLocales;
-    for (const QString & subdir : qAsConst(subdirs))
+    for (const QString & subdir : std::as_const(subdirs))
     {
         QLocale locale = tt3::util::fromString(subdir, QLocale::c());
         if (locale != QLocale::c())
@@ -98,7 +98,7 @@ void LocalSiteHelpLoader::_loadTopicFromDirectory(
         {
             return a < b;
         });
-    for (const auto & entry : qAsConst(entries))
+    for (const auto & entry : std::as_const(entries))
     {
         QString fileOrDirPath = dir.filePath(entry);
         if (progressListener != nullptr)

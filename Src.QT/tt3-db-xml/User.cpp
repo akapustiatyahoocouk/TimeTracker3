@@ -275,7 +275,7 @@ void User::setPermittedWorkloads(
         Workloads addedWorkloads = xmlWorkloads - _permittedWorkloads;
         Workloads removedWorkloads = _permittedWorkloads - xmlWorkloads;
         //  link the added workloads...
-        for (Workload * xmlWorkload : qAsConst(addedWorkloads))
+        for (Workload * xmlWorkload : std::as_const(addedWorkloads))
         {
             _permittedWorkloads.insert(xmlWorkload);
             xmlWorkload->_assignedUsers.insert(this);
@@ -283,7 +283,7 @@ void User::setPermittedWorkloads(
             this->addReference();
         }
         //  ...un-link the removed workloads...
-        for (Workload * xmlWorkload : qAsConst(removedWorkloads))
+        for (Workload * xmlWorkload : std::as_const(removedWorkloads))
         {
             _permittedWorkloads.remove(xmlWorkload);
             xmlWorkload->_assignedUsers.remove(this);
@@ -949,7 +949,7 @@ void User::_validate(
     {   //  OOPS!
         throw tt3::db::api::DatabaseCorruptException(_database->_address);
     }
-    for (Account * account : qAsConst(_accounts))
+    for (Account * account : std::as_const(_accounts))
     {
         if (account == nullptr || !account->_isLive ||
             account->_database != _database ||
@@ -959,7 +959,7 @@ void User::_validate(
         }
         account->_validate(validatedObjects);
     }
-    for (PrivateActivity * privateActivity : qAsConst(_privateActivities))
+    for (PrivateActivity * privateActivity : std::as_const(_privateActivities))
     {
         if (privateActivity == nullptr || !privateActivity->_isLive ||
             privateActivity->_database != _database ||
@@ -969,7 +969,7 @@ void User::_validate(
         }
         privateActivity->_validate(validatedObjects);
     }
-    for (PrivateTask * privateTask : qAsConst(_rootPrivateTasks))
+    for (PrivateTask * privateTask : std::as_const(_rootPrivateTasks))
     {
         if (privateTask == nullptr || !privateTask->_isLive ||
             privateTask->_database != _database ||
@@ -981,7 +981,7 @@ void User::_validate(
     }
 
     //  Validate associations
-    for (Workload * workload : qAsConst(_permittedWorkloads))
+    for (Workload * workload : std::as_const(_permittedWorkloads))
     {
         if (workload == nullptr ||
             workload->_database != this->_database || !workload->_isLive ||

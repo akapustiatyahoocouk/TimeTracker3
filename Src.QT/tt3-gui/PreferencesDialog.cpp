@@ -57,7 +57,7 @@ PreferencesDialog::PreferencesDialog(
     QList<Preferences*> rootNodes = PreferencesManager::rootPreferences().values();
     std::sort(rootNodes.begin(), rootNodes.end(), _compare);
     QMap<Preferences*,QTreeWidgetItem*> itemsForPreferences;
-    for (Preferences * rootNode : qAsConst(rootNodes))
+    for (Preferences * rootNode : std::as_const(rootNodes))
     {
         QTreeWidgetItem * rootItem = new QTreeWidgetItem();
         itemsForPreferences[rootNode] = rootItem;
@@ -128,7 +128,7 @@ void PreferencesDialog::_createChildItems(QTreeWidgetItem * parentItem,
         parentItem->data(0, Qt::ItemDataRole::UserRole).value<Preferences*>();;
     QList<Preferences*> childNodes = parentNode->children().values();
     std::sort(childNodes.begin(), childNodes.end(), _compare);
-    for (Preferences * childNode : qAsConst(childNodes))
+    for (Preferences * childNode : std::as_const(childNodes))
     {
         QTreeWidgetItem * childItem = new QTreeWidgetItem();
         itemsForPreferences[childNode] = childItem;

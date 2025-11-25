@@ -55,7 +55,7 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
             return tt3::util::LocaleManager::displayName(a) < tt3::util::LocaleManager::displayName(b);
         });
 
-    for (const QLocale & locale : qAsConst(_locales))
+    for (const QLocale & locale : std::as_const(_locales))
     {
         _ui->languageComboBox->addItem(
             tt3::util::LocaleManager::smallIcon(locale),
@@ -70,7 +70,7 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
         _skins.end(),
         [](auto a, auto b) { return a->displayName() < b->displayName(); });
 
-    for (ISkin * skin : qAsConst(_skins))
+    for (ISkin * skin : std::as_const(_skins))
     {
         _ui->skinComboBox->addItem(skin->smallIcon(), skin->displayName());
     }
@@ -83,7 +83,7 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
         _themes.end(),
         [](auto a, auto b) { return a->displayName() < b->displayName(); });
 
-    for (ITheme * theme : qAsConst(_themes))
+    for (ITheme * theme : std::as_const(_themes))
     {
         _ui->themeComboBox->addItem(theme->smallIcon(), theme->displayName());
     }

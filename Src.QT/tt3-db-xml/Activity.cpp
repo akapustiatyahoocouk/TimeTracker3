@@ -459,9 +459,9 @@ void Activity::_makeDead()
         _workload = nullptr;
     }
     //  Remove from all "quick pick" lists
-    for (User * user : qAsConst(_database->_users))
+    for (User * user : std::as_const(_database->_users))
     {
-        for (Account * account : qAsConst(user->_accounts))
+        for (Account * account : std::as_const(user->_accounts))
         {
             if (account->_quickPicksList.contains(this))
             {
@@ -632,7 +632,7 @@ void Activity::_validate(
             throw tt3::db::api::DatabaseCorruptException(_database->_address);
         }
     }
-    for (Work * work : qAsConst(_works))
+    for (Work * work : std::as_const(_works))
     {
         if (work == nullptr || !work->_isLive ||
             work->_database != _database ||
@@ -642,7 +642,7 @@ void Activity::_validate(
         }
         //  Works themselves are validated via Account
     }
-    for (Event * event : qAsConst(_events))
+    for (Event * event : std::as_const(_events))
     {
         if (event == nullptr || !event->_isLive ||
             event->_database != _database ||

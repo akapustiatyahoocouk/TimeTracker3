@@ -67,7 +67,7 @@ CreateUserDialog::CreateUserDialog(QWidget * parent,
         {
             return tt3::util::LocaleManager::displayName(a) < tt3::util::LocaleManager::displayName(b);
         });
-    for (const QLocale & locale : qAsConst(_locales))
+    for (const QLocale & locale : std::as_const(_locales))
     {
         _ui->uiLocaleComboBox->addItem(
             tt3::util::LocaleManager::smallIcon(locale),

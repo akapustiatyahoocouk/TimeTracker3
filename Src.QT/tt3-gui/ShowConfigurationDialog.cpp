@@ -56,7 +56,7 @@ ShowConfigurationDialog::ShowConfigurationDialog(QWidget * parent)
         subsystems.begin(),
         subsystems.end(),
         [](auto a, auto b) { return a->displayName() < b->displayName(); });
-    for (tt3::util::ISubsystem * subsystem : qAsConst(subsystems))
+    for (tt3::util::ISubsystem * subsystem : std::as_const(subsystems))
     {
         QTreeWidgetItem * subsystemItem = new QTreeWidgetItem();
         subsystemItem->setText(0, subsystem->displayName());
@@ -69,7 +69,7 @@ ShowConfigurationDialog::ShowConfigurationDialog(QWidget * parent)
             components.begin(),
             components.end(),
             [](auto a, auto b) { return a->mnemonic() < b->mnemonic(); });
-        for (tt3::util::IComponent * component : qAsConst(components))
+        for (tt3::util::IComponent * component : std::as_const(components))
         {
             QTreeWidgetItem * componentItem = new QTreeWidgetItem();
             componentItem->setText(0, component->displayName());

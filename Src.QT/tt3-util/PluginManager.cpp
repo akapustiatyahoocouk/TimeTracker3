@@ -46,7 +46,7 @@ void PluginManager::loadPlugins()
     for (bool keepGoing = true; keepGoing; )
     {
         keepGoing = false;
-        for (auto plugin : qAsConst(impl->discoveredPlugins))
+        for (auto plugin : std::as_const(impl->discoveredPlugins))
         {
             if (!impl->initializedPlugins.contains(plugin))
             {

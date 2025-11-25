@@ -514,7 +514,7 @@ void MainFrame::_refreshToolsMenu()
         {
             return a->displayName() < b->displayName();
         });
-    for (auto tool : qAsConst(tools))
+    for (auto tool : std::as_const(tools))
     {
         QAction * action = new QAction(tool->smallIcon(), tool->displayName());
         action->setData(QVariant::fromValue(tool));

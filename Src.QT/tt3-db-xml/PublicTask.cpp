@@ -461,7 +461,7 @@ void PublicTask::_validate(
             throw tt3::db::api::DatabaseCorruptException(_database->_address);
         }
     }
-    for (PublicTask * child : qAsConst(_children))
+    for (PublicTask * child : std::as_const(_children))
     {
         if (child == nullptr || !child->_isLive ||
             child->_database != _database ||

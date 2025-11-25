@@ -40,7 +40,7 @@ ConfigureRestoreDialog::ConfigureRestoreDialog(
         {
             return a->displayName() < b->displayName(); // Example: ascending order
         });
-    for (auto workspaceType : qAsConst(workspaceTypes))
+    for (auto workspaceType : std::as_const(workspaceTypes))
     {
         _ui->workspaceTypeComboBox->addItem(
             workspaceType->smallIcon(),

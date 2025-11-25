@@ -35,7 +35,7 @@ SimpleHelpTopic::SimpleHelpTopic(
 
 SimpleHelpTopic::~SimpleHelpTopic()
 {
-    for (auto child : qAsConst(_children))
+    for (auto child : std::as_const(_children))
     {
         delete child;
     }

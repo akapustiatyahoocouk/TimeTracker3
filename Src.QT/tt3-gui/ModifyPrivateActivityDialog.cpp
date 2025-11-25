@@ -53,7 +53,7 @@ ModifyPrivateActivityDialog::ModifyPrivateActivityDialog(
         {
             return a->realName(_credentials) < b->realName(_credentials);   //  may throw
         });
-    for (const auto & u : qAsConst(usersList))
+    for (const auto & u : std::as_const(usersList))
     {
         _ui->userComboBox->addItem(
             u->type()->smallIcon(),
@@ -88,7 +88,7 @@ ModifyPrivateActivityDialog::ModifyPrivateActivityDialog(
     _ui->activityTypeComboBox->addItem(
         "-",
         QVariant::fromValue<tt3::ws::ActivityType>(nullptr));
-    for (const auto & activityType : qAsConst(activityTypes))
+    for (const auto & activityType : std::as_const(activityTypes))
     {
         _ui->activityTypeComboBox->addItem(
             activityType->type()->smallIcon(),

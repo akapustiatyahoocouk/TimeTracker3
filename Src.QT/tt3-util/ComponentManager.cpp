@@ -168,7 +168,7 @@ void ComponentManager::saveComponentSettings()
             {
                 return a->mnemonic() < b->mnemonic();
             });
-        for (IComponent * component : qAsConst(allComponents))
+        for (IComponent * component : std::as_const(allComponents))
         {   //  Sorted by component mnemonic to simplify lookin text editor
             iniStream << "["
                       << component->mnemonic().toString()
@@ -186,7 +186,7 @@ void ComponentManager::saveComponentSettings()
                 {
                     return a->mnemonic() < b->mnemonic();
                 });
-            for (AbstractSetting * setting : qAsConst(componentSettings))
+            for (AbstractSetting * setting : std::as_const(componentSettings))
             {   //  Sorted by setting mnemonic to simplify lookin text editor
                 iniStream << setting->mnemonic().toString()
                           << "="

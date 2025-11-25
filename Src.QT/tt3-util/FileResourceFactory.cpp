@@ -89,7 +89,7 @@ void FileResourceFactory::_loadResources()
             QLocale::AnyLanguage,
             QLocale::AnyScript,
             QLocale::AnyCountry);
-    for (const QLocale & locale : qAsConst(allLocales))
+    for (const QLocale & locale : std::as_const(allLocales))
     {   //  There are locales (e.g. "en-Shaw") wjose "name()"
         //  is the same as that of the proper "en_GB" locale.
         //  We don't want these duplicates!
