@@ -7,6 +7,8 @@ SOURCES += \
     Component.cpp \
     ConfigureRestoreDialog.cpp \
     Plugins.cpp \
+    RestoreProgressDialog.cpp \
+    RestoreReader.cpp \
     RestoreTool.cpp
 
 HEADERS += \
@@ -14,6 +16,8 @@ HEADERS += \
     Components.hpp \
     ConfigureRestoreDialog.hpp \
     Linkage.hpp \
+    RestoreProgressDialog.hpp \
+    RestoreReader.hpp \
     RestoreTool.hpp
 
 PRECOMPILED_HEADER = API.hpp
@@ -28,4 +32,5 @@ RESOURCES += \
     tt3-tools-restore.qrc
 
 FORMS += \
-    ConfigureRestoreDialog.ui
+    ConfigureRestoreDialog.ui \
+    RestoreProgressDialog.ui

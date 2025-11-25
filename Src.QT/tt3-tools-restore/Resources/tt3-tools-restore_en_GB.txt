@@ -24,3 +24,8 @@ OkPushButton=OK
 CancelPushButton=Cancel
 RestoreFromDialogTitle=Restore from file
 RestoreFromDialogFilter=TimeTracker3 backup files (*{0});;All files (*.*)
+
+[RestoreProgressDialog]
+RestoreLabel=Restring:
+FromLabel=From:
+CancelPushButton=Cancel

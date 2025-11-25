@@ -42,7 +42,7 @@ namespace tt3::tools::backup
         ///     If called from a thread that currently runs
         ///     an event loop, will display a popup "backup
         ///     progress" window that allows cancelling the
-        ///     bakup process while it is underwau.
+        ///     backup process while it is underwau.
         /// \exception Exception
         ///     If an error occurs.
         bool        backupWorkspace();
@@ -50,10 +50,10 @@ namespace tt3::tools::backup
         //////////
         //  Implementation
     private:
-        tt3::ws::Workspace  _workspace;
-        tt3::ws::BackupCredentials  _credentials;
-        QFile           _backupFile;
-        QTextStream     _backupStream;
+        tt3::ws::Workspace  _workspace; //  to read from
+        tt3::ws::BackupCredentials  _credentials;   //  for _workspace
+        QFile           _backupFile;    //  to write to
+        QTextStream     _backupStream;  //  to write to
 
         const quint64   _objectsToWrite;
         const quint64   _associationsToWrite;
@@ -63,7 +63,7 @@ namespace tt3::tools::backup
 
         std::unique_ptr<BackupProgressDialog>   _progressDialog = nullptr;
 
-        struct _CancelRequest {};
+        struct _CancelRequest {};   //  throws to cncel
 
         //  Helpers
         //  All methods may throw

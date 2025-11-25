@@ -27,6 +27,8 @@
 #include "tt3-tools-restore/Components.hpp"
 
 #include "tt3-tools-restore/RestoreTool.hpp"
+#include "tt3-tools-restore/RestoreProgressDialog.hpp"
 #include "tt3-tools-restore/ConfigureRestoreDialog.hpp"
+#include "tt3-tools-restore/RestoreReader.hpp"
 
 //  End of tt3-tools-restore/API.hpp

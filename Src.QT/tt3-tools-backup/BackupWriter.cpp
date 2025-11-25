@@ -224,7 +224,7 @@ bool BackupWriter::backupWorkspace()
         _backupFile.close();
         _workspace->releaseCredentials(_credentials);   //  may throw
         if (_backupFile.error() != QFile::NoError)
-        {   //  OOP! Disk full, etc.
+        {   //  OOPS! Disk full, etc.
             QFile::remove(_backupFile.fileName());  //  may fail, but who cares at this point...
             throw tt3::ws::CustomWorkspaceException(
                 _backupFile.fileName() + ": " + _backupFile.errorString());

@@ -1,5 +1,5 @@
 //
-//  tt3-tools-backup/BackupProgressDialog.hpp - The "backup progress" dialog.
+//  tt3-tools-restore/RestoreProgressDialog.hpp - The "restore progress" popup window.
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,29 +15,29 @@
 //  GNU General Public License for more details.
 //////////
 #pragma once
-#include "tt3-tools-backup/API.hpp"
+#include "tt3-tools-restore/API.hpp"
 
-namespace tt3::tools::backup
+namespace tt3::tools::restore
 {
-    namespace Ui { class BackupProgressDialog; }
+    namespace Ui { class RestoreProgressDialog; }
 
-    /// \class BackupProgressDialog tt3-tools-backup/API.hpp
-    /// \brief The "backup progress" dialog.
-    class TT3_TOOLS_BACKUP_PUBLIC BackupProgressDialog final
+    /// \class RestoreProgressDialog tt3-tools-restore/API.hpp
+    /// \brief The "restore progress" popup window..
+    class TT3_TOOLS_RESTORE_PUBLIC RestoreProgressDialog final
         :   private QDialog
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BackupProgressDialog)
+        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(RestoreProgressDialog)
 
         //////////
         //  Construction
     public:
-        BackupProgressDialog(
+        RestoreProgressDialog(
                 QWidget * parent,
-                const QString & backupSource,
-                const QString & backupDestination
+                const QString & restoreSource,
+                const QString & restoreDestination
             );
-        virtual ~BackupProgressDialog();
+        virtual ~RestoreProgressDialog();
 
         //////////
         //  Operations
@@ -52,10 +52,11 @@ namespace tt3::tools::backup
     private:
         std::atomic<bool>   _cancelRequested = false;
 
+
         //////////
         //  Controls
     private:
-        Ui::BackupProgressDialog *const _ui;
+        Ui::RestoreProgressDialog *const    _ui;
 
         //////////
         //  Signal handlers
@@ -65,4 +66,4 @@ namespace tt3::tools::backup
     };
 }
 
-//  End of tt3-tools-backup/BackupProgressDialog.hpp
+//  End of tt3-tools-restore/RestoreProgressDialog.hpp
