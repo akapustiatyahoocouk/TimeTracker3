@@ -57,7 +57,7 @@ bool RestoreReader::restoreWorkspace()
 {
     Q_ASSERT(_bytesRead == 0);
 
-    //  Prepare to backup
+    //  Prepare to restore
     if (!_restoreFile.open(QIODevice::ReadOnly))
     {   //  OOPS!
         throw tt3::ws::CustomWorkspaceException(_restoreFile.fileName() + ": " + _restoreFile.errorString());
@@ -75,12 +75,26 @@ bool RestoreReader::restoreWorkspace()
     }
 
     //  Go!
+    _record.reset();
     try
     {
         //  All _restore...() services may throw
         while (!_restoreStream.atEnd())
         {
             QString line = _restoreStream.readLine().trimmed();
+            if (line.startsWith("[") && line.endsWith("]"))
+            {   //  New recpord starts here
+                if (_record.isValid())
+                {
+                    _processRecord();
+                }
+                _record.reset(line.mid(1, line.length() - 2));
+                continue;
+            }
+        }
+        if (_record.isValid())
+        {
+            _processRecord();
         }
 
         //  Cleanup & we're done.
@@ -107,6 +121,36 @@ bool RestoreReader::restoreWorkspace()
         _workspace->releaseCredentials(_restoreCredentials);
         throw;
     }
+}
+
+//////////
+//  Implementation helpers
+void RestoreReader::_reportProgress()
+{
+    if (_progressDialog != nullptr)
+    {
+        double progress =
+            (_bytesToRead == 0) ?
+                0.0 :
+                (double)_restoreFile.pos() / (double)_bytesToRead;
+        _progressDialog->reportProgress(progress);
+        QDateTime continueAt =
+            QDateTime::currentDateTimeUtc().addMSecs(_oneRecordDelayMs);
+        do
+        {
+            QCoreApplication::processEvents();
+        }   while (QDateTime::currentDateTimeUtc() < continueAt);
+        if (_progressDialog->cancelRequested())
+        {
+            throw _CancelRequest();
+        }
+
+    }
+}
+
+void RestoreReader::_processRecord()
+{
+    _reportProgress();
 }
 
 //  End of tt3-tools-restore/RestoreReader.cpp

@@ -1570,7 +1570,7 @@ void Database::_save()
     //  Step 3
     {
         QFile f(file.fileName());
-        if (!f.rename(oldFile.fileName()))  //  changes "f" on success
+        if (f.exists() && !f.rename(oldFile.fileName()))  //  changes "f" on success
         {   //  OOPS! Cleanup & throw
             newFile.remove();
             throw tt3::db::api::CustomDatabaseException(f.fileName() + ": " +  f.errorString());

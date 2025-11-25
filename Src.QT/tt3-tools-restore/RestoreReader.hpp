@@ -67,6 +67,27 @@ namespace tt3::tools::restore
 
         //  Helpers
         //  All methods may throw
+        struct _Record
+        {
+            QString     type;   //  == backup section name
+            QMap<QString,QString>   fields;
+
+            bool        isValid() const
+            {
+                return !type.isEmpty();
+            }
+
+            void        reset(const QString & recordType = "")
+            {
+                type = recordType;
+                fields.clear();
+            }
+
+        };
+        _Record         _record;    //  currently being read/processed
+        
+        void            _reportProgress();
+        void            _processRecord();
     };
 }
 
