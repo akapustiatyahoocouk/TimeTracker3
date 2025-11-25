@@ -191,7 +191,7 @@ QString FileResourceFactory::_unescape(const QString & s)
             i++;
             continue;
         }
-        //  We have ab escape sequence. Skip '\'
+        //  We have an escape sequence. Skip '\'
         i++;
         if (i >= s.length())
         {   //  OOPS! Missing!

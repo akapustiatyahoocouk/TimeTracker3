@@ -63,7 +63,7 @@ void ObjectImpl::setOid(
     try
     {
         //  Validate access rights
-        if (!_workspace->_isReportCredentials(credentials))
+        if (!_workspace->_isRestoreCredentials(credentials))
         {
             throw AccessDeniedException();
         }

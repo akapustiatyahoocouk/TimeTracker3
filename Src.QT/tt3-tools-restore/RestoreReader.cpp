@@ -82,8 +82,8 @@ bool RestoreReader::restoreWorkspace()
     }
 
     //  Do we need a progress dialog ?
-    if (QThread::currentThread()->eventDispatcher() != nullptr)
-    {
+    if (false && QThread::currentThread()->eventDispatcher() != nullptr)
+    {   //  TODO remove "false"
         _progressDialog.reset(
             new RestoreProgressDialog(
                 QApplication::activeWindow(),
@@ -108,6 +108,11 @@ bool RestoreReader::restoreWorkspace()
                 }
                 _record.reset(line.mid(1, line.length() - 2));
                 continue;
+            }
+            qsizetype eqIndex = line.indexOf('=');
+            if (eqIndex != -1)
+            {   //  name=value
+                _record.fields[line.left(eqIndex)] = line.mid(eqIndex + 1);
             }
         }
         if (_record.isValid())
@@ -143,6 +148,207 @@ bool RestoreReader::restoreWorkspace()
 
 //////////
 //  Implementation helpers
+int RestoreReader::_xdigit(QChar c)
+{
+    if (c >= '0' && c <= '9')
+    {
+        return c.unicode() - '0';
+    }
+    else if (c >= 'a' && c <= 'f')
+    {
+        return c.unicode() - 'a' + 10;
+    }
+    else if (c >= 'A' && c <= 'F')
+    {
+        return c.unicode() - 'A' + 10;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+template <> QString RestoreReader::_parse<QString>(const QString & s, qsizetype & scan)
+{
+    if (scan < 0 || scan > s.length())
+    {   //  OOPS! Can't
+        throw tt3::util::ParseException(s, scan);
+    }
+    //  Skip opening quote
+    if (scan < s.length() && s[scan] == '"')
+    {
+        scan++;
+    }
+    else
+    {
+        throw tt3::util::ParseException(s, scan);
+    }
+    //  Parse innards
+    QString result;
+    while (scan < s.length())
+    {
+        if (s[scan] == '"')
+        {   //  Closing quote is here!
+            break;
+        }
+        if (s[scan] != '\\')
+        {   //  A literal character
+            result += s[scan];
+            scan++;
+            continue;
+        }
+        //  We have an escape sequence. Skip '\'
+        scan++;
+        if (scan >= s.length())
+        {   //  OOPS! Missing!
+            throw tt3::util::ParseException(s, scan);
+        }
+        //  Special character ?
+        if (s[scan] == 'a')
+        {   //  \a
+            result += '\a';
+            scan++;
+        }
+        else if (s[scan] == 'b')
+        {   //  \b
+            result += '\b';
+            scan++;
+        }
+        else if (s[scan] == 'f')
+        {   //  \f
+            result += '\f';
+            scan++;
+        }
+        else if (s[scan] == 'n')
+        {   //  \n
+            result += '\n';
+            scan++;
+        }
+        else if (s[scan] == 'r')
+        {   //  \r
+            result += '\r';
+            scan++;
+        }
+        else if (s[scan] == 't')
+        {   //  \t
+            result += '\t';
+            scan++;
+        }
+        else if (s[scan] == 'v')
+        {   //  \a
+            result += '\v';
+            scan++;
+        }
+        //  Numeric escape ?
+        else if (s[scan] == 'x')
+        {   //  \xXX
+            scan++;
+            if (scan + 1 < s.length() &&
+                _xdigit(s[scan]) != -1 && _xdigit(s[scan + 1]) != -1)
+            {
+                result += QChar(_xdigit(s[scan]) * 16 +
+                                _xdigit(s[scan + 1]));
+                scan += 2;
+            }
+            else
+            {   //  OOPS! Invalid hex escape!
+                throw tt3::util::ParseException(s, scan);
+            }
+        }
+        else if (s[scan] == 'u')
+        {   //  \uXXXX
+            scan++;
+            if (scan + 3 < s.length() &&
+                _xdigit(s[scan]) != -1 && _xdigit(s[scan + 1]) != -1 &&
+                _xdigit(s[scan + 2]) != -1 && _xdigit(s[scan + 3]) != -1)
+            {
+                result += QChar(_xdigit(s[scan]) * 4096 +
+                                _xdigit(s[scan + 1]) * 256 +
+                                _xdigit(s[scan + 2]) * 16 +
+                                _xdigit(s[scan + 3]));
+                scan += 4;
+            }
+            else
+            {   //  OOPS! Invalid hex escape!
+                throw tt3::util::ParseException(s, scan);
+            }
+        }
+        //  Literal escape
+        else
+        {
+            result += s[scan++];
+        }
+    }
+    //  Skip closing quote
+    if (scan < s.length() && s[scan] == '"')
+    {
+        scan++;
+    }
+    else
+    {
+        throw tt3::util::ParseException(s, scan);
+    }
+    //  Done
+    return result;
+}
+
+template <> QStringList RestoreReader::_parse<QStringList>(const QString & s, qsizetype & scan)
+{
+    if (scan < 0 || scan > s.length())
+    {   //  OOPS! Can't
+        throw tt3::util::ParseException(s, scan);
+    }
+    //  Skip opening bracket
+    if (scan < s.length() && s[scan] == '[')
+    {
+        scan++;
+    }
+    else
+    {
+        throw tt3::util::ParseException(s, scan);
+    }
+    //  Parse innards
+    QStringList result;
+    if (scan < s.length() && s[scan] != ']')
+    {   //  The list is not empty
+        for (; ; )
+        {
+            QString element = _parse<QString>(s, scan);   //  may throw
+            result.append(element);
+            //  More ?
+            if (scan < s.length() && s[scan] == ',')
+            {   //  Yes
+                scan++;
+            }
+            else
+            {   //  No
+                break;
+            }
+        }
+    }
+    //  Skip closing bracket
+    if (scan < s.length() && s[scan] == ']')
+    {
+        scan++;
+    }
+    else
+    {
+        throw tt3::util::ParseException(s, scan);
+    }
+    //  Done
+    return result;
+}
+
+template <> tt3::ws::InactivityTimeout RestoreReader::_parse<tt3::ws::InactivityTimeout>(const QString & s, qsizetype & scan)
+{
+    return tt3::util::fromString<tt3::util::TimeSpan>(s, scan);
+}
+
+template <> tt3::ws::UiLocale RestoreReader::_parse<tt3::ws::UiLocale>(const QString & s, qsizetype & scan)
+{
+    return tt3::util::fromString<QLocale>(s, scan);
+}
+
 void RestoreReader::_reportProgress()
 {
     if (_progressDialog != nullptr)
@@ -175,7 +381,30 @@ void RestoreReader::_processRecord()
 
 void RestoreReader::_processUserRecord()
 {
+    tt3::ws::Oid oid;
+    bool enabled = false;
+    QStringList emailAddresses;
+    QString realName;
+    tt3::ws::InactivityTimeout inactivityTimeout;
+    tt3::ws::UiLocale uiLocale;
+
+    _record.fetchField("OID", oid);
+    _record.fetchField("Enabled", enabled);
+    _record.fetchField("EmailAddresses", emailAddresses);
+    _record.fetchField("RealName", realName);
+    _record.fetchOptionalField("InactivityTimeout", inactivityTimeout);
+    _record.fetchOptionalField("UiLocale", uiLocale);
     //  TODO implement
+    auto user =
+        _workspace->createUser( //  may throw
+            _restoreCredentials,
+            enabled,
+            emailAddresses,
+            realName,
+            inactivityTimeout,
+            uiLocale,
+            tt3::ws::Workloads());
+    user->setOid(_restoreCredentials, oid);
 }
 
 void RestoreReader::_processAccountRecord()

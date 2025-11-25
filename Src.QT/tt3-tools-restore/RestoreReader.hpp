@@ -70,6 +70,20 @@ namespace tt3::tools::restore
         QMap<QString, _RecordHandler>   _recordHandlers;
 
         //  All methods may throw
+        static int      _xdigit(QChar c);
+        template <class T>
+        static T        _parse(const QString & s, qsizetype & scan)
+        {
+            return tt3::util::fromString<T>(s, scan);
+        }
+#define DECLARE_PARSE(T)        \
+        template <> T  _parse<T>(const QString & s, qsizetype & scan);
+        DECLARE_PARSE(QString)
+        DECLARE_PARSE(QStringList)
+        DECLARE_PARSE(tt3::ws::InactivityTimeout)
+        DECLARE_PARSE(tt3::ws::UiLocale)
+#undef DECLARE_PARSE
+
         struct _Record
         {
             QString     type;   //  == backup section name
@@ -86,6 +100,27 @@ namespace tt3::tools::restore
                 fields.clear();
             }
 
+            template <class T>
+            void        fetchField(const QString & field, T & value)
+            {
+                if (!fields.contains(field))
+                {   //  TODO throw properly
+                }
+                qsizetype scan = 0;
+                value = _parse<T>(fields[field], scan);
+                if (scan != fields[field].length())
+                {   //  OOPS! //  TODO throw properly
+                }
+            }
+
+            template <class T>
+            void        fetchOptionalField(const QString & field, T & value)
+            {
+                if (fields.contains(field))
+                {
+                    fetchField(field, value);
+                }
+            }
         };
         _Record         _record;    //  currently being read/processed
 
