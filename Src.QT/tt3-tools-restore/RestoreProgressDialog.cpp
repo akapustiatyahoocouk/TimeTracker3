@@ -22,8 +22,8 @@ using namespace tt3::tools::restore;
 //  Construction/destruction
 RestoreProgressDialog::RestoreProgressDialog(
         QWidget * parent,
-        const QString & restoreSource,
-        const QString & restoreDestination
+        const QString & restoreDestination,
+        const QString & restoreSource
     ) : QDialog(parent),
         _ui(new Ui::RestoreProgressDialog)
 {

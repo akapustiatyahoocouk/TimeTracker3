@@ -34,8 +34,8 @@ namespace tt3::tools::restore
     public:
         RestoreProgressDialog(
                 QWidget * parent,
-                const QString & restoreSource,
-                const QString & restoreDestination
+                const QString & restoreDestination,
+                const QString & restoreSource
             );
         virtual ~RestoreProgressDialog();
 

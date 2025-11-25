@@ -36,6 +36,24 @@ RestoreReader::RestoreReader(
         _restoreFile(backupFileName),
         _restoreStream(&_restoreFile)
 {
+    //  Prepare record handler dispatch table
+    _recordHandlers["Object:User"] = &RestoreReader::_processUserRecord;
+    _recordHandlers["Object:Account"] = &RestoreReader::_processAccountRecord;
+    _recordHandlers["Object:ActivityType"] = &RestoreReader::_processActivityTypeRecord;
+    _recordHandlers["Object:PublicActivity"] = &RestoreReader::_processPublicActivityRecord;
+    _recordHandlers["Object:PublicTask"] = &RestoreReader::_processPublicTaskRecord;
+    _recordHandlers["Object:PrivateActivity"] = &RestoreReader::_processPrivateActivityRecord;
+    _recordHandlers["Object:PrivateTask"] = &RestoreReader::_processPrivateTaskRecord;
+    _recordHandlers["Object:Project"] = &RestoreReader::_processProjectRecord;
+    _recordHandlers["Object:WorkStream"] = &RestoreReader::_processWorkStreamRecord;
+    _recordHandlers["Object:Beneficiary"] = &RestoreReader::_processBeneficiaryRecord;
+    _recordHandlers["Object:Work"] = &RestoreReader::_processWorkRecord;
+    _recordHandlers["Object:Event"] = &RestoreReader::_processEventRecord;
+    _recordHandlers["Association:QuickPicksList"] = &RestoreReader::_processQuickPicksListAssociationRecord;
+    _recordHandlers["Association:PermittedWorkloads"] = &RestoreReader::_processPermittedWorkloadsAssociationRecord;
+    _recordHandlers["Association:ActivityType"] = &RestoreReader::_processActivityTypeAssociationRecord;
+    _recordHandlers["Association:ActivityWorkload"] = &RestoreReader::_processActivityWorkloadAssociationRecord;
+    _recordHandlers["Association:WorkloadBeneficiaries"] = &RestoreReader::_processWorkloadBeneficiariesAssociationRecord;
 }
 
 RestoreReader::~RestoreReader()
@@ -144,13 +162,100 @@ void RestoreReader::_reportProgress()
         {
             throw _CancelRequest();
         }
-
     }
 }
 
 void RestoreReader::_processRecord()
 {
+    qDebug() << _record.type;
+    Q_ASSERT(_recordHandlers.contains(_record.type));
+    (this->*_recordHandlers[_record.type])();
     _reportProgress();
+}
+
+void RestoreReader::_processUserRecord()
+{
+    //  TODO implement
+}
+
+void RestoreReader::_processAccountRecord()
+{
+    //  TODO implement
+}
+
+void RestoreReader::_processActivityTypeRecord()
+{
+    //  TODO implement
+}
+
+void RestoreReader::_processPublicActivityRecord()
+{
+    //  TODO implement
+}
+
+void RestoreReader::_processPublicTaskRecord()
+{
+    //  TODO implement
+}
+
+void RestoreReader::_processPrivateActivityRecord()
+{
+    //  TODO implement
+}
+
+void RestoreReader::_processPrivateTaskRecord()
+{
+    //  TODO implement
+}
+
+void RestoreReader::_processProjectRecord()
+{
+    //  TODO implement
+}
+
+void RestoreReader::_processWorkStreamRecord()
+{
+    //  TODO implement
+}
+
+void RestoreReader::_processBeneficiaryRecord()
+{
+    //  TODO implement
+}
+
+void RestoreReader::_processWorkRecord()
+{
+    //  TODO implement
+}
+
+void RestoreReader::_processEventRecord()
+{
+    //  TODO implement
+}
+
+void RestoreReader::_processQuickPicksListAssociationRecord()
+{
+    //  TODO implement
+}
+
+void RestoreReader::_processPermittedWorkloadsAssociationRecord()
+{
+    //  TODO implement
+}
+
+void RestoreReader::_processActivityTypeAssociationRecord()
+{
+    //  TODO implement
+}
+
+void RestoreReader::_processActivityWorkloadAssociationRecord()
+{
+    //  TODO implement
+}
+
+void RestoreReader::_processWorkloadBeneficiariesAssociationRecord()
+{
+    //  TODO implement
 }
 
 //  End of tt3-tools-restore/RestoreReader.cpp

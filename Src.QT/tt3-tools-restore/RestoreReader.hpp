@@ -66,6 +66,9 @@ namespace tt3::tools::restore
         struct _CancelRequest {};   //  thrown to cancel
 
         //  Helpers
+        using _RecordHandler = void (RestoreReader::*)();
+        QMap<QString, _RecordHandler>   _recordHandlers;
+
         //  All methods may throw
         struct _Record
         {
@@ -85,9 +88,26 @@ namespace tt3::tools::restore
 
         };
         _Record         _record;    //  currently being read/processed
-        
+
         void            _reportProgress();
         void            _processRecord();
+        void            _processUserRecord();
+        void            _processAccountRecord();
+        void            _processActivityTypeRecord();
+        void            _processPublicActivityRecord();
+        void            _processPublicTaskRecord();
+        void            _processPrivateActivityRecord();
+        void            _processPrivateTaskRecord();
+        void            _processProjectRecord();
+        void            _processWorkStreamRecord();
+        void            _processBeneficiaryRecord();
+        void            _processWorkRecord();
+        void            _processEventRecord();
+        void            _processQuickPicksListAssociationRecord();
+        void            _processPermittedWorkloadsAssociationRecord();
+        void            _processActivityTypeAssociationRecord();
+        void            _processActivityWorkloadAssociationRecord();
+        void            _processWorkloadBeneficiariesAssociationRecord();
     };
 }
 
