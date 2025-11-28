@@ -83,7 +83,7 @@ bool RestoreReader::restoreWorkspace()
 
     //  Do we need a progress dialog ?
     if (QThread::currentThread()->eventDispatcher() != nullptr)
-    {   //  TODO remove "false"
+    {
         _progressDialog.reset(
             new RestoreProgressDialog(
                 QApplication::activeWindow(),
@@ -349,6 +349,53 @@ template <> tt3::ws::UiLocale RestoreReader::_parse<tt3::ws::UiLocale>(const QSt
     return tt3::util::fromString<QLocale>(s, scan);
 }
 
+template <> QList<tt3::ws::Oid> RestoreReader::_parse<QList<tt3::ws::Oid>>(const QString & s, qsizetype & scan)
+{
+    if (scan < 0 || scan > s.length())
+    {   //  OOPS! Can't
+        throw tt3::util::ParseException(s, scan);
+    }
+    //  Skip opening bracket
+    if (scan < s.length() && s[scan] == '[')
+    {
+        scan++;
+    }
+    else
+    {
+        throw tt3::util::ParseException(s, scan);
+    }
+    //  Parse innards
+    QList<tt3::ws::Oid> result;
+    if (scan < s.length() && s[scan] != ']')
+    {   //  The list is not empty
+        for (; ; )
+        {
+            tt3::ws::Oid element = _parse<tt3::ws::Oid>(s, scan);   //  may throw
+            result.append(element);
+            //  More ?
+            if (scan < s.length() && s[scan] == ',')
+            {   //  Yes
+                scan++;
+            }
+            else
+            {   //  No
+                break;
+            }
+        }
+    }
+    //  Skip closing bracket
+    if (scan < s.length() && s[scan] == ']')
+    {
+        scan++;
+    }
+    else
+    {
+        throw tt3::util::ParseException(s, scan);
+    }
+    //  Done
+    return result;
+}
+
 void RestoreReader::_reportProgress()
 {
     if (_progressDialog != nullptr)
@@ -487,42 +534,305 @@ void RestoreReader::_processPublicActivityRecord()
 
 void RestoreReader::_processPublicTaskRecord()
 {
-    //  TODO implement
+    auto oid =
+        _record.fetchField<tt3::ws::Oid>("OID");
+    auto displayName =
+        _record.fetchField<QString>("DisplayName");
+    auto description =
+        _record.fetchField<QString>("Description");
+    auto timeout =
+        _record.fetchOptionalField<tt3::ws::InactivityTimeout>("Timeout");
+    auto requireCommentOnStart =
+        _record.fetchField<bool>("RequireCommentOnStart");
+    auto requireCommentOnStop =
+        _record.fetchField<bool>("RequireCommentOnStop");
+    auto fullScreenReminder =
+        _record.fetchField<bool>("FullScreenReminder");
+    auto requireCommentOnCompletion =
+        _record.fetchField<bool>("RequireCommentOnCompletion");
+    auto completed =
+        _record.fetchField<bool>("Completed");
+
+    tt3::ws::PublicTask publicTask;
+    if (_record.fields.contains("ParentOID"))
+    {
+        auto parentOid =
+            _record.fetchField<tt3::ws::Oid>("ParentOID");
+        auto parent =
+            _workspace->getObjectByOid<tt3::ws::PublicTask>(_restoreCredentials, parentOid);
+        publicTask =
+            parent->createChild(
+                _restoreCredentials,
+                displayName,
+                description,
+                timeout,
+                requireCommentOnStart,
+                requireCommentOnStop,
+                fullScreenReminder,
+                nullptr,
+                nullptr,
+                completed,
+                requireCommentOnCompletion);
+    }
+    else
+    {
+        publicTask =
+            _workspace->createPublicTask(
+                _restoreCredentials,
+                displayName,
+                description,
+                timeout,
+                requireCommentOnStart,
+                requireCommentOnStop,
+                fullScreenReminder,
+                nullptr,
+                nullptr,
+                completed,
+                requireCommentOnCompletion);
+    }
+    publicTask->setOid(_restoreCredentials, oid);   //  may throw
 }
 
 void RestoreReader::_processPrivateActivityRecord()
 {
-    //  TODO implement
+    auto ownerOid =
+        _record.fetchField<tt3::ws::Oid>("OwnerOID");
+    auto oid =
+        _record.fetchField<tt3::ws::Oid>("OID");
+    auto displayName =
+        _record.fetchField<QString>("DisplayName");
+    auto description =
+        _record.fetchField<QString>("Description");
+    auto timeout =
+        _record.fetchOptionalField<tt3::ws::InactivityTimeout>("Timeout");
+    auto requireCommentOnStart =
+        _record.fetchField<bool>("RequireCommentOnStart");
+    auto requireCommentOnStop =
+        _record.fetchField<bool>("RequireCommentOnStop");
+    auto fullScreenReminder =
+        _record.fetchField<bool>("FullScreenReminder");
+
+    auto owner =
+        _workspace->getObjectByOid<tt3::ws::User>(_restoreCredentials, ownerOid);
+    auto privateActivity =
+        owner->createPrivateActivity(   //  may throw
+            _restoreCredentials,
+            displayName,
+            description,
+            timeout,
+            requireCommentOnStart,
+            requireCommentOnStop,
+            fullScreenReminder,
+            nullptr,
+            nullptr);
+    privateActivity->setOid(_restoreCredentials, oid);   //  may throw
 }
 
 void RestoreReader::_processPrivateTaskRecord()
 {
-    //  TODO implement
+    auto ownerOid =
+        _record.fetchField<tt3::ws::Oid>("OwnerOID");
+    auto oid =
+        _record.fetchField<tt3::ws::Oid>("OID");
+    auto displayName =
+        _record.fetchField<QString>("DisplayName");
+    auto description =
+        _record.fetchField<QString>("Description");
+    auto timeout =
+        _record.fetchOptionalField<tt3::ws::InactivityTimeout>("Timeout");
+    auto requireCommentOnStart =
+        _record.fetchField<bool>("RequireCommentOnStart");
+    auto requireCommentOnStop =
+        _record.fetchField<bool>("RequireCommentOnStop");
+    auto fullScreenReminder =
+        _record.fetchField<bool>("FullScreenReminder");
+    auto requireCommentOnCompletion =
+        _record.fetchField<bool>("RequireCommentOnCompletion");
+    auto completed =
+        _record.fetchField<bool>("Completed");
+
+    tt3::ws::PrivateTask privateTask;
+    if (_record.fields.contains("ParentOID"))
+    {
+        auto parentOid =
+            _record.fetchField<tt3::ws::Oid>("ParentOID");
+        auto parent =
+            _workspace->getObjectByOid<tt3::ws::PrivateTask>(_restoreCredentials, parentOid);
+        privateTask =
+            parent->createChild(
+                _restoreCredentials,
+                displayName,
+                description,
+                timeout,
+                requireCommentOnStart,
+                requireCommentOnStop,
+                fullScreenReminder,
+                nullptr,
+                nullptr,
+                completed,
+                requireCommentOnCompletion);
+    }
+    else
+    {
+        auto owner =
+            _workspace->getObjectByOid<tt3::ws::User>(_restoreCredentials, ownerOid);
+        privateTask =
+            owner->createPrivateTask(
+                _restoreCredentials,
+                displayName,
+                description,
+                timeout,
+                requireCommentOnStart,
+                requireCommentOnStop,
+                fullScreenReminder,
+                nullptr,
+                nullptr,
+                completed,
+                requireCommentOnCompletion);
+    }
+    privateTask->setOid(_restoreCredentials, oid);   //  may throw
 }
 
 void RestoreReader::_processProjectRecord()
 {
-    //  TODO implement
+    auto oid =
+        _record.fetchField<tt3::ws::Oid>("OID");
+    auto displayName =
+        _record.fetchField<QString>("DisplayName");
+    auto description =
+        _record.fetchField<QString>("Description");
+    auto completed =
+        _record.fetchField<bool>("Completed");
+
+    tt3::ws::Project project;
+    if (_record.fields.contains("ParentOID"))
+    {
+        auto parentOid =
+            _record.fetchField<tt3::ws::Oid>("ParentOID");
+        auto parent =
+            _workspace->getObjectByOid<tt3::ws::Project>(_restoreCredentials, parentOid);
+        project =
+            parent->createChild(
+                _restoreCredentials,
+                displayName,
+                description,
+                tt3::ws::Beneficiaries(),
+                completed);
+    }
+    else
+    {
+        project =
+            _workspace->createProject(
+                _restoreCredentials,
+                displayName,
+                description,
+                tt3::ws::Beneficiaries(),
+                completed);
+    }
+    project->setOid(_restoreCredentials, oid);   //  may throw
 }
 
 void RestoreReader::_processWorkStreamRecord()
 {
-    //  TODO implement
+    auto oid =
+        _record.fetchField<tt3::ws::Oid>("OID");
+    auto displayName =
+        _record.fetchField<QString>("DisplayName");
+    auto description =
+        _record.fetchField<QString>("Description");
+
+    tt3::ws::WorkStream workStream =
+        _workspace->createWorkStream(
+            _restoreCredentials,
+            displayName,
+            description,
+            tt3::ws::Beneficiaries());
+    workStream->setOid(_restoreCredentials, oid);   //  may throw
 }
 
 void RestoreReader::_processBeneficiaryRecord()
 {
-    //  TODO implement
+    auto oid =
+        _record.fetchField<tt3::ws::Oid>("OID");
+    auto displayName =
+        _record.fetchField<QString>("DisplayName");
+    auto description =
+        _record.fetchField<QString>("Description");
+
+    tt3::ws::Beneficiary beneficiary =
+        _workspace->createBeneficiary(
+            _restoreCredentials,
+            displayName,
+            description,
+            tt3::ws::Workloads());
+    beneficiary->setOid(_restoreCredentials, oid);   //  may throw
 }
 
 void RestoreReader::_processWorkRecord()
 {
-    //  TODO implement
+    auto oid =
+        _record.fetchField<tt3::ws::Oid>("OID");
+    auto activityOid =
+        _record.fetchField<tt3::ws::Oid>("ActivityOID");
+    auto accountOid =
+        _record.fetchField<tt3::ws::Oid>("AccountOID");
+    auto startedAt =
+        _record.fetchField<QDateTime>("StartedAt");
+    auto finishedAt =
+        _record.fetchField<QDateTime>("FinishedAt");
+
+    auto activity =
+        _workspace->findObjectByOid<tt3::ws::Activity>(_restoreCredentials, activityOid);
+    auto account =
+        _workspace->findObjectByOid<tt3::ws::Account>(_restoreCredentials, accountOid);
+    auto work =
+        account->createWork(
+            _restoreCredentials,
+            startedAt,
+            finishedAt,
+            activity);
+    work->setOid(_restoreCredentials, oid);   //  may throw
 }
 
 void RestoreReader::_processEventRecord()
 {
-    //  TODO implement
+    auto oid =
+        _record.fetchField<tt3::ws::Oid>("OID");
+    QList<tt3::ws::Oid> activityOids;
+    if (_record.fields.contains("ActivityOID"))
+    {
+        activityOids.append(
+            _record.fetchField<tt3::ws::Oid>("ActivityOID"));
+    }
+    else if (_record.fields.contains("ActivityOIDs"))
+    {
+        activityOids =
+            _record.fetchField<QList<tt3::ws::Oid>>("ActivityOIDs");
+    }
+    auto accountOid =
+        _record.fetchField<tt3::ws::Oid>("AccountOID");
+    auto occurredAt =
+        _record.fetchField<QDateTime>("OccurredAt");
+    auto summary =
+        _record.fetchField<QString>("Summary");
+
+    auto account =
+        _workspace->findObjectByOid<tt3::ws::Account>(_restoreCredentials, accountOid);
+    tt3::ws::Activities activities =
+        tt3::util::transform(
+            QSet<tt3::ws::Oid>(activityOids.cbegin(), activityOids.cend()),
+            [&](const auto & oid)
+            {
+                return _workspace->getObjectByOid<tt3::ws::Activity>(_restoreCredentials, oid);
+            });
+
+    auto event =
+        account->createEvent(
+            _restoreCredentials,
+            occurredAt,
+            summary,
+            activities);
+    event->setOid(_restoreCredentials, oid);   //  may throw
 }
 
 void RestoreReader::_processQuickPicksListAssociationRecord()

@@ -77,13 +77,14 @@ namespace tt3::tools::restore
         {
             return tt3::util::fromString<T>(s, scan);
         }
-#define DECLARE_PARSE(T)        \
+#define TT3_TOOLS_RESTORE_DECLARE_PARSE(T)        \
         template <> T  _parse<T>(const QString & s, qsizetype & scan);
-        DECLARE_PARSE(QString)
-        DECLARE_PARSE(QStringList)
-        DECLARE_PARSE(tt3::ws::InactivityTimeout)
-        DECLARE_PARSE(tt3::ws::UiLocale)
-#undef DECLARE_PARSE
+        TT3_TOOLS_RESTORE_DECLARE_PARSE(QString)
+        TT3_TOOLS_RESTORE_DECLARE_PARSE(QStringList)
+        TT3_TOOLS_RESTORE_DECLARE_PARSE(tt3::ws::InactivityTimeout)
+        TT3_TOOLS_RESTORE_DECLARE_PARSE(tt3::ws::UiLocale)
+        TT3_TOOLS_RESTORE_DECLARE_PARSE(QList<tt3::ws::Oid>)
+#undef TT3_TOOLS_RESTORE_DECLARE_PARSE
 
         struct _Record
         {
