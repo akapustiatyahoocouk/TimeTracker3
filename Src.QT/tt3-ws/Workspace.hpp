@@ -154,19 +154,22 @@ namespace tt3::ws
                             const Oid & oid
                     ) const
         {
+            static_assert(
+                std::is_base_of<typename Object::element_type, typename T::element_type>::value,
+                "Type T must be a subtype of Object.");
             tt3::util::Lock _(_guard);
             _ensureOpen();  //  may throw
 
             try
             {
                 if (auto dataObject = _database->findObjectByOid(oid))
-                {
+                {   //  Found, but is it accessible ?
                     Object object =
                         _getProxy(
                             dynamic_cast<typename _TypeTraits<T>::DataObjectType*>(dataObject));
                     return object->_canRead(credentials) ?
-                               std::dynamic_pointer_cast<typename _TypeTraits<T>::ImplType>(object) :
-                               nullptr;
+                                std::dynamic_pointer_cast<typename T::element_type>(object) :
+                                nullptr;
                 }
                 return nullptr;
 
@@ -1012,13 +1015,31 @@ namespace tt3::ws
         template <class T>
         struct _TypeTraits {};
 
-        template <>
-        struct _TypeTraits<User>
-        {
-            using DataObjectType = tt3::db::api::IUser;
-            using ImplType = UserImpl;
-            static inline QString   objectTypeName() { return "User"; }
+#define TT3_WS_DECLARE_TYPE_TRAITS(Type)                                \
+        template <>                                                     \
+        struct _TypeTraits<Type>                                        \
+        {                                                               \
+            using DataObjectType = tt3::db::api::I##Type;               \
+            static inline QString   objectTypeName() { return #Type; }  \
         };
+
+    TT3_WS_DECLARE_TYPE_TRAITS(Object)
+    TT3_WS_DECLARE_TYPE_TRAITS(User)
+    TT3_WS_DECLARE_TYPE_TRAITS(Account)
+    TT3_WS_DECLARE_TYPE_TRAITS(ActivityType)
+    TT3_WS_DECLARE_TYPE_TRAITS(Activity)
+    TT3_WS_DECLARE_TYPE_TRAITS(PublicActivity)
+    TT3_WS_DECLARE_TYPE_TRAITS(PrivateActivity)
+    TT3_WS_DECLARE_TYPE_TRAITS(Task)
+    TT3_WS_DECLARE_TYPE_TRAITS(PublicTask)
+    TT3_WS_DECLARE_TYPE_TRAITS(PrivateTask)
+    TT3_WS_DECLARE_TYPE_TRAITS(Workload)
+    TT3_WS_DECLARE_TYPE_TRAITS(Project)
+    TT3_WS_DECLARE_TYPE_TRAITS(WorkStream)
+    TT3_WS_DECLARE_TYPE_TRAITS(Beneficiary)
+    TT3_WS_DECLARE_TYPE_TRAITS(Work)
+    TT3_WS_DECLARE_TYPE_TRAITS(Event)
+#undef TT3_WS_DECLARE_TYPE_TRAITS
 
         //////////
         //  Signal handlers
