@@ -71,8 +71,9 @@ namespace tt3::tools::restore
 
         //  All methods may throw
         static int      _xdigit(QChar c);
+
         template <class T>
-        static T        _parse(const QString & s, qsizetype & scan)
+        T               _parse(const QString & s, qsizetype & scan)
         {
             return tt3::util::fromString<T>(s, scan);
         }
@@ -86,6 +87,9 @@ namespace tt3::tools::restore
 
         struct _Record
         {
+            _Record(RestoreReader * rr) : restoreReader(rr) {}
+
+            RestoreReader *const    restoreReader;
             QString     type;   //  == backup section name
             QMap<QString,QString>   fields;
 
@@ -104,12 +108,14 @@ namespace tt3::tools::restore
             T           fetchField(const QString & field)
             {
                 if (!fields.contains(field))
-                {   //  TODO throw properly
+                {   //  OOPS!
+                    throw BackupFileCorruptException(restoreReader->_restoreFile.fileName());
                 }
                 qsizetype scan = 0;
-                T result= _parse<T>(fields[field], scan);
+                T result= restoreReader->_parse<T>(fields[field], scan);
                 if (scan != fields[field].length())
-                {   //  OOPS! //  TODO throw properly
+                {   //  OOPS!
+                    throw tt3::util::ParseException(fields[field], scan);
                 }
                 return result;
             }
@@ -122,7 +128,7 @@ namespace tt3::tools::restore
                         T();
             }
         };
-        _Record         _record;    //  currently being read/processed
+        _Record         _record{this};  //  currently being read/processed
 
         void            _reportProgress();
         void            _processRecord();

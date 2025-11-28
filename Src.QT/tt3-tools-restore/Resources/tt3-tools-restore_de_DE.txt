@@ -24,3 +24,11 @@ OkPushButton=Bestätigen
 CancelPushButton=Abbrechen
 RestoreFromDialogTitle=Wiederherstellen aus Datei
 RestoreFromDialogFilter=TimeTracker3-Sicherungsdateien (*{0});;Alle Dateien (*.*)
+
+[RestoreProgressDialog]
+RestoreLabel=Zeichenkette neu setzen:
+FromLabel=Aus Datei:
+CancelPushButton=Abbrechen
+
+[Errors]
+BackupFileCorruptException=Die Sicherungsdatei {0} ist beschädigt.

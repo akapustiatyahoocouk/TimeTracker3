@@ -26,6 +26,9 @@ RestoreFromDialogTitle=Restore from file
 RestoreFromDialogFilter=TimeTracker3 backup files (*{0});;All files (*.*)
 
 [RestoreProgressDialog]
-RestoreLabel=Restring:
-FromLabel=From:
+RestoreLabel=Restoring:
+FromLabel=From file:
 CancelPushButton=Cancel
+
+[Errors]
+BackupFileCorruptException=The backup file {0} is corrupt.

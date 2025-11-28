@@ -24,3 +24,11 @@ OkPushButton=ОК
 CancelPushButton=Отмена
 RestoreFromDialogTitle=Восстановить из файла
 RestoreFromDialogFilter=Файлы резервной копии TimeTracker3 (*{0});;Все файлы (*.*)
+
+[RestoreProgressDialog]
+RestoreLabel=Восстановление:
+FromLabel=Из файла:
+CancelPushButton=Отмена
+
+[Errors]
+BackupFileCorruptException=Файл резервной копии {0} повреждён.

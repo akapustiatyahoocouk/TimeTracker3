@@ -1,6 +1,6 @@
 //
 //  tt3-tools-restore/RestoreProgressDialog.cpp - tt3::tools::restore::RestoreProgressDialog class implementation
-//  TODO localize via Respurces
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //

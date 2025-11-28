@@ -6,6 +6,7 @@ DEFINES += TT3_TOOLS_RESTORE_LIBRARY
 SOURCES += \
     Component.cpp \
     ConfigureRestoreDialog.cpp \
+    Exceptions.cpp \
     Plugins.cpp \
     RestoreProgressDialog.cpp \
     RestoreReader.cpp \
@@ -15,6 +16,7 @@ HEADERS += \
     API.hpp \
     Components.hpp \
     ConfigureRestoreDialog.hpp \
+    Exceptions.hpp \
     Linkage.hpp \
     RestoreProgressDialog.hpp \
     RestoreReader.hpp \

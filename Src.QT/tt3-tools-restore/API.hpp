@@ -26,6 +26,7 @@
 #include "tt3-tools-restore/Linkage.hpp"
 #include "tt3-tools-restore/Components.hpp"
 
+#include "tt3-tools-restore/Exceptions.hpp"
 #include "tt3-tools-restore/RestoreTool.hpp"
 #include "tt3-tools-restore/RestoreProgressDialog.hpp"
 #include "tt3-tools-restore/ConfigureRestoreDialog.hpp"

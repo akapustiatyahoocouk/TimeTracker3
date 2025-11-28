@@ -82,7 +82,7 @@ bool RestoreReader::restoreWorkspace()
     }
 
     //  Do we need a progress dialog ?
-    if (false && QThread::currentThread()->eventDispatcher() != nullptr)
+    if (QThread::currentThread()->eventDispatcher() != nullptr)
     {   //  TODO remove "false"
         _progressDialog.reset(
             new RestoreProgressDialog(
@@ -423,7 +423,6 @@ void RestoreReader::_processAccountRecord()
     auto capabilities =
         _record.fetchField<tt3::ws::Capabilities>("Capabilities");
 
-    //  TODO implement
     auto user =
         _workspace->getObjectByOid<tt3::ws::User>(_restoreCredentials, userOid);
     auto account =
@@ -440,12 +439,50 @@ void RestoreReader::_processAccountRecord()
 
 void RestoreReader::_processActivityTypeRecord()
 {
-    //  TODO implement
+    auto oid =
+        _record.fetchField<tt3::ws::Oid>("OID");
+    auto displayName =
+        _record.fetchField<QString>("DisplayName");
+    auto description =
+        _record.fetchField<QString>("Description");
+
+    auto activityType =
+        _workspace->createActivityType( //  may throw
+            _restoreCredentials,
+            displayName,
+            description);
+    activityType->setOid(_restoreCredentials, oid); //  may throw
 }
 
 void RestoreReader::_processPublicActivityRecord()
 {
-    //  TODO implement
+    auto oid =
+        _record.fetchField<tt3::ws::Oid>("OID");
+    auto displayName =
+        _record.fetchField<QString>("DisplayName");
+    auto description =
+        _record.fetchField<QString>("Description");
+    auto timeout =
+        _record.fetchOptionalField<tt3::ws::InactivityTimeout>("Timeout");
+    auto requireCommentOnStart =
+        _record.fetchField<bool>("RequireCommentOnStart");
+    auto requireCommentOnStop =
+        _record.fetchField<bool>("RequireCommentOnStop");
+    auto fullScreenReminder =
+        _record.fetchField<bool>("FullScreenReminder");
+
+    auto publicActivity =
+        _workspace->createPublicActivity(   //  may throw
+            _restoreCredentials,
+            displayName,
+            description,
+            timeout,
+            requireCommentOnStart,
+            requireCommentOnStop,
+            fullScreenReminder,
+            nullptr,
+            nullptr);
+    publicActivity->setOid(_restoreCredentials, oid);   //  may throw
 }
 
 void RestoreReader::_processPublicTaskRecord()

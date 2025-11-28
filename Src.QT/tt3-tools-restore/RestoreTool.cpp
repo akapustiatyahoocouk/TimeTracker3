@@ -95,8 +95,16 @@ void RestoreTool::run(QWidget * parent)
             workspace,
             adminCredentials,
             restoreSource);
-        restoreSuccessful =
-            restoreReader.restoreWorkspace(); //  may throw
+        try
+        {
+            restoreSuccessful =
+                restoreReader.restoreWorkspace(); //  may throw
+        }
+        catch (const tt3::util::ParseException & ex)
+        {   //  Log & translate
+            qCritical() << ex;
+            throw BackupFileCorruptException(restoreSource);
+        }
         //  We no longer need a fake Admin account!
         workspace->login(adminCredentials)->user(adminCredentials)->destroy(adminCredentials);  //  may throw
         //  Cleanup before returning
