@@ -15,6 +15,11 @@
 //  GNU General Public License for more details.
 //////////
 
+namespace tt3::tools::restore
+{
+    class RestoreReader;
+}
+
 namespace tt3::ws
 {
     /// A login account.
@@ -281,6 +286,12 @@ namespace tt3::ws
         //  Implementation
     private:
         tt3::db::api::IAccount *const   _dataAccount;    //  counts as "reference"
+
+        //  Making this method public will be a security breach!
+        friend class tt3::tools::restore::RestoreReader;
+        void            _setPasswordHash(
+                                const QString & passwordHash
+                            );
 
         //  Access control
         virtual bool    _canRead(       //  throws WorkspaceException

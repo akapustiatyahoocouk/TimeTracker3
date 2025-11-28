@@ -560,6 +560,25 @@ auto AccountImpl::createEvent(
 }
 
 //////////
+//  Implementation helpers
+void AccountImpl::_setPasswordHash(
+        const QString & passwordHash
+    )
+{
+    tt3::util::Lock _(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        _dataAccount->_setPasswordHash(passwordHash);
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
+//////////
 //  Implementation (Access control)
 bool AccountImpl::_canRead(
         const Credentials & credentials

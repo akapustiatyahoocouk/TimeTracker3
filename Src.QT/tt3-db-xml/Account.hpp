@@ -110,6 +110,9 @@ namespace tt3::db::xml
 
         //  Helpers
         virtual void    _makeDead() override;
+        virtual void    _setPasswordHash(
+                                const QString & passwordHash
+                            ) override;
 
         //////////
         //  Serialization

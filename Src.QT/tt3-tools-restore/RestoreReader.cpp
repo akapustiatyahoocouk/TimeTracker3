@@ -426,6 +426,16 @@ void RestoreReader::_processAccountRecord()
     //  TODO implement
     auto user =
         _workspace->getObjectByOid<tt3::ws::User>(_restoreCredentials, userOid);
+    auto account =
+        user->createAccount(    //  may throw
+            _restoreCredentials,
+            enabled,
+            emailAddresses,
+            login,
+            "",
+            capabilities);
+    account->setOid(_restoreCredentials, oid);
+    account->_setPasswordHash(passwordHash);    //  may throw
 }
 
 void RestoreReader::_processActivityTypeRecord()

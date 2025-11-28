@@ -1389,6 +1389,75 @@ auto WorkspaceImpl::_validateAccessRights(
     }
 }
 
+auto WorkspaceImpl::_getProxy(
+        tt3::db::api::IObject * dataObject
+    ) const -> Object
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    Q_ASSERT(_isOpen);
+    Q_ASSERT(dataObject != nullptr);
+
+    if (auto dataPrincipal =
+        dynamic_cast<tt3::db::api::IPrincipal*>(dataObject))
+    {   //  ...then use the dedicated proxy getter
+        return _getProxy(dataPrincipal);
+    }
+    if (auto dataActivityType =
+        dynamic_cast<tt3::db::api::IActivityType*>(dataObject))
+    {   //  ...then use the dedicated proxy getter
+        return _getProxy(dataActivityType);
+    }
+    if (auto dataActivity =
+        dynamic_cast<tt3::db::api::IActivity*>(dataObject))
+    {   //  ...then use the dedicated proxy getter
+        return _getProxy(dataActivity);
+    }
+    if (auto dataWorkload =
+        dynamic_cast<tt3::db::api::IWorkload*>(dataObject))
+    {   //  ...then use the dedicated proxy getter
+        return _getProxy(dataWorkload);
+    }
+    if (auto dataBeneficiary =
+        dynamic_cast<tt3::db::api::IBeneficiary*>(dataObject))
+    {   //  ...then use the dedicated proxy getter
+        return _getProxy(dataBeneficiary);
+    }
+    if (auto dataWork =
+        dynamic_cast<tt3::db::api::IWork*>(dataObject))
+    {   //  ...then use the dedicated proxy getter
+        return _getProxy(dataWork);
+    }
+    if (auto dataEvent =
+        dynamic_cast<tt3::db::api::IEvent*>(dataObject))
+    {   //  ...then use the dedicated proxy getter
+        return _getProxy(dataEvent);
+    }
+    Q_ASSERT(false);    //  Can't happen!
+    return nullptr;
+}
+
+auto WorkspaceImpl::_getProxy(
+        tt3::db::api::IPrincipal * dataPrincipal
+    ) const -> Principal
+{
+    Q_ASSERT(_guard.isLockedByCurrentThread());
+    Q_ASSERT(_isOpen);
+    Q_ASSERT(dataPrincipal != nullptr);
+
+    if (auto dataUser =
+        dynamic_cast<tt3::db::api::IUser*>(dataPrincipal))
+    {   //  ...then use the dedicated proxy getter
+        return _getProxy(dataUser);
+    }
+    if (auto dataAccount =
+        dynamic_cast<tt3::db::api::IAccount*>(dataPrincipal))
+    {   //  ...then use the dedicated proxy getter
+        return _getProxy(dataAccount);
+    }
+    Q_ASSERT(false);    //  Can't happen!
+    return nullptr;
+}
+
 User WorkspaceImpl::_getProxy(tt3::db::api::IUser * dataUser) const
 {
     Q_ASSERT(_guard.isLockedByCurrentThread());
@@ -1466,22 +1535,22 @@ auto WorkspaceImpl::_getProxy(
     if (auto dataPublicTask =
         dynamic_cast<tt3::db::api::IPublicTask*>(dataActivity))
     {   //  ...then use the dedicated proxy getter
-        return std::dynamic_pointer_cast<ActivityImpl>(_getProxy(dataPublicTask));
+        return _getProxy(dataPublicTask);
     }
     if (auto dataPrivateTask =
         dynamic_cast<tt3::db::api::IPrivateTask*>(dataActivity))
     {   //  ...then use the dedicated proxy getter
-        return std::dynamic_pointer_cast<ActivityImpl>(_getProxy(dataPrivateTask));
+        return _getProxy(dataPrivateTask);
     }
     if (auto dataPublicActivity =
         dynamic_cast<tt3::db::api::IPublicActivity*>(dataActivity))
     {   //  ...then use the dedicated proxy getter
-        return std::dynamic_pointer_cast<ActivityImpl>(_getProxy(dataPublicActivity));
+        return _getProxy(dataPublicActivity);
     }
     if (auto dataPrivateActivity =
         dynamic_cast<tt3::db::api::IPrivateActivity*>(dataActivity))
     {   //  ...then use the dedicated proxy getter
-        return std::dynamic_pointer_cast<ActivityImpl>(_getProxy(dataPrivateActivity));
+        return _getProxy(dataPrivateActivity);
     }
     Q_ASSERT(false);    //  Can't happen!
     return nullptr;
@@ -1494,7 +1563,7 @@ PublicActivity WorkspaceImpl::_getProxy(
     if (auto dataPublicTask =
             dynamic_cast<tt3::db::api::IPublicTask *>(dataPublicActivity))
     {   //  ...then use the dedicated proxy getter
-        return std::dynamic_pointer_cast<PublicActivityImpl>(_getProxy(dataPublicTask));
+        return _getProxy(dataPublicTask);
     }
 
     //  Do the work
@@ -1549,7 +1618,7 @@ PrivateActivity WorkspaceImpl::_getProxy(
     if (auto dataPrivateTask =
         dynamic_cast<tt3::db::api::IPrivateTask *>(dataPrivateActivity))
     {   //  ...then use the dedicated proxy getter
-        return std::dynamic_pointer_cast<PrivateActivityImpl>(_getProxy(dataPrivateTask));
+        return _getProxy(dataPrivateTask);
     }
 
     //  Do the work
@@ -1608,12 +1677,12 @@ Workload WorkspaceImpl::_getProxy(
     if (auto dataProject =
         dynamic_cast<tt3::db::api::IProject*>(dataWorkload))
     {   //  ...then use the dedicated proxy getter
-        return std::dynamic_pointer_cast<WorkloadImpl>(_getProxy(dataProject));
+        return _getProxy(dataProject);
     }
     if (auto dataWorkStream =
         dynamic_cast<tt3::db::api::IWorkStream*>(dataWorkload))
     {   //  ...then use the dedicated proxy getter
-        return std::dynamic_pointer_cast<WorkloadImpl>(_getProxy(dataWorkStream));
+        return _getProxy(dataWorkStream);
     }
     Q_ASSERT(false);    //  Can't happen!
     return nullptr;

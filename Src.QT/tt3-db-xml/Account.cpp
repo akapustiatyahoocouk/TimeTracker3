@@ -500,6 +500,45 @@ void Account::_makeDead()
     Principal::_makeDead();
 }
 
+void Account::_setPasswordHash(
+        const QString & passwordHash
+    )
+{
+    tt3::util::Lock _(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Make sure passwordHash is valid - a
+    //  string of 50 uppercase hex digits
+    static const std::wregex pattern(L"^[0-9A-F]{40}$");
+
+    std::wcmatch match;
+    std::wstring ws = passwordHash.toStdWString();
+    if (!std::regex_match(ws.c_str(), match, pattern))
+    {   //  OOPS!
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Account::instance(),
+            "passwordHash",
+            passwordHash);
+    }
+
+    //  Always make the change (we want XML file
+    //  to STILL be saved even if new password is
+    //  the same as old one)...
+    _passwordHash = passwordHash;
+    _database->_markModified();
+    //  ...schedule change notifications...
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectModifiedNotification(
+            _database, type(), _oid));
+    //  ...and we're done
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+}
+
 //////////
 //  Serialization
 void Account::_serializeProperties(

@@ -15,6 +15,11 @@
 //  GNU General Public License for more details.
 //////////
 
+namespace tt3::ws
+{
+    class AccountImpl;
+}
+
 namespace tt3::db::api
 {
     /// \class IAccount tt3-db-api/API.hpp
@@ -230,6 +235,16 @@ namespace tt3::db::api
                                 const QString & summary,
                                 const Activities & activities
                             ) -> IEvent * = 0;
+
+        //////////
+        //  Implementation
+    private:
+        //  Helpers
+        //  Making this method public will be a security breach!
+        friend class tt3::ws::AccountImpl;
+        virtual void    _setPasswordHash(
+                                const QString & passwordHash
+                            ) = 0;
     };
 }
 

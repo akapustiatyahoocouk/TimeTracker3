@@ -98,7 +98,7 @@ void RestoreTool::run(QWidget * parent)
         restoreSuccessful =
             restoreReader.restoreWorkspace(); //  may throw
         //  We no longer need a fake Admin account!
-        workspace->login(adminCredentials)->destroy(adminCredentials);  //  may throw
+        workspace->login(adminCredentials)->user(adminCredentials)->destroy(adminCredentials);  //  may throw
         //  Cleanup before returning
         workspace->close(); //  may throw
         //  RestoreReader's destructor closes the backup file

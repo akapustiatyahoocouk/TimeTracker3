@@ -890,6 +890,12 @@ namespace tt3::ws
                         ) const -> Capabilities;
 
         auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IObject * dataObject
+                        ) const -> Object;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IPrincipal * dataPrincipal
+                        ) const -> Principal;
+        auto        _getProxy(  //  throws WorkspaceException
                             tt3::db::api::IUser * dataUser
                         ) const -> User;
         auto        _getProxy(  //  throws WorkspaceException
@@ -1024,6 +1030,7 @@ namespace tt3::ws
         };
 
     TT3_WS_DECLARE_TYPE_TRAITS(Object)
+    TT3_WS_DECLARE_TYPE_TRAITS(Principal)
     TT3_WS_DECLARE_TYPE_TRAITS(User)
     TT3_WS_DECLARE_TYPE_TRAITS(Account)
     TT3_WS_DECLARE_TYPE_TRAITS(ActivityType)
