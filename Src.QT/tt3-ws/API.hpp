@@ -29,6 +29,7 @@
 
 #include "tt3-ws/Credentials.hpp"
 #include "tt3-ws/Validator.hpp"
+#include "tt3-ws/Exceptions.hpp"
 #include "tt3-ws/WorkspaceType.hpp"
 #include "tt3-ws/WorkspaceAddress.hpp"
 #include "tt3-ws/Workspace.hpp"
@@ -52,6 +53,5 @@
 #include "tt3-ws/Event.hpp"
 
 #include "tt3-ws/Notifications.hpp"
-#include "tt3-ws/Exceptions.hpp"
 
 //  End of tt3-ws/API.hpp

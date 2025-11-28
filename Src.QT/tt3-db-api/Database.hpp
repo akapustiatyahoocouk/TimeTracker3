@@ -102,6 +102,19 @@ namespace tt3::db::api
         virtual quint64 objectCount() const = 0;
 
         /// \brief
+        ///     Finds the object with the specified OID.
+        /// \param oid
+        ///     The OID to look for.
+        /// \return
+        ///     The object with the specified OID; nullptr
+        ///     if not found.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        virtual auto    findObjectByOid(
+                                const Oid & oid
+                            ) const -> IObject * = 0;
+
+        /// \brief
         ///     Returns the set of all users in this database.
         /// \return
         ///     The set of all users in this database.

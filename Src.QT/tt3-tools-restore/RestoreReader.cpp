@@ -381,20 +381,19 @@ void RestoreReader::_processRecord()
 
 void RestoreReader::_processUserRecord()
 {
-    tt3::ws::Oid oid;
-    bool enabled = false;
-    QStringList emailAddresses;
-    QString realName;
-    tt3::ws::InactivityTimeout inactivityTimeout;
-    tt3::ws::UiLocale uiLocale;
+    auto oid =
+        _record.fetchField<tt3::ws::Oid>("OID");
+    auto enabled =
+        _record.fetchField<bool>("Enabled");
+    auto emailAddresses =
+        _record.fetchField<QStringList>("EmailAddresses");
+    auto realName =
+        _record.fetchField<QString>("RealName");
+    auto inactivityTimeout =
+        _record.fetchOptionalField<tt3::ws::InactivityTimeout>("InactivityTimeout");
+    auto uiLocale =
+        _record.fetchOptionalField<tt3::ws::UiLocale>("UiLocale");
 
-    _record.fetchField("OID", oid);
-    _record.fetchField("Enabled", enabled);
-    _record.fetchField("EmailAddresses", emailAddresses);
-    _record.fetchField("RealName", realName);
-    _record.fetchOptionalField("InactivityTimeout", inactivityTimeout);
-    _record.fetchOptionalField("UiLocale", uiLocale);
-    //  TODO implement
     auto user =
         _workspace->createUser( //  may throw
             _restoreCredentials,
@@ -409,7 +408,24 @@ void RestoreReader::_processUserRecord()
 
 void RestoreReader::_processAccountRecord()
 {
+    auto userOid =
+        _record.fetchField<tt3::ws::Oid>("UserOID");
+    auto oid =
+        _record.fetchField<tt3::ws::Oid>("OID");
+    auto enabled =
+        _record.fetchField<bool>("Enabled");
+    auto emailAddresses =
+        _record.fetchField<QStringList>("EmailAddresses");
+    auto login =
+        _record.fetchField<QString>("Login");
+    auto passwordHash =
+        _record.fetchField<QString>("PasswordHash");
+    auto capabilities =
+        _record.fetchField<tt3::ws::Capabilities>("Capabilities");
+
     //  TODO implement
+    auto user =
+        _workspace->getObjectByOid<tt3::ws::User>(_restoreCredentials, userOid);
 }
 
 void RestoreReader::_processActivityTypeRecord()

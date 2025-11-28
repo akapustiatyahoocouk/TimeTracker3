@@ -138,6 +138,72 @@ namespace tt3::ws
                         ) const;
 
         /// \brief
+        ///     Finds the object with the specified OID.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param oid
+        ///     The OID to look for.
+        /// \return
+        ///     The object with the specified OID; nullptr
+        ///     if not found.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        template <class T>
+        T           findObjectByOid(
+                            const Credentials & credentials,
+                            const Oid & oid
+                    ) const
+        {
+            tt3::util::Lock _(_guard);
+            _ensureOpen();  //  may throw
+
+            try
+            {
+                if (auto dataObject = _database->findObjectByOid(oid))
+                {
+                    Object object =
+                        _getProxy(
+                            dynamic_cast<typename _TypeTraits<T>::DataObjectType*>(dataObject));
+                    return object->_canRead(credentials) ?
+                               std::dynamic_pointer_cast<typename _TypeTraits<T>::ImplType>(object) :
+                               nullptr;
+                }
+                return nullptr;
+
+            }
+            catch (const tt3::util::Exception & ex)
+            {   //  OOPS! Translate & re-throw
+                WorkspaceException::translateAndThrow(ex);
+            }
+        }
+
+        /// \brief
+        ///     Gets the object with the specified OID.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param oid
+        ///     The OID to look for.
+        /// \return
+        ///     The object with the specified OID.
+        /// \exception WorkspaceException
+        ///     If an error occurs or the search fails.
+        template <class T>
+        T           getObjectByOid(
+                            const Credentials & credentials,
+                            const Oid & oid
+                        ) const
+        {
+            if (T result = findObjectByOid<T>(credentials, oid))
+            {
+                return result;
+            }
+            throw DoesNotExistException(
+                _TypeTraits<T>::objectTypeName(),
+                "OID",
+                oid);
+        }
+
+        /// \brief
         ///     Returns the set of all users in this workspace.
         /// \param credentials
         ///     The credentials of the service caller.
@@ -941,6 +1007,18 @@ namespace tt3::ws
         void        _clearExpiredBackupCredentials();
         void        _clearExpiredRestoreCredentials();
         void        _clearExpiredReportCredentials();
+
+        //  Type handling
+        template <class T>
+        struct _TypeTraits {};
+
+        template <>
+        struct _TypeTraits<User>
+        {
+            using DataObjectType = tt3::db::api::IUser;
+            using ImplType = UserImpl;
+            static inline QString   objectTypeName() { return "User"; }
+        };
 
         //////////
         //  Signal handlers

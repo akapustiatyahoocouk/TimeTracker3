@@ -80,6 +80,9 @@ namespace tt3::db::xml
     public:
         virtual quint64 objectCount(
                             ) const override;
+        virtual auto    findObjectByOid(
+                                const tt3::db::api::Oid & oid
+                            ) const -> tt3::db::api::IObject * override;
         virtual auto    users(
                             ) const -> tt3::db::api::Users override;
         virtual auto    accounts(

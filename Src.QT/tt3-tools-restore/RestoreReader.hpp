@@ -101,25 +101,25 @@ namespace tt3::tools::restore
             }
 
             template <class T>
-            void        fetchField(const QString & field, T & value)
+            T           fetchField(const QString & field)
             {
                 if (!fields.contains(field))
                 {   //  TODO throw properly
                 }
                 qsizetype scan = 0;
-                value = _parse<T>(fields[field], scan);
+                T result= _parse<T>(fields[field], scan);
                 if (scan != fields[field].length())
                 {   //  OOPS! //  TODO throw properly
                 }
+                return result;
             }
 
             template <class T>
-            void        fetchOptionalField(const QString & field, T & value)
+            T           fetchOptionalField(const QString & field)
             {
-                if (fields.contains(field))
-                {
-                    fetchField(field, value);
-                }
+                return fields.contains(field) ?
+                        fetchField<T>(field) :  //  may throw
+                        T();
             }
         };
         _Record         _record;    //  currently being read/processed

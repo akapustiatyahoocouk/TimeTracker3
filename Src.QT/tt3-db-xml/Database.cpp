@@ -349,6 +349,17 @@ quint64 Database::objectCount(
     return _liveObjects.size();
 }
 
+auto Database::findObjectByOid(
+        const tt3::db::api::Oid & oid
+    ) const -> tt3::db::api::IObject *
+{
+    tt3::util::Lock _(_guard);
+    _ensureOpen();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _liveObjects.contains(oid) ? _liveObjects[oid] : nullptr;
+}
+
 auto Database::users(
     ) const -> tt3::db::api::Users
 {
