@@ -5,6 +5,7 @@ DEFINES += TT3_REPORT_LIBRARY
 
 SOURCES += \
     Component.cpp \
+    TypographicSize.cpp \
     TypographicUnit.cpp
 
 HEADERS += \

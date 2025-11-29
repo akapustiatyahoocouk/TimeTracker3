@@ -68,8 +68,8 @@ bool TypographicUnit::operator >= (const TypographicUnit & op2) const
 namespace tt3::util
 {
     template <> TT3_REPORT_PUBLIC
-    QString toString<tt3::report::TypographicUnit>(
-            const tt3::report::TypographicUnit & value
+    QString toString<TypographicUnit>(
+            const TypographicUnit & value
         )
     {
         if (value == TypographicUnit::Point)
@@ -97,10 +97,10 @@ namespace tt3::util
     }
 
     template <> TT3_REPORT_PUBLIC
-    auto fromString<tt3::report::TypographicUnit>(
+    auto fromString<TypographicUnit>(
             const QString & s,
             qsizetype & scan
-        ) -> tt3::report::TypographicUnit
+        ) -> TypographicUnit
     {
         //  All unit codes are 2 characters long
         if (scan < 0 || scan + 2 > s.length())

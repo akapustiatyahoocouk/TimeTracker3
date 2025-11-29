@@ -74,8 +74,20 @@ namespace tt3::report
         //////////
         //  Construction/destruction/assignment
     public:
+        /// \brief
+        ///     Constructs a standard 12pt size.
         TypographicSize();
-        TypographicSize(const TypographicUnit & unit, float amount);
+
+        /// \brief
+        ///     Constructs a typographic size.
+        /// \param amount
+        ///     The number of typographic units in this typographic size.
+        /// \param unit
+        ///     The unit in which the typographic size is expressed.
+        explicit TypographicSize(
+                float amount,
+            const TypographicUnit & unit = TypographicUnit::Point
+            );
 
         //  The default copy constructor, destructor and
         //  assignment operator are all OK
@@ -94,21 +106,21 @@ namespace tt3::report
         //  Operations
     public:
         /// \brief
-        ///     Returns the number of typographic units.
+        ///     Returns the number of typographic units in this typographic size.
         /// \return
-        ///     The number of typographic units.
+        ///     The number of typographic units in this typographic size.
         float           amount() const { return _amount; }
 
         /// \brief
-        ///     Returns the typographic unit in which this size is expressed.
+        ///     Returns the typographic unit in which this typographic size is expressed.
         /// \return
-        ///     The typographic unit in which this size is expressed.
+        ///     The typographic unit in which this typographic size is expressed.
         TypographicUnit unit() const { return _unit; }
 
         /// \brief
-        ///     Returns the point size of this size
+        ///     Returns the point size of this typographic size.
         /// \return
-        ///     The point size of this size
+        ///     The point size of this typographic size.
         float           pointSize() const { return _amount * _unit.points(); }
 
         //////////
