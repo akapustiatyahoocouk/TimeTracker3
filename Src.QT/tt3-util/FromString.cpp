@@ -420,7 +420,7 @@ template <> TT3_UTIL_PUBLIC QString tt3::util::fromString<QString>(const QString
     if (scan >= 0 && scan <= s.length())
     {
         QString result = s.mid(scan);
-        scan = int(s.length());
+        scan = s.length();
         return result;
     }
     throw ParseException(s, scan);

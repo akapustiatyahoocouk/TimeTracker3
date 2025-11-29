@@ -24,11 +24,11 @@ namespace tt3::report
         //////////
         //  Constants
     public:
-        static const TypographicUnit    Centimeter;
-        static const TypographicUnit    Millimeter;
-        static const TypographicUnit    Inch;
-        static const TypographicUnit    Pica;
-        static const TypographicUnit    Point;
+        static const TypographicUnit    Centimeter; ///< cm
+        static const TypographicUnit    Millimeter; ///< mm
+        static const TypographicUnit    Inch;       ///< in
+        static const TypographicUnit    Pica;       ///< pc
+        static const TypographicUnit    Point;      ///< pt
 
         //////////
         //  Construction/destruction/assignment
@@ -45,11 +45,56 @@ namespace tt3::report
         //////////
         //  Operators
     public:
+        /// \brief
+        ///     Compares two TypographicUnits for equality.
+        /// \param op2
+        ///     The 2nd TypographicUnit to compare this TypographicUnit to.
+        /// \return
+        ///     True if the two TypographicUnits are eequal, else false.
         bool        operator == (const TypographicUnit & op2) const;
+
+        /// \brief
+        ///     Compares two TypographicUnits for equality.
+        /// \param op2
+        ///     The 2nd TypographicUnit to compare this TypographicUnit to.
+        /// \return
+        ///     False if the two TypographicUnitssare eequal, else true.
         bool        operator != (const TypographicUnit & op2) const;
+
+        /// \brief
+        ///     Compares two TypographicUnits for order.
+        /// \param op2
+        ///     The 2nd TypographicUnit to compare this TypographicUnit to.
+        /// \return
+        ///     True if this TypographicUnit is "less than"
+        ///     the 2nd TypographicUnit, else false.
         bool        operator <  (const TypographicUnit & op2) const;
+
+        /// \brief
+        ///     Compares two TypographicUnits for order.
+        /// \param op2
+        ///     The 2nd TypographicUnit to compare this TypographicUnit to.
+        /// \return
+        ///     True if this TypographicUnit is "less than or equal to"
+        ///     the 2nd TypographicUnit, else false.
         bool        operator <= (const TypographicUnit & op2) const;
+
+        /// \brief
+        ///     Compares two TypographicUnits for order.
+        /// \param op2
+        ///     The 2nd TypographicUnit to compare this TypographicUnit to.
+        /// \return
+        ///     True if this TypographicUnit is "greater than"
+        ///     the 2nd TypographicUnit, else false.
         bool        operator >  (const TypographicUnit & op2) const;
+
+        /// \brief
+        ///     Compares two TypographicUnits for order.
+        /// \param op2
+        ///     The 2nd TypographicUnit to compare this TypographicUnit to.
+        /// \return
+        ///     True if this TypographicUnit is "greater than or equal to"
+        ///     the 2nd TypographicUnit, else false.
         bool        operator >= (const TypographicUnit & op2) const;
 
         //////////
@@ -86,7 +131,7 @@ namespace tt3::report
         ///     The unit in which the typographic size is expressed.
         explicit TypographicSize(
                 float amount,
-            const TypographicUnit & unit = TypographicUnit::Point
+                const TypographicUnit & unit = TypographicUnit::Point
             );
 
         //  The default copy constructor, destructor and
@@ -95,11 +140,74 @@ namespace tt3::report
         //////////
         //  Operators
     public:
+        /// \brief
+        ///     Compares two TypographicSizes for equality.
+        /// \details
+        ///     TypographicSizes are compared using their point
+        ///     equivalents, so 1in and 72pt will compare "equal".
+        /// \param op2
+        ///     The 2nd TypographicSize to compare this TypographicSize to.
+        /// \return
+        ///     True if the two TypographicSizes are eequal, else false.
         bool        operator == (const TypographicSize & op2) const;
+
+        /// \brief
+        ///     Compares two TypographicSizes for equality.
+        /// \details
+        ///     TypographicSizes are compared using their point
+        ///     equivalents, so 1in and 72pt will compare "equal".
+        /// \param op2
+        ///     The 2nd TypographicSize to compare this TypographicSize to.
+        /// \return
+        ///     False if the two TypographicSizes are eequal, else true.
         bool        operator != (const TypographicSize & op2) const;
+
+        /// \brief
+        ///     Compares two TypographicSizes for order.
+        /// \details
+        ///     TypographicSizes are compared using their point
+        ///     equivalents, so 1in and 72pt will compare "equal".
+        /// \param op2
+        ///     The 2nd TypographicSize to compare this TypographicSize to.
+        /// \return
+        ///     True if this TypographicSize is "less than"
+        ///     the 2nd TypographicSize, else false.
         bool        operator <  (const TypographicSize & op2) const;
+
+        /// \brief
+        ///     Compares two TypographicSizes for order.
+        /// \details
+        ///     TypographicSizes are compared using their point
+        ///     equivalents, so 1in and 72pt will compare "equal".
+        /// \param op2
+        ///     The 2nd TypographicSize to compare this TypographicSize to.
+        /// \return
+        ///     True if this TypographicSize is "less than or equal to"
+        ///     the 2nd TypographicSize, else false.
         bool        operator <= (const TypographicSize & op2) const;
+
+        /// \brief
+        ///     Compares two TypographicSizes for order.
+        /// \details
+        ///     TypographicSizes are compared using their point
+        ///     equivalents, so 1in and 72pt will compare "equal".
+        /// \param op2
+        ///     The 2nd TypographicSize to compare this TypographicSize to.
+        /// \return
+        ///     True if this TypographicSize is "greater than"
+        ///     the 2nd TypographicSize, else false.
         bool        operator >  (const TypographicSize & op2) const;
+
+        /// \brief
+        ///     Compares two TypographicSizes for order.
+        /// \details
+        ///     TypographicSizes are compared using their point
+        ///     equivalents, so 1in and 72pt will compare "equal".
+        /// \param op2
+        ///     The 2nd TypographicSize to compare this TypographicSize to.
+        /// \return
+        ///     True if this TypographicSize is "greater than or equal to"
+        ///     the 2nd TypographicSize, else false.
         bool        operator >= (const TypographicSize & op2) const;
 
         //////////
@@ -129,6 +237,134 @@ namespace tt3::report
         float           _amount;
         TypographicUnit _unit;
     };
+
+    /// \class FontSpec tt3-report/API.hpp
+    /// \brief Specifies the font or font class name.
+    class TT3_REPORT_PUBLIC FontSpec final
+    {
+        //////////
+        //  Constants
+    public:
+        static const FontSpec   Default;    ///< ""
+        static const FontSpec   Serif;      ///< serif
+        static const FontSpec   SansSerif;  ///< sans-serif
+        static const FontSpec   Monospaced; ///< monospace
+
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        /// \brief
+        ///     Constructs a default (empty) font name.
+        FontSpec();
+
+        /// \brief
+        ///     Constructs a custom or standard font name.
+        /// \param name
+        ///     The font or font class name.
+        explicit FontSpec(const QString & name);
+
+        //  The default copy constructor, destructor and
+        //  assignment operator are all OK
+
+        //////////
+        //  Operators
+    public:
+        /// \brief
+        ///     Compares two FontSpecs for equality.
+        /// \details
+        ///     FontSpecs are compared case-insensitively.
+        /// \param op2
+        ///     The 2nd FontSpec to compare this FontSpec to.
+        /// \return
+        ///     True if the two FontSpecs are eequal, else false.
+        bool        operator == (const FontSpec & op2) const;
+
+        /// \brief
+        ///     Compares two FontSpecs for equality.
+        /// \details
+        ///     FontSpecs are compared case-insensitively.
+        /// \param op2
+        ///     The 2nd FontSpec to compare this FontSpec to.
+        /// \return
+        ///     False if the two FontSpecs are eequal, else true.
+        bool        operator != (const FontSpec & op2) const;
+
+        /// \brief
+        ///     Compares two FontSpecs for order.
+        /// \details
+        ///     FontSpecs are compared case-insensitively.
+        /// \param op2
+        ///     The 2nd FontSpec to compare this FontSpec to.
+        /// \return
+        ///     True if this FontSpec is "less than"
+        ///     the 2nd FontSpec, else false.
+        bool        operator <  (const FontSpec & op2) const;
+
+        /// \brief
+        ///     Compares two FontSpecs for order.
+        /// \details
+        ///     FontSpecs are compared case-insensitively.
+        /// \param op2
+        ///     The 2nd FontSpec to compare this FontSpec to.
+        /// \return
+        ///     True if this FontSpec is "less than or equal to"
+        ///     the 2nd FontSpec, else false.
+        bool        operator <= (const FontSpec & op2) const;
+
+        /// \brief
+        ///     Compares two FontSpecs for order.
+        /// \details
+        ///     FontSpecs are compared case-insensitively.
+        /// \param op2
+        ///     The 2nd FontSpec to compare this FontSpec to.
+        /// \return
+        ///     True if this FontSpec is "greater than"
+        ///     the 2nd FontSpec, else false.
+        bool        operator >  (const FontSpec & op2) const;
+
+        /// \brief
+        ///     Compares two FontSpecs for order.
+        /// \details
+        ///     FontSpecs are compared case-insensitively.
+        /// \param op2
+        ///     The 2nd FontSpec to compare this FontSpec to.
+        /// \return
+        ///     True if this FontSpec is "greater than or equal to"
+        ///     the 2nd FontSpec, else false.
+        bool        operator >= (const FontSpec & op2) const;
+
+        //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Checks if this is a "default" font specification.
+        /// \return
+        ///     True if this is a "default" font specification, else false.
+        bool            isDefault() const;
+
+        /// \brief
+        ///     Checks if this is a font class specification.
+        /// \return
+        ///     True if this is a font class specification, else false.
+        bool            isFontClassName() const;
+
+        /// \brief
+        ///     Checks if this is a font (not font class!) specification.
+        /// \return
+        ///     True if this is a font (not font class!) specification, else false.
+        bool            isFontName() const;
+
+        /// \brief
+        ///     Returns the font or font class name.
+        /// \return
+        ///     The font or font class name; "" == default font.
+        QString         name() const { return _name; }
+
+        //////////
+        //  Implementation
+    private:
+        QString         _name;  //  "" == "default font"
+    };
 }
 
 //  Formatting/parsing
@@ -142,6 +378,10 @@ namespace tt3::util
     QString toString<tt3::report::TypographicSize>(
             const tt3::report::TypographicSize & value
         );
+    template <> TT3_REPORT_PUBLIC
+    QString toString<tt3::report::FontSpec>(
+            const tt3::report::FontSpec & value
+        );
 
     template <> TT3_REPORT_PUBLIC
     auto fromString<tt3::report::TypographicUnit>(
@@ -153,6 +393,11 @@ namespace tt3::util
             const QString & s,
             qsizetype & scan
         ) -> tt3::report::TypographicSize;
+    template <> TT3_REPORT_PUBLIC
+    auto fromString<tt3::report::FontSpec>(
+            const QString & s,
+            qsizetype & scan
+        ) -> tt3::report::FontSpec;
 }
 
 //  End of tt3-report/DataTypes.hpp
