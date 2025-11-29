@@ -2,6 +2,7 @@ include(../tt3.pri)
 
 TEMPLATE = lib
 DEFINES += TT3_TOOLS_BACKUP_LIBRARY
+
 SOURCES += \
     BackupProgressDialog.cpp \
     BackupTool.cpp \

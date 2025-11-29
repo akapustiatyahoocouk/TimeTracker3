@@ -513,27 +513,26 @@ namespace tt3::db::xml
         template <class T>
         auto            _objectTypeTraits(
                             ) -> tt3::db::api::IObjectType *  = delete;
-#define DECLARE_OBJECT_TYPE_TRAITS(TYPE)                               \
+#define TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(TYPE)                               \
         template <>                                             \
         auto            _objectTypeTraits<TYPE>(                \
                             ) -> tt3::db::api::IObjectType *    \
         {                                                       \
             return tt3::db::api::ObjectTypes::TYPE::instance(); \
         }
-        DECLARE_OBJECT_TYPE_TRAITS(User)
-        DECLARE_OBJECT_TYPE_TRAITS(Account)
-        DECLARE_OBJECT_TYPE_TRAITS(ActivityType)
-        DECLARE_OBJECT_TYPE_TRAITS(PublicActivity)
-        DECLARE_OBJECT_TYPE_TRAITS(PublicTask)
-        DECLARE_OBJECT_TYPE_TRAITS(PrivateActivity)
-        DECLARE_OBJECT_TYPE_TRAITS(PrivateTask)
-        DECLARE_OBJECT_TYPE_TRAITS(Project)
-        DECLARE_OBJECT_TYPE_TRAITS(WorkStream)
-        DECLARE_OBJECT_TYPE_TRAITS(Beneficiary)
-        DECLARE_OBJECT_TYPE_TRAITS(Work)
-        DECLARE_OBJECT_TYPE_TRAITS(Event)
-#undef DECLARE_OBJECT_TYPE_TRAITS
-
+        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(User)
+        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(Account)
+        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(ActivityType)
+        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(PublicActivity)
+        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(PublicTask)
+        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(PrivateActivity)
+        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(PrivateTask)
+        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(Project)
+        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(WorkStream)
+        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(Beneficiary)
+        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(Work)
+        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(Event)
+#undef TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS
         //  Validation
         void            _validate();    //  throwstt3::db::api::DatabaseException
     };

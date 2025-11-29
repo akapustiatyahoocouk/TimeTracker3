@@ -1,0 +1,4 @@
+[Component]
+DisplayName=TimeTracker3 Reporting
+Description=Defines reporting framework for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin

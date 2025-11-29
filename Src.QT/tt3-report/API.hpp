@@ -1,5 +1,5 @@
 //
-//  tt3/API.hpp - tt3 master header
+//  tt3-report/API.hpp - TT3 reporting framework
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -18,16 +18,12 @@
 
 //////////
 //  Dependencies
-#include "tt3-report/API.hpp"
-#include "tt3-gui/API.hpp"
 #include "tt3-ws/API.hpp"
-#include "tt3-db-api/API.hpp"
-#include "tt3-help/API.hpp"
 #include "tt3-util/API.hpp"
 
 //////////
-//  tt3 components
-#include "tt3/Components.hpp"
-#include "tt3/Application.hpp"
+//  tt3-report components
+#include "tt3-report/Linkage.hpp"
+#include "tt3-report/Components.hpp"
 
-//  End of tt3/API.hpp
+//  End of tt3-report/API.hpp

@@ -54,6 +54,10 @@ Doxyfile  text diff=cpp
 *.out   binary
 *.app   binary
 
+# Git
+.gitattributes  text diff=cpp
+.gitignore      text diff=cpp
+
 # TT3
 *.tt3-xml     text diff=cpp
 *.tt3-backup  text diff=cpp
