@@ -44,6 +44,10 @@ namespace tt3::help
         //////////
         //  Construction/destruction/assignment
     public:
+        /// \brief
+        ///     Constructs the exception.
+        /// \param location
+        ///     The location of the nonexistent help site.
         explicit HelpSiteDoesNotExistException(
                 const QString & location
             );
@@ -89,6 +93,10 @@ namespace tt3::help
         //////////
         //  Construction/destruction/assignment
     public:
+        /// \brief
+        ///     Constructs the exception.
+        /// \param path
+        ///     The path to the offending directory.
         explicit CannotCreateDirectoryException(
                 const QString & path
             );
@@ -134,6 +142,10 @@ namespace tt3::help
         //////////
         //  Construction/destruction/assignment
     public:
+        /// \brief
+        ///     Constructs the exception.
+        /// \param path
+        ///     The path to the offending file.
         explicit FileAlreadyExistsException(
                 const QString & path
             );
@@ -179,6 +191,10 @@ namespace tt3::help
         //////////
         //  Construction/destruction/assignment
     public:
+        /// \brief
+        ///     Constructs the exception.
+        /// \param url
+        ///     The offending URL.
         explicit UnsupportedProtocolException(
                 const QString & url
             );
@@ -226,7 +242,7 @@ namespace tt3::help
     public:
         /// \brief
         ///     Constructs the exception.
-        /// \param cerrorMessage
+        /// \param errorMessage
         ///     The custom error message.
         explicit CustomHelpException(
                 const QString & errorMessage

@@ -17,8 +17,8 @@
 
 namespace tt3::tools::restore
 {
-    /// \class RestoreTool tt3-tools-restore/API.hpp
-    /// \brief The "TT3 Restore" tool.
+    /// \class BackupFileCorruptException tt3-tools-restore/API.hpp
+    /// \brief Thrown when a backup file is corrupt.
     class TT3_TOOLS_RESTORE_PUBLIC BackupFileCorruptException final
         :   public virtual tt3::util::Exception
     {

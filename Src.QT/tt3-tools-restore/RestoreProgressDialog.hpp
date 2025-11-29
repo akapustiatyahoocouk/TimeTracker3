@@ -22,7 +22,7 @@ namespace tt3::tools::restore
     namespace Ui { class RestoreProgressDialog; }
 
     /// \class RestoreProgressDialog tt3-tools-restore/API.hpp
-    /// \brief The "restore progress" popup window..
+    /// \brief The "restore progress" popup window.
     class TT3_TOOLS_RESTORE_PUBLIC RestoreProgressDialog final
         :   private QDialog
     {
@@ -32,6 +32,16 @@ namespace tt3::tools::restore
         //////////
         //  Construction
     public:
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent for the dialog; nullptr == none.
+        /// \param restoreDestination
+        ///     The restore destination - normally the user-readable
+        ///     form of the address of the workspace into which data is restored.
+        /// \param restoreSource
+        ///     The restore source - normally the name of the backup file
+        ///     written earlier from which data is restored.
         RestoreProgressDialog(
                 QWidget * parent,
                 const QString & restoreDestination,
@@ -44,7 +54,19 @@ namespace tt3::tools::restore
     public:
         using QDialog::setVisible;
 
+        /// \brief
+        ///     Reports the progress of the restore operationn.
+        /// \param ratioCompleted
+        ///     The ration of the restore work completed; 0.0 ==
+        ///     just started, 1.0 == finished, 0.5 == halfway through.
         void            reportProgress(double ratioCompleted);
+
+        /// \brief
+        ///     Checks if the user has requested cancellation
+        ///     of the restore process.
+        /// \return
+        ///     True if the user has requested cancellation of
+        ///     the restore process, else false.
         bool            cancelRequested() const { return _cancelRequested; }
 
         //////////

@@ -22,7 +22,7 @@ namespace tt3::tools::restore
     namespace Ui { class ConfigureRestoreDialog; }
 
     /// \class ConfigureRestoreDialog tt3-tools-restore/API.hpp
-    /// \brief The "configure restore job" dialog..
+    /// \brief The "configure restore job" dialog.
     class TT3_TOOLS_RESTORE_PUBLIC ConfigureRestoreDialog final
         :   private QDialog
     {

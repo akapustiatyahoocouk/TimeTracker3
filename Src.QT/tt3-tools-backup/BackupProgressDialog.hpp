@@ -32,11 +32,24 @@ namespace tt3::tools::backup
         //////////
         //  Construction
     public:
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent for the dialog; ullptr == none.
+        /// \param backupSource
+        ///     The backup source - this is normally the user-readable
+        ///     representation of the backed-up workspace address.
+        /// \param backupDestination
+        ///     The backup destination - this is normally the name of
+        ///     the newly created and written backup file.
         BackupProgressDialog(
                 QWidget * parent,
                 const QString & backupSource,
                 const QString & backupDestination
             );
+
+        /// \brief
+        ///     The class destructor.
         virtual ~BackupProgressDialog();
 
         //////////
@@ -44,7 +57,19 @@ namespace tt3::tools::backup
     public:
         using QDialog::setVisible;
 
+        /// \brief
+        ///     Returns the progress of the backup operation.
+        /// \param ratioCompleted
+        ///     The ratio of the backup that is completed; 0.0 == just
+        ///     started, 1.0 == finished; 0.5 = halfway through.
         void            reportProgress(double ratioCompleted);
+
+        /// \brief
+        ///     Checks if the user has requested cancellation of the
+        ///     backup process.
+        /// \return
+        ///     True if the user has requested cancellation of the
+        ///     backup process; else false.
         bool            cancelRequested() const { return _cancelRequested; }
 
         //////////

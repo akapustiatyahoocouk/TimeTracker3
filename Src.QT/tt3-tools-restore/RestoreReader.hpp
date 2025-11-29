@@ -26,11 +26,24 @@ namespace tt3::tools::restore
         //////////
         //  Construction/destruction
     public:
+        /// \brief
+        ///     Constructs the RestoreReader.s
+        /// \param workspace
+        ///     The workspace to restore into.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param backupFileName
+        ///     The name of the backup file created earlier.
+        /// \exception Exception
+        ///     If an error occurs.
         RestoreReader(
                 tt3::ws::Workspace workspace,
                 const tt3::ws::Credentials & credentials,
                 const QString & backupFileName
             );
+
+        /// \brief
+        ///     The class destructor.
         ~RestoreReader();
 
         //////////
@@ -38,11 +51,14 @@ namespace tt3::tools::restore
     public:
         /// \brief
         ///     Performs the workspace restore.
+        ///     Can only be callefd once on a RestoreReader instance.
         /// \details
         ///     If called from a thread that currently runs
         ///     an event loop, will display a popup "restore
         ///     progress" window that allows cancelling the
         ///     restore process while it is underwau.
+        /// \return
+        ///     True if restore completed successfully, else flse.
         /// \exception Exception
         ///     If an error occurs.
         bool        restoreWorkspace();

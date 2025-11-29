@@ -26,11 +26,24 @@ namespace tt3::tools::backup
         //////////
         //  Construction/destruction
     public:
+        /// \brief
+        ///     Constructs the backup writer.
+        /// \param workspace
+        ///     The workspace to backup.
+        /// \param credentials
+        ///     The credentials of the user requesting a backup.
+        /// \param backupFileName
+        ///     The name of the backup file to create and wrte.
+        /// \exception Exception
+        ///     If an error occurs.
         BackupWriter(
                 tt3::ws::Workspace workspace,
                 const tt3::ws::Credentials & credentials,
                 const QString & backupFileName
             );
+
+        /// \brief
+        ///     The class destructor.
         ~BackupWriter();
 
         //////////
@@ -38,11 +51,14 @@ namespace tt3::tools::backup
     public:
         /// \brief
         ///     Performs the workspace backup.
+        ///     Can only be callefd once on a BackupWriter instance.
         /// \details
         ///     If called from a thread that currently runs
         ///     an event loop, will display a popup "backup
         ///     progress" window that allows cancelling the
         ///     backup process while it is underwau.
+        /// \return
+        ///     True if backup completed successfully, else flse.
         /// \exception Exception
         ///     If an error occurs.
         bool        backupWorkspace();

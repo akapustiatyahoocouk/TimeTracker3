@@ -69,7 +69,14 @@ namespace tt3::help
         //////////
         //  Construction/destruction
     public:
+        /// \brief
+        ///     Costructs the content loader.
+        /// \param path
+        ///     The local filesystem path to the content file.
         explicit LocalFileContentLoader(const QString & path);
+
+        /// \brief
+        ///     The class destuctor.
         virtual ~LocalFileContentLoader();
 
         //////////

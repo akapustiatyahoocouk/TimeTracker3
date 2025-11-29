@@ -47,7 +47,18 @@ namespace tt3::help
         //////////
         //  Operations
     public:
+        /// \brief
+        ///     Returns the directory where ZIP files containing the
+        ///     help contents are available.
+        /// \return
+        ///     The directory where ZIP files containing the
+        ///     help contents are available.
         QString         zipFilesDirectory() const { return _zipFilesDirectory; }
+
+        /// \brief
+        ///     Returns the directory where the local help site is assembled.
+        /// \return
+        ///     The directory where the local help site is assembled.
         QString         helpSiteDirectory() const { return _helpSiteDirectory; }
 
         /// \brief

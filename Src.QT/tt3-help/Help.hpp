@@ -208,7 +208,6 @@ namespace tt3::help
                 }
             };
 
-            /// \class const_iterator tt3-help/API.hpp
             /// \brief
             ///     The iterator over a help topic collection that
             ///     does not permit modifying that collection.
@@ -417,7 +416,16 @@ namespace tt3::help
         //////////
         //  Serialization
     protected:
+        /// \brief
+        ///     Returns the XML tag name for the collection element.
+        /// \return
+        ///     The XML tag name for the collection element.
         virtual QString collectionElementTag() const = 0;
+
+        /// \brief
+        ///     Serializes this help collection to an XML element.
+        /// \param collectionElement
+        ///     The XML element representing the help collection itself.
         virtual void    serialize(QDomElement collectionElement) = 0;
     };
 }

@@ -78,7 +78,7 @@ namespace tt3::help
             //////////
             //  Types
         public:
-            /// \class iterator tt3=help/API.hpp
+            /// \class iterator tt3-help/API.hpp
             /// \brief The iterator over a collection of help topics.
             class TT3_HELP_PUBLIC iterator final
             {
@@ -237,7 +237,6 @@ namespace tt3::help
                 }
             };
 
-            /// \class const_iterator tt3-help/API.hpp
             /// \brief
             ///     The iterator over a help topic collection that
             ///     does not permit modifying that collection.
@@ -272,6 +271,16 @@ namespace tt3::help
                 return _helpTopic->childCount();
             }
 
+            /// \brief
+            ///     Creates a new SimpleHelpTopic at the end of this collection.
+            /// \param name
+            ///     The internal name for the new SimpleHelpTopic.
+            /// \param displayName
+            ///     The user-readable display name for a new SimpleHelpTopic.
+            /// \param contentLoader
+            ///     The content loader for a new SimpleHelpTopic; nullptr == none.
+            /// \return
+            ///     The newly created SimpleHelpTopic.
             auto            createTopic(
                                     const QString & name,
                                     const QString & displayName,
@@ -375,8 +384,27 @@ namespace tt3::help
         //////////
         //  Operations
     public:
+        /// \brief
+        ///     Sets the internal name of this SimpleHelpTopic.
+        /// \param name
+        ///     The new internal name for this SimpleHelpTopic.
         void                setName(const QString name);
+
+        /// \brief
+        ///     Sets the user-readable display name of this SimpleHelpTopic.
+        /// \param displayName
+        ///     The nre user-readable display name for this SimpleHelpTopic.
         void                setDisplayName(const QString & displayName);
+
+        /// \brief
+        ///     Sets the content URL of this SimpleHelpTopic.
+        /// \details
+        ///     Calling this method creates a new ContentLoader that loads content
+        ///     from the specified URL and associates that ContentLoader with this
+        ///     SimpleHelpTopic. The previously associated ContentLoader for this
+        ///     SimpleHelpTopic (if there was one) is destroyed.
+        /// \param contentUrl
+        ///     The new content URL of this SimpleHelpTopic.
         void                setContentUrl(const QUrl & contentUrl);
 
         //////////
@@ -425,6 +453,8 @@ namespace tt3::help
         //////////
         //  Serialization
     protected:
+        ///\brief
+        ///     The XML element tag name for SimpleHelpCollections,
         static inline const QString CollectionElementTag = "SimpleHelpCollection";
 
         virtual QString collectionElementTag() const override;

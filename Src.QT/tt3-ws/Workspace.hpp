@@ -129,6 +129,8 @@ namespace tt3::ws
     public:
         /// \brief
         ///     Returns the number of live objects in this Database.
+        /// \param credentials
+        ///     The credentials of the service caller.
         /// \return
         ///     The number of live objects in this Database.
         /// \exception WorkspaceException
@@ -779,6 +781,8 @@ namespace tt3::ws
         ///     a "read lock" on the workspace; this "read
         ///     lock" is released when the "backup credentials"
         ///     that caused the lock to appear are released.
+        /// \param backupCredentials
+        ///     The backup credentials to release.
         /// \exception WorkspaceException
         ///     If an error occurs.
         void        releaseCredentials(
@@ -796,6 +800,8 @@ namespace tt3::ws
         ///     a "read lock" on the workspace; this "read
         ///     lock" is released when the "restore credentials"
         ///     that caused the lock to appear are released.
+        /// \param restoreCredentials
+        ///     The restore credentials to release.
         /// \exception WorkspaceException
         ///     If an error occurs.
         void        releaseCredentials(
@@ -813,6 +819,8 @@ namespace tt3::ws
         ///     a "read lock" on the workspace; this "read
         ///     lock" is released when the "report credentials"
         ///     that caused the lock to appear are released.
+        /// \param reportCredentials
+        ///     The report credentials to release.
         /// \exception WorkspaceException
         ///     If an error occurs.
         void        releaseCredentials(
