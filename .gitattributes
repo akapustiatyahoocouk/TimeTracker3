@@ -53,3 +53,7 @@ Doxyfile  text diff=cpp
 *.exe   binary
 *.out   binary
 *.app   binary
+
+# TT3
+*.tt3-xml     text diff=cpp
+*.tt3-backup  text diff=cpp
