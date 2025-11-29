@@ -4,11 +4,13 @@ TEMPLATE = lib
 DEFINES += TT3_REPORT_LIBRARY
 
 SOURCES += \
-    Component.cpp
+    Component.cpp \
+    TypographicUnit.cpp
 
 HEADERS += \
     API.hpp \
     Components.hpp \
+    DataTypes.hpp \
     Linkage.hpp
 
 LIBS += \

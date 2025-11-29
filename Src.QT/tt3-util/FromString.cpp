@@ -249,7 +249,7 @@ template <> TT3_UTIL_PUBLIC signed long long tt3::util::fromString<signed long l
 
 template <> TT3_UTIL_PUBLIC unsigned long long tt3::util::fromString<unsigned long long>(const QString & s, qsizetype & scan)
 {
-    if (scan < 0)
+    if (scan < 0 || scan >= s.length())
     {
         throw ParseException(s, scan);
     }
@@ -274,6 +274,135 @@ template <> TT3_UTIL_PUBLIC unsigned long long tt3::util::fromString<unsigned lo
     }
     scan = prescan;
     return temp;
+}
+
+template <> TT3_UTIL_PUBLIC float tt3::util::fromString<float>(const QString & s, qsizetype & scan)
+{
+    return static_cast<float>(fromString<double>(s, scan));
+}
+
+template <> TT3_UTIL_PUBLIC double tt3::util::fromString<double>(const QString & s, qsizetype & scan)
+{
+    if (scan < 0 || scan >= s.length())
+    {
+        throw ParseException(s, scan);
+    }
+    //  Handle special cases
+    if (scan + 5 <= s.length() &&
+        s[scan + 0] == '#' &&
+        s[scan + 1] == '+' &&
+        s[scan + 2] == 'I' &&
+        s[scan + 3] == 'N' &&
+        s[scan + 4] == 'F')
+    {   //  "#+INF"
+        scan += 5;
+        return std::numeric_limits<double>::infinity();
+    }
+    if (scan + 5 <= s.length() &&
+        s[scan + 0] == '#' &&
+        s[scan + 1] == '-' &&
+        s[scan + 2] == 'I' &&
+        s[scan + 3] == 'N' &&
+        s[scan + 4] == 'F')
+    {   //  "#-INF"
+        scan += 5;
+        return -std::numeric_limits<double>::infinity();
+    }
+    if (scan + 5 <= s.length() &&
+        s[scan + 0] == '#' &&
+        s[scan + 1] == 'Q' &&
+        s[scan + 2] == 'N' &&
+        s[scan + 3] == 'A' &&
+        s[scan + 4] == 'N')
+    {   //  "#QNAN"
+        scan += 5;
+        return std::numeric_limits<double>::quiet_NaN();
+    }
+    //  Default case
+    //  [+-]?d+[.d*]?[[eE][+-]?d+]?
+    qsizetype prescan = scan;
+    bool negative = false;
+    double magnitude= 0.0;
+    qsizetype numDigits = 0;
+    //  Parse sign
+    if (prescan < s.length() && s[prescan] == '+')
+    {   //  +
+        prescan++;
+    }
+    else if (prescan < s.length() && s[prescan] == '-')
+    {   //  -
+        negative = true;
+        prescan++;
+    }
+    //  Parse integer digits
+    while (prescan < s.length() &&
+           s[prescan] >= '0' && s[prescan] <= '9')
+    {
+        int digit = s[prescan++].unicode() - '0';
+        magnitude = magnitude * 10.0 + digit;
+        numDigits++;
+    }
+    //  Parse fractional part
+    if (prescan < s.length() && s[prescan] == '.')
+    {
+        double scale = 1.0;
+        prescan++;
+        while (prescan < s.length() &&
+               s[prescan] >= '0' && s[prescan] <= '9')
+        {
+            int digit = s[prescan++].unicode() - '0';
+            magnitude = magnitude * 10.0 + digit;
+            scale *= 10.0;
+            numDigits++;
+        }
+        magnitude /= scale;
+    }
+    //  Parse exponent
+    qsizetype expscan = prescan;
+    if (prescan < s.length() &&
+        (s[prescan] == 'E' || s[prescan] == 'e'))
+    {
+        prescan++;  //  skip E
+        //  Parse exponent sign
+        bool exponentNegative = false;
+        if (prescan < s.length() && s[prescan] == '+')
+        {   //  +
+            prescan++;
+        }
+        else if (prescan < s.length() && s[prescan] == '-')
+        {   //  -
+            exponentNegative = true;
+            prescan++;
+        }
+        //  Parse exponent digits
+        qsizetype numExponentDigits = 0;
+        int exponentMagnitude = 0;
+        while (prescan < s.length() &&
+               s[prescan] >= '0' && s[prescan] <= '9')
+        {
+            int digit = s[prescan++].unicode() - '0';
+            exponentMagnitude = exponentMagnitude * 10 + digit;
+            numExponentDigits++;
+            if (numExponentDigits > 3)
+            {   //  OOP! No more!
+                break;
+            }
+        }
+        if (numExponentDigits == 0)
+        {   //  OOPS! Exponent is empty - ignore it
+            prescan = expscan;
+        }
+        else
+        {   //  Factor exponent into magnitude
+            magnitude =
+                exponentNegative ?
+                    magnitude / std::pow(10.0, exponentMagnitude) :
+                    magnitude * std::pow(10.0, exponentMagnitude);
+        }
+    }
+    //  Form the value & we're done
+    scan = prescan;
+    return negative ? -magnitude : magnitude;
 }
 
 //  QT types

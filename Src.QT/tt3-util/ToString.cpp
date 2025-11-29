@@ -86,6 +86,29 @@ template <> TT3_UTIL_PUBLIC QString tt3::util::toString<unsigned long long>(cons
     return s;
 }
 
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<float>(const float & value)
+{
+    return toString<double>(value);
+}
+
+template <> TT3_UTIL_PUBLIC QString tt3::util::toString<double>(const double & value)
+{
+    switch (std::fpclassify(value))
+    {
+        case FP_INFINITE:
+            return (value > 0.0) ? "#+INF" : "#-INF";
+        case FP_NAN:
+            return "#QNAN";
+        case FP_NORMAL:
+        case FP_SUBNORMAL:
+        case FP_ZERO:
+            default:
+                char s[128];
+                sprintf(s, "%g", value);
+                return s;
+    }
+}
+
 //  QT types
 template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QChar>(const QChar & value)
 {

@@ -53,6 +53,8 @@ namespace tt3::util
     template <> TT3_UTIL_PUBLIC unsigned long fromString<unsigned long>(const QString & s, qsizetype & scan);
     template <> TT3_UTIL_PUBLIC signed long long fromString<signed long long>(const QString & s, qsizetype & scan);
     template <> TT3_UTIL_PUBLIC unsigned long long fromString<unsigned long long>(const QString & s, qsizetype & scan);
+    template <> TT3_UTIL_PUBLIC float fromString<float>(const QString & s, qsizetype & scan);
+    template <> TT3_UTIL_PUBLIC double fromString<double>(const QString & s, qsizetype & scan);
 
     //  QT types
     template <> TT3_UTIL_PUBLIC QChar fromString<QChar>(const QString & s, qsizetype & scan);

@@ -26,4 +26,6 @@
 #include "tt3-report/Linkage.hpp"
 #include "tt3-report/Components.hpp"
 
+#include "tt3-report/DataTypes.hpp"
+
 //  End of tt3-report/API.hpp
