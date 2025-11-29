@@ -30,5 +30,13 @@ RestoreLabel=Восстановление:
 FromLabel=Из файла:
 CancelPushButton=Отмена
 
+[RestoreCompletedDialog]
+Title=Восстановление завершено
+Message=Рабочая область\n{0}\nбыла успешно восстановлена из\n{1}.
+
+[RestoreCancelledDialog]
+Title=Восстановление прервано
+Message=Операция восстановления прервана
+
 [Errors]
 BackupFileCorruptException=Файл резервной копии {0} повреждён.

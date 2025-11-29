@@ -150,6 +150,11 @@ namespace tt3::tools::restore
         void            _processActivityTypeAssociationRecord();
         void            _processActivityWorkloadAssociationRecord();
         void            _processWorkloadBeneficiariesAssociationRecord();
+
+        auto            _resolveActivity(
+                            ) -> tt3::ws::Activity;
+        auto            _resolveWorkload(
+                            ) -> tt3::ws::Workload;
     };
 }
 

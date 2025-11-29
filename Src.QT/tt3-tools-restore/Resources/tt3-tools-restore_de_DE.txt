@@ -30,5 +30,13 @@ RestoreLabel=Zeichenkette neu setzen:
 FromLabel=Aus Datei:
 CancelPushButton=Abbrechen
 
+[RestoreCompletedDialog]
+Title=Wiederherstellung abgeschlossen
+Message=Der Arbeitsbereich\n{0}\nwurde erfolgreich von\n{1} wiederhergestellt.
+
+[RestoreCancelledDialog]
+Title=Wiederherstellung abgebrochen
+Message=Die Wiederherstellung wurde abgebrochen.
+
 [Errors]
 BackupFileCorruptException=Die Sicherungsdatei {0} ist beschädigt.

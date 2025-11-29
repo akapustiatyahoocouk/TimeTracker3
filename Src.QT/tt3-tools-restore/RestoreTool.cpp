@@ -105,8 +105,6 @@ void RestoreTool::run(QWidget * parent)
             qCritical() << ex;
             throw BackupFileCorruptException(restoreSource);
         }
-        //  We no longer need a fake Admin account!
-        workspace->login(adminCredentials)->user(adminCredentials)->destroy(adminCredentials);  //  may throw
         //  Cleanup before returning
         workspace->close(); //  may throw
         //  RestoreReader's destructor closes the backup file
@@ -121,26 +119,32 @@ void RestoreTool::run(QWidget * parent)
     }
 
     if (restoreSuccessful)
-    {   //  Pop up the "restore completed" message
-        /*
+    {   //  Need to destroy the artificial "admin credentials"
+        workspace =
+            workspaceAddress->workspaceType()->openWorkspace(   //  may throw
+                workspaceAddress,
+                tt3::ws::OpenMode::ReadWrite);
+        workspace->login(adminCredentials)->user(adminCredentials)->destroy(adminCredentials);  //  may throw
+        workspace->close(); //  may throw
+        //  Pop up the "restore completed" message
         tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(RestoreCompletedDialog));
         tt3::gui::MessageDialog::show(
             parent,
             rr.string(RID(Title)),
             rr.string(RID(Message),
                       workspaceAddress->displayForm(),
-                      backupDestination));
-        */
+                      restoreSource));
     }
     else
-    {   //  Pop up the "restore cancelled" message
-        /*  TODO
+    {   //  Need to destroy the partually restored workspace
+        workspaceAddress->workspaceType()->destroyWorkspace( //  may throw
+            adminCredentials, workspaceAddress);
+        //  Pop up the "restore cancelled" message
         tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(RestoreCancelledDialog));
         tt3::gui::MessageDialog::show(
             parent,
             rr.string(RID(Title)),
             rr.string(RID(Message)));
-        */
     }
 }
 

@@ -34,7 +34,7 @@ CancelPushButton=Cancel
 
 [BackupCompletedDialog]
 Title=Backup completed
-Message=The workspace\n{0}\nhas been successfully vacked up to\n{1}.
+Message=The workspace\n{0}\nhas been successfully backed up to\n{1}.
 
 [BackupCancelledDialog]
 Title=Backup cancelled

@@ -782,9 +782,9 @@ void RestoreReader::_processWorkRecord()
         _record.fetchField<QDateTime>("FinishedAt");
 
     auto activity =
-        _workspace->findObjectByOid<tt3::ws::Activity>(_restoreCredentials, activityOid);
+        _workspace->getObjectByOid<tt3::ws::Activity>(_restoreCredentials, activityOid);
     auto account =
-        _workspace->findObjectByOid<tt3::ws::Account>(_restoreCredentials, accountOid);
+        _workspace->getObjectByOid<tt3::ws::Account>(_restoreCredentials, accountOid);
     auto work =
         account->createWork(
             _restoreCredentials,
@@ -817,7 +817,7 @@ void RestoreReader::_processEventRecord()
         _record.fetchField<QString>("Summary");
 
     auto account =
-        _workspace->findObjectByOid<tt3::ws::Account>(_restoreCredentials, accountOid);
+        _workspace->getObjectByOid<tt3::ws::Account>(_restoreCredentials, accountOid);
     tt3::ws::Activities activities =
         tt3::util::transform(
             QSet<tt3::ws::Oid>(activityOids.cbegin(), activityOids.cend()),
@@ -837,27 +837,118 @@ void RestoreReader::_processEventRecord()
 
 void RestoreReader::_processQuickPicksListAssociationRecord()
 {
-    //  TODO implement
+    auto accountOid =
+        _record.fetchField<tt3::ws::Oid>("AccountOID");
+    auto account =
+        _workspace->getObjectByOid<tt3::ws::Account>(_restoreCredentials, accountOid);
+
+    tt3::ws::Activity activity = _resolveActivity();
+
+    auto quickPicksList =
+        account->quickPicksList(_restoreCredentials);
+    if (!quickPicksList.contains(activity))
+    {
+        quickPicksList.append(activity);
+    }
+    account->setQuickPicksList(_restoreCredentials, quickPicksList);
 }
 
 void RestoreReader::_processPermittedWorkloadsAssociationRecord()
 {
-    //  TODO implement
+    auto userOid =
+        _record.fetchField<tt3::ws::Oid>("UserOID");
+    auto user =
+        _workspace->getObjectByOid<tt3::ws::User>(_restoreCredentials, userOid);
+
+    tt3::ws::Workload workload = _resolveWorkload();
+
+    user->addPermittedWorkload(_restoreCredentials, workload);
 }
 
 void RestoreReader::_processActivityTypeAssociationRecord()
 {
-    //  TODO implement
+    tt3::ws::Activity activity = _resolveActivity();
+
+    auto activityTypeOid =
+        _record.fetchField<tt3::ws::Oid>("ActivityTypeOID");
+    auto activityType =
+        _workspace->getObjectByOid<tt3::ws::ActivityType>(_restoreCredentials, activityTypeOid);
+
+    activity->setActivityType(_restoreCredentials, activityType);
 }
 
 void RestoreReader::_processActivityWorkloadAssociationRecord()
 {
-    //  TODO implement
+    tt3::ws::Activity activity = _resolveActivity();
+    tt3::ws::Workload workload = _resolveWorkload();
+
+    activity->setWorkload(_restoreCredentials, workload);
 }
 
 void RestoreReader::_processWorkloadBeneficiariesAssociationRecord()
 {
-    //  TODO implement
+    tt3::ws::Workload workload = _resolveWorkload();
+
+    auto beneficiaryOid =
+        _record.fetchField<tt3::ws::Oid>("BeneficiaryOID");
+    auto beneficiary =
+        _workspace->getObjectByOid<tt3::ws::Beneficiary>(_restoreCredentials, beneficiaryOid);
+
+    workload->addBeneficiary(_restoreCredentials, beneficiary);
+}
+
+auto RestoreReader::_resolveActivity(
+    ) -> tt3::ws::Activity
+{
+    if (_record.fields.contains("PublicActivityOID"))
+    {
+        auto publicActivityOid =
+            _record.fetchField<tt3::ws::Oid>("PublicActivityOID");
+        return _workspace->getObjectByOid<tt3::ws::PublicActivity>(_restoreCredentials, publicActivityOid);
+    }
+    else if (_record.fields.contains("PublicTaskOID"))
+    {
+        auto publicTaskOid =
+            _record.fetchField<tt3::ws::Oid>("PublicTaskOID");
+        return _workspace->getObjectByOid<tt3::ws::PublicTask>(_restoreCredentials, publicTaskOid);
+    }
+    else if (_record.fields.contains("PrivateActivityOID"))
+    {
+        auto privateActivityOid =
+            _record.fetchField<tt3::ws::Oid>("PrivateActivityOID");
+        return _workspace->getObjectByOid<tt3::ws::PrivateActivity>(_restoreCredentials, privateActivityOid);
+    }
+    else if (_record.fields.contains("PrivateTaskOID"))
+    {
+        auto privateTaskOid =
+            _record.fetchField<tt3::ws::Oid>("PrivateTaskOID");
+        return _workspace->getObjectByOid<tt3::ws::PrivateTask>(_restoreCredentials, privateTaskOid);
+    }
+    else
+    {
+        throw BackupFileCorruptException(_restoreFile.fileName());
+    }
+}
+
+auto RestoreReader::_resolveWorkload(
+    ) -> tt3::ws::Workload
+{
+    if (_record.fields.contains("ProjectOID"))
+    {
+        auto projectOID =
+            _record.fetchField<tt3::ws::Oid>("ProjectOID");
+        return _workspace->getObjectByOid<tt3::ws::Project>(_restoreCredentials, projectOID);
+    }
+    else if (_record.fields.contains("WorkStreamOID"))
+    {
+        auto workStreamOID =
+            _record.fetchField<tt3::ws::Oid>("WorkStreamOID");
+        return _workspace->getObjectByOid<tt3::ws::WorkStream>(_restoreCredentials, workStreamOID);
+    }
+    else
+    {
+        throw BackupFileCorruptException(_restoreFile.fileName());
+    }
 }
 
 //  End of tt3-tools-restore/RestoreReader.cpp

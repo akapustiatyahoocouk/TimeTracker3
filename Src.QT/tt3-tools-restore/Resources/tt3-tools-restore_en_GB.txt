@@ -30,5 +30,13 @@ RestoreLabel=Restoring:
 FromLabel=From file:
 CancelPushButton=Cancel
 
+[RestoreCompletedDialog]
+Title=Restore completed
+Message=The workspace\n{0}\nhas been successfully restored from\n{1}.
+
+[RestoreCancelledDialog]
+Title=Restore cancelled
+Message=The restore operation has been cancelled
+
 [Errors]
 BackupFileCorruptException=The backup file {0} is corrupt.
