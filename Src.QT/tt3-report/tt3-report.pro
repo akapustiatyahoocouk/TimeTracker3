@@ -4,6 +4,8 @@ TEMPLATE = lib
 DEFINES += TT3_REPORT_LIBRARY
 
 SOURCES += \
+    BorderType.cpp \
+    ColorSpec.cpp \
     Component.cpp \
     FontFlag.cpp \
     FontSpec.cpp \
@@ -19,6 +21,7 @@ SOURCES += \
 
 HEADERS += \
     API.hpp \
+    Classes.hpp \
     Components.hpp \
     DataTypes.hpp \
     Linkage.hpp \

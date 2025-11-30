@@ -58,7 +58,7 @@ namespace tt3::report
         /// \param op2
         ///     The 2nd TypographicUnit to compare this TypographicUnit to.
         /// \return
-        ///     False if the two TypographicUnitssare eequal, else true.
+        ///     False if the two TypographicUnits are eequal, else true.
         bool        operator != (const TypographicUnit & op2) const;
 
         /// \brief
@@ -636,7 +636,7 @@ namespace tt3::report
         /// \param op2
         ///     The 2nd PageSetup to compare this PageSetup to.
         /// \return
-        ///     False if the two PageSetupssare eequal, else true.
+        ///     False if the two PageSetups are eequal, else true.
         bool            operator != (const PageSetup & op2) const;
 
         //////////
@@ -671,6 +671,95 @@ namespace tt3::report
         TypographicSize _rightMargin;
         TypographicSize _topMargin;
         TypographicSize _bottomMargin;
+    };
+
+    /// \class ColorSpec tt3-report/API.hpp
+    /// \brief The color specification.
+    class TT3_REPORT_PUBLIC ColorSpec final
+    {
+        //////////
+        //  Types
+    public:
+        enum class ColorClass
+        {
+            Default,    ///< Default color.
+            Transparent,///< Transparent color.
+            Custom      ///< Custom color.
+        };
+
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        /// \brief
+        ///     Constructs a Default color.
+        ColorSpec();
+
+        /// \brief
+        ///     Constructs a color from color class.
+        /// \param color
+        ///     The color class.
+        ColorSpec(ColorClass colorClass);
+
+        /// \brief
+        ///     Constructs a Custom color.
+        /// \param customColor
+        ///     The custom color.
+        ColorSpec(const QColor & customColor);
+
+        //  The default copy constructor, destructor and
+        //  assignment operator are all OK
+
+        //////////
+        //  Operators
+    public:
+        /// \brief
+        ///     Compares two ColorSpecs for equality.
+        /// \param op2
+        ///     The 2nd ColorSpec to compare this ColorSpec to.
+        /// \return
+        ///     True if the two ColorSpecs are eequal, else false.
+        bool        operator == (const ColorSpec & op2) const;
+
+        /// \brief
+        ///     Compares two ColorSpecs for equality.
+        /// \param op2
+        ///     The 2nd ColorSpec to compare this ColorSpec to.
+        /// \return
+        ///     False if the two ColorSpecs are eequal, else true.
+        bool        operator != (const ColorSpec & op2) const;
+
+        //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Returns the color class.
+        /// \return
+        ///     The color class.
+        ColorClass      colorClass() const { return _colorClass; }
+
+        /// \brief
+        ///     Returns the custom color.
+        /// \return
+        ///     The custom color or a fully transparent if color
+        ///     class is not Custom.
+        QColor          customColor() const { return _customColor; }
+
+        //////////
+        //  Implementation
+    private:
+        ColorClass      _colorClass;
+        QColor          _customColor;   //  unused unless _colorClass == Custom
+    };
+
+    /// \brief
+    ///     The specification of a border type.
+    enum class BorderType
+    {
+        Default,    ///< Use defaule border.
+        None,       ///< No borders.
+        Single,     ///< Single border.
+        Double,     ///< Double border.
+        Mixed       ///< Double outer border, single inner border.
     };
 }
 
@@ -720,6 +809,14 @@ namespace tt3::util
     template <> TT3_REPORT_PUBLIC
     QString toString<tt3::report::PageSetup>(
             const tt3::report::PageSetup & value
+        );
+    template <> TT3_REPORT_PUBLIC
+    QString toString<tt3::report::ColorSpec>(
+            const tt3::report::ColorSpec & value
+        );
+    template <> TT3_REPORT_PUBLIC
+    QString toString<tt3::report::BorderType>(
+            const tt3::report::BorderType & value
         );
 
     template <> TT3_REPORT_PUBLIC
@@ -777,6 +874,16 @@ namespace tt3::util
             const QString & s,
             qsizetype & scan
         ) -> tt3::report::PageSetup;
+    template <> TT3_REPORT_PUBLIC
+    auto fromString<tt3::report::ColorSpec>(
+            const QString & s,
+            qsizetype & scan
+        ) -> tt3::report::ColorSpec;
+    template <> TT3_REPORT_PUBLIC
+    auto fromString<tt3::report::BorderType>(
+            const QString & s,
+            qsizetype & scan
+        ) -> tt3::report::BorderType;
 }
 
 //  End of tt3-report/DataTypes.hpp
