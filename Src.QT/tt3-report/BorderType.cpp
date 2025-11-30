@@ -30,8 +30,7 @@ namespace
         { BorderType::Default, "Default" },
         { BorderType::None   , "None"    },
         { BorderType::Single , "Single"  },
-        { BorderType::Double , "Double"  },
-        { BorderType::Mixed  , "Mixed"   }
+        { BorderType::Double , "Double"  }
     };
 }
 

@@ -11,6 +11,7 @@ SOURCES += \
     FontSpec.cpp \
     FontStyle.cpp \
     HorizontalAlignment.cpp \
+    IReportTemplate.cpp \
     PageNumberPlacement.cpp \
     PageOrientation.cpp \
     PageSetup.cpp \

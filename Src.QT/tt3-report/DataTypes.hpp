@@ -111,6 +111,7 @@ namespace tt3::report
     private:
         float       _points;
     };
+    using TypographicUnitOpt = std::optional<TypographicUnit>;
 
     /// \class TypographicSize tt3-report/API.hpp
     /// \brief The typographic size (unit + number of units).
@@ -237,6 +238,7 @@ namespace tt3::report
         float           _amount;
         TypographicUnit _unit;
     };
+    using TypographicSizeOpt = std::optional<TypographicSize>;
 
     /// \class FontSpec tt3-report/API.hpp
     /// \brief Specifies the font or font class name.
@@ -365,10 +367,12 @@ namespace tt3::report
     private:
         QString         _name;  //  "" == "default font"
     };
+    using FontSpecOpt = std::optional<FontSpec>;
 
     /// \brief
     ///     The liat of font spect ORDERED BY DECREASING PRIORITY.
     using FontSpecs = QList<FontSpec>;
+    using FontSpecsOpt = std::optional<FontSpecs>;
 
     /// \brief
     ///     Flags that can be applied to a font.
@@ -510,6 +514,7 @@ namespace tt3::report
     private:
         int             _mask;
     };
+    using FontStyleOpt = std::optional<FontStyle>;
 
     /// \brief
     ///     Returns the FontFlag set that contains
@@ -536,6 +541,7 @@ namespace tt3::report
         Center,     ///< Aligh to center.
         Right       ///< Align right.
     };
+    using HorizontalAlignmentOpt = std::optional<HorizontalAlignment>;
 
     /// \brief
     ///     The specification of a vertical alignment.
@@ -546,6 +552,7 @@ namespace tt3::report
         Middle,     ///< Aligh to middle.
         Bottom      ///< Align to bottom.
     };
+    using VerticalAlignmentOpt = std::optional<VerticalAlignment>;
 
     /// \brief
     ///     The specification of a paage number placement.
@@ -560,6 +567,7 @@ namespace tt3::report
         BottomCenter,   ///< Page numbers centered at the bottom of the page.
         BottomRight     ///< Page numbers at the bottom-right corner of the page.
     };
+    using PageNumberPlacementOpt = std::optional<PageNumberPlacement>;
 
     /// \brief
     ///     The specification of a text underline mode.
@@ -570,6 +578,7 @@ namespace tt3::report
         Single,     ///< Single-line underline.
         Double      ///< Double-line underline.
     };
+    using UnderlineModeOpt = std::optional<UnderlineMode>;
 
     /// \brief
     ///     The specification of a page orientation.
@@ -579,6 +588,7 @@ namespace tt3::report
         Portrait,   ///< Use portrait page orientation.
         Landscape   ///< Use landscape page orientation.
     };
+    using PageOrientationOpt = std::optional<PageOrientation>;
 
     /// \class PageSetup tt3-report/API.hpp
     /// \brief The page setup.
@@ -672,6 +682,7 @@ namespace tt3::report
         TypographicSize _topMargin;
         TypographicSize _bottomMargin;
     };
+    using PageSetupOpt = std::optional<PageSetup>;
 
     /// \class ColorSpec tt3-report/API.hpp
     /// \brief The color specification.
@@ -750,6 +761,7 @@ namespace tt3::report
         ColorClass      _colorClass;
         QColor          _customColor;   //  unused unless _colorClass == Custom
     };
+    using ColorSpecOpt = std::optional<ColorSpec>;
 
     /// \brief
     ///     The specification of a border type.
@@ -758,9 +770,9 @@ namespace tt3::report
         Default,    ///< Use defaule border.
         None,       ///< No borders.
         Single,     ///< Single border.
-        Double,     ///< Double border.
-        Mixed       ///< Double outer border, single inner border.
+        Double      ///< Double border.
     };
+    using BorderTypeOpt = std::optional<BorderType>;
 }
 
 //  Formatting/parsing
