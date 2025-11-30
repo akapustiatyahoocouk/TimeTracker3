@@ -365,6 +365,211 @@ namespace tt3::report
     private:
         QString         _name;  //  "" == "default font"
     };
+
+    /// \brief
+    ///     The liat of font spect ORDERED BY DECREASING PRIORITY.
+    using FontSpecs = QList<FontSpec>;
+
+    /// \brief
+    ///     Flags that can be applied to a font.
+    enum class FontFlag
+    {
+        Bold = 0x01,        ///\ bold
+        Italic = 0x02,      ///\ italic
+        Underline = 0x04,   ///\ underline
+        StrikeThrough = 0x08///\ strikethrough
+    };
+
+    /// \class FontFlags tt3-report/API.hpp
+    /// \brief A "set of FontFlag flags" ADT.
+    /// \details
+    ///     Implemented as a bit set for better performance.
+    class TT3_REPORT_PUBLIC FontFlags final
+    {
+        //////////
+        //  Constants
+    public:
+        static const FontFlags  Plain;          ///< Empty set  - no flags.
+        static const FontFlags  Bold;           ///< Bold flag only.
+        static const FontFlags  Italic;         ///< Italic flag only.
+        static const FontFlags  Underline;      ///< Underline flag only.
+        static const FontFlags  StrikeThrough;  ///< StrikeThrough flag only.
+
+        //////////
+        //  Construction/destruction/assignment
+    private:
+        explicit FontFlags(int mask) : _mask(mask) {}
+    public:
+        /// \brief
+        ///     Constructs an empty set of FontFlag flags.
+        constexpr FontFlags() : _mask(0) {}
+
+        /// \brief
+        ///     Constructs a set with a single FontFlag flag.
+        /// \param f
+        ///     The FontFlag flag to initialize the set with.
+        constexpr FontFlags(FontFlag f) : _mask(int(f)) {}
+
+        //  The default copy constructor, destructor anjd
+        //  assignment are all OK
+
+        //////////
+        //  Operators
+    public:
+        /// \brief
+        ///     Compares two FontFlag sets for equality.
+        /// \param op2
+        ///     The 2nd FontFlag set to compare this one with.
+        /// \return
+        ///     True if the two FontFlag sets are equal, else false.
+        bool            operator == (const FontFlags & op2) const { return _mask == op2._mask; }
+
+        /// \brief
+        ///     Compares two FontFlag sets for inequality.
+        /// \param op2
+        ///     The 2nd FontFlag set to compare this one with.
+        /// \return
+        ///     False if the two FontFlag sets are equal, else true.
+        bool            operator != (const FontFlags & op2) const { return _mask != op2._mask; }
+
+        /// \brief
+        ///     Calculates a union of two FontFlag sets.
+        /// \param op2
+        ///     The 2nd FontFlag set.
+        /// \return
+        ///     The union of two FontFlag sets.
+        FontFlags       operator |(const FontFlags & op2) const
+        {
+            return FontFlags(_mask | op2._mask);
+        }
+
+        /// \brief
+        ///     Calculates a union of two FontFlag sets.
+        /// \param op2
+        ///     The 2nd FontFlag set.
+        /// \return
+        ///     The *this, whose value has been updated to
+        ///     be the union of two FontFlag sets.
+        FontFlags &     operator |=(const FontFlags & op2)
+        {
+            _mask |= op2._mask;
+            return *this;
+        }
+
+        /// \brief
+        ///     Calculates an intersection of two FontFlag sets.
+        /// \param op2
+        ///     The 2nd FontFlag set.
+        /// \return
+        ///     The intersection of two FontFlag sets.
+        FontFlags       operator &(const FontFlags & op2) const
+        {
+            return FontFlags(_mask & op2._mask);
+        }
+
+        /// \brief
+        ///     Calculates an intersection of two FontFlag sets.
+        /// \param op2
+        ///     The 2nd FontFlag set.
+        /// \return
+        ///     The *this, whose value has been updated to
+        ///     be the intersection of two FontFlag sets.
+        FontFlags &     operator &=(const FontFlags & op2)
+        {
+            _mask &= op2._mask;
+            return *this;
+        }
+
+        //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Checks if this FontFlag set is empty.
+        /// \return
+        ///     True if this FontFlag set is empty, false if not.
+        constexpr bool  isEmpty() const
+        {
+            return _mask == 0;
+        }
+
+        /// \brief
+        ///     Checks if this FontFlag set contains the
+        ///     specified FontFlag.
+        /// \param f
+        ///     The FontFlag to check.
+        /// \return
+        ///     True if this FontFlag set contains the
+        ///     specified FontFlag, else false.
+        constexpr bool  contains(FontFlag f) const
+        {
+            return (_mask & int(f)) != 0;
+        }
+
+        //////////
+        //  Implementation
+    private:
+        int             _mask;
+    };
+
+    /// \brief
+    ///     Returns the FontFlag set that contains
+    ///     all of the specified FontFlags.
+    /// \param a
+    ///     The FontFlag to include into the set.
+    /// \param b
+    ///     The FontFlag to include into the set.
+    /// \return
+    ///     The FontFlag set that contains all of
+    ///     the specified FontFlags.
+    TT3_REPORT_PUBLIC
+    inline FontFlags operator |(FontFlag a, FontFlag b)
+    {
+        return FontFlags(a) | FontFlags(b);
+    }
+
+    /// \brief
+    ///     The specification of a horizontal alignment.
+    enum class HorizontalAlignment
+    {
+        Default,    ///< Use defaule alignment.
+        Left,       ///< Align left.
+        Center,     ///< Aligh to center.
+        Right       ///< Align right.
+    };
+
+    /// \brief
+    ///     The specification of a vertical alignment.
+    enum class VerticalAlignment
+    {
+        Default,    ///< Use defaule alignment.
+        Top,        ///< Align to top.
+        Middle,     ///< Aligh to middle.
+        Bottom      ///< Align to bottom.
+    };
+
+    /// \brief
+    ///     The specification of a paage number placement.
+    enum class PageNumberPlacement
+    {
+        Default,        ///< Use default page number placement.
+        None,           ///< Mo page numbers.
+        TopLeft,        ///< Page numbers at the top-left corner of the page.
+        TopCenter,      ///< Page numbers centered at the top of the page.
+        TopRight,       ///< Page numbers at the top-right corner of the page.
+        BottomLeft,     ///< Page numbers at the bottom-left corner of the page.
+        BottomCenter,   ///< Page numbers centered at the bottom of the page.
+        BottomRight     ///< Page numbers at the bottom-right corner of the page.
+    };
+
+    /// \brief
+    ///     The specification of a text underline mode.
+    enum class UnderlineMode
+    {
+        Default,    ///< Use default page number placement.
+        None,       ///< Mo underlining.
+        Single,     ///< Single-line underline.
+        Double      ///< Double-line underline.
+    };
 }
 
 //  Formatting/parsing
@@ -382,6 +587,26 @@ namespace tt3::util
     QString toString<tt3::report::FontSpec>(
             const tt3::report::FontSpec & value
         );
+    template <> TT3_REPORT_PUBLIC
+    QString toString<tt3::report::FontFlag>(
+            const tt3::report::FontFlag & value
+        );
+    template <> TT3_REPORT_PUBLIC
+    QString toString<tt3::report::FontFlags>(
+            const tt3::report::FontFlags & value
+        );
+    template <> TT3_REPORT_PUBLIC
+    QString toString<tt3::report::HorizontalAlignment>(
+            const tt3::report::HorizontalAlignment & value
+        );
+    template <> TT3_REPORT_PUBLIC
+    QString toString<tt3::report::VerticalAlignment>(
+            const tt3::report::VerticalAlignment & value
+        );
+    template <> TT3_REPORT_PUBLIC
+    QString toString<tt3::report::PageNumberPlacement>(
+            const tt3::report::PageNumberPlacement & value
+        );
 
     template <> TT3_REPORT_PUBLIC
     auto fromString<tt3::report::TypographicUnit>(
@@ -398,6 +623,31 @@ namespace tt3::util
             const QString & s,
             qsizetype & scan
         ) -> tt3::report::FontSpec;
+    template <> TT3_REPORT_PUBLIC
+    auto fromString<tt3::report::FontFlag>(
+            const QString & s,
+            qsizetype & scan
+        ) -> tt3::report::FontFlag;
+    template <> TT3_REPORT_PUBLIC
+    auto fromString<tt3::report::FontFlags>(
+            const QString & s,
+            qsizetype & scan
+        ) -> tt3::report::FontFlags;
+    template <> TT3_REPORT_PUBLIC
+    auto fromString<tt3::report::HorizontalAlignment>(
+            const QString & s,
+            qsizetype & scan
+        ) -> tt3::report::HorizontalAlignment;
+    template <> TT3_REPORT_PUBLIC
+    auto fromString<tt3::report::VerticalAlignment>(
+            const QString & s,
+            qsizetype & scan
+        ) -> tt3::report::VerticalAlignment;
+    template <> TT3_REPORT_PUBLIC
+    auto fromString<tt3::report::PageNumberPlacement>(
+            const QString & s,
+            qsizetype & scan
+        ) -> tt3::report::PageNumberPlacement;
 }
 
 //  End of tt3-report/DataTypes.hpp

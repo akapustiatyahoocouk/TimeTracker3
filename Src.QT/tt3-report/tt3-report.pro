@@ -5,9 +5,15 @@ DEFINES += TT3_REPORT_LIBRARY
 
 SOURCES += \
     Component.cpp \
+    FontFlag.cpp \
+    FontFlags.cpp \
     FontSpec.cpp \
+    HorizontalAlignment.cpp \
+    PageNumberPlacement.cpp \
     TypographicSize.cpp \
-    TypographicUnit.cpp
+    TypographicUnit.cpp \
+    UnderlineMode.cpp \
+    VerticalAlignment.cpp
 
 HEADERS += \
     API.hpp \
