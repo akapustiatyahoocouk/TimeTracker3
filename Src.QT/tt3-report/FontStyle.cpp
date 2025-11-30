@@ -1,5 +1,5 @@
 //
-//  tt3-report/FontFlags.cpp - tt3::report::FontFlags enum implementation
+//  tt3-report/FontStyle.cpp - tt3::report::FontStyle enum implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,15 +19,15 @@ using namespace tt3::report;
 
 //////////
 //  Constants
-const FontFlags FontFlags::Plain(0);
-const FontFlags FontFlags::Bold(FontFlag::Bold);
-const FontFlags FontFlags::Italic(FontFlag::Italic);
-const FontFlags FontFlags::Underline(FontFlag::Underline);
-const FontFlags FontFlags::StrikeThrough(FontFlag::StrikeThrough);
+const FontStyle FontStyle::Plain(0);
+const FontStyle FontStyle::Bold(FontFlag::Bold);
+const FontStyle FontStyle::Italic(FontFlag::Italic);
+const FontStyle FontStyle::Underline(FontFlag::Underline);
+const FontStyle FontStyle::StrikeThrough(FontFlag::StrikeThrough);
 
 namespace
 {
-    const FontFlag theFontFlags[] =
+    const FontFlag AllFontStyle[] =
     {
         FontFlag::Bold,
         FontFlag::Italic,
@@ -43,36 +43,36 @@ namespace
 namespace tt3::util
 {
     template <> TT3_REPORT_PUBLIC
-    QString toString<FontFlags>(
-            const FontFlags & value
+    QString toString<FontStyle>(
+            const FontStyle & value
         )
     {
         //  Special cases
-        if (value == FontFlags::Plain)
+        if (value == FontStyle::Plain)
         {
             return "plain";
         }
         //  General case
         QString result;
-        for (size_t i = 0; i < sizeof(theFontFlags) / sizeof(theFontFlags[0]); i++)
+        for (size_t i = 0; i < sizeof(AllFontStyle) / sizeof(AllFontStyle[0]); i++)
         {
-            if (value.contains(theFontFlags[i]))
+            if (value.contains(AllFontStyle[i]))
             {
                 if (!result.isEmpty())
                 {
                     result += Separator;
                 }
-                result += toString(theFontFlags[i]);
+                result += toString(AllFontStyle[i]);
             }
         }
         return result;
     }
 
     template <> TT3_REPORT_PUBLIC
-    auto fromString<FontFlags>(
+    auto fromString<FontStyle>(
             const QString & s,
             qsizetype & scan
-           ) -> FontFlags
+           ) -> FontStyle
     {
         if (scan < 0 || scan > s.length())
         {   //  OOPS!
@@ -82,10 +82,10 @@ namespace tt3::util
         if (s.mid(scan, 8).startsWith("plain", Qt::CaseInsensitive))
         {
             scan += 5;
-            return FontFlags::Plain;
+            return FontStyle::Plain;
         }
         //  General case
-        FontFlags result;
+        FontStyle result;
         if (scan >= s.length())
         {
             return result;
@@ -95,13 +95,13 @@ namespace tt3::util
         for (; ; )
         {
             //  Does a font flag start at s[scan] |
-            FontFlags addend;
-            for (size_t i = 0; i < sizeof(theFontFlags) / sizeof(theFontFlags[0]); i++)
+            FontStyle addend;
+            for (size_t i = 0; i < sizeof(AllFontStyle) / sizeof(AllFontStyle[0]); i++)
             {
-                QString name = toString(theFontFlags[i]);
+                QString name = toString(AllFontStyle[i]);
                 if (s.mid(prescan, 16).startsWith(name, Qt::CaseInsensitive))
                 {   //  Yes
-                    addend = theFontFlags[i];
+                    addend = AllFontStyle[i];
                     prescan += name.length();
                     break;
                 }
@@ -133,4 +133,4 @@ namespace tt3::util
     }
 }
 
-//  End of tt3-report/FontFlags.cpp
+//  End of tt3-report/FontStyle.cpp

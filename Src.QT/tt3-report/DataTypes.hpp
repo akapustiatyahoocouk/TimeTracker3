@@ -109,7 +109,7 @@ namespace tt3::report
         //////////
         //  Implementation
     private:
-        const float     _points;
+        float       _points;
     };
 
     /// \class TypographicSize tt3-report/API.hpp
@@ -380,35 +380,35 @@ namespace tt3::report
         StrikeThrough = 0x08///\ strikethrough
     };
 
-    /// \class FontFlags tt3-report/API.hpp
+    /// \class FontStyle tt3-report/API.hpp
     /// \brief A "set of FontFlag flags" ADT.
     /// \details
     ///     Implemented as a bit set for better performance.
-    class TT3_REPORT_PUBLIC FontFlags final
+    class TT3_REPORT_PUBLIC FontStyle final
     {
         //////////
         //  Constants
     public:
-        static const FontFlags  Plain;          ///< Empty set  - no flags.
-        static const FontFlags  Bold;           ///< Bold flag only.
-        static const FontFlags  Italic;         ///< Italic flag only.
-        static const FontFlags  Underline;      ///< Underline flag only.
-        static const FontFlags  StrikeThrough;  ///< StrikeThrough flag only.
+        static const FontStyle  Plain;          ///< Empty set  - no flags.
+        static const FontStyle  Bold;           ///< Bold flag only.
+        static const FontStyle  Italic;         ///< Italic flag only.
+        static const FontStyle  Underline;      ///< Underline flag only.
+        static const FontStyle  StrikeThrough;  ///< StrikeThrough flag only.
 
         //////////
         //  Construction/destruction/assignment
     private:
-        explicit FontFlags(int mask) : _mask(mask) {}
+        explicit FontStyle(int mask) : _mask(mask) {}
     public:
         /// \brief
         ///     Constructs an empty set of FontFlag flags.
-        constexpr FontFlags() : _mask(0) {}
+        constexpr FontStyle() : _mask(0) {}
 
         /// \brief
         ///     Constructs a set with a single FontFlag flag.
         /// \param f
         ///     The FontFlag flag to initialize the set with.
-        constexpr FontFlags(FontFlag f) : _mask(int(f)) {}
+        constexpr FontStyle(FontFlag f) : _mask(int(f)) {}
 
         //  The default copy constructor, destructor anjd
         //  assignment are all OK
@@ -422,7 +422,7 @@ namespace tt3::report
         ///     The 2nd FontFlag set to compare this one with.
         /// \return
         ///     True if the two FontFlag sets are equal, else false.
-        bool            operator == (const FontFlags & op2) const { return _mask == op2._mask; }
+        bool            operator == (const FontStyle & op2) const { return _mask == op2._mask; }
 
         /// \brief
         ///     Compares two FontFlag sets for inequality.
@@ -430,7 +430,7 @@ namespace tt3::report
         ///     The 2nd FontFlag set to compare this one with.
         /// \return
         ///     False if the two FontFlag sets are equal, else true.
-        bool            operator != (const FontFlags & op2) const { return _mask != op2._mask; }
+        bool            operator != (const FontStyle & op2) const { return _mask != op2._mask; }
 
         /// \brief
         ///     Calculates a union of two FontFlag sets.
@@ -438,9 +438,9 @@ namespace tt3::report
         ///     The 2nd FontFlag set.
         /// \return
         ///     The union of two FontFlag sets.
-        FontFlags       operator |(const FontFlags & op2) const
+        FontStyle       operator |(const FontStyle & op2) const
         {
-            return FontFlags(_mask | op2._mask);
+            return FontStyle(_mask | op2._mask);
         }
 
         /// \brief
@@ -450,7 +450,7 @@ namespace tt3::report
         /// \return
         ///     The *this, whose value has been updated to
         ///     be the union of two FontFlag sets.
-        FontFlags &     operator |=(const FontFlags & op2)
+        FontStyle &     operator |=(const FontStyle & op2)
         {
             _mask |= op2._mask;
             return *this;
@@ -462,9 +462,9 @@ namespace tt3::report
         ///     The 2nd FontFlag set.
         /// \return
         ///     The intersection of two FontFlag sets.
-        FontFlags       operator &(const FontFlags & op2) const
+        FontStyle       operator &(const FontStyle & op2) const
         {
-            return FontFlags(_mask & op2._mask);
+            return FontStyle(_mask & op2._mask);
         }
 
         /// \brief
@@ -474,7 +474,7 @@ namespace tt3::report
         /// \return
         ///     The *this, whose value has been updated to
         ///     be the intersection of two FontFlag sets.
-        FontFlags &     operator &=(const FontFlags & op2)
+        FontStyle &     operator &=(const FontStyle & op2)
         {
             _mask &= op2._mask;
             return *this;
@@ -513,18 +513,18 @@ namespace tt3::report
 
     /// \brief
     ///     Returns the FontFlag set that contains
-    ///     all of the specified FontFlags.
+    ///     all of the specified FontStyle.
     /// \param a
     ///     The FontFlag to include into the set.
     /// \param b
     ///     The FontFlag to include into the set.
     /// \return
     ///     The FontFlag set that contains all of
-    ///     the specified FontFlags.
+    ///     the specified FontStyle.
     TT3_REPORT_PUBLIC
-    inline FontFlags operator |(FontFlag a, FontFlag b)
+    inline FontStyle operator |(FontFlag a, FontFlag b)
     {
-        return FontFlags(a) | FontFlags(b);
+        return FontStyle(a) | FontStyle(b);
     }
 
     /// \brief
@@ -566,9 +566,111 @@ namespace tt3::report
     enum class UnderlineMode
     {
         Default,    ///< Use default page number placement.
-        None,       ///< Mo underlining.
+        None,       ///< No underlining.
         Single,     ///< Single-line underline.
         Double      ///< Double-line underline.
+    };
+
+    /// \brief
+    ///     The specification of a page orientation.
+    enum class PageOrientation
+    {
+        Default,    ///< Use default page orientation.
+        Portrait,   ///< Use portrait page orientation.
+        Landscape   ///< Use landscape page orientation.
+    };
+
+    /// \class PageSetup tt3-report/API.hpp
+    /// \brief The page setup.
+    class TT3_REPORT_PUBLIC PageSetup final
+    {
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        /// \brief
+        ///     Constructs a default page setup (A4 portrait, 2cm margins).
+        PageSetup();
+
+        /// \brief
+        ///     Constructs the page setup.
+        /// \param pageWidth
+        ///     The page width.
+        /// \param pageHeight
+        ///     The page height.
+        /// \param pageOrientation
+        ///     The page orientation.
+        /// \param leftMargin
+        ///     The left margin.
+        /// \param rightMargin
+        ///     The right margin.
+        /// \param topMargin
+        ///     The top margin.
+        /// \param bottomMargin
+        ///     The bottom margin.
+        PageSetup(
+                const TypographicSize & pageWidth,
+                const TypographicSize & pageHeight,
+                PageOrientation pageOrientation,
+                const TypographicSize & leftMargin,
+                const TypographicSize & rightMargin,
+                const TypographicSize & topMargin,
+                const TypographicSize & bottomMargin
+            );
+
+        //  The default copy constructor, destructor and
+        //  assignment operator are all OK
+
+        //////////
+        //  Operators
+    public:
+        /// \brief
+        ///     Compares two PageSetups for equality.
+        /// \param op2
+        ///     The 2nd PageSetup to compare this PageSetup to.
+        /// \return
+        ///     True if the two PageSetups are eequal, else false.
+        bool            operator == (const PageSetup & op2) const;
+
+        /// \brief
+        ///     Compares two PageSetups for equality.
+        /// \param op2
+        ///     The 2nd PageSetup to compare this PageSetup to.
+        /// \return
+        ///     False if the two PageSetupssare eequal, else true.
+        bool            operator != (const PageSetup & op2) const;
+
+        //////////
+        //  Operations
+    public:
+        TypographicSize pageWidth() const { return _pageWidth; }
+        TypographicSize pageHeight() const { return _pageHeight; }
+        PageOrientation pageOrientation() const { return _pageOrientation; }
+        TypographicSize leftMargin() const { return _leftMargin; }
+        TypographicSize rightMargin() const { return _rightMargin; }
+        TypographicSize topMargin() const { return _topMargin; }
+        TypographicSize bottomMargin() const { return _bottomMargin; }
+
+        /// \brief
+        ///     Checks this PageSetup for validity.
+        /// \details
+        ///     A PageSetup is considered valid if:
+        ///     -   its size is >0.
+        ///     -   its margins are >= 0.
+        ///     -   its margins leave unused area in the middle of the page.
+        /// \return
+        ///     True if this PageSetup is valid, else false.
+        bool           isValid() const;
+
+        //////////
+        //  Implementation
+    private:
+        TypographicSize _pageWidth;
+        TypographicSize _pageHeight;
+        PageOrientation _pageOrientation;
+        TypographicSize _leftMargin;
+        TypographicSize _rightMargin;
+        TypographicSize _topMargin;
+        TypographicSize _bottomMargin;
     };
 }
 
@@ -592,8 +694,8 @@ namespace tt3::util
             const tt3::report::FontFlag & value
         );
     template <> TT3_REPORT_PUBLIC
-    QString toString<tt3::report::FontFlags>(
-            const tt3::report::FontFlags & value
+    QString toString<tt3::report::FontStyle>(
+            const tt3::report::FontStyle & value
         );
     template <> TT3_REPORT_PUBLIC
     QString toString<tt3::report::HorizontalAlignment>(
@@ -606,6 +708,18 @@ namespace tt3::util
     template <> TT3_REPORT_PUBLIC
     QString toString<tt3::report::PageNumberPlacement>(
             const tt3::report::PageNumberPlacement & value
+        );
+    template <> TT3_REPORT_PUBLIC
+    QString toString<tt3::report::UnderlineMode>(
+            const tt3::report::UnderlineMode & value
+        );
+    template <> TT3_REPORT_PUBLIC
+    QString toString<tt3::report::PageOrientation>(
+            const tt3::report::PageOrientation & value
+        );
+    template <> TT3_REPORT_PUBLIC
+    QString toString<tt3::report::PageSetup>(
+            const tt3::report::PageSetup & value
         );
 
     template <> TT3_REPORT_PUBLIC
@@ -629,10 +743,10 @@ namespace tt3::util
             qsizetype & scan
         ) -> tt3::report::FontFlag;
     template <> TT3_REPORT_PUBLIC
-    auto fromString<tt3::report::FontFlags>(
+    auto fromString<tt3::report::FontStyle>(
             const QString & s,
             qsizetype & scan
-        ) -> tt3::report::FontFlags;
+        ) -> tt3::report::FontStyle;
     template <> TT3_REPORT_PUBLIC
     auto fromString<tt3::report::HorizontalAlignment>(
             const QString & s,
@@ -648,6 +762,21 @@ namespace tt3::util
             const QString & s,
             qsizetype & scan
         ) -> tt3::report::PageNumberPlacement;
+    template <> TT3_REPORT_PUBLIC
+    auto fromString<tt3::report::UnderlineMode>(
+            const QString & s,
+            qsizetype & scan
+        ) -> tt3::report::UnderlineMode;
+    template <> TT3_REPORT_PUBLIC
+    auto fromString<tt3::report::PageOrientation>(
+            const QString & s,
+            qsizetype & scan
+        ) -> tt3::report::PageOrientation;
+    template <> TT3_REPORT_PUBLIC
+    auto fromString<tt3::report::PageSetup>(
+            const QString & s,
+            qsizetype & scan
+        ) -> tt3::report::PageSetup;
 }
 
 //  End of tt3-report/DataTypes.hpp

@@ -6,10 +6,12 @@ DEFINES += TT3_REPORT_LIBRARY
 SOURCES += \
     Component.cpp \
     FontFlag.cpp \
-    FontFlags.cpp \
     FontSpec.cpp \
+    FontStyle.cpp \
     HorizontalAlignment.cpp \
     PageNumberPlacement.cpp \
+    PageOrientation.cpp \
+    PageSetup.cpp \
     TypographicSize.cpp \
     TypographicUnit.cpp \
     UnderlineMode.cpp \
@@ -19,7 +21,10 @@ HEADERS += \
     API.hpp \
     Components.hpp \
     DataTypes.hpp \
-    Linkage.hpp
+    Linkage.hpp \
+    ReportTemplate.hpp
+
+PRECOMPILED_HEADER = API.hpp
 
 LIBS += \
     -ltt3-gui$$TARGET_SUFFIX \
