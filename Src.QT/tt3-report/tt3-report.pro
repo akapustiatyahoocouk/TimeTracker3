@@ -15,6 +15,7 @@ SOURCES += \
     PageNumberPlacement.cpp \
     PageOrientation.cpp \
     PageSetup.cpp \
+    ReportTemplateManager.cpp \
     TypographicSize.cpp \
     TypographicUnit.cpp \
     UnderlineMode.cpp \

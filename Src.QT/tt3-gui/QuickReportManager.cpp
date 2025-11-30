@@ -21,10 +21,10 @@ struct QuickReportManager::_Impl
 {
     _Impl()
     {
-#define REGISTER(Subsystem)                     \
+#define REGISTER(QuickReport)                   \
         registry.insert(                        \
-                                                Subsystem::instance()->mnemonic(),  \
-                                                Subsystem::instance())
+            QuickReport::instance()->mnemonic(),\
+            QuickReport::instance())
         REGISTER(DailyWorkQuickReport);
     }
 

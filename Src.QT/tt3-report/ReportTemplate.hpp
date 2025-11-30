@@ -103,6 +103,49 @@ namespace tt3::report
         QString         toXmlString() const;
     };
 
+    /// \class ReportTemplateManager tt3-report/API.hpp
+    /// \brief The manager of known report templates.
+    class TT3_REPORT_PUBLIC ReportTemplateManager final
+    {
+        UTILITY_CLASS(ReportTemplateManager)
+
+        //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Returns the set of all registered ReportTemplates.
+        /// \return
+        ///     The set of all registered ReportTemplates.
+        static ReportTemplates  allReportTemplates();
+
+        /// \brief
+        ///     Registers the specified ReportTemplate.
+        /// \param reportTemplate
+        ///     The ReportTemplate to register
+        /// \return
+        ///     True on success, false on failure. Repeated
+        ///     registration of the same ReportTemplate is treated
+        ///     as a "success".
+        static bool         registerReportTemplate(IReportTemplate * reportTemplate);
+
+        /// \brief
+        ///     Finds a registered ReportTemplate by its mnemonic.
+        /// \param mnemonic
+        ///     The mnemonic to look for.
+        /// \return
+        ///     The registered ReportTemplate with the required mnemonic;
+        ///     nullptr if not found.
+        static IReportTemplate *    findReportTemplate(const tt3::util::Mnemonic & mnemonic);
+
+        //////////
+        //  Implementation
+    private:
+        struct _Impl;
+
+        //  Helpers
+        static _Impl *      _impl();
+    };
+
     /// \class IStyle tt3-report/API.hpp
     /// \brief An abstract interface to a "formatting style" of report eement.
     class TT3_REPORT_PUBLIC IStyle
@@ -382,18 +425,6 @@ namespace tt3::report
         ///     the left edge of list item texts; no value == inherit
         ///     from parent.
         virtual auto    indent() const -> TypographicSizeOpt = 0;
-
-        /// \brief
-        ///     Returns the resolved indent between the left edge
-        ///     of the list and the left edge of list item texts.
-        /// \return
-        ///     If this style itself does not specify the indent, the
-        ///     default list style from the same report template is
-        ///     used, then the report template itself.
-        /// \return
-        ///     The resolved indent between the left edge of the
-        ///     list and the left edge of list item texts.
-        TypographicSize resolveIndent() const;
     };
 
     class TT3_REPORT_PUBLIC ITableStyle

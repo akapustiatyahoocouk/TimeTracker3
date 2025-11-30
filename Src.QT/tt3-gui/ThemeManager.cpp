@@ -21,10 +21,10 @@ struct ThemeManager::_Impl
 {
     _Impl()
     {
-#define REGISTER(Subsystem)                     \
-        registry.insert(                        \
-            Subsystem::instance()->mnemonic(),  \
-            Subsystem::instance())
+#define REGISTER(Theme)                     \
+        registry.insert(                    \
+            Theme::instance()->mnemonic(),  \
+            Theme::instance())
 
         REGISTER(StandardThemes::System);
         REGISTER(StandardThemes::Light);
