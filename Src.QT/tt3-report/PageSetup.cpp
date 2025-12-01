@@ -20,13 +20,13 @@ using namespace tt3::report;
 //////////
 //  Construction/destruction/assignment
 PageSetup::PageSetup(
-    ) : _pageWidth(TypographicSize(210, TypographicUnit::Millimeter)),
-        _pageHeight(TypographicSize(297, TypographicUnit::Millimeter)),
+    ) : _pageWidth(TypographicSize::mm(210)),
+        _pageHeight(TypographicSize::mm(297)),
         _pageOrientation(PageOrientation::Portrait),
-        _leftMargin(TypographicSize(20, TypographicUnit::Millimeter)),
-        _rightMargin(TypographicSize(20, TypographicUnit::Millimeter)),
-        _topMargin(TypographicSize(20, TypographicUnit::Millimeter)),
-        _bottomMargin(TypographicSize(20, TypographicUnit::Millimeter))
+        _leftMargin(TypographicSize::mm(20)),
+        _rightMargin(TypographicSize::mm(20)),
+        _topMargin(TypographicSize::mm(20)),
+        _bottomMargin(TypographicSize::mm(20))
 {
 }
 

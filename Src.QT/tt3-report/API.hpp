@@ -29,5 +29,6 @@
 
 #include "tt3-report/DataTypes.hpp"
 #include "tt3-report/ReportTemplate.hpp"
+#include "tt3-report/BasicReportTemplate.hpp"
 
 //  End of tt3-report/API.hpp

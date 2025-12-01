@@ -31,6 +31,31 @@ TypographicSize::TypographicSize(float amount, const TypographicUnit & unit)
 {
 }
 
+auto TypographicSize::cm(float amount) -> TypographicSize
+{
+    return TypographicSize(amount, TypographicUnit::Centimeter);
+}
+
+auto TypographicSize::mm(float amount) -> TypographicSize
+{
+    return TypographicSize(amount, TypographicUnit::Millimeter);
+}
+
+auto TypographicSize::in(float amount) -> TypographicSize
+{
+    return TypographicSize(amount, TypographicUnit::Inch);
+}
+
+auto TypographicSize::pc(float amount) -> TypographicSize
+{
+    return TypographicSize(amount, TypographicUnit::Pica);
+}
+
+auto TypographicSize::pt(float amount) -> TypographicSize
+{
+    return TypographicSize(amount, TypographicUnit::Point);
+}
+
 //////////
 //  Operators
 bool TypographicSize::operator == (const TypographicSize & op2) const

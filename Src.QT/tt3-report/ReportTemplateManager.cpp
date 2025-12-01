@@ -26,7 +26,7 @@ struct ReportTemplateManager::_Impl
             ReportTemplate::instance()->mnemonic(), \
             ReportTemplate::instance())
 
-        //  TODO standard report templates REGISTER(StandardReportTemplates::Dark);
+        REGISTER(BasicReportTemplate);
     }
 
     tt3::util::Mutex                    guard;

@@ -4,6 +4,7 @@ TEMPLATE = lib
 DEFINES += TT3_REPORT_LIBRARY
 
 SOURCES += \
+    BasicReportTemplate.cpp \
     BorderType.cpp \
     ColorSpec.cpp \
     Component.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
 
 HEADERS += \
     API.hpp \
+    BasicReportTemplate.hpp \
     Classes.hpp \
     Components.hpp \
     DataTypes.hpp \

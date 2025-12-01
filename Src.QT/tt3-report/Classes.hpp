@@ -27,6 +27,16 @@ namespace tt3::report
     class TT3_REPORT_PUBLIC ILinkStyle;
     class TT3_REPORT_PUBLIC ISectionStyle;
 
+    class TT3_REPORT_PUBLIC BasicReportTemplate;
+    class TT3_REPORT_PUBLIC BasicStyle;
+    class TT3_REPORT_PUBLIC BasicCharacterStyle;
+    class TT3_REPORT_PUBLIC BasicBlockStyle;
+    class TT3_REPORT_PUBLIC BasicParagraphStyle;
+    class TT3_REPORT_PUBLIC BasicListStyle;
+    class TT3_REPORT_PUBLIC BasicTableStyle;
+    class TT3_REPORT_PUBLIC BasicLinkStyle;
+    class TT3_REPORT_PUBLIC BasicSectionStyle;
+
     //  Collections
     using ReportTemplates = QSet<IReportTemplate*>;
     using Styles = QSet<IStyle*>;
@@ -37,6 +47,16 @@ namespace tt3::report
     using TableStyles = QSet<ITableStyle*>;
     using LinkStyles = QSet<ILinkStyle*>;
     using SectionStyles = QSet<ISectionStyle*>;
+
+    using BasicReportTemplates = QSet<BasicReportTemplate*>;
+    using BasicStyles = QSet<BasicStyle*>;
+    using BasicCharacterStyles = QSet<BasicCharacterStyle*>;
+    using BasicBlockStyles = QSet<BasicBlockStyle*>;
+    using BasicParagraphStyles = QSet<BasicParagraphStyle*>;
+    using BasicListStyles = QSet<BasicListStyle*>;
+    using BasicTableStyles = QSet<BasicTableStyle*>;
+    using BasicLinkStyles = QSet<BasicLinkStyle*>;
+    using BasicSectionStyles = QSet<BasicSectionStyle*>;
 }
 
 //  End of tt3-report/Classes.hpp

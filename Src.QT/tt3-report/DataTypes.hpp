@@ -132,11 +132,51 @@ namespace tt3::report
         ///     The unit in which the typographic size is expressed.
         explicit TypographicSize(
                 float amount,
-                const TypographicUnit & unit = TypographicUnit::Point
+                const TypographicUnit & unit
             );
 
         //  The default copy constructor, destructor and
         //  assignment operator are all OK
+
+        /// \brief
+        ///     Creates a TypographicSize measured in centimeters.
+        /// \param amount
+        ///     The number of centimeters.
+        /// \return
+        ///     The TypographicSize with that many centimeters.
+        static auto     cm(float amount) -> TypographicSize;
+
+        /// \brief
+        ///     Creates a TypographicSize measured in millimeters.
+        /// \param amount
+        ///     The number of millimeters.
+        /// \return
+        ///     The TypographicSize with that many millimeters.
+        static auto     mm(float amount) -> TypographicSize;
+
+        /// \brief
+        ///     Creates a TypographicSize measured in inches.
+        /// \param amount
+        ///     The number of inches.
+        /// \return
+        ///     The TypographicSize with that many inches.
+        static auto     in(float amount) -> TypographicSize;
+
+        /// \brief
+        ///     Creates a TypographicSize measured in c.
+        /// \param amount
+        ///     The number of inches.
+        /// \return
+        ///     The TypographicSize with that many inches.
+        static auto     pc(float amount) -> TypographicSize;
+
+        /// \brief
+        ///     Creates a TypographicSize measured in points.
+        /// \param amount
+        ///     The number of points.
+        /// \return
+        ///     The TypographicSize with that many points.
+        static auto     pt(float amount) -> TypographicSize;
 
         //////////
         //  Operators
@@ -150,7 +190,7 @@ namespace tt3::report
         ///     The 2nd TypographicSize to compare this TypographicSize to.
         /// \return
         ///     True if the two TypographicSizes are eequal, else false.
-        bool        operator == (const TypographicSize & op2) const;
+        bool            operator == (const TypographicSize & op2) const;
 
         /// \brief
         ///     Compares two TypographicSizes for equality.
@@ -161,7 +201,7 @@ namespace tt3::report
         ///     The 2nd TypographicSize to compare this TypographicSize to.
         /// \return
         ///     False if the two TypographicSizes are eequal, else true.
-        bool        operator != (const TypographicSize & op2) const;
+        bool            operator != (const TypographicSize & op2) const;
 
         /// \brief
         ///     Compares two TypographicSizes for order.
@@ -173,7 +213,7 @@ namespace tt3::report
         /// \return
         ///     True if this TypographicSize is "less than"
         ///     the 2nd TypographicSize, else false.
-        bool        operator <  (const TypographicSize & op2) const;
+        bool            operator <  (const TypographicSize & op2) const;
 
         /// \brief
         ///     Compares two TypographicSizes for order.
@@ -185,7 +225,7 @@ namespace tt3::report
         /// \return
         ///     True if this TypographicSize is "less than or equal to"
         ///     the 2nd TypographicSize, else false.
-        bool        operator <= (const TypographicSize & op2) const;
+        bool            operator <= (const TypographicSize & op2) const;
 
         /// \brief
         ///     Compares two TypographicSizes for order.
@@ -197,7 +237,7 @@ namespace tt3::report
         /// \return
         ///     True if this TypographicSize is "greater than"
         ///     the 2nd TypographicSize, else false.
-        bool        operator >  (const TypographicSize & op2) const;
+        bool            operator >  (const TypographicSize & op2) const;
 
         /// \brief
         ///     Compares two TypographicSizes for order.
@@ -209,7 +249,7 @@ namespace tt3::report
         /// \return
         ///     True if this TypographicSize is "greater than or equal to"
         ///     the 2nd TypographicSize, else false.
-        bool        operator >= (const TypographicSize & op2) const;
+        bool            operator >= (const TypographicSize & op2) const;
 
         //////////
         //  Operations

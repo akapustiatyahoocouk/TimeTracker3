@@ -2,3 +2,6 @@
 DisplayName=Отчётность TimeTracker3
 Description=Определяет сервисы отчётности для TimeTracker3
 Copyright=Авторское право (C) {0}, Андрей Капустин
+
+[BasicReportTemplate]
+DisplayName=Базовый (предопределен)

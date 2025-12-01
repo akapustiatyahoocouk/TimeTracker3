@@ -65,29 +65,29 @@ namespace tt3::report
         virtual auto    linkStyles() const -> LinkStyles;
         virtual auto    sectionStyles() const -> SectionStyles;
 
-        virtual auto    findStyleByName(
-                                const QString & name
+        virtual auto    findStyleByMnemonic(
+                                const Mnemonic & mnemonic
                             ) const -> IStyle * = 0;
-        virtual auto    findCharacterStyleByName(
-                                const QString & name
+        virtual auto    findCharacterStyleByMnemonic(
+                                const Mnemonic & mnemonic
                             ) const -> ICharacterStyle *;
-        virtual auto    findBlockStyleByName(
-                                const QString & name
+        virtual auto    findBlockStyleByMnemonic(
+                                const Mnemonic & mnemonic
                             ) const -> IBlockStyle *;
-        virtual auto    findParagraphStyleByName(
-                                const QString & name
+        virtual auto    findParagraphStyleByMnemonic(
+                                const Mnemonic & mnemonic
                             ) const -> IParagraphStyle *;
-        virtual auto    findListStyleByName(
-                                const QString & name
+        virtual auto    findListStyleByMnemonic(
+                                const Mnemonic & mnemonic
                             ) const -> IListStyle *;
-        virtual auto    findTableStyleByName(
-                                const QString & name
+        virtual auto    findTableStyleByMnemonic(
+                                const Mnemonic & mnemonic
                             ) const -> ITableStyle *;
-        virtual auto    findLinkStyleByName(
-                                const QString & name
+        virtual auto    findLinkStyleByMnemonic(
+                                const Mnemonic & mnemonic
                             ) const -> ILinkStyle *;
-        virtual auto    findSectionStyleByName(
-                                const QString & name
+        virtual auto    findSectionStyleByMnemonic(
+                                const Mnemonic & mnemonic
                             ) const -> ISectionStyle *;
 
         /// \brief
