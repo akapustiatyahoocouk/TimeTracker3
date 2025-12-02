@@ -49,18 +49,23 @@ namespace tt3::tools::backup
         /// \brief A type alias to improve code readability.
         using Mnemonic = tt3::util::Mnemonic;
         /// \brief A type alias to improve code readability.
-        using Subsystem = tt3::util::ISubsystem;
+        using ISubsystem = tt3::util::ISubsystem;
+        /// \brief A type alias to improve code readability.
+        using IPlugin = tt3::util::IPlugin;
 
+        virtual IPlugin *       plugin() const override;
         virtual Mnemonic        mnemonic() const override;
         virtual QString         displayName() const override;
         virtual QString         description() const override;
         virtual QString         copyright() const override;
         virtual QVersionNumber  version() const override;
         virtual QString         buildNumber() const override;
-        virtual Subsystem *     subsystem() const override;
+        virtual ISubsystem *    subsystem() const override;
         virtual Resources *     resources() const override;
         virtual Settings *      settings() override;
         virtual const Settings *settings() const override;
+        virtual void            iniialize() override;
+        virtual void            deiniialize() override;
     };
 }
 

@@ -25,6 +25,11 @@ Component::~Component() {}
 
 //////////
 //  IComponent
+IPlugin * Component::plugin() const
+{
+    return nullptr;
+}
+
 Mnemonic Component::mnemonic() const
 {
     return M(tt3-util);
@@ -76,6 +81,14 @@ Component::Settings * Component::settings()
 const Component::Settings * Component::settings() const
 {
     return Settings::instance();
+}
+
+void Component::iniialize()
+{
+}
+
+void Component::deiniialize()
+{
 }
 
 //////////

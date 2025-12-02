@@ -25,6 +25,11 @@ Component::~Component() {}
 
 //////////
 //  IComponent
+Component::IPlugin * Component::plugin() const
+{
+    return nullptr;
+}
+
 auto Component::mnemonic(
     ) const -> tt3::util::Mnemonic
 {
@@ -81,6 +86,14 @@ auto Component::settings(
     ) const -> const Component::Settings *
 {
     return Settings::instance();
+}
+
+void Component::iniialize()
+{
+}
+
+void Component::deiniialize()
+{
 }
 
 //////////

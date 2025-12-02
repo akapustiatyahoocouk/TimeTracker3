@@ -50,6 +50,7 @@ namespace tt3::util
         //////////
         //  IComponent
     public:
+        virtual IPlugin *       plugin() const override;
         virtual Mnemonic        mnemonic() const override;
         virtual QString         displayName() const override;
         virtual QString         description() const override;
@@ -60,6 +61,8 @@ namespace tt3::util
         virtual Resources *     resources() const override;
         virtual Settings *      settings() override;
         virtual const Settings *settings() const override;
+        virtual void            iniialize() override;
+        virtual void            deiniialize() override;
     };
 }
 

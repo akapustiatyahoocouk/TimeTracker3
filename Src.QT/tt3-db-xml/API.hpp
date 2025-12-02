@@ -25,6 +25,7 @@
 //  db-db-xml components
 #include "tt3-db-xml/Linkage.hpp"
 #include "tt3-db-xml/Classes.hpp"
+#include "tt3-db-xml/Plugins.hpp"
 #include "tt3-db-xml/Components.hpp"
 
 #include "tt3-db-xml/DatabaseType.hpp"

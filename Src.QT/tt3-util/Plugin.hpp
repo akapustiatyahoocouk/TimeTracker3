@@ -22,11 +22,15 @@ namespace tt3::util
     ///     An abstract interface to a "plugin" - an agent discovered
     ///     and instantiated at runtime.
     /// \details
-    ///     Any implementing concrete class P must provide:
-    ///     -   A public default constructor T::T().
-    ///     -   A public destructor T::~T().
-    class TT3_UTIL_PUBLIC IPlugin
+    ///     Any implementing concrete class P must be a SINGLETTON!
+    class TT3_UTIL_PUBLIC  IPlugin
     {
+        //////////
+        //  Types
+    public:
+        /// \brief A type alias to improve code readability.
+        using Mnemonic = tt3::util::Mnemonic;
+
         //////////
         //  This is an interface
     protected:
@@ -161,17 +165,16 @@ namespace tt3::util
 }
 
 #define BEGIN_PLUGIN_TABLE()                                                \
-    extern "C"                                                              \
+    extern "C" /* GCC -Weffc++ requires a prototype! */                     \
     Q_DECL_EXPORT void PluginProvider(QSet<tt3::util::IPlugin*> & plugins); \
     extern "C"                                                              \
     Q_DECL_EXPORT void PluginProvider(QSet<tt3::util::IPlugin*> & plugins)  \
     {
 
-#define EXPORT_PLUGIN(PluginClazz)                                      \
-        static PluginClazz plugin##PluginClazz;                         \
-        plugins.insert(&plugin##PluginClazz);
+#define EXPORT_PLUGIN(PluginClazz)              \
+        plugins.insert(PluginClazz::instance());
 
-#define END_PLUGIN_TABLE()                                              \
+#define END_PLUGIN_TABLE()  \
     }
 
 //  End of tt3-util/Plugin.cpp

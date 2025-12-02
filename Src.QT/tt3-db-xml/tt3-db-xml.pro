@@ -15,7 +15,7 @@ SOURCES += \
     DatabaseType.cpp \
     Event.cpp \
     Object.cpp \
-    Plugins.cpp \
+    Plugin.cpp \
     Principal.cpp \
     PrivateActivity.cpp \
     PrivateTask.cpp \
@@ -43,6 +43,7 @@ HEADERS += \
     Event.hpp \
     Linkage.hpp \
     Object.hpp \
+    Plugins.hpp \
     Principal.hpp \
     PrivateActivity.hpp \
     PrivateTask.hpp \

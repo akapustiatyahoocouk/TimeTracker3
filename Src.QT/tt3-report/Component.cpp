@@ -25,6 +25,11 @@ Component::~Component() {}
 
 //////////
 //  IComponent
+Component::IPlugin * Component::plugin() const
+{
+    return nullptr;
+}
+
 Component::Mnemonic Component::mnemonic() const
 {
     return M(tt3-report);
@@ -58,7 +63,7 @@ QString Component::buildNumber() const
     return TT3_BUILD_DATE "-" TT3_BUILD_TIME;
 }
 
-tt3::util::ISubsystem * Component::subsystem() const
+Component::ISubsystem * Component::subsystem() const
 {
     return tt3::util::StandardSubsystems::Reporting::instance();
 }
@@ -76,6 +81,14 @@ Component::Settings * Component::settings()
 const Component::Settings * Component::settings() const
 {
     return Settings::instance();
+}
+
+void Component::iniialize()
+{
+}
+
+void Component::deiniialize()
+{
 }
 
 //////////

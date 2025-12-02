@@ -135,7 +135,7 @@ void BeneficiaryImpl::setDescription(
 
 //////////
 //  Operations (associations)
-auto BeneficiaryImpl:: workloads(
+auto BeneficiaryImpl::workloads(
         const Credentials & credentials
     ) const -> Workloads
 {

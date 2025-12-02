@@ -30,11 +30,18 @@ namespace tt3::util
         //  This is an interface
     protected:
         IComponent() = default;
-        virtual ~IComponent() = default;
+        virtual ~IComponent() noexcept = default;
 
         //////////
         //  Operations
     public:
+        /// \brief
+        ///     Returns the plugin that defines this component.
+        /// \return
+        ///     The plugin that defines this component; nullptr == none
+        ///     (i.e. this is a core component not defined by a plugin).
+        virtual IPlugin*plugin() const = 0;
+
         /// \brief
         ///     Returns the mnemonic identifier of this component.
         /// \details
@@ -132,6 +139,18 @@ namespace tt3::util
         ///     The settings of this component.
         virtual auto    settings(
                             ) const -> const Settings * = 0;
+
+        /// \brief
+        ///     Initializes this component; has no effect if
+        ///     the component has already been initialized.
+        /// \exception Exception
+        ///     If the component initialization fails.
+        virtual void    iniialize() = 0;
+
+        /// \brief
+        ///     Deinitializes this component; has no effect if
+        ///     the component has not been initialized.
+        virtual void    deiniialize() = 0;
     };
 
     /// \class ComponentManager tt3-util/API.hpp
@@ -191,6 +210,9 @@ namespace tt3::util
         static auto     findComponent(
                                 const Mnemonic & mnemonic
                             ) -> IComponent *;
+
+        static void     initializeComponents();
+        static void     deinitializeComponents();
 
         /// \brief
         ///     Loads Settings of all registered components from

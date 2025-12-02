@@ -20,22 +20,16 @@ using namespace tt3::db::api;
 //////////
 //  Singleton
 IMPLEMENT_SINGLETON(Component)
-
-Component::Component()
-{
-    qRegisterMetaType<ChangeNotification>();
-    qRegisterMetaType<DatabaseClosedNotification>();
-    qRegisterMetaType<ObjectCreatedNotification>();
-    qRegisterMetaType<ObjectDestroyedNotification>();
-    qRegisterMetaType<ObjectModifiedNotification>();
-}
-
-Component::~Component()
-{
-}
+Component::Component() {}
+Component::~Component() {}
 
 //////////
 //  IComponent
+Component::IPlugin * Component::plugin() const
+{
+    return nullptr;
+}
+
 tt3::util::Mnemonic Component::mnemonic() const
 {
     return M(tt3-db-api);
@@ -69,7 +63,7 @@ QString Component::buildNumber() const
     return TT3_BUILD_DATE "-" TT3_BUILD_TIME;
 }
 
-tt3::util::ISubsystem * Component::subsystem() const
+Component::ISubsystem * Component::subsystem() const
 {
     return tt3::util::StandardSubsystems::Storage::instance();
 }
@@ -87,6 +81,19 @@ Component::Settings * Component::settings()
 const Component::Settings * Component::settings() const
 {
     return Settings::instance();
+}
+
+void Component::iniialize()
+{
+    qRegisterMetaType<ChangeNotification>();
+    qRegisterMetaType<DatabaseClosedNotification>();
+    qRegisterMetaType<ObjectCreatedNotification>();
+    qRegisterMetaType<ObjectDestroyedNotification>();
+    qRegisterMetaType<ObjectModifiedNotification>();
+}
+
+void Component::deiniialize()
+{
 }
 
 //////////

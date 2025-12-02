@@ -22,19 +22,11 @@ namespace
     class Plugin final
         :   public virtual tt3::util::IPlugin
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Plugin)
+        DECLARE_SINGLETON(Plugin)
 
         //////////
-        //  Construction/destruction
+        //  tt3::util::IPlugin
     public:
-        Plugin() = default;
-        virtual ~Plugin() = default;
-
-        //////////
-        //  util::IPlugin
-    public:
-        using Mnemonic = tt3::util::Mnemonic;
-
         virtual Mnemonic        mnemonic() const override
         {
             return M(tt3-tools-restore);
@@ -74,6 +66,10 @@ namespace
             tt3::util::ToolManager::registerTool(RestoreTool::instance());
         }
     };
+
+    IMPLEMENT_SINGLETON(Plugin)
+    Plugin::Plugin() {}
+    Plugin::~Plugin() {}
 }
 
 BEGIN_PLUGIN_TABLE()

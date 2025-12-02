@@ -21,6 +21,7 @@ struct ComponentManager::_Impl
 {
     Mutex                       guard;
     QMap<Mnemonic, IComponent*> registry;
+    Components                  initializedComponents;
 };
 
 namespace
@@ -90,6 +91,67 @@ IComponent * ComponentManager::findComponent(const Mnemonic & mnemonic)
         }
     }
     return result;
+}
+
+void ComponentManager::initializeComponents()
+{
+    _Impl * impl = _impl();
+    Lock _(impl->guard);
+
+    for (bool keepGoing = true; keepGoing; )
+    {
+        keepGoing = false;
+        for (auto component : impl->registry.values())
+        {
+            if (!impl->initializedComponents.contains(component))
+            {   //  Try this one!
+                try
+                {
+                    component->iniialize(); //  may throw
+                    impl->initializedComponents.insert(component);
+                    keepGoing = true;
+                }
+                catch (const Exception & ex)
+                {   //  OOPS! Log, but suppress
+                    qCritical() << ex;
+                }
+                catch (const Error & ex)
+                {   //  OOPS! Log, but suppress
+                    qCritical() << ex;
+                }
+                catch (...)
+                {   //  OOPS! Suppress, though
+                }
+            }
+        }
+
+    }
+}
+
+void ComponentManager::deinitializeComponents()
+{
+    _Impl * impl = _impl();
+    Lock _(impl->guard);
+
+    for (auto component : impl->initializedComponents)
+    {
+        try
+        {   //  Be defensive - cleanup as many as possible
+            component->deiniialize();
+        }
+        catch (const Exception & ex)
+        {   //  OOPS! Log, but suppress
+            qCritical() << ex;
+        }
+        catch (const Error & ex)
+        {   //  OOPS! Log, but suppress
+            qCritical() << ex;
+        }
+        catch (...)
+        {   //  OOPS! Suppress, though
+        }
+    }
+    impl->initializedComponents.clear();
 }
 
 void ComponentManager::loadComponentSettings()

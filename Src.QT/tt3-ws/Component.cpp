@@ -20,46 +20,16 @@ using namespace tt3::ws;
 //////////
 //  Singleton
 IMPLEMENT_SINGLETON(Component)
-
-Component::Component()
-{
-    qRegisterMetaType<ChangeNotification>();
-    qRegisterMetaType<WorkspaceClosedNotification>();
-    qRegisterMetaType<ObjectCreatedNotification>();
-    qRegisterMetaType<ObjectDestroyedNotification>();
-    qRegisterMetaType<ObjectModifiedNotification>();
-
-    //  Enable objects and object pointers for QVariant
-    qRegisterMetaType<ObjectImpl>();
-    qRegisterMetaType<PrincipalImpl>();
-    qRegisterMetaType<UserImpl>();
-    qRegisterMetaType<AccountImpl>();
-
-    qRegisterMetaType<Object>();
-    qRegisterMetaType<Principal>();
-    qRegisterMetaType<User>();
-    qRegisterMetaType<Account>();
-    qRegisterMetaType<ActivityType>();
-    qRegisterMetaType<Activity>();
-    qRegisterMetaType<PublicActivity>();
-    qRegisterMetaType<PrivateActivity>();
-    qRegisterMetaType<Task>();
-    qRegisterMetaType<PublicTask>();
-    qRegisterMetaType<PrivateTask>();
-    qRegisterMetaType<Work>();
-    qRegisterMetaType<Event>();
-    qRegisterMetaType<Workload>();
-    qRegisterMetaType<Project>();
-    qRegisterMetaType<WorkStream>();
-    qRegisterMetaType<Beneficiary>();
-}
-
-Component::~Component()
-{
-}
+Component::Component() {}
+Component::~Component() {}
 
 //////////
 //  IComponent
+Component::IPlugin * Component::plugin() const
+{
+    return nullptr;
+}
+
 Component::Mnemonic Component::mnemonic() const
 {
     return M(tt3-ws);
@@ -93,7 +63,7 @@ QString Component::buildNumber() const
     return TT3_BUILD_DATE "-" TT3_BUILD_TIME;
 }
 
-tt3::util::ISubsystem * Component::subsystem() const
+Component::ISubsystem * Component::subsystem() const
 {
     return tt3::util::StandardSubsystems::Storage::instance();
 }
@@ -111,6 +81,43 @@ Component::Settings * Component::settings()
 const Component::Settings * Component::settings() const
 {
     return Settings::instance();
+}
+
+void Component::iniialize()
+{
+    qRegisterMetaType<ChangeNotification>();
+    qRegisterMetaType<WorkspaceClosedNotification>();
+    qRegisterMetaType<ObjectCreatedNotification>();
+    qRegisterMetaType<ObjectDestroyedNotification>();
+    qRegisterMetaType<ObjectModifiedNotification>();
+
+    //  Enable objects and object pointers for QVariant
+    qRegisterMetaType<ObjectImpl>();
+    qRegisterMetaType<PrincipalImpl>();
+    qRegisterMetaType<UserImpl>();
+    qRegisterMetaType<AccountImpl>();
+
+    qRegisterMetaType<Object>();
+    qRegisterMetaType<Principal>();
+    qRegisterMetaType<User>();
+    qRegisterMetaType<Account>();
+    qRegisterMetaType<ActivityType>();
+    qRegisterMetaType<Activity>();
+    qRegisterMetaType<PublicActivity>();
+    qRegisterMetaType<PrivateActivity>();
+    qRegisterMetaType<Task>();
+    qRegisterMetaType<PublicTask>();
+    qRegisterMetaType<PrivateTask>();
+    qRegisterMetaType<Work>();
+    qRegisterMetaType<Event>();
+    qRegisterMetaType<Workload>();
+    qRegisterMetaType<Project>();
+    qRegisterMetaType<WorkStream>();
+    qRegisterMetaType<Beneficiary>();
+}
+
+void Component::deiniialize()
+{
 }
 
 //////////

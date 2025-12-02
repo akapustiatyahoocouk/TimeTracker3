@@ -159,8 +159,9 @@ void Application::_initialize()
     //QGuiApplication::setApplicationDisplayName(tt3::util::ProductInformation::applicationDisplayName());
 
     _registerStandardComponents();
-    tt3::util::PluginManager::loadPlugins();
+    tt3::util::PluginManager::loadPlugins();    //  will register components defined by plugins
     tt3::util::ComponentManager::loadComponentSettings();
+    tt3::util::ComponentManager::initializeComponents();
 
     tt3::util::theCurrentLocale = tt3::gui::Component::Settings::instance()->uiLocale;
     _selectActiveTheme();
@@ -241,6 +242,9 @@ void Application::_cleanup()
     Q_ASSERT(tt3::gui::theCurrentSkin != nullptr);
     tt3::gui::theCurrentSkin->deactivate();
     tt3::gui::theCurrentSkin = nullptr;
+
+    //  Cleanup registrie
+    tt3::util::ComponentManager::deinitializeComponents();
 
     //  Done
     tt3::util::ComponentManager::saveComponentSettings();
