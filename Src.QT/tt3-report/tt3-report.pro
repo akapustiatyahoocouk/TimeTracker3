@@ -4,7 +4,15 @@ TEMPLATE = lib
 DEFINES += TT3_REPORT_LIBRARY
 
 SOURCES += \
+    BasicBlockStyle.cpp \
+    BasicCharacterStyle.cpp \
+    BasicLinkStyle.cpp \
+    BasicListStyle.cpp \
+    BasicParagraphStyle.cpp \
     BasicReportTemplate.cpp \
+    BasicSectionStyle.cpp \
+    BasicStyle.cpp \
+    BasicTableStyle.cpp \
     BorderType.cpp \
     ColorSpec.cpp \
     Component.cpp \

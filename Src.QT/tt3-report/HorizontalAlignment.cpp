@@ -30,7 +30,8 @@ namespace
         { HorizontalAlignment::Default, "Default" },
         { HorizontalAlignment::Left   , "Left"    },
         { HorizontalAlignment::Center , "Center"  },
-        { HorizontalAlignment::Right  , "Right"   }
+        { HorizontalAlignment::Right  , "Right"   },
+        { HorizontalAlignment::Justify, "Justify" }
     };
 }
 

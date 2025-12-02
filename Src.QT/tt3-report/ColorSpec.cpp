@@ -37,6 +37,12 @@ ColorSpec::ColorSpec(const QColor & customColor)
 {
 }
 
+ColorSpec::ColorSpec(int r, int g, int b, int a)
+    :   _colorClass(ColorClass::Custom),
+        _customColor(r, g, b, a)
+{
+}
+
 //////////
 //  Operators
 bool ColorSpec::operator == (const ColorSpec & op2) const

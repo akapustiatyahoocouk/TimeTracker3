@@ -88,6 +88,13 @@ bool TypographicSize::operator >= (const TypographicSize & op2) const
     return pointSize() >= op2.pointSize();
 }
 
+//////////
+//  Operations
+TypographicSize TypographicSize::scaled(float scaleFactor) const
+{
+    return TypographicSize(_amount * scaleFactor, _unit);
+}
+
 //  Formatting/parsing
 namespace tt3::util
 {

@@ -24,18 +24,385 @@ BasicReportTemplate::BasicReportTemplate()
         _defaultFontSpecs{FontSpec::SansSerif},
         _defaultFontSize(TypographicSize::pt(12)),
         _defaultFontStyle(FontStyle::Plain),
-        _defaultTextColor(ColorSpec::ColorClass::Default),
-        _defaultBackgroundColor(ColorSpec::ColorClass::Default),
+        _defaultTextColor(ColorSpec::Default),
+        _defaultBackgroundColor(ColorSpec::Default),
         _defaultListIndent(TypographicSize::in(0.25)),
         _defaultTableBorderType(BorderType::Single),
         _defaultLinkUnderlineMode(UnderlineMode::Single),
         _defaultPageNumberPlacement(PageNumberPlacement::Default)
 {
+    _addStyle(
+        new BasicSectionStyle(
+            ISectionStyle::DefaultStyleName,
+            _defaultFontSpecs,
+            _defaultFontSize,
+            FontStyle::Bold,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            PageNumberPlacement::BottomRight));
+
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::TitleStyleName,
+            _defaultFontSpecs,
+            _defaultFontSize.scaled(4),
+            FontStyle::Bold,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(2),
+            TypographicSize::pt(2),
+            HorizontalAlignment::Center,
+            BorderType::None));
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::SubtitleStyleName,
+            _defaultFontSpecs,
+            _defaultFontSize.scaled(2),
+            _defaultFontStyle,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(2),
+            TypographicSize::pt(2),
+            HorizontalAlignment::Center,
+            BorderType::None));
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::DefaultStyleName,
+            _defaultFontSpecs,
+            _defaultFontSize,
+            _defaultFontStyle,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(2),
+            TypographicSize::pt(2),
+            HorizontalAlignment::Left,
+            BorderType::None));
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::Heading1StyleName,
+            _defaultFontSpecs,
+            _defaultFontSize.scaled(2.4f),
+            FontStyle::Bold,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(2),
+            TypographicSize::pt(2),
+            HorizontalAlignment::Left,
+            BorderType::None));
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::Heading2StyleName,
+            _defaultFontSpecs,
+            _defaultFontSize.scaled(2.2f),
+            FontStyle::Bold,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(2),
+            TypographicSize::pt(2),
+            HorizontalAlignment::Left,
+            BorderType::None));
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::Heading3StyleName,
+            _defaultFontSpecs,
+            _defaultFontSize.scaled(2.0f),
+            FontStyle::Bold,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(2),
+            TypographicSize::pt(2),
+            HorizontalAlignment::Left,
+            BorderType::None));
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::Heading4StyleName,
+            _defaultFontSpecs,
+            _defaultFontSize.scaled(1.8f),
+            FontStyle::Bold,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(2),
+            TypographicSize::pt(2),
+            HorizontalAlignment::Left,
+            BorderType::None));
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::Heading5StyleName,
+            _defaultFontSpecs,
+            _defaultFontSize.scaled(1.6f),
+            FontStyle::Bold,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(2),
+            TypographicSize::pt(2),
+            HorizontalAlignment::Left,
+            BorderType::None));
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::Heading6StyleName,
+            _defaultFontSpecs,
+            _defaultFontSize.scaled(1.5f),
+            FontStyle::Bold,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(2),
+            TypographicSize::pt(2),
+            HorizontalAlignment::Left,
+            BorderType::None));
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::Heading7StyleName,
+            _defaultFontSpecs,
+            _defaultFontSize.scaled(1.4f),
+            FontStyle::Bold,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(2),
+            TypographicSize::pt(2),
+            HorizontalAlignment::Left,
+            BorderType::None));
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::Heading8StyleName,
+            _defaultFontSpecs,
+            _defaultFontSize.scaled(1.3f),
+            FontStyle::Bold,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(2),
+            TypographicSize::pt(2),
+            HorizontalAlignment::Left,
+            BorderType::None));
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::Heading9StyleName,
+            _defaultFontSpecs,
+            _defaultFontSize.scaled(1.2f),
+            FontStyle::Bold,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(2),
+            TypographicSize::pt(2),
+            HorizontalAlignment::Left,
+            BorderType::None));
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::Toc1StyleName,
+            _defaultFontSpecs,
+            _defaultFontSize,
+            FontStyle::Bold,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(6),
+            TypographicSize::pt(0),
+            HorizontalAlignment::Left,
+            BorderType::None));
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::Toc2StyleName,
+            _defaultFontSpecs,
+            _defaultFontSize,
+            _defaultFontStyle,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(12),
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            HorizontalAlignment::Justify,
+            BorderType::None));
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::Toc3StyleName,
+            _defaultFontSpecs,
+            _defaultFontSize,
+            _defaultFontStyle,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(24),
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            HorizontalAlignment::Justify,
+            BorderType::None));
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::Toc4StyleName,
+            _defaultFontSpecs,
+            _defaultFontSize,
+            _defaultFontStyle,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(36),
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            HorizontalAlignment::Justify,
+            BorderType::None));
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::Toc5StyleName,
+            _defaultFontSpecs,
+            _defaultFontSize,
+            _defaultFontStyle,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(48),
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            HorizontalAlignment::Justify,
+            BorderType::None));
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::Toc6StyleName,
+            _defaultFontSpecs,
+            _defaultFontSize,
+            _defaultFontStyle,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(60),
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            HorizontalAlignment::Justify,
+            BorderType::None));
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::Toc7StyleName,
+            _defaultFontSpecs,
+            _defaultFontSize,
+            _defaultFontStyle,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(72),
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            HorizontalAlignment::Justify,
+            BorderType::None));
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::Toc8StyleName,
+            _defaultFontSpecs,
+            _defaultFontSize,
+            _defaultFontStyle,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(84),
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            HorizontalAlignment::Justify,
+            BorderType::None));
+    _addStyle(
+        new BasicParagraphStyle(
+            IParagraphStyle::Toc9StyleName,
+            _defaultFontSpecs,
+            _defaultFontSize,
+            _defaultFontStyle,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(96),
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            HorizontalAlignment::Justify,
+            BorderType::None));
+
+    _addStyle(
+        new BasicTableStyle(
+            ITableStyle::DefaultStyleName,
+            _defaultFontSpecs,
+            _defaultFontSize,
+            _defaultFontStyle,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::pt(0),
+            TypographicSize::pt(0),
+            TypographicSize::pt(2),
+            TypographicSize::pt(2),
+            _defaultTableBorderType,
+            _defaultTableBorderType));
+
+    _addStyle(
+        new BasicListStyle(
+            IListStyle::DefaultStyleName,
+            _defaultFontSpecs,
+            _defaultFontSize,
+            _defaultFontStyle,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            TypographicSize::in(0.25),
+            TypographicSize::pt(0),
+            TypographicSize::pt(2),
+            TypographicSize::pt(2),
+            _defaultListIndent));
+
+    _addStyle(
+        new BasicLinkStyle(
+            ILinkStyle::DefaultStyleName,
+            _defaultFontSpecs,
+            _defaultFontSize,
+            _defaultFontStyle,
+            QColor(0, 128, 0),
+            _defaultBackgroundColor,
+            _defaultLinkUnderlineMode));
 }
 
 BasicReportTemplate::~BasicReportTemplate()
 {
-    for (auto style : _mapNamesToStyles.values())
+    for (auto style : _styles.values())
     {
         delete style;
     }
@@ -106,16 +473,27 @@ auto BasicReportTemplate::defaultPageNumberPlacement() const -> PageNumberPlacem
 
 auto BasicReportTemplate::styles() const -> Styles
 {
-    QList<BasicStyle*> basicStyles = _mapNamesToStyles.values();
+    QList<BasicStyle*> basicStyles = _styles.values();
     return Styles(basicStyles.cbegin(), basicStyles.cend());
 }
+
 auto BasicReportTemplate::findStyleByMnemonic(
         const Mnemonic & mnemonic
     ) const -> IStyle *
 {
-    return _mapNamesToStyles.contains(mnemonic) ?
-                _mapNamesToStyles[mnemonic] :
+    return _styles.contains(mnemonic) ?
+                _styles[mnemonic] :
                 nullptr;
+}
+
+//////////
+//  Implementation helpers
+void BasicReportTemplate::_addStyle(BasicStyle * style)
+{
+    Q_ASSERT(style != nullptr);
+    Q_ASSERT(!_styles.contains(style->name()));
+
+    _styles[style->name()] = style;
 }
 
 //  End of tt3-report/BasicReportTemplate.cpp

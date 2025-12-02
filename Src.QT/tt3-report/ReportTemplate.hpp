@@ -164,6 +164,9 @@ namespace tt3::report
         //////////
         //  Operations
     public:
+        /// \brief A type alias to improve code readability.
+        using Mnemonic = tt3::util::Mnemonic;
+
         /// \brief
         ///     Returns the ReportTemplate to which this Style belongs.
         /// \details
@@ -179,7 +182,7 @@ namespace tt3::report
         ///     All Styles within a ReportTemplate must have distinct names.
         /// \return
         ///     The name of this Style.
-        virtual QString name() const = 0;
+        virtual auto    name() const -> Mnemonic = 0;
 
         /// \brief
         ///     Returns the list of FontSpecs to use.
@@ -226,6 +229,8 @@ namespace tt3::report
         virtual auto    underlineMode() const -> UnderlineModeOpt = 0;
     };
 
+    /// \class ICharacterStyle tt3-report/API.hpp
+    /// \brief An abstract interface to a "character formatting style" of report eement.
     class TT3_REPORT_PUBLIC ICharacterStyle
         :   public virtual IStyle
     {
@@ -237,6 +242,8 @@ namespace tt3::report
         ICharacterStyle() = default;
     };
 
+    /// \class IBlockStyle tt3-report/API.hpp
+    /// \brief An abstract interface to a "block character formatting style" of report eement.
     class TT3_REPORT_PUBLIC IBlockStyle
         :   public virtual IStyle
     {
@@ -277,6 +284,8 @@ namespace tt3::report
         virtual auto    gapBelow() const -> TypographicSizeOpt = 0;
     };
 
+    /// \class IParagraphStyle tt3-report/API.hpp
+    /// \brief An abstract interface to a "paragraph character formatting style" of report eement.
     class TT3_REPORT_PUBLIC IParagraphStyle
         :   public virtual IBlockStyle
     {
@@ -397,6 +406,8 @@ namespace tt3::report
         virtual auto    borderType() const -> BorderTypeOpt = 0;
     };
 
+    /// \class IListStyle tt3-report/API.hpp
+    /// \brief An abstract interface to a "list character formatting style" of report eement.
     class TT3_REPORT_PUBLIC IListStyle
         :   public virtual IBlockStyle
     {
@@ -427,6 +438,8 @@ namespace tt3::report
         virtual auto    indent() const -> TypographicSizeOpt = 0;
     };
 
+    /// \class ITableStyle tt3-report/API.hpp
+    /// \brief An abstract interface to a "table character formatting style" of report eement.
     class TT3_REPORT_PUBLIC ITableStyle
         :   public virtual IBlockStyle
     {
@@ -449,7 +462,7 @@ namespace tt3::report
     public:
         /// \brief
         ///     Returns the type of border around the table.
-        /// \@return
+        /// \return
         ///     The type of border around the table;
         ///     no value == inherit from parent,
         ///     Default == inherit from ReportTemplate.
@@ -465,6 +478,8 @@ namespace tt3::report
         virtual auto    cellBorderType() const -> BorderTypeOpt = 0;
     };
 
+    /// \class ILinkStyle tt3-report/API.hpp
+    /// \brief An abstract interface to a "link formatting style" of report eement.
     class TT3_REPORT_PUBLIC ILinkStyle
         :   public virtual IStyle
     {
@@ -483,6 +498,8 @@ namespace tt3::report
         inline static const QString DefaultStyleName = "Link.Default"; //$NON-NLS-1$
     };
 
+    /// \class ISectionStyle tt3-report/API.hpp
+    /// \brief An abstract interface to a "section character formatting style" of report eement.
     class TT3_REPORT_PUBLIC ISectionStyle
         :   public virtual IStyle
     {

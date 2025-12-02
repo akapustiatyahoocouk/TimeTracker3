@@ -272,6 +272,16 @@ namespace tt3::report
         ///     The point size of this typographic size.
         float           pointSize() const { return _amount * _unit.points(); }
 
+        /// \brief
+        ///     Returns the scaled variant of this TypographicSize.
+        /// \param scaleFactor
+        ///     The scale factor.
+        /// \return
+        ///     The TypographicSize which uses the same unit as this
+        ///     TypographicSize, but whose amount has been multiplied by the
+        ///     specified scale factor.
+        TypographicSize scaled(float scaleFactor) const;
+
         //////////
         //  Implementation
     private:
@@ -579,7 +589,8 @@ namespace tt3::report
         Default,    ///< Use defaule alignment.
         Left,       ///< Align left.
         Center,     ///< Aligh to center.
-        Right       ///< Align right.
+        Right,      ///< Align right.
+        Justify     ///< Justify left and right.
     };
     using HorizontalAlignmentOpt = std::optional<HorizontalAlignment>;
 
@@ -731,7 +742,7 @@ namespace tt3::report
         //////////
         //  Types
     public:
-        enum class ColorClass
+        enum ColorClass
         {
             Default,    ///< Default color.
             Transparent,///< Transparent color.
@@ -756,6 +767,18 @@ namespace tt3::report
         /// \param customColor
         ///     The custom color.
         ColorSpec(const QColor & customColor);
+
+        /// \brief
+        ///     Constructs a Custom color.
+        /// \param r
+        ///     The red intensity.
+        /// \param g
+        ///     The green intensity.
+        /// \param b
+        ///     The blue intensity.
+        /// \param a
+        ///     The alpha (opacity) channel.
+        ColorSpec(int r, int g, int b, int a = 255);
 
         //  The default copy constructor, destructor and
         //  assignment operator are all OK
