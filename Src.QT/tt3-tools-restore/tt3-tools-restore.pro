@@ -7,7 +7,7 @@ SOURCES += \
     Component.cpp \
     ConfigureRestoreDialog.cpp \
     Exceptions.cpp \
-    Plugins.cpp \
+    Plugin.cpp \
     RestoreProgressDialog.cpp \
     RestoreReader.cpp \
     RestoreTool.cpp
@@ -18,6 +18,7 @@ HEADERS += \
     ConfigureRestoreDialog.hpp \
     Exceptions.hpp \
     Linkage.hpp \
+    Plugins.hpp \
     RestoreProgressDialog.hpp \
     RestoreReader.hpp \
     RestoreTool.hpp

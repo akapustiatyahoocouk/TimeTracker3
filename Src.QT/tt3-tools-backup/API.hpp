@@ -24,6 +24,7 @@
 //////////
 //  tt3-tools-backup components
 #include "tt3-tools-backup/Linkage.hpp"
+#include "tt3-tools-backup/Plugins.hpp"
 #include "tt3-tools-backup/Components.hpp"
 
 #include "tt3-tools-backup/BackupTool.hpp"

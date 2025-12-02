@@ -6,7 +6,7 @@ DEFINES += TT3_SKIN_ADMIN_LIBRARY
 SOURCES += \
     Component.cpp \
     MainFrame.cpp \
-    Plugins.cpp \
+    Plugin.cpp \
     Skin.cpp
 
 HEADERS += \
@@ -15,6 +15,7 @@ HEADERS += \
     Components.hpp \
     Linkage.hpp \
     MainFrame.hpp \
+    Plugins.hpp \
     Skin.hpp
 
 PRECOMPILED_HEADER = API.hpp

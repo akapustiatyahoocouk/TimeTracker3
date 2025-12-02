@@ -27,7 +27,7 @@ Component::~Component() {}
 //  IComponent
 Component::IPlugin * Component::plugin() const
 {
-    return nullptr; //  TODO proper plugin
+    return Plugin::instance();
 }
 
 Component::Mnemonic Component::mnemonic() const
