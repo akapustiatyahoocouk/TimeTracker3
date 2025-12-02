@@ -31,7 +31,7 @@ namespace tt3::gui
     ///     setting groups.
     class TT3_GUI_PUBLIC Preferences
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Preferences)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Preferences)
 
         //////////
         //  Construction/destruction
@@ -103,7 +103,7 @@ namespace tt3::gui
     /// \brief The manager of known Preferences.
     class TT3_GUI_PUBLIC PreferencesManager final
     {
-        UTILITY_CLASS(PreferencesManager)
+        TT3_UTILITY_CLASS(PreferencesManager)
 
         //////////
         //  Operations
@@ -155,7 +155,7 @@ namespace tt3::gui
     class TT3_GUI_PUBLIC GeneralPreferences final
         :   public Preferences
     {
-        DECLARE_SINGLETON(GeneralPreferences)
+        TT3_DECLARE_SINGLETON(GeneralPreferences)
 
         //////////
         //  Preferences
@@ -172,7 +172,7 @@ namespace tt3::gui
     class TT3_GUI_PUBLIC GeneralAppearancePreferences final
         :   public Preferences
     {
-        DECLARE_SINGLETON(GeneralAppearancePreferences)
+        TT3_DECLARE_SINGLETON(GeneralAppearancePreferences)
 
         //////////
         //  Preferences
@@ -189,7 +189,7 @@ namespace tt3::gui
     class TT3_GUI_PUBLIC GeneralStartupPreferences final
         :   public Preferences
     {
-        DECLARE_SINGLETON(GeneralStartupPreferences)
+        TT3_DECLARE_SINGLETON(GeneralStartupPreferences)
 
         //////////
         //  Preferences
@@ -206,7 +206,7 @@ namespace tt3::gui
     class TT3_GUI_PUBLIC GeneralDialogsPreferences final
         :   public Preferences
     {
-        DECLARE_SINGLETON(GeneralDialogsPreferences)
+        TT3_DECLARE_SINGLETON(GeneralDialogsPreferences)
 
         //////////
         //  Preferences

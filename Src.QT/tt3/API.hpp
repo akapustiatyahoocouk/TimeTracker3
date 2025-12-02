@@ -27,7 +27,7 @@
 
 //////////
 //  tt3 components
-#include "tt3/Components.hpp"
+#include "tt3/Component.hpp"
 #include "tt3/Application.hpp"
 
 //  End of tt3/API.hpp

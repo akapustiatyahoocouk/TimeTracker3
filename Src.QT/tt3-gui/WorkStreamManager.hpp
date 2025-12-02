@@ -30,7 +30,7 @@ namespace tt3::gui
         :   public QWidget
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkStreamManager)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkStreamManager)
 
         friend class SelectWorkloadDialog;
         friend class SelectWorkloadsDialog;

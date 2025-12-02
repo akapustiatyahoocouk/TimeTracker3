@@ -19,7 +19,7 @@ using namespace tt3::db::api;
 
 //////////
 //  Singleton
-IMPLEMENT_SINGLETON(DefaultValidator)
+TT3_IMPLEMENT_SINGLETON(DefaultValidator)
 DefaultValidator::DefaultValidator() {}
 DefaultValidator::~DefaultValidator() {}
 
@@ -203,7 +203,7 @@ bool DefaultValidator::_isValidDateTime(
 
 //////////
 //  DefaultValidator::_PrincipalValidator
-IMPLEMENT_SINGLETON(DefaultValidator::_PrincipalValidator)
+TT3_IMPLEMENT_SINGLETON(DefaultValidator::_PrincipalValidator)
 DefaultValidator::_PrincipalValidator::_PrincipalValidator() {}
 DefaultValidator::_PrincipalValidator::~_PrincipalValidator() {}
 
@@ -214,7 +214,7 @@ bool DefaultValidator::_PrincipalValidator::isValidEmailAddress(const QString & 
 
 //////////
 //  DefaultValidator::_UserValidator
-IMPLEMENT_SINGLETON(DefaultValidator::_UserValidator)
+TT3_IMPLEMENT_SINGLETON(DefaultValidator::_UserValidator)
 DefaultValidator::_UserValidator::_UserValidator() {}
 DefaultValidator::_UserValidator::~_UserValidator() {}
 
@@ -246,7 +246,7 @@ bool DefaultValidator::_UserValidator::isValidInactivityTimeout(const Inactivity
 
 //////////
 //  DefaultValidator::_AccountValidator
-IMPLEMENT_SINGLETON(DefaultValidator::_AccountValidator)
+TT3_IMPLEMENT_SINGLETON(DefaultValidator::_AccountValidator)
 DefaultValidator::_AccountValidator::_AccountValidator() {}
 DefaultValidator::_AccountValidator::~_AccountValidator() {}
 
@@ -267,7 +267,7 @@ bool DefaultValidator::_AccountValidator::isValidPassword(const QString & /*pass
 
 //////////
 //  DefaultValidator::_ActivityTypeValidator
-IMPLEMENT_SINGLETON(DefaultValidator::_ActivityTypeValidator)
+TT3_IMPLEMENT_SINGLETON(DefaultValidator::_ActivityTypeValidator)
 DefaultValidator::_ActivityTypeValidator::_ActivityTypeValidator() {}
 DefaultValidator::_ActivityTypeValidator::~_ActivityTypeValidator() {}
 
@@ -287,7 +287,7 @@ bool DefaultValidator::_ActivityTypeValidator::isValidDescription(
 
 //////////
 //  DefaultValidator::_ActivityValidator
-IMPLEMENT_SINGLETON(DefaultValidator::_ActivityValidator)
+TT3_IMPLEMENT_SINGLETON(DefaultValidator::_ActivityValidator)
 DefaultValidator::_ActivityValidator::_ActivityValidator() {}
 DefaultValidator::_ActivityValidator::~_ActivityValidator() {}
 
@@ -318,7 +318,7 @@ bool DefaultValidator::_ActivityValidator::isValidTimeout(const InactivityTimeou
 
 //////////
 //  DefaultValidator::_WorkloadValidator
-IMPLEMENT_SINGLETON(DefaultValidator::_WorkloadValidator)
+TT3_IMPLEMENT_SINGLETON(DefaultValidator::_WorkloadValidator)
 DefaultValidator::_WorkloadValidator::_WorkloadValidator() {}
 DefaultValidator::_WorkloadValidator::~_WorkloadValidator() {}
 
@@ -338,7 +338,7 @@ bool DefaultValidator::_WorkloadValidator::isValidDescription(
 
 //////////
 //  DefaultValidator::_BeneficiaryValidator
-IMPLEMENT_SINGLETON(DefaultValidator::_BeneficiaryValidator)
+TT3_IMPLEMENT_SINGLETON(DefaultValidator::_BeneficiaryValidator)
 DefaultValidator::_BeneficiaryValidator::_BeneficiaryValidator() {}
 DefaultValidator::_BeneficiaryValidator::~_BeneficiaryValidator() {}
 
@@ -358,7 +358,7 @@ bool DefaultValidator::_BeneficiaryValidator::isValidDescription(
 
 //////////
 //  DefaultValidator::_WorkValidator
-IMPLEMENT_SINGLETON(DefaultValidator::_WorkValidator)
+TT3_IMPLEMENT_SINGLETON(DefaultValidator::_WorkValidator)
 DefaultValidator::_WorkValidator::_WorkValidator() {}
 DefaultValidator::_WorkValidator::~_WorkValidator() {}
 
@@ -374,7 +374,7 @@ bool DefaultValidator::_WorkValidator::isValidStartedFinishedAt(
 
 //////////
 //  DefaultValidator::_EventValidator
-IMPLEMENT_SINGLETON(DefaultValidator::_EventValidator)
+TT3_IMPLEMENT_SINGLETON(DefaultValidator::_EventValidator)
 DefaultValidator::_EventValidator::_EventValidator() {}
 DefaultValidator::_EventValidator::~_EventValidator() {}
 

@@ -15,28 +15,28 @@
 //  GNU General Public License for more details.
 //////////
 
-#define CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Clazz)          \
+#define TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Clazz)      \
     private:                                            \
         Clazz(const Clazz &) = delete;                  \
         Clazz(Clazz &&) = delete;                       \
         Clazz & operator = (const Clazz &) = delete;    \
         Clazz & operator = (Clazz &&) = delete;
 
-#define UTILITY_CLASS(Clazz)                            \
-    CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Clazz)              \
+#define TT3_UTILITY_CLASS(Clazz)                        \
+    TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Clazz)          \
     private:                                            \
         Clazz() = delete;                               \
         ~Clazz() = delete;
 
-#define DECLARE_SINGLETON(Clazz)                        \
-    CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Clazz)              \
+#define TT3_DECLARE_SINGLETON(Clazz)                    \
+    TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Clazz)          \
     private:                                            \
         Clazz();                                        \
         ~Clazz();                                       \
     public:                                             \
         static Clazz *  instance();
 
-#define IMPLEMENT_SINGLETON(Clazz)                      \
+#define TT3_IMPLEMENT_SINGLETON(Clazz)                  \
     Clazz * Clazz::instance()                           \
     {                                                   \
         static Clazz * theInstance = new Clazz();       \

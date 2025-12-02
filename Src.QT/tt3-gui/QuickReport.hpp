@@ -95,7 +95,7 @@ namespace tt3::gui
     /// \brief The manager of known QuickReports.
     class TT3_GUI_PUBLIC QuickReportManager final
     {
-        UTILITY_CLASS(QuickReportManager)
+        TT3_UTILITY_CLASS(QuickReportManager)
 
         //////////
         //  Operations
@@ -139,7 +139,7 @@ namespace tt3::gui
     class TT3_GUI_PUBLIC DailyWorkQuickReport final
         :   public virtual IQuickReport
     {
-        DECLARE_SINGLETON(DailyWorkQuickReport)
+        TT3_DECLARE_SINGLETON(DailyWorkQuickReport)
 
         //////////
         //  IQuickReport

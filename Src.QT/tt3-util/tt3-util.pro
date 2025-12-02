@@ -38,7 +38,6 @@ HEADERS += \
     Classes.hpp \
     Collections.hpp \
     Component.hpp \
-    Components.hpp \
     DateTime.hpp \
     Exceptions.hpp \
     FromString.hpp \

@@ -21,7 +21,7 @@ namespace tt3::help
     /// \brief  node in the help collection.
     class TT3_HELP_PUBLIC HelpTopic
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(HelpTopic)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(HelpTopic)
 
         //////////
         //  Construction/destruction
@@ -398,7 +398,7 @@ namespace tt3::help
     class TT3_HELP_PUBLIC HelpCollection
         :   public virtual HelpTopic
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(HelpCollection)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(HelpCollection)
 
         friend class Serializer;
 

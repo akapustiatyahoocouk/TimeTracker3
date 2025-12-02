@@ -21,7 +21,7 @@ namespace tt3::tools::restore
     /// \brief The "TT3 Restore Reader" agent.
     class TT3_TOOLS_RESTORE_PUBLIC RestoreReader final
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(RestoreReader)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(RestoreReader)
 
         //////////
         //  Construction/destruction

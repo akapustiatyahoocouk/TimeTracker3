@@ -34,7 +34,7 @@ HEADERS += \
     API.hpp \
     BasicReportTemplate.hpp \
     Classes.hpp \
-    Components.hpp \
+    Component.hpp \
     DataTypes.hpp \
     Linkage.hpp \
     ReportTemplate.hpp

@@ -25,7 +25,7 @@
 //  tt3-report components
 #include "tt3-report/Linkage.hpp"
 #include "tt3-report/Classes.hpp"
-#include "tt3-report/Components.hpp"
+#include "tt3-report/Component.hpp"
 
 #include "tt3-report/DataTypes.hpp"
 #include "tt3-report/ReportTemplate.hpp"

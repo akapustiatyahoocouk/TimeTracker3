@@ -24,7 +24,7 @@
 //  tt3-db-api components
 #include "tt3-db-api/Linkage.hpp"
 #include "tt3-db-api/Classes.hpp"
-#include "tt3-db-api/Components.hpp"
+#include "tt3-db-api/Component.hpp"
 
 #include "tt3-db-api/Validator.hpp"
 #include "tt3-db-api/DatabaseType.hpp"

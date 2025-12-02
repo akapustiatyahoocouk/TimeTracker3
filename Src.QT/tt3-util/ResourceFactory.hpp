@@ -446,7 +446,7 @@ namespace tt3::util
     class TT3_UTIL_PUBLIC FileResourceFactory
         :   public virtual IResourceFactory
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(FileResourceFactory)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(FileResourceFactory)
 
         //////////
         //  Construction/destruction
@@ -497,7 +497,7 @@ namespace tt3::util
     /// \brief  A helper class for reading resources from a single section.
     class TT3_UTIL_PUBLIC ResourceReader final
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ResourceReader)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ResourceReader)
 
         //////////
         //  Construction/destruction

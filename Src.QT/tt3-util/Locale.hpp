@@ -23,7 +23,7 @@ namespace tt3::util
     /// \brief The manager of known Locales.
     class TT3_UTIL_PUBLIC LocaleManager final
     {
-        UTILITY_CLASS(LocaleManager)
+        TT3_UTILITY_CLASS(LocaleManager)
 
         //////////
         //  Operations
@@ -72,7 +72,7 @@ namespace tt3::util
         :   public QObject
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentLocale)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentLocale)
 
         //////////
         //  Construction/destruction

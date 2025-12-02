@@ -26,7 +26,7 @@ namespace tt3::gui
     class TT3_GUI_PUBLIC ConfirmExitDialog final
         :   private AskYesNoDialog
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmExitDialog)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmExitDialog)
 
         //////////
         //  Construction/destruction

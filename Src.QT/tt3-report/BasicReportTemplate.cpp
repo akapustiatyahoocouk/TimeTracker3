@@ -17,7 +17,7 @@
 #include "tt3-report/API.hpp"
 using namespace tt3::report;
 
-IMPLEMENT_SINGLETON(BasicReportTemplate)
+TT3_IMPLEMENT_SINGLETON(BasicReportTemplate)
 
 BasicReportTemplate::BasicReportTemplate()
     :   _pageSetup(),   //  default, A4

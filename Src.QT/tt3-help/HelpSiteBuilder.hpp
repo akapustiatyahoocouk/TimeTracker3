@@ -31,7 +31,7 @@ namespace tt3::help
         :   public QObject
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(HelpSiteBuilder)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(HelpSiteBuilder)
 
         //////////
         //  Construction/destruction
@@ -134,7 +134,7 @@ namespace tt3::help
         class TT3_HELP_PUBLIC _WorkerThread
             :   public QThread
         {
-            CANNOT_ASSIGN_OR_COPY_CONSTRUCT(_WorkerThread)
+            TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(_WorkerThread)
 
             //////////
             //  Constants

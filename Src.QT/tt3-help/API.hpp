@@ -24,7 +24,7 @@
 //  tt3-help components
 #include "tt3-help/Linkage.hpp"
 #include "tt3-help/Classes.hpp"
-#include "tt3-help/Components.hpp"
+#include "tt3-help/Component.hpp"
 #include "tt3-help/Exceptions.hpp"
 
 #include "tt3-help/ContentLoader.hpp"

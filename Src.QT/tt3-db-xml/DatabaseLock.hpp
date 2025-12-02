@@ -25,7 +25,7 @@ namespace tt3::db::xml
         :   public QObject,
             public virtual tt3::db::api::IDatabaseLock
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DatabaseLock)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DatabaseLock)
 
         friend class Database;
 

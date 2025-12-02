@@ -20,7 +20,7 @@ namespace tt3::ws
     /// A generic workspace object.
     class TT3_WS_PUBLIC ObjectImpl
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ObjectImpl)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ObjectImpl)
 
         friend class WorkspaceImpl;
         friend class PrincipalImpl;

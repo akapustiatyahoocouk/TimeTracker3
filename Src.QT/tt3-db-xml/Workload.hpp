@@ -23,7 +23,7 @@ namespace tt3::db::xml
         :   public Object,
             public virtual tt3::db::api::IWorkload
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Workload)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Workload)
 
         friend class Database;
         friend class User;

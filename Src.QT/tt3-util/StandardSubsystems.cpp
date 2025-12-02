@@ -19,7 +19,7 @@ using namespace tt3::util;
 
 //////////
 //  StandardSubsystems::Applications
-IMPLEMENT_SINGLETON(StandardSubsystems::Applications)
+TT3_IMPLEMENT_SINGLETON(StandardSubsystems::Applications)
 StandardSubsystems::Applications::Applications() {}
 StandardSubsystems::Applications::~Applications() {}
 
@@ -42,7 +42,7 @@ QString StandardSubsystems::Applications::description() const
 
 //////////
 //  StandardSubsystems::Storage
-IMPLEMENT_SINGLETON(StandardSubsystems::Storage)
+TT3_IMPLEMENT_SINGLETON(StandardSubsystems::Storage)
 StandardSubsystems::Storage::Storage() {}
 StandardSubsystems::Storage::~Storage() {}
 
@@ -65,7 +65,7 @@ QString StandardSubsystems::Storage::description() const
 
 //////////
 //  StandardSubsystems::Gui
-IMPLEMENT_SINGLETON(StandardSubsystems::Gui)
+TT3_IMPLEMENT_SINGLETON(StandardSubsystems::Gui)
 StandardSubsystems::Gui::Gui() {}
 StandardSubsystems::Gui::~Gui() {}
 
@@ -88,7 +88,7 @@ QString StandardSubsystems::Gui::description() const
 
 //////////
 //  StandardSubsystems::Reporting
-IMPLEMENT_SINGLETON(StandardSubsystems::Reporting)
+TT3_IMPLEMENT_SINGLETON(StandardSubsystems::Reporting)
 StandardSubsystems::Reporting::Reporting() {}
 StandardSubsystems::Reporting::~Reporting() {}
 
@@ -111,7 +111,7 @@ QString StandardSubsystems::Reporting::description() const
 
 //////////
 //  StandardSubsystems::Utility
-IMPLEMENT_SINGLETON(StandardSubsystems::Utility)
+TT3_IMPLEMENT_SINGLETON(StandardSubsystems::Utility)
 StandardSubsystems::Utility::Utility() {}
 StandardSubsystems::Utility::~Utility() {}
 

@@ -19,7 +19,7 @@ using namespace tt3::util;
 
 //////////
 //  StandardLicenses::Gpl3
-IMPLEMENT_SINGLETON(StandardLicenses::Gpl3)
+TT3_IMPLEMENT_SINGLETON(StandardLicenses::Gpl3)
 StandardLicenses::Gpl3::Gpl3() {}
 StandardLicenses::Gpl3::~Gpl3() {}
 

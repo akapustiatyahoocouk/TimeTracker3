@@ -22,7 +22,7 @@ namespace tt3
     class Application final
         :   public QApplication
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Application)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Application)
 
         //////////
         //  Construction/destruction
@@ -65,7 +65,6 @@ namespace tt3
         //  Implementation
     private:
         //  Helpers
-        void            _registerStandardComponents();
         void            _selectActiveTheme();
         void            _selectActiveSkin();
         void            _initialize();

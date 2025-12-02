@@ -119,7 +119,7 @@ namespace tt3::util
     /// \brief A locator and manager of available plugins.
     class TT3_UTIL_PUBLIC PluginManager
     {
-        UTILITY_CLASS(PluginManager)
+        TT3_UTILITY_CLASS(PluginManager)
 
         friend class IPlugin;
 
@@ -164,17 +164,17 @@ namespace tt3::util
     typedef void (*PluginExportProc)(Plugins & plugins);
 }
 
-#define BEGIN_PLUGIN_TABLE()                                                \
+#define TT3_BEGIN_PLUGIN_TABLE()                                            \
     extern "C" /* GCC -Weffc++ requires a prototype! */                     \
     Q_DECL_EXPORT void PluginProvider(QSet<tt3::util::IPlugin*> & plugins); \
     extern "C"                                                              \
     Q_DECL_EXPORT void PluginProvider(QSet<tt3::util::IPlugin*> & plugins)  \
     {
 
-#define EXPORT_PLUGIN(PluginClazz)              \
+#define TT3_EXPORT_PLUGIN(PluginClazz)              \
         plugins.insert(PluginClazz::instance());
 
-#define END_PLUGIN_TABLE()  \
+#define TT3_END_PLUGIN_TABLE()  \
     }
 
 //  End of tt3-util/Plugin.cpp

@@ -1,5 +1,5 @@
 //
-//  tt3-gui/Components.hpp - TT3-gui Components
+//  tt3-gui/Component.hpp - TT3-gui Component
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -22,7 +22,7 @@ namespace tt3::gui
     class TT3_GUI_PUBLIC Component final
         :   public virtual tt3::util::IComponent
     {
-        DECLARE_SINGLETON(Component)
+        TT3_DECLARE_COMPONENT(Component)
 
         //////////
         //  Types
@@ -32,7 +32,7 @@ namespace tt3::gui
         class TT3_GUI_PUBLIC Resources final
             :   public tt3::util::FileResourceFactory
         {
-            DECLARE_SINGLETON(Resources)
+            TT3_DECLARE_SINGLETON(Resources)
         };
 
         /// \class Settings tt3-gui/API.hpp
@@ -40,7 +40,7 @@ namespace tt3::gui
         class TT3_GUI_PUBLIC Settings final
             :   public tt3::util::Settings
         {
-            DECLARE_SINGLETON(Settings)
+            TT3_DECLARE_SINGLETON(Settings)
 
             //////////
             //  Properties
@@ -183,4 +183,4 @@ namespace tt3::gui
     };
 }
 
-//  End of tt3-gui/Components.hpp
+//  End of tt3-gui/Component.hpp

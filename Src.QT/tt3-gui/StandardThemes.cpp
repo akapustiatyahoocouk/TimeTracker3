@@ -19,7 +19,7 @@ using namespace tt3::gui;
 
 //////////
 //  StandardThemes::System
-IMPLEMENT_SINGLETON(StandardThemes::System)
+TT3_IMPLEMENT_SINGLETON(StandardThemes::System)
 StandardThemes::System::System() {}
 StandardThemes::System::~System() {}
 
@@ -59,7 +59,7 @@ QString StandardThemes::System::css() const
 
 //////////
 //  StandardThemes::Light
-IMPLEMENT_SINGLETON(StandardThemes::Light)
+TT3_IMPLEMENT_SINGLETON(StandardThemes::Light)
 
 StandardThemes::Light::Light()
 {
@@ -114,7 +114,7 @@ QString StandardThemes::Light::css() const
 
 //////////
 //  StandardThemes::Dark
-IMPLEMENT_SINGLETON(StandardThemes::Dark)
+TT3_IMPLEMENT_SINGLETON(StandardThemes::Dark)
 
 StandardThemes::Dark::Dark()
 {

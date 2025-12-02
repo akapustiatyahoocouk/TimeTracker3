@@ -27,7 +27,7 @@ namespace tt3::gui
         :   public QWidget
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ActivityTypeManager)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ActivityTypeManager)
 
         //////////
         //  Construction/destruction

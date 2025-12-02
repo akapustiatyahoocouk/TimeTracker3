@@ -31,7 +31,7 @@ namespace tt3::gui
         :   public PreferencesEditor
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(GeneralAppearancePreferencesEditor)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(GeneralAppearancePreferencesEditor)
 
         //////////
         //  Construction/destruction

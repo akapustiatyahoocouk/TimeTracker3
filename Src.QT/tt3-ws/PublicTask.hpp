@@ -23,7 +23,7 @@ namespace tt3::ws
         :   public PublicActivityImpl,
             public TaskImpl
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PublicTaskImpl)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PublicTaskImpl)
 
         friend class WorkspaceImpl;
         friend std::shared_ptr<PublicTaskImpl>;

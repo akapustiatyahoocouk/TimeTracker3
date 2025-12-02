@@ -22,7 +22,7 @@ namespace tt3::ws
     class TT3_WS_PUBLIC UserImpl final
         :   public PrincipalImpl
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(UserImpl)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(UserImpl)
 
         friend class WorkspaceImpl;
         friend std::shared_ptr<UserImpl>;

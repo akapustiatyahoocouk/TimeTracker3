@@ -133,7 +133,7 @@ HEADERS += \
     BeneficiaryManager.hpp \
     ChooseReloginDialog.hpp \
     Color.hpp \
-    Components.hpp \
+    Component.hpp \
     ConfirmCloseWorkspaceDialog.hpp \
     ConfirmDestroyWorkspaceDialog.hpp \
     ConfirmDropWorkspaceDialog.hpp \

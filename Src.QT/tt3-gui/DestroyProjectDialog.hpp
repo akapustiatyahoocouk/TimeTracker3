@@ -26,7 +26,7 @@
     class TT3_GUI_PUBLIC DestroyProjectDialog final
         :   private AskYesNoDialog
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DestroyProjectDialog)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DestroyProjectDialog)
 
         //////////
         //  Types

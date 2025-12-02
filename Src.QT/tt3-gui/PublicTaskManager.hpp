@@ -29,7 +29,7 @@ namespace tt3::gui
     class TT3_GUI_PUBLIC PublicTaskManager final : public QWidget
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PublicTaskManager)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PublicTaskManager)
 
         friend class SelectPublicTaskParentDialog;
         friend class ManageQuickPicksListDialog;

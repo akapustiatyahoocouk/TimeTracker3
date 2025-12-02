@@ -83,7 +83,7 @@ namespace tt3::util
     /// \brief The standard (predefined) licenses.
     class TT3_UTIL_PUBLIC StandardLicenses final
     {
-        UTILITY_CLASS(StandardLicenses)
+        TT3_UTILITY_CLASS(StandardLicenses)
 
         //////////
         //  Members
@@ -93,7 +93,7 @@ namespace tt3::util
         class TT3_UTIL_PUBLIC Gpl3 final
             :   public virtual ILicense
         {
-            DECLARE_SINGLETON(Gpl3)
+            TT3_DECLARE_SINGLETON(Gpl3)
 
             //////////
             //  ILicense
@@ -115,7 +115,7 @@ namespace tt3::util
     /// \brief The manager of known Licenses.
     class TT3_UTIL_PUBLIC LicenseManager final
     {
-        UTILITY_CLASS(LicenseManager)
+        TT3_UTILITY_CLASS(LicenseManager)
 
         //////////
         //  Operations

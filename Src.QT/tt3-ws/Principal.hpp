@@ -22,7 +22,7 @@ namespace tt3::ws
     class TT3_WS_PUBLIC PrincipalImpl
         :   public ObjectImpl
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PrincipalImpl)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PrincipalImpl)
 
         friend class UserImpl;
         friend class AccountImpl;

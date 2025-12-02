@@ -22,7 +22,7 @@ namespace tt3::db::xml
     class TT3_DB_XML_PUBLIC Database final
         :   public virtual tt3::db::api::IDatabase
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Database)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Database)
 
         friend class DatabaseType;
         friend class Object;
@@ -231,7 +231,7 @@ namespace tt3::db::xml
         class TT3_DB_XML_PUBLIC _LockRefresher final
             :   public QThread
         {
-            CANNOT_ASSIGN_OR_COPY_CONSTRUCT(_LockRefresher)
+            TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(_LockRefresher)
 
             //////////
             //  Constants

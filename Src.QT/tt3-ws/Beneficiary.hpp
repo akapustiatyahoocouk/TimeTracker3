@@ -22,7 +22,7 @@ namespace tt3::ws
     class TT3_WS_PUBLIC BeneficiaryImpl final
         :   public ObjectImpl
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BeneficiaryImpl)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BeneficiaryImpl)
 
         friend class WorkspaceImpl;
         friend std::shared_ptr<BeneficiaryImpl>;

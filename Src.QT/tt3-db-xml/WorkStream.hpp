@@ -23,7 +23,7 @@ namespace tt3::db::xml
         :   public Workload,
             public virtual tt3::db::api::IWorkStream
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkStream)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkStream)
 
         friend class Database;
 

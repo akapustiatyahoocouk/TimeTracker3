@@ -8,7 +8,7 @@ SOURCES += \
 HEADERS += \
     API.hpp \
     Application.hpp \
-    Components.hpp
+    Component.hpp
 
 PRECOMPILED_HEADER = API.hpp
 

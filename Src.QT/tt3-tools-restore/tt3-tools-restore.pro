@@ -14,11 +14,11 @@ SOURCES += \
 
 HEADERS += \
     API.hpp \
-    Components.hpp \
+    Component.hpp \
     ConfigureRestoreDialog.hpp \
     Exceptions.hpp \
     Linkage.hpp \
-    Plugins.hpp \
+    Plugin.hpp \
     RestoreProgressDialog.hpp \
     RestoreReader.hpp \
     RestoreTool.hpp

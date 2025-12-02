@@ -23,7 +23,7 @@ namespace tt3::db::xml
         :   public Object,
             public virtual tt3::db::api::IEvent
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Event)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Event)
 
         friend class Database;
         friend class Account;

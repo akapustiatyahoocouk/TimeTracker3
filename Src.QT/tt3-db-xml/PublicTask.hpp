@@ -24,7 +24,7 @@ namespace tt3::db::xml
             public Task,
             public virtual tt3::db::api::IPublicTask
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PublicTask)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PublicTask)
 
         friend class Database;
 

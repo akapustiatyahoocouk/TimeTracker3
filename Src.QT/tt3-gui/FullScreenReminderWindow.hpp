@@ -27,7 +27,7 @@ namespace tt3::gui
         :   public QDialog
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(FullScreenReminderWindow)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(FullScreenReminderWindow)
 
         //////////
         //  Construction/destruction

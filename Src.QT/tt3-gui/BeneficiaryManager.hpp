@@ -29,7 +29,7 @@ class TT3_GUI_PUBLIC SelectBeneficiariesDialog;
         :   public QWidget
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BeneficiaryManager)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BeneficiaryManager)
 
         friend class SelectBeneficiariesDialog;
 

@@ -29,7 +29,7 @@ namespace tt3::gui
         :   private QDialog
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ManagePublicTasksDialog)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ManagePublicTasksDialog)
 
         //////////
         //  Construction/destruction

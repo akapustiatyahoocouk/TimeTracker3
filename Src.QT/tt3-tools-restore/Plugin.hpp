@@ -1,5 +1,5 @@
 //
-//  tt3-db-xml/Plugins.hpp - tt3-db-xml Plugins
+//  tt3-tools-restore/Plugin.hpp - tt3-tools-restore Plugin
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,14 +15,14 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace tt3::db::xml
+namespace tt3::tools::restore
 {
-    /// \class Plugin tt3-db-xml/API.hpp
-    /// \brief The "TT3 XML file database" plugin.
-    class TT3_DB_XML_PUBLIC Plugin final
+    /// \class Plugin tt3-tools-restore/API.hpp
+    /// \brief The "TT3 restore tool" plugin.
+    class TT3_TOOLS_RESTORE_PUBLIC Plugin final
         :   public virtual tt3::util::IPlugin
     {
-        DECLARE_SINGLETON(Plugin)
+        TT3_DECLARE_SINGLETON(Plugin)
 
         //////////
         //  tt3::util::IPlugin
@@ -37,4 +37,4 @@ namespace tt3::db::xml
     };
 }
 
-//  End of tt3-db-xml/Plugins.hpp
+//  End of tt3-tools-restore/Plugin.hpp

@@ -25,7 +25,7 @@
 //  tt3-ws components
 #include "tt3-ws/Linkage.hpp"
 #include "tt3-ws/Classes.hpp"
-#include "tt3-ws/Components.hpp"
+#include "tt3-ws/Component.hpp"
 
 #include "tt3-ws/Credentials.hpp"
 #include "tt3-ws/Validator.hpp"

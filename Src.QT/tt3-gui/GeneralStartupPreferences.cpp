@@ -19,7 +19,7 @@ using namespace tt3::gui;
 
 //////////
 //  Singleton
-IMPLEMENT_SINGLETON(GeneralStartupPreferences)
+TT3_IMPLEMENT_SINGLETON(GeneralStartupPreferences)
 GeneralStartupPreferences::GeneralStartupPreferences() {}
 GeneralStartupPreferences::~GeneralStartupPreferences() {}
 

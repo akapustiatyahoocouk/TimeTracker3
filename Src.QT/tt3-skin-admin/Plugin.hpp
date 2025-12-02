@@ -1,5 +1,5 @@
 //
-//  tt3-tools-restore/Plugins.hpp - tt3-tools-restore Plugins
+//  tt3-skin-admin/Plugin.hpp - tt3-skin-admin Plugin
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,14 +15,14 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace tt3::tools::restore
+namespace tt3::skin::admin
 {
-    /// \class Plugin tt3-tools-restore/API.hpp
-    /// \brief The "TT3 restore tool" plugin.
-    class TT3_TOOLS_RESTORE_PUBLIC Plugin final
+    /// \class Plugin tt3-skin-admin/API.hpp
+    /// \brief The "TT3 Admin skin" plugin.
+    class TT3_SKIN_ADMIN_PUBLIC Plugin final
         :   public virtual tt3::util::IPlugin
     {
-        DECLARE_SINGLETON(Plugin)
+        TT3_DECLARE_SINGLETON(Plugin)
 
         //////////
         //  tt3::util::IPlugin
@@ -37,4 +37,4 @@ namespace tt3::tools::restore
     };
 }
 
-//  End of tt3-tools-restore/Plugins.hpp
+//  End of tt3-skin-admin/Plugin.hpp

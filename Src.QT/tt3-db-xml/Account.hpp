@@ -23,7 +23,7 @@ namespace tt3::db::xml
         :   public Principal,
             public virtual tt3::db::api::IAccount
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Account)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Account)
 
         friend class Database;
         friend class User;

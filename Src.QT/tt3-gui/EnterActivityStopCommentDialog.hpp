@@ -28,7 +28,7 @@ namespace tt3::gui
     class TT3_GUI_PUBLIC EnterActivityStopCommentDialog final
         :   private EditStringDialog
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(EnterActivityStopCommentDialog)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(EnterActivityStopCommentDialog)
 
         //////////
         //  Types

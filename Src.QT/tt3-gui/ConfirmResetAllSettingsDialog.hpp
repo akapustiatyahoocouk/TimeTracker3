@@ -26,7 +26,7 @@ namespace tt3::gui
     class TT3_GUI_PUBLIC ConfirmResetAllSettingsDialog final
         :   private AskYesNoDialog
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmResetAllSettingsDialog)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmResetAllSettingsDialog)
 
         //////////
         //  Construction/destruction

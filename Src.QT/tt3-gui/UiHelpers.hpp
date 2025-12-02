@@ -21,7 +21,7 @@ namespace tt3::gui
     /// \brief A helper class to avoid recursive refresh of UI widgets.
     class TT3_GUI_PUBLIC RefreshGuard final
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(RefreshGuard);
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(RefreshGuard);
 
         //////////
         //  Construction/destruction

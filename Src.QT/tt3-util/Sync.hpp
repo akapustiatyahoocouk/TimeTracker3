@@ -9,7 +9,7 @@ namespace tt3::util
     /// \brief A generic object that can be used for thread synchronisation.
     class TT3_UTIL_PUBLIC SynchronisationObject
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(SynchronisationObject)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(SynchronisationObject)
 
         //////////
         //  Construction/destruction
@@ -51,7 +51,7 @@ namespace tt3::util
     ///     in constructor and "released" it in destructor.
     class TT3_UTIL_PUBLIC Lock final
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Lock)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Lock)
 
         //////////
         //  Construction/destruction
@@ -80,7 +80,7 @@ namespace tt3::util
     class TT3_UTIL_PUBLIC Mutex final
         :   public SynchronisationObject
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Mutex)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Mutex)
 
         //////////
         //  Construction/destruction
@@ -167,7 +167,7 @@ namespace tt3::util
     template <class T>
     class BlockingQueue
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BlockingQueue)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BlockingQueue)
 
         //////////
         //  Construction/destruction

@@ -18,10 +18,8 @@
 using namespace tt3::db::api;
 
 //////////
-//  Singleton
-IMPLEMENT_SINGLETON(Component)
-Component::Component() {}
-Component::~Component() {}
+//  Registration
+TT3_IMPLEMENT_COMPONENT(Component)
 
 //////////
 //  IComponent
@@ -98,14 +96,14 @@ void Component::deiniialize()
 
 //////////
 //  Component::Resources
-IMPLEMENT_SINGLETON(Component::Resources)
+TT3_IMPLEMENT_SINGLETON(Component::Resources)
 Component::Resources::Resources()
     :   FileResourceFactory(":/tt3-db-api/Resources/tt3-db-api.txt") {}
 Component::Resources::~Resources() {}
 
 //////////
 //  Component::Settings
-IMPLEMENT_SINGLETON(Component::Settings)
+TT3_IMPLEMENT_SINGLETON(Component::Settings)
 Component::Settings::Settings() {}
 Component::Settings::~Settings() {}
 

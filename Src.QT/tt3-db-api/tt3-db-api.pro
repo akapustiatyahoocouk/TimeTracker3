@@ -21,7 +21,7 @@ HEADERS += \
     Beneficiary.hpp \
     Capabilities.hpp \
     Classes.hpp \
-    Components.hpp \
+    Component.hpp \
     Database.hpp \
     DatabaseAddress.hpp \
     DatabaseLock.hpp \

@@ -82,7 +82,7 @@ namespace tt3::util
     /// \brief The standard (predefined) subsystems.
     class TT3_UTIL_PUBLIC StandardSubsystems final
     {
-        UTILITY_CLASS(StandardSubsystems)
+        TT3_UTILITY_CLASS(StandardSubsystems)
 
         //////////
         //  Members
@@ -92,7 +92,7 @@ namespace tt3::util
         class TT3_UTIL_PUBLIC Applications final
             :   public virtual ISubsystem
         {
-            DECLARE_SINGLETON(Applications);
+            TT3_DECLARE_SINGLETON(Applications);
 
             //////////
             //  ISubsystem
@@ -107,7 +107,7 @@ namespace tt3::util
         class TT3_UTIL_PUBLIC Storage final
             :   public virtual ISubsystem
         {
-            DECLARE_SINGLETON(Storage);
+            TT3_DECLARE_SINGLETON(Storage);
 
             //////////
             //  ISubsystem
@@ -122,7 +122,7 @@ namespace tt3::util
         class TT3_UTIL_PUBLIC Gui final
             :   public virtual ISubsystem
         {
-            DECLARE_SINGLETON(Gui);
+            TT3_DECLARE_SINGLETON(Gui);
 
             //////////
             //  ISubsystem
@@ -137,7 +137,7 @@ namespace tt3::util
         class TT3_UTIL_PUBLIC Reporting final
             :   public virtual ISubsystem
         {
-            DECLARE_SINGLETON(Reporting);
+            TT3_DECLARE_SINGLETON(Reporting);
 
             //////////
             //  ISubsystem
@@ -152,7 +152,7 @@ namespace tt3::util
         class TT3_UTIL_PUBLIC Utility final
             :   public virtual ISubsystem
         {
-            DECLARE_SINGLETON(Utility);
+            TT3_DECLARE_SINGLETON(Utility);
 
             //////////
             //  ISubsystem
@@ -167,7 +167,7 @@ namespace tt3::util
     /// \brief The manager of known Subsystems.
     class TT3_UTIL_PUBLIC SubsystemManager final
     {
-        UTILITY_CLASS(SubsystemManager)
+        TT3_UTILITY_CLASS(SubsystemManager)
 
         //////////
         //  Operations

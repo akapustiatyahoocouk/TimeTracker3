@@ -25,7 +25,7 @@ namespace tt3::gui
     class TT3_GUI_PUBLIC HelpClient final
 
     {
-        UTILITY_CLASS(HelpClient)
+        TT3_UTILITY_CLASS(HelpClient)
 
         //////////
         //  Operations

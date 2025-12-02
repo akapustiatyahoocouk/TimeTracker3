@@ -19,7 +19,7 @@ using namespace tt3::gui;
 
 //////////
 //  Singleton
-IMPLEMENT_SINGLETON(GeneralPreferences)
+TT3_IMPLEMENT_SINGLETON(GeneralPreferences)
 GeneralPreferences::GeneralPreferences() {}
 GeneralPreferences::~GeneralPreferences() {}
 

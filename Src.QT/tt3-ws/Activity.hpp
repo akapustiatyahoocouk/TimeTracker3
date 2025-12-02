@@ -22,7 +22,7 @@ namespace tt3::ws
     class TT3_WS_PUBLIC ActivityImpl
         :   public ObjectImpl
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ActivityImpl)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ActivityImpl)
 
         friend class AccountImpl;
         friend class PublicActivityImpl;

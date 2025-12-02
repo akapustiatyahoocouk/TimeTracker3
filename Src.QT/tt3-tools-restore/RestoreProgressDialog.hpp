@@ -27,7 +27,7 @@ namespace tt3::tools::restore
         :   private QDialog
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(RestoreProgressDialog)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(RestoreProgressDialog)
 
         //////////
         //  Construction

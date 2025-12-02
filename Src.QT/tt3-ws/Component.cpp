@@ -18,10 +18,8 @@
 using namespace tt3::ws;
 
 //////////
-//  Singleton
-IMPLEMENT_SINGLETON(Component)
-Component::Component() {}
-Component::~Component() {}
+//  Registration
+TT3_IMPLEMENT_COMPONENT(Component)
 
 //////////
 //  IComponent
@@ -122,7 +120,7 @@ void Component::deiniialize()
 
 //////////
 //  Component::Settings
-IMPLEMENT_SINGLETON(Component::Settings)
+TT3_IMPLEMENT_SINGLETON(Component::Settings)
 
 Component::Settings::Settings()
     :   recentWorkspaces(this, M(RecentWorkspaces), WorkspaceAddressesList())
@@ -135,7 +133,7 @@ Component::Settings::~Settings()
 
 //////////
 //  Component::Resources
-IMPLEMENT_SINGLETON(Component::Resources)
+TT3_IMPLEMENT_SINGLETON(Component::Resources)
 Component::Resources::Resources()
     :   FileResourceFactory(":/tt3-ws/Resources/tt3-ws.txt") {}
 Component::Resources::~Resources() {}

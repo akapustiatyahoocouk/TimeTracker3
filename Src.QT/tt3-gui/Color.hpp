@@ -21,7 +21,7 @@ namespace tt3::gui
     /// \brief Provides color management helper services.
     class TT3_GUI_PUBLIC ColorManager final
     {
-        UTILITY_CLASS(ColorManager)
+        TT3_UTILITY_CLASS(ColorManager)
 
         //////////
         //  Operations

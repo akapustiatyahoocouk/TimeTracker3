@@ -21,7 +21,7 @@ namespace tt3::help
     /// \brief Loader of help content from a local help site.
     class TT3_HELP_PUBLIC LocalSiteHelpLoader final
     {
-        UTILITY_CLASS(LocalSiteHelpLoader)
+        TT3_UTILITY_CLASS(LocalSiteHelpLoader)
 
         //////////
         //  Types

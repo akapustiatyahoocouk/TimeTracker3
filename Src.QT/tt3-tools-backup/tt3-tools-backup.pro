@@ -16,10 +16,10 @@ HEADERS += \
     BackupProgressDialog.hpp \
     BackupTool.hpp \
     BackupWriter.hpp \
-    Components.hpp \
+    Component.hpp \
     ConfigureBackupDialog.hpp \
     Linkage.hpp \
-    Plugins.hpp
+    Plugin.hpp
 
 PRECOMPILED_HEADER = API.hpp
 

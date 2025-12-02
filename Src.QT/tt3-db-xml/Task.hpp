@@ -23,7 +23,7 @@ namespace tt3::db::xml
         :   public virtual Activity,
             public virtual tt3::db::api::ITask
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Task)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Task)
 
         friend class Database;
         friend class PublicTask;

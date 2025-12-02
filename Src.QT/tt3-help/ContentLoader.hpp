@@ -57,7 +57,7 @@ namespace tt3::help
     class TT3_HELP_PUBLIC LocalFileContentLoader final
         :   public virtual IContentLoader
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(LocalFileContentLoader)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(LocalFileContentLoader)
 
         //////////
         //  Constants
@@ -95,7 +95,7 @@ namespace tt3::help
     /// \brief The factory for help content loaders.
     class TT3_HELP_PUBLIC ContentLoaderFactory final
     {
-        UTILITY_CLASS(ContentLoaderFactory)
+        TT3_UTILITY_CLASS(ContentLoaderFactory)
 
         //////////
         //  Operations

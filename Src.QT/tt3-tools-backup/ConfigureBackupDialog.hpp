@@ -27,7 +27,7 @@ namespace tt3::tools::backup
         :   private QDialog
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfigureBackupDialog)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfigureBackupDialog)
 
         //////////
         //  Types

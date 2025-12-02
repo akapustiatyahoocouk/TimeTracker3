@@ -22,7 +22,7 @@ namespace tt3::db::xml
     class TT3_DB_XML_PUBLIC Object
         :   public virtual tt3::db::api::IObject
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Object)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Object)
 
         friend class Database;
         friend class Principal;

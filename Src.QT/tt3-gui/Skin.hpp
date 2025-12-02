@@ -113,7 +113,7 @@ namespace tt3::gui
     /// \brief The manager of known skins
     class TT3_GUI_PUBLIC SkinManager final
     {
-        UTILITY_CLASS(SkinManager)
+        TT3_UTILITY_CLASS(SkinManager)
 
         //////////
         //  Operations
@@ -162,7 +162,7 @@ namespace tt3::gui
         :   public QObject
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentSkin)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentSkin)
 
         //////////
         //  Construction/destruction

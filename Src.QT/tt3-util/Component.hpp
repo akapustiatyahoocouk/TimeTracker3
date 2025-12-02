@@ -157,7 +157,7 @@ namespace tt3::util
     /// \brief The manager of known components.
     class TT3_UTIL_PUBLIC ComponentManager final
     {
-        UTILITY_CLASS(ComponentManager)
+        TT3_UTILITY_CLASS(ComponentManager)
 
         //////////
         //  Operations
@@ -179,6 +179,16 @@ namespace tt3::util
         /// \return
         ///     True on success, false on failure.
         static bool     registerComponent(
+                                IComponent * component
+                            );
+
+        /// \brief
+        ///     Un-registers the specified component.
+        /// \param component
+        ///     The component to un-register.
+        /// \return
+        ///     True on success, false on failure.
+        static bool     unregisterComponent(
                                 IComponent * component
                             );
 
@@ -257,6 +267,88 @@ namespace tt3::util
         //  Helpers
         static _Impl *  _impl();
     };
+
+//  A helper macro for Component declaration - use within a .hpp
+//  file in a declaration of an IComponent - implementing class
+#define TT3_DECLARE_COMPONENT(Clazz)    \
+    TT3_DECLARE_SINGLETON(Clazz)        \
+public:                                 \
+    class Registrator final             \
+    {                                   \
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Registrator)    \
+    public:                             \
+        Registrator();                  \
+        ~Registrator();                 \
+    };
+
+//  A helper macro for Component definition - use
+//  within a .cpp file where the IComponent -
+//  implementing class is defined
+#define TT3_IMPLEMENT_COMPONENT(Clazz)  \
+    TT3_IMPLEMENT_SINGLETON(Clazz)      \
+    Clazz::Clazz() {}                   \
+    Clazz::~Clazz() {}                  \
+    Clazz::Registrator::Registrator()   \
+    {                                   \
+        tt3::util::ComponentManager::registerComponent(Clazz::instance());  \
+    }                                   \
+    Clazz::Registrator::~Registrator()  \
+    {                                   \
+        tt3::util::ComponentManager::unregisterComponent(Clazz::instance());\
+    }                                   \
+    namespace                           \
+    {                                   \
+        Clazz::Registrator the##Clazz##Registrator; \
+    }
+
+    //  The #ifdef guard is needed for MOC to work properly
+#ifdef TT3_UTIL_SETTINGS_DEFINED
+    /// \class Component tt3-util/API.hpp
+    /// \brief The "TT3 Util" component
+    class TT3_UTIL_PUBLIC Component final
+        :   public virtual IComponent
+    {
+        TT3_DECLARE_COMPONENT(Component)
+
+        //////////
+        //  Types
+    public:
+        //  The component's resources
+        class TT3_UTIL_PUBLIC Resources final
+            :   public FileResourceFactory
+        {
+            TT3_DECLARE_SINGLETON(Resources)
+        };
+
+        //  The component's settings
+        class TT3_UTIL_PUBLIC Settings final
+            :   public tt3::util::Settings
+        {
+            TT3_DECLARE_SINGLETON(Settings)
+
+            //////////
+            //  Properties
+        public:
+        };
+
+        //////////
+        //  IComponent
+    public:
+        virtual IPlugin *       plugin() const override;
+        virtual Mnemonic        mnemonic() const override;
+        virtual QString         displayName() const override;
+        virtual QString         description() const override;
+        virtual QString         copyright() const override;
+        virtual QVersionNumber  version() const override;
+        virtual QString         buildNumber() const override;
+        virtual ISubsystem *    subsystem() const override;
+        virtual Resources *     resources() const override;
+        virtual Settings *      settings() override;
+        virtual const Settings *settings() const override;
+        virtual void            iniialize() override;
+        virtual void            deiniialize() override;
+    };
+#endif //   def TT3_UTIL_SETTINGS_DEFINED
 }
 
 //  End of tt3-util/Component.cpp

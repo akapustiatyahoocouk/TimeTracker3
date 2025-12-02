@@ -30,7 +30,7 @@ namespace tt3::gui
     class TT3_GUI_PUBLIC ProjectManager final : public QWidget
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ProjectManager)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ProjectManager)
 
         friend class SelectProjectParentDialog;
         friend class SelectWorkloadDialog;

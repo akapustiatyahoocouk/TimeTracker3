@@ -18,7 +18,7 @@ SOURCES += \
 HEADERS += \
     API.hpp \
     Classes.hpp \
-    Components.hpp \
+    Component.hpp \
     ContentLoader.hpp \
     Exceptions.hpp \
     Help.hpp \

@@ -23,7 +23,7 @@ namespace tt3::db::xml
         :   public Object,
             public virtual tt3::db::api::IActivity
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Activity)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Activity)
 
         friend class Database;
         friend class User;

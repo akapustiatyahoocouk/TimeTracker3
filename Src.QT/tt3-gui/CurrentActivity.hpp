@@ -29,7 +29,7 @@ namespace tt3::gui
         :   public QObject
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentActivity)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentActivity)
 
         //////////
         //  Construction/destruction

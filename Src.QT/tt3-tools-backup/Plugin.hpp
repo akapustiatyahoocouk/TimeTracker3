@@ -1,5 +1,5 @@
 //
-//  tt3-tools-backup/Plugins.hpp - tt3-tools-backup Plugins
+//  tt3-tools-backup/Plugin.hpp - tt3-tools-backup Plugin
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -22,7 +22,7 @@ namespace tt3::tools::backup
     class TT3_TOOLS_BACKUP_PUBLIC Plugin final
         :   public virtual tt3::util::IPlugin
     {
-        DECLARE_SINGLETON(Plugin)
+        TT3_DECLARE_SINGLETON(Plugin)
 
         //////////
         //  tt3::util::IPlugin
@@ -37,4 +37,4 @@ namespace tt3::tools::backup
     };
 }
 
-//  End of tt3-tools-backup/Plugins.hpp
+//  End of tt3-tools-backup/Plugin.hpp

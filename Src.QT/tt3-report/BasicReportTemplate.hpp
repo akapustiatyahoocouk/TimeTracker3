@@ -22,7 +22,7 @@ namespace tt3::report
     class TT3_REPORT_PUBLIC BasicReportTemplate final
         :   public virtual IReportTemplate
     {
-        DECLARE_SINGLETON(BasicReportTemplate)
+        TT3_DECLARE_SINGLETON(BasicReportTemplate)
 
         //////////
         //  IReportTemplate
@@ -70,7 +70,7 @@ namespace tt3::report
     class TT3_REPORT_PUBLIC BasicStyle
         :   public virtual IStyle
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicStyle)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicStyle)
 
         friend class BasicReportTemplate;
         friend class BasicCharacterStyle;
@@ -122,7 +122,7 @@ namespace tt3::report
         :   public BasicStyle,
             public virtual ICharacterStyle
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicCharacterStyle)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicCharacterStyle)
 
         //////////
         //  Construction/destruction - from friends only
@@ -145,7 +145,7 @@ namespace tt3::report
         :   public BasicStyle,
             public virtual IBlockStyle
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicBlockStyle)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicBlockStyle)
 
         friend class BasicParagraphStyle;
         friend class BasicListStyle;
@@ -192,7 +192,7 @@ namespace tt3::report
         :   public BasicBlockStyle,
             public virtual IParagraphStyle
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicParagraphStyle)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicParagraphStyle)
 
         friend class BasicReportTemplate;
 
@@ -235,7 +235,7 @@ namespace tt3::report
         :   public BasicBlockStyle,
             public virtual IListStyle
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicListStyle)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicListStyle)
 
         friend class BasicReportTemplate;
 
@@ -275,7 +275,7 @@ namespace tt3::report
         :   public BasicBlockStyle,
             public virtual ITableStyle
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicTableStyle)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicTableStyle)
 
         friend class BasicReportTemplate;
 
@@ -318,7 +318,7 @@ namespace tt3::report
         :   public BasicStyle,
             public virtual ILinkStyle
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicLinkStyle)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicLinkStyle)
 
         friend class BasicReportTemplate;
 
@@ -343,7 +343,7 @@ namespace tt3::report
         :   public BasicStyle,
             public virtual ISectionStyle
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicSectionStyle)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicSectionStyle)
 
         friend class BasicReportTemplate;
 

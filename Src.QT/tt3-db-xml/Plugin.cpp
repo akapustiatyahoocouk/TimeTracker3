@@ -17,13 +17,13 @@
 #include "tt3-db-xml/API.hpp"
 using namespace tt3::db::xml;
 
-BEGIN_PLUGIN_TABLE()
-    EXPORT_PLUGIN(Plugin)
-END_PLUGIN_TABLE()
+TT3_BEGIN_PLUGIN_TABLE()
+    TT3_EXPORT_PLUGIN(Plugin)
+TT3_END_PLUGIN_TABLE()
 
 //////////
 //  Singleton
-IMPLEMENT_SINGLETON(Plugin)
+TT3_IMPLEMENT_SINGLETON(Plugin)
 Plugin::Plugin() {}
 Plugin::~Plugin() {}
 
@@ -64,7 +64,6 @@ QString Plugin::buildNumber() const
 
 void Plugin::initialize()
 {
-    tt3::util::ComponentManager::registerComponent(Component::instance());
     tt3::db::api::DatabaseTypeManager::registerDatabaseType(DatabaseType::instance());
 }
 

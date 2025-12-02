@@ -85,7 +85,7 @@ namespace tt3::gui
     /// \brief The standard (predefined) themes.
     class TT3_GUI_PUBLIC StandardThemes final
     {
-        UTILITY_CLASS(StandardThemes)
+        TT3_UTILITY_CLASS(StandardThemes)
 
         //////////
         //  Themes
@@ -95,7 +95,7 @@ namespace tt3::gui
         class TT3_GUI_PUBLIC System final
             :   public virtual ITheme
         {
-            DECLARE_SINGLETON(System)
+            TT3_DECLARE_SINGLETON(System)
 
             //////////
             //  ITheme
@@ -118,7 +118,7 @@ namespace tt3::gui
         class TT3_GUI_PUBLIC Light final
             :   public virtual ITheme
         {
-            DECLARE_SINGLETON(Light)
+            TT3_DECLARE_SINGLETON(Light)
 
             //////////
             //  ITheme
@@ -141,7 +141,7 @@ namespace tt3::gui
         class TT3_GUI_PUBLIC Dark final
             :   public virtual ITheme
         {
-            DECLARE_SINGLETON(Dark)
+            TT3_DECLARE_SINGLETON(Dark)
 
             //////////
             //  ITheme
@@ -164,7 +164,7 @@ namespace tt3::gui
     /// \brief The manager of known themes.
     class TT3_GUI_PUBLIC ThemeManager final
     {
-        UTILITY_CLASS(ThemeManager)
+        TT3_UTILITY_CLASS(ThemeManager)
 
         //////////
         //  Operations
@@ -213,7 +213,7 @@ namespace tt3::gui
         :   public QObject
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentTheme)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CurrentTheme)
 
         //////////
         //  Construction/destruction

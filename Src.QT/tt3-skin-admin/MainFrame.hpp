@@ -27,7 +27,7 @@ namespace tt3::skin::admin
         :   public QMainWindow
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(MainFrame)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(MainFrame)
 
         //////////
         //  Construction

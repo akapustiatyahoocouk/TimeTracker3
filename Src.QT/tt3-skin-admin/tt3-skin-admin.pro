@@ -12,10 +12,10 @@ SOURCES += \
 HEADERS += \
     API.hpp \
     Classes.hpp \
-    Components.hpp \
+    Component.hpp \
     Linkage.hpp \
     MainFrame.hpp \
-    Plugins.hpp \
+    Plugin.hpp \
     Skin.hpp
 
 PRECOMPILED_HEADER = API.hpp

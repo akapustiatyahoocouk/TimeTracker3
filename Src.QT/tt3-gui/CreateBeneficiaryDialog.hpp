@@ -27,7 +27,7 @@ namespace tt3::gui
         :   private QDialog
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CreateBeneficiaryDialog)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CreateBeneficiaryDialog)
 
         //////////
         //  Types

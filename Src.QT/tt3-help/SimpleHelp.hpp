@@ -22,7 +22,7 @@ namespace tt3::help
     class TT3_HELP_PUBLIC SimpleHelpTopic
         :   public virtual HelpTopic
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(SimpleHelpTopic)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(SimpleHelpTopic)
 
         friend class SimpleHelpCollection;
 
@@ -426,7 +426,7 @@ namespace tt3::help
             public SimpleHelpTopic
 
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(SimpleHelpCollection)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(SimpleHelpCollection)
 
         //////////
         //  Construction/destruction

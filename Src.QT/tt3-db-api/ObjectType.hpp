@@ -65,7 +65,7 @@ namespace tt3::db::api
     /// \brief Standard database object types.
     class TT3_DB_API_PUBLIC ObjectTypes final
     {
-        UTILITY_CLASS(ObjectTypes)
+        TT3_UTILITY_CLASS(ObjectTypes)
 
         //////////
         //  Database object types
@@ -75,7 +75,7 @@ namespace tt3::db::api
         class TT3_DB_API_PUBLIC User final
             :   public virtual IObjectType
         {
-            DECLARE_SINGLETON(User)
+            TT3_DECLARE_SINGLETON(User)
 
             //////////
             //  IObjectType
@@ -92,7 +92,7 @@ namespace tt3::db::api
         class TT3_DB_API_PUBLIC Account final
             :   public virtual IObjectType
         {
-            DECLARE_SINGLETON(Account)
+            TT3_DECLARE_SINGLETON(Account)
 
             //////////
             //  IObjectType
@@ -109,7 +109,7 @@ namespace tt3::db::api
         class TT3_DB_API_PUBLIC ActivityType final
             :   public virtual IObjectType
         {
-            DECLARE_SINGLETON(ActivityType)
+            TT3_DECLARE_SINGLETON(ActivityType)
 
             //////////
             //  IObjectType
@@ -126,7 +126,7 @@ namespace tt3::db::api
         class TT3_DB_API_PUBLIC PublicActivity final
             :   public virtual IObjectType
         {
-            DECLARE_SINGLETON(PublicActivity)
+            TT3_DECLARE_SINGLETON(PublicActivity)
 
             //////////
             //  IObjectType
@@ -143,7 +143,7 @@ namespace tt3::db::api
         class TT3_DB_API_PUBLIC PublicTask final
             :   public virtual IObjectType
         {
-            DECLARE_SINGLETON(PublicTask)
+            TT3_DECLARE_SINGLETON(PublicTask)
 
             //////////
             //  IObjectType
@@ -160,7 +160,7 @@ namespace tt3::db::api
         class TT3_DB_API_PUBLIC PrivateActivity final
             :   public virtual IObjectType
         {
-            DECLARE_SINGLETON(PrivateActivity)
+            TT3_DECLARE_SINGLETON(PrivateActivity)
 
             //////////
             //  IObjectType
@@ -177,7 +177,7 @@ namespace tt3::db::api
         class TT3_DB_API_PUBLIC PrivateTask final
             :   public virtual IObjectType
         {
-            DECLARE_SINGLETON(PrivateTask)
+            TT3_DECLARE_SINGLETON(PrivateTask)
 
             //////////
             //  IObjectType
@@ -194,7 +194,7 @@ namespace tt3::db::api
         class TT3_DB_API_PUBLIC Work final
             :   public virtual IObjectType
         {
-            DECLARE_SINGLETON(Work)
+            TT3_DECLARE_SINGLETON(Work)
 
             //////////
             //  IObjectType
@@ -211,7 +211,7 @@ namespace tt3::db::api
         class TT3_DB_API_PUBLIC Event final
             :   public virtual IObjectType
         {
-            DECLARE_SINGLETON(Event)
+            TT3_DECLARE_SINGLETON(Event)
 
             //////////
             //  IObjectType
@@ -228,7 +228,7 @@ namespace tt3::db::api
         class TT3_DB_API_PUBLIC Project final
             :   public virtual IObjectType
         {
-            DECLARE_SINGLETON(Project)
+            TT3_DECLARE_SINGLETON(Project)
 
             //////////
             //  IObjectType
@@ -245,7 +245,7 @@ namespace tt3::db::api
         class TT3_DB_API_PUBLIC WorkStream final
             :   public virtual IObjectType
         {
-            DECLARE_SINGLETON(WorkStream)
+            TT3_DECLARE_SINGLETON(WorkStream)
 
             //////////
             //  IObjectType
@@ -262,7 +262,7 @@ namespace tt3::db::api
         class TT3_DB_API_PUBLIC Beneficiary final
             :   public virtual IObjectType
         {
-            DECLARE_SINGLETON(Beneficiary)
+            TT3_DECLARE_SINGLETON(Beneficiary)
 
             //////////
             //  IObjectType

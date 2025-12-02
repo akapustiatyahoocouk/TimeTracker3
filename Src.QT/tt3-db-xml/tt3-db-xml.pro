@@ -35,7 +35,7 @@ HEADERS += \
     ActivityType.hpp \
     Beneficiary.hpp \
     Classes.hpp \
-    Components.hpp \
+    Component.hpp \
     Database.hpp \
     DatabaseAddress.hpp \
     DatabaseLock.hpp \
@@ -43,7 +43,7 @@ HEADERS += \
     Event.hpp \
     Linkage.hpp \
     Object.hpp \
-    Plugins.hpp \
+    Plugin.hpp \
     Principal.hpp \
     PrivateActivity.hpp \
     PrivateTask.hpp \

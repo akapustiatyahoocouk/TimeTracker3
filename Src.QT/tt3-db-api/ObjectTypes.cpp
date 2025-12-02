@@ -19,7 +19,7 @@ using namespace tt3::db::api;
 
 //////////
 //  ObjectTypes::User
-IMPLEMENT_SINGLETON(ObjectTypes::User)
+TT3_IMPLEMENT_SINGLETON(ObjectTypes::User)
 ObjectTypes::User::User() {}
 ObjectTypes::User::~User() {}
 
@@ -49,7 +49,7 @@ QIcon ObjectTypes::User::largeIcon() const
 
 //////////
 //  ObjectTypes::Account
-IMPLEMENT_SINGLETON(ObjectTypes::Account)
+TT3_IMPLEMENT_SINGLETON(ObjectTypes::Account)
 ObjectTypes::Account::Account() {}
 ObjectTypes::Account::~Account() {}
 
@@ -79,7 +79,7 @@ QIcon ObjectTypes::Account::largeIcon() const
 
 //////////
 //  ObjectTypes::ActivityType
-IMPLEMENT_SINGLETON(ObjectTypes::ActivityType)
+TT3_IMPLEMENT_SINGLETON(ObjectTypes::ActivityType)
 ObjectTypes::ActivityType::ActivityType() {}
 ObjectTypes::ActivityType::~ActivityType() {}
 
@@ -109,7 +109,7 @@ QIcon ObjectTypes::ActivityType::largeIcon() const
 
 //////////
 //  ObjectTypes::PublicActivity
-IMPLEMENT_SINGLETON(ObjectTypes::PublicActivity)
+TT3_IMPLEMENT_SINGLETON(ObjectTypes::PublicActivity)
 ObjectTypes::PublicActivity::PublicActivity() {}
 ObjectTypes::PublicActivity::~PublicActivity() {}
 
@@ -139,7 +139,7 @@ QIcon ObjectTypes::PublicActivity::largeIcon() const
 
 //////////
 //  ObjectTypes::PublicTask
-IMPLEMENT_SINGLETON(ObjectTypes::PublicTask)
+TT3_IMPLEMENT_SINGLETON(ObjectTypes::PublicTask)
 ObjectTypes::PublicTask::PublicTask() {}
 ObjectTypes::PublicTask::~PublicTask() {}
 
@@ -169,7 +169,7 @@ QIcon ObjectTypes::PublicTask::largeIcon() const
 
 //////////
 //  ObjectTypes::PrivateActivity
-IMPLEMENT_SINGLETON(ObjectTypes::PrivateActivity)
+TT3_IMPLEMENT_SINGLETON(ObjectTypes::PrivateActivity)
 ObjectTypes::PrivateActivity::PrivateActivity() {}
 ObjectTypes::PrivateActivity::~PrivateActivity() {}
 
@@ -199,7 +199,7 @@ QIcon ObjectTypes::PrivateActivity::largeIcon() const
 
 //////////
 //  ObjectTypes::PrivateTask
-IMPLEMENT_SINGLETON(ObjectTypes::PrivateTask)
+TT3_IMPLEMENT_SINGLETON(ObjectTypes::PrivateTask)
 ObjectTypes::PrivateTask::PrivateTask() {}
 ObjectTypes::PrivateTask::~PrivateTask() {}
 
@@ -229,7 +229,7 @@ QIcon ObjectTypes::PrivateTask::largeIcon() const
 
 //////////
 //  ObjectTypes::Work
-IMPLEMENT_SINGLETON(ObjectTypes::Work)
+TT3_IMPLEMENT_SINGLETON(ObjectTypes::Work)
 ObjectTypes::Work::Work() {}
 ObjectTypes::Work::~Work() {}
 
@@ -259,7 +259,7 @@ QIcon ObjectTypes::Work::largeIcon() const
 
 //////////
 //  ObjectTypes::Event
-IMPLEMENT_SINGLETON(ObjectTypes::Event)
+TT3_IMPLEMENT_SINGLETON(ObjectTypes::Event)
 ObjectTypes::Event::Event() {}
 ObjectTypes::Event::~Event() {}
 
@@ -289,7 +289,7 @@ QIcon ObjectTypes::Event::largeIcon() const
 
 //////////
 //  ObjectTypes::Project
-IMPLEMENT_SINGLETON(ObjectTypes::Project)
+TT3_IMPLEMENT_SINGLETON(ObjectTypes::Project)
 ObjectTypes::Project::Project() {}
 ObjectTypes::Project::~Project() {}
 
@@ -319,7 +319,7 @@ QIcon ObjectTypes::Project::largeIcon() const
 
 //////////
 //  ObjectTypes::WorkStream
-IMPLEMENT_SINGLETON(ObjectTypes::WorkStream)
+TT3_IMPLEMENT_SINGLETON(ObjectTypes::WorkStream)
 ObjectTypes::WorkStream::WorkStream() {}
 ObjectTypes::WorkStream::~WorkStream() {}
 
@@ -349,7 +349,7 @@ QIcon ObjectTypes::WorkStream::largeIcon() const
 
 //////////
 //  ObjectTypes::Beneficiary
-IMPLEMENT_SINGLETON(ObjectTypes::Beneficiary)
+TT3_IMPLEMENT_SINGLETON(ObjectTypes::Beneficiary)
 ObjectTypes::Beneficiary::Beneficiary() {}
 ObjectTypes::Beneficiary::~Beneficiary() {}
 

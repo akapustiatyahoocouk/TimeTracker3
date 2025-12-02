@@ -24,7 +24,7 @@ namespace tt3::ws
     ///     for a specific property of a specific object.
     class TT3_WS_PUBLIC Validator final
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Validator)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Validator)
 
         friend class WorkspaceTypeImpl;
 

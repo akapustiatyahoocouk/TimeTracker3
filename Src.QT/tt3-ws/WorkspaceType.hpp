@@ -24,7 +24,7 @@ namespace tt3::ws
     ///     automatically based on the available database types.
     class TT3_WS_PUBLIC WorkspaceTypeImpl final
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkspaceTypeImpl)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkspaceTypeImpl)
 
         friend class WorkspaceTypeManager;
         friend class WorkspaceAddressImpl;
@@ -237,7 +237,7 @@ namespace tt3::ws
     /// \brief The registry/manager of known workspace types.
     class TT3_WS_PUBLIC WorkspaceTypeManager final
     {
-        UTILITY_CLASS(WorkspaceTypeManager)
+        TT3_UTILITY_CLASS(WorkspaceTypeManager)
 
         friend class WorkspaceAddressImpl;
 

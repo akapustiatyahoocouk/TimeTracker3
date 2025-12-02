@@ -22,7 +22,7 @@ namespace tt3::db::xml
     class TT3_DB_XML_PUBLIC DatabaseAddress final
         :   public virtual tt3::db::api::IDatabaseAddress
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DatabaseAddress)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DatabaseAddress)
 
         friend class DatabaseType;
         friend class Database;

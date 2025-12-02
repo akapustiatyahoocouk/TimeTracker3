@@ -28,7 +28,7 @@
     class TT3_GUI_PUBLIC EnterCommentDialog final
         :   private EditStringDialog
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(EnterCommentDialog)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(EnterCommentDialog)
 
         //////////
         //  Types

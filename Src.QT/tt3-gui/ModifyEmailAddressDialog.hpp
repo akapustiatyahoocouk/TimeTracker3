@@ -26,7 +26,7 @@ namespace tt3::gui
     class TT3_GUI_PUBLIC ModifyEmailAddressDialog final
         :   private EditStringDialog
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ModifyEmailAddressDialog)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ModifyEmailAddressDialog)
 
         //////////
         //  Types

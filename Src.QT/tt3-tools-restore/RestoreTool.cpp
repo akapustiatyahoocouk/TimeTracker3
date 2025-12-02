@@ -23,7 +23,7 @@ const QString RestoreTool::PreferredFilenameExtension = ".tt3-backup";
 
 //////////
 //  Singleton
-IMPLEMENT_SINGLETON(RestoreTool)
+TT3_IMPLEMENT_SINGLETON(RestoreTool)
 RestoreTool::RestoreTool() {}
 RestoreTool::~RestoreTool() {}
 

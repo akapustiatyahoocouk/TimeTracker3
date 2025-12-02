@@ -21,7 +21,7 @@ namespace tt3::tools::backup
     /// \brief The "TT3 Backup writer" agent.
     class TT3_TOOLS_BACKUP_PUBLIC BackupWriter final
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BackupWriter)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BackupWriter)
 
         //////////
         //  Construction/destruction

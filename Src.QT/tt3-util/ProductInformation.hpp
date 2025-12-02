@@ -21,7 +21,7 @@ namespace tt3::util
     /// \brief The product information provider.
     class TT3_UTIL_PUBLIC ProductInformation final
     {
-        UTILITY_CLASS(ProductInformation)
+        TT3_UTILITY_CLASS(ProductInformation)
 
         //////////
         //  Operations

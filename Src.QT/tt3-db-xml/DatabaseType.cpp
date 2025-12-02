@@ -23,7 +23,7 @@ const QString DatabaseType::PreferredFilenameExtension = ".tt3-xml";
 
 //////////
 //  Sigleton
-IMPLEMENT_SINGLETON(DatabaseType)
+TT3_IMPLEMENT_SINGLETON(DatabaseType)
 
 DatabaseType::DatabaseType()
     :   _validator(tt3::db::api::DefaultValidator::instance()),

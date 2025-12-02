@@ -1,5 +1,5 @@
 //
-//  tt3/Components.hpp - TT3 Components
+//  tt3-db-api/Component.hpp - tt3-db-api Component
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,32 +15,32 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace tt3
+namespace tt3::db::api
 {
-    /// \class Component tt3/API.hpp
-    /// \brief The "TT3 application" component.
-    class Component final
+    /// \class Component tt3-db-api/API.hpp
+    /// \brief The "TT3 DB API" component.
+    class TT3_DB_API_PUBLIC Component final
         :   public virtual tt3::util::IComponent
     {
-        DECLARE_SINGLETON(Component)
+        TT3_DECLARE_COMPONENT(Component)
 
         //////////
         //  Types
     public:
-        /// \class Resources tt3/API.hpp
+        /// \class Resources tt3-db-api/API.hpp
         /// \brief The component's resources.
-        class Resources final
+        class TT3_DB_API_PUBLIC Resources final
             :   public tt3::util::FileResourceFactory
         {
-            DECLARE_SINGLETON(Resources)
+            TT3_DECLARE_SINGLETON(Resources)
         };
 
-        /// \class Settings tt3/API.hpp
+        /// \class Settings tt3-db-api/API.hpp
         /// \brief The component's settings.
-        class Settings final
+        class TT3_DB_API_PUBLIC Settings final
             :   public tt3::util::Settings
         {
-            DECLARE_SINGLETON(Settings)
+            TT3_DECLARE_SINGLETON(Settings)
         };
 
         //////////
@@ -69,4 +69,4 @@ namespace tt3
     };
 }
 
-//  End of tt3/Components.hpp
+//  End of tt3-db-api/Component.hpp

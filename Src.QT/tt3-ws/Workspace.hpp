@@ -25,7 +25,7 @@ namespace tt3::ws
         :   public QObject
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkspaceImpl)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkspaceImpl)
 
         friend class WorkspaceTypeImpl;
         friend std::shared_ptr<WorkspaceImpl>;

@@ -22,7 +22,7 @@ namespace tt3::tools::backup
     class TT3_TOOLS_BACKUP_PUBLIC BackupTool final
         :   public virtual tt3::util::ITool
     {
-        DECLARE_SINGLETON(BackupTool)
+        TT3_DECLARE_SINGLETON(BackupTool)
 
         //////////
         //  Constants

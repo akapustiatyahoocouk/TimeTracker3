@@ -22,7 +22,7 @@ namespace tt3::tools::restore
     class TT3_TOOLS_RESTORE_PUBLIC RestoreTool final
         :   public virtual tt3::util::ITool
     {
-        DECLARE_SINGLETON(RestoreTool)
+        TT3_DECLARE_SINGLETON(RestoreTool)
 
         //////////
         //  Constants

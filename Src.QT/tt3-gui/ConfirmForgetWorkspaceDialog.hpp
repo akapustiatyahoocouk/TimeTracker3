@@ -28,7 +28,7 @@
     class TT3_GUI_PUBLIC ConfirmForgetWorkspaceDialog final
         :   private AskYesNoDialog
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmForgetWorkspaceDialog)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmForgetWorkspaceDialog)
 
         //////////
         //  Construction/destruction

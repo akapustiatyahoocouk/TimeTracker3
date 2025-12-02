@@ -595,7 +595,7 @@ namespace tt3::db::api
     class TT3_DB_API_PUBLIC DefaultValidator final
         :   public virtual IValidator
     {
-        DECLARE_SINGLETON(DefaultValidator)
+        TT3_DECLARE_SINGLETON(DefaultValidator)
 
         //////////
         //  IValidator
@@ -657,7 +657,7 @@ namespace tt3::db::api
         class TT3_DB_API_PUBLIC _PrincipalValidator final
             :   public virtual IPrincipalValidator
         {
-            DECLARE_SINGLETON(_PrincipalValidator)
+            TT3_DECLARE_SINGLETON(_PrincipalValidator)
 
             //////////
             //  IPrincipalValidator
@@ -670,7 +670,7 @@ namespace tt3::db::api
         class TT3_DB_API_PUBLIC _UserValidator final
             :   public virtual IUserValidator
         {
-            DECLARE_SINGLETON(_UserValidator)
+            TT3_DECLARE_SINGLETON(_UserValidator)
 
             //////////
             //  IPrincipalValidator
@@ -696,7 +696,7 @@ namespace tt3::db::api
         class TT3_DB_API_PUBLIC _AccountValidator final
             :   public virtual IAccountValidator
         {
-            DECLARE_SINGLETON(_AccountValidator)
+            TT3_DECLARE_SINGLETON(_AccountValidator)
 
             //////////
             //  IPrincipalValidator
@@ -719,7 +719,7 @@ namespace tt3::db::api
         class TT3_DB_API_PUBLIC _ActivityTypeValidator final
             :   public virtual IActivityTypeValidator
         {
-            DECLARE_SINGLETON(_ActivityTypeValidator)
+            TT3_DECLARE_SINGLETON(_ActivityTypeValidator)
 
             //////////
             //  IActivityTypeValidator
@@ -740,7 +740,7 @@ namespace tt3::db::api
                 public virtual IPublicTaskValidator,
                 public virtual IPrivateTaskValidator
         {
-            DECLARE_SINGLETON(_ActivityValidator)
+            TT3_DECLARE_SINGLETON(_ActivityValidator)
 
             //////////
             //  IActivityValidator
@@ -761,7 +761,7 @@ namespace tt3::db::api
                 public virtual IProjectValidator,
                 public virtual IWorkStreamValidator
         {
-            DECLARE_SINGLETON(_WorkloadValidator)
+            TT3_DECLARE_SINGLETON(_WorkloadValidator)
 
             //////////
             //  IWorkloadValidator
@@ -777,7 +777,7 @@ namespace tt3::db::api
         class TT3_DB_API_PUBLIC _BeneficiaryValidator final
             :   public virtual IBeneficiaryValidator
         {
-            DECLARE_SINGLETON(_BeneficiaryValidator)
+            TT3_DECLARE_SINGLETON(_BeneficiaryValidator)
 
             //////////
             //  IBeneficiaryValidator
@@ -793,7 +793,7 @@ namespace tt3::db::api
         class TT3_DB_API_PUBLIC _WorkValidator final
             :   public virtual IWorkValidator
         {
-            DECLARE_SINGLETON(_WorkValidator)
+            TT3_DECLARE_SINGLETON(_WorkValidator)
 
             //////////
             //  IWorkValidator
@@ -807,7 +807,7 @@ namespace tt3::db::api
         class TT3_DB_API_PUBLIC _EventValidator final
             :   public virtual IEventValidator
         {
-            DECLARE_SINGLETON(_EventValidator)
+            TT3_DECLARE_SINGLETON(_EventValidator)
 
             //////////
             //  IEventValidator

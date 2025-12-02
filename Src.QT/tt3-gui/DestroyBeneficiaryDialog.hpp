@@ -26,7 +26,7 @@ namespace tt3::gui
     class TT3_GUI_PUBLIC DestroyBeneficiaryDialog final
         :   private AskYesNoDialog
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DestroyBeneficiaryDialog)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DestroyBeneficiaryDialog)
 
         //////////
         //  Types

@@ -86,18 +86,6 @@ bool Application::notify(QObject * receiver, QEvent * event)
 
 //////////
 //  Implementation helpers
-void Application::_registerStandardComponents()
-{   //  Some components form the TT3 skeleton
-    //  and, therefore, are NOT registered by plugins
-    tt3::util::ComponentManager::registerComponent(tt3::Component::instance());
-    tt3::util::ComponentManager::registerComponent(tt3::report::Component::instance());
-    tt3::util::ComponentManager::registerComponent(tt3::gui::Component::instance());
-    tt3::util::ComponentManager::registerComponent(tt3::ws::Component::instance());
-    tt3::util::ComponentManager::registerComponent(tt3::db::api::Component::instance());
-    tt3::util::ComponentManager::registerComponent(tt3::help::Component::instance());
-    tt3::util::ComponentManager::registerComponent(tt3::util::Component::instance());
-}
-
 void Application::_selectActiveTheme()
 {
     tt3::gui::ITheme * initialTheme =
@@ -158,7 +146,6 @@ void Application::_initialize()
     //QGuiApplication::setApplicationVersion(tt3::util::ProductInformation::applicationVersion().toString());
     //QGuiApplication::setApplicationDisplayName(tt3::util::ProductInformation::applicationDisplayName());
 
-    _registerStandardComponents();
     tt3::util::PluginManager::loadPlugins();    //  will register components defined by plugins
     tt3::util::ComponentManager::loadComponentSettings();
     tt3::util::ComponentManager::initializeComponents();

@@ -95,7 +95,7 @@ namespace tt3::util
     /// \brief The manager of known Tools.
     class TT3_UTIL_PUBLIC ToolManager final
     {
-        UTILITY_CLASS(ToolManager)
+        TT3_UTILITY_CLASS(ToolManager)
 
         //////////
         //  Operations

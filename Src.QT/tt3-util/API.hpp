@@ -146,6 +146,5 @@
 
 //  Misc
 #include "tt3-util/ProductInformation.hpp"
-#include "tt3-util/Components.hpp"
 
 //  End of tt3-util/API.hpp

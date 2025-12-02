@@ -107,7 +107,7 @@ namespace tt3::report
     /// \brief The manager of known report templates.
     class TT3_REPORT_PUBLIC ReportTemplateManager final
     {
-        UTILITY_CLASS(ReportTemplateManager)
+        TT3_UTILITY_CLASS(ReportTemplateManager)
 
         //////////
         //  Operations

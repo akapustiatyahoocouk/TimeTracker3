@@ -24,8 +24,8 @@
 //////////
 //  tt3-tools-restore components
 #include "tt3-tools-restore/Linkage.hpp"
-#include "tt3-tools-restore/Plugins.hpp"
-#include "tt3-tools-restore/Components.hpp"
+#include "tt3-tools-restore/Plugin.hpp"
+#include "tt3-tools-restore/Component.hpp"
 
 #include "tt3-tools-restore/Exceptions.hpp"
 #include "tt3-tools-restore/RestoreTool.hpp"

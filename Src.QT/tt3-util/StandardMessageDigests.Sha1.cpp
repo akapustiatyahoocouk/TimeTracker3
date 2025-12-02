@@ -19,7 +19,7 @@ using namespace tt3::util;
 
 //////////
 //  Singleton
-IMPLEMENT_SINGLETON(StandardMessageDigests::Sha1)
+TT3_IMPLEMENT_SINGLETON(StandardMessageDigests::Sha1)
 StandardMessageDigests::Sha1::Sha1() {}
 StandardMessageDigests::Sha1::~Sha1() {}
 

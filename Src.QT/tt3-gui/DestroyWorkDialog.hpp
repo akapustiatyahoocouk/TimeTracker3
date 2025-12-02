@@ -26,7 +26,7 @@ namespace tt3::gui
     class TT3_GUI_PUBLIC DestroyWorkDialog final
         :   private AskYesNoDialog
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DestroyWorkDialog)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DestroyWorkDialog)
 
         //////////
         //  Types

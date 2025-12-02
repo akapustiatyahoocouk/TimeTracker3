@@ -26,7 +26,7 @@ namespace tt3::ws
     class TT3_WS_PUBLIC AccountImpl final
         :   public PrincipalImpl
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AccountImpl)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AccountImpl)
 
         friend class WorkspaceImpl;
         friend std::shared_ptr<AccountImpl>;

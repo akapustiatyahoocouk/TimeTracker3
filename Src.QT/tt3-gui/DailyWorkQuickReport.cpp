@@ -19,7 +19,7 @@ using namespace tt3::gui;
 
 //////////
 //  DailyWorkQuickReport
-IMPLEMENT_SINGLETON(DailyWorkQuickReport)
+TT3_IMPLEMENT_SINGLETON(DailyWorkQuickReport)
 DailyWorkQuickReport::DailyWorkQuickReport() {}
 DailyWorkQuickReport::~DailyWorkQuickReport() {}
 

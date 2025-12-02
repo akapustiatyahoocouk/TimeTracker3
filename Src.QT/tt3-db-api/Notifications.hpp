@@ -222,7 +222,7 @@ namespace tt3::db::api
         :   public QObject
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ChangeNotifier)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ChangeNotifier)
 
         //////////
         //  Construction/destruction
@@ -300,7 +300,7 @@ namespace tt3::db::api
         class TT3_DB_API_PUBLIC _WorkerThread
             :   public QThread
         {
-            CANNOT_ASSIGN_OR_COPY_CONSTRUCT(_WorkerThread)
+            TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(_WorkerThread)
 
             //////////
             //  Constants

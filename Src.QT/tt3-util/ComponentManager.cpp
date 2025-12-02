@@ -19,6 +19,16 @@ using namespace tt3::util;
 
 struct ComponentManager::_Impl
 {
+    _Impl()
+    {
+        qDebug() << "ComponentManager::_Impl";
+    }
+
+    ~_Impl()
+    {
+        qDebug() << "~ComponentManager::_Impl";
+    }
+
     Mutex                       guard;
     QMap<Mnemonic, IComponent*> registry;
     Components                  initializedComponents;
@@ -48,6 +58,7 @@ bool ComponentManager::registerComponent(IComponent * component)
 {
     Q_ASSERT(component != nullptr);
 
+    qDebug() << "Registering " << component->mnemonic().toString();
     _Impl * impl = _impl();
     Lock _(impl->guard);
 
@@ -62,6 +73,25 @@ bool ComponentManager::registerComponent(IComponent * component)
     Mnemonic key = component->mnemonic() + "|" + util::toString(component->version());
     impl->registry[key] = component;
     return true;
+}
+
+bool ComponentManager::unregisterComponent(
+        IComponent * component
+    )
+{
+    Q_ASSERT(component != nullptr);
+
+    qDebug() << "Unregistering " << component->mnemonic().toString();
+    _Impl * impl = _impl();
+    Lock _(impl->guard);
+
+    if (impl->registry.contains(component->mnemonic()) &&
+        impl->registry[component->mnemonic()] == component)
+    {
+        impl->registry.remove(component->mnemonic());
+        return true;
+    }
+    return false;
 }
 
 IComponent * ComponentManager::findComponent(const tt3::util::Mnemonic & mnemonic, const QVersionNumber & version)
@@ -133,7 +163,7 @@ void ComponentManager::deinitializeComponents()
     _Impl * impl = _impl();
     Lock _(impl->guard);
 
-    for (auto component : impl->initializedComponents)
+    for (auto component : std::as_const(impl->initializedComponents))
     {
         try
         {   //  Be defensive - cleanup as many as possible

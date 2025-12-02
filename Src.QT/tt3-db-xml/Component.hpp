@@ -1,5 +1,5 @@
 //
-//  tt3-util/Components.hpp - TT3-util Components
+//  tt3-db-xml/Component.hpp - tt3-db-xml Component
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,41 +15,44 @@
 //  GNU General Public License for more details.
 //////////
 
-//  The #ifdef guard is needed for MOC to work properly
-#ifdef TT3_UTIL_SETTINGS_DEFINED
-
-namespace tt3::util
+namespace tt3::db::xml
 {
-    //  The "TT3 Util" component
-    class TT3_UTIL_PUBLIC Component final
-        :   public virtual IComponent
+    /// \class Component tt3-db-xml/API.hpp
+    /// \brief The "TT3 XML file database" component.
+    class TT3_DB_XML_PUBLIC Component final
+        :   public virtual tt3::util::IComponent
     {
-        DECLARE_SINGLETON(Component)
+        TT3_DECLARE_COMPONENT(Component)
 
         //////////
         //  Types
     public:
-        //  The component's resources
-        class TT3_UTIL_PUBLIC Resources final
-            :   public FileResourceFactory
+        /// \class Resources tt3-db-xml/API.hpp
+        /// \brief The component's resources.
+        class TT3_DB_XML_PUBLIC Resources final
+            :   public tt3::util::FileResourceFactory
         {
-            DECLARE_SINGLETON(Resources)
+            TT3_DECLARE_SINGLETON(Resources)
         };
 
-        //  The component's settings
-        class TT3_UTIL_PUBLIC Settings final
+        /// \class Settings tt3-db-xml/API.hpp
+        /// \brief The component's settings.
+        class TT3_DB_XML_PUBLIC Settings final
             :   public tt3::util::Settings
         {
-            DECLARE_SINGLETON(Settings)
-
-            //////////
-            //  Properties
-        public:
+            TT3_DECLARE_SINGLETON(Settings)
         };
 
         //////////
         //  IComponent
     public:
+        /// \brief A type alias to improve code readability.
+        using Mnemonic = tt3::util::Mnemonic;
+        /// \brief A type alias to improve code readability.
+        using ISubsystem = tt3::util::ISubsystem;
+        /// \brief A type alias to improve code readability.
+        using IPlugin = tt3::util::IPlugin;
+
         virtual IPlugin *       plugin() const override;
         virtual Mnemonic        mnemonic() const override;
         virtual QString         displayName() const override;
@@ -66,5 +69,4 @@ namespace tt3::util
     };
 }
 
-#endif  //  def TT3_UTIL_SETTINGS_DEFINED
-//  End of tt3-util/Components.hpp
+//  End of tt3-db-xml/Component.hpp

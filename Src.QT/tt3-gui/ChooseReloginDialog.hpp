@@ -26,7 +26,7 @@
     class TT3_GUI_PUBLIC ChooseReloginDialog final
         :   private AskYesNoDialog
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ChooseReloginDialog)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ChooseReloginDialog)
 
         //////////
         //  Construction/destruction

@@ -22,7 +22,7 @@ namespace tt3::ws
 class TT3_WS_PUBLIC WorkStreamImpl final
     :   public WorkloadImpl
 {
-    CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkStreamImpl)
+    TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkStreamImpl)
 
     friend class WorkspaceImpl;
     friend std::shared_ptr<WorkStreamImpl>;

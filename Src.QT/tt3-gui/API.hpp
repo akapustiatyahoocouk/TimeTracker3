@@ -25,7 +25,7 @@
 //////////
 //  tt3-gui components
 #include "tt3-gui/Linkage.hpp"
-#include "tt3-gui/Components.hpp"
+#include "tt3-gui/Component.hpp"
 
 //  Miscellaneous helpers
 #include "tt3-gui/Exceptions.hpp"

@@ -26,7 +26,7 @@
     class TT3_GUI_PUBLIC ConfirmRestartDialog final
         :   private AskYesNoDialog
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmRestartDialog)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ConfirmRestartDialog)
 
         //////////
         //  Construction/destruction

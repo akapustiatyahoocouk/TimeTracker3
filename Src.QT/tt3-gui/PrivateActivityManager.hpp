@@ -29,7 +29,7 @@ namespace tt3::gui
         :   public QWidget
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PrivateActivityManager)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PrivateActivityManager)
 
         friend class TT3_GUI_PUBLIC ManageQuickPicksListDialog;
 

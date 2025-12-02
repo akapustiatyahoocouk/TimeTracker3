@@ -27,7 +27,7 @@ namespace tt3::ws
     ///     any existing workspace.
     class TT3_WS_PUBLIC WorkspaceAddressImpl final
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkspaceAddressImpl)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkspaceAddressImpl)
 
         friend class WorkspaceTypeImpl;
         friend std::shared_ptr<WorkspaceAddressImpl>;

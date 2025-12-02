@@ -1,5 +1,5 @@
 //
-//  tt3-tools-backup/Components.hpp - tt3-tools-backup Components
+//  tt3-skin-admin/Component.hpp - tt3-skin-admin Component
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,32 +15,48 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace tt3::tools::backup
+namespace tt3::skin::admin
 {
-    /// \class Component tt3-tools-backup/API.hpp
-    /// \brief The "TT3 Backup" component.
-    class TT3_TOOLS_BACKUP_PUBLIC Component final
+    /// \class Component tt3-skin-admin/API.hpp
+    /// \brief The "TT3 Admin skin" component.
+    class TT3_SKIN_ADMIN_PUBLIC Component final
         :   public virtual tt3::util::IComponent
     {
-        DECLARE_SINGLETON(Component)
+        TT3_DECLARE_COMPONENT(Component)
 
         //////////
         //  Types
     public:
-        /// \class Resources tt3-tools-backup/API.hpp
+        /// \class Resources tt3-skin-admin/API.hpp
         /// \brief The component's resources.
-        class TT3_TOOLS_BACKUP_PUBLIC Resources final
+        class TT3_SKIN_ADMIN_PUBLIC Resources final
             :   public tt3::util::FileResourceFactory
         {
-            DECLARE_SINGLETON(Resources)
+            TT3_DECLARE_SINGLETON(Resources)
         };
 
-        /// \class Settings tt3-tools-backup/API.hpp
+        /// \class Settings tt3-skin-admin/API.hpp
         /// \brief The component's settings.
-        class TT3_TOOLS_BACKUP_PUBLIC Settings final
+        class TT3_SKIN_ADMIN_PUBLIC Settings final
             :   public tt3::util::Settings
         {
-            DECLARE_SINGLETON(Settings)
+            TT3_DECLARE_SINGLETON(Settings)
+
+            //////////
+            //  Properties
+        public:
+            /// \brief
+            ///     The "normal" bounds of the main UI frame
+            ///     (that is, when it is noe minimized or maximized).
+            tt3::util::Setting<QRect>   mainFrameBounds;
+
+            /// \brief
+            ///     True if the main UI frame is maximized, false if not.
+            tt3::util::Setting<bool>    mainFrameMaximized;
+
+            /// \brief
+            ///     The current tab index within the MainFrame.
+            tt3::util::Setting<int>     mainFrameCurrentTab;
         };
 
         //////////
@@ -69,4 +85,4 @@ namespace tt3::tools::backup
     };
 }
 
-//  End of tt3-tools-backup/Components.hpp
+//  End of tt3-skin-admin/Component.hpp

@@ -197,7 +197,7 @@ namespace tt3::db::api
     /// \brief The manager of known database types.
     class TT3_DB_API_PUBLIC DatabaseTypeManager final
     {
-        UTILITY_CLASS(DatabaseTypeManager)
+        TT3_UTILITY_CLASS(DatabaseTypeManager)
 
         //////////
         //  Operations

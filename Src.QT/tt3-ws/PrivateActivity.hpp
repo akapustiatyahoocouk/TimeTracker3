@@ -22,7 +22,7 @@ namespace tt3::ws
     class TT3_WS_PUBLIC PrivateActivityImpl
         :   public virtual ActivityImpl
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PrivateActivityImpl)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PrivateActivityImpl)
 
         friend class WorkspaceImpl;
         friend std::shared_ptr<PrivateActivityImpl>;

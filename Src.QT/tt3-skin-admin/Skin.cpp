@@ -19,7 +19,7 @@ using namespace tt3::skin::admin;
 
 //////////
 //  Singleton
-IMPLEMENT_SINGLETON(Skin)
+TT3_IMPLEMENT_SINGLETON(Skin)
 Skin::Skin() {}
 Skin::~Skin() {}
 

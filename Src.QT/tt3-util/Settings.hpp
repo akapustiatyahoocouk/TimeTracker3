@@ -27,7 +27,7 @@ namespace tt3::util
     ///     Concrete subclasses will normally be singletons.
     class TT3_UTIL_PUBLIC Settings
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Settings)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Settings)
 
         friend class AbstractSetting;
 
@@ -76,7 +76,7 @@ namespace tt3::util
         :   public QObject
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AbstractSetting)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(AbstractSetting)
 
         //////////
         //  Construction/destruction
@@ -160,7 +160,7 @@ namespace tt3::util
     class Setting final
         :   public AbstractSetting
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Setting)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Setting)
 
         //////////
         //  Construction/destruction

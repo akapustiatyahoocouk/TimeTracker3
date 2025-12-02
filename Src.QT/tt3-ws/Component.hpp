@@ -1,5 +1,5 @@
 //
-//  tt3-skin-admin/Components.hpp - tt3-skin-admin Components
+//  tt3-ws/Component.hpp - tt3-ws Component
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,48 +15,72 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace tt3::skin::admin
+namespace tt3::ws
 {
-    /// \class Component tt3-skin-admin/API.hpp
-    /// \brief The "TT3 Admin skin" component.
-    class TT3_SKIN_ADMIN_PUBLIC Component final
+    /// \class Component tt3-ws/API.hpp
+    /// \brief The "TT3 Workspace" component.
+    class TT3_WS_PUBLIC Component final
         :   public virtual tt3::util::IComponent
     {
-        DECLARE_SINGLETON(Component)
+        TT3_DECLARE_COMPONENT(Component)
 
         //////////
         //  Types
     public:
-        /// \class Resources tt3-skin-admin/API.hpp
+        /// \class Resources tt3-ws/API.hpp
         /// \brief The component's resources.
-        class TT3_SKIN_ADMIN_PUBLIC Resources final
+        class TT3_WS_PUBLIC Resources final
             :   public tt3::util::FileResourceFactory
         {
-            DECLARE_SINGLETON(Resources)
+            TT3_DECLARE_SINGLETON(Resources)
         };
 
-        /// \class Settings tt3-skin-admin/API.hpp
+        /// \class Settings tt3-ws/API.hpp
         /// \brief The component's settings.
-        class TT3_SKIN_ADMIN_PUBLIC Settings final
+        class TT3_WS_PUBLIC Settings final
             :   public tt3::util::Settings
         {
-            DECLARE_SINGLETON(Settings)
+            TT3_DECLARE_SINGLETON(Settings)
+
+            //////////
+            //  Constants
+        public:
+            /// \brief
+            ///     The maximum size of the MRU workspaces list.
+            static inline const int MaxRecentWorkspaces = 9;
 
             //////////
             //  Properties
         public:
             /// \brief
-            ///     The "normal" bounds of the main UI frame
-            ///     (that is, when it is noe minimized or maximized).
-            tt3::util::Setting<QRect>   mainFrameBounds;
+            ///     The addresses of the recently used workspaces, most
+            ///     recent first.
+            tt3::util::Setting<WorkspaceAddressesList>  recentWorkspaces;
+
+            //////////
+            //  Operations
+        public:
+            /// \brief
+            ///     Adds the specified entry to the MRU workspaces list.
+            /// \details
+            ///     If the entry is already there, moves it to the top
+            ///     of the list.
+            /// \param workspaceAddress
+            ///     The workspace address to add to the MRU list
+            void            addRecentWorkspace(
+                                    WorkspaceAddress workspaceAddress
+                                );
 
             /// \brief
-            ///     True if the main UI frame is maximized, false if not.
-            tt3::util::Setting<bool>    mainFrameMaximized;
-
-            /// \brief
-            ///     The current tab index within the MainFrame.
-            tt3::util::Setting<int>     mainFrameCurrentTab;
+            ///     Removes the specified entry from the MRU
+            ///     workspaces list.
+            /// \details
+            ///     If already not there, the call has no effect.
+            /// \param workspaceAddress
+            ///     The workspace address to remove from the MRU list
+            void            removeRecentWorkspace(
+                                    WorkspaceAddress workspaceAddress
+                                );
         };
 
         //////////
@@ -85,4 +109,4 @@ namespace tt3::skin::admin
     };
 }
 
-//  End of tt3-skin-admin/Components.hpp
+//  End of tt3-ws/Component.hpp

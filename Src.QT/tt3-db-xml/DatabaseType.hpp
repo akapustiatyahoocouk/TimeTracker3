@@ -26,7 +26,7 @@ namespace tt3::db::xml
     class TT3_DB_XML_PUBLIC DatabaseType final
         :   public virtual tt3::db::api::IDatabaseType
     {
-        DECLARE_SINGLETON(DatabaseType)
+        TT3_DECLARE_SINGLETON(DatabaseType)
 
         friend class DatabaseAddress;
         friend class Database;

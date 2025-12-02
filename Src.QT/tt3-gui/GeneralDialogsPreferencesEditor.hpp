@@ -27,7 +27,7 @@ namespace tt3::gui
         :   public PreferencesEditor
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(GeneralDialogsPreferencesEditor)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(GeneralDialogsPreferencesEditor)
 
         //////////
         //  Construction/destruction

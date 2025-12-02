@@ -23,7 +23,7 @@ namespace tt3::db::xml
         :   public virtual Activity,
             public virtual tt3::db::api::IPrivateActivity
     {
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PrivateActivity)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PrivateActivity)
 
         friend class Database;
         friend class User;

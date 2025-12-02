@@ -27,7 +27,7 @@ namespace tt3::gui
         :   public QuickReportView
     {
         Q_OBJECT
-        CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DailyWorkQuickReportView)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DailyWorkQuickReportView)
 
         //////////
         //  Construction/destruction

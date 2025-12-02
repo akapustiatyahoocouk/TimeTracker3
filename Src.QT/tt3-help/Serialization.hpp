@@ -21,7 +21,7 @@ namespace tt3::help
     /// \brief An agent that saves a help collection to a file.
     class TT3_HELP_PUBLIC Serializer final
     {
-        UTILITY_CLASS(Serializer)
+        TT3_UTILITY_CLASS(Serializer)
 
         //////////
         //  Operations

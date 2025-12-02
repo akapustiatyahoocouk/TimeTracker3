@@ -34,7 +34,7 @@ namespace tt3::util
         ///     Once "finalised", the digest bytes become available.
         class TT3_UTIL_PUBLIC Builder
         {
-            CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Builder)
+            TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Builder)
 
             //////////
             //  Construction/destruction
@@ -141,7 +141,7 @@ namespace tt3::util
     /// \brief The standard (predefined) licenses.
     class TT3_UTIL_PUBLIC StandardMessageDigests final
     {
-        UTILITY_CLASS(StandardMessageDigests)
+        TT3_UTILITY_CLASS(StandardMessageDigests)
 
         //////////
         //  Members
@@ -151,7 +151,7 @@ namespace tt3::util
         class TT3_UTIL_PUBLIC Sha1 final
             :   public virtual IMessageDigest
         {
-            DECLARE_SINGLETON(Sha1)
+            TT3_DECLARE_SINGLETON(Sha1)
 
             //////////
             //  IMessageDigest
@@ -166,7 +166,7 @@ namespace tt3::util
             class TT3_UTIL_PUBLIC _Builder final
                 :   public Builder
             {
-                CANNOT_ASSIGN_OR_COPY_CONSTRUCT(_Builder)
+                TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(_Builder)
 
                 //////////
                 //  Construction/destruction
@@ -209,7 +209,7 @@ namespace tt3::util
     /// \brief The manager of known message ditest algorithms.
     class TT3_UTIL_PUBLIC MessageDigestManager final
     {
-        UTILITY_CLASS(MessageDigestManager)
+        TT3_UTILITY_CLASS(MessageDigestManager)
 
         //////////
         //  Operations

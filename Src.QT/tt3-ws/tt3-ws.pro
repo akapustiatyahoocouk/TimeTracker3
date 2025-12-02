@@ -39,7 +39,7 @@ HEADERS += \
     ActivityType.hpp \
     Beneficiary.hpp \
     Classes.hpp \
-    Components.hpp \
+    Component.hpp \
     Credentials.hpp \
     Event.hpp \
     Exceptions.hpp \
