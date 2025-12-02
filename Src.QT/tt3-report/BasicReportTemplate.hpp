@@ -82,7 +82,7 @@ namespace tt3::report
         //  Construction/destruction - from friends only
     private:
         BasicStyle(
-                const QString & name,
+                const Mnemonic & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,
@@ -128,7 +128,7 @@ namespace tt3::report
         //  Construction/destruction - from friends only
     private:
         BasicCharacterStyle(
-                const QString & name,
+                const Mnemonic & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,
@@ -155,7 +155,7 @@ namespace tt3::report
         //  Construction/destruction - from friends only
     private:
         BasicBlockStyle(
-                const QString & name,
+                const Mnemonic & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,
@@ -200,7 +200,7 @@ namespace tt3::report
         //  Construction/destruction - from friends only
     private:
         BasicParagraphStyle(
-                const QString & name,
+                const Mnemonic & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,
@@ -243,7 +243,7 @@ namespace tt3::report
         //  Construction/destruction - from friends only
     private:
         BasicListStyle(
-            const QString & name,
+            const Mnemonic & name,
             const FontSpecsOpt & fontSpecs,
             const TypographicSizeOpt & fontSize,
             const FontStyleOpt & fontStyle,
@@ -283,7 +283,7 @@ namespace tt3::report
         //  Construction/destruction - from friends only
     private:
         BasicTableStyle(
-                const QString & name,
+                const Mnemonic & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,
@@ -326,7 +326,7 @@ namespace tt3::report
         //  Construction/destruction - from friends only
     private:
         BasicLinkStyle(
-                const QString & name,
+                const Mnemonic & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,
@@ -351,7 +351,7 @@ namespace tt3::report
         //  Construction/destruction - from friends only
     private:
         BasicSectionStyle(
-                const QString & name,
+                const Mnemonic & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,

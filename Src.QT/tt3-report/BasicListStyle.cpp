@@ -20,7 +20,7 @@ using namespace tt3::report;
 //////////
 //  Construction/destruction - from friends only
 BasicListStyle::BasicListStyle(
-        const QString & name,
+        const Mnemonic & name,
         const FontSpecsOpt & fontSpecs,
         const TypographicSizeOpt & fontSize,
         const FontStyleOpt & fontStyle,

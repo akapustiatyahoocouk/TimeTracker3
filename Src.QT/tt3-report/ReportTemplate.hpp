@@ -306,87 +306,87 @@ namespace tt3::report
         ///     handling - any "section" of a "document" which has one or more paragraphs of that
         ///     style is considered a "title page" section and, if the section content is shorter
         ///     than the page length, it is vertically centred within the page.
-        inline static const QString TitleStyleName = "Paragraph.Title";
+        inline static const Mnemonic TitleStyleName = M(Paragraph.Title);
 
         /// \brief
         ///     The "document subtitle" paragraph style; must be defined by every valid report template.
-        inline static const QString SubtitleStyleName = "Paragraph.Subtitle";
+        inline static const Mnemonic SubtitleStyleName = M(Paragraph.Subtitle);
 
         /// \brief
         ///     The default paragraph style; must be defined by every valid report template.
-        inline static const QString DefaultStyleName = "Paragraph.Default";
+        inline static const Mnemonic DefaultStyleName = M(Paragraph.Default);
 
         /// \brief
         ///     The paragraph style for level 1 headings; must be defined by every valid report template.
-        inline static const QString Heading1StyleName = "Paragraph.Heading1";
+        inline static const Mnemonic Heading1StyleName = M(Paragraph.Heading1);
 
         /// \brief
         ///     The paragraph style for level 2 headings; must be defined by every valid report template.
-        inline static const QString Heading2StyleName = "Paragraph.Heading2";
+        inline static const Mnemonic Heading2StyleName = M(Paragraph.Heading2);
 
         /// \brief
         ///     The paragraph style for level 3 headings; must be defined by every valid report template.
-        inline static const QString Heading3StyleName = "Paragraph.Heading3";
+        inline static const Mnemonic Heading3StyleName = M(Paragraph.Heading3);
 
         /// \brief
         ///     The paragraph style for level 4 headings; must be defined by every valid report template.
-        inline static const QString Heading4StyleName = "Paragraph.Heading4";
+        inline static const Mnemonic Heading4StyleName = M(Paragraph.Heading4);
 
         /// \brief
         ///     The paragraph style for level 5 headings; must be defined by every valid report template.
-        inline static const QString Heading5StyleName = "Paragraph.Heading5";
+        inline static const Mnemonic Heading5StyleName = M(Paragraph.Heading5);
 
         /// \brief
         ///     The paragraph style for level 6 headings; must be defined by every valid report template.
-        inline static const QString Heading6StyleName = "Paragraph.Heading6";
+        inline static const Mnemonic Heading6StyleName = M(Paragraph.Heading6);
 
         /// \brief
         ///     The paragraph style for level 7 headings; must be defined by every valid report template.
-        inline static const QString Heading7StyleName = "Paragraph.Heading7";
+        inline static const Mnemonic Heading7StyleName = M(Paragraph.Heading7);
 
         /// \brief
         ///     The paragraph style for level 8 headings; must be defined by every valid report template.
-        inline static const QString Heading8StyleName = "Paragraph.Heading8";
+        inline static const Mnemonic Heading8StyleName = M(Paragraph.Heading8);
 
         /// \brief
         ///     The paragraph style for level 9 headings; must be defined by every valid report template.
-        inline static const QString Heading9StyleName = "Paragraph.Heading9";
+        inline static const Mnemonic Heading9StyleName = M(Paragraph.Heading9);
 
         /// \brief
         ///     The paragraph style for level 1 table-of-content entries; must be defined by every valid report template.
-        inline static const QString Toc1StyleName = "Paragraph.Toc1";
+        inline static const Mnemonic Toc1StyleName = M(Paragraph.Toc1);
 
         /// \brief
         ///     The paragraph style for level 2 table-of-content entries; must be defined by every valid report template.
-        inline static const QString Toc2StyleName = "Paragraph.Toc2";
+        inline static const Mnemonic Toc2StyleName = M(Paragraph.Toc2);
 
         /// \brief
         ///     The paragraph style for level 3 table-of-content entries; must be defined by every valid report template.
-        inline static const QString Toc3StyleName = "Paragraph.Toc3";
+        inline static const Mnemonic Toc3StyleName = M(Paragraph.Toc3);
 
         /// \brief
         ///     The paragraph style for level 4 table-of-content entries; must be defined by every valid report template.
-        inline static const QString Toc4StyleName = "Paragraph.Toc4";
+        inline static const Mnemonic Toc4StyleName = M(Paragraph.Toc4);
 
         /// \brief
         ///     The paragraph style for level 5 table-of-content entries; must be defined by every valid report template.
-        inline static const QString Toc5StyleName = "Paragraph.Toc5";
+        inline static const Mnemonic Toc5StyleName = M(Paragraph.Toc5);
 
         /// \brief
         ///     The paragraph style for level 6 table-of-content entries; must be defined by every valid report template.
-        inline static const QString Toc6StyleName = "Paragraph.Toc6";
+        inline static const Mnemonic Toc6StyleName = M(Paragraph.Toc6);
 
         /// \brief
         ///     The paragraph style for level 7 table-of-content entries; must be defined by every valid report template.
-        inline static const QString Toc7StyleName = "Paragraph.Toc7";
+        inline static const Mnemonic Toc7StyleName = M(Paragraph.Toc7);
 
         /// \brief
         ///     The paragraph style for level 8 table-of-content entries; must be defined by every valid report template.
-        inline static const QString Toc8StyleName = "Paragraph.Toc8";
+        inline static const Mnemonic Toc8StyleName = M(Paragraph.Toc8);
 
         /// \brief
         ///     The paragraph style for level 9 table-of-content entries; must be defined by every valid report template.
-        inline static const QString Toc9StyleName = "Paragraph.Toc9";
+        inline static const Mnemonic Toc9StyleName = M(Paragraph.Toc9);
 
         //////////
         //  Operations
@@ -423,7 +423,7 @@ namespace tt3::report
     public:
         /// \brief
         ///     The default list style; must be defined by every valid report template.
-        inline static const QString DefaultStyleName = "List.Default";
+        inline static const Mnemonic DefaultStyleName = M(List.Default);
 
         //////////
         //  Operations
@@ -455,7 +455,7 @@ namespace tt3::report
     public:
         /// \brief
         ///     The default table style; must be defined by every valid report template.
-        inline static const QString DefaultStyleName = "Table.Default"; //$NON-NLS-1$
+        inline static const Mnemonic DefaultStyleName = M(Table.Default);
 
         //////////
         //  Operations
@@ -495,7 +495,7 @@ namespace tt3::report
     public:
         /// \brief
         ///     The default link style; must be defined by every valid report template.
-        inline static const QString DefaultStyleName = "Link.Default"; //$NON-NLS-1$
+        inline static const Mnemonic DefaultStyleName = M(Link.Default);
     };
 
     /// \class ISectionStyle tt3-report/API.hpp
@@ -515,7 +515,7 @@ namespace tt3::report
     public:
         /// \brief
         ///     The default section style; must be defined by every valid report template.
-        inline static const QString DefaultStyleName = "Section.Default"; //$NON-NLS-1$
+        inline static const Mnemonic DefaultStyleName = M(Section.Default);
 
         //////////
         //  Operations

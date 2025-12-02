@@ -20,7 +20,7 @@
 //////////
 //  Construction/destruction - from friends only
 BasicCharacterStyle::BasicCharacterStyle(
-        const QString & name,
+        const Mnemonic & name,
         const FontSpecsOpt & fontSpecs,
         const TypographicSizeOpt & fontSize,
         const FontStyleOpt & fontStyle,
