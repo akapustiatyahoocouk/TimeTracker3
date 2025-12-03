@@ -217,8 +217,28 @@ namespace tt3::util
                                 const Mnemonic & mnemonic
                             ) -> IComponent *;
 
+        /// \brief
+        ///     Loads (bit does NOT initialize) optional Components
+        ///     available in a TT3 installation.
+        /// \details
+        ///     This is done by loading those .DLL/.SO files in the
+        ///     directory where the TT3 executable was launched from
+        ///     which define Components.
         static void     loadOptionalComponents();
+
+        /// \brief
+        ///     Initializes all known Components by calling
+        ///     initialize() on each of them.
+        /// \details
+        ///     Any exceptions thrown by Component initializers
+        ///     are logged, but do not stop the initialization
+        ///     process. This was as many Cmponents as possible
+        ///     are initialized.
         static void     initializeComponents();
+
+        /// \brief
+        ///     Deinitializes all known Components by calling
+        ///     deinitialize() on each of them.
         static void     deinitializeComponents();
 
         /// \brief

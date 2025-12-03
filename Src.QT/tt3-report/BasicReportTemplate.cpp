@@ -477,12 +477,12 @@ auto BasicReportTemplate::styles() const -> Styles
     return Styles(basicStyles.cbegin(), basicStyles.cend());
 }
 
-auto BasicReportTemplate::findStyleByMnemonic(
-        const Mnemonic & mnemonic
+auto BasicReportTemplate::findStyleByName(
+        const Mnemonic & name
     ) const -> IStyle *
 {
-    return _styles.contains(mnemonic) ?
-                _styles[mnemonic] :
+    return _styles.contains(name) ?
+                _styles[name] :
                 nullptr;
 }
 

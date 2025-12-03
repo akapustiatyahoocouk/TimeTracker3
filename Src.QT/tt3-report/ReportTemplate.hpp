@@ -43,51 +43,214 @@ namespace tt3::report
         /// \brief A type alias to improve code readability.
         using Mnemonic = tt3::util::Mnemonic;
 
+        /// \brief
+        ///     Returns the mnemonic identifier of this report template.
+        /// \return
+        ///     The mnemonic identifier of this report template.
         virtual auto    mnemonic() const -> Mnemonic = 0;
+
+        /// \brief
+        ///     Returns the user-readable display name of this report template.
+        /// \return
+        ///     The user-readable display name of this report template
+        ///     for the current default locale.
         virtual auto    displayName() const -> QString = 0;
+
+        /// \brief
+        ///     Returns the page setup of this report template.
+        /// \return
+        ///     The page setup of this report template.
         virtual auto    pageSetup() const -> PageSetup = 0;
+
+        /// \brief
+        ///     Returns the prioritized list of font specs used by
+        ///     this report template.
+        /// \details
+        ///     For portability, it is recommended that the last element
+        ///     of the font specs list is a generic font family name
+        ///     (such as Serif, etc.)
+        /// \return
+        ///     The prioritized list of font specs used by
+        ///     this report template with the best choice first,
+        ///     worst choice last.
         virtual auto    defaultFontSpecs() const -> FontSpecs = 0;
+
+        /// \brief
+        ///     Returns the default report font size.
+        /// \return
+        ///     The default report font size.
         virtual auto    defaultFontSize() const -> TypographicSize = 0;
+
+        /// \brief
+        ///     Returns the default report font style.
+        /// \return
+        ///     The default report font style.
         virtual auto    defaultFontStyle() const -> FontStyle = 0;
+
+        /// \brief
+        ///     Returns the default report text color.
+        /// \return
+        ///     The default report text color.
         virtual auto    defaultTextColor() const -> ColorSpec = 0;
+
+        /// \brief
+        ///     Returns the default report background color.
+        /// \return
+        ///     The default report background color.
         virtual auto    defaultBackgroundColor() const -> ColorSpec = 0;
+
+        /// \brief
+        ///     Returns the default list indent for the report.
+        /// \return
+        ///     The default list indent for the report.
         virtual auto    defaultListIndent() const -> TypographicSize = 0;
+
+        /// \brief
+        ///     Returns the default table border type for the report.
+        /// \return
+        ///     The default table border type for the report.
         virtual auto    defaultTableBorderType() const -> BorderType = 0;
+
+        /// \brief
+        ///     Returns the default link underline type for the report.
+        /// \return
+        ///     The default link underline type for the report.
         virtual auto    defaultLinkUnderlineMode() const -> UnderlineMode = 0;
+
+        /// \brief
+        ///     Returns the default page number placement for the report.
+        /// \return
+        ///     The default page number placement for the report.
         virtual auto    defaultPageNumberPlacement() const -> PageNumberPlacement = 0;
 
+        /// \brief
+        ///     Returns the set of all styles in this report template.
+        /// \return
+        ///     The set of all styles in this report template.
         virtual auto    styles() const -> Styles = 0;
+
+        /// \brief
+        ///     Returns the set of all characterstyles in this report template.
+        /// \return
+        ///     The set of all characterstyles in this report template.
         virtual auto    characterStyles() const -> CharacterStyles;
+
+        /// \brief
+        ///     Returns the set of all block styles in this report template.
+        /// \return
+        ///     The set of all block styles in this report template.
         virtual auto    blockStyles() const -> BlockStyles;
+
+        /// \brief
+        ///     Returns the set of all paragraph styles in this report template.
+        /// \return
+        ///     The set of all paragraph styles in this report template.
         virtual auto    paragraphStyles() const -> ParagraphStyles;
+
+        /// \brief
+        ///     Returns the set of all list styles in this report template.
+        /// \return
+        ///     The set of all list styles in this report template.
         virtual auto    listStyles() const -> ListStyles;
+
+        /// \brief
+        ///     Returns the set of all table styles in this report template.
+        /// \return
+        ///     The set of all table styles in this report template.
         virtual auto    tableStyles() const -> TableStyles;
+
+        /// \brief
+        ///     Returns the set of all link styles in this report template.
+        /// \return
+        ///     The set of all link styles in this report template.
         virtual auto    linkStyles() const -> LinkStyles;
+
+        /// \brief
+        ///     Returns the set of all section styles in this report template.
+        /// \return
+        ///     The set of all section styles in this report template.
         virtual auto    sectionStyles() const -> SectionStyles;
 
-        virtual auto    findStyleByMnemonic(
-                                const Mnemonic & mnemonic
+        /// \brief
+        ///     Finds a style defined in this report template by name.
+        /// \param name
+        ///     The name to look for.
+        /// \return
+        ///     The style with the required name; nullptr
+        ///     if not found.
+        virtual auto    findStyleByName(
+                                const Mnemonic & name
                             ) const -> IStyle * = 0;
-        virtual auto    findCharacterStyleByMnemonic(
-                                const Mnemonic & mnemonic
+
+        /// \brief
+        ///     Finds a character style defined in this report template by name.
+        /// \param name
+        ///     The name to look for.
+        /// \return
+        ///     The style with the required name; nullptr
+        ///     if not found or not a character style.
+        virtual auto    findCharacterStyleByName(
+                                const Mnemonic & name
                             ) const -> ICharacterStyle *;
-        virtual auto    findBlockStyleByMnemonic(
-                                const Mnemonic & mnemonic
+
+        ///     Finds a block style defined in this report template by name.
+        /// \param name
+        ///     The name to look for.
+        /// \return
+        ///     The style with the required name; nullptr
+        ///     if not found or not a block style.
+        virtual auto    findBlockStyleByName(
+                                const Mnemonic & name
                             ) const -> IBlockStyle *;
-        virtual auto    findParagraphStyleByMnemonic(
-                                const Mnemonic & mnemonic
+
+        ///     Finds a paragraph style defined in this report template by name.
+        /// \param name
+        ///     The name to look for.
+        /// \return
+        ///     The style with the required name; nullptr
+        ///     if not found or not a paragraph style.
+        virtual auto    findParagraphStyleByName(
+                                const Mnemonic & name
                             ) const -> IParagraphStyle *;
-        virtual auto    findListStyleByMnemonic(
-                                const Mnemonic & mnemonic
+
+        ///     Finds a list style defined in this report template by name.
+        /// \param name
+        ///     The name to look for.
+        /// \return
+        ///     The style with the required name; nullptr
+        ///     if not found or not a list style.
+        virtual auto    findListStyleByName(
+                                const Mnemonic & name
                             ) const -> IListStyle *;
-        virtual auto    findTableStyleByMnemonic(
-                                const Mnemonic & mnemonic
+
+        ///     Finds a table style defined in this report template by name.
+        /// \param name
+        ///     The name to look for.
+        /// \return
+        ///     The style with the required name; nullptr
+        ///     if not found or not a table style.
+        virtual auto    findTableStyleByName(
+                                const Mnemonic & name
                             ) const -> ITableStyle *;
-        virtual auto    findLinkStyleByMnemonic(
-                                const Mnemonic & mnemonic
+
+        ///     Finds a link style defined in this report template by name.
+        /// \param name
+        ///     The name to look for.
+        /// \return
+        ///     The style with the required name; nullptr
+        ///     if not found or not a link style.
+        virtual auto    findLinkStyleByName(
+                                const Mnemonic & name
                             ) const -> ILinkStyle *;
-        virtual auto    findSectionStyleByMnemonic(
-                                const Mnemonic & mnemonic
+
+        ///     Finds a section style defined in this report template by name.
+        /// \param name
+        ///     The name to look for.
+        /// \return
+        ///     The style with the required name; nullptr
+        ///     if not found or not a section style.
+        virtual auto    findSectionStyleByName(
+                                const Mnemonic & name
                             ) const -> ISectionStyle *;
 
         /// \brief

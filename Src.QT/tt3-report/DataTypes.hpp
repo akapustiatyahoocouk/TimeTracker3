@@ -703,12 +703,50 @@ namespace tt3::report
         //////////
         //  Operations
     public:
+        /// \brief
+        ///     Returns the specified page width.
+        /// \details
+        ///     This is the smaller of the two page dimensions.
+        /// \return
+        ///     The specified page width.
         TypographicSize pageWidth() const { return _pageWidth; }
+
+        /// \brief
+        ///     Returns the specified page height.
+        /// \details
+        ///     This is the larger of the two page dimensions.
+        /// \return
+        ///     The specified page height.
         TypographicSize pageHeight() const { return _pageHeight; }
+
+        /// \brief
+        ///     Returns the page orientation.
+        /// \return
+        ///     The page orientation.
         PageOrientation pageOrientation() const { return _pageOrientation; }
+
+        /// \brief
+        ///     Returns the size of the margin at the left edge of the page.
+        /// \return
+        ///     The size of the margin at the left edge of the page.
         TypographicSize leftMargin() const { return _leftMargin; }
+
+        /// \brief
+        ///     Returns the size of the margin at the right edge of the page.
+        /// \return
+        ///     The size of the margin at the right edge of the page.
         TypographicSize rightMargin() const { return _rightMargin; }
+
+        /// \brief
+        ///     Returns the size of the margin at the top edge of the page.
+        /// \return
+        ///     The size of the margin at the top edge of the page.
         TypographicSize topMargin() const { return _topMargin; }
+
+        /// \brief
+        ///     Returns the size of the margin at the bottom edge of the page.
+        /// \return
+        ///     The size of the margin at the bottom edge of the page.
         TypographicSize bottomMargin() const { return _bottomMargin; }
 
         /// \brief
@@ -742,6 +780,8 @@ namespace tt3::report
         //////////
         //  Types
     public:
+        /// \brief
+        ///     The class of the color specification.
         enum ColorClass
         {
             Default,    ///< Default color.
@@ -758,7 +798,7 @@ namespace tt3::report
 
         /// \brief
         ///     Constructs a color from color class.
-        /// \param color
+        /// \param colorClass
         ///     The color class.
         ColorSpec(ColorClass colorClass);
 

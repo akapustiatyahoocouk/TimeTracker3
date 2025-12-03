@@ -110,53 +110,53 @@ auto IReportTemplate::sectionStyles() const -> SectionStyles
     return result;
 }
 
-auto IReportTemplate::findCharacterStyleByMnemonic(
-        const Mnemonic & mnemonic
+auto IReportTemplate::findCharacterStyleByName(
+        const Mnemonic & name
     ) const -> ICharacterStyle *
 {
-    return dynamic_cast<ICharacterStyle*>(findStyleByMnemonic(mnemonic));
+    return dynamic_cast<ICharacterStyle*>(findStyleByName(name));
 }
 
-auto IReportTemplate::findBlockStyleByMnemonic(
-        const Mnemonic & mnemonic
+auto IReportTemplate::findBlockStyleByName(
+        const Mnemonic & name
     ) const -> IBlockStyle *
 {
-    return dynamic_cast<IBlockStyle*>(findStyleByMnemonic(mnemonic));
+    return dynamic_cast<IBlockStyle*>(findStyleByName(name));
 }
 
-auto IReportTemplate::findParagraphStyleByMnemonic(
-        const Mnemonic & mnemonic
+auto IReportTemplate::findParagraphStyleByName(
+        const Mnemonic & name
     ) const -> IParagraphStyle *
 {
-    return dynamic_cast<IParagraphStyle*>(findStyleByMnemonic(mnemonic));
+    return dynamic_cast<IParagraphStyle*>(findStyleByName(name));
 }
 
-auto IReportTemplate::findListStyleByMnemonic(
-        const Mnemonic & mnemonic
+auto IReportTemplate::findListStyleByName(
+        const Mnemonic & name
     ) const -> IListStyle *
 {
-    return dynamic_cast<IListStyle*>(findStyleByMnemonic(mnemonic));
+    return dynamic_cast<IListStyle*>(findStyleByName(name));
 }
 
-auto IReportTemplate::findTableStyleByMnemonic(
-        const Mnemonic & mnemonic
+auto IReportTemplate::findTableStyleByName(
+        const Mnemonic & name
     ) const -> ITableStyle *
 {
-    return dynamic_cast<ITableStyle*>(findStyleByMnemonic(mnemonic));
+    return dynamic_cast<ITableStyle*>(findStyleByName(name));
 }
 
-auto IReportTemplate::findLinkStyleByMnemonic(
-        const Mnemonic & mnemonic
+auto IReportTemplate::findLinkStyleByName(
+        const Mnemonic & name
     ) const -> ILinkStyle *
 {
-    return dynamic_cast<ILinkStyle*>(findStyleByMnemonic(mnemonic));
+    return dynamic_cast<ILinkStyle*>(findStyleByName(name));
 }
 
-auto IReportTemplate::findSectionStyleByMnemonic(
-        const Mnemonic & mnemonic
+auto IReportTemplate::findSectionStyleByName(
+        const Mnemonic & name
     ) const -> ISectionStyle *
 {
-    return dynamic_cast<ISectionStyle*>(findStyleByMnemonic(mnemonic));
+    return dynamic_cast<ISectionStyle*>(findStyleByName(name));
 }
 
 QDomDocument IReportTemplate::toXmlDocument() const
