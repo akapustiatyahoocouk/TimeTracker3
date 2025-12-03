@@ -378,6 +378,7 @@ void ComponentManager::_loadLibrary(const QString & fileName)
         library.unload();
         return;
     }
+    qDebug() << "Found optional components in " << fileName;
 }
 
 //  End of tt3-util/ComponentManager.cpp

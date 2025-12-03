@@ -159,4 +159,25 @@ auto IReportTemplate::findSectionStyleByMnemonic(
     return dynamic_cast<ISectionStyle*>(findStyleByMnemonic(mnemonic));
 }
 
+QDomDocument IReportTemplate::toXmlDocument() const
+{
+    //  Create DOM document
+    QDomDocument document;
+    QDomProcessingInstruction xmlDeclaration = document.createProcessingInstruction("xml", "version='1.0' encoding='UTF-8' standalone='yes'");
+    document.appendChild(xmlDeclaration);
+
+    //  TODO
+    //  DONE
+    return document;
+}
+
+QString IReportTemplate::toXmlString() const
+{
+    QDomDocument document = toXmlDocument();
+    QString xmlString;
+    QTextStream stream(&xmlString);
+    document.save(stream, 4);    //  4 spaces per indent level
+    return xmlString;
+}
+
 //  End of tt3-report/IReportTemplate.cpp
