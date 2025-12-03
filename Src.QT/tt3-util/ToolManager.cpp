@@ -49,6 +49,21 @@ bool ToolManager::registerTool(ITool * tool)
     return true;
 }
 
+bool ToolManager::unregisterTool(ITool * tool)
+{
+    Q_ASSERT(tool != nullptr);
+
+    _Impl * impl = _impl();
+    Lock _(impl->guard);
+
+    if (impl->registry.contains(tool->mnemonic()))
+    {
+        impl->registry.remove(tool->mnemonic());
+        return true;
+    }
+    return false;
+}
+
 ITool * ToolManager::findTool(const Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();

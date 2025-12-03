@@ -137,7 +137,6 @@
 //  Stock objects
 #include "tt3-util/MessageDigest.hpp"
 #include "tt3-util/License.hpp"
-#include "tt3-util/Plugin.hpp"
 #include "tt3-util/Settings.hpp"
 #include "tt3-util/ResourceFactory.hpp"
 #include "tt3-util/Component.hpp"

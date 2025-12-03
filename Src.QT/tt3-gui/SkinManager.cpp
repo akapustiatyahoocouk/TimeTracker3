@@ -49,6 +49,21 @@ bool SkinManager::registerSkin(ISkin * skin)
     return true;
 }
 
+bool SkinManager::unregisterSkin(ISkin * skin)
+{
+    Q_ASSERT(skin != nullptr);
+
+    _Impl * impl = _impl();
+    tt3::util::Lock _(impl->guard);
+
+    if (impl->registry.contains(skin->mnemonic()))
+    {
+        impl->registry.remove(skin->mnemonic());
+        return true;
+    }
+    return false;
+}
+
 ISkin * SkinManager::findSkin(const tt3::util::Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();

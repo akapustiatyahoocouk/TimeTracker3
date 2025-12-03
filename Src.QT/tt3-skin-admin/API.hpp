@@ -25,7 +25,6 @@
 //  tt3-skin-admin components
 #include "tt3-skin-admin/Linkage.hpp"
 #include "tt3-skin-admin/Classes.hpp"
-#include "tt3-skin-admin/Plugin.hpp"
 #include "tt3-skin-admin/Component.hpp"
 
 #include "tt3-skin-admin/MainFrame.hpp"

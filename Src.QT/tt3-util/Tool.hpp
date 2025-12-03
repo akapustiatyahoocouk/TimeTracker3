@@ -24,6 +24,12 @@ namespace tt3::util
     class TT3_UTIL_PUBLIC ITool
     {
         //////////
+        //  Types
+    public:
+        /// \brief A type alias to improve code readability.
+        using Mnemonic = tt3::util::Mnemonic;
+
+        //////////
         //  This is an interface
     protected:
         /// \brief
@@ -115,6 +121,14 @@ namespace tt3::util
         ///     registration of the same yool is treated
         ///     as a success.
         static bool     registerTool(ITool * tool);
+
+        /// \brief
+        ///     Un-registers the specified Tool.
+        /// \param tool
+        ///     The tool to un-register.
+        /// \return
+        ///     True on success, false on failure.
+        static bool     unregisterTool(ITool * tool);
 
         /// \brief
         ///     Finds a registered Tool by its mnemonic.

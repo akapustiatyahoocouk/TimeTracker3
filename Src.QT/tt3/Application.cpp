@@ -128,7 +128,7 @@ void Application::_selectActiveSkin()
     {
         tt3::gui::ErrorDialog::show(
             resources->string(RSID(Errors), RID(NoSkinsDefined)));
-        QCoreApplication::quit();
+        ::exit(EXIT_FAILURE);
     }
     tt3::gui::theCurrentSkin = initialSkin;
     initialSkin->activate();
@@ -146,9 +146,9 @@ void Application::_initialize()
     //QGuiApplication::setApplicationVersion(tt3::util::ProductInformation::applicationVersion().toString());
     //QGuiApplication::setApplicationDisplayName(tt3::util::ProductInformation::applicationDisplayName());
 
-    tt3::util::PluginManager::loadPlugins();    //  will register components defined by plugins
-    tt3::util::ComponentManager::loadComponentSettings();
+    tt3::util::ComponentManager::loadOptionalComponents();
     tt3::util::ComponentManager::initializeComponents();
+    tt3::util::ComponentManager::loadComponentSettings();
 
     tt3::util::theCurrentLocale = tt3::gui::Component::Settings::instance()->uiLocale;
     _selectActiveTheme();
@@ -230,11 +230,9 @@ void Application::_cleanup()
     tt3::gui::theCurrentSkin->deactivate();
     tt3::gui::theCurrentSkin = nullptr;
 
-    //  Cleanup registrie
-    tt3::util::ComponentManager::deinitializeComponents();
-
-    //  Done
+    //  Deinitialize all Components
     tt3::util::ComponentManager::saveComponentSettings();
+    tt3::util::ComponentManager::deinitializeComponents();
 }
 
 //  End of tt3/Application.cpp

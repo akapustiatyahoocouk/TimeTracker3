@@ -28,7 +28,7 @@ namespace tt3::gui
     /// \details
     ///     Concrete classes implementing this
     ///     interface will typically be singletons
-    ///     registered by plugins.
+    ///     registered by Components during their initialization.
     class TT3_GUI_PUBLIC IQuickReport
     {
         //////////

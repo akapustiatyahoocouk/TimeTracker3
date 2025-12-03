@@ -40,6 +40,23 @@ bool DatabaseTypeManager::registerDatabaseType(IDatabaseType * databaseType)
     return true;
 }
 
+bool DatabaseTypeManager::unregisterDatabaseType(
+        IDatabaseType * databaseType
+    )
+{
+    Q_ASSERT(databaseType != nullptr);
+
+    _Impl * impl = _impl();
+    tt3::util::Lock _(impl->guard);
+
+    if (impl->registry.contains(databaseType->mnemonic()))
+    {
+        impl->registry.remove(databaseType->mnemonic());
+        return true;
+    }
+    return false;
+}
+
 IDatabaseType * DatabaseTypeManager::findDatabaseType(const tt3::util::Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();

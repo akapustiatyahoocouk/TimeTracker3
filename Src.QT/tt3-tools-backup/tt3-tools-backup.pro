@@ -8,8 +8,7 @@ SOURCES += \
     BackupTool.cpp \
     BackupWriter.cpp \
     Component.cpp \
-    ConfigureBackupDialog.cpp \
-    Plugin.cpp
+    ConfigureBackupDialog.cpp
 
 HEADERS += \
     API.hpp \
@@ -18,8 +17,7 @@ HEADERS += \
     BackupWriter.hpp \
     Component.hpp \
     ConfigureBackupDialog.hpp \
-    Linkage.hpp \
-    Plugin.hpp
+    Linkage.hpp
 
 PRECOMPILED_HEADER = API.hpp
 

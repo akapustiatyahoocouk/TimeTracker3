@@ -23,11 +23,6 @@ TT3_IMPLEMENT_COMPONENT(Component)
 
 //////////
 //  IComponent
-Component::IPlugin * Component::plugin() const
-{
-    return nullptr;
-}
-
 tt3::util::Mnemonic Component::mnemonic() const
 {
     return M(tt3-db-api);

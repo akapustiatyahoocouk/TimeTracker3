@@ -13,7 +13,6 @@ SOURCES += \
     IComponent.cpp \
     ILicense.cpp \
     IMessageDigest.cpp \
-    IPlugin.cpp \
     IResourceFactory.cpp \
     ISubsystem.cpp \
     Identifiers.cpp \
@@ -21,7 +20,6 @@ SOURCES += \
     LocaleManager.cpp \
     MessageDigestManager.cpp \
     Mutex.cpp \
-    PluginManager.cpp \
     ProductInformation.cpp \
     ResourceReader.cpp \
     Settings.cpp \
@@ -47,7 +45,6 @@ HEADERS += \
     Locale.hpp \
     Macros.hpp \
     MessageDigest.hpp \
-    Plugin.hpp \
     ProductInformation.hpp \
     ResourceFactory.hpp \
     Settings.hpp \

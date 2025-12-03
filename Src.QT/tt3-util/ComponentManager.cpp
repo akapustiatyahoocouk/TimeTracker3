@@ -123,6 +123,22 @@ IComponent * ComponentManager::findComponent(const Mnemonic & mnemonic)
     return result;
 }
 
+void ComponentManager::loadOptionalComponents()
+{
+    QString startupDirectory = QCoreApplication::applicationDirPath();
+    QString exeFile = QCoreApplication::applicationFilePath();
+    //  Discover DLLs/SOs and load Components from them
+    for (const auto & dllInfo : QDir(startupDirectory).entryInfoList())
+    {
+        if (dllInfo.isFile() && !dllInfo.isSymbolicLink() &&
+            dllInfo.baseName().startsWith("tt3-") &&
+            dllInfo.absoluteFilePath() != exeFile)
+        {
+            _loadLibrary(dllInfo.absoluteFilePath());
+        }
+    }
+}
+
 void ComponentManager::initializeComponents()
 {
     _Impl * impl = _impl();
@@ -336,6 +352,32 @@ ComponentManager::_Impl * ComponentManager::_impl()
     static _Impl impl;
 
     return &impl;
+}
+
+void ComponentManager::_loadLibrary(const QString & fileName)
+{
+    _Impl * impl = _impl();
+
+    //  Load file as a library.
+    //  NOTE, that we don't bother checking if a DLL has already
+    //  been loaded earlier - it it has, then its repeated loading
+    //  will define no new Components (because they were all registered
+    //  by static Component::Registrators when the DLL was loaded
+    //  for the 1st time), so we can safely undo the re-load.
+    qsizetype numComponents = impl->registry.size();
+    QLibrary library(fileName);
+    if (!library.load())
+    {   // OOPS! Can't!
+        return;
+    }
+    //  Upon successful load, the number of registered
+    //  Components MAY go up - otherwise we can just
+    //  unload the livrary we've just loaded
+    if (impl->registry.size() == numComponents)
+    {   //  The library defines no new Components
+        library.unload();
+        return;
+    }
 }
 
 //  End of tt3-util/ComponentManager.cpp

@@ -134,6 +134,14 @@ namespace tt3::gui
         static bool         registerSkin(ISkin * skin);
 
         /// \brief
+        ///     Un-registers the specified Skin.
+        /// \param skin
+        ///     The Skin to un-register,
+        /// \return
+        ///     True on success, false on failure.
+        static bool         unregisterSkin(ISkin * skin);
+
+        /// \brief
         ///     Finds a registered Skin by its mnemonic.
         /// \param mnemonic
         ///     The mnemonic to look for.

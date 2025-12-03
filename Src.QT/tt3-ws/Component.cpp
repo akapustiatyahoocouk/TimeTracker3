@@ -23,11 +23,6 @@ TT3_IMPLEMENT_COMPONENT(Component)
 
 //////////
 //  IComponent
-Component::IPlugin * Component::plugin() const
-{
-    return nullptr;
-}
-
 Component::Mnemonic Component::mnemonic() const
 {
     return M(tt3-ws);

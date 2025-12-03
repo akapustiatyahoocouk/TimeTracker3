@@ -32,7 +32,7 @@ namespace tt3::db::api
     ///     used to keep data persistent.
     /// \details
     ///     Concrete database types will normally be singletons
-    ///     registered by plugins.
+    ///     registered by Components during their initialization.
     class TT3_DB_API_PUBLIC IDatabaseType
     {
         //////////
@@ -212,6 +212,16 @@ namespace tt3::db::api
         ///     Repeated registration of the same database type
         ///     is considered as a "success".
         static bool     registerDatabaseType(
+                                IDatabaseType * databaseType
+                            );
+
+        /// \brief
+        ///     Un-registers the specified database type.
+        /// \param databaseType
+        ///     The database type to un-register.
+        /// \return
+        ///     True on success, false on failure.
+        static bool     unregisterDatabaseType(
                                 IDatabaseType * databaseType
                             );
 

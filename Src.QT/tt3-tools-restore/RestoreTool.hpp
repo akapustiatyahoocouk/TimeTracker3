@@ -35,9 +35,6 @@ namespace tt3::tools::restore
         //////////
         //  ITool
     public:
-        /// \brief A type alias to improve code readability.
-        using Mnemonic = tt3::util::Mnemonic;
-
         virtual Mnemonic    mnemonic() const override;
         virtual QString     displayName() const override;
         virtual QString     description() const override;

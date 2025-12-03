@@ -19,13 +19,16 @@ namespace tt3::util
 {
     /// \class IComponent tt3-util/API.hpp
     /// \brief A component making up the TT3 architecture.
-    /// \details
-    ///     While a "plugin" is a unit of disctibution
-    ///     1 DLL == 1 plugin), "components" are architectural
-    ///     elements, so it may be not uncommon for a single
-    ///     plugin to define (and register) several components.
     class TT3_UTIL_PUBLIC IComponent
     {
+        //////////
+        //  Types
+    public:
+        /// \brief A type alias to improve code readability.
+        using Mnemonic = tt3::util::Mnemonic;
+        /// \brief A type alias to improve code readability.
+        using ISubsystem = tt3::util::ISubsystem;
+
         //////////
         //  This is an interface
     protected:
@@ -35,13 +38,6 @@ namespace tt3::util
         //////////
         //  Operations
     public:
-        /// \brief
-        ///     Returns the plugin that defines this component.
-        /// \return
-        ///     The plugin that defines this component; nullptr == none
-        ///     (i.e. this is a core component not defined by a plugin).
-        virtual IPlugin*plugin() const = 0;
-
         /// \brief
         ///     Returns the mnemonic identifier of this component.
         /// \details
@@ -221,6 +217,7 @@ namespace tt3::util
                                 const Mnemonic & mnemonic
                             ) -> IComponent *;
 
+        static void     loadOptionalComponents();
         static void     initializeComponents();
         static void     deinitializeComponents();
 
@@ -266,6 +263,7 @@ namespace tt3::util
 
         //  Helpers
         static _Impl *  _impl();
+        static void     _loadLibrary(const QString & fileName);
     };
 
 //  A helper macro for Component declaration - use within a .hpp
@@ -334,7 +332,6 @@ public:                                 \
         //////////
         //  IComponent
     public:
-        virtual IPlugin *       plugin() const override;
         virtual Mnemonic        mnemonic() const override;
         virtual QString         displayName() const override;
         virtual QString         description() const override;

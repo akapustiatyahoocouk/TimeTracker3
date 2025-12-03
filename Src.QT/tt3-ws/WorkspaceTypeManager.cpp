@@ -21,15 +21,20 @@ struct WorkspaceTypeManager::_Impl
 {
     _Impl()
     {
+        refreshRegistry();
+    }
+
+    tt3::util::Mutex                                    guard;
+    QMap<tt3::db::api::IDatabaseType*, WorkspaceType>   registry;
+
+    void        refreshRegistry()
+    {
         for (tt3::db::api::IDatabaseType * databaseType :
              tt3::db::api::DatabaseTypeManager::allDatabaseTypes())
         {
             registry[databaseType] = new WorkspaceTypeImpl(databaseType);
         }
     }
-
-    tt3::util::Mutex                                    guard;
-    QMap<tt3::db::api::IDatabaseType*, WorkspaceType>   registry;
 };
 
 //////////
@@ -39,6 +44,7 @@ WorkspaceType WorkspaceTypeManager::findWorkspaceType(const tt3::util::Mnemonic 
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
 
+    impl->refreshRegistry();
     tt3::db::api::IDatabaseType * databaseType =
         tt3::db::api::DatabaseTypeManager::findDatabaseType(mnemonic);
     return impl->registry.contains(databaseType) ? impl->registry[databaseType] : nullptr;
@@ -49,6 +55,7 @@ WorkspaceTypes WorkspaceTypeManager::allWorkspaceTypes()
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
 
+    impl->refreshRegistry();
     QList<WorkspaceType> values = impl->registry.values();
     return WorkspaceTypes(values.cbegin(), values.cend());
 }

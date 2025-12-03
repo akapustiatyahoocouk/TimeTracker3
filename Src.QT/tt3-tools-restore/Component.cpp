@@ -23,11 +23,6 @@ TT3_IMPLEMENT_COMPONENT(Component)
 
 //////////
 //  IComponent
-Component::IPlugin * Component::plugin() const
-{
-    return Plugin::instance();
-}
-
 Component::Mnemonic Component::mnemonic() const
 {
     return M(tt3-tools-restore);
@@ -83,10 +78,12 @@ const Component::Settings * Component::settings() const
 
 void Component::iniialize()
 {
+    tt3::util::ToolManager::registerTool(RestoreTool::instance());
 }
 
 void Component::deiniialize()
 {
+    tt3::util::ToolManager::unregisterTool(RestoreTool::instance());
 }
 
 //////////

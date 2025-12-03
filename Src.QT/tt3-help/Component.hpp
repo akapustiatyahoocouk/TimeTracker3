@@ -46,14 +46,6 @@ namespace tt3::help
         //////////
         //  IComponent
     public:
-        /// \brief A type alias to improve code readability.
-        using Mnemonic = tt3::util::Mnemonic;
-        /// \brief A type alias to improve code readability.
-        using ISubsystem = tt3::util::ISubsystem;
-        /// \brief A type alias to improve code readability.
-        using IPlugin = tt3::util::IPlugin;
-
-        virtual IPlugin *       plugin() const override;
         virtual Mnemonic        mnemonic() const override;
         virtual QString         displayName() const override;
         virtual QString         description() const override;

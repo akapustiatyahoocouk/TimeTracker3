@@ -23,11 +23,6 @@ TT3_IMPLEMENT_COMPONENT(Component)
 
 //////////
 //  IComponent
-Component::IPlugin * Component::plugin() const
-{
-    return Plugin::instance();
-}
-
 Component::Mnemonic Component::mnemonic() const
 {
     return M(tt3-db-xml);
@@ -83,10 +78,12 @@ const Component::Settings * Component::settings() const
 
 void Component::iniialize()
 {
+    tt3::db::api::DatabaseTypeManager::registerDatabaseType(DatabaseType::instance());
 }
 
 void Component::deiniialize()
 {
+    tt3::db::api::DatabaseTypeManager::unregisterDatabaseType(DatabaseType::instance());
 }
 
 //////////
