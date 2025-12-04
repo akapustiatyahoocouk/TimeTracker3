@@ -35,11 +35,18 @@ SOURCES += \
     PageOrientation.cpp \
     PageSetup.cpp \
     Report.cpp \
+    ReportBlockElement.cpp \
     ReportElement.cpp \
     ReportFlowElement.cpp \
     ReportFormatManager.cpp \
+    ReportList.cpp \
+    ReportListItem.cpp \
+    ReportParagraph.cpp \
+    ReportPicture.cpp \
     ReportSection.cpp \
+    ReportSpanElement.cpp \
     ReportTemplateManager.cpp \
+    ReportText.cpp \
     TypographicSize.cpp \
     TypographicUnit.cpp \
     UnderlineMode.cpp \

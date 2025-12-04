@@ -1,5 +1,5 @@
 //
-//  tt3-report/ReportElement.cpp - tt3::report::ReportElement class implementation
+//  tt3-report/ReportSpanElement.cpp - tt3::report::ReportSpanElement class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,19 +19,23 @@ using namespace tt3::report;
 
 //////////
 //  Construction/destruction
-ReportElement::ReportElement(
-        Report * report
-    ) : _report(report)
+ReportSpanElement::ReportSpanElement(
+        ReportParagraph * paragraph
+    ) : ReportElement(paragraph->_report),
+        _paragraph()
 {
-    Q_ASSERT(_report != nullptr);
+    //  Add to parent
+    _paragraph->_children.append(this);
 }
 
-ReportElement::~ReportElement()
+ReportSpanElement::~ReportSpanElement()
 {
-    for (auto anchor : ReportAnchors(_anchors)) //  shallow clone!
-    {
-        delete anchor;  //  removes Anchor from Element and Report
-    }
+    delete _link;   //  "delete nullptr" is safe
+
+    //  Remove from parent
+    Q_ASSERT(_paragraph->_children.contains(this));
+    _paragraph->_children.removeAll(this);
 }
 
-//  End of tt3-report/ReportElement.cpp
+//  End of tt3-report/ReportSpanElement.cpp
+

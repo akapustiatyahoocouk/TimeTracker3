@@ -113,6 +113,13 @@ namespace tt3::report
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportElement)
 
         friend class ReportFlowElement;
+        friend class ReportBlockElement;
+        friend class ReportSection;
+        friend class ReportSpanElement;
+        friend class ReportParagraph;
+        friend class ReportText;
+        friend class ReportList;
+        friend class ReportListItem;
 
         //////////
         //  Construction/destruction - from friends only
@@ -157,6 +164,7 @@ namespace tt3::report
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportFlowElement)
 
         friend class ReportSection;
+        friend class ReportListItem;
 
         //////////
         //  Construction/destruction - from friends only
@@ -188,6 +196,8 @@ namespace tt3::report
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportBlockElement)
 
         friend class ReportFlowElement;
+        friend class ReportParagraph;
+        friend class ReportList;
 
         //////////
         //  Construction/destruction - from friends only
@@ -210,34 +220,6 @@ namespace tt3::report
         ReportFlowElement * _parent;    //  can be nullptr
     };
 
-    /// \class ReportSpanElement tt3-report/API.hpp
-    /// \brief A report element that does not cause a flow break.
-    class TT3_REPORT_PUBLIC ReportSpanElement
-        :   public ReportElement
-    {
-        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportSpanElement)
-
-        //////////
-        //  Construction/destruction - from friends only
-    private:
-        explicit ReportSpanElement(Report * report);
-        virtual ~ReportSpanElement();
-
-        //////////
-        //  Operations
-    public:
-        /// \brief
-        ///     Returns the Link associated with this element.
-        /// \return
-        ///     The Link associated with this element; nullptr == none.
-        ReportLink *    link() const { return _link; }
-
-        //////////
-        //  Implementation
-    private:
-        ReportLink *    _link = nullptr;
-    };
-
     /// \class ReportSection tt3-report/API.hpp
     /// \brief A section within a report.
     class TT3_REPORT_PUBLIC ReportSection final
@@ -251,9 +233,9 @@ namespace tt3::report
         //  Construction/destruction - from friends only
     private:
         ReportSection(
-                Report * report,
-                const QString & name,
-                ISectionStyle * style
+            Report * report,
+            const QString & name,
+            ISectionStyle * style
             );  //  registers Section with Report
         virtual ~ReportSection();
 
@@ -306,19 +288,101 @@ namespace tt3::report
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportParagraph)
 
+        friend class ReportSpanElement;
+
         //////////
         //  Construction/destruction - from friends only
     private:
-        explicit ReportParagraph(Report * report);
+        ReportParagraph(
+            ReportFlowElement * parent,
+            IParagraphStyle * style
+            );
         virtual ~ReportParagraph();
 
         //////////
         //  Operations
     public:
+        /// \brief
+        ///     Returns the style of this paragraph.
+        /// \return
+        ///     The style of this paragraph; nullptr == none.
+        auto            style() const -> IParagraphStyle * { return _style; }
+
+        /// \brief
+        ///     Sets the style of this Paragraph.
+        /// \details
+        ///     The new Style (unless nullptr) must belong to
+        ///     the report template associated with the Report.
+        /// \param style
+        ///     The new style for this Paragrapph; nullptr == none.
+        void            setStyle(IParagraphStyle * style);
+
+        /// \brief
+        ///     Returns the list of children of this Paragraph.
+        /// \return
+        ///     The list of children of this Paragraph, in order of creation.
+        auto            children() const -> ReportSpanElements { return _children; }
+
+        ReportText *    createText(
+                                const QString & text,
+                                ICharacterStyle * style
+                            );
+
+        ReportPicture * createPicture(
+                                const TypographicSize & width,
+                                const TypographicSize & height,
+                                const QImage & image
+                            );
 
         //////////
         //  Implementation
     private:
+        IParagraphStyle *   _style; //  may be null
+        ReportSpanElements  _children;
+    };
+
+    /// \class ReportSpanElement tt3-report/API.hpp
+    /// \brief A report element that does not cause a flow break.
+    class TT3_REPORT_PUBLIC ReportSpanElement
+        :   public ReportElement
+    {
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportSpanElement)
+
+        friend class ReportParagraph;
+        friend class ReportText;
+        friend class ReportPicture;
+
+        //////////
+        //  Construction/destruction - from friends only
+    private:
+        explicit ReportSpanElement(ReportParagraph * paragraph);
+        virtual ~ReportSpanElement();
+
+        //////////
+        //  ReportElement
+    public:
+        virtual auto    parent() const -> ReportParagraph * override { return _paragraph; }
+
+        //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Returns the Paragraph to which this SpanElement belongs.
+        /// \return
+        ///     The Paragraph to which this SpanElement belongs, never nullptr.
+        ReportParagraph*paragraph() const { return _paragraph; }
+
+        /// \brief
+        ///     Returns the Link associated with this element.
+        /// \return
+        ///     The Link associated with this element; nullptr == none.
+        ReportLink *    link() const { return _link; }
+
+        //////////
+        //  Implementation
+    private:
+        ReportParagraph*_paragraph; //  ...to which this span element belongs
+        ReportLink *    _link = nullptr;
     };
 
     /// \class ReportText tt3-report/API.hpp
@@ -328,11 +392,13 @@ namespace tt3::report
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportText)
 
+        friend class ReportParagraph;
+
         //////////
         //  Construction/destruction - from friends only
     private:
         ReportText(
-                Report * report,
+                ReportParagraph * paragraph,
                 const QString & text,
                 ICharacterStyle * style
             );
@@ -382,11 +448,13 @@ namespace tt3::report
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportPicture)
 
+        friend class ReportParagraph;
+
         //////////
         //  Construction/destruction - from friends only
     private:
         ReportPicture(
-                Report * report,
+                ReportParagraph * paragraph,
                 const TypographicSize & width,
                 const TypographicSize & height,
                 const QImage & image
@@ -429,10 +497,15 @@ namespace tt3::report
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportList)
 
+        friend class ReportListItem;
+
         //////////
         //  Construction/destruction - from friends only
     private:
-        ReportList(Report * report);
+        ReportList(
+                ReportFlowElement * parent,
+                IListStyle * style
+            );
         virtual ~ReportList();
 
         //////////
@@ -473,10 +546,12 @@ namespace tt3::report
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportListItem)
 
+        friend class ReportList;
+
         //////////
         //  Construction/destruction - from friends only
     private:
-        ReportListItem(ReportList * list);
+        explicit ReportListItem(ReportList * list);
         virtual ~ReportListItem();
 
         //////////
@@ -637,6 +712,8 @@ namespace tt3::report
         :   public ReportElement
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportLink)
+
+        friend class ReportSpanElement;
 
         //////////
         //  Construction/destruction - from friends only

@@ -1,5 +1,5 @@
 //
-//  tt3-report/ReportElement.cpp - tt3::report::ReportElement class implementation
+//  tt3-report/ReportBlockElement.cpp - tt3::report::ReportBlockElement class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,19 +19,16 @@ using namespace tt3::report;
 
 //////////
 //  Construction/destruction
-ReportElement::ReportElement(
-        Report * report
-    ) : _report(report)
+ReportBlockElement::ReportBlockElement(
+        ReportFlowElement * parent
+    ) : ReportElement(parent->report()),
+    _parent(parent)
 {
-    Q_ASSERT(_report != nullptr);
 }
 
-ReportElement::~ReportElement()
+ReportBlockElement::~ReportBlockElement()
 {
-    for (auto anchor : ReportAnchors(_anchors)) //  shallow clone!
-    {
-        delete anchor;  //  removes Anchor from Element and Report
-    }
 }
 
-//  End of tt3-report/ReportElement.cpp
+//  End of tt3-report/ReportBlockElement.cpp
+

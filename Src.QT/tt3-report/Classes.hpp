@@ -41,9 +41,9 @@ namespace tt3::report
     class TT3_REPORT_PUBLIC ReportElement;
     class TT3_REPORT_PUBLIC ReportFlowElement;
     class TT3_REPORT_PUBLIC ReportBlockElement;
-    class TT3_REPORT_PUBLIC ReportSpanElement;
     class TT3_REPORT_PUBLIC ReportSection;
     class TT3_REPORT_PUBLIC ReportParagraph;
+    class TT3_REPORT_PUBLIC ReportSpanElement;
     class TT3_REPORT_PUBLIC ReportText;
     class TT3_REPORT_PUBLIC ReportPicture;
     class TT3_REPORT_PUBLIC ReportList;
@@ -82,6 +82,7 @@ namespace tt3::report
 
     using ReportSections = QList<ReportSection*>;
     using ReportBlockElements = QList<ReportBlockElement*>;
+    using ReportSpanElements = QList<ReportSpanElement*>;
     using ReportListItems = QList<ReportListItem*>;
     using ReportTableCells = QList<ReportTableCell*>;
     using ReportAnchors = QList<ReportAnchor*>;

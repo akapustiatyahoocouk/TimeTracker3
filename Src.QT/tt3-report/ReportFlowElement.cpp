@@ -18,7 +18,7 @@
 using namespace tt3::report;
 
 //////////
-//  Construction/destruction - from friends only
+//  Construction/destruction
 ReportFlowElement::ReportFlowElement(
         Report * report
     ) : ReportElement(report)
@@ -27,9 +27,9 @@ ReportFlowElement::ReportFlowElement(
 
 ReportFlowElement::~ReportFlowElement()
 {
-    for (auto child : _children)
+    for (auto child : ReportBlockElements(_children))   //  shallow clone
     {
-        delete child;
+        delete child;   //  removes BlockElement from this FlowElement
     }
 }
 

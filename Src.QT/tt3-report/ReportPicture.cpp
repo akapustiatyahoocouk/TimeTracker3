@@ -1,5 +1,5 @@
 //
-//  tt3-report/ReportElement.cpp - tt3::report::ReportElement class implementation
+//  tt3-report/ReportPicture.cpp - tt3::report::ReportPicture class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -18,20 +18,21 @@
 using namespace tt3::report;
 
 //////////
-//  Construction/destruction
-ReportElement::ReportElement(
-        Report * report
-    ) : _report(report)
+//  Construction/destruction - from friends only
+ReportPicture::ReportPicture(
+        ReportParagraph * paragraph,
+        const TypographicSize & width,
+        const TypographicSize & height,
+        const QImage & image
+    ) : ReportSpanElement(paragraph),
+        _width(width),
+        _height(height),
+        _image(image)
 {
-    Q_ASSERT(_report != nullptr);
 }
 
-ReportElement::~ReportElement()
+ReportPicture::~ReportPicture()
 {
-    for (auto anchor : ReportAnchors(_anchors)) //  shallow clone!
-    {
-        delete anchor;  //  removes Anchor from Element and Report
-    }
 }
 
-//  End of tt3-report/ReportElement.cpp
+//  End of tt3-report/ReportPicture.cpp

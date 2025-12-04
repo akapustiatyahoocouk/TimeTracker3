@@ -1,5 +1,5 @@
 //
-//  tt3-report/ReportSection.cpp - tt3::report::ReportSection class implementation
+//  tt3-report/ReportText.cpp - tt3::report::ReportText class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -18,32 +18,26 @@
 using namespace tt3::report;
 
 //////////
-//  Construction/destruction
-ReportSection::ReportSection(
-        Report * report,
-        const QString & name,
-        ISectionStyle * style
-    ) : ReportFlowElement(report),
-        _name(name),
+//  Construction/destruction - from friends only
+ReportText::ReportText(
+        ReportParagraph * paragraph,
+        const QString & text,
+        ICharacterStyle * style
+    ) : ReportSpanElement(paragraph),
+        _text(text),
         _style(style)
 {
     Q_ASSERT(_style == nullptr ||
-             _style->reportTemplate() == report->reportTemplate());
-
-    //  Add to parent(s)
-    _report->_sections.append(this);
+             _style->reportTemplate() == _report->reportTemplate());
 }
 
-ReportSection::~ReportSection()
+ReportText::~ReportText()
 {
-    //  Remove from parent(s)
-    Q_ASSERT(_report->_sections.contains(this));
-    _report->_sections.removeAll(this);
 }
 
 //////////
 //  Operations
-void ReportSection::setStyle(ISectionStyle * style)
+void ReportText::setStyle(ICharacterStyle * style)
 {
     Q_ASSERT(style == nullptr ||
              style->reportTemplate() == _report->reportTemplate());
@@ -51,4 +45,4 @@ void ReportSection::setStyle(ISectionStyle * style)
     _style = style;
 }
 
-//  End of tt3-report/ReportSection.cpp
+//  End of tt3-report/ReportText.cpp
