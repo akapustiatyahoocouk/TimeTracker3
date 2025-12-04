@@ -120,6 +120,8 @@ namespace tt3::report
         friend class ReportText;
         friend class ReportList;
         friend class ReportListItem;
+        friend class ReportTable;
+        friend class ReportTableCell;
 
         //////////
         //  Construction/destruction - from friends only
@@ -165,6 +167,7 @@ namespace tt3::report
 
         friend class ReportSection;
         friend class ReportListItem;
+        friend class ReportTableCell;
 
         //////////
         //  Construction/destruction - from friends only
@@ -198,6 +201,7 @@ namespace tt3::report
         friend class ReportFlowElement;
         friend class ReportParagraph;
         friend class ReportList;
+        friend class ReportTable;
 
         //////////
         //  Construction/destruction - from friends only
@@ -594,10 +598,15 @@ namespace tt3::report
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportTable)
 
+        friend class ReportTableCell;
+
         //////////
         //  Construction/destruction - from friends only
     private:
-        ReportTable(Report * report);
+        ReportTable(
+                ReportFlowElement * parent,
+                ITableStyle * style
+            );
         virtual ~ReportTable();
 
         //////////
@@ -652,10 +661,20 @@ namespace tt3::report
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportTableCell)
 
+        friend class ReportTable;
+
         //////////
         //  Construction/destruction - from friends only
     private:
-        ReportTableCell(ReportTable * table);
+        ReportTableCell(
+                ReportTable * table,
+                int startColumn,
+                int startRow,
+                int columnSpan,
+                int rowSpan,
+                VerticalAlignment contentAlignment,
+                const TypographicSizeOpt & preferredWidth
+            );
         virtual ~ReportTableCell();
 
         //////////
@@ -666,14 +685,25 @@ namespace tt3::report
         //////////
         //  Operations
     public:
+        ReportTable *   table() const { return _table; }
+        int             startColumn() const { return _startColumn; }
+        int             startRow() const { return _startRow; }
+        int             columnSpan() const { return _columnSpan; }
+        int             rowSpan() const { return _rowSpan; }
+        auto            contentAlignment() const -> VerticalAlignment { return _contentAlignment; }
+        auto            preferredWidth() const -> TypographicSizeOpt { return _preferredWidth; }
 
         //////////
         //  Implementation
     private:
         ReportTable *   _table;
+        int             _startColumn;           //  always >= 0
+        int             _startRow;              //  always >= 0
+        int             _columnSpan;            //  always >= 1
+        int             _rowSpan;               //  always >= 1
+        VerticalAlignment   _contentAlignment;
+        TypographicSizeOpt  _preferredWidth;    //  no value == choose automatically
     };
-
-    //  TODO insert Element classes here
 
     /// \class ReportAnchor tt3-report/API.hpp
     /// \brief A link anchor within a report.

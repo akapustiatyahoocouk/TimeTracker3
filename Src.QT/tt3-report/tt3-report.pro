@@ -45,6 +45,8 @@ SOURCES += \
     ReportPicture.cpp \
     ReportSection.cpp \
     ReportSpanElement.cpp \
+    ReportTable.cpp \
+    ReportTableCell.cpp \
     ReportTemplateManager.cpp \
     ReportText.cpp \
     TypographicSize.cpp \
