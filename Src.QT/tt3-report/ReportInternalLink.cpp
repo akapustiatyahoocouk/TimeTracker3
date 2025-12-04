@@ -1,5 +1,5 @@
 //
-//  tt3-report/ReportListItem.cpp - tt3::report::ReportListItem class implementation
+//  tt3-report/ReportInternalLink.cpp - tt3::report::ReportInternalLink class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,21 +19,19 @@ using namespace tt3::report;
 
 //////////
 //  Construction/destruction - from friends only
-ReportListItem::ReportListItem(
-        ReportList * list,
-        const QString & label
-    ) : ReportFlowElement(list->_report),
-        _list(list),
-        _label(label)
+ReportInternalLink::ReportInternalLink(
+        ReportSpanElement * spanElement,
+        ILinkStyle * style,
+        ReportAnchor * anchor
+    ) : ReportLink(spanElement, style),
+        _anchor(anchor)
 {
-    //  Add to parents
-    _list->_items.append(this);
+    Q_ASSERT(_anchor != nullptr &&
+             _anchor->_report == this->_report);
 }
 
-ReportListItem::~ReportListItem()
-{
-    //  Remove from parents
-    _list->_items.removeAll(this);
+ReportInternalLink::~ReportInternalLink()
+{   //  Destrouing the link doea NOT destroy the nchor!
 }
 
-//  End of tt3-report/ReportListItem.cpp
+//  End of tt3-report/ReportInternalLink.cpp

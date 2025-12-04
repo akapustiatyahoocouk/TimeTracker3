@@ -33,4 +33,35 @@ ReportFlowElement::~ReportFlowElement()
     }
 }
 
+//////////
+//  Operations
+ReportParagraph * ReportFlowElement::createParagraph(IParagraphStyle * style)
+{
+    Q_ASSERT(style == nullptr ||
+             style->reportTemplate() == _report->reportTemplate());
+
+    return new ReportParagraph(this, style);
+}
+
+ReportTable * ReportFlowElement::createTable(ITableStyle * style)
+{
+    Q_ASSERT(style == nullptr ||
+             style->reportTemplate() == _report->reportTemplate());
+
+    return new ReportTable(this, style);
+}
+
+ReportList * ReportFlowElement::createList(IListStyle * style)
+{
+    Q_ASSERT(style == nullptr ||
+             style->reportTemplate() == _report->reportTemplate());
+
+    return new ReportList(this, style);
+}
+
+auto ReportFlowElement::createTableOfContent() -> ReportTableOfContent *
+{
+    return new ReportTableOfContent(this);
+}
+
 //  End of tt3-report/ReportFlowElement.cpp

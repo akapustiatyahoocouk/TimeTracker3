@@ -1,5 +1,5 @@
 //
-//  tt3-report/ReportListItem.cpp - tt3::report::ReportListItem class implementation
+//  tt3-report/ReportExternalLink.cpp - tt3::report::ReportExternalLink class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,25 +15,21 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-report/API.hpp"
-using namespace tt3::report;
+    using namespace tt3::report;
 
 //////////
 //  Construction/destruction - from friends only
-ReportListItem::ReportListItem(
-        ReportList * list,
-        const QString & label
-    ) : ReportFlowElement(list->_report),
-        _list(list),
-        _label(label)
+ReportExternalLink::ReportExternalLink(
+        ReportSpanElement * spanElement,
+        ILinkStyle * style,
+        const QString & url
+    ) : ReportLink(spanElement, style),
+        _url(url)
 {
-    //  Add to parents
-    _list->_items.append(this);
 }
 
-ReportListItem::~ReportListItem()
+ReportExternalLink::~ReportExternalLink()
 {
-    //  Remove from parents
-    _list->_items.removeAll(this);
 }
 
-//  End of tt3-report/ReportListItem.cpp
+//  End of tt3-report/ReportExternalLink.cpp

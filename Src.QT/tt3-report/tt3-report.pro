@@ -35,10 +35,14 @@ SOURCES += \
     PageOrientation.cpp \
     PageSetup.cpp \
     Report.cpp \
+    ReportAnchor.cpp \
     ReportBlockElement.cpp \
     ReportElement.cpp \
+    ReportExternalLink.cpp \
     ReportFlowElement.cpp \
     ReportFormatManager.cpp \
+    ReportInternalLink.cpp \
+    ReportLink.cpp \
     ReportList.cpp \
     ReportListItem.cpp \
     ReportParagraph.cpp \
@@ -47,6 +51,7 @@ SOURCES += \
     ReportSpanElement.cpp \
     ReportTable.cpp \
     ReportTableCell.cpp \
+    ReportTableOfContent.cpp \
     ReportTemplateManager.cpp \
     ReportText.cpp \
     TypographicSize.cpp \

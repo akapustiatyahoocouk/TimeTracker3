@@ -1,5 +1,5 @@
 //
-//  tt3-report/ReportList.cpp - tt3::report::ReportList class implementation
+//  tt3-report/ReportTableOfContent.cpp - tt3::report::ReportTableOfContent class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,29 +19,14 @@ using namespace tt3::report;
 
 //////////
 //  Construction/destruction
-ReportList::ReportList(
-        ReportFlowElement * parent,
-        IListStyle * style
-    ) : ReportBlockElement(parent),
-        _style(style)
+ReportTableOfContent::ReportTableOfContent(
+        ReportFlowElement * parent
+    ) : ReportBlockElement(parent)
 {
-    Q_ASSERT(_style == nullptr ||
-             _style->reportTemplate() == _report->reportTemplate());
 }
 
-ReportList::~ReportList()
+ReportTableOfContent::~ReportTableOfContent()
 {
-    for (auto item : ReportListItems(_items))   //  shallow clone
-    {
-        delete item;    //  removes ListItem from List
-    }
 }
 
-//////////
-//  Operations
-ReportListItem * ReportList::createItem(const QString & label)
-{
-    return new ReportListItem(this, label);
-}
-
-//  End of tt3-report/ReportList.cpp
+//  End of tt3-report/ReportTableOfContent.cpp

@@ -24,6 +24,8 @@ namespace tt3::report
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Report)
 
         friend class ReportSection;
+        friend class ReportAnchor;
+        friend class ReportLink;
 
         //////////
         //  Construction/destruction
@@ -122,6 +124,9 @@ namespace tt3::report
         friend class ReportListItem;
         friend class ReportTable;
         friend class ReportTableCell;
+        friend class ReportAnchor;
+        friend class ReportLink;
+        friend class ReportInternalLink;
 
         //////////
         //  Construction/destruction - from friends only
@@ -151,6 +156,12 @@ namespace tt3::report
         ///     in order of creation.
         ReportAnchors   anchors() const { return _anchors; }
 
+        /// \brief
+        ///     Creates a new Anchor associated with this Element.
+        /// \return
+        ///     The newly created Anchor.
+        ReportAnchor *  createAnchor();
+
         //////////
         //  Implementation
     private:
@@ -165,6 +176,7 @@ namespace tt3::report
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportFlowElement)
 
+        friend class ReportBlockElement;
         friend class ReportSection;
         friend class ReportListItem;
         friend class ReportTableCell;
@@ -185,6 +197,11 @@ namespace tt3::report
         ///     in order of creation.
         auto            children() const -> ReportBlockElements { return _children; }
 
+        ReportParagraph*createParagraph(IParagraphStyle * style = nullptr);
+        ReportTable *   createTable(ITableStyle * style = nullptr);
+        ReportList *    createList(IListStyle * style = nullptr);
+        auto            createTableOfContent() -> ReportTableOfContent *;
+
         //////////
         //  Implementation
     private:
@@ -202,6 +219,7 @@ namespace tt3::report
         friend class ReportParagraph;
         friend class ReportList;
         friend class ReportTable;
+        friend class ReportTableOfContent;
 
         //////////
         //  Construction/destruction - from friends only
@@ -292,14 +310,15 @@ namespace tt3::report
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportParagraph)
 
+        friend class ReportFlowElement;
         friend class ReportSpanElement;
 
         //////////
         //  Construction/destruction - from friends only
     private:
         ReportParagraph(
-            ReportFlowElement * parent,
-            IParagraphStyle * style
+                ReportFlowElement * parent,
+                IParagraphStyle * style
             );
         virtual ~ReportParagraph();
 
@@ -355,6 +374,7 @@ namespace tt3::report
         friend class ReportParagraph;
         friend class ReportText;
         friend class ReportPicture;
+        friend class ReportLink;
 
         //////////
         //  Construction/destruction - from friends only
@@ -381,6 +401,15 @@ namespace tt3::report
         /// \return
         ///     The Link associated with this element; nullptr == none.
         ReportLink *    link() const { return _link; }
+
+        auto            createInternalLink(
+                                ReportAnchor * anchor,
+                                ILinkStyle * style = nullptr
+                            ) -> ReportInternalLink *;
+        auto            createExternalLink(
+                                const QString & url,
+                                ILinkStyle * style = nullptr
+                            ) -> ReportExternalLink *;
 
         //////////
         //  Implementation
@@ -501,6 +530,7 @@ namespace tt3::report
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportList)
 
+        friend class ReportFlowElement;
         friend class ReportListItem;
 
         //////////
@@ -536,6 +566,8 @@ namespace tt3::report
         ///     The list of all Items in this List, in order of creation.
         ReportListItems     items() const { return _items; }
 
+        ReportListItem *    createItem(const QString & label = "");
+
         //////////
         //  Implementation
     private:
@@ -555,7 +587,9 @@ namespace tt3::report
         //////////
         //  Construction/destruction - from friends only
     private:
-        explicit ReportListItem(ReportList * list);
+         ReportListItem(
+                ReportList * list,
+                const QString & label);
         virtual ~ReportListItem();
 
         //////////
@@ -598,6 +632,7 @@ namespace tt3::report
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportTable)
 
+        friend class ReportFlowElement;
         friend class ReportTableCell;
 
         //////////
@@ -644,6 +679,15 @@ namespace tt3::report
         /// \return
         ///     The number of rows in this Table.
         int             rowCount() const { return _rowCount; }
+
+        ReportTableCell*createCell(
+                                int startColumn,
+                                int startRow,
+                                int columnSpan,
+                                int rowSpan,
+                                VerticalAlignment contentAlignment = VerticalAlignment::Top,
+                                TypographicSizeOpt preferredWidth = TypographicSizeOpt()
+                            );
 
         //////////
         //  Implementation
@@ -707,11 +751,12 @@ namespace tt3::report
 
     /// \class ReportAnchor tt3-report/API.hpp
     /// \brief A link anchor within a report.
-    class TT3_REPORT_PUBLIC ReportAnchor
+    class TT3_REPORT_PUBLIC ReportAnchor final
         :   public ReportElement
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportAnchor)
 
+        friend class Report;
         friend class ReportElement;
 
         //////////
@@ -719,6 +764,11 @@ namespace tt3::report
     private:
         explicit ReportAnchor(ReportElement * anchoredElement);
         virtual ~ReportAnchor();
+
+        //////////
+        //  ReportElement
+    public:
+        virtual auto    parent() const -> ReportElement * override { return _anchoredElement; }
 
         //////////
         //  Operations
@@ -743,7 +793,10 @@ namespace tt3::report
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportLink)
 
+        friend class Report;
         friend class ReportSpanElement;
+        friend class ReportInternalLink;
+        friend class ReportExternalLink;
 
         //////////
         //  Construction/destruction - from friends only
@@ -796,6 +849,8 @@ namespace tt3::report
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportInternalLink)
 
+        friend class ReportSpanElement;
+
         //////////
         //  Construction/destruction - from friends only
     private:
@@ -827,6 +882,8 @@ namespace tt3::report
         :   public ReportLink
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportExternalLink)
+
+        friend class ReportSpanElement;
 
         //////////
         //  Construction/destruction - from friends only
@@ -860,10 +917,14 @@ namespace tt3::report
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportTableOfContent)
 
+        friend class ReportFlowElement;
+
         //////////
         //  Construction/destruction - from friends only
     private:
-        explicit ReportTableOfContent(Report * report);
+        explicit ReportTableOfContent(
+                ReportFlowElement * parent
+            );
         virtual ~ReportTableOfContent();
 
         //////////

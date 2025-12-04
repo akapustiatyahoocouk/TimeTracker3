@@ -22,12 +22,17 @@ using namespace tt3::report;
 ReportBlockElement::ReportBlockElement(
         ReportFlowElement * parent
     ) : ReportElement(parent->report()),
-    _parent(parent)
+        _parent(parent)
 {
+    //  Add to parent
+    _parent->_children.append(this);
 }
 
 ReportBlockElement::~ReportBlockElement()
 {
+    //  Remove from parent
+    Q_ASSERT(_parent->_children.contains(this));
+    _parent->_children.removeAll(this);
 }
 
 //  End of tt3-report/ReportBlockElement.cpp

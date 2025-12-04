@@ -37,5 +37,23 @@ ReportSpanElement::~ReportSpanElement()
     _paragraph->_children.removeAll(this);
 }
 
+//////////
+//  Operations
+auto ReportSpanElement::createInternalLink(
+        ReportAnchor * anchor,
+        ILinkStyle * style
+    ) -> ReportInternalLink *
+{
+    return new ReportInternalLink(this, style, anchor);
+}
+
+auto ReportSpanElement::createExternalLink(
+        const QString & url,
+        ILinkStyle * style
+    ) -> ReportExternalLink *
+{
+    return new ReportExternalLink(this, style, url);
+}
+
 //  End of tt3-report/ReportSpanElement.cpp
 

@@ -34,4 +34,11 @@ ReportElement::~ReportElement()
     }
 }
 
+//////////
+//  Operations
+ReportAnchor * ReportElement::createAnchor()
+{
+    return new ReportAnchor(this);
+}
+
 //  End of tt3-report/ReportElement.cpp

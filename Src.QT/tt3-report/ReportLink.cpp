@@ -1,5 +1,5 @@
 //
-//  tt3-report/ReportList.cpp - tt3::report::ReportList class implementation
+//  tt3-report/ReportLink.cpp - tt3::report::ReportLink class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,29 +19,39 @@ using namespace tt3::report;
 
 //////////
 //  Construction/destruction
-ReportList::ReportList(
-        ReportFlowElement * parent,
-        IListStyle * style
-    ) : ReportBlockElement(parent),
+ReportLink::ReportLink(
+        ReportSpanElement * spanElement,
+        ILinkStyle * style
+    ) : ReportElement(spanElement->_report),
+        _spanElement(spanElement),
         _style(style)
 {
     Q_ASSERT(_style == nullptr ||
              _style->reportTemplate() == _report->reportTemplate());
+
+    //  Add to parents
+    _report->_links.append(this);
+    Q_ASSERT(_spanElement->_link == nullptr);
+    _spanElement->_link = this;
 }
 
-ReportList::~ReportList()
+ReportLink::~ReportLink()
 {
-    for (auto item : ReportListItems(_items))   //  shallow clone
-    {
-        delete item;    //  removes ListItem from List
-    }
+    //  Remove from parents
+    Q_ASSERT(_report->_links.contains(this));
+    _report->_links.removeAll(this);
+    Q_ASSERT(_spanElement->_link == this);
+    _spanElement->_link = nullptr;
 }
 
 //////////
 //  Operations
-ReportListItem * ReportList::createItem(const QString & label)
+void ReportLink::setStyle(ILinkStyle * style)
 {
-    return new ReportListItem(this, label);
+    Q_ASSERT(style == nullptr ||
+             style->reportTemplate() == _report->reportTemplate());
+
+    _style = style;
 }
 
-//  End of tt3-report/ReportList.cpp
+//  End of tt3-report/ReportLink.cpp

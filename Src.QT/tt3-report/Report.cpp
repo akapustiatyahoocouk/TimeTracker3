@@ -32,6 +32,14 @@ Report::Report(
 
 Report::~Report()
 {
+    for (auto link : ReportLinks(_links))  //  shallow clone
+    {
+        delete link; //  removes Links from Report ans SpanElements
+    }
+    for (auto anchor : ReportAnchors(_anchors))  //  shallow clone
+    {
+        delete anchor; //  removes Anchors from Report ans Elements
+    }
     for (auto section : ReportSections(_sections))  //  shallow clone
     {
         delete section; //  removes Sections from Report
