@@ -91,6 +91,8 @@ namespace tt3::report
         ///     The name for the new Section.
         /// \param style
         ///     The style for the new Section; nullptr == none.
+        /// \return
+        ///     The newly created Section.
         ReportSection * createSection(
                                 const QString & name,
                                 ISectionStyle * style = nullptr
@@ -197,9 +199,34 @@ namespace tt3::report
         ///     in order of creation.
         auto            children() const -> ReportBlockElements { return _children; }
 
+        /// \brief
+        ///     Creates a new empty Paragraph at the end of this Flow.
+        /// \param style
+        ///     The style for the new Paragraph; nullptr == none.
+        /// \return
+        ///     The newly created Paragraph.
         ReportParagraph*createParagraph(IParagraphStyle * style = nullptr);
+
+        /// \brief
+        ///     Creates a new empty Table at the end of this Flow.
+        /// \param style
+        ///     The style for the new Table; nullptr == none.
+        /// \return
+        ///     The newly created Table.
         ReportTable *   createTable(ITableStyle * style = nullptr);
+
+        /// \brief
+        ///     Creates a new empty List at the end of this Flow.
+        /// \param style
+        ///     The style for the new List; nullptr == none.
+        /// \return
+        ///     The newly created List.
         ReportList *    createList(IListStyle * style = nullptr);
+
+        /// \brief
+        ///     Creates a new TOC at the end of this Flow.
+        /// \return
+        ///     The newly created TOC.
         auto            createTableOfContent() -> ReportTableOfContent *;
 
         //////////
@@ -346,11 +373,29 @@ namespace tt3::report
         ///     The list of children of this Paragraph, in order of creation.
         auto            children() const -> ReportSpanElements { return _children; }
 
+        /// \brief
+        ///     Creates a new Text at the end of this Paragraph.
+        /// \param text
+        ///     The actual text to appear in the report.
+        /// \param style
+        ///     The style for the new Text, nullptr == none.
+        /// \return
+        ///     The newly created Text.
         ReportText *    createText(
                                 const QString & text,
                                 ICharacterStyle * style
                             );
 
+        /// \brief
+        ///     Creates a new Picture at the end of this Paragraph.
+        /// \param width
+        ///     The width of the Picture.
+        /// \param height
+        ///     The height of the Picture.
+        /// \param image
+        ///     The image to be drawi as a Picture.
+        /// \return
+        ///     The newly created Picture.
         ReportPicture * createPicture(
                                 const TypographicSize & width,
                                 const TypographicSize & height,
@@ -402,10 +447,27 @@ namespace tt3::report
         ///     The Link associated with this element; nullptr == none.
         ReportLink *    link() const { return _link; }
 
+        /// \brief
+        ///     Creates a new InternalLink for this Span.
+        /// \param anchor
+        ///     The link target Anchow (must belong to the same Report).
+        /// \param style
+        ///     The style for the new Link, nullptr == none.
+        /// \return
+        ///     The newly created InternalLink.
         auto            createInternalLink(
                                 ReportAnchor * anchor,
                                 ILinkStyle * style = nullptr
                             ) -> ReportInternalLink *;
+
+        /// \brief
+        ///     Creates a new ExternalLink for this Span.
+        /// \param url
+        ///     The link target URL.
+        /// \param style
+        ///     The style for the new Link, nullptr == none.
+        /// \return
+        ///     The newly created ExternalLink.
         auto            createExternalLink(
                                 const QString & url,
                                 ILinkStyle * style = nullptr
@@ -566,6 +628,12 @@ namespace tt3::report
         ///     The list of all Items in this List, in order of creation.
         ReportListItems     items() const { return _items; }
 
+        /// \brief
+        ///     Creates a new ListItem at the end of this List.
+        /// \param label
+        ///     The label to appear as a list bullet, "" == default.
+        /// \return
+        ///     The newly created ListItem.
         ReportListItem *    createItem(const QString & label = "");
 
         //////////
@@ -680,6 +748,23 @@ namespace tt3::report
         ///     The number of rows in this Table.
         int             rowCount() const { return _rowCount; }
 
+        /// \brief
+        ///     Creates a new TableCell in this Table.
+        /// \param startColumn
+        ///     The start colunm for the TableCell (0-based).
+        /// \param startRow
+        ///     The start row for the TableCell (0-based).
+        /// \param columnSpan
+        ///     The column span for the TableCell (1 or more).
+        /// \param rowSpan
+        ///     The row span for the TableCell (1 or more).
+        /// \param contentAlignment
+        ///     The alignment of content within thew TableCell.
+        /// \param preferredWidth
+        ///     The preferred width of the column(s) occupied by
+        ///     the TableCell; no value == choose automatically.
+        /// \return
+        ///     The newly created TableCell.
         ReportTableCell*createCell(
                                 int startColumn,
                                 int startRow,
@@ -729,12 +814,48 @@ namespace tt3::report
         //////////
         //  Operations
     public:
+        /// \brief
+        ///     Returns the Table to which this TableCell belongs.
+        /// \return
+        ///     The Table to which this TableCell belongs.
         ReportTable *   table() const { return _table; }
+
+        /// \brief
+        ///     Returns the start column of this TableCell.
+        /// \return
+        ///     The start column of this TableCell (0-based).
         int             startColumn() const { return _startColumn; }
+
+        /// \brief
+        ///     Returns the start row of this TableCell.
+        /// \return
+        ///     The start row of this TableCell (0-based).
         int             startRow() const { return _startRow; }
+
+        /// \brief
+        ///     Returns the number of columns occupied by this TableCell.
+        /// \return
+        ///     The number of columns occupied by this TableCell (1 or more).
         int             columnSpan() const { return _columnSpan; }
+
+        /// \brief
+        ///     Returns the number of ows occupied by this TableCell.
+        /// \return
+        ///     The number of rows occupied by this TableCell (1 or more).
         int             rowSpan() const { return _rowSpan; }
+
+        /// \brief
+        ///     Returns the alignment of content within this TableCell.
+        /// \return
+        ///     The alignment of content within this TableCell.
         auto            contentAlignment() const -> VerticalAlignment { return _contentAlignment; }
+
+        /// \brief
+        ///     Returns the preferred width of the column(s)
+        ///     occupied by this TableCell.
+        /// \return
+        ///     The preferred width of the column(s) occupied
+        ///     by this TableCell; no va;ue == choose automatically.
         auto            preferredWidth() const -> TypographicSizeOpt { return _preferredWidth; }
 
         //////////
