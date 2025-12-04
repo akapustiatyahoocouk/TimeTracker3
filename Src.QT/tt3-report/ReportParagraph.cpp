@@ -52,10 +52,17 @@ ReportText * ReportParagraph::createText(
         ICharacterStyle * style
     )
 {
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
     Q_ASSERT(style == nullptr ||
              style->reportTemplate() == _report->reportTemplate());
 
-    return new ReportText(this, text, style);
+    auto result = new ReportText(this, text, style);
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    return result;
 }
 
 ReportPicture * ReportParagraph::createPicture(
@@ -64,7 +71,14 @@ ReportPicture * ReportParagraph::createPicture(
         const QImage & image
     )
 {
-    return new ReportPicture(this, width, height, image);
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    auto result = new ReportPicture(this, width, height, image);
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    return result;
 }
 
 //  End of tt3-report/ReportParagraph.cpp

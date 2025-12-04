@@ -23,7 +23,13 @@ namespace tt3::report
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Report)
 
+        friend class ReportElement;
+        friend class ReportFlowElement;
+        friend class ReportSpanElement;
+        friend class ReportParagraph;
         friend class ReportSection;
+        friend class ReportList;
+        friend class ReportTable;
         friend class ReportAnchor;
         friend class ReportLink;
 
@@ -108,6 +114,13 @@ namespace tt3::report
         ReportSections  _sections;  //  in order of creation
         ReportAnchors   _anchors;   //  in order of creation
         ReportLinks     _links;     //  in order of creation
+
+#ifdef QT_DEBUG
+        //////////
+        //  Validation
+    private:
+        void            _validate();
+#endif
     };
 
     /// \class ReportElement tt3-report/API.hpp
@@ -116,6 +129,7 @@ namespace tt3::report
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportElement)
 
+        friend class Report;
         friend class ReportFlowElement;
         friend class ReportBlockElement;
         friend class ReportSection;
@@ -971,6 +985,7 @@ namespace tt3::report
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportInternalLink)
 
         friend class ReportSpanElement;
+        friend class ReportAnchor;
 
         //////////
         //  Construction/destruction - from friends only

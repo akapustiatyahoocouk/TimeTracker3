@@ -37,31 +37,59 @@ ReportFlowElement::~ReportFlowElement()
 //  Operations
 ReportParagraph * ReportFlowElement::createParagraph(IParagraphStyle * style)
 {
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
     Q_ASSERT(style == nullptr ||
              style->reportTemplate() == _report->reportTemplate());
 
-    return new ReportParagraph(this, style);
+    auto result = new ReportParagraph(this, style);
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    return result;
 }
 
 ReportTable * ReportFlowElement::createTable(ITableStyle * style)
 {
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
     Q_ASSERT(style == nullptr ||
              style->reportTemplate() == _report->reportTemplate());
 
-    return new ReportTable(this, style);
+    auto result = new ReportTable(this, style);
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    return result;
 }
 
 ReportList * ReportFlowElement::createList(IListStyle * style)
 {
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
     Q_ASSERT(style == nullptr ||
              style->reportTemplate() == _report->reportTemplate());
 
-    return new ReportList(this, style);
+    auto result = new ReportList(this, style);
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    return result;
 }
 
 auto ReportFlowElement::createTableOfContent() -> ReportTableOfContent *
 {
-    return new ReportTableOfContent(this);
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    auto result = new ReportTableOfContent(this);
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    return result;
 }
 
 //  End of tt3-report/ReportFlowElement.cpp

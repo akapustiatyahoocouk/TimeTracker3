@@ -31,7 +31,18 @@ ReportAnchor::ReportAnchor(
 
 ReportAnchor::~ReportAnchor()
 {
-    //  TODO Destroy all internal links referring to this Anchor
+    //  Destroy all internal links referring to this Anchor
+    for (auto link : ReportLinks(_report->_links))  //  shallow clone
+    {
+        if (auto internalLink =
+            dynamic_cast<ReportInternalLink*>(link))
+        {
+            if (internalLink->_anchor == this)
+            {
+                delete internalLink;
+            }
+        }
+    }
 
     //  Remove from parents
     Q_ASSERT(_report->_anchors.contains(this));

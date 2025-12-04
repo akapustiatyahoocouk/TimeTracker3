@@ -53,7 +53,10 @@ ReportTableCell * ReportTable::createCell(
     Q_ASSERT(columnSpan > 0);
     Q_ASSERT(rowSpan > 0);
 
-    return new ReportTableCell(
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    auto result = new ReportTableCell(
         this,
         std::max(startColumn, 0),   //  be defensive
         std::max(startRow, 0),      //  be defensive
@@ -61,6 +64,10 @@ ReportTableCell * ReportTable::createCell(
         std::max(rowSpan, 1),       //  be defensive
         contentAlignment,
         preferredWidth);
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    return result;
 }
 
 //  End of tt3-report/ReportTable.cpp

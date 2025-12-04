@@ -44,7 +44,14 @@ auto ReportSpanElement::createInternalLink(
         ILinkStyle * style
     ) -> ReportInternalLink *
 {
-    return new ReportInternalLink(this, style, anchor);
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    auto result = new ReportInternalLink(this, style, anchor);
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    return result;
 }
 
 auto ReportSpanElement::createExternalLink(
@@ -52,7 +59,14 @@ auto ReportSpanElement::createExternalLink(
         ILinkStyle * style
     ) -> ReportExternalLink *
 {
-    return new ReportExternalLink(this, style, url);
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    auto result = new ReportExternalLink(this, style, url);
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    return result;
 }
 
 //  End of tt3-report/ReportSpanElement.cpp

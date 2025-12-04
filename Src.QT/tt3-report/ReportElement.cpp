@@ -38,7 +38,14 @@ ReportElement::~ReportElement()
 //  Operations
 ReportAnchor * ReportElement::createAnchor()
 {
-    return new ReportAnchor(this);
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    auto result = new ReportAnchor(this);
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    return result;
 }
 
 //  End of tt3-report/ReportElement.cpp

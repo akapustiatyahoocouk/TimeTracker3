@@ -41,7 +41,14 @@ ReportList::~ReportList()
 //  Operations
 ReportListItem * ReportList::createItem(const QString & label)
 {
-    return new ReportListItem(this, label);
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    auto result = new ReportListItem(this, label);
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    return result;
 }
 
 //  End of tt3-report/ReportList.cpp

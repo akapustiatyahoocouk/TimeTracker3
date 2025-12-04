@@ -32,6 +32,9 @@ Report::Report(
 
 Report::~Report()
 {
+#ifdef QT_DEBUG
+    _validate();
+#endif
     for (auto link : ReportLinks(_links))  //  shallow clone
     {
         delete link; //  removes Links from Report ans SpanElements
@@ -44,6 +47,9 @@ Report::~Report()
     {
         delete section; //  removes Sections from Report
     }
+#ifdef QT_DEBUG
+    _validate();
+#endif
     _reportTemplate->_referenceCount--;
 }
 
@@ -54,7 +60,38 @@ ReportSection * Report::createSection(
         ISectionStyle * style
     )
 {
-    return new ReportSection(this, name, style);
+#ifdef QT_DEBUG
+    _validate();
+#endif
+    auto result = new ReportSection(this, name, style);
+#ifdef QT_DEBUG
+    _validate();
+#endif
+    return result;
 }
+
+#ifdef QT_DEBUG
+//////////
+//  Validation
+void Report::_validate()
+{
+    //  Validate back links
+    for (auto section : _sections)
+    {
+        Q_ASSERT(section->_report == this);
+    }
+    for (auto anchor : _anchors)
+    {
+        Q_ASSERT(anchor->_report == this);
+    }
+    for (auto link : _links)
+    {
+        Q_ASSERT(link->_report == this);
+    }
+
+    //  Validate objects
+    //  TODO
+}
+#endif
 
 //  End of tt3-report/Report.cpp
