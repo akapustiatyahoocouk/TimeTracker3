@@ -166,8 +166,38 @@ QDomDocument IReportTemplate::toXmlDocument() const
     QDomProcessingInstruction xmlDeclaration = document.createProcessingInstruction("xml", "version='1.0' encoding='UTF-8' standalone='yes'");
     document.appendChild(xmlDeclaration);
 
-    //  TODO
-    //  DONE
+    //  Set up the root element
+    QDomElement rootElement = document.createElement("CustomReportTemplate");
+    document.appendChild(rootElement);
+    rootElement.setAttribute("FormatVersion", "1");
+
+    //  Set up "template properties" element
+    QDomElement propertiesElement = document.createElement("Properties"); //$NON-NLS-1$
+    rootElement.appendChild(propertiesElement);
+
+    _setAttribute(propertiesElement, "Mnemonic", this->mnemonic());
+    _setAttribute(propertiesElement, "DisplayName", this->displayName());
+    _setAttribute(propertiesElement, "PageSetup", this->pageSetup());
+    _setAttribute(propertiesElement, "DefaultFontSpecs", this->defaultFontSpecs());
+    _setAttribute(propertiesElement, "DefaultFontSize", this->defaultFontSize());
+    _setAttribute(propertiesElement, "DefaultFontStyle", this->defaultFontStyle());
+    _setAttribute(propertiesElement, "DefaultTextColor", this->defaultTextColor());
+    _setAttribute(propertiesElement, "DefaultBackgroundColor", this->defaultBackgroundColor());
+    _setAttribute(propertiesElement, "DefaultListIndent", this->defaultListIndent());
+    _setAttribute(propertiesElement, "DefaultTableBorderType", this->defaultTableBorderType());
+    _setAttribute(propertiesElement, "DefaultLinkUnderlineMode", this->defaultLinkUnderlineMode());
+
+    //  Set up "template styles" element
+    QDomElement stylesElement = document.createElement("Styles");
+    rootElement.appendChild(stylesElement);
+
+    for (IStyle * style : this->styles())
+    {
+        QDomElement styleElement = document.createElement(style->_xmlTagName());
+        stylesElement.appendChild(styleElement);
+    }
+
+    //  Done
     return document;
 }
 

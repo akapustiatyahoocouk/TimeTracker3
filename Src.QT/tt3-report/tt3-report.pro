@@ -18,9 +18,18 @@ SOURCES += \
     Component.cpp \
     FontFlag.cpp \
     FontSpec.cpp \
+    FontSpecs.cpp \
     FontStyle.cpp \
     HorizontalAlignment.cpp \
+    IBlockStyle.cpp \
+    ICharacterStyle.cpp \
+    ILinkStyle.cpp \
+    IListStyle.cpp \
+    IParagraphStyle.cpp \
     IReportTemplate.cpp \
+    ISectionStyle.cpp \
+    IStyle.cpp \
+    ITableStyle.cpp \
     PageNumberPlacement.cpp \
     PageOrientation.cpp \
     PageSetup.cpp \

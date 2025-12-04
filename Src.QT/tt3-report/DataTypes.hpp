@@ -894,6 +894,10 @@ namespace tt3::util
             const tt3::report::FontSpec & value
         );
     template <> TT3_REPORT_PUBLIC
+    QString toString<tt3::report::FontSpecs>(
+            const tt3::report::FontSpecs & value
+        );
+    template <> TT3_REPORT_PUBLIC
     QString toString<tt3::report::FontFlag>(
             const tt3::report::FontFlag & value
         );

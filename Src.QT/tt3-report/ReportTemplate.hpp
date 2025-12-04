@@ -26,6 +26,13 @@ namespace tt3::report
     ///     ReportTemplateManager.
     class TT3_REPORT_PUBLIC IReportTemplate
     {
+        friend class IStyle;
+        friend class IBlockStyle;
+        friend class IParagraphStyle;
+        friend class IListStyle;
+        friend class ITableStyle;
+        friend class ISectionStyle;
+
         //////////
         //  This is an interface
     protected:
@@ -264,6 +271,35 @@ namespace tt3::report
         /// \return
         ///     The formatted XML text representing this report template.
         QString         toXmlString() const;
+
+        //////////
+        //  Implementation helpers
+    private:
+        template <class T>
+        static void     _setAttribute(
+                                QDomElement & element,
+                                QString name,
+                                const T & value
+                            )
+        {
+            QDomElement childElement = element.ownerDocument().createElement(name);
+            element.appendChild(childElement);
+            QDomText text = element.ownerDocument().createTextNode(tt3::util::toString(value));
+            childElement.appendChild(text);
+        }
+
+        template <class T>
+        static void     _setAttribute(
+                QDomElement & element,
+                QString name,
+                const std::optional<T> & value
+            )
+        {
+            if (value.has_value())
+            {
+                _setAttribute(element, name, value.value());
+            }
+        }
     };
 
     /// \class ReportTemplateManager tt3-report/API.hpp
@@ -313,6 +349,12 @@ namespace tt3::report
     /// \brief An abstract interface to a "formatting style" of report eement.
     class TT3_REPORT_PUBLIC IStyle
     {
+        friend class IReportTemplate;
+        friend class ICharacterStyle;
+        friend class IBlockStyle;
+        friend class ILinkStyle;
+        friend class ISectionStyle;
+
         //////////
         //  This is an interface
     protected:
@@ -390,6 +432,12 @@ namespace tt3::report
         ///     The underline mode to use; no value == inherit
         ///     from parent, Default == inherit from ReportTemplate.
         virtual auto    underlineMode() const -> UnderlineModeOpt = 0;
+
+        //////////
+        //  Imlementation helpers
+    private:
+        virtual QString _xmlTagName() const = 0;
+        virtual void    _storeAttributes(QDomElement & element) const;
     };
 
     /// \class ICharacterStyle tt3-report/API.hpp
@@ -403,6 +451,13 @@ namespace tt3::report
         /// \brief
         ///     The default [interface] constructor.
         ICharacterStyle() = default;
+
+        //////////
+        //  Imlementation helpers
+    private:
+        inline static const QString _XmlTagName = "CharacterStyle";
+        virtual QString _xmlTagName() const override { return _XmlTagName; }
+        virtual void    _storeAttributes(QDomElement & element) const override;
     };
 
     /// \class IBlockStyle tt3-report/API.hpp
@@ -410,6 +465,10 @@ namespace tt3::report
     class TT3_REPORT_PUBLIC IBlockStyle
         :   public virtual IStyle
     {
+        friend class IParagraphStyle;
+        friend class IListStyle;
+        friend class ITableStyle;
+
         //////////
         //  This is an interface
     protected:
@@ -445,6 +504,13 @@ namespace tt3::report
         /// \return
         ///     The vertical gap after the block; no value == inherit from parent.
         virtual auto    gapBelow() const -> TypographicSizeOpt = 0;
+
+        //////////
+        //  Imlementation helpers
+    private:
+        inline static const QString _XmlTagName = "BlockStyle";
+        virtual QString _xmlTagName() const override { return _XmlTagName; }
+        virtual void    _storeAttributes(QDomElement & element) const override;
     };
 
     /// \class IParagraphStyle tt3-report/API.hpp
@@ -567,6 +633,13 @@ namespace tt3::report
         ///     The type of border around the paragraph; no value ==
         ///     inherit from parent, Default == inherit from ReportTemplate.
         virtual auto    borderType() const -> BorderTypeOpt = 0;
+
+        //////////
+        //  Imlementation helpers
+    private:
+        inline static const QString _XmlTagName = "ParagraphStyle";
+        virtual QString _xmlTagName() const override { return _XmlTagName; }
+        virtual void    _storeAttributes(QDomElement & element) const override;
     };
 
     /// \class IListStyle tt3-report/API.hpp
@@ -599,6 +672,13 @@ namespace tt3::report
         ///     the left edge of list item texts; no value == inherit
         ///     from parent.
         virtual auto    indent() const -> TypographicSizeOpt = 0;
+
+        //////////
+        //  Imlementation helpers
+    private:
+        inline static const QString _XmlTagName = "ListStyle";
+        virtual QString _xmlTagName() const override { return _XmlTagName; }
+        virtual void    _storeAttributes(QDomElement & element) const override;
     };
 
     /// \class ITableStyle tt3-report/API.hpp
@@ -639,6 +719,13 @@ namespace tt3::report
         ///     mo value == inherit from parent, Default ==
         ///     inherit from ReportTemplate.
         virtual auto    cellBorderType() const -> BorderTypeOpt = 0;
+
+        //////////
+        //  Imlementation helpers
+    private:
+        inline static const QString _XmlTagName = "TableStyle";
+        virtual QString _xmlTagName() const override { return _XmlTagName; }
+        virtual void    _storeAttributes(QDomElement & element) const override;
     };
 
     /// \class ILinkStyle tt3-report/API.hpp
@@ -659,6 +746,13 @@ namespace tt3::report
         /// \brief
         ///     The default link style; must be defined by every valid report template.
         inline static const Mnemonic DefaultStyleName = M(Link.Default);
+
+        //////////
+        //  Imlementation helpers
+    private:
+        inline static const QString _XmlTagName = "LinkStyle";
+        virtual QString _xmlTagName() const override { return _XmlTagName; }
+        virtual void    _storeAttributes(QDomElement & element) const override;
     };
 
     /// \class ISectionStyle tt3-report/API.hpp
@@ -691,6 +785,13 @@ namespace tt3::report
         ///     a section; no value == inherit from parent,
         ///     Default == inherit from ReportTemplate.
         virtual auto    pageNumberPlacement() const -> PageNumberPlacementOpt = 0;
+
+        //////////
+        //  Imlementation helpers
+    private:
+        inline static const QString _XmlTagName = "SectionStyle";
+        virtual QString _xmlTagName() const override { return _XmlTagName; }
+        virtual void    _storeAttributes(QDomElement & element) const override;
     };
 }
 
