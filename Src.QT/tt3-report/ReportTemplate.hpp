@@ -32,6 +32,8 @@ namespace tt3::report
         friend class IListStyle;
         friend class ITableStyle;
         friend class ISectionStyle;
+        friend class BasicReportTemplate;
+        friend class Report;
 
         //////////
         //  This is an interface
@@ -273,8 +275,11 @@ namespace tt3::report
         QString         toXmlString() const;
 
         //////////
-        //  Implementation helpers
+        //  Implementation
     private:
+        qsizetype       _referenceCount = 0;    //  Report instances that use this ReportTemplate
+
+        //  Helpers
         template <class T>
         static void     _setAttribute(
                                 QDomElement & element,

@@ -21,6 +21,7 @@ SOURCES += \
     FontSpecs.cpp \
     FontStyle.cpp \
     HorizontalAlignment.cpp \
+    HtmlReportFormat.cpp \
     IBlockStyle.cpp \
     ICharacterStyle.cpp \
     ILinkStyle.cpp \
@@ -33,6 +34,11 @@ SOURCES += \
     PageNumberPlacement.cpp \
     PageOrientation.cpp \
     PageSetup.cpp \
+    Report.cpp \
+    ReportElement.cpp \
+    ReportFlowElement.cpp \
+    ReportFormatManager.cpp \
+    ReportSection.cpp \
     ReportTemplateManager.cpp \
     TypographicSize.cpp \
     TypographicUnit.cpp \
@@ -45,7 +51,10 @@ HEADERS += \
     Classes.hpp \
     Component.hpp \
     DataTypes.hpp \
+    HtmlReportFormat.hpp \
     Linkage.hpp \
+    Report.hpp \
+    ReportFormat.hpp \
     ReportTemplate.hpp
 
 PRECOMPILED_HEADER = API.hpp

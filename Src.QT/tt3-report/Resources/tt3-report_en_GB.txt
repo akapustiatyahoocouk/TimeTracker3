@@ -5,3 +5,6 @@ Copyright=Copyright (C) {0}, Andrey Kapustin
 
 [BasicReportTemplate]
 DisplayName=Basic (predefined)
+
+[HtmlReportFormat]
+DisplayName=HTML document

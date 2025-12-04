@@ -3,5 +3,7 @@
         <file>Resources/tt3-report_de_DE.txt</file>
         <file>Resources/tt3-report_en_GB.txt</file>
         <file>Resources/tt3-report_ru_RU.txt</file>
+        <file>Resources/Images/Reports/HtmlReportFormatLarge.png</file>
+        <file>Resources/Images/Reports/HtmlReportFormatSmall.png</file>
     </qresource>
 </RCC>

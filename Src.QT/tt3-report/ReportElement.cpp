@@ -1,5 +1,5 @@
 //
-//  tt3-report/API.hpp - TT3 reporting framework
+//  tt3-report/ReportElement.cpp - tt3::report::ReportElement class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,25 +14,24 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
+#include "tt3-report/API.hpp"
+using namespace tt3::report;
 
 //////////
-//  Dependencies
-#include "tt3-ws/API.hpp"
-#include "tt3-util/API.hpp"
+//  Construction/destruction - from friends only
+ReportElement::ReportElement(
+        Report * report
+    ) : _report(report)
+{
+    Q_ASSERT(_report != nullptr);
+}
 
-//////////
-//  tt3-report components
-#include "tt3-report/Linkage.hpp"
-#include "tt3-report/Classes.hpp"
-#include "tt3-report/Component.hpp"
+ReportElement::~ReportElement()
+{
+    for (auto anchor : ReportAnchors(_anchors)) //  shallow clone!
+    {
+        delete anchor;  //  removes Anchor from Element and Report
+    }
+}
 
-#include "tt3-report/DataTypes.hpp"
-#include "tt3-report/ReportTemplate.hpp"
-#include "tt3-report/BasicReportTemplate.hpp"
-
-#include "tt3-report/Report.hpp"
-
-#include "tt3-report/ReportFormat.hpp"
-#include "tt3-report/HtmlReportFormat.hpp"
-//  End of tt3-report/API.hpp
+//  End of tt3-report/ReportElement.cpp

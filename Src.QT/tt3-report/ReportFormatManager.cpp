@@ -1,5 +1,5 @@
 //
-//  tt3-report/ReportTemplateManager.cpp - tt3::report::ReportTemplateManager class implementation
+//  tt3-report/ReportFormatManager.cpp - tt3::report::ReportFormatManager class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -17,49 +17,49 @@
 #include "tt3-report/API.hpp"
 using namespace tt3::report;
 
-struct ReportTemplateManager::_Impl
+struct ReportFormatManager::_Impl
 {
     _Impl()
     {
-#define REGISTER(ReportTemplate)                    \
+#define REGISTER(ReportFormat)                      \
         registry.insert(                            \
-            ReportTemplate::instance()->mnemonic(), \
-            ReportTemplate::instance())
+            ReportFormat::instance()->mnemonic(),   \
+            ReportFormat::instance())
 
-        REGISTER(BasicReportTemplate);
+            REGISTER(HtmlReportFormat);
     }
 
     tt3::util::Mutex                    guard;
-    QMap<tt3::util::Mnemonic, IReportTemplate*> registry;
+    QMap<tt3::util::Mnemonic, IReportFormat*> registry;
 };
 
 //////////
 //  Operations
-ReportTemplates ReportTemplateManager::allReportTemplates()
+ReportFormats ReportFormatManager::allReportFormats()
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
 
-    QList<IReportTemplate*> values = impl->registry.values();
-    return QSet<IReportTemplate*>(values.cbegin(), values.cend());
+    QList<IReportFormat*> values = impl->registry.values();
+    return QSet<IReportFormat*>(values.cbegin(), values.cend());
 }
 
-bool ReportTemplateManager::registerReportTemplate(IReportTemplate * reportTemplate)
+bool ReportFormatManager::registerReportFormat(IReportFormat * reportFormat)
 {
-    Q_ASSERT(reportTemplate != nullptr);
+    Q_ASSERT(reportFormat != nullptr);
 
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
 
-    if (impl->registry.contains(reportTemplate->mnemonic()))
+    if (impl->registry.contains(reportFormat->mnemonic()))
     {
-        return reportTemplate == impl->registry[reportTemplate->mnemonic()];
+        return reportFormat == impl->registry[reportFormat->mnemonic()];
     }
-    impl->registry[reportTemplate->mnemonic()] = reportTemplate;
+    impl->registry[reportFormat->mnemonic()] = reportFormat;
     return true;
 }
 
-IReportTemplate * ReportTemplateManager::findReportTemplate(const tt3::util::Mnemonic & mnemonic)
+IReportFormat * ReportFormatManager::findReportFormat(const tt3::util::Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
@@ -69,10 +69,10 @@ IReportTemplate * ReportTemplateManager::findReportTemplate(const tt3::util::Mne
 
 //////////
 //  Implementation helpers
-ReportTemplateManager::_Impl * ReportTemplateManager::_impl()
+ReportFormatManager::_Impl * ReportFormatManager::_impl()
 {
     static _Impl impl;
     return &impl;
 }
 
-//  End of tt3-report/ReportTemplateManager.cpp
+//  End of tt3-report/ReportFormatManager.cpp

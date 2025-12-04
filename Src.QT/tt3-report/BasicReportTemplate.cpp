@@ -402,6 +402,7 @@ BasicReportTemplate::BasicReportTemplate()
 
 BasicReportTemplate::~BasicReportTemplate()
 {
+    Q_ASSERT(_referenceCount == 0);
     for (auto style : _styles.values())
     {
         delete style;

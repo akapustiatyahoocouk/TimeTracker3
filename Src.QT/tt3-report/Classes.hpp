@@ -37,6 +37,28 @@ namespace tt3::report
     class TT3_REPORT_PUBLIC BasicLinkStyle;
     class TT3_REPORT_PUBLIC BasicSectionStyle;
 
+    class TT3_REPORT_PUBLIC Report;
+    class TT3_REPORT_PUBLIC ReportElement;
+    class TT3_REPORT_PUBLIC ReportFlowElement;
+    class TT3_REPORT_PUBLIC ReportBlockElement;
+    class TT3_REPORT_PUBLIC ReportSpanElement;
+    class TT3_REPORT_PUBLIC ReportSection;
+    class TT3_REPORT_PUBLIC ReportParagraph;
+    class TT3_REPORT_PUBLIC ReportText;
+    class TT3_REPORT_PUBLIC ReportPicture;
+    class TT3_REPORT_PUBLIC ReportList;
+    class TT3_REPORT_PUBLIC ReportListItem;
+    class TT3_REPORT_PUBLIC ReportTable;
+    class TT3_REPORT_PUBLIC ReportTableCell;
+    class TT3_REPORT_PUBLIC ReportAnchor;
+    class TT3_REPORT_PUBLIC ReportLink;
+    class TT3_REPORT_PUBLIC ReportInternalLink;
+    class TT3_REPORT_PUBLIC ReportExternalLink;
+    class TT3_REPORT_PUBLIC ReportTableOfContent;
+
+    class TT3_REPORT_PUBLIC IReportFormat;
+    class TT3_REPORT_PUBLIC HtmlReportFormat;
+
     //  Collections
     using ReportTemplates = QSet<IReportTemplate*>;
     using Styles = QSet<IStyle*>;
@@ -57,6 +79,15 @@ namespace tt3::report
     using BasicTableStyles = QSet<BasicTableStyle*>;
     using BasicLinkStyles = QSet<BasicLinkStyle*>;
     using BasicSectionStyles = QSet<BasicSectionStyle*>;
+
+    using ReportSections = QList<ReportSection*>;
+    using ReportBlockElements = QList<ReportBlockElement*>;
+    using ReportListItems = QList<ReportListItem*>;
+    using ReportTableCells = QList<ReportTableCell*>;
+    using ReportAnchors = QList<ReportAnchor*>;
+    using ReportLinks = QList<ReportLink*>;
+
+    using ReportFormats = QSet<IReportFormat*>;
 }
 
 //  End of tt3-report/Classes.hpp

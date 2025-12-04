@@ -5,3 +5,6 @@ Copyright=Авторское право (C) {0}, Андрей Капустин
 
 [BasicReportTemplate]
 DisplayName=Базовый (предопределен)
+
+[HtmlReportFormat]
+DisplayName=HTML документ
