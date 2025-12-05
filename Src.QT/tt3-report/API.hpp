@@ -35,4 +35,6 @@
 
 #include "tt3-report/ReportFormat.hpp"
 #include "tt3-report/HtmlReportFormat.hpp"
+
+#include "tt3-report/ReportTemplateManagerTool.hpp"
 //  End of tt3-report/API.hpp

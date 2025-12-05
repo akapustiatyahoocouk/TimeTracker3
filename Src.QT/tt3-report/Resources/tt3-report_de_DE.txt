@@ -8,3 +8,7 @@ DisplayName=Standard (vordefiniert)
 
 [HtmlReportFormat]
 DisplayName=HTML-Dokument
+
+[ReportTemplateManagerTool]
+DisplayName=Berichtsvorlagen-Manager
+Description=Verwaltet verfügbare Berichtsvorlagen

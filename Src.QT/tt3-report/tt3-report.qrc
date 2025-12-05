@@ -5,5 +5,13 @@
         <file>Resources/tt3-report_ru_RU.txt</file>
         <file>Resources/Images/Reports/HtmlReportFormatLarge.png</file>
         <file>Resources/Images/Reports/HtmlReportFormatSmall.png</file>
+        <file>Resources/Images/Reports/ReportTemplateLarge.png</file>
+        <file>Resources/Images/Reports/ReportTemplateManagerLarge.png</file>
+        <file>Resources/Images/Reports/ReportTemplateManagerSmall.png</file>
+        <file>Resources/Images/Reports/ReportTemplateSmall.png</file>
+        <file>Resources/Images/Misc/ClosedFolderLarge.png</file>
+        <file>Resources/Images/Misc/ClosedFolderSmall.png</file>
+        <file>Resources/Images/Misc/OpenFolderLarge.png</file>
+        <file>Resources/Images/Misc/OpenFolderSmall.png</file>
     </qresource>
 </RCC>

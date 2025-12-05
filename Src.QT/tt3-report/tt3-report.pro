@@ -53,6 +53,7 @@ SOURCES += \
     ReportTableCell.cpp \
     ReportTableOfContent.cpp \
     ReportTemplateManager.cpp \
+    ReportTemplateManagerTool.cpp \
     ReportText.cpp \
     TypographicSize.cpp \
     TypographicUnit.cpp \
@@ -69,7 +70,8 @@ HEADERS += \
     Linkage.hpp \
     Report.hpp \
     ReportFormat.hpp \
-    ReportTemplate.hpp
+    ReportTemplate.hpp \
+    ReportTemplateManagerTool.hpp
 
 PRECOMPILED_HEADER = API.hpp
 

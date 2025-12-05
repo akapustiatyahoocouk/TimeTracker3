@@ -8,3 +8,7 @@ DisplayName=Базовый (предопределен)
 
 [HtmlReportFormat]
 DisplayName=HTML документ
+
+[ReportTemplateManagerTool]
+DisplayName=Менеджер шаблонов отчётов
+Description=Управляет доступными шаблонами отчётов

@@ -8,3 +8,7 @@ DisplayName=Basic (predefined)
 
 [HtmlReportFormat]
 DisplayName=HTML document
+
+[ReportTemplateManagerTool]
+DisplayName=Report Template Manager
+Description=Manages available Report Templates

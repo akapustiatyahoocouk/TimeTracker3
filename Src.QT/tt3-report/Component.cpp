@@ -78,10 +78,12 @@ const Component::Settings * Component::settings() const
 
 void Component::iniialize()
 {
+    tt3::util::ToolManager::registerTool(ReportTemplateManagerTool::instance());
 }
 
 void Component::deiniialize()
 {
+    tt3::util::ToolManager::unregisterTool(ReportTemplateManagerTool::instance());
 }
 
 //////////
