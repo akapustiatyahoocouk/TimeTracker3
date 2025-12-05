@@ -19,6 +19,18 @@ using namespace tt3::report;
 
 //////////
 //  Operations
+QIcon IReportTemplate::smallIcon() const
+{
+    static const QIcon icon(":/tt3-report/Resources/Images/Reports/ReportTemplateSmall.png");
+    return icon;
+}
+
+QIcon IReportTemplate::largeIcon() const
+{
+    static const QIcon icon(":/tt3-report/Resources/Images/Reports/ReportTemplateLarge.png");
+    return icon;
+}
+
 auto IReportTemplate::characterStyles() const -> CharacterStyles
 {
     CharacterStyles result;

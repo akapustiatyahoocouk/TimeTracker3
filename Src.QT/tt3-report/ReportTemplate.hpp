@@ -66,6 +66,19 @@ namespace tt3::report
         virtual auto    displayName() const -> QString = 0;
 
         /// \brief
+        ///     Returns the small (16x16) icon representing this report template.
+        /// \return
+        ///     The small (16x16) icon representing this report template.
+        virtual QIcon       smallIcon() const;
+
+        /// \brief
+        ///     Returns the large (32x32) icon representing this report template.
+        /// \return
+        ///     The large (32x32) icon representing this report template.
+        virtual QIcon       largeIcon() const;
+
+
+        /// \brief
         ///     Returns the page setup of this report template.
         /// \return
         ///     The page setup of this report template.

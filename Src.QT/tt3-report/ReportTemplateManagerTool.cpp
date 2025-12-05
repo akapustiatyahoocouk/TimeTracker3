@@ -61,6 +61,10 @@ bool ReportTemplateManagerTool::enabled() const
 
 void ReportTemplateManagerTool::run(QWidget * parent)
 {
+    Q_ASSERT(QThread::currentThread()->eventDispatcher() != nullptr);
+
+    ManageReportTemplatesDialog dlg(parent);
+    dlg.doModal();
 }
 
 //  End of tt3-report/ReportTemplateManagerTool.cpp

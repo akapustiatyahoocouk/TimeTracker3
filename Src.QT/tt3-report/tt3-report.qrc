@@ -13,5 +13,13 @@
         <file>Resources/Images/Misc/ClosedFolderSmall.png</file>
         <file>Resources/Images/Misc/OpenFolderLarge.png</file>
         <file>Resources/Images/Misc/OpenFolderSmall.png</file>
+        <file>Resources/Images/Actions/ExportLarge.png</file>
+        <file>Resources/Images/Actions/ExportSmall.png</file>
+        <file>Resources/Images/Actions/ImportLarge.png</file>
+        <file>Resources/Images/Actions/ImportSmall.png</file>
+        <file>Resources/Images/Actions/CancelLarge.png</file>
+        <file>Resources/Images/Actions/CancelSmall.png</file>
+        <file>Resources/Images/Actions/OkLarge.png</file>
+        <file>Resources/Images/Actions/OkSmall.png</file>
     </qresource>
 </RCC>

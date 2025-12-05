@@ -1,5 +1,5 @@
 //
-//  tt3-report/BasicReportTemplate.hpp - tt3-report basic report template
+//  tt3-report/BasicReportTemplate.hpp - tt3-report basic (hardcoded) report template
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin

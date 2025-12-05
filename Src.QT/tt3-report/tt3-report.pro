@@ -31,6 +31,7 @@ SOURCES += \
     ISectionStyle.cpp \
     IStyle.cpp \
     ITableStyle.cpp \
+    ManageReportTemplatesDialog.cpp \
     PageNumberPlacement.cpp \
     PageOrientation.cpp \
     PageSetup.cpp \
@@ -68,6 +69,7 @@ HEADERS += \
     DataTypes.hpp \
     HtmlReportFormat.hpp \
     Linkage.hpp \
+    ManageReportTemplatesDialog.hpp \
     Report.hpp \
     ReportFormat.hpp \
     ReportTemplate.hpp \
@@ -83,3 +85,6 @@ LIBS += \
 
 RESOURCES += \
     tt3-report.qrc
+
+FORMS += \
+    ManageReportTemplatesDialog.ui
