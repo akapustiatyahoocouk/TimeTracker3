@@ -87,6 +87,7 @@
 #include <QStandardPaths>
 #include <QStatusBar>
 #include <QStyleFactory>
+#include <QTemporaryFile>
 #include <QTextDocumentFragment>
 #include <QThread>
 #include <QTimer>

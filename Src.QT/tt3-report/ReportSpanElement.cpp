@@ -22,7 +22,7 @@ using namespace tt3::report;
 ReportSpanElement::ReportSpanElement(
         ReportParagraph * paragraph
     ) : ReportElement(paragraph->_report),
-        _paragraph()
+        _paragraph(paragraph)
 {
     //  Add to parent
     _paragraph->_children.append(this);

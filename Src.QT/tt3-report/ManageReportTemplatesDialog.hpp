@@ -24,10 +24,12 @@ namespace tt3::report
     /// \class ManageReportTemplatesDialog tt3-report/API.hpp
     /// \brief The modal "Manage report templates" dialog.
     class TT3_REPORT_PUBLIC ManageReportTemplatesDialog final
-        :   private QDialog
+        :   public QDialog  //  TODO private!
     {
         Q_OBJECT
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ManageReportTemplatesDialog)
+
+        class TT3_REPORT_PUBLIC _PreviewGenerator;
 
         //////////
         //  Construction/destruction
@@ -49,15 +51,25 @@ namespace tt3::report
     public:
         /// \brief
         ///     Runs the dialog modally.
-        void        doModal();
+        void            doModal();
+
+        //////////
+        //  Signals
+    signals:
+        void            refreshRequested();
+        void            previewAvailable(IReportTemplate*, QString);
 
         //////////
         //  Implementation
     private:
+        QSet<QString>   _previewFileNames;  //  to remove when closing the dialog
+        QMap<IReportTemplate*, _PreviewGenerator*>  _previewGenerators;
+        QMap<IReportTemplate*, QString> _previews;
+
         //  Helpers
-        void        _refresh();
-        void        _refreshReportTemplateItems(QTreeWidgetItem * parentItem);
-        auto        _selectedReportTemplate() -> IReportTemplate *;
+        void            _refresh();
+        void            _refreshReportTemplateItems(QTreeWidgetItem * parentItem);
+        auto            _selectedReportTemplate() -> IReportTemplate *;
 
         //////////
         //  Controls
@@ -70,12 +82,45 @@ namespace tt3::report
         //////////
         //  Signal handlers:
     private slots:
-        void        _templateTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
-        void        _templateTreeWidgetItemExpanded(QTreeWidgetItem*);
-        void        _templateTreeWidgetItemCollapsed(QTreeWidgetItem*);
-        void        _exportPushButtonClicked();
-        void        _importPushButtonClicked();
-        void        _removePushButtonClicked();
+        void            _templateTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
+        void            _templateTreeWidgetItemExpanded(QTreeWidgetItem*);
+        void            _templateTreeWidgetItemCollapsed(QTreeWidgetItem*);
+        void            _exportPushButtonClicked();
+        void            _importPushButtonClicked();
+        void            _removePushButtonClicked();
+        void            _refreshRequested();
+        void            _previewAvailable(IReportTemplate * reportTemplate, QString html);
+
+        //////////
+        //  Threads
+    private:
+        class TT3_REPORT_PUBLIC _PreviewGenerator final
+            :   public QThread
+        {
+            TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(_PreviewGenerator)
+
+            //////////
+            //  Construction/destruction
+        public:
+            _PreviewGenerator(
+                    ManageReportTemplatesDialog * dialog,
+                    IReportTemplate * reportTemplate,
+                    const QString & htmlFileName
+                );
+            virtual ~_PreviewGenerator();
+
+            //////////
+            //  QThread
+        protected:
+            virtual void    run() override;
+
+            //////////
+            //  Implementation
+        private:
+            ManageReportTemplatesDialog *   _dialog;
+            IReportTemplate *   _reportTemplate;
+            QString         _htmlFileName;
+        };
     };
 }
 

@@ -397,7 +397,7 @@ namespace tt3::report
         ///     The newly created Text.
         ReportText *    createText(
                                 const QString & text,
-                                ICharacterStyle * style
+                                ICharacterStyle * style = nullptr
                             );
 
         /// \brief

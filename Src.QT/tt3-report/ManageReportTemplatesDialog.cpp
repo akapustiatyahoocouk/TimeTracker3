@@ -39,6 +39,18 @@ ManageReportTemplatesDialog::ManageReportTemplatesDialog(
     _refresh(); //  Must populate templates tree NOW
     _ui->templatesTreeWidget->expandAll();
 
+    //  Handle refresh requests
+    connect(this,
+            &ManageReportTemplatesDialog::refreshRequested,
+            this,
+            &ManageReportTemplatesDialog::_refreshRequested,
+            Qt::ConnectionType::QueuedConnection);
+    connect(this,
+            &ManageReportTemplatesDialog::previewAvailable,
+            this,
+            &ManageReportTemplatesDialog::_previewAvailable,
+            Qt::ConnectionType::QueuedConnection);
+
     //  Done
     _ui->templatesTreeWidget->setFocus();
     adjustSize();
@@ -46,6 +58,19 @@ ManageReportTemplatesDialog::ManageReportTemplatesDialog(
 
 ManageReportTemplatesDialog::~ManageReportTemplatesDialog()
 {
+    //  Need to kill & delete all preview generators
+    for (auto previewGenerator : _previewGenerators)
+    {
+        previewGenerator->terminate();
+        previewGenerator->wait();
+        delete previewGenerator;
+    }
+    //  Remove any temporary preview files created
+    for (auto previewFileName : _previewFileNames)
+    {
+        QFile(previewFileName).remove();
+    }
+    //  Cleanup & done
     delete _ui;
 }
 
@@ -87,6 +112,48 @@ void ManageReportTemplatesDialog::_refresh()
         dynamic_cast<CustomReportTemplate*>(_selectedReportTemplate()) != nullptr);
     */
     _ui->removePushButton->setEnabled(false);
+
+    //  Display preview
+    auto reportTemplate = _selectedReportTemplate();
+    if (reportTemplate == nullptr)
+    {
+        _ui->previewGroupBox->setTitle(
+            "Preview not available");
+        _ui->previewTextBrowser->setText("");
+    }
+    else if (_previews.contains(reportTemplate))
+    {
+        _ui->previewGroupBox->setTitle(
+            "Preview of " + reportTemplate->displayName());
+        _ui->previewTextBrowser->setHtml(_previews[reportTemplate]);
+    }
+    else if (_previewGenerators.contains(reportTemplate) &&
+             _previewGenerators[reportTemplate]->isRunning())
+    {
+        _ui->previewGroupBox->setTitle(
+            "Preview of " + reportTemplate->displayName());
+        _ui->previewTextBrowser->setText(
+            "<p style=\"text-align: center;\">Generating preview...</p>");
+    }
+    else
+    {   //  Need a new preview generator
+        QTemporaryFile  previewFile;
+        if (previewFile.open())
+        {   //  Go!
+            previewFile.close();
+            _previewFileNames.insert(previewFile.fileName());
+            auto previewGenerator =
+                new _PreviewGenerator(this, reportTemplate, previewFile.fileName());
+            _previewGenerators[reportTemplate] = previewGenerator;
+            previewGenerator->start();
+        }
+        else
+        {   //  OOPS! No go! Show error message instead.
+            _previews[reportTemplate] = previewFile.errorString();
+        }
+        //  Refresh ASAP
+        emit refreshRequested();
+    }
 }
 
 void ManageReportTemplatesDialog::_refreshReportTemplateItems(QTreeWidgetItem * parentItem)
@@ -197,6 +264,139 @@ void ManageReportTemplatesDialog::_importPushButtonClicked()
 void ManageReportTemplatesDialog::_removePushButtonClicked()
 {
     tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+}
+
+void ManageReportTemplatesDialog::_refreshRequested()
+{
+    _refresh();
+}
+
+void ManageReportTemplatesDialog::_previewAvailable(IReportTemplate * reportTemplate, QString html)
+{
+    _previews[reportTemplate] = html;
+}
+
+//////////
+//  ManageReportTemplatesDialog::_PreviewGenerator
+ManageReportTemplatesDialog::_PreviewGenerator::_PreviewGenerator(
+        ManageReportTemplatesDialog * dialog,
+        IReportTemplate * reportTemplate,
+        const QString & htmlFileName
+    ) : _dialog(dialog),
+        _reportTemplate(reportTemplate),
+        _htmlFileName(htmlFileName)
+{
+}
+
+ManageReportTemplatesDialog::_PreviewGenerator::~_PreviewGenerator()
+{
+}
+
+void ManageReportTemplatesDialog::_PreviewGenerator::run()
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ManageReportTemplatesDialog));
+
+    //  Generate a "preview" report
+    QString html = "TODO";
+    std::unique_ptr<Report> report =
+        std::make_unique<Report>(
+            rr.string(RID(PreviewReport.Name)),
+        _reportTemplate);
+    ReportSection * section =
+        report->createSection("1");
+
+    section
+        ->createParagraph(
+            _reportTemplate->findParagraphStyleByName(
+                IParagraphStyle::TitleStyleName))
+        ->createText(rr.string(RID(PreviewReport.Name)));
+
+    section->createTableOfContent();
+
+    section
+        ->createParagraph(
+            _reportTemplate->findParagraphStyleByName(
+                IParagraphStyle::Heading1StyleName))
+        ->createText(rr.string(RID(PreviewReport.Chapter1)));
+
+    ReportText * topText =
+        section
+            ->createParagraph()
+            ->createText(rr.string(RID(PreviewReport.Paragraph1)));
+    ReportAnchor * anchor =
+        topText->createAnchor();
+
+    ReportList * list =
+        section->createList();
+    list->createItem()
+        ->createParagraph()
+        ->createText(rr.string(RID(PreviewReport.ListItem1)));
+    list->createItem()
+        ->createParagraph()
+        ->createText(rr.string(RID(PreviewReport.ListItem2)));
+    list->createItem()
+        ->createParagraph()
+        ->createText(rr.string(RID(PreviewReport.ListItem3)));
+
+    section
+        ->createParagraph(
+            _reportTemplate->findParagraphStyleByName(
+                IParagraphStyle::Heading2StyleName))
+        ->createText(rr.string(RID(PreviewReport.Chapter11)));
+    section
+        ->createParagraph()
+        ->createText(rr.string(RID(PreviewReport.Paragraph2)));
+
+    section
+        ->createParagraph(
+            _reportTemplate->findParagraphStyleByName(
+                IParagraphStyle::Heading2StyleName))
+        ->createText(rr.string(RID(PreviewReport.Chapter12)));
+    section
+        ->createParagraph()
+        ->createText(rr.string(RID(PreviewReport.Paragraph3)));
+
+    section
+        ->createParagraph(
+            _reportTemplate->findParagraphStyleByName(
+                IParagraphStyle::Heading1StyleName))
+        ->createText(rr.string(RID(PreviewReport.Chapter2)));
+    section
+        ->createParagraph()
+        ->createText(rr.string(RID(PreviewReport.Paragraph4)));
+
+    ReportTable * table =
+        section->createTable();
+    table
+        ->createCell(0, 0, 1, 1)
+        ->createParagraph()
+        ->createText(rr.string(RID(PreviewReport.TableCell11)));
+    table
+        ->createCell(1, 0, 1, 1)
+        ->createParagraph()
+        ->createText(rr.string(RID(PreviewReport.TableCell12)));
+    table
+        ->createCell(0, 1, 1, 1)
+        ->createParagraph()
+        ->createText(rr.string(RID(PreviewReport.TableCell21)));
+    table
+        ->createCell(1, 1, 1, 1)
+        ->createParagraph()
+        ->createText(rr.string(RID(PreviewReport.TableCell22)));
+
+    section
+        ->createParagraph()
+        ->createText(rr.string(RID(PreviewReport.Link1)))
+        ->createInternalLink(anchor);
+
+    //  ...save as HTML...
+
+    //  ...load HTML...
+
+    //  ...and we're done
+    QThread::sleep(5);  //  TODO keep? kill?
+    emit _dialog->previewAvailable(_reportTemplate, html);
+    emit _dialog->refreshRequested();
 }
 
 //  End of tt3-report/ManageReportTemplatesDialog.cpp
