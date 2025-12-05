@@ -56,6 +56,8 @@ namespace tt3::report
     private:
         //  Helpers
         void        _refresh();
+        void        _refreshReportTemplateItems(QTreeWidgetItem * parentItem);
+        auto        _selectedReportTemplate() -> IReportTemplate *;
 
         //////////
         //  Controls
@@ -64,6 +66,11 @@ namespace tt3::report
         //  Some tree nodes are statically created
         QTreeWidgetItem *   _predefinedReportsItem;
         QTreeWidgetItem *   _customReportsItem;
+
+        //////////
+        //  Signal handlers:
+    private slots:
+        void        _templateTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
     };
 }
 

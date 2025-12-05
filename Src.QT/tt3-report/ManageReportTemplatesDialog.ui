@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>590</width>
+    <width>686</width>
     <height>347</height>
    </rect>
   </property>
@@ -23,22 +23,14 @@
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
      </property>
+     <property name="childrenCollapsible">
+      <bool>false</bool>
+     </property>
      <widget class="QGroupBox" name="templatesGroupBox">
       <property name="title">
        <string>Report templates</string>
       </property>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="1" column="0">
-        <widget class="QPushButton" name="exportPushButton">
-         <property name="text">
-          <string>Export</string>
-         </property>
-         <property name="icon">
-          <iconset resource="tt3-report.qrc">
-           <normaloff>:/tt3-report/Resources/Images/Actions/ExportSmall.png</normaloff>:/tt3-report/Resources/Images/Actions/ExportSmall.png</iconset>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="1">
         <widget class="QPushButton" name="importPushButton">
          <property name="text">
@@ -63,7 +55,29 @@
          </property>
         </spacer>
        </item>
-       <item row="0" column="0" colspan="3">
+       <item row="1" column="0">
+        <widget class="QPushButton" name="exportPushButton">
+         <property name="text">
+          <string>Export</string>
+         </property>
+         <property name="icon">
+          <iconset resource="tt3-report.qrc">
+           <normaloff>:/tt3-report/Resources/Images/Actions/ExportSmall.png</normaloff>:/tt3-report/Resources/Images/Actions/ExportSmall.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QPushButton" name="removePushButton">
+         <property name="text">
+          <string>Remove</string>
+         </property>
+         <property name="icon">
+          <iconset resource="tt3-report.qrc">
+           <normaloff>:/tt3-report/Resources/Images/Actions/RemoveSmall.png</normaloff>:/tt3-report/Resources/Images/Actions/RemoveSmall.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="4">
         <widget class="QTreeWidget" name="templatesTreeWidget">
          <attribute name="headerVisible">
           <bool>false</bool>
@@ -150,5 +164,24 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>templatesTreeWidget</sender>
+   <signal>currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</signal>
+   <receiver>tt3::report::ManageReportTemplatesDialog</receiver>
+   <slot>_templateTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>199</x>
+     <y>144</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>342</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>_templateTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+ </slots>
 </ui>

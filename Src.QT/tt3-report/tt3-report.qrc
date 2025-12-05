@@ -21,5 +21,7 @@
         <file>Resources/Images/Actions/CancelSmall.png</file>
         <file>Resources/Images/Actions/OkLarge.png</file>
         <file>Resources/Images/Actions/OkSmall.png</file>
+        <file>Resources/Images/Actions/RemoveLarge.png</file>
+        <file>Resources/Images/Actions/RemoveSmall.png</file>
     </qresource>
 </RCC>

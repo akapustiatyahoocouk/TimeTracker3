@@ -63,33 +63,86 @@ void ManageReportTemplatesDialog::_refresh()
     static const QIcon openFolderIcon(":/tt3-report/Resources/Images/Misc/OpenFolderSmall.png");
     static const QIcon closedFolderIcon(":/tt3-report/Resources/Images/Misc/ClosedFolderSmall.png");
 
-    //  Adjust "predefined templates" folder
-    QList<BasicReportTemplate*> basicReportTemplates;
-    for (auto reportTemplate :
-         ReportTemplateManager::allReportTemplates())
-    {
-        if (auto basicReportTemplate =
-            dynamic_cast<BasicReportTemplate*>(reportTemplate))
-        {
-            basicReportTemplates.append(basicReportTemplate);
-        }
-    }
-    std::sort(
-        basicReportTemplates.begin(),
-        basicReportTemplates.end(),
-        [](auto a, auto b)
-        {
-            return a->displayName() < b->displayName();
-        });
-
-    //  Adjust "custom templates" folder
-    //  TODO
+    _refreshReportTemplateItems(_predefinedReportsItem);
+    _refreshReportTemplateItems(_customReportsItem);
 
     //  Adjust folder icons
     _predefinedReportsItem->setIcon(0,
         _predefinedReportsItem->isExpanded() ? openFolderIcon : closedFolderIcon);
     _customReportsItem->setIcon(0,
         _customReportsItem->isExpanded() ? openFolderIcon : closedFolderIcon);
+
+    //  Adjust action button availability
+    _ui->exportPushButton->setEnabled(
+        _selectedReportTemplate() != nullptr);
+    _ui->importPushButton->setEnabled(true);
+    /*  TODO uncomment & use
+    _ui->removePushButton->setEnabled(
+        dynamic_cast<CustomReportTemplate*>(_selectedReportTemplate()) != nullptr);
+    */
+    _ui->removePushButton->setEnabled(false);
+}
+
+void ManageReportTemplatesDialog::_refreshReportTemplateItems(QTreeWidgetItem * parentItem)
+{
+    QList<IReportTemplate*> reportTemplates;
+    if (parentItem == _predefinedReportsItem)
+    {
+        for (auto reportTemplate :
+             ReportTemplateManager::allReportTemplates())
+        {
+            if (dynamic_cast<BasicReportTemplate*>(reportTemplate))
+            {
+                reportTemplates.append(reportTemplate);
+            }
+        }
+    }
+    else if (parentItem == _customReportsItem)
+    {   //  TODO implement
+    }
+    std::sort(
+        reportTemplates.begin(),
+        reportTemplates.end(),
+        [](auto a, auto b)
+        {
+            return a->displayName() < b->displayName();
+        });
+    //  Make sure the parent item has a proper number
+    //  of child (report template) items...
+    while (parentItem->childCount() < reportTemplates.size())
+    {   //  Too few child (ReportTemplate) items
+        parentItem->addChild(new QTreeWidgetItem());
+    }
+    while (parentItem->childCount() > reportTemplates.size())
+    {   //  Too many child (ReportTemplate) items
+        delete parentItem->takeChild(
+            parentItem->childCount() - 1);
+    }
+    //  ...and that each child item represents
+    //  a proper ReportTemplate
+    for (int i = 0; i < reportTemplates.size(); i++)
+    {
+        auto reportTemplateItem = parentItem->child(i);
+        auto reportTemplate = reportTemplates[i];
+        reportTemplateItem->setText(0, reportTemplate->displayName());
+        reportTemplateItem->setIcon(0, reportTemplate->smallIcon());
+        reportTemplateItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(reportTemplate));
+    }
+}
+
+auto ManageReportTemplatesDialog::_selectedReportTemplate() -> IReportTemplate *
+{
+    QTreeWidgetItem * item = _ui->templatesTreeWidget->currentItem();
+    return (item != nullptr && item->parent() != nullptr) ?
+                item->data(0, Qt::ItemDataRole::UserRole).value<IReportTemplate*>() :
+                nullptr;
+}
+
+//////////
+//  Signal handlers:
+void ManageReportTemplatesDialog::_templateTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)
+{
+    _refresh();
 }
 
 //  End of tt3-report/ManageReportTemplatesDialog.cpp

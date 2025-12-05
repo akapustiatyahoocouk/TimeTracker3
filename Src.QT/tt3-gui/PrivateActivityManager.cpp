@@ -492,7 +492,7 @@ void PrivateActivityManager::_refreshUserItem(
         userItem->addChild(new QTreeWidgetItem());
     }
     while (userItem->childCount() > userModel->privateActivityModels.size())
-    {   //  Too many root (User) items
+    {   //  Too many child (PrivateActivity) items
         delete userItem->takeChild(
             userItem->childCount() - 1);
     }

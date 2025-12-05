@@ -4,7 +4,7 @@ Description=Определяет сервисы отчётности для Time
 Copyright=Авторское право (C) {0}, Андрей Капустин
 
 [BasicReportTemplate]
-DisplayName=Базовый (предопределен)
+DisplayName=Базовый (встроенный)
 
 [HtmlReportFormat]
 DisplayName=HTML документ

@@ -4,7 +4,7 @@ Description=Defines reporting framework for TimeTracker3
 Copyright=Copyright (C) {0}, Andrey Kapustin
 
 [BasicReportTemplate]
-DisplayName=Basic (predefined)
+DisplayName=Basic (built-in)
 
 [HtmlReportFormat]
 DisplayName=HTML document
