@@ -27,10 +27,10 @@ namespace
 
     const Traits theTraits[] =
     {
-        { BorderType::Default, "Default" },
-        { BorderType::None   , "None"    },
-        { BorderType::Single , "Single"  },
-        { BorderType::Double , "Double"  }
+        { BorderType::Default, "default" },
+        { BorderType::None   , "none"    },
+        { BorderType::Single , "single"  },
+        { BorderType::Double , "double"  }
     };
 }
 

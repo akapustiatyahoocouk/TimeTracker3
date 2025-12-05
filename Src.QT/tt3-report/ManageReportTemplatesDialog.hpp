@@ -71,6 +71,11 @@ namespace tt3::report
         //  Signal handlers:
     private slots:
         void        _templateTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
+        void        _templateTreeWidgetItemExpanded(QTreeWidgetItem*);
+        void        _templateTreeWidgetItemCollapsed(QTreeWidgetItem*);
+        void        _exportPushButtonClicked();
+        void        _importPushButtonClicked();
+        void        _removePushButtonClicked();
     };
 }
 

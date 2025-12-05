@@ -27,14 +27,14 @@ namespace
 
     const Traits theTraits[] =
     {
-        { PageNumberPlacement::Default     , "Default"      },
-        { PageNumberPlacement::None        , "None"         },
-        { PageNumberPlacement::TopLeft     , "TopLeft"      },
-        { PageNumberPlacement::TopCenter   , "TopCenter"    },
-        { PageNumberPlacement::TopRight    , "TopRight"     },
-        { PageNumberPlacement::BottomLeft  , "BottomLeft"   },
-        { PageNumberPlacement::BottomCenter, "BottomCenter" },
-        { PageNumberPlacement::BottomRight , "BottomRight"  }
+        { PageNumberPlacement::Default     , "default"      },
+        { PageNumberPlacement::None        , "none"         },
+        { PageNumberPlacement::TopLeft     , "top-left"      },
+        { PageNumberPlacement::TopCenter   , "top-center"    },
+        { PageNumberPlacement::TopRight    , "top-right"     },
+        { PageNumberPlacement::BottomLeft  , "bottom-left"   },
+        { PageNumberPlacement::BottomCenter, "bottom-center" },
+        { PageNumberPlacement::BottomRight , "bottom-right"  }
     };
 }
 

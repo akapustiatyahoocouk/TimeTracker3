@@ -27,9 +27,9 @@ namespace
 
     const Traits theTraits[] =
         {
-            { PageOrientation::Default  , "Default"   },
-            { PageOrientation::Portrait , "Portrait"  },
-            { PageOrientation::Landscape, "Landscape" }
+            { PageOrientation::Default  , "default"   },
+            { PageOrientation::Portrait , "portrait"  },
+            { PageOrientation::Landscape, "landscape" }
     };
 }
 

@@ -203,10 +203,22 @@ QDomDocument IReportTemplate::toXmlDocument() const
     QDomElement stylesElement = document.createElement("Styles");
     rootElement.appendChild(stylesElement);
 
-    for (IStyle * style : this->styles())
+    //  Keep styles sorted by name to minimize the diffs
+    //  between the report template XML files
+    Styles styles = this->styles();
+    QList<IStyle*> stylesList(styles.cbegin(), styles.cend());
+    std::sort(
+    stylesList.begin(),
+        stylesList.end(),
+        [](auto a, auto b)
+        {
+            return a->name() < b->name();
+        });
+    for (IStyle * style : stylesList)
     {
         QDomElement styleElement = document.createElement(style->_xmlTagName());
         stylesElement.appendChild(styleElement);
+        style->_storeAttributes(styleElement);
     }
 
     //  Done

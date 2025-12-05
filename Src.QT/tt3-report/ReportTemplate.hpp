@@ -36,6 +36,13 @@ namespace tt3::report
         friend class Report;
 
         //////////
+        //  Constants
+    public:
+        /// \brief
+        ///     The preferred extension for [custom] report template files.
+        inline static const QString PreferredExtension = ".tt3-rpt";
+
+        //////////
         //  This is an interface
     protected:
         /// \brief

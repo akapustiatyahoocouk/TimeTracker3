@@ -27,11 +27,11 @@ namespace
 
     const Traits theTraits[] =
     {
-        { HorizontalAlignment::Default, "Default" },
-        { HorizontalAlignment::Left   , "Left"    },
-        { HorizontalAlignment::Center , "Center"  },
-        { HorizontalAlignment::Right  , "Right"   },
-        { HorizontalAlignment::Justify, "Justify" }
+        { HorizontalAlignment::Default, "default" },
+        { HorizontalAlignment::Left   , "left"    },
+        { HorizontalAlignment::Center , "center"  },
+        { HorizontalAlignment::Right  , "right"   },
+        { HorizontalAlignment::Justify, "justify" }
     };
 }
 

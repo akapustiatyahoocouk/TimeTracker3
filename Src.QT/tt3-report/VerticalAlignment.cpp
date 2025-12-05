@@ -27,10 +27,10 @@ namespace
 
     const Traits theTraits[] =
     {
-        { VerticalAlignment::Default, "Default" },
-        { VerticalAlignment::Top    , "Top"     },
-        { VerticalAlignment::Middle , "Middle"  },
-        { VerticalAlignment::Bottom , "Bottom"  }
+        { VerticalAlignment::Default, "default" },
+        { VerticalAlignment::Top    , "top"     },
+        { VerticalAlignment::Middle , "middle"  },
+        { VerticalAlignment::Bottom , "bottom"  }
     };
 }
 

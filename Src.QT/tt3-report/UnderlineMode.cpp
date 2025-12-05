@@ -27,10 +27,10 @@ namespace
 
     const Traits theTraits[] =
     {
-        { UnderlineMode::Default, "Default" },
-        { UnderlineMode::None   , "None"    },
-        { UnderlineMode::Single , "Single"  },
-        { UnderlineMode::Double , "Double"  }
+        { UnderlineMode::Default, "default" },
+        { UnderlineMode::None   , "none"    },
+        { UnderlineMode::Single , "single"  },
+        { UnderlineMode::Double , "double"  }
     };
 }
 

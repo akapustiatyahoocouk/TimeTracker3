@@ -68,9 +68,15 @@ void ManageReportTemplatesDialog::_refresh()
 
     //  Adjust folder icons
     _predefinedReportsItem->setIcon(0,
-        _predefinedReportsItem->isExpanded() ? openFolderIcon : closedFolderIcon);
+        (_predefinedReportsItem->isExpanded() &&
+         _predefinedReportsItem->childCount() > 0)?
+            openFolderIcon :
+            closedFolderIcon);
     _customReportsItem->setIcon(0,
-        _customReportsItem->isExpanded() ? openFolderIcon : closedFolderIcon);
+        (_customReportsItem->isExpanded() &&
+         _customReportsItem->childCount() > 0) ?
+            openFolderIcon :
+            closedFolderIcon);
 
     //  Adjust action button availability
     _ui->exportPushButton->setEnabled(
@@ -143,6 +149,54 @@ auto ManageReportTemplatesDialog::_selectedReportTemplate() -> IReportTemplate *
 void ManageReportTemplatesDialog::_templateTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)
 {
     _refresh();
+}
+
+void ManageReportTemplatesDialog::_templateTreeWidgetItemExpanded(QTreeWidgetItem*)
+{
+    _refresh();
+}
+
+void ManageReportTemplatesDialog::_templateTreeWidgetItemCollapsed(QTreeWidgetItem*)
+{
+    _refresh();
+}
+
+void ManageReportTemplatesDialog::_exportPushButtonClicked()
+{
+    if (auto reportTemplate = _selectedReportTemplate())
+    {
+        QString path =
+            QFileDialog::getSaveFileName(
+                this,
+                "Export report template",
+                /*dir =*/ QString(),
+                "TT3 report templates (*.tt3-rpt);;All files (*.*)");
+        if (!path.isEmpty())
+        {   //  Do it!
+            QFile file(path);
+            if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+            {
+                QTextStream out(&file);
+                out << reportTemplate->toXmlString();
+                out.flush();
+                file.close();
+            }
+            else
+            {   //  OOPS!
+                tt3::gui::ErrorDialog::show(this, file.errorString());
+            }
+        }
+    }
+}
+
+void ManageReportTemplatesDialog::_importPushButtonClicked()
+{
+    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+}
+
+void ManageReportTemplatesDialog::_removePushButtonClicked()
+{
+    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
 }
 
 //  End of tt3-report/ManageReportTemplatesDialog.cpp

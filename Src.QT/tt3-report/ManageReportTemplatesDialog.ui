@@ -180,8 +180,93 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>templatesTreeWidget</sender>
+   <signal>itemExpanded(QTreeWidgetItem*)</signal>
+   <receiver>tt3::report::ManageReportTemplatesDialog</receiver>
+   <slot>_templateTreeWidgetItemExpanded(QTreeWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>199</x>
+     <y>144</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>342</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>templatesTreeWidget</sender>
+   <signal>itemCollapsed(QTreeWidgetItem*)</signal>
+   <receiver>tt3::report::ManageReportTemplatesDialog</receiver>
+   <slot>_templateTreeWidgetItemCollapsed(QTreeWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>199</x>
+     <y>144</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>342</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>importPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::ManageReportTemplatesDialog</receiver>
+   <slot>_importPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>157</x>
+     <y>262</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>342</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>removePushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::ManageReportTemplatesDialog</receiver>
+   <slot>_removePushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>326</x>
+     <y>262</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>342</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>exportPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::ManageReportTemplatesDialog</receiver>
+   <slot>_exportPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>66</x>
+     <y>262</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>342</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_templateTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+  <slot>_templateTreeWidgetItemExpanded(QTreeWidgetItem*)</slot>
+  <slot>_templateTreeWidgetItemCollapsed(QTreeWidgetItem*)</slot>
+  <slot>_exportPushButtonClicked()</slot>
+  <slot>_importPushButtonClicked()</slot>
+  <slot>_removePushButtonClicked()</slot>
  </slots>
 </ui>
