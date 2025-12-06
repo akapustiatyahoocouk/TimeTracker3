@@ -70,6 +70,16 @@ namespace tt3::report
         ///     The preferred extension for report files in
         ///     this format; always starts with a dot '.'.
         virtual QString preferredExtension() const = 0;
+
+        /// \brief
+        ///     Saves the report to the specified file in this format.
+        /// \param report
+        ///     The report to save to a file.
+        /// \param fileName
+        ///     The file to save the report to; overwritten if exists.
+        /// \exception Exception
+        ///     If a save error occurs.
+        virtual void    saveReport(Report * report, const QString & fileName) = 0;
     };
 
     /// \class ReportFormatManager tt3-report/API.hpp

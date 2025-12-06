@@ -53,4 +53,25 @@ QString HtmlReportFormat::preferredExtension() const
     return ".html";
 }
 
+void HtmlReportFormat::saveReport(Report * report, const QString & fileName)
+{
+    Q_ASSERT(report != nullptr);
+
+    _HtmlGenerator htmlGenerator;
+    QString html = htmlGenerator.generateHtml(report);
+
+    QFile file(fileName);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream out(&file);
+        out << html;
+        out.flush();
+        file.close();
+    }
+    else
+    {   //  OOPS! TODO throw a proper exception
+        throw tt3::ws::CustomWorkspaceException(fileName + ": " + file.errorString());
+    }
+}
+
 //  End of tt3-report/HtmlReportFormat.cpp

@@ -297,7 +297,6 @@ void ManageReportTemplatesDialog::_PreviewGenerator::run()
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ManageReportTemplatesDialog));
 
     //  Generate a "preview" report
-    QString html = "TODO";
     std::unique_ptr<Report> report =
         std::make_unique<Report>(
             rr.string(RID(PreviewReport.Name)),
@@ -390,8 +389,28 @@ void ManageReportTemplatesDialog::_PreviewGenerator::run()
         ->createInternalLink(anchor);
 
     //  ...save as HTML...
+    QString html;
+    try
+    {
+        HtmlReportFormat::instance()->saveReport(report.get(), _htmlFileName);  //  ,ay throw!
+        //  ...and load HTML as a string
+        QFile file(_htmlFileName);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            QTextStream in(&file);
+            html = in.readAll();
+            file.close();
+        }
+        else
+        {
+            html = _htmlFileName + ": " +  file.errorString();
+        }
 
-    //  ...load HTML...
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        html = ex.errorMessage();
+    }
 
     //  ...and we're done
     QThread::sleep(5);  //  TODO keep? kill?
