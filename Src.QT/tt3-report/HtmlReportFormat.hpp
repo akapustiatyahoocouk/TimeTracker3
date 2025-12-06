@@ -45,8 +45,8 @@ namespace tt3::report
             //////////
             //  Construction/destruction
         public:
-            _HtmlBuilder() = default;
-            ~_HtmlBuilder() = default;
+            _HtmlBuilder();
+            ~_HtmlBuilder();
 
             //////////
             //  Operations
@@ -83,20 +83,20 @@ namespace tt3::report
                                 const QString & attributeName1,
                                 const QString & attributeValue1);
             void        writeText(const QString & text);
-            QString     html() const;
+            QString     html();
 
             //////////
             //  Implementation
         private:
-            QString     _htmlBuilder;
-            QString     _spanBuilder;
+            QString     _htmlAccumulator;
+            QString     _spanAccumulator;
 
             QStack<QString> _openTags;
 
             //  Helpers
             bool        _isSpanTag(const QString & tagName);
             void        _commitSpanData();
-            QString     _indent(int level);
+            QString     _indent(qsizetype level);
             bool        _isTagNameStart(QChar c);
             bool        _isTagNameChar(QChar c);
             bool        _isValidTagName(const QString & tagName);
@@ -115,8 +115,8 @@ namespace tt3::report
             //////////
             //  Construction/destruction
         public:
-            _CssBuilder() = default;
-            ~_CssBuilder() = default;
+            _CssBuilder();
+            ~_CssBuilder();
 
             //////////
             //  Operations
@@ -130,7 +130,7 @@ namespace tt3::report
             QString     linkStyle(ReportLink * link);
             QString     linkStyle(ILinkStyle * linkStyle);
             QString     listStyle(ReportList * list);
-            QString     css() const;
+            QString     css();
 
             //////////
             //  Implementation
