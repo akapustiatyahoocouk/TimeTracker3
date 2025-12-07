@@ -27,7 +27,8 @@ BasicReportTemplate::BasicReportTemplate()
         _defaultTextColor(ColorSpec::Default),
         _defaultBackgroundColor(ColorSpec::Default),
         _defaultListIndent(TypographicSize::in(0.25)),
-        _defaultTableBorderType(BorderType::Single),
+        _defaultTableBorderType(BorderType::Double),
+        _defaultCellBorderType(BorderType::Single),
         _defaultLinkUnderlineMode(UnderlineMode::Single),
         _defaultPageNumberPlacement(PageNumberPlacement::Default)
 {
@@ -460,6 +461,11 @@ auto BasicReportTemplate::defaultListIndent() const -> TypographicSize
 auto BasicReportTemplate::defaultTableBorderType() const -> BorderType
 {
     return _defaultTableBorderType;
+}
+
+auto BasicReportTemplate::defaultCellBorderType() const -> BorderType
+{
+    return _defaultCellBorderType;
 }
 
 auto BasicReportTemplate::defaultLinkUnderlineMode() const -> UnderlineMode

@@ -21,6 +21,7 @@ SOURCES += \
     FontSpecs.cpp \
     FontStyle.cpp \
     HorizontalAlignment.cpp \
+    HtmlReportFormat._CssBuilder.cpp \
     HtmlReportFormat._HtmlBuilder.cpp \
     HtmlReportFormat._HtmlGenerator.cpp \
     HtmlReportFormat.cpp \

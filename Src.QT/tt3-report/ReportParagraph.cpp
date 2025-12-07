@@ -38,6 +38,120 @@ ReportParagraph::~ReportParagraph()
 }
 
 //////////
+//  ReportElement
+auto ReportParagraph::resolveFontSpecs() const -> FontSpecs
+{
+    if (_style != nullptr)
+    {
+        auto styleFontSpecs = _style->fontSpecs();
+        if (!styleFontSpecs.has_value())
+        {   //  Inherit from parent
+            Q_ASSERT(_parent != nullptr);
+            return _parent->resolveFontSpecs();
+        }
+        else if (styleFontSpecs.value().isEmpty())
+        {   //  Go directly to template
+            return _report->_reportTemplate->defaultFontSpecs();
+        }
+        else
+        {   //  Use value from style
+            return styleFontSpecs.value();
+        }
+    }
+    //  Style not specified - go to parent
+    Q_ASSERT(_parent != nullptr);
+    return _parent->resolveFontSpecs();
+}
+
+auto ReportParagraph::resolveFontSize() const -> TypographicSize
+{
+    if (_style != nullptr)
+    {
+        auto styleFontSize = _style->fontSize();
+        if (!styleFontSize.has_value())
+        {   //  Inherit from parent
+            Q_ASSERT(_parent != nullptr);
+            return _parent->resolveFontSize();
+        }
+        else
+        {   //  Use value from style
+            return styleFontSize.value();
+        }
+    }
+    //  Style not specified - go to parent
+    Q_ASSERT(_parent != nullptr);
+    return _parent->resolveFontSize();
+}
+
+auto ReportParagraph::resolveFontStyle() const -> FontStyle
+{
+    if (_style != nullptr)
+    {
+        auto styleFontStyle = _style->fontStyle();
+        if (!styleFontStyle.has_value())
+        {   //  Inherit from parent
+            Q_ASSERT(_parent != nullptr);
+            return _parent->resolveFontStyle();
+        }
+        else
+        {   //  Use value from style
+            return styleFontStyle.value();
+        }
+    }
+    //  Style not specified - go to parent
+    Q_ASSERT(_parent != nullptr);
+    return _parent->resolveFontStyle();
+}
+
+auto ReportParagraph::resolveTextColor() const -> ColorSpec
+{
+    if (_style != nullptr)
+    {
+        auto styleTextColor = _style->textColor();
+        if (!styleTextColor.has_value())
+        {   //  Inherit from parent
+            Q_ASSERT(_parent != nullptr);
+            return _parent->resolveTextColor();
+        }
+        else if (styleTextColor.value() == ColorSpec::Default)
+        {   //  Go directly to report template
+            return _report->_reportTemplate->defaultTextColor();
+        }
+        else
+        {   //  Use value from style
+            return styleTextColor.value();
+        }
+    }
+    //  Style not specified - go to parent
+    Q_ASSERT(_parent != nullptr);
+    return _parent->resolveTextColor();
+}
+
+auto ReportParagraph::resolveBackgroundColor() const -> ColorSpec
+{
+    if (_style != nullptr)
+    {
+        auto styleBackgroundColor = _style->backgroundColor();
+        if (!styleBackgroundColor.has_value())
+        {   //  Inherit from parent
+            Q_ASSERT(_parent != nullptr);
+            return _parent->resolveBackgroundColor();
+        }
+        else if (styleBackgroundColor.value() == ColorSpec::Default)
+        {   //  Go directly to report template
+            return _report->_reportTemplate->defaultBackgroundColor();
+        }
+        else
+        {   //  Use value from style
+            return styleBackgroundColor.value();
+        }
+    }
+    //  Style not specified - go to parent
+    Q_ASSERT(_parent != nullptr);
+    return _parent->resolveBackgroundColor();
+}
+
+//////////
 //  Operations
 void ReportParagraph::setStyle(IParagraphStyle * style)
 {

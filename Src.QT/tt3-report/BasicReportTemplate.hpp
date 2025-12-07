@@ -37,6 +37,7 @@ namespace tt3::report
         virtual auto    defaultBackgroundColor() const -> ColorSpec override;
         virtual auto    defaultListIndent() const -> TypographicSize override;
         virtual auto    defaultTableBorderType() const -> BorderType override;
+        virtual auto    defaultCellBorderType() const -> BorderType override;
         virtual auto    defaultLinkUnderlineMode() const -> UnderlineMode override;
         virtual auto    defaultPageNumberPlacement() const -> PageNumberPlacement override;
 
@@ -56,6 +57,7 @@ namespace tt3::report
         const ColorSpec             _defaultBackgroundColor;    //  never null
         const TypographicSize       _defaultListIndent;         //  never null
         const BorderType            _defaultTableBorderType;    //  never null
+        const BorderType            _defaultCellBorderType;    //  never null
         const UnderlineMode         _defaultLinkUnderlineMode;  //  never null
         const PageNumberPlacement   _defaultPageNumberPlacement;
 

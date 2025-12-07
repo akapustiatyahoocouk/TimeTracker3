@@ -32,6 +32,7 @@ namespace tt3::report
         friend class ReportTable;
         friend class ReportAnchor;
         friend class ReportLink;
+        friend class ReportText;
 
         //////////
         //  Construction/destruction
@@ -178,6 +179,62 @@ namespace tt3::report
         ///     The newly created Anchor.
         ReportAnchor *  createAnchor();
 
+        /// \brief
+        ///     Returns the list of font specs of the font used
+        ///     by this element, in order of decreasing priority.
+        /// \details
+        ///     If this element does not have an associated
+        ///     style, or if that style does not specify the font
+        ///     specs, goes to the parent element, eventuually
+        ///     returns the default value from the report template.
+        /// \return
+        ///     The list of face names of the font used by this element.
+        virtual auto    resolveFontSpecs() const -> FontSpecs = 0;
+
+        /// \brief
+        ///     Returns the resolved font size for this element.
+        /// \details
+        ///     This is taken from the element's associated style
+        ///     or, if that style does not specify the font size,
+        ///     goes to the parent element, eventuually returns
+        ///     the default value from the report template.
+        /// \return
+        ///     The resolved font size for this element.
+        virtual auto    resolveFontSize() const -> TypographicSize = 0;
+
+        /// \brief
+        ///     Returns the resolved font style for this element.
+        /// \details
+        ///     This is taken from the element's associated style
+        ///     or, if that style does not specify the font style,
+        ///     goes to the parent element, eventuually returns
+        ///     the default value from the report template.
+        /// \return
+        ///     The resolved font style for this element.
+        virtual auto    resolveFontStyle() const -> FontStyle = 0;
+
+        /// \brief
+        ///     Returns the resolved text color for this element.
+        /// \details
+        ///     This is taken from the element's associated style
+        ///     or, if that style does not specify the text color,
+        ///     goes to the parent element, eventuually returns
+        ///     the default value from the report template.
+        /// \return
+        ///     The resolved text color for this element.
+        virtual auto    resolveTextColor() const -> ColorSpec = 0;
+
+        /// \brief
+        ///     Returns the resolved background color for this element.
+        /// \details
+        ///     This is taken from the element's associated style
+        ///     or, if that style does not specify the background color,
+        ///     goes to the parent element, eventuually returns
+        ///     the default value from the report template.
+        /// \return
+        ///     The resolved background color for this element.
+        virtual auto    resolveBackgroundColor() const -> ColorSpec = 0;
+
         //////////
         //  Implementation
     private:
@@ -280,7 +337,7 @@ namespace tt3::report
         //////////
         //  Implementation
     private:
-        ReportFlowElement * _parent;    //  can be nullptr
+        ReportFlowElement * _parent;    //  never nullptr
     };
 
     /// \class ReportSection tt3-report/API.hpp
@@ -296,9 +353,9 @@ namespace tt3::report
         //  Construction/destruction - from friends only
     private:
         ReportSection(
-            Report * report,
-            const QString & name,
-            ISectionStyle * style
+                Report * report,
+                const QString & name,
+                ISectionStyle * style
             );  //  registers Section with Report
         virtual ~ReportSection();
 
@@ -306,6 +363,11 @@ namespace tt3::report
         //  ReportElement
     public:
         virtual auto    parent() const -> ReportElement * override { return nullptr; }
+        virtual auto    resolveFontSpecs() const -> FontSpecs override;
+        virtual auto    resolveFontSize() const -> TypographicSize override;
+        virtual auto    resolveFontStyle() const -> FontStyle override;
+        virtual auto    resolveTextColor() const -> ColorSpec override;
+        virtual auto    resolveBackgroundColor() const -> ColorSpec override;
 
         //////////
         //  Operations
@@ -362,6 +424,15 @@ namespace tt3::report
                 IParagraphStyle * style
             );
         virtual ~ReportParagraph();
+
+        //////////
+        //  ReportElement
+    public:
+        virtual auto    resolveFontSpecs() const -> FontSpecs override;
+        virtual auto    resolveFontSize() const -> TypographicSize override;
+        virtual auto    resolveFontStyle() const -> FontStyle override;
+        virtual auto    resolveTextColor() const -> ColorSpec override;
+        virtual auto    resolveBackgroundColor() const -> ColorSpec override;
 
         //////////
         //  Operations
@@ -514,6 +585,15 @@ namespace tt3::report
         virtual ~ReportText();
 
         //////////
+        //  ReportElement
+    public:
+        virtual auto    resolveFontSpecs() const -> FontSpecs override;
+        virtual auto    resolveFontSize() const -> TypographicSize override;
+        virtual auto    resolveFontStyle() const -> FontStyle override;
+        virtual auto    resolveTextColor() const -> ColorSpec override;
+        virtual auto    resolveBackgroundColor() const -> ColorSpec override;
+
+        //////////
         //  Operations
     public:
         /// \brief
@@ -571,6 +651,15 @@ namespace tt3::report
         virtual ~ReportPicture();
 
         //////////
+        //  ReportElement
+    public:
+        virtual auto    resolveFontSpecs() const -> FontSpecs override;
+        virtual auto    resolveFontSize() const -> TypographicSize override;
+        virtual auto    resolveFontStyle() const -> FontStyle override;
+        virtual auto    resolveTextColor() const -> ColorSpec override;
+        virtual auto    resolveBackgroundColor() const -> ColorSpec override;
+
+        //////////
         //  Operations
     public:
         /// \brief
@@ -617,6 +706,15 @@ namespace tt3::report
                 IListStyle * style
             );
         virtual ~ReportList();
+
+        //////////
+        //  ReportElement
+    public:
+        virtual auto    resolveFontSpecs() const -> FontSpecs override;
+        virtual auto    resolveFontSize() const -> TypographicSize override;
+        virtual auto    resolveFontStyle() const -> FontStyle override;
+        virtual auto    resolveTextColor() const -> ColorSpec override;
+        virtual auto    resolveBackgroundColor() const -> ColorSpec override;
 
         //////////
         //  Operations
@@ -678,6 +776,11 @@ namespace tt3::report
         //  ReportElement
     public:
         virtual auto    parent() const -> ReportElement * override { return _list; }
+        virtual auto    resolveFontSpecs() const -> FontSpecs override;
+        virtual auto    resolveFontSize() const -> TypographicSize override;
+        virtual auto    resolveFontStyle() const -> FontStyle override;
+        virtual auto    resolveTextColor() const -> ColorSpec override;
+        virtual auto    resolveBackgroundColor() const -> ColorSpec override;
 
         //////////
         //  Operations
@@ -725,6 +828,15 @@ namespace tt3::report
                 ITableStyle * style
             );
         virtual ~ReportTable();
+
+        //////////
+        //  ReportElement
+    public:
+        virtual auto    resolveFontSpecs() const -> FontSpecs override;
+        virtual auto    resolveFontSize() const -> TypographicSize override;
+        virtual auto    resolveFontStyle() const -> FontStyle override;
+        virtual auto    resolveTextColor() const -> ColorSpec override;
+        virtual auto    resolveBackgroundColor() const -> ColorSpec override;
 
         //////////
         //  Operations
@@ -788,6 +900,39 @@ namespace tt3::report
                                 TypographicSizeOpt preferredWidth = TypographicSizeOpt()
                             );
 
+        /// \brief
+        ///     Returns the TableCell that appears at the specified row/column.
+        /// \param column
+        ///    The 0-based column number.
+        /// \param row
+        ///    The 0-based row number.
+        /// \return
+        ///     The TableCell that appears at the specified row/column;
+        ///     nullptr if there is no such TableCell.
+        ReportTableCell*findTableCellAt(int column, int row);
+
+        /// \brief
+        ///     Returns the resolved table border style for this table.
+        /// \details
+        ///     This is taken from the element's associated style
+        ///     or, if that style does not specify the table border style
+        ///     goes to the parent element, eventuually returns
+        ///     the default value from the report template.
+        /// \return
+        ///     The resolved table border style for this table.
+        auto            resolveTableBorderType() const -> BorderType;
+
+        /// \brief
+        ///     Returns the resolved cell border style for this table.
+        /// \details
+        ///     This is taken from the element's associated style
+        ///     or, if that style does not specify the cell border style
+        ///     goes to the parent element, eventuually returns
+        ///     the default value from the report template.
+        /// \return
+        ///     The resolved cell border style for this table.
+        auto            resolveCellBorderType() const -> BorderType;
+
         //////////
         //  Implementation
     private:
@@ -815,7 +960,7 @@ namespace tt3::report
                 int startRow,
                 int columnSpan,
                 int rowSpan,
-                VerticalAlignment contentAlignment,
+                VerticalAlignment contentAlignment, //  TODO replace with ITableCellStyle
                 const TypographicSizeOpt & preferredWidth
             );
         virtual ~ReportTableCell();
@@ -824,6 +969,11 @@ namespace tt3::report
         //  ReportElement
     public:
         virtual auto    parent() const -> ReportElement * override { return _table; }
+        virtual auto    resolveFontSpecs() const -> FontSpecs override;
+        virtual auto    resolveFontSize() const -> TypographicSize override;
+        virtual auto    resolveFontStyle() const -> FontStyle override;
+        virtual auto    resolveTextColor() const -> ColorSpec override;
+        virtual auto    resolveBackgroundColor() const -> ColorSpec override;
 
         //////////
         //  Operations
@@ -872,6 +1022,18 @@ namespace tt3::report
         ///     by this TableCell; no va;ue == choose automatically.
         auto            preferredWidth() const -> TypographicSizeOpt { return _preferredWidth; }
 
+        /// \brief
+        ///     Returns the resolved border type for this table cell.
+        /// \return
+        ///     The resolved vertical border type for this table cell.
+        auto            resolveCellBorderType() const -> BorderType;
+
+        /// \brief
+        ///     Returns the resolved vertical content alignment for this table cell.
+        /// \return
+        ///     The resolved vertical text alignment for this table cell.
+        auto            resolveContentAlignment() const -> VerticalAlignment;
+
         //////////
         //  Implementation
     private:
@@ -904,6 +1066,11 @@ namespace tt3::report
         //  ReportElement
     public:
         virtual auto    parent() const -> ReportElement * override { return _anchoredElement; }
+        virtual auto    resolveFontSpecs() const -> FontSpecs override;
+        virtual auto    resolveFontSize() const -> TypographicSize override;
+        virtual auto    resolveFontStyle() const -> FontStyle override;
+        virtual auto    resolveTextColor() const -> ColorSpec override;
+        virtual auto    resolveBackgroundColor() const -> ColorSpec override;
 
         //////////
         //  Operations
@@ -917,7 +1084,7 @@ namespace tt3::report
         //////////
         //  Implementation
     private:
-        ReportElement * _anchoredElement;
+        ReportElement * _anchoredElement;   //  never nullptr
     };
 
 
@@ -945,6 +1112,11 @@ namespace tt3::report
         //  ReportElement
     public:
         virtual auto    parent() const -> ReportElement * override { return _spanElement; }
+        virtual auto    resolveFontSpecs() const -> FontSpecs override;
+        virtual auto    resolveFontSize() const -> TypographicSize override;
+        virtual auto    resolveFontStyle() const -> FontStyle override;
+        virtual auto    resolveTextColor() const -> ColorSpec override;
+        virtual auto    resolveBackgroundColor() const -> ColorSpec override;
 
         //////////
         //  Operations
@@ -1062,6 +1234,15 @@ namespace tt3::report
                 ReportFlowElement * parent
             );
         virtual ~ReportTableOfContent();
+
+        //////////
+        //  ReportElement
+    public:
+        virtual auto    resolveFontSpecs() const -> FontSpecs override;
+        virtual auto    resolveFontSize() const -> TypographicSize override;
+        virtual auto    resolveFontStyle() const -> FontStyle override;
+        virtual auto    resolveTextColor() const -> ColorSpec override;
+        virtual auto    resolveBackgroundColor() const -> ColorSpec override;
 
         //////////
         //  Operations

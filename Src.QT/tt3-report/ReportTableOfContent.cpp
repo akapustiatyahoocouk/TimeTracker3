@@ -29,4 +29,41 @@ ReportTableOfContent::~ReportTableOfContent()
 {
 }
 
+//////////
+//  ReportElement
+auto ReportTableOfContent::resolveFontSpecs() const -> FontSpecs
+{
+    //  No own style - go to parent
+    Q_ASSERT(_parent != nullptr);
+    return _parent->resolveFontSpecs();
+}
+
+auto ReportTableOfContent::resolveFontSize() const -> TypographicSize
+{
+    //  No own style - go to parent
+    Q_ASSERT(_parent != nullptr);
+    return _parent->resolveFontSize();
+}
+
+auto ReportTableOfContent::resolveFontStyle() const -> FontStyle
+{
+    //  No own style - go to parent
+    Q_ASSERT(_parent != nullptr);
+    return _parent->resolveFontStyle();
+}
+
+auto ReportTableOfContent::resolveTextColor() const -> ColorSpec
+{
+    //  No own style - go to parent
+    Q_ASSERT(_parent != nullptr);
+    return _parent->resolveTextColor();
+}
+
+auto ReportTableOfContent::resolveBackgroundColor() const -> ColorSpec
+{
+    //  No own style - go to parent
+    Q_ASSERT(_parent != nullptr);
+    return _parent->resolveBackgroundColor();
+}
+
 //  End of tt3-report/ReportTableOfContent.cpp

@@ -1,0 +1,890 @@
+//
+//  tt3-report/HtmlReportFormat._CssBuilder.cpp - tt3::report::HtmlReportFormat::_CssBuilder class implementation
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+#include "tt3-report/API.hpp"
+using namespace tt3::report;
+using HRG = HtmlReportFormat;
+
+//////////
+//  Construction/destruction
+HRG::_CssBuilder::_CssBuilder()
+{
+    reset();
+}
+
+HRG::_CssBuilder::~_CssBuilder()
+{
+    reset();    //  to chean up
+}
+
+//////////
+//  Operations
+void HRG::_CssBuilder::reset()
+{
+#define CLEAN(set)          \
+    for (auto item : set)   \
+    {                       \
+        delete item;        \
+    }                       \
+    set.clear();
+
+    CLEAN(_bodyStyles)
+    CLEAN(_paragraphStyles)
+    CLEAN(_tableStyles)
+    CLEAN(_tableCellStyles)
+    CLEAN(_linkStyles)
+    CLEAN(_listStyles)
+#undef CLEAN
+}
+
+QString HRG::_CssBuilder::bodyStyle(IReportTemplate * reportTemplate)
+{
+    //  Prepare style properties
+    QString fontFamilyString = _formatFontSpecs(reportTemplate->defaultFontSpecs());
+    QString fontSizeString = _formatSize(reportTemplate->defaultFontSize());
+    QString fontStyleString = _formatFontStyle(reportTemplate->defaultFontStyle());
+    QString fontWeightString = _formatFontWeight(reportTemplate->defaultFontStyle());
+    QString colorString = _formatColor(reportTemplate->defaultTextColor());
+    QString backgroundColorString = _formatColor(reportTemplate->defaultBackgroundColor());
+
+    float widthPt =
+        (((reportTemplate->pageSetup().pageOrientation() == PageOrientation::Portrait) ?
+            reportTemplate->pageSetup().pageWidth().pointSize() :
+            reportTemplate->pageSetup().pageHeight().pointSize()) -
+            reportTemplate->pageSetup().leftMargin().pointSize() -
+            reportTemplate->pageSetup().rightMargin().pointSize());
+    QString widthString = tt3::util::toString(widthPt) + "pt";
+
+    //  Find/create the style
+    for (_BodyStyle * bodyStyle : _bodyStyles)
+    {
+        if (bodyStyle->fontFamilyString == fontFamilyString &&
+            bodyStyle->fontSizeString == fontSizeString &&
+            bodyStyle->fontStyleString == fontStyleString &&
+            bodyStyle->fontWeightString == fontWeightString &&
+            bodyStyle->colorString == colorString &&
+            bodyStyle->backgroundColorString == backgroundColorString &&
+            bodyStyle->widthString == widthString)
+        {
+            return bodyStyle->className;
+        }
+    }
+    _BodyStyle * bodyStyle =
+        new _BodyStyle(
+            _nextUnusedStyleNumber++,
+            fontFamilyString,
+            fontSizeString,
+            fontStyleString,
+            fontWeightString,
+            colorString,
+            backgroundColorString,
+            widthString);
+    _bodyStyles.insert(bodyStyle);
+    return bodyStyle->className;
+}
+
+QString HRG::_CssBuilder::paragraphStyle(
+        ReportParagraph * paragraph
+    )
+{   //  TODO reimplement using resolveXXX()
+    if (paragraph->style() != nullptr)
+    {   //  Explicit style
+        return paragraphStyle(paragraph->style());
+    }
+    if (auto defaultParagraphStyle =    //  be defensive!
+        paragraph->report()->reportTemplate()->findParagraphStyleByName(IParagraphStyle::DefaultStyleName))
+    {   //  Implicit default style
+        return paragraphStyle(defaultParagraphStyle);
+    }
+    //  Give up and inherit everything
+    return _paragraphStyle(
+                "", //  fontFamilyString
+                "", //  fontSizeString
+                "", //  fontStyleString
+                "", //  fontWeightString
+                "", //  colorString
+                "", //  backgroundColorString
+                "", //  leftMarginString
+                "", //  rightMarginString
+                "", //  gapAboveString
+                "", //  gapBelowString
+                "", //  textAlignmentString
+                "");//  borderTypeString
+}
+
+QString HRG::_CssBuilder::paragraphStyle(
+        IParagraphStyle * style
+    )
+{
+    Q_ASSERT(style != nullptr);
+
+    //  Prepare style properties
+    QString fontFamilyString =
+        _formatFontSpecs(
+            style->fontSpecs().has_value() ?
+                style->fontSpecs().value() :
+                style->reportTemplate()->defaultFontSpecs());
+    QString fontSizeString =
+        _formatSize(
+            style->fontSize().has_value() ?
+                style->fontSize().value() :
+                style->reportTemplate()->defaultFontSize());
+    QString fontStyleString =
+        _formatFontStyle(
+            style->fontStyle().has_value() ?
+                style->fontStyle().value() :
+                style->reportTemplate()->defaultFontStyle());
+    QString fontWeightString =
+        _formatFontWeight(
+            style->fontStyle().has_value() ?
+                style->fontStyle().value() :
+                style->reportTemplate()->defaultFontStyle());
+    QString colorString =
+        _formatColor(
+            style->textColor().has_value() ?
+                style->textColor().value() :
+                style->reportTemplate()->defaultTextColor());
+    QString backgroundColorString =
+        _formatColor(
+            style->backgroundColor().has_value() ?
+                style->backgroundColor().value() :
+                style->reportTemplate()->defaultBackgroundColor());
+    QString leftMarginString =
+        style->leftMargin().has_value() ?
+            _formatSize(style->leftMargin().value()) :
+            "";
+    QString rightMarginString =
+        style->rightMargin().has_value() ?
+            _formatSize(style->rightMargin().value()) :
+            "";
+    QString gapAboveString =
+        style->gapAbove().has_value() ?
+            _formatSize(style->gapAbove().value()) :
+            "";
+    QString gapBelowString =
+        style->gapBelow().has_value() ?
+            _formatSize(style->gapBelow().value()) :
+            "";
+    QString textAlignmentString =
+        style->textAlignment().has_value() ?
+            _formatHorizontalAlignment(style->textAlignment().value()) :
+            "";
+    QString borderTypeString =
+        _formatBorderType(
+            style->borderType().has_value() ?
+                style->borderType().value() :
+                BorderType::None);
+
+    //  Find/create the style
+    return _paragraphStyle(
+                fontFamilyString,
+                fontSizeString,
+                fontStyleString,
+                fontWeightString,
+                colorString,
+                backgroundColorString,
+                leftMarginString,
+                rightMarginString,
+                gapAboveString,
+                gapBelowString,
+                textAlignmentString,
+                borderTypeString);
+}
+
+QString HRG::_CssBuilder::tableStyle(
+        ReportTable * table
+    )
+{   //  TODO reimplement using resolveXXX()
+    if (table->style() != nullptr)
+    {   //  Explicit style
+        return tableStyle(table->style());
+    }
+    if (auto defaultTableStyle =    //  be defensive!
+        table->report()->reportTemplate()->findTableStyleByName(ITableStyle::DefaultStyleName))
+    {   //  Implicit default style
+        return tableStyle(defaultTableStyle);
+    }
+    //  Give up and inherit everything
+    return _tableStyle(
+                "", //  fontFamilyString
+                "", //  fontSizeString
+                "", //  fontStyleString
+                "", //  fontWeightString
+                "", //  colorString
+                "", //  backgroundColorString
+                "", //  leftMarginString
+                "", //  rightMarginString
+                "", //  gapAboveString
+                "", //  gapBelowString
+                "", //  tableBorderTypeStringn
+                "");//  cellBorderTypeString
+}
+
+QString HRG::_CssBuilder::tableStyle(
+        ITableStyle * style
+    )
+{
+    Q_ASSERT(style != nullptr);
+
+    //  Prepare style properties
+    QString fontFamilyString =
+        _formatFontSpecs(
+            style->fontSpecs().has_value() ?
+                style->fontSpecs().value() :
+                style->reportTemplate()->defaultFontSpecs());
+    QString fontSizeString =
+        _formatSize(
+            style->fontSize().has_value() ?
+                style->fontSize().value() :
+                style->reportTemplate()->defaultFontSize());
+    QString fontStyleString =
+        _formatFontStyle(
+            style->fontStyle().has_value() ?
+                style->fontStyle().value() :
+                style->reportTemplate()->defaultFontStyle());
+    QString fontWeightString =
+        _formatFontWeight(
+            style->fontStyle().has_value() ?
+                style->fontStyle().value() :
+                style->reportTemplate()->defaultFontStyle());
+    QString colorString =
+        _formatColor(
+            style->textColor().has_value() ?
+                style->textColor().value() :
+                style->reportTemplate()->defaultTextColor());
+    QString backgroundColorString =
+        _formatColor(
+            style->backgroundColor().has_value() ?
+                style->backgroundColor().value() :
+                style->reportTemplate()->defaultBackgroundColor());
+    QString leftMarginString =
+        style->leftMargin().has_value() ?
+            _formatSize(style->leftMargin().value()) :
+            "";
+    QString rightMarginString =
+        style->rightMargin().has_value() ?
+            _formatSize(style->rightMargin().value()) :
+            "";
+    QString gapAboveString =
+        style->gapAbove().has_value() ?
+            _formatSize(style->gapAbove().value()) :
+            "";
+    QString gapBelowString =
+        style->gapBelow().has_value() ?
+            _formatSize(style->gapBelow().value()) :
+            "";
+    QString tableBorderTypeString =
+        style->tableBorderType().has_value() ?
+            _formatBorderType(style->tableBorderType().value()) :
+            "";
+    QString cellBorderTypeString =
+        _formatBorderType(
+            style->cellBorderType().has_value() ?
+                style->cellBorderType().value() :
+                BorderType::None);
+
+    //  Find/create the style
+    return _tableStyle(
+                fontFamilyString,
+                fontSizeString,
+                fontStyleString,
+                fontWeightString,
+                colorString,
+                backgroundColorString,
+                leftMarginString,
+                rightMarginString,
+                gapAboveString,
+                gapBelowString,
+                tableBorderTypeString,
+                cellBorderTypeString);
+}
+
+QString HRG::_CssBuilder::tableCellStyle(
+        ReportTableCell * tableCell
+    )
+{   //  TODO reimplement using resolveXXX()
+    QString fontFamilyString =
+        _formatFontSpecs(
+            tableCell->resolveFontSpecs());
+    QString fontSizeString =
+        _formatSize(
+            tableCell->resolveFontSize());
+    QString fontStyleString =
+        _formatFontStyle(
+            tableCell->resolveFontStyle());
+    QString fontWeightString =
+        _formatFontWeight(
+            tableCell->resolveFontStyle());
+    QString colorString =
+        _formatColor(
+            tableCell->resolveTextColor());
+    QString backgroundColorString =
+        _formatColor(
+            tableCell->resolveBackgroundColor());
+    QString cellBorderTypeString =
+        _formatBorderType(
+            tableCell->resolveCellBorderType());
+    QString verticalAlignString =
+        _formatVerticalAlignment(
+            tableCell->resolveContentAlignment());
+    QString preferredWidthString =
+        tableCell->preferredWidth().has_value() ?
+            _formatPreferredWidth(tableCell->preferredWidth().value()) :
+            "";
+
+    auto tableCellStyle =
+        new _TableCellStyle(
+            _nextUnusedStyleNumber++,
+            fontFamilyString,
+            fontSizeString,
+            fontStyleString,
+            fontWeightString,
+            colorString,
+            backgroundColorString,
+            cellBorderTypeString,
+            verticalAlignString,
+            preferredWidthString);
+    _tableCellStyles.insert(tableCellStyle);
+    return tableCellStyle->className;
+}
+
+QString HRG::_CssBuilder::linkStyle(
+        ReportLink * link
+    )
+{   //  TODO reimplement using resolveXXX()
+    if (link->style() != nullptr)
+    {   //  Explicit style
+        return linkStyle(link->style());
+    }
+    if (auto defaultLinkStyle =    //  be defensive!
+        link->report()->reportTemplate()->findLinkStyleByName(ILinkStyle::DefaultStyleName))
+    {   //  Implicit default style
+        return linkStyle(defaultLinkStyle);
+    }
+    //  Give up and inherit everything
+    return _linkStyle(
+                "", //  fontFamilyString
+                "", //  fontSizeString
+                "", //  fontStyleString
+                "", //  fontWeightString
+                "", //  colorString
+                "", //  backgroundColorString
+                "");//  textDecorationStyleString
+}
+
+QString HRG::_CssBuilder::linkStyle(
+        ILinkStyle * style
+    )
+{
+    Q_ASSERT(style != nullptr);
+
+    //  Prepare style properties
+    QString fontFamilyString =
+        _formatFontSpecs(
+            style->fontSpecs().has_value() ?
+                style->fontSpecs().value() :
+                style->reportTemplate()->defaultFontSpecs());
+    QString fontSizeString =
+        _formatSize(
+            style->fontSize().has_value() ?
+                style->fontSize().value() :
+                style->reportTemplate()->defaultFontSize());
+    QString fontStyleString =
+        _formatFontStyle(
+            style->fontStyle().has_value() ?
+                style->fontStyle().value() :
+                style->reportTemplate()->defaultFontStyle());
+    QString fontWeightString =
+        _formatFontWeight(
+            style->fontStyle().has_value() ?
+                style->fontStyle().value() :
+                style->reportTemplate()->defaultFontStyle());
+    QString colorString =
+        _formatColor(
+            style->textColor().has_value() ?
+                style->textColor().value() :
+                style->reportTemplate()->defaultTextColor());
+    QString backgroundColorString =
+        _formatColor(
+            style->backgroundColor().has_value() ?
+                style->backgroundColor().value() :
+                style->reportTemplate()->defaultBackgroundColor());
+    QString textDecorationStyleString =
+        _formatUnderlineMode(
+            style->underlineMode().has_value() ?
+                style->underlineMode().value() :
+                style->reportTemplate()->defaultLinkUnderlineMode());
+
+    //  Find/create the style
+    return _linkStyle(
+        fontFamilyString,
+        fontSizeString,
+        fontStyleString,
+        fontWeightString,
+        colorString,
+        backgroundColorString,
+        textDecorationStyleString);
+}
+
+QString HRG::_CssBuilder::listStyle(
+        ReportList * list
+    )
+{   //  TODO reimplement using resolveXXX()
+    if (list->style() != nullptr)
+    {   //  Explicit style
+        return listStyle(list->style());
+    }
+    if (auto defaultListStyle =    //  be defensive!
+        list->report()->reportTemplate()->findListStyleByName(IListStyle::DefaultStyleName))
+    {   //  Implicit default style
+        return listStyle(defaultListStyle);
+    }
+    //  Give up and inherit everything
+    return _listStyle(
+        "", //  fontFamilyString
+        "", //  fontSizeString
+        "", //  fontStyleString
+        "", //  fontWeightString
+        "", //  colorString
+        "", //  backgroundColorString
+        "", //  leftMarginString
+        "", //  rightMarginString
+        "", //  gapAboveString
+        "", //  gapBelowString
+        "");//  indentString
+}
+
+QString HRG::_CssBuilder::listStyle(
+        IListStyle * style
+    )
+{
+    Q_ASSERT(style != nullptr);
+
+    //  Prepare style properties
+    QString fontFamilyString =
+        _formatFontSpecs(
+            style->fontSpecs().has_value() ?
+                style->fontSpecs().value() :
+                style->reportTemplate()->defaultFontSpecs());
+    QString fontSizeString =
+        _formatSize(
+            style->fontSize().has_value() ?
+                style->fontSize().value() :
+                style->reportTemplate()->defaultFontSize());
+    QString fontStyleString =
+        _formatFontStyle(
+            style->fontStyle().has_value() ?
+                style->fontStyle().value() :
+                style->reportTemplate()->defaultFontStyle());
+    QString fontWeightString =
+        _formatFontWeight(
+            style->fontStyle().has_value() ?
+                style->fontStyle().value() :
+                style->reportTemplate()->defaultFontStyle());
+    QString colorString =
+        _formatColor(
+            style->textColor().has_value() ?
+                style->textColor().value() :
+                style->reportTemplate()->defaultTextColor());
+    QString backgroundColorString =
+        _formatColor(
+            style->backgroundColor().has_value() ?
+                style->backgroundColor().value() :
+                style->reportTemplate()->defaultBackgroundColor());
+    QString leftMarginString =
+        style->leftMargin().has_value() ?
+            _formatSize(style->leftMargin().value()) :
+            "";
+    QString rightMarginString =
+        style->rightMargin().has_value() ?
+            _formatSize(style->rightMargin().value()) :
+            "";
+    QString gapAboveString =
+        style->gapAbove().has_value() ?
+            _formatSize(style->gapAbove().value()) :
+            "";
+    QString gapBelowString =
+        style->gapBelow().has_value() ?
+            _formatSize(style->gapBelow().value()) :
+            "";
+    QString indentString =
+        style->indent().has_value() ?
+            _formatSize(style->indent().value()) :
+            "";
+
+    //  Find/create the style
+    return _listStyle(
+        fontFamilyString,
+        fontSizeString,
+        fontStyleString,
+        fontWeightString,
+        colorString,
+        backgroundColorString,
+        leftMarginString,
+        rightMarginString,
+        gapAboveString,
+        gapBelowString,
+        indentString);
+}
+
+QString HRG::_CssBuilder::css()
+{
+    QString css;
+
+#define FORMAT_STYLES(stylesSet)                                \
+    {                                                           \
+        using T = decltype(stylesSet)::value_type;              \
+        QList<T> stylesList(stylesSet.cbegin(), stylesSet.cend()); \
+        std::sort(                                              \
+            stylesList.begin(),                                 \
+            stylesList.end(),                                   \
+            [](auto a, auto b)                                  \
+            {                                                   \
+                return a->className < b->className;             \
+            });                                                 \
+        for (auto style : stylesList)                           \
+        {                                                       \
+            css += style->css();                                \
+            css += "\n";                                        \
+        }                                                       \
+    }
+
+    FORMAT_STYLES(_bodyStyles)
+    FORMAT_STYLES(_paragraphStyles)
+    FORMAT_STYLES(_tableStyles)
+    FORMAT_STYLES(_tableCellStyles)
+    FORMAT_STYLES(_linkStyles)
+    FORMAT_STYLES(_listStyles)
+#undef FORMAT_STYLES
+
+    return css;
+}
+
+//////////
+//  Implementation helpers
+QString HRG::_CssBuilder::_formatColor(
+        const ColorSpec & c
+    )
+{
+    switch (c.colorClass())
+    {
+        default:
+        case ColorSpec::Default:
+            return "";
+        case ColorSpec::Transparent:
+            return "rgba(0,0,0,0)";
+        case ColorSpec::Custom:
+            //  #rrggbb
+            return tt3::util::toString(c.customColor());
+    }
+}
+
+QString HRG::_CssBuilder::_formatFontSpecs(
+        const FontSpecs & fontSpecs
+    )
+{
+    return
+        tt3::util::transform(
+            fontSpecs,
+            [](auto s)
+            {
+                return '"' + s.name() + '"';
+            }).join('+');
+}
+
+QString HRG::_CssBuilder::_formatSize(const TypographicSize & size)
+{
+    return tt3::util::toString(size.pointSize()) + "pt";
+}
+
+QString HRG::_CssBuilder::_formatFontStyle(
+        const FontStyle & fontStyle
+    )
+{
+    return (fontStyle & FontFlag::Italic).isEmpty() ? "normal" : "italic";
+}
+
+QString HRG::_CssBuilder::_formatFontWeight(const FontStyle & fontStyle)
+{
+    return (fontStyle & FontFlag::Bold).isEmpty() ? "normal" : "bold";
+}
+
+QString HRG::_CssBuilder::_formatHorizontalAlignment(
+        HorizontalAlignment alignment
+    )
+{
+    switch (alignment)
+    {
+        case HorizontalAlignment::Default:
+            return "";
+        case HorizontalAlignment::Left:
+            return "left";
+        case HorizontalAlignment::Center:
+            return "center";
+        case HorizontalAlignment::Right:
+            return "right";
+        case HorizontalAlignment::Justify:
+            return "justify";
+        default:
+            Q_ASSERT(false);
+            return "left";
+    }
+}
+
+QString HRG::_CssBuilder::_formatBorderType(
+        BorderType borderType
+    )
+{
+    switch (borderType)
+    {
+        case BorderType::Default:
+            return "";
+        case BorderType::None:
+            return "none";
+        case BorderType::Single:
+            return "solid";
+        case BorderType::Double:
+            return "double";
+        default:
+            Q_ASSERT(false);
+            return "none";
+    }
+}
+
+QString HRG::_CssBuilder::_formatVerticalAlignment(
+        VerticalAlignment alignment
+    )
+{
+    switch (alignment)
+    {
+        case VerticalAlignment::Default:
+            return "";
+        case VerticalAlignment::Top:
+            return "top";
+        case VerticalAlignment::Middle:
+            return "middle";
+        case VerticalAlignment::Bottom:
+            return "bottom";
+        default:
+            Q_ASSERT(false);
+            return "top";
+    }
+}
+
+QString HRG::_CssBuilder::_formatUnderlineMode(
+        UnderlineMode underlineMode
+    )
+{
+    switch (underlineMode)
+    {
+        case UnderlineMode::Default:
+            return "inherit";
+        case UnderlineMode::None:
+            return "";
+        case UnderlineMode::Single:
+            return "solid";
+        case UnderlineMode::Double:
+            return "double";
+        default:
+            Q_ASSERT(false);
+            return "solid";
+    }
+}
+
+QString HRG::_CssBuilder::_formatPreferredWidth(
+        const TypographicSizeOpt & preferredWidth
+    )
+{
+    return preferredWidth.has_value() ?
+                _formatSize(preferredWidth.value()) :
+                "auto";
+}
+
+QString HRG::_CssBuilder::_paragraphStyle(
+        const QString & fontFamilyString,
+        const QString & fontSizeString,
+        const QString & fontStyleString,
+        const QString & fontWeightString,
+        const QString & colorString,
+        const QString & backgroundColorString,
+        const QString & leftMarginString,
+        const QString & rightMarginString,
+        const QString & gapAboveString,
+        const QString & gapBelowString,
+        const QString & textAlignmentString,
+        const QString & borderTypeString
+    )
+{
+    for (auto paragraphStyle : _paragraphStyles)
+    {
+        if (paragraphStyle->fontFamilyString == fontFamilyString &&
+            paragraphStyle->fontSizeString == fontSizeString &&
+            paragraphStyle->fontStyleString == fontStyleString &&
+            paragraphStyle->fontWeightString == fontWeightString &&
+            paragraphStyle->colorString == colorString &&
+            paragraphStyle->backgroundColorString == backgroundColorString &&
+            paragraphStyle->leftMarginString == leftMarginString &&
+            paragraphStyle->rightMarginString == rightMarginString &&
+            paragraphStyle->gapAboveString == gapAboveString &&
+            paragraphStyle->gapBelowString == gapBelowString &&
+            paragraphStyle->textAlignmentString == textAlignmentString &&
+            paragraphStyle->borderTypeString == borderTypeString)
+        {
+            return paragraphStyle->className;
+        }
+    }
+    auto paragraphStyle =
+        new _ParagraphStyle(
+            _nextUnusedStyleNumber++,
+            fontFamilyString,
+            fontSizeString,
+            fontStyleString,
+            fontWeightString,
+            colorString,
+            backgroundColorString,
+            leftMarginString,
+            rightMarginString,
+            gapAboveString,
+            gapBelowString,
+            textAlignmentString,
+            borderTypeString);
+    _paragraphStyles.insert(paragraphStyle);
+    return paragraphStyle->className;
+}
+
+QString HRG::_CssBuilder::_tableStyle(
+        const QString & fontFamilyString,
+        const QString & fontSizeString,
+        const QString & fontStyleString,
+        const QString & fontWeightString,
+        const QString & colorString,
+        const QString & backgroundColorString,
+        const QString & leftMarginString,
+        const QString & rightMarginString,
+        const QString & gapAboveString,
+        const QString & gapBelowString,
+        const QString & tableBorderTypeString,
+        const QString & cellBorderTypeString
+    )
+{
+    for (auto tableStyle : _tableStyles)
+    {
+        if (tableStyle->fontFamilyString == fontFamilyString &&
+            tableStyle->fontSizeString == fontSizeString &&
+            tableStyle->fontStyleString == fontStyleString &&
+            tableStyle->fontWeightString == fontWeightString &&
+            tableStyle->colorString == colorString &&
+            tableStyle->backgroundColorString == backgroundColorString &&
+            tableStyle->leftMarginString == leftMarginString &&
+            tableStyle->rightMarginString == rightMarginString &&
+            tableStyle->gapAboveString == gapAboveString &&
+            tableStyle->gapBelowString == gapBelowString &&
+            tableStyle->tableBorderTypeString == tableBorderTypeString &&
+            tableStyle->cellBorderTypeString == cellBorderTypeString)
+        {
+            return tableStyle->className;
+        }
+    }
+    auto tableStyle =
+        new _TableStyle(
+            _nextUnusedStyleNumber++,
+            fontFamilyString,
+            fontSizeString,
+            fontStyleString,
+            fontWeightString,
+            colorString,
+            backgroundColorString,
+            leftMarginString,
+            rightMarginString,
+            gapAboveString,
+            gapBelowString,
+            tableBorderTypeString,
+            cellBorderTypeString);
+    _tableStyles.insert(tableStyle);
+    return tableStyle->className;
+}
+
+QString HRG::_CssBuilder::_listStyle(
+        const QString & fontFamilyString,
+        const QString & fontSizeString,
+        const QString & fontStyleString,
+        const QString & fontWeightString,
+        const QString & colorString,
+        const QString & backgroundColorString,
+        const QString & leftMarginString,
+        const QString & rightMarginString,
+        const QString & gapAboveString,
+        const QString & gapBelowString,
+        const QString & indentString
+    )
+{
+    //  TODO reuse ?
+    auto listStyle =
+        new _ListStyle(
+            _nextUnusedStyleNumber++,
+            fontFamilyString,
+            fontSizeString,
+            fontStyleString,
+            fontWeightString,
+            colorString,
+            backgroundColorString,
+            leftMarginString,
+            rightMarginString,
+            gapAboveString,
+            gapBelowString,
+            indentString);
+    _listStyles.insert(listStyle);
+    return listStyle->className;
+}
+
+QString HRG::_CssBuilder::_linkStyle(
+        const QString & fontFamilyString,
+        const QString & fontSizeString,
+        const QString & fontStyleString,
+        const QString & fontWeightString,
+        const QString & colorString,
+        const QString & backgroundColorString,
+        const QString & textDecorationStyleString
+    )
+{
+    for (auto linkStyle : _linkStyles)
+    {
+        if (linkStyle->fontFamilyString == fontFamilyString &&
+            linkStyle->fontSizeString == fontSizeString &&
+            linkStyle->fontStyleString == fontStyleString &&
+            linkStyle->fontWeightString == fontWeightString &&
+            linkStyle->colorString == colorString &&
+            linkStyle->backgroundColorString == backgroundColorString &&
+            linkStyle->textDecorationStyleString == textDecorationStyleString)
+        {
+            return linkStyle->className;
+        }
+    }
+    auto linkStyle =
+        new _LinkStyle(
+            _nextUnusedStyleNumber++,
+            fontFamilyString,
+            fontSizeString,
+            fontStyleString,
+            fontWeightString,
+            colorString,
+            backgroundColorString,
+            textDecorationStyleString);
+    _linkStyles.insert(linkStyle);
+    return linkStyle->className;
+}
+
+//  End of tt3-report/HtmlReportFormat._CssBuilder.cpp

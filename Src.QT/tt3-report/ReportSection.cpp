@@ -42,6 +42,94 @@ ReportSection::~ReportSection()
 }
 
 //////////
+//  ReportElement
+auto ReportSection::resolveFontSpecs() const -> FontSpecs
+{
+    if (_style != nullptr)
+    {
+        auto styleFontSpecs = _style->fontSpecs();
+        //  empty list == inherit from parent, but
+        //  There IS NO parent!
+        if (styleFontSpecs.has_value() &&
+            !styleFontSpecs.value().isEmpty())
+        {
+            return styleFontSpecs.value();
+        }
+    }
+    //  Style not specified - go to parent or template defaults
+    //  EXCEPT THERE IS NO PARENT!
+    return _report->_reportTemplate->defaultFontSpecs();
+}
+
+auto ReportSection::resolveFontSize() const -> TypographicSize
+{
+    if (_style != nullptr)
+    {
+        auto styleFontSize = _style->fontSize();
+        if (styleFontSize.has_value())
+        {
+            return styleFontSize.value();
+        }
+    }
+    //  Style not specified - go to parent or template defaults
+    //  EXCEPT THERE IS NO PARENT!
+    return _report->_reportTemplate->defaultFontSize();
+}
+
+auto ReportSection::resolveFontStyle() const -> FontStyle
+{
+    if (_style != nullptr)
+    {
+        auto styleFontStyle = _style->fontStyle();
+        if (styleFontStyle.has_value())
+        {
+            return styleFontStyle.value();
+        }
+    }
+    //  Style not specified - go to parent or template defaults
+    //  EXCEPT THERE IS NO PARENT!
+    return _report->_reportTemplate->defaultFontStyle();
+}
+
+auto ReportSection::resolveTextColor() const -> ColorSpec
+{
+    if (_style != nullptr)
+    {
+        auto styleTextColor = _style->textColor();
+        if (styleTextColor.has_value())
+        {
+            if (styleTextColor.value().colorClass() == ColorSpec::Default)
+            {   //  Go directly to report template
+                return _report->_reportTemplate->defaultTextColor();
+            }
+            return styleTextColor.value();
+        }
+    }
+    //  Style not specified - go to parent or template defaults
+    //  EXCEPT THERE IS NO PARENT!
+    return _report->_reportTemplate->defaultTextColor();
+}
+
+auto ReportSection::resolveBackgroundColor() const -> ColorSpec
+{
+    if (_style != nullptr)
+    {
+        auto styleBackgroundColor = _style->backgroundColor();
+        if (styleBackgroundColor.has_value())
+        {
+            if (styleBackgroundColor.value().colorClass() == ColorSpec::Default)
+            {   //  Go directly to report template
+                return _report->_reportTemplate->defaultBackgroundColor();
+            }
+            return styleBackgroundColor.value();
+        }
+    }
+    //  Style not specified - go to parent or template defaults
+    //  EXCEPT THERE IS NO PARENT!
+    return _report->_reportTemplate->defaultBackgroundColor();
+}
+
+//////////
 //  Operations
 void ReportSection::setStyle(ISectionStyle * style)
 {

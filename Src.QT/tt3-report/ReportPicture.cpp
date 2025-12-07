@@ -35,4 +35,41 @@ ReportPicture::~ReportPicture()
 {
 }
 
+//////////
+//  ReportElement
+auto ReportPicture::resolveFontSpecs() const -> FontSpecs
+{
+    //  No own style - go to parent
+    Q_ASSERT(_paragraph != nullptr);
+    return _paragraph->resolveFontSpecs();
+}
+
+auto ReportPicture::resolveFontSize() const -> TypographicSize
+{
+    //  No own style - go to parent
+    Q_ASSERT(_paragraph != nullptr);
+    return _paragraph->resolveFontSize();
+}
+
+auto ReportPicture::resolveFontStyle() const -> FontStyle
+{
+    //  No own style - go to parent
+    Q_ASSERT(_paragraph != nullptr);
+    return _paragraph->resolveFontStyle();
+}
+
+auto ReportPicture::resolveTextColor() const -> ColorSpec
+{
+    //  No own style - go to parent
+    Q_ASSERT(_paragraph != nullptr);
+    return _paragraph->resolveTextColor();
+}
+
+auto ReportPicture::resolveBackgroundColor() const -> ColorSpec
+{
+    //  No own style - go to parent
+    Q_ASSERT(_paragraph != nullptr);
+    return _paragraph->resolveBackgroundColor();
+}
+
 //  End of tt3-report/ReportPicture.cpp

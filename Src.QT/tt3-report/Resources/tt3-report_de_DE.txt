@@ -8,6 +8,7 @@ DisplayName=Einfach (integriert)
 
 [HtmlReportFormat]
 DisplayName=HTML-Dokument
+TableOfContent=Tabelle des Inhaltsverzeichnisses
 
 [ReportTemplateManagerTool]
 DisplayName=Berichtsvorlagen-Manager

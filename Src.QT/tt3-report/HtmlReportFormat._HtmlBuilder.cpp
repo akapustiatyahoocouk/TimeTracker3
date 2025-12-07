@@ -90,6 +90,123 @@ void HRG::_HtmlBuilder::openTag(
     _openTags.push(tagName);
 }
 
+void HRG::_HtmlBuilder::openTag(
+        const QString & tagName,
+        const QString & attributeName1,
+        const QString & attributeValue1,
+        const QString & attributeName2,
+        const QString & attributeValue2
+    )
+{
+    Q_ASSERT(_isValidTagName(tagName));
+    Q_ASSERT(_isValidAttributeName(attributeName1));
+    Q_ASSERT(_isValidAttributeValue(attributeValue1));
+    Q_ASSERT(_isValidAttributeName(attributeName2));
+    Q_ASSERT(_isValidAttributeValue(attributeValue2));
+
+    QString tag =
+        "<" + tagName + " " +
+        attributeName1 + "=\"" + _escapeAttributeValue(attributeValue1) + "\" " +
+        attributeName2 + "=\"" + _escapeAttributeValue(attributeValue2) + "\"" +
+        ">";
+    if (_isSpanTag(tagName))
+    {   //  Add to "span data"
+        _spanAccumulator += tag;
+    }
+    else
+    {   //  Commit "span data" & open a new div tag
+        _commitSpanData();
+        _htmlAccumulator += _indent(_openTags.size());
+        _htmlAccumulator += tag;
+        _htmlAccumulator += "\n";
+    }
+
+    _openTags.push(tagName);
+}
+
+void HRG::_HtmlBuilder::openTag(
+        const QString & tagName,
+        const QString & attributeName1,
+        const QString & attributeValue1,
+        const QString & attributeName2,
+        const QString & attributeValue2,
+        const QString & attributeName3,
+        const QString & attributeValue3
+    )
+{
+    Q_ASSERT(_isValidTagName(tagName));
+    Q_ASSERT(_isValidAttributeName(attributeName1));
+    Q_ASSERT(_isValidAttributeValue(attributeValue1));
+    Q_ASSERT(_isValidAttributeName(attributeName2));
+    Q_ASSERT(_isValidAttributeValue(attributeValue2));
+    Q_ASSERT(_isValidAttributeName(attributeName3));
+    Q_ASSERT(_isValidAttributeValue(attributeValue3));
+
+    QString tag =
+        "<" + tagName + " " +
+        attributeName1 + "=\"" + _escapeAttributeValue(attributeValue1) + "\" " +
+        attributeName2 + "=\"" + _escapeAttributeValue(attributeValue2) + "\"" +
+        attributeName3 + "=\"" + _escapeAttributeValue(attributeValue3) + "\"" +
+        ">";
+    if (_isSpanTag(tagName))
+    {   //  Add to "span data"
+        _spanAccumulator += tag;
+    }
+    else
+    {   //  Commit "span data" & open a new div tag
+        _commitSpanData();
+        _htmlAccumulator += _indent(_openTags.size());
+        _htmlAccumulator += tag;
+        _htmlAccumulator += "\n";
+    }
+
+    _openTags.push(tagName);
+}
+
+void HRG::_HtmlBuilder::openTag(
+        const QString & tagName,
+        const QString & attributeName1,
+        const QString & attributeValue1,
+        const QString & attributeName2,
+        const QString & attributeValue2,
+        const QString & attributeName3,
+        const QString & attributeValue3,
+        const QString & attributeName4,
+        const QString & attributeValue4
+    )
+{
+    Q_ASSERT(_isValidTagName(tagName));
+    Q_ASSERT(_isValidAttributeName(attributeName1));
+    Q_ASSERT(_isValidAttributeValue(attributeValue1));
+    Q_ASSERT(_isValidAttributeName(attributeName2));
+    Q_ASSERT(_isValidAttributeValue(attributeValue2));
+    Q_ASSERT(_isValidAttributeName(attributeName3));
+    Q_ASSERT(_isValidAttributeValue(attributeValue3));
+    Q_ASSERT(_isValidAttributeName(attributeName4));
+    Q_ASSERT(_isValidAttributeValue(attributeValue4));
+
+    QString tag =
+        "<" + tagName + " " +
+        attributeName1 + "=\"" + _escapeAttributeValue(attributeValue1) + "\" " +
+        attributeName2 + "=\"" + _escapeAttributeValue(attributeValue2) + "\"" +
+        attributeName3 + "=\"" + _escapeAttributeValue(attributeValue3) + "\"" +
+        attributeName4 + "=\"" + _escapeAttributeValue(attributeValue4) + "\"" +
+        ">";
+    if (_isSpanTag(tagName))
+    {   //  Add to "span data"
+        _spanAccumulator += tag;
+    }
+    else
+    {   //  Commit "span data" & open a new div tag
+        _commitSpanData();
+        _htmlAccumulator += _indent(_openTags.size());
+        _htmlAccumulator += tag;
+        _htmlAccumulator += "\n";
+    }
+
+    _openTags.push(tagName);
+}
+
 void HRG::_HtmlBuilder::closeTag(
         const QString & tagName
     )

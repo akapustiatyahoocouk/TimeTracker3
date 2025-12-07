@@ -38,6 +38,120 @@ ReportTable::~ReportTable()
 }
 
 //////////
+//  ReportElement
+auto ReportTable::resolveFontSpecs() const -> FontSpecs
+{
+    if (_style != nullptr)
+    {
+        auto styleFontSpecs = _style->fontSpecs();
+        if (!styleFontSpecs.has_value())
+        {   //  Inherit from parent
+            Q_ASSERT(_parent != nullptr);
+            return _parent->resolveFontSpecs();
+        }
+        else if (styleFontSpecs.value().isEmpty())
+        {   //  Go directly to template
+            return _report->_reportTemplate->defaultFontSpecs();
+        }
+        else
+        {   //  Use value from style
+            return styleFontSpecs.value();
+        }
+    }
+    //  Style not specified - go to parent
+    Q_ASSERT(_parent != nullptr);
+    return _parent->resolveFontSpecs();
+}
+
+auto ReportTable::resolveFontSize() const -> TypographicSize
+{
+    if (_style != nullptr)
+    {
+        auto styleFontSize = _style->fontSize();
+        if (!styleFontSize.has_value())
+        {   //  Inherit from parent
+            Q_ASSERT(_parent != nullptr);
+            return _parent->resolveFontSize();
+        }
+        else
+        {   //  Use value from style
+            return styleFontSize.value();
+        }
+    }
+    //  Style not specified - go to parent
+    Q_ASSERT(_parent != nullptr);
+    return _parent->resolveFontSize();
+}
+
+auto ReportTable::resolveFontStyle() const -> FontStyle
+{
+    if (_style != nullptr)
+    {
+        auto styleFontStyle = _style->fontStyle();
+        if (!styleFontStyle.has_value())
+        {   //  Inherit from parent
+            Q_ASSERT(_parent != nullptr);
+            return _parent->resolveFontStyle();
+        }
+        else
+        {   //  Use value from style
+            return styleFontStyle.value();
+        }
+    }
+    //  Style not specified - go to parent
+    Q_ASSERT(_parent != nullptr);
+    return _parent->resolveFontStyle();
+}
+
+auto ReportTable::resolveTextColor() const -> ColorSpec
+{
+    if (_style != nullptr)
+    {
+        auto styleTextColor = _style->textColor();
+        if (!styleTextColor.has_value())
+        {   //  Inherit from parent
+            Q_ASSERT(_parent != nullptr);
+            return _parent->resolveTextColor();
+        }
+        else if (styleTextColor.value() == ColorSpec::Default)
+        {   //  Go directly to report template
+            return _report->_reportTemplate->defaultTextColor();
+        }
+        else
+        {   //  Use value from style
+            return styleTextColor.value();
+        }
+    }
+    //  Style not specified - go to parent
+    Q_ASSERT(_parent != nullptr);
+    return _parent->resolveTextColor();
+}
+
+auto ReportTable::resolveBackgroundColor() const -> ColorSpec
+{
+    if (_style != nullptr)
+    {
+        auto styleBackgroundColor = _style->backgroundColor();
+        if (!styleBackgroundColor.has_value())
+        {   //  Inherit from parent
+            Q_ASSERT(_parent != nullptr);
+            return _parent->resolveBackgroundColor();
+        }
+        else if (styleBackgroundColor.value() == ColorSpec::Default)
+        {   //  Go directly to report template
+            return _report->_reportTemplate->defaultBackgroundColor();
+        }
+        else
+        {   //  Use value from style
+            return styleBackgroundColor.value();
+        }
+    }
+    //  Style not specified - go to parent
+    Q_ASSERT(_parent != nullptr);
+    return _parent->resolveBackgroundColor();
+}
+
+//////////
 //  Operations
 ReportTableCell * ReportTable::createCell(
         int startColumn,
@@ -68,6 +182,101 @@ ReportTableCell * ReportTable::createCell(
     _report->_validate();
 #endif
     return result;
+}
+
+ReportTableCell * ReportTable::findTableCellAt(int column, int row)
+{
+    for (auto cell : _cells)
+    {
+        if (row >= cell->_startRow &&
+            row < cell->_startRow + cell->_rowSpan &&
+            column >= cell->_startColumn &&
+            column < cell->_startColumn + cell->_columnSpan)
+        {
+            return cell;
+        }
+    }
+    return nullptr;
+}
+
+auto ReportTable::resolveTableBorderType() const -> BorderType
+{
+    if (_style != nullptr)
+    {
+        auto styleTableBorder = _style->tableBorderType();
+        if (!styleTableBorder.has_value())
+        {   //  Inherit from parent
+            for (ReportElement * parent = _parent; parent != nullptr; parent = parent->parent())
+            {
+                if (auto parentTable =
+                    dynamic_cast<ReportTable*>(parent))
+                {
+                    return parentTable->resolveTableBorderType();
+                }
+            }
+            //  Give up and go to template
+            return _report->_reportTemplate->defaultTableBorderType();
+        }
+        else if (styleTableBorder.value() == BorderType::Default)
+        {   //  Go directly to report template
+            return _report->_reportTemplate->defaultTableBorderType();
+        }
+        else
+        {   //  Use value from style
+            return styleTableBorder.value();
+        }
+    }
+    //  Style not specified - go to parent
+    for (ReportElement * parent = _parent; parent != nullptr; parent = parent->parent())
+    {
+        if (auto parentTable =
+            dynamic_cast<ReportTable*>(parent))
+        {
+            return parentTable->resolveTableBorderType();
+        }
+    }
+    //  Give up and go to template
+    return _report->_reportTemplate->defaultTableBorderType();
+}
+
+auto ReportTable::resolveCellBorderType() const -> BorderType
+{
+    if (_style != nullptr)
+    {
+        auto styleCellBorder = _style->cellBorderType();
+        if (!styleCellBorder.has_value())
+        {   //  Inherit from parent
+            for (ReportElement * parent = _parent; parent != nullptr; parent = parent->parent())
+            {
+                if (auto parentTable =
+                    dynamic_cast<ReportTable*>(parent))
+                {
+                    return parentTable->resolveCellBorderType();
+                }
+            }
+            //  Give up and go to template
+            return _report->_reportTemplate->defaultCellBorderType();
+        }
+        else if (styleCellBorder.value() == BorderType::Default)
+        {   //  Go directly to report template
+            return _report->_reportTemplate->defaultCellBorderType();
+        }
+        else
+        {   //  Use value from style
+            return styleCellBorder.value();
+        }
+    }
+    //  Style not specified - go to parent
+    for (ReportElement * parent = _parent; parent != nullptr; parent = parent->parent())
+    {
+        if (auto parentTable =
+            dynamic_cast<ReportTable*>(parent))
+        {
+            return parentTable->resolveCellBorderType();
+        }
+    }
+    //  Give up and go to template
+    return _report->_reportTemplate->defaultCellBorderType();
 }
 
 //  End of tt3-report/ReportTable.cpp

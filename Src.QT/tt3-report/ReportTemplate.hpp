@@ -141,6 +141,12 @@ namespace tt3::report
         virtual auto    defaultTableBorderType() const -> BorderType = 0;
 
         /// \brief
+        ///     Returns the default table cell border type for the report.
+        /// \return
+        ///     The default table cell border type for the report.
+        virtual auto    defaultCellBorderType() const -> BorderType = 0;
+
+        /// \brief
         ///     Returns the default link underline type for the report.
         /// \return
         ///     The default link underline type for the report.

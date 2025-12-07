@@ -51,4 +51,36 @@ ReportAnchor::~ReportAnchor()
     _anchoredElement->_anchors.removeAll(this);
 }
 
+//////////
+//  ReportElement
+auto ReportAnchor::resolveFontSpecs() const -> FontSpecs
+{
+    Q_ASSERT(_anchoredElement != nullptr);
+    return _anchoredElement->resolveFontSpecs();
+}
+
+auto ReportAnchor::resolveFontSize() const -> TypographicSize
+{
+    Q_ASSERT(_anchoredElement != nullptr);
+    return _anchoredElement->resolveFontSize();
+}
+
+auto ReportAnchor::resolveFontStyle() const -> FontStyle
+{
+    Q_ASSERT(_anchoredElement != nullptr);
+    return _anchoredElement->resolveFontStyle();
+}
+
+auto ReportAnchor::resolveTextColor() const -> ColorSpec
+{
+    Q_ASSERT(_anchoredElement != nullptr);
+    return _anchoredElement->resolveTextColor();
+}
+
+auto ReportAnchor::resolveBackgroundColor() const -> ColorSpec
+{
+    Q_ASSERT(_anchoredElement != nullptr);
+    return _anchoredElement->resolveBackgroundColor();
+}
+
 //  End of tt3-report/ReportAnchor.cpp

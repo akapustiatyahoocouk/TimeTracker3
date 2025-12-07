@@ -52,4 +52,49 @@ ReportTableCell::~ReportTableCell()
     _table->_cells.removeAll(this);
 }
 
+//////////
+//  ReportElement
+auto ReportTableCell::resolveFontSpecs() const -> FontSpecs
+{   //  No own style - must go to the parent
+    Q_ASSERT(_table != nullptr);
+    return _table->resolveFontSpecs();
+}
+
+auto ReportTableCell::resolveFontSize() const -> TypographicSize
+{   //  No own style - must go to the parent
+    Q_ASSERT(_table != nullptr);
+    return _table->resolveFontSize();
+}
+
+auto ReportTableCell::resolveFontStyle() const -> FontStyle
+{   //  No own style - must go to the parent
+    Q_ASSERT(_table != nullptr);
+    return _table->resolveFontStyle();
+}
+
+auto ReportTableCell::resolveTextColor() const -> ColorSpec
+{   //  No own style - must go to the parent
+    Q_ASSERT(_table != nullptr);
+    return _table->resolveTextColor();
+}
+
+auto ReportTableCell::resolveBackgroundColor() const -> ColorSpec
+{   //  No own style - must go to the parent
+    Q_ASSERT(_table != nullptr);
+    return _table->resolveBackgroundColor();
+}
+
+//////////
+//  Operations
+auto ReportTableCell::resolveCellBorderType() const -> BorderType
+{   //  No own style - must go to the parent
+    Q_ASSERT(_table != nullptr);
+    return _table->resolveCellBorderType();
+}
+
+auto ReportTableCell::resolveContentAlignment() const -> VerticalAlignment
+{
+    return _contentAlignment;
+}
+
 //  End of tt3-report/ReportTableCell.cpp

@@ -36,4 +36,41 @@ ReportListItem::~ReportListItem()
     _list->_items.removeAll(this);
 }
 
+//////////
+//  ReportElement
+auto ReportListItem::resolveFontSpecs() const -> FontSpecs
+{
+    //  No own style - go to parent
+    Q_ASSERT(_list != nullptr);
+    return _list->resolveFontSpecs();
+}
+
+auto ReportListItem::resolveFontSize() const -> TypographicSize
+{
+    //  No own style - go to parent
+    Q_ASSERT(_list != nullptr);
+    return _list->resolveFontSize();
+}
+
+auto ReportListItem::resolveFontStyle() const -> FontStyle
+{
+    //  No own style - go to parent
+    Q_ASSERT(_list != nullptr);
+    return _list->resolveFontStyle();
+}
+
+auto ReportListItem::resolveTextColor() const -> ColorSpec
+{
+    //  No own style - go to parent
+    Q_ASSERT(_list != nullptr);
+    return _list->resolveTextColor();
+}
+
+auto ReportListItem::resolveBackgroundColor() const -> ColorSpec
+{
+    //  No own style - go to parent
+    Q_ASSERT(_list != nullptr);
+    return _list->resolveBackgroundColor();
+}
+
 //  End of tt3-report/ReportListItem.cpp

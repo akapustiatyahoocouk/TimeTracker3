@@ -197,6 +197,7 @@ QDomDocument IReportTemplate::toXmlDocument() const
     _setAttribute(propertiesElement, "DefaultBackgroundColor", this->defaultBackgroundColor());
     _setAttribute(propertiesElement, "DefaultListIndent", this->defaultListIndent());
     _setAttribute(propertiesElement, "DefaultTableBorderType", this->defaultTableBorderType());
+    _setAttribute(propertiesElement, "DefaultCellBorderType", this->defaultCellBorderType());
     _setAttribute(propertiesElement, "DefaultLinkUnderlineMode", this->defaultLinkUnderlineMode());
 
     //  Set up "template styles" element
