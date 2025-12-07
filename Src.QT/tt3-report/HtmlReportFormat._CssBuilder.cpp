@@ -544,6 +544,15 @@ QString HRG::_CssBuilder::css()
 {
     QString css;
 
+    /*  TODO keep? kill?
+    css +=
+        "@media (prefers-color-scheme: dark) {\n"
+        "  body {\n"
+        "    background-color: #333;\n"
+        "    color: white;\n"
+        "  }\n"
+        "}\n";
+    */
 #define FORMAT_STYLES(stylesSet)                                \
     {                                                           \
         using T = decltype(stylesSet)::value_type;              \
