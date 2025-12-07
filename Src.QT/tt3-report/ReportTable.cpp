@@ -178,6 +178,9 @@ ReportTableCell * ReportTable::createCell(
         std::max(rowSpan, 1),       //  be defensive
         contentAlignment,
         preferredWidth);
+    //  Must update the table geometry
+    _columnCount = std::max(_columnCount, result->_startColumn + result->_columnSpan);
+    _rowCount = std::max(_rowCount, result->_startRow + result->_rowSpan);
 #ifdef QT_DEBUG
     _report->_validate();
 #endif

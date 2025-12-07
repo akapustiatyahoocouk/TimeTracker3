@@ -305,7 +305,7 @@ namespace tt3::report
                            "    margin-top: " + gapAboveString + ";\n" +
                            "    margin-bottom: " + gapBelowString + ";\n" +
                            "    border-style: " + tableBorderTypeString + ";\n" +
-                           "    border-width: " + ((tableBorderTypeString == "solid") ? "1px" : "auto") + ";\n" +
+                           /* TODO kill off "    border-width: " + ((tableBorderTypeString == "") ? "auto" : "1px") + ";\n" + */
                            "    border-color: " + colorString + ";\n" +
                            "    border-spacing: 0pt;\n" +
                            "    border-collapse: collapse;\n" +

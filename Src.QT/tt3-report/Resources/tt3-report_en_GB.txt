@@ -8,7 +8,7 @@ DisplayName=Basic (built-in)
 
 [HtmlReportFormat]
 DisplayName=HTML document
-TableOfContent=Table of TableOfContent
+TableOfContent=Table of content
 
 [ReportTemplateManagerTool]
 DisplayName=Report Template Manager

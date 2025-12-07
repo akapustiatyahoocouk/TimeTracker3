@@ -36,6 +36,7 @@ ManageReportTemplatesDialog::ManageReportTemplatesDialog(
     _ui->templatesTreeWidget->addTopLevelItem(_customReportsItem);
 
     //  Adjust controls
+    _ui->splitter->setSizes(QList<int>{100, 1000});
     _refresh(); //  Must populate templates tree NOW
     _ui->templatesTreeWidget->expandAll();
 
@@ -51,9 +52,19 @@ ManageReportTemplatesDialog::ManageReportTemplatesDialog(
             &ManageReportTemplatesDialog::_previewAvailable,
             Qt::ConnectionType::QueuedConnection);
 
-    //  Done
+    //  Done...
     _ui->templatesTreeWidget->setFocus();
-    adjustSize();
+    //  ...but need to make almost-fullscreen - report
+    //  preview are LARGE
+    if (QScreen *screen = QGuiApplication::primaryScreen())
+    {
+        QRect r = screen->availableGeometry();
+        int l = 32;
+        int t = 64;
+        int w = r.width() - 2 * l;
+        int h = r.height() - 2 * t;
+        this->setGeometry(l, t, w, h);
+    }
 }
 
 ManageReportTemplatesDialog::~ManageReportTemplatesDialog()

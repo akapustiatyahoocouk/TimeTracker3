@@ -601,7 +601,19 @@ QString HRG::_CssBuilder::_formatFontSpecs(
             fontSpecs,
             [](auto s)
             {
-                return '"' + s.name() + '"';
+                QString name = s.name();
+                //   Do we need to quote ?
+                for (int i = 0; i < name.length(); i++)
+                {
+                    if (!((name[i] >= 'a' && name[i] <= 'z') ||
+                          (name[i] >= 'A' && name[i] <= 'Z') ||
+                          (name[i] >= '0' && name[i] <= '9') ||
+                          name[i] == '-'))
+                    {   //  Yes!
+                        return '"' + s.name() + '"';
+                    }
+                }
+                return name;
             }).join('+');
 }
 
