@@ -1,4 +1,4 @@
-QT += core gui widgets xml charts
+QT += core gui widgets xml charts webenginewidgets
 
 TT3_VERSION=1.0.0
 

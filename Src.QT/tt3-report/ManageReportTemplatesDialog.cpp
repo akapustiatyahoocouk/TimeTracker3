@@ -130,20 +130,20 @@ void ManageReportTemplatesDialog::_refresh()
     {
         _ui->previewGroupBox->setTitle(
             "Preview not available");
-        _ui->previewTextBrowser->setText("");
+        _ui->previewWebEngineView->setHtml("");
     }
     else if (_previews.contains(reportTemplate))
     {
         _ui->previewGroupBox->setTitle(
             "Preview of " + reportTemplate->displayName());
-        _ui->previewTextBrowser->setHtml(_previews[reportTemplate]);
+        _ui->previewWebEngineView->setHtml(_previews[reportTemplate]);
     }
     else if (_previewGenerators.contains(reportTemplate) &&
              _previewGenerators[reportTemplate]->isRunning())
     {
         _ui->previewGroupBox->setTitle(
             "Preview of " + reportTemplate->displayName());
-        _ui->previewTextBrowser->setText(
+        _ui->previewWebEngineView->setHtml(
             "<p style=\"text-align: center;\">Generating preview...</p>");
     }
     else
