@@ -63,6 +63,9 @@ void ReportTemplateManagerTool::run(QWidget * parent)
 {
     Q_ASSERT(QThread::currentThread()->eventDispatcher() != nullptr);
 
+    //  Use wait cursor when creating the dialog - the
+    //  QWebEngineView it uses for previews needs a long
+    //  time to initialize the WebEngine for the 1st time
     QApplication::setOverrideCursor(Qt::WaitCursor);
     QApplication::processEvents();
     ManageReportTemplatesDialog dlg(parent);

@@ -27,11 +27,13 @@ ManageReportTemplatesDialog::ManageReportTemplatesDialog(
 {
     _ui->setupUi(this);
 
-    QPalette palette = _ui->previewWebEngineView->palette();
-    palette.setColor(QPalette::Window, Qt::black);
-    _ui->previewWebEngineView->setPalette(palette);
-    _ui->previewWebEngineView->setAutoFillBackground(true);
-
+    //  Set static control values
+    /*  TODO
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
+    */
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
     //  Create static tree widget items
     _predefinedReportsItem = new QTreeWidgetItem();
     _customReportsItem = new QTreeWidgetItem();
@@ -130,6 +132,8 @@ void ManageReportTemplatesDialog::_refresh()
     _ui->removePushButton->setEnabled(false);
 
     //  Display preview
+    _ui->previewWebEngineView->page()->setBackgroundColor(
+        tt3::gui::LabelDecorations().background);
     QString emptyStyle =
         "color: " + tt3::util::toString(tt3::gui::LabelDecorations().foreground) + ";" +
         "background-color: " + tt3::util::toString(tt3::gui::LabelDecorations().background) + ";" +
@@ -139,7 +143,8 @@ void ManageReportTemplatesDialog::_refresh()
     {
         _ui->previewGroupBox->setTitle(
             "Preview not available");
-        _ui->previewWebEngineView->setHtml("");
+        _ui->previewWebEngineView->setHtml(
+            "<p style=\"" + emptyStyle + "\">-</p>");
     }
     else if (_previews.contains(reportTemplate))
     {
@@ -169,7 +174,10 @@ void ManageReportTemplatesDialog::_refresh()
         }
         else
         {   //  OOPS! No go! Show error message instead.
-            _previews[reportTemplate] = previewFile.errorString();
+            _previews[reportTemplate] =
+                "<p style=\"" + emptyStyle + "\">" +
+                previewFile.errorString().toHtmlEscaped() +
+                "</p>";
         }
         //  Refresh ASAP
         emit refreshRequested();

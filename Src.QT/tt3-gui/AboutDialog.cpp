@@ -29,6 +29,7 @@ AboutDialog::AboutDialog(QWidget * parent)
     _ui->setupUi(this);
     setWindowTitle(rr.string(RID(Title)));
 
+    //  Set static control values
     _ui->productLabel->setText(
         tt3::util::ProductInformation::applicationDisplayName());
     _ui->versionLabel->setText(
