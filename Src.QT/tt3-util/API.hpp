@@ -99,7 +99,7 @@
 #include <QVersionNumber>
 #include <QWidget>
 
- #include <QWebEngineView>
+#include <QWebEngineView>
 
 #if defined(__GNUC__)
     #pragma GCC diagnostic pop

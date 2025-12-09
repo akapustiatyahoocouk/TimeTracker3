@@ -63,7 +63,11 @@ void ReportTemplateManagerTool::run(QWidget * parent)
 {
     Q_ASSERT(QThread::currentThread()->eventDispatcher() != nullptr);
 
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+    QApplication::processEvents();
     ManageReportTemplatesDialog dlg(parent);
+    QApplication::restoreOverrideCursor();
+
     dlg.doModal();
 }
 

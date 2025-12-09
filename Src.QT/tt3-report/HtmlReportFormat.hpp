@@ -152,31 +152,9 @@ namespace tt3::report
                         const QString colorString_,
                         const QString backgroundColorString_,
                         const QString widthString_
-                    ) : className("class" + tt3::util::toString(sequenceNumber)),
-                        fontFamilyString(fontFamilyString_),
-                        fontSizeString(fontSizeString_),
-                        fontStyleString(fontStyleString_),
-                        fontWeightString(fontWeightString_),
-                        colorString(colorString_),
-                        backgroundColorString(backgroundColorString_),
-                        widthString(widthString_)
-                {
-                }
+                    );
 
-                QString         css() const
-                {
-                    return "." + className + "\n" +
-                           "{\n" +
-                           "    font-family: " + fontFamilyString + ";\n" +
-                           "    font-size: " + fontSizeString + ";\n" +
-                           "    font-style: " + fontStyleString + ";\n" +
-                           "    font-weight: " + fontWeightString + ";\n" +
-                           "    color: " + colorString + ";\n" +
-                           "    background-color: " + backgroundColorString + ";\n" +
-                           "    width: " + widthString + ";\n" +
-                           "    margin: 0 auto;\n" +
-                           "}\n";
-                }
+                QString         css() const;
 
                 //  Properties ("" == omit property from CSS)
                 const QString   className;
@@ -205,42 +183,9 @@ namespace tt3::report
                         const QString & gapBelowString_,
                         const QString & textAlignmentString_,
                         const QString & borderTypeString_
-                    ) : className("class" + tt3::util::toString(sequenceNumber)),
-                        fontFamilyString(fontFamilyString_),
-                        fontSizeString(fontSizeString_),
-                        fontStyleString(fontStyleString_),
-                        fontWeightString(fontWeightString_),
-                        colorString(colorString_),
-                        backgroundColorString(backgroundColorString_),
-                        leftMarginString(leftMarginString_),
-                        rightMarginString(rightMarginString_),
-                        gapAboveString(gapAboveString_),
-                        gapBelowString(gapBelowString_),
-                        textAlignmentString(textAlignmentString_),
-                        borderTypeString(borderTypeString_)
-                {
-                }
+                    );
 
-                QString css() const
-                {
-                    return "." + className + "\n" +
-                           "{\n" +
-                           "    font-family: " + fontFamilyString + ";\n" +
-                           "    font-size: " + fontSizeString + ";\n" +
-                           "    font-style: " + fontStyleString + ";\n" +
-                           "    font-weight: " + fontWeightString + ";\n" +
-                           "    color: " + colorString + ";\n" +
-                           "    background-color: " + backgroundColorString + ";\n" +
-                           "    margin-left: " + leftMarginString + ";\n" +
-                           "    margin-right: " + rightMarginString + ";\n" +
-                           "    margin-top: " + gapAboveString + ";\n" +
-                           "    margin-bottom: " + gapBelowString + ";\n" +
-                           "    text-align: " + textAlignmentString + ";\n" +
-                           "    border-style: " + borderTypeString + ";\n" +
-                           "    border-color: " + colorString + ";\n" +
-                           "    line-height: 100%;\n" +
-                           "}\n";
-                }
+                QString         css() const;
 
                 //  Properties ("" == omit property from CSS)
                 const QString   className;
@@ -274,43 +219,9 @@ namespace tt3::report
                         const QString & gapBelowString_,
                         const QString & tableBorderTypeString_,
                         const QString & cellBorderTypeString_
-                    ) : className("class" + tt3::util::toString(sequenceNumber)),
-                        fontFamilyString(fontFamilyString_),
-                        fontSizeString(fontSizeString_),
-                        fontStyleString(fontStyleString_),
-                        fontWeightString(fontWeightString_),
-                        colorString(colorString_),
-                        backgroundColorString(backgroundColorString_),
-                        leftMarginString(leftMarginString_),
-                        rightMarginString(rightMarginString_),
-                        gapAboveString(gapAboveString_),
-                        gapBelowString(gapBelowString_),
-                        tableBorderTypeString(tableBorderTypeString_),
-                        cellBorderTypeString(cellBorderTypeString_)
-                {
-                }
+                    );
 
-                QString css() const
-                {
-                    return "." + className + "\n" +
-                           "{\n" +
-                           "    font-family: " + fontFamilyString + ";\n" +
-                           "    font-size: " + fontSizeString + ";\n" +
-                           "    font-style: " + fontStyleString + ";\n" +
-                           "    font-weight: " + fontWeightString + ";\n" +
-                           "    color: " + colorString + ";\n" +
-                           "    background-color: " + backgroundColorString + ";\n" +
-                           "    margin-left: " + leftMarginString + ";\n" +
-                           "    margin-right: " + rightMarginString + ";\n" +
-                           "    margin-top: " + gapAboveString + ";\n" +
-                           "    margin-bottom: " + gapBelowString + ";\n" +
-                           "    border-style: " + tableBorderTypeString + ";\n" +
-                           /* TODO kill off "    border-width: " + ((tableBorderTypeString == "") ? "auto" : "1px") + ";\n" + */
-                           "    border-color: " + colorString + ";\n" +
-                           "    border-spacing: 0pt;\n" +
-                           "    border-collapse: collapse;\n" +
-                           "}\n";
-                }
+                QString         css() const;
 
                 //  Properties ("" == omit property from CSS)
                 const QString   className;
@@ -341,36 +252,9 @@ namespace tt3::report
                         const QString & cellBorderTypeString_,
                         const QString & verticalAlignString_,
                         const QString & preferredWidthString_
-                    ) : className("class" + tt3::util::toString(sequenceNumber)),
-                        fontFamilyString(fontFamilyString_),
-                        fontSizeString(fontSizeString_),
-                        fontStyleString(fontStyleString_),
-                        fontWeightString(fontWeightString_),
-                        colorString(colorString_),
-                        backgroundColorString(backgroundColorString_),
-                        cellBorderTypeString(cellBorderTypeString_),
-                        verticalAlignString(verticalAlignString_),
-                        preferredWidthString(preferredWidthString_)
-                {
-                }
+                    );
 
-                QString css() const
-                {
-                    return "." + className + "\n" +
-                           "{\n" +
-                           "    font-family: " + fontFamilyString + ";\n" +
-                           "    font-size: " + fontSizeString + ";\n" +
-                           "    font-style: " + fontStyleString + ";\n" +
-                           "    font-weight: " + fontWeightString + ";\n" +
-                           "    color: " + colorString + ";\n" +
-                           "    background-color: " + backgroundColorString + ";\n" +
-                           "    border-style: " + cellBorderTypeString + ";\n" +
-                           "    border-width: " + ((cellBorderTypeString == "solid") ? "1px" : "auto") + ";\n" +
-                           "    border-color: " + colorString + ";\n" +
-                           "    vertical-align: " + verticalAlignString + ";\n" +
-                           "    width: " + preferredWidthString + ";\n" +
-                           "}\n";
-                }
+                QString         css() const;
 
                 //  Properties ("" == omit property from CSS)
                 const QString   className;
@@ -396,34 +280,9 @@ namespace tt3::report
                         const QString & colorString_,
                         const QString & backgroundColorString_,
                         const QString & textDecorationStyleString_
-                    ) : className("class" + tt3::util::toString(sequenceNumber)),
-                        fontFamilyString(fontFamilyString_),
-                        fontSizeString(fontSizeString_),
-                        fontStyleString(fontStyleString_),
-                        fontWeightString(fontWeightString_),
-                        colorString(colorString_),
-                        backgroundColorString(backgroundColorString_),
-                        textDecorationStyleString(textDecorationStyleString_)
-                {
-                }
+                    );
 
-                QString css() const
-                {
-                    return "." + className + "\n" +
-                           "{\n" +
-                           "    font-family: " + fontFamilyString + ";\n" +
-                           "    font-size: " + fontSizeString + ";\n" +
-                           "    font-style: " + fontStyleString + ";\n" +
-                           "    font-weight: " + fontWeightString + ";\n" +
-                           "    color: " + colorString + ";\n" +
-                           "    background-color: " + backgroundColorString + ";\n" +
-                           (!textDecorationStyleString.isEmpty() ?
-                                ("    text-decoration-line: underline;\n" + QString() +
-                                 "    text-decoration-style:" + textDecorationStyleString + ";\n" +
-                                 "    text-decoration-color: " + colorString + ";\n") :
-                                "") +
-                           "}\n";
-                }
+                QString         css() const;
 
                 //  Properties ("" == omit property from CSS)
                 const QString   className;
@@ -451,77 +310,9 @@ namespace tt3::report
                         const QString & gapAboveString_,
                         const QString & gapBelowString_,
                         const QString & indentString_
-                    ) : className("class" + tt3::util::toString(sequenceNumber)),
-                        fontFamilyString(fontFamilyString_),
-                        fontSizeString(fontSizeString_),
-                        fontStyleString(fontStyleString_),
-                        fontWeightString(fontWeightString_),
-                        colorString(colorString_),
-                        backgroundColorString(backgroundColorString_),
-                        leftMarginString(leftMarginString_),
-                        rightMarginString(rightMarginString_),
-                        gapAboveString(gapAboveString_),
-                        gapBelowString(gapBelowString_),
-                        indentString(indentString_)
-                {
-                }
+                    );
 
-                QString css() const
-                {
-                    return "." + className + "-table\n" +
-                           "{\n" +
-                           "    font-family: " + fontFamilyString + ";\n" +
-                           "    font-size: " + fontSizeString + ";\n" +
-                           "    font-style: " + fontStyleString + ";\n" +
-                           "    font-weight: " + fontWeightString + ";\n" +
-                           "    color: " + colorString + ";\n" +
-                           "    background-color: " + backgroundColorString + ";\n" +
-                           "    margin-left: " + leftMarginString + ";\n" +
-                           "    margin-right: " + rightMarginString + ";\n" +
-                           "    margin-top: " + gapAboveString + ";\n" +
-                           "    margin-bottom: " + gapBelowString + ";\n" +
-                           "    border-style: none;\n" +
-                           "    border-collapse: collapse;\n" +
-                           "    border-spacing:0pt;\n" +
-                           "    padding: 0pt;\n" +
-                           "}\n" +
-                           "\n" +
-                           "." + className + "-td1\n" +
-                           "{\n" +
-                           "    font-family: " + fontFamilyString + ";\n" +
-                           "    font-size: " + fontSizeString + ";\n" +
-                           "    font-style: " + fontStyleString + ";\n" +
-                           "    font-weight: " + fontWeightString + ";\n" +
-                           "    color: " + colorString + ";\n" +
-                           "    background-color: " + backgroundColorString + ";\n" +
-                           "    margin-left: 0pt;\n" +
-                           "    margin-right: 0pt;\n" +
-                           "    margin-top: 0pt;\n" +
-                           "    margin-bottom: 0pt;\n" +
-                           "    border-style: none;\n" +
-                           "    width: " + indentString + ";\n" +
-                           "    border-spacing:0pt;\n" +
-                           "    padding: 0pt;\n" +
-                           "    vertical-align: top;\n" +
-                           "}\n" +
-                           "\n" +
-                           "." + className + "-td2\n" +                            "{\n" +
-                           "    font-family: " + fontFamilyString + ";\n" +
-                           "    font-size: " + fontSizeString + ";\n" +
-                           "    font-style: " + fontStyleString + ";\n" +
-                           "    font-weight: " + fontWeightString + ";\n" +
-                           "    color: " + colorString + ";\n" +
-                           "    background-color: " + backgroundColorString + ";\n" +
-                           "    margin-left: 0pt;\n" +
-                           "    margin-right: 0pt;\n" +
-                           "    margin-top: 0pt;\n" +
-                           "    margin-bottom: 0pt;\n" +
-                           "    border-style: none;\n" +
-                           "    border-spacing:0pt;\n" +
-                           "    padding: 0pt;\n" +
-                           "    vertical-align: top;\n" +
-                           "}\n";
-                }
+                QString         css() const;
 
                 //  Properties ("" == omit property from CSS)
                 const QString   className;

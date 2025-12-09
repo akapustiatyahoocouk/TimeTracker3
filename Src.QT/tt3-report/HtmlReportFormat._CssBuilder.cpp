@@ -60,6 +60,8 @@ QString HRG::_CssBuilder::bodyStyle(IReportTemplate * reportTemplate)
     QString colorString = _formatColor(reportTemplate->defaultTextColor());
     QString backgroundColorString = _formatColor(reportTemplate->defaultBackgroundColor());
 
+    colorString = "initial";
+    backgroundColorString = "initial";
     float widthPt =
         (((reportTemplate->pageSetup().pageOrientation() == PageOrientation::Portrait) ?
             reportTemplate->pageSetup().pageWidth().pointSize() :
@@ -906,6 +908,335 @@ QString HRG::_CssBuilder::_linkStyle(
             textDecorationStyleString);
     _linkStyles.insert(linkStyle);
     return linkStyle->className;
+}
+
+//////////
+//  HRG::_CssBuilder::_BodyStyle
+namespace
+{
+    QString cssProperty(const QString & name, const QString & value)
+    {
+        return
+            "    " +
+            (value.trimmed().isEmpty() ?
+             "" :
+             (name + ": " + value.trimmed() + ";\n"));
+    }
+    }
+
+HRG::_CssBuilder::_BodyStyle::_BodyStyle(
+        int sequenceNumber,
+        const QString fontFamilyString_,
+        const QString fontSizeString_,
+        const QString fontStyleString_,
+        const QString fontWeightString_,
+        const QString colorString_,
+        const QString backgroundColorString_,
+        const QString widthString_
+    ) : className("class" + tt3::util::toString(sequenceNumber)),
+        fontFamilyString(fontFamilyString_),
+        fontSizeString(fontSizeString_),
+        fontStyleString(fontStyleString_),
+        fontWeightString(fontWeightString_),
+        colorString(colorString_),
+        backgroundColorString(backgroundColorString_),
+        widthString(widthString_)
+{
+}
+
+QString HRG::_CssBuilder::_BodyStyle::css() const
+{
+    return "." + className + "\n" +
+           "{\n" +
+           cssProperty("font-family: ", fontFamilyString) +
+           cssProperty("font-size", fontSizeString) +
+           cssProperty("font-style", fontStyleString) +
+           cssProperty("font-weight", fontWeightString) +
+           cssProperty("color", colorString) +
+           cssProperty("background-color", backgroundColorString) +
+           cssProperty("width", widthString) +
+           cssProperty("margin", "0 auto") +
+           "}\n";
+}
+
+//////////
+//  HRG::_CssBuilder::_ParagraphStyle
+HRG::_CssBuilder::_ParagraphStyle::_ParagraphStyle(
+        int sequenceNumber,
+        const QString & fontFamilyString_,
+        const QString & fontSizeString_,
+        const QString & fontStyleString_,
+        const QString & fontWeightString_,
+        const QString & colorString_,
+        const QString & backgroundColorString_,
+        const QString & leftMarginString_,
+        const QString & rightMarginString_,
+        const QString & gapAboveString_,
+        const QString & gapBelowString_,
+        const QString & textAlignmentString_,
+        const QString & borderTypeString_
+    ) : className("class" + tt3::util::toString(sequenceNumber)),
+        fontFamilyString(fontFamilyString_),
+        fontSizeString(fontSizeString_),
+        fontStyleString(fontStyleString_),
+        fontWeightString(fontWeightString_),
+        colorString(colorString_),
+        backgroundColorString(backgroundColorString_),
+        leftMarginString(leftMarginString_),
+        rightMarginString(rightMarginString_),
+        gapAboveString(gapAboveString_),
+        gapBelowString(gapBelowString_),
+        textAlignmentString(textAlignmentString_),
+        borderTypeString(borderTypeString_)
+{
+}
+
+QString HRG::_CssBuilder::_ParagraphStyle::css() const
+{
+    return "." + className + "\n" +
+           "{\n" +
+           cssProperty("font-family", fontFamilyString) +
+           cssProperty("font-size", fontSizeString) +
+           cssProperty("font-style", fontStyleString) +
+           cssProperty("font-weight", fontWeightString) +
+           cssProperty("color", colorString) +
+           cssProperty("background-color", backgroundColorString) +
+           cssProperty("margin-left", leftMarginString) +
+           cssProperty("margin-right", rightMarginString) +
+           cssProperty("margin-top", gapAboveString) +
+           cssProperty("margin-bottom", gapBelowString) +
+           cssProperty("text-align", textAlignmentString) +
+           cssProperty("border-style", borderTypeString) +
+           cssProperty("border-color", colorString) +
+           cssProperty("line-height", "100%") +
+           "}\n";
+}
+
+//////////
+//  HRG::_CssBuilder::_TableStyle
+HRG::_CssBuilder::_TableStyle::_TableStyle(
+        int sequenceNumber,
+        const QString & fontFamilyString_,
+        const QString & fontSizeString_,
+        const QString & fontStyleString_,
+        const QString & fontWeightString_,
+        const QString & colorString_,
+        const QString & backgroundColorString_,
+        const QString & leftMarginString_,
+        const QString & rightMarginString_,
+        const QString & gapAboveString_,
+        const QString & gapBelowString_,
+        const QString & tableBorderTypeString_,
+        const QString & cellBorderTypeString_
+    ) : className("class" + tt3::util::toString(sequenceNumber)),
+        fontFamilyString(fontFamilyString_),
+        fontSizeString(fontSizeString_),
+        fontStyleString(fontStyleString_),
+        fontWeightString(fontWeightString_),
+        colorString(colorString_),
+        backgroundColorString(backgroundColorString_),
+        leftMarginString(leftMarginString_),
+        rightMarginString(rightMarginString_),
+        gapAboveString(gapAboveString_),
+        gapBelowString(gapBelowString_),
+        tableBorderTypeString(tableBorderTypeString_),
+        cellBorderTypeString(cellBorderTypeString_)
+{
+}
+
+QString HRG::_CssBuilder::_TableStyle::css() const
+{
+    return "." + className + "\n" +
+           "{\n" +
+           cssProperty("font-family", fontFamilyString) +
+           cssProperty("font-size", fontSizeString) +
+           cssProperty("font-style", fontStyleString) +
+           cssProperty("font-weight", fontWeightString) +
+           cssProperty("color", colorString) +
+           cssProperty("background-color", backgroundColorString) +
+           cssProperty("margin-left", leftMarginString) +
+           cssProperty("margin-right", rightMarginString) +
+           cssProperty("margin-top", gapAboveString) +
+           cssProperty("margin-bottom", gapBelowString) +
+           cssProperty("border-style", tableBorderTypeString) +
+           /* TODO kill off "    border-width", ((tableBorderTypeString == "") ? "auto" : "1px")) + */
+           cssProperty("border-color", colorString) +
+           cssProperty("border-spacing", "0pt") +
+           cssProperty("border-collapse", "collapse") +
+           "}\n";
+}
+
+//////////
+//  HRG::_CssBuilder::_TableCellStyle
+HRG::_CssBuilder::_TableCellStyle::_TableCellStyle(
+        int sequenceNumber,
+        const QString & fontFamilyString_,
+        const QString & fontSizeString_,
+        const QString & fontStyleString_,
+        const QString & fontWeightString_,
+        const QString & colorString_,
+        const QString & backgroundColorString_,
+        const QString & cellBorderTypeString_,
+        const QString & verticalAlignString_,
+        const QString & preferredWidthString_
+    ) : className("class" + tt3::util::toString(sequenceNumber)),
+        fontFamilyString(fontFamilyString_),
+        fontSizeString(fontSizeString_),
+        fontStyleString(fontStyleString_),
+        fontWeightString(fontWeightString_),
+        colorString(colorString_),
+        backgroundColorString(backgroundColorString_),
+        cellBorderTypeString(cellBorderTypeString_),
+        verticalAlignString(verticalAlignString_),
+        preferredWidthString(preferredWidthString_)
+{
+}
+
+QString HRG::_CssBuilder::_TableCellStyle::css() const
+{
+    return "." + className + "\n" +
+           "{\n" +
+           cssProperty("font-family", fontFamilyString) +
+           cssProperty("font-size", fontSizeString) +
+           cssProperty("font-style", fontStyleString) +
+           cssProperty("font-weight", fontWeightString) +
+           cssProperty("color", colorString) +
+           cssProperty("background-color", backgroundColorString) +
+           cssProperty("border-style", cellBorderTypeString) +
+           cssProperty("border-width", ((cellBorderTypeString == "solid") ? "1px" : "auto")) +
+           cssProperty("border-color", colorString) +
+           cssProperty("vertical-align", verticalAlignString) +
+           cssProperty("width", preferredWidthString) +
+           "}\n";
+}
+
+//////////
+//  HRG::_CssBuilder::_LinkStyle
+HRG::_CssBuilder::_LinkStyle::_LinkStyle(
+        int sequenceNumber,
+        const QString & fontFamilyString_,
+        const QString & fontSizeString_,
+        const QString & fontStyleString_,
+        const QString & fontWeightString_,
+        const QString & colorString_,
+        const QString & backgroundColorString_,
+        const QString & textDecorationStyleString_
+    ) : className("class" + tt3::util::toString(sequenceNumber)),
+        fontFamilyString(fontFamilyString_),
+        fontSizeString(fontSizeString_),
+        fontStyleString(fontStyleString_),
+        fontWeightString(fontWeightString_),
+        colorString(colorString_),
+        backgroundColorString(backgroundColorString_),
+        textDecorationStyleString(textDecorationStyleString_)
+{
+}
+
+QString HRG::_CssBuilder::_LinkStyle::css() const
+{
+    return "." + className + "\n" +
+           "{\n" +
+           cssProperty("font-family", fontFamilyString) +
+           cssProperty("font-size", fontSizeString) +
+           cssProperty("font-style", fontStyleString) +
+           cssProperty("font-weight", fontWeightString) +
+           cssProperty("color", colorString) +
+           cssProperty("background-color", backgroundColorString) +
+           (!textDecorationStyleString.isEmpty() ?
+                (cssProperty("text-decoration-line", "underline") +
+                 cssProperty("text-decoration-style", textDecorationStyleString) +
+                 cssProperty("text-decoration-color", colorString)) :
+                "") +
+           "}\n";
+}
+
+//////////
+//  HRG::_CssBuilder::_ListStyle
+HRG::_CssBuilder::_ListStyle::_ListStyle(
+        int sequenceNumber,
+        const QString & fontFamilyString_,
+        const QString & fontSizeString_,
+        const QString & fontStyleString_,
+        const QString & fontWeightString_,
+        const QString & colorString_,
+        const QString & backgroundColorString_,
+        const QString & leftMarginString_,
+        const QString & rightMarginString_,
+        const QString & gapAboveString_,
+        const QString & gapBelowString_,
+        const QString & indentString_
+    ) : className("class" + tt3::util::toString(sequenceNumber)),
+        fontFamilyString(fontFamilyString_),
+        fontSizeString(fontSizeString_),
+        fontStyleString(fontStyleString_),
+        fontWeightString(fontWeightString_),
+        colorString(colorString_),
+        backgroundColorString(backgroundColorString_),
+        leftMarginString(leftMarginString_),
+        rightMarginString(rightMarginString_),
+        gapAboveString(gapAboveString_),
+        gapBelowString(gapBelowString_),
+        indentString(indentString_)
+{
+}
+
+QString HRG::_CssBuilder::_ListStyle::css() const
+{
+    return "." + className + "-table\n" +
+           "{\n" +
+           cssProperty("font-family: ", fontFamilyString) +
+           cssProperty("font-size: ", fontSizeString) +
+           cssProperty("font-style: ", fontStyleString) +
+           cssProperty("font-weight: ", fontWeightString) +
+           cssProperty("color: ", colorString) +
+           cssProperty("background-color: ", backgroundColorString) +
+           cssProperty("margin-left: ", leftMarginString) +
+           cssProperty("margin-right: ", rightMarginString) +
+           cssProperty("margin-top: ", gapAboveString) +
+           cssProperty("margin-bottom: ", gapBelowString) +
+           cssProperty("border-style", "none") +
+           cssProperty("border-collapse", "collapse") +
+           cssProperty("border-spacing", "0pt") +
+           cssProperty("padding", "0pt") +
+           "}\n" +
+           "." + className + "-td1\n" +
+           "{\n" +
+           cssProperty("font-family: ", fontFamilyString) +
+           cssProperty("font-size: ", fontSizeString) +
+           cssProperty("font-style: ", fontStyleString) +
+           cssProperty("font-weight: ", fontWeightString) +
+           cssProperty("color: ", colorString) +
+           cssProperty("background-color: ", backgroundColorString) +
+           cssProperty("margin-left", "0pt") +
+           cssProperty("margin-right", "0pt") +
+           cssProperty("margin-top", "0pt") +
+           cssProperty("margin-bottom", "0pt") +
+           cssProperty("border-style", "none") +
+           cssProperty("width: ", indentString) +
+           cssProperty("border-spacing", "0pt") +
+           cssProperty("padding-left", "0pt") +
+           cssProperty("padding-right", "10pt") +
+           cssProperty("padding-top", "0pt") +
+           cssProperty("padding-botom", "0pt") +
+           cssProperty("vertical-align", "top") +
+           "}\n" +
+           "." + className + "-td2\n" +
+           "{\n" +
+           cssProperty("font-family: ", fontFamilyString) +
+           cssProperty("font-size: ", fontSizeString) +
+           cssProperty("font-style: ", fontStyleString) +
+           cssProperty("font-weight: ", fontWeightString) +
+           cssProperty("color: ", colorString) +
+           cssProperty("background-color: ", backgroundColorString) +
+           cssProperty("margin-left", "0pt") +
+           cssProperty("margin-right", "0pt") +
+           cssProperty("margin-top", "0pt") +
+           cssProperty("margin-bottom", "0pt") +
+           cssProperty("border-style", "none") +
+           cssProperty("border-spacing", "0pt") +
+           cssProperty("padding", "0pt") +
+           cssProperty("vertical-align", "top") +
+           "}\n";
 }
 
 //  End of tt3-report/HtmlReportFormat._CssBuilder.cpp

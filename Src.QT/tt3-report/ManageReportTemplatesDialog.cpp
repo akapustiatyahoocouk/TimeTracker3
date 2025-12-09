@@ -27,6 +27,11 @@ ManageReportTemplatesDialog::ManageReportTemplatesDialog(
 {
     _ui->setupUi(this);
 
+    QPalette palette = _ui->previewWebEngineView->palette();
+    palette.setColor(QPalette::Window, Qt::black);
+    _ui->previewWebEngineView->setPalette(palette);
+    _ui->previewWebEngineView->setAutoFillBackground(true);
+
     //  Create static tree widget items
     _predefinedReportsItem = new QTreeWidgetItem();
     _customReportsItem = new QTreeWidgetItem();
@@ -125,6 +130,10 @@ void ManageReportTemplatesDialog::_refresh()
     _ui->removePushButton->setEnabled(false);
 
     //  Display preview
+    QString emptyStyle =
+        "color: " + tt3::util::toString(tt3::gui::LabelDecorations().foreground) + ";" +
+        "background-color: " + tt3::util::toString(tt3::gui::LabelDecorations().background) + ";" +
+        "text-align: center; ";
     auto reportTemplate = _selectedReportTemplate();
     if (reportTemplate == nullptr)
     {
@@ -144,7 +153,7 @@ void ManageReportTemplatesDialog::_refresh()
         _ui->previewGroupBox->setTitle(
             "Preview of " + reportTemplate->displayName());
         _ui->previewWebEngineView->setHtml(
-            "<p style=\"text-align: center;\">Generating preview...</p>");
+            "<p style=\"" + emptyStyle + "\">Generating preview...</p>");
     }
     else
     {   //  Need a new preview generator
@@ -412,6 +421,21 @@ void ManageReportTemplatesDialog::_PreviewGenerator::run()
             QTextStream in(&file);
             html = in.readAll();
             file.close();
+            //  Adjust colors to the current UI mode.
+            //  IMPORETANT: The below code uses internal
+            //  knowledge about how the HTML Reporrt Format
+            //  generates the CSS. However, the knowledge
+            //  is still encapsulated within the tt3-report
+            //  component.
+            tt3::gui::LabelDecorations decorations;
+            html =
+                html.replace(
+                    " color: initial;",
+                    " color: " + tt3::util::toString(decorations.foreground) + ";");
+            html =
+                html.replace(
+                    " background-color: initial;",
+                    " background-color: " + tt3::util::toString(decorations.background) + ";");
         }
         else
         {
