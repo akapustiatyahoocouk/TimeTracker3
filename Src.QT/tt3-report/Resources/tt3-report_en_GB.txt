@@ -11,10 +11,28 @@ DisplayName=HTML document
 TableOfContent=Table of content
 
 [ReportTemplateManagerTool]
-DisplayName=Report Template Manager
+DisplayName=Report template manager
 Description=Manages available Report Templates
 
 [ManageReportTemplatesDialog]
+Title=Manage report templates
+TemplatesGroupBox=Report templates
+PreviewGroupBox=Preview
+PreviewGroupBox.NotAvailable=Preview not avalable
+PreviewGroupBox.Available=Preview of {0}
+ExportPushButton=Export
+ImportPushButton=Import
+RemovePushButton=Remove
+PredefinedReportTemplates=Predefined report templates
+CustomReportTemplates=Custom report templates
+GeneratingPreview=Generating preview...
+OkPushButton=OK
+
+ExportReportTemplate=Export report template
+ReportTemplateFilter=TT3 report templates (*{0});;All files (*.*)
+ExportCompletedTitle=Export completed
+ExportCompletedMessage=Report template\n{0}\nhas been exported to\n{1}.
+
 PreviewReport.Name=Preview
 PreviewReport.Chapter1=1. Concerns greatest margaret
 PreviewReport.Paragraph1=Ignorant saw her her drawings marriage laughter. Case oh an that or away sigh do here upon. Acuteness you exquisite ourselves now end forfeited. Enquire ye without it garrets up himself. Interest our nor received followed was. Cultivated an up solicitude mr unpleasant.
@@ -26,7 +44,7 @@ PreviewReport.Chapter12=1.2 Perpetual sincerity
 PreviewReport.Paragraph2=Examine she brother prudent add day ham. Far stairs now coming bed oppose hunted become his.
 PreviewReport.Paragraph3=You zealously departure had procuring suspicion. Books whose front would purse if be do decay. Quitting you way formerly disposed perceive ladyship are. Common turned boy direct and yet.
 PreviewReport.Chapter2=2. Attended no do thoughts
-PreviewReport.Paragraph4=Woody equal ask saw sir weeks aware decay. Entrance prospect removing we packages strictly is no smallest he. For hopes may chief get hours day rooms. Oh no turned behind polite piqued enough at. Forbade few through inquiry blushes you
+PreviewReport.Paragraph4=Woody equal ask saw sir weeks aware decay. Entrance prospect removing we packages strictly is no smallest he. For hopes may chief get hours day rooms. Oh no turned behind polite piqued enough at. Forbade few through inquiry blushes you.
 PreviewReport.TableCell11=Issue #1
 PreviewReport.TableCell12=Is allowance instantly strangers applauded discourse so. Separate entrance welcomed sensible laughing why one moderate shy. We seeing piqued garden he. As in merry at forth least ye stood. And cold sons yet with. Delivered middleton therefore me at. Attachment companions man way excellence how her pianoforte.
 PreviewReport.TableCell21=Issue #2

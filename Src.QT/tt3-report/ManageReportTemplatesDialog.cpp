@@ -1,6 +1,6 @@
 //
 //  tt3-report/ManageReportTemplatesDialog.cpp - tt3::report::ManageReportTemplatesDialog class implementation
-//  TODO localize via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -25,20 +25,37 @@ ManageReportTemplatesDialog::ManageReportTemplatesDialog(
     ) : QDialog(parent),
         _ui(new Ui::ManageReportTemplatesDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ManageReportTemplatesDialog));
+
     _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
 
     //  Set static control values
-    /*  TODO
+    _ui->templatesGroupBox->setTitle(
+        rr.string(RID(TemplatesGroupBox)));
+    _ui->previewGroupBox->setTitle(
+        rr.string(RID(PreviewGroupBox)));
+    _ui->exportPushButton->setText(
+        rr.string(RID(ExportPushButton)));
+    _ui->importPushButton->setText(
+        rr.string(RID(ImportPushButton)));
+    _ui->removePushButton->setText(
+        rr.string(RID(RemovePushButton)));
+
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setText(rr.string(RID(OkPushButton)));
-    */
     _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
+
     //  Create static tree widget items
     _predefinedReportsItem = new QTreeWidgetItem();
     _customReportsItem = new QTreeWidgetItem();
-    _predefinedReportsItem->setText(0, "Predefined report templates");
-    _customReportsItem->setText(0, "Custom report templates");
+    _predefinedReportsItem->setText(
+        0,
+        rr.string(RID(PredefinedReportTemplates)));
+    _customReportsItem->setText(
+        0,
+        rr.string(RID(CustomReportTemplates)));
     _ui->templatesTreeWidget->addTopLevelItem(_predefinedReportsItem);
     _ui->templatesTreeWidget->addTopLevelItem(_customReportsItem);
 
@@ -105,6 +122,7 @@ void ManageReportTemplatesDialog::_refresh()
 {
     static const QIcon openFolderIcon(":/tt3-report/Resources/Images/Misc/OpenFolderSmall.png");
     static const QIcon closedFolderIcon(":/tt3-report/Resources/Images/Misc/ClosedFolderSmall.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ManageReportTemplatesDialog));
 
     _refreshReportTemplateItems(_predefinedReportsItem);
     _refreshReportTemplateItems(_customReportsItem);
@@ -142,23 +160,28 @@ void ManageReportTemplatesDialog::_refresh()
     if (reportTemplate == nullptr)
     {
         _ui->previewGroupBox->setTitle(
-            "Preview not available");
+            rr.string(RID(PreviewGroupBox.NotAvailable)));
         _ui->previewWebEngineView->setHtml(
             "<p style=\"" + emptyStyle + "\">-</p>");
     }
     else if (_previews.contains(reportTemplate))
     {
         _ui->previewGroupBox->setTitle(
-            "Preview of " + reportTemplate->displayName());
-        _ui->previewWebEngineView->setHtml(_previews[reportTemplate]);
+            rr.string(RID(PreviewGroupBox.Available),
+                      reportTemplate->displayName()));
+        _ui->previewWebEngineView->setHtml(
+            _previews[reportTemplate]);
     }
     else if (_previewGenerators.contains(reportTemplate) &&
              _previewGenerators[reportTemplate]->isRunning())
     {
         _ui->previewGroupBox->setTitle(
-            "Preview of " + reportTemplate->displayName());
+            rr.string(RID(PreviewGroupBox.Available),
+                      reportTemplate->displayName()));
         _ui->previewWebEngineView->setHtml(
-            "<p style=\"" + emptyStyle + "\">Generating preview...</p>");
+            "<p style=\"" + emptyStyle + "\">" +
+            rr.string(RID(GeneratingPreview)) +
+            "</p>");
     }
     else
     {   //  Need a new preview generator
@@ -258,14 +281,16 @@ void ManageReportTemplatesDialog::_templateTreeWidgetItemCollapsed(QTreeWidgetIt
 
 void ManageReportTemplatesDialog::_exportPushButtonClicked()
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ManageReportTemplatesDialog));
+
     if (auto reportTemplate = _selectedReportTemplate())
     {
         QString path =
             QFileDialog::getSaveFileName(
                 this,
-                "Export report template",
+                rr.string(RID(ExportReportTemplate)),
                 /*dir =*/ QString(),
-                "TT3 report templates (*.tt3-rpt);;All files (*.*)");
+                rr.string(RID(ReportTemplateFilter), IReportTemplate::PreferredExtension));
         if (!path.isEmpty())
         {   //  Do it!
             QFile file(path);
@@ -275,6 +300,14 @@ void ManageReportTemplatesDialog::_exportPushButtonClicked()
                 out << reportTemplate->toXmlString();
                 out.flush();
                 file.close();
+                //  Show "report template exported" confirmation popup
+                //  to provide user with visible action feedback
+                tt3::gui::MessageDialog::show(
+                    this,
+                    rr.string(RID(ExportCompletedTitle)),
+                    rr.string(RID(ExportCompletedMessage),
+                              reportTemplate->displayName(),
+                              path));
             }
             else
             {   //  OOPS!

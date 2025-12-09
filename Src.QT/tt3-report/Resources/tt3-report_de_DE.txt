@@ -13,3 +13,40 @@ TableOfContent=Tabelle des Inhaltsverzeichnisses
 [ReportTemplateManagerTool]
 DisplayName=Berichtsvorlagen-Manager
 Description=Verwaltet verfügbare Berichtsvorlagen
+
+[ManageReportTemplatesDialog]
+Title=Berichtsvorlagen verwalten
+TemplatesGroupBox=Berichtsvorlagen
+PreviewGroupBox=Vorschau
+PreviewGroupBox.NotAvailable=Vorschau nicht verfügbar
+PreviewGroupBox.Available=Vorschau von {0}
+ExportPushButton=Exportieren
+ImportPushButton=Importieren
+RemovePushButton=Entfernen
+PredefinedReportTemplates=Vordefinierte Berichtsvorlagen
+CustomReportTemplates=Benutzerdefinierte Berichtsvorlagen
+GeneratingPreview=Vorschau wird generiert...
+OkPushButton=Bestätigen
+
+ExportReportTemplate=Berichtsvorlage exportieren
+ReportTemplateFilter=TT3-Berichtsvorlagen (*{0});;Alle Dateien (*.*)
+ExportCompletedTitle=Export abgeschlossen
+ExportCompletedMessage=Berichtsvorlage\n{0}\nwurde exportiert nach\n{1}.
+
+PreviewReport.Name=Vorschau
+PreviewReport.Chapter1=1. Die größten Sorgen von Margaret
+PreviewReport.Paragraph1=Unwissend sah sie ihre Zeichnungen Hochzeit Lachen. Fall oh ein das oder weg Seufzen tun hier darauf. Schärfe du exquisit uns jetzt Ende verwirkt. Erkundigt euch ohne es Dachböden selbst. Interesse unser noch erhalten gefolgt war. Kultiviert eine Sorge Herr unangenehm.
+PreviewReport.ListItem1=Entzückend, vorbehaltlos, unmöglich, wenige schätzen Männer günstig ein, siehe Bitten.
+PreviewReport.ListItem2=Ihr Anstand besserte sich sofort. Er oder der Eingang war ebenso mäßig humorvoll. Viel noch Spiel Sohn sagen fühlen. Fett machen getroffen kann muss in Tor formen. Mich, wir beleidigend vorherrschende Entdeckung.
+PreviewReport.ListItem3=Benzin erschüttert weitverbreitete Überzeugungen, während Liebe immer nur die zweite Wahl war.
+PreviewReport.Chapter11=1.1 Werbung für uns selbst
+PreviewReport.Chapter12=1.2 Unerschütterliche Aufrichtigkeit
+PreviewReport.Paragraph2=Untersuche sie, Bruder, klug, füge Tag Schinken hinzu. Weit Treppen steigen jetzt ins Bett, widersetze dich der Jagd, werde sein.
+PreviewReport.Paragraph3=Dein eifriger Abschied hatte Verdacht erregt. Bücher, deren Vorderseite verfallen würde, wenn sie verfielen. Du verlässt den Weg, den du früher für die Wahrnehmung der Dame vorgesehen hattest. Ein gewöhnlicher Junge wandte sich direkt und doch.
+PreviewReport.Chapter2=2. Teilnahme an „keine Gedanken“
+PreviewReport.Paragraph4=Woody fragte gleichberechtigt, sah Herrn Wochen lang, sich des Verfalls bewusst. Eingangsaussichten, wir entfernen Pakete streng, ist nicht das kleinste, das er. Für Hoffnungen kann Chef Stunden Tag Zimmer bekommen. Oh nein, drehte sich hinter höflich genug verärgert um. Verbot wenige durch Nachfrage erröten Sie.
+PreviewReport.TableCell11=Problem Nr. 1
+PreviewReport.TableCell12=Ist Zulage sofort applaudierten Fremde dem Diskurs so. Separater Eingang begrüßte vernünftiges Lachen, warum ein gemäßigter Schüchterner. Wir sahen verärgerten Garten er. Wie in fröhlichem Vorwärts standet ihr zumindest. Und kalte Söhne noch mit. Überbrachte Middleton daher mich bei. Bindung Gefährten Mann Weg Exzellenz wie ihr Klavier.
+PreviewReport.TableCell21=Problem Nr. 2
+PreviewReport.TableCell22=Dasselbe gilt für die meisten. Ein Herr, der Sportler entsorgt. Versucht, keine Ursache für Verderb zu finden. Länger im Tal der Damen, um Wertschätzung zu erlangen, führte zu sechs. Middletons Entschlossenheit, Vorteile auszudrücken, Parteilichkeit, also mich. West, keine Hoffnung, wenn singen, oh, geschickt, sagen ist.
+PreviewReport.Link1=Gehe nach oben
