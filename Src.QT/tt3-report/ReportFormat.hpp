@@ -77,7 +77,7 @@ namespace tt3::report
         ///     The report to save to a file.
         /// \param fileName
         ///     The file to save the report to; overwritten if exists.
-        /// \exception Exception
+        /// \exception ReportException
         ///     If a save error occurs.
         virtual void    saveReport(Report * report, const QString & fileName) = 0;
     };

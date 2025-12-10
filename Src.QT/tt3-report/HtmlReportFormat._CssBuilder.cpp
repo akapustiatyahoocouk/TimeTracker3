@@ -105,7 +105,47 @@ QString HRG::_CssBuilder::bodyStyle(IReportTemplate * reportTemplate)
 QString HRG::_CssBuilder::paragraphStyle(
         ReportParagraph * paragraph
     )
-{   //  TODO reimplement using resolveXXX()
+{
+    QString fontFamilyString =
+        _formatFontSpecs(
+            paragraph->resolveFontSpecs());
+    QString fontSizeString =
+        _formatSize(
+            paragraph->resolveFontSize());
+    QString fontStyleString =
+        _formatFontStyle(
+            paragraph->resolveFontStyle());
+    QString fontWeightString =
+        _formatFontWeight(
+            paragraph->resolveFontStyle());
+    QString textDecorationString =
+        _formatTextDecoration(
+            paragraph->resolveFontStyle());
+    QString colorString =
+        _formatColor(
+            paragraph->resolveTextColor());
+    QString backgroundColorString =
+        _formatColor(
+            paragraph->resolveBackgroundColor());
+    QString leftMarginString =
+        _formatSize(
+            paragraph->resolveLeftMargin());
+    QString rightMarginString =
+        _formatSize(
+            paragraph->resolveRightMargin());
+    QString gapAboveString =
+        _formatSize(
+            paragraph->resolveGapAboven());
+    QString gapBelowString =
+        _formatSize(
+            paragraph->resolveGapBelow());
+    QString textAlignmentString =
+        _formatHorizontalAlignment(
+            paragraph->resolveTextAlignment());
+    QString borderTypeString =
+        _formatBorderType(
+            paragraph->resolveBorderType());
+    /*  TODO kill off
     if (paragraph->style() != nullptr)
     {   //  Explicit style
         return paragraphStyle(paragraph->style());
@@ -130,6 +170,21 @@ QString HRG::_CssBuilder::paragraphStyle(
                 "", //  gapBelowString
                 "", //  textAlignmentString
                 "");//  borderTypeString
+    */
+    return _paragraphStyle(
+                fontFamilyString,
+                fontSizeString,
+                fontStyleString,
+                fontWeightString,
+                textDecorationString,
+                colorString,
+                backgroundColorString,
+                leftMarginString,
+                rightMarginString,
+                gapAboveString,
+                gapBelowString,
+                textAlignmentString,
+                borderTypeString);
 }
 
 QString HRG::_CssBuilder::paragraphStyle(
@@ -582,15 +637,6 @@ QString HRG::_CssBuilder::css()
 {
     QString css;
 
-    /*  TODO keep? kill?
-    css +=
-        "@media (prefers-color-scheme: dark) {\n"
-        "  body {\n"
-        "    background-color: #333;\n"
-        "    color: white;\n"
-        "  }\n"
-        "}\n";
-    */
 #define FORMAT_STYLES(stylesSet)                                \
     {                                                           \
         using T = decltype(stylesSet)::value_type;              \
@@ -918,7 +964,24 @@ QString HRG::_CssBuilder::_listStyle(
         const QString & indentString
     )
 {
-    //  TODO reuse ?
+    for (auto listStyle : _listStyles)
+    {
+        if (listStyle->fontFamilyString == fontFamilyString &&
+            listStyle->fontSizeString == fontSizeString &&
+            listStyle->fontStyleString == fontStyleString &&
+            listStyle->fontWeightString == fontWeightString &&
+            listStyle->textDecorationString == textDecorationString &&
+            listStyle->colorString == colorString &&
+            listStyle->backgroundColorString == backgroundColorString &&
+            listStyle->leftMarginString == leftMarginString &&
+            listStyle->rightMarginString == rightMarginString &&
+            listStyle->gapAboveString == gapAboveString &&
+            listStyle->gapBelowString == gapBelowString &&
+            listStyle->indentString == indentString)
+        {
+            return listStyle->className;
+        }
+    }
     auto listStyle =
         new _ListStyle(
             _nextUnusedStyleNumber++,
@@ -1134,7 +1197,6 @@ QString HRG::_CssBuilder::_TableStyle::css() const
            cssProperty("margin-top", gapAboveString) +
            cssProperty("margin-bottom", gapBelowString) +
            cssProperty("border-style", tableBorderTypeString) +
-           /* TODO kill off "    border-width", ((tableBorderTypeString == "") ? "auto" : "1px")) + */
            cssProperty("border-color", colorString) +
            cssProperty("border-spacing", "0pt") +
            cssProperty("border-collapse", "collapse") +

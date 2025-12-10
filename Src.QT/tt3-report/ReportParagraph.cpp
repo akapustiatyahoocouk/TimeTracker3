@@ -152,6 +152,52 @@ auto ReportParagraph::resolveBackgroundColor() const -> ColorSpec
 }
 
 //////////
+//  ReportBlockElement
+TypographicSize ReportParagraph::resolveLeftMargin() const
+{
+    //  Honor own style first
+    if (_style != nullptr && _style->leftMargin().has_value())
+    {
+        return _style->leftMargin().value();
+    }
+    //  The rest is up to the base implementation
+    return ReportBlockElement::resolveLeftMargin();
+}
+
+TypographicSize ReportParagraph::resolveRightMargin() const
+{
+    //  Honor own style first
+    if (_style != nullptr && _style->rightMargin().has_value())
+    {
+        return _style->rightMargin().value();
+    }
+    //  The rest is up to the base implementation
+    return ReportBlockElement::resolveRightMargin();
+}
+
+TypographicSize ReportParagraph::resolveGapAboven() const
+{
+    //  Honor own style first
+    if (_style != nullptr && _style->gapAbove().has_value())
+    {
+        return _style->gapAbove().value();
+    }
+    //  The rest is up to the base implementation
+    return ReportBlockElement::resolveGapAboven();
+}
+
+TypographicSize ReportParagraph::resolveGapBelow() const
+{
+    //  Honor own style first
+    if (_style != nullptr && _style->gapBelow().has_value())
+    {
+        return _style->gapBelow().value();
+    }
+    //  The rest is up to the base implementation
+    return ReportBlockElement::resolveGapBelow();
+}
+
+//////////
 //  Operations
 void ReportParagraph::setStyle(IParagraphStyle * style)
 {
@@ -159,6 +205,50 @@ void ReportParagraph::setStyle(IParagraphStyle * style)
              style->reportTemplate() == _report->reportTemplate());
 
     _style = style;
+}
+
+auto ReportParagraph::resolveTextAlignment() const-> HorizontalAlignment
+{
+    //  Honor own style first
+    if (_style != nullptr && _style->textAlignment().has_value())
+    {
+        return _style->textAlignment().value();
+    }
+    //  Must go to the parent paragraph
+    for (ReportElement * parent = this->parent();
+         parent != nullptr;
+         parent = parent->parent())
+    {
+        if (auto parentParagraph =
+            dynamic_cast<ReportParagraph*>(parent))
+        {
+            return parentParagraph->resolveTextAlignment();
+        }
+    }
+    //  No ancestor paragraph was any good
+    return HorizontalAlignment::Default;
+}
+
+BorderType ReportParagraph::resolveBorderType() const
+{
+    //  Honor own style first
+    if (_style != nullptr && _style->borderType().has_value())
+    {
+        return _style->borderType().value();
+    }
+    //  Must go to the parent paragraph
+    for (ReportElement * parent = this->parent();
+         parent != nullptr;
+         parent = parent->parent())
+    {
+        if (auto parentParagraph =
+            dynamic_cast<ReportParagraph*>(parent))
+        {
+            return parentParagraph->resolveBorderType();
+        }
+    }
+    //  No ancestor paragraph was any good
+    return BorderType::Default;
 }
 
 ReportText * ReportParagraph::createText(

@@ -69,8 +69,8 @@ void HtmlReportFormat::saveReport(Report * report, const QString & fileName)
         file.close();
     }
     else
-    {   //  OOPS! TODO throw a proper exception
-        throw tt3::ws::CustomWorkspaceException(fileName + ": " + file.errorString());
+    {
+        throw CustomReportException(fileName + ": " + file.errorString());
     }
 }
 

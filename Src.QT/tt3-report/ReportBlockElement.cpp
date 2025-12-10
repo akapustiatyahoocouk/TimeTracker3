@@ -35,5 +35,71 @@ ReportBlockElement::~ReportBlockElement()
     _parent->_children.removeAll(this);
 }
 
+//////////
+//  Opertions
+TypographicSize ReportBlockElement::resolveLeftMargin() const
+{   //  Default behaviour is go to the parent block
+    for (ReportElement * parent = this->parent();
+         parent != nullptr;
+         parent = parent->parent())
+    {
+        if (auto parentBlock =
+            dynamic_cast<ReportBlockElement*>(parent))
+        {
+            return parentBlock->resolveLeftMargin();
+        }
+    }
+    //  No ancestor block was any good
+    return TypographicSize::pt(0);
+}
+
+TypographicSize ReportBlockElement::resolveRightMargin() const
+{   //  Default behaviour is go to the parent block
+    for (ReportElement * parent = this->parent();
+         parent != nullptr;
+         parent = parent->parent())
+    {
+        if (auto parentBlock =
+            dynamic_cast<ReportBlockElement*>(parent))
+        {
+            return parentBlock->resolveRightMargin();
+        }
+    }
+    //  No ancestor block was any good
+    return TypographicSize::pt(0);
+}
+
+TypographicSize ReportBlockElement::resolveGapAboven() const
+{   //  Default behaviour is go to the parent block
+    for (ReportElement * parent = this->parent();
+         parent != nullptr;
+         parent = parent->parent())
+    {
+        if (auto parentBlock =
+            dynamic_cast<ReportBlockElement*>(parent))
+        {
+            return parentBlock->resolveGapAboven();
+        }
+    }
+    //  No ancestor block was any good
+    return TypographicSize::pt(0);
+}
+
+TypographicSize ReportBlockElement::resolveGapBelow() const
+{   //  Default behaviour is go to the parent block
+    for (ReportElement * parent = this->parent();
+         parent != nullptr;
+         parent = parent->parent())
+    {
+        if (auto parentBlock =
+            dynamic_cast<ReportBlockElement*>(parent))
+        {
+            return parentBlock->resolveGapBelow();
+        }
+    }
+    //  No ancestor block was any good
+    return TypographicSize::pt(0);
+}
+
 //  End of tt3-report/ReportBlockElement.cpp
 

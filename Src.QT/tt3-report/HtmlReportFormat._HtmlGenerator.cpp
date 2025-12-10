@@ -330,7 +330,7 @@ void HRG::_HtmlGenerator::_generateParagraph(
             else if (auto picture =
                      dynamic_cast<ReportPicture*>(spanElement))
             {
-                Q_ASSERT(false);    //  TODO implement
+                throw tt3::util::NotImplementedError();
             }
             else
             {   //  OOPS! Should never happen!
@@ -473,14 +473,14 @@ void HRG::_HtmlGenerator::_generateTableOfContentForParagraph(
                              "href", "#" + _mapElementsToIds[paragraph]);
         if (auto text =
             dynamic_cast<ReportText*>(spanElement))
-        {   //  TODO we need a link here!!!
+        {
             _htmlBuilder.writeText(text->text());
         }
         else if (auto picture =
                  dynamic_cast<ReportPicture*>(spanElement))
 
-        {   //  TODO throw proper exception
-            throw tt3::ws::CustomWorkspaceException("Images in ToC are not supported");
+        {
+            throw tt3::util::NotImplementedError();
         }
         else
         {   //  OOPS! Should never happen!

@@ -447,7 +447,7 @@ QString HRG::_HtmlBuilder::_escapeText(
         const QString & text
     )
 {
-    return _escapeAttributeValue(text); //  TODO really ?
+    return _escapeAttributeValue(text);
 }
 
 //  End of tt3-report/HtmlReportFormat._HtmlBuilder.cpp

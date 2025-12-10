@@ -124,14 +124,14 @@ namespace tt3::report
             void        reset();
             QString     bodyStyle(IReportTemplate * reportTemplate);
             QString     paragraphStyle(ReportParagraph * paragraph);
-            QString     paragraphStyle(IParagraphStyle * style);    //  TODO kill off
+            QString     paragraphStyle(IParagraphStyle * style);
             QString     tableStyle(ReportTable * table);
-            QString     tableStyle(ITableStyle * style);//  TODO kill off
+            QString     tableStyle(ITableStyle * style);
             QString     tableCellStyle(ReportTableCell * tableCell);
             QString     linkStyle(ReportLink * link);
-            QString     linkStyle(ILinkStyle * style);  //  TODO kill off
+            QString     linkStyle(ILinkStyle * style);
             QString     listStyle(ReportList * list);
-            QString     listStyle(IListStyle * style);  //  TODO kill off
+            QString     listStyle(IListStyle * style);
             QString     css();
 
             //////////

@@ -66,4 +66,26 @@ auto ReportTableOfContent::resolveBackgroundColor() const -> ColorSpec
     return _parent->resolveBackgroundColor();
 }
 
+//////////
+//  ReportBlockElement
+TypographicSize ReportTableOfContent::resolveLeftMargin() const
+{   //  No own style - always use base implementation
+    return ReportBlockElement::resolveLeftMargin();
+}
+
+TypographicSize ReportTableOfContent::resolveRightMargin() const
+{   //  No own style - always use base implementation
+    return ReportBlockElement::resolveRightMargin();
+}
+
+TypographicSize ReportTableOfContent::resolveGapAboven() const
+{   //  No own style - always use base implementation
+    return ReportBlockElement::resolveGapAboven();
+}
+
+TypographicSize ReportTableOfContent::resolveGapBelow() const
+{   //  No own style - always use base implementation
+    return ReportBlockElement::resolveGapBelow();
+}
+
 //  End of tt3-report/ReportTableOfContent.cpp

@@ -333,6 +333,10 @@ namespace tt3::report
         //////////
         //  Operations
     public:
+        virtual auto    resolveLeftMargin() const ->TypographicSize;
+        virtual auto    resolveRightMargin() const ->TypographicSize;
+        virtual auto    resolveGapAboven() const ->TypographicSize;
+        virtual auto    resolveGapBelow() const ->TypographicSize;
 
         //////////
         //  Implementation
@@ -435,6 +439,14 @@ namespace tt3::report
         virtual auto    resolveBackgroundColor() const -> ColorSpec override;
 
         //////////
+        //  ReportBlockElement
+    public:
+        virtual auto    resolveLeftMargin() const ->TypographicSize override;
+        virtual auto    resolveRightMargin() const ->TypographicSize override;
+        virtual auto    resolveGapAboven() const ->TypographicSize override;
+        virtual auto    resolveGapBelow() const ->TypographicSize override;
+
+        //////////
         //  Operations
     public:
         /// \brief
@@ -457,6 +469,9 @@ namespace tt3::report
         /// \return
         ///     The list of children of this Paragraph, in order of creation.
         auto            children() const -> ReportSpanElements { return _children; }
+
+        auto            resolveTextAlignment() const -> HorizontalAlignment;
+        BorderType      resolveBorderType() const;
 
         /// \brief
         ///     Creates a new Text at the end of this Paragraph.
@@ -717,6 +732,14 @@ namespace tt3::report
         virtual auto    resolveBackgroundColor() const -> ColorSpec override;
 
         //////////
+        //  ReportBlockElement
+    public:
+        virtual auto    resolveLeftMargin() const ->TypographicSize override;
+        virtual auto    resolveRightMargin() const ->TypographicSize override;
+        virtual auto    resolveGapAboven() const ->TypographicSize override;
+        virtual auto    resolveGapBelow() const ->TypographicSize override;
+
+        //////////
         //  Operations
     public:
         /// \brief
@@ -837,6 +860,14 @@ namespace tt3::report
         virtual auto    resolveFontStyle() const -> FontStyle override;
         virtual auto    resolveTextColor() const -> ColorSpec override;
         virtual auto    resolveBackgroundColor() const -> ColorSpec override;
+
+        //////////
+        //  ReportBlockElement
+    public:
+        virtual auto    resolveLeftMargin() const ->TypographicSize override;
+        virtual auto    resolveRightMargin() const ->TypographicSize override;
+        virtual auto    resolveGapAboven() const ->TypographicSize override;
+        virtual auto    resolveGapBelow() const ->TypographicSize override;
 
         //////////
         //  Operations
@@ -1243,6 +1274,14 @@ namespace tt3::report
         virtual auto    resolveFontStyle() const -> FontStyle override;
         virtual auto    resolveTextColor() const -> ColorSpec override;
         virtual auto    resolveBackgroundColor() const -> ColorSpec override;
+
+        //////////
+        //  ReportBlockElement
+    public:
+        virtual auto    resolveLeftMargin() const ->TypographicSize override;
+        virtual auto    resolveRightMargin() const ->TypographicSize override;
+        virtual auto    resolveGapAboven() const ->TypographicSize override;
+        virtual auto    resolveGapBelow() const ->TypographicSize override;
 
         //////////
         //  Operations
