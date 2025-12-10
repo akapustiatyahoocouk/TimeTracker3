@@ -2,7 +2,7 @@
 //  tt3-util/API.hpp - tt3-util master header
 //
 //  TimeTracker3
-//  Copyright (C) `2026, Andrey Kapustin
+//  Copyright (C) 2026, Andrey Kapustin
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by

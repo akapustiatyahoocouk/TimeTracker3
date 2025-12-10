@@ -188,7 +188,19 @@ QDomDocument IReportTemplate::toXmlDocument() const
     rootElement.appendChild(propertiesElement);
 
     _setAttribute(propertiesElement, "Mnemonic", this->mnemonic());
-    _setAttribute(propertiesElement, "DisplayName", this->displayName());
+    _setAttribute(propertiesElement, "DisplayName", this->displayName());   //  this is for "default" display name
+    QLocale currentLocale = tt3::util::theCurrentLocale;
+    for (QLocale locale : tt3::util::ComponentManager::supportedLocales())
+    {   //  Must save ALL DISPLAY names!
+        //  TODO test this in action!
+        tt3::util::theCurrentLocale = locale;
+        QDomElement displayNameElement = document.createElement("LocalDisplayName");
+        propertiesElement.appendChild(displayNameElement);
+        displayNameElement.setAttribute("Locale", tt3::util::toString(locale));
+        QDomText text = document.createTextNode(tt3::util::toString(this->displayName()));
+        displayNameElement.appendChild(text);
+    }
+    tt3::util::theCurrentLocale = currentLocale;
     _setAttribute(propertiesElement, "PageSetup", this->pageSetup());
     _setAttribute(propertiesElement, "DefaultFontSpecs", this->defaultFontSpecs());
     _setAttribute(propertiesElement, "DefaultFontSize", this->defaultFontSize());

@@ -30,6 +30,7 @@
 #include "tt3-report/DataTypes.hpp"
 #include "tt3-report/ReportTemplate.hpp"
 #include "tt3-report/BasicReportTemplate.hpp"
+#include "tt3-report/CustomReportTemplate.hpp"
 
 #include "tt3-report/Report.hpp"
 

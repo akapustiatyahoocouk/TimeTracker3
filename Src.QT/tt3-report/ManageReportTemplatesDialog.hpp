@@ -54,9 +54,14 @@ namespace tt3::report
         void            doModal();
 
         //////////
-        //  Signals
+        //  Signals - dialog itself always listens
     signals:
+        /// \brief
+        ///     Raised when the dialog must refresh irself.
         void            refreshRequested();
+
+        /// \brief
+        ///     Raised when a preview for a report template becomes available.S
         void            previewAvailable(IReportTemplate*, QString);
 
         //////////

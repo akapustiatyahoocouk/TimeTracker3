@@ -16,6 +16,7 @@ SOURCES += \
     BorderType.cpp \
     ColorSpec.cpp \
     Component.cpp \
+    CustomReportTemplate.cpp \
     FontFlag.cpp \
     FontSpec.cpp \
     FontSpecs.cpp \
@@ -69,6 +70,7 @@ HEADERS += \
     BasicReportTemplate.hpp \
     Classes.hpp \
     Component.hpp \
+    CustomReportTemplate.hpp \
     DataTypes.hpp \
     HtmlReportFormat.hpp \
     Linkage.hpp \

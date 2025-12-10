@@ -33,6 +33,7 @@ namespace tt3::report
         friend class ITableStyle;
         friend class ISectionStyle;
         friend class BasicReportTemplate;
+        friend class CustomReportTemplate;
         friend class Report;
 
         //////////

@@ -37,6 +37,16 @@ namespace tt3::report
     class TT3_REPORT_PUBLIC BasicLinkStyle;
     class TT3_REPORT_PUBLIC BasicSectionStyle;
 
+    class TT3_REPORT_PUBLIC CustomReportTemplate;
+    class TT3_REPORT_PUBLIC CustomStyle;
+    class TT3_REPORT_PUBLIC CustomCharacterStyle;
+    class TT3_REPORT_PUBLIC CustomBlockStyle;
+    class TT3_REPORT_PUBLIC CustomParagraphStyle;
+    class TT3_REPORT_PUBLIC CustomListStyle;
+    class TT3_REPORT_PUBLIC CustomTableStyle;
+    class TT3_REPORT_PUBLIC CustomLinkStyle;
+    class TT3_REPORT_PUBLIC CustomSectionStyle;
+
     class TT3_REPORT_PUBLIC Report;
     class TT3_REPORT_PUBLIC ReportElement;
     class TT3_REPORT_PUBLIC ReportFlowElement;
@@ -79,6 +89,16 @@ namespace tt3::report
     using BasicTableStyles = QSet<BasicTableStyle*>;
     using BasicLinkStyles = QSet<BasicLinkStyle*>;
     using BasicSectionStyles = QSet<BasicSectionStyle*>;
+
+    using CustomReportTemplates = QSet<CustomReportTemplate*>;
+    using CustomStyles = QSet<CustomStyle*>;
+    using CustomCharacterStyles = QSet<CustomCharacterStyle*>;
+    using CustomBlockStyles = QSet<CustomBlockStyle*>;
+    using CustomParagraphStyles = QSet<CustomParagraphStyle*>;
+    using CustomListStyles = QSet<CustomListStyle*>;
+    using CustomTableStyles = QSet<CustomTableStyle*>;
+    using CustomLinkStyles = QSet<CustomLinkStyle*>;
+    using CustomSectionStyles = QSet<CustomSectionStyle*>;
 
     using ReportSections = QList<ReportSection*>;
     using ReportBlockElements = QList<ReportBlockElement*>;
