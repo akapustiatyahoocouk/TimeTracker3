@@ -954,6 +954,11 @@ namespace tt3::util
             qsizetype & scan
         ) -> tt3::report::FontSpec;
     template <> TT3_REPORT_PUBLIC
+    auto fromString<tt3::report::FontSpecs>(
+            const QString & s,
+            qsizetype & scan
+        ) -> tt3::report::FontSpecs;
+    template <> TT3_REPORT_PUBLIC
     auto fromString<tt3::report::FontFlag>(
             const QString & s,
             qsizetype & scan

@@ -57,11 +57,15 @@ QString HRG::_CssBuilder::bodyStyle(IReportTemplate * reportTemplate)
     QString fontSizeString = _formatSize(reportTemplate->defaultFontSize());
     QString fontStyleString = _formatFontStyle(reportTemplate->defaultFontStyle());
     QString fontWeightString = _formatFontWeight(reportTemplate->defaultFontStyle());
-    QString colorString = _formatColor(reportTemplate->defaultTextColor());
-    QString backgroundColorString = _formatColor(reportTemplate->defaultBackgroundColor());
+    QString colorString =
+        (reportTemplate->defaultTextColor().colorClass() == ColorSpec::Custom) ?
+            _formatColor(reportTemplate->defaultTextColor()) :
+            "initial";
+    QString backgroundColorString =
+        (reportTemplate->defaultBackgroundColor().colorClass() == ColorSpec::Custom) ?
+            _formatColor(reportTemplate->defaultBackgroundColor()) :
+            "initial";;
 
-    colorString = "initial";
-    backgroundColorString = "initial";
     float widthPt =
         (((reportTemplate->pageSetup().pageOrientation() == PageOrientation::Portrait) ?
             reportTemplate->pageSetup().pageWidth().pointSize() :
@@ -117,6 +121,7 @@ QString HRG::_CssBuilder::paragraphStyle(
                 "", //  fontSizeString
                 "", //  fontStyleString
                 "", //  fontWeightString
+                "", //  textDecorationString
                 "", //  colorString
                 "", //  backgroundColorString
                 "", //  leftMarginString
@@ -151,6 +156,11 @@ QString HRG::_CssBuilder::paragraphStyle(
                 style->reportTemplate()->defaultFontStyle());
     QString fontWeightString =
         _formatFontWeight(
+            style->fontStyle().has_value() ?
+                style->fontStyle().value() :
+                style->reportTemplate()->defaultFontStyle());
+    QString textDecorationString =
+        _formatTextDecoration(
             style->fontStyle().has_value() ?
                 style->fontStyle().value() :
                 style->reportTemplate()->defaultFontStyle());
@@ -196,6 +206,7 @@ QString HRG::_CssBuilder::paragraphStyle(
                 fontSizeString,
                 fontStyleString,
                 fontWeightString,
+                textDecorationString,
                 colorString,
                 backgroundColorString,
                 leftMarginString,
@@ -225,6 +236,7 @@ QString HRG::_CssBuilder::tableStyle(
                 "", //  fontSizeString
                 "", //  fontStyleString
                 "", //  fontWeightString
+                "", //  textDecorationString
                 "", //  colorString
                 "", //  backgroundColorString
                 "", //  leftMarginString
@@ -259,6 +271,11 @@ QString HRG::_CssBuilder::tableStyle(
                 style->reportTemplate()->defaultFontStyle());
     QString fontWeightString =
         _formatFontWeight(
+            style->fontStyle().has_value() ?
+                style->fontStyle().value() :
+                style->reportTemplate()->defaultFontStyle());
+    QString textDecorationString =
+        _formatTextDecoration(
             style->fontStyle().has_value() ?
                 style->fontStyle().value() :
                 style->reportTemplate()->defaultFontStyle());
@@ -304,6 +321,7 @@ QString HRG::_CssBuilder::tableStyle(
                 fontSizeString,
                 fontStyleString,
                 fontWeightString,
+                textDecorationString,
                 colorString,
                 backgroundColorString,
                 leftMarginString,
@@ -330,6 +348,9 @@ QString HRG::_CssBuilder::tableCellStyle(
     QString fontWeightString =
         _formatFontWeight(
             tableCell->resolveFontStyle());
+    QString textDecorationString =
+        _formatTextDecoration(
+            tableCell->resolveFontStyle());
     QString colorString =
         _formatColor(
             tableCell->resolveTextColor());
@@ -354,6 +375,7 @@ QString HRG::_CssBuilder::tableCellStyle(
             fontSizeString,
             fontStyleString,
             fontWeightString,
+            textDecorationString,
             colorString,
             backgroundColorString,
             cellBorderTypeString,
@@ -382,6 +404,7 @@ QString HRG::_CssBuilder::linkStyle(
                 "", //  fontSizeString
                 "", //  fontStyleString
                 "", //  fontWeightString
+                "", //  textDecorationString
                 "", //  colorString
                 "", //  backgroundColorString
                 "");//  textDecorationStyleString
@@ -414,6 +437,11 @@ QString HRG::_CssBuilder::linkStyle(
             style->fontStyle().has_value() ?
                 style->fontStyle().value() :
                 style->reportTemplate()->defaultFontStyle());
+    QString textDecorationString =
+        _formatTextDecoration(
+            style->fontStyle().has_value() ?
+                style->fontStyle().value() :
+                style->reportTemplate()->defaultFontStyle());
     QString colorString =
         _formatColor(
             style->textColor().has_value() ?
@@ -432,13 +460,14 @@ QString HRG::_CssBuilder::linkStyle(
 
     //  Find/create the style
     return _linkStyle(
-        fontFamilyString,
-        fontSizeString,
-        fontStyleString,
-        fontWeightString,
-        colorString,
-        backgroundColorString,
-        textDecorationStyleString);
+                fontFamilyString,
+                fontSizeString,
+                fontStyleString,
+                fontWeightString,
+                textDecorationString,
+                colorString,
+                backgroundColorString,
+                textDecorationStyleString);
 }
 
 QString HRG::_CssBuilder::listStyle(
@@ -456,17 +485,18 @@ QString HRG::_CssBuilder::listStyle(
     }
     //  Give up and inherit everything
     return _listStyle(
-        "", //  fontFamilyString
-        "", //  fontSizeString
-        "", //  fontStyleString
-        "", //  fontWeightString
-        "", //  colorString
-        "", //  backgroundColorString
-        "", //  leftMarginString
-        "", //  rightMarginString
-        "", //  gapAboveString
-        "", //  gapBelowString
-        "");//  indentString
+                "", //  fontFamilyString
+                "", //  fontSizeString
+                "", //  fontStyleString
+                "", //  fontWeightString
+                "", //  textDeorationString
+                "", //  colorString
+                "", //  backgroundColorString
+                "", //  leftMarginString
+                "", //  rightMarginString
+                "", //  gapAboveString
+                "", //  gapBelowString
+                "");//  indentString
 }
 
 QString HRG::_CssBuilder::listStyle(
@@ -493,6 +523,11 @@ QString HRG::_CssBuilder::listStyle(
                 style->reportTemplate()->defaultFontStyle());
     QString fontWeightString =
         _formatFontWeight(
+            style->fontStyle().has_value() ?
+                style->fontStyle().value() :
+                style->reportTemplate()->defaultFontStyle());
+    QString textDecorationString =
+        _formatTextDecoration(
             style->fontStyle().has_value() ?
                 style->fontStyle().value() :
                 style->reportTemplate()->defaultFontStyle());
@@ -529,17 +564,18 @@ QString HRG::_CssBuilder::listStyle(
 
     //  Find/create the style
     return _listStyle(
-        fontFamilyString,
-        fontSizeString,
-        fontStyleString,
-        fontWeightString,
-        colorString,
-        backgroundColorString,
-        leftMarginString,
-        rightMarginString,
-        gapAboveString,
-        gapBelowString,
-        indentString);
+                fontFamilyString,
+                fontSizeString,
+                fontStyleString,
+                fontWeightString,
+                colorString,
+                backgroundColorString,
+                leftMarginString,
+                textDecorationString,
+                rightMarginString,
+                gapAboveString,
+                gapBelowString,
+                indentString);
 }
 
 QString HRG::_CssBuilder::css()
@@ -645,6 +681,27 @@ QString HRG::_CssBuilder::_formatFontWeight(const FontStyle & fontStyle)
     return (fontStyle & FontFlag::Bold).isEmpty() ? "normal" : "bold";
 }
 
+QString HRG::_CssBuilder::_formatTextDecoration(const FontStyle & fontStyle)
+{
+    if (fontStyle.contains(FontFlag::Underline) &&
+        fontStyle.contains(FontFlag::StrikeThrough))
+    {
+        return "underline line-through";
+    }
+    else if (fontStyle.contains(FontFlag::Underline))
+    {
+        return "underline";
+    }
+    else if (fontStyle.contains(FontFlag::StrikeThrough))
+    {
+        return "line-through";
+    }
+    else
+    {
+        return "";
+    }
+}
+
 QString HRG::_CssBuilder::_formatHorizontalAlignment(
         HorizontalAlignment alignment
     )
@@ -741,6 +798,7 @@ QString HRG::_CssBuilder::_paragraphStyle(
         const QString & fontSizeString,
         const QString & fontStyleString,
         const QString & fontWeightString,
+        const QString & textDecorationString,
         const QString & colorString,
         const QString & backgroundColorString,
         const QString & leftMarginString,
@@ -757,6 +815,7 @@ QString HRG::_CssBuilder::_paragraphStyle(
             paragraphStyle->fontSizeString == fontSizeString &&
             paragraphStyle->fontStyleString == fontStyleString &&
             paragraphStyle->fontWeightString == fontWeightString &&
+            paragraphStyle->textDecorationString == textDecorationString &&
             paragraphStyle->colorString == colorString &&
             paragraphStyle->backgroundColorString == backgroundColorString &&
             paragraphStyle->leftMarginString == leftMarginString &&
@@ -776,6 +835,7 @@ QString HRG::_CssBuilder::_paragraphStyle(
             fontSizeString,
             fontStyleString,
             fontWeightString,
+            textDecorationString,
             colorString,
             backgroundColorString,
             leftMarginString,
@@ -793,6 +853,7 @@ QString HRG::_CssBuilder::_tableStyle(
         const QString & fontSizeString,
         const QString & fontStyleString,
         const QString & fontWeightString,
+        const QString & textDecorationString,
         const QString & colorString,
         const QString & backgroundColorString,
         const QString & leftMarginString,
@@ -809,6 +870,7 @@ QString HRG::_CssBuilder::_tableStyle(
             tableStyle->fontSizeString == fontSizeString &&
             tableStyle->fontStyleString == fontStyleString &&
             tableStyle->fontWeightString == fontWeightString &&
+            tableStyle->textDecorationString == textDecorationString &&
             tableStyle->colorString == colorString &&
             tableStyle->backgroundColorString == backgroundColorString &&
             tableStyle->leftMarginString == leftMarginString &&
@@ -828,6 +890,7 @@ QString HRG::_CssBuilder::_tableStyle(
             fontSizeString,
             fontStyleString,
             fontWeightString,
+            textDecorationString,
             colorString,
             backgroundColorString,
             leftMarginString,
@@ -845,6 +908,7 @@ QString HRG::_CssBuilder::_listStyle(
         const QString & fontSizeString,
         const QString & fontStyleString,
         const QString & fontWeightString,
+        const QString & textDecorationString,
         const QString & colorString,
         const QString & backgroundColorString,
         const QString & leftMarginString,
@@ -862,6 +926,7 @@ QString HRG::_CssBuilder::_listStyle(
             fontSizeString,
             fontStyleString,
             fontWeightString,
+            textDecorationString,
             colorString,
             backgroundColorString,
             leftMarginString,
@@ -878,6 +943,7 @@ QString HRG::_CssBuilder::_linkStyle(
         const QString & fontSizeString,
         const QString & fontStyleString,
         const QString & fontWeightString,
+        const QString & textDecorationString,
         const QString & colorString,
         const QString & backgroundColorString,
         const QString & textDecorationStyleString
@@ -889,6 +955,7 @@ QString HRG::_CssBuilder::_linkStyle(
             linkStyle->fontSizeString == fontSizeString &&
             linkStyle->fontStyleString == fontStyleString &&
             linkStyle->fontWeightString == fontWeightString &&
+            linkStyle->textDecorationString == textDecorationString &&
             linkStyle->colorString == colorString &&
             linkStyle->backgroundColorString == backgroundColorString &&
             linkStyle->textDecorationStyleString == textDecorationStyleString)
@@ -903,6 +970,7 @@ QString HRG::_CssBuilder::_linkStyle(
             fontSizeString,
             fontStyleString,
             fontWeightString,
+            textDecorationString,
             colorString,
             backgroundColorString,
             textDecorationStyleString);
@@ -952,6 +1020,7 @@ QString HRG::_CssBuilder::_BodyStyle::css() const
            cssProperty("font-size", fontSizeString) +
            cssProperty("font-style", fontStyleString) +
            cssProperty("font-weight", fontWeightString) +
+           cssProperty("text-decoration", textDecorationString) +
            cssProperty("color", colorString) +
            cssProperty("background-color", backgroundColorString) +
            cssProperty("width", widthString) +
@@ -967,6 +1036,7 @@ HRG::_CssBuilder::_ParagraphStyle::_ParagraphStyle(
         const QString & fontSizeString_,
         const QString & fontStyleString_,
         const QString & fontWeightString_,
+        const QString & textDecorationString_,
         const QString & colorString_,
         const QString & backgroundColorString_,
         const QString & leftMarginString_,
@@ -980,6 +1050,7 @@ HRG::_CssBuilder::_ParagraphStyle::_ParagraphStyle(
         fontSizeString(fontSizeString_),
         fontStyleString(fontStyleString_),
         fontWeightString(fontWeightString_),
+        textDecorationString(textDecorationString_),
         colorString(colorString_),
         backgroundColorString(backgroundColorString_),
         leftMarginString(leftMarginString_),
@@ -999,6 +1070,7 @@ QString HRG::_CssBuilder::_ParagraphStyle::css() const
            cssProperty("font-size", fontSizeString) +
            cssProperty("font-style", fontStyleString) +
            cssProperty("font-weight", fontWeightString) +
+           cssProperty("text-decoration", textDecorationString) +
            cssProperty("color", colorString) +
            cssProperty("background-color", backgroundColorString) +
            cssProperty("margin-left", leftMarginString) +
@@ -1020,6 +1092,7 @@ HRG::_CssBuilder::_TableStyle::_TableStyle(
         const QString & fontSizeString_,
         const QString & fontStyleString_,
         const QString & fontWeightString_,
+        const QString & textDecorationString_,
         const QString & colorString_,
         const QString & backgroundColorString_,
         const QString & leftMarginString_,
@@ -1033,6 +1106,7 @@ HRG::_CssBuilder::_TableStyle::_TableStyle(
         fontSizeString(fontSizeString_),
         fontStyleString(fontStyleString_),
         fontWeightString(fontWeightString_),
+        textDecorationString(textDecorationString_),
         colorString(colorString_),
         backgroundColorString(backgroundColorString_),
         leftMarginString(leftMarginString_),
@@ -1052,6 +1126,7 @@ QString HRG::_CssBuilder::_TableStyle::css() const
            cssProperty("font-size", fontSizeString) +
            cssProperty("font-style", fontStyleString) +
            cssProperty("font-weight", fontWeightString) +
+           cssProperty("text-decoration", textDecorationString) +
            cssProperty("color", colorString) +
            cssProperty("background-color", backgroundColorString) +
            cssProperty("margin-left", leftMarginString) +
@@ -1074,6 +1149,7 @@ HRG::_CssBuilder::_TableCellStyle::_TableCellStyle(
         const QString & fontSizeString_,
         const QString & fontStyleString_,
         const QString & fontWeightString_,
+        const QString & textDecorationString_,
         const QString & colorString_,
         const QString & backgroundColorString_,
         const QString & cellBorderTypeString_,
@@ -1084,6 +1160,7 @@ HRG::_CssBuilder::_TableCellStyle::_TableCellStyle(
         fontSizeString(fontSizeString_),
         fontStyleString(fontStyleString_),
         fontWeightString(fontWeightString_),
+        textDecorationString(textDecorationString_),
         colorString(colorString_),
         backgroundColorString(backgroundColorString_),
         cellBorderTypeString(cellBorderTypeString_),
@@ -1100,6 +1177,7 @@ QString HRG::_CssBuilder::_TableCellStyle::css() const
            cssProperty("font-size", fontSizeString) +
            cssProperty("font-style", fontStyleString) +
            cssProperty("font-weight", fontWeightString) +
+           cssProperty("text-decoration", textDecorationString) +
            cssProperty("color", colorString) +
            cssProperty("background-color", backgroundColorString) +
            cssProperty("border-style", cellBorderTypeString) +
@@ -1118,6 +1196,7 @@ HRG::_CssBuilder::_LinkStyle::_LinkStyle(
         const QString & fontSizeString_,
         const QString & fontStyleString_,
         const QString & fontWeightString_,
+        const QString & textDecorationString_,
         const QString & colorString_,
         const QString & backgroundColorString_,
         const QString & textDecorationStyleString_
@@ -1126,6 +1205,7 @@ HRG::_CssBuilder::_LinkStyle::_LinkStyle(
         fontSizeString(fontSizeString_),
         fontStyleString(fontStyleString_),
         fontWeightString(fontWeightString_),
+        textDecorationString(textDecorationString_),
         colorString(colorString_),
         backgroundColorString(backgroundColorString_),
         textDecorationStyleString(textDecorationStyleString_)
@@ -1140,6 +1220,7 @@ QString HRG::_CssBuilder::_LinkStyle::css() const
            cssProperty("font-size", fontSizeString) +
            cssProperty("font-style", fontStyleString) +
            cssProperty("font-weight", fontWeightString) +
+           cssProperty("text-decoration", textDecorationString) +
            cssProperty("color", colorString) +
            cssProperty("background-color", backgroundColorString) +
            (!textDecorationStyleString.isEmpty() ?
@@ -1158,6 +1239,7 @@ HRG::_CssBuilder::_ListStyle::_ListStyle(
         const QString & fontSizeString_,
         const QString & fontStyleString_,
         const QString & fontWeightString_,
+        const QString & textDecorationString_,
         const QString & colorString_,
         const QString & backgroundColorString_,
         const QString & leftMarginString_,
@@ -1170,6 +1252,7 @@ HRG::_CssBuilder::_ListStyle::_ListStyle(
         fontSizeString(fontSizeString_),
         fontStyleString(fontStyleString_),
         fontWeightString(fontWeightString_),
+        textDecorationString(textDecorationString_),
         colorString(colorString_),
         backgroundColorString(backgroundColorString_),
         leftMarginString(leftMarginString_),
@@ -1188,6 +1271,7 @@ QString HRG::_CssBuilder::_ListStyle::css() const
            cssProperty("font-size: ", fontSizeString) +
            cssProperty("font-style: ", fontStyleString) +
            cssProperty("font-weight: ", fontWeightString) +
+           cssProperty("text-decoration", textDecorationString) +
            cssProperty("color: ", colorString) +
            cssProperty("background-color: ", backgroundColorString) +
            cssProperty("margin-left: ", leftMarginString) +

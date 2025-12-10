@@ -16,7 +16,16 @@ SOURCES += \
     BorderType.cpp \
     ColorSpec.cpp \
     Component.cpp \
+    CustomBlockStyle.cpp \
+    CustomCharacterStyle.cpp \
+    CustomLinkStyle.cpp \
+    CustomListStyle.cpp \
+    CustomParagraphStyle.cpp \
     CustomReportTemplate.cpp \
+    CustomSectionStyle.cpp \
+    CustomStyle.cpp \
+    CustomTableStyle.cpp \
+    Exceptions.cpp \
     FontFlag.cpp \
     FontSpec.cpp \
     FontSpecs.cpp \
@@ -72,6 +81,7 @@ HEADERS += \
     Component.hpp \
     CustomReportTemplate.hpp \
     DataTypes.hpp \
+    Exceptions.hpp \
     HtmlReportFormat.hpp \
     Linkage.hpp \
     ManageReportTemplatesDialog.hpp \

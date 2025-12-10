@@ -189,18 +189,6 @@ QDomDocument IReportTemplate::toXmlDocument() const
 
     _setAttribute(propertiesElement, "Mnemonic", this->mnemonic());
     _setAttribute(propertiesElement, "DisplayName", this->displayName());   //  this is for "default" display name
-    QLocale currentLocale = tt3::util::theCurrentLocale;
-    for (QLocale locale : tt3::util::ComponentManager::supportedLocales())
-    {   //  Must save ALL DISPLAY names!
-        //  TODO test this in action!
-        tt3::util::theCurrentLocale = locale;
-        QDomElement displayNameElement = document.createElement("LocalDisplayName");
-        propertiesElement.appendChild(displayNameElement);
-        displayNameElement.setAttribute("Locale", tt3::util::toString(locale));
-        QDomText text = document.createTextNode(tt3::util::toString(this->displayName()));
-        displayNameElement.appendChild(text);
-    }
-    tt3::util::theCurrentLocale = currentLocale;
     _setAttribute(propertiesElement, "PageSetup", this->pageSetup());
     _setAttribute(propertiesElement, "DefaultFontSpecs", this->defaultFontSpecs());
     _setAttribute(propertiesElement, "DefaultFontSize", this->defaultFontSize());
@@ -211,6 +199,7 @@ QDomDocument IReportTemplate::toXmlDocument() const
     _setAttribute(propertiesElement, "DefaultTableBorderType", this->defaultTableBorderType());
     _setAttribute(propertiesElement, "DefaultCellBorderType", this->defaultCellBorderType());
     _setAttribute(propertiesElement, "DefaultLinkUnderlineMode", this->defaultLinkUnderlineMode());
+    _setAttribute(propertiesElement, "DefaultPageNumberPlacement", this->defaultPageNumberPlacement());
 
     //  Set up "template styles" element
     QDomElement stylesElement = document.createElement("Styles");
@@ -245,6 +234,53 @@ QString IReportTemplate::toXmlString() const
     QTextStream stream(&xmlString);
     document.save(stream, 4);    //  4 spaces per indent level
     return xmlString;
+}
+
+void IReportTemplate::validate() const
+{
+#define CHECK_STYLE(Type, Name)                         \
+    if (find##Type##StyleByName(                        \
+            I##Type##Style::Name##StyleName) == nullptr)\
+    {                                                   \
+        qCritical() <<                                  \
+            "Report template " +                        \
+            this->displayName() +                       \
+            " (" +                                      \
+            this->mnemonic().toString() +               \
+            ") does not define style " +                \
+            "I" + #Type + "Style::" +                   \
+            #Name + "StyleName";                        \
+        throw InvalidReportTemplateException();         \
+    }
+
+    CHECK_STYLE(Paragraph, Title)
+    CHECK_STYLE(Paragraph, Subtitle)
+    CHECK_STYLE(Paragraph, Default)
+    CHECK_STYLE(Paragraph, Heading1)
+    CHECK_STYLE(Paragraph, Heading2)
+    CHECK_STYLE(Paragraph, Heading3)
+    CHECK_STYLE(Paragraph, Heading4)
+    CHECK_STYLE(Paragraph, Heading5)
+    CHECK_STYLE(Paragraph, Heading6)
+    CHECK_STYLE(Paragraph, Heading7)
+    CHECK_STYLE(Paragraph, Heading8)
+    CHECK_STYLE(Paragraph, Heading9)
+    CHECK_STYLE(Paragraph, Toc1)
+    CHECK_STYLE(Paragraph, Toc2)
+    CHECK_STYLE(Paragraph, Toc3)
+    CHECK_STYLE(Paragraph, Toc4)
+    CHECK_STYLE(Paragraph, Toc5)
+    CHECK_STYLE(Paragraph, Toc6)
+    CHECK_STYLE(Paragraph, Toc7)
+    CHECK_STYLE(Paragraph, Toc8)
+    CHECK_STYLE(Paragraph, Toc9)
+
+    CHECK_STYLE(List, Default)
+    CHECK_STYLE(Table, Default)
+    CHECK_STYLE(Link, Default)
+    CHECK_STYLE(Section, Default)
+
+#undef CHECK_STYLE
 }
 
 //  End of tt3-report/IReportTemplate.cpp

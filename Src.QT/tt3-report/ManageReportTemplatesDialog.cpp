@@ -222,7 +222,15 @@ void ManageReportTemplatesDialog::_refreshReportTemplateItems(QTreeWidgetItem * 
         }
     }
     else if (parentItem == _customReportsItem)
-    {   //  TODO implement
+    {
+        for (auto reportTemplate :
+             ReportTemplateManager::allReportTemplates())
+        {
+            if (dynamic_cast<CustomReportTemplate*>(reportTemplate))
+            {
+                reportTemplates.append(reportTemplate);
+            }
+        }
     }
     std::sort(
         reportTemplates.begin(),
@@ -262,6 +270,26 @@ auto ManageReportTemplatesDialog::_selectedReportTemplate() -> IReportTemplate *
                 nullptr;
 }
 
+void ManageReportTemplatesDialog::_setSelectedReportTemplate(
+        IReportTemplate * reportTemplate
+    )
+{
+    for (int i = 0; i < _ui->templatesTreeWidget->topLevelItemCount(); i++)
+    {
+        auto categoryItem = _ui->templatesTreeWidget->topLevelItem(i);
+        for (int j = 0; j < categoryItem->childCount(); j++)
+        {
+            auto reportTemplateItem = categoryItem->child(j);
+            auto rt = reportTemplateItem->data(0, Qt::ItemDataRole::UserRole).value<IReportTemplate*>();
+            if (rt == reportTemplate)
+            {   //  This one!
+                _ui->templatesTreeWidget->setCurrentItem(reportTemplateItem);
+                return;
+            }
+        }
+    }
+}
+
 //////////
 //  Signal handlers:
 void ManageReportTemplatesDialog::_templateTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)
@@ -291,35 +319,75 @@ void ManageReportTemplatesDialog::_exportPushButtonClicked()
                 rr.string(RID(ExportReportTemplate)),
                 /*dir =*/ QString(),
                 rr.string(RID(ReportTemplateFilter), IReportTemplate::PreferredExtension));
-        if (!path.isEmpty())
-        {   //  Do it!
-            QFile file(path);
-            if (file.open(QIODevice::WriteOnly | QIODevice::Text))
-            {
-                QTextStream out(&file);
-                out << reportTemplate->toXmlString();
-                out.flush();
-                file.close();
-                //  Show "report template exported" confirmation popup
-                //  to provide user with visible action feedback
-                tt3::gui::MessageDialog::show(
-                    this,
-                    rr.string(RID(ExportCompletedTitle)),
-                    rr.string(RID(ExportCompletedMessage),
-                              reportTemplate->displayName(),
-                              path));
-            }
-            else
-            {   //  OOPS!
-                tt3::gui::ErrorDialog::show(this, file.errorString());
-            }
+        if (path.isEmpty())
+        {   //  User has cancelled
+            return;
+        }
+        //  Do it!
+        QFile file(path);
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+            QTextStream out(&file);
+            out << reportTemplate->toXmlString();
+            out.flush();
+            file.close();
+            //  Show "report template exported" confirmation popup
+            //  to provide user with visible action feedback
+            tt3::gui::MessageDialog::show(
+                this,
+                rr.string(RID(ExportCompletedTitle)),
+                rr.string(RID(ExportCompletedMessage),
+                          reportTemplate->displayName(),
+                          path));
+        }
+        else
+        {   //  OOPS!
+            tt3::gui::ErrorDialog::show(this, file.errorString());
         }
     }
 }
 
 void ManageReportTemplatesDialog::_importPushButtonClicked()
 {
-    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ManageReportTemplatesDialog));
+
+    QString path =
+        QFileDialog::getOpenFileName(
+            this,
+            rr.string(RID(ImportReportTemplate)),
+            /*dir =*/ QString(),
+            rr.string(RID(ReportTemplateFilter), IReportTemplate::PreferredExtension));
+    if (path.isEmpty())
+    {   //  User has cancelled
+        return;
+    }
+    //  Load file as text (assuming it's XML)...
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {   //  OOPS!
+        throw CustomReportException(path + ": " + file.errorString());
+    }
+    QTextStream in(&file);
+    QString xml = in.readAll();
+    file.close();
+    //  Create report template from XML
+    auto reportTemplate =
+        std::make_unique<CustomReportTemplate>(xml);    //  may throw
+    //  No duplication!
+    if (auto rt =
+        ReportTemplateManager::findReportTemplate(reportTemplate->mnemonic()))
+    {   //  OOPS!
+        throw ReportTemplateAlreadyExistsException(
+            rt->mnemonic(),
+            rt->displayName());
+
+    }
+    //  Register & release
+    if (ReportTemplateManager::registerReportTemplate(reportTemplate.get()))
+    {   //  Success - refresh, select & release
+        _refresh();
+        _setSelectedReportTemplate(reportTemplate.release());
+    }
 }
 
 void ManageReportTemplatesDialog::_removePushButtonClicked()

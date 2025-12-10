@@ -49,8 +49,8 @@ namespace tt3::db::api
         //////////
         //  QException
     public:
-        virtual Self *  clone() const { return new Self(*this); }
-        virtual void    raise() const { throw *this; }
+        virtual Self *  clone() const override { return new Self(*this); }
+        virtual void    raise() const override { throw *this; }
 
         //////////
         //  tt3::util::Exception
@@ -83,8 +83,8 @@ namespace tt3::db::api
         //////////
         //  QException
     public:
-        virtual Self *  clone() const { return new Self(*this); }
-        virtual void    raise() const { throw *this; }
+        virtual Self *  clone() const override { return new Self(*this); }
+        virtual void    raise() const override { throw *this; }
 
         //////////
         //  tt3::util::Exception
@@ -140,8 +140,8 @@ namespace tt3::db::api
         //////////
         //  QException
     public:
-        virtual Self *  clone() const { return new Self(*this); }
-        virtual void    raise() const { throw *this; }
+        virtual Self *  clone() const override { return new Self(*this); }
+        virtual void    raise() const override { throw *this; }
 
         //////////
         //  tt3::util::Exception
@@ -193,8 +193,8 @@ namespace tt3::db::api
         //////////
         //  QException
     public:
-        virtual Self *  clone() const { return new Self(*this); }
-        virtual void    raise() const { throw *this; }
+        virtual Self *  clone() const override { return new Self(*this); }
+        virtual void    raise() const override { throw *this; }
 
         //////////
         //  tt3::util::Exception
@@ -223,8 +223,8 @@ namespace tt3::db::api
         //////////
         //  QException
     public:
-        virtual Self *  clone() const { return new Self(*this); }
-        virtual void    raise() const { throw *this; }
+        virtual Self *  clone() const override { return new Self(*this); }
+        virtual void    raise() const override { throw *this; }
 
         //////////
         //  tt3::util::Exception
@@ -307,8 +307,8 @@ namespace tt3::db::api
         //////////
         //  QException
     public:
-        virtual Self *  clone() const { return new Self(*this); }
-        virtual void    raise() const { throw *this; }
+        virtual Self *  clone() const override { return new Self(*this); }
+        virtual void    raise() const override { throw *this; }
 
         //////////
         //  tt3::util::Exception
@@ -421,8 +421,8 @@ namespace tt3::db::api
         //////////
         //  QException
     public:
-        virtual Self *  clone() const { return new Self(*this); }
-        virtual void    raise() const { throw *this; }
+        virtual Self *  clone() const override { return new Self(*this); }
+        virtual void    raise() const override { throw *this; }
 
         //////////
         //  tt3::util::Exception
@@ -535,8 +535,8 @@ namespace tt3::db::api
         //////////
         //  QException
     public:
-        virtual Self *  clone() const { return new Self(*this); }
-        virtual void    raise() const { throw *this; }
+        virtual Self *  clone() const override { return new Self(*this); }
+        virtual void    raise() const override { throw *this; }
 
         //////////
         //  tt3::util::Exception
@@ -593,8 +593,8 @@ namespace tt3::db::api
         //////////
         //  QException
     public:
-        virtual Self *  clone() const { return new Self(*this); }
-        virtual void    raise() const { throw *this; }
+        virtual Self *  clone() const override { return new Self(*this); }
+        virtual void    raise() const override { throw *this; }
 
         //////////
         //  tt3::util::Exception
@@ -635,8 +635,8 @@ namespace tt3::db::api
         //////////
         //  QException
     public:
-        virtual Self *  clone() const { return new Self(*this); }
-        virtual void    raise() const { throw *this; }
+        virtual Self *  clone() const override { return new Self(*this); }
+        virtual void    raise() const override { throw *this; }
 
         //////////
         //  tt3::util::Exception
@@ -683,8 +683,8 @@ namespace tt3::db::api
         //////////
         //  QException
     public:
-        virtual Self *  clone() const { return new Self(*this); }
-        virtual void    raise() const { throw *this; }
+        virtual Self *  clone() const override { return new Self(*this); }
+        virtual void    raise() const override { throw *this; }
 
         //////////
         //  tt3::util::Exception

@@ -29,6 +29,7 @@ GeneratingPreview=Generating preview...
 OkPushButton=OK
 
 ExportReportTemplate=Export report template
+ImportReportTemplate=Import report template
 ReportTemplateFilter=TT3 report templates (*{0});;All files (*.*)
 ExportCompletedTitle=Export completed
 ExportCompletedMessage=Report template\n{0}\nhas been exported to\n{1}.
@@ -50,3 +51,7 @@ PreviewReport.TableCell12=Is allowance instantly strangers applauded discourse s
 PreviewReport.TableCell21=Issue #2
 PreviewReport.TableCell22=Same an quit most an. Admitting an mr disposing sportsmen. Tried on cause no spoil arise plate. Longer ladies valley get esteem use led six. Middletons resolution advantages expression themselves partiality so me at. West none hope if sing oh sent tell is.
 PreviewReport.Link1=Go to the top
+
+[Errors]
+InvalidReportTemplateException=Invalid report template
+ReportTemplateAlreadyExistsException=Report template {0} ({1}) already exists

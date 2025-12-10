@@ -399,6 +399,8 @@ BasicReportTemplate::BasicReportTemplate()
             QColor(0, 128, 0),
             _defaultBackgroundColor,
             _defaultLinkUnderlineMode));
+
+    validate();
 }
 
 BasicReportTemplate::~BasicReportTemplate()
@@ -498,7 +500,7 @@ auto BasicReportTemplate::findStyleByName(
 void BasicReportTemplate::_addStyle(BasicStyle * style)
 {
     Q_ASSERT(style != nullptr);
-    Q_ASSERT(!_styles.contains(style->name()));
+    Q_ASSERT(!_styles.contains(style->name())); //  must be hardcoded right!
 
     _styles[style->name()] = style;
 }

@@ -162,6 +162,8 @@ namespace tt3::report
                 const QString   fontSizeString;
                 const QString   fontStyleString;
                 const QString   fontWeightString;
+                const QString   textDeorationString;
+                const QString   textDecorationString;
                 const QString   colorString;
                 const QString   backgroundColorString;
                 const QString   widthString;
@@ -175,6 +177,7 @@ namespace tt3::report
                         const QString & fontSizeString_,
                         const QString & fontStyleString_,
                         const QString & fontWeightString_,
+                        const QString & textDecorationString_,
                         const QString & colorString_,
                         const QString & backgroundColorString_,
                         const QString & leftMarginString_,
@@ -193,6 +196,7 @@ namespace tt3::report
                 const QString   fontSizeString;
                 const QString   fontStyleString;
                 const QString   fontWeightString;
+                const QString   textDecorationString;
                 const QString   colorString;
                 const QString   backgroundColorString;
                 const QString   leftMarginString;
@@ -211,6 +215,7 @@ namespace tt3::report
                         const QString & fontSizeString_,
                         const QString & fontStyleString_,
                         const QString & fontWeightString_,
+                        const QString & textDecorationString_,
                         const QString & colorString_,
                         const QString & backgroundColorString_,
                         const QString & leftMarginString_,
@@ -229,6 +234,7 @@ namespace tt3::report
                 const QString   fontSizeString;
                 const QString   fontStyleString;
                 const QString   fontWeightString;
+                const QString   textDecorationString;
                 const QString   colorString;
                 const QString   backgroundColorString;
                 const QString   leftMarginString;
@@ -247,6 +253,7 @@ namespace tt3::report
                         const QString & fontSizeString_,
                         const QString & fontStyleString_,
                         const QString & fontWeightString_,
+                        const QString & textDecorationString_,
                         const QString & colorString_,
                         const QString & backgroundColorString_,
                         const QString & cellBorderTypeString_,
@@ -262,6 +269,7 @@ namespace tt3::report
                 const QString   fontSizeString;
                 const QString   fontStyleString;
                 const QString   fontWeightString;
+                const QString   textDecorationString;
                 const QString   colorString;
                 const QString   backgroundColorString;
                 const QString   cellBorderTypeString;
@@ -277,6 +285,7 @@ namespace tt3::report
                         const QString & fontSizeString_,
                         const QString & fontStyleString_,
                         const QString & fontWeightString_,
+                        const QString & textDecorationString_,
                         const QString & colorString_,
                         const QString & backgroundColorString_,
                         const QString & textDecorationStyleString_
@@ -290,6 +299,7 @@ namespace tt3::report
                 const QString   fontSizeString;
                 const QString   fontStyleString;
                 const QString   fontWeightString;
+                const QString   textDecorationString;
                 const QString   colorString;
                 const QString   backgroundColorString;
                 const QString   textDecorationStyleString; //  can be null (if no underline)!!!
@@ -303,6 +313,7 @@ namespace tt3::report
                         const QString & fontSizeString_,
                         const QString & fontStyleString_,
                         const QString & fontWeightString_,
+                        const QString & textDecorationString_,
                         const QString & colorString_,
                         const QString & backgroundColorString_,
                         const QString & leftMarginString_,
@@ -320,6 +331,7 @@ namespace tt3::report
                 const QString   fontSizeString;
                 const QString   fontStyleString;
                 const QString   fontWeightString;
+                const QString   textDecorationString;
                 const QString   colorString;
                 const QString   backgroundColorString;
                 const QString   leftMarginString;
@@ -342,6 +354,7 @@ namespace tt3::report
             QString     _formatSize(const TypographicSize & size);
             QString     _formatFontStyle(const FontStyle & fontStyle);
             QString     _formatFontWeight(const FontStyle & fontStyle);
+            QString     _formatTextDecoration(const FontStyle & fontStyle);
             QString     _formatHorizontalAlignment(HorizontalAlignment alignment);
             QString     _formatBorderType(BorderType borderType);
             QString     _formatVerticalAlignment(VerticalAlignment alignment);
@@ -353,6 +366,7 @@ namespace tt3::report
                                 const QString & fontSizeString,
                                 const QString & fontStyleString,
                                 const QString & fontWeightString,
+                                const QString & textDecorationString,
                                 const QString & colorString,
                                 const QString & backgroundColorString,
                                 const QString & leftMarginString,
@@ -367,6 +381,7 @@ namespace tt3::report
                                 const QString & fontSizeString,
                                 const QString & fontStyleString,
                                 const QString & fontWeightString,
+                                const QString & textDecorationString,
                                 const QString & colorString,
                                 const QString & backgroundColorString,
                                 const QString & leftMarginString,
@@ -381,6 +396,7 @@ namespace tt3::report
                                 const QString & fontSizeString,
                                 const QString & fontStyleString,
                                 const QString & fontWeightString,
+                                const QString & textDecorationString,
                                 const QString & colorString,
                                 const QString & backgroundColorString,
                                 const QString & cellBorderTypeString,
@@ -392,6 +408,7 @@ namespace tt3::report
                                 const QString & fontSizeString,
                                 const QString & fontStyleString,
                                 const QString & fontWeightString,
+                                const QString & textDecorationString,
                                 const QString & colorString,
                                 const QString & backgroundColorString,
                                 const QString & leftMarginString,
@@ -405,6 +422,7 @@ namespace tt3::report
                                 const QString & fontSizeString,
                                 const QString & fontStyleString,
                                 const QString & fontWeightString,
+                                const QString & textDecorationString,
                                 const QString & colorString,
                                 const QString & backgroundColorString,
                                 const QString & textDecorationStyleString

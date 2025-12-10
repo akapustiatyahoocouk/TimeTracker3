@@ -75,6 +75,9 @@ namespace tt3::report
         void            _refresh();
         void            _refreshReportTemplateItems(QTreeWidgetItem * parentItem);
         auto            _selectedReportTemplate() -> IReportTemplate *;
+        void            _setSelectedReportTemplate(
+                                IReportTemplate * reportTemplate
+                            );
 
         //////////
         //  Controls

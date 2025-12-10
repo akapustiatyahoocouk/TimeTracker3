@@ -97,8 +97,24 @@ namespace tt3::util
     QString toString<FontSpec>(
             const FontSpec & value
         )
-    {
-        return toString(value.name());
+    {   //  Limit to printable ASCII-7 characters,
+        //  then escape the "s and \s and enclose in "s
+        QString name = value.name();
+        QString result;
+        for (int i = 0; i < name.length(); i++)
+        {
+            QChar c = name[i];
+            if (c == '"' || c == '\\')
+            {   //  must escape
+                result += '\\';
+                result += c;
+            }
+            else if (c.unicode() >= 32 && c.unicode() < 128)
+            {   //  printable ASCII-7 (127 is a BackSpace)
+                result += c;
+            }   //  else skip "c"
+        }
+        return '"' + result + '"';
     }
 
     template <> TT3_REPORT_PUBLIC
@@ -107,7 +123,44 @@ namespace tt3::util
             qsizetype & scan
         ) -> FontSpec
     {
-        QString name = fromString<QString>(s, scan);
+        //  Skip opening "
+        if (scan >= s.length() || s[scan] != '"')
+        {
+            throw tt3::util::ParseException(s, scan);
+        }
+        qsizetype prescan = scan + 1;
+        //  Scan innards
+        QString name;
+        while (prescan < s.length())
+        {
+            if (s[prescan] == '"')
+            {   //  EOS marker
+                break;
+            }
+            else if (s[prescan] == '\\')
+            {   //  Unescape
+                prescan++;
+                if (prescan < s.length())
+                {
+                    name += s[prescan++];
+                }
+                else
+                {   //  OOPS! Escape broken!
+                    break;
+                }
+            }
+            else
+            {   //  Literally
+                name += s[prescan++];
+            }
+        }
+        //  Skip closing "
+        if (scan >= s.length() || s[scan] != '"')
+        {
+            throw tt3::util::ParseException(s, scan);
+        }
+        //  Done
+        scan = prescan + 1;
         return FontSpec(name);
     }
 }

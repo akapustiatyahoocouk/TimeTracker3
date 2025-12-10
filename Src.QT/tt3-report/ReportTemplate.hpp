@@ -301,6 +301,16 @@ namespace tt3::report
         ///     The formatted XML text representing this report template.
         QString         toXmlString() const;
 
+        /// \brief
+        ///     Checks this report template for validity.
+        /// \details
+        ///     The main criterion is that all mandatory styles
+        ///     are defined. Derived classes may implement extra
+        ///     checks, but must always call the base version.
+        /// \exception ReportException
+        ///     If this report templais invalid.
+        virtual void    validate() const;
+
         //////////
         //  Implementation
     private:
@@ -487,8 +497,8 @@ namespace tt3::report
         //////////
         //  Imlementation helpers
     private:
-        inline static const QString _XmlTagName = "CharacterStyle";
-        virtual QString _xmlTagName() const override { return _XmlTagName; }
+        //  TODO kill off inline static const QString _XmlTagName = "CharacterStyle";
+        //  TODO kill off virtual QString _xmlTagName() const override { return _XmlTagName; }
         virtual void    _storeAttributes(QDomElement & element) const override;
     };
 
@@ -540,8 +550,8 @@ namespace tt3::report
         //////////
         //  Imlementation helpers
     private:
-        inline static const QString _XmlTagName = "BlockStyle";
-        virtual QString _xmlTagName() const override { return _XmlTagName; }
+        //  TODO kill off inline static const QString _XmlTagName = "BlockStyle";
+        //  TODO kill off virtual QString _xmlTagName() const override { return _XmlTagName; }
         virtual void    _storeAttributes(QDomElement & element) const override;
     };
 
@@ -550,6 +560,8 @@ namespace tt3::report
     class TT3_REPORT_PUBLIC IParagraphStyle
         :   public virtual IBlockStyle
     {
+        friend class CustomReportTemplate;
+
         //////////
         //  This is an interface
     protected:
@@ -679,6 +691,8 @@ namespace tt3::report
     class TT3_REPORT_PUBLIC IListStyle
         :   public virtual IBlockStyle
     {
+        friend class CustomReportTemplate;
+
         //////////
         //  This is an interface
     protected:
@@ -718,6 +732,8 @@ namespace tt3::report
     class TT3_REPORT_PUBLIC ITableStyle
         :   public virtual IBlockStyle
     {
+        friend class CustomReportTemplate;
+
         //////////
         //  This is an interface
     protected:
@@ -765,6 +781,8 @@ namespace tt3::report
     class TT3_REPORT_PUBLIC ILinkStyle
         :   public virtual IStyle
     {
+        friend class CustomReportTemplate;
+
         //////////
         //  This is an interface
     protected:
@@ -792,6 +810,8 @@ namespace tt3::report
     class TT3_REPORT_PUBLIC ISectionStyle
         :   public virtual IStyle
     {
+        friend class CustomReportTemplate;
+
         //////////
         //  This is an interface
     protected:

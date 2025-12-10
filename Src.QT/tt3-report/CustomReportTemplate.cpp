@@ -39,7 +39,7 @@ CustomReportTemplate::CustomReportTemplate(
     auto parseResult = document.setContent(xml);
     if (!parseResult)
     {   //  OOPS! Throw a proper exception!
-        Q_ASSERT(false);
+        throw CustomReportException(parseResult.errorMessage);
     }
     _construct(document);
 }
@@ -80,17 +80,7 @@ auto CustomReportTemplate::mnemonic() const -> Mnemonic
 
 auto CustomReportTemplate::displayName() const -> QString
 {
-    if (_displayNames.contains(tt3::util::theCurrentLocale))
-    {
-        return _displayNames[tt3::util::theCurrentLocale];
-    }
-    //  Be safe!
-    QLocale baseLocale = Component::Resources::instance()->baseLocale();
-    if (_displayNames.contains(baseLocale))
-    {
-        return _displayNames[baseLocale];
-    }
-    return _mnemonic.toString(); //  to shut up the compiler
+    return _displayName;
 }
 
 auto CustomReportTemplate::pageSetup() const -> PageSetup
@@ -167,6 +157,167 @@ void CustomReportTemplate::_construct(
         const QDomDocument & document
     )
 {
+    //  Locate & validate the root element
+    if (document.documentElement().isNull() ||
+        document.documentElement().tagName() != "CustomReportTemplate" ||
+        document.documentElement().attribute("FormatVersion") != "1")
+    {   //  OOPS! Not a valid template!
+        throw InvalidReportTemplateException();
+    }
+
+    //  Locate the "Properties" element and parse report
+    //  template properties - we can use data members directly
+    QDomElement propertiesElement = _getChildElement(document.documentElement(), "Properties");
+
+    _parseAttribute(
+        propertiesElement,
+        "Mnemonic",
+        _mnemonic);
+    _parseAttribute(
+        propertiesElement,
+        "DisplayName",
+        _displayName);
+    _parseAttribute(
+        propertiesElement,
+        "PageSetup",
+        _pageSetup);
+    _parseAttribute(
+        propertiesElement,
+        "DefaultFontSpecs",
+        _defaultFontSpecs);
+    _parseAttribute(
+        propertiesElement,
+        "DefaultFontSize",
+        _defaultFontSize);
+    _parseAttribute(
+        propertiesElement,
+        "DefaultFontStyle",
+        _defaultFontStyle);
+    _parseAttribute(
+        propertiesElement,
+        "DefaultTextColor",
+        _defaultTextColor);
+    _parseAttribute(
+        propertiesElement,
+        "DefaultBackgroundColor",
+        _defaultBackgroundColor);
+    _parseAttribute(
+        propertiesElement,
+        "DefaultListIndent",
+        _defaultListIndent);
+    _parseAttribute(
+        propertiesElement,
+        "DefaultTableBorderType",
+        _defaultTableBorderType);
+    _parseAttribute(
+        propertiesElement,
+        "DefaultCellBorderType",
+        _defaultCellBorderType);
+    _parseAttribute(
+        propertiesElement,
+        "DefaultLinkUnderlineMode",
+        _defaultLinkUnderlineMode);
+    _parseAttribute(
+        propertiesElement,
+        "DefaultPageNumberPlacement",
+        _defaultPageNumberPlacement);
+
+    //  Do the styles
+    QDomElement stylesElement = _getChildElement(document.documentElement(), "Styles");
+    for (auto styleElement = stylesElement.firstChildElement();
+         !styleElement.isNull();
+         styleElement = styleElement.nextSiblingElement())
+    {
+        CustomStyle * style;
+        if (styleElement.tagName() == IParagraphStyle::_XmlTagName)
+        {
+            style = new CustomParagraphStyle(this);
+        }
+        else if (styleElement.tagName() == IListStyle::_XmlTagName)
+        {
+            style = new CustomListStyle(this);
+        }
+        else if (styleElement.tagName() == ITableStyle::_XmlTagName)
+        {
+            style = new CustomTableStyle(this);
+        }
+        else if (styleElement.tagName() == ILinkStyle::_XmlTagName)
+        {
+            style = new CustomLinkStyle(this);
+        }
+        else if (styleElement.tagName() == ISectionStyle::_XmlTagName)
+        {
+            style = new CustomSectionStyle(this);
+        }
+        else
+        {   //  OOPS!
+            throw InvalidReportTemplateException();
+        }
+        style->_deserialize(styleElement);
+        _addStyle(style);
+    }
+
+    //  Done
+    validate();
+}
+
+void CustomReportTemplate::_addStyle(CustomStyle * style)
+{
+    Q_ASSERT(style != nullptr);
+
+    if (_styles.contains(style->_name))
+    {   //  OOPS! Duplicate styles in report template XML!
+        throw InvalidReportTemplateException();
+    }
+    _styles[style->_name] = style;
+}
+
+QDomElement CustomReportTemplate::_findChildElement(
+        const QDomElement & parentElement,
+        const QString & childTagName
+    )
+{
+    QDomElement result;
+    for (auto childElement = parentElement.firstChildElement();
+         !childElement.isNull();
+         childElement = childElement.nextSiblingElement())
+    {
+        if (childElement.tagName() == childTagName)
+        {   //  Record & keep looking
+            if (!result.isNull())
+            {   //  OOPS! Duplicate!
+                throw InvalidReportTemplateException();
+            }
+            result = childElement;
+        }
+    }
+    return result;  //  my be a "null" element
+}
+
+QDomElement CustomReportTemplate::_getChildElement(
+        const QDomElement & parentElement,
+        const QString & childTagName
+    )
+{
+    QDomElement result;
+    for (auto childElement = parentElement.firstChildElement();
+         !childElement.isNull();
+         childElement = childElement.nextSiblingElement())
+    {
+        if (childElement.tagName() == childTagName)
+        {   //  Record & keep looking
+            if (!result.isNull())
+            {   //  OOPS! Duplicate!
+                throw InvalidReportTemplateException();
+            }
+            result = childElement;
+        }
+    }
+    if (result.isNull())
+    {   //  OOPS! Not found!
+        throw InvalidReportTemplateException();
+    }
+    return result;
 }
 
 //  End of tt3-report/CustomReportTemplate.cpp

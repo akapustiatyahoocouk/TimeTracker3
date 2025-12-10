@@ -29,6 +29,7 @@ GeneratingPreview=Vorschau wird generiert...
 OkPushButton=Bestätigen
 
 ExportReportTemplate=Berichtsvorlage exportieren
+ImportReportTemplate=Berichtsvorlage importieren
 ReportTemplateFilter=TT3-Berichtsvorlagen (*{0});;Alle Dateien (*.*)
 ExportCompletedTitle=Export abgeschlossen
 ExportCompletedMessage=Berichtsvorlage\n{0}\nwurde exportiert nach\n{1}.
@@ -50,3 +51,7 @@ PreviewReport.TableCell12=Ist Zulage sofort applaudierten Fremde dem Diskurs so.
 PreviewReport.TableCell21=Problem Nr. 2
 PreviewReport.TableCell22=Dasselbe gilt für die meisten. Ein Herr, der Sportler entsorgt. Versucht, keine Ursache für Verderb zu finden. Länger im Tal der Damen, um Wertschätzung zu erlangen, führte zu sechs. Middletons Entschlossenheit, Vorteile auszudrücken, Parteilichkeit, also mich. West, keine Hoffnung, wenn singen, oh, geschickt, sagen ist.
 PreviewReport.Link1=Gehe nach oben
+
+[Errors]
+InvalidReportTemplateException=Ungültige Berichtsvorlage
+ReportTemplateAlreadyExistsException=Berichtsvorlage {0} ({1}) existiert bereits
