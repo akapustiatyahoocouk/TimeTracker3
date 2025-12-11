@@ -18,10 +18,11 @@
 using namespace tt3::report;
 
 //////////
-//  Imlementation helpers
-void ITableStyle::_storeAttributes(QDomElement & element) const
+//  Serialization
+void ITableStyle::serialize(QDomElement & element) const
 {
-    IBlockStyle::_storeAttributes(element);
+    IBlockStyle::serialize(element);
+
     IReportTemplate::_setAttribute(
         element,
         "TableBorderType",

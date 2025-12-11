@@ -18,10 +18,11 @@
 using namespace tt3::report;
 
 //////////
-//  Imlementation helpers
-void ISectionStyle::_storeAttributes(QDomElement & element) const
+//  Serialization
+void ISectionStyle::serialize(QDomElement & element) const
 {
-    IStyle::_storeAttributes(element);
+    IStyle::serialize(element);
+
     IReportTemplate::_setAttribute(
         element,
         "PageNumberPlacement",

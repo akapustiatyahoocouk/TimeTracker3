@@ -18,10 +18,10 @@
 using namespace tt3::report;
 
 //////////
-//  Imlementation helpers
-void ILinkStyle::_storeAttributes(QDomElement & element) const
+//  Serialization
+void ILinkStyle::serialize(QDomElement & element) const
 {
-    IStyle::_storeAttributes(element);
+    IStyle::serialize(element);
 }
 
 //  End of tt3-report/ILinkStyle.cpp

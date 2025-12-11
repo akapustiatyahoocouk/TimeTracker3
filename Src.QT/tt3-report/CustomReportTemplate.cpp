@@ -144,11 +144,18 @@ auto CustomReportTemplate::styles() const -> Styles
     return Styles(styles.cbegin(), styles.cend());
 }
 
-auto CustomReportTemplate::findStyleByName(
+auto CustomReportTemplate::findStyle(
         const Mnemonic & name
     ) const -> IStyle *
 {
     return _styles.contains(name) ? _styles[name] : nullptr;
+}
+
+Report * CustomReportTemplate::createNewReport()
+{
+    auto report = new Report(this->displayName(), this);
+    //  TODO populate
+    return report;
 }
 
 //////////
@@ -159,8 +166,8 @@ void CustomReportTemplate::_construct(
 {
     //  Locate & validate the root element
     if (document.documentElement().isNull() ||
-        document.documentElement().tagName() != "CustomReportTemplate" ||
-        document.documentElement().attribute("FormatVersion") != "1")
+        document.documentElement().tagName() != IReportTemplate::XmlTagName ||
+        document.documentElement().attribute("FormatVersion") != IReportTemplate::FormatVersion)
     {   //  OOPS! Not a valid template!
         throw InvalidReportTemplateException();
     }
@@ -229,23 +236,23 @@ void CustomReportTemplate::_construct(
          styleElement = styleElement.nextSiblingElement())
     {
         CustomStyle * style;
-        if (styleElement.tagName() == IParagraphStyle::_XmlTagName)
+        if (styleElement.tagName() == IParagraphStyle::XmlTagName)
         {
             style = new CustomParagraphStyle(this);
         }
-        else if (styleElement.tagName() == IListStyle::_XmlTagName)
+        else if (styleElement.tagName() == IListStyle::XmlTagName)
         {
             style = new CustomListStyle(this);
         }
-        else if (styleElement.tagName() == ITableStyle::_XmlTagName)
+        else if (styleElement.tagName() == ITableStyle::XmlTagName)
         {
             style = new CustomTableStyle(this);
         }
-        else if (styleElement.tagName() == ILinkStyle::_XmlTagName)
+        else if (styleElement.tagName() == ILinkStyle::XmlTagName)
         {
             style = new CustomLinkStyle(this);
         }
-        else if (styleElement.tagName() == ISectionStyle::_XmlTagName)
+        else if (styleElement.tagName() == ISectionStyle::XmlTagName)
         {
             style = new CustomSectionStyle(this);
         }

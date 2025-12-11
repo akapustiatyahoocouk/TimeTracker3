@@ -74,9 +74,11 @@ namespace tt3::report
         virtual auto    defaultPageNumberPlacement() const -> PageNumberPlacement override;
 
         virtual auto    styles() const -> Styles override;
-        virtual auto    findStyleByName(
+        virtual auto    findStyle(
                                 const Mnemonic & name
                             ) const -> IStyle * override;
+
+        virtual Report *createNewReport() override;
 
         //////////
         //  Implementation

@@ -18,8 +18,8 @@
 using namespace tt3::report;
 
 //////////
-//  Imlementation helpers
-void IStyle::_storeAttributes(QDomElement & element) const
+//  Serialization
+void IStyle::serialize(QDomElement & element) const
 {
     IReportTemplate::_setAttribute(
         element,

@@ -1,6 +1,6 @@
 //
 //  tt3-report/ReportTemplateManagerTool.cpp - ReportTemplateManagerTool class implementation
-//  TODO add non-en_GB resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //

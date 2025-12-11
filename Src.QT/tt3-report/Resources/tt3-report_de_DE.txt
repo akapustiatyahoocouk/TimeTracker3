@@ -5,6 +5,8 @@ Copyright=Copyright (C) {0}, Andrey Kapustin
 
 [BasicReportTemplate]
 DisplayName=Einfach (integriert)
+Report.Title=Titel
+Report.Subtitle=Untertitel
 
 [HtmlReportFormat]
 DisplayName=HTML-Dokument
@@ -34,7 +36,6 @@ ReportTemplateFilter=TT3-Berichtsvorlagen (*{0});;Alle Dateien (*.*)
 ExportCompletedTitle=Export abgeschlossen
 ExportCompletedMessage=Berichtsvorlage\n{0}\nwurde exportiert nach\n{1}.
 
-PreviewReport.Name=Vorschau
 PreviewReport.Chapter1=1. Die größten Sorgen von Margaret
 PreviewReport.Paragraph1=Unwissend sah sie ihre Zeichnungen Hochzeit Lachen. Fall oh ein das oder weg Seufzen tun hier darauf. Schärfe du exquisit uns jetzt Ende verwirkt. Erkundigt euch ohne es Dachböden selbst. Interesse unser noch erhalten gefolgt war. Kultiviert eine Sorge Herr unangenehm.
 PreviewReport.ListItem1=Entzückend, vorbehaltlos, unmöglich, wenige schätzen Männer günstig ein, siehe Bitten.

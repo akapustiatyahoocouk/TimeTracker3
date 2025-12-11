@@ -34,10 +34,40 @@ BasicReportTemplate::BasicReportTemplate()
 {
     _addStyle(
         new BasicSectionStyle(
-            ISectionStyle::DefaultStyleName,
+            ISectionStyle::TitleStyleName,
             _defaultFontSpecs,
             _defaultFontSize,
-            FontStyle::Bold,
+            FontStyle::Plain,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            PageNumberPlacement::None));
+    _addStyle(
+        new BasicSectionStyle(
+            ISectionStyle::PrequelStyleName,
+            _defaultFontSpecs,
+            _defaultFontSize,
+            FontStyle::Plain,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            PageNumberPlacement::BottomRight));
+    _addStyle(
+        new BasicSectionStyle(
+            ISectionStyle::BodyStyleName,
+            _defaultFontSpecs,
+            _defaultFontSize,
+            FontStyle::Plain,
+            _defaultTextColor,
+            _defaultBackgroundColor,
+            UnderlineMode::None,
+            PageNumberPlacement::BottomRight));
+    _addStyle(
+        new BasicSectionStyle(
+            ISectionStyle::SequelStyleName,
+            _defaultFontSpecs,
+            _defaultFontSize,
+            FontStyle::Plain,
             _defaultTextColor,
             _defaultBackgroundColor,
             UnderlineMode::None,
@@ -486,13 +516,39 @@ auto BasicReportTemplate::styles() const -> Styles
     return Styles(basicStyles.cbegin(), basicStyles.cend());
 }
 
-auto BasicReportTemplate::findStyleByName(
+auto BasicReportTemplate::findStyle(
         const Mnemonic & name
     ) const -> IStyle *
 {
-    return _styles.contains(name) ?
-                _styles[name] :
-                nullptr;
+    return _styles.contains(name) ? _styles[name] : nullptr;
+}
+
+Report * BasicReportTemplate::createNewReport()
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(BasicReportTemplate));
+
+    auto report = new Report(displayName(), this);
+
+    //  Create & populate title section
+    auto titleSection =
+        report->createSection("title", findSectionStyle(ISectionStyle::TitleStyleName));
+    titleSection
+        ->createParagraph(findParagraphStyle(IParagraphStyle::TitleStyleName))
+        ->createText(rr.string(RID(Report.Title)));
+    titleSection
+        ->createParagraph(findParagraphStyle(IParagraphStyle::SubtitleStyleName))
+        ->createText(rr.string(RID(Report.Subtitle)));
+
+    //  Create & populate prequel section
+    auto tocSection =
+        report->createSection("toc", findSectionStyle(ISectionStyle::PrequelStyleName));
+    tocSection->createTableOfContent();
+
+    //  Create empty body section
+    report->createSection("body", findSectionStyle(ISectionStyle::BodyStyleName));
+
+    //  Done
+    return report;
 }
 
 //////////

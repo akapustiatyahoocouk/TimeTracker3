@@ -425,37 +425,47 @@ void ManageReportTemplatesDialog::_PreviewGenerator::run()
 {
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ManageReportTemplatesDialog));
 
-    //  Generate a "preview" report
-    std::unique_ptr<Report> report =
-        std::make_unique<Report>(
-            rr.string(RID(PreviewReport.Name)),
-        _reportTemplate);
-    ReportSection * section =
-        report->createSection("1");
+    //  Generate a "preview" report with initial content
+    //  by asking the report template to create one
+    std::unique_ptr<Report> report
+        { _reportTemplate->createNewReport() };
 
-    section
+    //  Find/create the "body" section
+    ReportSection * bodySection = nullptr;
+    for (auto section : report->sections())
+    {
+        if (section->style() != nullptr &&
+            section->style()->name() == ISectionStyle::BodyStyleName)
+        {   //  This one!
+            bodySection = section;
+            break;
+        }
+    }
+    if (bodySection == nullptr)
+    {
+        bodySection =
+            report->createSection(
+                "1",
+                _reportTemplate->findSectionStyle(
+                    ISectionStyle::BodyStyleName));
+    }
+
+    //  Populate the report body
+    bodySection
         ->createParagraph(
-            _reportTemplate->findParagraphStyleByName(
-                IParagraphStyle::TitleStyleName))
-        ->createText(rr.string(RID(PreviewReport.Name)));
-
-    section->createTableOfContent();
-
-    section
-        ->createParagraph(
-            _reportTemplate->findParagraphStyleByName(
+            _reportTemplate->findParagraphStyle(
                 IParagraphStyle::Heading1StyleName))
         ->createText(rr.string(RID(PreviewReport.Chapter1)));
 
     ReportText * topText =
-        section
+        bodySection
             ->createParagraph()
             ->createText(rr.string(RID(PreviewReport.Paragraph1)));
     ReportAnchor * anchor =
         topText->createAnchor();
 
     ReportList * list =
-        section->createList();
+        bodySection->createList();
     list->createItem()
         ->createParagraph()
         ->createText(rr.string(RID(PreviewReport.ListItem1)));
@@ -466,35 +476,35 @@ void ManageReportTemplatesDialog::_PreviewGenerator::run()
         ->createParagraph()
         ->createText(rr.string(RID(PreviewReport.ListItem3)));
 
-    section
+    bodySection
         ->createParagraph(
-            _reportTemplate->findParagraphStyleByName(
+            _reportTemplate->findParagraphStyle(
                 IParagraphStyle::Heading2StyleName))
         ->createText(rr.string(RID(PreviewReport.Chapter11)));
-    section
+    bodySection
         ->createParagraph()
         ->createText(rr.string(RID(PreviewReport.Paragraph2)));
 
-    section
+    bodySection
         ->createParagraph(
-            _reportTemplate->findParagraphStyleByName(
+            _reportTemplate->findParagraphStyle(
                 IParagraphStyle::Heading2StyleName))
         ->createText(rr.string(RID(PreviewReport.Chapter12)));
-    section
+    bodySection
         ->createParagraph()
         ->createText(rr.string(RID(PreviewReport.Paragraph3)));
 
-    section
+    bodySection
         ->createParagraph(
-            _reportTemplate->findParagraphStyleByName(
+            _reportTemplate->findParagraphStyle(
                 IParagraphStyle::Heading1StyleName))
         ->createText(rr.string(RID(PreviewReport.Chapter2)));
-    section
+    bodySection
         ->createParagraph()
         ->createText(rr.string(RID(PreviewReport.Paragraph4)));
 
     ReportTable * table =
-        section->createTable();
+        bodySection->createTable();
     table
         ->createCell(0, 0, 1, 1)
         ->createParagraph()
@@ -512,7 +522,7 @@ void ManageReportTemplatesDialog::_PreviewGenerator::run()
         ->createParagraph()
         ->createText(rr.string(RID(PreviewReport.TableCell22)));
 
-    section
+    bodySection
         ->createParagraph()
         ->createText(rr.string(RID(PreviewReport.Link1)))
         ->createInternalLink(anchor);
@@ -558,7 +568,6 @@ void ManageReportTemplatesDialog::_PreviewGenerator::run()
     }
 
     //  ...and we're done
-    QThread::sleep(5);  //  TODO keep? kill?
     emit _dialog->previewAvailable(_reportTemplate, html);
     emit _dialog->refreshRequested();
 }

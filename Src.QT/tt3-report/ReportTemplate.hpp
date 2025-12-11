@@ -214,7 +214,7 @@ namespace tt3::report
         /// \return
         ///     The style with the required name; nullptr
         ///     if not found.
-        virtual auto    findStyleByName(
+        virtual auto    findStyle(
                                 const Mnemonic & name
                             ) const -> IStyle * = 0;
 
@@ -225,7 +225,7 @@ namespace tt3::report
         /// \return
         ///     The style with the required name; nullptr
         ///     if not found or not a character style.
-        virtual auto    findCharacterStyleByName(
+        virtual auto    findCharacterStyle(
                                 const Mnemonic & name
                             ) const -> ICharacterStyle *;
 
@@ -235,7 +235,7 @@ namespace tt3::report
         /// \return
         ///     The style with the required name; nullptr
         ///     if not found or not a block style.
-        virtual auto    findBlockStyleByName(
+        virtual auto    findBlockStyle(
                                 const Mnemonic & name
                             ) const -> IBlockStyle *;
 
@@ -245,7 +245,7 @@ namespace tt3::report
         /// \return
         ///     The style with the required name; nullptr
         ///     if not found or not a paragraph style.
-        virtual auto    findParagraphStyleByName(
+        virtual auto    findParagraphStyle(
                                 const Mnemonic & name
                             ) const -> IParagraphStyle *;
 
@@ -255,7 +255,7 @@ namespace tt3::report
         /// \return
         ///     The style with the required name; nullptr
         ///     if not found or not a list style.
-        virtual auto    findListStyleByName(
+        virtual auto    findListStyle(
                                 const Mnemonic & name
                             ) const -> IListStyle *;
 
@@ -265,7 +265,7 @@ namespace tt3::report
         /// \return
         ///     The style with the required name; nullptr
         ///     if not found or not a table style.
-        virtual auto    findTableStyleByName(
+        virtual auto    findTableStyle(
                                 const Mnemonic & name
                             ) const -> ITableStyle *;
 
@@ -275,7 +275,7 @@ namespace tt3::report
         /// \return
         ///     The style with the required name; nullptr
         ///     if not found or not a link style.
-        virtual auto    findLinkStyleByName(
+        virtual auto    findLinkStyle(
                                 const Mnemonic & name
                             ) const -> ILinkStyle *;
 
@@ -285,7 +285,7 @@ namespace tt3::report
         /// \return
         ///     The style with the required name; nullptr
         ///     if not found or not a section style.
-        virtual auto    findSectionStyleByName(
+        virtual auto    findSectionStyle(
                                 const Mnemonic & name
                             ) const -> ISectionStyle *;
 
@@ -310,6 +310,43 @@ namespace tt3::report
         /// \exception ReportException
         ///     If this report templais invalid.
         virtual void    validate() const;
+
+        /// \brief
+        ///     Creates a new report, containing only elements
+        ///     specific to this report template.
+        /// \details
+        ///     -   The report will have one or more sections
+        ///         with what content is deemed appropriate.
+        ///     -   One of them will be a "body" section, where
+        ///         the concrete report shall create dynamic content.
+        ///     -   The report will have a TOC if the report template
+        ///         demands it. The same goes for title and subtitle,
+        ///         althugh the report generator will normally choose
+        ///         to alter the content of these paragraphs.
+        ///     -   The caller is reponsible for "delete"ing the
+        ///         returned Report instance when done with it.
+        /// \return
+        ///     The newly created Report.
+        virtual Report *createNewReport() = 0;
+
+        //////////
+        //  Serialization
+    public:
+        /// \brief
+        ///     The XML serialization format version.
+        inline static const QString FormatVersion = "1";
+
+        /// \brief
+        ///     The tag name for an XML element representing
+        ///     the report template itself in an XML document.
+        inline static const QString XmlTagName = "ReportTemplate";
+
+        /// \brief
+        ///     Serializes this report template by setting attributes
+        ///     and children of the specified element as necessary.
+        /// \param element
+        ///     The XML DOM element to serialize to.
+        virtual void    serialize(QDomElement & element) const;
 
         //////////
         //  Implementation
@@ -476,10 +513,22 @@ namespace tt3::report
         virtual auto    underlineMode() const -> UnderlineModeOpt = 0;
 
         //////////
-        //  Imlementation helpers
-    private:
-        virtual QString _xmlTagName() const = 0;
-        virtual void    _storeAttributes(QDomElement & element) const;
+        //  Serialization
+    public:
+        /// \brief
+        ///     Returns the tag name for an XML element representing
+        ///     the report template itself in an XML document.
+        /// \return
+        ///     The tag name for an XML element representing
+        ///     the report template itself in an XML document.
+        virtual QString xmlTagName() const = 0;
+
+        /// \brief
+        ///     Serializes this style by setting attributes
+        ///     and children of the specified element as necessary.
+        /// \param element
+        ///     The XML DOM element to serialize to.
+        virtual void    serialize(QDomElement & element) const;
     };
 
     /// \class ICharacterStyle tt3-report/API.hpp
@@ -495,9 +544,9 @@ namespace tt3::report
         ICharacterStyle() = default;
 
         //////////
-        //  Imlementation helpers
-    private:
-        virtual void    _storeAttributes(QDomElement & element) const override;
+        //  Serialization
+    public:
+        virtual void    serialize(QDomElement & element) const override;
     };
 
     /// \class IBlockStyle tt3-report/API.hpp
@@ -546,9 +595,9 @@ namespace tt3::report
         virtual auto    gapBelow() const -> TypographicSizeOpt = 0;
 
         //////////
-        //  Imlementation helpers
-    private:
-        virtual void    _storeAttributes(QDomElement & element) const override;
+        //  Serialization
+    public:
+        virtual void    serialize(QDomElement & element) const override;
     };
 
     /// \class IParagraphStyle tt3-report/API.hpp
@@ -675,11 +724,15 @@ namespace tt3::report
         virtual auto    borderType() const -> BorderTypeOpt = 0;
 
         //////////
-        //  Imlementation helpers
-    private:
-        inline static const QString _XmlTagName = "ParagraphStyle";
-        virtual QString _xmlTagName() const override { return _XmlTagName; }
-        virtual void    _storeAttributes(QDomElement & element) const override;
+        //  Serialization
+    public:
+        /// \brief
+        ///     The tag name for an XML element representing
+        ///     this style in an XML document.
+        inline static const QString XmlTagName = "ParagraphStyle";
+
+        virtual QString xmlTagName() const override { return XmlTagName; }
+        virtual void    serialize(QDomElement & element) const override;
     };
 
     /// \class IListStyle tt3-report/API.hpp
@@ -716,11 +769,15 @@ namespace tt3::report
         virtual auto    indent() const -> TypographicSizeOpt = 0;
 
         //////////
-        //  Imlementation helpers
-    private:
-        inline static const QString _XmlTagName = "ListStyle";
-        virtual QString _xmlTagName() const override { return _XmlTagName; }
-        virtual void    _storeAttributes(QDomElement & element) const override;
+        //  Serialization
+    public:
+        /// \brief
+        ///     The tag name for an XML element representing
+        ///     this style in an XML document.
+        inline static const QString XmlTagName = "ListStyle";
+
+        virtual QString xmlTagName() const override { return XmlTagName; }
+        virtual void    serialize(QDomElement & element) const override;
     };
 
     /// \class ITableStyle tt3-report/API.hpp
@@ -765,11 +822,15 @@ namespace tt3::report
         virtual auto    cellBorderType() const -> BorderTypeOpt = 0;
 
         //////////
-        //  Imlementation helpers
-    private:
-        inline static const QString _XmlTagName = "TableStyle";
-        virtual QString _xmlTagName() const override { return _XmlTagName; }
-        virtual void    _storeAttributes(QDomElement & element) const override;
+        //  Serialization
+    public:
+        /// \brief
+        ///     The tag name for an XML element representing
+        ///     this style in an XML document.
+        inline static const QString XmlTagName = "TableStyle";
+
+        virtual QString xmlTagName() const override { return XmlTagName; }
+        virtual void    serialize(QDomElement & element) const override;
     };
 
     /// \class ILinkStyle tt3-report/API.hpp
@@ -794,11 +855,15 @@ namespace tt3::report
         inline static const Mnemonic DefaultStyleName = M(Link.Default);
 
         //////////
-        //  Imlementation helpers
-    private:
-        inline static const QString _XmlTagName = "LinkStyle";
-        virtual QString _xmlTagName() const override { return _XmlTagName; }
-        virtual void    _storeAttributes(QDomElement & element) const override;
+        //  Serialization
+    public:
+        /// \brief
+        ///     The tag name for an XML element representing
+        ///     this style in an XML document.
+        inline static const QString XmlTagName = "LinkStyle";
+
+        virtual QString xmlTagName() const override { return XmlTagName; }
+        virtual void    serialize(QDomElement & element) const override;
     };
 
     /// \class ISectionStyle tt3-report/API.hpp
@@ -819,8 +884,32 @@ namespace tt3::report
         //  Constants
     public:
         /// \brief
-        ///     The default section style; must be defined by every valid report template.
-        inline static const Mnemonic DefaultStyleName = M(Section.Default);
+        ///     The title section style; must be defined by every valid report template.
+        /// \details
+        ///     The "prequel" of a report is a section which appears in the report at the
+        ///     bery beginning.
+        inline static const Mnemonic TitleStyleName = M(Section.Title);
+
+        /// \brief
+        ///     The prequel section style; must be defined by every valid report template.
+        /// \details
+        ///     The "prequel" of a report is a section which appears in the report BEFORE
+        ///     the generated report body.
+        inline static const Mnemonic PrequelStyleName = M(Section.Prequel);
+
+        /// \brief
+        ///     The body section style; must be defined by every valid report template.
+        /// \details
+        ///     The "body" of a report is a section where the report generator creates
+        ///     actual content during report generation.
+        inline static const Mnemonic BodyStyleName = M(Section.Body);
+
+        /// \brief
+        ///     The sequel section style; must be defined by every valid report template.
+        /// \details
+        ///     The "sequel" of a report is a section which appears in the report AFTER
+        ///     the generated report body.
+        inline static const Mnemonic SequelStyleName = M(Section.Sequel);
 
         //////////
         //  Operations
@@ -835,11 +924,15 @@ namespace tt3::report
         virtual auto    pageNumberPlacement() const -> PageNumberPlacementOpt = 0;
 
         //////////
-        //  Imlementation helpers
-    private:
-        inline static const QString _XmlTagName = "SectionStyle";
-        virtual QString _xmlTagName() const override { return _XmlTagName; }
-        virtual void    _storeAttributes(QDomElement & element) const override;
+        //  Serialization
+    public:
+        /// \brief
+        ///     The tag name for an XML element representing
+        ///     this style in an XML document.
+        inline static const QString XmlTagName = "SectionStyle";
+
+        virtual QString xmlTagName() const override { return XmlTagName; }
+        virtual void    serialize(QDomElement & element) const override;
     };
 }
 

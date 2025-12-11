@@ -5,6 +5,8 @@ Copyright=Copyright (C) {0}, Andrey Kapustin
 
 [BasicReportTemplate]
 DisplayName=Basic (built-in)
+Report.Title=Title
+Report.Subtitle=Subtitle
 
 [HtmlReportFormat]
 DisplayName=HTML document
@@ -34,7 +36,6 @@ ReportTemplateFilter=TT3 report templates (*{0});;All files (*.*)
 ExportCompletedTitle=Export completed
 ExportCompletedMessage=Report template\n{0}\nhas been exported to\n{1}.
 
-PreviewReport.Name=Preview
 PreviewReport.Chapter1=1. Concerns greatest margaret
 PreviewReport.Paragraph1=Ignorant saw her her drawings marriage laughter. Case oh an that or away sigh do here upon. Acuteness you exquisite ourselves now end forfeited. Enquire ye without it garrets up himself. Interest our nor received followed was. Cultivated an up solicitude mr unpleasant.
 PreviewReport.ListItem1=Delightful unreserved impossible few estimating men favourable see entreaties.

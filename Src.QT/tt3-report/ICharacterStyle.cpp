@@ -18,10 +18,10 @@
 using namespace tt3::report;
 
 //////////
-//  Imlementation helpers
-void ICharacterStyle::_storeAttributes(QDomElement & element) const
+//  Serialization
+void ICharacterStyle::serialize(QDomElement & element) const
 {
-    IStyle::_storeAttributes(element);
+    IStyle::serialize(element);
 }
 
 //  End of tt3-report/ICharacterStyle.cpp

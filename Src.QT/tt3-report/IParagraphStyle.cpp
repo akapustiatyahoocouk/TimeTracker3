@@ -18,10 +18,11 @@
 using namespace tt3::report;
 
 //////////
-//  Imlementation helpers
-void IParagraphStyle::_storeAttributes(QDomElement & element) const
+//  Serialization
+void IParagraphStyle::serialize(QDomElement & element) const
 {
-    IBlockStyle::_storeAttributes(element);
+    IBlockStyle::serialize(element);
+
     IReportTemplate::_setAttribute(
         element,
         "TextAlignment",

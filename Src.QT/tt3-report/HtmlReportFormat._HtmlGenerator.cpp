@@ -359,8 +359,7 @@ void HRG::_HtmlGenerator::_generateTableOfContent(
 {
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(HtmlReportFormat));
 
-    IParagraphStyle * heading1Style = tableOfContent->report()->reportTemplate()->findParagraphStyleByName(IParagraphStyle::Heading1StyleName);
-    _htmlBuilder.openTag(
+    IParagraphStyle * heading1Style = tableOfContent->report()->reportTemplate()->findParagraphStyle(IParagraphStyle::Heading1StyleName);    _htmlBuilder.openTag(
         "p",
         "class", _cssBuilder.paragraphStyle(heading1Style));
     _htmlBuilder.writeText(
@@ -422,39 +421,39 @@ void HRG::_HtmlGenerator::_generateTableOfContentForParagraph(
     tt3::util::Mnemonic paragraphStyleName = paragraph->style()->name();
     if (paragraphStyleName == IParagraphStyle::Heading1StyleName)
     {
-        tocStyle = paragraph->report()->reportTemplate()->findParagraphStyleByName(IParagraphStyle::Toc1StyleName);
+        tocStyle = paragraph->report()->reportTemplate()->findParagraphStyle(IParagraphStyle::Toc1StyleName);
     }
     else if (paragraphStyleName == IParagraphStyle::Heading2StyleName)
     {
-        tocStyle = paragraph->report()->reportTemplate()->findParagraphStyleByName(IParagraphStyle::Toc2StyleName);
+        tocStyle = paragraph->report()->reportTemplate()->findParagraphStyle(IParagraphStyle::Toc2StyleName);
     }
     else if (paragraphStyleName == IParagraphStyle::Heading3StyleName)
     {
-        tocStyle = paragraph->report()->reportTemplate()->findParagraphStyleByName(IParagraphStyle::Toc3StyleName);
+        tocStyle = paragraph->report()->reportTemplate()->findParagraphStyle(IParagraphStyle::Toc3StyleName);
     }
     else if (paragraphStyleName == IParagraphStyle::Heading4StyleName)
     {
-        tocStyle = paragraph->report()->reportTemplate()->findParagraphStyleByName(IParagraphStyle::Toc4StyleName);
+        tocStyle = paragraph->report()->reportTemplate()->findParagraphStyle(IParagraphStyle::Toc4StyleName);
     }
     else if (paragraphStyleName == IParagraphStyle::Heading5StyleName)
     {
-        tocStyle = paragraph->report()->reportTemplate()->findParagraphStyleByName(IParagraphStyle::Toc5StyleName);
+        tocStyle = paragraph->report()->reportTemplate()->findParagraphStyle(IParagraphStyle::Toc5StyleName);
     }
     else if (paragraphStyleName == IParagraphStyle::Heading6StyleName)
     {
-        tocStyle = paragraph->report()->reportTemplate()->findParagraphStyleByName(IParagraphStyle::Toc6StyleName);
+        tocStyle = paragraph->report()->reportTemplate()->findParagraphStyle(IParagraphStyle::Toc6StyleName);
     }
     else if (paragraphStyleName == IParagraphStyle::Heading7StyleName)
     {
-        tocStyle = paragraph->report()->reportTemplate()->findParagraphStyleByName(IParagraphStyle::Toc7StyleName);
+        tocStyle = paragraph->report()->reportTemplate()->findParagraphStyle(IParagraphStyle::Toc7StyleName);
     }
     else if (paragraphStyleName == IParagraphStyle::Heading8StyleName)
     {
-        tocStyle = paragraph->report()->reportTemplate()->findParagraphStyleByName(IParagraphStyle::Toc8StyleName);
+        tocStyle = paragraph->report()->reportTemplate()->findParagraphStyle(IParagraphStyle::Toc8StyleName);
     }
     else if (paragraphStyleName == IParagraphStyle::Heading9StyleName)
     {
-        tocStyle = paragraph->report()->reportTemplate()->findParagraphStyleByName(IParagraphStyle::Toc9StyleName);
+        tocStyle = paragraph->report()->reportTemplate()->findParagraphStyle(IParagraphStyle::Toc9StyleName);
     }
     else
     {
@@ -467,7 +466,7 @@ void HRG::_HtmlGenerator::_generateTableOfContentForParagraph(
         "class", _cssBuilder.paragraphStyle(tocStyle));
     for (auto spanElement : paragraph->children())
     {
-        QString linkClass = _cssBuilder.linkStyle(paragraph->report()->reportTemplate()->findLinkStyleByName(ILinkStyle::DefaultStyleName));
+        QString linkClass = _cssBuilder.linkStyle(paragraph->report()->reportTemplate()->findLinkStyle(ILinkStyle::DefaultStyleName));
         _htmlBuilder.openTag("a",
                              "class", linkClass,
                              "href", "#" + _mapElementsToIds[paragraph]);

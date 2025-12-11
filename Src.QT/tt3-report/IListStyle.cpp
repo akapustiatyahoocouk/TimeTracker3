@@ -18,10 +18,11 @@
 using namespace tt3::report;
 
 //////////
-//  Imlementation helpers
-void IListStyle::_storeAttributes(QDomElement & element) const
+//  Serialization
+void IListStyle::serialize(QDomElement & element) const
 {
-    IBlockStyle::_storeAttributes(element);
+    IBlockStyle::serialize(element);
+
     IReportTemplate::_setAttribute(
         element,
         "Indent",

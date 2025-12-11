@@ -122,53 +122,53 @@ auto IReportTemplate::sectionStyles() const -> SectionStyles
     return result;
 }
 
-auto IReportTemplate::findCharacterStyleByName(
+auto IReportTemplate::findCharacterStyle(
         const Mnemonic & name
     ) const -> ICharacterStyle *
 {
-    return dynamic_cast<ICharacterStyle*>(findStyleByName(name));
+    return dynamic_cast<ICharacterStyle*>(findStyle(name));
 }
 
-auto IReportTemplate::findBlockStyleByName(
+auto IReportTemplate::findBlockStyle(
         const Mnemonic & name
     ) const -> IBlockStyle *
 {
-    return dynamic_cast<IBlockStyle*>(findStyleByName(name));
+    return dynamic_cast<IBlockStyle*>(findStyle(name));
 }
 
-auto IReportTemplate::findParagraphStyleByName(
+auto IReportTemplate::findParagraphStyle(
         const Mnemonic & name
     ) const -> IParagraphStyle *
 {
-    return dynamic_cast<IParagraphStyle*>(findStyleByName(name));
+    return dynamic_cast<IParagraphStyle*>(findStyle(name));
 }
 
-auto IReportTemplate::findListStyleByName(
+auto IReportTemplate::findListStyle(
         const Mnemonic & name
     ) const -> IListStyle *
 {
-    return dynamic_cast<IListStyle*>(findStyleByName(name));
+    return dynamic_cast<IListStyle*>(findStyle(name));
 }
 
-auto IReportTemplate::findTableStyleByName(
+auto IReportTemplate::findTableStyle(
         const Mnemonic & name
     ) const -> ITableStyle *
 {
-    return dynamic_cast<ITableStyle*>(findStyleByName(name));
+    return dynamic_cast<ITableStyle*>(findStyle(name));
 }
 
-auto IReportTemplate::findLinkStyleByName(
+auto IReportTemplate::findLinkStyle(
         const Mnemonic & name
     ) const -> ILinkStyle *
 {
-    return dynamic_cast<ILinkStyle*>(findStyleByName(name));
+    return dynamic_cast<ILinkStyle*>(findStyle(name));
 }
 
-auto IReportTemplate::findSectionStyleByName(
+auto IReportTemplate::findSectionStyle(
         const Mnemonic & name
     ) const -> ISectionStyle *
 {
-    return dynamic_cast<ISectionStyle*>(findStyleByName(name));
+    return dynamic_cast<ISectionStyle*>(findStyle(name));
 }
 
 QDomDocument IReportTemplate::toXmlDocument() const
@@ -179,49 +179,11 @@ QDomDocument IReportTemplate::toXmlDocument() const
     document.appendChild(xmlDeclaration);
 
     //  Set up the root element
-    QDomElement rootElement = document.createElement("CustomReportTemplate");
+    QDomElement rootElement = document.createElement(XmlTagName);
     document.appendChild(rootElement);
-    rootElement.setAttribute("FormatVersion", "1");
 
-    //  Set up "template properties" element
-    QDomElement propertiesElement = document.createElement("Properties"); //$NON-NLS-1$
-    rootElement.appendChild(propertiesElement);
-
-    _setAttribute(propertiesElement, "Mnemonic", this->mnemonic());
-    _setAttribute(propertiesElement, "DisplayName", this->displayName());   //  this is for "default" display name
-    _setAttribute(propertiesElement, "PageSetup", this->pageSetup());
-    _setAttribute(propertiesElement, "DefaultFontSpecs", this->defaultFontSpecs());
-    _setAttribute(propertiesElement, "DefaultFontSize", this->defaultFontSize());
-    _setAttribute(propertiesElement, "DefaultFontStyle", this->defaultFontStyle());
-    _setAttribute(propertiesElement, "DefaultTextColor", this->defaultTextColor());
-    _setAttribute(propertiesElement, "DefaultBackgroundColor", this->defaultBackgroundColor());
-    _setAttribute(propertiesElement, "DefaultListIndent", this->defaultListIndent());
-    _setAttribute(propertiesElement, "DefaultTableBorderType", this->defaultTableBorderType());
-    _setAttribute(propertiesElement, "DefaultCellBorderType", this->defaultCellBorderType());
-    _setAttribute(propertiesElement, "DefaultLinkUnderlineMode", this->defaultLinkUnderlineMode());
-    _setAttribute(propertiesElement, "DefaultPageNumberPlacement", this->defaultPageNumberPlacement());
-
-    //  Set up "template styles" element
-    QDomElement stylesElement = document.createElement("Styles");
-    rootElement.appendChild(stylesElement);
-
-    //  Keep styles sorted by name to minimize the diffs
-    //  between the report template XML files
-    Styles styles = this->styles();
-    QList<IStyle*> stylesList(styles.cbegin(), styles.cend());
-    std::sort(
-    stylesList.begin(),
-        stylesList.end(),
-        [](auto a, auto b)
-        {
-            return a->name() < b->name();
-        });
-    for (IStyle * style : stylesList)
-    {
-        QDomElement styleElement = document.createElement(style->_xmlTagName());
-        stylesElement.appendChild(styleElement);
-        style->_storeAttributes(styleElement);
-    }
+    //  Go!
+    serialize(rootElement);
 
     //  Done
     return document;
@@ -239,7 +201,7 @@ QString IReportTemplate::toXmlString() const
 void IReportTemplate::validate() const
 {
 #define CHECK_STYLE(Type, Name)                         \
-    if (find##Type##StyleByName(                        \
+    if (find##Type##Style(                              \
             I##Type##Style::Name##StyleName) == nullptr)\
     {                                                   \
         qCritical() <<                                  \
@@ -278,9 +240,64 @@ void IReportTemplate::validate() const
     CHECK_STYLE(List, Default)
     CHECK_STYLE(Table, Default)
     CHECK_STYLE(Link, Default)
-    CHECK_STYLE(Section, Default)
+
+    CHECK_STYLE(Section, Title)
+    CHECK_STYLE(Section, Prequel)
+    CHECK_STYLE(Section, Body)
+    CHECK_STYLE(Section, Sequel)
 
 #undef CHECK_STYLE
+}
+
+//////////
+//  Serialization
+void IReportTemplate::serialize(QDomElement & element) const
+{
+    Q_ASSERT(!element.isNull());
+    Q_ASSERT(!element.ownerDocument().isNull());
+
+    //  Set report template element's attributes
+    element.setAttribute("FormatVersion", FormatVersion);
+
+    //  Set up "template properties" element
+    QDomElement propertiesElement = element.ownerDocument().createElement("Properties");
+    element.appendChild(propertiesElement);
+
+    _setAttribute(propertiesElement, "Mnemonic", this->mnemonic());
+    _setAttribute(propertiesElement, "DisplayName", this->displayName());   //  this is for "default" display name
+    _setAttribute(propertiesElement, "PageSetup", this->pageSetup());
+    _setAttribute(propertiesElement, "DefaultFontSpecs", this->defaultFontSpecs());
+    _setAttribute(propertiesElement, "DefaultFontSize", this->defaultFontSize());
+    _setAttribute(propertiesElement, "DefaultFontStyle", this->defaultFontStyle());
+    _setAttribute(propertiesElement, "DefaultTextColor", this->defaultTextColor());
+    _setAttribute(propertiesElement, "DefaultBackgroundColor", this->defaultBackgroundColor());
+    _setAttribute(propertiesElement, "DefaultListIndent", this->defaultListIndent());
+    _setAttribute(propertiesElement, "DefaultTableBorderType", this->defaultTableBorderType());
+    _setAttribute(propertiesElement, "DefaultCellBorderType", this->defaultCellBorderType());
+    _setAttribute(propertiesElement, "DefaultLinkUnderlineMode", this->defaultLinkUnderlineMode());
+    _setAttribute(propertiesElement, "DefaultPageNumberPlacement", this->defaultPageNumberPlacement());
+
+    //  Set up "styles" element
+    QDomElement stylesElement =  element.ownerDocument().createElement("Styles");
+    element.appendChild(stylesElement);
+
+    //  Keep styles sorted by name to minimize the diffs
+    //  between the report template XML files
+    Styles styles = this->styles();
+    QList<IStyle*> stylesList(styles.cbegin(), styles.cend());
+    std::sort(
+        stylesList.begin(),
+        stylesList.end(),
+        [](auto a, auto b)
+        {
+            return a->name() < b->name();
+        });
+    for (IStyle * style : stylesList)
+    {
+        QDomElement styleElement =  element.ownerDocument().createElement(style->xmlTagName());
+        stylesElement.appendChild(styleElement);
+        style->serialize(styleElement);
+    }
 }
 
 //  End of tt3-report/IReportTemplate.cpp
