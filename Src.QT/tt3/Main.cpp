@@ -21,9 +21,8 @@ using namespace tt3;
 //  TT3 entry point
 int main(int argc, char *argv[])
 {
-    //  TODO kill off QtWebView::initialize();
     Application app(argc, argv);
-    //  Move the next line to Application::_initialize(),
+    //  TODO Move the next line to Application::_initialize(),
     //  right before the _selectActiveTheme() call
     app.setStyle(QStyleFactory::create("Fusion"));    //  TODO what about Linux?
     try

@@ -333,9 +333,48 @@ namespace tt3::report
         //////////
         //  Operations
     public:
+        /// \brief
+        ///     Returns the resolved left margin for this block.
+        /// \details
+        ///     This is taken from the block's associated style
+        ///     or, if that style does not specify the left margin,
+        ///     goes to the parent block, eventuually returns
+        ///     the default value from the report template.
+        /// \return
+        ///     The resolved left margin for this block.
         virtual auto    resolveLeftMargin() const ->TypographicSize;
+
+        /// \brief
+        ///     Returns the resolved right margin for this block.
+        /// \details
+        ///     This is taken from the block's associated style
+        ///     or, if that style does not specify the right margin,
+        ///     goes to the parent block, eventuually returns
+        ///     the default value from the report template.
+        /// \return
+        ///     The resolved right margin for this block.
         virtual auto    resolveRightMargin() const ->TypographicSize;
+
+        /// \brief
+        ///     Returns the resolved gap above this block.
+        /// \details
+        ///     This is taken from the block's associated style
+        ///     or, if that style does not specify the above gap,
+        ///     goes to the parent block, eventuually returns
+        ///     the default value from the report template.
+        /// \return
+        ///     The resolved gap above this block.
         virtual auto    resolveGapAboven() const ->TypographicSize;
+
+        /// \brief
+        ///     Returns the resolved gap below this block.
+        /// \details
+        ///     This is taken from the block's associated style
+        ///     or, if that style does not specify the below gap,
+        ///     goes to the parent block, eventuually returns
+        ///     the default value from the report template.
+        /// \return
+        ///     The resolved gap below this block.
         virtual auto    resolveGapBelow() const ->TypographicSize;
 
         //////////
@@ -470,7 +509,26 @@ namespace tt3::report
         ///     The list of children of this Paragraph, in order of creation.
         auto            children() const -> ReportSpanElements { return _children; }
 
+        /// \brief
+        ///     Returns the resolved text alignment for this paragraph.
+        /// \details
+        ///     This is taken from the paragraph's associated style
+        ///     or, if that style does not specify the text alignment,
+        ///     goes to the parent block, eventuually returns
+        ///     the default value from the report template.
+        /// \return
+        ///     The resolved text alignment for this paragraph.
         auto            resolveTextAlignment() const -> HorizontalAlignment;
+
+        /// \brief
+        ///     Returns the resolved border type for this paragraph.
+        /// \details
+        ///     This is taken from the paragraph's associated style
+        ///     or, if that style does not specify the border type,
+        ///     goes to the parent block, eventuually returns
+        ///     the default value from the report template.
+        /// \return
+        ///     The resolved border type for this paragraph.
         BorderType      resolveBorderType() const;
 
         /// \brief
@@ -762,6 +820,17 @@ namespace tt3::report
         /// \return
         ///     The list of all Items in this List, in order of creation.
         ReportListItems     items() const { return _items; }
+
+        /// \brief
+        ///     Returns the resolved indent for this list.
+        /// \details
+        ///     This is taken from the paragraph's associated style
+        ///     or, if that style does not specify the undent,
+        ///     goes to the parent block, eventuually returns
+        ///     the default value from the report template.
+        /// \return
+        ///     The resolved indent for this list.
+        TypographicSize     resolveIndent() const;
 
         /// \brief
         ///     Creates a new ListItem at the end of this List.

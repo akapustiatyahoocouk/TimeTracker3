@@ -199,6 +199,28 @@ TypographicSize ReportList::resolveGapBelow() const
 
 //////////
 //  Operations
+TypographicSize ReportList::resolveIndent() const
+{
+    //  Honor own style first
+    if (_style != nullptr && _style->indent().has_value())
+    {
+        return _style->indent().value();
+    }
+    //  Must go to the parent list
+    for (ReportElement * parent = this->parent();
+         parent != nullptr;
+         parent = parent->parent())
+    {
+        if (auto parentList =
+            dynamic_cast<ReportList*>(parent))
+        {
+            return parentList->resolveIndent();
+        }
+    }
+    //  No ancestor list was any good
+    return _report->_reportTemplate->defaultListIndent();
+}
+
 ReportListItem * ReportList::createItem(const QString & label)
 {
 #ifdef QT_DEBUG

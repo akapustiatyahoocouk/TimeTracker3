@@ -497,8 +497,6 @@ namespace tt3::report
         //////////
         //  Imlementation helpers
     private:
-        //  TODO kill off inline static const QString _XmlTagName = "CharacterStyle";
-        //  TODO kill off virtual QString _xmlTagName() const override { return _XmlTagName; }
         virtual void    _storeAttributes(QDomElement & element) const override;
     };
 
@@ -550,8 +548,6 @@ namespace tt3::report
         //////////
         //  Imlementation helpers
     private:
-        //  TODO kill off inline static const QString _XmlTagName = "BlockStyle";
-        //  TODO kill off virtual QString _xmlTagName() const override { return _XmlTagName; }
         virtual void    _storeAttributes(QDomElement & element) const override;
     };
 
