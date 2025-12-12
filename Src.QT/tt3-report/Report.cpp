@@ -23,7 +23,8 @@ Report::Report(
         const QString & name,
         const IReportTemplate * reportTemplate
     ) : _name(name),
-        _reportTemplate(reportTemplate)
+        _reportTemplate(reportTemplate),
+        _createdAt(QDateTime::currentDateTimeUtc())
 {
     Q_ASSERT(_reportTemplate != nullptr);
 
@@ -31,6 +32,14 @@ Report::Report(
 }
 
 Report::~Report()
+{
+    clear();
+    _reportTemplate->_referenceCount--;
+}
+
+//////////
+//  Operations
+void Report::clear()
 {
 #ifdef QT_DEBUG
     _validate();
@@ -50,11 +59,8 @@ Report::~Report()
 #ifdef QT_DEBUG
     _validate();
 #endif
-    _reportTemplate->_referenceCount--;
 }
 
-//////////
-//  Operations
 ReportSections Report::sections()
 {
     return _sections;
@@ -109,6 +115,8 @@ void Report::serialize(QDomElement & element) const
     //  Report properties
     element.setAttribute("FormatVersion", FormatVersion);
     element.setAttribute("Template", _reportTemplate->mnemonic().toString());
+    element.setAttribute("Name", _name);
+    element.setAttribute("CreatedAt", tt3::util::toString(_createdAt));
 
     //  Report content - it's sufficient to serialize
     //  _sections, as _anchors and _links will be re-created
@@ -121,6 +129,31 @@ void Report::serialize(QDomElement & element) const
         element.appendChild(sectionElement);
         section->serialize(sectionElement);
     }
+}
+
+void Report::deserialize(const QDomElement & element)
+{
+    Q_ASSERT(!element.isNull());
+
+    //  Report properties
+    if (element.attribute("FormatVersion") != FormatVersion)
+    {   //  OOPS! Format version mismatch
+        qCritical() << "FormatVersion != " + FormatVersion;
+        throw InvalidReportException();
+    }
+    if (element.attribute("Template") != _reportTemplate->mnemonic().toString())
+    {   //  OOPS! Template mismatch!
+        qCritical() << "Template != " + _reportTemplate->mnemonic().toString();
+        throw InvalidReportException();
+    }
+    _name = element.attribute("Name");
+    _createdAt =
+        tt3::util::fromString<QDateTime>(
+            element.attribute("CreatedAt"),
+            _createdAt);    //  default == no change
+
+    //  We're re-creating the entire content of a report
+    clear();
 }
 
 #ifdef QT_DEBUG

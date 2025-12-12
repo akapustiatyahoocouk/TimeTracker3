@@ -219,26 +219,66 @@ namespace tt3::report
                             ) const -> IStyle * = 0;
 
         /// \brief
+        ///     Gets a style defined in this report template by name.
+        /// \param name
+        ///     The name to look for.
+        /// \return
+        ///     The style with the required name.
+        /// \exception ReportException
+        ///     If the style does not exist.
+        virtual auto    style(
+                                const Mnemonic & name
+                            ) const -> IStyle *;
+
+        /// \brief
         ///     Finds a character style defined in this report template by name.
         /// \param name
         ///     The name to look for.
         /// \return
-        ///     The style with the required name; nullptr
+        ///     The character style with the required name; nullptr
         ///     if not found or not a character style.
         virtual auto    findCharacterStyle(
                                 const Mnemonic & name
                             ) const -> ICharacterStyle *;
 
+        /// \brief
+        ///     Gets a character style defined in this report template by name.
+        /// \param name
+        ///     The name to look for.
+        /// \return
+        ///     The character style with the required name.
+        /// \exception ReportException
+        ///     If the style does not exist or is not a
+        ///     character style.
+        virtual auto    characterStyle(
+                                const Mnemonic & name
+                            ) const -> ICharacterStyle *;
+
+        /// \brief
         ///     Finds a block style defined in this report template by name.
         /// \param name
         ///     The name to look for.
         /// \return
-        ///     The style with the required name; nullptr
+        ///     The block style with the required name; nullptr
         ///     if not found or not a block style.
         virtual auto    findBlockStyle(
                                 const Mnemonic & name
                             ) const -> IBlockStyle *;
 
+        /// \brief
+        ///     Gets a block style defined in this report template by name.
+        /// \param name
+        ///     The name to look for.
+        /// \return
+        ///     The block style with the required name.
+        /// \exception ReportException
+        ///     If the style does not exist or is not a
+        ///     block style.
+        virtual auto    blockStyle(
+                                const Mnemonic & name
+                            ) const -> IBlockStyle *;
+
+        /// \brief
         ///     Finds a paragraph style defined in this report template by name.
         /// \param name
         ///     The name to look for.
@@ -249,43 +289,112 @@ namespace tt3::report
                                 const Mnemonic & name
                             ) const -> IParagraphStyle *;
 
+        /// \brief
+        ///     Gets a paragraph style defined in this report template by name.
+        /// \param name
+        ///     The name to look for.
+        /// \return
+        ///     The paragraph style with the required name.
+        /// \exception ReportException
+        ///     If the style does not exist or is not a
+        ///     paragraph style.
+        virtual auto    paragraphStyle(
+                                const Mnemonic & name
+                            ) const -> IParagraphStyle *;
+
+        /// \brief
         ///     Finds a list style defined in this report template by name.
         /// \param name
         ///     The name to look for.
         /// \return
-        ///     The style with the required name; nullptr
+        ///     The list style with the required name; nullptr
         ///     if not found or not a list style.
         virtual auto    findListStyle(
                                 const Mnemonic & name
                             ) const -> IListStyle *;
 
+        /// \brief
+        ///     Gets a list style defined in this report template by name.
+        /// \param name
+        ///     The name to look for.
+        /// \return
+        ///     The list list style with the required name.
+        /// \exception ReportException
+        ///     If the style does not exist or is not a
+        ///     list style.
+        virtual auto    listStyle(
+                                const Mnemonic & name
+                            ) const -> IListStyle *;
+
+        /// \brief
         ///     Finds a table style defined in this report template by name.
         /// \param name
         ///     The name to look for.
         /// \return
-        ///     The style with the required name; nullptr
+        ///     The table style with the required name; nullptr
         ///     if not found or not a table style.
         virtual auto    findTableStyle(
                                 const Mnemonic & name
                             ) const -> ITableStyle *;
 
+        /// \brief
+        ///     Gets a table style defined in this report template by name.
+        /// \param name
+        ///     The name to look for.
+        /// \return
+        ///     The table style with the required name.
+        /// \exception ReportException
+        ///     If the style does not exist or is not a
+        ///     table style.
+        virtual auto    tableStyle(
+                                const Mnemonic & name
+                            ) const -> ITableStyle *;
+
+        /// \brief
         ///     Finds a link style defined in this report template by name.
         /// \param name
         ///     The name to look for.
         /// \return
-        ///     The style with the required name; nullptr
+        ///     The link style with the required name; nullptr
         ///     if not found or not a link style.
         virtual auto    findLinkStyle(
                                 const Mnemonic & name
                             ) const -> ILinkStyle *;
 
+        /// \brief
+        ///     Gets a link style defined in this report template by name.
+        /// \param name
+        ///     The name to look for.
+        /// \return
+        ///     The link style with the required name.
+        /// \exception ReportException
+        ///     If the style does not exist or is not a
+        ///     link style.
+        virtual auto    linkStyle(
+                                const Mnemonic & name
+                            ) const -> ILinkStyle *;
+
+        /// \brief
         ///     Finds a section style defined in this report template by name.
         /// \param name
         ///     The name to look for.
         /// \return
-        ///     The style with the required name; nullptr
+        ///     The section style with the required name; nullptr
         ///     if not found or not a section style.
         virtual auto    findSectionStyle(
+                                const Mnemonic & name
+                            ) const -> ISectionStyle *;
+
+        /// \brief
+        ///     Gets a section style defined in this report template by name.
+        /// \param name
+        ///     The name to look for.
+        /// \return
+        ///     The section style with the required name.
+        /// \exception ReportException
+        ///     If the style does not exist or is not a
+        ///     section style.
+        virtual auto    sectionStyle(
                                 const Mnemonic & name
                             ) const -> ISectionStyle *;
 

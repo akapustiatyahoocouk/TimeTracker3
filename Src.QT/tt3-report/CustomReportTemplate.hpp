@@ -99,6 +99,8 @@ namespace tt3::report
 
         QMap<Mnemonic, CustomStyle*>_styles; //  all styles "owned" by this report template
 
+        QString         _emptyReportXml;
+
         //  Helpers
         void            _construct(const QDomDocument & document);
         void            _addStyle(CustomStyle * style);

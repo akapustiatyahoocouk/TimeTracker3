@@ -61,7 +61,7 @@ namespace tt3::report
         virtual QString errorMessage() const override;
     };
 
-    /// \class ReportTemplateAlreadyExistsException tt3-db-api/API.hpp
+    /// \class ReportTemplateDoesNotExistException tt3-db-api/API.hpp
     /// \brief Thrown when a report template conflict occurs.
     class TT3_REPORT_PUBLIC ReportTemplateAlreadyExistsException
         :   public ReportException
@@ -117,6 +117,158 @@ namespace tt3::report
     private:
         tt3::util::Mnemonic _mnemonic;
         QString         _displayName;
+    };
+
+    /// \class ReportTemplateDoesNotExistException tt3-db-api/API.hpp
+    /// \brief Thrown when a report template does not exist.
+    class TT3_REPORT_PUBLIC ReportTemplateDoesNotExistException
+        :   public ReportException
+    {
+        //////////
+        //  Types
+    public:
+        /// \brief A type alias to improve code readability.
+        using Self = ReportTemplateDoesNotExistException;
+
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        /// \brief
+        ///     Constructs the exception.
+        /// \param mnemonic
+        ///     The mnemonic identifier of the conflicting report template.
+        explicit ReportTemplateDoesNotExistException(
+                const tt3::util::Mnemonic & mnemonic
+            );
+
+        //////////
+        //  QException
+    public:
+        virtual Self *  clone() const override { return new Self(*this); }
+        virtual void    raise() const override { throw *this; }
+
+        //////////
+        //  tt3::util::Exception
+    public:
+        virtual QString errorMessage() const override;
+
+        //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Returns the mnemonic identifier of the conflicting report template.
+        /// \return
+        ///     The mnemonic identifier of the conflicting report template.
+        auto            mnemonic() const -> tt3::util::Mnemonic { return _mnemonic; }
+
+        //////////
+        //  Implementation
+    private:
+        tt3::util::Mnemonic _mnemonic;
+    };
+
+    /// \class StyleDoesNotExistException tt3-db-api/API.hpp
+    /// \brief Thrown when a style does not exist in a report template.
+    class TT3_REPORT_PUBLIC StyleDoesNotExistException
+        :   public ReportException
+    {
+        //////////
+        //  Types
+    public:
+        /// \brief A type alias to improve code readability.
+        using Self = StyleDoesNotExistException;
+
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        /// \brief
+        ///     Constructs the exception.
+        /// \param styleName
+        ///     The name of the nonexistent style.
+        /// \param reportTemplatenemonic
+        ///     The mnemonic identifier of the report template
+        ///     where a required style does not exist.
+        /// \param reportTemplateDisplayName;
+        ///     The user-readable display name of the report template
+        ///     where a required style does not exist.
+        StyleDoesNotExistException(
+                const tt3::util::Mnemonic & styleName,
+                const tt3::util::Mnemonic & reportTemplatenemonic,
+                const QString & reportTemplateDisplayName
+            );
+
+        //////////
+        //  QException
+    public:
+        virtual Self *  clone() const override { return new Self(*this); }
+        virtual void    raise() const override { throw *this; }
+
+        //////////
+        //  tt3::util::Exception
+    public:
+        virtual QString errorMessage() const override;
+
+        //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Returns the name of the nonexistent style.
+        /// \return
+        ///     The name of the nonexistent style.
+        auto            styleName() const -> tt3::util::Mnemonic { return _styleName; }
+
+        /// \brief
+        ///     Returns the mnemonic identifier of the report template
+        ///     where a required style does not exist.
+        /// \return
+        ///     The mnemonic identifier of the report template
+        ///     where a required style does not exist.
+        auto            reportTemplateMnemonic() const -> tt3::util::Mnemonic { return _reportTemplatenemonic; }
+
+        /// \brief
+        ///     Returns the user-readable display name of the report template
+        ///     where a required style does not exist.
+        /// \return
+        ///     The user-readable display name of the report template
+        ///     where a required style does not exist.
+        QString         reportTemplateDisplayName() const { return _reportTemplateDisplayName; }
+
+        //////////
+        //  Implementation
+    private:
+        tt3::util::Mnemonic _styleName;
+        tt3::util::Mnemonic _reportTemplatenemonic;
+        QString         _reportTemplateDisplayName;
+    };
+
+    /// \class InvalidReportException tt3-db-api/API.hpp
+    /// \brief Thrown when a report is malformed.
+    class TT3_REPORT_PUBLIC InvalidReportException
+        :   public ReportException
+    {
+        //////////
+        //  Types
+    public:
+        /// \brief A type alias to improve code readability.
+        using Self = InvalidReportException;
+
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        /// \brief
+        ///     Constructs the exception.
+        InvalidReportException();
+
+        //////////
+        //  QException
+    public:
+        virtual Self *  clone() const override { return new Self(*this); }
+        virtual void    raise() const override { throw *this; }
+
+        //////////
+        //  tt3::util::Exception
+    public:
+        virtual QString errorMessage() const override;
     };
 
     /// \class CustomReportException tt3-db-api/API.hpp

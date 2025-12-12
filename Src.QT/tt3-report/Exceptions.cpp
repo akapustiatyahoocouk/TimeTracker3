@@ -58,6 +58,60 @@ QString ReportTemplateAlreadyExistsException::errorMessage() const
 }
 
 //////////
+//  ReportTemplateDoesNotExistException
+ReportTemplateDoesNotExistException::ReportTemplateDoesNotExistException(
+        const tt3::util::Mnemonic & mnemonic
+    ) : _mnemonic(mnemonic)
+{
+}
+
+QString ReportTemplateDoesNotExistException::errorMessage() const
+{
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+        RSID(Errors),
+        RID(ReportTemplateDoesNotExistException),
+        _mnemonic);
+}
+
+//////////
+//  StyleDoesNotExistException
+StyleDoesNotExistException::StyleDoesNotExistException(
+        const tt3::util::Mnemonic & styleName,
+        const tt3::util::Mnemonic & reportTemplatenemonic,
+        const QString & reportTemplateDisplayName
+    ) : _styleName(styleName),
+        _reportTemplatenemonic(reportTemplatenemonic),
+        _reportTemplateDisplayName(reportTemplateDisplayName)
+{
+}
+
+QString StyleDoesNotExistException::errorMessage() const
+{
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+        RSID(Errors),
+        RID(StyleDoesNotExistException),
+        _styleName,
+        _reportTemplatenemonic,
+        _reportTemplateDisplayName);
+}
+
+//////////
+//  InvalidReportException
+InvalidReportException::InvalidReportException()
+{
+}
+
+QString InvalidReportException::errorMessage() const
+{
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+        RSID(Errors),
+        RID(InvalidReportException));
+}
+
+//////////
 //  CustomReportException
 CustomReportException::CustomReportException(
         const QString & errorMessage

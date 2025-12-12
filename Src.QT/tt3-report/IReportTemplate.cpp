@@ -122,11 +122,33 @@ auto IReportTemplate::sectionStyles() const -> SectionStyles
     return result;
 }
 
+auto IReportTemplate::style(
+        const Mnemonic & name
+    ) const -> IStyle *
+{
+    if (auto result = findStyle(name))
+    {
+        return result;
+    }
+    throw StyleDoesNotExistException(name, mnemonic(), displayName());
+}
+
 auto IReportTemplate::findCharacterStyle(
         const Mnemonic & name
     ) const -> ICharacterStyle *
 {
     return dynamic_cast<ICharacterStyle*>(findStyle(name));
+}
+
+auto IReportTemplate::characterStyle(
+        const Mnemonic & name
+    ) const -> ICharacterStyle *
+{
+    if (auto result = findCharacterStyle(name))
+    {
+        return result;
+    }
+    throw StyleDoesNotExistException(name, mnemonic(), displayName());
 }
 
 auto IReportTemplate::findBlockStyle(
@@ -136,11 +158,33 @@ auto IReportTemplate::findBlockStyle(
     return dynamic_cast<IBlockStyle*>(findStyle(name));
 }
 
+auto IReportTemplate::blockStyle(
+        const Mnemonic & name
+    ) const -> IBlockStyle *
+{
+    if (auto result = findBlockStyle(name))
+    {
+        return result;
+    }
+    throw StyleDoesNotExistException(name, mnemonic(), displayName());
+}
+
 auto IReportTemplate::findParagraphStyle(
         const Mnemonic & name
     ) const -> IParagraphStyle *
 {
     return dynamic_cast<IParagraphStyle*>(findStyle(name));
+}
+
+auto IReportTemplate::paragraphStyle(
+        const Mnemonic & name
+    ) const -> IParagraphStyle *
+{
+    if (auto result = findParagraphStyle(name))
+    {
+        return result;
+    }
+    throw StyleDoesNotExistException(name, mnemonic(), displayName());
 }
 
 auto IReportTemplate::findListStyle(
@@ -150,6 +194,17 @@ auto IReportTemplate::findListStyle(
     return dynamic_cast<IListStyle*>(findStyle(name));
 }
 
+auto IReportTemplate::listStyle(
+        const Mnemonic & name
+    ) const -> IListStyle *
+{
+    if (auto result = findListStyle(name))
+    {
+        return result;
+    }
+    throw StyleDoesNotExistException(name, mnemonic(), displayName());
+}
+
 auto IReportTemplate::findTableStyle(
         const Mnemonic & name
     ) const -> ITableStyle *
@@ -157,11 +212,34 @@ auto IReportTemplate::findTableStyle(
     return dynamic_cast<ITableStyle*>(findStyle(name));
 }
 
+auto IReportTemplate::tableStyle(
+        const Mnemonic & name
+    ) const -> ITableStyle *
+{
+    if (auto result = findTableStyle(name))
+    {
+        return result;
+    }
+    throw StyleDoesNotExistException(name, mnemonic(), displayName());
+}
+
+
 auto IReportTemplate::findLinkStyle(
         const Mnemonic & name
     ) const -> ILinkStyle *
 {
     return dynamic_cast<ILinkStyle*>(findStyle(name));
+}
+
+auto IReportTemplate::linkStyle(
+    const Mnemonic & name
+    ) const -> ILinkStyle *
+{
+    if (auto result = findLinkStyle(name))
+    {
+        return result;
+    }
+    throw StyleDoesNotExistException(name, mnemonic(), displayName());
 }
 
 auto IReportTemplate::findSectionStyle(
@@ -171,6 +249,16 @@ auto IReportTemplate::findSectionStyle(
     return dynamic_cast<ISectionStyle*>(findStyle(name));
 }
 
+auto IReportTemplate::sectionStyle(
+        const Mnemonic & name
+    ) const -> ISectionStyle *
+{
+    if (auto result = findSectionStyle(name))
+    {
+        return result;
+    }
+    throw StyleDoesNotExistException(name, mnemonic(), displayName());
+}
 QDomDocument IReportTemplate::toXmlDocument() const
 {
     //  Create DOM document

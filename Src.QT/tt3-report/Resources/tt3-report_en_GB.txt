@@ -57,3 +57,6 @@ PreviewReport.Link1=Go to the top
 [Errors]
 InvalidReportTemplateException=Invalid report template
 ReportTemplateAlreadyExistsException=Report template {0} ({1}) already exists
+ReportTemplateDoesNotExistException=Report template {0} does not exist
+StyleDoesNotExistException=Style {0} does not exist in report template {1} ({2})
+InvalidReportException=Invalid or corrupt report

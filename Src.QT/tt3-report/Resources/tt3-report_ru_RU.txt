@@ -57,3 +57,6 @@ PreviewReport.Link1=Перейти к началу
 [Errors]
 InvalidReportTemplateException=Неверный шаблон отчета
 ReportTemplateAlreadyExistsException=Шаблон отчета {0} ({1}) уже существует
+ReportTemplateDoesNotExistException=Шаблон отчета {0} не существует
+StyleDoesNotExistException=Стиль {0} отсутствует в шаблоне отчета {1} ({2})
+InvalidReportException=Недействительный или поврежденный отчет

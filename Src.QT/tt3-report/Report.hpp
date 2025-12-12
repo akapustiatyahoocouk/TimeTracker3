@@ -57,6 +57,10 @@ namespace tt3::report
         //  Operations
     public:
         /// \brief
+        ///     Clears the report, removing its entire content.
+        void            clear();
+
+        /// \brief
         ///     Returns the report name.
         /// \return
         ///     The report name.
@@ -141,6 +145,16 @@ namespace tt3::report
         /// \param element
         ///     The XML DOM element to serialize to.
         void            serialize(QDomElement & element) const;
+
+        /// \brief
+        ///     Deserializes this report by analyzing attributes
+        ///     and children of the specified element and modifying
+        ///     this instance as necessary.
+        /// \param element
+        ///     The XML DOM element to deserialize from.
+        /// \exception ReportException
+        ///     If an errir occurs.
+        void            deserialize(const QDomElement & element);
 
         //////////
         //  Implementation

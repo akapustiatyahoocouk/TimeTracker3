@@ -264,6 +264,22 @@ void CustomReportTemplate::_construct(
         _addStyle(style);
     }
 
+    //  Locate the "Report" element - that's our "new report"
+    QDomElement reportElement = _getChildElement(document.documentElement(), "Report");
+    std::unique_ptr<Report> emptyReport
+        { new Report(this->displayName(), this) };
+    emptyReport->deserialize(reportElement);    //  may throw - Report will be deleted
+
+    //  We need an XML string representation of the emptyReport
+    QDomDocument emptyReportDocument;
+    auto rootElement =
+        emptyReportDocument.createElement(Report::XmlTagName);
+    emptyReportDocument.appendChild(rootElement);
+    emptyReport->serialize(rootElement);
+    _emptyReportXml = emptyReportDocument.toString(4);
+    qDebug() << _emptyReportXml;
+    emptyReport.reset();    //  deletes Report instance
+
     //  Done
     validate();
 }
