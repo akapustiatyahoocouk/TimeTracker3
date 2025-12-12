@@ -199,6 +199,28 @@ TypographicSize ReportList::resolveGapBelow() const
 
 //////////
 //  Operations
+void ReportList::setStyle(IListStyle * style)
+{
+    Q_ASSERT(style == nullptr ||
+             style->reportTemplate() == _report->reportTemplate());
+
+    if (style == nullptr ||
+        style->reportTemplate() == _report->reportTemplate())
+    {   //  Be defensive in Release mode
+        _style = style;
+    }
+}
+
+ReportListItems ReportList::items()
+{
+    return _items;
+}
+
+ReportListItemsC ReportList::items() const
+{
+    return ReportListItemsC(_items.cbegin(), _items.cend());
+}
+
 TypographicSize ReportList::resolveIndent() const
 {
     //  Honor own style first
@@ -207,12 +229,12 @@ TypographicSize ReportList::resolveIndent() const
         return _style->indent().value();
     }
     //  Must go to the parent list
-    for (ReportElement * parent = this->parent();
+    for (const ReportElement * parent = this->parent();
          parent != nullptr;
          parent = parent->parent())
     {
         if (auto parentList =
-            dynamic_cast<ReportList*>(parent))
+            dynamic_cast<const ReportList*>(parent))
         {
             return parentList->resolveIndent();
         }
@@ -231,6 +253,25 @@ ReportListItem * ReportList::createItem(const QString & label)
     _report->_validate();
 #endif
     return result;
+}
+
+//////////
+//  Serialization
+void ReportList::serialize(QDomElement & element) const
+{
+    ReportBlockElement::serialize(element);
+
+    if (_style != nullptr)
+    {
+        element.setAttribute("Style", _style->name().toString());
+    }
+    for (auto item : _items)
+    {
+        auto itemElement =
+            element.ownerDocument().createElement(item->xmlTagName());
+        element.appendChild(itemElement);
+        item->serialize(itemElement);
+    }
 }
 
 //  End of tt3-report/ReportList.cpp

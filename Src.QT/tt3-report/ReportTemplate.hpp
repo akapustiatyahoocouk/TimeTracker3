@@ -327,7 +327,7 @@ namespace tt3::report
         ///         returned Report instance when done with it.
         /// \return
         ///     The newly created Report.
-        virtual Report *createNewReport() = 0;
+        virtual Report *createNewReport() const = 0;
 
         //////////
         //  Serialization
@@ -351,7 +351,8 @@ namespace tt3::report
         //////////
         //  Implementation
     private:
-        qsizetype       _referenceCount = 0;    //  Report instances that use this ReportTemplate
+        //  Reports modify this when instances are created/destroyed
+        mutable qsizetype   _referenceCount = 0;    //  no. of report instances that use this ReportTemplate
 
         //  Helpers
         template <class T>

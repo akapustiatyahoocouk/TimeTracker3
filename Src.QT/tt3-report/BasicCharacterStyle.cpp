@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 #include "tt3-report/API.hpp"
-    using namespace tt3::report;
+using namespace tt3::report;
 
 //////////
 //  Construction/destruction - from friends only

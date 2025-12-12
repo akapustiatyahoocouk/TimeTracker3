@@ -69,6 +69,7 @@ SOURCES += \
     ReportTemplateManager.cpp \
     ReportTemplateManagerTool.cpp \
     ReportText.cpp \
+    ReportTypeManager.cpp \
     TypographicSize.cpp \
     TypographicUnit.cpp \
     UnderlineMode.cpp \
@@ -88,7 +89,8 @@ HEADERS += \
     Report.hpp \
     ReportFormat.hpp \
     ReportTemplate.hpp \
-    ReportTemplateManagerTool.hpp
+    ReportTemplateManagerTool.hpp \
+    ReportType.hpp
 
 PRECOMPILED_HEADER = API.hpp
 

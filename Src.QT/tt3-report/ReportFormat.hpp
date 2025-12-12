@@ -22,6 +22,13 @@ namespace tt3::report
     class TT3_REPORT_PUBLIC IReportFormat
     {
         //////////
+        //  Types
+    public:
+        /// \brief
+        ///     The agent notified of a save progress.
+        using ProgressListener = std::function<void(double ratioCompleted)>;
+
+        //////////
         //  This is an interface
     protected:
         /// \brief
@@ -52,6 +59,13 @@ namespace tt3::report
         virtual auto    displayName() const -> QString = 0;
 
         /// \brief
+        ///     Returns the short (1 line) description of this ReportFormat.
+        /// \return
+        ///     The short (1 line) description of this ReportFormat
+        ///     for the current default locale.
+        virtual QString description() const = 0;
+
+        /// \brief
         ///     Returns the small (16x16) icon representing this ReportFormat.
         /// \return
         ///     The small (16x16) icon representing this ReportFormat.
@@ -77,9 +91,16 @@ namespace tt3::report
         ///     The report to save to a file.
         /// \param fileName
         ///     The file to save the report to; overwritten if exists.
+        /// \param progressListener
+        ///     The callback to use for save progress notification,
+        ///     nullptr == don't notify.
         /// \exception ReportException
         ///     If a save error occurs.
-        virtual void    saveReport(Report * report, const QString & fileName) = 0;
+        virtual void    saveReport(
+                                const Report * report,
+                                const QString & fileName,
+                                ProgressListener progressListener = nullptr
+                            ) = 0;
     };
 
     /// \class ReportFormatManager tt3-report/API.hpp
@@ -95,7 +116,7 @@ namespace tt3::report
         ///     Returns the set of all registered ReportFormats.
         /// \return
         ///     The set of all registered ReportFormats.
-        static ReportFormats    allReportFormats();
+        static auto     allReportFormats() -> ReportFormats;
 
         /// \brief
         ///     Registers the specified ReportFormat.
@@ -105,7 +126,15 @@ namespace tt3::report
         ///     True on success, false on failure. Repeated
         ///     registration of the same ReportFormat is treated
         ///     as a "success".
-        static bool         registerReportFormat(IReportFormat * reportFormat);
+        static bool     registerReportFormat(IReportFormat * reportFormat);
+
+        /// \brief
+        ///     Un-registers the specified ReportFormat.
+        /// \param reportFormat
+        ///     The ReportFormat to un-register
+        /// \return
+        ///     True on success, false on failure.
+        static bool     unregisterReportFormat(IReportFormat * reportFormat);
 
         /// \brief
         ///     Finds a registered ReportFormat by its mnemonic.
@@ -114,7 +143,9 @@ namespace tt3::report
         /// \return
         ///     The registered ReportFormat with the required mnemonic;
         ///     nullptr if not found.
-        static IReportFormat *  findReportFormat(const tt3::util::Mnemonic & mnemonic);
+        static auto     findReportFormat(
+                                const tt3::util::Mnemonic & mnemonic
+                            ) -> IReportFormat *;
 
         //////////
         //  Implementation

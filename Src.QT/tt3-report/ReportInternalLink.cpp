@@ -34,4 +34,15 @@ ReportInternalLink::~ReportInternalLink()
 {   //  Destrouing the link doea NOT destroy the nchor!
 }
 
+//////////
+//  Serialization
+void ReportInternalLink::serialize(QDomElement & element) const
+{
+    ReportLink::serialize(element);
+
+    element.setAttribute(
+        "AnchorID",
+        tt3::util::toString(static_cast<const void *>(_anchor)));
+}
+
 //  End of tt3-report/ReportInternalLink.cpp

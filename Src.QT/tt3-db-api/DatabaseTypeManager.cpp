@@ -49,9 +49,11 @@ bool DatabaseTypeManager::unregisterDatabaseType(
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
 
-    if (impl->registry.contains(databaseType->mnemonic()))
+    auto key = databaseType->mnemonic();
+    if (impl->registry.contains(key) &&
+        impl->registry[key] == databaseType)
     {
-        impl->registry.remove(databaseType->mnemonic());
+        impl->registry.remove(key);
         return true;
     }
     return false;

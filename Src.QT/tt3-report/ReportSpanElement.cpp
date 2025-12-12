@@ -69,5 +69,21 @@ auto ReportSpanElement::createExternalLink(
     return result;
 }
 
+//////////
+//  Serialization
+void ReportSpanElement::serialize(QDomElement & element) const
+{
+    ReportElement::serialize(element);
+
+    if (_link != nullptr)
+    {
+        auto linkElement =
+            element.ownerDocument().createElement(
+                _link->xmlTagName());
+        element.appendChild(linkElement);
+        _link->serialize(linkElement);
+    }
+}
+
 //  End of tt3-report/ReportSpanElement.cpp
 

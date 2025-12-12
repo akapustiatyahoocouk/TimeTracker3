@@ -29,10 +29,15 @@ namespace tt3::report
     public:
         virtual auto    mnemonic() const -> Mnemonic override;
         virtual auto    displayName() const -> QString override;
+        virtual auto    description() const -> QString override;
         virtual QIcon   smallIcon() const override;
         virtual QIcon   largeIcon() const override;
         virtual QString preferredExtension() const override;
-        virtual void    saveReport(Report * report, const QString & fileName) override;
+        virtual void    saveReport(
+                                const Report * report,
+                                const QString & fileName,
+                                ProgressListener progressListener = nullptr
+                            ) override;
 
         //////////
         //  Implementation
@@ -122,17 +127,17 @@ namespace tt3::report
             //  Operations
         public:
             void        reset();
-            QString     bodyStyle(IReportTemplate * reportTemplate);
-            QString     paragraphStyle(ReportParagraph * paragraph);
-            QString     paragraphStyle(IParagraphStyle * style);
-            QString     tableStyle(ReportTable * table);
-            QString     tableStyle(ITableStyle * style);
-            QString     tableCellStyle(ReportTableCell * tableCell);
-            QString     linkStyle(ReportLink * link);
-            QString     linkStyle(ILinkStyle * style);
-            QString     listStyle(ReportList * list);
-            QString     listStyle(IListStyle * style);
-            QString     css();
+            QString     bodyStyle(const IReportTemplate * reportTemplate);
+            QString     paragraphStyle(const ReportParagraph * paragraph);
+            QString     paragraphStyle(const IParagraphStyle * style);
+            QString     tableStyle(const ReportTable * table);
+            QString     tableStyle(const ITableStyle * style);
+            QString     tableCellStyle(const ReportTableCell * tableCell);
+            QString     linkStyle(const ReportLink * link);
+            QString     linkStyle(const ILinkStyle * style);
+            QString     listStyle(const ReportList * list);
+            QString     listStyle(const IListStyle * style);
+            QString     css() const;
 
             //////////
             //  Implementation
@@ -436,44 +441,45 @@ namespace tt3::report
             //////////
             //  Construction/destruction
         public:
-            _HtmlGenerator();
+            explicit _HtmlGenerator(ProgressListener progressListener);
             ~_HtmlGenerator();
 
             //////////
             //  Operations
         public:
-            QString     generateHtml(Report * report);
+            QString     generateHtml(const Report * report);
 
             //////////
             //  Implementation
         private:
+            ProgressListener _progressListener; //  can be nullptr
             int             _totalSteps;
             int             _completedSteps;
             _HtmlBuilder    _htmlBuilder;
             _CssBuilder     _cssBuilder;
 
             int             _nextUnusedId = 1;
-            QMap<ReportElement*, QString>   _mapElementsToIds;
+            QMap<const ReportElement*, QString> _mapElementsToIds;
 
             //  Helpers
             void            _completeStep();
-            static int      _countParagraps(Report * report);
-            static int      _countParagraps(ReportFlowElement * flowElement);
-            static int      _countParagraps(ReportBlockElement * blockElement);
-            static int      _countParagraps(ReportList * list);
-            static int      _countParagraps(ReportTable * table);
-            void            _assignIdsToElements(Report * report);
-            void            _assignIdsToElements(ReportFlowElement * flowElement);
-            void            _assignIdsToElements(ReportBlockElement * blockElement);
-            void            _generateFlowElement(ReportFlowElement * flowElement);
-            void            _generateParagraph(ReportParagraph * paragraph);
-            void            _generateTableOfContent(ReportTableOfContent * tableOfContent);
-            void            _generateTableOfContentForReport(Report * report);
-            void            _generateTableOfContentForSection(ReportSection * section);;
-            void            _generateTableOfContentForParagraph(ReportParagraph * paragraph);
-            void            _generateText(ReportText * text);
-            void            _generateTable(ReportTable * table);
-            void            _generateList(ReportList * list);
+            static int      _countParagraps(const Report * report);
+            static int      _countParagraps(const ReportFlowElement * flowElement);
+            static int      _countParagraps(const ReportBlockElement * blockElement);
+            static int      _countParagraps(const ReportList * list);
+            static int      _countParagraps(const ReportTable * table);
+            void            _assignIdsToElements(const Report * report);
+            void            _assignIdsToElements(const ReportFlowElement * flowElement);
+            void            _assignIdsToElements(const ReportBlockElement * blockElement);
+            void            _generateFlowElement(const ReportFlowElement * flowElement);
+            void            _generateParagraph(const ReportParagraph * paragraph);
+            void            _generateTableOfContent(const ReportTableOfContent * tableOfContent);
+            void            _generateTableOfContent(const Report * report);
+            void            _generateTableOfContent(const ReportSection * section);;
+            void            _generateTableOfContent(const ReportParagraph * paragraph);
+            void            _generateText(const ReportText * text);
+            void            _generateTable(const ReportTable * table);
+            void            _generateList(const ReportList * list);
         };
     };
 }

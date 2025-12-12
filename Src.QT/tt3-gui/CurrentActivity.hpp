@@ -48,9 +48,7 @@ namespace tt3::gui
         /// \brief
         ///     Replaces the "current" Activity.
         /// \details
-        ///     Technically this is a shortcut form for a
-        ///     "replace(activity, theCurrentCredentials);
-        ///     any errors are logged but ignored.
+        ///     Any errors are logged but ignored.
         /// \param activity
         ///     The activity to make "current"; nullptr == none.
         void        operator = (const tt3::ws::Activity & activity);

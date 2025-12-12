@@ -523,7 +523,7 @@ auto BasicReportTemplate::findStyle(
     return _styles.contains(name) ? _styles[name] : nullptr;
 }
 
-Report * BasicReportTemplate::createNewReport()
+Report * BasicReportTemplate::createNewReport() const
 {
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(BasicReportTemplate));
 

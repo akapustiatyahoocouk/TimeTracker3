@@ -50,7 +50,9 @@ void HRG::_CssBuilder::reset()
 #undef CLEAN
 }
 
-QString HRG::_CssBuilder::bodyStyle(IReportTemplate * reportTemplate)
+QString HRG::_CssBuilder::bodyStyle(
+        const IReportTemplate * reportTemplate
+    )
 {
     //  Prepare style properties
     QString fontFamilyString = _formatFontSpecs(reportTemplate->defaultFontSpecs());
@@ -103,7 +105,7 @@ QString HRG::_CssBuilder::bodyStyle(IReportTemplate * reportTemplate)
 }
 
 QString HRG::_CssBuilder::paragraphStyle(
-        ReportParagraph * paragraph
+        const ReportParagraph * paragraph
     )
 {
     QString fontFamilyString =
@@ -162,7 +164,7 @@ QString HRG::_CssBuilder::paragraphStyle(
 }
 
 QString HRG::_CssBuilder::paragraphStyle(
-        IParagraphStyle * style
+        const IParagraphStyle * style
     )
 {
     Q_ASSERT(style != nullptr);
@@ -247,7 +249,7 @@ QString HRG::_CssBuilder::paragraphStyle(
 }
 
 QString HRG::_CssBuilder::tableStyle(
-        ReportTable * table
+        const ReportTable * table
     )
 {
     QString fontFamilyString =
@@ -306,7 +308,7 @@ QString HRG::_CssBuilder::tableStyle(
 }
 
 QString HRG::_CssBuilder::tableStyle(
-        ITableStyle * style
+        const ITableStyle * style
     )
 {
     Q_ASSERT(style != nullptr);
@@ -391,7 +393,7 @@ QString HRG::_CssBuilder::tableStyle(
 }
 
 QString HRG::_CssBuilder::tableCellStyle(
-        ReportTableCell * tableCell
+        const ReportTableCell * tableCell
     )
 {   //  TODO reimplement using resolveXXX()
     QString fontFamilyString =
@@ -444,7 +446,7 @@ QString HRG::_CssBuilder::tableCellStyle(
 }
 
 QString HRG::_CssBuilder::linkStyle(
-        ReportLink * link
+        const ReportLink * link
     )
 {
     QString fontFamilyString =
@@ -483,7 +485,7 @@ QString HRG::_CssBuilder::linkStyle(
 }
 
 QString HRG::_CssBuilder::linkStyle(
-        ILinkStyle * style
+        const ILinkStyle * style
     )
 {
     Q_ASSERT(style != nullptr);
@@ -543,7 +545,7 @@ QString HRG::_CssBuilder::linkStyle(
 }
 
 QString HRG::_CssBuilder::listStyle(
-        ReportList * list
+        const ReportList * list
     )
 {
     QString fontFamilyString =
@@ -598,7 +600,7 @@ QString HRG::_CssBuilder::listStyle(
 }
 
 QString HRG::_CssBuilder::listStyle(
-        IListStyle * style
+        const IListStyle * style
     )
 {
     Q_ASSERT(style != nullptr);
@@ -676,7 +678,7 @@ QString HRG::_CssBuilder::listStyle(
                 indentString);
 }
 
-QString HRG::_CssBuilder::css()
+QString HRG::_CssBuilder::css() const
 {
     QString css;
 

@@ -36,6 +36,12 @@ auto HtmlReportFormat::displayName() const -> QString
     return resources->string(RSID(HtmlReportFormat), RID(DisplayName));
 }
 
+auto HtmlReportFormat::description() const -> QString
+{
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(HtmlReportFormat), RID(Description));
+}
+
 QIcon HtmlReportFormat::smallIcon() const
 {
     static const QIcon icon(":/tt3-report/Resources/Images/Reports/HtmlReportFormatSmall.png");
@@ -53,11 +59,15 @@ QString HtmlReportFormat::preferredExtension() const
     return ".html";
 }
 
-void HtmlReportFormat::saveReport(Report * report, const QString & fileName)
+void HtmlReportFormat::saveReport(
+        const Report * report,
+        const QString & fileName,
+        ProgressListener progressListener
+    )
 {
     Q_ASSERT(report != nullptr);
 
-    _HtmlGenerator htmlGenerator;
+    _HtmlGenerator htmlGenerator(progressListener);
     QString html = htmlGenerator.generateHtml(report);
 
     QFile file(fileName);

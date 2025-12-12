@@ -19,16 +19,6 @@ using namespace tt3::util;
 
 struct ComponentManager::_Impl
 {
-    _Impl()
-    {
-        qDebug() << "ComponentManager::_Impl";
-    }
-
-    ~_Impl()
-    {
-        qDebug() << "~ComponentManager::_Impl";
-    }
-
     Mutex                       guard;
     QMap<Mnemonic, IComponent*> registry;
     Components                  initializedComponents;
@@ -58,7 +48,6 @@ bool ComponentManager::registerComponent(IComponent * component)
 {
     Q_ASSERT(component != nullptr);
 
-    qDebug() << "Registering " << component->mnemonic().toString();
     _Impl * impl = _impl();
     Lock _(impl->guard);
 
@@ -81,14 +70,14 @@ bool ComponentManager::unregisterComponent(
 {
     Q_ASSERT(component != nullptr);
 
-    qDebug() << "Unregistering " << component->mnemonic().toString();
     _Impl * impl = _impl();
     Lock _(impl->guard);
 
-    if (impl->registry.contains(component->mnemonic()) &&
-        impl->registry[component->mnemonic()] == component)
+    auto key = component->mnemonic();
+    if (impl->registry.contains(key) &&
+        impl->registry[key] == component)
     {
-        impl->registry.remove(component->mnemonic());
+        impl->registry.remove(key);
         return true;
     }
     return false;
@@ -378,7 +367,6 @@ void ComponentManager::_loadLibrary(const QString & fileName)
         library.unload();
         return;
     }
-    qDebug() << "Found optional components in " << fileName;
 }
 
 //  End of tt3-util/ComponentManager.cpp

@@ -298,6 +298,13 @@ void IReportTemplate::serialize(QDomElement & element) const
         stylesElement.appendChild(styleElement);
         style->serialize(styleElement);
     }
+
+    //  Serialize empty report
+    std::unique_ptr<Report> report
+        { createNewReport() };
+    QDomElement reportElement = element.ownerDocument().createElement("Report");
+    element.appendChild(reportElement);
+    report->serialize(reportElement);
 }
 
 //  End of tt3-report/IReportTemplate.cpp

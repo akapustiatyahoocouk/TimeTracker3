@@ -10,6 +10,7 @@ Report.Subtitle=Подзаголовок
 
 [HtmlReportFormat]
 DisplayName=HTML документ
+Description=Сохраняет отчет как самодостаточную HTML-страницу
 TableOfContent=Содержание
 
 [ReportTemplateManagerTool]

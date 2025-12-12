@@ -73,4 +73,13 @@ auto ReportListItem::resolveBackgroundColor() const -> ColorSpec
     return _list->resolveBackgroundColor();
 }
 
+//////////
+//  Serialization
+void ReportListItem::serialize(QDomElement & element) const
+{
+    ReportFlowElement::serialize(element);
+
+    element.setAttribute("Label", _label);
+}
+
 //  End of tt3-report/ReportListItem.cpp

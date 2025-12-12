@@ -29,6 +29,7 @@
 
 #include "tt3-report/Exceptions.hpp"
 #include "tt3-report/DataTypes.hpp"
+
 #include "tt3-report/ReportTemplate.hpp"
 #include "tt3-report/BasicReportTemplate.hpp"
 #include "tt3-report/CustomReportTemplate.hpp"
@@ -37,6 +38,8 @@
 
 #include "tt3-report/ReportFormat.hpp"
 #include "tt3-report/HtmlReportFormat.hpp"
+
+#include "tt3-report/ReportType.hpp"
 
 #include "tt3-report/ReportTemplateManagerTool.hpp"
 #include "tt3-report/ManageReportTemplatesDialog.hpp"

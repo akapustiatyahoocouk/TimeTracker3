@@ -56,9 +56,11 @@ bool ToolManager::unregisterTool(ITool * tool)
     _Impl * impl = _impl();
     Lock _(impl->guard);
 
-    if (impl->registry.contains(tool->mnemonic()))
+    auto key = tool->mnemonic();
+    if (impl->registry.contains(key) &&
+        impl->registry[key] == tool)
     {
-        impl->registry.remove(tool->mnemonic());
+        impl->registry.remove(key);
         return true;
     }
     return false;

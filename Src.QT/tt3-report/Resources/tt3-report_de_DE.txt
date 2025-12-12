@@ -10,6 +10,7 @@ Report.Subtitle=Untertitel
 
 [HtmlReportFormat]
 DisplayName=HTML-Dokument
+Description=Speichert den Bericht als eigenständige HTML-Seite
 TableOfContent=Tabelle des Inhaltsverzeichnisses
 
 [ReportTemplateManagerTool]

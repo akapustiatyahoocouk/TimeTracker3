@@ -83,4 +83,15 @@ auto ReportAnchor::resolveBackgroundColor() const -> ColorSpec
     return _anchoredElement->resolveBackgroundColor();
 }
 
+//////////
+//  Serialization
+void ReportAnchor::serialize(QDomElement & element) const
+{
+    ReportElement::serialize(element);
+
+    element.setAttribute(
+        "AnchorID",
+        tt3::util::toString(static_cast<const void *>(this)));
+}
+
 //  End of tt3-report/ReportAnchor.cpp

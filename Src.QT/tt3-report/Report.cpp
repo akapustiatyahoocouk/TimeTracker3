@@ -21,7 +21,7 @@ using namespace tt3::report;
 //  Construction/destruction
 Report::Report(
         const QString & name,
-        IReportTemplate * reportTemplate
+        const IReportTemplate * reportTemplate
     ) : _name(name),
         _reportTemplate(reportTemplate)
 {
@@ -55,6 +55,36 @@ Report::~Report()
 
 //////////
 //  Operations
+ReportSections Report::sections()
+{
+    return _sections;
+}
+
+ReportSectionsC Report::sections() const
+{
+    return ReportSectionsC(_sections.cbegin(), _sections.cend());
+}
+
+ReportAnchors Report::anchors()
+{
+    return _anchors;
+}
+
+ReportAnchorsC Report::anchors() const
+{
+    return ReportAnchorsC(_anchors.cbegin(), _anchors.cend());
+}
+
+ReportLinks Report::links()
+{
+    return _links;
+}
+
+ReportLinksC Report::links() const
+{
+    return ReportLinksC(_links.cbegin(), _links.cend());
+}
+
 ReportSection * Report::createSection(
         const QString & name,
         ISectionStyle * style
@@ -68,6 +98,29 @@ ReportSection * Report::createSection(
     _validate();
 #endif
     return result;
+}
+
+//////////
+//  Serialization
+void Report::serialize(QDomElement & element) const
+{
+    Q_ASSERT(!element.isNull());
+
+    //  Report properties
+    element.setAttribute("FormatVersion", FormatVersion);
+    element.setAttribute("Template", _reportTemplate->mnemonic().toString());
+
+    //  Report content - it's sufficient to serialize
+    //  _sections, as _anchors and _links will be re-created
+    //  when a Report is deserialized
+    for (auto section : _sections)
+    {
+        auto sectionElement =
+            element.ownerDocument().createElement(
+                section->xmlTagName());
+        element.appendChild(sectionElement);
+        section->serialize(sectionElement);
+    }
 }
 
 #ifdef QT_DEBUG

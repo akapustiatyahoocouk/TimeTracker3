@@ -1,5 +1,5 @@
 //
-//  tt3-gui/SkinManager.cpp - tt3::gui::SkinManager class implementation
+//  tt3-report/ReportTypeManager.cpp - tt3::report::ReportTypeManager class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,59 +14,42 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#include "tt3-gui/API.hpp"
-using namespace tt3::gui;
+#include "tt3-report/API.hpp"
+using namespace tt3::report;
 
-struct SkinManager::_Impl
+struct ReportTypeManager::_Impl
 {
     tt3::util::Mutex                    guard;
-    QMap<tt3::util::Mnemonic, ISkin*>   registry;
+    QMap<tt3::util::Mnemonic, IReportType*> registry;
 };
 
 //////////
 //  Operations
-QSet<ISkin*> SkinManager::allSkins()
+ReportTypes ReportTypeManager::allReportTypes()
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
 
-    QList<ISkin*> values = impl->registry.values();
-    return QSet<ISkin*>(values.cbegin(), values.cend());
+    QList<IReportType*> values = impl->registry.values();
+    return QSet<IReportType*>(values.cbegin(), values.cend());
 }
 
-bool SkinManager::registerSkin(ISkin * skin)
+bool ReportTypeManager::registerReportType(IReportType * reportType)
 {
-    Q_ASSERT(skin != nullptr);
+    Q_ASSERT(reportType != nullptr);
 
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
 
-    if (impl->registry.contains(skin->mnemonic()))
+    if (impl->registry.contains(reportType->mnemonic()))
     {
-        return skin == impl->registry[skin->mnemonic()];
+        return reportType == impl->registry[reportType->mnemonic()];
     }
-    impl->registry[skin->mnemonic()] = skin;
+    impl->registry[reportType->mnemonic()] = reportType;
     return true;
 }
 
-bool SkinManager::unregisterSkin(ISkin * skin)
-{
-    Q_ASSERT(skin != nullptr);
-
-    _Impl * impl = _impl();
-    tt3::util::Lock _(impl->guard);
-
-    auto key = skin->mnemonic();
-    if (impl->registry.contains(key) &&
-        impl->registry[key] == skin)
-    {
-        impl->registry.remove(key);
-        return true;
-    }
-    return false;
-}
-
-ISkin * SkinManager::findSkin(const tt3::util::Mnemonic & mnemonic)
+IReportType * ReportTypeManager::findReportType(const tt3::util::Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
@@ -76,10 +59,10 @@ ISkin * SkinManager::findSkin(const tt3::util::Mnemonic & mnemonic)
 
 //////////
 //  Implementation helpers
-SkinManager::_Impl * SkinManager::_impl()
+ReportTypeManager::_Impl * ReportTypeManager::_impl()
 {
     static _Impl impl;
     return &impl;
 }
 
-//  End of tt3-gui/SkinManager.cpp
+//  End of tt3-report/ReportTypeManager.cpp

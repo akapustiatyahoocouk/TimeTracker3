@@ -68,7 +68,9 @@ namespace tt3::report
 
     class TT3_REPORT_PUBLIC IReportFormat;
     class TT3_REPORT_PUBLIC HtmlReportFormat;
-
+    
+    class TT3_REPORT_PUBLIC IReportType;
+    
     //  Collections
     using ReportTemplates = QSet<IReportTemplate*>;
     using Styles = QSet<IStyle*>;
@@ -107,8 +109,17 @@ namespace tt3::report
     using ReportTableCells = QList<ReportTableCell*>;
     using ReportAnchors = QList<ReportAnchor*>;
     using ReportLinks = QList<ReportLink*>;
+    
+    using ReportSectionsC = QList<const ReportSection*>;
+    using ReportBlockElementsC = QList<const ReportBlockElement*>;
+    using ReportSpanElementsC = QList<const ReportSpanElement*>;
+    using ReportListItemsC = QList<const ReportListItem*>;
+    using ReportTableCellsC = QList<const ReportTableCell*>;
+    using ReportAnchorsC = QList<const ReportAnchor*>;
+    using ReportLinksC = QList<const ReportLink*>;
 
     using ReportFormats = QSet<IReportFormat*>;
+    using ReportTypes = QSet<IReportType*>;
 }
 
 //  End of tt3-report/Classes.hpp

@@ -199,11 +199,33 @@ TypographicSize ReportTable::resolveGapBelow() const
 
 //////////
 //  Operations
+void ReportTable::setStyle(ITableStyle * style)
+{
+    Q_ASSERT(style == nullptr ||
+             style->reportTemplate() == _report->reportTemplate());
+
+    if (style == nullptr ||
+        style->reportTemplate() == _report->reportTemplate())
+    {   //  Be defensive in Release mode
+        _style = style;
+    }
+}
+
+auto ReportTable::cells() -> ReportTableCells
+{
+    return _cells;
+}
+
+auto ReportTable::cells() const -> ReportTableCellsC
+{
+    return ReportTableCellsC(_cells.cbegin(), _cells.cend());
+}
+
 ReportTableCell * ReportTable::createCell(
-        int startColumn,
-        int startRow,
-        int columnSpan,
-        int rowSpan,
+        qsizetype startColumn,
+        qsizetype startRow,
+        qsizetype columnSpan,
+        qsizetype rowSpan,
         VerticalAlignment contentAlignment,
         TypographicSizeOpt preferredWidth
     )
@@ -218,10 +240,10 @@ ReportTableCell * ReportTable::createCell(
 #endif
     auto result = new ReportTableCell(
         this,
-        std::max(startColumn, 0),   //  be defensive
-        std::max(startRow, 0),      //  be defensive
-        std::max(columnSpan, 1),    //  be defensive
-        std::max(rowSpan, 1),       //  be defensive
+        std::max<qsizetype>(startColumn, 0),   //  be defensive
+        std::max<qsizetype>(startRow, 0),      //  be defensive
+        std::max<qsizetype>(columnSpan, 1),    //  be defensive
+        std::max<qsizetype>(rowSpan, 1),       //  be defensive
         contentAlignment,
         preferredWidth);
     //  Must update the table geometry
@@ -233,7 +255,19 @@ ReportTableCell * ReportTable::createCell(
     return result;
 }
 
-ReportTableCell * ReportTable::findTableCellAt(int column, int row)
+ReportTableCell * ReportTable::findTableCellAt(
+        qsizetype column,
+        qsizetype row
+    )
+{
+    return const_cast<ReportTableCell*>(
+            const_cast<const ReportTable*>(this)->findTableCellAt(column, row));
+}
+
+auto ReportTable::findTableCellAt(
+        qsizetype column,
+        qsizetype row
+    ) const -> const ReportTableCell *
 {
     for (auto cell : _cells)
     {
@@ -326,6 +360,29 @@ auto ReportTable::resolveCellBorderType() const -> BorderType
     }
     //  Give up and go to template
     return _report->_reportTemplate->defaultCellBorderType();
+}
+
+//////////
+//  Serialization
+void ReportTable::serialize(QDomElement & element) const
+{
+    ReportBlockElement::serialize(element);
+
+    if (_style != nullptr)
+    {
+        element.setAttribute("Style", _style->name().toString());
+    }
+    element.setAttribute("ColumnCount", _columnCount);
+    element.setAttribute("RowCount", _rowCount);
+
+    for (auto cell : _cells)
+    {
+        auto cellElement =
+            element.ownerDocument().createElement(
+                cell->xmlTagName());
+        element.appendChild(cellElement);
+        cell->serialize(cellElement);
+    }
 }
 
 //  End of tt3-report/ReportTable.cpp

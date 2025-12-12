@@ -35,6 +35,16 @@ ReportFlowElement::~ReportFlowElement()
 
 //////////
 //  Operations
+auto ReportFlowElement::children() -> ReportBlockElements
+{
+    return _children;
+}
+
+auto ReportFlowElement::children() const -> ReportBlockElementsC
+{
+    return ReportBlockElementsC(_children.cbegin(), _children.cend());
+}
+
 ReportParagraph * ReportFlowElement::createParagraph(IParagraphStyle * style)
 {
 #ifdef QT_DEBUG
@@ -90,6 +100,22 @@ auto ReportFlowElement::createTableOfContent() -> ReportTableOfContent *
     _report->_validate();
 #endif
     return result;
+}
+
+//////////
+//  Serialization
+void ReportFlowElement::serialize(QDomElement & element) const
+{
+    ReportElement::serialize(element);
+
+    for (auto child : _children)
+    {
+        auto childElement =
+            element.ownerDocument().createElement(
+                child->xmlTagName());
+        element.appendChild(childElement);
+        child->serialize(childElement);
+    }
 }
 
 //  End of tt3-report/ReportFlowElement.cpp

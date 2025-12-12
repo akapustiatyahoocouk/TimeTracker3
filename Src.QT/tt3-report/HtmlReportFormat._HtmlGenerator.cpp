@@ -20,7 +20,8 @@ using HRG = HtmlReportFormat;
 
 //////////
 //  Construction/destruction
-HRG::_HtmlGenerator::_HtmlGenerator()
+HRG::_HtmlGenerator::_HtmlGenerator(ProgressListener progressListener)
+    :   _progressListener(progressListener)
 {
 }
 
@@ -30,7 +31,9 @@ HRG::_HtmlGenerator::~_HtmlGenerator()
 
 //////////
 //  Operations
-QString HRG::_HtmlGenerator::generateHtml(Report * report)
+QString HRG::_HtmlGenerator::generateHtml(
+        const Report * report
+    )
 {
     Q_ASSERT(report != nullptr);
 
@@ -38,7 +41,10 @@ QString HRG::_HtmlGenerator::generateHtml(Report * report)
     //  *   1 for every "Paragraph" in the "report"
     _totalSteps = _countParagraps(report);
     _completedSteps = 0;
-    //  TODO _progressListener.onProgressReached(0.0);
+    if (_progressListener != nullptr)
+    {
+        _progressListener(0.0);
+    }
 
     //  We'll be embedding the CSS into the HTML - we need a "token" that will be
     //  inserted into the proper place of HTML document that we'll later replace
@@ -85,7 +91,10 @@ QString HRG::_HtmlGenerator::generateHtml(Report * report)
     //  Done
     QString html = _htmlBuilder.html();
     html = html.replace(cssToken, _cssBuilder.css());
-    //  TODO _progressListener.onProgressReached(1.0);
+    if (_progressListener != nullptr)
+    {
+        _progressListener(1.0);
+    }
     return html;
 }
 
@@ -94,26 +103,15 @@ QString HRG::_HtmlGenerator::generateHtml(Report * report)
 void HRG::_HtmlGenerator::_completeStep()
 {
     _completedSteps++;
-    /*  TODO uncomment
-    if (_progressListener != null)
+    if (_progressListener != nullptr)
     {
-        _progressListener.onProgressReached((float)_completedSteps / (float)_totalSteps);
-        if (_totalSteps > 0 && _completedSteps >= 0 && _completedSteps <= _totalSteps)
-        {
-            try
-            {
-                Thread.sleep(5000 / _totalSteps);
-            }
-            catch (@SuppressWarnings("unused") InterruptedException ex)
-            {   //  Ignore wake-ups
-            }
-        }
+        _progressListener((double)(_completedSteps + 1) / (double)(_totalSteps + 1));
+        QThread::msleep(5000 / (_totalSteps + 1));  //  aim at 5 seconds per save
     }
-    */
 }
 
 int HRG::_HtmlGenerator::_countParagraps(
-        Report * report
+        const Report * report
     )
 {
     int result = 0;
@@ -125,7 +123,7 @@ int HRG::_HtmlGenerator::_countParagraps(
 }
 
 int HRG::_HtmlGenerator::_countParagraps(
-        ReportFlowElement * flowElement
+        const ReportFlowElement * flowElement
     )
 {
     int result = 0;
@@ -137,24 +135,24 @@ int HRG::_HtmlGenerator::_countParagraps(
 }
 
 int HRG::_HtmlGenerator::_countParagraps(
-        ReportBlockElement * blockElement
+        const ReportBlockElement * blockElement
     )
 {
-    if (dynamic_cast<ReportParagraph*>(blockElement))
+    if (dynamic_cast<const ReportParagraph*>(blockElement))
     {
         return 1;
     }
     else if (auto list =
-             dynamic_cast<ReportList*>(blockElement))
+             dynamic_cast<const ReportList*>(blockElement))
     {
         return _countParagraps(list);
     }
     else if (auto table =
-             dynamic_cast<ReportTable*>(blockElement))
+             dynamic_cast<const ReportTable*>(blockElement))
     {
         return _countParagraps(table);
     }
-    else if (dynamic_cast<ReportTableOfContent*>(blockElement))
+    else if (dynamic_cast<const ReportTableOfContent*>(blockElement))
     {
         return 1;
     }
@@ -166,7 +164,7 @@ int HRG::_HtmlGenerator::_countParagraps(
 }
 
 int HRG::_HtmlGenerator::_countParagraps(
-        ReportList * list
+        const ReportList * list
     )
 {
     int result = 0;
@@ -178,7 +176,7 @@ int HRG::_HtmlGenerator::_countParagraps(
 }
 
 int HRG::_HtmlGenerator::_countParagraps(
-        ReportTable * table
+        const ReportTable * table
     )
 {
     int result = 0;
@@ -190,7 +188,7 @@ int HRG::_HtmlGenerator::_countParagraps(
 }
 
 void HRG::_HtmlGenerator::_assignIdsToElements(
-        Report * report
+        const Report * report
     )
 {
     for (auto section : report->sections())
@@ -200,7 +198,7 @@ void HRG::_HtmlGenerator::_assignIdsToElements(
 }
 
 void HRG::_HtmlGenerator::_assignIdsToElements(
-        ReportFlowElement * flowElement
+        const ReportFlowElement * flowElement
     )
 {
     QString id = "Flow" + tt3::util::toString(_nextUnusedId++);
@@ -213,14 +211,14 @@ void HRG::_HtmlGenerator::_assignIdsToElements(
 }
 
 void HRG::_HtmlGenerator::_assignIdsToElements(
-        ReportBlockElement * blockElement
+        const ReportBlockElement * blockElement
     )
 {
     QString id = "Block" + tt3::util::toString(_nextUnusedId++);
     _mapElementsToIds[blockElement] = id;
 
     if (auto paragraph =
-        dynamic_cast<ReportParagraph*>(blockElement))
+        dynamic_cast<const ReportParagraph*>(blockElement))
     {
         for (auto spanElement : paragraph->children())
         {
@@ -229,7 +227,7 @@ void HRG::_HtmlGenerator::_assignIdsToElements(
         }
     }
     else if (auto list =
-             dynamic_cast<ReportList*>(blockElement))
+             dynamic_cast<const ReportList*>(blockElement))
     {
         for (auto item : list->items())
         {
@@ -237,14 +235,14 @@ void HRG::_HtmlGenerator::_assignIdsToElements(
         }
     }
     else if (auto table =
-             dynamic_cast<ReportTable*>(blockElement))
+             dynamic_cast<const ReportTable*>(blockElement))
     {
         for (auto cell : table->cells())
         {
             _assignIdsToElements(cell);
         }
     }
-    else if (dynamic_cast<ReportTableOfContent*>(blockElement))
+    else if (dynamic_cast<const ReportTableOfContent*>(blockElement))
     {   //  Ignore
     }
     else
@@ -254,28 +252,28 @@ void HRG::_HtmlGenerator::_assignIdsToElements(
 }
 
 void HRG::_HtmlGenerator::_generateFlowElement(
-        ReportFlowElement * flowElement
+        const ReportFlowElement * flowElement
     )
 {
     for (auto blockElement : flowElement->children())
     {
         if (auto paragraph =
-            dynamic_cast<ReportParagraph*>(blockElement))
+            dynamic_cast<const ReportParagraph*>(blockElement))
         {
             _generateParagraph(paragraph);
         }
         else if (auto table =
-                 dynamic_cast<ReportTable*>(blockElement))
+                 dynamic_cast<const ReportTable*>(blockElement))
         {
             _generateTable(table);
         }
         else if (auto list =
-                 dynamic_cast<ReportList*>(blockElement))
+                 dynamic_cast<const ReportList*>(blockElement))
         {
             _generateList(list);
         }
         else if (auto toc =
-                 dynamic_cast<ReportTableOfContent*>(blockElement))
+                 dynamic_cast<const ReportTableOfContent*>(blockElement))
         {
             _generateTableOfContent(toc);
         }
@@ -287,7 +285,7 @@ void HRG::_HtmlGenerator::_generateFlowElement(
 }
 
 void HRG::_HtmlGenerator::_generateParagraph(
-        ReportParagraph * paragraph
+        const ReportParagraph * paragraph
     )
 {
     _htmlBuilder.openTag(
@@ -301,7 +299,7 @@ void HRG::_HtmlGenerator::_generateParagraph(
         {
             auto link = spanElement->link();
             if (auto internalLink =
-                dynamic_cast<ReportInternalLink*>(link))
+                dynamic_cast<const ReportInternalLink*>(link))
             {
                 QString linkClass = _cssBuilder.linkStyle(link);
                 auto linkTargetAnchor = internalLink->anchor();
@@ -313,7 +311,7 @@ void HRG::_HtmlGenerator::_generateParagraph(
                     "href", "#" + targetId);
             }
             else if (auto externalLink =
-                     dynamic_cast<ReportExternalLink*>(link))
+                     dynamic_cast<const ReportExternalLink*>(link))
             {
                 QString linkClass = _cssBuilder.linkStyle(link);
                 _htmlBuilder.openTag(
@@ -323,12 +321,12 @@ void HRG::_HtmlGenerator::_generateParagraph(
             }
 
             if (auto text =
-                dynamic_cast<ReportText*>(spanElement))
+                dynamic_cast<const ReportText*>(spanElement))
             {
                 _generateText(text);
             }
             else if (auto picture =
-                     dynamic_cast<ReportPicture*>(spanElement))
+                     dynamic_cast<const ReportPicture*>(spanElement))
             {
                 throw tt3::util::NotImplementedError();
             }
@@ -354,7 +352,7 @@ void HRG::_HtmlGenerator::_generateParagraph(
 }
 
 void HRG::_HtmlGenerator::_generateTableOfContent(
-        ReportTableOfContent * tableOfContent
+        const ReportTableOfContent * tableOfContent
     )
 {
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(HtmlReportFormat));
@@ -367,37 +365,37 @@ void HRG::_HtmlGenerator::_generateTableOfContent(
     _htmlBuilder.closeTag("p");
 
     //  TOC data
-    _generateTableOfContentForReport(tableOfContent->report());
+    _generateTableOfContent(tableOfContent->report());
 }
 
-void HRG::_HtmlGenerator::_generateTableOfContentForReport(
-        Report * report
+void HRG::_HtmlGenerator::_generateTableOfContent(
+        const Report * report
     )
 {
     for (auto section : report->sections())
     {
-        _generateTableOfContentForSection(section);
+        _generateTableOfContent(section);
     }
 }
 
-void HRG::_HtmlGenerator::_generateTableOfContentForSection(
-        ReportSection * section
+void HRG::_HtmlGenerator::_generateTableOfContent(
+        const ReportSection * section
     )
 {
     for (auto blockElement : section->children())
     {
         if (auto paragraph =
-            dynamic_cast<ReportParagraph*>(blockElement))
+            dynamic_cast<const ReportParagraph*>(blockElement))
         {
-            _generateTableOfContentForParagraph(paragraph);
+            _generateTableOfContent(paragraph);
         }
-        else if (dynamic_cast<ReportTable*>(blockElement))
+        else if (dynamic_cast<const ReportTable*>(blockElement))
         {   //  Ignore
         }
-        else if (dynamic_cast<ReportList*>(blockElement))
+        else if (dynamic_cast<const ReportList*>(blockElement))
         {   //  Ignore
         }
-        else if (dynamic_cast<ReportTableOfContent*>(blockElement))
+        else if (dynamic_cast<const ReportTableOfContent*>(blockElement))
         {   //  Ignore
         }
         else
@@ -407,8 +405,8 @@ void HRG::_HtmlGenerator::_generateTableOfContentForSection(
     }
 }
 
-void HRG::_HtmlGenerator::_generateTableOfContentForParagraph(
-        ReportParagraph * paragraph
+void HRG::_HtmlGenerator::_generateTableOfContent(
+        const ReportParagraph * paragraph
     )
 {
     if (paragraph->style() == nullptr)
@@ -471,12 +469,12 @@ void HRG::_HtmlGenerator::_generateTableOfContentForParagraph(
                              "class", linkClass,
                              "href", "#" + _mapElementsToIds[paragraph]);
         if (auto text =
-            dynamic_cast<ReportText*>(spanElement))
+            dynamic_cast<const ReportText*>(spanElement))
         {
             _htmlBuilder.writeText(text->text());
         }
         else if (auto picture =
-                 dynamic_cast<ReportPicture*>(spanElement))
+                 dynamic_cast<const ReportPicture*>(spanElement))
 
         {
             throw tt3::util::NotImplementedError();
@@ -492,7 +490,7 @@ void HRG::_HtmlGenerator::_generateTableOfContentForParagraph(
 }
 
 void HRG::_HtmlGenerator::_generateText(
-        ReportText * text
+        const ReportText * text
     )
 {
     if (text->style() != nullptr)
@@ -516,7 +514,7 @@ void HRG::_HtmlGenerator::_generateText(
 }
 
 void HRG::_HtmlGenerator::_generateTable(
-        ReportTable * table
+        const ReportTable * table
     )
 {
     _htmlBuilder.openTag(
@@ -530,7 +528,7 @@ void HRG::_HtmlGenerator::_generateTable(
         _htmlBuilder.openTag("tr");
         for (int column = 0; column < table->columnCount(); column++)
         {
-            ReportTableCell * cell = table->findTableCellAt(column, row);
+            auto cell = table->findTableCellAt(column, row);
             if (cell != nullptr)
             {   //  Cell found...
                 if (cell->startColumn() == column && cell->startRow() == row)
@@ -557,7 +555,7 @@ void HRG::_HtmlGenerator::_generateTable(
 }
 
 void HRG::_HtmlGenerator::_generateList(
-        ReportList * list
+        const ReportList * list
     )
 {   //  We generate lists as borderless HTML tables containing 2 columns:
     //  *   1st column is the "label" of list items (e.g. bullets, numbers, etc.)

@@ -88,4 +88,11 @@ TypographicSize ReportTableOfContent::resolveGapBelow() const
     return ReportBlockElement::resolveGapBelow();
 }
 
+//////////
+//  Serialization
+void ReportTableOfContent::serialize(QDomElement & element) const
+{
+    ReportBlockElement::serialize(element);
+}
+
 //  End of tt3-report/ReportTableOfContent.cpp

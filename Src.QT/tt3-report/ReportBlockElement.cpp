@@ -39,12 +39,12 @@ ReportBlockElement::~ReportBlockElement()
 //  Opertions
 TypographicSize ReportBlockElement::resolveLeftMargin() const
 {   //  Default behaviour is go to the parent block
-    for (ReportElement * parent = this->parent();
+    for (const ReportElement * parent = this->parent();
          parent != nullptr;
          parent = parent->parent())
     {
         if (auto parentBlock =
-            dynamic_cast<ReportBlockElement*>(parent))
+            dynamic_cast<const ReportBlockElement*>(parent))
         {
             return parentBlock->resolveLeftMargin();
         }
@@ -55,12 +55,12 @@ TypographicSize ReportBlockElement::resolveLeftMargin() const
 
 TypographicSize ReportBlockElement::resolveRightMargin() const
 {   //  Default behaviour is go to the parent block
-    for (ReportElement * parent = this->parent();
+    for (const ReportElement * parent = this->parent();
          parent != nullptr;
          parent = parent->parent())
     {
         if (auto parentBlock =
-            dynamic_cast<ReportBlockElement*>(parent))
+            dynamic_cast<const ReportBlockElement*>(parent))
         {
             return parentBlock->resolveRightMargin();
         }
@@ -71,12 +71,12 @@ TypographicSize ReportBlockElement::resolveRightMargin() const
 
 TypographicSize ReportBlockElement::resolveGapAboven() const
 {   //  Default behaviour is go to the parent block
-    for (ReportElement * parent = this->parent();
+    for (const ReportElement * parent = this->parent();
          parent != nullptr;
          parent = parent->parent())
     {
         if (auto parentBlock =
-            dynamic_cast<ReportBlockElement*>(parent))
+            dynamic_cast<const ReportBlockElement*>(parent))
         {
             return parentBlock->resolveGapAboven();
         }
@@ -87,18 +87,25 @@ TypographicSize ReportBlockElement::resolveGapAboven() const
 
 TypographicSize ReportBlockElement::resolveGapBelow() const
 {   //  Default behaviour is go to the parent block
-    for (ReportElement * parent = this->parent();
+    for (const ReportElement * parent = this->parent();
          parent != nullptr;
          parent = parent->parent())
     {
         if (auto parentBlock =
-            dynamic_cast<ReportBlockElement*>(parent))
+            dynamic_cast<const ReportBlockElement*>(parent))
         {
             return parentBlock->resolveGapBelow();
         }
     }
     //  No ancestor block was any good
     return TypographicSize::pt(0);
+}
+
+//////////
+//  Serialization
+void ReportBlockElement::serialize(QDomElement & element) const
+{
+    ReportElement::serialize(element);
 }
 
 //  End of tt3-report/ReportBlockElement.cpp

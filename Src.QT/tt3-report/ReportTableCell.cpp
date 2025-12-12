@@ -21,18 +21,18 @@ using namespace tt3::report;
 //  Construction/destruction
 ReportTableCell::ReportTableCell(
         ReportTable * table,
-        int startColumn,
-        int startRow,
-        int columnSpan,
-        int rowSpan,
+        qsizetype startColumn,
+        qsizetype startRow,
+        qsizetype columnSpan,
+        qsizetype rowSpan,
         VerticalAlignment contentAlignment,
         const TypographicSizeOpt & preferredWidth
     ) : ReportFlowElement(table->_report),
         _table(table),
-        _startColumn(std::max(startColumn, 0)), //  be defensive
-        _startRow(std::max(startRow, 0)),       //  be defensive
-        _columnSpan(std::max(columnSpan, 1)),   //  be defensive
-        _rowSpan(std::max(rowSpan, 1)),         //  be defensive
+        _startColumn(std::max<qsizetype>(startColumn, 0)), //  be defensive
+        _startRow(std::max<qsizetype>(startRow, 0)),       //  be defensive
+        _columnSpan(std::max<qsizetype>(columnSpan, 1)),   //  be defensive
+        _rowSpan(std::max<qsizetype>(rowSpan, 1)),         //  be defensive
         _contentAlignment(contentAlignment),
         _preferredWidth(preferredWidth)
 {
@@ -95,6 +95,23 @@ auto ReportTableCell::resolveCellBorderType() const -> BorderType
 auto ReportTableCell::resolveContentAlignment() const -> VerticalAlignment
 {
     return _contentAlignment;
+}
+
+//////////
+//  Serialization
+void ReportTableCell::serialize(QDomElement & element) const
+{
+    ReportFlowElement::serialize(element);
+
+    element.setAttribute("StartColumn", _startColumn);
+    element.setAttribute("StartRow", _startRow);
+    element.setAttribute("ColumnSpan", _columnSpan);
+    element.setAttribute("RowSpan", _rowSpan);
+    element.setAttribute("ContentAlignment", tt3::util::toString(_contentAlignment));
+    if (_preferredWidth.has_value())
+    {
+        element.setAttribute("PreferredWidth", tt3::util::toString(_preferredWidth.value()));
+    }
 }
 
 //  End of tt3-report/ReportTableCell.cpp

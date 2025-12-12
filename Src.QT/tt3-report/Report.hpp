@@ -46,7 +46,7 @@ namespace tt3::report
         ///     IMPORTANT: must NOT be "delete"d whihc the Report
         ///     instance(s) that use that ReportTemplate exist.
         Report(const QString & name,
-               IReportTemplate * reportTemplate
+               const IReportTemplate * reportTemplate
             );
 
         /// \brief
@@ -66,7 +66,7 @@ namespace tt3::report
         ///     Returns the report template.
         /// \return
         ///     The report template.
-        auto            reportTemplate() const -> IReportTemplate * { return _reportTemplate; }
+        auto            reportTemplate() const -> const IReportTemplate * { return _reportTemplate; }
 
         /// \brief
         ///     Returns the UTC date+time when this Report was created.
@@ -78,19 +78,37 @@ namespace tt3::report
         ///     Returns the list of all Sections in this Report.
         /// \return
         ///     The list of all Sections in this Report, in order of creation.
-        ReportSections  sections() const { return _sections; }
+        ReportSections  sections();
+
+        /// \brief
+        ///     Returns the list of all Sections in this Report.
+        /// \return
+        ///     The list of all Sections in this Report, in order of creation.
+        ReportSectionsC sections() const;
 
         /// \brief
         ///     Returns the list of all Anchors in this Report.
         /// \return
         ///     The list of all Anchors in this Report, in order of creation.
-        ReportAnchors   anchors() const { return _anchors; }
+        ReportAnchors   anchors();
+
+        /// \brief
+        ///     Returns the list of all Anchors in this Report.
+        /// \return
+        ///     The list of all Anchors in this Report, in order of creation.
+        ReportAnchorsC  anchors() const;
 
         /// \brief
         ///     Returns the list of all Links in this Report.
         /// \return
         ///     The list of all Links in this Report, in order of creation.
-        ReportLinks     links() const { return _links; }
+        ReportLinks     links();
+
+        /// \brief
+        ///     Returns the list of all Links in this Report.
+        /// \return
+        ///     The list of all Links in this Report, in order of creation.
+        ReportLinksC    links() const;
 
         /// \brief
         ///     Creates a new Section at the end of this Report.
@@ -106,10 +124,29 @@ namespace tt3::report
                             );
 
         //////////
+        //  Serialization
+    public:
+        /// \brief
+        ///     The XML serialization format version.
+        inline static const QString FormatVersion = "1";
+
+        /// \brief
+        ///     The tag name for an XML element representing
+        ///     the template itself in an XML document.
+        inline static const QString XmlTagName = "Report";
+
+        /// \brief
+        ///     Serializes this report by setting attributes
+        ///     and children of the specified element as necessary.
+        /// \param element
+        ///     The XML DOM element to serialize to.
+        void            serialize(QDomElement & element) const;
+
+        //////////
         //  Implementation
     private:
         QString         _name;
-        IReportTemplate*_reportTemplate;
+        const IReportTemplate * _reportTemplate;
         QDateTime       _createdAt;
 
         ReportSections  _sections;  //  in order of creation
@@ -158,20 +195,39 @@ namespace tt3::report
         ///     Returns the Report to which this Element belongs.
         /// \return
         ///     The Report to which this Element belongs.
-        Report *        report() const { return _report; }
+        Report *        report() { return _report; }
+
+        /// \brief
+        ///     Returns the Report to which this Element belongs.
+        /// \return
+        ///     The Report to which this Element belongs.
+        const Report *  report() const { return _report; }
 
         /// \brief
         ///     Returns the immediate parent of this Element.
         /// \return
         ///     The immediate parent of this Element; nullptr == none.
-        virtual auto    parent() const -> ReportElement * = 0;
+        virtual auto    parent() -> ReportElement * = 0;
+
+        /// \brief
+        ///     Returns the immediate parent of this Element.
+        /// \return
+        ///     The immediate parent of this Element; nullptr == none.
+        virtual auto    parent() const -> const ReportElement * = 0;
 
         /// \brief
         ///     Returns the list of anchors assigned to this Element.
         /// \return
         ///     The list of anchors assigned to this Element,
         ///     in order of creation.
-        ReportAnchors   anchors() const { return _anchors; }
+        ReportAnchors   anchors();
+
+        /// \brief
+        ///     Returns the list of anchors assigned to this Element.
+        /// \return
+        ///     The list of anchors assigned to this Element,
+        ///     in order of creation.
+        ReportAnchorsC  anchors() const;
 
         /// \brief
         ///     Creates a new Anchor associated with this Element.
@@ -236,6 +292,24 @@ namespace tt3::report
         virtual auto    resolveBackgroundColor() const -> ColorSpec = 0;
 
         //////////
+        //  Serialization
+    public:
+        /// \brief
+        ///     Returns the tag name for an XML element representing
+        ///     the element itself in an XML document.
+        /// \return
+        ///     The tag name for an XML element representing
+        ///     the element itself in an XML document.
+        virtual QString xmlTagName() const = 0;
+
+        /// \brief
+        ///     Serializes this element by setting attributes
+        ///     and children of the specified element as necessary.
+        /// \param element
+        ///     The XML DOM element to serialize to.
+        virtual void    serialize(QDomElement & element) const;
+
+        //////////
         //  Implementation
     private:
         Report *        _report;
@@ -268,7 +342,14 @@ namespace tt3::report
         /// \return
         ///     The list of immediate children of this FlowElement,
         ///     in order of creation.
-        auto            children() const -> ReportBlockElements { return _children; }
+        auto            children() -> ReportBlockElements;
+
+        /// \brief
+        ///     Returns the list of immediate children of this FlowElement.
+        /// \return
+        ///     The list of immediate children of this FlowElement,
+        ///     in order of creation.
+        auto            children() const -> ReportBlockElementsC;
 
         /// \brief
         ///     Creates a new empty Paragraph at the end of this Flow.
@@ -301,6 +382,11 @@ namespace tt3::report
         auto            createTableOfContent() -> ReportTableOfContent *;
 
         //////////
+        //  Serialization
+    public:
+        virtual void    serialize(QDomElement & element) const override;
+
+        //////////
         //  Implementation
     private:
         ReportBlockElements _children;  //  in order of creations
@@ -328,7 +414,8 @@ namespace tt3::report
         //////////
         //  ReportElement
     public:
-        virtual auto    parent() const -> ReportFlowElement * override { return _parent; }
+        virtual auto    parent() -> ReportFlowElement * override { return _parent; }
+        virtual auto    parent() const -> const ReportFlowElement * override { return _parent; }
 
         //////////
         //  Operations
@@ -378,6 +465,11 @@ namespace tt3::report
         virtual auto    resolveGapBelow() const ->TypographicSize;
 
         //////////
+        //  Serialization
+    public:
+        virtual void    serialize(QDomElement & element) const override;
+
+        //////////
         //  Implementation
     private:
         ReportFlowElement * _parent;    //  never nullptr
@@ -405,7 +497,8 @@ namespace tt3::report
         //////////
         //  ReportElement
     public:
-        virtual auto    parent() const -> ReportElement * override { return nullptr; }
+        virtual auto    parent() -> ReportElement * override { return nullptr; }
+        virtual auto    parent() const -> const ReportElement * override { return nullptr; }
         virtual auto    resolveFontSpecs() const -> FontSpecs override;
         virtual auto    resolveFontSize() const -> TypographicSize override;
         virtual auto    resolveFontStyle() const -> FontStyle override;
@@ -441,6 +534,17 @@ namespace tt3::report
         /// \param style
         ///     The new style for this Section; nullptr == none.
         void            setStyle(ISectionStyle * style);
+
+        //////////
+        //  Serialization
+    public:
+        /// \brief
+        ///     The tag name for an XML element representing
+        ///     the section itself in an XML document.
+        inline static const QString XmlTagName = "Section";
+
+        virtual QString xmlTagName() const override { return XmlTagName; }
+        virtual void    serialize(QDomElement & element) const override;
 
         //////////
         //  Implementation
@@ -507,7 +611,13 @@ namespace tt3::report
         ///     Returns the list of children of this Paragraph.
         /// \return
         ///     The list of children of this Paragraph, in order of creation.
-        auto            children() const -> ReportSpanElements { return _children; }
+        auto            children() -> ReportSpanElements;
+
+        /// \brief
+        ///     Returns the list of children of this Paragraph.
+        /// \return
+        ///     The list of children of this Paragraph, in order of creation.
+        auto            children() const -> ReportSpanElementsC;
 
         /// \brief
         ///     Returns the resolved text alignment for this paragraph.
@@ -561,6 +671,17 @@ namespace tt3::report
                             );
 
         //////////
+        //  Serialization
+    public:
+        /// \brief
+        ///     The tag name for an XML element representing
+        ///     the paragraph itself in an XML document.
+        inline static const QString XmlTagName = "Paragraph";
+
+        virtual QString xmlTagName() const override { return XmlTagName; }
+        virtual void    serialize(QDomElement & element) const override;
+
+        //////////
         //  Implementation
     private:
         IParagraphStyle *   _style; //  may be null
@@ -588,7 +709,8 @@ namespace tt3::report
         //////////
         //  ReportElement
     public:
-        virtual auto    parent() const -> ReportParagraph * override { return _paragraph; }
+        virtual auto    parent() -> ReportParagraph * override { return _paragraph; }
+        virtual auto    parent() const -> const ReportParagraph * override { return _paragraph; }
 
         //////////
         //  Operations
@@ -597,13 +719,25 @@ namespace tt3::report
         ///     Returns the Paragraph to which this SpanElement belongs.
         /// \return
         ///     The Paragraph to which this SpanElement belongs, never nullptr.
-        ReportParagraph*paragraph() const { return _paragraph; }
+        auto            paragraph() -> ReportParagraph * { return _paragraph; }
+
+        /// \brief
+        ///     Returns the Paragraph to which this SpanElement belongs.
+        /// \return
+        ///     The Paragraph to which this SpanElement belongs, never nullptr.
+        auto            paragraph() const -> const ReportParagraph * { return _paragraph; }
 
         /// \brief
         ///     Returns the Link associated with this element.
         /// \return
         ///     The Link associated with this element; nullptr == none.
-        ReportLink *    link() const { return _link; }
+        auto            link() -> ReportLink * { return _link; }
+
+        /// \brief
+        ///     Returns the Link associated with this element.
+        /// \return
+        ///     The Link associated with this element; nullptr == none.
+        auto            link() const -> const ReportLink * { return _link; }
 
         /// \brief
         ///     Creates a new InternalLink for this Span.
@@ -630,6 +764,11 @@ namespace tt3::report
                                 const QString & url,
                                 ILinkStyle * style = nullptr
                             ) -> ReportExternalLink *;
+
+        //////////
+        //  Serialization
+    public:
+        virtual void    serialize(QDomElement & element) const override;
 
         //////////
         //  Implementation
@@ -697,6 +836,17 @@ namespace tt3::report
         void            setStyle(ICharacterStyle * style);
 
         //////////
+        //  Serialization
+    public:
+        /// \brief
+        ///     The tag name for an XML element representing
+        ///     the text itself in an XML document.
+        inline static const QString XmlTagName = "Text";
+
+        virtual QString xmlTagName() const override { return XmlTagName; }
+        virtual void    serialize(QDomElement & element) const override;
+
+        //////////
         //  Implementation
     private:
         QString             _text;
@@ -752,6 +902,17 @@ namespace tt3::report
         /// \return
         ///     The image to display as a picture.
         QImage          image() const { return _image; }
+
+        //////////
+        //  Serialization
+    public:
+        /// \brief
+        ///     The tag name for an XML element representing
+        ///     the picture itself in an XML document.
+        inline static const QString XmlTagName = "Picture";
+
+        virtual QString xmlTagName() const override { return XmlTagName; }
+        virtual void    serialize(QDomElement & element) const override;
 
         //////////
         //  Implementation
@@ -819,7 +980,13 @@ namespace tt3::report
         ///     Returns the list of all Items in this List.
         /// \return
         ///     The list of all Items in this List, in order of creation.
-        ReportListItems     items() const { return _items; }
+        ReportListItems     items();
+
+        /// \brief
+        ///     Returns the list of all Items in this List.
+        /// \return
+        ///     The list of all Items in this List, in order of creation.
+        ReportListItemsC    items() const;
 
         /// \brief
         ///     Returns the resolved indent for this list.
@@ -839,6 +1006,17 @@ namespace tt3::report
         /// \return
         ///     The newly created ListItem.
         ReportListItem *    createItem(const QString & label = "");
+
+        //////////
+        //  Serialization
+    public:
+        /// \brief
+        ///     The tag name for an XML element representing
+        ///     the list itself in an XML document.
+        inline static const QString XmlTagName = "List";
+
+        virtual QString xmlTagName() const override { return XmlTagName; }
+        virtual void    serialize(QDomElement & element) const override;
 
         //////////
         //  Implementation
@@ -867,7 +1045,8 @@ namespace tt3::report
         //////////
         //  ReportElement
     public:
-        virtual auto    parent() const -> ReportElement * override { return _list; }
+        virtual auto    parent() -> ReportElement * override { return _list; }
+        virtual auto    parent() const -> const ReportElement * override { return _list; }
         virtual auto    resolveFontSpecs() const -> FontSpecs override;
         virtual auto    resolveFontSize() const -> TypographicSize override;
         virtual auto    resolveFontStyle() const -> FontStyle override;
@@ -881,7 +1060,13 @@ namespace tt3::report
         ///     Returns the List to which this ListItem belongs.
         /// \return
         ///     The List to which this ListItem belongs; never nullptr.
-        ReportList *    list() const { return _list; }
+        auto            list() -> ReportList * { return _list; }
+
+        /// \brief
+        ///     Returns the List to which this ListItem belongs.
+        /// \return
+        ///     The List to which this ListItem belongs; never nullptr.
+        auto            list() const -> const ReportList * { return _list; }
 
         /// \brief
         ///     Returns the label of this ListItem.
@@ -894,6 +1079,17 @@ namespace tt3::report
         /// \param label
         ///     The new label for this ListItem.
         void            setLabel(const QString & label) { _label = label; }
+
+        //////////
+        //  Serialization
+    public:
+        /// \brief
+        ///     The tag name for an XML element representing
+        ///     the list item itself in an XML document.
+        inline static const QString XmlTagName = "ListItem";
+
+        virtual QString xmlTagName() const override { return XmlTagName; }
+        virtual void    serialize(QDomElement & element) const override;
 
         //////////
         //  Implementation
@@ -960,19 +1156,25 @@ namespace tt3::report
         ///     Returns the list of all Cells of this Table.
         /// \return
         ///     The list of all Cells of this Table, in order of creation.
-        ReportTableCells cells() const { return _cells; }
+        auto            cells() -> ReportTableCells;
+
+        /// \brief
+        ///     Returns the list of all Cells of this Table.
+        /// \return
+        ///     The list of all Cells of this Table, in order of creation.
+        auto            cells() const -> ReportTableCellsC;
 
         /// \brief
         ///     Returns the number of columns in this Table.
         /// \return
         ///     The number of columns in this Table.
-        int             columnCount() const { return _columnCount; }
+        qsizetype       columnCount() const { return _columnCount; }
 
         /// \brief
         ///     Returns the number of rows in this Table.
         /// \return
         ///     The number of rows in this Table.
-        int             rowCount() const { return _rowCount; }
+        qsizetype       rowCount() const { return _rowCount; }
 
         /// \brief
         ///     Creates a new TableCell in this Table.
@@ -991,14 +1193,14 @@ namespace tt3::report
         ///     the TableCell; no value == choose automatically.
         /// \return
         ///     The newly created TableCell.
-        ReportTableCell*createCell(
-                                int startColumn,
-                                int startRow,
-                                int columnSpan,
-                                int rowSpan,
+        auto            createCell(
+                                qsizetype startColumn,
+                                qsizetype startRow,
+                                qsizetype columnSpan,
+                                qsizetype rowSpan,
                                 VerticalAlignment contentAlignment = VerticalAlignment::Top,
                                 TypographicSizeOpt preferredWidth = TypographicSizeOpt()
-                            );
+                            ) -> ReportTableCell *;
 
         /// \brief
         ///     Returns the TableCell that appears at the specified row/column.
@@ -1009,7 +1211,24 @@ namespace tt3::report
         /// \return
         ///     The TableCell that appears at the specified row/column;
         ///     nullptr if there is no such TableCell.
-        ReportTableCell*findTableCellAt(int column, int row);
+        auto            findTableCellAt(
+                                qsizetype column,
+                                qsizetype row
+                            ) -> ReportTableCell *;
+
+        /// \brief
+        ///     Returns the TableCell that appears at the specified row/column.
+        /// \param column
+        ///    The 0-based column number.
+        /// \param row
+        ///    The 0-based row number.
+        /// \return
+        ///     The TableCell that appears at the specified row/column;
+        ///     nullptr if there is no such TableCell.
+        auto            findTableCellAt(
+                                qsizetype column,
+                                qsizetype row
+                            ) const -> const ReportTableCell *;
 
         /// \brief
         ///     Returns the resolved table border style for this table.
@@ -1034,12 +1253,23 @@ namespace tt3::report
         auto            resolveCellBorderType() const -> BorderType;
 
         //////////
+        //  Serialization
+    public:
+        /// \brief
+        ///     The tag name for an XML element representing
+        ///     the table itself in an XML document.
+        inline static const QString XmlTagName = "Table";
+
+        virtual QString xmlTagName() const override { return XmlTagName; }
+        virtual void    serialize(QDomElement & element) const override;
+
+        //////////
         //  Implementation
     private:
         ITableStyle *   _style; //  may be null
         ReportTableCells    _cells;
-        int             _columnCount = 0;
-        int             _rowCount = 0;
+        qsizetype       _columnCount = 0;
+        qsizetype       _rowCount = 0;
     };
 
     /// \class ReportTableCell tt3-report/API.hpp
@@ -1056,10 +1286,10 @@ namespace tt3::report
     private:
         ReportTableCell(
                 ReportTable * table,
-                int startColumn,
-                int startRow,
-                int columnSpan,
-                int rowSpan,
+                qsizetype startColumn,
+                qsizetype startRow,
+                qsizetype columnSpan,
+                qsizetype rowSpan,
                 VerticalAlignment contentAlignment, //  TODO replace with ITableCellStyle
                 const TypographicSizeOpt & preferredWidth
             );
@@ -1068,7 +1298,8 @@ namespace tt3::report
         //////////
         //  ReportElement
     public:
-        virtual auto    parent() const -> ReportElement * override { return _table; }
+        virtual auto    parent() -> ReportElement * override { return _table; }
+        virtual auto    parent() const -> const ReportElement * override { return _table; }
         virtual auto    resolveFontSpecs() const -> FontSpecs override;
         virtual auto    resolveFontSize() const -> TypographicSize override;
         virtual auto    resolveFontStyle() const -> FontStyle override;
@@ -1082,31 +1313,37 @@ namespace tt3::report
         ///     Returns the Table to which this TableCell belongs.
         /// \return
         ///     The Table to which this TableCell belongs.
-        ReportTable *   table() const { return _table; }
+        auto            table() -> ReportTable * { return _table; }
+
+        /// \brief
+        ///     Returns the Table to which this TableCell belongs.
+        /// \return
+        ///     The Table to which this TableCell belongs.
+        auto            table() const -> const ReportTable * { return _table; }
 
         /// \brief
         ///     Returns the start column of this TableCell.
         /// \return
         ///     The start column of this TableCell (0-based).
-        int             startColumn() const { return _startColumn; }
+        qsizetype       startColumn() const { return _startColumn; }
 
         /// \brief
         ///     Returns the start row of this TableCell.
         /// \return
         ///     The start row of this TableCell (0-based).
-        int             startRow() const { return _startRow; }
+        qsizetype       startRow() const { return _startRow; }
 
         /// \brief
         ///     Returns the number of columns occupied by this TableCell.
         /// \return
         ///     The number of columns occupied by this TableCell (1 or more).
-        int             columnSpan() const { return _columnSpan; }
+        qsizetype       columnSpan() const { return _columnSpan; }
 
         /// \brief
         ///     Returns the number of ows occupied by this TableCell.
         /// \return
         ///     The number of rows occupied by this TableCell (1 or more).
-        int             rowSpan() const { return _rowSpan; }
+        qsizetype       rowSpan() const { return _rowSpan; }
 
         /// \brief
         ///     Returns the alignment of content within this TableCell.
@@ -1135,13 +1372,24 @@ namespace tt3::report
         auto            resolveContentAlignment() const -> VerticalAlignment;
 
         //////////
+        //  Serialization
+    public:
+        /// \brief
+        ///     The tag name for an XML element representing
+        ///     the table cell itself in an XML document.
+        inline static const QString XmlTagName = "TableCell";
+
+        virtual QString xmlTagName() const override { return XmlTagName; }
+        virtual void    serialize(QDomElement & element) const override;
+
+        //////////
         //  Implementation
     private:
         ReportTable *   _table;
-        int             _startColumn;           //  always >= 0
-        int             _startRow;              //  always >= 0
-        int             _columnSpan;            //  always >= 1
-        int             _rowSpan;               //  always >= 1
+        qsizetype       _startColumn;   //  always >= 0
+        qsizetype       _startRow;      //  always >= 0
+        qsizetype       _columnSpan;    //  always >= 1
+        qsizetype       _rowSpan;       //  always >= 1
         VerticalAlignment   _contentAlignment;
         TypographicSizeOpt  _preferredWidth;    //  no value == choose automatically
     };
@@ -1165,7 +1413,8 @@ namespace tt3::report
         //////////
         //  ReportElement
     public:
-        virtual auto    parent() const -> ReportElement * override { return _anchoredElement; }
+        virtual auto    parent() -> ReportElement * override { return _anchoredElement; }
+        virtual auto    parent() const -> const ReportElement * override { return _anchoredElement; }
         virtual auto    resolveFontSpecs() const -> FontSpecs override;
         virtual auto    resolveFontSize() const -> TypographicSize override;
         virtual auto    resolveFontStyle() const -> FontStyle override;
@@ -1179,7 +1428,24 @@ namespace tt3::report
         ///     Returns the element to which this Anchor is assigned.
         /// \return
         ///     The element to which this Anchor is assigned; never nullptr.
-        ReportElement * anchoredElement() const { return _anchoredElement; }
+        auto            anchoredElement() -> ReportElement * { return _anchoredElement; }
+
+        /// \brief
+        ///     Returns the element to which this Anchor is assigned.
+        /// \return
+        ///     The element to which this Anchor is assigned; never nullptr.
+        auto            anchoredElement() const -> const ReportElement * { return _anchoredElement; }
+
+        //////////
+        //  Serialization
+    public:
+        /// \brief
+        ///     The tag name for an XML element representing
+        ///     the section itself in an XML document.
+        inline static const QString XmlTagName = "Section";
+
+        virtual QString xmlTagName() const override { return XmlTagName; }
+        virtual void    serialize(QDomElement & element) const override;
 
         //////////
         //  Implementation
@@ -1211,6 +1477,7 @@ namespace tt3::report
         //////////
         //  ReportElement
     public:
+        virtual auto    parent() -> ReportElement * override { return _spanElement; }
         virtual auto    parent() const -> ReportElement * override { return _spanElement; }
         virtual auto    resolveFontSpecs() const -> FontSpecs override;
         virtual auto    resolveFontSize() const -> TypographicSize override;
@@ -1225,7 +1492,13 @@ namespace tt3::report
         ///     Returns the SpanElement that acts as a link.
         /// \return
         ///     The SpanElement that acts as a link; never nullptr.
-        ReportSpanElement * spanElement() const { return _spanElement; }
+        auto            spanElement() -> ReportSpanElement * { return _spanElement; }
+
+        /// \brief
+        ///     Returns the SpanElement that acts as a link.
+        /// \return
+        ///     The SpanElement that acts as a link; never nullptr.
+        auto            spanElement() const -> const ReportSpanElement * { return _spanElement; }
 
         /// \brief
         ///     Returns The style assigned to this Link.
@@ -1241,6 +1514,11 @@ namespace tt3::report
         /// \param style
         ///     The new style for this link; nullptr == none.
         void        setStyle(ILinkStyle * style);
+
+        //////////
+        //  Serialization
+    public:
+        virtual void    serialize(QDomElement & element) const override;
 
         //////////
         //  Implementation
@@ -1276,7 +1554,24 @@ namespace tt3::report
         ///     Returns the link target Anchor.
         /// \return
         ///     The link target Anchor; never nullptr.
-        ReportAnchor *  anchor() const { return _anchor; }
+        auto        anchor() -> ReportAnchor * { return _anchor; }
+
+        /// \brief
+        ///     Returns the link target Anchor.
+        /// \return
+        ///     The link target Anchor; never nullptr.
+        auto        anchor() const -> const ReportAnchor * { return _anchor; }
+
+        //////////
+        //  Serialization
+    public:
+        /// \brief
+        ///     The tag name for an XML element representing
+        ///     the link itself in an XML document.
+        inline static const QString XmlTagName = "InternalLink";
+
+        virtual QString xmlTagName() const override { return XmlTagName; }
+        virtual void    serialize(QDomElement & element) const override;
 
         //////////
         //  Implementation
@@ -1311,6 +1606,17 @@ namespace tt3::report
         /// \return
         ///     The link target URL.
         QString         url() const { return _url; }
+
+        //////////
+        //  Serialization
+    public:
+        /// \brief
+        ///     The tag name for an XML element representing
+        ///     the link itself in an XML document.
+        inline static const QString XmlTagName = "ExternalLink";
+
+        virtual QString xmlTagName() const override { return XmlTagName; }
+        virtual void    serialize(QDomElement & element) const override;
 
         //////////
         //  Implementation
@@ -1353,12 +1659,15 @@ namespace tt3::report
         virtual auto    resolveGapBelow() const ->TypographicSize override;
 
         //////////
-        //  Operations
+        //  Serialization
     public:
+        /// \brief
+        ///     The tag name for an XML element representing
+        ///     the TOC itself in an XML document.
+        inline static const QString XmlTagName = "TableOfContent";
 
-        //////////
-        //  Implementation
-    private:
+        virtual QString xmlTagName() const override { return XmlTagName; }
+        virtual void    serialize(QDomElement & element) const override;
     };
 }
 

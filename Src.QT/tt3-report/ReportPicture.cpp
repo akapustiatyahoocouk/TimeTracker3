@@ -72,4 +72,13 @@ auto ReportPicture::resolveBackgroundColor() const -> ColorSpec
     return _paragraph->resolveBackgroundColor();
 }
 
+//////////
+//  Serialization
+void ReportPicture::serialize(QDomElement & element) const
+{
+    ReportSpanElement::serialize(element);
+
+    throw tt3::util::NotImplementedError();
+}
+
 //  End of tt3-report/ReportPicture.cpp

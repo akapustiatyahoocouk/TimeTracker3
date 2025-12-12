@@ -59,6 +59,23 @@ bool ReportFormatManager::registerReportFormat(IReportFormat * reportFormat)
     return true;
 }
 
+bool ReportFormatManager::unregisterReportFormat(IReportFormat * reportFormat)
+{
+    Q_ASSERT(reportFormat != nullptr);
+
+    _Impl * impl = _impl();
+    tt3::util::Lock _(impl->guard);
+
+    auto key = reportFormat->mnemonic();
+    if (impl->registry.contains(key) &&
+        impl->registry[key] == reportFormat)
+    {
+        impl->registry.remove(key);
+        return true;
+    }
+    return false;
+}
+
 IReportFormat * ReportFormatManager::findReportFormat(const tt3::util::Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();

@@ -41,9 +41,9 @@ namespace tt3::gui
         using Mnemonic = tt3::util::Mnemonic;
 
         /// \brief
-        ///     Returns the mnemonic identifier of this skin
+        ///     Returns the mnemonic identifier of this skin.
         /// \return
-        ///     The mnemonic identifier of this skin
+        ///     The mnemonic identifier of this skin.
         virtual Mnemonic    mnemonic() const = 0;
 
         /// \brief

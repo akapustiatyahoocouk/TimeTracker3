@@ -420,7 +420,6 @@ void RestoreReader::_reportProgress()
 
 void RestoreReader::_processRecord()
 {
-    qDebug() << _record.type;
     Q_ASSERT(_recordHandlers.contains(_record.type));
     (this->*_recordHandlers[_record.type])();
     _reportProgress();

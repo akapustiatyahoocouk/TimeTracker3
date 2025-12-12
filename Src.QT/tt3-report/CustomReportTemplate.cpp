@@ -151,7 +151,7 @@ auto CustomReportTemplate::findStyle(
     return _styles.contains(name) ? _styles[name] : nullptr;
 }
 
-Report * CustomReportTemplate::createNewReport()
+Report * CustomReportTemplate::createNewReport() const
 {
     auto report = new Report(this->displayName(), this);
     //  TODO populate

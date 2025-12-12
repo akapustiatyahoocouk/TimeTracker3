@@ -17,81 +17,96 @@
 #include "tt3-util/API.hpp"
 
 //  C++ types
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<nullptr_t>(const nullptr_t & /*value*/)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<nullptr_t>(const nullptr_t & /*value*/)
 {
     return "(null)";
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<bool>(const bool & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<bool>(const bool & value)
 {
     return value ? "true" : "false";
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<char>(const char & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<char>(const char & value)
 {
     return QString(QChar(value));
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<signed char>(const signed char & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<signed char>(const signed char & value)
 {
     return toString<signed long long>(value);
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<unsigned char>(const unsigned char & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<unsigned char>(const unsigned char & value)
 {
     return toString<unsigned long long>(value);
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<signed short>(const signed short & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<signed short>(const signed short & value)
 {
     return toString<signed long long>(value);
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<unsigned short>(const unsigned short & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<unsigned short>(const unsigned short & value)
 {
     return toString<unsigned long long>(value);
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<signed int>(const signed int & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<signed int>(const signed int & value)
 {
     return toString<signed long long>(value);
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<unsigned int>(const unsigned int & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<unsigned int>(const unsigned int & value)
 {
     return toString<unsigned long long>(value);
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<signed long>(const signed long & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<signed long>(const signed long & value)
 {
     return toString<signed long long>(value);
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<unsigned long>(const unsigned long & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<unsigned long>(const unsigned long & value)
 {
     return toString<unsigned long long>(value);
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<signed long long>(const signed long long & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<signed long long>(const signed long long & value)
 {
     char s[64];
     sprintf(s, "%lld", value);
     return s;
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<unsigned long long>(const unsigned long long & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<unsigned long long>(const unsigned long long & value)
 {
     char s[64];
     sprintf(s, "%llu", value);
     return s;
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<float>(const float & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<float>(const float & value)
 {
     return toString<double>(value);
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<double>(const double & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<double>(const double & value)
 {
     switch (std::fpclassify(value))
     {
@@ -109,18 +124,33 @@ template <> TT3_UTIL_PUBLIC QString tt3::util::toString<double>(const double & v
     }
 }
 
+TT3_UTIL_PUBLIC QString tt3::util::toString(const char * value)
+{
+    return (value != nullptr) ? QString(value) : "(null)";
+}
+
+TT3_UTIL_PUBLIC QString tt3::util::toString(const void * value)
+{
+    char s[32];
+    sprintf(s, "%p", value);
+    return s;
+}
+
 //  QT types
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QChar>(const QChar & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<QChar>(const QChar & value)
 {
     return QString(value);
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QString>(const QString & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<QString>(const QString & value)
 {
     return value;
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QRect>(const QRect & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<QRect>(const QRect & value)
 {
     char s[128];
 
@@ -130,19 +160,22 @@ template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QRect>(const QRect & val
     return s;
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QVersionNumber>(const QVersionNumber & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<QVersionNumber>(const QVersionNumber & value)
 {
     return toString(value.majorVersion()) + "." +
            toString(value.minorVersion()) + "." +
            toString(value.microVersion());
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QLocale>(const QLocale & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<QLocale>(const QLocale & value)
 {
     return (value == QLocale::c()) ? "C" : value.name();
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QColor>(const QColor & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<QColor>(const QColor & value)
 {
     if (value.isValid())
     {
@@ -165,7 +198,8 @@ template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QColor>(const QColor & v
     }
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QDateTime>(const QDateTime & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<QDateTime>(const QDateTime & value)
 {
     if (value.isValid())
     {
@@ -183,7 +217,8 @@ template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QDateTime>(const QDateTi
     return "-";
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QDate>(const QDate & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<QDate>(const QDate & value)
 {
     if (value.isValid())
     {
@@ -198,22 +233,26 @@ template <> TT3_UTIL_PUBLIC QString tt3::util::toString<QDate>(const QDate & val
 }
 
 //  tt3::util types
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<tt3::util::TimeSpan>(const TimeSpan & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<tt3::util::TimeSpan>(const TimeSpan & value)
 {
     return value.isValid() ? toString(value.asMinutes()) : "?";
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<tt3::util::Mnemonic>(const Mnemonic & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<tt3::util::Mnemonic>(const Mnemonic & value)
 {
     return value.toString();
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<tt3::util::ResourceSectionId>(const ResourceSectionId & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<tt3::util::ResourceSectionId>(const ResourceSectionId & value)
 {
     return value.toString();
 }
 
-template <> TT3_UTIL_PUBLIC QString tt3::util::toString<tt3::util::ResourceId>(const ResourceId & value)
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<tt3::util::ResourceId>(const ResourceId & value)
 {
     return value.toString();
 }

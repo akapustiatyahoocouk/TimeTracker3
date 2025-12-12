@@ -36,6 +36,16 @@ ReportElement::~ReportElement()
 
 //////////
 //  Operations
+ReportAnchors ReportElement::anchors()
+{
+    return _anchors;
+}
+
+ReportAnchorsC ReportElement::anchors() const
+{
+    return ReportAnchorsC(_anchors.cbegin(), _anchors.cend());;
+}
+
 ReportAnchor * ReportElement::createAnchor()
 {
 #ifdef QT_DEBUG
@@ -46,6 +56,21 @@ ReportAnchor * ReportElement::createAnchor()
     _report->_validate();
 #endif
     return result;
+}
+
+//////////
+//  Serialization
+void ReportElement::serialize(QDomElement & element) const
+{
+    //  Do the anchors
+    for (auto anchor : _anchors)
+    {
+        auto anchorElement =
+            element.ownerDocument().createElement(
+                anchor->xmlTagName());
+        element.appendChild(anchorElement);
+        anchor->serialize(anchorElement);
+    }
 }
 
 //  End of tt3-report/ReportElement.cpp

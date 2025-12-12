@@ -204,7 +204,21 @@ void ReportParagraph::setStyle(IParagraphStyle * style)
     Q_ASSERT(style == nullptr ||
              style->reportTemplate() == _report->reportTemplate());
 
-    _style = style;
+    if (style == nullptr ||
+        style->reportTemplate() == _report->reportTemplate())
+    {   //  Be defensive in Release mode
+        _style = style;
+    }
+}
+
+auto ReportParagraph::children() -> ReportSpanElements
+{
+    return _children;
+}
+
+auto ReportParagraph::children() const -> ReportSpanElementsC
+{
+    return ReportSpanElementsC(_children.cbegin(), _children.cend());
 }
 
 auto ReportParagraph::resolveTextAlignment() const-> HorizontalAlignment
@@ -215,12 +229,12 @@ auto ReportParagraph::resolveTextAlignment() const-> HorizontalAlignment
         return _style->textAlignment().value();
     }
     //  Must go to the parent paragraph
-    for (ReportElement * parent = this->parent();
+    for (const ReportElement * parent = this->parent();
          parent != nullptr;
          parent = parent->parent())
     {
         if (auto parentParagraph =
-            dynamic_cast<ReportParagraph*>(parent))
+            dynamic_cast<const ReportParagraph*>(parent))
         {
             return parentParagraph->resolveTextAlignment();
         }
@@ -237,12 +251,12 @@ BorderType ReportParagraph::resolveBorderType() const
         return _style->borderType().value();
     }
     //  Must go to the parent paragraph
-    for (ReportElement * parent = this->parent();
+    for (const ReportElement * parent = this->parent();
          parent != nullptr;
          parent = parent->parent())
     {
         if (auto parentParagraph =
-            dynamic_cast<ReportParagraph*>(parent))
+            dynamic_cast<const ReportParagraph*>(parent))
         {
             return parentParagraph->resolveBorderType();
         }
@@ -283,6 +297,26 @@ ReportPicture * ReportParagraph::createPicture(
     _report->_validate();
 #endif
     return result;
+}
+
+//////////
+//  Serialization
+void ReportParagraph::serialize(QDomElement & element) const
+{
+    ReportBlockElement::serialize(element);
+
+    if (_style != nullptr)
+    {
+        element.setAttribute("Style", _style->name().toString());
+    }
+    for (auto child : _children)
+    {
+        auto childElement =
+            element.ownerDocument().createElement(
+                child->xmlTagName());
+        element.appendChild(childElement);
+        child->serialize(childElement);
+    }
 }
 
 //  End of tt3-report/ReportParagraph.cpp

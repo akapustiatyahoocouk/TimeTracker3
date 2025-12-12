@@ -32,4 +32,13 @@ ReportExternalLink::~ReportExternalLink()
 {
 }
 
+//////////
+//  Serialization
+void ReportExternalLink::serialize(QDomElement & element) const
+{
+    ReportLink::serialize(element);
+
+    element.setAttribute("URL", _url);
+}
+
 //  End of tt3-report/ReportExternalLink.cpp

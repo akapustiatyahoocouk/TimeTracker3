@@ -10,6 +10,7 @@ Report.Subtitle=Subtitle
 
 [HtmlReportFormat]
 DisplayName=HTML document
+Description=Saves report as a self-contained HTML page
 TableOfContent=Table of content
 
 [ReportTemplateManagerTool]

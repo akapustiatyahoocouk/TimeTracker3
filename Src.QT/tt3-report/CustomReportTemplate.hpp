@@ -78,7 +78,7 @@ namespace tt3::report
                                 const Mnemonic & name
                             ) const -> IStyle * override;
 
-        virtual Report *createNewReport() override;
+        virtual Report *createNewReport() const override;
 
         //////////
         //  Implementation
@@ -120,11 +120,9 @@ namespace tt3::report
                             )
         {
             QDomElement e = _findChildElement(element, attributeName);
-            qDebug() << "Parsing " << attributeName;
             if (!e.isNull())
             {
                 QString text = e.text();
-                qDebug() << "text = " << text;
                 qsizetype scan = 0;
                 try
                 {

@@ -156,7 +156,24 @@ void ReportText::setStyle(ICharacterStyle * style)
     Q_ASSERT(style == nullptr ||
              style->reportTemplate() == _report->reportTemplate());
 
-    _style = style;
+    if (style == nullptr ||
+        style->reportTemplate() == _report->reportTemplate())
+    {   //  Be defensive in Release mode
+        _style = style;
+    }
+}
+
+//////////
+//  Serialization
+void ReportText::serialize(QDomElement & element) const
+{
+    ReportSpanElement::serialize(element);
+
+    element.setAttribute("Text", _text);
+    if (_style != nullptr)
+    {
+        element.setAttribute("Style", _style->name().toString());
+    }
 }
 
 //  End of tt3-report/ReportText.cpp
