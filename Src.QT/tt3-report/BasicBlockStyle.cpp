@@ -20,7 +20,7 @@ using namespace tt3::report;
 //////////
 //  Construction/destruction - from friends only
 BasicBlockStyle::BasicBlockStyle(
-        const Mnemonic & name,
+        const Name & name,
         const FontSpecsOpt & fontSpecs,
         const TypographicSizeOpt & fontSize,
         const FontStyleOpt & fontStyle,

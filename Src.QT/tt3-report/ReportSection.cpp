@@ -156,4 +156,17 @@ void ReportSection::serialize(QDomElement & element) const
     }
 }
 
+void ReportSection::deserialize(const QDomElement & element)
+{
+    ReportFlowElement::deserialize(element);
+
+    _name = element.attribute("Name", _name);
+    if (element.hasAttribute("Style"))
+    {
+        _style =
+            _report->_reportTemplate->sectionStyle( //  may throw
+                IStyle::Name(element.attribute("Style")));
+    }
+}
+
 //  End of tt3-report/ReportSection.cpp

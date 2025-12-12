@@ -118,4 +118,36 @@ void ReportFlowElement::serialize(QDomElement & element) const
     }
 }
 
+void ReportFlowElement::deserialize(const QDomElement & element)
+{
+    ReportElement::deserialize(element);
+
+    for (QDomElement childElement = element.firstChildElement();
+         !childElement.isNull();
+         childElement = childElement.nextSiblingElement())
+    {
+        if (childElement.tagName() == ReportParagraph::XmlTagName)
+        {
+            auto paragraph = createParagraph();
+            paragraph->deserialize(childElement);
+        }
+        else if (childElement.tagName() == ReportList::XmlTagName)
+        {
+            auto list = createList();
+            list->deserialize(childElement);
+        }
+        else if (childElement.tagName() == ReportTable::XmlTagName)
+        {
+            auto table = createTable();
+            table->deserialize(childElement);
+        }
+        else if (childElement.tagName() == ReportTableOfContent::XmlTagName)
+        {
+            auto toc = createTableOfContent();
+            toc->deserialize(childElement);
+        }
+        //  There may be other children handled by base or derived classes!
+    }
+}
+
 //  End of tt3-report/ReportFlowElement.cpp

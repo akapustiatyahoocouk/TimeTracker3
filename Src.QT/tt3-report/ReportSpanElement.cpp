@@ -85,5 +85,30 @@ void ReportSpanElement::serialize(QDomElement & element) const
     }
 }
 
+void ReportSpanElement::deserialize(const QDomElement & element)
+{
+    ReportElement::deserialize(element);
+
+    for (QDomElement childElement = element.firstChildElement();
+         !childElement.isNull();
+         childElement = childElement.nextSiblingElement())
+    {
+        if (childElement.tagName() == ReportExternalLink::XmlTagName)
+        {
+            auto link = createExternalLink("");
+            link->deserialize(childElement);
+        }
+        else if (childElement.tagName() == ReportInternalLink::XmlTagName)
+        {   //  We cannot create an internal link now - the anchor may be
+            //  defined later in the XML, or not al all. o, we instead
+            //  record the Span -> AnchorID mapping fr future resolution
+            QString anchorId = childElement.attribute("AnchorID");
+            _report->_anchorIdsForInternalLinks[this] = anchorId;
+            _report->_elementsForInternalLinks[this] = element;
+        }
+        //  There may be other children handled by base or derived classes!
+    }
+}
+
 //  End of tt3-report/ReportSpanElement.cpp
 

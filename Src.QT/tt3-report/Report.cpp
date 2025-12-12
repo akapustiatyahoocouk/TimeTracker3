@@ -48,17 +48,32 @@ void Report::clear()
     {
         delete link; //  removes Links from Report ans SpanElements
     }
+    Q_ASSERT(_links.isEmpty());
+
     for (auto anchor : ReportAnchors(_anchors))  //  shallow clone
     {
         delete anchor; //  removes Anchors from Report ans Elements
     }
+    Q_ASSERT(_anchors.isEmpty());
+
     for (auto section : ReportSections(_sections))  //  shallow clone
     {
         delete section; //  removes Sections from Report
     }
+    Q_ASSERT(_sections.isEmpty());
 #ifdef QT_DEBUG
     _validate();
 #endif
+}
+
+void Report::setName(const QString & name)
+{
+    _name = name;
+}
+
+void Report::setCreatedAt(const QDateTime & createdAt)
+{
+    _createdAt = createdAt;
 }
 
 ReportSections Report::sections()
@@ -152,8 +167,46 @@ void Report::deserialize(const QDomElement & element)
             element.attribute("CreatedAt"),
             _createdAt);    //  default == no change
 
-    //  We're re-creating the entire content of a report
+    //  We're re-creating the entire content of a report...
     clear();
+    _anchorsForIds.clear();
+    _anchorIdsForInternalLinks.clear();
+
+    //  ...section-by-section; this will refill _anchors,
+    //  but DON'T CREATE THE INTERNAL LINKS YET!
+    for (QDomElement childElement = element.firstChildElement();
+         !childElement.isNull();
+         childElement = childElement.nextSiblingElement())
+    {
+        if (childElement.tagName() == ReportSection::XmlTagName)
+        {
+            auto section = this->createSection("?");
+            section->deserialize(childElement);
+        }
+        else
+        {   //  OOPS!
+            qCritical() << "Unexpected tag " + childElement.tagName();
+            throw InvalidReportException();
+        }
+    }
+
+    //  NOW we can create internal links
+    for (auto [span, anchorId] : _anchorIdsForInternalLinks.asKeyValueRange())
+    {
+        if (!_anchorsForIds.contains(anchorId))
+        {   //  OOPS!
+            qCritical() << "Undefined AnchorId " + anchorId;
+            throw InvalidReportException();
+        }
+        auto link = span->createInternalLink(_anchorsForIds[anchorId]);
+        link->deserialize(_elementsForInternalLinks[span]);
+    }
+
+    //  TODO
+
+    //  Done
+    _anchorsForIds.clear();
+    _anchorIdsForInternalLinks.clear();
 }
 
 #ifdef QT_DEBUG

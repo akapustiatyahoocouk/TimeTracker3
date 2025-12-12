@@ -45,4 +45,11 @@ void ReportInternalLink::serialize(QDomElement & element) const
         tt3::util::toString(static_cast<const void *>(_anchor)));
 }
 
+void ReportInternalLink::deserialize(const QDomElement & element)
+{
+    ReportLink::deserialize(element);
+
+    //  Anchor associations are handled by Report::deserialize()
+}
+
 //  End of tt3-report/ReportInternalLink.cpp

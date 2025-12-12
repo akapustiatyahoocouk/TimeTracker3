@@ -86,7 +86,7 @@ namespace tt3::report
         //  Construction/destruction - from friends only
     private:
         BasicStyle(
-                const Mnemonic & name,
+                const Name & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,
@@ -100,7 +100,7 @@ namespace tt3::report
         //  IStyle
     public:
         virtual auto    reportTemplate() const -> IReportTemplate * override;
-        virtual auto    name() const -> Mnemonic override;
+        virtual auto    name() const -> Name override;
         virtual auto    fontSpecs() const -> FontSpecsOpt override;
         virtual auto    fontSize() const -> TypographicSizeOpt override;
         virtual auto    fontStyle() const -> FontStyleOpt override;
@@ -111,7 +111,7 @@ namespace tt3::report
         //////////
         //  Implementation
     private:
-        const Mnemonic              _name;
+        const Name                  _name;
         const FontSpecsOpt          _fontSpecs;
         const TypographicSizeOpt    _fontSize;
         const FontStyleOpt          _fontStyle;
@@ -132,7 +132,7 @@ namespace tt3::report
         //  Construction/destruction - from friends only
     private:
         BasicCharacterStyle(
-                const Mnemonic & name,
+                const Name & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,
@@ -159,7 +159,7 @@ namespace tt3::report
         //  Construction/destruction - from friends only
     private:
         BasicBlockStyle(
-                const Mnemonic & name,
+                const Name & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,
@@ -204,7 +204,7 @@ namespace tt3::report
         //  Construction/destruction - from friends only
     private:
         BasicParagraphStyle(
-                const Mnemonic & name,
+                const Name & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,
@@ -247,18 +247,18 @@ namespace tt3::report
         //  Construction/destruction - from friends only
     private:
         BasicListStyle(
-            const Mnemonic & name,
-            const FontSpecsOpt & fontSpecs,
-            const TypographicSizeOpt & fontSize,
-            const FontStyleOpt & fontStyle,
-            const ColorSpecOpt & textColor,
-            const ColorSpecOpt & backgroundColor,
-            const UnderlineModeOpt & underlineMode,
-            const TypographicSizeOpt & leftMargin,
-            const TypographicSizeOpt & rightMargin,
-            const TypographicSizeOpt & gapAbove,
-            const TypographicSizeOpt & gapBelow,
-            const TypographicSizeOpt & indent
+                const Name & name,
+                const FontSpecsOpt & fontSpecs,
+                const TypographicSizeOpt & fontSize,
+                const FontStyleOpt & fontStyle,
+                const ColorSpecOpt & textColor,
+                const ColorSpecOpt & backgroundColor,
+                const UnderlineModeOpt & underlineMode,
+                const TypographicSizeOpt & leftMargin,
+                const TypographicSizeOpt & rightMargin,
+                const TypographicSizeOpt & gapAbove,
+                const TypographicSizeOpt & gapBelow,
+                const TypographicSizeOpt & indent
             );
         virtual ~BasicListStyle();
 
@@ -287,7 +287,7 @@ namespace tt3::report
         //  Construction/destruction - from friends only
     private:
         BasicTableStyle(
-                const Mnemonic & name,
+                const Name & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,
@@ -330,7 +330,7 @@ namespace tt3::report
         //  Construction/destruction - from friends only
     private:
         BasicLinkStyle(
-                const Mnemonic & name,
+                const Name & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,
@@ -355,7 +355,7 @@ namespace tt3::report
         //  Construction/destruction - from friends only
     private:
         BasicSectionStyle(
-                const Mnemonic & name,
+                const Name & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,

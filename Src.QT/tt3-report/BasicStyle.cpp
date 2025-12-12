@@ -20,7 +20,7 @@ using namespace tt3::report;
 //////////
 //  Construction/destruction - from friends only
 BasicStyle::BasicStyle(
-        const Mnemonic & name,
+        const Name & name,
         const FontSpecsOpt & fontSpecs,
         const TypographicSizeOpt & fontSize,
         const FontStyleOpt & fontStyle,
@@ -48,7 +48,7 @@ auto BasicStyle::reportTemplate() const -> IReportTemplate *
     return BasicReportTemplate::instance();
 }
 
-auto BasicStyle::name() const -> Mnemonic
+IStyle::Name BasicStyle::name() const
 {
     return _name;
 }

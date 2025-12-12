@@ -154,7 +154,15 @@ auto CustomReportTemplate::findStyle(
 Report * CustomReportTemplate::createNewReport() const
 {
     auto report = new Report(this->displayName(), this);
-    //  TODO populate
+    //  Populate with the "empty document" XML
+    QDomDocument document;
+    auto parseResult = document.setContent(_emptyReportXml);
+    if (!parseResult)
+    {   //  OOPS! Throw a proper exception!
+        throw CustomReportException(parseResult.errorMessage);
+    }
+    report->deserialize(document.documentElement());
+    //  Done
     return report;
 }
 

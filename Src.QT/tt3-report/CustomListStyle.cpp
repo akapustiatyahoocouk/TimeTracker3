@@ -21,7 +21,7 @@ using namespace tt3::report;
 //  Construction/destruction - from friends only
 CustomListStyle::CustomListStyle(
         CustomReportTemplate * reportTemplate,
-        const Mnemonic & name,
+        const Name & name,
         const FontSpecsOpt & fontSpecs,
         const TypographicSizeOpt & fontSize,
         const FontStyleOpt & fontStyle,

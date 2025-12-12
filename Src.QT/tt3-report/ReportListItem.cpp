@@ -82,4 +82,11 @@ void ReportListItem::serialize(QDomElement & element) const
     element.setAttribute("Label", _label);
 }
 
+void ReportListItem::deserialize(const QDomElement & element)
+{
+    ReportFlowElement::deserialize(element);
+
+    _label = element.attribute("Label");
+}
+
 //  End of tt3-report/ReportListItem.cpp

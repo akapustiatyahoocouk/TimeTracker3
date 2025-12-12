@@ -95,4 +95,9 @@ void ReportTableOfContent::serialize(QDomElement & element) const
     ReportBlockElement::serialize(element);
 }
 
+void ReportTableOfContent::deserialize(const QDomElement & element)
+{
+    ReportBlockElement::deserialize(element);
+}
+
 //  End of tt3-report/ReportTableOfContent.cpp

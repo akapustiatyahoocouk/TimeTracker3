@@ -319,5 +319,37 @@ void ReportParagraph::serialize(QDomElement & element) const
     }
 }
 
+void ReportParagraph::deserialize(const QDomElement & element)
+{
+    ReportBlockElement::deserialize(element);
+
+    if (element.hasAttribute("Style"))
+    {
+        _style =
+            _report->_reportTemplate->paragraphStyle(   //  may throw
+                IStyle::Name(element.attribute("Style")));
+    }
+    for (QDomElement childElement = element.firstChildElement();
+         !childElement.isNull();
+         childElement = childElement.nextSiblingElement())
+    {
+        if (childElement.tagName() == ReportText::XmlTagName)
+        {
+            auto text = createText("?");
+            text->deserialize(childElement);
+        }
+        else if (childElement.tagName() == ReportPicture::XmlTagName)
+        {
+            auto picture =
+                createPicture(
+                    TypographicSize::cm(1),
+                    TypographicSize::cm(1),
+                    QImage());
+            picture->deserialize(childElement);
+        }
+        //  There may be other children handled by base or derived classes!
+    }
+}
+
 //  End of tt3-report/ReportParagraph.cpp
 

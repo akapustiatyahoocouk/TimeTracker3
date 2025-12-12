@@ -114,4 +114,37 @@ void ReportTableCell::serialize(QDomElement & element) const
     }
 }
 
+void ReportTableCell::deserialize(const QDomElement & element)
+{
+    ReportFlowElement::deserialize(element);
+
+    _startColumn =
+        tt3::util::fromString(
+            element.attribute("StartColumn"),
+            _startColumn);
+    _startRow =
+        tt3::util::fromString(
+            element.attribute("StartRow"),
+            _startRow);
+    _columnSpan =
+        tt3::util::fromString(
+            element.attribute("ColumnSpan"),
+            _columnSpan);
+    _rowSpan =
+        tt3::util::fromString(
+            element.attribute("RowSpan"),
+            _rowSpan);
+    _contentAlignment =
+        tt3::util::fromString(
+            element.attribute("ContentAlignment"),
+            _contentAlignment);
+    if (element.hasAttribute("PreferredWidth"))
+    {
+        _preferredWidth =
+            tt3::util::fromString(
+                element.attribute("PreferredWidth"),
+                _preferredWidth.value());
+    }
+}
+
 //  End of tt3-report/ReportTableCell.cpp

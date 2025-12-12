@@ -21,7 +21,7 @@ using namespace tt3::report;
 //  Construction/destruction - from friends only
 CustomStyle::CustomStyle(
         CustomReportTemplate * reportTemplate,
-        const Mnemonic & name,
+        const Name & name,
         const FontSpecsOpt & fontSpecs,
         const TypographicSizeOpt & fontSize,
         const FontStyleOpt & fontStyle,
@@ -50,7 +50,7 @@ auto CustomStyle::reportTemplate() const -> IReportTemplate *
     return _reportTemplate;
 }
 
-auto CustomStyle::name() const -> Mnemonic
+IStyle::Name CustomStyle::name() const
 {
     return _name;
 }

@@ -176,4 +176,17 @@ void ReportText::serialize(QDomElement & element) const
     }
 }
 
+void ReportText::deserialize(const QDomElement & element)
+{
+    ReportSpanElement::deserialize(element);
+
+    _text = element.attribute("Text");
+    if (element.hasAttribute("Style"))
+    {
+        _style =
+            _report->_reportTemplate->characterStyle(
+                IStyle::Name(element.attribute("Style")));
+    }
+}
+
 //  End of tt3-report/ReportText.cpp

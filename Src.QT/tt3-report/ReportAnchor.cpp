@@ -94,4 +94,11 @@ void ReportAnchor::serialize(QDomElement & element) const
         tt3::util::toString(static_cast<const void *>(this)));
 }
 
+void ReportAnchor::deserialize(const QDomElement & element)
+{
+    ReportElement::deserialize(element);
+
+    _report->_anchorsForIds[element.attribute("AnchorID")] = this;
+}
+
 //  End of tt3-report/ReportAnchor.cpp

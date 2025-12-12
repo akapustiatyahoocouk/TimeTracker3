@@ -184,4 +184,16 @@ void ReportLink::serialize(QDomElement & element) const
     }
 }
 
+void ReportLink::deserialize(const QDomElement & element)
+{
+    ReportElement::deserialize(element);
+
+    if (element.hasAttribute("Style"))
+    {
+        _style =
+            _report->_reportTemplate->linkStyle(    //  may throw
+                IStyle::Name(element.attribute("Style")));
+    }
+}
+
 //  End of tt3-report/ReportLink.cpp

@@ -81,4 +81,11 @@ void ReportPicture::serialize(QDomElement & element) const
     throw tt3::util::NotImplementedError();
 }
 
+void ReportPicture::deserialize(const QDomElement & element)
+{
+    ReportSpanElement::deserialize(element);
+
+    throw tt3::util::NotImplementedError();
+}
+
 //  End of tt3-report/ReportPicture.cpp

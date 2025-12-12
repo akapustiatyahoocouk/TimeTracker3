@@ -191,7 +191,7 @@ namespace tt3::report
     private:
         CustomStyle(
                 CustomReportTemplate * reportTemplate,
-                const Mnemonic & name,
+                const Name & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,
@@ -205,7 +205,7 @@ namespace tt3::report
         //  IStyle
     public:
         virtual auto    reportTemplate() const -> IReportTemplate * override;
-        virtual auto    name() const -> Mnemonic override;
+        virtual Name    name() const override;
         virtual auto    fontSpecs() const -> FontSpecsOpt override;
         virtual auto    fontSize() const -> TypographicSizeOpt override;
         virtual auto    fontStyle() const -> FontStyleOpt override;
@@ -217,7 +217,7 @@ namespace tt3::report
         //  Implementation
     private:
         CustomReportTemplate *_reportTemplate;
-        Mnemonic              _name;
+        Name                  _name;
         FontSpecsOpt          _fontSpecs;
         TypographicSizeOpt    _fontSize;
         FontStyleOpt          _fontStyle;
@@ -247,7 +247,7 @@ namespace tt3::report
     private:
         CustomCharacterStyle(
                 CustomReportTemplate * reportTemplate,
-                const Mnemonic & name,
+                const Name & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,
@@ -283,7 +283,7 @@ namespace tt3::report
     private:
         CustomBlockStyle(
                 CustomReportTemplate * reportTemplate,
-                const Mnemonic & name,
+                const Name & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,
@@ -337,7 +337,7 @@ namespace tt3::report
     private:
         CustomParagraphStyle(
                 CustomReportTemplate * reportTemplate,
-                const Mnemonic & name,
+                const Name & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,
@@ -389,7 +389,7 @@ namespace tt3::report
     private:
         CustomListStyle(
                 CustomReportTemplate * reportTemplate,
-                const Mnemonic & name,
+                const Name & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,
@@ -438,7 +438,7 @@ namespace tt3::report
     private:
         CustomTableStyle(
                 CustomReportTemplate * reportTemplate,
-                const Mnemonic & name,
+                const Name & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,
@@ -490,7 +490,7 @@ namespace tt3::report
     private:
         CustomLinkStyle(
                 CustomReportTemplate * reportTemplate,
-                const Mnemonic & name,
+                const Name & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,
@@ -524,7 +524,7 @@ namespace tt3::report
     private:
         CustomSectionStyle(
                 CustomReportTemplate * reportTemplate,
-                const Mnemonic & name,
+                const Name & name,
                 const FontSpecsOpt & fontSpecs,
                 const TypographicSizeOpt & fontSize,
                 const FontStyleOpt & fontStyle,

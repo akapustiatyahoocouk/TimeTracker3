@@ -32,6 +32,7 @@ namespace tt3::report
         friend class ReportTable;
         friend class ReportAnchor;
         friend class ReportLink;
+        friend class ReportInternalLink;
         friend class ReportText;
 
         //////////
@@ -67,6 +68,12 @@ namespace tt3::report
         QString         name() const { return _name; }
 
         /// \brief
+        ///     Sets the report name.
+        /// \param name
+        ///     The new report name.
+        void            setName(const QString & name);
+
+        /// \brief
         ///     Returns the report template.
         /// \return
         ///     The report template.
@@ -77,6 +84,12 @@ namespace tt3::report
         /// \return
         ///     The UTC date+time when this Report was created.
         QDateTime       createdAt() const { return _createdAt; }
+
+        /// \brief
+        ///     Sets the UTC date+time when this Report was created.
+        /// \param createdAt
+        ///     The new UTC date+time when this Report was created.
+        void            setCreatedAt(const QDateTime & createdAt);
 
         /// \brief
         ///     Returns the list of all Sections in this Report.
@@ -153,7 +166,7 @@ namespace tt3::report
         /// \param element
         ///     The XML DOM element to deserialize from.
         /// \exception ReportException
-        ///     If an errir occurs.
+        ///     If an error occurs.
         void            deserialize(const QDomElement & element);
 
         //////////
@@ -166,6 +179,11 @@ namespace tt3::report
         ReportSections  _sections;  //  in order of creation
         ReportAnchors   _anchors;   //  in order of creation
         ReportLinks     _links;     //  in order of creation
+
+        //  Working areas used for deserialization
+        QMap<QString, ReportAnchor*>    _anchorsForIds; //  AnchorID -> Anchor
+        QMap<ReportSpanElement*,QString>    _anchorIdsForInternalLinks;
+        QMap<ReportSpanElement*,QDomElement>_elementsForInternalLinks;
 
 #ifdef QT_DEBUG
         //////////
@@ -323,6 +341,16 @@ namespace tt3::report
         ///     The XML DOM element to serialize to.
         virtual void    serialize(QDomElement & element) const;
 
+        /// \brief
+        ///     Deserializes this report element by analyzing attributes
+        ///     and children of the specified element and modifying
+        ///     this instance as necessary.
+        /// \param element
+        ///     The XML DOM element to deserialize from.
+        /// \exception ReportException
+        ///     If an error occurs.
+        virtual void    deserialize(const QDomElement & element);
+
         //////////
         //  Implementation
     private:
@@ -399,6 +427,7 @@ namespace tt3::report
         //  Serialization
     public:
         virtual void    serialize(QDomElement & element) const override;
+        virtual void    deserialize(const QDomElement & element) override;
 
         //////////
         //  Implementation
@@ -482,6 +511,7 @@ namespace tt3::report
         //  Serialization
     public:
         virtual void    serialize(QDomElement & element) const override;
+        virtual void    deserialize(const QDomElement & element) override;
 
         //////////
         //  Implementation
@@ -559,6 +589,7 @@ namespace tt3::report
 
         virtual QString xmlTagName() const override { return XmlTagName; }
         virtual void    serialize(QDomElement & element) const override;
+        virtual void    deserialize(const QDomElement & element) override;
 
         //////////
         //  Implementation
@@ -694,6 +725,7 @@ namespace tt3::report
 
         virtual QString xmlTagName() const override { return XmlTagName; }
         virtual void    serialize(QDomElement & element) const override;
+        virtual void    deserialize(const QDomElement & element) override;
 
         //////////
         //  Implementation
@@ -783,6 +815,7 @@ namespace tt3::report
         //  Serialization
     public:
         virtual void    serialize(QDomElement & element) const override;
+        virtual void    deserialize(const QDomElement & element) override;
 
         //////////
         //  Implementation
@@ -859,6 +892,7 @@ namespace tt3::report
 
         virtual QString xmlTagName() const override { return XmlTagName; }
         virtual void    serialize(QDomElement & element) const override;
+        virtual void    deserialize(const QDomElement & element) override;
 
         //////////
         //  Implementation
@@ -927,6 +961,7 @@ namespace tt3::report
 
         virtual QString xmlTagName() const override { return XmlTagName; }
         virtual void    serialize(QDomElement & element) const override;
+        virtual void    deserialize(const QDomElement & element) override;
 
         //////////
         //  Implementation
@@ -1031,6 +1066,7 @@ namespace tt3::report
 
         virtual QString xmlTagName() const override { return XmlTagName; }
         virtual void    serialize(QDomElement & element) const override;
+        virtual void    deserialize(const QDomElement & element) override;
 
         //////////
         //  Implementation
@@ -1104,6 +1140,7 @@ namespace tt3::report
 
         virtual QString xmlTagName() const override { return XmlTagName; }
         virtual void    serialize(QDomElement & element) const override;
+        virtual void    deserialize(const QDomElement & element) override;
 
         //////////
         //  Implementation
@@ -1276,6 +1313,7 @@ namespace tt3::report
 
         virtual QString xmlTagName() const override { return XmlTagName; }
         virtual void    serialize(QDomElement & element) const override;
+        virtual void    deserialize(const QDomElement & element) override;
 
         //////////
         //  Implementation
@@ -1395,6 +1433,7 @@ namespace tt3::report
 
         virtual QString xmlTagName() const override { return XmlTagName; }
         virtual void    serialize(QDomElement & element) const override;
+        virtual void    deserialize(const QDomElement & element) override;
 
         //////////
         //  Implementation
@@ -1460,6 +1499,7 @@ namespace tt3::report
 
         virtual QString xmlTagName() const override { return XmlTagName; }
         virtual void    serialize(QDomElement & element) const override;
+        virtual void    deserialize(const QDomElement & element) override;
 
         //////////
         //  Implementation
@@ -1533,6 +1573,7 @@ namespace tt3::report
         //  Serialization
     public:
         virtual void    serialize(QDomElement & element) const override;
+        virtual void    deserialize(const QDomElement & element) override;
 
         //////////
         //  Implementation
@@ -1586,6 +1627,7 @@ namespace tt3::report
 
         virtual QString xmlTagName() const override { return XmlTagName; }
         virtual void    serialize(QDomElement & element) const override;
+        virtual void    deserialize(const QDomElement & element) override;
 
         //////////
         //  Implementation
@@ -1631,6 +1673,7 @@ namespace tt3::report
 
         virtual QString xmlTagName() const override { return XmlTagName; }
         virtual void    serialize(QDomElement & element) const override;
+        virtual void    deserialize(const QDomElement & element) override;
 
         //////////
         //  Implementation
@@ -1682,6 +1725,7 @@ namespace tt3::report
 
         virtual QString xmlTagName() const override { return XmlTagName; }
         virtual void    serialize(QDomElement & element) const override;
+        virtual void    deserialize(const QDomElement & element) override;
     };
 }
 

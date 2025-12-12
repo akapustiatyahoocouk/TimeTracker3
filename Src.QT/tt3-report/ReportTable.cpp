@@ -385,4 +385,36 @@ void ReportTable::serialize(QDomElement & element) const
     }
 }
 
+void ReportTable::deserialize(const QDomElement & element)
+{
+    ReportBlockElement::deserialize(element);
+
+    if (element.hasAttribute("Style"))
+    {
+        _style =
+            _report->_reportTemplate->tableStyle(
+                IStyle::Name(element.attribute("Style")));
+    }
+    _columnCount =
+        tt3::util::fromString(
+            element.attribute("ColumnCount"),
+            _columnCount);
+    _rowCount =
+        tt3::util::fromString(
+            element.attribute("RowCount"),
+            _rowCount);
+
+    for (QDomElement childElement = element.firstChildElement();
+         !childElement.isNull();
+         childElement = childElement.nextSiblingElement())
+    {
+        if (childElement.tagName() == ReportTableCell::XmlTagName)
+        {
+            auto cell = createCell(0, 0, 1, 1);
+            cell->deserialize(childElement);
+        }
+        //  There may be other children handled by base or derived classes!
+    }
+}
+
 //  End of tt3-report/ReportTable.cpp

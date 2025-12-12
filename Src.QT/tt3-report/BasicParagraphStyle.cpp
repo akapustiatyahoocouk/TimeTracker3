@@ -20,7 +20,7 @@
 //////////
 //  Construction/destruction - from friends only
 BasicParagraphStyle::BasicParagraphStyle(
-        const Mnemonic & name,
+        const Name & name,
         const FontSpecsOpt & fontSpecs,
         const TypographicSizeOpt & fontSize,
         const FontStyleOpt & fontStyle,

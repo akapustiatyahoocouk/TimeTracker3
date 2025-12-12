@@ -108,5 +108,10 @@ void ReportBlockElement::serialize(QDomElement & element) const
     ReportElement::serialize(element);
 }
 
+void ReportBlockElement::deserialize(const QDomElement & element)
+{
+    ReportElement::deserialize(element);
+}
+
 //  End of tt3-report/ReportBlockElement.cpp
 

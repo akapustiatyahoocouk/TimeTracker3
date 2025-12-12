@@ -73,4 +73,19 @@ void ReportElement::serialize(QDomElement & element) const
     }
 }
 
+void ReportElement::deserialize(const QDomElement & element)
+{
+    for (QDomElement childElement = element.firstChildElement();
+         !childElement.isNull();
+         childElement = childElement.nextSiblingElement())
+    {
+        if (childElement.tagName() == ReportAnchor::XmlTagName)
+        {
+            auto anchor = createAnchor();
+            anchor->deserialize(childElement);
+        }
+        //  There may be other children handled by derived classes!
+    }
+}
+
 //  End of tt3-report/ReportElement.cpp

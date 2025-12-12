@@ -274,4 +274,28 @@ void ReportList::serialize(QDomElement & element) const
     }
 }
 
+void ReportList::deserialize(const QDomElement & element)
+{
+    ReportBlockElement::deserialize(element);
+
+    if (element.hasAttribute("Style"))
+    {
+        _style =
+            _report->_reportTemplate->listStyle(
+                IStyle::Name(element.attribute("Style")));
+    }
+
+    for (QDomElement childElement = element.firstChildElement();
+         !childElement.isNull();
+         childElement = childElement.nextSiblingElement())
+    {
+        if (childElement.tagName() == ReportListItem::XmlTagName)
+        {
+            auto item = createItem("");
+            item->deserialize(childElement);
+        }
+        //  There may be other children handled by base or derived classes!
+    }
+}
+
 //  End of tt3-report/ReportList.cpp

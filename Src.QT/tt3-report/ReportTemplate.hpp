@@ -559,7 +559,7 @@ namespace tt3::report
         //  Operations
     public:
         /// \brief A type alias to improve code readability.
-        using Mnemonic = tt3::util::Mnemonic;
+        using Name = tt3::util::Mnemonic;
 
         /// \brief
         ///     Returns the ReportTemplate to which this Style belongs.
@@ -576,7 +576,7 @@ namespace tt3::report
         ///     All Styles within a ReportTemplate must have distinct names.
         /// \return
         ///     The name of this Style.
-        virtual auto    name() const -> Mnemonic = 0;
+        virtual Name    name() const = 0;
 
         /// \brief
         ///     Returns the list of FontSpecs to use.
@@ -734,87 +734,87 @@ namespace tt3::report
         ///     handling - any "section" of a "document" which has one or more paragraphs of that
         ///     style is considered a "title page" section and, if the section content is shorter
         ///     than the page length, it is vertically centred within the page.
-        inline static const Mnemonic TitleStyleName = M(Paragraph.Title);
+        inline static const Name TitleStyleName = M(Paragraph.Title);
 
         /// \brief
         ///     The "document subtitle" paragraph style; must be defined by every valid report template.
-        inline static const Mnemonic SubtitleStyleName = M(Paragraph.Subtitle);
+        inline static const Name SubtitleStyleName = M(Paragraph.Subtitle);
 
         /// \brief
         ///     The default paragraph style; must be defined by every valid report template.
-        inline static const Mnemonic DefaultStyleName = M(Paragraph.Default);
+        inline static const Name DefaultStyleName = M(Paragraph.Default);
 
         /// \brief
         ///     The paragraph style for level 1 headings; must be defined by every valid report template.
-        inline static const Mnemonic Heading1StyleName = M(Paragraph.Heading1);
+        inline static const Name Heading1StyleName = M(Paragraph.Heading1);
 
         /// \brief
         ///     The paragraph style for level 2 headings; must be defined by every valid report template.
-        inline static const Mnemonic Heading2StyleName = M(Paragraph.Heading2);
+        inline static const Name Heading2StyleName = M(Paragraph.Heading2);
 
         /// \brief
         ///     The paragraph style for level 3 headings; must be defined by every valid report template.
-        inline static const Mnemonic Heading3StyleName = M(Paragraph.Heading3);
+        inline static const Name Heading3StyleName = M(Paragraph.Heading3);
 
         /// \brief
         ///     The paragraph style for level 4 headings; must be defined by every valid report template.
-        inline static const Mnemonic Heading4StyleName = M(Paragraph.Heading4);
+        inline static const Name Heading4StyleName = M(Paragraph.Heading4);
 
         /// \brief
         ///     The paragraph style for level 5 headings; must be defined by every valid report template.
-        inline static const Mnemonic Heading5StyleName = M(Paragraph.Heading5);
+        inline static const Name Heading5StyleName = M(Paragraph.Heading5);
 
         /// \brief
         ///     The paragraph style for level 6 headings; must be defined by every valid report template.
-        inline static const Mnemonic Heading6StyleName = M(Paragraph.Heading6);
+        inline static const Name Heading6StyleName = M(Paragraph.Heading6);
 
         /// \brief
         ///     The paragraph style for level 7 headings; must be defined by every valid report template.
-        inline static const Mnemonic Heading7StyleName = M(Paragraph.Heading7);
+        inline static const Name Heading7StyleName = M(Paragraph.Heading7);
 
         /// \brief
         ///     The paragraph style for level 8 headings; must be defined by every valid report template.
-        inline static const Mnemonic Heading8StyleName = M(Paragraph.Heading8);
+        inline static const Name Heading8StyleName = M(Paragraph.Heading8);
 
         /// \brief
         ///     The paragraph style for level 9 headings; must be defined by every valid report template.
-        inline static const Mnemonic Heading9StyleName = M(Paragraph.Heading9);
+        inline static const Name Heading9StyleName = M(Paragraph.Heading9);
 
         /// \brief
         ///     The paragraph style for level 1 table-of-content entries; must be defined by every valid report template.
-        inline static const Mnemonic Toc1StyleName = M(Paragraph.Toc1);
+        inline static const Name Toc1StyleName = M(Paragraph.Toc1);
 
         /// \brief
         ///     The paragraph style for level 2 table-of-content entries; must be defined by every valid report template.
-        inline static const Mnemonic Toc2StyleName = M(Paragraph.Toc2);
+        inline static const Name Toc2StyleName = M(Paragraph.Toc2);
 
         /// \brief
         ///     The paragraph style for level 3 table-of-content entries; must be defined by every valid report template.
-        inline static const Mnemonic Toc3StyleName = M(Paragraph.Toc3);
+        inline static const Name Toc3StyleName = M(Paragraph.Toc3);
 
         /// \brief
         ///     The paragraph style for level 4 table-of-content entries; must be defined by every valid report template.
-        inline static const Mnemonic Toc4StyleName = M(Paragraph.Toc4);
+        inline static const Name Toc4StyleName = M(Paragraph.Toc4);
 
         /// \brief
         ///     The paragraph style for level 5 table-of-content entries; must be defined by every valid report template.
-        inline static const Mnemonic Toc5StyleName = M(Paragraph.Toc5);
+        inline static const Name Toc5StyleName = M(Paragraph.Toc5);
 
         /// \brief
         ///     The paragraph style for level 6 table-of-content entries; must be defined by every valid report template.
-        inline static const Mnemonic Toc6StyleName = M(Paragraph.Toc6);
+        inline static const Name Toc6StyleName = M(Paragraph.Toc6);
 
         /// \brief
         ///     The paragraph style for level 7 table-of-content entries; must be defined by every valid report template.
-        inline static const Mnemonic Toc7StyleName = M(Paragraph.Toc7);
+        inline static const Name Toc7StyleName = M(Paragraph.Toc7);
 
         /// \brief
         ///     The paragraph style for level 8 table-of-content entries; must be defined by every valid report template.
-        inline static const Mnemonic Toc8StyleName = M(Paragraph.Toc8);
+        inline static const Name Toc8StyleName = M(Paragraph.Toc8);
 
         /// \brief
         ///     The paragraph style for level 9 table-of-content entries; must be defined by every valid report template.
-        inline static const Mnemonic Toc9StyleName = M(Paragraph.Toc9);
+        inline static const Name Toc9StyleName = M(Paragraph.Toc9);
 
         //////////
         //  Operations
@@ -864,7 +864,7 @@ namespace tt3::report
     public:
         /// \brief
         ///     The default list style; must be defined by every valid report template.
-        inline static const Mnemonic DefaultStyleName = M(List.Default);
+        inline static const Name DefaultStyleName = M(List.Default);
 
         //////////
         //  Operations
@@ -909,7 +909,7 @@ namespace tt3::report
     public:
         /// \brief
         ///     The default table style; must be defined by every valid report template.
-        inline static const Mnemonic DefaultStyleName = M(Table.Default);
+        inline static const Name DefaultStyleName = M(Table.Default);
 
         //////////
         //  Operations
@@ -962,7 +962,7 @@ namespace tt3::report
     public:
         /// \brief
         ///     The default link style; must be defined by every valid report template.
-        inline static const Mnemonic DefaultStyleName = M(Link.Default);
+        inline static const Name DefaultStyleName = M(Link.Default);
 
         //////////
         //  Serialization
@@ -998,28 +998,28 @@ namespace tt3::report
         /// \details
         ///     The "prequel" of a report is a section which appears in the report at the
         ///     bery beginning.
-        inline static const Mnemonic TitleStyleName = M(Section.Title);
+        inline static const Name TitleStyleName = M(Section.Title);
 
         /// \brief
         ///     The prequel section style; must be defined by every valid report template.
         /// \details
         ///     The "prequel" of a report is a section which appears in the report BEFORE
         ///     the generated report body.
-        inline static const Mnemonic PrequelStyleName = M(Section.Prequel);
+        inline static const Name PrequelStyleName = M(Section.Prequel);
 
         /// \brief
         ///     The body section style; must be defined by every valid report template.
         /// \details
         ///     The "body" of a report is a section where the report generator creates
         ///     actual content during report generation.
-        inline static const Mnemonic BodyStyleName = M(Section.Body);
+        inline static const Name BodyStyleName = M(Section.Body);
 
         /// \brief
         ///     The sequel section style; must be defined by every valid report template.
         /// \details
         ///     The "sequel" of a report is a section which appears in the report AFTER
         ///     the generated report body.
-        inline static const Mnemonic SequelStyleName = M(Section.Sequel);
+        inline static const Name SequelStyleName = M(Section.Sequel);
 
         //////////
         //  Operations
