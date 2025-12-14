@@ -28,8 +28,10 @@ struct QuickReportManager::_Impl
         REGISTER(DailyWorkQuickReport);
     }
 
-    tt3::util::Mutex                    guard;
-    QMap<tt3::util::Mnemonic, IQuickReport*>    registry;
+    using Registry = QMap<tt3::util::Mnemonic, IQuickReport*>;
+
+    tt3::util::Mutex    guard;
+    Registry            registry;
 };
 
 //////////

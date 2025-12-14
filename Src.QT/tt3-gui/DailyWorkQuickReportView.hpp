@@ -16,6 +16,7 @@
 //////////
 #pragma once
 #include "tt3-gui/API.hpp"
+#ifdef TT3_GUI_QUICK_REPORT_VIEW_DEFINED
 
 namespace tt3::gui
 {
@@ -129,5 +130,6 @@ namespace tt3::gui
     };
 }
 
-//  End of //  tt3-gui/DailyWorkQuickReportView.hpp
+#endif  //  def TT3_GUI_QUICK_REPORT_VIEW_DEFINED
+//  End of tt3-gui/DailyWorkQuickReportView.hpp
 

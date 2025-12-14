@@ -19,6 +19,8 @@
 
 namespace tt3::gui
 {
+    class TT3_GUI_PUBLIC QuickReportBrowser;
+
     namespace Ui { class QuickReportsDialog; }
 
     /// \class QuickReportsDialog tt3-gui/API.hpp

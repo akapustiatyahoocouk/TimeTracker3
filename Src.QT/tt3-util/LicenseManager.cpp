@@ -29,8 +29,10 @@ struct LicenseManager::_Impl
         REGISTER(StandardLicenses::Gpl3);
     }
 
-    Mutex                       guard;
-    QMap<Mnemonic, ILicense*>   registry;
+    using Registry = QMap<Mnemonic, ILicense*>;
+
+    Mutex       guard;
+    Registry    registry;
 };
 
 //////////

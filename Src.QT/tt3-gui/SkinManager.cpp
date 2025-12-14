@@ -19,8 +19,10 @@ using namespace tt3::gui;
 
 struct SkinManager::_Impl
 {
-    tt3::util::Mutex                    guard;
-    QMap<tt3::util::Mnemonic, ISkin*>   registry;
+    using Registry = QMap<tt3::util::Mnemonic, ISkin*>;
+
+    tt3::util::Mutex    guard;
+    Registry            registry;
 };
 
 //////////

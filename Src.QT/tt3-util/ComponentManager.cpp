@@ -19,9 +19,10 @@ using namespace tt3::util;
 
 struct ComponentManager::_Impl
 {
-    Mutex                       guard;
-    QMap<Mnemonic, IComponent*> registry;
-    Components                  initializedComponents;
+    using Registry = QMap<Mnemonic, IComponent*>;
+
+    Mutex       guard;
+    Registry    registry;
 };
 
 namespace
@@ -138,12 +139,12 @@ void ComponentManager::initializeComponents()
         keepGoing = false;
         for (auto component : impl->registry.values())
         {
-            if (!impl->initializedComponents.contains(component))
+            if (!component->_initialized)
             {   //  Try this one!
                 try
                 {
                     component->iniialize(); //  may throw
-                    impl->initializedComponents.insert(component);
+                    component->_initialized = true;
                     keepGoing = true;
                 }
                 catch (const Exception & ex)
@@ -168,25 +169,28 @@ void ComponentManager::deinitializeComponents()
     _Impl * impl = _impl();
     Lock _(impl->guard);
 
-    for (auto component : std::as_const(impl->initializedComponents))
+    for (auto component : impl->registry.values())
     {
-        try
-        {   //  Be defensive - cleanup as many as possible
-            component->deiniialize();
-        }
-        catch (const Exception & ex)
-        {   //  OOPS! Log, but suppress
-            qCritical() << ex;
-        }
-        catch (const Error & ex)
-        {   //  OOPS! Log, but suppress
-            qCritical() << ex;
-        }
-        catch (...)
-        {   //  OOPS! Suppress, though
+        if (component->_initialized)
+        {
+            try
+            {   //  Be defensive - cleanup as many as possible
+                component->deiniialize();
+            }
+            catch (const Exception & ex)
+            {   //  OOPS! Log, but suppress
+                qCritical() << ex;
+            }
+            catch (const Error & ex)
+            {   //  OOPS! Log, but suppress
+                qCritical() << ex;
+            }
+            catch (...)
+            {   //  OOPS! Suppress, though
+            }
+            component->_initialized = false;
         }
     }
-    impl->initializedComponents.clear();
 }
 
 void ComponentManager::loadComponentSettings()
@@ -339,7 +343,6 @@ Locales ComponentManager::fullySupportedLocales()
 ComponentManager::_Impl * ComponentManager::_impl()
 {
     static _Impl impl;
-
     return &impl;
 }
 

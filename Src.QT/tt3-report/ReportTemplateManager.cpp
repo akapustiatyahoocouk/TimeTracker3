@@ -29,8 +29,10 @@ struct ReportTemplateManager::_Impl
         REGISTER(BasicReportTemplate);
     }
 
-    tt3::util::Mutex                    guard;
-    QMap<tt3::util::Mnemonic, IReportTemplate*> registry;
+    using Registry = QMap<tt3::util::Mnemonic, IReportTemplate*>;
+
+    tt3::util::Mutex    guard;
+    Registry            registry;
 };
 
 //////////

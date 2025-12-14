@@ -17,6 +17,8 @@
 
 namespace tt3::tools::backup
 {
+    class TT3_TOOLS_BACKUP_PUBLIC BackupProgressDialog;
+
     /// \class BackupWriter tt3-tools-backup/API.hpp
     /// \brief The "TT3 Backup writer" agent.
     class TT3_TOOLS_BACKUP_PUBLIC BackupWriter final

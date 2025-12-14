@@ -29,8 +29,10 @@ struct ReportFormatManager::_Impl
             REGISTER(HtmlReportFormat);
     }
 
-    tt3::util::Mutex                    guard;
-    QMap<tt3::util::Mnemonic, IReportFormat*> registry;
+    using Registry = QMap<tt3::util::Mnemonic, IReportFormat*>;
+
+    tt3::util::Mutex    guard;
+    Registry            registry;
 };
 
 //////////

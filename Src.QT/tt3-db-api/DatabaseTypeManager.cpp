@@ -19,8 +19,10 @@ using namespace tt3::db::api;
 
 struct DatabaseTypeManager::_Impl
 {
-    tt3::util::Mutex                            guard;
-    QMap<tt3::util::Mnemonic, IDatabaseType*>   registry;
+    using Registry = QMap<tt3::util::Mnemonic, IDatabaseType*>;
+
+    tt3::util::Mutex    guard;
+    Registry            registry;
 };
 
 //////////

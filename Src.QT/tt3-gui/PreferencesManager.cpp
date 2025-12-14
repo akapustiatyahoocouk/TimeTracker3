@@ -32,8 +32,10 @@ struct PreferencesManager::_Impl
         REGISTER(GeneralDialogsPreferences);
     }
 
-    tt3::util::Mutex                        guard;
-    QMap<tt3::util::Mnemonic, Preferences*> registry;
+    using Registry = QMap<tt3::util::Mnemonic, Preferences*>;
+
+    tt3::util::Mutex    guard;
+    Registry            registry;
 };
 
 //////////

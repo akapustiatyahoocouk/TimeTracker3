@@ -19,8 +19,10 @@ using namespace tt3::util;
 
 struct ToolManager::_Impl
 {
-    Mutex                   guard;
-    QMap<Mnemonic, ITool*>  registry;
+    using Registry = QMap<Mnemonic, ITool*>;
+
+    Mutex       guard;
+    Registry    registry;
 };
 
 //////////

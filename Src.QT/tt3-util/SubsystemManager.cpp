@@ -33,8 +33,10 @@ struct SubsystemManager::_Impl
         REGISTER(StandardSubsystems::Utility);
     }
 
-    Mutex                       guard;
-    QMap<Mnemonic, ISubsystem*> registry;
+    using Registry = QMap<Mnemonic, ISubsystem*>;
+
+    Mutex       guard;
+    Registry    registry;
 };
 
 //////////

@@ -24,8 +24,10 @@ struct WorkspaceTypeManager::_Impl
         refreshRegistry();
     }
 
-    tt3::util::Mutex                                    guard;
-    QMap<tt3::db::api::IDatabaseType*, WorkspaceType>   registry;
+    using Registry = QMap<tt3::db::api::IDatabaseType*, WorkspaceType>;
+
+    tt3::util::Mutex    guard;
+    Registry            registry;
 
     void        refreshRegistry()
     {

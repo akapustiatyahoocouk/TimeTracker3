@@ -21,6 +21,8 @@ namespace tt3::util
     /// \brief A component making up the TT3 architecture.
     class TT3_UTIL_PUBLIC IComponent
     {
+        friend class ComponentManager;
+
         //////////
         //  Types
     public:
@@ -147,6 +149,11 @@ namespace tt3::util
         ///     Deinitializes this component; has no effect if
         ///     the component has not been initialized.
         virtual void    deiniialize() = 0;
+
+        //////////
+        //  Implementation
+    private:
+        bool            _initialized = false;
     };
 
     /// \class ComponentManager tt3-util/API.hpp

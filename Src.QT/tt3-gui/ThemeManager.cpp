@@ -31,8 +31,10 @@ struct ThemeManager::_Impl
         REGISTER(StandardThemes::Dark);
     }
 
-    tt3::util::Mutex                    guard;
-    QMap<tt3::util::Mnemonic, ITheme*>  registry;
+    using Registry = QMap<tt3::util::Mnemonic, ITheme*>;
+
+    tt3::util::Mutex    guard;
+    Registry            registry;
 };
 
 //////////

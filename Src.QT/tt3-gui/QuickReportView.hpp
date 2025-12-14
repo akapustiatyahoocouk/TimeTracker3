@@ -128,5 +128,8 @@ namespace tt3::gui
     };
 }
 
+//  Macro needed for MOC-generated .cpp files
+#define TT3_GUI_QUICK_REPORT_VIEW_DEFINED
+
 //  End of tt3-gui/QuickReportView.hpp
 

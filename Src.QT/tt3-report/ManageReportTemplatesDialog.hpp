@@ -15,7 +15,7 @@
 //  GNU General Public License for more details.
 //////////
 #pragma once
-#include "tt3-gui/API.hpp"
+#include "tt3-report/API.hpp"
 
 namespace tt3::report
 {

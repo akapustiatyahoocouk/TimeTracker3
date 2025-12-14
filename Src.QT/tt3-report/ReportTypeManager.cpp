@@ -19,8 +19,10 @@ using namespace tt3::report;
 
 struct ReportTypeManager::_Impl
 {
-    tt3::util::Mutex                    guard;
-    QMap<tt3::util::Mnemonic, IReportType*> registry;
+    using Registry = QMap<tt3::util::Mnemonic, IReportType*>;
+
+    tt3::util::Mutex    guard;
+    Registry            registry;
 };
 
 //////////

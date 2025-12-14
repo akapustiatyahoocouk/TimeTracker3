@@ -17,6 +17,8 @@
 
 namespace tt3::tools::restore
 {
+    class TT3_TOOLS_RESTORE_PUBLIC RestoreProgressDialog;
+
     /// \class RestoreReader tt3-tools-restore/API.hpp
     /// \brief The "TT3 Restore Reader" agent.
     class TT3_TOOLS_RESTORE_PUBLIC RestoreReader final

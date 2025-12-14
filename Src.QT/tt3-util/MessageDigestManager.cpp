@@ -29,8 +29,10 @@ struct MessageDigestManager::_Impl
         REGISTER(StandardMessageDigests::Sha1);
     }
 
-    Mutex                           guard;
-    QMap<Mnemonic, IMessageDigest*> registry;
+    using Registry = QMap<Mnemonic, IMessageDigest*>;
+
+    Mutex       guard;
+    Registry    registry;
 };
 
 //////////

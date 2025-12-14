@@ -24,6 +24,8 @@ namespace tt3::util
     class TT3_UTIL_PUBLIC ILicense;
     class TT3_UTIL_PUBLIC ITool;
 
+    class TT3_UTIL_PUBLIC ComponentManager;
+
     //  Collections
     using Subsystems = QSet<ISubsystem*>;
     using Components = QSet<IComponent*>;
