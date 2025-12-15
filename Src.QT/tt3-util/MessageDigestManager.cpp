@@ -21,12 +21,10 @@ struct MessageDigestManager::_Impl
 {
     _Impl()
     {
-#define REGISTER(Clazz)                     \
-        registry.insert(                    \
-            Clazz::instance()->mnemonic(),  \
-            Clazz::instance())
-
-        REGISTER(StandardMessageDigests::Sha1);
+        for (auto md : StandardMessageDigests::all())
+        {
+            registry[md->mnemonic()] = md;
+        }
     }
 
     using Registry = QMap<Mnemonic, IMessageDigest*>;

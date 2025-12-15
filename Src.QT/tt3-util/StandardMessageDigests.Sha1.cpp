@@ -1,5 +1,5 @@
 //
-//  tt3-util/StandardMessageDigests.Sha1.cpp - The tt3::util::StandardMessageDigests.Sha1 class implementation
+//  tt3-util/StandardMessageDigests.Sha1.cpp - The tt3::util::StandardMessageDigests::Sha1 class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin

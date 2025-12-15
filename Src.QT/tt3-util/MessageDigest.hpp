@@ -144,6 +144,15 @@ namespace tt3::util
         TT3_UTILITY_CLASS(StandardMessageDigests)
 
         //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Returns the set of all standard message digests.
+        /// \return
+        ///     The set of all standard message digests.
+        static MessageDigests   all();
+
+        //////////
         //  Members
     public:
         /// \class Sha1 tt3-util/API.hpp
@@ -177,6 +186,8 @@ namespace tt3::util
                 //////////
                 //  Builder
             public:
+                using Builder::digestFragment;
+
                 virtual IMessageDigest *messageDigest() const override;
                 virtual void        reset() override;
                 virtual void        digestFragment(const void * data, size_t numBytes) override;
