@@ -76,11 +76,11 @@ const Component::Settings * Component::settings() const
     return Settings::instance();
 }
 
-void Component::iniialize()
+void Component::initialize()
 {
 }
 
-void Component::deiniialize()
+void Component::deinitialize()
 {
 }
 
@@ -101,7 +101,7 @@ Component::Settings::Settings()
         lastLogin(this, M(LastLogin), ""),
         uiLocale(this, M(UiLocale), QLocale(QLocale::English, QLocale::UnitedKingdom)),
         loadLastWorkspaceAtStartup(this, M(LoadLastWorkspaceAtStartup), false),
-    lastUsedWorkspaceType(this, M(LastUsedWorkspaceType), M(-)),
+        lastUsedWorkspaceType(this, M(LastUsedWorkspaceType), M(-)),
         rememberLastLogin(this, M(RememberLastLogin), true),
         currentPreferences(this, M(CurrentPreferences), M(-)),
         //  Properties (user confirmations)

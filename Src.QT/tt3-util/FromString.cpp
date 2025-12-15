@@ -398,7 +398,7 @@ double tt3::util::fromString<double>(const QString & s, qsizetype & scan)
             exponentMagnitude = exponentMagnitude * 10 + digit;
             numExponentDigits++;
             if (numExponentDigits > 3)
-            {   //  OOP! No more!
+            {   //  OOPS! No more!
                 break;
             }
         }

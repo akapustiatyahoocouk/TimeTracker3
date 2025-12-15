@@ -71,7 +71,7 @@ bool ReportFormatManager::unregisterReportFormat(IReportFormat * reportFormat)
     auto key = reportFormat->mnemonic();
     if (impl->registry.contains(key) &&
         impl->registry[key] == reportFormat)
-    {
+    {   //  Guard against an impersonator
         impl->registry.remove(key);
         return true;
     }

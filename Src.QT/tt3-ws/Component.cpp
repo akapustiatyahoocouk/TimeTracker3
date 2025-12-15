@@ -76,7 +76,7 @@ const Component::Settings * Component::settings() const
     return Settings::instance();
 }
 
-void Component::iniialize()
+void Component::initialize()
 {
     qRegisterMetaType<ChangeNotification>();
     qRegisterMetaType<WorkspaceClosedNotification>();
@@ -109,7 +109,7 @@ void Component::iniialize()
     qRegisterMetaType<Beneficiary>();
 }
 
-void Component::deiniialize()
+void Component::deinitialize()
 {
 }
 

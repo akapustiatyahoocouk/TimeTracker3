@@ -280,6 +280,7 @@ namespace tt3::report
         ///     The TypographicSize which uses the same unit as this
         ///     TypographicSize, but whose amount has been multiplied by the
         ///     specified scale factor.
+        //  TODO Replace this method with "*" operator yaking a float
         TypographicSize scaled(float scaleFactor) const;
 
         //////////

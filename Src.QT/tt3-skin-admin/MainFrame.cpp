@@ -238,7 +238,44 @@ void MainFrame::refresh()
 //  Implementation
 void MainFrame::_loadPosition()
 {
-    this->setGeometry(Component::Settings::instance()->mainFrameBounds);
+    QRect bounds = Component::Settings::instance()->mainFrameBounds;
+    //  Make sure the frame is not off-screen
+    QRect workspaceRect =
+        QGuiApplication::primaryScreen()->availableGeometry();
+    if (bounds.width() < 320)
+    {
+        bounds.setWidth(320);
+    }
+    if (bounds.width() > workspaceRect.width())
+    {
+        bounds.setWidth(workspaceRect.width());
+    }
+    if (bounds.height() < 200)
+    {
+        bounds.setHeight(200);
+    }
+    if (bounds.height() > workspaceRect.height())
+    {
+        bounds.setHeight(workspaceRect.height());
+    }
+    if (bounds.x() < workspaceRect.x())
+    {
+        bounds.setX(workspaceRect.x());
+    }
+    if (bounds.right() > workspaceRect.right())
+    {
+        bounds.setX(workspaceRect.right() - bounds.width());
+    }
+    if (bounds.y() < workspaceRect.y())
+    {
+        bounds.setY(workspaceRect.y());
+    }
+    if (bounds.bottom() > workspaceRect.bottom())
+    {
+        bounds.setY(workspaceRect.bottom() - bounds.bottom());
+    }
+    //  Do it
+    this->setGeometry(bounds);
     if (Component::Settings::instance()->mainFrameMaximized)
     {
         this->showMaximized();

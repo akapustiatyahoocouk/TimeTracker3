@@ -226,8 +226,8 @@ ReportTableCell * ReportTable::createCell(
         qsizetype startRow,
         qsizetype columnSpan,
         qsizetype rowSpan,
-        VerticalAlignment contentAlignment,
-        TypographicSizeOpt preferredWidth
+        TypographicSizeOpt preferredWidth,
+        ITableCellStyle * style
     )
 {
     Q_ASSERT(startColumn >= 0);
@@ -244,8 +244,41 @@ ReportTableCell * ReportTable::createCell(
         std::max<qsizetype>(startRow, 0),      //  be defensive
         std::max<qsizetype>(columnSpan, 1),    //  be defensive
         std::max<qsizetype>(rowSpan, 1),       //  be defensive
-        contentAlignment,
-        preferredWidth);
+        preferredWidth,
+        style);
+    //  Must update the table geometry
+    _columnCount = std::max(_columnCount, result->_startColumn + result->_columnSpan);
+    _rowCount = std::max(_rowCount, result->_startRow + result->_rowSpan);
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    return result;
+}
+
+ReportTableCell * ReportTable::createCell(
+        qsizetype startColumn,
+        qsizetype startRow,
+        qsizetype columnSpan,
+        qsizetype rowSpan,
+        ITableCellStyle * style
+    )
+{
+    Q_ASSERT(startColumn >= 0);
+    Q_ASSERT(startRow >= 0);
+    Q_ASSERT(columnSpan > 0);
+    Q_ASSERT(rowSpan > 0);
+
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    auto result = new ReportTableCell(
+        this,
+        std::max<qsizetype>(startColumn, 0),   //  be defensive
+        std::max<qsizetype>(startRow, 0),      //  be defensive
+        std::max<qsizetype>(columnSpan, 1),    //  be defensive
+        std::max<qsizetype>(rowSpan, 1),       //  be defensive
+        TypographicSizeOpt(),   //  default
+        style);
     //  Must update the table geometry
     _columnCount = std::max(_columnCount, result->_startColumn + result->_columnSpan);
     _rowCount = std::max(_rowCount, result->_startRow + result->_rowSpan);

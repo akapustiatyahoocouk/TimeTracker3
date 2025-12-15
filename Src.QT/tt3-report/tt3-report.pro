@@ -12,6 +12,7 @@ SOURCES += \
     BasicReportTemplate.cpp \
     BasicSectionStyle.cpp \
     BasicStyle.cpp \
+    BasicTableCellStyle.cpp \
     BasicTableStyle.cpp \
     BorderType.cpp \
     ColorSpec.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
     CustomReportTemplate.cpp \
     CustomSectionStyle.cpp \
     CustomStyle.cpp \
+    CustomTableCellStyle.cpp \
     CustomTableStyle.cpp \
     Exceptions.cpp \
     FontFlag.cpp \
@@ -43,7 +45,9 @@ SOURCES += \
     IReportTemplate.cpp \
     ISectionStyle.cpp \
     IStyle.cpp \
+    ITableCellStyle.cpp \
     ITableStyle.cpp \
+    KnownCustomReportTemplate.cpp \
     ManageReportTemplatesDialog.cpp \
     PageNumberPlacement.cpp \
     PageOrientation.cpp \

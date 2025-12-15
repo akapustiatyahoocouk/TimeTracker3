@@ -420,9 +420,12 @@ QString HRG::_CssBuilder::tableCellStyle(
     QString cellBorderTypeString =
         _formatBorderType(
             tableCell->resolveCellBorderType());
+    QString horizontalAlignment =
+        _formatHorizontalAlignment(
+            tableCell->resolveHorizontalAlignment());
     QString verticalAlignString =
         _formatVerticalAlignment(
-            tableCell->resolveContentAlignment());
+            tableCell->resolveVerticalAlignment());
     QString preferredWidthString =
         tableCell->preferredWidth().has_value() ?
             _formatPreferredWidth(tableCell->preferredWidth().value()) :
@@ -439,6 +442,7 @@ QString HRG::_CssBuilder::tableCellStyle(
             colorString,
             backgroundColorString,
             cellBorderTypeString,
+            horizontalAlignment,
             verticalAlignString,
             preferredWidthString);
     _tableCellStyles.insert(tableCellStyle);
@@ -1260,7 +1264,8 @@ HRG::_CssBuilder::_TableCellStyle::_TableCellStyle(
         const QString & colorString_,
         const QString & backgroundColorString_,
         const QString & cellBorderTypeString_,
-        const QString & verticalAlignString_,
+        const QString & horizontalAlignmentString_,
+        const QString & verticalAlignmentString_,
         const QString & preferredWidthString_
     ) : className("class" + tt3::util::toString(sequenceNumber)),
         fontFamilyString(fontFamilyString_),
@@ -1271,7 +1276,8 @@ HRG::_CssBuilder::_TableCellStyle::_TableCellStyle(
         colorString(colorString_),
         backgroundColorString(backgroundColorString_),
         cellBorderTypeString(cellBorderTypeString_),
-        verticalAlignString(verticalAlignString_),
+        horizontalAlignmentString(horizontalAlignmentString_),
+        verticalAlignmentString(verticalAlignmentString_),
         preferredWidthString(preferredWidthString_)
 {
 }
@@ -1290,7 +1296,8 @@ QString HRG::_CssBuilder::_TableCellStyle::css() const
            cssProperty("border-style", cellBorderTypeString) +
            cssProperty("border-width", ((cellBorderTypeString == "solid") ? "1px" : "auto")) +
            cssProperty("border-color", colorString) +
-           cssProperty("vertical-align", verticalAlignString) +
+           cssProperty("text-align", horizontalAlignmentString) +
+           cssProperty("vertical-align", verticalAlignmentString) +
            cssProperty("width", preferredWidthString) +
            "}\n";
 }

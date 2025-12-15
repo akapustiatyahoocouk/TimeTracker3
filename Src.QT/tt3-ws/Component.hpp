@@ -96,8 +96,8 @@ namespace tt3::ws
         virtual Resources *     resources() const override;
         virtual Settings *      settings() override;
         virtual const Settings *settings() const override;
-        virtual void            iniialize() override;
-        virtual void            deiniialize() override;
+        virtual void            initialize() override;
+        virtual void            deinitialize() override;
     };
 }
 

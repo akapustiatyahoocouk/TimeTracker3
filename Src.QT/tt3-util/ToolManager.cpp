@@ -61,7 +61,7 @@ bool ToolManager::unregisterTool(ITool * tool)
     auto key = tool->mnemonic();
     if (impl->registry.contains(key) &&
         impl->registry[key] == tool)
-    {
+    {   //  Guard against an impersonator
         impl->registry.remove(key);
         return true;
     }

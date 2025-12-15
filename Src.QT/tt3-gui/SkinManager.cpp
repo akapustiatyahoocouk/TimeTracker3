@@ -61,7 +61,7 @@ bool SkinManager::unregisterSkin(ISkin * skin)
     auto key = skin->mnemonic();
     if (impl->registry.contains(key) &&
         impl->registry[key] == skin)
-    {
+    {   //  Guard against an impersonator
         impl->registry.remove(key);
         return true;
     }

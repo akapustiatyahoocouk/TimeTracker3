@@ -96,6 +96,19 @@ auto IReportTemplate::tableStyles() const -> TableStyles
     return result;
 }
 
+auto IReportTemplate::tableCellStyles() const -> TableCellStyles
+{
+    TableCellStyles result;
+    for (auto style : styles())
+    {
+        if (auto tableCellStyle = dynamic_cast<ITableCellStyle*>(style))
+        {
+            result.insert(tableCellStyle);
+        }
+    }
+    return result;
+}
+
 auto IReportTemplate::linkStyles() const -> LinkStyles
 {
     LinkStyles result;
@@ -223,6 +236,23 @@ auto IReportTemplate::tableStyle(
     throw StyleDoesNotExistException(name, mnemonic(), displayName());
 }
 
+auto IReportTemplate::findTableCellStyle(
+        const Mnemonic & name
+    ) const -> ITableCellStyle *
+{
+    return dynamic_cast<ITableCellStyle*>(findStyle(name));
+}
+
+auto IReportTemplate::tableCellStyle(
+        const Mnemonic & name
+    ) const -> ITableCellStyle *
+{
+    if (auto result = findTableCellStyle(name))
+    {
+        return result;
+    }
+    throw StyleDoesNotExistException(name, mnemonic(), displayName());
+}
 
 auto IReportTemplate::findLinkStyle(
         const Mnemonic & name

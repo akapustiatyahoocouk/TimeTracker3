@@ -143,12 +143,12 @@ namespace tt3::util
         ///     the component has already been initialized.
         /// \exception Exception
         ///     If the component initialization fails.
-        virtual void    iniialize() = 0;
+        virtual void    initialize() = 0;
 
         /// \brief
         ///     Deinitializes this component; has no effect if
         ///     the component has not been initialized.
-        virtual void    deiniialize() = 0;
+        virtual void    deinitialize() = 0;
 
         //////////
         //  Implementation
@@ -369,8 +369,8 @@ public:                                 \
         virtual Resources *     resources() const override;
         virtual Settings *      settings() override;
         virtual const Settings *settings() const override;
-        virtual void            iniialize() override;
-        virtual void            deiniialize() override;
+        virtual void            initialize() override;
+        virtual void            deinitialize() override;
     };
 #endif //   def TT3_UTIL_SETTINGS_DEFINED
 }

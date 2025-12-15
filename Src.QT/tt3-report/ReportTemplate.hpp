@@ -31,6 +31,7 @@ namespace tt3::report
         friend class IParagraphStyle;
         friend class IListStyle;
         friend class ITableStyle;
+        friend class ITableCellStyle;
         friend class ISectionStyle;
         friend class BasicReportTemplate;
         friend class CustomReportTemplate;
@@ -196,6 +197,12 @@ namespace tt3::report
         virtual auto    tableStyles() const -> TableStyles;
 
         /// \brief
+        ///     Returns the set of all table cell styles in this report template.
+        /// \return
+        ///     The set of all table cell styles in this report template.
+        virtual auto    tableCellStyles() const -> TableCellStyles;
+
+        /// \brief
         ///     Returns the set of all link styles in this report template.
         /// \return
         ///     The set of all link styles in this report template.
@@ -349,6 +356,30 @@ namespace tt3::report
         virtual auto    tableStyle(
                                 const Mnemonic & name
                             ) const -> ITableStyle *;
+
+        /// \brief
+        ///     Finds a table cell style defined in this report template by name.
+        /// \param name
+        ///     The name to look for.
+        /// \return
+        ///     The table cell style with the required name; nullptr
+        ///     if not found or not a table cell style.
+        virtual auto    findTableCellStyle(
+                                const Mnemonic & name
+                            ) const -> ITableCellStyle *;
+
+        /// \brief
+        ///     Gets a table cell style defined in this report template by name.
+        /// \param name
+        ///     The name to look for.
+        /// \return
+        ///     The table style with the required name.
+        /// \exception ReportException
+        ///     If the style does not exist or is not a
+        ///     table cell style.
+        virtual auto    tableCellStyle(
+                                const Mnemonic & name
+                            ) const -> ITableCellStyle *;
 
         /// \brief
         ///     Finds a link style defined in this report template by name.
@@ -517,6 +548,14 @@ namespace tt3::report
         static bool         registerReportTemplate(IReportTemplate * reportTemplate);
 
         /// \brief
+        ///     Un-registers the specified ReportTemplate.
+        /// \param reportTemplate
+        ///     The ReportTemplate to un-register
+        /// \return
+        ///     True on success, false on failure.
+        static bool         unregisterReportTemplate(IReportTemplate * reportTemplate);
+
+        /// \brief
         ///     Finds a registered ReportTemplate by its mnemonic.
         /// \param mnemonic
         ///     The mnemonic to look for.
@@ -535,7 +574,7 @@ namespace tt3::report
     };
 
     /// \class IStyle tt3-report/API.hpp
-    /// \brief An abstract interface to a "formatting style" of report eement.
+    /// \brief An abstract interface to a "formatting style" of report element.
     class TT3_REPORT_PUBLIC IStyle
     {
         friend class IReportTemplate;
@@ -642,7 +681,7 @@ namespace tt3::report
     };
 
     /// \class ICharacterStyle tt3-report/API.hpp
-    /// \brief An abstract interface to a "character formatting style" of report eement.
+    /// \brief An abstract interface to a "character formatting style" of report element.
     class TT3_REPORT_PUBLIC ICharacterStyle
         :   public virtual IStyle
     {
@@ -660,7 +699,7 @@ namespace tt3::report
     };
 
     /// \class IBlockStyle tt3-report/API.hpp
-    /// \brief An abstract interface to a "block character formatting style" of report eement.
+    /// \brief An abstract interface to a "block character formatting style" of report element.
     class TT3_REPORT_PUBLIC IBlockStyle
         :   public virtual IStyle
     {
@@ -711,7 +750,7 @@ namespace tt3::report
     };
 
     /// \class IParagraphStyle tt3-report/API.hpp
-    /// \brief An abstract interface to a "paragraph character formatting style" of report eement.
+    /// \brief An abstract interface to a "paragraph character formatting style" of report element.
     class TT3_REPORT_PUBLIC IParagraphStyle
         :   public virtual IBlockStyle
     {
@@ -846,7 +885,7 @@ namespace tt3::report
     };
 
     /// \class IListStyle tt3-report/API.hpp
-    /// \brief An abstract interface to a "list character formatting style" of report eement.
+    /// \brief An abstract interface to a "list character formatting style" of report element.
     class TT3_REPORT_PUBLIC IListStyle
         :   public virtual IBlockStyle
     {
@@ -891,7 +930,7 @@ namespace tt3::report
     };
 
     /// \class ITableStyle tt3-report/API.hpp
-    /// \brief An abstract interface to a "table character formatting style" of report eement.
+    /// \brief An abstract interface to a "table character formatting style" of report element.
     class TT3_REPORT_PUBLIC ITableStyle
         :   public virtual IBlockStyle
     {
@@ -943,8 +982,66 @@ namespace tt3::report
         virtual void    serialize(QDomElement & element) const override;
     };
 
+    /// \class ITableCellStyle tt3-report/API.hpp
+    /// \brief An abstract interface to a "table cell formatting style" of report element.
+    class TT3_REPORT_PUBLIC ITableCellStyle
+        :   public virtual ICharacterStyle
+    {
+        friend class CustomReportTemplate;
+
+        //////////
+        //  This is an interface
+    protected:
+        /// \brief
+        ///     The default [interface] constructor.
+        ITableCellStyle() = default;
+
+        //////////
+        //  Constants
+    public:
+        /// \brief
+        ///     The table heading cell style; must be defined by every valid report template.
+        inline static const Name HeadingStyleName = M(TableCell.Heading);
+
+        /// \brief
+        ///     The default table cell style; must be defined by every valid report template.
+        inline static const Name DefaultStyleName = M(TableCell.Default);
+
+        //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Returns the horizontal alignment of the
+        ///     content within the cell.
+        /// \return
+        ///     The horizontal alignment of the content
+        ///     within the cell; no value == inherit from parent,
+        ///     Default == inherit from ReportTemplate.
+        virtual auto    horizontalAlignment() const -> HorizontalAlignmentOpt = 0;
+
+        /// \brief
+        ///     Returns the vertical alignment of the
+        ///     content within the cell.
+        /// \return
+        ///     The vertical alignment of the content
+        ///     within the cell; no value == inherit from parent,
+        ///     Default == inherit from ReportTemplate.
+        virtual auto    verticalAlignment() const -> VerticalAlignmentOpt = 0;
+
+        //////////
+        //  Serialization
+    public:
+        /// \brief
+        ///     The tag name for an XML element representing
+        ///     this style in an XML document.
+        inline static const QString XmlTagName = "TableCellStyle";
+
+        virtual QString xmlTagName() const override { return XmlTagName; }
+        virtual void    serialize(QDomElement & element) const override;
+    };
+
     /// \class ILinkStyle tt3-report/API.hpp
-    /// \brief An abstract interface to a "link formatting style" of report eement.
+    /// \brief An abstract interface to a "link formatting style" of report element.
     class TT3_REPORT_PUBLIC ILinkStyle
         :   public virtual IStyle
     {
@@ -977,7 +1074,7 @@ namespace tt3::report
     };
 
     /// \class ISectionStyle tt3-report/API.hpp
-    /// \brief An abstract interface to a "section character formatting style" of report eement.
+    /// \brief An abstract interface to a "section formatting style" of report element.
     class TT3_REPORT_PUBLIC ISectionStyle
         :   public virtual IStyle
     {
@@ -997,7 +1094,7 @@ namespace tt3::report
         ///     The title section style; must be defined by every valid report template.
         /// \details
         ///     The "prequel" of a report is a section which appears in the report at the
-        ///     bery beginning.
+        ///     very beginning.
         inline static const Name TitleStyleName = M(Section.Title);
 
         /// \brief

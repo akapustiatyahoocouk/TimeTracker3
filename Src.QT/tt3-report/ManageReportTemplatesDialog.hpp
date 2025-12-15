@@ -24,7 +24,7 @@ namespace tt3::report
     /// \class ManageReportTemplatesDialog tt3-report/API.hpp
     /// \brief The modal "Manage report templates" dialog.
     class TT3_REPORT_PUBLIC ManageReportTemplatesDialog final
-        :   public QDialog  //  TODO private!
+        :   public QDialog
     {
         Q_OBJECT
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ManageReportTemplatesDialog)
@@ -70,6 +70,7 @@ namespace tt3::report
         QSet<QString>   _previewFileNames;  //  to remove when closing the dialog
         QMap<IReportTemplate*, _PreviewGenerator*>  _previewGenerators;
         QMap<IReportTemplate*, QString> _previews;
+        bool            _refreshUnderway = false;
 
         //  Helpers
         void            _refresh();

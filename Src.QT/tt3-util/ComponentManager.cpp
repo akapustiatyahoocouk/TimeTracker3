@@ -77,7 +77,7 @@ bool ComponentManager::unregisterComponent(
     auto key = component->mnemonic();
     if (impl->registry.contains(key) &&
         impl->registry[key] == component)
-    {
+    {   //  Guard against an impersonator
         impl->registry.remove(key);
         return true;
     }
@@ -143,7 +143,7 @@ void ComponentManager::initializeComponents()
             {   //  Try this one!
                 try
                 {
-                    component->iniialize(); //  may throw
+                    component->initialize(); //  may throw
                     component->_initialized = true;
                     keepGoing = true;
                 }
@@ -175,7 +175,7 @@ void ComponentManager::deinitializeComponents()
         {
             try
             {   //  Be defensive - cleanup as many as possible
-                component->deiniialize();
+                component->deinitialize();
             }
             catch (const Exception & ex)
             {   //  OOPS! Log, but suppress

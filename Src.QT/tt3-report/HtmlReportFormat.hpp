@@ -262,7 +262,8 @@ namespace tt3::report
                         const QString & colorString_,
                         const QString & backgroundColorString_,
                         const QString & cellBorderTypeString_,
-                        const QString & verticalAlignString_,
+                        const QString & horizontalAlignmentString_,
+                        const QString & verticalAlignmentString_,
                         const QString & preferredWidthString_
                     );
 
@@ -278,7 +279,8 @@ namespace tt3::report
                 const QString   colorString;
                 const QString   backgroundColorString;
                 const QString   cellBorderTypeString;
-                const QString   verticalAlignString;
+                const QString   horizontalAlignmentString;
+                const QString   verticalAlignmentString;
                 const QString   preferredWidthString;
             };
 

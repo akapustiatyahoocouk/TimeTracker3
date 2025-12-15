@@ -25,16 +25,16 @@ ReportTableCell::ReportTableCell(
         qsizetype startRow,
         qsizetype columnSpan,
         qsizetype rowSpan,
-        VerticalAlignment contentAlignment,
-        const TypographicSizeOpt & preferredWidth
+        const TypographicSizeOpt & preferredWidth,
+        ITableCellStyle * style
     ) : ReportFlowElement(table->_report),
         _table(table),
         _startColumn(std::max<qsizetype>(startColumn, 0)), //  be defensive
         _startRow(std::max<qsizetype>(startRow, 0)),       //  be defensive
         _columnSpan(std::max<qsizetype>(columnSpan, 1)),   //  be defensive
         _rowSpan(std::max<qsizetype>(rowSpan, 1)),         //  be defensive
-        _contentAlignment(contentAlignment),
-        _preferredWidth(preferredWidth)
+        _preferredWidth(preferredWidth),
+        _style(style)
 {
     Q_ASSERT(startColumn >= 0);
     Q_ASSERT(startRow >= 0);
@@ -86,15 +86,66 @@ auto ReportTableCell::resolveBackgroundColor() const -> ColorSpec
 
 //////////
 //  Operations
+void ReportTableCell::setStyle(ITableCellStyle * style)
+{
+    Q_ASSERT(style == nullptr ||
+             style->reportTemplate() == _report->reportTemplate());
+
+    if (style == nullptr ||
+        style->reportTemplate() == _report->reportTemplate())
+    {   //  Be defensive in Release mode
+        _style = style;
+    }
+}
+
 auto ReportTableCell::resolveCellBorderType() const -> BorderType
 {   //  No own style - must go to the parent
     Q_ASSERT(_table != nullptr);
     return _table->resolveCellBorderType();
 }
 
-auto ReportTableCell::resolveContentAlignment() const -> VerticalAlignment
+auto ReportTableCell::resolveHorizontalAlignment() const -> HorizontalAlignment
 {
-    return _contentAlignment;
+    //  Honor own style first
+    if (_style != nullptr && _style->horizontalAlignment().has_value())
+    {
+        return _style->horizontalAlignment().value();
+    }
+    //  Must go to the parent TableCell (usually there will be none)
+    for (const ReportElement * parent = this->parent();
+         parent != nullptr;
+         parent = parent->parent())
+    {
+        if (auto parentCell =
+            dynamic_cast<const ReportTableCell*>(parent))
+        {
+            return parentCell->resolveHorizontalAlignment();
+        }
+    }
+    //  No ancestor cell was any good
+    return HorizontalAlignment::Default;
+}
+
+auto ReportTableCell::resolveVerticalAlignment() const -> VerticalAlignment
+{
+    //  Honor own style first
+    if (_style != nullptr && _style->verticalAlignment().has_value())
+    {
+        return _style->verticalAlignment().value();
+    }
+    //  Must go to the parent TableCell (usually there will be none)
+    for (const ReportElement * parent = this->parent();
+         parent != nullptr;
+         parent = parent->parent())
+    {
+        if (auto parentCell =
+            dynamic_cast<const ReportTableCell*>(parent))
+        {
+            return parentCell->resolveVerticalAlignment();
+        }
+    }
+    //  No ancestor cell was any good
+    return VerticalAlignment::Default;
 }
 
 //////////
@@ -103,11 +154,14 @@ void ReportTableCell::serialize(QDomElement & element) const
 {
     ReportFlowElement::serialize(element);
 
+    if (_style != nullptr)
+    {
+        element.setAttribute("Style", _style->name().toString());
+    }
     element.setAttribute("StartColumn", _startColumn);
     element.setAttribute("StartRow", _startRow);
     element.setAttribute("ColumnSpan", _columnSpan);
     element.setAttribute("RowSpan", _rowSpan);
-    element.setAttribute("ContentAlignment", tt3::util::toString(_contentAlignment));
     if (_preferredWidth.has_value())
     {
         element.setAttribute("PreferredWidth", tt3::util::toString(_preferredWidth.value()));
@@ -118,6 +172,12 @@ void ReportTableCell::deserialize(const QDomElement & element)
 {
     ReportFlowElement::deserialize(element);
 
+    if (element.hasAttribute("Style"))
+    {
+        _style =
+            _report->_reportTemplate->tableCellStyle(
+                IStyle::Name(element.attribute("Style")));
+    }
     _startColumn =
         tt3::util::fromString(
             element.attribute("StartColumn"),
@@ -134,10 +194,6 @@ void ReportTableCell::deserialize(const QDomElement & element)
         tt3::util::fromString(
             element.attribute("RowSpan"),
             _rowSpan);
-    _contentAlignment =
-        tt3::util::fromString(
-            element.attribute("ContentAlignment"),
-            _contentAlignment);
     if (element.hasAttribute("PreferredWidth"))
     {
         _preferredWidth =

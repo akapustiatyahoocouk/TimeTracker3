@@ -76,12 +76,12 @@ const Component::Settings * Component::settings() const
     return Settings::instance();
 }
 
-void Component::iniialize()
+void Component::initialize()
 {
     tt3::util::ToolManager::registerTool(BackupTool::instance());
 }
 
-void Component::deiniialize()
+void Component::deinitialize()
 {
     tt3::util::ToolManager::unregisterTool(BackupTool::instance());
 }

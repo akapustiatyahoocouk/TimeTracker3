@@ -522,11 +522,10 @@ void HRG::_HtmlGenerator::_generateTable(
         "class", _cssBuilder.tableStyle(table),
         "width", "100%");
 
-    //  TODO add support for table cells spanning more than 1 column.row
-    for (int row = 0; row < table->rowCount(); row++)
-    {
+    for (qsizetype row = 0; row < table->rowCount(); row++)
+    {   //  TODO add support for table cells spanning more than 1 row
         _htmlBuilder.openTag("tr");
-        for (int column = 0; column < table->columnCount(); column++)
+        for (qsizetype column = 0; column < table->columnCount(); )
         {
             auto cell = table->findTableCellAt(column, row);
             if (cell != nullptr)
@@ -541,11 +540,13 @@ void HRG::_HtmlGenerator::_generateTable(
                         "rowspan", tt3::util::toString(cell->rowSpan()));
                     _generateFlowElement(cell);
                     _htmlBuilder.closeTag("td");
+                    column += cell->columnSpan();
                 }
             }
             else
-            {   //  No cell here
+            {   //  No cell here - generate empty cell
                 _htmlBuilder.writeTag("td");
+                column++;
             }
         }
         _htmlBuilder.closeTag("tr");

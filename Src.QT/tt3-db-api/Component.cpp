@@ -76,7 +76,7 @@ const Component::Settings * Component::settings() const
     return Settings::instance();
 }
 
-void Component::iniialize()
+void Component::initialize()
 {
     qRegisterMetaType<ChangeNotification>();
     qRegisterMetaType<DatabaseClosedNotification>();
@@ -85,7 +85,7 @@ void Component::iniialize()
     qRegisterMetaType<ObjectModifiedNotification>();
 }
 
-void Component::deiniialize()
+void Component::deinitialize()
 {
 }
 

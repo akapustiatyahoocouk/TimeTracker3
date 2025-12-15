@@ -24,6 +24,7 @@ namespace tt3::report
     class TT3_REPORT_PUBLIC IParagraphStyle;
     class TT3_REPORT_PUBLIC IListStyle;
     class TT3_REPORT_PUBLIC ITableStyle;
+    class TT3_REPORT_PUBLIC ITableCellStyle;
     class TT3_REPORT_PUBLIC ILinkStyle;
     class TT3_REPORT_PUBLIC ISectionStyle;
 
@@ -34,6 +35,7 @@ namespace tt3::report
     class TT3_REPORT_PUBLIC BasicParagraphStyle;
     class TT3_REPORT_PUBLIC BasicListStyle;
     class TT3_REPORT_PUBLIC BasicTableStyle;
+    class TT3_REPORT_PUBLIC BasicTableCellStyle;
     class TT3_REPORT_PUBLIC BasicLinkStyle;
     class TT3_REPORT_PUBLIC BasicSectionStyle;
 
@@ -44,6 +46,7 @@ namespace tt3::report
     class TT3_REPORT_PUBLIC CustomParagraphStyle;
     class TT3_REPORT_PUBLIC CustomListStyle;
     class TT3_REPORT_PUBLIC CustomTableStyle;
+    class TT3_REPORT_PUBLIC CustomTableCellStyle;
     class TT3_REPORT_PUBLIC CustomLinkStyle;
     class TT3_REPORT_PUBLIC CustomSectionStyle;
 
@@ -79,6 +82,7 @@ namespace tt3::report
     using ParagraphStyles = QSet<IParagraphStyle*>;
     using ListStyles = QSet<IListStyle*>;
     using TableStyles = QSet<ITableStyle*>;
+    using TableCellStyles = QSet<ITableCellStyle*>;
     using LinkStyles = QSet<ILinkStyle*>;
     using SectionStyles = QSet<ISectionStyle*>;
 
@@ -89,6 +93,7 @@ namespace tt3::report
     using BasicParagraphStyles = QSet<BasicParagraphStyle*>;
     using BasicListStyles = QSet<BasicListStyle*>;
     using BasicTableStyles = QSet<BasicTableStyle*>;
+    using BasicTableCellStyles = QSet<BasicTableCellStyle*>;
     using BasicLinkStyles = QSet<BasicLinkStyle*>;
     using BasicSectionStyles = QSet<BasicSectionStyle*>;
 
@@ -99,6 +104,7 @@ namespace tt3::report
     using CustomParagraphStyles = QSet<CustomParagraphStyle*>;
     using CustomListStyles = QSet<CustomListStyle*>;
     using CustomTableStyles = QSet<CustomTableStyle*>;
+    using CustomTableCellStyles = QSet<CustomTableCellStyle*>;
     using CustomLinkStyles = QSet<CustomLinkStyle*>;
     using CustomSectionStyles = QSet<CustomSectionStyle*>;
 

@@ -256,6 +256,10 @@ void CustomReportTemplate::_construct(
         {
             style = new CustomTableStyle(this);
         }
+        else if (styleElement.tagName() == ITableCellStyle::XmlTagName)
+        {
+            style = new CustomTableCellStyle(this);
+        }
         else if (styleElement.tagName() == ILinkStyle::XmlTagName)
         {
             style = new CustomLinkStyle(this);
@@ -285,7 +289,6 @@ void CustomReportTemplate::_construct(
     emptyReportDocument.appendChild(rootElement);
     emptyReport->serialize(rootElement);
     _emptyReportXml = emptyReportDocument.toString(4);
-    qDebug() << _emptyReportXml;
     emptyReport.reset();    //  deletes Report instance
 
     //  Done

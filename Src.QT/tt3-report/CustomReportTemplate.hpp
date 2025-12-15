@@ -29,6 +29,7 @@ namespace tt3::report
         friend class CustomParagraphStyle;
         friend class CustomListStyle;
         friend class CustomTableStyle;
+        friend class CustomTableCellStyle;
         friend class CustomSectionStyle;
 
         //////////
@@ -171,7 +172,7 @@ namespace tt3::report
     };
 
     /// \class CustomStyle tt3-report/API.hpp
-    /// \brief A custom (loaded from XML file) stylw.
+    /// \brief A custom (loaded from XML file) style.
     class TT3_REPORT_PUBLIC CustomStyle
         :   public virtual IStyle
     {
@@ -183,6 +184,7 @@ namespace tt3::report
         friend class CustomParagraphStyle;
         friend class CustomLinkStyle;
         friend class CustomTableStyle;
+        friend class CustomTableCellStyle;
         friend class CustomListStyle;
         friend class CustomSectionStyle;
 
@@ -235,12 +237,14 @@ namespace tt3::report
     };
 
     /// \class CustomCharacterStyle tt3-report/API.hpp
-    /// \brief A custom (loaded from XML file) character stylw.
+    /// \brief A custom (loaded from XML file) character style.
     class TT3_REPORT_PUBLIC CustomCharacterStyle
         :   public CustomStyle,
             public virtual ICharacterStyle
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CustomCharacterStyle)
+
+        friend class CustomTableCellStyle;
 
         //////////
         //  Construction/destruction - from friends only
@@ -267,7 +271,7 @@ namespace tt3::report
     };
 
     /// \class CustomBlockStyle tt3-report/API.hpp
-    /// \brief A custom (loaded from XML file) block stylw.
+    /// \brief A custom (loaded from XML file) block style.
     class TT3_REPORT_PUBLIC CustomBlockStyle
         :   public CustomStyle,
             public virtual IBlockStyle
@@ -323,7 +327,7 @@ namespace tt3::report
     };
 
     /// \class CustomParagraphStyle tt3-report/API.hpp
-    /// \brief A custom (loaded from XML file) paragraph stylw.
+    /// \brief A custom (loaded from XML file) paragraph style.
     class TT3_REPORT_PUBLIC CustomParagraphStyle
         :   public CustomBlockStyle,
             public virtual IParagraphStyle
@@ -375,7 +379,7 @@ namespace tt3::report
     };
 
     /// \class CustomListStyle tt3-report/API.hpp
-    /// \brief A custom (loaded from XML file) list stylw.
+    /// \brief A custom (loaded from XML file) list style.
     class TT3_REPORT_PUBLIC CustomListStyle
         :   public CustomBlockStyle,
             public virtual IListStyle
@@ -424,7 +428,7 @@ namespace tt3::report
     };
 
     /// \class CustomTableStyle tt3-report/API.hpp
-    /// \brief A custom (loaded from XML file) Table stylw.
+    /// \brief A custom (loaded from XML file) Table style.
     class TT3_REPORT_PUBLIC CustomTableStyle
         :   public CustomBlockStyle,
             public virtual ITableStyle
@@ -475,8 +479,56 @@ namespace tt3::report
         virtual void    _deserialize(const QDomElement & styleElement) override;
     };
 
+    /// \class CustomTableCellStyle tt3-report/API.hpp
+    /// \brief A custom (loaded from XML file) table cell style.
+    class TT3_REPORT_PUBLIC CustomTableCellStyle
+        :   public CustomCharacterStyle,
+            public virtual ITableCellStyle
+    {
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CustomTableCellStyle)
+
+        friend class CustomReportTemplate;
+
+        //////////
+        //  Construction/destruction - from friends only
+    private:
+        CustomTableCellStyle(
+                CustomReportTemplate * reportTemplate,
+                const Name & name,
+                const FontSpecsOpt & fontSpecs,
+                const TypographicSizeOpt & fontSize,
+                const FontStyleOpt & fontStyle,
+                const ColorSpecOpt & textColor,
+                const ColorSpecOpt & backgroundColor,
+                const UnderlineModeOpt & underlineMode,
+                const HorizontalAlignmentOpt & horizontalAlignment,
+                const VerticalAlignmentOpt & verticalAlignment
+            );
+        virtual ~CustomTableCellStyle();
+
+        //////////
+        //  ITableCellStyle
+    public:
+        virtual auto    horizontalAlignment() const -> HorizontalAlignmentOpt override;
+        virtual auto    verticalAlignment() const -> VerticalAlignmentOpt override;
+
+        //////////
+        //  Implementation
+    private:
+        HorizontalAlignmentOpt  _horizontalAlignment;
+        VerticalAlignmentOpt    _verticalAlignment;
+
+        //////////
+        //  Serialization
+    private:
+        explicit CustomTableCellStyle(
+                CustomReportTemplate * reportTemplate
+            );
+        virtual void    _deserialize(const QDomElement & styleElement) override;
+    };
+
     /// \class CustomLinkStyle tt3-report/API.hpp
-    /// \brief A custom (loaded from XML file) link stylw.
+    /// \brief A custom (loaded from XML file) link style.
     class TT3_REPORT_PUBLIC CustomLinkStyle
         :   public CustomStyle,
             public virtual ILinkStyle
@@ -510,7 +562,7 @@ namespace tt3::report
     };
 
     /// \class CustomSectionStyle tt3-report/API.hpp
-    /// \brief A custom (loaded from XML file) section stylw.
+    /// \brief A custom (loaded from XML file) section style.
     class TT3_REPORT_PUBLIC CustomSectionStyle
         :   public CustomStyle,
             public virtual ISectionStyle

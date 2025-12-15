@@ -30,6 +30,7 @@ namespace tt3::report
         friend class ReportSection;
         friend class ReportList;
         friend class ReportTable;
+        friend class ReportTableCell;
         friend class ReportAnchor;
         friend class ReportLink;
         friend class ReportInternalLink;
@@ -1249,8 +1250,31 @@ namespace tt3::report
                                 qsizetype startRow,
                                 qsizetype columnSpan,
                                 qsizetype rowSpan,
-                                VerticalAlignment contentAlignment = VerticalAlignment::Top,
-                                TypographicSizeOpt preferredWidth = TypographicSizeOpt()
+                                TypographicSizeOpt preferredWidth,
+                                ITableCellStyle * style = nullptr
+                            ) -> ReportTableCell *;
+
+        /// \brief
+        ///     Creates a new TableCell in this Table.
+        /// \param startColumn
+        ///     The start colunm for the TableCell (0-based).
+        /// \param startRow
+        ///     The start row for the TableCell (0-based).
+        /// \param columnSpan
+        ///     The column span for the TableCell (1 or more).
+        /// \param rowSpan
+        ///     The row span for the TableCell (1 or more).
+        /// \param contentAlignment
+        ///     The alignment of content within thew TableCell.
+        ///     the TableCell; no value == choose automatically.
+        /// \return
+        ///     The newly created TableCell.
+        auto            createCell(
+                                qsizetype startColumn,
+                                qsizetype startRow,
+                                qsizetype columnSpan,
+                                qsizetype rowSpan,
+                                ITableCellStyle * style = nullptr
                             ) -> ReportTableCell *;
 
         /// \brief
@@ -1342,8 +1366,8 @@ namespace tt3::report
                 qsizetype startRow,
                 qsizetype columnSpan,
                 qsizetype rowSpan,
-                VerticalAlignment contentAlignment, //  TODO replace with ITableCellStyle
-                const TypographicSizeOpt & preferredWidth
+                const TypographicSizeOpt & preferredWidth,
+                ITableCellStyle * style
             );
         virtual ~ReportTableCell();
 
@@ -1374,6 +1398,22 @@ namespace tt3::report
         auto            table() const -> const ReportTable * { return _table; }
 
         /// \brief
+        ///     Returns the Style assigned to this TableCell.
+        /// \return
+        ///     The Style assigned to this TableCell; nullptr == none.
+        ITableCellStyle*style() const { return _style; }
+
+        /// \brief
+        ///     Sets the style of this TableCell.
+        /// \details
+        ///     The new Style (unless nullptr) must belong to
+        ///     the report template associated with the Report.
+        /// \param style
+        ///     The new style for this TableCell; nullptr == none.
+        void                setStyle(ITableCellStyle * style);
+
+
+        /// \brief
         ///     Returns the start column of this TableCell.
         /// \return
         ///     The start column of this TableCell (0-based).
@@ -1398,18 +1438,13 @@ namespace tt3::report
         qsizetype       rowSpan() const { return _rowSpan; }
 
         /// \brief
-        ///     Returns the alignment of content within this TableCell.
-        /// \return
-        ///     The alignment of content within this TableCell.
-        auto            contentAlignment() const -> VerticalAlignment { return _contentAlignment; }
-
-        /// \brief
         ///     Returns the preferred width of the column(s)
         ///     occupied by this TableCell.
         /// \return
         ///     The preferred width of the column(s) occupied
         ///     by this TableCell; no va;ue == choose automatically.
         auto            preferredWidth() const -> TypographicSizeOpt { return _preferredWidth; }
+
 
         /// \brief
         ///     Returns the resolved border type for this table cell.
@@ -1418,10 +1453,16 @@ namespace tt3::report
         auto            resolveCellBorderType() const -> BorderType;
 
         /// \brief
+        ///     Returns the resolved horizontal content alignment for this table cell.
+        /// \return
+        ///     The resolved horizontal text alignment for this table cell.
+        auto            resolveHorizontalAlignment() const -> HorizontalAlignment;
+
+        /// \brief
         ///     Returns the resolved vertical content alignment for this table cell.
         /// \return
         ///     The resolved vertical text alignment for this table cell.
-        auto            resolveContentAlignment() const -> VerticalAlignment;
+        auto            resolveVerticalAlignment() const -> VerticalAlignment;
 
         //////////
         //  Serialization
@@ -1443,8 +1484,8 @@ namespace tt3::report
         qsizetype       _startRow;      //  always >= 0
         qsizetype       _columnSpan;    //  always >= 1
         qsizetype       _rowSpan;       //  always >= 1
-        VerticalAlignment   _contentAlignment;
         TypographicSizeOpt  _preferredWidth;    //  no value == choose automatically
+        ITableCellStyle*_style;
     };
 
     /// \class ReportAnchor tt3-report/API.hpp

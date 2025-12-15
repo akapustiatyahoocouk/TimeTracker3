@@ -54,7 +54,7 @@ bool DatabaseTypeManager::unregisterDatabaseType(
     auto key = databaseType->mnemonic();
     if (impl->registry.contains(key) &&
         impl->registry[key] == databaseType)
-    {
+    {   //  Guard against an impersonator
         impl->registry.remove(key);
         return true;
     }

@@ -76,11 +76,11 @@ const Component::Settings * Component::settings() const
     return Settings::instance();
 }
 
-void Component::iniialize()
+void Component::initialize()
 {
 }
 
-void Component::deiniialize()
+void Component::deinitialize()
 {
 }
 

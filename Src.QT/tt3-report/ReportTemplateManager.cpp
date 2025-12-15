@@ -27,6 +27,42 @@ struct ReportTemplateManager::_Impl
             ReportTemplate::instance())
 
         REGISTER(BasicReportTemplate);
+
+        for (auto kcrt : Component::Settings::instance()->knownCustomReportTemplates.value())
+        {
+            //  Load file as text (assuming it's XML)...
+            QFile file(kcrt.location);
+            if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+            {   //  OOPS! Ignore, though
+                continue;
+            }
+            QTextStream in(&file);
+            QString xml = in.readAll();
+            file.close();
+            //  Create report template from XML
+            CustomReportTemplate * reportTemplate;
+            try
+            {
+                reportTemplate = new CustomReportTemplate(xml);    //  may throw
+            }
+            catch (const tt3::util::Exception & ex)
+            {   //  OOPS! Recover & continue
+                qCritical() << ex;
+                continue;
+            }
+            catch (...)
+            {   //  OOPS! Recover & continue
+                continue;
+            }
+            //  No duplication!
+            if (registry.contains(reportTemplate->mnemonic()))
+            {   //  OOPS! Ignore, though
+                delete reportTemplate;
+                continue;
+            }
+            //  Register (cannot fail at this point)
+            registry.insert(reportTemplate->mnemonic(), reportTemplate);
+        }
     }
 
     using Registry = QMap<tt3::util::Mnemonic, IReportTemplate*>;
@@ -53,12 +89,30 @@ bool ReportTemplateManager::registerReportTemplate(IReportTemplate * reportTempl
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
 
-    if (impl->registry.contains(reportTemplate->mnemonic()))
+    auto key = reportTemplate->mnemonic();
+    if (impl->registry.contains(key))
     {
         return reportTemplate == impl->registry[reportTemplate->mnemonic()];
     }
-    impl->registry[reportTemplate->mnemonic()] = reportTemplate;
+    impl->registry[key] = reportTemplate;
     return true;
+}
+
+bool ReportTemplateManager::unregisterReportTemplate(IReportTemplate * reportTemplate)
+{
+    Q_ASSERT(reportTemplate != nullptr);
+
+    _Impl * impl = _impl();
+    tt3::util::Lock _(impl->guard);
+
+    auto key = reportTemplate->mnemonic();
+    if (impl->registry.contains(key) &&
+        impl->registry[key] == reportTemplate)
+    {   //  Guard against an impersonator
+        impl->registry.remove(key);
+        return true;
+    }
+    return false;
 }
 
 IReportTemplate * ReportTemplateManager::findReportTemplate(const tt3::util::Mnemonic & mnemonic)

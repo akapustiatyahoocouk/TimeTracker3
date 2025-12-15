@@ -17,6 +17,21 @@
 
 namespace tt3::report
 {
+    struct TT3_REPORT_PUBLIC KnownCustomReportTemplate
+    {
+        //////////
+        //  Operators (needed by QList)
+        bool                operator == (const KnownCustomReportTemplate & op2) const;
+        bool                operator != (const KnownCustomReportTemplate & op2) const;
+
+        //////////
+        //  Properties
+        tt3::util::Mnemonic mnemonic;
+        QString             displayName;
+        QString             location;
+    };
+    using KnownCustomReportTemplates = QList<KnownCustomReportTemplate>;
+
     /// \class Component tt3-report/API.hpp
     /// \brief The "TT3 Reporting" component.
     class TT3_REPORT_PUBLIC Component final
@@ -41,6 +56,13 @@ namespace tt3::report
             :   public tt3::util::Settings
         {
             TT3_DECLARE_SINGLETON(Settings)
+
+            //////////
+            //  Properties
+        public:
+            /// \brief
+            ///     The set of "known" custom reports.
+            tt3::util::Setting<KnownCustomReportTemplates> knownCustomReportTemplates;
         };
 
         //////////
@@ -56,9 +78,33 @@ namespace tt3::report
         virtual Resources *     resources() const override;
         virtual Settings *      settings() override;
         virtual const Settings *settings() const override;
-        virtual void            iniialize() override;
-        virtual void            deiniialize() override;
+        virtual void            initialize() override;
+        virtual void            deinitialize() override;
     };
 }
+
+//  Formatting/parsing
+namespace tt3::util
+{
+    template <> TT3_REPORT_PUBLIC
+    QString toString<tt3::report::KnownCustomReportTemplate>(
+            const tt3::report::KnownCustomReportTemplate & value
+        );
+    template <> TT3_REPORT_PUBLIC
+    QString toString<tt3::report::KnownCustomReportTemplates>(
+            const tt3::report::KnownCustomReportTemplates & value
+        );
+
+    template <> TT3_REPORT_PUBLIC
+    auto fromString<tt3::report::KnownCustomReportTemplate>(
+            const QString & s,
+            qsizetype & scan
+        ) -> tt3::report::KnownCustomReportTemplate;
+    template <> TT3_REPORT_PUBLIC
+    auto fromString<tt3::report::KnownCustomReportTemplates>(
+            const QString & s,
+            qsizetype & scan
+        ) -> tt3::report::KnownCustomReportTemplates;
+    }
 
 //  End of tt3-report/Component.hpp

@@ -152,7 +152,7 @@ namespace
             //  We have an escape sequence. Skip '\'
             i++;
             if (i >= s.length())
-            {   //  OOP! Missing
+            {   //  OOPS! Missing
                 throw tt3::util::ParseException(s, 0);
             }
             //  Special character ?

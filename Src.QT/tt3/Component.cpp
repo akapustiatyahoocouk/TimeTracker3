@@ -80,11 +80,11 @@ auto Component::settings(
     return Settings::instance();
 }
 
-void Component::iniialize()
+void Component::initialize()
 {
 }
 
-void Component::deiniialize()
+void Component::deinitialize()
 {
 }
 

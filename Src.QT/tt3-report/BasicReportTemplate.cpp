@@ -35,52 +35,52 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicSectionStyle(
             ISectionStyle::TitleStyleName,
-            _defaultFontSpecs,
-            _defaultFontSize,
-            FontStyle::Plain,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            FontSpecsOpt(), //  inherit
+            TypographicSizeOpt(),   //  inherit
+            FontStyleOpt(),
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             PageNumberPlacement::None));
     _addStyle(
         new BasicSectionStyle(
             ISectionStyle::PrequelStyleName,
-            _defaultFontSpecs,
-            _defaultFontSize,
-            FontStyle::Plain,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            FontSpecsOpt(), //  inherit
+            TypographicSizeOpt(),   //  inherit
+            FontStyleOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             PageNumberPlacement::BottomRight));
     _addStyle(
         new BasicSectionStyle(
             ISectionStyle::BodyStyleName,
-            _defaultFontSpecs,
-            _defaultFontSize,
-            FontStyle::Plain,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            FontSpecsOpt(), //  inherit
+            TypographicSizeOpt(),   //  inherit
+            FontStyleOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             PageNumberPlacement::BottomRight));
     _addStyle(
         new BasicSectionStyle(
             ISectionStyle::SequelStyleName,
-            _defaultFontSpecs,
-            _defaultFontSize,
-            FontStyle::Plain,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            FontSpecsOpt(), //  inherit
+            TypographicSizeOpt(),   //  inherit
+            FontStyleOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             PageNumberPlacement::BottomRight));
 
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::TitleStyleName,
-            _defaultFontSpecs,
+            FontSpecsOpt(), //  inherit
             _defaultFontSize.scaled(4),
             FontStyle::Bold,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(0),
             TypographicSize::pt(0),
@@ -91,11 +91,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::SubtitleStyleName,
-            _defaultFontSpecs,
+            FontSpecsOpt(), //  inherit
             _defaultFontSize.scaled(2),
-            _defaultFontStyle,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            FontStyleOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(0),
             TypographicSize::pt(0),
@@ -106,11 +106,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::DefaultStyleName,
-            _defaultFontSpecs,
-            _defaultFontSize,
-            _defaultFontStyle,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            FontSpecsOpt(), //  inherit
+            TypographicSizeOpt(),   //  inherit
+            FontStyleOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(0),
             TypographicSize::pt(0),
@@ -121,11 +121,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::Heading1StyleName,
-            _defaultFontSpecs,
+            FontSpecsOpt(), //  inherit
             _defaultFontSize.scaled(2.4f),
             FontStyle::Bold,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(0),
             TypographicSize::pt(0),
@@ -136,11 +136,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::Heading2StyleName,
-            _defaultFontSpecs,
+            FontSpecsOpt(), //  inherit
             _defaultFontSize.scaled(2.2f),
             FontStyle::Bold,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(0),
             TypographicSize::pt(0),
@@ -151,11 +151,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::Heading3StyleName,
-            _defaultFontSpecs,
+            FontSpecsOpt(), //  inherit
             _defaultFontSize.scaled(2.0f),
             FontStyle::Bold,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(0),
             TypographicSize::pt(0),
@@ -166,11 +166,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::Heading4StyleName,
-            _defaultFontSpecs,
+            FontSpecsOpt(), //  inherit
             _defaultFontSize.scaled(1.8f),
             FontStyle::Bold,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(0),
             TypographicSize::pt(0),
@@ -181,11 +181,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::Heading5StyleName,
-            _defaultFontSpecs,
+            FontSpecsOpt(), //  inherit
             _defaultFontSize.scaled(1.6f),
             FontStyle::Bold,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(0),
             TypographicSize::pt(0),
@@ -196,11 +196,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::Heading6StyleName,
-            _defaultFontSpecs,
+            FontSpecsOpt(), //  inherit
             _defaultFontSize.scaled(1.5f),
             FontStyle::Bold,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(0),
             TypographicSize::pt(0),
@@ -211,11 +211,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::Heading7StyleName,
-            _defaultFontSpecs,
+            FontSpecsOpt(), //  inherit
             _defaultFontSize.scaled(1.4f),
             FontStyle::Bold,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(0),
             TypographicSize::pt(0),
@@ -226,11 +226,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::Heading8StyleName,
-            _defaultFontSpecs,
+            FontSpecsOpt(), //  inherit
             _defaultFontSize.scaled(1.3f),
             FontStyle::Bold,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(0),
             TypographicSize::pt(0),
@@ -241,11 +241,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::Heading9StyleName,
-            _defaultFontSpecs,
+            FontSpecsOpt(), //  inherit
             _defaultFontSize.scaled(1.2f),
             FontStyle::Bold,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(0),
             TypographicSize::pt(0),
@@ -256,11 +256,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::Toc1StyleName,
-            _defaultFontSpecs,
-            _defaultFontSize,
+            FontSpecsOpt(), //  inherit
+            TypographicSizeOpt(),   //  inherit
             FontStyle::Bold,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(0),
             TypographicSize::pt(0),
@@ -271,11 +271,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::Toc2StyleName,
-            _defaultFontSpecs,
-            _defaultFontSize,
-            _defaultFontStyle,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            FontSpecsOpt(), //  inherit
+            TypographicSizeOpt(),   //  inherit
+            FontStyleOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(12),
             TypographicSize::pt(0),
@@ -286,11 +286,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::Toc3StyleName,
-            _defaultFontSpecs,
-            _defaultFontSize,
-            _defaultFontStyle,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            FontSpecsOpt(), //  inherit
+            TypographicSizeOpt(),   //  inherit
+            FontStyleOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(24),
             TypographicSize::pt(0),
@@ -301,11 +301,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::Toc4StyleName,
-            _defaultFontSpecs,
-            _defaultFontSize,
-            _defaultFontStyle,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            FontSpecsOpt(), //  inherit
+            TypographicSizeOpt(),   //  inherit
+            FontStyleOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(36),
             TypographicSize::pt(0),
@@ -316,11 +316,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::Toc5StyleName,
-            _defaultFontSpecs,
-            _defaultFontSize,
-            _defaultFontStyle,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            FontSpecsOpt(), //  inherit
+            TypographicSizeOpt(),   //  inherit
+            FontStyleOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(48),
             TypographicSize::pt(0),
@@ -331,11 +331,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::Toc6StyleName,
-            _defaultFontSpecs,
-            _defaultFontSize,
-            _defaultFontStyle,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            FontSpecsOpt(), //  inherit
+            TypographicSizeOpt(),   //  inherit
+            FontStyleOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(60),
             TypographicSize::pt(0),
@@ -346,11 +346,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::Toc7StyleName,
-            _defaultFontSpecs,
-            _defaultFontSize,
-            _defaultFontStyle,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            FontSpecsOpt(), //  inherit
+            TypographicSizeOpt(),   //  inherit
+            FontStyleOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(72),
             TypographicSize::pt(0),
@@ -361,11 +361,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::Toc8StyleName,
-            _defaultFontSpecs,
-            _defaultFontSize,
-            _defaultFontStyle,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            FontSpecsOpt(), //  inherit
+            TypographicSizeOpt(),   //  inherit
+            FontStyleOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(84),
             TypographicSize::pt(0),
@@ -376,11 +376,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicParagraphStyle(
             IParagraphStyle::Toc9StyleName,
-            _defaultFontSpecs,
-            _defaultFontSize,
-            _defaultFontStyle,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            FontSpecsOpt(), //  inherit
+            TypographicSizeOpt(),   //  inherit
+            FontStyleOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(96),
             TypographicSize::pt(0),
@@ -392,11 +392,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicTableStyle(
             ITableStyle::DefaultStyleName,
-            _defaultFontSpecs,
-            _defaultFontSize,
-            _defaultFontStyle,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            FontSpecsOpt(), //  inherit
+            TypographicSizeOpt(),   //  inherit
+            FontStyleOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::pt(0),
             TypographicSize::pt(0),
@@ -406,13 +406,36 @@ BasicReportTemplate::BasicReportTemplate()
             _defaultTableBorderType));
 
     _addStyle(
+        new BasicTableCellStyle(
+            ITableCellStyle::HeadingStyleName,
+            FontSpecsOpt(), //  inherit
+            _defaultFontSize.scaled(1.1f),
+            _defaultFontStyle | FontStyle::Bold,
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
+            UnderlineMode::None,
+            HorizontalAlignment::Center,
+            VerticalAlignment::Middle));
+    _addStyle(
+        new BasicTableCellStyle(
+            ITableCellStyle::DefaultStyleName,
+            FontSpecsOpt(), //  inherit
+            TypographicSizeOpt(),   //  inherit
+            FontStyleOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
+            UnderlineMode::None,
+            HorizontalAlignment::Left,
+            VerticalAlignment::Top));
+
+    _addStyle(
         new BasicListStyle(
             IListStyle::DefaultStyleName,
-            _defaultFontSpecs,
-            _defaultFontSize,
-            _defaultFontStyle,
-            _defaultTextColor,
-            _defaultBackgroundColor,
+            FontSpecsOpt(), //  inherit
+            TypographicSizeOpt(),   //  inherit
+            FontStyleOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
+            ColorSpecOpt(), //  inherit
             UnderlineMode::None,
             TypographicSize::in(0.25),
             TypographicSize::pt(0),
@@ -423,11 +446,11 @@ BasicReportTemplate::BasicReportTemplate()
     _addStyle(
         new BasicLinkStyle(
             ILinkStyle::DefaultStyleName,
-            _defaultFontSpecs,
-            _defaultFontSize,
-            _defaultFontStyle,
+            FontSpecsOpt(), //  inherit
+            TypographicSizeOpt(),   //  inherit
+            FontStyleOpt(), //  inherit
             QColor(0, 128, 0),
-            _defaultBackgroundColor,
+            ColorSpecOpt(), //  inherit
             _defaultLinkUnderlineMode));
 
     validate();

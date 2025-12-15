@@ -70,7 +70,7 @@ namespace tt3::report
     };
 
     /// \class BasicStyle tt3-report/API.hpp
-    /// \brief A basic (predefined) stylw.
+    /// \brief A basic (predefined) style.
     class TT3_REPORT_PUBLIC BasicStyle
         :   public virtual IStyle
     {
@@ -121,12 +121,14 @@ namespace tt3::report
     };
 
     /// \class BasicCharacterStyle tt3-report/API.hpp
-    /// \brief A basic (predefined) character stylw.
+    /// \brief A basic (predefined) character style.
     class TT3_REPORT_PUBLIC BasicCharacterStyle
         :   public BasicStyle,
             public virtual ICharacterStyle
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicCharacterStyle)
+
+        friend class BasicTableCellStyle;
 
         //////////
         //  Construction/destruction - from friends only
@@ -144,7 +146,7 @@ namespace tt3::report
     };
 
     /// \class BasicBlockStyle tt3-report/API.hpp
-    /// \brief A basic (predefined) block stylw.
+    /// \brief A basic (predefined) block style.
     class TT3_REPORT_PUBLIC BasicBlockStyle
         :   public BasicStyle,
             public virtual IBlockStyle
@@ -191,7 +193,7 @@ namespace tt3::report
     };
 
     /// \class BasicParagraphStyle tt3-report/API.hpp
-    /// \brief A basic (predefined) paragraph stylw.
+    /// \brief A basic (predefined) paragraph style.
     class TT3_REPORT_PUBLIC BasicParagraphStyle
         :   public BasicBlockStyle,
             public virtual IParagraphStyle
@@ -234,7 +236,7 @@ namespace tt3::report
     };
 
     /// \class BasicListStyle tt3-report/API.hpp
-    /// \brief A basic (predefined) list stylw.
+    /// \brief A basic (predefined) list style.
     class TT3_REPORT_PUBLIC BasicListStyle
         :   public BasicBlockStyle,
             public virtual IListStyle
@@ -274,7 +276,7 @@ namespace tt3::report
     };
 
     /// \class BasicTableStyle tt3-report/API.hpp
-    /// \brief A basic (predefined) Table stylw.
+    /// \brief A basic (predefined) Table style.
     class TT3_REPORT_PUBLIC BasicTableStyle
         :   public BasicBlockStyle,
             public virtual ITableStyle
@@ -316,8 +318,47 @@ namespace tt3::report
         const BorderTypeOpt     _cellBorderType;
     };
 
+    /// \class BasicTableCellStyle tt3-report/API.hpp
+    /// \brief A basic (predefined) Table cell style.
+    class TT3_REPORT_PUBLIC BasicTableCellStyle
+        :   public BasicCharacterStyle,
+            public virtual ITableCellStyle
+    {
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicTableCellStyle)
+
+        friend class BasicReportTemplate;
+
+        //////////
+        //  Construction/destruction - from friends only
+    private:
+        BasicTableCellStyle(
+                const Name & name,
+                const FontSpecsOpt & fontSpecs,
+                const TypographicSizeOpt & fontSize,
+                const FontStyleOpt & fontStyle,
+                const ColorSpecOpt & textColor,
+                const ColorSpecOpt & backgroundColor,
+                const UnderlineModeOpt & underlineMode,
+                const HorizontalAlignmentOpt & horizontalAlignment,
+                const VerticalAlignmentOpt & verticalAlignment
+            );
+        virtual ~BasicTableCellStyle();
+
+        //////////
+        //  ITableCellStyle
+    public:
+        virtual auto    horizontalAlignment() const -> HorizontalAlignmentOpt override;
+        virtual auto    verticalAlignment() const -> VerticalAlignmentOpt override;
+
+        //////////
+        //  Implementation
+    private:
+        const HorizontalAlignmentOpt    _horizontalAlignment;
+        const VerticalAlignmentOpt      _verticalAlignment;
+    };
+
     /// \class BasicLinkStyle tt3-report/API.hpp
-    /// \brief A basic (predefined) link stylw.
+    /// \brief A basic (predefined) link style.
     class TT3_REPORT_PUBLIC BasicLinkStyle
         :   public BasicStyle,
             public virtual ILinkStyle
@@ -342,7 +383,7 @@ namespace tt3::report
     };
 
     /// \class BasicSectionStyle tt3-report/API.hpp
-    /// \brief A basic (predefined) section stylw.
+    /// \brief A basic (predefined) section style.
     class TT3_REPORT_PUBLIC BasicSectionStyle
         :   public BasicStyle,
             public virtual ISectionStyle

@@ -75,7 +75,6 @@ ManageReportTemplatesDialog::ManageReportTemplatesDialog(
             this,
             &ManageReportTemplatesDialog::_previewAvailable,
             Qt::ConnectionType::QueuedConnection);
-
     //  Done...
     _ui->templatesTreeWidget->setFocus();
     //  ...but need to make almost-fullscreen - report
@@ -124,86 +123,87 @@ void ManageReportTemplatesDialog::_refresh()
     static const QIcon closedFolderIcon(":/tt3-report/Resources/Images/Misc/ClosedFolderSmall.png");
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ManageReportTemplatesDialog));
 
-    _refreshReportTemplateItems(_predefinedReportsItem);
-    _refreshReportTemplateItems(_customReportsItem);
-
-    //  Adjust folder icons
-    _predefinedReportsItem->setIcon(0,
-        (_predefinedReportsItem->isExpanded() &&
-         _predefinedReportsItem->childCount() > 0)?
-            openFolderIcon :
-            closedFolderIcon);
-    _customReportsItem->setIcon(0,
-        (_customReportsItem->isExpanded() &&
-         _customReportsItem->childCount() > 0) ?
-            openFolderIcon :
-            closedFolderIcon);
-
-    //  Adjust action button availability
-    _ui->exportPushButton->setEnabled(
-        _selectedReportTemplate() != nullptr);
-    _ui->importPushButton->setEnabled(true);
-    /*  TODO uncomment & use
-    _ui->removePushButton->setEnabled(
-        dynamic_cast<CustomReportTemplate*>(_selectedReportTemplate()) != nullptr);
-    */
-    _ui->removePushButton->setEnabled(false);
-
-    //  Display preview
-    _ui->previewWebEngineView->page()->setBackgroundColor(
-        tt3::gui::LabelDecorations().background);
-    QString emptyStyle =
-        "color: " + tt3::util::toString(tt3::gui::LabelDecorations().foreground) + ";" +
-        "background-color: " + tt3::util::toString(tt3::gui::LabelDecorations().background) + ";" +
-        "text-align: center; ";
-    auto reportTemplate = _selectedReportTemplate();
-    if (reportTemplate == nullptr)
+    //  We don't want a refresh() to trigger a recursive refresh()!
+    if (auto _ = tt3::gui::RefreshGuard(_refreshUnderway)) //  Don't recurse!
     {
-        _ui->previewGroupBox->setTitle(
-            rr.string(RID(PreviewGroupBox.NotAvailable)));
-        _ui->previewWebEngineView->setHtml(
-            "<p style=\"" + emptyStyle + "\">-</p>");
-    }
-    else if (_previews.contains(reportTemplate))
-    {
-        _ui->previewGroupBox->setTitle(
-            rr.string(RID(PreviewGroupBox.Available),
-                      reportTemplate->displayName()));
-        _ui->previewWebEngineView->setHtml(
-            _previews[reportTemplate]);
-    }
-    else if (_previewGenerators.contains(reportTemplate) &&
-             _previewGenerators[reportTemplate]->isRunning())
-    {
-        _ui->previewGroupBox->setTitle(
-            rr.string(RID(PreviewGroupBox.Available),
-                      reportTemplate->displayName()));
-        _ui->previewWebEngineView->setHtml(
-            "<p style=\"" + emptyStyle + "\">" +
-            rr.string(RID(GeneratingPreview)) +
-            "</p>");
-    }
-    else
-    {   //  Need a new preview generator
-        QTemporaryFile  previewFile;
-        if (previewFile.open())
-        {   //  Go!
-            previewFile.close();
-            _previewFileNames.insert(previewFile.fileName());
-            auto previewGenerator =
-                new _PreviewGenerator(this, reportTemplate, previewFile.fileName());
-            _previewGenerators[reportTemplate] = previewGenerator;
-            previewGenerator->start();
+        _refreshReportTemplateItems(_predefinedReportsItem);
+        _refreshReportTemplateItems(_customReportsItem);
+
+        //  Adjust folder icons
+        _predefinedReportsItem->setIcon(0,
+            (_predefinedReportsItem->isExpanded() &&
+             _predefinedReportsItem->childCount() > 0)?
+                openFolderIcon :
+                closedFolderIcon);
+        _customReportsItem->setIcon(0,
+            (_customReportsItem->isExpanded() &&
+             _customReportsItem->childCount() > 0) ?
+                openFolderIcon :
+                closedFolderIcon);
+
+        //  Adjust action button availability
+        _ui->exportPushButton->setEnabled(
+            _selectedReportTemplate() != nullptr);
+        _ui->importPushButton->setEnabled(true);
+        _ui->removePushButton->setEnabled(
+            dynamic_cast<CustomReportTemplate*>(_selectedReportTemplate()) != nullptr);
+
+        //  Display preview
+        _ui->previewWebEngineView->page()->setBackgroundColor(
+            tt3::gui::LabelDecorations().background);
+        QString emptyStyle =
+            "color: " + tt3::util::toString(tt3::gui::LabelDecorations().foreground) + ";" +
+            "background-color: " + tt3::util::toString(tt3::gui::LabelDecorations().background) + ";" +
+            "text-align: center; ";
+        auto reportTemplate = _selectedReportTemplate();
+        if (reportTemplate == nullptr)
+        {
+            _ui->previewGroupBox->setTitle(
+                rr.string(RID(PreviewGroupBox.NotAvailable)));
+            _ui->previewWebEngineView->setHtml(
+                "<p style=\"" + emptyStyle + "\">-</p>");
+        }
+        else if (_previews.contains(reportTemplate))
+        {
+            _ui->previewGroupBox->setTitle(
+                rr.string(RID(PreviewGroupBox.Available),
+                          reportTemplate->displayName()));
+            _ui->previewWebEngineView->setHtml(
+                _previews[reportTemplate]);
+        }
+        else if (_previewGenerators.contains(reportTemplate) &&
+                 _previewGenerators[reportTemplate]->isRunning())
+        {
+            _ui->previewGroupBox->setTitle(
+                rr.string(RID(PreviewGroupBox.Available),
+                          reportTemplate->displayName()));
+            _ui->previewWebEngineView->setHtml(
+                "<p style=\"" + emptyStyle + "\">" +
+                rr.string(RID(GeneratingPreview)) +
+                "</p>");
         }
         else
-        {   //  OOPS! No go! Show error message instead.
-            _previews[reportTemplate] =
-                "<p style=\"" + emptyStyle + "\">" +
-                previewFile.errorString().toHtmlEscaped() +
-                "</p>";
+        {   //  Need a new preview generator
+            QTemporaryFile  previewFile;
+            if (previewFile.open())
+            {   //  Go!
+                previewFile.close();
+                _previewFileNames.insert(previewFile.fileName());
+                auto previewGenerator =
+                    new _PreviewGenerator(this, reportTemplate, previewFile.fileName());
+                _previewGenerators[reportTemplate] = previewGenerator;
+                previewGenerator->start();
+            }
+            else
+            {   //  OOPS! No go! Show error message instead.
+                _previews[reportTemplate] =
+                    "<p style=\"" + emptyStyle + "\">" +
+                    previewFile.errorString().toHtmlEscaped() +
+                    "</p>";
+            }
+            //  Refresh ASAP
+            emit refreshRequested();
         }
-        //  Refresh ASAP
-        emit refreshRequested();
     }
 }
 
@@ -248,7 +248,7 @@ void ManageReportTemplatesDialog::_refreshReportTemplateItems(QTreeWidgetItem * 
     while (parentItem->childCount() > reportTemplates.size())
     {   //  Too many child (ReportTemplate) items
         delete parentItem->takeChild(
-            parentItem->childCount() - 1);
+                parentItem->childCount() - 1);
     }
     //  ...and that each child item represents
     //  a proper ReportTemplate
@@ -382,9 +382,16 @@ void ManageReportTemplatesDialog::_importPushButtonClicked()
             rt->displayName());
 
     }
-    //  Register & release
+    //  Register, record & release
     if (ReportTemplateManager::registerReportTemplate(reportTemplate.get()))
-    {   //  Success - refresh, select & release
+    {   //  Success - record, refresh, select & release
+        auto known = Component::Settings::instance()->knownCustomReportTemplates.value();
+        known.append(
+            KnownCustomReportTemplate(
+                reportTemplate->mnemonic(),
+                reportTemplate->displayName(),
+                path));
+        Component::Settings::instance()->knownCustomReportTemplates = known;
         _refresh();
         _setSelectedReportTemplate(reportTemplate.release());
     }
@@ -392,7 +399,37 @@ void ManageReportTemplatesDialog::_importPushButtonClicked()
 
 void ManageReportTemplatesDialog::_removePushButtonClicked()
 {
-    tt3::gui::ErrorDialog::show(this, "Not yet implemented");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ManageReportTemplatesDialog));
+
+    if (auto customReportTemplate =
+        dynamic_cast<CustomReportTemplate*>(_selectedReportTemplate()))
+    {   //  Confirm...
+        tt3::gui::AskYesNoDialog dlg(
+            this,
+            QIcon(":/tt3-report/Resources/Images/Actions/RemoveSmall.png"),
+            rr.string(RID(RemoveReportTemplateTitle)),
+            rr.string(RID(RemoveReportTemplatePrompt),
+                      customReportTemplate->displayName(),
+                      customReportTemplate->mnemonic()));
+        if (dlg.doModal() != tt3::gui::AskYesNoDialog::Result::Yes)
+        {
+            return;
+        }
+        //  ...forget...
+        auto known = Component::Settings::instance()->knownCustomReportTemplates.value();
+        for (auto kcrt : KnownCustomReportTemplates(known)) //  shallow clone
+        {
+            if (kcrt.mnemonic == customReportTemplate->mnemonic())
+            {
+                known.removeOne(kcrt);
+            }
+        }
+        Component::Settings::instance()->knownCustomReportTemplates = known;
+        //  ...and remove
+        ReportTemplateManager::unregisterReportTemplate(customReportTemplate);
+        _refresh();
+        delete customReportTemplate;
+    }
 }
 
 void ManageReportTemplatesDialog::_refreshRequested()
@@ -506,19 +543,31 @@ void ManageReportTemplatesDialog::_PreviewGenerator::run()
     ReportTable * table =
         bodySection->createTable();
     table
-        ->createCell(0, 0, 1, 1)
+        ->createCell(
+            0, 0, 2, 1,
+            report->reportTemplate()->findTableCellStyle(ITableCellStyle::HeadingStyleName))
+        ->createParagraph()
+        ->createText(rr.string(RID(PreviewReport.TableHeading)));
+    table
+        ->createCell(
+            0, 1, 1, 1,
+            report->reportTemplate()->findTableCellStyle(ITableCellStyle::DefaultStyleName))
         ->createParagraph()
         ->createText(rr.string(RID(PreviewReport.TableCell11)));
     table
-        ->createCell(1, 0, 1, 1)
+        ->createCell(1, 1, 1, 1)
         ->createParagraph()
         ->createText(rr.string(RID(PreviewReport.TableCell12)));
     table
-        ->createCell(0, 1, 1, 1)
+        ->createCell(
+            0, 2, 1, 1,
+            report->reportTemplate()->findTableCellStyle(ITableCellStyle::DefaultStyleName))
         ->createParagraph()
         ->createText(rr.string(RID(PreviewReport.TableCell21)));
     table
-        ->createCell(1, 1, 1, 1)
+        ->createCell(
+            1, 2, 1, 1,
+            report->reportTemplate()->findTableCellStyle(ITableCellStyle::DefaultStyleName))
         ->createParagraph()
         ->createText(rr.string(RID(PreviewReport.TableCell22)));
 
