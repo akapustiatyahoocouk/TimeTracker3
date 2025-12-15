@@ -244,8 +244,6 @@ namespace tt3::report
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CustomCharacterStyle)
 
-        friend class CustomTableCellStyle;
-
         //////////
         //  Construction/destruction - from friends only
     private:
@@ -482,7 +480,7 @@ namespace tt3::report
     /// \class CustomTableCellStyle tt3-report/API.hpp
     /// \brief A custom (loaded from XML file) table cell style.
     class TT3_REPORT_PUBLIC CustomTableCellStyle
-        :   public CustomCharacterStyle,
+        :   public CustomStyle,
             public virtual ITableCellStyle
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CustomTableCellStyle)

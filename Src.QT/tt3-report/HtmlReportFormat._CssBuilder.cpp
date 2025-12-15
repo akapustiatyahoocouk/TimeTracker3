@@ -1096,11 +1096,9 @@ namespace
 {
     QString cssProperty(const QString & name, const QString & value)
     {
-        return
-            "    " +
-            (value.trimmed().isEmpty() ?
-             "" :
-             (name + ": " + value.trimmed() + ";\n"));
+        return value.trimmed().isEmpty() ?
+                "" :
+                ("    " + name + ": " + value.trimmed() + ";\n");
     }
     }
 

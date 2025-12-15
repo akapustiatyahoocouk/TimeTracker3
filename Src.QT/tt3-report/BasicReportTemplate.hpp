@@ -80,6 +80,7 @@ namespace tt3::report
         friend class BasicCharacterStyle;
         friend class BasicBlockStyle;
         friend class BasicLinkStyle;
+        friend class BasicTableCellStyle;
         friend class BasicSectionStyle;
 
         //////////
@@ -127,8 +128,6 @@ namespace tt3::report
             public virtual ICharacterStyle
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicCharacterStyle)
-
-        friend class BasicTableCellStyle;
 
         //////////
         //  Construction/destruction - from friends only
@@ -321,7 +320,7 @@ namespace tt3::report
     /// \class BasicTableCellStyle tt3-report/API.hpp
     /// \brief A basic (predefined) Table cell style.
     class TT3_REPORT_PUBLIC BasicTableCellStyle
-        :   public BasicCharacterStyle,
+        :   public BasicStyle,
             public virtual ITableCellStyle
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicTableCellStyle)

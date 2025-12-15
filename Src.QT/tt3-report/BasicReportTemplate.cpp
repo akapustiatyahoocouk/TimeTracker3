@@ -116,7 +116,7 @@ BasicReportTemplate::BasicReportTemplate()
             TypographicSize::pt(0),
             TypographicSize::pt(2),
             TypographicSize::pt(2),
-            HorizontalAlignment::Left,
+            HorizontalAlignmentOpt(),   //  inherit
             BorderType::None));
     _addStyle(
         new BasicParagraphStyle(
@@ -131,7 +131,7 @@ BasicReportTemplate::BasicReportTemplate()
             TypographicSize::pt(0),
             TypographicSize::pt(2),
             TypographicSize::pt(2),
-            HorizontalAlignment::Left,
+            HorizontalAlignmentOpt(),   //  inherit
             BorderType::None));
     _addStyle(
         new BasicParagraphStyle(
@@ -146,7 +146,7 @@ BasicReportTemplate::BasicReportTemplate()
             TypographicSize::pt(0),
             TypographicSize::pt(2),
             TypographicSize::pt(2),
-            HorizontalAlignment::Left,
+            HorizontalAlignmentOpt(),   //  inherit
             BorderType::None));
     _addStyle(
         new BasicParagraphStyle(
@@ -161,7 +161,7 @@ BasicReportTemplate::BasicReportTemplate()
             TypographicSize::pt(0),
             TypographicSize::pt(2),
             TypographicSize::pt(2),
-            HorizontalAlignment::Left,
+            HorizontalAlignmentOpt(),   //  inherit
             BorderType::None));
     _addStyle(
         new BasicParagraphStyle(
@@ -176,7 +176,7 @@ BasicReportTemplate::BasicReportTemplate()
             TypographicSize::pt(0),
             TypographicSize::pt(2),
             TypographicSize::pt(2),
-            HorizontalAlignment::Left,
+            HorizontalAlignmentOpt(),   //  inherit
             BorderType::None));
     _addStyle(
         new BasicParagraphStyle(
@@ -191,7 +191,7 @@ BasicReportTemplate::BasicReportTemplate()
             TypographicSize::pt(0),
             TypographicSize::pt(2),
             TypographicSize::pt(2),
-            HorizontalAlignment::Left,
+            HorizontalAlignmentOpt(),   //  inherit
             BorderType::None));
     _addStyle(
         new BasicParagraphStyle(
@@ -206,7 +206,7 @@ BasicReportTemplate::BasicReportTemplate()
             TypographicSize::pt(0),
             TypographicSize::pt(2),
             TypographicSize::pt(2),
-            HorizontalAlignment::Left,
+            HorizontalAlignmentOpt(),   //  inherit
             BorderType::None));
     _addStyle(
         new BasicParagraphStyle(
@@ -221,7 +221,7 @@ BasicReportTemplate::BasicReportTemplate()
             TypographicSize::pt(0),
             TypographicSize::pt(2),
             TypographicSize::pt(2),
-            HorizontalAlignment::Left,
+            HorizontalAlignmentOpt(),   //  inherit
             BorderType::None));
     _addStyle(
         new BasicParagraphStyle(
@@ -236,7 +236,7 @@ BasicReportTemplate::BasicReportTemplate()
             TypographicSize::pt(0),
             TypographicSize::pt(2),
             TypographicSize::pt(2),
-            HorizontalAlignment::Left,
+            HorizontalAlignmentOpt(),   //  inherit
             BorderType::None));
     _addStyle(
         new BasicParagraphStyle(
@@ -251,7 +251,7 @@ BasicReportTemplate::BasicReportTemplate()
             TypographicSize::pt(0),
             TypographicSize::pt(2),
             TypographicSize::pt(2),
-            HorizontalAlignment::Left,
+            HorizontalAlignmentOpt(),   //  inherit
             BorderType::None));
     _addStyle(
         new BasicParagraphStyle(
@@ -266,7 +266,7 @@ BasicReportTemplate::BasicReportTemplate()
             TypographicSize::pt(0),
             TypographicSize::pt(6),
             TypographicSize::pt(0),
-            HorizontalAlignment::Left,
+            HorizontalAlignmentOpt(),   //  inherit
             BorderType::None));
     _addStyle(
         new BasicParagraphStyle(
@@ -425,7 +425,7 @@ BasicReportTemplate::BasicReportTemplate()
             ColorSpecOpt(), //  inherit
             ColorSpecOpt(), //  inherit
             UnderlineMode::None,
-            HorizontalAlignment::Left,
+            HorizontalAlignmentOpt(),   //  inherit
             VerticalAlignment::Top));
 
     _addStyle(

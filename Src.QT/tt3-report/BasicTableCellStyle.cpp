@@ -29,7 +29,7 @@ BasicTableCellStyle::BasicTableCellStyle(
         const UnderlineModeOpt & underlineMode,
         const HorizontalAlignmentOpt & horizontalAlignment,
         const VerticalAlignmentOpt & verticalAlignment
-    ) : BasicCharacterStyle(
+    ) : BasicStyle(
             name,
             fontSpecs,
             fontSize,

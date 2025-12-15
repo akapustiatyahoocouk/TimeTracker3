@@ -985,7 +985,7 @@ namespace tt3::report
     /// \class ITableCellStyle tt3-report/API.hpp
     /// \brief An abstract interface to a "table cell formatting style" of report element.
     class TT3_REPORT_PUBLIC ITableCellStyle
-        :   public virtual ICharacterStyle
+        :   public virtual IStyle
     {
         friend class CustomReportTemplate;
 

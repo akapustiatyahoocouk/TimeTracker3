@@ -496,7 +496,9 @@ void ManageReportTemplatesDialog::_PreviewGenerator::run()
 
     ReportText * topText =
         bodySection
-            ->createParagraph()
+            ->createParagraph(
+                report->reportTemplate()->findParagraphStyle(
+                    IParagraphStyle::DefaultStyleName))
             ->createText(rr.string(RID(PreviewReport.Paragraph1)));
     ReportAnchor * anchor =
         topText->createAnchor();
@@ -504,13 +506,19 @@ void ManageReportTemplatesDialog::_PreviewGenerator::run()
     ReportList * list =
         bodySection->createList();
     list->createItem()
-        ->createParagraph()
+        ->createParagraph(
+            report->reportTemplate()->findParagraphStyle(
+                IParagraphStyle::DefaultStyleName))
         ->createText(rr.string(RID(PreviewReport.ListItem1)));
     list->createItem()
-        ->createParagraph()
+        ->createParagraph(
+            report->reportTemplate()->findParagraphStyle(
+                IParagraphStyle::DefaultStyleName))
         ->createText(rr.string(RID(PreviewReport.ListItem2)));
     list->createItem()
-        ->createParagraph()
+        ->createParagraph(
+            report->reportTemplate()->findParagraphStyle(
+                IParagraphStyle::DefaultStyleName))
         ->createText(rr.string(RID(PreviewReport.ListItem3)));
 
     bodySection
@@ -519,7 +527,9 @@ void ManageReportTemplatesDialog::_PreviewGenerator::run()
                 IParagraphStyle::Heading2StyleName))
         ->createText(rr.string(RID(PreviewReport.Chapter11)));
     bodySection
-        ->createParagraph()
+        ->createParagraph(
+            report->reportTemplate()->findParagraphStyle(
+                IParagraphStyle::DefaultStyleName))
         ->createText(rr.string(RID(PreviewReport.Paragraph2)));
 
     bodySection
@@ -528,7 +538,9 @@ void ManageReportTemplatesDialog::_PreviewGenerator::run()
                 IParagraphStyle::Heading2StyleName))
         ->createText(rr.string(RID(PreviewReport.Chapter12)));
     bodySection
-        ->createParagraph()
+        ->createParagraph(
+            report->reportTemplate()->findParagraphStyle(
+                IParagraphStyle::DefaultStyleName))
         ->createText(rr.string(RID(PreviewReport.Paragraph3)));
 
     bodySection
@@ -537,42 +549,57 @@ void ManageReportTemplatesDialog::_PreviewGenerator::run()
                 IParagraphStyle::Heading1StyleName))
         ->createText(rr.string(RID(PreviewReport.Chapter2)));
     bodySection
-        ->createParagraph()
+        ->createParagraph(
+            report->reportTemplate()->findParagraphStyle(
+                IParagraphStyle::DefaultStyleName))
         ->createText(rr.string(RID(PreviewReport.Paragraph4)));
 
     ReportTable * table =
-        bodySection->createTable();
+        bodySection->createTable(
+        report->reportTemplate()->tableStyle(ITableStyle::DefaultStyleName));
     table
         ->createCell(
             0, 0, 2, 1,
             report->reportTemplate()->findTableCellStyle(ITableCellStyle::HeadingStyleName))
-        ->createParagraph()
+        ->createParagraph(
+            report->reportTemplate()->findParagraphStyle(
+                IParagraphStyle::DefaultStyleName))
         ->createText(rr.string(RID(PreviewReport.TableHeading)));
     table
         ->createCell(
             0, 1, 1, 1,
             report->reportTemplate()->findTableCellStyle(ITableCellStyle::DefaultStyleName))
-        ->createParagraph()
+        ->createParagraph(
+            report->reportTemplate()->findParagraphStyle(
+                IParagraphStyle::DefaultStyleName))
         ->createText(rr.string(RID(PreviewReport.TableCell11)));
     table
         ->createCell(1, 1, 1, 1)
-        ->createParagraph()
+        ->createParagraph(
+            report->reportTemplate()->findParagraphStyle(
+                IParagraphStyle::DefaultStyleName))
         ->createText(rr.string(RID(PreviewReport.TableCell12)));
     table
         ->createCell(
             0, 2, 1, 1,
             report->reportTemplate()->findTableCellStyle(ITableCellStyle::DefaultStyleName))
-        ->createParagraph()
+        ->createParagraph(
+            report->reportTemplate()->findParagraphStyle(
+                IParagraphStyle::DefaultStyleName))
         ->createText(rr.string(RID(PreviewReport.TableCell21)));
     table
         ->createCell(
             1, 2, 1, 1,
             report->reportTemplate()->findTableCellStyle(ITableCellStyle::DefaultStyleName))
-        ->createParagraph()
+        ->createParagraph(
+            report->reportTemplate()->findParagraphStyle(
+                IParagraphStyle::DefaultStyleName))
         ->createText(rr.string(RID(PreviewReport.TableCell22)));
 
     bodySection
-        ->createParagraph()
+        ->createParagraph(
+            report->reportTemplate()->findParagraphStyle(
+                IParagraphStyle::DefaultStyleName))
         ->createText(rr.string(RID(PreviewReport.Link1)))
         ->createInternalLink(anchor);
 
@@ -582,6 +609,7 @@ void ManageReportTemplatesDialog::_PreviewGenerator::run()
     {
         HtmlReportFormat::instance()->saveReport(report.get(), _htmlFileName); //  may throw!
         //  ...and load HTML as a string
+        qDebug() << _htmlFileName;
         QFile file(_htmlFileName);
         if (file.open(QIODevice::ReadOnly | QIODevice::Text))
         {

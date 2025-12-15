@@ -55,31 +55,101 @@ ReportTableCell::~ReportTableCell()
 //////////
 //  ReportElement
 auto ReportTableCell::resolveFontSpecs() const -> FontSpecs
-{   //  No own style - must go to the parent
+{
+    if (_style != nullptr)
+    {
+        auto styleFontSpecs = _style->fontSpecs();
+        if (!styleFontSpecs.has_value())
+        {   //  Inherit from parent
+            Q_ASSERT(_table != nullptr);
+            return _table->resolveFontSpecs();
+        }
+        else
+        {   //  Use value from style
+            return styleFontSpecs.value();
+        }
+    }
+    //  Style not specified - go to parent
     Q_ASSERT(_table != nullptr);
     return _table->resolveFontSpecs();
 }
 
 auto ReportTableCell::resolveFontSize() const -> TypographicSize
-{   //  No own style - must go to the parent
+{
+    if (_style != nullptr)
+    {
+        auto styleFontSize = _style->fontSize();
+        if (!styleFontSize.has_value())
+        {   //  Inherit from parent
+            Q_ASSERT(_table != nullptr);
+            return _table->resolveFontSize();
+        }
+        else
+        {   //  Use value from style
+            return styleFontSize.value();
+        }
+    }
+    //  Style not specified - go to parent
     Q_ASSERT(_table != nullptr);
     return _table->resolveFontSize();
 }
 
 auto ReportTableCell::resolveFontStyle() const -> FontStyle
-{   //  No own style - must go to the parent
+{
+    if (_style != nullptr)
+    {
+        auto styleFontStyle = _style->fontStyle();
+        if (!styleFontStyle.has_value())
+        {   //  Inherit from parent
+            Q_ASSERT(_table != nullptr);
+            return _table->resolveFontStyle();
+        }
+        else
+        {   //  Use value from style
+            return styleFontStyle.value();
+        }
+    }
+    //  Style not specified - go to parent
     Q_ASSERT(_table != nullptr);
     return _table->resolveFontStyle();
 }
 
 auto ReportTableCell::resolveTextColor() const -> ColorSpec
-{   //  No own style - must go to the parent
+{
+    if (_style != nullptr)
+    {
+        auto styleTextColor = _style->textColor();
+        if (!styleTextColor.has_value())
+        {   //  Inherit from parent
+            Q_ASSERT(_table != nullptr);
+            return _table->resolveTextColor();
+        }
+        else
+        {   //  Use value from style
+            return styleTextColor.value();
+        }
+    }
+    //  Style not specified - go to parent
     Q_ASSERT(_table != nullptr);
     return _table->resolveTextColor();
 }
 
 auto ReportTableCell::resolveBackgroundColor() const -> ColorSpec
-{   //  No own style - must go to the parent
+{
+    if (_style != nullptr)
+    {
+        auto styleBackgroundColor = _style->backgroundColor();
+        if (!styleBackgroundColor.has_value())
+        {   //  Inherit from parent
+            Q_ASSERT(_table != nullptr);
+            return _table->resolveBackgroundColor();
+        }
+        else
+        {   //  Use value from style
+            return styleBackgroundColor.value();
+        }
+    }
+    //  Style not specified - go to parent
     Q_ASSERT(_table != nullptr);
     return _table->resolveBackgroundColor();
 }

@@ -30,7 +30,7 @@ CustomTableCellStyle::CustomTableCellStyle(
         const UnderlineModeOpt & underlineMode,
         const HorizontalAlignmentOpt & horizontalAlignment,
         const VerticalAlignmentOpt & verticalAlignment
-    ) : CustomCharacterStyle(
+    ) : CustomStyle(
           reportTemplate,
           name,
           fontSpecs,
@@ -64,13 +64,13 @@ auto CustomTableCellStyle::verticalAlignment() const -> VerticalAlignmentOpt
 //  Serialization
 CustomTableCellStyle::CustomTableCellStyle(
         CustomReportTemplate * reportTemplate
-    ) : CustomCharacterStyle(reportTemplate)
+    ) : CustomStyle(reportTemplate)
 {
 }
 
 void CustomTableCellStyle::_deserialize(const QDomElement & styleElement)
 {
-    CustomCharacterStyle::_deserialize(styleElement);
+    CustomStyle::_deserialize(styleElement);
 
     _reportTemplate->_parseAttribute(
         styleElement,

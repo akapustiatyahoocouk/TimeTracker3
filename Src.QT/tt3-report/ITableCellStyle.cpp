@@ -21,7 +21,7 @@ using namespace tt3::report;
 //  Serialization
 void ITableCellStyle::serialize(QDomElement & element) const
 {
-    ICharacterStyle::serialize(element);
+    IStyle::serialize(element);
 
     IReportTemplate::_setAttribute(
         element,
