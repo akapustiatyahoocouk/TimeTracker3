@@ -28,6 +28,7 @@ BackupToDialogTitle=Backup to file
 BackupToDialogFilter=TimeTracker3 backup files (*{0});;All files (*.*)
 
 [BackupProgressDialog]
+Title=Backup workspace
 BackupLabel=Backing up:
 ToLabel=To:
 CancelPushButton=Cancel

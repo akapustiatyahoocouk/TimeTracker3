@@ -37,6 +37,7 @@ BackupProgressDialog::BackupProgressDialog(
     flags &= ~Qt::WindowTitleHint;
     flags &= ~Qt::WindowCloseButtonHint;
     setWindowFlags(flags);
+    setWindowTitle(rr.string(RID(Title)));
 
     //  Set static control values
     _ui->backupLabel->setText(

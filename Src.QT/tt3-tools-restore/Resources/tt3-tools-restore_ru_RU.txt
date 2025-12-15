@@ -26,6 +26,7 @@ RestoreFromDialogTitle=Восстановить из файла
 RestoreFromDialogFilter=Файлы резервной копии TimeTracker3 (*{0});;Все файлы (*.*)
 
 [RestoreProgressDialog]
+Title=Восстановление рабочей области
 RestoreLabel=Восстановление:
 FromLabel=Из файла:
 CancelPushButton=Отмена

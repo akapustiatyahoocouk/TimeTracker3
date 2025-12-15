@@ -28,6 +28,7 @@ BackupToDialogTitle=Sicherung in Datei
 BackupToDialogFilter=TimeTracker3-Sicherungsdateien (*{0});;Alle Dateien (*.*)
 
 [BackupProgressDialog]
+Title=Arbeitsbereich sichern
 BackupLabel=Sicherung wird erstellt:
 ToLabel=Ziel:
 CancelPushButton=Abbrechen

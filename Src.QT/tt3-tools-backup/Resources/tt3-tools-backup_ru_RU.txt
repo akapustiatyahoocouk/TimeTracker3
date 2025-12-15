@@ -28,13 +28,14 @@ BackupToDialogTitle=Резервное копирование в файл
 BackupToDialogFilter=Файлы резервной копии TimeTracker3 (*{0});;Все файлы (*.*)
 
 [BackupProgressDialog]
+Title=Резервное копирование рабочей области
 BackupLabel=Резервное копирование:
 ToLabel=В файл:
 CancelPushButton=Отмена
 
 [BackupCompletedDialog]
 Title=Резервное копирование завершено
-Message=Рабочая обламть\n{0}\nбыла успешно скопирована в\n{1}.
+Message=Рабочая область\n{0}\nбыла успешно скопирована в\n{1}.
 
 [BackupCancelledDialog]
 Title=Резервное копирование прервано

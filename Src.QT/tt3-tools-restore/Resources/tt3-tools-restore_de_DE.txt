@@ -26,6 +26,7 @@ RestoreFromDialogTitle=Wiederherstellen aus Datei
 RestoreFromDialogFilter=TimeTracker3-Sicherungsdateien (*{0});;Alle Dateien (*.*)
 
 [RestoreProgressDialog]
+Title=Arbeitsbereich wiederherstellen
 RestoreLabel=Zeichenkette neu setzen:
 FromLabel=Aus Datei:
 CancelPushButton=Abbrechen

@@ -26,6 +26,7 @@ RestoreFromDialogTitle=Restore from file
 RestoreFromDialogFilter=TimeTracker3 backup files (*{0});;All files (*.*)
 
 [RestoreProgressDialog]
+Title=Restore workspace
 RestoreLabel=Restoring:
 FromLabel=From file:
 CancelPushButton=Cancel
