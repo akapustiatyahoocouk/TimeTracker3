@@ -504,7 +504,9 @@ void ManageReportTemplatesDialog::_PreviewGenerator::run()
         topText->createAnchor();
 
     ReportList * list =
-        bodySection->createList();
+        bodySection->createList(
+            report->reportTemplate()->findListStyle(
+                IListStyle::DefaultStyleName));
     list->createItem()
         ->createParagraph(
             report->reportTemplate()->findParagraphStyle(
@@ -556,11 +558,13 @@ void ManageReportTemplatesDialog::_PreviewGenerator::run()
 
     ReportTable * table =
         bodySection->createTable(
-        report->reportTemplate()->tableStyle(ITableStyle::DefaultStyleName));
+            report->reportTemplate()->tableStyle(
+                ITableStyle::DefaultStyleName));
     table
         ->createCell(
             0, 0, 2, 1,
-            report->reportTemplate()->findTableCellStyle(ITableCellStyle::HeadingStyleName))
+            report->reportTemplate()->findTableCellStyle(
+                ITableCellStyle::HeadingStyleName))
         ->createParagraph(
             report->reportTemplate()->findParagraphStyle(
                 IParagraphStyle::DefaultStyleName))
@@ -568,7 +572,8 @@ void ManageReportTemplatesDialog::_PreviewGenerator::run()
     table
         ->createCell(
             0, 1, 1, 1,
-            report->reportTemplate()->findTableCellStyle(ITableCellStyle::DefaultStyleName))
+            report->reportTemplate()->findTableCellStyle(
+                ITableCellStyle::DefaultStyleName))
         ->createParagraph(
             report->reportTemplate()->findParagraphStyle(
                 IParagraphStyle::DefaultStyleName))
@@ -582,7 +587,8 @@ void ManageReportTemplatesDialog::_PreviewGenerator::run()
     table
         ->createCell(
             0, 2, 1, 1,
-            report->reportTemplate()->findTableCellStyle(ITableCellStyle::DefaultStyleName))
+            report->reportTemplate()->findTableCellStyle(
+                ITableCellStyle::DefaultStyleName))
         ->createParagraph(
             report->reportTemplate()->findParagraphStyle(
                 IParagraphStyle::DefaultStyleName))
@@ -590,7 +596,8 @@ void ManageReportTemplatesDialog::_PreviewGenerator::run()
     table
         ->createCell(
             1, 2, 1, 1,
-            report->reportTemplate()->findTableCellStyle(ITableCellStyle::DefaultStyleName))
+            report->reportTemplate()->findTableCellStyle(
+                ITableCellStyle::DefaultStyleName))
         ->createParagraph(
             report->reportTemplate()->findParagraphStyle(
                 IParagraphStyle::DefaultStyleName))

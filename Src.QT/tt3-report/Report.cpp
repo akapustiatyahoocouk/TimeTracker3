@@ -202,8 +202,6 @@ void Report::deserialize(const QDomElement & element)
         link->deserialize(_elementsForInternalLinks[span]);
     }
 
-    //  TODO
-
     //  Done
     _anchorsForIds.clear();
     _anchorIdsForInternalLinks.clear();

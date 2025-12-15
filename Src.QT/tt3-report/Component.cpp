@@ -79,36 +79,6 @@ const Component::Settings * Component::settings() const
 void Component::initialize()
 {
     tt3::util::ToolManager::registerTool(ReportTemplateManagerTool::instance());
-
-    /*  TODO kill off
-    //  Load known custom report templates
-    for (auto kcrt : Settings::instance()->knownCustomReportTemplates.value())
-    {
-        //  Load file as text (assuming it's XML)...
-        QFile file(kcrt.location);
-        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        {   //  OOPS! Ignore, though
-            continue;
-        }
-        QTextStream in(&file);
-        QString xml = in.readAll();
-        file.close();
-        //  Create report template from XML
-        auto reportTemplate =
-            std::make_unique<CustomReportTemplate>(xml);    //  may throw
-        //  No duplication!
-        if (auto rt =
-            ReportTemplateManager::findReportTemplate(reportTemplate->mnemonic()))
-        {   //  OOPS! Ignore, though
-            continue;
-        }
-        //  Register (may fail)
-        if (ReportTemplateManager::registerReportTemplate(reportTemplate.get()))
-        {   //  Manager took ownership of the report template
-            reportTemplate.release();
-        }
-    }
-    */
 }
 
 void Component::deinitialize()

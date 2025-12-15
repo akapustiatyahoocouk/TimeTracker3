@@ -77,7 +77,7 @@ BasicReportTemplate::BasicReportTemplate()
         new BasicParagraphStyle(
             IParagraphStyle::TitleStyleName,
             FontSpecsOpt(), //  inherit
-            _defaultFontSize.scaled(4),
+            _defaultFontSize * 4,
             FontStyle::Bold,
             ColorSpecOpt(), //  inherit
             ColorSpecOpt(), //  inherit
@@ -92,7 +92,7 @@ BasicReportTemplate::BasicReportTemplate()
         new BasicParagraphStyle(
             IParagraphStyle::SubtitleStyleName,
             FontSpecsOpt(), //  inherit
-            _defaultFontSize.scaled(2),
+            _defaultFontSize * 2,
             FontStyleOpt(), //  inherit
             ColorSpecOpt(), //  inherit
             ColorSpecOpt(), //  inherit
@@ -122,7 +122,7 @@ BasicReportTemplate::BasicReportTemplate()
         new BasicParagraphStyle(
             IParagraphStyle::Heading1StyleName,
             FontSpecsOpt(), //  inherit
-            _defaultFontSize.scaled(2.4f),
+            _defaultFontSize * 2.4f,
             FontStyle::Bold,
             ColorSpecOpt(), //  inherit
             ColorSpecOpt(), //  inherit
@@ -137,7 +137,7 @@ BasicReportTemplate::BasicReportTemplate()
         new BasicParagraphStyle(
             IParagraphStyle::Heading2StyleName,
             FontSpecsOpt(), //  inherit
-            _defaultFontSize.scaled(2.2f),
+            _defaultFontSize * 2.2f,
             FontStyle::Bold,
             ColorSpecOpt(), //  inherit
             ColorSpecOpt(), //  inherit
@@ -152,7 +152,7 @@ BasicReportTemplate::BasicReportTemplate()
         new BasicParagraphStyle(
             IParagraphStyle::Heading3StyleName,
             FontSpecsOpt(), //  inherit
-            _defaultFontSize.scaled(2.0f),
+            _defaultFontSize * 2.0f,
             FontStyle::Bold,
             ColorSpecOpt(), //  inherit
             ColorSpecOpt(), //  inherit
@@ -167,7 +167,7 @@ BasicReportTemplate::BasicReportTemplate()
         new BasicParagraphStyle(
             IParagraphStyle::Heading4StyleName,
             FontSpecsOpt(), //  inherit
-            _defaultFontSize.scaled(1.8f),
+            _defaultFontSize * 1.8f,
             FontStyle::Bold,
             ColorSpecOpt(), //  inherit
             ColorSpecOpt(), //  inherit
@@ -182,7 +182,7 @@ BasicReportTemplate::BasicReportTemplate()
         new BasicParagraphStyle(
             IParagraphStyle::Heading5StyleName,
             FontSpecsOpt(), //  inherit
-            _defaultFontSize.scaled(1.6f),
+            _defaultFontSize * 1.6f,
             FontStyle::Bold,
             ColorSpecOpt(), //  inherit
             ColorSpecOpt(), //  inherit
@@ -197,7 +197,7 @@ BasicReportTemplate::BasicReportTemplate()
         new BasicParagraphStyle(
             IParagraphStyle::Heading6StyleName,
             FontSpecsOpt(), //  inherit
-            _defaultFontSize.scaled(1.5f),
+            _defaultFontSize * 1.5f,
             FontStyle::Bold,
             ColorSpecOpt(), //  inherit
             ColorSpecOpt(), //  inherit
@@ -212,7 +212,7 @@ BasicReportTemplate::BasicReportTemplate()
         new BasicParagraphStyle(
             IParagraphStyle::Heading7StyleName,
             FontSpecsOpt(), //  inherit
-            _defaultFontSize.scaled(1.4f),
+            _defaultFontSize * 1.4f,
             FontStyle::Bold,
             ColorSpecOpt(), //  inherit
             ColorSpecOpt(), //  inherit
@@ -227,7 +227,7 @@ BasicReportTemplate::BasicReportTemplate()
         new BasicParagraphStyle(
             IParagraphStyle::Heading8StyleName,
             FontSpecsOpt(), //  inherit
-            _defaultFontSize.scaled(1.3f),
+            _defaultFontSize * 1.3f,
             FontStyle::Bold,
             ColorSpecOpt(), //  inherit
             ColorSpecOpt(), //  inherit
@@ -242,7 +242,7 @@ BasicReportTemplate::BasicReportTemplate()
         new BasicParagraphStyle(
             IParagraphStyle::Heading9StyleName,
             FontSpecsOpt(), //  inherit
-            _defaultFontSize.scaled(1.2f),
+            _defaultFontSize * 1.2f,
             FontStyle::Bold,
             ColorSpecOpt(), //  inherit
             ColorSpecOpt(), //  inherit
@@ -403,13 +403,13 @@ BasicReportTemplate::BasicReportTemplate()
             TypographicSize::pt(2),
             TypographicSize::pt(2),
             _defaultTableBorderType,
-            _defaultTableBorderType));
+            _defaultCellBorderType));
 
     _addStyle(
         new BasicTableCellStyle(
             ITableCellStyle::HeadingStyleName,
             FontSpecsOpt(), //  inherit
-            _defaultFontSize.scaled(1.1f),
+            _defaultFontSize * 1.1f,
             _defaultFontStyle | FontStyle::Bold,
             ColorSpecOpt(), //  inherit
             ColorSpecOpt(), //  inherit

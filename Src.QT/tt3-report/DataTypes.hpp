@@ -251,6 +251,16 @@ namespace tt3::report
         ///     the 2nd TypographicSize, else false.
         bool            operator >= (const TypographicSize & op2) const;
 
+        /// \brief
+        ///     Returns the scaled variant of this TypographicSize.
+        /// \param scaleFactor
+        ///     The scale factor.
+        /// \return
+        ///     The TypographicSize which uses the same unit as this
+        ///     TypographicSize, but whose amount has been multiplied by the
+        ///     specified scale factor.
+        TypographicSize operator * (float scaleFactor) const;
+
         //////////
         //  Operations
     public:
@@ -271,17 +281,6 @@ namespace tt3::report
         /// \return
         ///     The point size of this typographic size.
         float           pointSize() const { return _amount * _unit.points(); }
-
-        /// \brief
-        ///     Returns the scaled variant of this TypographicSize.
-        /// \param scaleFactor
-        ///     The scale factor.
-        /// \return
-        ///     The TypographicSize which uses the same unit as this
-        ///     TypographicSize, but whose amount has been multiplied by the
-        ///     specified scale factor.
-        //  TODO Replace this method with "*" operator yaking a float
-        TypographicSize scaled(float scaleFactor) const;
 
         //////////
         //  Implementation
