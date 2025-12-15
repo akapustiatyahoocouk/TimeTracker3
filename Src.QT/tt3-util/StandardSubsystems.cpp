@@ -18,6 +18,21 @@
 using namespace tt3::util;
 
 //////////
+//  Operations
+Subsystems StandardSubsystems::all()
+{
+    static const Subsystems result
+    {
+        Applications::instance(),
+        Storage::instance(),
+        Gui::instance(),
+        Reporting::instance(),
+        Utility::instance()
+    };
+    return result;
+}
+
+//////////
 //  StandardSubsystems::Applications
 TT3_IMPLEMENT_SINGLETON(StandardSubsystems::Applications)
 StandardSubsystems::Applications::Applications() {}

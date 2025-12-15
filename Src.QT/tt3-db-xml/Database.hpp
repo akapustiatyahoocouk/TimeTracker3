@@ -17,6 +17,34 @@
 
 namespace tt3::db::xml
 {
+    template <class T>
+    struct ObjectTypeTraits
+    {
+        inline static auto  objectType() = delete;
+    };
+#define TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(TYPE)             \
+    template <>                                                 \
+    struct ObjectTypeTraits<TYPE>                               \
+    {                                                           \
+        inline static auto  objectType()                        \
+        {                                                       \
+            return tt3::db::api::ObjectTypes::TYPE::instance(); \
+        }                                                       \
+    };
+    TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(User)
+    TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(Account)
+    TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(ActivityType)
+    TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(PublicActivity)
+    TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(PublicTask)
+    TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(PrivateActivity)
+    TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(PrivateTask)
+    TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(Project)
+    TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(WorkStream)
+    TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(Beneficiary)
+    TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(Work)
+    TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(Event)
+#undef TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS
+
     /// \class Database tt3-db-xml/API.hpp
     /// \brief A single-user database stored in an XML file.
     class TT3_DB_XML_PUBLIC Database final
@@ -498,7 +526,7 @@ namespace tt3::db::xml
         {
             Q_ASSERT(aggregation.isEmpty());
             QDomElement aggregationElement = _childElement(parentElement, aggregationName); //  may throw
-            tt3::db::api::IObjectType * objectType = _objectTypeTraits<T>();
+            tt3::db::api::IObjectType * objectType = ObjectTypeTraits<T>::objectType();
             for (const QDomElement & objectElement : _childElements(aggregationElement, objectType->mnemonic().toString()))
             {
                 T * object = nullptr;
@@ -510,6 +538,7 @@ namespace tt3::db::xml
             }
         }
 
+/*  TODO kill off
         template <class T>
         auto            _objectTypeTraits(
                             ) -> tt3::db::api::IObjectType *  = delete;
@@ -533,6 +562,7 @@ namespace tt3::db::xml
         TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(Work)
         TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(Event)
 #undef TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS
+*/
         //  Validation
         void            _validate();    //  throwstt3::db::api::DatabaseException
     };

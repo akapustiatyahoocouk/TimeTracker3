@@ -18,6 +18,26 @@
 using namespace tt3::db::api;
 
 //////////
+//  Operations
+QSet<IObjectType*> ObjectTypes::all()
+{
+    static const QSet<IObjectType*> result
+    {
+        User::instance(),
+        Account::instance(),
+        ActivityType::instance(),
+        PublicActivity::instance(),
+        PublicTask::instance(),
+        PrivateActivity::instance(),
+        PrivateTask::instance(),
+        Project::instance(),
+        WorkStream::instance(),
+        Beneficiary::instance()
+    };
+    return result;
+}
+
+//////////
 //  ObjectTypes::User
 TT3_IMPLEMENT_SINGLETON(ObjectTypes::User)
 ObjectTypes::User::User() {}

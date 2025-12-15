@@ -21,16 +21,11 @@ struct SubsystemManager::_Impl
 {
     _Impl()
     {
-#define REGISTER(Subsystem)                     \
-        registry.insert(                        \
-            Subsystem::instance()->mnemonic(),  \
-            Subsystem::instance())
-
-        REGISTER(StandardSubsystems::Applications);
-        REGISTER(StandardSubsystems::Storage);
-        REGISTER(StandardSubsystems::Gui);
-        REGISTER(StandardSubsystems::Reporting);
-        REGISTER(StandardSubsystems::Utility);
+        for (auto subsystem : StandardSubsystems::all())
+        {
+            Q_ASSERT(!registry.contains(subsystem->mnemonic()));
+            registry[subsystem->mnemonic()] = subsystem;
+        }
     }
 
     using Registry = QMap<Mnemonic, ISubsystem*>;

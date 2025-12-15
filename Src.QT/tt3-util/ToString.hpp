@@ -36,8 +36,8 @@ namespace tt3::util
     template <> TT3_UTIL_PUBLIC QString toString<unsigned long long>(const unsigned long long & value);
     template <> TT3_UTIL_PUBLIC QString toString<float>(const float & value);
     template <> TT3_UTIL_PUBLIC QString toString<double>(const double & value);
-    TT3_UTIL_PUBLIC inline      QString toString(const char * value);
-    TT3_UTIL_PUBLIC inline      QString toString(const void * value);
+    TT3_UTIL_PUBLIC         QString toString(const char * value);
+    TT3_UTIL_PUBLIC         QString toString(const void * value);
 
     //  QT types
     template <> TT3_UTIL_PUBLIC QString toString<QChar>(const QChar & value);

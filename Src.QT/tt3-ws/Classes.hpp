@@ -17,27 +17,27 @@
 
 namespace tt3::ws
 {
-    class TT3_WS_PUBLIC WorkspaceTypeImpl;
-    class TT3_WS_PUBLIC WorkspaceAddressImpl;
-    class TT3_WS_PUBLIC WorkspaceImpl;
+    class WorkspaceTypeImpl;
+    class WorkspaceAddressImpl;
+    class WorkspaceImpl;
 
-    class TT3_WS_PUBLIC ObjectImpl;
-    class TT3_WS_PUBLIC PrincipalImpl;
-    class TT3_WS_PUBLIC UserImpl;
-    class TT3_WS_PUBLIC AccountImpl;
-    class TT3_WS_PUBLIC ActivityTypeImpl;
-    class TT3_WS_PUBLIC ActivityImpl;
-    class TT3_WS_PUBLIC PublicActivityImpl;
-    class TT3_WS_PUBLIC PrivateActivityImpl;
-    class TT3_WS_PUBLIC TaskImpl;
-    class TT3_WS_PUBLIC PublicTaskImpl;
-    class TT3_WS_PUBLIC PrivateTaskImpl;
-    class TT3_WS_PUBLIC WorkImpl;
-    class TT3_WS_PUBLIC EventImpl;
-    class TT3_WS_PUBLIC WorkloadImpl;
-    class TT3_WS_PUBLIC ProjectImpl;
-    class TT3_WS_PUBLIC WorkStreamImpl;
-    class TT3_WS_PUBLIC BeneficiaryImpl;
+    class ObjectImpl;
+    class PrincipalImpl;
+    class UserImpl;
+    class AccountImpl;
+    class ActivityTypeImpl;
+    class ActivityImpl;
+    class PublicActivityImpl;
+    class PrivateActivityImpl;
+    class TaskImpl;
+    class PublicTaskImpl;
+    class PrivateTaskImpl;
+    class WorkImpl;
+    class EventImpl;
+    class WorkloadImpl;
+    class ProjectImpl;
+    class WorkStreamImpl;
+    class BeneficiaryImpl;
 
     //  Opaque pointer-like types (reference counted);
     //  can all be nullptr
@@ -84,18 +84,18 @@ namespace tt3::ws
     using Beneficiaries = QSet<Beneficiary>;
 
     //  Exceptins & notifications
-    class TT3_WS_PUBLIC WorkspaceException;
-    class TT3_WS_PUBLIC WorkspaceClosedNotification;
-    class TT3_WS_PUBLIC ObjectCreatedNotification;
-    class TT3_WS_PUBLIC ObjectDestroyedNotification;
-    class TT3_WS_PUBLIC ObjectModifiedNotification;
+    class WorkspaceException;
+    class WorkspaceClosedNotification;
+    class ObjectCreatedNotification;
+    class ObjectDestroyedNotification;
+    class ObjectModifiedNotification;
 
     //  Helper types
-    class TT3_WS_PUBLIC Credentials;
-    class TT3_WS_PUBLIC BackupCredentials;
-    class TT3_WS_PUBLIC RestoreCredentials;
-    class TT3_WS_PUBLIC ReportCredentials;
-    class TT3_WS_PUBLIC WorkspaceTypeManager;
+    class Credentials;
+    class BackupCredentials;
+    class RestoreCredentials;
+    class ReportCredentials;
+    class WorkspaceTypeManager;
 
     //  We can piggyback on some DB API types
     using OpenMode = tt3::db::api::OpenMode;

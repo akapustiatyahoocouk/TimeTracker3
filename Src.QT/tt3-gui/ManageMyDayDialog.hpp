@@ -19,7 +19,7 @@
 
 namespace tt3::gui
 {
-    class TT3_GUI_PUBLIC MyDayManager;
+    class MyDayManager;
 
     namespace Ui { class ManageMyDayDialog; }
 

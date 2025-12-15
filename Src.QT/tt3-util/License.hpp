@@ -86,6 +86,15 @@ namespace tt3::util
         TT3_UTILITY_CLASS(StandardLicenses)
 
         //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Returns the set of all standard licenses.
+        /// \return
+        ///     The set of all standard licenses.
+        static Licenses     all();
+
+        //////////
         //  Members
     public:
         /// \class Gpl3 tt3-util/API.hpp

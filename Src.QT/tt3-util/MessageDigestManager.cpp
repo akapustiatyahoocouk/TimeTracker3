@@ -23,6 +23,7 @@ struct MessageDigestManager::_Impl
     {
         for (auto md : StandardMessageDigests::all())
         {
+            Q_ASSERT(!registry.contains(md->mnemonic()));
             registry[md->mnemonic()] = md;
         }
     }

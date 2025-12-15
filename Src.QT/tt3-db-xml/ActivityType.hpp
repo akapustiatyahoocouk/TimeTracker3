@@ -35,10 +35,7 @@ namespace tt3::db::xml
         //////////
         //  Construction/destruction (from DB type only)
     private:
-        ActivityType(
-                Database * database,
-                tt3::db::api::Oid oid
-            );
+        ActivityType(Database * database, tt3::db::api::Oid oid);
         virtual ~ActivityType();
 
         //////////

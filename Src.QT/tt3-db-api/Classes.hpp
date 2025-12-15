@@ -17,27 +17,27 @@
 
 namespace tt3::db::api
 {
-    class TT3_DB_API_PUBLIC IDatabaseType;
-    class TT3_DB_API_PUBLIC IDatabaseAddress;
-    class TT3_DB_API_PUBLIC IDatabase;
-    class TT3_DB_API_PUBLIC IDatabaseLock;
-    class TT3_DB_API_PUBLIC IObject;
-    class TT3_DB_API_PUBLIC IPrincipal;
-    class TT3_DB_API_PUBLIC IUser;
-    class TT3_DB_API_PUBLIC IAccount;
-    class TT3_DB_API_PUBLIC IActivityType;
-    class TT3_DB_API_PUBLIC IActivity;
-    class TT3_DB_API_PUBLIC IPublicActivity;
-    class TT3_DB_API_PUBLIC IPrivateActivity;
-    class TT3_DB_API_PUBLIC ITask;
-    class TT3_DB_API_PUBLIC IPublicTask;
-    class TT3_DB_API_PUBLIC IPrivateTask;
-    class TT3_DB_API_PUBLIC IWork;
-    class TT3_DB_API_PUBLIC IEvent;
-    class TT3_DB_API_PUBLIC IWorkload;
-    class TT3_DB_API_PUBLIC IProject;
-    class TT3_DB_API_PUBLIC IWorkStream;
-    class TT3_DB_API_PUBLIC IBeneficiary;
+    class IDatabaseType;
+    class IDatabaseAddress;
+    class IDatabase;
+    class IDatabaseLock;
+    class IObject;
+    class IPrincipal;
+    class IUser;
+    class IAccount;
+    class IActivityType;
+    class IActivity;
+    class IPublicActivity;
+    class IPrivateActivity;
+    class ITask;
+    class IPublicTask;
+    class IPrivateTask;
+    class IWork;
+    class IEvent;
+    class IWorkload;
+    class IProject;
+    class IWorkStream;
+    class IBeneficiary;
 
     //  Collections
     using DatabaseTypes = QSet<IDatabaseType*>;
@@ -62,8 +62,8 @@ namespace tt3::db::api
     class TT3_DB_API_PUBLIC DatabaseException;
 
     //  Helper types
-    class TT3_DB_API_PUBLIC Oid;
-    class TT3_DB_API_PUBLIC ChangeNotifier;
+    class Oid;
+    class ChangeNotifier;
 
     using InactivityTimeout = std::optional<tt3::util::TimeSpan>;
     using UiLocale = std::optional<QLocale>;

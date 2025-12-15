@@ -19,7 +19,40 @@
 
 namespace tt3::ws
 {
-    /// \class WorkspaceImpl tt3-ws/API.hpp
+    template <class T>
+    struct ObjectTypeTraits
+    {
+        static inline QString   objectTypeName() = delete;
+    };
+
+#define TT3_WS_DECLARE_TYPE_TRAITS(Type)                                \
+    template <>                                                     \
+    struct ObjectTypeTraits<Type>                                        \
+    {                                                               \
+        using DataObjectType = tt3::db::api::I##Type;               \
+        static inline QString   objectTypeName() { return #Type; }  \
+    };
+
+    TT3_WS_DECLARE_TYPE_TRAITS(Object)
+    TT3_WS_DECLARE_TYPE_TRAITS(Principal)
+    TT3_WS_DECLARE_TYPE_TRAITS(User)
+    TT3_WS_DECLARE_TYPE_TRAITS(Account)
+    TT3_WS_DECLARE_TYPE_TRAITS(ActivityType)
+    TT3_WS_DECLARE_TYPE_TRAITS(Activity)
+    TT3_WS_DECLARE_TYPE_TRAITS(PublicActivity)
+    TT3_WS_DECLARE_TYPE_TRAITS(PrivateActivity)
+    TT3_WS_DECLARE_TYPE_TRAITS(Task)
+    TT3_WS_DECLARE_TYPE_TRAITS(PublicTask)
+    TT3_WS_DECLARE_TYPE_TRAITS(PrivateTask)
+    TT3_WS_DECLARE_TYPE_TRAITS(Workload)
+    TT3_WS_DECLARE_TYPE_TRAITS(Project)
+    TT3_WS_DECLARE_TYPE_TRAITS(WorkStream)
+    TT3_WS_DECLARE_TYPE_TRAITS(Beneficiary)
+    TT3_WS_DECLARE_TYPE_TRAITS(Work)
+    TT3_WS_DECLARE_TYPE_TRAITS(Event)
+#undef TT3_WS_DECLARE_TYPE_TRAITS
+
+/// \class WorkspaceImpl tt3-ws/API.hpp
     /// \brief A connection to a persistent container of data.
     class TT3_WS_PUBLIC WorkspaceImpl final
         :   public QObject
@@ -168,7 +201,7 @@ namespace tt3::ws
                 {   //  Found, but is it accessible ?
                     Object object =
                         _getProxy(
-                            dynamic_cast<typename _TypeTraits<T>::DataObjectType*>(dataObject));
+                            dynamic_cast<typename ObjectTypeTraits<T>::DataObjectType*>(dataObject));
                     return object->_canRead(credentials) ?
                                 std::dynamic_pointer_cast<typename T::element_type>(object) :
                                 nullptr;
@@ -203,7 +236,7 @@ namespace tt3::ws
                 return result;
             }
             throw DoesNotExistException(
-                _TypeTraits<T>::objectTypeName(),
+                ObjectTypeTraits<T>::objectTypeName(),
                 "OID",
                 oid);
         }
@@ -1024,37 +1057,6 @@ namespace tt3::ws
         void        _clearExpiredBackupCredentials();
         void        _clearExpiredRestoreCredentials();
         void        _clearExpiredReportCredentials();
-
-        //  Type handling
-        template <class T>
-        struct _TypeTraits {};
-
-#define TT3_WS_DECLARE_TYPE_TRAITS(Type)                                \
-        template <>                                                     \
-        struct _TypeTraits<Type>                                        \
-        {                                                               \
-            using DataObjectType = tt3::db::api::I##Type;               \
-            static inline QString   objectTypeName() { return #Type; }  \
-        };
-
-    TT3_WS_DECLARE_TYPE_TRAITS(Object)
-    TT3_WS_DECLARE_TYPE_TRAITS(Principal)
-    TT3_WS_DECLARE_TYPE_TRAITS(User)
-    TT3_WS_DECLARE_TYPE_TRAITS(Account)
-    TT3_WS_DECLARE_TYPE_TRAITS(ActivityType)
-    TT3_WS_DECLARE_TYPE_TRAITS(Activity)
-    TT3_WS_DECLARE_TYPE_TRAITS(PublicActivity)
-    TT3_WS_DECLARE_TYPE_TRAITS(PrivateActivity)
-    TT3_WS_DECLARE_TYPE_TRAITS(Task)
-    TT3_WS_DECLARE_TYPE_TRAITS(PublicTask)
-    TT3_WS_DECLARE_TYPE_TRAITS(PrivateTask)
-    TT3_WS_DECLARE_TYPE_TRAITS(Workload)
-    TT3_WS_DECLARE_TYPE_TRAITS(Project)
-    TT3_WS_DECLARE_TYPE_TRAITS(WorkStream)
-    TT3_WS_DECLARE_TYPE_TRAITS(Beneficiary)
-    TT3_WS_DECLARE_TYPE_TRAITS(Work)
-    TT3_WS_DECLARE_TYPE_TRAITS(Event)
-#undef TT3_WS_DECLARE_TYPE_TRAITS
 
         //////////
         //  Signal handlers

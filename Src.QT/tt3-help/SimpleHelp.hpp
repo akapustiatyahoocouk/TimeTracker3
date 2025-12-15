@@ -30,7 +30,7 @@ namespace tt3::help
         //  Construction/destruction
     private:
         SimpleHelpTopic(
-                SimpleHelpTopic * parent,
+                SimpleHelpTopic * parentTopic,
                 const QString & name,
                 const QString & displayName,
                 IContentLoader * contentLoader
@@ -208,12 +208,13 @@ namespace tt3::help
                 ///     of the HelpTopics collection.
                 /// \brief
                 ///     If the iterator is "finished", the call has no effect.
-                void        operator++()
+                iterator &  operator++()
                 {
                     if (!_finished())
                     {
                         _currentIndex++;
                     }
+                    return *this;
                 }
 
                 /// \brief
@@ -221,7 +222,7 @@ namespace tt3::help
                 ///     of the HelpTopics collection.
                 /// \brief
                 ///     If the iterator is "finished", the call has no effect.
-                void        operator++(int) { operator++(); }
+                iterator    operator++(int) { operator++(); return *this; }
 
                 //////////
                 //  Implementation

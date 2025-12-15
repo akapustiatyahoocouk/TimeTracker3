@@ -81,7 +81,7 @@ namespace tt3::tools::backup
 
         std::unique_ptr<BackupProgressDialog>   _progressDialog = nullptr;
 
-        struct _CancelRequest {};   //  throws to cncel
+        struct _CancelRequest { };  //  throws to cncel
 
         //  Helpers
         //  All methods may throw

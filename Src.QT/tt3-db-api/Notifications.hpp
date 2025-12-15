@@ -71,8 +71,7 @@ namespace tt3::db::api
         DatabaseClosedNotification(IDatabase * db)
             :   ChangeNotification(db) {}
 
-        //  Default copy-constructor, destructor and
-        //  assigmnent are all OK
+        //  Default copy-constructor and assigmnent are OK
     };
 
     /// \class ObjectCreatedNotification tt3-db-api/API.hpp
@@ -95,8 +94,7 @@ namespace tt3::db::api
             :   ChangeNotification(db), _objectType(objectType), _oid(oid)
         { Q_ASSERT(_objectType != nullptr && _oid != Oid::Invalid); }
 
-        //  Default copy-constructor, destructor and
-        //  assigmnent are all OK
+        //  Default copy-constructor and assigmnent are OK
 
         //////////
         //  Operations
@@ -140,8 +138,7 @@ namespace tt3::db::api
             :   ChangeNotification(db), _objectType(objectType), _oid(oid)
         { Q_ASSERT(_objectType != nullptr && _oid != Oid::Invalid); }
 
-        //  Default copy-constructor, destructor and
-        //  assigmnent are all OK
+        //  Default copy-constructor and assigmnent are OK
 
         //////////
         //  Operations
@@ -189,8 +186,7 @@ namespace tt3::db::api
             :   ChangeNotification(db), _objectType(objectType), _oid(oid)
         { Q_ASSERT(_objectType != nullptr && _oid != Oid::Invalid); }
 
-        //  Default copy-constructor, destructor and
-        //  assigmnent are all OK
+        //  Default copy-constructor and assigmnent are OK
 
         //////////
         //  Operations

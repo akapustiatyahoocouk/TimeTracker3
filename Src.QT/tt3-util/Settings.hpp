@@ -36,7 +36,7 @@ namespace tt3::util
     protected:
         /// \brief
         ///     Constructs an initially empty binch of Settings.
-        Settings() = default;
+        Settings() : _settings() {}
 
         /// \brief
         ///     The class destructor.

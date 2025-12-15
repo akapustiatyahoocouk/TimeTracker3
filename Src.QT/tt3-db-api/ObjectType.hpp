@@ -68,6 +68,15 @@ namespace tt3::db::api
         TT3_UTILITY_CLASS(ObjectTypes)
 
         //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Returns the set of all valid Object Types.
+        /// \return
+        ///     The set of all valid Object Types.
+        static QSet<IObjectType*>   all();
+
+        //////////
         //  Database object types
     public:
         /// \class User tt3-db-api/API.hpp

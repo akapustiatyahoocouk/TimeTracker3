@@ -99,7 +99,11 @@ namespace tt3::gui
     //  Building tt3-gui
 #else
     //  Building tt3-gui client
-    Q_DECL_IMPORT CurrentCredentials theCurrentCredentials;
+    #ifdef Q_OS_WINDOWS
+        Q_DECL_IMPORT CurrentCredentials theCurrentCredentials;
+    #else
+        extern CurrentCredentials theCurrentCredentials;
+    #endif
 #endif
 }
 

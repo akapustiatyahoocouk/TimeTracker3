@@ -20,7 +20,8 @@ using namespace tt3::db::api;
 //////////
 //  Construction/destruction
 ChangeNotifier::ChangeNotifier()
-    :   _workerThread(this)
+    :   _pendingNotifications(),
+        _workerThread(this)
 {
     //  Move signals to this thread to ensure queued
     //  connections to all slots
@@ -63,25 +64,25 @@ void ChangeNotifier::_WorkerThread::run()
             {   //  Thread stop requested
                 break;
             }
-            if (DatabaseClosedNotification * n =
+            if (auto databaseClosed =
                 dynamic_cast<DatabaseClosedNotification *>(changeNotification))
             {
-                emit _changeNotifier->databaseClosed(*n);
+                emit _changeNotifier->databaseClosed(*databaseClosed);
             }
-            else if (ObjectCreatedNotification * n =
+            else if (auto objectCreated =
                      dynamic_cast<ObjectCreatedNotification *>(changeNotification))
             {
-                emit _changeNotifier->objectCreated(*n);
+                emit _changeNotifier->objectCreated(*objectCreated);
             }
-            else if (ObjectDestroyedNotification * n =
+            else if (auto objectDestroyed =
                      dynamic_cast<ObjectDestroyedNotification *>(changeNotification))
             {
-                emit _changeNotifier->objectDestroyed(*n);
+                emit _changeNotifier->objectDestroyed(*objectDestroyed);
             }
-            else if (ObjectModifiedNotification * n =
+            else if (auto objectModified =
                      dynamic_cast<ObjectModifiedNotification *>(changeNotification))
             {
-                emit _changeNotifier->objectModified(*n);
+                emit _changeNotifier->objectModified(*objectModified);
             }
             else
             {

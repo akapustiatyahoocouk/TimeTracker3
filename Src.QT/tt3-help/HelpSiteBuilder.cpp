@@ -24,14 +24,10 @@ using namespace tt3::help;
 //////////
 //  Construction/destruction
 HelpSiteBuilder::HelpSiteBuilder()
-    :   _workerThread(this)
+    :   _zipFilesDirectory(QDir(QCoreApplication::applicationDirPath()).filePath("Help")),
+        _helpSiteDirectory(QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation)).filePath(".tt3-help-" TT3_VERSION)),
+        _workerThread(this)
 {
-    //  Determine the directory where help .zips reside
-    QString startupDirectory = QCoreApplication::applicationDirPath();
-    _zipFilesDirectory = QDir(startupDirectory).filePath("Help");
-
-    QString tempDirectory = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
-    _helpSiteDirectory = QDir(tempDirectory).filePath(".tt3-help-" TT3_VERSION);
 
     //  Done
     _workerThread.start();

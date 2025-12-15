@@ -17,14 +17,14 @@
 
 namespace tt3::util
 {
-    class TT3_UTIL_PUBLIC Settings;
-    class TT3_UTIL_PUBLIC ISubsystem;
-    class TT3_UTIL_PUBLIC IComponent;
-    class TT3_UTIL_PUBLIC IMessageDigest;
-    class TT3_UTIL_PUBLIC ILicense;
-    class TT3_UTIL_PUBLIC ITool;
+    class Settings;
+    class ISubsystem;
+    class IComponent;
+    class IMessageDigest;
+    class ILicense;
+    class ITool;
 
-    class TT3_UTIL_PUBLIC ComponentManager;
+    class ComponentManager;
 
     //  Collections
     using Subsystems = QSet<ISubsystem*>;
@@ -34,8 +34,8 @@ namespace tt3::util
     using Tools = QSet<ITool*>;
 
     //  Exceptions
-    class TT3_UTIL_PUBLIC ParseException;
-    class TT3_UTIL_PUBLIC MissingResourceException;
+    class ParseException;
+    class MissingResourceException;
 }
 
 using Locales = QSet<QLocale>;

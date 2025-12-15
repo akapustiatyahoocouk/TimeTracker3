@@ -22,7 +22,10 @@ using namespace tt3::db::xml;
 Workload::Workload(
         Database * database,
         tt3::db::api::Oid oid
-    ) : Object(database, oid)
+    ) : Object(database, oid),
+        //  Properties
+        _displayName(),
+        _description()
 {
 }
 

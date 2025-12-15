@@ -20,8 +20,10 @@ RESOURCES += \
 RC_FILE = tt3.rc
 
 LIBS += \
+    -ltt3-help$$TARGET_SUFFIX \
     -ltt3-gui$$TARGET_SUFFIX \
     -ltt3-ws$$TARGET_SUFFIX \
+    -ltt3-db-api$$TARGET_SUFFIX \
     -ltt3-util$$TARGET_SUFFIX
 
 DISTFILES += \

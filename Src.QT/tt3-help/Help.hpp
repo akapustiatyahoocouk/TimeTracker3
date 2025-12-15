@@ -28,11 +28,11 @@ namespace tt3::help
     protected:
         /// \brief
         ///     Constructs the help topic.
-        /// \param parent
+        /// \param parentTopic
         ///     The immediate parent for the help
         ///     topic, nullptr == none.
-        explicit HelpTopic(HelpTopic * parent)
-            :   parent(parent), children(this) {}
+        explicit HelpTopic(HelpTopic * parentTopic)
+            :   parent(parentTopic), children(this) {}
 
         /// \brief
         ///     The class destructor.
@@ -179,12 +179,13 @@ namespace tt3::help
                 ///     of the HelpTopics collection.
                 /// \brief
                 ///     If the iterator is "finished", the call has no effect.
-                void        operator++()
+                iterator &  operator++()
                 {
                     if (!_finished())
                     {
                         _currentIndex++;
                     }
+                    return *this;
                 }
 
                 /// \brief
@@ -192,7 +193,7 @@ namespace tt3::help
                 ///     of the HelpTopics collection.
                 /// \brief
                 ///     If the iterator is "finished", the call has no effect.
-                void        operator++(int) { operator++(); }
+                iterator    operator++(int) { operator++(); return *this; }
 
                 //////////
                 //  Implementation

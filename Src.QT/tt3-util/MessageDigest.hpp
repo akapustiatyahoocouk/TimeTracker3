@@ -206,7 +206,7 @@ namespace tt3::util
                 uint8_t             _messageBlock[64];      //  512-bit message blocks
                 int                 _messageBlockIndex = 0; //  Index into message block array
 
-                QByteArray          _result = {};   //  empty unless finalized
+                QByteArray          _result;    //  empty unless finalized
 
                 //  Helpers
                 void                _processMessageBlock();

@@ -20,12 +20,12 @@ using namespace tt3::help;
 //////////
 //  Construction/destruction
 SimpleHelpTopic::SimpleHelpTopic(
-        SimpleHelpTopic * parent_,
+        SimpleHelpTopic * parentTopic,
         const QString & name,
         const QString & displayName,
         IContentLoader * contentLoader
-    ) : HelpTopic(parent_),
-        parent(parent_),
+    ) : HelpTopic(parentTopic),
+        parent(parentTopic),
         children(this),
         _name(name),
         _displayName(displayName),

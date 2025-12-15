@@ -92,7 +92,7 @@ namespace tt3::util
         ///     Changes the "current" locale.
         /// \param locale
         ///     Thew locale to set as the "current" locale.
-        void            operator = (const QLocale & locale);
+        CurrentLocale & operator = (const QLocale & locale);
 
         /// \brief
         ///     Returns the "current" locale.
@@ -124,7 +124,11 @@ namespace tt3::util
     //  Building tt3-util
 #else
     //  Building tt3-util client
-    Q_DECL_IMPORT CurrentLocale theCurrentLocale;
+    #ifdef Q_CC_MSVC
+        Q_DECL_IMPORT CurrentLocale theCurrentLocale;
+    #else
+        extern CurrentLocale theCurrentLocale;
+    #endif
 #endif
 }
 

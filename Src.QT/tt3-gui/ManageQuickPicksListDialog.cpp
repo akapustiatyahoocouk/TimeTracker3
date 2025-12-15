@@ -214,7 +214,8 @@ void ManageQuickPicksListDialog::_refillPublicActivitiesTree()
         _ui->publicActivitiesTreeWidget,
         [](auto item)
         {
-            return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicActivity>();
+            return item->data(0, Qt::ItemDataRole::UserRole)
+                       .template value<tt3::ws::PublicActivity>();
         });
 }
 
@@ -241,7 +242,8 @@ void ManageQuickPicksListDialog::_refillPublicTasksTree()
         _ui->publicTasksTreeWidget,
         [](auto item)
         {
-            return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicTask>();
+            return item->data(0, Qt::ItemDataRole::UserRole)
+                       .template value<tt3::ws::PublicTask>();
         });
 }
 
@@ -263,7 +265,8 @@ void ManageQuickPicksListDialog::_refillPrivateActivitiesTree()
             _ui->privateActivitiesTreeWidget,
             [](auto item)
             {
-                return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PrivateActivity>();
+                return item->data(0, Qt::ItemDataRole::UserRole)
+                           .template value<tt3::ws::PrivateActivity>();
             });
     }
     catch (const tt3::util::Exception & ex)
@@ -297,7 +300,8 @@ void ManageQuickPicksListDialog::_refillPrivateTasksTree()
             _ui->privateTasksTreeWidget,
             [](auto item)
             {
-                return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PrivateTask>();
+                return item->data(0, Qt::ItemDataRole::UserRole)
+                           .template value<tt3::ws::PrivateTask>();
             });
     }
     catch (const tt3::util::Exception & ex)
@@ -637,25 +641,29 @@ void ManageQuickPicksListDialog::_removePushButtonClicked()
                 _ui->publicActivitiesTreeWidget,
                 [](auto item)
                 {
-                    return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicActivity>();
+                    return item->data(0, Qt::ItemDataRole::UserRole)
+                               .template value<tt3::ws::PublicActivity>();
                 });
             _refreshCheckMarks(
                 _ui->publicTasksTreeWidget,
                 [](auto item)
                 {
-                    return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicTask>();
+                    return item->data(0, Qt::ItemDataRole::UserRole)
+                               .template value<tt3::ws::PublicTask>();
                 });
             _refreshCheckMarks(
                 _ui->privateActivitiesTreeWidget,
                 [](auto item)
                 {
-                    return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PrivateActivity>();
+                    return item->data(0, Qt::ItemDataRole::UserRole)
+                               .template value<tt3::ws::PrivateActivity>();
                 });
             _refreshCheckMarks(
                 _ui->privateTasksTreeWidget,
                 [](auto item)
                 {
-                    return item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PrivateTask>();
+                    return item->data(0, Qt::ItemDataRole::UserRole)
+                               .template value<tt3::ws::PrivateTask>();
                 });
         }
     }

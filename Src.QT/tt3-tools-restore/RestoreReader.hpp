@@ -17,7 +17,22 @@
 
 namespace tt3::tools::restore
 {
-    class TT3_TOOLS_RESTORE_PUBLIC RestoreProgressDialog;
+    //  TODO this is UGLY!
+    template <class T>
+    T               _parse(const QString & s, qsizetype & scan)
+    {
+        return tt3::util::fromString<T>(s, scan);
+    }
+#define TT3_TOOLS_RESTORE_DECLARE_PARSE(T)        \
+    template <> T  _parse<T>(const QString & s, qsizetype & scan);
+    TT3_TOOLS_RESTORE_DECLARE_PARSE(QString)
+    TT3_TOOLS_RESTORE_DECLARE_PARSE(QStringList)
+    TT3_TOOLS_RESTORE_DECLARE_PARSE(tt3::ws::InactivityTimeout)
+    TT3_TOOLS_RESTORE_DECLARE_PARSE(tt3::ws::UiLocale)
+    TT3_TOOLS_RESTORE_DECLARE_PARSE(QList<tt3::ws::Oid>)
+#undef TT3_TOOLS_RESTORE_DECLARE_PARSE
+
+    class RestoreProgressDialog;
 
     /// \class RestoreReader tt3-tools-restore/API.hpp
     /// \brief The "TT3 Restore Reader" agent.
@@ -81,7 +96,7 @@ namespace tt3::tools::restore
 
         std::unique_ptr<RestoreProgressDialog>  _progressDialog = nullptr;
 
-        struct _CancelRequest {};   //  thrown to cancel
+        struct _CancelRequest { };  //  thrown to cancel
 
         //  Helpers
         using _RecordHandler = void (RestoreReader::*)();
@@ -89,20 +104,6 @@ namespace tt3::tools::restore
 
         //  All methods may throw
         static int      _xdigit(QChar c);
-
-        template <class T>
-        T               _parse(const QString & s, qsizetype & scan)
-        {
-            return tt3::util::fromString<T>(s, scan);
-        }
-#define TT3_TOOLS_RESTORE_DECLARE_PARSE(T)        \
-        template <> T  _parse<T>(const QString & s, qsizetype & scan);
-        TT3_TOOLS_RESTORE_DECLARE_PARSE(QString)
-        TT3_TOOLS_RESTORE_DECLARE_PARSE(QStringList)
-        TT3_TOOLS_RESTORE_DECLARE_PARSE(tt3::ws::InactivityTimeout)
-        TT3_TOOLS_RESTORE_DECLARE_PARSE(tt3::ws::UiLocale)
-        TT3_TOOLS_RESTORE_DECLARE_PARSE(QList<tt3::ws::Oid>)
-#undef TT3_TOOLS_RESTORE_DECLARE_PARSE
 
         struct _Record
         {
@@ -131,7 +132,7 @@ namespace tt3::tools::restore
                     throw BackupFileCorruptException(restoreReader->_restoreFile.fileName());
                 }
                 qsizetype scan = 0;
-                T result= restoreReader->_parse<T>(fields[field], scan);
+                T result = _parse<T>(fields[field], scan);
                 if (scan != fields[field].length())
                 {   //  OOPS!
                     throw tt3::util::ParseException(fields[field], scan);

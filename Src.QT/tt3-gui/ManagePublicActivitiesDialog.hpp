@@ -19,7 +19,7 @@
 
 namespace tt3::gui
 {
-    class TT3_GUI_PUBLIC PublicActivityManager;
+    class PublicActivityManager;
 
     namespace Ui { class ManagePublicActivitiesDialog; }
 

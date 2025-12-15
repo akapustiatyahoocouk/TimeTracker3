@@ -17,6 +17,29 @@
 #include "tt3-tools-restore/API.hpp"
 using namespace tt3::tools::restore;
 
+namespace
+{
+    int _xdigit(QChar c)
+    {
+        if (c >= '0' && c <= '9')
+        {
+            return c.unicode() - '0';
+        }
+        else if (c >= 'a' && c <= 'f')
+        {
+            return c.unicode() - 'a' + 10;
+        }
+        else if (c >= 'A' && c <= 'F')
+        {
+            return c.unicode() - 'A' + 10;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+}
+
 //////////
 //  Construction/destruction
 RestoreReader::RestoreReader(
@@ -148,27 +171,7 @@ bool RestoreReader::restoreWorkspace()
 
 //////////
 //  Implementation helpers
-int RestoreReader::_xdigit(QChar c)
-{
-    if (c >= '0' && c <= '9')
-    {
-        return c.unicode() - '0';
-    }
-    else if (c >= 'a' && c <= 'f')
-    {
-        return c.unicode() - 'a' + 10;
-    }
-    else if (c >= 'A' && c <= 'F')
-    {
-        return c.unicode() - 'A' + 10;
-    }
-    else
-    {
-        return -1;
-    }
-}
-
-template <> QString RestoreReader::_parse<QString>(const QString & s, qsizetype & scan)
+template <> QString tt3::tools::restore::_parse<QString>(const QString & s, qsizetype & scan)
 {
     if (scan < 0 || scan > s.length())
     {   //  OOPS! Can't
@@ -292,7 +295,7 @@ template <> QString RestoreReader::_parse<QString>(const QString & s, qsizetype 
     return result;
 }
 
-template <> QStringList RestoreReader::_parse<QStringList>(const QString & s, qsizetype & scan)
+template <> QStringList tt3::tools::restore::_parse<QStringList>(const QString & s, qsizetype & scan)
 {
     if (scan < 0 || scan > s.length())
     {   //  OOPS! Can't
@@ -339,17 +342,17 @@ template <> QStringList RestoreReader::_parse<QStringList>(const QString & s, qs
     return result;
 }
 
-template <> tt3::ws::InactivityTimeout RestoreReader::_parse<tt3::ws::InactivityTimeout>(const QString & s, qsizetype & scan)
+template <> tt3::ws::InactivityTimeout tt3::tools::restore::_parse<tt3::ws::InactivityTimeout>(const QString & s, qsizetype & scan)
 {
     return tt3::util::fromString<tt3::util::TimeSpan>(s, scan);
 }
 
-template <> tt3::ws::UiLocale RestoreReader::_parse<tt3::ws::UiLocale>(const QString & s, qsizetype & scan)
+template <> tt3::ws::UiLocale tt3::tools::restore::_parse<tt3::ws::UiLocale>(const QString & s, qsizetype & scan)
 {
     return tt3::util::fromString<QLocale>(s, scan);
 }
 
-template <> QList<tt3::ws::Oid> RestoreReader::_parse<QList<tt3::ws::Oid>>(const QString & s, qsizetype & scan)
+template <> QList<tt3::ws::Oid> tt3::tools::restore::_parse<QList<tt3::ws::Oid>>(const QString & s, qsizetype & scan)
 {
     if (scan < 0 || scan > s.length())
     {   //  OOPS! Can't
@@ -403,7 +406,7 @@ void RestoreReader::_reportProgress()
         double progress =
             (_bytesToRead == 0) ?
                 0.0 :
-                (double)_restoreFile.pos() / (double)_bytesToRead;
+                double(_restoreFile.pos()) / double(_bytesToRead);
         _progressDialog->reportProgress(progress);
         QDateTime continueAt =
             QDateTime::currentDateTimeUtc().addMSecs(_oneRecordDelayMs);
@@ -820,9 +823,9 @@ void RestoreReader::_processEventRecord()
     tt3::ws::Activities activities =
         tt3::util::transform(
             QSet<tt3::ws::Oid>(activityOids.cbegin(), activityOids.cend()),
-            [&](const auto & oid)
+            [&](const auto & o)
             {
-                return _workspace->getObjectByOid<tt3::ws::Activity>(_restoreCredentials, oid);
+                return _workspace->getObjectByOid<tt3::ws::Activity>(_restoreCredentials, o);
             });
 
     auto event =

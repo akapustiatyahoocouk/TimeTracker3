@@ -19,7 +19,7 @@
 
 namespace tt3::gui
 {
-    class TT3_GUI_PUBLIC ProjectManager;
+    class ProjectManager;
 
     namespace Ui { class ManageProjectsDialog; }
 

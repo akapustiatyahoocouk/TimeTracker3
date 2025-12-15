@@ -166,10 +166,10 @@ namespace tt3::util
         //////////
         //  Implementation
     private:
-        QRecursiveMutex _impl = {};
+        QRecursiveMutex _impl;
 
         //  Extended mutex state
-        QMutex          _extendedStateGuard = {};
+        QMutex          _extendedStateGuard;
         int             _lockCount = 0;
         QThread *       _lockingThread = nullptr;
     };

@@ -18,6 +18,17 @@
 using namespace tt3::util;
 
 //////////
+//  Operations
+Licenses StandardLicenses::all()
+{
+    static const Licenses result
+    {
+        Gpl3::instance()
+    };
+    return result;
+}
+
+    //////////
 //  StandardLicenses::Gpl3
 TT3_IMPLEMENT_SINGLETON(StandardLicenses::Gpl3)
 StandardLicenses::Gpl3::Gpl3() {}

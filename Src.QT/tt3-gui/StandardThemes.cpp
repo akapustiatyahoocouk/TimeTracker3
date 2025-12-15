@@ -18,6 +18,19 @@
 using namespace tt3::gui;
 
 //////////
+//  Operations
+Themes StandardThemes::all()
+{
+    static const Themes result
+    {
+        System::instance(),
+        Light::instance(),
+        Dark::instance()
+    };
+    return result;
+}
+
+//////////
 //  StandardThemes::System
 TT3_IMPLEMENT_SINGLETON(StandardThemes::System)
 StandardThemes::System::System() {}

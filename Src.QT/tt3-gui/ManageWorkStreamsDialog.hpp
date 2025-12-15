@@ -19,7 +19,7 @@
 
 namespace tt3::gui
 {
-    class TT3_GUI_PUBLIC WorkStreamManager;
+    class WorkStreamManager;
 
     namespace Ui { class ManageWorkStreamsDialog; }
 

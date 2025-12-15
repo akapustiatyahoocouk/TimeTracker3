@@ -19,8 +19,8 @@
 
 namespace tt3::gui
 {
-    class TT3_GUI_PUBLIC Preferences;
-    class TT3_GUI_PUBLIC PreferencesEditor;
+    class Preferences;
+    class PreferencesEditor;
 
     namespace Ui { class PreferencesDialog; }
 

@@ -24,7 +24,7 @@ ActivityType::ActivityType(
         tt3::db::api::Oid oid)
     :   Object(database, oid)
 {
-    //  Register User with parent
+    //  Register with parent
     _database->_activityTypes.insert(this);
     this->addReference();
 }

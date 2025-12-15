@@ -85,6 +85,15 @@ namespace tt3::util
         TT3_UTILITY_CLASS(StandardSubsystems)
 
         //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Returns the set of all standard Subsystems.
+        /// \return
+        ///     The set of all standard Subsystems.
+        static Subsystems   all();
+
+        //////////
         //  Members
     public:
         /// \class Applications tt3-util/API.hpp

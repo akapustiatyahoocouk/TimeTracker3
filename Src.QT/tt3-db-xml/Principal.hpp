@@ -57,7 +57,7 @@ namespace tt3::db::xml
     private:
         //  Properties
         bool            _enabled = true;
-        QStringList     _emailAddresses {};
+        QStringList     _emailAddresses;
 
         //  Helpers
         virtual void    _makeDead() override;

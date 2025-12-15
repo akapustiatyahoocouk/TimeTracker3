@@ -238,7 +238,11 @@ namespace tt3::gui
     //  Building tt3-gui
 #else
     //  Building tt3-gui client
-    Q_DECL_IMPORT CurrentSkin theCurrentSkin;
+    #ifdef Q_OS_WINDOWS
+        Q_DECL_IMPORT CurrentSkin theCurrentSkin;
+    #else
+        extern CurrentSkin theCurrentSkin;
+    #endif
 #endif
 }
 

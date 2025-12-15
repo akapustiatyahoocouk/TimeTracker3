@@ -5,10 +5,10 @@ TT3_VERSION=1.0.0
 CONFIG += c++20 strict_c++
 CONFIG += force_debug_info
 gcc {
-    QMAKE_CXXFLAGS += -ansi -Wall -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Weffc++ -Wextra -Wformat=2 -Winit-self -Wmissing-noreturn -Wno-long-long -Wold-style-cast -Woverloaded-virtual -Wpointer-arith -Wredundant-decls -Wsign-promo -Wswitch-default -Wswitch-enum -Wundef -Wunused -Wconversion -Wformat-security -Wformat-y2k -Wmissing-declarations -Wmissing-field-initializers -Wmissing-include-dirs -Wpacked -Wshadow -Wvariadic-macros -Wwrite-strings -fno-strict-aliasing -Wno-c++0x-compat
+    QMAKE_CXXFLAGS += -ansi -Wall -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wextra -Wformat=2 -Winit-self -Wmissing-noreturn -Wno-long-long -Wold-style-cast -Woverloaded-virtual -Wpointer-arith -Wredundant-decls -Wswitch-enum -Wundef -Wunused -Wconversion -Wformat-security -Wformat-y2k -Wmissing-declarations -Wmissing-field-initializers -Wmissing-include-dirs -Wpacked -Wshadow -Wvariadic-macros -Wwrite-strings -fno-strict-aliasing -Wno-c++0x-compat
+    #QMAKE_CXXFLAGS += -Weffc++ -Wsign-promo -Wswitch-default
     TT3_BUILD_DATE=$$system(date '+%Y%m%d')
     TT3_BUILD_TIME=$$system(date '+%H%M')
-    QMAKE_CXXFLAGS += -Wno-c++98-compat
 }
 msvc {
     QMAKE_CXXFLAGS += /Wall /D_CRT_SECURE_NO_WARNINGS

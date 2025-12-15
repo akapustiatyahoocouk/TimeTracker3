@@ -218,7 +218,7 @@ DailyWorkQuickReportView::~DailyWorkQuickReportView()
 //////////
 //  QuickReportView
 auto DailyWorkQuickReportView::quickReport(
-    ) -> IQuickReport * const
+    ) -> IQuickReport *
 {
     return DailyWorkQuickReport::instance();
 }

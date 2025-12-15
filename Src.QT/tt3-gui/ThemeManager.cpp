@@ -21,6 +21,12 @@ struct ThemeManager::_Impl
 {
     _Impl()
     {
+        for (auto theme : StandardThemes::all())
+        {
+            Q_ASSERT(!registry.contains(theme->mnemonic()));
+            registry[theme->mnemonic()] = theme;
+        }
+
 #define REGISTER(Theme)                     \
         registry.insert(                    \
             Theme::instance()->mnemonic(),  \
@@ -39,13 +45,13 @@ struct ThemeManager::_Impl
 
 //////////
 //  Operations
-QSet<ITheme*> ThemeManager::allThemes()
+Themes ThemeManager::allThemes()
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
 
-    QList<ITheme*> values = impl->registry.values();
-    return QSet<ITheme*>(values.cbegin(), values.cend());
+    auto values = impl->registry.values();
+    return Themes(values.cbegin(), values.cend());
 }
 
 bool ThemeManager::registerTheme(ITheme * theme)

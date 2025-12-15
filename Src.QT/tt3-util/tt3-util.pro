@@ -25,6 +25,7 @@ SOURCES += \
     Settings.cpp \
     StandardLicenses.cpp \
     StandardMessageDigests.Sha1.cpp \
+    StandardMessageDigests.cpp \
     StandardSubsystems.cpp \
     SubsystemManager.cpp \
     TimeSpan.cpp \

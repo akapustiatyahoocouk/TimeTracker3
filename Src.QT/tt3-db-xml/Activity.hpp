@@ -108,8 +108,8 @@ namespace tt3::db::xml
         //  Associations
         ActivityType *  _activityType = nullptr;//  counts as "reference" unless nullptr
         Workload *      _workload = nullptr;    //  counts as "reference" uness nullptr
-        Works           _works;     //  count as "references"
-        Events          _events;    //  count as "references"
+        Works           _works;         //  count as "references"
+        Events          _events;        //  count as "references"
 
         //  Helpers
         virtual bool    _siblingExists(const QString & displayName) const = 0;

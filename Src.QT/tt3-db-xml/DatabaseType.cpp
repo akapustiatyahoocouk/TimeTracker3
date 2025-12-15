@@ -137,8 +137,8 @@ auto DatabaseType::parseDatabaseAddress(
         const QString & externalForm
     ) -> tt3::db::api::IDatabaseAddress *
 {
-    QString path = QFileInfo(externalForm).absoluteFilePath();
-    if (path != externalForm)
+    QString absolutePath = QFileInfo(externalForm).absoluteFilePath();
+    if (absolutePath != externalForm)
     {   //  OOPS!
         throw tt3::db::api::InvalidDatabaseAddressException();
     }
@@ -146,9 +146,9 @@ auto DatabaseType::parseDatabaseAddress(
     tt3::util::Lock _(_databaseAddressesGuard);
 
     DatabaseAddress * databaseAddress;
-    if (_databaseAddresses.contains(path))
+    if (_databaseAddresses.contains(absolutePath))
     {   //  An instance already exists
-        databaseAddress = _databaseAddresses[path];
+        databaseAddress = _databaseAddresses[absolutePath];
         if (databaseAddress->_state == DatabaseAddress::State::Old)
         {   //  An instance is Old, but a client just expressed
             //  interest in it, so promote it to New (recount == 0 for both)
@@ -172,10 +172,10 @@ auto DatabaseType::parseDatabaseAddress(
             _databaseAddresses.remove(path);
         }
         //  ...so create one
-        databaseAddress = new DatabaseAddress(path);
+        databaseAddress = new DatabaseAddress(absolutePath);
         Q_ASSERT(databaseAddress->_referenceCount == 0 &&
                  databaseAddress->_state == DatabaseAddress::State::New);
-        _databaseAddresses[path] = databaseAddress;
+        _databaseAddresses[absolutePath] = databaseAddress;
     }
 #ifdef QT_DEBUG
     databaseAddress->_assertState();

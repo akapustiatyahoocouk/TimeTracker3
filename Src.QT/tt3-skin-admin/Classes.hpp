@@ -17,7 +17,7 @@
 
 namespace tt3::skin::admin
 {
-    class TT3_SKIN_ADMIN_PUBLIC MainFrame;
+    class MainFrame;
 }
 
 //  End of tt3-skin-admin/Classes.hpp

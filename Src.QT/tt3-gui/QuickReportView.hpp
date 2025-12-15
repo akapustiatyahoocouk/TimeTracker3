@@ -52,7 +52,7 @@ namespace tt3::gui
         /// \return
         ///     The QuickReport viewed by this widget.
         virtual auto        quickReport(
-                                ) -> IQuickReport * const = 0;
+                                ) -> IQuickReport * = 0;
 
         /// \brief
         ///     Returns the workspace currently viewed in this widget.

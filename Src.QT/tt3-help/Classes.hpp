@@ -17,22 +17,22 @@
 
 namespace tt3::help
 {
-    class TT3_HELP_PUBLIC IContentType;
-    class TT3_HELP_PUBLIC IContentLoader;
+    class IContentType;
+    class IContentLoader;
 
-    class TT3_HELP_PUBLIC HelpTopic;
-    class TT3_HELP_PUBLIC HelpCollection;
+    class HelpTopic;
+    class HelpCollection;
 
-    class TT3_HELP_PUBLIC SimpleHelpTopic;
-    class TT3_HELP_PUBLIC SimpleHelpCollection;
+    class SimpleHelpTopic;
+    class SimpleHelpCollection;
 
     //  Collections
     using ContentTypes = QSet<IContentType*>;
 
     //  Helpers
-    class TT3_HELP_PUBLIC LocalSiteHelpLoader;
+    class LocalSiteHelpLoader;
 
-    class TT3_HELP_PUBLIC Serializer;
+    class Serializer;
 }
 
 //  End of tt3-help/Classes.hpp

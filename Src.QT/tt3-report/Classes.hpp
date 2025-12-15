@@ -17,62 +17,62 @@
 
 namespace tt3::report
 {
-    class TT3_REPORT_PUBLIC IReportTemplate;
-    class TT3_REPORT_PUBLIC IStyle;
-    class TT3_REPORT_PUBLIC ICharacterStyle;
-    class TT3_REPORT_PUBLIC IBlockStyle;
-    class TT3_REPORT_PUBLIC IParagraphStyle;
-    class TT3_REPORT_PUBLIC IListStyle;
-    class TT3_REPORT_PUBLIC ITableStyle;
-    class TT3_REPORT_PUBLIC ITableCellStyle;
-    class TT3_REPORT_PUBLIC ILinkStyle;
-    class TT3_REPORT_PUBLIC ISectionStyle;
+    class IReportTemplate;
+    class IStyle;
+    class ICharacterStyle;
+    class IBlockStyle;
+    class IParagraphStyle;
+    class IListStyle;
+    class ITableStyle;
+    class ITableCellStyle;
+    class ILinkStyle;
+    class ISectionStyle;
 
-    class TT3_REPORT_PUBLIC BasicReportTemplate;
-    class TT3_REPORT_PUBLIC BasicStyle;
-    class TT3_REPORT_PUBLIC BasicCharacterStyle;
-    class TT3_REPORT_PUBLIC BasicBlockStyle;
-    class TT3_REPORT_PUBLIC BasicParagraphStyle;
-    class TT3_REPORT_PUBLIC BasicListStyle;
-    class TT3_REPORT_PUBLIC BasicTableStyle;
-    class TT3_REPORT_PUBLIC BasicTableCellStyle;
-    class TT3_REPORT_PUBLIC BasicLinkStyle;
-    class TT3_REPORT_PUBLIC BasicSectionStyle;
+    class BasicReportTemplate;
+    class BasicStyle;
+    class BasicCharacterStyle;
+    class BasicBlockStyle;
+    class BasicParagraphStyle;
+    class BasicListStyle;
+    class BasicTableStyle;
+    class BasicTableCellStyle;
+    class BasicLinkStyle;
+    class BasicSectionStyle;
 
-    class TT3_REPORT_PUBLIC CustomReportTemplate;
-    class TT3_REPORT_PUBLIC CustomStyle;
-    class TT3_REPORT_PUBLIC CustomCharacterStyle;
-    class TT3_REPORT_PUBLIC CustomBlockStyle;
-    class TT3_REPORT_PUBLIC CustomParagraphStyle;
-    class TT3_REPORT_PUBLIC CustomListStyle;
-    class TT3_REPORT_PUBLIC CustomTableStyle;
-    class TT3_REPORT_PUBLIC CustomTableCellStyle;
-    class TT3_REPORT_PUBLIC CustomLinkStyle;
-    class TT3_REPORT_PUBLIC CustomSectionStyle;
+    class CustomReportTemplate;
+    class CustomStyle;
+    class CustomCharacterStyle;
+    class CustomBlockStyle;
+    class CustomParagraphStyle;
+    class CustomListStyle;
+    class CustomTableStyle;
+    class CustomTableCellStyle;
+    class CustomLinkStyle;
+    class CustomSectionStyle;
 
-    class TT3_REPORT_PUBLIC Report;
-    class TT3_REPORT_PUBLIC ReportElement;
-    class TT3_REPORT_PUBLIC ReportFlowElement;
-    class TT3_REPORT_PUBLIC ReportBlockElement;
-    class TT3_REPORT_PUBLIC ReportSection;
-    class TT3_REPORT_PUBLIC ReportParagraph;
-    class TT3_REPORT_PUBLIC ReportSpanElement;
-    class TT3_REPORT_PUBLIC ReportText;
-    class TT3_REPORT_PUBLIC ReportPicture;
-    class TT3_REPORT_PUBLIC ReportList;
-    class TT3_REPORT_PUBLIC ReportListItem;
-    class TT3_REPORT_PUBLIC ReportTable;
-    class TT3_REPORT_PUBLIC ReportTableCell;
-    class TT3_REPORT_PUBLIC ReportAnchor;
-    class TT3_REPORT_PUBLIC ReportLink;
-    class TT3_REPORT_PUBLIC ReportInternalLink;
-    class TT3_REPORT_PUBLIC ReportExternalLink;
-    class TT3_REPORT_PUBLIC ReportTableOfContent;
+    class Report;
+    class ReportElement;
+    class ReportFlowElement;
+    class ReportBlockElement;
+    class ReportSection;
+    class ReportParagraph;
+    class ReportSpanElement;
+    class ReportText;
+    class ReportPicture;
+    class ReportList;
+    class ReportListItem;
+    class ReportTable;
+    class ReportTableCell;
+    class ReportAnchor;
+    class ReportLink;
+    class ReportInternalLink;
+    class ReportExternalLink;
+    class ReportTableOfContent;
 
-    class TT3_REPORT_PUBLIC IReportFormat;
-    class TT3_REPORT_PUBLIC HtmlReportFormat;
+    class IReportFormat;
+    class HtmlReportFormat;
     
-    class TT3_REPORT_PUBLIC IReportType;
+    class IReportType;
     
     //  Collections
     using ReportTemplates = QSet<IReportTemplate*>;

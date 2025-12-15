@@ -121,7 +121,13 @@ void ComponentManager::loadOptionalComponents()
     for (const auto & dllInfo : QDir(startupDirectory).entryInfoList())
     {
         if (dllInfo.isFile() && !dllInfo.isSymbolicLink() &&
+#if defined(Q_OS_WINDOWS)
             dllInfo.baseName().startsWith("tt3-") &&
+#elif defined(Q_OS_LINUX)
+            dllInfo.baseName().startsWith("libtt3-") &&
+#else
+    #error Unsupported platform
+#endif
             dllInfo.absoluteFilePath() != exeFile)
         {
             _loadLibrary(dllInfo.absoluteFilePath());

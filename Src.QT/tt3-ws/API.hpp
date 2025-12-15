@@ -32,9 +32,10 @@
 #include "tt3-ws/Exceptions.hpp"
 #include "tt3-ws/WorkspaceType.hpp"
 #include "tt3-ws/WorkspaceAddress.hpp"
-#include "tt3-ws/Workspace.hpp"
+//  TODO kill off #include "tt3-ws/Workspace.hpp"
 
-#include "tt3-ws/Object.hpp"
+#include "tt3-ws/Object.hpp"    //  GCC needs ObjectImpl defined befors Workspace
+#include "tt3-ws/Workspace.hpp"
 #include "tt3-ws/Principal.hpp"
 #include "tt3-ws/User.hpp"
 #include "tt3-ws/Account.hpp"

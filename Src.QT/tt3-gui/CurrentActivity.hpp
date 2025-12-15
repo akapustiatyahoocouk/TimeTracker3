@@ -201,7 +201,11 @@ namespace tt3::gui
     //  Building tt3-gui
 #else
     //  Building tt3-gui client
-    Q_DECL_IMPORT CurrentActivity theCurrentActivity;
+    #ifdef Q_OS_WINDOWS
+        Q_DECL_IMPORT CurrentActivity theCurrentActivity;
+    #else
+        extern CurrentActivity theCurrentActivity;
+    #endif
 #endif
 }
 

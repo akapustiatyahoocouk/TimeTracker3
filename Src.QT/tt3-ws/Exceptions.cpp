@@ -34,64 +34,61 @@ void WorkspaceException::translateAndThrow(
         exx->raise();
     }
     //  Translate database exeptions to workspace exceptions
-    else if (auto exx = dynamic_cast<const tt3::db::api::InvalidDatabaseAddressException*>(&ex))
+    if (dynamic_cast<const tt3::db::api::InvalidDatabaseAddressException*>(&ex))
     {
         throw InvalidWorkspaceAddressException();
     }
-    else if (auto exx = dynamic_cast<const tt3::db::api::DatabaseInUseException*>(&ex))
+    if (auto exx = dynamic_cast<const tt3::db::api::DatabaseInUseException*>(&ex))
     {
         throw WorkspaceInUseException(
             exx->databaseTypeDisplayName(),
             exx->databaseAddressDisplayForm());
     }
-    else if (auto exx = dynamic_cast<const tt3::db::api::DatabaseCorruptException*>(&ex))
+    if (auto exx = dynamic_cast<const tt3::db::api::DatabaseCorruptException*>(&ex))
     {
         throw WorkspaceCorruptException(
             exx->databaseTypeDisplayName(),
             exx->databaseAddressDisplayForm());
     }
-    else if (auto exx = dynamic_cast<const tt3::db::api::DatabaseClosedException*>(&ex))
+    if (dynamic_cast<const tt3::db::api::DatabaseClosedException*>(&ex))
     {
         throw WorkspaceClosedException();
     }
-    else if (auto exx = dynamic_cast<const tt3::db::api::AccessDeniedException*>(&ex))
+    if (dynamic_cast<const tt3::db::api::AccessDeniedException*>(&ex))
     {
         throw AccessDeniedException();
     }
-    else if (auto exx = dynamic_cast<const tt3::db::api::InvalidPropertyValueException*>(&ex))
+    if (auto exx = dynamic_cast<const tt3::db::api::InvalidPropertyValueException*>(&ex))
     {
         throw InvalidPropertyValueException(
             exx->objectTypeName(),
             exx->propertyName(),
             exx->propertyValueString());
     }
-    else if (auto exx = dynamic_cast<const tt3::db::api::AlreadyExistsException*>(&ex))
+    if (auto exx = dynamic_cast<const tt3::db::api::AlreadyExistsException*>(&ex))
     {
         throw AlreadyExistsException(
             exx->objectTypeName(),
             exx->propertyName(),
             exx->propertyValueString());
     }
-    else if (auto exx = dynamic_cast<const tt3::db::api::DoesNotExistException*>(&ex))
+    if (auto exx = dynamic_cast<const tt3::db::api::DoesNotExistException*>(&ex))
     {
         throw DoesNotExistException(
             exx->objectTypeName(),
             exx->propertyName(),
             exx->propertyValueString());
     }
-    else if (auto exx = dynamic_cast<const tt3::db::api::InstanceDeadException*>(&ex))
+    if (dynamic_cast<const tt3::db::api::InstanceDeadException*>(&ex))
     {
         throw InstanceDeadException();
     }
-    else if (auto exx = dynamic_cast<const tt3::db::api::IncompatibleInstanceException*>(&ex))
+    if (auto exx = dynamic_cast<const tt3::db::api::IncompatibleInstanceException*>(&ex))
     {
         throw IncompatibleInstanceException(exx->objectTypeName());
     }
     //  Anything else becomes CustomWorkspaceException
-    else
-    {
-        throw CustomWorkspaceException(ex.errorMessage());
-    }
+    throw CustomWorkspaceException(ex.errorMessage());
 }
 
 //////////

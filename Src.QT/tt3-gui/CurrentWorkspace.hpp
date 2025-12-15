@@ -134,7 +134,11 @@ namespace tt3::gui
     //  Building tt3-gui
 #else
     //  Building tt3-gui client
-    Q_DECL_IMPORT CurrentWorkspace theCurrentWorkspace;
+    #ifdef Q_OS_WINDOWS
+        Q_DECL_IMPORT CurrentWorkspace theCurrentWorkspace;
+    #else
+        extern CurrentWorkspace theCurrentWorkspace;
+    #endif
 #endif
 }
 

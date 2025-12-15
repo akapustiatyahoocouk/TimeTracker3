@@ -21,12 +21,11 @@ struct LicenseManager::_Impl
 {
     _Impl()
     {
-#define REGISTER(License)                   \
-        registry.insert(                    \
-            License::instance()->mnemonic(),\
-            License::instance())
-
-        REGISTER(StandardLicenses::Gpl3);
+        for (auto license : StandardLicenses::all())
+        {
+            Q_ASSERT(!registry.contains(license->mnemonic()));
+            registry[license->mnemonic()] = license;
+        }
     }
 
     using Registry = QMap<Mnemonic, ILicense*>;

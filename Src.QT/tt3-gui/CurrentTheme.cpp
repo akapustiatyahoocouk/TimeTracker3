@@ -64,7 +64,7 @@ void CurrentTheme::operator = (ITheme * theme)
     //  Signal is sent in a "not locked" state
     if (before != after)
     {
-        ((QApplication*)QApplication::instance())->setStyleSheet(after->css());
+        static_cast<QApplication*>(QApplication::instance())->setStyleSheet(after->css());
         emit changed(before, after);
     }
 }

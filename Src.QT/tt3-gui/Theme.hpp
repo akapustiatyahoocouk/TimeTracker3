@@ -81,11 +81,22 @@ namespace tt3::gui
         virtual QString     css() const = 0;
     };
 
+    using Themes = QSet<ITheme*>;
+
     /// \class StandardThemes tt3-gui/API.hpp
     /// \brief The standard (predefined) themes.
     class TT3_GUI_PUBLIC StandardThemes final
     {
         TT3_UTILITY_CLASS(StandardThemes)
+
+        //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Returns the set of all standard Themes.
+        /// \return
+        ///     The set of all standard Themes.
+        static Themes       all();
 
         //////////
         //  Themes
@@ -173,7 +184,7 @@ namespace tt3::gui
         ///     Returns the set of all registered themes.
         /// \return
         ///     The set of all registered themes.
-        static QSet<ITheme*>allThemes();
+        static Themes       allThemes();
 
         /// \brief
         ///     Registers the specified Theme.
@@ -280,7 +291,11 @@ namespace tt3::gui
     //  Building tt3-gui
 #else
     //  Building tt3-gui client
-    Q_DECL_IMPORT CurrentTheme  theCurrentTheme;
+    #ifdef Q_OS_WINDOWS
+        Q_DECL_IMPORT CurrentTheme  theCurrentTheme;
+    #else
+        extern CurrentTheme  theCurrentTheme;
+    #endif
 #endif
 }
 

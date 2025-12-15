@@ -38,7 +38,7 @@ namespace tt3::ws
         ///     The class destructor.
         virtual ~ChangeNotification() = default;
 
-        //  Defult copy-constructor and assigmnent are OK
+        //  Default copy-constructor and assigmnent are OK
 
         //////////
         //  Operations
@@ -71,8 +71,7 @@ namespace tt3::ws
                 const Workspace & workspace
             ) : ChangeNotification(workspace) {}
 
-        //  Defult copy-constructor, destructor and assigmnent
-        //  are a;; OK
+        //  Default copy-constructor and assigmnent are OK
     };
 
     /// \class ObjectCreatedNotification tt3-ws/API.hpp
@@ -102,8 +101,7 @@ namespace tt3::ws
             Q_ASSERT(_objectType != nullptr && _oid != Oid::Invalid);
         }
 
-        //  Defult copy-constructor, destructor and assigmnent
-        //  are all OK
+        //  Default copy-constructor and assigmnent are OK
 
         //////////
         //  Operations
@@ -154,8 +152,7 @@ namespace tt3::ws
             Q_ASSERT(_objectType != nullptr && _oid != Oid::Invalid);
         }
 
-        //  Defult copy-constructor, destructor and assigmnent
-        //  are all OK
+        //  Default copy-constructor and assigmnent are OK
 
         //////////
         //  Operations
@@ -209,8 +206,7 @@ namespace tt3::ws
             Q_ASSERT(_objectType != nullptr && _oid != Oid::Invalid);
         }
 
-        //  Defult copy-constructor, destructor and assigmnent
-        //  are all OK
+        //  Default copy-constructor and assigmnent are OK
 
         //////////
         //  Operations

@@ -17,27 +17,27 @@
 
 namespace tt3::db::xml
 {
-    class TT3_DB_XML_PUBLIC DatabaseType;
-    class TT3_DB_XML_PUBLIC DatabaseAddress;
-    class TT3_DB_XML_PUBLIC Database;
-    class TT3_DB_XML_PUBLIC DatabaseLock;
+    class DatabaseType;
+    class DatabaseAddress;
+    class Database;
+    class DatabaseLock;
 
-    class TT3_DB_XML_PUBLIC Object;
-    class TT3_DB_XML_PUBLIC Principal;
-    class TT3_DB_XML_PUBLIC User;
-    class TT3_DB_XML_PUBLIC Account;
-    class TT3_DB_XML_PUBLIC ActivityType;
-    class TT3_DB_XML_PUBLIC Activity;
-    class TT3_DB_XML_PUBLIC PublicActivity;
-    class TT3_DB_XML_PUBLIC PublicTask;
-    class TT3_DB_XML_PUBLIC PrivateActivity;
-    class TT3_DB_XML_PUBLIC PrivateTask;
-    class TT3_DB_XML_PUBLIC Work;
-    class TT3_DB_XML_PUBLIC Event;
-    class TT3_DB_XML_PUBLIC Workload;
-    class TT3_DB_XML_PUBLIC Project;
-    class TT3_DB_XML_PUBLIC WorkStream;
-    class TT3_DB_XML_PUBLIC Beneficiary;
+    class Object;
+    class Principal;
+    class User;
+    class Account;
+    class ActivityType;
+    class Activity;
+    class PublicActivity;
+    class PublicTask;
+    class PrivateActivity;
+    class PrivateTask;
+    class Work;
+    class Event;
+    class Workload;
+    class Project;
+    class WorkStream;
+    class Beneficiary;
 
     using Objects = QSet<Object*>;
     using Users = QSet<User*>;
