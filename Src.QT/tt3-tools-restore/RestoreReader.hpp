@@ -18,13 +18,16 @@
 namespace tt3::tools::restore
 {
     //  TODO this is UGLY!
+    //  All parse() methods may throw
     template <class T>
-    T               _parse(const QString & s, qsizetype & scan)
+    T parse(const QString & s, qsizetype & scan)
     {
         return tt3::util::fromString<T>(s, scan);
     }
-#define TT3_TOOLS_RESTORE_DECLARE_PARSE(T)        \
-    template <> T  _parse<T>(const QString & s, qsizetype & scan);
+#define TT3_TOOLS_RESTORE_DECLARE_PARSE(T)          \
+    template <> TT3_TOOLS_RESTORE_PUBLIC            \
+    T parse<T>(const QString & s, qsizetype & scan);
+
     TT3_TOOLS_RESTORE_DECLARE_PARSE(QString)
     TT3_TOOLS_RESTORE_DECLARE_PARSE(QStringList)
     TT3_TOOLS_RESTORE_DECLARE_PARSE(tt3::ws::InactivityTimeout)
@@ -132,7 +135,7 @@ namespace tt3::tools::restore
                     throw BackupFileCorruptException(restoreReader->_restoreFile.fileName());
                 }
                 qsizetype scan = 0;
-                T result = _parse<T>(fields[field], scan);
+                T result = parse<T>(fields[field], scan);
                 if (scan != fields[field].length())
                 {   //  OOPS!
                     throw tt3::util::ParseException(fields[field], scan);

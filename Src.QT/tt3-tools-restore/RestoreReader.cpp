@@ -17,29 +17,6 @@
 #include "tt3-tools-restore/API.hpp"
 using namespace tt3::tools::restore;
 
-namespace
-{
-    int _xdigit(QChar c)
-    {
-        if (c >= '0' && c <= '9')
-        {
-            return c.unicode() - '0';
-        }
-        else if (c >= 'a' && c <= 'f')
-        {
-            return c.unicode() - 'a' + 10;
-        }
-        else if (c >= 'A' && c <= 'F')
-        {
-            return c.unicode() - 'A' + 10;
-        }
-        else
-        {
-            return -1;
-        }
-    }
-}
-
 //////////
 //  Construction/destruction
 RestoreReader::RestoreReader(
@@ -171,234 +148,6 @@ bool RestoreReader::restoreWorkspace()
 
 //////////
 //  Implementation helpers
-template <> QString tt3::tools::restore::_parse<QString>(const QString & s, qsizetype & scan)
-{
-    if (scan < 0 || scan > s.length())
-    {   //  OOPS! Can't
-        throw tt3::util::ParseException(s, scan);
-    }
-    //  Skip opening quote
-    if (scan < s.length() && s[scan] == '"')
-    {
-        scan++;
-    }
-    else
-    {
-        throw tt3::util::ParseException(s, scan);
-    }
-    //  Parse innards
-    QString result;
-    while (scan < s.length())
-    {
-        if (s[scan] == '"')
-        {   //  Closing quote is here!
-            break;
-        }
-        if (s[scan] != '\\')
-        {   //  A literal character
-            result += s[scan];
-            scan++;
-            continue;
-        }
-        //  We have an escape sequence. Skip '\'
-        scan++;
-        if (scan >= s.length())
-        {   //  OOPS! Missing!
-            throw tt3::util::ParseException(s, scan);
-        }
-        //  Special character ?
-        if (s[scan] == 'a')
-        {   //  \a
-            result += '\a';
-            scan++;
-        }
-        else if (s[scan] == 'b')
-        {   //  \b
-            result += '\b';
-            scan++;
-        }
-        else if (s[scan] == 'f')
-        {   //  \f
-            result += '\f';
-            scan++;
-        }
-        else if (s[scan] == 'n')
-        {   //  \n
-            result += '\n';
-            scan++;
-        }
-        else if (s[scan] == 'r')
-        {   //  \r
-            result += '\r';
-            scan++;
-        }
-        else if (s[scan] == 't')
-        {   //  \t
-            result += '\t';
-            scan++;
-        }
-        else if (s[scan] == 'v')
-        {   //  \a
-            result += '\v';
-            scan++;
-        }
-        //  Numeric escape ?
-        else if (s[scan] == 'x')
-        {   //  \xXX
-            scan++;
-            if (scan + 1 < s.length() &&
-                _xdigit(s[scan]) != -1 && _xdigit(s[scan + 1]) != -1)
-            {
-                result += QChar(_xdigit(s[scan]) * 16 +
-                                _xdigit(s[scan + 1]));
-                scan += 2;
-            }
-            else
-            {   //  OOPS! Invalid hex escape!
-                throw tt3::util::ParseException(s, scan);
-            }
-        }
-        else if (s[scan] == 'u')
-        {   //  \uXXXX
-            scan++;
-            if (scan + 3 < s.length() &&
-                _xdigit(s[scan]) != -1 && _xdigit(s[scan + 1]) != -1 &&
-                _xdigit(s[scan + 2]) != -1 && _xdigit(s[scan + 3]) != -1)
-            {
-                result += QChar(_xdigit(s[scan]) * 4096 +
-                                _xdigit(s[scan + 1]) * 256 +
-                                _xdigit(s[scan + 2]) * 16 +
-                                _xdigit(s[scan + 3]));
-                scan += 4;
-            }
-            else
-            {   //  OOPS! Invalid hex escape!
-                throw tt3::util::ParseException(s, scan);
-            }
-        }
-        //  Literal escape
-        else
-        {
-            result += s[scan++];
-        }
-    }
-    //  Skip closing quote
-    if (scan < s.length() && s[scan] == '"')
-    {
-        scan++;
-    }
-    else
-    {
-        throw tt3::util::ParseException(s, scan);
-    }
-    //  Done
-    return result;
-}
-
-template <> QStringList tt3::tools::restore::_parse<QStringList>(const QString & s, qsizetype & scan)
-{
-    if (scan < 0 || scan > s.length())
-    {   //  OOPS! Can't
-        throw tt3::util::ParseException(s, scan);
-    }
-    //  Skip opening bracket
-    if (scan < s.length() && s[scan] == '[')
-    {
-        scan++;
-    }
-    else
-    {
-        throw tt3::util::ParseException(s, scan);
-    }
-    //  Parse innards
-    QStringList result;
-    if (scan < s.length() && s[scan] != ']')
-    {   //  The list is not empty
-        for (; ; )
-        {
-            QString element = _parse<QString>(s, scan);   //  may throw
-            result.append(element);
-            //  More ?
-            if (scan < s.length() && s[scan] == ',')
-            {   //  Yes
-                scan++;
-            }
-            else
-            {   //  No
-                break;
-            }
-        }
-    }
-    //  Skip closing bracket
-    if (scan < s.length() && s[scan] == ']')
-    {
-        scan++;
-    }
-    else
-    {
-        throw tt3::util::ParseException(s, scan);
-    }
-    //  Done
-    return result;
-}
-
-template <> tt3::ws::InactivityTimeout tt3::tools::restore::_parse<tt3::ws::InactivityTimeout>(const QString & s, qsizetype & scan)
-{
-    return tt3::util::fromString<tt3::util::TimeSpan>(s, scan);
-}
-
-template <> tt3::ws::UiLocale tt3::tools::restore::_parse<tt3::ws::UiLocale>(const QString & s, qsizetype & scan)
-{
-    return tt3::util::fromString<QLocale>(s, scan);
-}
-
-template <> QList<tt3::ws::Oid> tt3::tools::restore::_parse<QList<tt3::ws::Oid>>(const QString & s, qsizetype & scan)
-{
-    if (scan < 0 || scan > s.length())
-    {   //  OOPS! Can't
-        throw tt3::util::ParseException(s, scan);
-    }
-    //  Skip opening bracket
-    if (scan < s.length() && s[scan] == '[')
-    {
-        scan++;
-    }
-    else
-    {
-        throw tt3::util::ParseException(s, scan);
-    }
-    //  Parse innards
-    QList<tt3::ws::Oid> result;
-    if (scan < s.length() && s[scan] != ']')
-    {   //  The list is not empty
-        for (; ; )
-        {
-            tt3::ws::Oid element = _parse<tt3::ws::Oid>(s, scan);   //  may throw
-            result.append(element);
-            //  More ?
-            if (scan < s.length() && s[scan] == ',')
-            {   //  Yes
-                scan++;
-            }
-            else
-            {   //  No
-                break;
-            }
-        }
-    }
-    //  Skip closing bracket
-    if (scan < s.length() && s[scan] == ']')
-    {
-        scan++;
-    }
-    else
-    {
-        throw tt3::util::ParseException(s, scan);
-    }
-    //  Done
-    return result;
-}
-
 void RestoreReader::_reportProgress()
 {
     if (_progressDialog != nullptr)
@@ -951,6 +700,264 @@ auto RestoreReader::_resolveWorkload(
     {
         throw BackupFileCorruptException(_restoreFile.fileName());
     }
+}
+
+//////////
+//  Parsing
+namespace
+{
+    int xdigit(QChar c)
+    {
+        if (c >= '0' && c <= '9')
+        {
+            return c.unicode() - '0';
+        }
+        else if (c >= 'a' && c <= 'f')
+        {
+            return c.unicode() - 'a' + 10;
+        }
+        else if (c >= 'A' && c <= 'F')
+        {
+            return c.unicode() - 'A' + 10;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+}
+
+template <> TT3_TOOLS_RESTORE_PUBLIC
+QString tt3::tools::restore::parse<QString>(const QString & s, qsizetype & scan)
+{
+    if (scan < 0 || scan > s.length())
+    {   //  OOPS! Can't
+        throw tt3::util::ParseException(s, scan);
+    }
+    //  Skip opening quote
+    if (scan < s.length() && s[scan] == '"')
+    {
+        scan++;
+    }
+    else
+    {
+        throw tt3::util::ParseException(s, scan);
+    }
+    //  Parse innards
+    QString result;
+    while (scan < s.length())
+    {
+        if (s[scan] == '"')
+        {   //  Closing quote is here!
+            break;
+        }
+        if (s[scan] != '\\')
+        {   //  A literal character
+            result += s[scan];
+            scan++;
+            continue;
+        }
+        //  We have an escape sequence. Skip '\'
+        scan++;
+        if (scan >= s.length())
+        {   //  OOPS! Missing!
+            throw tt3::util::ParseException(s, scan);
+        }
+        //  Special character ?
+        if (s[scan] == 'a')
+        {   //  \a
+            result += '\a';
+            scan++;
+        }
+        else if (s[scan] == 'b')
+        {   //  \b
+            result += '\b';
+            scan++;
+        }
+        else if (s[scan] == 'f')
+        {   //  \f
+            result += '\f';
+            scan++;
+        }
+        else if (s[scan] == 'n')
+        {   //  \n
+            result += '\n';
+            scan++;
+        }
+        else if (s[scan] == 'r')
+        {   //  \r
+            result += '\r';
+            scan++;
+        }
+        else if (s[scan] == 't')
+        {   //  \t
+            result += '\t';
+            scan++;
+        }
+        else if (s[scan] == 'v')
+        {   //  \a
+            result += '\v';
+            scan++;
+        }
+        //  Numeric escape ?
+        else if (s[scan] == 'x')
+        {   //  \xXX
+            scan++;
+            if (scan + 1 < s.length() &&
+                xdigit(s[scan]) != -1 && xdigit(s[scan + 1]) != -1)
+            {
+                result += QChar(xdigit(s[scan]) * 16 +
+                                xdigit(s[scan + 1]));
+                scan += 2;
+            }
+            else
+            {   //  OOPS! Invalid hex escape!
+                throw tt3::util::ParseException(s, scan);
+            }
+        }
+        else if (s[scan] == 'u')
+        {   //  \uXXXX
+            scan++;
+            if (scan + 3 < s.length() &&
+                xdigit(s[scan]) != -1 && xdigit(s[scan + 1]) != -1 &&
+                xdigit(s[scan + 2]) != -1 && xdigit(s[scan + 3]) != -1)
+            {
+                result += QChar(xdigit(s[scan]) * 4096 +
+                                xdigit(s[scan + 1]) * 256 +
+                                xdigit(s[scan + 2]) * 16 +
+                                xdigit(s[scan + 3]));
+                scan += 4;
+            }
+            else
+            {   //  OOPS! Invalid hex escape!
+                throw tt3::util::ParseException(s, scan);
+            }
+        }
+        //  Literal escape
+        else
+        {
+            result += s[scan++];
+        }
+    }
+    //  Skip closing quote
+    if (scan < s.length() && s[scan] == '"')
+    {
+        scan++;
+    }
+    else
+    {
+        throw tt3::util::ParseException(s, scan);
+    }
+    //  Done
+    return result;
+}
+
+template <> TT3_TOOLS_RESTORE_PUBLIC
+QStringList tt3::tools::restore::parse<QStringList>(const QString & s, qsizetype & scan)
+{
+    if (scan < 0 || scan > s.length())
+    {   //  OOPS! Can't
+        throw tt3::util::ParseException(s, scan);
+    }
+    //  Skip opening bracket
+    if (scan < s.length() && s[scan] == '[')
+    {
+        scan++;
+    }
+    else
+    {
+        throw tt3::util::ParseException(s, scan);
+    }
+    //  Parse innards
+    QStringList result;
+    if (scan < s.length() && s[scan] != ']')
+    {   //  The list is not empty
+        for (; ; )
+        {
+            QString element = parse<QString>(s, scan);   //  may throw
+            result.append(element);
+            //  More ?
+            if (scan < s.length() && s[scan] == ',')
+            {   //  Yes
+                scan++;
+            }
+            else
+            {   //  No
+                break;
+            }
+        }
+    }
+    //  Skip closing bracket
+    if (scan < s.length() && s[scan] == ']')
+    {
+        scan++;
+    }
+    else
+    {
+        throw tt3::util::ParseException(s, scan);
+    }
+    //  Done
+    return result;
+}
+
+template <> TT3_TOOLS_RESTORE_PUBLIC
+tt3::ws::InactivityTimeout tt3::tools::restore::parse<tt3::ws::InactivityTimeout>(const QString & s, qsizetype & scan)
+{
+    return tt3::util::fromString<tt3::util::TimeSpan>(s, scan);
+}
+
+template <> TT3_TOOLS_RESTORE_PUBLIC
+tt3::ws::UiLocale tt3::tools::restore::parse<tt3::ws::UiLocale>(const QString & s, qsizetype & scan)
+{
+    return tt3::util::fromString<QLocale>(s, scan);
+}
+
+template <> TT3_TOOLS_RESTORE_PUBLIC
+QList<tt3::ws::Oid> tt3::tools::restore::parse<QList<tt3::ws::Oid>>(const QString & s, qsizetype & scan)
+{
+    if (scan < 0 || scan > s.length())
+    {   //  OOPS! Can't
+        throw tt3::util::ParseException(s, scan);
+    }
+    //  Skip opening bracket
+    if (scan < s.length() && s[scan] == '[')
+    {
+        scan++;
+    }
+    else
+    {
+        throw tt3::util::ParseException(s, scan);
+    }
+    //  Parse innards
+    QList<tt3::ws::Oid> result;
+    if (scan < s.length() && s[scan] != ']')
+    {   //  The list is not empty
+        for (; ; )
+        {
+            tt3::ws::Oid element = parse<tt3::ws::Oid>(s, scan);   //  may throw
+            result.append(element);
+            //  More ?
+            if (scan < s.length() && s[scan] == ',')
+            {   //  Yes
+                scan++;
+            }
+            else
+            {   //  No
+                break;
+            }
+        }
+    }
+    //  Skip closing bracket
+    if (scan < s.length() && s[scan] == ']')
+    {
+        scan++;
+    }
+    else
+    {
+        throw tt3::util::ParseException(s, scan);
+    }
+    //  Done
+    return result;
 }
 
 //  End of tt3-tools-restore/RestoreReader.cpp
