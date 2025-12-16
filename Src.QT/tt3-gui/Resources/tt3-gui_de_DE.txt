@@ -384,6 +384,7 @@ DisplayName=Startup
 [GeneralStartupPreferencesEditor]
 LoadLastWorkspaceAtStartupCheckBox=Letzten Arbeitsbereich beim Start neu laden
 RememnerLastLoginCheckBox=Letzte Anmeldung merken
+ShowSplashScreenCheckBox=Startbildschirm beim Start anzeigen
 
 [HelpBuilderProgressWindow]
 BuildingHelpLabel=Erstellung der Hilfesammlung...

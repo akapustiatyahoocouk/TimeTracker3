@@ -25,6 +25,13 @@ SplashScreen::SplashScreen()
         _ui(new Ui::SplashScreen)
 {
     _ui->setupUi(this);
+    Qt::WindowFlags flags = windowFlags();
+    flags |= Qt::CustomizeWindowHint;
+    flags |= Qt::WindowStaysOnTopHint;
+    flags &= ~Qt::WindowSystemMenuHint;
+    flags &= ~Qt::WindowTitleHint;
+    flags &= ~Qt::WindowCloseButtonHint;
+    setWindowFlags(flags);
     setWindowTitle(tt3::util::ProductInformation::applicationName());
 
     //  Set static control values - piggiback on About

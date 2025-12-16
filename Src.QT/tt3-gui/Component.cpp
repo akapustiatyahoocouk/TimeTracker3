@@ -104,6 +104,7 @@ Component::Settings::Settings()
         lastUsedWorkspaceType(this, M(LastUsedWorkspaceType), M(-)),
         rememberLastLogin(this, M(RememberLastLogin), true),
         currentPreferences(this, M(CurrentPreferences), M(-)),
+        useSplashScreen(this, M(UseSplashScreen), true),
         //  Properties (user confirmations)
         confirmCloseWorkspace(this, M(ConfirmCloseWorkspace), true),
         confirmRestart(this, M(ConfirmRestart), true),

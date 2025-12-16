@@ -384,6 +384,7 @@ DisplayName=Автозагрузка
 [GeneralStartupPreferencesEditor]
 LoadLastWorkspaceAtStartupCheckBox=Перезагрузить последнее рабочее пространство при запуске
 RememnerLastLoginCheckBox=Запомнить последний вход в систему
+ShowSplashScreenCheckBox=Показывать заставку при запуске
 
 [HelpBuilderProgressWindow]
 BuildingHelpLabel=Готовится справочная система...

@@ -55,6 +55,7 @@ namespace tt3::gui
     private slots:
         void            _loadLastWorkspaceAtStartupCheckBoxStateChanged(int);
         void            _rememberLastLoginCheckBoxStateChanged(int);
+        void            _showSplashScreenCheckBoxStateChanged(int);
     };
 }
 

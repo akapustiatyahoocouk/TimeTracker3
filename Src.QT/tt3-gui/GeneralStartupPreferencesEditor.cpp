@@ -32,6 +32,8 @@ GeneralStartupPreferencesEditor::GeneralStartupPreferencesEditor(QWidget * paren
         rr.string(RID(LoadLastWorkspaceAtStartupCheckBox)));
     _ui->rememnerLastLoginCheckBox->setText(
         rr.string(RID(RememnerLastLoginCheckBox)));
+    _ui->showSplashScreenCheckBox->setText(
+        rr.string(RID(ShowSplashScreenCheckBox)));
 
     //  Start off with current values from Settings
     loadControlValues();
@@ -55,6 +57,8 @@ void GeneralStartupPreferencesEditor::loadControlValues()
         Component::Settings::instance()->loadLastWorkspaceAtStartup);
     _ui->rememnerLastLoginCheckBox->setChecked(
         Component::Settings::instance()->rememberLastLogin);
+    _ui->showSplashScreenCheckBox->setChecked(
+        Component::Settings::instance()->useSplashScreen);
 }
 
 void GeneralStartupPreferencesEditor::saveControlValues()
@@ -63,6 +67,8 @@ void GeneralStartupPreferencesEditor::saveControlValues()
         _ui->loadLastWorkspaceAtStartupCheckBox->isChecked();
     Component::Settings::instance()->rememberLastLogin =
         _ui->rememnerLastLoginCheckBox->isChecked();
+    Component::Settings::instance()->useSplashScreen =
+        _ui->showSplashScreenCheckBox->isChecked();
 }
 
 void GeneralStartupPreferencesEditor::resetControlValues()
@@ -90,5 +96,9 @@ void GeneralStartupPreferencesEditor::_rememberLastLoginCheckBoxStateChanged(int
     emit controlValueChanged();
 }
 
+void GeneralStartupPreferencesEditor::_showSplashScreenCheckBoxStateChanged(int)
+{
+    emit controlValueChanged();
+}
 
 //  End of tt3-gui/GeneralStartupPreferencesEditor.cpp

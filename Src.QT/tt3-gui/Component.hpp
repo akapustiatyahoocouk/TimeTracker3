@@ -78,6 +78,10 @@ namespace tt3::gui
             ///     "current" during last activation of the "Preferences" dialog.
             tt3::util::Setting<tt3::util::Mnemonic> currentPreferences;
 
+            /// \brief
+            ///     True to show splash screen during startup.
+            tt3::util::Setting<bool> useSplashScreen;
+
             //////////
             //  Properties (user confirmations)
         public:

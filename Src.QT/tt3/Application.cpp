@@ -174,10 +174,13 @@ void Application::_initialize()
     tt3::util::ComponentManager::loadComponentSettings();
     tt3::util::theCurrentLocale = tt3::gui::Component::Settings::instance()->uiLocale;
 
-    //  Show splash screen TODO unless disabled
+    //  Show splash screen unless disabled
     tt3::gui::SplashScreen splashScreen;
     splashScreen.showStartupProgress("", "", 0.0);
-    splashScreen.show();
+    if (tt3::gui::Component::Settings::instance()->useSplashScreen)
+    {
+        splashScreen.show();
+    }
     QDateTime closeSplashScreenAt =
         QDateTime::currentDateTimeUtc().addMSecs(tt3::gui::SplashScreen::PreferredStartupDelayMs);
 

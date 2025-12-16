@@ -384,6 +384,7 @@ DisplayName=Startup
 [GeneralStartupPreferencesEditor]
 LoadLastWorkspaceAtStartupCheckBox=Reload last workspace at startup
 RememnerLastLoginCheckBox=Remember last login
+ShowSplashScreenCheckBox=Show splash screen during startup
 
 [HelpBuilderProgressWindow]
 BuildingHelpLabel=Building the help collection...
