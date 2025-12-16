@@ -166,6 +166,21 @@ void Application::_initialize()
     }
     _initialized = true;
 
+    //  Core (preloaded) components can be initialzed
+    //  NOW - we need these settings for SplashScreen
+    //  localization. ComponentManager takes care of
+    //  not initializing the same Component more than once.
+    tt3::util::ComponentManager::initializeComponents();
+    tt3::util::ComponentManager::loadComponentSettings();
+    tt3::util::theCurrentLocale = tt3::gui::Component::Settings::instance()->uiLocale;
+
+    //  Show splash screen TODO unless disabled
+    tt3::gui::SplashScreen splashScreen;
+    splashScreen.showStartupProgress("", "", 0.0);
+    splashScreen.show();
+    QDateTime closeSplashScreenAt =
+        QDateTime::currentDateTimeUtc().addMSecs(tt3::gui::SplashScreen::PreferredStartupDelayMs);
+
     _prepareForLogging();
 
     QPixmap pm;
@@ -176,11 +191,29 @@ void Application::_initialize()
     //QGuiApplication::setApplicationVersion(tt3::util::ProductInformation::applicationVersion().toString());
     //QGuiApplication::setApplicationDisplayName(tt3::util::ProductInformation::applicationDisplayName());
 
-    tt3::util::ComponentManager::loadOptionalComponents();
-    tt3::util::ComponentManager::initializeComponents();
+    //  Optional components must be discovered dynamially
+    tt3::util::ComponentManager::discoverComponents(
+        [&](auto a, auto c, auto r)
+        {
+            splashScreen.showStartupProgress(a, c, r);
+        });
+    tt3::util::ComponentManager::initializeComponents(
+        [&](auto a, auto c, auto r)
+        {
+            splashScreen.showStartupProgress(a, c, r);
+        });
     tt3::util::ComponentManager::loadComponentSettings();
 
-    tt3::util::theCurrentLocale = tt3::gui::Component::Settings::instance()->uiLocale;
+    //  Close splash screen BEFORE UI (skin) is activated
+    if (splashScreen.isVisible())
+    {   //  No point in delays if invisible
+        while (QDateTime::currentDateTimeUtc() < closeSplashScreenAt)
+        {
+            QCoreApplication::processEvents();
+        }
+    }
+    splashScreen.hide();
+
     _selectActiveTheme();
     _selectActiveSkin();
 
@@ -193,6 +226,7 @@ void Application::_initialize()
     if (loginDialog.doModal() != tt3::gui::LoginDialog::Result::Ok)
     {   //  No need to cleanup - nothing has
         //  chnaged in application's settings
+        splashScreen.hide();
         ::exit(0);
     }
     tt3::gui::theCurrentCredentials = loginDialog.credentials();

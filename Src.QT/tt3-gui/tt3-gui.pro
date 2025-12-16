@@ -118,6 +118,7 @@ SOURCES += \
     ShowConfigurationDialog.cpp \
     ShowLicenseDialog.cpp \
     SkinManager.cpp \
+    SplashScreen.cpp \
     StandardThemes.cpp \
     ThemeManager.cpp \
     TreeWidgetDecorations.cpp \
@@ -231,6 +232,7 @@ HEADERS += \
     ShowConfigurationDialog.hpp \
     ShowLicenseDialog.hpp \
     Skin.hpp \
+    SplashScreen.hpp \
     Theme.hpp \
     UiHelpers.hpp \
     UserManager.hpp \
@@ -304,6 +306,7 @@ FORMS += \
     SelectWorkspaceDialog.ui \
     ShowConfigurationDialog.ui \
     ShowLicenseDialog.ui \
+    SplashScreen.ui \
     UserManager.ui \
     WorkStreamManager.ui
 

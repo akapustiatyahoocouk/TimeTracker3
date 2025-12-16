@@ -113,33 +113,85 @@ IComponent * ComponentManager::findComponent(const Mnemonic & mnemonic)
     return result;
 }
 
-void ComponentManager::loadOptionalComponents()
+void ComponentManager::discoverComponents(
+        ProgressListener progressListener
+    )
 {
+    ResourceReader rr(Component::Resources::instance(), RSID(ComponentManager));
+
     QString startupDirectory = QCoreApplication::applicationDirPath();
     QString exeFile = QCoreApplication::applicationFilePath();
     //  Discover DLLs/SOs and load Components from them
-    for (const auto & dllInfo : QDir(startupDirectory).entryInfoList())
+    const auto entryInfos = QDir(startupDirectory).entryInfoList();
+    if (progressListener != nullptr)
     {
-        if (dllInfo.isFile() && !dllInfo.isSymbolicLink() &&
+        progressListener(
+            rr.string(RID(DiscoveringComponents)),
+            "",
+            0.0);
+    }
+    for (int i = 0; i < entryInfos.size(); i++)
+    {
+        auto entryInfo = entryInfos[i];
+        if (entryInfo.isFile() && !entryInfo.isSymbolicLink() &&
 #if defined(Q_OS_WINDOWS)
-            dllInfo.baseName().startsWith("tt3-") &&
+            entryInfo.baseName().startsWith("tt3-") &&
+            entryInfo.fileName().endsWith(".dll") &&
 #elif defined(Q_OS_LINUX)
-            dllInfo.baseName().startsWith("libtt3-") &&
+            entryInfo.baseName().startsWith("libtt3-") &&
+            entryInfo.fileName().endsWith(".so") &&
 #else
     #error Unsupported platform
 #endif
-            dllInfo.absoluteFilePath() != exeFile)
+            entryInfo.absoluteFilePath() != exeFile)
         {
-            _loadLibrary(dllInfo.absoluteFilePath());
+            if (progressListener != nullptr)
+            {
+                progressListener(
+                    rr.string(RID(DiscoveringComponents)),
+                    entryInfo.absoluteFilePath(),
+                    float(i + 1) / float(entryInfos.size() + 1));
+            }
+            _loadLibrary(entryInfo.absoluteFilePath());
         }
+    }
+    if (progressListener != nullptr)
+    {
+        progressListener(
+            rr.string(RID(DiscoveringComponents)),
+            "",
+            1.0);
     }
 }
 
-void ComponentManager::initializeComponents()
+void ComponentManager::initializeComponents(
+        ProgressListener progressListener
+    )
 {
+    ResourceReader rr(Component::Resources::instance(), RSID(ComponentManager));
+
     _Impl * impl = _impl();
     Lock _(impl->guard);
 
+    //  Count components - we'll need these counts
+    //  to report initialization progress
+    qsizetype totalComponents = impl->registry.values().size();
+    qsizetype initializedComponents = 0;
+    for (auto component : impl->registry.values())
+    {
+        if (component->_initialized)
+        {
+            initializedComponents++;
+        }
+    }
+    //  Go!
+    if (progressListener != nullptr)
+    {
+        progressListener(
+            rr.string(RID(InitializingComponents)),
+            "",
+            0.0);
+    }
     for (bool keepGoing = true; keepGoing; )
     {
         keepGoing = false;
@@ -147,10 +199,18 @@ void ComponentManager::initializeComponents()
         {
             if (!component->_initialized)
             {   //  Try this one!
+                if (progressListener != nullptr)
+                {
+                    progressListener(
+                        rr.string(RID(InitializingComponents)),
+                        component->displayName(),
+                        float(initializedComponents) / float(totalComponents));
+                }
                 try
                 {
                     component->initialize(); //  may throw
                     component->_initialized = true;
+                    initializedComponents++;
                     keepGoing = true;
                 }
                 catch (const Exception & ex)
@@ -167,6 +227,13 @@ void ComponentManager::initializeComponents()
             }
         }
 
+    }
+    if (progressListener != nullptr)
+    {
+        progressListener(
+            rr.string(RID(InitializingComponents)),
+            "",
+            1.0);
     }
 }
 

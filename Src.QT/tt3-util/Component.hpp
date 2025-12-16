@@ -163,6 +163,17 @@ namespace tt3::util
         TT3_UTILITY_CLASS(ComponentManager)
 
         //////////
+        //  Types
+    public:
+        /// \brief
+        ///     The listener to lengthy ComponentManager activities.
+        using ProgressListener =
+            std::function<void(
+                const QString & action,
+                const QString & context,
+                float ratioCompleted)>;
+
+        //////////
         //  Operations
     public:
         /// \brief
@@ -231,7 +242,12 @@ namespace tt3::util
         ///     This is done by loading those .DLL/.SO files in the
         ///     directory where the TT3 executable was launched from
         ///     which define Components.
-        static void     loadOptionalComponents();
+        /// \param progressListener
+        ///     The listener to notify of the component discovery
+        ///     progress, nullptr == none.
+        static void     discoverComponents(
+                                ProgressListener progressListener = nullptr
+                            );
 
         /// \brief
         ///     Initializes all known Components by calling
@@ -241,7 +257,12 @@ namespace tt3::util
         ///     are logged, but do not stop the initialization
         ///     process. This was as many Cmponents as possible
         ///     are initialized.
-        static void     initializeComponents();
+        /// \param progressListener
+        ///     The listener to notify of the component initialization
+        ///     progress, nullptr == none.
+        static void     initializeComponents(
+                                ProgressListener progressListener = nullptr
+                            );
 
         /// \brief
         ///     Deinitializes all known Components by calling

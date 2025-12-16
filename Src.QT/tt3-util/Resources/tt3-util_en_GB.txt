@@ -40,6 +40,10 @@ GB=United Kingdom
 DE=Germany
 RU=Russia
 
+[ComponentManager]
+DiscoveringComponents=Discovering components...
+InitializingComponents=Initializing components...
+
 [Errors]
 MissingResourceException=Missing resource [{1}]{2} in {0}
 ParseException=Error parsing "{0}" at position {1}
