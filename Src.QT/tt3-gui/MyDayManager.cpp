@@ -974,8 +974,8 @@ void MyDayManager::_quickPickButtonCustomContextMenuRequested(QPoint p)
         {   //  Re-create context menu
             _contextMenu.reset(new QMenu());
             QAction * modifyObjectAction = nullptr;
-            if (_contextMenuObject =
-                std::dynamic_pointer_cast<tt3::ws::PublicTaskImpl>(_quickPicksList[n]))
+            if ((_contextMenuObject =
+                 std::dynamic_pointer_cast<tt3::ws::PublicTaskImpl>(_quickPicksList[n])))
             {
                 try
                 {
@@ -999,8 +999,8 @@ void MyDayManager::_quickPickButtonCustomContextMenuRequested(QPoint p)
                             rr.string(RID(ViewPublicTaskAction)));
                 }
             }
-            else if (_contextMenuObject =
-                     std::dynamic_pointer_cast<tt3::ws::PrivateTaskImpl>(_quickPicksList[n]))
+            else if ((_contextMenuObject =
+                        std::dynamic_pointer_cast<tt3::ws::PrivateTaskImpl>(_quickPicksList[n])))
             {
                 try
                 {
@@ -1024,8 +1024,8 @@ void MyDayManager::_quickPickButtonCustomContextMenuRequested(QPoint p)
                             rr.string(RID(ViewPrivateTaskAction)));
                 }
             }
-            else if (_contextMenuObject =
-                     std::dynamic_pointer_cast<tt3::ws::PublicActivityImpl>(_quickPicksList[n]))
+            else if ((_contextMenuObject =
+                        std::dynamic_pointer_cast<tt3::ws::PublicActivityImpl>(_quickPicksList[n])))
             {
                 try
                 {
@@ -1049,8 +1049,8 @@ void MyDayManager::_quickPickButtonCustomContextMenuRequested(QPoint p)
                             rr.string(RID(ViewPublicActivityAction)));
                 }
             }
-            else if (_contextMenuObject =
-                     std::dynamic_pointer_cast<tt3::ws::PrivateActivityImpl>(_quickPicksList[n]))
+            else if ((_contextMenuObject =
+                        std::dynamic_pointer_cast<tt3::ws::PrivateActivityImpl>(_quickPicksList[n])))
             {
                 try
                 {

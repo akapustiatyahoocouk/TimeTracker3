@@ -31,9 +31,9 @@ namespace
     class DonutBreakdownMainSlice : public QPieSlice
     {
     public:
-        DonutBreakdownMainSlice(QPieSeries * breakdownSeries, QObject * parent)
+        DonutBreakdownMainSlice(QPieSeries * breakdownSeries_, QObject * parent)
             :   QPieSlice(parent),
-                breakdownSeries(breakdownSeries)
+                breakdownSeries(breakdownSeries_)
         {
         }
 

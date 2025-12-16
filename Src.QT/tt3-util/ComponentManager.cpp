@@ -133,7 +133,7 @@ void ComponentManager::discoverComponents(
     for (int i = 0; i < entryInfos.size(); i++)
     {
         auto entryInfo = entryInfos[i];
-        if (entryInfo.isFile() && !entryInfo.isSymbolicLink() &&
+        if (entryInfo.isFile() &&
 #if defined(Q_OS_WINDOWS)
             entryInfo.baseName().startsWith("tt3-") &&
             entryInfo.fileName().endsWith(".dll") &&

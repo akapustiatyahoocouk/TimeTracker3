@@ -105,7 +105,7 @@ void HRG::_HtmlGenerator::_completeStep()
     _completedSteps++;
     if (_progressListener != nullptr)
     {
-        _progressListener((double)(_completedSteps + 1) / (double)(_totalSteps + 1));
+        _progressListener(double(_completedSteps + 1) / double(_totalSteps + 1));
         QThread::msleep(5000 / (_totalSteps + 1));  //  aim at 5 seconds per save
     }
 }
@@ -325,7 +325,7 @@ void HRG::_HtmlGenerator::_generateParagraph(
             {
                 _generateText(text);
             }
-            else if (auto picture =
+            else if (/*auto picture =*/
                      dynamic_cast<const ReportPicture*>(spanElement))
             {
                 throw tt3::util::NotImplementedError();
@@ -473,7 +473,7 @@ void HRG::_HtmlGenerator::_generateTableOfContent(
         {
             _htmlBuilder.writeText(text->text());
         }
-        else if (auto picture =
+        else if (/*auto picture =*/
                  dynamic_cast<const ReportPicture*>(spanElement))
 
         {
