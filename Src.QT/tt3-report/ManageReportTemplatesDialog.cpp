@@ -616,7 +616,6 @@ void ManageReportTemplatesDialog::_PreviewGenerator::run()
     {
         HtmlReportFormat::instance()->saveReport(report.get(), _htmlFileName); //  may throw!
         //  ...and load HTML as a string
-        qDebug() << _htmlFileName;
         QFile file(_htmlFileName);
         if (file.open(QIODevice::ReadOnly | QIODevice::Text))
         {

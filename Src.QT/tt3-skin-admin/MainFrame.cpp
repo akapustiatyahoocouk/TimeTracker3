@@ -903,7 +903,8 @@ void MainFrame::_onActionRestart()
 
 void MainFrame::_onActionExit()
 {   //  Confirm...
-    if (tt3::gui::Component::Settings::instance()->confirmExit)
+    if (tt3::gui::Component::Settings::instance()->confirmExit &&
+        !tt3::util::SystemShutdownHandler::isShutdownInProgress())
     {
         tt3::gui::ConfirmExitDialog dlg(this);
         if (dlg.doModal() != tt3::gui::ConfirmExitDialog::Result::Yes)

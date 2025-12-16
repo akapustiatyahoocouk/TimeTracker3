@@ -28,6 +28,7 @@ SOURCES += \
     StandardMessageDigests.cpp \
     StandardSubsystems.cpp \
     SubsystemManager.cpp \
+    SystemShutdownHandler.cpp \
     TimeSpan.cpp \
     ToString.cpp \
     ToolManager.cpp
@@ -51,6 +52,7 @@ HEADERS += \
     Settings.hpp \
     Subsystem.hpp \
     Sync.hpp \
+    SystemShutdownHandler.hpp \
     ToString.hpp \
     Tool.hpp
 

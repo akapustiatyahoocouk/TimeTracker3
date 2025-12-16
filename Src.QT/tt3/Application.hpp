@@ -40,15 +40,6 @@ namespace tt3
         virtual ~Application();
 
         //////////
-        //  QApplication
-    public:
-        /// \brief
-        ///     Runs the application's event loop.
-        /// \return
-        ///     The application exit code.
-        int             exec();
-
-        //////////
         //  QGuiApplication
     public:
         /// \brief
@@ -62,13 +53,38 @@ namespace tt3
         virtual bool    notify(QObject * receiver, QEvent * event) override;
 
         //////////
+        //  QApplication
+    public:
+        /// \brief
+        ///     Runs the application's event loop.
+        /// \return
+        ///     The application exit code.
+        int             exec();
+
+        //////////
         //  Implementation
     private:
+        bool            _initialized = false;
+
         //  Helpers
+        void            _prepareForLogging();
         void            _selectActiveTheme();
         void            _selectActiveSkin();
         void            _initialize();
         void            _cleanup();
+
+        static void     _systemShutdownHook(void * cbData);
+
+        //////////
+        //  Loggins
+    private:
+        inline static QString   _logFileNameBase = "tt3-!.log";
+
+        static void     _logMessageOutput(
+                                QtMsgType type,
+                                const QMessageLogContext & context,
+                            const QString & msg
+                        );
     };
 }
 

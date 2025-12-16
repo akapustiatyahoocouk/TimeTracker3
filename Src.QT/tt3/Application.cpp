@@ -16,6 +16,9 @@
 //////////
 #include "tt3/API.hpp"
 using namespace tt3;
+#ifdef Q_OS_WINDOWS
+    #include <windows.h>
+#endif
 
 //////////
 //  Construction/destruction
@@ -27,28 +30,17 @@ Application::Application(int & argc, char ** argv)
     //  Don't setApplicationDisplayName() - will mess up dialog titles!
     setOrganizationName(tt3::util::ProductInformation::organizationName());
     setOrganizationDomain(tt3::util::ProductInformation::organizationDomain());
+
+    //  Prepare to handle system shutdown
+    tt3::util::SystemShutdownHandler::addShutdownHook(_systemShutdownHook, this);
+    tt3::util::SystemShutdownHandler::activate();
 }
 
 Application::~Application()
 {
-}
-
-//////////
-//  QApplication
-int Application::exec()
-{
-    try
-    {
-        _initialize();
-        int exitCode = QApplication::exec();    //  may throw
-        _cleanup();
-        return exitCode;
-    }
-    catch (...)
-    {   //  OOPS! Cleanup & re-throw
-        _cleanup();
-        throw;
-    }
+    //  Stop handling system shutdown
+    tt3::util::SystemShutdownHandler::deactivate();
+    tt3::util::SystemShutdownHandler::removeShutdownHook(_systemShutdownHook, this);
 }
 
 //////////
@@ -68,12 +60,14 @@ bool Application::notify(QObject * receiver, QEvent * event)
     catch (const tt3::util::Exception & ex)
     {
         qCritical() << ex;
+        //  TODO suppress dialog if system shutdown is in progress
         tt3::gui::ErrorDialog::show(QApplication::activeWindow(), ex);
         return false;
     }
     catch (const tt3::util::Error & ex)
     {
         qCritical() << ex;
+        //  TODO suppress dialog if system shutdown is in progress
         tt3::gui::ErrorDialog::show(QApplication::activeWindow(), ex);
         return false;
     }
@@ -85,7 +79,35 @@ bool Application::notify(QObject * receiver, QEvent * event)
 }
 
 //////////
+//  QApplication
+int Application::exec()
+{
+    try
+    {
+        _initialize();
+        int exitCode = QApplication::exec();    //  may throw
+        _cleanup();
+        return exitCode;
+    }
+    catch (...)
+    {   //  OOPS! Cleanup & re-throw.
+        //  TODO Perform quiet cleanup, as if the system shutdown was in progress
+        _cleanup();
+        throw;
+    }
+}
+
+//////////
 //  Implementation helpers
+void Application::_prepareForLogging()
+{
+    _logFileNameBase = //   TODO kill off QDir::home().filePath(".tt3-!.log");
+        QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation))
+            .filePath("tt3-!.log");
+    qInfo() << "_logFileNameBase = " + _logFileNameBase;
+    qInstallMessageHandler(_logMessageOutput);
+}
+
 void Application::_selectActiveTheme()
 {
     tt3::gui::ITheme * initialTheme =
@@ -138,6 +160,14 @@ void Application::_selectActiveSkin()
 
 void Application::_initialize()
 {
+    if (_initialized)
+    {   //  Nothing to do
+        return;
+    }
+    _initialized = true;
+
+    _prepareForLogging();
+
     QPixmap pm;
     pm.load(":/tt3/Resources/Images/Misc/Tt3Large.png");
     QIcon ic(pm);
@@ -198,6 +228,12 @@ void Application::_initialize()
 
 void Application::_cleanup()
 {
+    if (!_initialized)
+    {   //  Nothing to do
+        return;
+    }
+    _initialized = false;
+
     //  If there is a "current activity", record & stop it.
     try
     {
@@ -206,7 +242,10 @@ void Application::_cleanup()
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Report!
         qCritical() << ex;
-        tt3::gui::ErrorDialog::show(ex);
+        if (!tt3::util::SystemShutdownHandler::isShutdownInProgress())
+        {   //  No modal popups during system shutdown
+            tt3::gui::ErrorDialog::show(ex);
+        }
     }
 
     //  If there's a "current" workspace, close it
@@ -221,7 +260,10 @@ void Application::_cleanup()
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Report!
             qCritical() << ex;
-            tt3::gui::ErrorDialog::show(ex);
+            if (!tt3::util::SystemShutdownHandler::isShutdownInProgress())
+            {   //  No modal popups during system shutdown
+                tt3::gui::ErrorDialog::show(ex);
+            }
         }
     }
 
@@ -233,6 +275,77 @@ void Application::_cleanup()
     //  Deinitialize all Components
     tt3::util::ComponentManager::saveComponentSettings();
     tt3::util::ComponentManager::deinitializeComponents();
+}
+
+void Application::_systemShutdownHook(void * cbData)
+{
+    qInfo() << "Application::_systemShutdownHook() called";
+    //  Must cleanup on system shutdown.
+    //  This specifically saves the "current activity"
+    //  and closes the "current workspace", flushing all changes
+    auto app = static_cast<Application*>(cbData);
+    app->_cleanup();
+}
+
+//////////
+//  Logging
+void Application::_logMessageOutput(
+        QtMsgType type,
+        const QMessageLogContext & context,
+        const QString & msg
+    )
+{
+    QByteArray localMsg = msg.toLocal8Bit();
+    QString txt;
+
+    //  Determine message type and format accordingly
+    switch (type)
+    {
+        case QtDebugMsg:
+            txt = QString("DEBUG: %1").arg(localMsg.constData());
+            break;
+        case QtInfoMsg:
+            txt = QString("INFO: %1").arg(localMsg.constData());
+            break;
+        case QtWarningMsg:
+            txt = QString("WARNING: %1").arg(localMsg.constData());
+            break;
+        case QtCriticalMsg:
+            txt = QString("CRITICAL: %1").arg(localMsg.constData());
+            break;
+        case QtFatalMsg:
+            txt = QString("FATAL: %1").arg(localMsg.constData());
+            break;
+        default:    //  Be defensive!
+            txt = QString("UNEXPECTED: %1").arg(localMsg.constData());
+            break;
+    }
+
+    // Add timestamp and context (file/line number) to the log message
+    QString contextInfo = QString(" (%1:%2, %3)").arg(context.file).arg(context.line).arg(context.function);
+    QString currentDateTime = QDateTime::currentDateTimeUtc().toString("yyyy-MM-dd hh:mm:ss") + " UTC";
+    //QString finalMessage = QString("%1 %2 %3\n").arg(currentDateTime, txt, contextInfo);
+    QString finalMessage = QString("%1 %2\n").arg(currentDateTime, txt);
+
+    //  Open the log file and write the message.
+    //  Opening/closing the log file on every message
+    //  is SLOW, but we don't expect many of those
+    QFile logFile(_logFileNameBase.replace("!", QDateTime::currentDateTimeUtc().toString("yyyy-MM-dd")));
+    if (logFile.open(QIODevice::WriteOnly | QIODevice::Append))
+    {
+        QTextStream logStream(&logFile);
+        logStream << finalMessage;
+        logStream.flush();
+        logFile.close();
+    }
+
+    //  Echo to stdout
+    QString stdoutMessage = "\n" + txt + "\nAT " + contextInfo + "\n";
+#ifdef Q_OS_WINDOWS
+    OutputDebugStringW(stdoutMessage.toStdWString().c_str());
+#else   //  Linux, etc.
+    QTextStream(stdout) << stdoutMessage;
+#endif
 }
 
 //  End of tt3/Application.cpp

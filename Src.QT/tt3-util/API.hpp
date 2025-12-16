@@ -46,6 +46,7 @@
 
 #include <QtCore/qglobal.h>
 
+#include <QAbstractNativeEventFilter>
 #include <QApplication>
 #include <QAction>
 #include <QBoxLayout>
@@ -127,6 +128,7 @@
 //  Platform API
 #include "tt3-util/Sync.hpp"
 #include "tt3-util/Locale.hpp"
+#include "tt3-util/SystemShutdownHandler.hpp"
 
 //  Data types
 #include "tt3-util/DateTime.hpp"

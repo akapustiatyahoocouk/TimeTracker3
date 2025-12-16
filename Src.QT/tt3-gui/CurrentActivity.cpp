@@ -151,7 +151,8 @@ bool CurrentActivity::replaceWith(
             QString comment;
             tt3::ws::Activities eventActivities;
             if (with != nullptr &&
-                with->requireCommentOnStart(credentials))  //  may throw
+                with->requireCommentOnStart(credentials) && //  may throw
+                !tt3::util::SystemShutdownHandler::isShutdownInProgress())
             {
                 EnterActivityStartCommentDialog dlg(
                     QApplication::activeWindow(),
@@ -170,7 +171,8 @@ bool CurrentActivity::replaceWith(
                 }
             }
             else if (impl->activity != nullptr &&
-                     impl->activity->requireCommentOnStop(credentials))   //  may throw
+                     impl->activity->requireCommentOnStop(credentials) &&   //  may throw
+                     !tt3::util::SystemShutdownHandler::isShutdownInProgress())
             {
                 EnterActivityStopCommentDialog dlg(
                     QApplication::activeWindow(),
@@ -194,7 +196,7 @@ bool CurrentActivity::replaceWith(
             if (impl->activity != nullptr)
             {
                 Q_ASSERT(callerAccount != nullptr);
-                callerAccount->createWork(
+                callerAccount->createWork(  //  may throw
                     credentials,
                     impl->lastChangedAt,
                     now,
