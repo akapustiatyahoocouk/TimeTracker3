@@ -169,7 +169,7 @@ void ConfigureRestoreDialog::_restoreFromPushButtonClicked()
             this,
             resources->string(RSID(ConfigureRestoreDialog), RID(RestoreFromDialogTitle)),
             /*dir =*/ QString(),
-            resources->string(RSID(ConfigureRestoreDialog), RID(RestoreFromDialogFilter), RestoreTool::PreferredFilenameExtension));
+            resources->string(RSID(ConfigureRestoreDialog), RID(RestoreFromDialogFilter), RestoreTool::PreferredExtension));
     if (!path.isEmpty())
     {
         _ui->restoreFromLineEdit->setText(path);

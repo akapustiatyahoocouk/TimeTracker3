@@ -19,7 +19,7 @@
 
 namespace tt3::gui
 {
-    class TT3_GUI_PUBLIC ManageQuickPicksListDialog;
+    class ManageQuickPicksListDialog;
 
     namespace Ui { class PrivateActivityManager; }
 
@@ -31,7 +31,7 @@ namespace tt3::gui
         Q_OBJECT
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PrivateActivityManager)
 
-        friend class TT3_GUI_PUBLIC ManageQuickPicksListDialog;
+        friend class ManageQuickPicksListDialog;
 
         //////////
         //  Construction/destruction

@@ -29,6 +29,8 @@ namespace tt3::skin::admin
         Q_OBJECT
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(MainFrame)
 
+        friend class Skin;  //  TODO keep ?
+
         //////////
         //  Construction
     public:

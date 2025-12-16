@@ -18,10 +18,6 @@
 using namespace tt3::db::xml;
 
 //////////
-//  Constants
-const QString DatabaseType::PreferredFilenameExtension = ".tt3-xml";
-
-//////////
 //  Sigleton
 TT3_IMPLEMENT_SINGLETON(DatabaseType)
 
@@ -106,11 +102,17 @@ auto DatabaseType::enterNewDatabaseAddress(
             parent,
             resources->string(RSID(EnterNewDatabaseAddressDialog), RID(Title)),
             /*dir =*/ QString(),
-            resources->string(RSID(EnterNewDatabaseAddressDialog), RID(Filter), PreferredFilenameExtension));
+            resources->string(RSID(EnterNewDatabaseAddressDialog), RID(Filter), PreferredExtension));
     if (path.isEmpty())
     {
         return nullptr;
     }
+    //  On e.g. Linux we may need to auto-add the extension
+    if (QFileInfo(path).suffix().isEmpty())
+    {
+        path += PreferredExtension;
+    }
+    //  Go!
     return parseDatabaseAddress(path);
 }
 
@@ -125,7 +127,7 @@ auto DatabaseType::enterExistingDatabaseAddress(
             parent,
             resources->string(RSID(EnterExistingDatabaseAddressDialog), RID(Title)),
             /*dir =*/ QString(),
-            resources->string(RSID(EnterExistingDatabaseAddressDialog), RID(Filter), PreferredFilenameExtension));
+            resources->string(RSID(EnterExistingDatabaseAddressDialog), RID(Filter), PreferredExtension));
     if (path.isEmpty())
     {
         return nullptr;

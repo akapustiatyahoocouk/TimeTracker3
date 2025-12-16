@@ -29,7 +29,7 @@ namespace tt3::report
         Q_OBJECT
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ManageReportTemplatesDialog)
 
-        class TT3_REPORT_PUBLIC _PreviewGenerator;
+        class _PreviewGenerator;
 
         //////////
         //  Construction/destruction

@@ -25,13 +25,6 @@ namespace tt3::gui
     extern CurrentActivity theCurrentActivity;
 }
 
-QFont doubleFontSize(QFont font)
-{
-    QFont result = font;
-    result.setPointSize(font.pointSize() * 2);
-    return result;
-}
-
 //////////
 //  Construction/destruction
 FullScreenReminderWindow::FullScreenReminderWindow(
@@ -111,9 +104,9 @@ void FullScreenReminderWindow::refresh()
             _ui->stopPushButton->setEnabled(true);
 
             _ui->currentActivityLabel->setFont(
-                doubleFontSize(_labelDecorations.emphasisFont));
+                _doubleFontSize(_labelDecorations.emphasisFont));
             _ui->durationLabel->setFont(
-                doubleFontSize(_labelDecorations.emphasisFont));
+                _doubleFontSize(_labelDecorations.emphasisFont));
             _pushButtonDecorations.applyTo(
                 _ui->stopPushButton,
                 PushButtonDecorations::ButtonRole::LiveStatusButton);
@@ -128,9 +121,9 @@ void FullScreenReminderWindow::refresh()
             palette.setColor(QPalette::WindowText, _labelDecorations.errorForeground);
 
             _ui->currentActivityLabel->setFont(
-                doubleFontSize(_labelDecorations.font));
+                _doubleFontSize(_labelDecorations.font));
             _ui->durationLabel->setFont(
-                doubleFontSize(_labelDecorations.font));
+                _doubleFontSize(_labelDecorations.font));
             _pushButtonDecorations.applyTo(
                 _ui->stopPushButton,
                 PushButtonDecorations::ButtonRole::ErrorButton);
@@ -143,14 +136,23 @@ void FullScreenReminderWindow::refresh()
         _ui->stopPushButton->setEnabled(false);
 
         _ui->currentActivityLabel->setFont(
-            doubleFontSize(_labelDecorations.font));
+            _doubleFontSize(_labelDecorations.font));
         _ui->durationLabel->setFont(
-            doubleFontSize(_labelDecorations.font));
+            _doubleFontSize(_labelDecorations.font));
         _pushButtonDecorations.applyTo(
             _ui->stopPushButton,
             PushButtonDecorations::ButtonRole::DisabledButton);
     }
     this->setPalette(palette);
+}
+
+//////////
+//  Implementation helpers
+QFont FullScreenReminderWindow::_doubleFontSize(QFont font)
+{
+    QFont result = font;
+    result.setPointSize(font.pointSize() * 2);
+    return result;
 }
 
 //////////

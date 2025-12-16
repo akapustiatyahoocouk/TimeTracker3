@@ -19,9 +19,9 @@
 
 namespace tt3::gui
 {
-    class TT3_GUI_PUBLIC SelectProjectParentDialog;
-    class TT3_GUI_PUBLIC SelectWorkloadDialog;
-    class TT3_GUI_PUBLIC SelectWorkloadsDialog;
+    class SelectProjectParentDialog;
+    class SelectWorkloadDialog;
+    class SelectWorkloadsDialog;
 
     namespace Ui { class ProjectManager; }
 

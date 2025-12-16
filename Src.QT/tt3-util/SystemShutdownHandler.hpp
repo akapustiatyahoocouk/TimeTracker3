@@ -58,7 +58,12 @@ namespace tt3::util
         //  Implementation
     private:
         struct _Impl;
+
+        //  Helpers
         static _Impl *  _impl();
+#ifdef Q_OS_LINUX
+        static void     _sigtermHandler(int);
+#endif
     };
 }
 

@@ -54,34 +54,34 @@ void PushButtonDecorations::applyTo(
     )
 {
     Q_ASSERT(pushButton != nullptr);
-    QFont font;
+    QFont actualFont;
     QColor textColor, backColor;
     switch (buttonRole)
     {
         case ButtonRole::NormalButton:
-            font = this->font;
+            actualFont = this->font;
             textColor = this->foreground;
             backColor = this->background;
             break;
         case ButtonRole::DisabledButton:
-            font = this->font;
+            actualFont = this->font;
             textColor = this->disabledForeground;
             backColor = this->background;
             break;
         case ButtonRole::LiveStatusButton:
-            font = this->emphasisFont;
+            actualFont = this->emphasisFont;
             textColor = this->foreground;
             backColor = this->liveStatusBackground;
             break;
         case ButtonRole::ErrorButton:
         default:
-            font = this->font;
+            actualFont = this->font;
             textColor = this->errorForeground;
             backColor = this->errorBackground;
             break;
     }
     QString styleSheet;
-    if (QFontInfo (font).bold())
+    if (QFontInfo (actualFont).bold())
     {
         styleSheet += "font: bold;";
     }

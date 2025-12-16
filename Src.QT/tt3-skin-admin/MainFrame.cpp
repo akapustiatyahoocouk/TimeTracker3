@@ -32,7 +32,7 @@ MainFrame::MainFrame(QWidget * parent)
     _labelDecorations = tt3::gui::LabelDecorations(_ui->currentActivityLabel);
     _applyCurrentLocale();
 
-    _loadPosition();
+    //  TODO kill ? _loadPosition();
     _updateMruWorkspaces();
 
     //  Create custom controls
@@ -130,7 +130,6 @@ MainFrame::MainFrame(QWidget * parent)
 
     //  Done
     _ui->managersTabWidget->setCurrentIndex(Component::Settings::instance()->mainFrameCurrentTab);
-    _trackPosition = true;
     refresh();
 
     //  Start refreshing on timer
@@ -280,6 +279,8 @@ void MainFrame::_loadPosition()
     {
         this->showMaximized();
     }
+    //  Loaded
+    _trackPosition = true;
 }
 
 void MainFrame::_savePosition()
@@ -561,12 +562,12 @@ void MainFrame::_refreshToolsMenu()
                 this,
                 [&]()
                 {
-                    if (QAction * action = qobject_cast<QAction*>( sender()))
+                    if (QAction * menuItemAction = qobject_cast<QAction*>( sender()))
                     {
-                        auto tool = action->data().value<tt3::util::ITool*>();
+                        auto actionTool = menuItemAction->data().value<tt3::util::ITool*>();
                         try
                         {
-                            tool->run(this);    //  may throw
+                            actionTool->run(this);  //  may throw
                         }
                         catch (const tt3::util::Exception & ex)
                         {
@@ -878,8 +879,8 @@ void MainFrame::_onActionDestroyWorkspace()
         tt3::ws::WorkspaceAddress workspaceAddress = dlg.selectedWorkspaceAddress();
         Q_ASSERT(workspaceAddress != nullptr);
         //  Always confirm!
-        tt3::gui::ConfirmDestroyWorkspaceDialog dlg(this, workspaceAddress);
-        if (dlg.doModal() == tt3::gui::ConfirmDestroyWorkspaceDialog::Result::Yes)
+        tt3::gui::ConfirmDestroyWorkspaceDialog dlg1(this, workspaceAddress);
+        if (dlg1.doModal() == tt3::gui::ConfirmDestroyWorkspaceDialog::Result::Yes)
         {   //  Do it!
             _destroyWorkspace(workspaceAddress);
         }

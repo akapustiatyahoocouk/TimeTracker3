@@ -19,7 +19,7 @@
 
 namespace tt3::gui
 {
-    class TT3_GUI_PUBLIC QuickReportView;
+    class QuickReportView;
 
     /// \class IQuickReport tt3-gui/API.hpp
     /// \brief

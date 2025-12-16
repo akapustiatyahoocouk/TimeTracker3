@@ -19,8 +19,8 @@
 
 namespace tt3::gui
 {
-    class TT3_GUI_PUBLIC SelectPrivateTaskParentDialog;
-    class TT3_GUI_PUBLIC ManageQuickPicksListDialog;
+    class SelectPrivateTaskParentDialog;
+    class ManageQuickPicksListDialog;
 
     namespace Ui { class PrivateTaskManager; }
 

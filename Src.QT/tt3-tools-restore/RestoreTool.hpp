@@ -30,7 +30,7 @@ namespace tt3::tools::restore
         /// \brief
         ///     The preferred extension for TT3 database
         ///     backup files; starts with '.'.
-        static const QString    PreferredFilenameExtension;
+        inline static const QString    PreferredExtension = ".tt3-backup";
 
         //////////
         //  ITool

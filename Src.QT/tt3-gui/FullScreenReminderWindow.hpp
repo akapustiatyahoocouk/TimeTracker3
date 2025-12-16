@@ -63,6 +63,12 @@ namespace tt3::gui
         void            refresh();
 
         //////////
+        //  Implementation
+    private:
+        //  Helpers
+        static QFont    _doubleFontSize(QFont font);
+
+        //////////
         //  Controls
     private:
         Ui::FullScreenReminderWindow *const _ui;

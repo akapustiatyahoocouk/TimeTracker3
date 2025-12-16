@@ -17,7 +17,7 @@
 
 namespace tt3::gui
 {
-    class TT3_GUI_PUBLIC PreferencesEditor;
+    class PreferencesEditor;
 
     /// \class Preferences tt3-gui/API.hpp
     /// \brief

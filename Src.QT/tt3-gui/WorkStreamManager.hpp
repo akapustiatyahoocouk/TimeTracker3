@@ -19,8 +19,8 @@
 
 namespace tt3::gui
 {
-    class TT3_GUI_PUBLIC SelectWorkloadDialog;
-    class TT3_GUI_PUBLIC SelectWorkloadsDialog;
+    class SelectWorkloadDialog;
+    class SelectWorkloadsDialog;
 
     namespace Ui { class WorkStreamManager; }
 

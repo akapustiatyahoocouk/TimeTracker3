@@ -37,7 +37,7 @@ namespace tt3::db::xml
         /// \brief
         ///     The preferred extension for TT3 XML
         ///     database files; starts with '.'.
-        static const QString    PreferredFilenameExtension;
+        inline static const QString    PreferredExtension = ".tt3-xml";
 
         //////////
         //  tt3::db::api::IDatabaseType (general)

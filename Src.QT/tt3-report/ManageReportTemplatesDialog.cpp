@@ -323,6 +323,11 @@ void ManageReportTemplatesDialog::_exportPushButtonClicked()
         {   //  User has cancelled
             return;
         }
+        //  On e.g. Linux we may need to auto-add the extension
+        if (QFileInfo(path).suffix().isEmpty())
+        {
+            path += IReportTemplate::PreferredExtension;
+        }
         //  Do it!
         QFile file(path);
         if (file.open(QIODevice::WriteOnly | QIODevice::Text))

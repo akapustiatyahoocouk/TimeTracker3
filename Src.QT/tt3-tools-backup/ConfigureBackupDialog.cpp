@@ -228,9 +228,14 @@ void ConfigureBackupDialog::_backupToPushButtonClicked()
             this,
             resources->string(RSID(ConfigureBackupDialog), RID(BackupToDialogTitle)),
             /*dir =*/ QString(),
-            resources->string(RSID(ConfigureBackupDialog), RID(BackupToDialogFilter), BackupTool::PreferredFilenameExtension));
+            resources->string(RSID(ConfigureBackupDialog), RID(BackupToDialogFilter), BackupTool::PreferredExtension));
     if (!path.isEmpty())
     {
+        //  On e.g. Linux we may need to auto-add the extension
+        if (QFileInfo(path).suffix().isEmpty())
+        {
+            path += BackupTool::PreferredExtension;
+        }
         _ui->backupToLineEdit->setText(path);
         _refresh();
     }

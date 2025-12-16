@@ -129,6 +129,8 @@ namespace tt3::report
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicCharacterStyle)
 
+        friend class BasicReportTemplate;
+
         //////////
         //  Construction/destruction - from friends only
     private:

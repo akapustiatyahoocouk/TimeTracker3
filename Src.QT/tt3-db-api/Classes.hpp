@@ -59,7 +59,7 @@ namespace tt3::db::api
     using Beneficiaries = QSet<IBeneficiary*>;
 
     //  Exceptins & notifications
-    class TT3_DB_API_PUBLIC DatabaseException;
+    class DatabaseException;
 
     //  Helper types
     class Oid;

@@ -19,7 +19,7 @@
 
 namespace tt3::util
 {
-    class TT3_UTIL_PUBLIC AbstractSetting;
+    class AbstractSetting;
 
     /// \class Settings tt3-util/API.hpp
     /// \brief A bunch of related settings.

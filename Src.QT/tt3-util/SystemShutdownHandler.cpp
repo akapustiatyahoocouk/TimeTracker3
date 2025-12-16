@@ -18,6 +18,8 @@
 using namespace tt3::util;
 #if defined(Q_OS_WINDOWS)
     #include <windows.h>
+#elif defined(Q_OS_LINUX)
+    #include <signal.h>
 #else
     #error Unsupported platform
 #endif
@@ -25,6 +27,7 @@ using namespace tt3::util;
 struct SystemShutdownHandler::_Impl
 #if defined(Q_OS_WINDOWS)
     :   public QAbstractNativeEventFilter
+#elif defined(Q_OS_LINUX)
 #else
     #error Unsupported platform
 #endif
@@ -41,6 +44,7 @@ struct SystemShutdownHandler::_Impl
         {   //  GUI applications ONLY!
             app->removeNativeEventFilter(this);
         }
+#elif defined(Q_OS_LINUX)
 #else
     #error Unsupported platform
 #endif
@@ -95,6 +99,7 @@ public:
         }
         return false;   //  Let Qt handle other events
     }
+#elif defined(Q_OS_LINUX)
 #else
     #error Unsupported platform
 #endif
@@ -152,6 +157,8 @@ void SystemShutdownHandler::activate()
         {   //  GUI applications ONLY!
             app->installNativeEventFilter(impl);
         }
+#elif defined(Q_OS_LINUX)
+        signal(SIGTERM, _sigtermHandler);
 #else
     #error Unsupported platform
 #endif
@@ -172,6 +179,8 @@ void SystemShutdownHandler::deactivate()
         {   //  GUI applications ONLY!
             app->removeNativeEventFilter(impl);
         }
+#elif defined(Q_OS_LINUX)
+        signal(SIGTERM, SIG_DFL);
 #else
     #error Unsupported platform
 #endif
@@ -194,5 +203,34 @@ SystemShutdownHandler::_Impl * SystemShutdownHandler::_impl()
     static _Impl impl;
     return &impl;
 }
+
+//  Helpers
+#ifdef Q_OS_LINUX
+void SystemShutdownHandler::_sigtermHandler(int)
+{
+    _Impl * impl = _impl();
+
+    qInfo() << "Received SIGTERM. Performing cleanup and quitting.";
+    impl->shutdownInProgress = true;
+    //  Call all shutdown handlers ONCE
+    auto hh = impl->shutdownHooks;
+    auto pp = impl->shutdownHookParams;
+    impl->shutdownHooks.clear();
+    impl->shutdownHookParams.clear();
+    Q_ASSERT(hh.size() == pp.size());
+    for (int i = 0; i < hh.size(); i++)
+    {
+        try
+        {
+            (*(hh[i]))(pp[i]);
+        }
+        catch (...)
+        {   //  OOPS! Must suppress!
+        }
+    }
+    //  Finish with the message
+    qApp->quit();   //  ...to stop the event loop
+}
+#endif
 
 //  End of tt3-util/SystemShutdownHandler.cpp

@@ -18,10 +18,6 @@
 using namespace tt3::tools::restore;
 
 //////////
-//  Constants
-const QString RestoreTool::PreferredFilenameExtension = ".tt3-backup";
-
-//////////
 //  Singleton
 TT3_IMPLEMENT_SINGLETON(RestoreTool)
 RestoreTool::RestoreTool() {}
