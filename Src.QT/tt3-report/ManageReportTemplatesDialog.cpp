@@ -93,14 +93,14 @@ ManageReportTemplatesDialog::ManageReportTemplatesDialog(
 ManageReportTemplatesDialog::~ManageReportTemplatesDialog()
 {
     //  Need to kill & delete all preview generators
-    for (auto previewGenerator : _previewGenerators)
+    for (auto previewGenerator : std::as_const(_previewGenerators))
     {
         previewGenerator->terminate();
         previewGenerator->wait();
         delete previewGenerator;
     }
     //  Remove any temporary preview files created
-    for (auto previewFileName : _previewFileNames)
+    for (const auto & previewFileName : std::as_const(_previewFileNames))
     {
         QFile(previewFileName).remove();
     }

@@ -1,0 +1,4 @@
+[Component]
+DisplayName=TimeTracker3 Arbeitszeitübersichtsbericht
+Description=Erfasst Arbeitszeiten gruppiert nach Zeitraum und Aktivität
+Copyright=Copyright (C) {0}, Andrey Kapustin
