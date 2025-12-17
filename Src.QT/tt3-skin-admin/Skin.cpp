@@ -72,7 +72,6 @@ void Skin::activate()
     {
         _mainFrame = new MainFrame();
         _mainFrame->show();
-        _mainFrame->_loadPosition();
     }
     _mainFrame->activateWindow();
     _mainFrame->raise();

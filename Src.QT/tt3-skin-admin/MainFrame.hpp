@@ -29,18 +29,19 @@ namespace tt3::skin::admin
         Q_OBJECT
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(MainFrame)
 
-        friend class Skin;  //  TODO keep ?
+        //////////
+        //  Constants
+    public:
+        /// \brief
+        ///     The minimum size of the main frame.
+        inline static const QSize MinimumSize {320, 200};
 
         //////////
         //  Construction
     public:
         /// \brief
         ///     Constrctrs the frame.
-        /// \param parent
-        ///     The parent for the frame, nullptr == none.
-        explicit MainFrame(
-                QWidget * parent = nullptr
-            );
+        MainFrame();
 
         /// \brief
         ///     The class destructor.
@@ -71,6 +72,14 @@ namespace tt3::skin::admin
         //  Operations
     public:
         /// \brief
+        ///     Shows this frame; has no effect if already visible.
+        void            show();
+
+        /// \brief
+        ///     Hides this frame; has no effect if already invisible.
+        void            hide();
+
+        /// \brief
         ///     Refreshes this main frame and controls within
         void            refresh();
 
@@ -83,6 +92,8 @@ namespace tt3::skin::admin
         //  Helpers
         void            _loadPosition();
         void            _savePosition();
+        void            _ensureWithinScreenBounds();
+        void            _setFrameGeometry(const QRect & bounds);
 
         bool            _createWorkspace(tt3::ws::WorkspaceAddress workspaceAddress,
                               const QString & adminUser,
@@ -103,6 +114,7 @@ namespace tt3::skin::admin
         //  Controls
     private:
         Ui::MainFrame *const    _ui;
+        QTimer                  _trackPositionTimer;
         QTimer                  _savePositionTimer;
         QTimer                  _refreshTimer;
 
@@ -144,6 +156,7 @@ namespace tt3::skin::admin
         //////////
         //  Signal handlers
     private slots:
+        void            _trackPositionTimerTimeout();
         void            _savePositionTimerTimeout();
         void            _onActionNewWorkspace();
         void            _onActionOpenWorkspace();
