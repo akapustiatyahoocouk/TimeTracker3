@@ -30,6 +30,8 @@ MainFrame::MainFrame()
         _refreshTimer(this)
 {
     _ui->setupUi(this);
+    this->setMinimumSize(MinimumSize);
+
     _labelDecorations = tt3::gui::LabelDecorations(_ui->currentActivityLabel);
     _applyCurrentLocale();
 

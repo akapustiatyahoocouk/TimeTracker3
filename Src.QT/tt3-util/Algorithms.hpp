@@ -1,5 +1,5 @@
 //
-//  tt3-util/Collections.cpp - Collections helpers
+//  tt3-util/Algorithms.cpp - Helper algorithms
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -85,6 +85,27 @@ namespace tt3::util
         }
         return dst;
     }
+
+    /// \class NaturalStringOrder tt3-util/API.hpp
+    /// \brief Implements natural string order.
+    class TT3_UTIL_PUBLIC NaturalStringOrder final
+    {
+        TT3_UTILITY_CLASS(NaturalStringOrder)
+
+        //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Compares two strings using natural order.
+        /// \param a
+        ///     The 1st string to compare.
+        /// \param b
+        ///     The 2nd string to compare.
+        /// \return
+        ///     True if the 1st string is "naturally less"
+        ///     that the 2nd string, else false.
+        static bool     less(const QString & a, const QString & b);
+    };
 }
 
-//  End of tt3-util/Collections.cpp
+//  End of tt3-util/Algorithms.cpp

@@ -20,6 +20,7 @@ SOURCES += \
     LocaleManager.cpp \
     MessageDigestManager.cpp \
     Mutex.cpp \
+    NaturalStringOrder.cpp \
     ProductInformation.cpp \
     ResourceReader.cpp \
     Settings.cpp \
@@ -35,8 +36,8 @@ SOURCES += \
 
 HEADERS += \
     API.hpp \
+    Algorithms.hpp \
     Classes.hpp \
-    Collections.hpp \
     Component.hpp \
     DateTime.hpp \
     Exceptions.hpp \

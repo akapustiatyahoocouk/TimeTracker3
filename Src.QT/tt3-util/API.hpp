@@ -53,6 +53,7 @@
 #include <QChart>
 #include <QChartView>
 #include <QClipboard>
+#include <QCollator>
 #include <QDateTime>
 #include <QDebug>
 #include <QDesktopServices>
@@ -138,7 +139,7 @@
 //  Algorithms
 #include "tt3-util/ToString.hpp"
 #include "tt3-util/FromString.hpp"
-#include "tt3-util/Collections.hpp"
+#include "tt3-util/Algorithms.hpp"
 
 //  Stock objects
 #include "tt3-util/MessageDigest.hpp"
