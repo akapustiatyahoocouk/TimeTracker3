@@ -48,7 +48,9 @@ CreatePrivateTaskDialog::CreatePrivateTaskDialog(
         usersList.end(),
         [&](auto a, auto b)
         {
-            return a->realName(_credentials) < b->realName(_credentials);
+            return tt3::util::NaturalStringOrder::less(
+                a->realName(_credentials),
+                b->realName(_credentials));
         });
     for (const auto & u : std::as_const(usersList))
     {
@@ -66,7 +68,9 @@ CreatePrivateTaskDialog::CreatePrivateTaskDialog(
         activityTypes.end(),
         [&](auto a, auto b)
         {
-            return a->displayName(_credentials) < b->displayName(_credentials); //  may throw
+            return tt3::util::NaturalStringOrder::less(
+                a->displayName(_credentials),
+                b->displayName(_credentials)); //  may throw
         });
     _ui->activityTypeComboBox->addItem(
         "-",

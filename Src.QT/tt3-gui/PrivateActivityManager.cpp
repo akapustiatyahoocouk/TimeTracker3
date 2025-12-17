@@ -292,7 +292,9 @@ auto PrivateActivityManager::_createWorkspaceModel(
             workspaceModel->userModels.begin(),
             workspaceModel->userModels.end(),
             [&](auto a, auto b)
-            { return a->text < b->text; });
+            {
+                return tt3::util::NaturalStringOrder::less(a->text, b->text);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {
@@ -336,7 +338,9 @@ auto PrivateActivityManager::_createUserModel(
             userModel->privateActivityModels.begin(),
             userModel->privateActivityModels.end(),
             [&](auto a, auto b)
-            { return a->text < b->text; });
+            {
+                return tt3::util::NaturalStringOrder::less(a->text, b->text);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {

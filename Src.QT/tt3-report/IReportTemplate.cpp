@@ -408,7 +408,9 @@ void IReportTemplate::serialize(QDomElement & element) const
         stylesList.end(),
         [](auto a, auto b)
         {
-            return a->name() < b->name();
+            return tt3::util::NaturalStringOrder::less(
+                a->name().toString(),
+                b->name().toString());
         });
     for (IStyle * style : stylesList)
     {

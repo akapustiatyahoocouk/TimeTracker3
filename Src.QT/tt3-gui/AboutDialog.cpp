@@ -98,7 +98,10 @@ void AboutDialog::_showLicensePushButtonClicked()
         std::sort(
             _licenses.begin(),
             _licenses.end(),
-            [](auto a, auto b) { return a->displayName() < b->displayName(); });
+            [](const auto & a, const auto & b)
+            {
+                return tt3::util::NaturalStringOrder::less(a->displayName(), b->displayName());
+            });
     }
 
     //  If there is only ONE license, there's no need to choose

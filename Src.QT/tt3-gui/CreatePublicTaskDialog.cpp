@@ -51,7 +51,9 @@ CreatePublicTaskDialog::CreatePublicTaskDialog(
         activityTypes.end(),
         [&](auto a, auto b)
         {
-            return a->displayName(_credentials) < b->displayName(_credentials);
+            return tt3::util::NaturalStringOrder::less(
+                a->displayName(_credentials),
+                b->displayName(_credentials));  //  may throw
         });
     _ui->activityTypeComboBox->addItem(
         "-",

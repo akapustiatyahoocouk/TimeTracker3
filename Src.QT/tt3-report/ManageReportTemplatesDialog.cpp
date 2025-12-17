@@ -237,7 +237,9 @@ void ManageReportTemplatesDialog::_refreshReportTemplateItems(QTreeWidgetItem * 
         reportTemplates.end(),
         [](auto a, auto b)
         {
-            return a->displayName() < b->displayName();
+            return tt3::util::NaturalStringOrder::less(
+                a->displayName(),
+                b->displayName());
         });
     //  Make sure the parent item has a proper number
     //  of child (report template) items...

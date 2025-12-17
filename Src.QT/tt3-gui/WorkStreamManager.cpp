@@ -232,7 +232,9 @@ auto WorkStreamManager::_createWorkspaceModel(
             workspaceModel->workStreamModels.begin(),
             workspaceModel->workStreamModels.end(),
             [&](auto a, auto b)
-            { return a->text < b->text; });
+            {
+                return tt3::util::NaturalStringOrder::less(a->text, b->text);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {

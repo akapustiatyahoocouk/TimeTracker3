@@ -271,7 +271,9 @@ auto ProjectManager::_createWorkspaceModel(
             workspaceModel->projectModels.begin(),
             workspaceModel->projectModels.end(),
             [&](auto a, auto b)
-            { return a->text < b->text; });
+            {
+                return tt3::util::NaturalStringOrder::less(a->text, b->text);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {
@@ -316,7 +318,9 @@ auto ProjectManager::_createProjectModel(
             projectModel->childModels.begin(),
             projectModel->childModels.end(),
             [&](auto a, auto b)
-            { return a->text < b->text; });
+            {
+                return tt3::util::NaturalStringOrder::less(a->text, b->text);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {

@@ -49,7 +49,9 @@ CreateAccountDialog::CreateAccountDialog(
         usersList.end(),
         [&](auto a, auto b)
         {
-            return a->realName(_credentials) < b->realName(_credentials);
+            return tt3::util::NaturalStringOrder::less(
+                a->realName(_credentials),
+                b->realName(_credentials));
         });
     for (const auto & u : std::as_const(usersList))
     {

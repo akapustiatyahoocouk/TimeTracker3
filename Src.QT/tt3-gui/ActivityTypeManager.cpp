@@ -222,8 +222,8 @@ ActivityTypeManager::_WorkspaceModel ActivityTypeManager::_createWorkspaceModel(
         std::sort(
             workspaceModel->activityTypeModels.begin(),
             workspaceModel->activityTypeModels.end(),
-            [&](auto a, auto b)
-            {
+            [&](const auto & a, const auto & b)
+            {   //  TODO use same signature & order for all std::sprts
                 return tt3::util::NaturalStringOrder::less(a->text, b->text);
             });
     }

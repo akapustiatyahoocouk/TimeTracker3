@@ -318,7 +318,9 @@ auto PrivateTaskManager::_createWorkspaceModel(
             workspaceModel->userModels.begin(),
             workspaceModel->userModels.end(),
             [&](auto a, auto b)
-            { return a->text < b->text; });
+            {
+                return tt3::util::NaturalStringOrder::less(a->text, b->text);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {
@@ -362,7 +364,9 @@ auto PrivateTaskManager::_createUserModel(
             userModel->privateTaskModels.begin(),
             userModel->privateTaskModels.end(),
             [&](auto a, auto b)
-            { return a->text < b->text; });
+            {
+                return tt3::util::NaturalStringOrder::less(a->text, b->text);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {
@@ -424,7 +428,9 @@ auto PrivateTaskManager::_createPrivateTaskModel(
             privateTaskModel->childModels.begin(),
             privateTaskModel->childModels.end(),
             [&](auto a, auto b)
-            { return a->text < b->text; });
+            {
+                return tt3::util::NaturalStringOrder::less(a->text, b->text);
+            });
     }
     catch (const tt3::util::Exception & ex)
     {

@@ -39,7 +39,8 @@ SelectWorkspaceDialog::SelectWorkspaceDialog(
         workspaceTypes.end(),
         [](auto a, auto b)
         {
-            return a->displayName() < b->displayName(); // Example: ascending order
+            return tt3::util::NaturalStringOrder::less(
+                a->displayName(), b->displayName()); 
         });
     for (auto workspaceType : std::as_const(workspaceTypes))
     {

@@ -48,7 +48,9 @@ CreatePrivateActivityDialog::CreatePrivateActivityDialog(
         usersList.end(),
         [&](auto a, auto b)
         {
-            return a->realName(_credentials) < b->realName(_credentials);
+            return tt3::util::NaturalStringOrder::less(
+                a->realName(_credentials),
+                b->realName(_credentials));
         });
     for (const auto & u : std::as_const(usersList))
     {
@@ -80,7 +82,9 @@ CreatePrivateActivityDialog::CreatePrivateActivityDialog(
         activityTypes.end(),
         [&](auto a, auto b)
         {
-            return a->displayName(_credentials) < b->displayName(_credentials);
+            return tt3::util::NaturalStringOrder::less(
+                a->displayName(_credentials),
+                b->displayName(_credentials));
         });
     _ui->activityTypeComboBox->addItem(
         "-",

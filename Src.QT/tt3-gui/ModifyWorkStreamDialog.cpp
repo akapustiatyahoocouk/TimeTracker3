@@ -125,7 +125,9 @@ void ModifyWorkStreamDialog::_setSelectedBeneficiaries(
         {
             try
             {
-                return a->displayName(_credentials) < b->displayName(_credentials); //  may throw
+                return tt3::util::NaturalStringOrder::less(
+                    a->displayName(_credentials),
+                    b->displayName(_credentials)); //  may throw
             }
             catch (tt3::util::Exception & ex)
             {   //  OOPS! Report & recover with a stable sort order

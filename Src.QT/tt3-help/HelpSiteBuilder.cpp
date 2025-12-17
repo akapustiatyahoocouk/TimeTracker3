@@ -76,7 +76,7 @@ auto HelpSiteBuilder::_detectHelpSources(
     std::sort(
         result.begin(),
         result.end(),
-        [](auto a, auto b)
+        [](const auto & a, const auto & b)
         {
             return a.zipFileName < b.zipFileName;
         });

@@ -50,9 +50,11 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
     std::sort(
         _locales.begin(),
         _locales.end(),
-        [](auto a, auto b)
+        [](const auto & a, const auto & b)
         {
-            return tt3::util::LocaleManager::displayName(a) < tt3::util::LocaleManager::displayName(b);
+            return tt3::util::NaturalStringOrder::less(
+                tt3::util::LocaleManager::displayName(a),
+                tt3::util::LocaleManager::displayName(b));
         });
 
     for (const QLocale & locale : std::as_const(_locales))
@@ -68,7 +70,12 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
     std::sort(
         _skins.begin(),
         _skins.end(),
-        [](auto a, auto b) { return a->displayName() < b->displayName(); });
+        [](auto a, auto b)
+        {
+            return tt3::util::NaturalStringOrder::less(
+                a->displayName(),
+                b->displayName());
+        });
 
     for (ISkin * skin : std::as_const(_skins))
     {

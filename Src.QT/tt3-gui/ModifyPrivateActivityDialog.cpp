@@ -51,7 +51,9 @@ ModifyPrivateActivityDialog::ModifyPrivateActivityDialog(
         usersList.end(),
         [&](auto a, auto b)
         {
-            return a->realName(_credentials) < b->realName(_credentials);   //  may throw
+            return tt3::util::NaturalStringOrder::less(
+                a->realName(_credentials),
+                b->realName(_credentials)); //  may throw
         });
     for (const auto & u : std::as_const(usersList))
     {
@@ -83,7 +85,9 @@ ModifyPrivateActivityDialog::ModifyPrivateActivityDialog(
         activityTypes.end(),
         [&](auto a, auto b)
         {
-            return a->displayName(_credentials) < b->displayName(_credentials);
+            return tt3::util::NaturalStringOrder::less(
+                a->displayName(_credentials),
+                b->displayName(_credentials));
         });
     _ui->activityTypeComboBox->addItem(
         "-",

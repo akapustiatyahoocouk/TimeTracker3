@@ -53,7 +53,9 @@ ModifyAccountDialog::ModifyAccountDialog(
         usersList.end(),
         [&](auto a, auto b)
         {
-            return a->realName(_credentials) < b->realName(_credentials);   //  may throw
+            return tt3::util::NaturalStringOrder::less(
+                a->realName(_credentials),
+                b->realName(_credentials));  //  may throw
         });
     for (const auto & user : std::as_const(usersList))
     {

@@ -96,7 +96,7 @@ void LocalSiteHelpLoader::_loadTopicFromDirectory(
         entries.end(),
         [](const auto & a, const auto & b)
         {
-            return a < b;
+            return tt3::util::NaturalStringOrder::less(a, b);
         });
     for (const auto & entry : std::as_const(entries))
     {

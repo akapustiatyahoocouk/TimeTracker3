@@ -55,7 +55,12 @@ ShowConfigurationDialog::ShowConfigurationDialog(QWidget * parent)
     std::sort(
         subsystems.begin(),
         subsystems.end(),
-        [](auto a, auto b) { return a->displayName() < b->displayName(); });
+        [](auto a, auto b)
+        {
+            return tt3::util::NaturalStringOrder::less(
+                a->displayName(),
+                b->displayName());
+        });
     for (tt3::util::ISubsystem * subsystem : std::as_const(subsystems))
     {
         QTreeWidgetItem * subsystemItem = new QTreeWidgetItem();
@@ -68,7 +73,12 @@ ShowConfigurationDialog::ShowConfigurationDialog(QWidget * parent)
         std::sort(
             components.begin(),
             components.end(),
-            [](auto a, auto b) { return a->mnemonic() < b->mnemonic(); });
+            [](auto a, auto b)
+            {
+                return tt3::util::NaturalStringOrder::less(
+                    a->mnemonic().toString(),
+                    b->mnemonic().toString());
+            });
         for (tt3::util::IComponent * component : std::as_const(components))
         {
             QTreeWidgetItem * componentItem = new QTreeWidgetItem();

@@ -223,7 +223,9 @@ void QuickReportBrowser::_applyCurrentLocale()
             quickReportsList.end(),
             [](auto a, auto b)
             {
-                return a->displayName() < b->displayName();
+                return tt3::util::NaturalStringOrder::less(
+                    a->displayName(),
+                    b->displayName());
             });
         _ui->quickReportComboBox->clear();
         for (IQuickReport * quickReport : std::as_const(quickReportsList))

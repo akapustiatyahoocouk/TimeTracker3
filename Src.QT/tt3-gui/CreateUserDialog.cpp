@@ -65,7 +65,9 @@ CreateUserDialog::CreateUserDialog(QWidget * parent,
         _locales.end(),
         [](auto a, auto b)
         {
-            return tt3::util::LocaleManager::displayName(a) < tt3::util::LocaleManager::displayName(b);
+            return tt3::util::NaturalStringOrder::less(
+                tt3::util::LocaleManager::displayName(a),
+                tt3::util::LocaleManager::displayName(b));
         });
     for (const QLocale & locale : std::as_const(_locales))
     {
@@ -213,7 +215,9 @@ void CreateUserDialog::_setSelectedWorkloads(
         {
             try
             {
-                return a->displayName(_credentials) < b->displayName(_credentials); //  may throw
+                return tt3::util::NaturalStringOrder::less(
+                    a->displayName(_credentials),
+                    b->displayName(_credentials)); //  may throw
             }
             catch (tt3::util::Exception & ex)
             {   //  OOPS! Report & recover with a stable sort order

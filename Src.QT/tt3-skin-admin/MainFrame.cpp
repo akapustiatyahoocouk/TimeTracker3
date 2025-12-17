@@ -568,7 +568,9 @@ void MainFrame::_refreshToolsMenu()
         tools.end(),
         [](auto a, auto b)
         {
-            return a->displayName() < b->displayName();
+            return tt3::util::NaturalStringOrder::less(
+                a->displayName(),
+                b->displayName());
         });
     for (auto tool : std::as_const(tools))
     {
