@@ -1,5 +1,5 @@
 //
-//  tt3-report-worksummary/API.hpp - TT3 work summary report
+//  tt3-report-worksummary/ReportConfiguration.hpp - The Work Summary report configuration
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,22 +14,20 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
 
-//////////
-//  Dependencies
-#include "tt3-report/API.hpp"
-#include "tt3-gui/API.hpp"
-#include "tt3-ws/API.hpp"
-#include "tt3-util/API.hpp"
+namespace tt3::report::worksummary
+{
+    /// \class ReportConfiguration tt3-report-worksummary/API.hpp
+    /// \brief The "Work Summary" report configuration.
+    class TT3_REPORT_WORKSUMMARY_PUBLIC ReportConfiguration final
+        :   public tt3::report::ReportConfiguration
+    {
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        ReportConfiguration();
+        virtual ~ReportConfiguration();
+    };
+}
 
-//////////
-//  tt3-report-worksummary components
-#include "tt3-report-worksummary/Linkage.hpp"
-#include "tt3-report-worksummary/Component.hpp"
-
-#include "tt3-report-worksummary/ReportConfiguration.hpp"
-#include "tt3-report-worksummary/ReportConfigurationEditor.hpp"
-#include "tt3-report-worksummary/ReportType.hpp"
-
-//  End of tt3-report-worksummary/API.hpp
+//  End of tt3-report-worksummary/ReportType.hpp

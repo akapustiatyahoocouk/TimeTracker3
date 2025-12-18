@@ -2,3 +2,7 @@
 DisplayName=TimeTracker3 work summary report
 Description=Reports working time grouped by period and activity
 Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[ReportType]
+DisplayName=Work summary
+Description=Reports working time grouped by period and activity

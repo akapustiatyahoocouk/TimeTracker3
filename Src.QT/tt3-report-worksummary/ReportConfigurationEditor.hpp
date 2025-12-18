@@ -1,0 +1,63 @@
+//
+//  tt3-report-worksummary/ReportConfigurationEditor.hpp - tt3-report-worksummary report configuration editor
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+#pragma once
+#include "tt3-report-worksummary/API.hpp"
+
+namespace tt3::report::worksummary
+{
+    namespace Ui { class ReportConfigurationEditor; }
+
+    /// \class ReportConfigurationEditor tt3-report-worksummary/API.hpp
+    /// \brief the configuration for a "Wprk Summary" report.
+    class TT3_REPORT_WORKSUMMARY_PUBLIC ReportConfigurationEditor
+        :   public tt3::report::ReportConfigurationEditor
+    {
+        Q_OBJECT
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportConfigurationEditor)
+
+        //////////
+        //  Construction/destruction
+    public:
+        /// \brief
+        ///     Constructs the report configuration editor.
+        /// \param parent
+        ///     The parent for the widget; nullptr == none.
+        explicit ReportConfigurationEditor(
+                QWidget * parent
+            );
+
+        /// \brief
+        ///     The class destructor.
+        virtual ~ReportConfigurationEditor();
+
+        //////////
+        //  tt3::report::ReportConfigurationEditor
+    public:
+        virtual void    loadControlValues() override;
+        virtual void    saveControlValues() override;
+        virtual void    resetControlValues() override;
+        virtual bool    isValid() const override;
+
+        //////////
+        //  Controls
+    private:
+        Ui::ReportConfigurationEditor *const    _ui;
+    };
+}
+
+//  End of tt3-report-worksummary/ReportConfigurationEditor.hpp
+

@@ -2,3 +2,7 @@
 DisplayName=TimeTracker3 Arbeitszeitübersichtsbericht
 Description=Erfasst Arbeitszeiten gruppiert nach Zeitraum und Aktivität
 Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[ReportType]
+DisplayName=Arbeitsübersicht
+Description=Berichtet die Arbeitszeit gruppiert nach Zeitraum und Aktivität

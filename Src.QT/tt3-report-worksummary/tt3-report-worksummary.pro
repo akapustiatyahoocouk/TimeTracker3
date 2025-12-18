@@ -4,12 +4,17 @@ TEMPLATE = lib
 DEFINES += TT3_REPORT_WORKSUMMARY_LIBRARY
 
 SOURCES += \
-    Component.cpp
+    Component.cpp \
+    ReportConfigurationEditor.cpp \
+    ReportType.cpp
 
 HEADERS += \
     API.hpp \
     Component.hpp \
-    Linkage.hpp
+    Linkage.hpp \
+    ReportConfiguration.hpp \
+    ReportConfigurationEditor.hpp \
+    ReportType.hpp
 
 LIBS += \
     -ltt3-report$$TARGET_SUFFIX \
@@ -20,3 +25,6 @@ LIBS += \
 
 RESOURCES += \
     tt3-report-worksummary.qrc
+
+FORMS += \
+    ReportConfigurationEditor.ui

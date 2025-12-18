@@ -1,5 +1,5 @@
 //
-//  tt3-report-worksummary/API.hpp - TT3 work summary report
+//  tt3-report/ReportConfigurationEditor.cpp - tt3::report::ReportConfigurationEditor class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,22 +14,19 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
-
-//////////
-//  Dependencies
 #include "tt3-report/API.hpp"
-#include "tt3-gui/API.hpp"
-#include "tt3-ws/API.hpp"
-#include "tt3-util/API.hpp"
+using namespace tt3::report;
 
 //////////
-//  tt3-report-worksummary components
-#include "tt3-report-worksummary/Linkage.hpp"
-#include "tt3-report-worksummary/Component.hpp"
+//  Construction/destruction
+ReportConfigurationEditor::ReportConfigurationEditor(
+        QWidget * parent
+    ) : QWidget(parent)
+{
+}
 
-#include "tt3-report-worksummary/ReportConfiguration.hpp"
-#include "tt3-report-worksummary/ReportConfigurationEditor.hpp"
-#include "tt3-report-worksummary/ReportType.hpp"
+ReportConfigurationEditor::~ReportConfigurationEditor()
+{
+}
 
-//  End of tt3-report-worksummary/API.hpp
+//  End of tt3-report/ReportConfigurationEditor.cpp

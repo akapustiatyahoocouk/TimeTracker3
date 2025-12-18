@@ -107,9 +107,13 @@ namespace tt3::skin::admin
         void            _updateMruWorkspaces();
         void            _refreshToolsMenu();
         void            _refreshToolsMenuItemAvailability();
+        void            _refreshReportsMenu();
         void            _refreshCurrentActivityControls();
         void            _applyCurrentLocale();
 
+        void            _generateReport(
+                                tt3::report::IReportType * reportType
+                            );
         //////////
         //  Controls
     private:

@@ -55,6 +55,7 @@ SOURCES += \
     Report.cpp \
     ReportAnchor.cpp \
     ReportBlockElement.cpp \
+    ReportConfigurationEditor.cpp \
     ReportElement.cpp \
     ReportExternalLink.cpp \
     ReportFlowElement.cpp \
@@ -91,6 +92,8 @@ HEADERS += \
     Linkage.hpp \
     ManageReportTemplatesDialog.hpp \
     Report.hpp \
+    ReportConfiguration.hpp \
+    ReportConfigurationEditor.hpp \
     ReportFormat.hpp \
     ReportTemplate.hpp \
     ReportTemplateManagerTool.hpp \

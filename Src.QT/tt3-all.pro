@@ -27,6 +27,6 @@ tt3-tools-restore.depends = tt3-gui tt3-ws tt3-util
 tt3-report-worksummary.depends = tt3-report tt3-gui tt3-ws tt3-util
 tt3-report.depends = tt3-gui tt3-ws tt3-util
 
-tt3-skin-admin.depends = tt3-gui tt3-ws tt3-util
+tt3-skin-admin.depends = tt3-report tt3-gui tt3-ws tt3-util
 
 tt3-help.depends = tt3-util

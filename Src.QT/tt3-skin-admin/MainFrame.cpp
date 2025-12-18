@@ -616,6 +616,66 @@ void MainFrame::_refreshToolsMenuItemAvailability()
     _ui->menuTools->setEnabled(someToolEnabled);
 }
 
+void MainFrame::_refreshReportsMenu()
+{
+    //  The last two items in the Reports menu must be
+    //  *   A separator, and
+    //  *   A "Quick reports" menu item.
+    //  All items before that are report items, one per
+    //  report type, ant must be destroyed & re-created
+    auto actions = _ui->menuReports->actions();
+    Q_ASSERT(actions.size() >= 2 &&
+             actions[actions.size() - 2]->isSeparator() &&
+             !actions[actions.size() - 1]->isSeparator());
+    for (int i = 0; i < actions.size() - 2; i++)
+    {
+        _ui->menuReports->removeAction(actions[i]); //  deletes the action
+    }
+    //  Need to re-create the Report menu actions
+    //  from available report types, sorted by display name
+    auto reportTypes = tt3::report::ReportTypeManager::allReportTypes();
+    QList<tt3::report::IReportType*> reportTypesList(reportTypes.cbegin(), reportTypes.cend());
+    std::sort(
+        reportTypesList.begin(),
+        reportTypesList.end(),
+        [](auto a, auto b)
+        {
+            return tt3::util::NaturalStringOrder::less(a->displayName(), b->displayName());
+        });
+    for (int i = 0; i < reportTypesList.size(); i++)
+    {
+        auto action =
+            new QAction(
+                reportTypesList[i]->smallIcon(),
+                reportTypesList[i]->displayName());
+        action->setData(QVariant::fromValue(reportTypesList[i]));
+        _ui->menuReports->insertAction(
+            actions[actions.size() - 2],    //  separator
+            action);
+        //  Set up report invocation handler
+        connect(action,
+                &QAction::triggered,
+                this,
+                [&]()
+                {
+                    if (QAction * menuItemAction = qobject_cast<QAction*>( sender()))
+                    {
+                        auto actionReportType = menuItemAction->data().value<tt3::report::IReportType*>();
+                        try
+                        {
+                            _generateReport(actionReportType);  //  may throw
+                        }
+                        catch (const tt3::util::Exception & ex)
+                        {
+                            qCritical() << ex;
+                            tt3::gui::ErrorDialog::show(this, ex);
+                        }
+                        refresh();
+                    }
+                });
+    }
+}
+
 void MainFrame::_refreshCurrentActivityControls()
 {
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
@@ -814,6 +874,15 @@ void MainFrame::_applyCurrentLocale()
         rr.string(RID(StopActivityPushButton)));
 
     _refreshToolsMenu();
+    _refreshReportsMenu();
+}
+
+void MainFrame::_generateReport(
+        tt3::report::IReportType * reportType
+    )
+{
+    //  TODO  implement properly
+    tt3::gui::MessageDialog::show(this, "REPORT", reportType->displayName());
 }
 
 //////////

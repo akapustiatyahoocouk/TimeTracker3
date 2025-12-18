@@ -43,12 +43,30 @@ bool ReportTypeManager::registerReportType(IReportType * reportType)
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
 
-    if (impl->registry.contains(reportType->mnemonic()))
+    auto key = reportType->mnemonic();
+    if (impl->registry.contains(key))
     {
         return reportType == impl->registry[reportType->mnemonic()];
     }
-    impl->registry[reportType->mnemonic()] = reportType;
+    impl->registry[key] = reportType;
     return true;
+}
+
+bool ReportTypeManager::unregisterReportType(IReportType * reportType)
+{
+    Q_ASSERT(reportType != nullptr);
+
+    _Impl * impl = _impl();
+    tt3::util::Lock _(impl->guard);
+
+    auto key = reportType->mnemonic();
+    if (impl->registry.contains(key) &&
+        impl->registry[key] == reportType)
+    {   //  Guard against an impersonator
+        impl->registry.remove(key);
+        return true;
+    }
+    return false;
 }
 
 IReportType * ReportTypeManager::findReportType(const tt3::util::Mnemonic & mnemonic)

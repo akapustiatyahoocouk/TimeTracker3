@@ -78,10 +78,12 @@ const Component::Settings * Component::settings() const
 
 void Component::initialize()
 {
+    tt3::report::ReportTypeManager::registerReportType(ReportType::instance());
 }
 
 void Component::deinitialize()
 {
+    tt3::report::ReportTypeManager::unregisterReportType(ReportType::instance());
 }
 
 //////////

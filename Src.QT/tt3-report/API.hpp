@@ -40,6 +40,8 @@
 #include "tt3-report/ReportFormat.hpp"
 #include "tt3-report/HtmlReportFormat.hpp"
 
+#include "tt3-report/ReportConfiguration.hpp"
+#include "tt3-report/ReportConfigurationEditor.hpp"
 #include "tt3-report/ReportType.hpp"
 
 #include "tt3-report/ReportTemplateManagerTool.hpp"

@@ -14,8 +14,6 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
-#include "tt3-report/API.hpp"
 
 namespace tt3::report
 {
@@ -80,11 +78,26 @@ namespace tt3::report
         virtual QIcon   largeIcon() const = 0;
 
         /// \brief
+        ///     Creates a new configuration editor widget
+        ///     for a report of this type.
+        /// \param parent
+        ///     The [initial] parent for the new widget; nullptr == none.
+        /// \return
+        ///     The newly created configuration editor widget
+        ///     or nullptr if reports of this type have no
+        ///     editable configuration.
+        virtual auto    createConfigurationEditor(
+                                QWidget * parent
+                            ) -> ReportConfigurationEditor * = 0;
+
+        /// \brief
         ///     Generates the report.
         /// \param workspace
         ///     The workspace to report from.
         /// \param credentials
         ///     The credentials to use for data access.
+        /// \param configuration
+        ///     The report configuration;
         /// \param progressListener
         ///     The callback to use for save progress notification,
         ///     nullptr == don't notify.
@@ -94,15 +107,19 @@ namespace tt3::report
         ///     If a data access error occurs.
         /// \exception ReportException
         ///     If a report generation error occurs.
+        ///     This specifically includes the case when
+        ///     the specified "configuration" is incompatible
+        ///     with this report type.
         virtual Report *generateReport(
                                 const tt3::ws::Workspace & workspace,
                                 const tt3::ws::Credentials & credentials,
+                                const ReportConfiguration & configuration,
                                 ProgressListener progressListener
                             ) = 0;
     };
 
     /// \class ReportTypeManager tt3-report/API.hpp
-    /// \brief The manager of known ReportTypes
+    /// \brief The manager of known ReportTypes.
     class TT3_REPORT_PUBLIC ReportTypeManager final
     {
         TT3_UTILITY_CLASS(ReportTypeManager)
