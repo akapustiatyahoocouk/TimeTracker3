@@ -23,5 +23,9 @@
         <file>Resources/Images/Actions/OkSmall.png</file>
         <file>Resources/Images/Actions/RemoveLarge.png</file>
         <file>Resources/Images/Actions/RemoveSmall.png</file>
+        <file>Resources/Images/Actions/BrowseLarge.png</file>
+        <file>Resources/Images/Actions/BrowseSmall.png</file>
+        <file>Resources/Images/Reports/ReportLarge.png</file>
+        <file>Resources/Images/Reports/ReportSmall.png</file>
     </qresource>
 </RCC>

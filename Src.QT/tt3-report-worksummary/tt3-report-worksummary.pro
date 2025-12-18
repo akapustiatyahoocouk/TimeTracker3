@@ -16,6 +16,8 @@ HEADERS += \
     ReportConfigurationEditor.hpp \
     ReportType.hpp
 
+PRECOMPILED_HEADER = API.hpp
+
 LIBS += \
     -ltt3-report$$TARGET_SUFFIX \
     -ltt3-gui$$TARGET_SUFFIX \

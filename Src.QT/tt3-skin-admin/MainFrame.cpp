@@ -881,8 +881,12 @@ void MainFrame::_generateReport(
         tt3::report::IReportType * reportType
     )
 {
+    tt3::report::CreateReportDialog dlg(this, reportType);
+    if (dlg.doModal() != tt3::report::CreateReportDialog::Result::Ok)
+    {   //  User has cancelled
+        return;
+    }
     //  TODO  implement properly
-    tt3::gui::MessageDialog::show(this, "REPORT", reportType->displayName());
 }
 
 //////////

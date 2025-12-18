@@ -46,5 +46,6 @@
 
 #include "tt3-report/ReportTemplateManagerTool.hpp"
 #include "tt3-report/ManageReportTemplatesDialog.hpp"
+#include "tt3-report/CreateReportDialog.hpp"
 
 //  End of tt3-report/API.hpp

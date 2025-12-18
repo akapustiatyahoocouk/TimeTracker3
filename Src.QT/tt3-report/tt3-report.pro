@@ -17,6 +17,7 @@ SOURCES += \
     BorderType.cpp \
     ColorSpec.cpp \
     Component.cpp \
+    CreateReportDialog.cpp \
     CustomBlockStyle.cpp \
     CustomCharacterStyle.cpp \
     CustomLinkStyle.cpp \
@@ -85,6 +86,7 @@ HEADERS += \
     BasicReportTemplate.hpp \
     Classes.hpp \
     Component.hpp \
+    CreateReportDialog.hpp \
     CustomReportTemplate.hpp \
     DataTypes.hpp \
     Exceptions.hpp \
@@ -105,6 +107,7 @@ RESOURCES += \
     tt3-report.qrc
 
 FORMS += \
+    CreateReportDialog.ui \
     ManageReportTemplatesDialog.ui
 
 LIBS += \
