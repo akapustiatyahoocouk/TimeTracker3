@@ -71,6 +71,16 @@ CancelPushButton=Cancel
 SelectDestinationTitle=Select report destination
 SelectDestinationFilter={0} (*{1});;All files (*.*)
 
+[ReportProgressDialog]
+Title=Generating report
+GeneratingLabel=Generating: {0}
+WritingToLabel=Saving report to: {0}
+CancelPushButton=Cancel
+
+[ReportCancelledDialog]
+Title=Report cancelled
+Message=The report generation has been cancelled
+
 [Errors]
 InvalidReportTemplateException=Invalid report template
 ReportTemplateAlreadyExistsException=Report template {0} ({1}) already exists

@@ -38,6 +38,15 @@ namespace tt3::report
         static const int PreferredStageDurationMs = 5000;
 
         //////////
+        //  Types
+    public:
+        /// \brief
+        ///     Thrown from the reportXXXProgress if
+        ///     the user presses the Cancel button.
+        /// TODO kill off
+       struct CancelRequest {};
+
+        //////////
         //  Construction/destruction
     public:
         /// \brief
@@ -71,16 +80,31 @@ namespace tt3::report
         void            reportGenerationProgress(float ratioCompleted);
         void            reportSaveProgress(float ratioCompleted);
 
+        /// \brief
+        ///     Checks if the user has requested cancellation
+        ///     of the restore process.
+        /// \return
+        ///     True if the user has requested cancellation of
+        ///     the restore process, else false.
+        bool            cancelRequested() const { return _cancelRequested; }
+
         //////////
         //  Implementation
     private:
         float           _lastGenerationRatioCompleted = 0.0f;
         float           _lastSaveRatioCompleted = 0.0f;
+        bool            _cancelRequested = false;
 
         //////////
         //  Controls
     private:
         Ui::ReportProgressDialog *const _ui;
+
+        //////////
+        //  Signal handlers
+    private slots:
+        virtual void    accept() override;
+        virtual void    reject() override;
     };
 }
 

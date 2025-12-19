@@ -1,6 +1,6 @@
 //
 //  tt3-report/ReportProgressDialog.cpp - tt3::report::ReportProgressDialog class implementation
-//  TODO localize via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -29,20 +29,36 @@ ReportProgressDialog::ReportProgressDialog(
 {
     Q_ASSERT(reportType != nullptr);
 
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ReportProgressDialog));
+
     _ui->setupUi(this);
+    Qt::WindowFlags flags = windowFlags();
+    flags |= Qt::CustomizeWindowHint;
+    flags |= Qt::WindowStaysOnTopHint;
+    flags &= ~Qt::WindowSystemMenuHint;
+    flags &= ~Qt::WindowTitleHint;
+    flags &= ~Qt::WindowCloseButtonHint;
+    setWindowFlags(flags);
+    setWindowTitle(rr.string(RID(Title)));
 
     //  Set static control values
-    //  TODO properly
     _ui->generatingLabel->setText(
-        "Generating " + reportType->displayName());
+        rr.string(RID(GeneratingLabel),
+                  reportType->displayName()));
     _ui->writingToLabel->setText(
-        "Writing to " + reportDestination);
+        rr.string(RID(WritingToLabel),
+                  reportDestination));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setIcon(QIcon(":/tt3-report/Resources/Images/Actions/CancelSmall.png"));
 
     //  Adjust controls
     _ui->generatingProgressBar->setValue(0);
     _ui->writingToProgressBar->setValue(0);
-    _ui->writingToLabel->setVisible(false);
-    _ui->writingToProgressBar->setVisible(false);
+    _ui->writingToLabel->setEnabled(false);
+    _ui->writingToProgressBar->setEnabled(false);
 
     //  Done
     adjustSize();
@@ -94,10 +110,10 @@ void ReportProgressDialog::reportSaveProgress(float ratioCompleted)
 {
     ratioCompleted = std::max(0.0f, std::min(1.0f, ratioCompleted));
     //  Update the UI
-    if (!_ui->writingToLabel->isVisible())
+    if (!_ui->writingToLabel->isEnabled())
     {
-        _ui->writingToLabel->setVisible(true);
-        _ui->writingToProgressBar->setVisible(true);
+        _ui->writingToLabel->setEnabled(true);
+        _ui->writingToProgressBar->setEnabled(true);
     }
     _ui->writingToProgressBar->setValue(int(ratioCompleted * 100));
     //  Delay is calculate automatically,
@@ -110,6 +126,17 @@ void ReportProgressDialog::reportSaveProgress(float ratioCompleted)
     {   //  We need at least 1 guaranteed repaint
         QCoreApplication::processEvents();
     }   while (QDateTime::currentDateTimeUtc() < resumeAt);
+}
+
+//////////
+//  Signal handlers
+void ReportProgressDialog::accept()
+{   //  Don't close on Enter
+}
+
+void ReportProgressDialog::reject()
+{   //  Record a cancellation request
+    _cancelRequested = true;
 }
 
 //  End of tt3-report/ReportProgressDialog.cpp

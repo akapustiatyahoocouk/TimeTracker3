@@ -89,6 +89,8 @@ namespace tt3::report
         IReportTemplate*_reportTemplate = nullptr;
         QString         _reportDestination;
 
+        struct _CancelRequest {};
+
         //  Helpers
         IReportType *   _selectedReportType() const;
         void            _setSelectedReportType(IReportType * reportType);

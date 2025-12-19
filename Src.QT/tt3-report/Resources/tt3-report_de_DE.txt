@@ -71,6 +71,16 @@ CancelPushButton=Abbrechen
 SelectDestinationTitle=Berichtsziel auswählen
 SelectDestinationFilter={0} (*{1});;Alle Dateien (*.*)
 
+[ReportProgressDialog]
+Title=Bericht wird generiert
+GeneratingLabel=Generiert: {0}
+WritingToLabel=Speichern unter: {0}
+CancelPushButton=Abbrechen
+
+[ReportCancelledDialog]
+Title=Bericht abgebrochen
+Message=Die Berichtserstellung wurde abgebrochen
+
 [Errors]
 InvalidReportTemplateException=Ungültige Berichtsvorlage
 ReportTemplateAlreadyExistsException=Berichtsvorlage {0} ({1}) existiert bereits

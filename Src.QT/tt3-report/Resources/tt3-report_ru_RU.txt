@@ -64,12 +64,22 @@ ReportTypeLabel=Тип отчета:
 ReportFormatLabel=Формат отчета:
 ReportTemplateLabel=Шаблон отчета:
 DestinationLabel=Место назначения:
-BrowsePushButton=Обзор
+BrowsePushButton=Выбрать
 ConfiguratiokGroupBox=Конфигурация отчета
 OkPushButton=ОК
 CancelPushButton=Отмена
 SelectDestinationTitle=Выберите место назначения отчета
 SelectDestinationFilter={0} (*{1});;Все файлы (*.*)
+
+[ReportProgressDialog]
+Title=Создание отчета
+GeneratingLabel=Создание: {0}
+WritingToLabel=Сохранение отчета в: {0}
+CancelPushButton=Отмена
+
+[ReportCancelledDialog]
+Title=Отчет отменен
+Message=Создание отчета отменено
 
 [Errors]
 InvalidReportTemplateException=Неверный шаблон отчета

@@ -141,7 +141,16 @@ CreateReportDialog::CreateReportDialog(
     _ui->configuratiokGroupBox->setLayout(_configuratiokGroupBoxLayout);
 
     //  Adjust controls
-    //  TODO Remember last used report type/format/template
+    //  Remember last used report type/format/template
+    _setSelectedReportType(
+        ReportTypeManager::findReportType(
+            Component::Settings::instance()->lastUsedReportType));
+    _setSelectedReportFormat(
+        ReportFormatManager::findReportFormat(
+            Component::Settings::instance()->lastUsedReportFormat));
+    _setSelectedReportTemplate(
+        ReportTemplateManager::findReportTemplate(
+            Component::Settings::instance()->lastUsedReportTemplate));
     if (reportType != nullptr)
     {   //  Specified explicitly
         _setSelectedReportType(reportType);
@@ -321,7 +330,12 @@ void CreateReportDialog::accept()
     _reportFormat = _selectedReportFormat();
     _reportTemplate = _selectedReportTemplate();
     _reportDestination = _ui->destinationLineEdit->text().trimmed();
-    Q_ASSERT(_reportType != nullptr && _reportFormat != nullptr);
+    Q_ASSERT(_reportType != nullptr &&
+             _reportFormat != nullptr &&
+             _reportTemplate != nullptr);
+    Component::Settings::instance()->lastUsedReportType = _reportType->mnemonic();
+    Component::Settings::instance()->lastUsedReportFormat = _reportFormat->mnemonic();
+    Component::Settings::instance()->lastUsedReportTemplate = _reportTemplate->mnemonic();
 
     //  Save editor states before proceeding
     for (auto editor : _configurationEditors.values())
@@ -344,6 +358,10 @@ void CreateReportDialog::accept()
                 [&](float ratioCompleted)
                 {
                     dlg.reportGenerationProgress(ratioCompleted);
+                    if (dlg.cancelRequested())
+                    {
+                        throw _CancelRequest();
+                    }
                 })
         };
         dlg.reportGenerationProgress(1.0f);
@@ -355,13 +373,29 @@ void CreateReportDialog::accept()
                 [&](float ratioCompleted)
                 {
                     dlg.reportSaveProgress(ratioCompleted);
+                    if (dlg.cancelRequested())
+                    {
+                        throw _CancelRequest();
+                    }
                 });
             dlg.reportSaveProgress(1.0f);
         }
         //  All done
         dlg.hide();
     }
-    //  TODO catch "generation/save interrupted" exception
+    catch (const _CancelRequest &)
+    {   //  Report generation was cancelled half-way
+        tt3::gui::MessageDialog::show(
+            this,
+            Component::Resources::instance()->string(
+                RSID(ReportCancelledDialog),
+                RID(Title)),
+            Component::Resources::instance()->string(
+                RSID(ReportCancelledDialog),
+                RID(Message)));
+        //  Don't leave half-written file behind
+        QFile(_reportDestination).remove(); //  ignore errors
+    }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS!
         qCritical() << ex;
@@ -370,6 +404,8 @@ void CreateReportDialog::accept()
     }
     //  At this point we know the report has been
     //  generated and saved successfully
+    //  TODO Ask whether to open report/report directory
+    //  Close this dialog anyhow
     done(int(Result::Ok));
 }
 
