@@ -63,6 +63,18 @@ namespace tt3::report
             /// \brief
             ///     The set of "known" custom reports.
             tt3::util::Setting<KnownCustomReportTemplates> knownCustomReportTemplates;
+
+            /// \brief
+            ///     The mnemonic of the last used report type.
+            tt3::util::Setting<tt3::util::Mnemonic> lastUsedReportType;
+
+            /// \brief
+            ///     The mnemonic of the last used report format.
+            tt3::util::Setting<tt3::util::Mnemonic> lastUsedReportFormat;
+
+            /// \brief
+            ///     The mnemonic of the last used report template.
+            tt3::util::Setting<tt3::util::Mnemonic> lastUsedReportTemplate;
         };
 
         //////////

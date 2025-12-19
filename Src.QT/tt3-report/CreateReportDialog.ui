@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>374</width>
-    <height>268</height>
+    <width>504</width>
+    <height>294</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,9 +31,6 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1" colspan="2">
-       <widget class="QComboBox" name="reportTypeComboBox"/>
-      </item>
       <item row="1" column="0">
        <widget class="QLabel" name="reportFormatLabel">
         <property name="text">
@@ -44,21 +41,7 @@
       <item row="1" column="1" colspan="2">
        <widget class="QComboBox" name="reportFormatComboBox"/>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="destinationLabel">
-        <property name="text">
-         <string>Destination:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLineEdit" name="destinationLineEdit">
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
+      <item row="3" column="2">
        <widget class="QPushButton" name="browsePushButton">
         <property name="text">
          <string>Browse</string>
@@ -69,11 +52,44 @@
         </property>
        </widget>
       </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="destinationLineEdit">
+        <property name="minimumSize">
+         <size>
+          <width>240</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" colspan="2">
+       <widget class="QComboBox" name="reportTypeComboBox"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="destinationLabel">
+        <property name="text">
+         <string>Destination:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="reportTemplateLabel">
+        <property name="text">
+         <string>Report template:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" colspan="2">
+       <widget class="QComboBox" name="reportTemplateComboBox"/>
+      </item>
      </layout>
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QGroupBox" name="configuratiokGoupBox">
+    <widget class="QGroupBox" name="configuratiokGroupBox">
      <property name="title">
       <string>Report configuration</string>
      </property>
@@ -98,6 +114,13 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>reportTypeComboBox</tabstop>
+  <tabstop>reportFormatComboBox</tabstop>
+  <tabstop>reportTemplateComboBox</tabstop>
+  <tabstop>destinationLineEdit</tabstop>
+  <tabstop>browsePushButton</tabstop>
+ </tabstops>
  <resources>
   <include location="tt3-report.qrc"/>
  </resources>

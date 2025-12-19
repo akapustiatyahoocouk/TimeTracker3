@@ -80,6 +80,8 @@ PreferencesDialog::PreferencesDialog(
     {
         for (tt3::util::AbstractSetting * setting : component->settings()->settings())
         {
+            //  We need to connect() by name (old-style)
+            //  because we privately inherit from QDialog
             connect(setting,
                     SIGNAL(valueChanged()),
                     this,

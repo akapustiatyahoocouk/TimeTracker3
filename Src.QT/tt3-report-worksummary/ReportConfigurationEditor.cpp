@@ -55,4 +55,11 @@ bool ReportConfigurationEditor::isValid() const
     return true;    //  TODO implement properly
 }
 
+auto ReportConfigurationEditor::createReportConfiguration(
+    ) const -> ReportConfiguration *
+{
+    //  TODO implement properly
+    return new ReportConfiguration();
+}
+
 //  End of tt3-report-worksummary/ReportConfigurationEditor.cpp

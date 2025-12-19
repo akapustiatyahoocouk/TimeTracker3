@@ -108,6 +108,7 @@ namespace tt3::skin::admin
         void            _refreshToolsMenu();
         void            _refreshToolsMenuItemAvailability();
         void            _refreshReportsMenu();
+        void            _refreshReportsMenuItemAvailability();
         void            _refreshCurrentActivityControls();
         void            _applyCurrentLocale();
 

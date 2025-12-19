@@ -45,8 +45,15 @@ namespace tt3::report
         ///     The report name.
         /// \param reportTemplate
         ///     The report template; cannot be nullptr.
-        ///     IMPORTANT: must NOT be "delete"d whihc the Report
-        ///     instance(s) that use that ReportTemplate exist.
+        /// \details
+        ///     -   The report template must NOT be "delete"d
+        ///         while the Report instance(s) that use that
+        ///         ReportTemplate exist.
+        ///     -   If the report template is a DynamicReportTemplate,
+        ///         its ownership is taken over by the Report;
+        ///         such DynamicReportTemplate is then deleted
+        ///         automatically when the Report is deleted.
+        ///         TODO implement this behaviour.
         Report(const QString & name,
                const IReportTemplate * reportTemplate
             );

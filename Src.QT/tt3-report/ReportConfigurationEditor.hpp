@@ -71,6 +71,22 @@ namespace tt3::report
         ///     be saved to persistent settings, else false.
         virtual bool    isValid() const = 0;
 
+        /// \brief
+        ///     Returns the report configuration described by
+        ///     the current state of ths configuration editor.
+        /// \details
+        ///     -   A new instance of the ReportConfiguration-derived
+        ///         class is created by each call; the caller is
+        ///         responsible for deleting it when no longer needed.
+        ///     -   If any of the editor's controls specify invalid
+        ///         or unacceptable values, they are substituted with
+        ///         valid (acceptable) ones in the returned instance
+        ///         of a ReportConfiguration-deruived class.
+        /// \return
+        ///     The report configuration as visible by the user.
+        virtual auto    createReportConfiguration(
+                            ) const -> IReportConfiguration * = 0;
+
         //////////
         //  Signals
     signals:

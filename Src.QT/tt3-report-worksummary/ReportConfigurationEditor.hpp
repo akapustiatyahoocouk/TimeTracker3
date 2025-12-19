@@ -51,6 +51,8 @@ namespace tt3::report::worksummary
         virtual void    saveControlValues() override;
         virtual void    resetControlValues() override;
         virtual bool    isValid() const override;
+        virtual auto    createReportConfiguration(
+                            ) const -> ReportConfiguration * override;
 
         //////////
         //  Controls

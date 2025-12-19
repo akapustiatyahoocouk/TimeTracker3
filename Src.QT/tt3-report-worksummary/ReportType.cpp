@@ -63,12 +63,20 @@ auto ReportType::createConfigurationEditor(
 
 auto ReportType::generateReport(
         const tt3::ws::Workspace & /*workspace*/,
-        const tt3::ws::Credentials & /*credentials*/,
-        const tt3::report::ReportConfiguration & /*configuration*/,
-        ProgressListener /*progressListener*/
+        const tt3::ws::ReportCredentials & /*credentials*/,
+        const tt3::report::IReportConfiguration * /*configuration*/,
+        const tt3::report::IReportTemplate * reportTemplate,
+        ProgressListener progressListener
     ) -> tt3::report::Report *
 {
-    throw tt3::util::NotImplementedError();
+    for (int i = 0; i <= 100; i++)
+    {
+        if (progressListener != nullptr)
+        {
+            progressListener(i / 100.0);
+        }
+    }
+    return new Report("TODO", reportTemplate);
 }
 
-//  End of tt3-report-worksummary/Component.cpp
+//  End of tt3-report-worksummary/ReportType.cpp

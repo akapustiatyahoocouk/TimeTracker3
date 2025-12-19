@@ -57,6 +57,20 @@ PreviewReport.TableCell21=Problem Nr. 2
 PreviewReport.TableCell22=Dasselbe gilt für die meisten. Ein Herr, der Sportler entsorgt. Versucht, keine Ursache für Verderb zu finden. Länger im Tal der Damen, um Wertschätzung zu erlangen, führte zu sechs. Middletons Entschlossenheit, Vorteile auszudrücken, Parteilichkeit, also mich. West, keine Hoffnung, wenn singen, oh, geschickt, sagen ist.
 PreviewReport.Link1=Gehe nach oben
 
+[CreateReportDialog]
+Title=Bericht generieren
+ReportAndDestinationGroupBox=Bericht und Ziel
+ReportTypeLabel=Berichtstyp:
+ReportFormatLabel=Berichtsformat:
+ReportTemplateLabel=Berichtsvorlage:
+DestinationLabel=Ziel:
+BrowsePushButton=Durchsuchen
+ConfiguratiokGroupBox=Berichtskonfiguration
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+SelectDestinationTitle=Berichtsziel auswählen
+SelectDestinationFilter={0} (*{1});;Alle Dateien (*.*)
+
 [Errors]
 InvalidReportTemplateException=Ungültige Berichtsvorlage
 ReportTemplateAlreadyExistsException=Berichtsvorlage {0} ({1}) existiert bereits

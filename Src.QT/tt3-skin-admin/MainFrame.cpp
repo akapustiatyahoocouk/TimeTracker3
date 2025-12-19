@@ -239,6 +239,7 @@ void MainFrame::refresh()
     _ui->actionRefresh->setEnabled(workspace != nullptr);
     _ui->menuReports->setEnabled(workspace != nullptr);
     _refreshToolsMenuItemAvailability();
+    _refreshReportsMenuItemAvailability();
 
     //  Controls
     _userManager->refresh();
@@ -674,6 +675,41 @@ void MainFrame::_refreshReportsMenu()
                     }
                 });
     }
+    _refreshReportsMenuItemAvailability();
+}
+
+void MainFrame::_refreshReportsMenuItemAvailability()
+{
+    tt3::ws::Workspace workspace = tt3::gui::theCurrentWorkspace;
+    tt3::ws::Credentials credentials = tt3::gui::theCurrentCredentials;
+    bool canGenerateReports;
+    try
+    {
+        canGenerateReports =
+            workspace != nullptr &&
+            workspace->grantsAny(   //  may throw
+            credentials,
+                tt3::ws::Capability::Administrator |
+                tt3::ws::Capability::GenerateReports);
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Log & recover
+        qCritical() << ex;
+        canGenerateReports = false;
+    }
+    //  The last two items in the Reports menu must be
+    //  *   A separator, and
+    //  *   A "Quick reports" menu item.
+    //  All items before that are report items, one per
+    //  report type, ant must be destroyed & re-created
+    auto actions = _ui->menuReports->actions();
+    Q_ASSERT(actions.size() >= 2 &&
+             actions[actions.size() - 2]->isSeparator() &&
+             !actions[actions.size() - 1]->isSeparator());
+    for (int i = 0; i < actions.size() - 2; i++)
+    {
+        actions[i]->setEnabled(canGenerateReports);
+    }
 }
 
 void MainFrame::_refreshCurrentActivityControls()
@@ -881,12 +917,45 @@ void MainFrame::_generateReport(
         tt3::report::IReportType * reportType
     )
 {
-    tt3::report::CreateReportDialog dlg(this, reportType);
-    if (dlg.doModal() != tt3::report::CreateReportDialog::Result::Ok)
-    {   //  User has cancelled
-        return;
+    tt3::ws::Workspace workspace = tt3::gui::theCurrentWorkspace;
+    tt3::ws::Credentials credentials = tt3::gui::theCurrentCredentials;
+    try
+    {   //  We need outer handlers for report credentials manipulation...
+        tt3::ws::ReportCredentials reportCredentials =
+            workspace->beginReport( //  may throw
+                credentials,
+                workspace->objectCount(credentials) * 85 + //  1,000,000 objects -> 1 day lease...
+                60 * 60 * 1000);    //  ...+ 1 hour
+        try
+        {   //  ...and inner handler for report job
+            tt3::report::CreateReportDialog dlg(
+                this,
+                workspace,
+                reportCredentials,
+                reportType);
+            if (dlg.doModal() != tt3::report::CreateReportDialog::Result::Ok)
+            {   //  User has cancelled - cleanup & exit
+                workspace->releaseCredentials(reportCredentials);   //  may throw
+                return;
+            }
+            //  TODO  finish the implementation
+            //  Done reporting
+            workspace->releaseCredentials(reportCredentials);   //  may throw
+            //  TODO show "Report generated" popup, with
+            //  an option to open the report (via QDesktopServices)
+        }
+        catch (...)
+        {   //  OOPS! Cleanup & re-throw
+            workspace->releaseCredentials(reportCredentials);   //  may throw
+            throw;
+        }
     }
-    //  TODO  implement properly
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Report & we're done
+        qCritical() << ex;
+        tt3::gui::ErrorDialog::show(this, ex);
+    }   //  Let Errors and non-tt3 throwns use default behaviour
+    refresh();  //  workspace might have changed while report was generated
 }
 
 //////////

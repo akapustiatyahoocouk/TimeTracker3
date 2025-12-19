@@ -98,7 +98,10 @@ Component::Resources::~Resources() {}
 TT3_IMPLEMENT_SINGLETON(Component::Settings)
 
 Component::Settings::Settings()
-    :   knownCustomReportTemplates(this, M(KnownCustomReportTemplates), KnownCustomReportTemplates())
+    :   knownCustomReportTemplates(this, M(KnownCustomReportTemplates), KnownCustomReportTemplates()),
+        lastUsedReportType(this, M(LastUsedReportType), M(-)),
+        lastUsedReportFormat(this, M(LastUsedReportFormat), M(-)),
+        lastUsedReportTemplate(this, M(LastUsedReportTemplate), M(-))
 {
 }
 

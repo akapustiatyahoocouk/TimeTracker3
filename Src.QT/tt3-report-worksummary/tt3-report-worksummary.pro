@@ -5,6 +5,7 @@ DEFINES += TT3_REPORT_WORKSUMMARY_LIBRARY
 
 SOURCES += \
     Component.cpp \
+    ReportConfiguration.cpp \
     ReportConfigurationEditor.cpp \
     ReportType.cpp
 

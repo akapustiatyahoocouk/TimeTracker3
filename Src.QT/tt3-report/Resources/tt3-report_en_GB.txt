@@ -57,6 +57,20 @@ PreviewReport.TableCell21=Issue #2
 PreviewReport.TableCell22=Same an quit most an. Admitting an mr disposing sportsmen. Tried on cause no spoil arise plate. Longer ladies valley get esteem use led six. Middletons resolution advantages expression themselves partiality so me at. West none hope if sing oh sent tell is.
 PreviewReport.Link1=Go to the top
 
+[CreateReportDialog]
+Title=Generate report
+ReportAndDestinationGroupBox=Report and destination
+ReportTypeLabel=Report type:
+ReportFormatLabel=Report format:
+ReportTemplateLabel=Report template:
+DestinationLabel=Destination:
+BrowsePushButton=Browse
+ConfiguratiokGroupBox=Report configuration
+OkPushButton=OK
+CancelPushButton=Cancel
+SelectDestinationTitle=Select report destination
+SelectDestinationFilter={0} (*{1});;All files (*.*)
+
 [Errors]
 InvalidReportTemplateException=Invalid report template
 ReportTemplateAlreadyExistsException=Report template {0} ({1}) already exists

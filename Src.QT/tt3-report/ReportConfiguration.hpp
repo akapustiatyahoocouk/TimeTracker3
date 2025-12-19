@@ -17,22 +17,22 @@
 
 namespace tt3::report
 {
-    /// \class ReportConfiguration tt3-report/API.hpp
+    /// \class IReportConfiguration tt3-report/API.hpp
     /// \brief A configuration for a report generation job.
-    class TT3_REPORT_PUBLIC ReportConfiguration
+    class TT3_REPORT_PUBLIC IReportConfiguration
     {
-        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ReportConfiguration)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(IReportConfiguration)
 
         //////////
-        //  Construction/destruction
+        //  This is an interface
     public:
         /// \brief
         ///     The class constructor.
-        ReportConfiguration() = default;
+        IReportConfiguration() = default;
 
         /// \brief
         ///     The class destructor.
-        virtual ~ReportConfiguration() = default;
+        virtual ~IReportConfiguration() = default;
     };
 }
 

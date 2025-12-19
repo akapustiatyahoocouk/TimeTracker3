@@ -57,6 +57,20 @@ PreviewReport.TableCell21=Выпуск №2
 PreviewReport.TableCell22=То же самое и выход большинства. Принятие господина, располагающего спортсменов. Примерил, причина не портит, возникает пластина. Дольше дамы долины получают уважение, используют вел шесть. Разрешение Миддлтона, преимущества выражения, сами по себе, пристрастность, поэтому мне. Запад, никто не надеется, если поют, о, отправлено, скажите.
 PreviewReport.Link1=Перейти к началу
 
+[CreateReportDialog]
+Title=Создать отчет
+ReportAndDestinationGroupBox=Отчет и место назначения
+ReportTypeLabel=Тип отчета:
+ReportFormatLabel=Формат отчета:
+ReportTemplateLabel=Шаблон отчета:
+DestinationLabel=Место назначения:
+BrowsePushButton=Обзор
+ConfiguratiokGroupBox=Конфигурация отчета
+OkPushButton=ОК
+CancelPushButton=Отмена
+SelectDestinationTitle=Выберите место назначения отчета
+SelectDestinationFilter={0} (*{1});;Все файлы (*.*)
+
 [Errors]
 InvalidReportTemplateException=Неверный шаблон отчета
 ReportTemplateAlreadyExistsException=Шаблон отчета {0} ({1}) уже существует

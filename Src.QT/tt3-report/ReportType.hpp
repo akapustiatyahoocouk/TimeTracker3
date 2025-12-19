@@ -97,7 +97,9 @@ namespace tt3::report
         /// \param credentials
         ///     The credentials to use for data access.
         /// \param configuration
-        ///     The report configuration;
+        ///     The report configuration; nullptr == default or none.
+        /// \param reportTemplate
+        ///     The template for the report.
         /// \param progressListener
         ///     The callback to use for save progress notification,
         ///     nullptr == don't notify.
@@ -112,8 +114,9 @@ namespace tt3::report
         ///     with this report type.
         virtual Report *generateReport(
                                 const tt3::ws::Workspace & workspace,
-                                const tt3::ws::Credentials & credentials,
-                                const ReportConfiguration & configuration,
+                                const tt3::ws::ReportCredentials & credentials,
+                                const IReportConfiguration * configuration,
+                                const IReportTemplate * reportTemplate,
                                 ProgressListener progressListener
                             ) = 0;
     };

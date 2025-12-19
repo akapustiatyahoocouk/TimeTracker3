@@ -36,7 +36,7 @@ namespace tt3::report
         ///     The dialog result after a modal invocation.
         enum class Result
         {
-            Ok,     ///< Changes confirme; PublicTask has been created.
+            Ok,     ///< Report has been configured and generated.
             Cancel  ///< The dialog has been cancelled.
         };
 
@@ -47,10 +47,16 @@ namespace tt3::report
         ///     Constructs the dialog.
         /// \param parent
         ///     The parent for the dialog; nullptr == none.
+        /// \param workspace
+        ///     The workspace to report from.
+        /// \param credentials
+        ///     The credentials to use for data access.
         /// \param reportType
         ///     The report type to initially select, nullptr == auto.
         CreateReportDialog(
                 QWidget * parent,
+                tt3::ws::Workspace workspace,
+                const tt3::ws::ReportCredentials & credentials,
                 IReportType * reportType
             );
 
@@ -67,19 +73,38 @@ namespace tt3::report
         ///     The user's choice; on OK a new PublicTask has been created.
         Result          doModal();
 
+        IReportType *   reportType() const { return _reportType; }
+        IReportFormat * reportFormat() const { return _reportFormat; }
+        IReportTemplate*reportTemplate() const { return _reportTemplate; }
+        QString         reportDestination() const { return _reportDestination; }
+
         //////////
         //  Implementation
     private:
+        tt3::ws::Workspace _workspace;
+        const tt3::ws::ReportCredentials    _credentials;
+
+        IReportType *   _reportType = nullptr;
+        IReportFormat * _reportFormat = nullptr;
+        IReportTemplate*_reportTemplate = nullptr;
+        QString         _reportDestination;
+
         //  Helpers
         IReportType *   _selectedReportType() const;
         void            _setSelectedReportType(IReportType * reportType);
         IReportFormat * _selectedReportFormat() const;
         void            _setSelectedReportFormat(IReportFormat * reportFormat);
+        IReportTemplate*_selectedReportTemplate() const;
+        void            _setSelectedReportTemplate(IReportTemplate * reportTemplate);
+        void            _refresh();
 
         //////////
         //  Controls
     private:
         Ui::CreateReportDialog *const   _ui;
+        //  Some controls are created dynamically
+        QStackedLayout *    _configuratiokGroupBoxLayout;
+        QMap<IReportType*, ReportConfigurationEditor*>  _configurationEditors;  //  no nullptrs!
 
         //////////
         //  Signal handlers
@@ -87,6 +112,7 @@ namespace tt3::report
         void            _reportTypeComboBoxCurrentIndexChanged(int);
         void            _reportFormatComboBoxCurrentIndexChanged(int);
         void            _browsePushButtonClicked();
+        void            _editorControlValueChanged();
         virtual void    accept() override;
         virtual void    reject() override;
     };

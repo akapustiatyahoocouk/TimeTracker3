@@ -67,6 +67,7 @@ SOURCES += \
     ReportListItem.cpp \
     ReportParagraph.cpp \
     ReportPicture.cpp \
+    ReportProgressDialog.cpp \
     ReportSection.cpp \
     ReportSpanElement.cpp \
     ReportTable.cpp \
@@ -97,6 +98,7 @@ HEADERS += \
     ReportConfiguration.hpp \
     ReportConfigurationEditor.hpp \
     ReportFormat.hpp \
+    ReportProgressDialog.hpp \
     ReportTemplate.hpp \
     ReportTemplateManagerTool.hpp \
     ReportType.hpp
@@ -108,7 +110,8 @@ RESOURCES += \
 
 FORMS += \
     CreateReportDialog.ui \
-    ManageReportTemplatesDialog.ui
+    ManageReportTemplatesDialog.ui \
+    ReportProgressDialog.ui
 
 LIBS += \
     -ltt3-gui$$TARGET_SUFFIX \

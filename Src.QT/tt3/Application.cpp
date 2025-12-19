@@ -182,7 +182,7 @@ void Application::_initialize()
         splashScreen.show();
     }
     QDateTime closeSplashScreenAt =
-        QDateTime::currentDateTimeUtc().addMSecs(tt3::gui::SplashScreen::PreferredStartupDelayMs);
+        QDateTime::currentDateTimeUtc().addMSecs(tt3::gui::SplashScreen::PreferredStartupDurationMs);
 
     _prepareForLogging();
 

@@ -35,7 +35,7 @@ namespace tt3::gui
         /// \brief
         ///     The preferred time, in milliseconds, for which
         ///     the splash screen is visible during TT3 startup.
-        static const int PreferredStartupDelayMs = 5000;
+        static const int PreferredStartupDurationMs = 5000;
 
         //////////
         //  Construction/destruction
@@ -56,6 +56,12 @@ namespace tt3::gui
                             const QString & context,
                             float ratioCompleted
                         );
+
+        //////////
+        //  Implementation
+    private:
+        float       _lastRatioCompleted = 0.0;
+
         //////////
         //  Controls
     private:
