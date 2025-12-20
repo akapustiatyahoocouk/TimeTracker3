@@ -81,6 +81,14 @@ CancelPushButton=Cancel
 Title=Report cancelled
 Message=The report generation has been cancelled
 
+[ReportCreatedDialog]
+Title=Report created
+PromptLabel1=The report
+PromptLabel2=has been created successfully. Would you like to...
+OpenFilePushButton=Open the report
+OpenLocationPushButton=Open report location
+keepWorkingPushButton=Keep working
+
 [Errors]
 InvalidReportTemplateException=Invalid report template
 ReportTemplateAlreadyExistsException=Report template {0} ({1}) already exists

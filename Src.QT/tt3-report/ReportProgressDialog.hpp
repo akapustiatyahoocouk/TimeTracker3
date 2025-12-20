@@ -38,21 +38,16 @@ namespace tt3::report
         static const int PreferredStageDurationMs = 5000;
 
         //////////
-        //  Types
-    public:
-        /// \brief
-        ///     Thrown from the reportXXXProgress if
-        ///     the user presses the Cancel button.
-        /// TODO kill off
-       struct CancelRequest {};
-
-        //////////
         //  Construction/destruction
     public:
         /// \brief
         ///     Constructs the dialog.
         /// \param parent
         ///     The parent for the dialog, nullptr == none.
+        /// \param reportType
+        ///     The type of the report being generated.
+        /// \param reportDestination
+        ///     The path to the report file being written.
         explicit ReportProgressDialog(
                 QWidget * parent,
                 IReportType * reportType,
@@ -77,7 +72,18 @@ namespace tt3::report
         //////////
         //  Operations
     public:
+        /// \brief
+        ///     Updates the dialog to reflect report generation progress.
+        /// \param ratioCompleted
+        ///     The ratio of the work completed, 0.0 == just started,
+        ///     1.0 == finished, 0.5 == half-way through.
         void            reportGenerationProgress(float ratioCompleted);
+
+        /// \brief
+        ///     Updates the dialog to reflect report saving progress.
+        /// \param ratioCompleted
+        ///     The ratio of the work completed, 0.0 == just started,
+        ///     1.0 == finished, 0.5 == half-way through.
         void            reportSaveProgress(float ratioCompleted);
 
         /// \brief

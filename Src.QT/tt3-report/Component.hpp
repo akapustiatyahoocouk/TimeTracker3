@@ -17,17 +17,42 @@
 
 namespace tt3::report
 {
+    /// \class KnownCustomReportTemplate tt3-report/API.hpp
+    /// \brief The descriptor of a custom report template known to exist.
     struct TT3_REPORT_PUBLIC KnownCustomReportTemplate
     {
         //////////
         //  Operators (needed by QList)
+
+        /// \brief
+        ///     Compares two specs for equality.
+        /// \param op2
+        ///     The 2nd spec to compare this spec with.
+        /// \return
+        ///     True if the two specs are equal in all properties, else false.
         bool                operator == (const KnownCustomReportTemplate & op2) const;
+
+        /// \brief
+        ///     Compares two specs for equality.
+        /// \param op2
+        ///     The 2nd spec to compare this spec with.
+        /// \return
+        ///     False if the two specs are equal in all properties, else true.
         bool                operator != (const KnownCustomReportTemplate & op2) const;
 
         //////////
         //  Properties
+
+        /// \brief
+        ///     The mnemonic identifier of the custom report template.
         tt3::util::Mnemonic mnemonic;
+
+        /// \brief
+        ///     The user-readable display name of the custom report template.
         QString             displayName;
+
+        /// \brief
+        ///     The full path of the custom report template XML file.
         QString             location;
     };
     using KnownCustomReportTemplates = QList<KnownCustomReportTemplate>;

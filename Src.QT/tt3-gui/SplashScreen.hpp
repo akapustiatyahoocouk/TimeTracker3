@@ -24,7 +24,7 @@ namespace tt3::gui
     /// \class SplashScreen tt3-gui/API.hpp
     /// \brief The TT3 splash screen.
     class TT3_GUI_PUBLIC SplashScreen final
-        :   public QDialog  //  TODO private
+        :   private QDialog
     {
         Q_OBJECT
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(SplashScreen)
@@ -51,6 +51,20 @@ namespace tt3::gui
         //////////
         //  Operations
     public:
+        using QDialog::show;
+        using QDialog::hide;
+        using QDialog::isVisible;
+
+        /// \brief
+        ///     Updates the splash screen to reflect the
+        ///     progress of TT3 tartup.
+        /// \param action
+        ///     The action currently undertaken.
+        /// \param context
+        ///     The context in which the action is undertaken.
+        /// \param ratioCompleted
+        ///     The startup completion ratio, 0.0 = just started,
+        ///     10 == finished, 0.5 == half-way through.
         void        showStartupProgress(
                             const QString & action,
                             const QString & context,

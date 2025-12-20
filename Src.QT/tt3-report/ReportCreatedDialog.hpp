@@ -36,6 +36,8 @@ namespace tt3::report
         ///     Constructs the dialog.
         /// \param parent
         ///     The parent for the dialog; nullptr == none.
+        /// \param reportFileName
+        ///     The full path to the newly created report file.
         explicit ReportCreatedDialog(
                 QWidget * parent,
                 const QString & reportFileName

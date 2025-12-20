@@ -60,15 +60,19 @@ bool Application::notify(QObject * receiver, QEvent * event)
     catch (const tt3::util::Exception & ex)
     {
         qCritical() << ex;
-        //  TODO suppress dialog if system shutdown is in progress
-        tt3::gui::ErrorDialog::show(QApplication::activeWindow(), ex);
+        if (!tt3::util::SystemShutdownHandler::isShutdownInProgress())
+        {   //  Suppress dialog if system shutdown is in progress
+            tt3::gui::ErrorDialog::show(QApplication::activeWindow(), ex);
+        }
         return false;
     }
     catch (const tt3::util::Error & ex)
     {
         qCritical() << ex;
-        //  TODO suppress dialog if system shutdown is in progress
-        tt3::gui::ErrorDialog::show(QApplication::activeWindow(), ex);
+        if (!tt3::util::SystemShutdownHandler::isShutdownInProgress())
+        {   //  Suppress dialog if system shutdown is in progress
+            tt3::gui::ErrorDialog::show(QApplication::activeWindow(), ex);
+        }
         return false;
     }
     catch (...)
@@ -91,7 +95,6 @@ int Application::exec()
     }
     catch (...)
     {   //  OOPS! Cleanup & re-throw.
-        //  TODO Perform quiet cleanup, as if the system shutdown was in progress
         _cleanup();
         throw;
     }
@@ -101,7 +104,7 @@ int Application::exec()
 //  Implementation helpers
 void Application::_prepareForLogging()
 {
-    _logFileNameBase = //   TODO kill off QDir::home().filePath(".tt3-!.log");
+    _logFileNameBase =
         QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation))
             .filePath("tt3-!.log");
     qInfo() << "_logFileNameBase = " + _logFileNameBase;

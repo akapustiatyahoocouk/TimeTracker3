@@ -105,7 +105,7 @@ void HRG::_HtmlGenerator::_completeStep()
     _completedSteps++;
     if (_progressListener != nullptr)
     {
-        _progressListener(double(_completedSteps + 1) / double(_totalSteps + 1));
+        _progressListener(float(_completedSteps + 1) / float(_totalSteps + 1));
         QThread::msleep(5000 / (_totalSteps + 1));  //  aim at 5 seconds per save
     }
 }

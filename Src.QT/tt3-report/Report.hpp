@@ -1245,10 +1245,11 @@ namespace tt3::report
         ///     The column span for the TableCell (1 or more).
         /// \param rowSpan
         ///     The row span for the TableCell (1 or more).
-        /// \param contentAlignment
-        ///     The alignment of content within thew TableCell.
         /// \param preferredWidth
         ///     The preferred width of the column(s) occupied by
+        ///     the TableCell; no value == choose automatically.
+        /// \param style
+        ///     The style for the new table cell; nullptr == none.
         ///     the TableCell; no value == choose automatically.
         /// \return
         ///     The newly created TableCell.
@@ -1271,8 +1272,8 @@ namespace tt3::report
         ///     The column span for the TableCell (1 or more).
         /// \param rowSpan
         ///     The row span for the TableCell (1 or more).
-        /// \param contentAlignment
-        ///     The alignment of content within thew TableCell.
+        /// \param style
+        ///     The style for the new table cell; nullptr == none.
         ///     the TableCell; no value == choose automatically.
         /// \return
         ///     The newly created TableCell.

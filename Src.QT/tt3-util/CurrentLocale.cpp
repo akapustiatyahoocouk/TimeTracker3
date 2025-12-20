@@ -67,7 +67,6 @@ CurrentLocale & CurrentLocale::operator = (const QLocale & locale)
         emit changed(before, after);
     }
     //  Done
-    return *this;
 }
 
 CurrentLocale::operator QLocale () const

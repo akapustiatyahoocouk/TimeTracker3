@@ -17,6 +17,8 @@
 
 namespace tt3::db::xml
 {
+    /// \class ObjectTypeTraits tt3-db-xml/API.hpp
+    /// \brief The database object type traits provider
     template <class T>
     struct ObjectTypeTraits
     {
@@ -538,31 +540,6 @@ namespace tt3::db::xml
             }
         }
 
-/*  TODO kill off
-        template <class T>
-        auto            _objectTypeTraits(
-                            ) -> tt3::db::api::IObjectType *  = delete;
-#define TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(TYPE)                               \
-        template <>                                             \
-        auto            _objectTypeTraits<TYPE>(                \
-                            ) -> tt3::db::api::IObjectType *    \
-        {                                                       \
-            return tt3::db::api::ObjectTypes::TYPE::instance(); \
-        }
-        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(User)
-        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(Account)
-        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(ActivityType)
-        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(PublicActivity)
-        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(PublicTask)
-        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(PrivateActivity)
-        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(PrivateTask)
-        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(Project)
-        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(WorkStream)
-        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(Beneficiary)
-        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(Work)
-        TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS(Event)
-#undef TT3_DB_XML_DECLARE_OBJECT_TYPE_TRAITS
-*/
         //  Validation
         void            _validate();    //  throwstt3::db::api::DatabaseException
     };

@@ -411,7 +411,12 @@ void CreateReportDialog::accept()
 }
 
 void CreateReportDialog::reject()
-{
+{   //  After a cancelled attempt we need to clear these up
+    _reportType = nullptr;
+    _reportFormat = nullptr;
+    _reportTemplate = nullptr;
+    _reportDestination = "";
+    //  Close the dialog
     done(int(Result::Cancel));
 }
 

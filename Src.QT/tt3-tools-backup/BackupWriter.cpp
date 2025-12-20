@@ -270,14 +270,8 @@ void BackupWriter::_reportProgress()
     if (_progressDialog != nullptr)
     {
         _progressDialog->reportProgress(
-            double(_objectsWritten + _associationsWritten) /
-            double(_objectsToWrite + _associationsToWrite));
-        QDateTime continueAt =
-            QDateTime::currentDateTimeUtc().addMSecs(_oneObjectDelayMs);
-        do
-        {
-            QCoreApplication::processEvents();
-        }   while (QDateTime::currentDateTimeUtc() < continueAt);
+            float(_objectsWritten + _associationsWritten) /
+            float(_objectsToWrite + _associationsToWrite));
         if (_progressDialog->cancelRequested())
         {
             throw _CancelRequest();

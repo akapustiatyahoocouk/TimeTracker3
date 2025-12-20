@@ -81,6 +81,14 @@ CancelPushButton=Abbrechen
 Title=Bericht abgebrochen
 Message=Die Berichtserstellung wurde abgebrochen
 
+[ReportCreatedDialog]
+Title=Bericht erstellt
+PromptLabel1=Der Bericht
+PromptLabel2=wurde erfolgreich erstellt. Möchten Sie...
+OpenFilePushButton=Bericht öffnen
+OpenLocationPushButton=Berichtsspeicherort öffnen
+keepWorkingPushButton=Weiterarbeiten
+
 [Errors]
 InvalidReportTemplateException=Ungültige Berichtsvorlage
 ReportTemplateAlreadyExistsException=Berichtsvorlage {0} ({1}) existiert bereits

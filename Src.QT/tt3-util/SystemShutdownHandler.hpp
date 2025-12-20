@@ -28,12 +28,28 @@ namespace tt3::util
         //////////
         //  Types
     public:
+        /// \brief
+        ///     Ahook that can be invoked when system
+        ///     shutdown is detected.
         typedef void (*ShutdownHook)(void * cbData);
 
         //////////
         //  Operations
     public:
+        /// \brief
+        ///     Registers the system shutdown hook.
+        /// \param shutdownHook
+        ///     The hook to call if system shutdown is detected.
+        /// \param cbData
+        ///     The parameter for the shutdownHook invocation.
         static void     addShutdownHook(ShutdownHook shutdownHook, void * cbData);
+
+        /// \brief
+        ///     Un-registers the system shutdown hook.
+        /// \param shutdownHook
+        ///     The hook to un-register.
+        /// \param cbData
+        ///     The parameter for the shutdownHook invocation.
         static void     removeShutdownHook(ShutdownHook shutdownHook, void * cbData);
 
         /// \brief

@@ -30,6 +30,13 @@ namespace tt3::tools::restore
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(RestoreProgressDialog)
 
         //////////
+        //  Constants
+    public:
+        /// \brief
+        ///     The preferred duration, in milliseconds, of the restore process.
+        static const int PreferredRestoreDurationMs = 5000;
+
+        //////////
         //  Construction
     public:
         /// \brief
@@ -59,7 +66,7 @@ namespace tt3::tools::restore
         /// \param ratioCompleted
         ///     The ration of the restore work completed; 0.0 ==
         ///     just started, 1.0 == finished, 0.5 == halfway through.
-        void            reportProgress(double ratioCompleted);
+        void            reportProgress(float ratioCompleted);
 
         /// \brief
         ///     Checks if the user has requested cancellation
@@ -72,8 +79,8 @@ namespace tt3::tools::restore
         //////////
         //  Implementation
     private:
+        float               _lastRatioCompleted = 0.0f;
         std::atomic<bool>   _cancelRequested = false;
-
 
         //////////
         //  Controls

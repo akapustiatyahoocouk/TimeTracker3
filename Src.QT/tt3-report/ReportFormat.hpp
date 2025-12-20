@@ -26,7 +26,7 @@ namespace tt3::report
     public:
         /// \brief
         ///     The agent notified of a save progress.
-        using ProgressListener = std::function<void(double ratioCompleted)>;
+        using ProgressListener = std::function<void(float ratioCompleted)>;
 
         //////////
         //  This is an interface

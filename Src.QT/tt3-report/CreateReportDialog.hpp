@@ -73,9 +73,28 @@ namespace tt3::report
         ///     The user's choice; on OK a new PublicTask has been created.
         Result          doModal();
 
+        /// \brief
+        ///     Returns the type of the created report.
+        /// \return
+        ///     The type of the created report; nullptr if report cancelled.
         IReportType *   reportType() const { return _reportType; }
+
+        /// \brief
+        ///     Returns the format of the created report.
+        /// \return
+        ///     The format of the created report; nullptr if report cancelled.
         IReportFormat * reportFormat() const { return _reportFormat; }
+
+        /// \brief
+        ///     Returns the template of the created report.
+        /// \return
+        ///     The template of the created report; nullptr if report cancelled.
         IReportTemplate*reportTemplate() const { return _reportTemplate; }
+
+        /// \brief
+        ///     Returns the file name of the created report.
+        /// \return
+        ///     The file name of the created report; "" if report cancelled.
         QString         reportDestination() const { return _reportDestination; }
 
         //////////

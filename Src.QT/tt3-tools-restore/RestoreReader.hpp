@@ -17,7 +17,6 @@
 
 namespace tt3::tools::restore
 {
-    //  TODO this is UGLY!
     //  All parse() methods may throw
     template <class T>
     T parse(const QString & s, qsizetype & scan)

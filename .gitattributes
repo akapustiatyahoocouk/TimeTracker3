@@ -15,6 +15,7 @@
 *.resx text diff=cpp
 *.config text diff=cpp
 *.settings text diff=cpp
+Doxyfile text diff=cpp
 
 *.pro  text diff=cpp
 *.pri  text diff=cpp

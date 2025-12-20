@@ -19,6 +19,8 @@
 
 namespace tt3::ws
 {
+    /// \class ObjectTypeTraits tt3-ws/API.hpp
+    /// \brief The database object type traits provider
     template <class T>
     struct ObjectTypeTraits
     {

@@ -75,7 +75,7 @@ void SplashScreen::showStartupProgress(
         const QString & context,
         float ratioCompleted
     )
-{   //  TODO normalize ratioCompleted and make it float in all progress dialogs
+{
     ratioCompleted = std::max(0.0f, std::min(1.0f, ratioCompleted));
     //  Update the UI
     _ui->actionLabel->setText(action);
@@ -83,11 +83,9 @@ void SplashScreen::showStartupProgress(
     _ui->progressBar->setValue(int(ratioCompleted * 100));
     //  Delay is calculate automatically,
     //  100% == PreferredStartupDurationMs
-    //  TODO make all progress dialogs adjust themselves similarly
     float deltaRatioCompleted = std::max(0.0f, ratioCompleted - _lastRatioCompleted);
     int delayMs = int(deltaRatioCompleted * PreferredStartupDurationMs) / 2;   //  2 stages: discover/init
     _lastRatioCompleted = ratioCompleted;
-    qDebug() << deltaRatioCompleted << delayMs;
     QDateTime resumeAt = QDateTime::currentDateTimeUtc().addMSecs(delayMs);
     do
     {   //  We need at least 1 guaranteed repaint

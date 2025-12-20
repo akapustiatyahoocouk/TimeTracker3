@@ -177,23 +177,22 @@ namespace tt3::help
                 /// \brief
                 ///     Advances this iterator to the next element
                 ///     of the HelpTopics collection.
-                /// \brief
+                /// \details
                 ///     If the iterator is "finished", the call has no effect.
-                iterator &  operator++()
+                void        operator++()
                 {
                     if (!_finished())
                     {
                         _currentIndex++;
                     }
-                    return *this;
                 }
 
                 /// \brief
                 ///     Advances this iterator to the next element
                 ///     of the HelpTopics collection.
-                /// \brief
+                /// \details
                 ///     If the iterator is "finished", the call has no effect.
-                iterator    operator++(int) { operator++(); return *this; }
+                void        operator++(int) { operator++(); }
 
                 //////////
                 //  Implementation

@@ -137,8 +137,8 @@ namespace tt3::util
         virtual Builder *       createBuilder() = 0;
     };
 
-    /// \class StandardLicenses tt3-util/API.hpp
-    /// \brief The standard (predefined) licenses.
+    /// \class StandardMessageDigests tt3-util/API.hpp
+    /// \brief The standard (predefined) MESSAGE DIGESTS.
     class TT3_UTIL_PUBLIC StandardMessageDigests final
     {
         TT3_UTILITY_CLASS(StandardMessageDigests)

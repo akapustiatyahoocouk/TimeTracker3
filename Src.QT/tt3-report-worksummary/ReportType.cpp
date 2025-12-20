@@ -73,7 +73,7 @@ auto ReportType::generateReport(
     {
         if (progressListener != nullptr)
         {
-            progressListener(i / 100.0);
+            progressListener(float(i / 100.0));
         }
     }
     return new Report("TODO", reportTemplate);

@@ -30,6 +30,13 @@ namespace tt3::tools::backup
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BackupProgressDialog)
 
         //////////
+        //  Constants
+    public:
+        /// \brief
+        ///     The preferred duration, in milliseconds, of the backup process.
+        static const int PreferredBackupDurationMs = 5000;
+
+        //////////
         //  Construction
     public:
         /// \brief
@@ -62,7 +69,7 @@ namespace tt3::tools::backup
         /// \param ratioCompleted
         ///     The ratio of the backup that is completed; 0.0 == just
         ///     started, 1.0 == finished; 0.5 = halfway through.
-        void            reportProgress(double ratioCompleted);
+        void            reportProgress(float ratioCompleted);
 
         /// \brief
         ///     Checks if the user has requested cancellation of the
@@ -75,6 +82,7 @@ namespace tt3::tools::backup
         //////////
         //  Implementation
     private:
+        float           _lastRatioCompleted = 0.0f;
         std::atomic<bool>   _cancelRequested = false;
 
         //////////

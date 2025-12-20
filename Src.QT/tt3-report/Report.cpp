@@ -213,15 +213,15 @@ void Report::deserialize(const QDomElement & element)
 void Report::_validate()
 {
     //  Validate back links
-    for (auto section : _sections)
+    for (auto section : std::as_const(_sections))
     {
         Q_ASSERT(section->_report == this);
     }
-    for (auto anchor : _anchors)
+    for (auto anchor : std::as_const(_anchors))
     {
         Q_ASSERT(anchor->_report == this);
     }
-    for (auto link : _links)
+    for (auto link : std::as_const(_links))
     {
         Q_ASSERT(link->_report == this);
     }

@@ -91,8 +91,8 @@ namespace tt3::util
         /// \brief
         ///     Changes the "current" locale.
         /// \param locale
-        ///     Thew locale to set as the "current" locale.
-        CurrentLocale & operator = (const QLocale & locale);
+        ///     The locale to set as the "current" locale.
+        void            operator = (const QLocale & locale);
 
         /// \brief
         ///     Returns the "current" locale.

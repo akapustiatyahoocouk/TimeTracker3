@@ -61,7 +61,7 @@ namespace tt3::report
         virtual QString errorMessage() const override;
     };
 
-    /// \class ReportTemplateDoesNotExistException tt3-db-api/API.hpp
+    /// \class ReportTemplateAlreadyExistsException tt3-db-api/API.hpp
     /// \brief Thrown when a report template conflict occurs.
     class TT3_REPORT_PUBLIC ReportTemplateAlreadyExistsException
         :   public ReportException

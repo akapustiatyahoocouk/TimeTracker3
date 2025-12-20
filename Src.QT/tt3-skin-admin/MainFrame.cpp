@@ -933,16 +933,9 @@ void MainFrame::_generateReport(
                 workspace,
                 reportCredentials,
                 reportType);
-            if (dlg.doModal() != tt3::report::CreateReportDialog::Result::Ok)
-            {   //  User has cancelled - cleanup & exit
-                workspace->releaseCredentials(reportCredentials);   //  may throw
-                return;
-            }
-            //  TODO  finish the implementation
-            //  Done reporting
+            //  At the moment we don't care about doModal() results
+            dlg.doModal();
             workspace->releaseCredentials(reportCredentials);   //  may throw
-            //  TODO show "Report generated" popup, with
-            //  an option to open the report (via QDesktopServices)
         }
         catch (...)
         {   //  OOPS! Cleanup & re-throw

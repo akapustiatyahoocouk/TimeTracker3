@@ -152,17 +152,11 @@ void RestoreReader::_reportProgress()
 {
     if (_progressDialog != nullptr)
     {
-        double progress =
+        float progress =
             (_bytesToRead == 0) ?
-                0.0 :
-                double(_restoreFile.pos()) / double(_bytesToRead);
+                0.0f :
+                float(_restoreFile.pos()) / float(_bytesToRead);
         _progressDialog->reportProgress(progress);
-        QDateTime continueAt =
-            QDateTime::currentDateTimeUtc().addMSecs(_oneRecordDelayMs);
-        do
-        {
-            QCoreApplication::processEvents();
-        }   while (QDateTime::currentDateTimeUtc() < continueAt);
         if (_progressDialog->cancelRequested())
         {
             throw _CancelRequest();

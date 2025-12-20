@@ -21,7 +21,6 @@
 //  These headers are dirty, so disable some warnings for their processing
 #if defined(__GNUC__)
     #pragma GCC diagnostic push
-    //  TODO kill off #pragma GCC diagnostic ignored "-Weffc++"
     #pragma GCC diagnostic ignored "-Wsign-promo"
     #pragma GCC diagnostic ignored "-Wctor-dtor-privacy"
     #pragma GCC diagnostic ignored "-Wswitch-default"

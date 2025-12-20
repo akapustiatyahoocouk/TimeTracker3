@@ -1,6 +1,6 @@
 //
 //  tt3-report/ReportCreatedDialog.cpp - tt3::report::ReportCreatedDialog class implementation
-//  TODO localize via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -27,7 +27,23 @@ ReportCreatedDialog::ReportCreatedDialog(
         _reportFileName(reportFileName),
         _ui(new Ui::ReportCreatedDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ReportCreatedDialog));
+
     _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
+
+    //  Set static control values
+    _ui->promptLabel1->setText(
+        rr.string(RID(PromptLabel1)));
+    _ui->promptLabel2->setText(
+        rr.string(RID(PromptLabel2)));
+
+    _ui->openFilePushButton->setText(
+        rr.string(RID(OpenFilePushButton)));
+    _ui->openLocationPushButton->setText(
+        rr.string(RID(OpenLocationPushButton)));
+    _ui->keepWorkingPushButton->setText(
+        rr.string(RID(keepWorkingPushButton)));
 
     //  Adjust controls
     _ui->reportFileNameLabel->setText(reportFileName);

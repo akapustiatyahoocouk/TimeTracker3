@@ -66,14 +66,21 @@ RestoreProgressDialog::~RestoreProgressDialog()
 
 //////////
 //  Operations
-void RestoreProgressDialog::reportProgress(double ratioCompleted)
+void RestoreProgressDialog::reportProgress(float ratioCompleted)
 {
-    int newValue = qMax(0, qMin(100, int(ratioCompleted * 100)));
-    if (newValue != _ui->progressBar->value())
-    {
-        _ui->progressBar->setValue(newValue);
+    ratioCompleted = std::max(0.0f, std::min(1.0f, ratioCompleted));
+    //  Update the UI
+    _ui->progressBar->setValue(int(ratioCompleted * 100));
+    //  Delay is calculate automatically,
+    //  100% == PreferredStartupDurationMs
+    float deltaRatioCompleted = std::max(0.0f, ratioCompleted - _lastRatioCompleted);
+    int delayMs = int(deltaRatioCompleted * PreferredRestoreDurationMs);
+    _lastRatioCompleted = ratioCompleted;
+    QDateTime resumeAt = QDateTime::currentDateTimeUtc().addMSecs(delayMs);
+    do
+    {   //  We need at least 1 guaranteed repaint
         QCoreApplication::processEvents();
-    }
+    }   while (QDateTime::currentDateTimeUtc() < resumeAt);
 }
 
 //////////
