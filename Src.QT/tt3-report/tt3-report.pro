@@ -57,6 +57,7 @@ SOURCES += \
     ReportAnchor.cpp \
     ReportBlockElement.cpp \
     ReportConfigurationEditor.cpp \
+    ReportCreatedDialog.cpp \
     ReportElement.cpp \
     ReportExternalLink.cpp \
     ReportFlowElement.cpp \
@@ -97,6 +98,7 @@ HEADERS += \
     Report.hpp \
     ReportConfiguration.hpp \
     ReportConfigurationEditor.hpp \
+    ReportCreatedDialog.hpp \
     ReportFormat.hpp \
     ReportProgressDialog.hpp \
     ReportTemplate.hpp \
@@ -111,6 +113,7 @@ RESOURCES += \
 FORMS += \
     CreateReportDialog.ui \
     ManageReportTemplatesDialog.ui \
+    ReportCreatedDialog.ui \
     ReportProgressDialog.ui
 
 LIBS += \

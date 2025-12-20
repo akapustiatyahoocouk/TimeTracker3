@@ -404,8 +404,9 @@ void CreateReportDialog::accept()
     }
     //  At this point we know the report has been
     //  generated and saved successfully
-    //  TODO Ask whether to open report/report directory
-    //  Close this dialog anyhow
+    ReportCreatedDialog dlg(this, _reportDestination);
+    dlg.doModal();  //  may open the report/location before closing
+    //  Done generating the report
     done(int(Result::Ok));
 }
 

@@ -198,12 +198,12 @@ void Application::_initialize()
     tt3::util::ComponentManager::discoverComponents(
         [&](auto a, auto c, auto r)
         {
-            splashScreen.showStartupProgress(a, c, r);
+            splashScreen.showStartupProgress(a, c, r * 0.5f);
         });
     tt3::util::ComponentManager::initializeComponents(
         [&](auto a, auto c, auto r)
         {
-            splashScreen.showStartupProgress(a, c, r);
+            splashScreen.showStartupProgress(a, c, 0.5f + r * 0.5f);
         });
     tt3::util::ComponentManager::loadComponentSettings();
 
