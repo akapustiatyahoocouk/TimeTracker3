@@ -23,11 +23,115 @@ namespace tt3::report::worksummary
         :   public virtual tt3::report::IReportConfiguration
     {
         //////////
+        //  Types
+    public:
+        /// \brief
+        ///     Specifies whose works to include into report.
+        enum class Scope
+        {
+            CurrentUser,    ///< Report on the current user.
+            SingleUser,     ///< Report on an arbitrary user.
+            MultipleUsers   ///< Report on arbitrary set of users.
+        };
+
+        /// \brief
+        ///     Soecifies how report from/to dates are selected.
+        enum class DateRange
+        {
+            Today,          ///< Today only.
+            CurrentWeek,    ///< Current week.
+            CurrentMonth,   ///< Current month.
+            WeekToDate,     ///< From beginning ot the week until today.
+            MonthToDate,    ///< From beginning ot the moth until today.
+            YearToDate,     ///< From beginning ot the year until today.
+            Custom          ///< From/to dates.
+        };
+
+        /// \brief
+        ///     Specifies how to group works wothin the report.
+        enum class Grouping
+        {
+            ByActivityType, ///< Group works by activity types.
+            ByActivity      ///< Group works by activities.
+        };
+
+        //////////
         //  Construction/destruction/assignment
     public:
+        /// \brief
+        ///     Constructs the default report configuration.
         ReportConfiguration();
+
+        /// \brief
+        ///     Constructs the report configuration/
+        /// \param scope
+        ///     The scope of the report.
+        /// \param userOids
+        ///     The OIDs of the users to include into the report.
+        /// \param dateRange
+        ///     Specofoes how report from/to dates are selected.
+        /// \param startDate
+        ///     The local date to start from, inclusive.
+        /// \param endDate
+        ///     The local date to end at, inclusive.
+        /// \param grouping
+        ///     The works grouping mode.
+        /// \param includeDailySummaries
+        ///     True ro include the by-day section.
+        /// \param includeWeeklySummaries
+        ///     True ro include the by-week section.
+        /// \param includeMonthlySummaries
+        ///     True ro include the by-month section.
+        /// \param includeYearlySummaries
+        ///     True ro include the by-year section.
+        ReportConfiguration(
+                Scope scope,
+                const tt3::ws::Oids & userOids,
+                DateRange dateRange,
+                const QDate & startDate,
+                const QDate & endDate,
+                Grouping grouping,
+                bool includeDailySummaries,
+                bool includeWeeklySummaries,
+                bool includeMonthlySummaries,
+                bool includeYearlySummaries
+            );
+
+        /// \brief
+        ///     The class destructor.
         virtual ~ReportConfiguration();
+
+        //////////
+        //  Operations
+    public:
+        //////////
+        //  Implementation
+    private:
+        Scope           _scope = Scope::CurrentUser;
+        tt3::ws::Oids   _userOids;
+        DateRange       _dateRange = DateRange::CurrentMonth;
+        QDate           _startDate = QDate::currentDate();  //  inclusive, local date
+        QDate           _endDate = QDate::currentDate();    //  inclusive, local date
+        Grouping        _grouping = Grouping::ByActivity;
+        bool            _includeDailySummaries = true;
+        bool            _includeWeeklySummaries = true;
+        bool            _includeMonthlySummaries = true;
+        bool            _includeYearlySummaries = true;
     };
+}
+
+//////////
+//  Formatting/parsing
+namespace tt3::util
+{
+    template <> TT3_REPORT_WORKSUMMARY_PUBLIC
+    QString toString<tt3::report::worksummary::ReportConfiguration::Scope>
+        (const tt3::report::worksummary::ReportConfiguration::Scope & value);
+
+    template <> TT3_REPORT_WORKSUMMARY_PUBLIC
+    tt3::report::worksummary::ReportConfiguration::Scope
+    fromString<tt3::report::worksummary::ReportConfiguration::Scope>
+        (const QString & s, qsizetype & scan);
 }
 
 //  End of tt3-report-worksummary/ReportType.hpp

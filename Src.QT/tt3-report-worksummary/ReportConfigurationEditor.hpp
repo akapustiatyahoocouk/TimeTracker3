@@ -23,7 +23,7 @@ namespace tt3::report::worksummary
 
     /// \class ReportConfigurationEditor tt3-report-worksummary/API.hpp
     /// \brief the configuration for a "Wprk Summary" report.
-    class TT3_REPORT_WORKSUMMARY_PUBLIC ReportConfigurationEditor
+    class TT3_REPORT_WORKSUMMARY_PUBLIC ReportConfigurationEditor final
         :   public tt3::report::ReportConfigurationEditor
     {
         Q_OBJECT
@@ -37,7 +37,9 @@ namespace tt3::report::worksummary
         /// \param parent
         ///     The parent for the widget; nullptr == none.
         explicit ReportConfigurationEditor(
-                QWidget * parent
+                QWidget * parent,
+                tt3::ws::Workspace workspace,
+                const tt3::ws::ReportCredentials & credentials
             );
 
         /// \brief
@@ -55,6 +57,17 @@ namespace tt3::report::worksummary
                             ) const -> ReportConfiguration * override;
 
         //////////
+        //  Implementation
+    private:
+        //  Helpers
+        auto            _selectedScope(
+                            ) -> ReportConfiguration::Scope;
+        void            _setSelectedScope(
+                                ReportConfiguration::Scope scope
+                            );
+        void            _refresh();
+
+        //////////
         //  Controls
     private:
         Ui::ReportConfigurationEditor *const    _ui;
@@ -62,4 +75,3 @@ namespace tt3::report::worksummary
 }
 
 //  End of tt3-report-worksummary/ReportConfigurationEditor.hpp
-

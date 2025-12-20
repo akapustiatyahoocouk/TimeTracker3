@@ -87,7 +87,9 @@ namespace tt3::report
         ///     or nullptr if reports of this type have no
         ///     editable configuration.
         virtual auto    createConfigurationEditor(
-                                QWidget * parent
+                                QWidget * parent,
+                                tt3::ws::Workspace workspace,
+                                const tt3::ws::ReportCredentials & credentials
                             ) -> ReportConfigurationEditor * = 0;
 
         /// \brief

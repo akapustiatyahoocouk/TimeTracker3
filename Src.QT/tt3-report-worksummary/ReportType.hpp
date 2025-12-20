@@ -33,7 +33,9 @@ namespace tt3::report::worksummary
         virtual QIcon   smallIcon() const override;
         virtual QIcon   largeIcon() const override;
         virtual auto    createConfigurationEditor(
-                                QWidget * parent
+                                QWidget * parent,
+                                tt3::ws::Workspace workspace,
+                                const tt3::ws::ReportCredentials & credentials
                             ) -> ReportConfigurationEditor * override;
         virtual auto    generateReport(
                                 const tt3::ws::Workspace & workspace,

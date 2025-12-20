@@ -35,12 +35,25 @@ namespace tt3::report
         /// \param parent
         ///     The parent for the new widget; nullptr == none.
         explicit ReportConfigurationEditor(
-                QWidget * parent
+                QWidget * parent,
+                tt3::ws::Workspace workspace,
+                const tt3::ws::ReportCredentials & credentials
             );
 
         /// \brief
         ///     The class destructor.
         virtual ~ReportConfigurationEditor();
+
+        //////////
+        //  Properties
+    protected:
+        /// \brief
+        ///     The workspace from which report will be generated.
+        const tt3::ws::Workspace            workspace;
+
+        /// \brief
+        ///     The credentials to be used for report eneration.
+        const tt3::ws::ReportCredentials    credentials;
 
         //////////
         //  Operations

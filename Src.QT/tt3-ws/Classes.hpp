@@ -105,6 +105,7 @@ namespace tt3::ws
     using Capabilities = tt3::db::api::Capabilities;
 
     using Oid = tt3::db::api::Oid;
+    using Oids = tt3::db::api::Oids;
 
     using InactivityTimeout = tt3::db::api::InactivityTimeout;
     using UiLocale = tt3::db::api::UiLocale;

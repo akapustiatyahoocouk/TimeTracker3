@@ -119,7 +119,9 @@ CreateReportDialog::CreateReportDialog(
     //  Create editor widgets for each report type...
     for (auto reportType : ReportTypeManager::allReportTypes())
     {
-        if (auto editor = reportType->createConfigurationEditor(_ui->configuratiokGroupBox))
+        if (auto editor =
+            reportType->createConfigurationEditor(
+                _ui->configuratiokGroupBox, workspace, credentials))
         {
             _configurationEditors[reportType] = editor; //  editor may be nullptr!
             editor->loadControlValues();

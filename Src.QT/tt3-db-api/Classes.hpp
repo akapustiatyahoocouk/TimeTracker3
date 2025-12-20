@@ -63,6 +63,7 @@ namespace tt3::db::api
 
     //  Helper types
     class Oid;
+    using Oids = QSet<Oid>;
     class ChangeNotifier;
 
     using InactivityTimeout = std::optional<tt3::util::TimeSpan>;

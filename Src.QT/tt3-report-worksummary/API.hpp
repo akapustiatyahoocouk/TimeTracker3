@@ -26,10 +26,11 @@
 //////////
 //  tt3-report-worksummary components
 #include "tt3-report-worksummary/Linkage.hpp"
-#include "tt3-report-worksummary/Component.hpp"
 
 #include "tt3-report-worksummary/ReportConfiguration.hpp"
 #include "tt3-report-worksummary/ReportConfigurationEditor.hpp"
 #include "tt3-report-worksummary/ReportType.hpp"
+
+#include "tt3-report-worksummary/Component.hpp"
 
 //  End of tt3-report-worksummary/API.hpp

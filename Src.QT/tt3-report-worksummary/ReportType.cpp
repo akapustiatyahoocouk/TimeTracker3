@@ -55,10 +55,12 @@ QIcon ReportType::largeIcon() const
 }
 
 auto ReportType::createConfigurationEditor(
-        QWidget * parent
+        QWidget * parent,
+        tt3::ws::Workspace workspace,
+        const tt3::ws::ReportCredentials & credentials
     ) -> ReportConfigurationEditor *
 {
-    return new ReportConfigurationEditor(parent);
+    return new ReportConfigurationEditor(parent, workspace, credentials);
 }
 
 auto ReportType::generateReport(

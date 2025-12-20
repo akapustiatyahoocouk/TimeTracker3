@@ -43,7 +43,7 @@ CurrentLocale::~CurrentLocale()
 
 //////////
 //  Operators
-CurrentLocale & CurrentLocale::operator = (const QLocale & locale)
+void CurrentLocale::operator = (const QLocale & locale)
 {
     QLocale before, after;
 

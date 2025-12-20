@@ -45,6 +45,9 @@ namespace tt3::report::worksummary
             //////////
             //  Properties
         public:
+            /// \brief
+            ///     The scope of the report.
+            tt3::util::Setting<ReportConfiguration::Scope>  reportScope;
         };
 
         //////////

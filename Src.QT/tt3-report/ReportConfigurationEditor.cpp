@@ -20,8 +20,12 @@ using namespace tt3::report;
 //////////
 //  Construction/destruction
 ReportConfigurationEditor::ReportConfigurationEditor(
-        QWidget * parent
-    ) : QWidget(parent)
+        QWidget * parent,
+        tt3::ws::Workspace workspace_,
+        const tt3::ws::ReportCredentials & credentials_
+    ) : QWidget(parent),
+        workspace(workspace_),
+        credentials(credentials_)
 {
 }
 

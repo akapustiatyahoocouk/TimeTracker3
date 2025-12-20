@@ -98,6 +98,7 @@ Component::Resources::~Resources() {}
 TT3_IMPLEMENT_SINGLETON(Component::Settings)
 
 Component::Settings::Settings()
+    :   reportScope(this, M(ReportScope), ReportConfiguration::Scope::CurrentUser)
 {
 }
 

@@ -53,6 +53,8 @@ namespace tt3::report
         ///     The credentials to use for data access.
         /// \param reportType
         ///     The report type to initially select, nullptr == auto.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
         CreateReportDialog(
                 QWidget * parent,
                 tt3::ws::Workspace workspace,
