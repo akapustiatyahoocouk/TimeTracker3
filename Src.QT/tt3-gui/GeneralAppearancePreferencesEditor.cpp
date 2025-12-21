@@ -66,7 +66,7 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
 
     //  Fill the skin combo box with available skins
     //  sorted by display name
-    _skins.append(SkinManager::allSkins().values());
+    _skins.append(SkinManager::all().values());
     std::sort(
         _skins.begin(),
         _skins.end(),
@@ -84,7 +84,7 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
 
     //  Fill the theme combo box with available themes
     //  sorted by display name
-    _themes.append(ThemeManager::allThemes().values());
+    _themes.append(ThemeManager::all().values());
     std::sort(
         _themes.begin(),
         _themes.end(),
@@ -114,8 +114,8 @@ Preferences * GeneralAppearancePreferencesEditor::preferences() const
 void GeneralAppearancePreferencesEditor::loadControlValues()
 {
     _setSelectedLocale(Component::Settings::instance()->uiLocale);
-    _setSelectedSkin(SkinManager::findSkin(Component::Settings::instance()->activeSkin));
-    _setSelectedTheme(ThemeManager::findTheme(Component::Settings::instance()->activeTheme));
+    _setSelectedSkin(SkinManager::find(Component::Settings::instance()->activeSkin));
+    _setSelectedTheme(ThemeManager::find(Component::Settings::instance()->activeTheme));
 }
 
 void GeneralAppearancePreferencesEditor::saveControlValues()
@@ -130,8 +130,8 @@ void GeneralAppearancePreferencesEditor::saveControlValues()
 void GeneralAppearancePreferencesEditor::resetControlValues()
 {
     _setSelectedLocale(Component::Settings::instance()->uiLocale.defaultValue());
-    _setSelectedSkin(SkinManager::findSkin(Component::Settings::instance()->activeSkin.defaultValue()));
-    _setSelectedTheme(ThemeManager::findTheme(Component::Settings::instance()->activeTheme.defaultValue()));
+    _setSelectedSkin(SkinManager::find(Component::Settings::instance()->activeSkin.defaultValue()));
+    _setSelectedTheme(ThemeManager::find(Component::Settings::instance()->activeTheme.defaultValue()));
 }
 
 bool GeneralAppearancePreferencesEditor::isValid() const

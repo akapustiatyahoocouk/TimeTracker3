@@ -56,6 +56,10 @@ namespace tt3::report::worksummary
             tt3::util::Setting<QDate>  reportFromDate;
             tt3::util::Setting<QDate>  reportToDate;
             tt3::util::Setting<ReportConfiguration::Grouping>  reportGrouping;
+            tt3::util::Setting<bool> includeDailySummaries;
+            tt3::util::Setting<bool> includeWeeklySummaries;
+            tt3::util::Setting<bool> includeMonthlySummaries;
+            tt3::util::Setting<bool> includeYearlySummaries;
         };
 
         //////////

@@ -133,7 +133,7 @@ namespace tt3::util
         ///     Returns the set of all registered licenses.
         /// \return
         ///     The set of all registered licenses.
-        static Licenses     allLicenses();
+        static Licenses all();
 
         /// \brief
         ///     Registers the specified License.
@@ -142,7 +142,7 @@ namespace tt3::util
         /// \return
         ///     True on success, false on failure. Repeated regiatration
         ///     of the same License is treated as a "success".
-        static bool         registerLicense(ILicense * license);
+        static bool     register(ILicense * license);
 
         /// \brief
         ///     Finds a registered License by its mnemonic.
@@ -151,7 +151,7 @@ namespace tt3::util
         /// \return
         ///     The registered License with the required mnemonic;
         ///     nullptr if not found.
-        static ILicense *   findLicense(const Mnemonic & mnemonic);
+        static ILicense*find(const Mnemonic & mnemonic);
 
         //////////
         //  Implementation

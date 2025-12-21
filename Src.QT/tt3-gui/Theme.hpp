@@ -184,7 +184,7 @@ namespace tt3::gui
         ///     Returns the set of all registered themes.
         /// \return
         ///     The set of all registered themes.
-        static Themes       allThemes();
+        static Themes       all();
 
         /// \brief
         ///     Registers the specified Theme.
@@ -194,7 +194,7 @@ namespace tt3::gui
         ///     True on success, false on failure. Repeated
         ///     registration of the same theme is treated
         ///     as a "success".
-        static bool         registerTheme(ITheme * theme);
+        static bool     register(ITheme * theme);
 
         /// \brief
         ///     Finds a registered theme by its mnemonic.
@@ -203,7 +203,7 @@ namespace tt3::gui
         /// \return
         ///     The registered theme with the required mnemonic;
         ///     nullptr if not found.
-        static ITheme *     findTheme(const tt3::util::Mnemonic & mnemonic);
+        static ITheme * find(const tt3::util::Mnemonic & mnemonic);
 
         //////////
         //  Implementation
@@ -211,7 +211,7 @@ namespace tt3::gui
         struct _Impl;
 
         //  Helpers
-        static _Impl *      _impl();
+        static _Impl *  _impl();
     };
 
     /// \class CurrentTheme tt3-gui/API.hpp

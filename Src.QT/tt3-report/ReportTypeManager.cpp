@@ -27,7 +27,7 @@ struct ReportTypeManager::_Impl
 
 //////////
 //  Operations
-ReportTypes ReportTypeManager::allReportTypes()
+ReportTypes ReportTypeManager::all()
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
@@ -36,7 +36,7 @@ ReportTypes ReportTypeManager::allReportTypes()
     return QSet<IReportType*>(values.cbegin(), values.cend());
 }
 
-bool ReportTypeManager::registerReportType(IReportType * reportType)
+bool ReportTypeManager::register(IReportType * reportType)
 {
     Q_ASSERT(reportType != nullptr);
 
@@ -52,7 +52,7 @@ bool ReportTypeManager::registerReportType(IReportType * reportType)
     return true;
 }
 
-bool ReportTypeManager::unregisterReportType(IReportType * reportType)
+bool ReportTypeManager::unregister(IReportType * reportType)
 {
     Q_ASSERT(reportType != nullptr);
 
@@ -69,7 +69,7 @@ bool ReportTypeManager::unregisterReportType(IReportType * reportType)
     return false;
 }
 
-IReportType * ReportTypeManager::findReportType(const tt3::util::Mnemonic & mnemonic)
+IReportType * ReportTypeManager::find(const tt3::util::Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);

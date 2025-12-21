@@ -116,7 +116,7 @@ namespace tt3::report
         ///     Returns the set of all registered ReportFormats.
         /// \return
         ///     The set of all registered ReportFormats.
-        static auto     allReportFormats() -> ReportFormats;
+        static auto     all() -> ReportFormats;
 
         /// \brief
         ///     Registers the specified ReportFormat.
@@ -126,7 +126,7 @@ namespace tt3::report
         ///     True on success, false on failure. Repeated
         ///     registration of the same ReportFormat is treated
         ///     as a "success".
-        static bool     registerReportFormat(IReportFormat * reportFormat);
+        static bool     register(IReportFormat * reportFormat);
 
         /// \brief
         ///     Un-registers the specified ReportFormat.
@@ -134,7 +134,7 @@ namespace tt3::report
         ///     The ReportFormat to un-register
         /// \return
         ///     True on success, false on failure.
-        static bool     unregisterReportFormat(IReportFormat * reportFormat);
+        static bool     unregister(IReportFormat * reportFormat);
 
         /// \brief
         ///     Finds a registered ReportFormat by its mnemonic.
@@ -143,9 +143,7 @@ namespace tt3::report
         /// \return
         ///     The registered ReportFormat with the required mnemonic;
         ///     nullptr if not found.
-        static auto     findReportFormat(
-                                const tt3::util::Mnemonic & mnemonic
-                            ) -> IReportFormat *;
+        static auto     find(const tt3::util::Mnemonic & mnemonic) -> IReportFormat *;
 
         //////////
         //  Implementation

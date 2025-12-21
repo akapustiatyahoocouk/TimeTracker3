@@ -180,8 +180,7 @@ namespace tt3::util
         ///     Returns the set of all registered components.
         /// \return
         ///     Returns the set of all registered components.
-        static auto     allComponents(
-                            ) -> Components;
+        static auto     all() -> Components;
 
         /// \brief
         ///     Registers the specified component.
@@ -192,9 +191,7 @@ namespace tt3::util
         ///     The component to register.
         /// \return
         ///     True on success, false on failure.
-        static bool     registerComponent(
-                                IComponent * component
-                            );
+        static bool     register(IComponent * component);
 
         /// \brief
         ///     Un-registers the specified component.
@@ -202,9 +199,7 @@ namespace tt3::util
         ///     The component to un-register.
         /// \return
         ///     True on success, false on failure.
-        static bool     unregisterComponent(
-                                IComponent * component
-                            );
+        static bool     unregister(IComponent * component);
 
         /// \brief
         ///     Finds a registered component by mnemonic and version.
@@ -215,10 +210,8 @@ namespace tt3::util
         /// \return
         ///     The registered component with the required mnemonic
         ///     and version or nullptr if not found.
-        static auto     findComponent(
-                                const Mnemonic & mnemonic,
-                                const QVersionNumber & version
-                            ) -> IComponent *;
+        static auto     find(const Mnemonic & mnemonic,
+                             const QVersionNumber & version) -> IComponent *;
 
         /// \brief
         ///     Finds a registered component by mnemonic.
@@ -231,9 +224,7 @@ namespace tt3::util
         /// \return
         ///     The latest available version of a registered component
         ///     with the required mnemonic or nullptr if none found.
-        static auto     findComponent(
-                                const Mnemonic & mnemonic
-                            ) -> IComponent *;
+        static auto     find(const Mnemonic & mnemonic) -> IComponent *;
 
         /// \brief
         ///     Loads (bit does NOT initialize) optional Components
@@ -336,11 +327,11 @@ public:                                 \
     Clazz::~Clazz() {}                  \
     Clazz::Registrator::Registrator()   \
     {                                   \
-        tt3::util::ComponentManager::registerComponent(Clazz::instance());  \
+        tt3::util::ComponentManager::register(Clazz::instance());   \
     }                                   \
     Clazz::Registrator::~Registrator()  \
     {                                   \
-        tt3::util::ComponentManager::unregisterComponent(Clazz::instance());\
+        tt3::util::ComponentManager::unregister(Clazz::instance()); \
     }                                   \
     namespace                           \
     {                                   \

@@ -562,8 +562,7 @@ void MainFrame::_updateMruWorkspaces()
 void MainFrame::_refreshToolsMenu()
 {
     _ui->menuTools->clear();
-    QList<tt3::util::ITool*> tools =
-        tt3::util::ToolManager::allTools().values();
+    auto tools = tt3::util::ToolManager::all().values();
     std::sort(
         tools.begin(),
         tools.end(),
@@ -634,22 +633,21 @@ void MainFrame::_refreshReportsMenu()
     }
     //  Need to re-create the Report menu actions
     //  from available report types, sorted by display name
-    auto reportTypes = tt3::report::ReportTypeManager::allReportTypes();
-    QList<tt3::report::IReportType*> reportTypesList(reportTypes.cbegin(), reportTypes.cend());
+    auto reportTypes = tt3::report::ReportTypeManager::all().values();
     std::sort(
-        reportTypesList.begin(),
-        reportTypesList.end(),
+        reportTypes.begin(),
+        reportTypes.end(),
         [](auto a, auto b)
         {
             return tt3::util::NaturalStringOrder::less(a->displayName(), b->displayName());
         });
-    for (int i = 0; i < reportTypesList.size(); i++)
+    for (int i = 0; i < reportTypes.size(); i++)
     {
         auto action =
             new QAction(
-                reportTypesList[i]->smallIcon(),
-                reportTypesList[i]->displayName());
-        action->setData(QVariant::fromValue(reportTypesList[i]));
+                reportTypes[i]->smallIcon(),
+                reportTypes[i]->displayName());
+        action->setData(QVariant::fromValue(reportTypes[i]));
         _ui->menuReports->insertAction(
             actions[actions.size() - 2],    //  separator
             action);

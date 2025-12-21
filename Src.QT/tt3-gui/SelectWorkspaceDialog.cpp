@@ -33,7 +33,7 @@ SelectWorkspaceDialog::SelectWorkspaceDialog(
 
     //  Populate "Workspace type" combo box
     QList<tt3::ws::WorkspaceType> workspaceTypes =
-        tt3::ws::WorkspaceTypeManager::allWorkspaceTypes().values();
+        tt3::ws::WorkspaceTypeManager::all().values();
     std::sort(
         workspaceTypes.begin(),
         workspaceTypes.end(),
@@ -75,7 +75,7 @@ SelectWorkspaceDialog::SelectWorkspaceDialog(
 
     //  Set editable control values
     _setSelectedWorkspaceType(
-        tt3::ws::WorkspaceTypeManager::findWorkspaceType(
+        tt3::ws::WorkspaceTypeManager::find(
             Component::Settings::instance()->lastUsedWorkspaceType));
 
     //  Hide optional controls if necessary

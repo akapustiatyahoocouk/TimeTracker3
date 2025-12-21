@@ -253,7 +253,7 @@ namespace tt3::ws
         /// \return
         ///     The workspace type with the required mnemonic
         ///     or nullptr if not found.
-        static WorkspaceType    findWorkspaceType(const tt3::util::Mnemonic & mnemonic);
+        static WorkspaceType    find(const tt3::util::Mnemonic & mnemonic);
 
         /// \brief
         ///     Returns the set of all known workspace types.
@@ -261,7 +261,7 @@ namespace tt3::ws
         ///     This is determined based on registered database types.
         /// \return
         ///     The set of all known workspace types.
-        static WorkspaceTypes   allWorkspaceTypes();
+        static WorkspaceTypes   all();
 
         //////////
         //  Implementation

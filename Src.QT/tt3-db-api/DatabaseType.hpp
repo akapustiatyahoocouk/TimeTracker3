@@ -211,9 +211,7 @@ namespace tt3::db::api
         ///     True on success, false on failure.
         ///     Repeated registration of the same database type
         ///     is considered as a "success".
-        static bool     registerDatabaseType(
-                                IDatabaseType * databaseType
-                            );
+        static bool     register(IDatabaseType * databaseType);
 
         /// \brief
         ///     Un-registers the specified database type.
@@ -221,9 +219,7 @@ namespace tt3::db::api
         ///     The database type to un-register.
         /// \return
         ///     True on success, false on failure.
-        static bool     unregisterDatabaseType(
-                                IDatabaseType * databaseType
-                            );
+        static bool     unregister(IDatabaseType * databaseType);
 
         /// \brief
         ///     Finds a registered database type by its mnemonic.
@@ -232,16 +228,13 @@ namespace tt3::db::api
         /// \return
         ///     The registered database type with the required
         ///     mnemonic; nullptr if not found.
-        static auto     findDatabaseType(
-                                const tt3::util::Mnemonic & mnemonic
-                            ) -> IDatabaseType *;
+        static auto     find(const tt3::util::Mnemonic & mnemonic) -> IDatabaseType *;
 
         /// \brief
         ///     Returns the set of all registered database types.
         /// \return
         ///     Rhe set of all registered database types.
-        static auto     allDatabaseTypes(
-                            ) -> DatabaseTypes;
+        static auto     all() -> DatabaseTypes;
 
         //////////
         //  Implementation

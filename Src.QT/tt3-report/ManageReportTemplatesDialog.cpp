@@ -213,7 +213,7 @@ void ManageReportTemplatesDialog::_refreshReportTemplateItems(QTreeWidgetItem * 
     if (parentItem == _predefinedReportsItem)
     {
         for (auto reportTemplate :
-             ReportTemplateManager::allReportTemplates())
+             ReportTemplateManager::all())
         {
             if (dynamic_cast<BasicReportTemplate*>(reportTemplate))
             {
@@ -224,7 +224,7 @@ void ManageReportTemplatesDialog::_refreshReportTemplateItems(QTreeWidgetItem * 
     else if (parentItem == _customReportsItem)
     {
         for (auto reportTemplate :
-             ReportTemplateManager::allReportTemplates())
+             ReportTemplateManager::all())
         {
             if (dynamic_cast<CustomReportTemplate*>(reportTemplate))
             {
@@ -381,8 +381,7 @@ void ManageReportTemplatesDialog::_importPushButtonClicked()
     auto reportTemplate =
         std::make_unique<CustomReportTemplate>(xml);    //  may throw
     //  No duplication!
-    if (auto rt =
-        ReportTemplateManager::findReportTemplate(reportTemplate->mnemonic()))
+    if (auto rt = ReportTemplateManager::find(reportTemplate->mnemonic()))
     {   //  OOPS!
         throw ReportTemplateAlreadyExistsException(
             rt->mnemonic(),
@@ -390,7 +389,7 @@ void ManageReportTemplatesDialog::_importPushButtonClicked()
 
     }
     //  Register, record & release
-    if (ReportTemplateManager::registerReportTemplate(reportTemplate.get()))
+    if (ReportTemplateManager::register(reportTemplate.get()))
     {   //  Success - record, refresh, select & release
         auto known = Component::Settings::instance()->knownCustomReportTemplates.value();
         known.append(
@@ -433,7 +432,7 @@ void ManageReportTemplatesDialog::_removePushButtonClicked()
         }
         Component::Settings::instance()->knownCustomReportTemplates = known;
         //  ...and remove
-        ReportTemplateManager::unregisterReportTemplate(customReportTemplate);
+        ReportTemplateManager::unregister(customReportTemplate);
         _refresh();
         delete customReportTemplate;
     }

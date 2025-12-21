@@ -7,7 +7,8 @@ SOURCES += \
     Component.cpp \
     ReportConfiguration.cpp \
     ReportConfigurationEditor.cpp \
-    ReportType.cpp
+    ReportType.cpp \
+    SelectUsersDialog.cpp
 
 HEADERS += \
     API.hpp \
@@ -15,7 +16,8 @@ HEADERS += \
     Linkage.hpp \
     ReportConfiguration.hpp \
     ReportConfigurationEditor.hpp \
-    ReportType.hpp
+    ReportType.hpp \
+    SelectUsersDialog.hpp
 
 PRECOMPILED_HEADER = API.hpp
 
@@ -30,4 +32,5 @@ RESOURCES += \
     tt3-report-worksummary.qrc
 
 FORMS += \
-    ReportConfigurationEditor.ui
+    ReportConfigurationEditor.ui \
+    SelectUsersDialog.ui

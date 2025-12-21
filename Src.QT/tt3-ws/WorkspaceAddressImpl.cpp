@@ -298,7 +298,7 @@ auto tt3::util::fromString<tt3::ws::WorkspaceAddress>(
     }
     //  Resolve mnemonic
     WorkspaceType workspaceType =
-        WorkspaceTypeManager::findWorkspaceType(
+        WorkspaceTypeManager::find(
             tt3::util::Mnemonic(unescape(chunks[0])));  //  may throw
     if (workspaceType == nullptr)
     {   //  OOPS!

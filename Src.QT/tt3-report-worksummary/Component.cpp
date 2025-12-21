@@ -78,12 +78,12 @@ const Component::Settings * Component::settings() const
 
 void Component::initialize()
 {
-    tt3::report::ReportTypeManager::registerReportType(ReportType::instance());
+    tt3::report::ReportTypeManager::register(ReportType::instance());
 }
 
 void Component::deinitialize()
 {
-    tt3::report::ReportTypeManager::unregisterReportType(ReportType::instance());
+    tt3::report::ReportTypeManager::unregister(ReportType::instance());
 }
 
 //////////
@@ -102,7 +102,11 @@ Component::Settings::Settings()
         reportDateRange(this, M(ReportDateRange), ReportConfiguration::DateRange::CurrentWeek),
         reportFromDate(this, M(ReportFromDate), QDate::currentDate()),
         reportToDate(this, M(ReportToDate), QDate::currentDate()),
-        reportGrouping(this, M(ReportGrouping), ReportConfiguration::Grouping::ByActivityType)
+        reportGrouping(this, M(ReportGrouping), ReportConfiguration::Grouping::ByActivityType),
+        includeDailySummaries(this, M(IncludeDailySummaries), true),
+        includeWeeklySummaries(this, M(IncludeWeeklySummaries), true),
+        includeMonthlySummaries(this, M(IncludeMonthlySummaries), true),
+        includeYearlySummaries(this, M(IncludeYearlySummaries), true)
 {
 }
 

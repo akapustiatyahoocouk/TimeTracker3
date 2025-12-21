@@ -110,7 +110,7 @@ namespace tt3::util
         ///     Returns the set of all registered Tools.
         /// \return
         ///     The set of all registered Tools.
-        static Tools    allTools();
+        static Tools    all();
 
         /// \brief
         ///     Registers the specified Tool.
@@ -120,7 +120,7 @@ namespace tt3::util
         ///     True on success, false on failure. Repeated
         ///     registration of the same yool is treated
         ///     as a success.
-        static bool     registerTool(ITool * tool);
+        static bool     register(ITool * tool);
 
         /// \brief
         ///     Un-registers the specified Tool.
@@ -128,7 +128,7 @@ namespace tt3::util
         ///     The tool to un-register.
         /// \return
         ///     True on success, false on failure.
-        static bool     unregisterTool(ITool * tool);
+        static bool     unregister(ITool * tool);
 
         /// \brief
         ///     Finds a registered Tool by its mnemonic.
@@ -137,7 +137,7 @@ namespace tt3::util
         /// \return
         ///     The registered Tool with the required mnemonic;
         ///     nullptr if not found.
-        static ITool *  findTool(const Mnemonic & mnemonic);
+        static ITool *  find(const Mnemonic & mnemonic);
 
         //////////
         //  Implementation

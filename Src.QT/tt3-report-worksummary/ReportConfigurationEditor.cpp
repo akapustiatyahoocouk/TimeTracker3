@@ -49,7 +49,10 @@ void ReportConfigurationEditor::loadControlValues()
     _ui->fromDateEdit->setDate(settings->reportFromDate);
     _ui->toDateEdit->setDate(settings->reportToDate);
     _setSelectedGrouping(settings->reportGrouping);
-    //  TODO implement properly
+    _ui->dailyDataCheckBox->setChecked(settings->includeDailySummaries);
+    _ui->weeklyDataCheckBox->setChecked(settings->includeWeeklySummaries);
+    _ui->monthlyDataCheckBox->setChecked(settings->includeMonthlySummaries);
+    _ui->yearlyDataCheckBox->setChecked(settings->includeYearlySummaries);
     _refresh();
 }
 
@@ -62,7 +65,10 @@ void ReportConfigurationEditor::saveControlValues()
     settings->reportFromDate = _ui->fromDateEdit->date();
     settings->reportToDate = _ui->toDateEdit->date();
     settings->reportGrouping = _selectedGrouping();
-    //  TODO implement properly
+    settings->includeDailySummaries =  _ui->dailyDataCheckBox->isChecked();
+    settings->includeWeeklySummaries = _ui->weeklyDataCheckBox->isChecked();
+    settings->includeMonthlySummaries = _ui->monthlyDataCheckBox->isChecked();
+    settings->includeYearlySummaries = _ui->yearlyDataCheckBox->isChecked();
 }
 
 void ReportConfigurationEditor::resetControlValues()
@@ -74,8 +80,10 @@ void ReportConfigurationEditor::resetControlValues()
     _ui->fromDateEdit->setDate(settings->reportFromDate.defaultValue());
     _ui->toDateEdit->setDate(settings->reportToDate.defaultValue());
     _setSelectedGrouping(settings->reportGrouping.defaultValue());
-
-    //  TODO implement properly
+    _ui->dailyDataCheckBox->setChecked(settings->includeDailySummaries.defaultValue());
+    _ui->weeklyDataCheckBox->setChecked(settings->includeWeeklySummaries.defaultValue());
+    _ui->monthlyDataCheckBox->setChecked(settings->includeMonthlySummaries.defaultValue());
+    _ui->yearlyDataCheckBox->setChecked(settings->includeYearlySummaries.defaultValue());
     _refresh();
 }
 

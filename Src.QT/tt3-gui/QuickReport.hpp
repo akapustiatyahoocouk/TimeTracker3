@@ -104,7 +104,7 @@ namespace tt3::gui
         ///     Returns the set of all registered QuickReports.
         /// \return
         ///     The set of all registered QuickReports.
-        static QSet<IQuickReport*>allQuickReports();
+        static auto     all() -> QSet<IQuickReport*>;
 
         /// \brief
         ///     Registers the specified QuickReport.
@@ -114,7 +114,7 @@ namespace tt3::gui
         ///     True on success, false on failure. Repeated
         ///     registration of the same QuickReport is treated
         ///     as a "success".
-        static bool         registerQuickReport(IQuickReport * quickReport);
+        static bool     register(IQuickReport * quickReport);
 
         /// \brief
         ///     Finds a registered QuickReport by its mnemonic.
@@ -123,7 +123,9 @@ namespace tt3::gui
         /// \return
         ///     The registered QuickReport with the required mnemonic;
         ///     nullptr if not found.
-        static IQuickReport *     findQuickReport(const tt3::util::Mnemonic & mnemonic);
+        static auto     find(
+                                const tt3::util::Mnemonic & mnemonic
+                            ) -> IQuickReport *;
 
         //////////
         //  Implementation

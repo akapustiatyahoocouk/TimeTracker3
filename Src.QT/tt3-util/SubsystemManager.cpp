@@ -36,7 +36,7 @@ struct SubsystemManager::_Impl
 
 //////////
 //  Operations
-Subsystems SubsystemManager::allSubsystems()
+Subsystems SubsystemManager::all()
 {
     _Impl * impl = _impl();
     Lock _(impl->guard);
@@ -45,7 +45,7 @@ Subsystems SubsystemManager::allSubsystems()
     return Subsystems(values.cbegin(), values.cend());
 }
 
-bool SubsystemManager::registerSubsystem(ISubsystem * subsystem)
+bool SubsystemManager::register(ISubsystem * subsystem)
 {
     Q_ASSERT(subsystem != nullptr);
 
@@ -60,7 +60,7 @@ bool SubsystemManager::registerSubsystem(ISubsystem * subsystem)
     return true;
 }
 
-ISubsystem * SubsystemManager::findSubsystem(const Mnemonic & mnemonic)
+ISubsystem * SubsystemManager::find(const Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();
     Lock _(impl->guard);

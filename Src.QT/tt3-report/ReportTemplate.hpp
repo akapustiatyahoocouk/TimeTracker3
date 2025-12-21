@@ -535,7 +535,7 @@ namespace tt3::report
         ///     Returns the set of all registered ReportTemplates.
         /// \return
         ///     The set of all registered ReportTemplates.
-        static ReportTemplates  allReportTemplates();
+        static auto     all() -> ReportTemplates;
 
         /// \brief
         ///     Registers the specified ReportTemplate.
@@ -545,7 +545,7 @@ namespace tt3::report
         ///     True on success, false on failure. Repeated
         ///     registration of the same ReportTemplate is treated
         ///     as a "success".
-        static bool         registerReportTemplate(IReportTemplate * reportTemplate);
+        static bool     register(IReportTemplate * reportTemplate);
 
         /// \brief
         ///     Un-registers the specified ReportTemplate.
@@ -553,7 +553,7 @@ namespace tt3::report
         ///     The ReportTemplate to un-register
         /// \return
         ///     True on success, false on failure.
-        static bool         unregisterReportTemplate(IReportTemplate * reportTemplate);
+        static bool     unregister(IReportTemplate * reportTemplate);
 
         /// \brief
         ///     Finds a registered ReportTemplate by its mnemonic.
@@ -562,7 +562,7 @@ namespace tt3::report
         /// \return
         ///     The registered ReportTemplate with the required mnemonic;
         ///     nullptr if not found.
-        static IReportTemplate *    findReportTemplate(const tt3::util::Mnemonic & mnemonic);
+        static auto     find(const tt3::util::Mnemonic & mnemonic) -> IReportTemplate *;
 
         //////////
         //  Implementation

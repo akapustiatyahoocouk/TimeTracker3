@@ -54,7 +54,7 @@ namespace tt3::gui
         ///     Returns the mnemonic identifier of this preferences node.
         /// \return
         ///     The mnemonic identifier of this preferences node.
-        virtual Mnemonic        mnemonic() const = 0;
+        virtual Mnemonic mnemonic() const = 0;
 
         /// \brief
         ///     Returns the user-readable display name of this
@@ -62,14 +62,14 @@ namespace tt3::gui
         /// \return
         ///     The user-readable display name of this preferences.
         ///     node for the current default locale.
-        virtual QString         displayName() const = 0;
+        virtual QString displayName() const = 0;
 
         /// \brief
         ///     Returns the immediate parent node of this Preferences node.
         /// \return
         ///     The immediate parent node of this Preferences node
         ///     or null if this is one of the root nodes.
-        virtual Preferences *   parent() const = 0;
+        virtual auto    parent() const -> Preferences * = 0;
 
         /// \brief
         ///     Returns the set of immediate child nodes of this
@@ -77,7 +77,7 @@ namespace tt3::gui
         /// \return
         ///     The set of immediate child nodes of this
         ///     Preferences node.
-        virtual QSet<Preferences*>  children() const;
+        virtual auto    children() const -> QSet<Preferences*>;
 
         /// \brief
         ///     The relative order of this Preferences node
@@ -88,7 +88,7 @@ namespace tt3::gui
         /// \return
         ///     The relative order of this Preferences node
         ///     within its parent.
-        virtual int             order() const { return INT_MAX; }
+        virtual int     order() const { return INT_MAX; }
 
         /// \brief
         ///     Creates a new editor widget for this preferences node.
@@ -96,7 +96,7 @@ namespace tt3::gui
         ///     Creates a new editor widget for this preferences node,
         ///     or nullptr if this node is not editable. The returned
         ///     editor widget will be re-parented as necessary.
-        virtual PreferencesEditor * createEditor() = 0;
+        virtual auto    createEditor() -> PreferencesEditor * = 0;
     };
 
     /// \class PreferencesManager tt3-gui/API.hpp
@@ -113,13 +113,13 @@ namespace tt3::gui
         ///     root, leaf or intermediate.
         /// \return
         ///     The set of all registered Preferences.
-        static QSet<Preferences*>   allPreferences();
+        static auto     all() -> QSet<Preferences*>;
 
         /// \brief
         ///     Returns the set of all registered Preferemces that have no parent.
         /// \return
         ///     The set of all registered Preferemces that have no parent.
-        static QSet<Preferences*>   rootPreferences();
+        static auto     roots() -> QSet<Preferences*>;
 
         /// \brief
         ///     Registers the specified {references (along with its parents).
@@ -130,7 +130,7 @@ namespace tt3::gui
         ///     registered successfully, else false. A repeated
         ///     registration of the same preferences is treated as
         ///     a success.
-        static bool                 registerPreferences(Preferences * preferences);
+        static bool     register(Preferences * preferences);
 
         /// \brief
         ///     Finds a registered Preferences by its mnemonic.
@@ -139,7 +139,7 @@ namespace tt3::gui
         /// \return
         ///     The registered Preferences with the required
         ///     mnemonic or if not found.
-        static Preferences *        findPreferences(const tt3::util::Mnemonic & mnemonic);
+        static auto     find(const tt3::util::Mnemonic & mnemonic) -> Preferences *;
 
         //////////
         //  Implementation
@@ -147,7 +147,7 @@ namespace tt3::gui
         struct _Impl;
 
         //  Helpers
-        static _Impl *          _impl();
+        static _Impl *  _impl();
     };
 
     /// \class GeneralPreferences tt3-gui/API.hpp

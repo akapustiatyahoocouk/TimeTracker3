@@ -31,8 +31,7 @@ struct WorkspaceTypeManager::_Impl
 
     void        refreshRegistry()
     {
-        for (tt3::db::api::IDatabaseType * databaseType :
-             tt3::db::api::DatabaseTypeManager::allDatabaseTypes())
+        for (auto databaseType : tt3::db::api::DatabaseTypeManager::all())
         {
             registry[databaseType] = new WorkspaceTypeImpl(databaseType);
         }
@@ -41,18 +40,18 @@ struct WorkspaceTypeManager::_Impl
 
 //////////
 //  Operations
-WorkspaceType WorkspaceTypeManager::findWorkspaceType(const tt3::util::Mnemonic & mnemonic)
+WorkspaceType WorkspaceTypeManager::find(const tt3::util::Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
 
     impl->refreshRegistry();
     tt3::db::api::IDatabaseType * databaseType =
-        tt3::db::api::DatabaseTypeManager::findDatabaseType(mnemonic);
+        tt3::db::api::DatabaseTypeManager::find(mnemonic);
     return impl->registry.contains(databaseType) ? impl->registry[databaseType] : nullptr;
 }
 
-WorkspaceTypes WorkspaceTypeManager::allWorkspaceTypes()
+WorkspaceTypes WorkspaceTypeManager::all()
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);

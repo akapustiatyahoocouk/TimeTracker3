@@ -114,7 +114,7 @@ void Application::_prepareForLogging()
 void Application::_selectActiveTheme()
 {
     tt3::gui::ITheme * initialTheme =
-        tt3::gui::ThemeManager::findTheme(tt3::gui::Component::Settings::instance()->activeTheme);
+        tt3::gui::ThemeManager::find(tt3::gui::Component::Settings::instance()->activeTheme);
     tt3::gui::theCurrentTheme =
         (initialTheme != nullptr) ?
             initialTheme :
@@ -129,9 +129,9 @@ void Application::_selectActiveSkin()
     static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
 
     tt3::gui::ISkin * initialSkin =
-        tt3::gui::SkinManager::findSkin(tt3::gui::Component::Settings::instance()->activeSkin);
+        tt3::gui::SkinManager::find(tt3::gui::Component::Settings::instance()->activeSkin);
     //  Use a default skin ?
-    for (tt3::gui::ISkin * skin : tt3::gui::SkinManager::allSkins())
+    for (tt3::gui::ISkin * skin : tt3::gui::SkinManager::all())
     {
         if (skin->isDefault() && initialSkin == nullptr)
         {
@@ -140,7 +140,7 @@ void Application::_selectActiveSkin()
         }
     }
     //  Use any available skin ?
-    for (tt3::gui::ISkin * skin : tt3::gui::SkinManager::allSkins())
+    for (tt3::gui::ISkin * skin : tt3::gui::SkinManager::all())
     {
         if (initialSkin == nullptr)
         {

@@ -36,7 +36,7 @@ namespace
 
 //////////
 //  Operations
-Components ComponentManager::allComponents()
+Components ComponentManager::all()
 {
     _Impl * impl = _impl();
     Lock _(impl->guard);
@@ -45,18 +45,18 @@ Components ComponentManager::allComponents()
     return Components(values.cbegin(), values.cend());
 }
 
-bool ComponentManager::registerComponent(IComponent * component)
+bool ComponentManager::register(IComponent * component)
 {
     Q_ASSERT(component != nullptr);
 
     _Impl * impl = _impl();
     Lock _(impl->guard);
 
-    if (IComponent * registeredComponent = findComponent(component->mnemonic(), component->version()))
+    if (IComponent * registeredComponent = find(component->mnemonic(), component->version()))
     {
         return component == registeredComponent;
     }
-    if (!SubsystemManager::registerSubsystem(component->subsystem()))
+    if (!SubsystemManager::register(component->subsystem()))
     {   //  OOPS! Can't proceed!
         return false;
     }
@@ -65,7 +65,7 @@ bool ComponentManager::registerComponent(IComponent * component)
     return true;
 }
 
-bool ComponentManager::unregisterComponent(
+bool ComponentManager::unregister(
         IComponent * component
     )
 {
@@ -84,7 +84,10 @@ bool ComponentManager::unregisterComponent(
     return false;
 }
 
-IComponent * ComponentManager::findComponent(const tt3::util::Mnemonic & mnemonic, const QVersionNumber & version)
+IComponent * ComponentManager::find(
+        const tt3::util::Mnemonic & mnemonic,
+        const QVersionNumber & version
+    )
 {
     _Impl * impl = _impl();
     Lock _(impl->guard);
@@ -93,7 +96,9 @@ IComponent * ComponentManager::findComponent(const tt3::util::Mnemonic & mnemoni
     return impl->registry.contains(key) ? impl->registry[key] : nullptr;
 }
 
-IComponent * ComponentManager::findComponent(const Mnemonic & mnemonic)
+IComponent * ComponentManager::find(
+        const Mnemonic & mnemonic
+    )
 {
     _Impl * impl = _impl();
     Lock _(impl->guard);
@@ -293,7 +298,7 @@ void ComponentManager::loadComponentSettings()
                 {
                     Mnemonic componentMnemonic(line.mid(1, separatorIndex - 1));
                     QVersionNumber componentVersion(fromString<QVersionNumber>(line.mid(separatorIndex + 1, line.length() - separatorIndex - 2)));
-                    currentComponent = findComponent(componentMnemonic, componentVersion);
+                    currentComponent = find(componentMnemonic, componentVersion);
                     continue;
                 }
                 catch (const ParseException & ex)
@@ -333,16 +338,15 @@ void ComponentManager::saveComponentSettings()
     {
         QTextStream iniStream(&iniFile);
 
-        QList<IComponent*> allComponents =
-            ComponentManager::allComponents().values();
+        auto components = ComponentManager::all().values();
         std::sort(
-            allComponents.begin(),
-            allComponents.end(),
+            components.begin(),
+            components.end(),
             [](auto a, auto b)
             {
                 return a->mnemonic() < b->mnemonic();
             });
-        for (IComponent * component : std::as_const(allComponents))
+        for (IComponent * component : std::as_const(components))
         {   //  Sorted by component mnemonic to simplify lookin text editor
             iniStream << "["
                       << component->mnemonic().toString()

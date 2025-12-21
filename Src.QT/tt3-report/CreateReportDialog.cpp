@@ -38,16 +38,15 @@ CreateReportDialog::CreateReportDialog(
     setWindowTitle(rr.string(RID(Title)));
 
     //  Populate "report type" combo box
-    auto reportTypes = tt3::report::ReportTypeManager::allReportTypes();
-    QList<tt3::report::IReportType*> reportTypesList(reportTypes.cbegin(), reportTypes.cend());
+    auto reportTypes = tt3::report::ReportTypeManager::all().values();
     std::sort(
-        reportTypesList.begin(),
-        reportTypesList.end(),
+        reportTypes.begin(),
+        reportTypes.end(),
         [](auto a, auto b)
         {
             return tt3::util::NaturalStringOrder::less(a->displayName(), b->displayName());
         });
-    for (auto reportType : reportTypesList)
+    for (auto reportType : reportTypes)
     {
         _ui->reportTypeComboBox->addItem(
             reportType->smallIcon(),
@@ -56,16 +55,15 @@ CreateReportDialog::CreateReportDialog(
     }
 
     //  Populate "report format" combo box
-    auto reportFormats = tt3::report::ReportFormatManager::allReportFormats();
-    QList<tt3::report::IReportFormat*> reportFormatsList(reportFormats.cbegin(), reportFormats.cend());
+    auto reportFormats = tt3::report::ReportFormatManager::all().values();
     std::sort(
-        reportFormatsList.begin(),
-        reportFormatsList.end(),
+        reportFormats.begin(),
+        reportFormats.end(),
         [](auto a, auto b)
         {
             return tt3::util::NaturalStringOrder::less(a->displayName(), b->displayName());
         });
-    for (auto reportFormat : reportFormatsList)
+    for (auto reportFormat : reportFormats)
     {
         _ui->reportFormatComboBox->addItem(
             reportFormat->smallIcon(),
@@ -74,7 +72,7 @@ CreateReportDialog::CreateReportDialog(
     }
 
     //  Populate "report template" combo box
-    auto reportTemplates = tt3::report::ReportTemplateManager::allReportTemplates();
+    auto reportTemplates = tt3::report::ReportTemplateManager::all();
     QList<tt3::report::IReportTemplate*> reportTemplatesList(reportTemplates.cbegin(), reportTemplates.cend());
     std::sort(
         reportTemplatesList.begin(),
@@ -117,7 +115,7 @@ CreateReportDialog::CreateReportDialog(
         setIcon(QIcon(":/tt3-report/Resources/Images/Actions/CancelSmall.png"));
 
     //  Create editor widgets for each report type...
-    for (auto reportType : ReportTypeManager::allReportTypes())
+    for (auto reportType : ReportTypeManager::all())
     {
         if (auto editor =
             reportType->createConfigurationEditor(
@@ -146,13 +144,13 @@ CreateReportDialog::CreateReportDialog(
     //  Adjust controls
     //  Remember last used report type/format/template
     _setSelectedReportType(
-        ReportTypeManager::findReportType(
+        ReportTypeManager::find(
             Component::Settings::instance()->lastUsedReportType));
     _setSelectedReportFormat(
-        ReportFormatManager::findReportFormat(
+        ReportFormatManager::find(
             Component::Settings::instance()->lastUsedReportFormat));
     _setSelectedReportTemplate(
-        ReportTemplateManager::findReportTemplate(
+        ReportTemplateManager::find(
             Component::Settings::instance()->lastUsedReportTemplate));
     if (reportType != nullptr)
     {   //  Specified explicitly

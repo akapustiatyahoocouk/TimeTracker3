@@ -78,12 +78,12 @@ const Component::Settings * Component::settings() const
 
 void Component::initialize()
 {
-    tt3::gui::SkinManager::registerSkin(Skin::instance());
+    tt3::gui::SkinManager::register(Skin::instance());
 }
 
 void Component::deinitialize()
 {
-    tt3::gui::SkinManager::unregisterSkin(Skin::instance());
+    tt3::gui::SkinManager::unregister(Skin::instance());
 }
 
 //////////

@@ -31,8 +31,7 @@ ConfigureBackupDialog::ConfigureBackupDialog(
     setWindowTitle(rr.string(RID(Title)));
 
     //  Populate "Workspace type" combo box
-    QList<tt3::ws::WorkspaceType> workspaceTypes =
-        tt3::ws::WorkspaceTypeManager::allWorkspaceTypes().values();
+    auto workspaceTypes = tt3::ws::WorkspaceTypeManager::all().values();
     std::sort(
         workspaceTypes.begin(),
         workspaceTypes.end(),
@@ -79,7 +78,7 @@ ConfigureBackupDialog::ConfigureBackupDialog(
 
     //  Set editable control values
     _setSelectedWorkspaceType(
-        tt3::ws::WorkspaceTypeManager::findWorkspaceType(
+        tt3::ws::WorkspaceTypeManager::find(
             tt3::gui::Component::Settings::instance()->lastUsedWorkspaceType));
 
     //  Adjust controls

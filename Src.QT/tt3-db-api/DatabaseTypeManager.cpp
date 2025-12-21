@@ -27,7 +27,7 @@ struct DatabaseTypeManager::_Impl
 
 //////////
 //  Operations
-bool DatabaseTypeManager::registerDatabaseType(IDatabaseType * databaseType)
+bool DatabaseTypeManager::register(IDatabaseType * databaseType)
 {
     Q_ASSERT(databaseType != nullptr);
 
@@ -42,7 +42,7 @@ bool DatabaseTypeManager::registerDatabaseType(IDatabaseType * databaseType)
     return true;
 }
 
-bool DatabaseTypeManager::unregisterDatabaseType(
+bool DatabaseTypeManager::unregister(
         IDatabaseType * databaseType
     )
 {
@@ -61,7 +61,7 @@ bool DatabaseTypeManager::unregisterDatabaseType(
     return false;
 }
 
-IDatabaseType * DatabaseTypeManager::findDatabaseType(const tt3::util::Mnemonic & mnemonic)
+IDatabaseType * DatabaseTypeManager::find(const tt3::util::Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
@@ -69,7 +69,7 @@ IDatabaseType * DatabaseTypeManager::findDatabaseType(const tt3::util::Mnemonic 
     return impl->registry.contains(mnemonic) ? impl->registry[mnemonic] : nullptr;
 }
 
-DatabaseTypes DatabaseTypeManager::allDatabaseTypes()
+DatabaseTypes DatabaseTypeManager::all()
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
@@ -80,7 +80,7 @@ DatabaseTypes DatabaseTypeManager::allDatabaseTypes()
 
 //////////
 //  Implementation helpers
-DatabaseTypeManager::_Impl * DatabaseTypeManager::_impl()
+auto DatabaseTypeManager::_impl() -> _Impl *
 {
     static _Impl impl;
     return &impl;

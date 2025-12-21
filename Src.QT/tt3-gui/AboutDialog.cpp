@@ -88,7 +88,7 @@ void AboutDialog::_showLicensePushButtonClicked()
     if (_licenses.isEmpty())
     {   //  as good a check for "one time" as any - the tt3-gui
         //  component itself WILL have a license
-        for (tt3::util::IComponent * component : tt3::util::ComponentManager::allComponents())
+        for (tt3::util::IComponent * component : tt3::util::ComponentManager::all())
         {
             if (!_licenses.contains(component->license()))
             {

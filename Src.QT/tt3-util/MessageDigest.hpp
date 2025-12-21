@@ -230,7 +230,7 @@ namespace tt3::util
         ///     digest algorithms.
         /// \return
         ///     The set of all registered message digest algorithms.
-        static MessageDigests   allMessageDigests();
+        static auto     all() -> MessageDigests;
 
         /// \brief
         ///     Registers the specified message digest algorithm.
@@ -239,7 +239,7 @@ namespace tt3::util
         /// \return
         ///     True on success, false on failure. Repeated registration
         ///     of the same message digest algorithm is treated as a success.
-        static bool         registerMessageDigest(IMessageDigest * messageDigest);
+        static bool     register(IMessageDigest * messageDigest);
 
         /// \brief
         ///     Finds a registered message digest algorithm by its mnemonic.
@@ -248,7 +248,7 @@ namespace tt3::util
         /// \return
         ///     The message digest algorithm with the required
         ///     mnemonic; nullptr if not found.
-        static IMessageDigest * findMessageDigest(const Mnemonic & mnemonic);
+        static auto     find(const Mnemonic & mnemonic) -> IMessageDigest *;
 
         //////////
         //  Implementation

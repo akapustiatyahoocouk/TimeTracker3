@@ -34,7 +34,7 @@ QIcon ISubsystem::largeIcon() const
 Components ISubsystem::components() const
 {
     Components result;
-    for (IComponent * component : ComponentManager::allComponents())
+    for (auto component : ComponentManager::all())
     {
         if (component->subsystem() == this)
         {

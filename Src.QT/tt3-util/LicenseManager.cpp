@@ -36,7 +36,7 @@ struct LicenseManager::_Impl
 
 //////////
 //  Operations
-Licenses LicenseManager::allLicenses()
+Licenses LicenseManager::all()
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
@@ -45,7 +45,7 @@ Licenses LicenseManager::allLicenses()
     return Licenses(values.cbegin(), values.cend());
 }
 
-bool LicenseManager::registerLicense(ILicense * license)
+bool LicenseManager::register(ILicense * license)
 {
     Q_ASSERT(license != nullptr);
 
@@ -60,7 +60,9 @@ bool LicenseManager::registerLicense(ILicense * license)
     return true;
 }
 
-ILicense * LicenseManager::findLicense(const Mnemonic & mnemonic)
+ILicense * LicenseManager::find(
+        const Mnemonic & mnemonic
+    )
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);

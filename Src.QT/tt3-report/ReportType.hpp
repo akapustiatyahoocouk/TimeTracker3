@@ -136,7 +136,7 @@ namespace tt3::report
         ///     Returns the set of all registered ReportTypes.
         /// \return
         ///     The set of all registered ReportTypes.
-        static auto     allReportTypes() -> ReportTypes;
+        static auto     all() -> ReportTypes;
 
         /// \brief
         ///     Registers the specified ReportType.
@@ -145,7 +145,7 @@ namespace tt3::report
         /// \return
         ///     True on success, false on failure. A repeated
         ///     registration of the same ReportType is treated as a "success".
-        static bool     registerReportType(IReportType * reportType);
+        static bool     register(IReportType * reportType);
 
         /// \brief
         ///     Un-registers the specified ReportType.
@@ -153,7 +153,7 @@ namespace tt3::report
         ///     The ReportType to un-register,
         /// \return
         ///     True on success, false on failure.
-        static bool     unregisterReportType(IReportType * reportType);
+        static bool     unregister(IReportType * reportType);
 
         /// \brief
         ///     Finds a registered ReportType by its mnemonic.
@@ -162,9 +162,7 @@ namespace tt3::report
         /// \return
         ///     The registered ReportType with the required mnemonic;
         ///     nullptr if not found.
-        static auto     findReportType(
-                                const tt3::util::Mnemonic & mnemonic
-                            ) -> IReportType *;
+        static auto     find(const tt3::util::Mnemonic & mnemonic) -> IReportType *;
 
         //////////
         //  Implementation

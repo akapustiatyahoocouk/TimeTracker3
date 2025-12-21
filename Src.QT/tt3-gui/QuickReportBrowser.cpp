@@ -217,7 +217,7 @@ void QuickReportBrowser::_applyCurrentLocale()
     if (auto _ = RefreshGuard(_refreshUnderway))
     {   //  We don't want combo box current item change events handled
         //  while the combo box is initialized
-        QList<IQuickReport*> quickReportsList = QuickReportManager::allQuickReports().values();
+        auto quickReportsList = QuickReportManager::all().values();
         std::sort(
             quickReportsList.begin(),
             quickReportsList.end(),
@@ -237,7 +237,7 @@ void QuickReportBrowser::_applyCurrentLocale()
         }
         //  ...and select the "current" quick report
         IQuickReport * quickReport =
-            QuickReportManager::findQuickReport(
+            QuickReportManager::find(
                 Component::Settings::instance()->quickReport);
         _setSelectedQuickReport(
             (quickReport != nullptr) ?

@@ -78,12 +78,12 @@ const Component::Settings * Component::settings() const
 
 void Component::initialize()
 {
-    tt3::db::api::DatabaseTypeManager::registerDatabaseType(DatabaseType::instance());
+    tt3::db::api::DatabaseTypeManager::register(DatabaseType::instance());
 }
 
 void Component::deinitialize()
 {
-    tt3::db::api::DatabaseTypeManager::unregisterDatabaseType(DatabaseType::instance());
+    tt3::db::api::DatabaseTypeManager::unregister(DatabaseType::instance());
 }
 
 //////////

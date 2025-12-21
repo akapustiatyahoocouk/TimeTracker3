@@ -122,7 +122,7 @@ namespace tt3::gui
         ///     Returns the set of all registered Skins.
         /// \return
         ///     The set of all registered Skins.
-        static QSet<ISkin*> allSkins();
+        static QSet<ISkin*> all();
 
         /// \brief
         ///     Registers the specified Skin.
@@ -131,7 +131,7 @@ namespace tt3::gui
         /// \return
         ///     True on success, false on failure. A repeated
         ///     registration of the same skin is treated as a "success".
-        static bool         registerSkin(ISkin * skin);
+        static bool     register(ISkin * skin);
 
         /// \brief
         ///     Un-registers the specified Skin.
@@ -139,7 +139,7 @@ namespace tt3::gui
         ///     The Skin to un-register,
         /// \return
         ///     True on success, false on failure.
-        static bool         unregisterSkin(ISkin * skin);
+        static bool     unregister(ISkin * skin);
 
         /// \brief
         ///     Finds a registered Skin by its mnemonic.
@@ -148,7 +148,7 @@ namespace tt3::gui
         /// \return
         ///     The registered skin with the required mnemonic;
         ///     nullptr if not found.
-        static ISkin *      findSkin(const tt3::util::Mnemonic & mnemonic);
+        static ISkin *  find(const tt3::util::Mnemonic & mnemonic);
 
         //////////
         //  Implementation
@@ -156,7 +156,7 @@ namespace tt3::gui
         struct _Impl;
 
         //  Helpers
-        static _Impl *      _impl();
+        static _Impl *  _impl();
     };
 
     /// \class CurrentSkin tt3-gui/API.hpp

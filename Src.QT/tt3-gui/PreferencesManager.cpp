@@ -40,7 +40,7 @@ struct PreferencesManager::_Impl
 
 //////////
 //  Operations
-QSet<Preferences*> PreferencesManager::allPreferences()
+QSet<Preferences*> PreferencesManager::all()
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
@@ -49,7 +49,7 @@ QSet<Preferences*> PreferencesManager::allPreferences()
     return QSet<Preferences*>(values.cbegin(), values.cend());
 }
 
-QSet<Preferences*> PreferencesManager::rootPreferences()
+QSet<Preferences*> PreferencesManager::roots()
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
@@ -66,7 +66,7 @@ QSet<Preferences*> PreferencesManager::rootPreferences()
     return result;
 }
 
-bool PreferencesManager::registerPreferences(Preferences * preferences)
+bool PreferencesManager::register(Preferences * preferences)
 {
     Q_ASSERT(preferences != nullptr);
 
@@ -74,7 +74,7 @@ bool PreferencesManager::registerPreferences(Preferences * preferences)
     tt3::util::Lock _(impl->guard);
 
     if (preferences->parent() != nullptr &&
-        !registerPreferences(preferences->parent()))
+        !register(preferences->parent()))
     {   //  OOPS! No parent - no children
         return false;
     }
@@ -87,7 +87,7 @@ bool PreferencesManager::registerPreferences(Preferences * preferences)
     return true;
 }
 
-Preferences * PreferencesManager::findPreferences(const tt3::util::Mnemonic & mnemonic)
+Preferences * PreferencesManager::find(const tt3::util::Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);

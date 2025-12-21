@@ -54,7 +54,7 @@ PreferencesDialog::PreferencesDialog(
 
     //  Populate the preferences tree, creating
     //  editors for each Preferences node
-    QList<Preferences*> rootNodes = PreferencesManager::rootPreferences().values();
+    auto rootNodes = PreferencesManager::roots().values();
     std::sort(rootNodes.begin(), rootNodes.end(), _compare);
     QMap<Preferences*,QTreeWidgetItem*> itemsForPreferences;
     for (Preferences * rootNode : std::as_const(rootNodes))
@@ -76,7 +76,7 @@ PreferencesDialog::PreferencesDialog(
     _loadCurrentPreferences(itemsForPreferences);
 
     //  Start listening to component settings changes
-    for (tt3::util::IComponent * component : tt3::util::ComponentManager::allComponents())
+    for (tt3::util::IComponent * component : tt3::util::ComponentManager::all())
     {
         for (tt3::util::AbstractSetting * setting : component->settings()->settings())
         {
@@ -164,7 +164,7 @@ void PreferencesDialog::_createEditor(QTreeWidgetItem * item)
 void PreferencesDialog::_loadCurrentPreferences(const QMap<Preferences*,QTreeWidgetItem*> & itemsForPreferences)
 {
     if (Preferences * node =
-            PreferencesManager::findPreferences(
+            PreferencesManager::find(
                 Component::Settings::instance()->currentPreferences))
     {
         if (itemsForPreferences.contains(node))

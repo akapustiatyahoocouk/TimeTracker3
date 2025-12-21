@@ -50,8 +50,7 @@ ShowConfigurationDialog::ShowConfigurationDialog(QWidget * parent)
         setIcon(QIcon(":/tt3-gui/Resources/Images/Actions/OkSmall.png"));
 
     //  Fill the "components" tree
-    QList<tt3::util::ISubsystem*> subsystems =
-        tt3::util::SubsystemManager::allSubsystems().values();
+    auto subsystems = tt3::util::SubsystemManager::all().values();
     std::sort(
         subsystems.begin(),
         subsystems.end(),

@@ -37,7 +37,7 @@ struct ReportFormatManager::_Impl
 
 //////////
 //  Operations
-ReportFormats ReportFormatManager::allReportFormats()
+ReportFormats ReportFormatManager::all()
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
@@ -46,7 +46,7 @@ ReportFormats ReportFormatManager::allReportFormats()
     return QSet<IReportFormat*>(values.cbegin(), values.cend());
 }
 
-bool ReportFormatManager::registerReportFormat(IReportFormat * reportFormat)
+bool ReportFormatManager::register(IReportFormat * reportFormat)
 {
     Q_ASSERT(reportFormat != nullptr);
 
@@ -61,7 +61,7 @@ bool ReportFormatManager::registerReportFormat(IReportFormat * reportFormat)
     return true;
 }
 
-bool ReportFormatManager::unregisterReportFormat(IReportFormat * reportFormat)
+bool ReportFormatManager::unregister(IReportFormat * reportFormat)
 {
     Q_ASSERT(reportFormat != nullptr);
 
@@ -78,7 +78,7 @@ bool ReportFormatManager::unregisterReportFormat(IReportFormat * reportFormat)
     return false;
 }
 
-IReportFormat * ReportFormatManager::findReportFormat(const tt3::util::Mnemonic & mnemonic)
+IReportFormat * ReportFormatManager::find(const tt3::util::Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);

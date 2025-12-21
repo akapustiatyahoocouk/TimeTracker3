@@ -27,7 +27,7 @@ struct ToolManager::_Impl
 
 //////////
 //  Operations
-Tools ToolManager::allTools()
+Tools ToolManager::all()
 {
     _Impl * impl = _impl();
     Lock _(impl->guard);
@@ -36,7 +36,7 @@ Tools ToolManager::allTools()
     return Tools(values.cbegin(), values.cend());
 }
 
-bool ToolManager::registerTool(ITool * tool)
+bool ToolManager::register(ITool * tool)
 {
     Q_ASSERT(tool != nullptr);
 
@@ -51,7 +51,7 @@ bool ToolManager::registerTool(ITool * tool)
     return true;
 }
 
-bool ToolManager::unregisterTool(ITool * tool)
+bool ToolManager::unregister(ITool * tool)
 {
     Q_ASSERT(tool != nullptr);
 
@@ -68,12 +68,14 @@ bool ToolManager::unregisterTool(ITool * tool)
     return false;
 }
 
-ITool * ToolManager::findTool(const Mnemonic & mnemonic)
+ITool * ToolManager::find(
+        const Mnemonic & mnemonic
+    )
 {
     _Impl * impl = _impl();
     Lock _(impl->guard);
 
-    return impl->registry.contains(mnemonic) ? impl->registry[mnemonic] : nullptr;
+    return impl->registry.value(mnemonic, nullptr); //  TODO use value() wherever approproate
 }
 
 //////////

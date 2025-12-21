@@ -73,7 +73,7 @@ struct ReportTemplateManager::_Impl
 
 //////////
 //  Operations
-ReportTemplates ReportTemplateManager::allReportTemplates()
+ReportTemplates ReportTemplateManager::all()
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
@@ -82,7 +82,7 @@ ReportTemplates ReportTemplateManager::allReportTemplates()
     return QSet<IReportTemplate*>(values.cbegin(), values.cend());
 }
 
-bool ReportTemplateManager::registerReportTemplate(IReportTemplate * reportTemplate)
+bool ReportTemplateManager::register(IReportTemplate * reportTemplate)
 {
     Q_ASSERT(reportTemplate != nullptr);
 
@@ -98,7 +98,7 @@ bool ReportTemplateManager::registerReportTemplate(IReportTemplate * reportTempl
     return true;
 }
 
-bool ReportTemplateManager::unregisterReportTemplate(IReportTemplate * reportTemplate)
+bool ReportTemplateManager::unregister(IReportTemplate * reportTemplate)
 {
     Q_ASSERT(reportTemplate != nullptr);
 
@@ -115,7 +115,7 @@ bool ReportTemplateManager::unregisterReportTemplate(IReportTemplate * reportTem
     return false;
 }
 
-IReportTemplate * ReportTemplateManager::findReportTemplate(const tt3::util::Mnemonic & mnemonic)
+IReportTemplate * ReportTemplateManager::find(const tt3::util::Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);

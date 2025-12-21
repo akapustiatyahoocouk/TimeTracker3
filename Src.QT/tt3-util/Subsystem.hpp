@@ -185,7 +185,7 @@ namespace tt3::util
         ///     Returns the set of all registered subsystems.
         /// \return
         ///     The set of all registered subsystems.
-        static Subsystems   allSubsystems();
+        static auto     all() -> Subsystems;
 
         /// \brief
         ///     Registers the specified Subsystem.
@@ -195,7 +195,7 @@ namespace tt3::util
         ///     True on success, false on failure. Repeated
         ///     registration of the same subsystem is treated
         ///     as a success.
-        static bool         registerSubsystem(ISubsystem * subsystem);
+        static bool     register(ISubsystem * subsystem);
 
         /// \brief
         ///     Finds a registered Subsystem by its mnemonic.
@@ -204,7 +204,7 @@ namespace tt3::util
         /// \return
         ///     The registered subsystem with the required mnemonic;
         ///     nullptr if not found.
-        static ISubsystem * findSubsystem(const Mnemonic & mnemonic);
+        static auto     find(const Mnemonic & mnemonic) -> ISubsystem *;
 
         //////////
         //  Implementation
