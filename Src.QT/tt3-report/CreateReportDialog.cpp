@@ -131,7 +131,8 @@ CreateReportDialog::CreateReportDialog(
             connect(editor,
                     SIGNAL(controlValueChanged()),
                     this,
-                    SLOT(_editorControlValueChanged()));
+                    SLOT(_editorControlValueChanged()),
+                    Qt::ConnectionType::QueuedConnection);
         }
     }
     //  ...and add them to the dialog
@@ -397,11 +398,14 @@ void CreateReportDialog::accept()
                 RID(Message)));
         //  Don't leave half-written file behind
         QFile(_reportDestination).remove(); //  ignore errors
+        done(int(Result::Cancel));
+        return;
     }
     catch (const tt3::util::Exception & ex)
     {   //  OOPS!
         qCritical() << ex;
         tt3::gui::ErrorDialog::show(this, ex);
+        done(int(Result::Cancel));
         return;
     }
     //  At this point we know the report has been

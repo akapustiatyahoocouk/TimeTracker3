@@ -48,6 +48,14 @@ namespace tt3::report::worksummary
             /// \brief
             ///     The scope of the report.
             tt3::util::Setting<ReportConfiguration::Scope>  reportScope;
+
+            /// \brief
+            ///     The date range of the report.
+            tt3::util::Setting<ReportConfiguration::DateRange>  reportDateRange;
+
+            tt3::util::Setting<QDate>  reportFromDate;
+            tt3::util::Setting<QDate>  reportToDate;
+            tt3::util::Setting<ReportConfiguration::Grouping>  reportGrouping;
         };
 
         //////////

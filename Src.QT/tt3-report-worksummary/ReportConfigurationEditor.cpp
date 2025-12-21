@@ -45,6 +45,10 @@ void ReportConfigurationEditor::loadControlValues()
     auto settings = Component::Settings::instance();
 
     _setSelectedScope(settings->reportScope);
+    _setSelectedDateRange(settings->reportDateRange);
+    _ui->fromDateEdit->setDate(settings->reportFromDate);
+    _ui->toDateEdit->setDate(settings->reportToDate);
+    _setSelectedGrouping(settings->reportGrouping);
     //  TODO implement properly
     _refresh();
 }
@@ -54,6 +58,10 @@ void ReportConfigurationEditor::saveControlValues()
     auto settings = Component::Settings::instance();
 
     settings->reportScope = _selectedScope();
+    settings->reportDateRange = _selectedDateRange();
+    settings->reportFromDate = _ui->fromDateEdit->date();
+    settings->reportToDate = _ui->toDateEdit->date();
+    settings->reportGrouping = _selectedGrouping();
     //  TODO implement properly
 }
 
@@ -62,6 +70,10 @@ void ReportConfigurationEditor::resetControlValues()
     auto settings = Component::Settings::instance();
 
     _setSelectedScope(settings->reportScope.defaultValue());
+    _setSelectedDateRange(settings->reportDateRange.defaultValue());
+    _ui->fromDateEdit->setDate(settings->reportFromDate.defaultValue());
+    _ui->toDateEdit->setDate(settings->reportToDate.defaultValue());
+    _setSelectedGrouping(settings->reportGrouping.defaultValue());
 
     //  TODO implement properly
     _refresh();
@@ -84,7 +96,7 @@ auto ReportConfigurationEditor::createReportConfiguration(
 auto ReportConfigurationEditor::_selectedScope(
     ) -> ReportConfiguration::Scope
 {
-    if (_ui->currentMonthRadioButton->isChecked())
+    if (_ui->currentUserRadioButton->isChecked())
     {
         return ReportConfiguration::Scope::CurrentUser;
     }
@@ -121,8 +133,211 @@ void ReportConfigurationEditor::_setSelectedScope(
     }
 }
 
+auto ReportConfigurationEditor::_selectedDateRange(
+    ) -> ReportConfiguration::DateRange
+{
+    if (_ui->todayRadioButton->isChecked())
+    {
+        return ReportConfiguration::DateRange::Today;
+    }
+    else if (_ui->yesterdayRadioButton->isChecked())
+    {
+        return ReportConfiguration::DateRange::Yesterday;
+    }
+    else if (_ui->lastWeekRadioButton->isChecked())
+    {
+        return ReportConfiguration::DateRange::LastWeek;
+    }
+    else if (_ui->currentWeekRadioButton->isChecked())
+    {
+        return ReportConfiguration::DateRange::CurrentWeek;
+    }
+    else if (_ui->currentMonthRadioButton->isChecked())
+    {
+        return ReportConfiguration::DateRange::CurrentMonth;
+    }
+    else if (_ui->currentYearRadioButton->isChecked())
+    {
+        return ReportConfiguration::DateRange::CurrentYear;
+    }
+    else if (_ui->weekToDateRadioButton->isChecked())
+    {
+        return ReportConfiguration::DateRange::WeekToDate;
+    }
+    else if (_ui->monthToDateRadioButton->isChecked())
+    {
+        return ReportConfiguration::DateRange::MonthToDate;
+    }
+    else if (_ui->yearToDateRadioButton->isChecked())
+    {
+        return ReportConfiguration::DateRange::YearToDate;
+    }
+    else if (_ui->customDatesRadioButton->isChecked())
+    {
+        return ReportConfiguration::DateRange::Custom;
+    }
+    //  Be defensive in release mode
+    return ReportConfiguration::DateRange::CurrentWeek;
+}
+
+void ReportConfigurationEditor::_setSelectedDateRange(
+        ReportConfiguration::DateRange dateRange
+    )
+{
+    switch (dateRange)
+    {
+        case ReportConfiguration::DateRange::Today:
+            _ui->todayRadioButton->setChecked(true);
+            break;
+        case ReportConfiguration::DateRange::Yesterday:
+            _ui->yesterdayRadioButton->setChecked(true);
+            break;
+        case ReportConfiguration::DateRange::LastWeek:
+            _ui->lastWeekRadioButton->setChecked(true);
+            break;
+        case ReportConfiguration::DateRange::CurrentWeek:
+            _ui->currentWeekRadioButton->setChecked(true);
+            break;
+        case ReportConfiguration::DateRange::CurrentMonth:
+            _ui->currentMonthRadioButton->setChecked(true);
+            break;
+        case ReportConfiguration::DateRange::CurrentYear:
+            _ui->currentYearRadioButton->setChecked(true);
+            break;
+        case ReportConfiguration::DateRange::WeekToDate:
+            _ui->weekToDateRadioButton->setChecked(true);
+            break;
+        case ReportConfiguration::DateRange::MonthToDate:
+            _ui->monthToDateRadioButton->setChecked(true);
+            break;
+        case ReportConfiguration::DateRange::YearToDate:
+            _ui->yearToDateRadioButton->setChecked(true);
+            break;
+        case ReportConfiguration::DateRange::Custom:
+            _ui->customDatesRadioButton->setChecked(true);
+            break;
+        default:    //  Be defensive in release mode
+            _ui->currentWeekRadioButton->setChecked(true);
+            break;
+    }
+}
+
+auto ReportConfigurationEditor::_selectedGrouping(
+    ) -> ReportConfiguration::Grouping
+{
+    if (_ui->groupByActivityTypeRadioButton->isChecked())
+    {
+        return ReportConfiguration::Grouping::ByActivityType;
+    }
+    else if (_ui->groupByActivityRadioButton->isChecked())
+    {
+        return ReportConfiguration::Grouping::ByActivity;
+    }
+    //  Be defensive in release mode
+    return ReportConfiguration::Grouping::ByActivityType;
+}
+
+void ReportConfigurationEditor::_setSelectedGrouping(
+        ReportConfiguration::Grouping grouping
+    )
+{
+    switch (grouping)
+    {
+    case ReportConfiguration::Grouping::ByActivityType:
+        _ui->groupByActivityTypeRadioButton->setChecked(true);
+        break;
+    case ReportConfiguration::Grouping::ByActivity:
+        _ui->groupByActivityRadioButton->setChecked(true);
+        break;
+    default:    //  Be defensive in release mode
+        _ui->groupByActivityTypeRadioButton->setChecked(true);
+        break;
+    }
+}
+
 void ReportConfigurationEditor::_refresh()
 {
+    //  Update users to include
+    try
+    {
+        if (_ui->currentUserRadioButton->isChecked())
+        {   //  Make sure only the current user is chosen
+            auto currentAccount = workspace->login(tt3::gui::theCurrentCredentials);
+            auto theCurrentUser = currentAccount->user(credentials);
+            _users.clear();
+            _users.insert(theCurrentUser);
+        }
+        else if (_ui->singleUserRadioButton->isChecked())
+        {   //  Make sure at most 1 user is chosen
+            if (_users.size() > 1)
+            {   //  OOPS! Replace!
+                auto currentAccount = workspace->login(credentials);
+                auto theCurrentUser = currentAccount->user(credentials);
+                _users.clear();
+                _users.insert(theCurrentUser);
+            }
+        }
+        else
+        {
+            Q_ASSERT(_ui->multipleUsersRadioButton->isChecked());
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Log & recover
+        qCritical() << ex;
+        _users.clear();
+    }
+
+    //  Display included users
+    QString usersString;
+    try
+    {
+        QStringList userNames =
+            tt3::util::transform(
+                QList<tt3::ws::User>(_users.cbegin(), _users.cend()),
+                [&](const auto & u)
+                {
+                    return u->realName(credentials);
+                });
+        userNames.sort();
+        usersString =
+            userNames.isEmpty() ?
+                "-" :
+                userNames.join(", ");
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Log & recover
+        qCritical() << ex;
+        usersString = ex.errorMessage();
+    }
+    _ui->userNamesLabel->setText(usersString);
+
+    //  We cannot "Select" a current user
+    _ui->selectUsersPushButton->setEnabled(!_ui->currentUserRadioButton->isChecked());
+
+    //  From/To dates can only be selected in Custom range
+    _ui->fromDateEdit->setEnabled(_ui->customDatesRadioButton->isChecked());
+    _ui->toDateEdit->setEnabled(_ui->customDatesRadioButton->isChecked());
+}
+
+//////////
+//  Signal handlers
+void ReportConfigurationEditor::_scopeRadioButtonClicked()
+{
+    _refresh();
+    emit controlValueChanged();
+}
+
+void ReportConfigurationEditor::_dateRangeRadioButtonClicked()
+{
+    _refresh();
+    emit controlValueChanged();
+}
+
+void ReportConfigurationEditor::_fromToDateChanged(QDate)
+{
+    _refresh();
+    emit controlValueChanged();
 }
 
 //  End of tt3-report-worksummary/ReportConfigurationEditor.cpp

@@ -98,7 +98,11 @@ Component::Resources::~Resources() {}
 TT3_IMPLEMENT_SINGLETON(Component::Settings)
 
 Component::Settings::Settings()
-    :   reportScope(this, M(ReportScope), ReportConfiguration::Scope::CurrentUser)
+    :   reportScope(this, M(ReportScope), ReportConfiguration::Scope::CurrentUser),
+        reportDateRange(this, M(ReportDateRange), ReportConfiguration::DateRange::CurrentWeek),
+        reportFromDate(this, M(ReportFromDate), QDate::currentDate()),
+        reportToDate(this, M(ReportToDate), QDate::currentDate()),
+        reportGrouping(this, M(ReportGrouping), ReportConfiguration::Grouping::ByActivityType)
 {
 }
 

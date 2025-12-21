@@ -39,8 +39,11 @@ namespace tt3::report::worksummary
         enum class DateRange
         {
             Today,          ///< Today only.
-            CurrentWeek,    ///< Current week.
+            Yesterday,      ///< Yesterday only.
+            LastWeek,       ///< Last week only. Mon-Sun.
+            CurrentWeek,    ///< Current week. Mon-Sun.
             CurrentMonth,   ///< Current month.
+            CurrentYear,    ///< Current year.
             WeekToDate,     ///< From beginning ot the week until today.
             MonthToDate,    ///< From beginning ot the moth until today.
             YearToDate,     ///< From beginning ot the year until today.
@@ -86,7 +89,7 @@ namespace tt3::report::worksummary
         ///     True ro include the by-year section.
         ReportConfiguration(
                 Scope scope,
-                const tt3::ws::Oids & userOids,
+                const tt3::ws::Users & users,
                 DateRange dateRange,
                 const QDate & startDate,
                 const QDate & endDate,
@@ -108,7 +111,7 @@ namespace tt3::report::worksummary
         //  Implementation
     private:
         Scope           _scope = Scope::CurrentUser;
-        tt3::ws::Oids   _userOids;
+        tt3::ws::Users  _users;
         DateRange       _dateRange = DateRange::CurrentMonth;
         QDate           _startDate = QDate::currentDate();  //  inclusive, local date
         QDate           _endDate = QDate::currentDate();    //  inclusive, local date
@@ -127,10 +130,24 @@ namespace tt3::util
     template <> TT3_REPORT_WORKSUMMARY_PUBLIC
     QString toString<tt3::report::worksummary::ReportConfiguration::Scope>
         (const tt3::report::worksummary::ReportConfiguration::Scope & value);
+    template <> TT3_REPORT_WORKSUMMARY_PUBLIC
+    QString toString<tt3::report::worksummary::ReportConfiguration::DateRange>
+        (const tt3::report::worksummary::ReportConfiguration::DateRange & value);
+    template <> TT3_REPORT_WORKSUMMARY_PUBLIC
+    QString toString<tt3::report::worksummary::ReportConfiguration::Grouping>
+        (const tt3::report::worksummary::ReportConfiguration::Grouping & value);
 
     template <> TT3_REPORT_WORKSUMMARY_PUBLIC
     tt3::report::worksummary::ReportConfiguration::Scope
     fromString<tt3::report::worksummary::ReportConfiguration::Scope>
+        (const QString & s, qsizetype & scan);
+    template <> TT3_REPORT_WORKSUMMARY_PUBLIC
+    tt3::report::worksummary::ReportConfiguration::DateRange
+    fromString<tt3::report::worksummary::ReportConfiguration::DateRange>
+        (const QString & s, qsizetype & scan);
+    template <> TT3_REPORT_WORKSUMMARY_PUBLIC
+    tt3::report::worksummary::ReportConfiguration::Grouping
+    fromString<tt3::report::worksummary::ReportConfiguration::Grouping>
         (const QString & s, qsizetype & scan);
 }
 

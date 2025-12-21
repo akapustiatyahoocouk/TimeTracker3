@@ -59,11 +59,23 @@ namespace tt3::report::worksummary
         //////////
         //  Implementation
     private:
+        tt3::ws::Users  _users; //  yo include into the report
+
         //  Helpers
         auto            _selectedScope(
                             ) -> ReportConfiguration::Scope;
         void            _setSelectedScope(
                                 ReportConfiguration::Scope scope
+                            );
+        auto            _selectedDateRange(
+                            ) -> ReportConfiguration::DateRange;
+        void            _setSelectedDateRange(
+                                ReportConfiguration::DateRange dateRange
+                            );
+        auto            _selectedGrouping(
+                            ) -> ReportConfiguration::Grouping;
+        void            _setSelectedGrouping(
+                                ReportConfiguration::Grouping grouping
                             );
         void            _refresh();
 
@@ -71,6 +83,13 @@ namespace tt3::report::worksummary
         //  Controls
     private:
         Ui::ReportConfigurationEditor *const    _ui;
+
+        //////////
+        //  Signal handlers
+    private slots:
+        void            _scopeRadioButtonClicked();
+        void            _dateRangeRadioButtonClicked();
+        void            _fromToDateChanged(QDate);
     };
 }
 
