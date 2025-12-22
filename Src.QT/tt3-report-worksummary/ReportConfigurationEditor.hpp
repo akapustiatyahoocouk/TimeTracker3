@@ -88,6 +88,7 @@ namespace tt3::report::worksummary
         //  Signal handlers
     private slots:
         void            _scopeRadioButtonClicked();
+        void            _selectUsersPushButtonClicked();
         void            _dateRangeRadioButtonClicked();
         void            _fromToDateChanged(QDate);
     };

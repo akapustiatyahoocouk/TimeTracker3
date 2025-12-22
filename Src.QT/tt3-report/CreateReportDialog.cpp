@@ -46,7 +46,7 @@ CreateReportDialog::CreateReportDialog(
         {
             return tt3::util::NaturalStringOrder::less(a->displayName(), b->displayName());
         });
-    for (auto reportType : reportTypes)
+    for (auto reportType : std::as_const(reportTypes))
     {
         _ui->reportTypeComboBox->addItem(
             reportType->smallIcon(),
@@ -63,7 +63,7 @@ CreateReportDialog::CreateReportDialog(
         {
             return tt3::util::NaturalStringOrder::less(a->displayName(), b->displayName());
         });
-    for (auto reportFormat : reportFormats)
+    for (auto reportFormat : std::as_const(reportFormats))
     {
         _ui->reportFormatComboBox->addItem(
             reportFormat->smallIcon(),

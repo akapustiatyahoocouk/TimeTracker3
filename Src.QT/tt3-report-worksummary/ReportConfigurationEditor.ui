@@ -499,11 +499,28 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>selectUsersPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_selectUsersPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>409</x>
+     <y>58</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>240</x>
+     <y>160</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_scopeRadioButtonClicked()</slot>
   <slot>_dateRangeRadioButtonClicked()</slot>
   <slot>_fromToDateChanged(QDate)</slot>
+  <slot>_selectUsersPushButtonClicked()</slot>
  </slots>
  <buttongroups>
   <buttongroup name="groupingButtonGroup"/>

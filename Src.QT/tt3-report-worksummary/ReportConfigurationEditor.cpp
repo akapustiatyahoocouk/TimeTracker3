@@ -271,18 +271,18 @@ void ReportConfigurationEditor::_refresh()
         if (_ui->currentUserRadioButton->isChecked())
         {   //  Make sure only the current user is chosen
             auto currentAccount = workspace->login(tt3::gui::theCurrentCredentials);
-            auto theCurrentUser = currentAccount->user(credentials);
+            auto currentUser = currentAccount->user(credentials);
             _users.clear();
-            _users.insert(theCurrentUser);
+            _users.insert(currentUser);
         }
         else if (_ui->singleUserRadioButton->isChecked())
         {   //  Make sure at most 1 user is chosen
-            if (_users.size() > 1)
+            if (_users.size() != 1)
             {   //  OOPS! Replace!
-                auto currentAccount = workspace->login(credentials);
-                auto theCurrentUser = currentAccount->user(credentials);
+                auto currentAccount = workspace->login(tt3::gui::theCurrentCredentials);
+                auto currentUser = currentAccount->user(credentials);
                 _users.clear();
-                _users.insert(theCurrentUser);
+                _users.insert(currentUser);
             }
         }
         else
@@ -326,6 +326,8 @@ void ReportConfigurationEditor::_refresh()
     //  From/To dates can only be selected in Custom range
     _ui->fromDateEdit->setEnabled(_ui->customDatesRadioButton->isChecked());
     _ui->toDateEdit->setEnabled(_ui->customDatesRadioButton->isChecked());
+
+    //  TODO finish the implementation
 }
 
 //////////
@@ -334,6 +336,24 @@ void ReportConfigurationEditor::_scopeRadioButtonClicked()
 {
     _refresh();
     emit controlValueChanged();
+}
+
+void ReportConfigurationEditor::_selectUsersPushButtonClicked()
+{
+    SelectUsersDialog dlg(
+        this,
+        workspace,
+        credentials,
+        _ui->singleUserRadioButton->isChecked() ?
+            SelectUsersDialog::SelectionMode::SingleUser :
+            SelectUsersDialog::SelectionMode::MultipleUsers,
+        _users);
+    if (dlg.doModal() == SelectUsersDialog::Result::Ok)
+    {   //  Change users selection
+        _users = dlg.selectedUsers();
+        _refresh();
+        emit controlValueChanged();
+    }
 }
 
 void ReportConfigurationEditor::_dateRangeRadioButtonClicked()

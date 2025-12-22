@@ -21,6 +21,8 @@ namespace tt3::report::worksummary
 {
     namespace Ui { class SelectUsersDialog; }
 
+    /// \class SelectUsersDialog tt3-report-worksummary/API.hpp
+    /// \brief The model "Select users" dialog.
     class TT3_REPORT_WORKSUMMARY_PUBLIC SelectUsersDialog final
         :   private QDialog
     {
@@ -63,7 +65,7 @@ namespace tt3::report::worksummary
         SelectUsersDialog(
                 QWidget * parent,
                 tt3::ws::Workspace workspace,
-                tt3::ws::ReportCredentials & credentials,
+                const tt3::ws::ReportCredentials & credentials,
                 SelectionMode selectionMode,
                 const tt3::ws::Users & selectedUsers
             );
@@ -92,14 +94,34 @@ namespace tt3::report::worksummary
     private:
         tt3::ws::Workspace  _workspace;
         tt3::ws::ReportCredentials  _credentials;
-        SelectionMode       _selectionMode;
+        SelectionMode   _selectionMode;
 
-        tt3::ws::Users      _selectedUsers; //  currently chosen
+        tt3::ws::Users  _selectedUsers; //  currently chosen
+
+        bool            _refreshUnderway = false;
+
+        //  Helpers
+        void            _refresh();
+        void            _refreshUsersList(
+                                QListWidget * listWidget,
+                                const tt3::ws::Users & users
+                            );
+        void            _refreshSelectionMarks();
+        void            _setSelectedUser(tt3::ws::User user);
 
         //////////
         //  Controls
     private:
         Ui::SelectUsersDialog *const    _ui;
+
+        //////////
+        //  Signal handlers
+    private slots:
+        void            _filterLineEditTextChanged(QString);
+        void            _allUsersListWidgetItemChanged(QListWidgetItem*);
+        void            _chosenUsersListWidgetCurrentRowChanged(int);
+        virtual void    accept() override;
+        virtual void    reject() override;
     };
 }
 

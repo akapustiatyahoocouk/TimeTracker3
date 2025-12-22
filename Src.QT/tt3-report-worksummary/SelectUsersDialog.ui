@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>278</width>
-    <height>401</height>
+    <height>436</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,10 +15,37 @@
   </property>
   <property name="windowIcon">
    <iconset resource="tt3-report-worksummary.qrc">
-    <normaloff>:/tt3-report-worksummary/Resources/Images/Actions/BrowseLarge.png</normaloff>:/tt3-report-worksummary/Resources/Images/Actions/BrowseLarge.png</iconset>
+    <normaloff>:/tt3-report-worksummary/Resources/Images/Objects/UserLarge.png</normaloff>:/tt3-report-worksummary/Resources/Images/Objects/UserLarge.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="3" column="0">
+   <item row="1" column="0">
+    <widget class="QLabel" name="filterLabel">
+     <property name="text">
+      <string>Filter:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="filterLineEdit"/>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QListWidget" name="allUsersListWidget"/>
+   </item>
+   <item row="0" column="0" colspan="2">
+    <widget class="QLabel" name="usersToIncludeLabel">
+     <property name="text">
+      <string>Available users:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="QLabel" name="chosenUsersLabel">
+     <property name="text">
+      <string>Users to include into the report:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="2">
     <widget class="QListWidget" name="chosenUsersListWidget">
      <property name="maximumSize">
       <size>
@@ -28,24 +55,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="chosenUsersLabel">
-     <property name="text">
-      <string>Users to include into the report:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QListWidget" name="allUsersListWidget"/>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="usersToIncludeLabel">
-     <property name="text">
-      <string>Available users:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0">
+   <item row="6" column="0" colspan="2">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
@@ -55,7 +65,7 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item row="5" column="0" colspan="2">
     <widget class="Line" name="line">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
@@ -64,6 +74,11 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>filterLineEdit</tabstop>
+  <tabstop>allUsersListWidget</tabstop>
+  <tabstop>chosenUsersListWidget</tabstop>
+ </tabstops>
  <resources>
   <include location="tt3-report-worksummary.qrc"/>
  </resources>
@@ -100,5 +115,58 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>filterLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::report::worksummary::SelectUsersDialog</receiver>
+   <slot>_filterLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>51</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>138</x>
+     <y>217</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>allUsersListWidget</sender>
+   <signal>itemChanged(QListWidgetItem*)</signal>
+   <receiver>tt3::report::worksummary::SelectUsersDialog</receiver>
+   <slot>_allUsersListWidgetItemChanged(QListWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>138</x>
+     <y>168</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>138</x>
+     <y>217</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chosenUsersListWidget</sender>
+   <signal>currentRowChanged(int)</signal>
+   <receiver>tt3::report::worksummary::SelectUsersDialog</receiver>
+   <slot>_chosenUsersListWidgetCurrentRowChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>138</x>
+     <y>338</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>138</x>
+     <y>217</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>_filterLineEditTextChanged(QString)</slot>
+  <slot>_allUsersListWidgetItemChanged(QListWidgetItem*)</slot>
+  <slot>_chosenUsersListWidgetCurrentRowChanged(int)</slot>
+ </slots>
 </ui>

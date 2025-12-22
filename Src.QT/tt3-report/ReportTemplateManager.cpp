@@ -28,7 +28,7 @@ struct ReportTemplateManager::_Impl
 
         REGISTER(BasicReportTemplate);
 
-        for (auto kcrt : Component::Settings::instance()->knownCustomReportTemplates.value())
+        for (const auto & kcrt : Component::Settings::instance()->knownCustomReportTemplates.value())
         {
             //  Load file as text (assuming it's XML)...
             QFile file(kcrt.location);

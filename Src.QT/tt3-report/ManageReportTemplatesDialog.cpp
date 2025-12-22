@@ -423,7 +423,7 @@ void ManageReportTemplatesDialog::_removePushButtonClicked()
         }
         //  ...forget...
         auto known = Component::Settings::instance()->knownCustomReportTemplates.value();
-        for (auto kcrt : KnownCustomReportTemplates(known)) //  shallow clone
+        for (const auto & kcrt : KnownCustomReportTemplates(known)) //  shallow clone
         {
             if (kcrt.mnemonic == customReportTemplate->mnemonic())
             {

@@ -7,5 +7,9 @@
         <file>Resources/Images/Reports/WorkSummarySmall.png</file>
         <file>Resources/Images/Actions/BrowseLarge.png</file>
         <file>Resources/Images/Actions/BrowseSmall.png</file>
+        <file>Resources/Images/Objects/UserLarge.png</file>
+        <file>Resources/Images/Objects/UserSmall.png</file>
+        <file>Resources/Images/Misc/ErrorLarge.png</file>
+        <file>Resources/Images/Misc/ErrorSmall.png</file>
     </qresource>
 </RCC>

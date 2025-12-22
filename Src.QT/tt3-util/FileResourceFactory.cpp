@@ -84,12 +84,12 @@ void FileResourceFactory::_loadResources()
     QString prefix = _baseFileName.left(n);
     QString suffix = _baseFileName.mid(n);
     //  Locate & load per-locale resource files
-    QList<QLocale> allLocales =
+    QList<QLocale> locales =
         QLocale::matchingLocales(
             QLocale::AnyLanguage,
             QLocale::AnyScript,
             QLocale::AnyCountry);
-    for (const QLocale & locale : std::as_const(allLocales))
+    for (const QLocale & locale : std::as_const(locales))
     {   //  There are locales (e.g. "en-Shaw") wjose "name()"
         //  is the same as that of the proper "en_GB" locale.
         //  We don't want these duplicates!
