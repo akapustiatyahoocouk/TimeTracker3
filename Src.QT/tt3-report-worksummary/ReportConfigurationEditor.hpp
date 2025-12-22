@@ -96,6 +96,8 @@ namespace tt3::report::worksummary
         void            _selectUsersPushButtonClicked();
         void            _dateRangeRadioButtonClicked();
         void            _fromToDateChanged(QDate);
+        void            _includeCheckBoxStateChanged(int);
+        void            _hoursPerDayLineEditTextChanged(QString);
     };
 }
 

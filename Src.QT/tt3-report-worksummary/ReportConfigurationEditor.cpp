@@ -1,6 +1,6 @@
 //
 //  tt3-report-worksummary/ReportConfigurationEditor.cpp - ReportConfigurationEditor class implementation
-//  TODO Localize via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -27,30 +27,85 @@ ReportConfigurationEditor::ReportConfigurationEditor(
     ) : tt3::report::ReportConfigurationEditor(parent, workspace, credentials),
         _ui(new Ui::ReportConfigurationEditor)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ReportConfigurationEditor));
+
     _ui->setupUi(this);
 
+    //  Set static control values
+    _ui->scopeLabel->setText(
+        rr.string(RID(ScopeLabel)));
+    _ui->currentUserRadioButton->setText(
+        rr.string(RID(CurrentUserRadioButton)));
+    _ui->singleUserRadioButton->setText(
+        rr.string(RID(SingleUserRadioButton)));
+    _ui->multipleUsersRadioButton->setText(
+        rr.string(RID(MultipleUsersRadioButton)));
+    _ui->usersLabel->setText(
+        rr.string(RID(UsersLabel)));
+    _ui->selectUsersPushButton->setText(
+        rr.string(RID(SelectUsersPushButton)));
+    _ui->dateRangeLabel->setText(
+        rr.string(RID(DateRangeLabel)));
+    _ui->todayRadioButton->setText(
+        rr.string(RID(TodayRadioButton)));
+    _ui->yesterdayRadioButton->setText(
+        rr.string(RID(YesterdayRadioButton)));
+    _ui->lastWeekRadioButton->setText(
+        rr.string(RID(LastWeekRadioButton)));
+    _ui->currentWeekRadioButton->setText(
+        rr.string(RID(CurrentWeekRadioButton)));
+    _ui->currentMonthRadioButton->setText(
+        rr.string(RID(CurrentMonthRadioButton)));
+    _ui->currentYearRadioButton->setText(
+        rr.string(RID(CurrentYearRadioButton)));
+    _ui->weekToDateRadioButton->setText(
+        rr.string(RID(WeekToDateRadioButton)));
+    _ui->monthToDateRadioButton->setText(
+        rr.string(RID(MonthToDateRadioButton)));
+    _ui->yearToDateRadioButton->setText(
+        rr.string(RID(YearToDateRadioButton)));
+    _ui->customDatesRadioButton->setText(
+        rr.string(RID(CustomDatesRadioButton)));
+    _ui->groupByLabel->setText(
+        rr.string(RID(GroupByLabel)));
+    _ui->groupByActivityTypeRadioButton->setText(
+        rr.string(RID(GroupByActivityTypeRadioButton)));
+    _ui->groupByActivityRadioButton->setText(
+        rr.string(RID(GroupByActivityRadioButton)));
+    _ui->includeLabel->setText(
+        rr.string(RID(IncludeLabel)));
+    _ui->dailyDataCheckBox->setText(
+        rr.string(RID(DailyDataCheckBox)));
+    _ui->weeklyDataCheckBox->setText(
+        rr.string(RID(WeeklyDataCheckBox)));
+    _ui->monthlyDataCheckBox->setText(
+        rr.string(RID(MonthlyDataCheckBox)));
+    _ui->yearlyDataCheckBox->setText(
+        rr.string(RID(YearlyDataCheckBox)));
+    _ui->hoursPerDayLabel->setText(
+        rr.string(RID(HoursPerDayLabel)));
+    _ui->weekStartLabel->setText(
+        rr.string(RID(WeekStartLabel)));
+
     //  Populate editable controls
-    _ui->weekStartComboBox->addItem(
-        "Monday",
-        QVariant::fromValue(Qt::DayOfWeek::Monday));
-    _ui->weekStartComboBox->addItem(
-        "Tuesday",
-        QVariant::fromValue(Qt::DayOfWeek::Tuesday));
-    _ui->weekStartComboBox->addItem(
-        "Wednesday",
-        QVariant::fromValue(Qt::DayOfWeek::Wednesday));
-    _ui->weekStartComboBox->addItem(
-        "Thursday",
-        QVariant::fromValue(Qt::DayOfWeek::Thursday));
-    _ui->weekStartComboBox->addItem(
-        "Friday",
-        QVariant::fromValue(Qt::DayOfWeek::Friday));
-    _ui->weekStartComboBox->addItem(
-        "Saturday",
-        QVariant::fromValue(Qt::DayOfWeek::Saturday));
-    _ui->weekStartComboBox->addItem(
-        "Sunday",
-        QVariant::fromValue(Qt::DayOfWeek::Sunday));
+#define TT3_ADD_DAY(Day)                                                \
+    _ui->weekStartComboBox->addItem(                                    \
+        tt3::util::DateTimeManager::displayName(Qt::DayOfWeek::Day),    \
+        QVariant::fromValue(Qt::DayOfWeek::Day));
+    TT3_ADD_DAY(Monday)
+    TT3_ADD_DAY(Tuesday)
+    TT3_ADD_DAY(Wednesday)
+    TT3_ADD_DAY(Thursday)
+    TT3_ADD_DAY(Friday)
+    TT3_ADD_DAY(Saturday)
+    TT3_ADD_DAY(Sunday)
+#undef TT3_ADD_DAY
+
+    //  Adjust controls
+    _ui->fromDateEdit->setDisplayFormat(
+        QLocale().dateFormat(QLocale::FormatType::ShortFormat));
+    _ui->toDateEdit->setDisplayFormat(
+        QLocale().dateFormat(QLocale::FormatType::ShortFormat));
 
     //  Done
     resetControlValues();
@@ -121,7 +176,16 @@ void ReportConfigurationEditor::resetControlValues()
 
 bool ReportConfigurationEditor::isValid() const
 {
-    return true;    //  TODO implement properly
+    return
+        !_users.isEmpty() &&
+        (!_ui->customDatesRadioButton->isChecked() ||
+         _ui->fromDateEdit->date() <= _ui->toDateEdit->date()) &&
+        (_ui->dailyDataCheckBox->isChecked() ||
+         _ui->weeklyDataCheckBox->isChecked() ||
+         _ui->monthlyDataCheckBox->isChecked() ||
+         _ui->yearlyDataCheckBox->isChecked()) &&
+        tt3::util::fromString<float>(_ui->hoursPerDayLineEdit->text(), 0) > 0 &&
+        tt3::util::fromString<float>(_ui->hoursPerDayLineEdit->text(), 0) <= 24;
 }
 
 auto ReportConfigurationEditor::createReportConfiguration(
@@ -283,15 +347,15 @@ void ReportConfigurationEditor::_setSelectedGrouping(
 {
     switch (grouping)
     {
-    case ReportConfiguration::Grouping::ByActivityType:
-        _ui->groupByActivityTypeRadioButton->setChecked(true);
-        break;
-    case ReportConfiguration::Grouping::ByActivity:
-        _ui->groupByActivityRadioButton->setChecked(true);
-        break;
-    default:    //  Be defensive in release mode
-        _ui->groupByActivityTypeRadioButton->setChecked(true);
-        break;
+        case ReportConfiguration::Grouping::ByActivityType:
+            _ui->groupByActivityTypeRadioButton->setChecked(true);
+            break;
+        case ReportConfiguration::Grouping::ByActivity:
+            _ui->groupByActivityRadioButton->setChecked(true);
+            break;
+        default:    //  Be defensive in release mode
+            _ui->groupByActivityTypeRadioButton->setChecked(true);
+            break;
     }
 }
 
@@ -415,6 +479,18 @@ void ReportConfigurationEditor::_dateRangeRadioButtonClicked()
 }
 
 void ReportConfigurationEditor::_fromToDateChanged(QDate)
+{
+    _refresh();
+    emit controlValueChanged();
+}
+
+void ReportConfigurationEditor::_includeCheckBoxStateChanged(int)
+{
+    _refresh();
+    emit controlValueChanged();
+}
+
+void ReportConfigurationEditor::_hoursPerDayLineEditTextChanged(QString)
 {
     _refresh();
     emit controlValueChanged();

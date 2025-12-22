@@ -40,6 +40,15 @@ GB=Великобритания
 DE=Германия
 RU=Россия
 
+[DayOfWeek]
+Monday=Понедельник
+Tuesday=Вторник
+Wednesday=Среда
+Thursday=Четверг
+Friday=Пятница
+Saturday=Суббота
+Sunday=Воскресенье
+
 [ComponentManager]
 DiscoveringComponents=Обнаружение компонент...
 InitializingComponents=Инициализация компонент...

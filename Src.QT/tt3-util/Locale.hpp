@@ -49,7 +49,8 @@ namespace tt3::util
         /// \param locale
         ///     The locale.
         /// \return
-        ///     The user-readable display name of the specified locale.
+        ///     The user-readable display name of the
+        ///     specified locale for the current default locale.
         static QString  displayName(const QLocale & locale);
 
         //////////

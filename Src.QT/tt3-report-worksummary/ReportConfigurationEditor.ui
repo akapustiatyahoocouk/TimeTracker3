@@ -533,12 +533,94 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>dailyDataCheckBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_includeCheckBoxStateChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>176</x>
+     <y>253</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>172</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>weeklyDataCheckBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_includeCheckBoxStateChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>307</x>
+     <y>253</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>172</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>monthlyDataCheckBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_includeCheckBoxStateChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>176</x>
+     <y>285</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>172</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>yearlyDataCheckBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_includeCheckBoxStateChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>307</x>
+     <y>285</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>172</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hoursPerDayLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_hoursPerDayLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>176</x>
+     <y>318</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>172</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_scopeRadioButtonClicked()</slot>
   <slot>_dateRangeRadioButtonClicked()</slot>
   <slot>_fromToDateChanged(QDate)</slot>
   <slot>_selectUsersPushButtonClicked()</slot>
+  <slot>_includeCheckBoxStateChanged(int)</slot>
+  <slot>_hoursPerDayLineEditTextChanged(QString)</slot>
  </slots>
  <buttongroups>
   <buttongroup name="groupingButtonGroup"/>

@@ -274,7 +274,7 @@ void CreateReportDialog::_refresh()
         _selectedReportType() != nullptr &&
         _selectedReportFormat() != nullptr &&
         !_ui->destinationLineEdit->text().trimmed().isEmpty() &&
-        (_configurationEditors[_selectedReportType()] == nullptr ||
+        (!_configurationEditors.contains(_selectedReportType()) ||
          _configurationEditors[_selectedReportType()]->isValid()));
 }
 

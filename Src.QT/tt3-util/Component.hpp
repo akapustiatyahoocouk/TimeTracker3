@@ -284,6 +284,7 @@ namespace tt3::util
         /// \return
         ///     The set of all locales supported by at
         ///     least one registered component
+        /// TODO move this service to LocaleManager
         static Locales  supportedLocales();
 
         /// \brief
@@ -293,6 +294,7 @@ namespace tt3::util
         ///     The set of all locales supported by
         ///     every registered component.
         ///     NOTE, that this set may be empty.
+        /// TODO move this service to LocaleManager
         static Locales  fullySupportedLocales();
 
         //////////

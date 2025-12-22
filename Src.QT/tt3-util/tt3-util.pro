@@ -7,6 +7,7 @@ SOURCES += \
     Component.cpp \
     ComponentManager.cpp \
     CurrentLocale.cpp \
+    DateTimeManager.cpp \
     Exceptions.cpp \
     FileResourceFactory.cpp \
     FromString.cpp \

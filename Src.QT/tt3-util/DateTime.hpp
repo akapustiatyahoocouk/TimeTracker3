@@ -209,6 +209,26 @@ namespace tt3::util
         static inline const int _InvalidMinutes = INT_MIN;
         int         _minutes;
     };
+
+    /// \class DateTimeManager tt3-util/API.hpp
+    /// \brief The date/time helper services.
+    class TT3_UTIL_PUBLIC DateTimeManager final
+    {
+        TT3_UTILITY_CLASS(DateTimeManager)
+
+        //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Returns user-readable display name of the
+        ///     specified day-of-week.
+        /// \param dayOfWeek
+        ///     The day-of-week.
+        /// \return
+        ///     The user-readable display name of the specified
+        ///     day-of-week for the current default locale.
+        static QString  displayName(Qt::DayOfWeek dayOfWeek);
+    };
 }
 
 //  End of tt3-util/Plugin.cpp
