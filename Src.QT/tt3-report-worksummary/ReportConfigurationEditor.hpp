@@ -77,6 +77,11 @@ namespace tt3::report::worksummary
         void            _setSelectedGrouping(
                                 ReportConfiguration::Grouping grouping
                             );
+        auto            _selectedWeekStart(
+                            ) -> Qt::DayOfWeek;
+        void            _setSelectedWeekStart(
+                                Qt::DayOfWeek weekStart
+                            );
         void            _refresh();
 
         //////////

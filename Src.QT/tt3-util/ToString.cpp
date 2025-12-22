@@ -232,6 +232,32 @@ QString tt3::util::toString<QDate>(const QDate & value)
     return "-";
 }
 
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<Qt::DayOfWeek>(const Qt::DayOfWeek & value)
+{
+    switch (value)
+    {
+        case Qt::DayOfWeek::Monday:
+            return "Monday";
+        case Qt::DayOfWeek::Tuesday:
+            return "Tuesday";
+        case Qt::DayOfWeek::Wednesday:
+            return "Wednesday";
+        case Qt::DayOfWeek::Thursday:
+            return "Thursday";
+        case Qt::DayOfWeek::Friday:
+            return "Friday";
+        case Qt::DayOfWeek::Saturday:
+            return "Saturday";
+        case Qt::DayOfWeek::Sunday:
+            return "Sunday";
+        default:
+            Q_ASSERT(false);
+            //  Be defensive in releade mode
+            return "Sunday";
+    }
+}
+
 //  tt3::util types
 template <> TT3_UTIL_PUBLIC
 QString tt3::util::toString<tt3::util::TimeSpan>(const TimeSpan & value)

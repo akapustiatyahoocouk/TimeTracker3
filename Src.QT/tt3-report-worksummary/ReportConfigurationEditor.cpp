@@ -29,6 +29,29 @@ ReportConfigurationEditor::ReportConfigurationEditor(
 {
     _ui->setupUi(this);
 
+    //  Populate editable controls
+    _ui->weekStartComboBox->addItem(
+        "Monday",
+        QVariant::fromValue(Qt::DayOfWeek::Monday));
+    _ui->weekStartComboBox->addItem(
+        "Tuesday",
+        QVariant::fromValue(Qt::DayOfWeek::Tuesday));
+    _ui->weekStartComboBox->addItem(
+        "Wednesday",
+        QVariant::fromValue(Qt::DayOfWeek::Wednesday));
+    _ui->weekStartComboBox->addItem(
+        "Thursday",
+        QVariant::fromValue(Qt::DayOfWeek::Thursday));
+    _ui->weekStartComboBox->addItem(
+        "Friday",
+        QVariant::fromValue(Qt::DayOfWeek::Friday));
+    _ui->weekStartComboBox->addItem(
+        "Saturday",
+        QVariant::fromValue(Qt::DayOfWeek::Saturday));
+    _ui->weekStartComboBox->addItem(
+        "Sunday",
+        QVariant::fromValue(Qt::DayOfWeek::Sunday));
+
     //  Done
     resetControlValues();
 }
@@ -53,6 +76,8 @@ void ReportConfigurationEditor::loadControlValues()
     _ui->weeklyDataCheckBox->setChecked(settings->includeWeeklySummaries);
     _ui->monthlyDataCheckBox->setChecked(settings->includeMonthlySummaries);
     _ui->yearlyDataCheckBox->setChecked(settings->includeYearlySummaries);
+    _ui->hoursPerDayLineEdit->setText(tt3::util::toString(settings->houesPerDay.value()));
+    _setSelectedWeekStart(settings->weekStart);
     _refresh();
 }
 
@@ -69,6 +94,11 @@ void ReportConfigurationEditor::saveControlValues()
     settings->includeWeeklySummaries = _ui->weeklyDataCheckBox->isChecked();
     settings->includeMonthlySummaries = _ui->monthlyDataCheckBox->isChecked();
     settings->includeYearlySummaries = _ui->yearlyDataCheckBox->isChecked();
+    settings->houesPerDay =
+        tt3::util::fromString(
+            _ui->hoursPerDayLineEdit->text(),
+            settings->houesPerDay.defaultValue());
+    settings->weekStart = _selectedWeekStart();
 }
 
 void ReportConfigurationEditor::resetControlValues()
@@ -84,6 +114,8 @@ void ReportConfigurationEditor::resetControlValues()
     _ui->weeklyDataCheckBox->setChecked(settings->includeWeeklySummaries.defaultValue());
     _ui->monthlyDataCheckBox->setChecked(settings->includeMonthlySummaries.defaultValue());
     _ui->yearlyDataCheckBox->setChecked(settings->includeYearlySummaries.defaultValue());
+    _ui->hoursPerDayLineEdit->setText(tt3::util::toString(settings->houesPerDay.defaultValue()));
+    _setSelectedWeekStart(settings->weekStart.defaultValue());
     _refresh();
 }
 
@@ -260,6 +292,26 @@ void ReportConfigurationEditor::_setSelectedGrouping(
     default:    //  Be defensive in release mode
         _ui->groupByActivityTypeRadioButton->setChecked(true);
         break;
+    }
+}
+
+auto ReportConfigurationEditor::_selectedWeekStart(
+    ) -> Qt::DayOfWeek
+{
+    return _ui->weekStartComboBox->currentData().value<Qt::DayOfWeek>();
+}
+
+void ReportConfigurationEditor::_setSelectedWeekStart(
+        Qt::DayOfWeek weekStart
+    )
+{
+    for (int i = 0; i < _ui->weekStartComboBox->count(); i++)
+    {
+        if (weekStart == _ui->weekStartComboBox->itemData(i).value<Qt::DayOfWeek>())
+        {   //  This one
+            _ui->weekStartComboBox->setCurrentIndex(i);
+            break;
+        }
     }
 }
 

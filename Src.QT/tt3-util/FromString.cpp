@@ -669,6 +669,53 @@ QDate tt3::util::fromString<QDate>(const QString & s, qsizetype & scan)
     throw ParseException(s, scan);
 }
 
+template <> TT3_UTIL_PUBLIC
+    Qt::DayOfWeek tt3::util::fromString<Qt::DayOfWeek>(const QString & s, qsizetype & scan)
+{
+    if (scan < 0 || scan >= s.length())
+    {
+        throw ParseException(s, scan);
+    }
+    QString prefix = s.mid(scan, 16);
+    if (prefix.startsWith("Monday"))
+    {
+        scan += 6;
+        return Qt::DayOfWeek::Monday;
+    }
+    if (prefix.startsWith("Tuesday"))
+    {
+        scan += 7;
+        return Qt::DayOfWeek::Tuesday;
+    }
+    if (prefix.startsWith("Wednesday"))
+    {
+        scan += 9;
+        return Qt::DayOfWeek::Wednesday;
+    }
+    if (prefix.startsWith("Thursday"))
+    {
+        scan += 8;
+        return Qt::DayOfWeek::Thursday;
+    }
+    if (prefix.startsWith("Friday"))
+    {
+        scan += 6;
+        return Qt::DayOfWeek::Friday;
+    }
+    if (prefix.startsWith("Saturday"))
+    {
+        scan += 8;
+        return Qt::DayOfWeek::Saturday;
+    }
+    if (prefix.startsWith("Sunday"))
+    {
+        scan += 6;
+        return Qt::DayOfWeek::Sunday;
+    }
+    //  OOPS! Give up
+    throw ParseException(s, scan);
+}
+
 //  tt3::util types
 template <> TT3_UTIL_PUBLIC
 tt3::util::TimeSpan tt3::util::fromString<tt3::util::TimeSpan>(const QString & s, qsizetype & scan)

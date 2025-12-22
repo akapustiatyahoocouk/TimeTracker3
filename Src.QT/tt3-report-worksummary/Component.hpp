@@ -60,6 +60,8 @@ namespace tt3::report::worksummary
             tt3::util::Setting<bool> includeWeeklySummaries;
             tt3::util::Setting<bool> includeMonthlySummaries;
             tt3::util::Setting<bool> includeYearlySummaries;
+            tt3::util::Setting<float> houesPerDay;
+            tt3::util::Setting<Qt::DayOfWeek> weekStart;
         };
 
         //////////

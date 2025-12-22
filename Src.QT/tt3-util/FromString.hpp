@@ -65,6 +65,7 @@ namespace tt3::util
     template <> TT3_UTIL_PUBLIC QColor fromString<QColor>(const QString & s, qsizetype & scan);
     template <> TT3_UTIL_PUBLIC QDateTime fromString<QDateTime>(const QString & s, qsizetype & scan);
     template <> TT3_UTIL_PUBLIC QDate fromString<QDate>(const QString & s, qsizetype & scan);
+    template <> TT3_UTIL_PUBLIC Qt::DayOfWeek fromString<Qt::DayOfWeek>(const QString & s, qsizetype & scan);
 
     //  tt3::util types
     template <> TT3_UTIL_PUBLIC TimeSpan fromString<TimeSpan>(const QString & s, qsizetype & scan);

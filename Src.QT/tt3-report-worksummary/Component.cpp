@@ -106,7 +106,9 @@ Component::Settings::Settings()
         includeDailySummaries(this, M(IncludeDailySummaries), true),
         includeWeeklySummaries(this, M(IncludeWeeklySummaries), true),
         includeMonthlySummaries(this, M(IncludeMonthlySummaries), true),
-        includeYearlySummaries(this, M(IncludeYearlySummaries), true)
+        includeYearlySummaries(this, M(IncludeYearlySummaries), true),
+        houesPerDay(this, M(HouesPerDay), 8.0f),
+        weekStart(this, M(WeekStart), Qt::DayOfWeek::Monday)
 {
 }
 

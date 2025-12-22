@@ -90,7 +90,7 @@ void SelectUsersDialog::_refresh()
             if (QString filter = _ui->filterLineEdit->text().trimmed();
                 !filter.isEmpty())  //  TODO can we use the same trick elsewhere ?
             {   //  Perform filtering
-                for (auto user : users.values())    //  shallow kind-of-clone
+                for (const auto & user : users.values())    //  shallow kind-of-clone
                 {
                     if (!user->realName(_credentials).contains(filter, Qt::CaseInsensitive))
                     {   //  Not this one!

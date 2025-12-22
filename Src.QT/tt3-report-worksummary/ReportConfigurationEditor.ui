@@ -6,32 +6,32 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>482</width>
-    <height>321</height>
+    <width>510</width>
+    <height>346</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="1">
-    <widget class="QRadioButton" name="todayRadioButton">
+   <item row="4" column="3">
+    <widget class="QRadioButton" name="yearToDateRadioButton">
      <property name="text">
-      <string>Today</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
+      <string>Year to date</string>
      </property>
      <attribute name="buttonGroup">
       <string notr="true">dateRangeButtonGroup</string>
      </attribute>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="usersLabel">
+   <item row="3" column="2">
+    <widget class="QRadioButton" name="currentMonthRadioButton">
      <property name="text">
-      <string>Users:</string>
+      <string>Current month</string>
      </property>
+     <attribute name="buttonGroup">
+      <string notr="true">dateRangeButtonGroup</string>
+     </attribute>
     </widget>
    </item>
    <item row="1" column="1" colspan="2">
@@ -44,97 +44,23 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="3">
-    <widget class="QDateEdit" name="toDateEdit">
-     <property name="calendarPopup">
-      <bool>true</bool>
-     </property>
-     <property name="timeSpec">
-      <enum>Qt::TimeSpec::LocalTime</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="dateRangeLabel">
+   <item row="0" column="2">
+    <widget class="QRadioButton" name="singleUserRadioButton">
      <property name="text">
-      <string>Date range:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="2">
-    <widget class="QRadioButton" name="groupByActivityRadioButton">
-     <property name="text">
-      <string>Activity</string>
-     </property>
-     <attribute name="buttonGroup">
-      <string notr="true">groupingButtonGroup</string>
-     </attribute>
-    </widget>
-   </item>
-   <item row="4" column="2">
-    <widget class="QRadioButton" name="monthToDateRadioButton">
-     <property name="text">
-      <string>Month to date</string>
-     </property>
-     <attribute name="buttonGroup">
-      <string notr="true">dateRangeButtonGroup</string>
-     </attribute>
-    </widget>
-   </item>
-   <item row="9" column="1">
-    <widget class="QCheckBox" name="monthlyDataCheckBox">
-     <property name="text">
-      <string>Monthly data</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="2">
-    <widget class="QDateEdit" name="fromDateEdit">
-     <property name="calendarPopup">
-      <bool>true</bool>
-     </property>
-     <property name="timeSpec">
-      <enum>Qt::TimeSpec::LocalTime</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QRadioButton" name="currentUserRadioButton">
-     <property name="text">
-      <string>Current user</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
+      <string>Single user</string>
      </property>
      <attribute name="buttonGroup">
       <string notr="true">scopeButtonGroup</string>
      </attribute>
     </widget>
    </item>
-   <item row="4" column="3">
-    <widget class="QRadioButton" name="yearToDateRadioButton">
+   <item row="2" column="2">
+    <widget class="QRadioButton" name="yesterdayRadioButton">
      <property name="text">
-      <string>Year to date</string>
+      <string>Yesterday</string>
      </property>
      <attribute name="buttonGroup">
       <string notr="true">dateRangeButtonGroup</string>
-     </attribute>
-    </widget>
-   </item>
-   <item row="6" column="0">
-    <widget class="QLabel" name="groupByLabel">
-     <property name="text">
-      <string>Group by:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="3">
-    <widget class="QRadioButton" name="multipleUsersRadioButton">
-     <property name="text">
-      <string>Multiple users</string>
-     </property>
-     <attribute name="buttonGroup">
-      <string notr="true">scopeButtonGroup</string>
      </attribute>
     </widget>
    </item>
@@ -159,6 +85,93 @@
      </property>
     </widget>
    </item>
+   <item row="0" column="3">
+    <widget class="QRadioButton" name="multipleUsersRadioButton">
+     <property name="text">
+      <string>Multiple users</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">scopeButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="5" column="2">
+    <widget class="QDateEdit" name="fromDateEdit">
+     <property name="calendarPopup">
+      <bool>true</bool>
+     </property>
+     <property name="timeSpec">
+      <enum>Qt::TimeSpec::LocalTime</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QRadioButton" name="todayRadioButton">
+     <property name="text">
+      <string>Today</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">dateRangeButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="scopeLabel">
+     <property name="text">
+      <string>Scope:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <widget class="QRadioButton" name="monthToDateRadioButton">
+     <property name="text">
+      <string>Month to date</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">dateRangeButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="10" column="0">
+    <widget class="QLabel" name="hoursPerDayLabel">
+     <property name="text">
+      <string>Hours per day:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="2">
+    <widget class="QCheckBox" name="weeklyDataCheckBox">
+     <property name="text">
+      <string>Weekly data</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QRadioButton" name="currentUserRadioButton">
+     <property name="text">
+      <string>Current user</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">scopeButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="2" column="3">
+    <widget class="QRadioButton" name="lastWeekRadioButton">
+     <property name="text">
+      <string>Last week</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">dateRangeButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
    <item row="5" column="1">
     <widget class="QRadioButton" name="customDatesRadioButton">
      <property name="text">
@@ -169,17 +182,47 @@
      </attribute>
     </widget>
    </item>
-   <item row="8" column="1">
-    <widget class="QCheckBox" name="dailyDataCheckBox">
+   <item row="6" column="2">
+    <widget class="QRadioButton" name="groupByActivityRadioButton">
      <property name="text">
-      <string>Daily data</string>
+      <string>Activity</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">groupingButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="3" column="3">
+    <widget class="QRadioButton" name="currentYearRadioButton">
+     <property name="text">
+      <string>Current year</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">dateRangeButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="usersLabel">
+     <property name="text">
+      <string>Users:</string>
      </property>
     </widget>
    </item>
-   <item row="8" column="2">
-    <widget class="QCheckBox" name="weeklyDataCheckBox">
+   <item row="3" column="1">
+    <widget class="QRadioButton" name="currentWeekRadioButton">
      <property name="text">
-      <string>Weekly data</string>
+      <string>Current week</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">dateRangeButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="dateRangeLabel">
+     <property name="text">
+      <string>Date range:</string>
      </property>
     </widget>
    </item>
@@ -196,27 +239,41 @@
      </attribute>
     </widget>
    </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="scopeLabel">
+   <item row="6" column="0">
+    <widget class="QLabel" name="groupByLabel">
      <property name="text">
-      <string>Scope:</string>
+      <string>Group by:</string>
      </property>
-    </widget>
-   </item>
-   <item row="0" column="2">
-    <widget class="QRadioButton" name="singleUserRadioButton">
-     <property name="text">
-      <string>Single user</string>
-     </property>
-     <attribute name="buttonGroup">
-      <string notr="true">scopeButtonGroup</string>
-     </attribute>
     </widget>
    </item>
    <item row="8" column="0">
     <widget class="QLabel" name="includeLabel">
      <property name="text">
       <string>Include:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="3">
+    <widget class="QDateEdit" name="toDateEdit">
+     <property name="calendarPopup">
+      <bool>true</bool>
+     </property>
+     <property name="timeSpec">
+      <enum>Qt::TimeSpec::LocalTime</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="QCheckBox" name="dailyDataCheckBox">
+     <property name="text">
+      <string>Daily data</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="1">
+    <widget class="QCheckBox" name="monthlyDataCheckBox">
+     <property name="text">
+      <string>Monthly data</string>
      </property>
     </widget>
    </item>
@@ -227,55 +284,18 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
-    <widget class="QRadioButton" name="currentWeekRadioButton">
+   <item row="10" column="1">
+    <widget class="QLineEdit" name="hoursPerDayLineEdit"/>
+   </item>
+   <item row="10" column="2">
+    <widget class="QLabel" name="weekStartLabel">
      <property name="text">
-      <string>Current week</string>
+      <string>Week starts on:</string>
      </property>
-     <attribute name="buttonGroup">
-      <string notr="true">dateRangeButtonGroup</string>
-     </attribute>
     </widget>
    </item>
-   <item row="3" column="2">
-    <widget class="QRadioButton" name="currentMonthRadioButton">
-     <property name="text">
-      <string>Current month</string>
-     </property>
-     <attribute name="buttonGroup">
-      <string notr="true">dateRangeButtonGroup</string>
-     </attribute>
-    </widget>
-   </item>
-   <item row="2" column="2">
-    <widget class="QRadioButton" name="yesterdayRadioButton">
-     <property name="text">
-      <string>Yesterday</string>
-     </property>
-     <attribute name="buttonGroup">
-      <string notr="true">dateRangeButtonGroup</string>
-     </attribute>
-    </widget>
-   </item>
-   <item row="2" column="3">
-    <widget class="QRadioButton" name="lastWeekRadioButton">
-     <property name="text">
-      <string>Last week</string>
-     </property>
-     <attribute name="buttonGroup">
-      <string notr="true">dateRangeButtonGroup</string>
-     </attribute>
-    </widget>
-   </item>
-   <item row="3" column="3">
-    <widget class="QRadioButton" name="currentYearRadioButton">
-     <property name="text">
-      <string>Current year</string>
-     </property>
-     <attribute name="buttonGroup">
-      <string notr="true">dateRangeButtonGroup</string>
-     </attribute>
-    </widget>
+   <item row="10" column="3">
+    <widget class="QComboBox" name="weekStartComboBox"/>
    </item>
   </layout>
  </widget>
@@ -300,8 +320,6 @@
   <tabstop>groupByActivityRadioButton</tabstop>
   <tabstop>dailyDataCheckBox</tabstop>
   <tabstop>weeklyDataCheckBox</tabstop>
-  <tabstop>monthlyDataCheckBox</tabstop>
-  <tabstop>yearlyDataCheckBox</tabstop>
  </tabstops>
  <resources>
   <include location="tt3-report-worksummary.qrc"/>

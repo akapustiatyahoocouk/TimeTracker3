@@ -97,7 +97,9 @@ namespace tt3::report::worksummary
                 bool includeDailySummaries,
                 bool includeWeeklySummaries,
                 bool includeMonthlySummaries,
-                bool includeYearlySummaries
+                bool includeYearlySummaries,
+                float houesPerDay,
+                Qt::DayOfWeek weekStart
             );
 
         /// \brief
@@ -120,6 +122,8 @@ namespace tt3::report::worksummary
         bool            _includeWeeklySummaries = true;
         bool            _includeMonthlySummaries = true;
         bool            _includeYearlySummaries = true;
+        float           _houesPerDay = 8.0f;
+        Qt::DayOfWeek   _weekStart = Qt::DayOfWeek::Monday ;
     };
 }
 
