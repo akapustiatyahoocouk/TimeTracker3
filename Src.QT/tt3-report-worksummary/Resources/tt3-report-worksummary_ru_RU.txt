@@ -6,3 +6,11 @@ Copyright=Авторское право (C) {0}, Андрей Капустин
 [ReportType]
 DisplayName=Сводка рабочего времени
 Description=Отчёт о рабочем времени, сгруппированный по периодам и видам деятельности
+
+[SelectUsersDialog]
+Title=Выберите пользователей
+AvailableUsersLabel=Доступные пользователи:
+FilterLabel=Фильтр:
+ChosenUsersLabel=Выбранные пользователи:
+OkPushButton=OK
+CancelPushButton=Отмена

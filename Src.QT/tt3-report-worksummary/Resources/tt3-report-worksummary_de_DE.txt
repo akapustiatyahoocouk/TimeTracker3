@@ -6,3 +6,11 @@ Copyright=Copyright (C) {0}, Andrey Kapustin
 [ReportType]
 DisplayName=Arbeitsübersicht
 Description=Berichtet die Arbeitszeit gruppiert nach Zeitraum und Aktivität
+
+[SelectUsersDialog]
+Title=Benutzer auswählen
+AvailableUsersLabel=Verfügbare Benutzer:
+FilterLabel=Filter:
+ChosenUsersLabel=Ausgewählte Benutzer:
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen

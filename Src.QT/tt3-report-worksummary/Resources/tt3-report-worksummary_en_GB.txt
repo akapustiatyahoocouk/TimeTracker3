@@ -6,3 +6,11 @@ Copyright=Copyright (C) {0}, Andrey Kapustin
 [ReportType]
 DisplayName=Work summary
 Description=Reports working time grouped by period and activity
+
+[SelectUsersDialog]
+Title=Select users
+AvailableUsersLabel=Available users:
+FilterLabel=Filter:
+ChosenUsersLabel=Selected users:
+OkPushButton=OK
+CancelPushButton=Cancel

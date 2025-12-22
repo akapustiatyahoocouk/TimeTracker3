@@ -32,7 +32,7 @@
     <widget class="QListWidget" name="allUsersListWidget"/>
    </item>
    <item row="0" column="0" colspan="2">
-    <widget class="QLabel" name="usersToIncludeLabel">
+    <widget class="QLabel" name="availableUsersLabel">
      <property name="text">
       <string>Available users:</string>
      </property>

@@ -1,6 +1,6 @@
 //
 //  tt3-report-worksummary/SelectUsersDialog.cpp - SelectUsersDialog class implementation
-//  TODO Localize via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -35,7 +35,27 @@ SelectUsersDialog::SelectUsersDialog(
         //  Controls
         _ui(new Ui::SelectUsersDialog)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(SelectUsersDialog));
+
     _ui->setupUi(this);
+    setWindowTitle(rr.string(RID(Title)));
+
+    //  Set static control values
+    _ui->availableUsersLabel->setText(
+        rr.string(RID(AvailableUsersLabel)));
+    _ui->filterLabel->setText(
+        rr.string(RID(FilterLabel)));
+    _ui->chosenUsersLabel->setText(
+        rr.string(RID(ChosenUsersLabel)));
+
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setText(rr.string(RID(OkPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->
+        setIcon(QIcon(":/tt3-report-worksummary/Resources/Images/Actions/OkSmall.png"));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setText(rr.string(RID(CancelPushButton)));
+    _ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel)->
+        setIcon(QIcon(":/tt3-report-worksummary/Resources/Images/Actions/CancelSmall.png"));
 
     //  Done
     _refresh();
