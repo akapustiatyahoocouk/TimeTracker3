@@ -27,11 +27,14 @@
 //  tt3-report-worksummary components
 #include "tt3-report-worksummary/Linkage.hpp"
 
+#include "tt3-report-worksummary/DataTypes.hpp"
 #include "tt3-report-worksummary/ReportConfiguration.hpp"
 #include "tt3-report-worksummary/ReportConfigurationEditor.hpp"
 #include "tt3-report-worksummary/ReportType.hpp"
+#include "tt3-report-worksummary/ReportGenerator.hpp"
+
 #include "tt3-report-worksummary/SelectUsersDialog.hpp"
 
-#include "tt3-report-worksummary/Component.hpp"
+#include "tt3-report-worksummary/Component.hpp" //  last - Settings require Configuration
 
 //  End of tt3-report-worksummary/API.hpp

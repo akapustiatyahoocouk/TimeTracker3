@@ -271,6 +271,36 @@ namespace tt3::report
         virtual QString errorMessage() const override;
     };
 
+    /// \class InvalidReportConfigurationException tt3-db-api/API.hpp
+    /// \brief Thrown when a report configuration is malformed.
+    class TT3_REPORT_PUBLIC InvalidReportConfigurationException
+        :   public ReportException
+    {
+        //////////
+        //  Types
+    public:
+        /// \brief A type alias to improve code readability.
+        using Self = InvalidReportConfigurationException;
+
+        //////////
+        //  Construction/destruction/assignment
+    public:
+        /// \brief
+        ///     Constructs the exception.
+        InvalidReportConfigurationException();
+
+        //////////
+        //  QException
+    public:
+        virtual Self *  clone() const override { return new Self(*this); }
+        virtual void    raise() const override { throw *this; }
+
+        //////////
+        //  tt3::util::Exception
+    public:
+        virtual QString errorMessage() const override;
+    };
+
     /// \class CustomReportException tt3-db-api/API.hpp
     /// \brief Thrown when must carry a custom error message (from OS, etc.)
     class TT3_REPORT_PUBLIC CustomReportException

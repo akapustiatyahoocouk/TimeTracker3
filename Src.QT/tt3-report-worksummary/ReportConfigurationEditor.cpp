@@ -127,10 +127,10 @@ void ReportConfigurationEditor::loadControlValues()
     _ui->fromDateEdit->setDate(settings->reportFromDate);
     _ui->toDateEdit->setDate(settings->reportToDate);
     _setSelectedGrouping(settings->reportGrouping);
-    _ui->dailyDataCheckBox->setChecked(settings->includeDailySummaries);
-    _ui->weeklyDataCheckBox->setChecked(settings->includeWeeklySummaries);
-    _ui->monthlyDataCheckBox->setChecked(settings->includeMonthlySummaries);
-    _ui->yearlyDataCheckBox->setChecked(settings->includeYearlySummaries);
+    _ui->dailyDataCheckBox->setChecked(settings->includeDailyData);
+    _ui->weeklyDataCheckBox->setChecked(settings->includeWeeklyData);
+    _ui->monthlyDataCheckBox->setChecked(settings->includeMonthlyData);
+    _ui->yearlyDataCheckBox->setChecked(settings->includeYearlyData);
     _ui->hoursPerDayLineEdit->setText(tt3::util::toString(settings->houesPerDay.value()));
     _setSelectedWeekStart(settings->weekStart);
     _refresh();
@@ -145,10 +145,10 @@ void ReportConfigurationEditor::saveControlValues()
     settings->reportFromDate = _ui->fromDateEdit->date();
     settings->reportToDate = _ui->toDateEdit->date();
     settings->reportGrouping = _selectedGrouping();
-    settings->includeDailySummaries =  _ui->dailyDataCheckBox->isChecked();
-    settings->includeWeeklySummaries = _ui->weeklyDataCheckBox->isChecked();
-    settings->includeMonthlySummaries = _ui->monthlyDataCheckBox->isChecked();
-    settings->includeYearlySummaries = _ui->yearlyDataCheckBox->isChecked();
+    settings->includeDailyData =  _ui->dailyDataCheckBox->isChecked();
+    settings->includeWeeklyData = _ui->weeklyDataCheckBox->isChecked();
+    settings->includeMonthlyData = _ui->monthlyDataCheckBox->isChecked();
+    settings->includeYearlyData = _ui->yearlyDataCheckBox->isChecked();
     settings->houesPerDay =
         tt3::util::fromString(
             _ui->hoursPerDayLineEdit->text(),
@@ -165,10 +165,10 @@ void ReportConfigurationEditor::resetControlValues()
     _ui->fromDateEdit->setDate(settings->reportFromDate.defaultValue());
     _ui->toDateEdit->setDate(settings->reportToDate.defaultValue());
     _setSelectedGrouping(settings->reportGrouping.defaultValue());
-    _ui->dailyDataCheckBox->setChecked(settings->includeDailySummaries.defaultValue());
-    _ui->weeklyDataCheckBox->setChecked(settings->includeWeeklySummaries.defaultValue());
-    _ui->monthlyDataCheckBox->setChecked(settings->includeMonthlySummaries.defaultValue());
-    _ui->yearlyDataCheckBox->setChecked(settings->includeYearlySummaries.defaultValue());
+    _ui->dailyDataCheckBox->setChecked(settings->includeDailyData.defaultValue());
+    _ui->weeklyDataCheckBox->setChecked(settings->includeWeeklyData.defaultValue());
+    _ui->monthlyDataCheckBox->setChecked(settings->includeMonthlyData.defaultValue());
+    _ui->yearlyDataCheckBox->setChecked(settings->includeYearlyData.defaultValue());
     _ui->hoursPerDayLineEdit->setText(tt3::util::toString(settings->houesPerDay.defaultValue()));
     _setSelectedWeekStart(settings->weekStart.defaultValue());
     _refresh();
@@ -206,41 +206,41 @@ auto ReportConfigurationEditor::createReportConfiguration(
     QDate startDate, endDate;
     switch (_selectedDateRange())
     {
-        case ReportConfiguration::DateRange::Today:
+        case DateRange::Today:
             startDate = endDate = today;
             break;
-        case ReportConfiguration::DateRange::Yesterday:
+        case DateRange::Yesterday:
             startDate = endDate = today.addDays(-1);
             break;
-        case ReportConfiguration::DateRange::LastWeek:
+        case DateRange::LastWeek:
             startDate = thisWeekStart.addDays(-7);
             endDate = thisWeekStart.addDays(-1);
             break;
-        case ReportConfiguration::DateRange::CurrentWeek:
+        case DateRange::CurrentWeek:
             startDate = thisWeekStart;
             endDate = today;
             break;
-        case ReportConfiguration::DateRange::CurrentMonth:
+        case DateRange::CurrentMonth:
             startDate = thisMonthStart;
             endDate = today;
             break;
-        case ReportConfiguration::DateRange::CurrentYear:
+        case DateRange::CurrentYear:
             startDate = QDate(today.year(), 1, 1);
             endDate = today;
             break;
-        case ReportConfiguration::DateRange::WeekToDate:
+        case DateRange::WeekToDate:
             startDate = today.addDays(-6);
             endDate = today;
             break;
-        case ReportConfiguration::DateRange::MonthToDate:
+        case DateRange::MonthToDate:
             startDate = today.addMonths(-1).addDays(1);
             endDate = today;
             break;
-        case ReportConfiguration::DateRange::YearToDate:
+        case DateRange::YearToDate:
             startDate = today.addYears(-1).addDays(1);
             endDate = today;
             break;
-        case ReportConfiguration::DateRange::Custom:
+        case DateRange::Custom:
             startDate = _ui->fromDateEdit->date();
             endDate = std::max(startDate, _ui->toDateEdit->date()); //  ...for sanity
             break;
@@ -251,9 +251,7 @@ auto ReportConfigurationEditor::createReportConfiguration(
             break;
     }
     return new ReportConfiguration(
-        _selectedScope(),
         _users,
-        _selectedDateRange(),
         startDate,
         endDate,
         _selectedGrouping(),
@@ -268,37 +266,37 @@ auto ReportConfigurationEditor::createReportConfiguration(
 //////////
 //  Implementation helpers
 auto ReportConfigurationEditor::_selectedScope(
-    ) const -> ReportConfiguration::Scope
+    ) const -> Scope
 {
     if (_ui->currentUserRadioButton->isChecked())
     {
-        return ReportConfiguration::Scope::CurrentUser;
+        return Scope::CurrentUser;
     }
     else if (_ui->singleUserRadioButton->isChecked())
     {
-        return ReportConfiguration::Scope::SingleUser;
+        return Scope::SingleUser;
     }
     else if (_ui->multipleUsersRadioButton->isChecked())
     {
-        return ReportConfiguration::Scope::MultipleUsers;
+        return Scope::MultipleUsers;
     }
     //  Be defensive in release mode
-    return ReportConfiguration::Scope::CurrentUser;
+    return Scope::CurrentUser;
 }
 
 void ReportConfigurationEditor::_setSelectedScope(
-        ReportConfiguration::Scope scope
+        Scope scope
     )
 {
     switch (scope)
     {
-        case ReportConfiguration::Scope::CurrentUser:
+        case Scope::CurrentUser:
             _ui->currentUserRadioButton->setChecked(true);
             break;
-        case ReportConfiguration::Scope::SingleUser:
+        case Scope::SingleUser:
             _ui->singleUserRadioButton->setChecked(true);
             break;
-        case ReportConfiguration::Scope::MultipleUsers:
+        case Scope::MultipleUsers:
             _ui->multipleUsersRadioButton->setChecked(true);
             break;
         default:    //  Be defensive in release mode
@@ -308,86 +306,86 @@ void ReportConfigurationEditor::_setSelectedScope(
 }
 
 auto ReportConfigurationEditor::_selectedDateRange(
-    ) const -> ReportConfiguration::DateRange
+    ) const -> DateRange
 {
     if (_ui->todayRadioButton->isChecked())
     {
-        return ReportConfiguration::DateRange::Today;
+        return DateRange::Today;
     }
     else if (_ui->yesterdayRadioButton->isChecked())
     {
-        return ReportConfiguration::DateRange::Yesterday;
+        return DateRange::Yesterday;
     }
     else if (_ui->lastWeekRadioButton->isChecked())
     {
-        return ReportConfiguration::DateRange::LastWeek;
+        return DateRange::LastWeek;
     }
     else if (_ui->currentWeekRadioButton->isChecked())
     {
-        return ReportConfiguration::DateRange::CurrentWeek;
+        return DateRange::CurrentWeek;
     }
     else if (_ui->currentMonthRadioButton->isChecked())
     {
-        return ReportConfiguration::DateRange::CurrentMonth;
+        return DateRange::CurrentMonth;
     }
     else if (_ui->currentYearRadioButton->isChecked())
     {
-        return ReportConfiguration::DateRange::CurrentYear;
+        return DateRange::CurrentYear;
     }
     else if (_ui->weekToDateRadioButton->isChecked())
     {
-        return ReportConfiguration::DateRange::WeekToDate;
+        return DateRange::WeekToDate;
     }
     else if (_ui->monthToDateRadioButton->isChecked())
     {
-        return ReportConfiguration::DateRange::MonthToDate;
+        return DateRange::MonthToDate;
     }
     else if (_ui->yearToDateRadioButton->isChecked())
     {
-        return ReportConfiguration::DateRange::YearToDate;
+        return DateRange::YearToDate;
     }
     else if (_ui->customDatesRadioButton->isChecked())
     {
-        return ReportConfiguration::DateRange::Custom;
+        return DateRange::Custom;
     }
     //  Be defensive in release mode
-    return ReportConfiguration::DateRange::CurrentWeek;
+    return DateRange::CurrentWeek;
 }
 
 void ReportConfigurationEditor::_setSelectedDateRange(
-        ReportConfiguration::DateRange dateRange
+        DateRange dateRange
     )
 {
     switch (dateRange)
     {
-        case ReportConfiguration::DateRange::Today:
+        case DateRange::Today:
             _ui->todayRadioButton->setChecked(true);
             break;
-        case ReportConfiguration::DateRange::Yesterday:
+        case DateRange::Yesterday:
             _ui->yesterdayRadioButton->setChecked(true);
             break;
-        case ReportConfiguration::DateRange::LastWeek:
+        case DateRange::LastWeek:
             _ui->lastWeekRadioButton->setChecked(true);
             break;
-        case ReportConfiguration::DateRange::CurrentWeek:
+        case DateRange::CurrentWeek:
             _ui->currentWeekRadioButton->setChecked(true);
             break;
-        case ReportConfiguration::DateRange::CurrentMonth:
+        case DateRange::CurrentMonth:
             _ui->currentMonthRadioButton->setChecked(true);
             break;
-        case ReportConfiguration::DateRange::CurrentYear:
+        case DateRange::CurrentYear:
             _ui->currentYearRadioButton->setChecked(true);
             break;
-        case ReportConfiguration::DateRange::WeekToDate:
+        case DateRange::WeekToDate:
             _ui->weekToDateRadioButton->setChecked(true);
             break;
-        case ReportConfiguration::DateRange::MonthToDate:
+        case DateRange::MonthToDate:
             _ui->monthToDateRadioButton->setChecked(true);
             break;
-        case ReportConfiguration::DateRange::YearToDate:
+        case DateRange::YearToDate:
             _ui->yearToDateRadioButton->setChecked(true);
             break;
-        case ReportConfiguration::DateRange::Custom:
+        case DateRange::Custom:
             _ui->customDatesRadioButton->setChecked(true);
             break;
         default:    //  Be defensive in release mode
@@ -397,30 +395,30 @@ void ReportConfigurationEditor::_setSelectedDateRange(
 }
 
 auto ReportConfigurationEditor::_selectedGrouping(
-    ) const -> ReportConfiguration::Grouping
+    ) const -> Grouping
 {
     if (_ui->groupByActivityTypeRadioButton->isChecked())
     {
-        return ReportConfiguration::Grouping::ByActivityType;
+        return Grouping::ByActivityType;
     }
     else if (_ui->groupByActivityRadioButton->isChecked())
     {
-        return ReportConfiguration::Grouping::ByActivity;
+        return Grouping::ByActivity;
     }
     //  Be defensive in release mode
-    return ReportConfiguration::Grouping::ByActivityType;
+    return Grouping::ByActivityType;
 }
 
 void ReportConfigurationEditor::_setSelectedGrouping(
-        ReportConfiguration::Grouping grouping
+        Grouping grouping
     )
 {
     switch (grouping)
     {
-        case ReportConfiguration::Grouping::ByActivityType:
+        case Grouping::ByActivityType:
             _ui->groupByActivityTypeRadioButton->setChecked(true);
             break;
-        case ReportConfiguration::Grouping::ByActivity:
+        case Grouping::ByActivity:
             _ui->groupByActivityRadioButton->setChecked(true);
             break;
         default:    //  Be defensive in release mode

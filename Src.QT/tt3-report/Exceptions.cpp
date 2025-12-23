@@ -112,6 +112,20 @@ QString InvalidReportException::errorMessage() const
 }
 
 //////////
+//  InvalidReportConfigurationException
+InvalidReportConfigurationException::InvalidReportConfigurationException()
+{
+}
+
+QString InvalidReportConfigurationException::errorMessage() const
+{
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
+    return resources->string(
+        RSID(Errors),
+        RID(InvalidReportConfigurationException));
+}
+
+//////////
 //  CustomReportException
 CustomReportException::CustomReportException(
         const QString & errorMessage

@@ -5,17 +5,21 @@ DEFINES += TT3_REPORT_WORKSUMMARY_LIBRARY
 
 SOURCES += \
     Component.cpp \
+    DataTypes.cpp \
     ReportConfiguration.cpp \
     ReportConfigurationEditor.cpp \
+    ReportGenerator.cpp \
     ReportType.cpp \
     SelectUsersDialog.cpp
 
 HEADERS += \
     API.hpp \
     Component.hpp \
+    DataTypes.hpp \
     Linkage.hpp \
     ReportConfiguration.hpp \
     ReportConfigurationEditor.hpp \
+    ReportGenerator.hpp \
     ReportType.hpp \
     SelectUsersDialog.hpp
 

@@ -38,7 +38,7 @@ namespace tt3::report::worksummary
                                 const tt3::ws::ReportCredentials & credentials
                             ) -> ReportConfigurationEditor * override;
         virtual auto    generateReport(
-                                const tt3::ws::Workspace & workspace,
+                                tt3::ws::Workspace & workspace,
                                 const tt3::ws::ReportCredentials & credentials,
                                 const tt3::report::IReportConfiguration * configuration,
                                 const tt3::report::IReportTemplate * reportTemplate,

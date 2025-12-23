@@ -21,8 +21,6 @@ namespace tt3::report
     /// \brief A configuration for a report generation job.
     class TT3_REPORT_PUBLIC IReportConfiguration
     {
-        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(IReportConfiguration)
-
         //////////
         //  This is an interface
     public:

@@ -95,3 +95,4 @@ ReportTemplateAlreadyExistsException=Berichtsvorlage {0} ({1}) existiert bereits
 ReportTemplateDoesNotExistException=Die Berichtsvorlage {0} existiert nicht
 StyleDoesNotExistException=Der Stil {0} ist in der Berichtsvorlage {1} ({2}) nicht vorhanden
 InvalidReportException=Ungültiger oder fehlerhafter Bericht
+InvalidReportConfigurationException=Ungültige oder inkompatible Berichtskonfiguration

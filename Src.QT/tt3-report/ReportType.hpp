@@ -115,7 +115,7 @@ namespace tt3::report
         ///     the specified "configuration" is incompatible
         ///     with this report type.
         virtual Report *generateReport(
-                                const tt3::ws::Workspace & workspace,
+                                tt3::ws::Workspace & workspace,
                                 const tt3::ws::ReportCredentials & credentials,
                                 const IReportConfiguration * configuration,
                                 const IReportTemplate * reportTemplate,

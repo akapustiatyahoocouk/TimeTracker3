@@ -95,3 +95,4 @@ ReportTemplateAlreadyExistsException=Шаблон отчёта {0} ({1}) уже 
 ReportTemplateDoesNotExistException=Шаблон отчёта {0} не существует
 StyleDoesNotExistException=Стиль {0} отсутствует в шаблоне отчёта {1} ({2})
 InvalidReportException=Недействительный или поврежденный отчёт
+InvalidReportConfigurationException=Недопустимая или несовместимая конфигурация отчета

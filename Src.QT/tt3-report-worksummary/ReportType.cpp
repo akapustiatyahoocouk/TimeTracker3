@@ -64,21 +64,25 @@ auto ReportType::createConfigurationEditor(
 }
 
 auto ReportType::generateReport(
-        const tt3::ws::Workspace & /*workspace*/,
-        const tt3::ws::ReportCredentials & /*credentials*/,
-        const tt3::report::IReportConfiguration * /*configuration*/,
+        tt3::ws::Workspace & workspace,
+        const tt3::ws::ReportCredentials & credentials,
+        const tt3::report::IReportConfiguration * configuration,
         const tt3::report::IReportTemplate * reportTemplate,
         ProgressListener progressListener
     ) -> tt3::report::Report *
 {
-    for (int i = 0; i <= 100; i++)
-    {
-        if (progressListener != nullptr)
-        {
-            progressListener(float(i / 100.0));
-        }
+    auto rc = dynamic_cast<const ReportConfiguration*>(configuration);
+    if (rc == nullptr)
+    {   //  OOPS!
+        throw tt3::report::InvalidReportConfigurationException();
     }
-    return new Report("TODO", reportTemplate);
+    ReportGenerator generator(
+        workspace,
+        credentials,
+        *rc,
+        reportTemplate,
+        progressListener);
+    return generator.generateReport();
 }
 
 //  End of tt3-report-worksummary/ReportType.cpp

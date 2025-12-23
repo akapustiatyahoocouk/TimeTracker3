@@ -98,15 +98,15 @@ Component::Resources::~Resources() {}
 TT3_IMPLEMENT_SINGLETON(Component::Settings)
 
 Component::Settings::Settings()
-    :   reportScope(this, M(ReportScope), ReportConfiguration::Scope::CurrentUser),
-        reportDateRange(this, M(ReportDateRange), ReportConfiguration::DateRange::CurrentWeek),
+    :   reportScope(this, M(ReportScope), Scope::CurrentUser),
+        reportDateRange(this, M(ReportDateRange), DateRange::CurrentWeek),
         reportFromDate(this, M(ReportFromDate), QDate::currentDate()),
         reportToDate(this, M(ReportToDate), QDate::currentDate()),
-        reportGrouping(this, M(ReportGrouping), ReportConfiguration::Grouping::ByActivityType),
-        includeDailySummaries(this, M(IncludeDailySummaries), true),
-        includeWeeklySummaries(this, M(IncludeWeeklySummaries), true),
-        includeMonthlySummaries(this, M(IncludeMonthlySummaries), true),
-        includeYearlySummaries(this, M(IncludeYearlySummaries), true),
+        reportGrouping(this, M(ReportGrouping), Grouping::ByActivityType),
+        includeDailyData(this, M(IncludeDailyData), true),
+        includeWeeklyData(this, M(IncludeWeeklyData), true),
+        includeMonthlyData(this, M(IncludeMonthlyData), true),
+        includeYearlyData(this, M(IncludeYearlyData), true),
         houesPerDay(this, M(HouesPerDay), 8.0f),
         weekStart(this, M(WeekStart), Qt::DayOfWeek::Monday)
 {

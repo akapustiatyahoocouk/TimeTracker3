@@ -47,19 +47,19 @@ namespace tt3::report::worksummary
         public:
             /// \brief
             ///     The scope of the report.
-            tt3::util::Setting<ReportConfiguration::Scope>  reportScope;
+            tt3::util::Setting<Scope>  reportScope;
 
             /// \brief
             ///     The date range of the report.
-            tt3::util::Setting<ReportConfiguration::DateRange>  reportDateRange;
+            tt3::util::Setting<DateRange>  reportDateRange;
 
             tt3::util::Setting<QDate>  reportFromDate;
             tt3::util::Setting<QDate>  reportToDate;
-            tt3::util::Setting<ReportConfiguration::Grouping>  reportGrouping;
-            tt3::util::Setting<bool> includeDailySummaries;
-            tt3::util::Setting<bool> includeWeeklySummaries;
-            tt3::util::Setting<bool> includeMonthlySummaries;
-            tt3::util::Setting<bool> includeYearlySummaries;
+            tt3::util::Setting<Grouping>  reportGrouping;
+            tt3::util::Setting<bool> includeDailyData;
+            tt3::util::Setting<bool> includeWeeklyData;
+            tt3::util::Setting<bool> includeMonthlyData;
+            tt3::util::Setting<bool> includeYearlyData;
             tt3::util::Setting<float> houesPerDay;
             tt3::util::Setting<Qt::DayOfWeek> weekStart;
         };

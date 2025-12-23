@@ -95,3 +95,4 @@ ReportTemplateAlreadyExistsException=Report template {0} ({1}) already exists
 ReportTemplateDoesNotExistException=Report template {0} does not exist
 StyleDoesNotExistException=Style {0} does not exist in report template {1} ({2})
 InvalidReportException=Invalid or corrupt report
+InvalidReportConfigurationException=Invalid or incompatible report configuration

@@ -62,26 +62,14 @@ namespace tt3::report::worksummary
         tt3::ws::Users  _users; //  yo include into the report
 
         //  Helpers
-        auto            _selectedScope(
-                            ) const -> ReportConfiguration::Scope;
-        void            _setSelectedScope(
-                                ReportConfiguration::Scope scope
-                            );
-        auto            _selectedDateRange(
-                            ) const -> ReportConfiguration::DateRange;
-        void            _setSelectedDateRange(
-                                ReportConfiguration::DateRange dateRange
-                            );
-        auto            _selectedGrouping(
-                            ) const -> ReportConfiguration::Grouping;
-        void            _setSelectedGrouping(
-                                ReportConfiguration::Grouping grouping
-                            );
-        auto            _selectedWeekStart(
-                            ) const -> Qt::DayOfWeek;
-        void            _setSelectedWeekStart(
-                                Qt::DayOfWeek weekStart
-                            );
+        auto            _selectedScope() const -> Scope;
+        void            _setSelectedScope(Scope scope);
+        auto            _selectedDateRange() const -> DateRange;
+        void            _setSelectedDateRange(DateRange dateRange);
+        auto            _selectedGrouping() const -> Grouping;
+        void            _setSelectedGrouping(Grouping grouping);
+        auto            _selectedWeekStart() const -> Qt::DayOfWeek;
+        void            _setSelectedWeekStart(Qt::DayOfWeek weekStart);
         void            _refresh();
 
         //////////
