@@ -23,6 +23,34 @@ ReportConfiguration::ReportConfiguration()
 {
 }
 
+ReportConfiguration::ReportConfiguration(
+        Scope scope,
+        const tt3::ws::Users & users,
+        DateRange dateRange,
+        const QDate & startDate,
+        const QDate & endDate,
+        Grouping grouping,
+        bool includeDailySummaries,
+        bool includeWeeklySummaries,
+        bool includeMonthlySummaries,
+        bool includeYearlySummaries,
+        float houesPerDay,
+        Qt::DayOfWeek weekStart
+    ) : _scope(scope),
+        _users(users),
+        _dateRange(dateRange),
+        _startDate(startDate),
+        _endDate(endDate),
+        _grouping(grouping),
+        _includeDailySummaries(includeDailySummaries),
+        _includeWeeklySummaries(includeWeeklySummaries),
+        _includeMonthlySummaries(includeMonthlySummaries),
+        _includeYearlySummaries(includeYearlySummaries),
+        _houesPerDay(houesPerDay),
+        _weekStart(weekStart)
+{
+}
+
 ReportConfiguration::~ReportConfiguration()
 {
 }

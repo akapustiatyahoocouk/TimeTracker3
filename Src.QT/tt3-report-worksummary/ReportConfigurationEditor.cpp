@@ -191,14 +191,84 @@ bool ReportConfigurationEditor::isValid() const
 auto ReportConfigurationEditor::createReportConfiguration(
     ) const -> ReportConfiguration *
 {
-    //  TODO implement properly
-    return new ReportConfiguration();
+    if (!isValid())
+    {   //  In case of errors, use defaults
+        return new ReportConfiguration();
+    }
+    QDate today = QDateTime::currentDateTime().date();
+    QDate thisWeekStart = today;
+    while (thisWeekStart.dayOfWeek() != _selectedWeekStart())
+    {
+        thisWeekStart = thisWeekStart.addDays(-1);
+    }
+    QDate thisMonthStart(today.year(), today.month(), 1);
+
+    QDate startDate, endDate;
+    switch (_selectedDateRange())
+    {
+        case ReportConfiguration::DateRange::Today:
+            startDate = endDate = today;
+            break;
+        case ReportConfiguration::DateRange::Yesterday:
+            startDate = endDate = today.addDays(-1);
+            break;
+        case ReportConfiguration::DateRange::LastWeek:
+            startDate = thisWeekStart.addDays(-7);
+            endDate = thisWeekStart.addDays(-1);
+            break;
+        case ReportConfiguration::DateRange::CurrentWeek:
+            startDate = thisWeekStart;
+            endDate = today;
+            break;
+        case ReportConfiguration::DateRange::CurrentMonth:
+            startDate = thisMonthStart;
+            endDate = today;
+            break;
+        case ReportConfiguration::DateRange::CurrentYear:
+            startDate = QDate(today.year(), 1, 1);
+            endDate = today;
+            break;
+        case ReportConfiguration::DateRange::WeekToDate:
+            startDate = today.addDays(-6);
+            endDate = today;
+            break;
+        case ReportConfiguration::DateRange::MonthToDate:
+            startDate = today.addMonths(-1).addDays(1);
+            endDate = today;
+            break;
+        case ReportConfiguration::DateRange::YearToDate:
+            startDate = today.addYears(-1).addDays(1);
+            endDate = today;
+            break;
+        case ReportConfiguration::DateRange::Custom:
+            startDate = _ui->fromDateEdit->date();
+            endDate = std::max(startDate, _ui->toDateEdit->date()); //  ...for sanity
+            break;
+        default:
+            Q_ASSERT(false);
+            //  Be defensive in release mode
+            startDate = endDate = today;
+            break;
+    }
+    return new ReportConfiguration(
+        _selectedScope(),
+        _users,
+        _selectedDateRange(),
+        startDate,
+        endDate,
+        _selectedGrouping(),
+        _ui->dailyDataCheckBox->isChecked(),
+        _ui->weeklyDataCheckBox->isChecked(),
+        _ui->monthlyDataCheckBox->isChecked(),
+        _ui->yearlyDataCheckBox->isChecked(),
+        tt3::util::fromString<float>(_ui->hoursPerDayLineEdit->text()),
+        _selectedWeekStart());
 }
 
 //////////
 //  Implementation helpers
 auto ReportConfigurationEditor::_selectedScope(
-    ) -> ReportConfiguration::Scope
+    ) const -> ReportConfiguration::Scope
 {
     if (_ui->currentUserRadioButton->isChecked())
     {
@@ -238,7 +308,7 @@ void ReportConfigurationEditor::_setSelectedScope(
 }
 
 auto ReportConfigurationEditor::_selectedDateRange(
-    ) -> ReportConfiguration::DateRange
+    ) const -> ReportConfiguration::DateRange
 {
     if (_ui->todayRadioButton->isChecked())
     {
@@ -327,7 +397,7 @@ void ReportConfigurationEditor::_setSelectedDateRange(
 }
 
 auto ReportConfigurationEditor::_selectedGrouping(
-    ) -> ReportConfiguration::Grouping
+    ) const -> ReportConfiguration::Grouping
 {
     if (_ui->groupByActivityTypeRadioButton->isChecked())
     {
@@ -360,7 +430,7 @@ void ReportConfigurationEditor::_setSelectedGrouping(
 }
 
 auto ReportConfigurationEditor::_selectedWeekStart(
-    ) -> Qt::DayOfWeek
+    ) const -> Qt::DayOfWeek
 {
     return _ui->weekStartComboBox->currentData().value<Qt::DayOfWeek>();
 }

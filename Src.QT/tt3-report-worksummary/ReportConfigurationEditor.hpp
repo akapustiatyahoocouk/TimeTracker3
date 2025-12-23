@@ -63,22 +63,22 @@ namespace tt3::report::worksummary
 
         //  Helpers
         auto            _selectedScope(
-                            ) -> ReportConfiguration::Scope;
+                            ) const -> ReportConfiguration::Scope;
         void            _setSelectedScope(
                                 ReportConfiguration::Scope scope
                             );
         auto            _selectedDateRange(
-                            ) -> ReportConfiguration::DateRange;
+                            ) const -> ReportConfiguration::DateRange;
         void            _setSelectedDateRange(
                                 ReportConfiguration::DateRange dateRange
                             );
         auto            _selectedGrouping(
-                            ) -> ReportConfiguration::Grouping;
+                            ) const -> ReportConfiguration::Grouping;
         void            _setSelectedGrouping(
                                 ReportConfiguration::Grouping grouping
                             );
         auto            _selectedWeekStart(
-                            ) -> Qt::DayOfWeek;
+                            ) const -> Qt::DayOfWeek;
         void            _setSelectedWeekStart(
                                 Qt::DayOfWeek weekStart
                             );

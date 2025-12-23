@@ -339,9 +339,14 @@ void CreateReportDialog::accept()
     Component::Settings::instance()->lastUsedReportTemplate = _reportTemplate->mnemonic();
 
     //  Save editor states before proceeding
-    for (auto editor : _configurationEditors.values())
+    std::unique_ptr<IReportConfiguration> reportConfiguration {nullptr};
+    for (auto [rt, editor] : _configurationEditors.asKeyValueRange())
     {
         editor->saveControlValues();
+        if (rt == _reportType)
+        {
+            reportConfiguration.reset(editor->createReportConfiguration());
+        }
     }
 
     //  Go!
@@ -354,7 +359,7 @@ void CreateReportDialog::accept()
             _reportType->generateReport(    //  may throw
                 _workspace,
                 _credentials,
-                nullptr,    //  TODO report configuration
+                reportConfiguration.get(),
                 _reportTemplate,
                 [&](float ratioCompleted)
                 {
