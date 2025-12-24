@@ -47,7 +47,7 @@ namespace tt3::report::worksummary
         virtual ~ReportConfigurationEditor();
 
         //////////
-        //  tt3::report::ReportConfigurationEditor
+        //  ReportConfigurationEditor
     public:
         virtual void    loadControlValues() override;
         virtual void    saveControlValues() override;

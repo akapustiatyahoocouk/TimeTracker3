@@ -20,7 +20,7 @@ namespace tt3::report::worksummary
     /// \class ReportType tt3-report-worksummary/API.hpp
     /// \brief The "Work Summary" report type.
     class TT3_REPORT_WORKSUMMARY_PUBLIC ReportType final
-    :   public virtual tt3::report::IReportType
+    :   public virtual IReportType
     {
         TT3_DECLARE_SINGLETON(ReportType)
 
@@ -40,10 +40,10 @@ namespace tt3::report::worksummary
         virtual auto    generateReport(
                                 tt3::ws::Workspace & workspace,
                                 const tt3::ws::ReportCredentials & credentials,
-                                const tt3::report::IReportConfiguration * configuration,
-                                const tt3::report::IReportTemplate * reportTemplate,
+                                const IReportConfiguration * configuration,
+                                const IReportTemplate * reportTemplate,
                                 ProgressListener progressListener
-                            ) -> tt3::report::Report * override;
+                            ) -> Report * override;
     };
 }
 

@@ -47,6 +47,10 @@ WeekStartLabel=Wochenbeginn:
 [ReportGenerator]
 ReportName=Arbeitsübersicht
 CreatedOnMessage=Erstellt am {0}
+PrefaceChapter=Vorwort
+CreatorMessage=Ersteller:
+ReportedDatesMessage=Gemeldete Daten:
+IncludedUsersMessage=Eingeschlossene Benutzer:
 DailyBreakdownChapter=Tagesübersicht
 WeeklyBreakdownChapter=Wochenübersicht
 MonthlyBreakdownChapter=Monatsübersicht

@@ -26,6 +26,35 @@ struct LocaleManager::_Impl
 
 //////////
 //  Operations
+Locales LocaleManager::supportedLocales()
+{
+    Locales result;
+    for (IComponent * component : ComponentManager::all())
+    {
+        result.unite(component->resources()->supportedLocales());
+    }
+    return result;
+}
+
+Locales LocaleManager::fullySupportedLocales()
+{
+    Locales result;
+    bool firstTime = true;
+    for (IComponent * component : ComponentManager::all())
+    {
+        if (firstTime)
+        {
+            result = component->resources()->supportedLocales();
+            firstTime = false;
+        }
+        else
+        {
+            result.intersect(component->resources()->supportedLocales());
+        }
+    }
+    return result;
+}
+
 QIcon LocaleManager::smallIcon(const QLocale & locale)
 {
     _Impl * impl = _impl();

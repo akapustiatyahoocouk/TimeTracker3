@@ -47,6 +47,10 @@ WeekStartLabel=Неделя начинается в:
 [ReportGenerator]
 ReportName=Сводка рабочего времени
 CreatedOnMessage=Создано {0}
+PrefaceChapter=Предисловие
+CreatorMessage=Автор:
+ReportedDatesMessage=Период:
+IncludedUsersMessage=Включённые пользователи:
 DailyBreakdownChapter=Ежедневная разбивка
 WeeklyBreakdownChapter=Еженедельная разбивка
 MonthlyBreakdownChapter=Ежемесячная разбивка

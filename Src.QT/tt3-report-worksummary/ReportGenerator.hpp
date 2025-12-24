@@ -30,8 +30,8 @@ namespace tt3::report::worksummary
                 tt3::ws::Workspace workspace,
                 const tt3::ws::ReportCredentials & credentials,
                 const ReportConfiguration & configuration,
-                const tt3::report::IReportTemplate * reportTemplate,
-                tt3::report::IReportType::ProgressListener progressListener
+                const IReportTemplate * reportTemplate,
+                IReportType::ProgressListener progressListener
             );
 
         /// \brief
@@ -52,7 +52,7 @@ namespace tt3::report::worksummary
         ///     This specifically includes the case when
         ///     the specified "configuration" is incompatible
         ///     with this report type.
-        auto        generateReport() -> tt3::report::Report *;
+        auto        generateReport() -> Report *;
 
         //////////
         //  Implementation
@@ -60,13 +60,13 @@ namespace tt3::report::worksummary
         const tt3::ws::Workspace                    _workspace;
         const tt3::ws::ReportCredentials            _credentials;
         const ReportConfiguration                   _configuration;
-        const tt3::report::IReportTemplate *const   _reportTemplate;
-        const tt3::report::IReportType::ProgressListener    _progressListener;
+        const IReportTemplate *const   _reportTemplate;
+        const IReportType::ProgressListener    _progressListener;
 
         qsizetype   _totalSteps = 0;
         qsizetype   _completedSteps = 0;
 
-        tt3::report::ReportSection *    _bodySection = nullptr;
+        ReportSection *    _bodySection = nullptr;
 
         //////////
         //  Report model
@@ -177,42 +177,18 @@ namespace tt3::report::worksummary
         //////////
         //  Helpers
     private:
-        void        _analyze(
-                            tt3::report::Report * report
-                        );
-        void        _analyze(
-                            tt3::report::ReportSection * section
-                        );
-        void        _analyze(
-                            tt3::report::ReportBlockElement * block
-                        );
-        void        _analyze(
-                            tt3::report::ReportParagraph * paragraph
-                        );
-        void        _analyze(
-                            tt3::report::ReportList * list
-                        );
-        void        _analyze(
-                            tt3::report::ReportTable * table
-                        );
-        void        _analyze(
-                            tt3::report::ReportTableOfContent * toc
-                        );
-        void        _analyze(
-                            tt3::report::ReportSpanElement * span
-                        );
-        void        _analyze(
-                            tt3::report::ReportText * text
-                        );
-        void        _analyze(
-                            tt3::report::ReportPicture * picture
-                        );
-        void        _analyze(
-                            tt3::report::ReportListItem * item
-                        );
-        void        _analyze(
-                            tt3::report::ReportTableCell * cell
-                        );
+        void        _analyze(Report * report);
+        void        _analyze(ReportSection * section);
+        void        _analyze(ReportBlockElement * block);
+        void        _analyze(ReportParagraph * paragraph);
+        void        _analyze(ReportList * list);
+        void        _analyze(ReportTable * table);
+        void        _analyze(ReportTableOfContent * toc);
+        void        _analyze(ReportSpanElement * span);
+        void        _analyze(ReportText * text);
+        void        _analyze(ReportPicture * picture);
+        void        _analyze(ReportListItem * item);
+        void        _analyze(ReportTableCell * cell);
         void        _prepareAccounts();
         void        _prepareDateRanges();
         void        _collectData(
@@ -237,9 +213,10 @@ namespace tt3::report::worksummary
                             const _DateRange & dateRange,
                             _Column column
                         );
+        void        _generatePreface();
         void        _generateReportTable(
                             const QString & heading,
-                            tt3::report::Report * report,
+                            Report * report,
                             const _DateRanges & dateRanges
                         );
         QString     _formatEffort(qint64 effortMs);

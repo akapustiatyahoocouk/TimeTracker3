@@ -47,6 +47,10 @@ WeekStartLabel=Week starts on:
 [ReportGenerator]
 ReportName=Work summary
 CreatedOnMessage=Created on {0}
+PrefaceChapter=Preface
+CreatorMessage=Created by:
+ReportedDatesMessage=Reported dates:
+IncludedUsersMessage=Included users:
 DailyBreakdownChapter=Daily breakdown
 WeeklyBreakdownChapter=Weekly breakdown
 MonthlyBreakdownChapter=Monthly breakdown

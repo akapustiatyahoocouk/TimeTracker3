@@ -20,7 +20,7 @@ namespace tt3::report::worksummary
     /// \class ReportConfiguration tt3-report-worksummary/API.hpp
     /// \brief The "Work Summary" report configuration.
     class TT3_REPORT_WORKSUMMARY_PUBLIC ReportConfiguration final
-        :   public virtual tt3::report::IReportConfiguration
+        :   public virtual IReportConfiguration
     {
         //////////
         //  Construction/destruction/assignment

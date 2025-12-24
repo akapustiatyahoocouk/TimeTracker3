@@ -56,7 +56,7 @@ CreateUserDialog::CreateUserDialog(QWidget * parent,
     //  Fill "UI locale" combo box
     _ui->uiLocaleComboBox->addItem(
         rr.string(RID(SystemDefaultLocale)));
-    for (const QLocale & locale : tt3::util::ComponentManager::supportedLocales())
+    for (const QLocale & locale : tt3::util::LocaleManager::supportedLocales())
     {
         _locales.append(locale);
     }

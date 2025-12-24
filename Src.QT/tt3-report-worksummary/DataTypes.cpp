@@ -65,8 +65,8 @@ namespace
 }
 
 template <> TT3_REPORT_WORKSUMMARY_PUBLIC
-QString tt3::util::toString<tt3::report::worksummary::Scope>
-    (const tt3::report::worksummary::Scope & value)
+QString tt3::util::toString<Scope>
+    (const Scope & value)
 {
     for (const auto & scopeName : ScopeNames)
     {
@@ -80,8 +80,8 @@ QString tt3::util::toString<tt3::report::worksummary::Scope>
 }
 
 template <> TT3_REPORT_WORKSUMMARY_PUBLIC
-QString tt3::util::toString<tt3::report::worksummary::DateRange>
-    (const tt3::report::worksummary::DateRange & value)
+QString tt3::util::toString<DateRange>
+    (const DateRange & value)
 {
     for (const auto & dateRangeName : DateRangeNames)
     {
@@ -95,8 +95,8 @@ QString tt3::util::toString<tt3::report::worksummary::DateRange>
 }
 
 template <> TT3_REPORT_WORKSUMMARY_PUBLIC
-QString tt3::util::toString<tt3::report::worksummary::Grouping>
-    (const tt3::report::worksummary::Grouping & value)
+QString tt3::util::toString<Grouping>
+    (const Grouping & value)
 {
     for (const auto & groupingName : GroupingNames)
     {
@@ -110,8 +110,8 @@ QString tt3::util::toString<tt3::report::worksummary::Grouping>
 }
 
 template <> TT3_REPORT_WORKSUMMARY_PUBLIC
-tt3::report::worksummary::Scope
-tt3::util::fromString<tt3::report::worksummary::Scope>
+Scope
+tt3::util::fromString<Scope>
     (const QString & s, qsizetype & scan)
 {
     if (scan < 0 || scan > s.length())
@@ -131,8 +131,8 @@ tt3::util::fromString<tt3::report::worksummary::Scope>
 }
 
 template <> TT3_REPORT_WORKSUMMARY_PUBLIC
-tt3::report::worksummary::DateRange
-tt3::util::fromString<tt3::report::worksummary::DateRange>
+DateRange
+tt3::util::fromString<DateRange>
     (const QString & s, qsizetype & scan)
 {
     if (scan < 0 || scan > s.length())
@@ -152,8 +152,8 @@ tt3::util::fromString<tt3::report::worksummary::DateRange>
 }
 
 template <> TT3_REPORT_WORKSUMMARY_PUBLIC
-tt3::report::worksummary::Grouping
-tt3::util::fromString<tt3::report::worksummary::Grouping>
+Grouping
+tt3::util::fromString<Grouping>
     (const QString & s, qsizetype & scan)
 {
     if (scan < 0 || scan > s.length())

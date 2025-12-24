@@ -43,7 +43,7 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
     //  Fill the language combo box with available locales
     //  from the set of locales supported by components and
     //  sorted by display name
-    for (const QLocale & locale : tt3::util::ComponentManager::supportedLocales())
+    for (const QLocale & locale : tt3::util::LocaleManager::supportedLocales())
     {
         _locales.append(locale);
     }

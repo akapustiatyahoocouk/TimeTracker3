@@ -380,41 +380,6 @@ void ComponentManager::saveComponentSettings()
     }
 }
 
-Locales ComponentManager::supportedLocales()
-{
-    _Impl * impl = _impl();
-    Lock _(impl->guard);
-
-    Locales result;
-    for (IComponent * component : impl->registry.values())
-    {
-        result.unite(component->resources()->supportedLocales());
-    }
-    return result;
-}
-
-Locales ComponentManager::fullySupportedLocales()
-{
-    _Impl * impl = _impl();
-    Lock _(impl->guard);
-
-    Locales result;
-    bool firstTime = true;
-    for (IComponent * component : impl->registry.values())
-    {
-        if (firstTime)
-        {
-            result = component->resources()->supportedLocales();
-            firstTime = false;
-        }
-        else
-        {
-            result.intersect(component->resources()->supportedLocales());
-        }
-    }
-    return result;
-}
-
 //////////
 //  Implementation helpers
 ComponentManager::_Impl * ComponentManager::_impl()

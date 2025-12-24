@@ -29,6 +29,23 @@ namespace tt3::util
         //  Operations
     public:
         /// \brief
+        ///     Returns the set of all locales supported by at
+        ///     least one registered component
+        /// \return
+        ///     The set of all locales supported by at
+        ///     least one registered component
+        static Locales  supportedLocales();
+
+        /// \brief
+        ///     Returns the set of all locales supported by
+        ///     every registered component
+        /// \return
+        ///     The set of all locales supported by
+        ///     every registered component.
+        ///     NOTE, that this set may be empty.
+        static Locales  fullySupportedLocales();
+
+        /// \brief
         ///     Returns the small (16x16) icon representing the specified locale.
         /// \param locale
         ///     The locale.

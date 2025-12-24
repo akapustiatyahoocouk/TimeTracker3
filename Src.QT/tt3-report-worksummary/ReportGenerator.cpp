@@ -23,8 +23,8 @@ ReportGenerator::ReportGenerator(
         tt3::ws::Workspace workspace,
         const tt3::ws::ReportCredentials & credentials,
         const ReportConfiguration & configuration,
-        const tt3::report::IReportTemplate * reportTemplate,
-        tt3::report::IReportType::ProgressListener progressListener
+        const IReportTemplate * reportTemplate,
+        IReportType::ProgressListener progressListener
     ) : _workspace(workspace),
         _credentials(credentials),
         _configuration(configuration),
@@ -39,7 +39,7 @@ ReportGenerator::~ReportGenerator()
 
 //////////
 //  Operations
-auto ReportGenerator::generateReport() -> tt3::report::Report *
+auto ReportGenerator::generateReport() -> Report *
 {
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ReportGenerator));
 
@@ -72,17 +72,15 @@ auto ReportGenerator::generateReport() -> tt3::report::Report *
     _completedSteps = 0;
 
     //  Make sure we destroy Report on exception
-    std::unique_ptr<tt3::report::Report> report
+    std::unique_ptr<Report> report
         { _reportTemplate->createNewReport() };
     report->setName(rr.string(RID(ReportName)));
     //  Must analyze initial report created by
     //  template - insert titles, find body section, etc.s
     _analyze(report.get());
 
-    //  Add Preface section - report creator, dates, included users, etc.
-    //  TODO
-
     //  Go!
+    _generatePreface();
     if (_configuration.includeDailyData())
     {
         _collectData(_dailyRanges);
@@ -127,7 +125,7 @@ auto ReportGenerator::generateReport() -> tt3::report::Report *
 //////////
 //  Implementation helpers
 void ReportGenerator::_analyze(
-        tt3::report::Report * report
+        Report * report
     )
 {
     _bodySection = nullptr;
@@ -142,16 +140,16 @@ void ReportGenerator::_analyze(
             report->createSection(
                 "body",
                 report->reportTemplate()->sectionStyle(
-                    tt3::report::ISectionStyle::BodyStyleName));
+                    ISectionStyle::BodyStyleName));
     }
 }
 
 void ReportGenerator::_analyze(
-        tt3::report::ReportSection * section
+        ReportSection * section
     )
 {
     if (section->style() != nullptr &&
-        section->style()->name() == tt3::report::ISectionStyle::BodyStyleName &&
+        section->style()->name() == ISectionStyle::BodyStyleName &&
         _bodySection == nullptr)
     {   //  The 1st "body" section is special
         _bodySection = section;
@@ -163,7 +161,7 @@ void ReportGenerator::_analyze(
 }
 
 void ReportGenerator::_analyze(
-        tt3::report::ReportBlockElement * block
+        ReportBlockElement * block
     )
 {
     if (auto paragraph =
@@ -193,7 +191,7 @@ void ReportGenerator::_analyze(
 }
 
 void ReportGenerator::_analyze(
-        tt3::report::ReportParagraph * paragraph
+        ReportParagraph * paragraph
     )
 {
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ReportGenerator));
@@ -223,7 +221,7 @@ void ReportGenerator::_analyze(
 }
 
 void ReportGenerator::_analyze(
-        tt3::report::ReportList * list
+        ReportList * list
     )
 {
     for (auto item : list->items())
@@ -233,7 +231,7 @@ void ReportGenerator::_analyze(
 }
 
 void ReportGenerator::_analyze(
-        tt3::report::ReportTable * table
+        ReportTable * table
     )
 {
     for (auto cell : table->cells())
@@ -243,13 +241,13 @@ void ReportGenerator::_analyze(
 }
 
 void ReportGenerator::_analyze(
-        tt3::report::ReportTableOfContent * /*toc*/
+        ReportTableOfContent * /*toc*/
     )
 {   //  Nothing further
 }
 
 void ReportGenerator::_analyze(
-        tt3::report::ReportSpanElement * span
+        ReportSpanElement * span
     )
 {
     if (auto text =
@@ -269,20 +267,20 @@ void ReportGenerator::_analyze(
 }
 
 void ReportGenerator::_analyze(
-        tt3::report::ReportText * /*text*/
+        ReportText * /*text*/
     )
 {   //  Nothing further
 }
 
 void ReportGenerator::_analyze(
-        tt3::report::ReportPicture * /*picture*/
+        ReportPicture * /*picture*/
     )
 {   //  Nothing furthern
 
 }
 
 void ReportGenerator::_analyze(
-        tt3::report::ReportListItem * item
+        ReportListItem * item
     )
 {
     for (auto child : item->children())
@@ -292,7 +290,7 @@ void ReportGenerator::_analyze(
 }
 
 void ReportGenerator::_analyze(
-        tt3::report::ReportTableCell * cell
+        ReportTableCell * cell
     )
 {
     for (auto child : cell->children())
@@ -381,11 +379,11 @@ void ReportGenerator::_collectData(
 {
     _columns.clear();
     _efforts.clear();
-    for (auto account : std::as_const(_accounts))
+    for (const auto & account : std::as_const(_accounts))
     {
         for (const auto & dateRange : dateRanges)
         {   //  Process all works in this date range...
-            for (auto work :
+            for (const auto & work :
                  account->works(_credentials, dateRange.startUtc(), dateRange.endUtc()))
             {
                 _recordWork(dateRange, work);
@@ -490,7 +488,7 @@ auto ReportGenerator::_getColumn(
         tt3::ws::Activity activity
     ) -> _Column
 {   //  Will one of the existing columns do ?
-    for (auto column : std::as_const(_columns))
+    for (const auto & column : std::as_const(_columns))
     {
         if (auto col =
             std::dynamic_pointer_cast<_ActivityColumnImpl>(column))
@@ -540,9 +538,90 @@ qint64 ReportGenerator::_getEffort(
     return 0;
 }
 
+void ReportGenerator::_generatePreface()
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ReportGenerator));
+    auto reportTemplate = _bodySection->report()->reportTemplate();
+
+    _bodySection
+        ->createParagraph(
+            reportTemplate->paragraphStyle(IParagraphStyle::Heading1StyleName))
+        ->createText(rr.string(RID(PrefaceChapter)));
+
+    _bodySection
+        ->createParagraph(
+            reportTemplate->paragraphStyle(IParagraphStyle::DefaultStyleName))
+        ->createText(rr.string(RID(CreatorMessage)));
+    auto currentUser =
+        _workspace->login(gui::theCurrentCredentials)
+                  ->user(gui::theCurrentCredentials);
+    _bodySection
+        ->createList(
+            reportTemplate->listStyle(IListStyle::DefaultStyleName))
+        ->createItem()
+        ->createParagraph(
+            reportTemplate->paragraphStyle(IParagraphStyle::DefaultStyleName))
+        ->createText(currentUser->realName(_credentials));
+
+    _bodySection
+        ->createParagraph(
+            reportTemplate->paragraphStyle(IParagraphStyle::DefaultStyleName))
+        ->createText(rr.string(RID(ReportedDatesMessage)));
+    QString periodString =
+        QLocale().toString(
+            _configuration.startDate(),
+            QLocale::ShortFormat);
+    if (_configuration.endDate() != _configuration.startDate())
+    {
+        periodString += " .. ";
+        periodString +=
+            QLocale().toString(
+                _configuration.endDate(),
+                QLocale::ShortFormat);
+    }
+    _bodySection
+        ->createList(
+            reportTemplate->listStyle(IListStyle::DefaultStyleName))
+        ->createItem()
+        ->createParagraph(
+            reportTemplate->paragraphStyle(IParagraphStyle::DefaultStyleName))
+        ->createText(periodString);
+
+    _bodySection
+        ->createParagraph(
+            reportTemplate->paragraphStyle(IParagraphStyle::DefaultStyleName))
+        ->createText(rr.string(RID(IncludedUsersMessage)));
+    auto usersList =
+        _bodySection
+            ->createList(
+                reportTemplate->listStyle(IListStyle::DefaultStyleName));
+    QList<tt3::ws::User> users;
+    for (const auto & user : _configuration.users())
+    {
+        users.append(user);
+    }
+    std::sort(
+        users.begin(),
+        users.end(),
+        [&](auto a, auto b)
+        {
+            return tt3::util::NaturalStringOrder::less(
+                a->realName(_credentials),
+                b->realName(_credentials));
+        });
+    for (const auto & user : users)
+    {
+        usersList
+            ->createItem()
+            ->createParagraph(
+                reportTemplate->paragraphStyle(IParagraphStyle::DefaultStyleName))
+            ->createText(user->realName(_credentials));
+    }
+}
+
 void ReportGenerator::_generateReportTable(
         const QString & heading,
-        tt3::report::Report * report,
+        Report * report,
         const _DateRanges & dateRanges
     )
 {

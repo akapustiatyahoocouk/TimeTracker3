@@ -278,25 +278,6 @@ namespace tt3::util
         ///     home directory.
         static void     saveComponentSettings();
 
-        /// \brief
-        ///     Returns the set of all locales supported by at
-        ///     least one registered component
-        /// \return
-        ///     The set of all locales supported by at
-        ///     least one registered component
-        /// TODO move this service to LocaleManager
-        static Locales  supportedLocales();
-
-        /// \brief
-        ///     Returns the set of all locales supported by
-        ///     every registered component
-        /// \return
-        ///     The set of all locales supported by
-        ///     every registered component.
-        ///     NOTE, that this set may be empty.
-        /// TODO move this service to LocaleManager
-        static Locales  fullySupportedLocales();
-
         //////////
         //  Implementation
     private:

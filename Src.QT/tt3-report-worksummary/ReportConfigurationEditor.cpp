@@ -510,8 +510,6 @@ void ReportConfigurationEditor::_refresh()
     //  From/To dates can only be selected in Custom range
     _ui->fromDateEdit->setEnabled(_ui->customDatesRadioButton->isChecked());
     _ui->toDateEdit->setEnabled(_ui->customDatesRadioButton->isChecked());
-
-    //  TODO finish the implementation
 }
 
 //////////

@@ -66,15 +66,15 @@ auto ReportType::createConfigurationEditor(
 auto ReportType::generateReport(
         tt3::ws::Workspace & workspace,
         const tt3::ws::ReportCredentials & credentials,
-        const tt3::report::IReportConfiguration * configuration,
-        const tt3::report::IReportTemplate * reportTemplate,
+        const IReportConfiguration * configuration,
+        const IReportTemplate * reportTemplate,
         ProgressListener progressListener
-    ) -> tt3::report::Report *
+    ) -> Report *
 {
     auto rc = dynamic_cast<const ReportConfiguration*>(configuration);
     if (rc == nullptr)
     {   //  OOPS!
-        throw tt3::report::InvalidReportConfigurationException();
+        throw InvalidReportConfigurationException();
     }
     ReportGenerator generator(
         workspace,

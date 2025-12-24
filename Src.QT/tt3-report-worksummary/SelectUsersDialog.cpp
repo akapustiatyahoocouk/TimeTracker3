@@ -155,7 +155,7 @@ void SelectUsersDialog::_refreshUsersList(
         auto user = usersList[i];
         try
         {
-            item->setText(user->realName(_credentials));    //  TODO may throw
+            item->setText(user->realName(_credentials));
             item->setIcon(userIcon);
         }
         catch (const tt3::util::Exception & ex)
