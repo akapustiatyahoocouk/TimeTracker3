@@ -1,0 +1,13 @@
+[Plugin]
+DisplayName=TimeTracker3-Schlank-Skin
+Description=Definiert den GUI-Schlank-Skin für TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[Component]
+DisplayName=TimeTracker3-Schlank-Skin
+Description=Definiert den GUI-Schlank-Skin für TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[Skin]
+DisplayName=Schlank
+Description=Bietet eine minimalistische Benutzeroberfläche für TimeTracker3-Benutzer

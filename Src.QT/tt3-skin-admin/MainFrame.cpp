@@ -150,6 +150,8 @@ MainFrame::MainFrame()
 
 MainFrame::~MainFrame()
 {
+    _trackPositionTimer.stop();
+    _savePositionTimer.stop();
     _refreshTimer.stop();
     delete _ui;
 }
@@ -174,6 +176,8 @@ void MainFrame::closeEvent(QCloseEvent * event)
     _onActionExit();
 }
 
+//////////
+//  Operations
 void MainFrame::show()
 {
     if (!this->isVisible())
@@ -190,13 +194,12 @@ void MainFrame::hide()
 {
     if (this->isVisible())
     {
+        _trackPositionTimer.stop();
         _trackPosition = false;
         QMainWindow::hide();
     }
 }
 
-//////////
-//  Operations
 void MainFrame::refresh()
 {
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
@@ -263,7 +266,6 @@ void MainFrame::_loadPosition()
 {
     _setFrameGeometry(Component::Settings::instance()->mainFrameBounds);
     _ensureWithinScreenBounds();
-    //  Make sure the frame is not off-screen
     if (Component::Settings::instance()->mainFrameMaximized)
     {
         this->showMaximized();

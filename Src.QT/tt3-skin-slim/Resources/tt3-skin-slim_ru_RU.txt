@@ -1,0 +1,13 @@
+[Plugin]
+DisplayName=Минимальный интерфейс TimeTracker3
+Description=Определяет минимальную версию интерфейса для TimeTracker3
+Copyright=Авторское право (C) {0}, Андрей Капустин
+
+[Component]
+DisplayName=Минимальный интерфейс TimeTracker3
+Description=Определяет минимальную версию интерфейса для TimeTracker3
+Copyright=Авторское право (C) {0}, Андрей Капустин
+
+[Skin]
+DisplayName=Минимальный
+Description=Минимальный интерфейс для работы с TimeTracker3

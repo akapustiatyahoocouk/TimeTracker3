@@ -1,0 +1,13 @@
+[Plugin]
+DisplayName=TimeTracker3 Slim skin
+Description=Defines GUI Slim skin for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[Component]
+DisplayName=TimeTracker3 Slim skin
+Description=Defines GUI Slim skin for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[Skin]
+DisplayName=Slim
+Description=Provides minimalistic GUI for TimeTracker3 users

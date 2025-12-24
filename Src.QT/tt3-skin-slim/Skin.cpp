@@ -1,5 +1,5 @@
 //
-//  tt3-skin-admin/Skin.cpp - tt3::skin::admin::Skin class implementation
+//  tt3-skin-slim/Skin.cpp - tt3::skin::slim::Skin class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,8 +14,8 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#include "tt3-skin-admin/API.hpp"
-using namespace tt3::skin::admin;
+#include "tt3-skin-slim/API.hpp"
+using namespace tt3::skin::slim;
 
 //////////
 //  Singleton
@@ -27,7 +27,7 @@ Skin::~Skin() {}
 //  gui::ISkin
 Skin::Mnemonic Skin::mnemonic() const
 {
-    return M(Admin);
+    return M(Slim);
 }
 
 QString Skin::displayName() const
@@ -44,19 +44,19 @@ QString Skin::description() const
 
 QIcon Skin::smallIcon() const
 {
-    static const QIcon icon(":/tt3-skin-admin/Resources/Images/Objects/AdminSkinSmall.png");
+    static const QIcon icon(":/tt3-skin-slim/Resources/Images/Objects/SlimSkinSmall.png");
     return icon;
 }
 
 QIcon Skin::largeIcon() const
 {
-    static const QIcon icon(":/tt3-skin-admin/Resources/Images/Objects/AdminSkinLarge.png");
+    static const QIcon icon(":/tt3-skin-slim/Resources/Images/Objects/SlimSkinLarge.png");
     return icon;
 }
 
 bool Skin::isDefault() const
 {
-    return true;
+    return false;
 }
 
 //////////
@@ -73,6 +73,7 @@ void Skin::activate()
         _mainFrame = new MainFrame();
         _mainFrame->show();
     }
+    //  TODO if hidden, restore from system tray
     _mainFrame->activateWindow();
     _mainFrame->raise();
 }
@@ -89,7 +90,7 @@ void Skin::deactivate()
 
 QMainWindow * Skin::mainWindow()
 {
-    return _mainFrame;
+    return (_mainFrame != nullptr && _mainFrame->isVisible()) ? _mainFrame : nullptr;
 }
 
-//  End of tt3-skin-admin/Skin.cpp
+//  End of tt3-skin-slim/Skin.cpp

@@ -9,6 +9,7 @@ SUBDIRS +=  \
     tt3-report \
     tt3-report-worksummary \
     tt3-skin-admin \
+    tt3-skin-slim \
     tt3-tools-backup \
     tt3-tools-restore \
     tt3-util \
@@ -28,5 +29,6 @@ tt3-report-worksummary.depends = tt3-report tt3-gui tt3-ws tt3-util
 tt3-report.depends = tt3-gui tt3-ws tt3-util
 
 tt3-skin-admin.depends = tt3-report tt3-gui tt3-ws tt3-util
+tt3-skin-slim.depends = tt3-report tt3-gui tt3-ws tt3-util
 
 tt3-help.depends = tt3-util

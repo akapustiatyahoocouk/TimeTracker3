@@ -40,6 +40,7 @@ FullScreenReminderWindow::FullScreenReminderWindow(
     flags |= Qt::CustomizeWindowHint;
     flags |= Qt::WindowStaysOnTopHint;
     flags &= ~Qt::WindowSystemMenuHint;
+    flags &= ~Qt::WindowMinMaxButtonsHint;
     flags &= ~Qt::WindowTitleHint;
     flags &= ~Qt::WindowCloseButtonHint;
     setWindowFlags(flags);
