@@ -673,6 +673,10 @@ namespace tt3::report
         auto            children() const -> ReportSpanElementsC;
 
         /// \brief
+        ///     Clears this paragraph, destroying all children.
+        void            clearChildren();
+
+        /// \brief
         ///     Returns the resolved text alignment for this paragraph.
         /// \details
         ///     This is taken from the paragraph's associated style

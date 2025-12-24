@@ -43,3 +43,20 @@ MonthlyDataCheckBox=Ежемесячные данные
 YearlyDataCheckBox=Годовые данные
 HoursPerDayLabel=Часов в день:
 WeekStartLabel=Неделя начинается в:
+
+[ReportGenerator]
+ReportName=Сводка рабочего времени
+CreatedOnMessage=Создано {0}
+DailyBreakdownChapter=Ежедневная разбивка
+WeeklyBreakdownChapter=Еженедельная разбивка
+MonthlyBreakdownChapter=Ежемесячная разбивка
+YearlyBreakdownChapter=Годовая разбивка
+DateColumn=Дата
+OtherColumn=Другое
+TotalColumn=ИТОГО
+TotalRow=ИТОГО
+EffortDHMS={0}день {1}час {2}мин
+EffortHMS={0}час {0}мин
+EffortMS={0}мин {1}сек
+EffortS={0}сек
+Effort=-

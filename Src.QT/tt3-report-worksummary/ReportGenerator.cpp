@@ -17,8 +17,6 @@
 #include "tt3-report-worksummary/API.hpp"
 using namespace tt3::report::worksummary;
 
-#define TR(str) QString(#str)   /*  TODO kill off after translation is done */
-
 //////////
 //  Construction/destruction
 ReportGenerator::ReportGenerator(
@@ -43,6 +41,8 @@ ReportGenerator::~ReportGenerator()
 //  Operations
 auto ReportGenerator::generateReport() -> tt3::report::Report *
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ReportGenerator));
+
     if (_progressListener != nullptr)
     {
         _progressListener(0.0f);
@@ -74,18 +74,46 @@ auto ReportGenerator::generateReport() -> tt3::report::Report *
     //  Make sure we destroy Report on exception
     std::unique_ptr<tt3::report::Report> report
         { _reportTemplate->createNewReport() };
+    report->setName(rr.string(RID(ReportName)));
     //  Must analyze initial report created by
     //  template - insert titles, find body section, etc.s
     _analyze(report.get());
+
+    //  Add Preface section - report creator, dates, included users, etc.
+    //  TODO
 
     //  Go!
     if (_configuration.includeDailyData())
     {
         _collectData(_dailyRanges);
         _generateReportTable(
-            TR(Daily breakdown),
+            rr.string(RID(DailyBreakdownChapter)),
             report.get(),
             _dailyRanges);
+    }
+    if (_configuration.includeWeeklyData())
+    {
+        _collectData(_weeklyRanges);
+        _generateReportTable(
+            rr.string(RID(WeeklyBreakdownChapter)),
+            report.get(),
+            _weeklyRanges);
+    }
+    if (_configuration.includeMonthlyData())
+    {
+        _collectData(_monthlyRanges);
+        _generateReportTable(
+            rr.string(RID(MonthlyBreakdownChapter)),
+            report.get(),
+            _monthlyRanges);
+    }
+    if (_configuration.includeYearlyData())
+    {
+        _collectData(_yearlyRanges);
+        _generateReportTable(
+            rr.string(RID(YearlyBreakdownChapter)),
+            report.get(),
+            _yearlyRanges);
     }
 
     //  All done - pass Report ownership out
@@ -168,23 +196,22 @@ void ReportGenerator::_analyze(
         tt3::report::ReportParagraph * paragraph
     )
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ReportGenerator));
+
     if (paragraph->style() != nullptr)
     {   //  Some paragraphs are special
         if (paragraph->style()->name() == IParagraphStyle::TitleStyleName)
-        {   //  Remove whatever was placed there by template...
-            //  TODO
-            //  ...and add new text
-            QString title = TR(Work summary);
-            paragraph->createText(title);
+        {   //  Replace whatever was placed there by template...
+            paragraph->clearChildren();
+            paragraph->createText(rr.string(RID(ReportName)));
         }
         else if (paragraph->style()->name() == IParagraphStyle::SubtitleStyleName)
-        {   //  Remove whatever was placed there by template...
-            //  TODO
-            //  ...and add new text
+        {   //  Replace whatever was placed there by template...
+            paragraph->clearChildren();
             QString subtitle =
-                TR(Created on) +
-                " " +
-                QLocale().toString(QDateTime::currentDateTime(), QLocale::ShortFormat);
+                rr.string(
+                    RID(CreatedOnMessage),
+                    QLocale().toString(QDateTime::currentDateTime().date(), QLocale::ShortFormat));
             paragraph->createText(subtitle);
         }
     }
@@ -433,7 +460,10 @@ void ReportGenerator::_recordWork(
 auto ReportGenerator::_getColumn(
         tt3::ws::ActivityType activityType
     ) -> _Column
-{   //  Will one of the existing columns do ?
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ReportGenerator));
+
+    //  Will one of the existing columns do ?
     for (const auto & column : std::as_const(_columns))
     {
         if (auto col =
@@ -450,7 +480,7 @@ auto ReportGenerator::_getColumn(
         std::make_shared<_ActivityTypeColumnImpl>(
             (activityType != nullptr) ?
                 activityType->displayName(_credentials) :
-                TR(Other),
+                rr.string(RID(OtherColumn)),
             activityType);
     _columns.append(column);
     return column;
@@ -516,6 +546,8 @@ void ReportGenerator::_generateReportTable(
         const _DateRanges & dateRanges
     )
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ReportGenerator));
+
     _bodySection
         ->createParagraph(
             report->reportTemplate()->paragraphStyle(
@@ -533,7 +565,7 @@ void ReportGenerator::_generateReportTable(
             report->reportTemplate()->tableCellStyle(
                 ITableCellStyle::HeadingStyleName))
         ->createParagraph()
-        ->createText(TR(Date));
+        ->createText(rr.string(RID(DateColumn)));
     for (int i = 0; i < _columns.size(); i++)
     {
         table
@@ -548,10 +580,11 @@ void ReportGenerator::_generateReportTable(
     table
         ->createCell(
             _columns.size() + 1, 0, 1, 1,
+            TypographicSize::cm(3),
             report->reportTemplate()->tableCellStyle(
                 ITableCellStyle::HeadingStyleName))
         ->createParagraph()
-        ->createText(TR(TOTAL));
+        ->createText(rr.string(RID(TotalColumn)));
 
     //  Generate data rows
     qint64 totalEffortMs = 0;
@@ -603,6 +636,7 @@ void ReportGenerator::_generateReportTable(
             table
                 ->createCell(
                     j + 1, numDataRows + 1, 1, 1,
+                    TypographicSize::cm(3),
                     report->reportTemplate()->tableCellStyle(
                         ITableCellStyle::DefaultStyleName))
                 ->createParagraph()
@@ -612,6 +646,7 @@ void ReportGenerator::_generateReportTable(
         table
             ->createCell(
                 _columns.size() + 1, numDataRows + 1, 1, 1,
+                TypographicSize::cm(3),
                 report->reportTemplate()->tableCellStyle(
                     ITableCellStyle::DefaultStyleName))
             ->createParagraph()
@@ -627,7 +662,7 @@ void ReportGenerator::_generateReportTable(
             report->reportTemplate()->tableCellStyle(
                 ITableCellStyle::HeadingStyleName))
         ->createParagraph()
-        ->createText(TR(TOTAL));
+        ->createText(rr.string(RID(TotalRow)));
     for (int i = 0; i < _columns.size(); i++)
     {
         qint64 columnEfforsMs = 0;
@@ -638,6 +673,7 @@ void ReportGenerator::_generateReportTable(
         table
             ->createCell(
                 i + 1, numDataRows + 1, 1, 1,
+                TypographicSize::cm(3),
                 report->reportTemplate()->tableCellStyle(
                     ITableCellStyle::HeadingStyleName))
             ->createParagraph()
@@ -646,6 +682,7 @@ void ReportGenerator::_generateReportTable(
     table
         ->createCell(
             _columns.size() + 1, numDataRows + 1, 1, 1,
+            TypographicSize::cm(3),
             report->reportTemplate()->tableCellStyle(
                 ITableCellStyle::HeadingStyleName))
         ->createParagraph()
@@ -653,36 +690,32 @@ void ReportGenerator::_generateReportTable(
 }
 
 QString ReportGenerator::_formatEffort(qint64 effortMs)
-{   //  TODO translate
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ReportGenerator));
+
     auto days = (effortMs / (24 * 60 * 60 * 1000));
     auto hours = (effortMs / (60 * 60 * 1000)) % 24;
     auto minutes = (effortMs / (60 * 1000)) % 60;
     auto seconds = (effortMs / 1000) % 60;
     if (days > 0)
     {
-        return tt3::util::toString(days) + "d" +
-               tt3::util::toString(hours) + "h" +
-               tt3::util::toString(minutes) + "m" +
-               tt3::util::toString(seconds) + "s";
+        return rr.string(RID(EffortDHMS), days, hours, minutes, seconds);
     }
     else if (hours > 0)
     {
-        return tt3::util::toString(hours) + "h" +
-               tt3::util::toString(minutes) + "m" +
-               tt3::util::toString(seconds) + "s";
+        return rr.string(RID(EffortHMS), hours, minutes, seconds);
     }
     else if (minutes > 0)
     {
-        return tt3::util::toString(minutes) + "m" +
-               tt3::util::toString(seconds) + "s";
+        return rr.string(RID(EffortMS), minutes, seconds);
     }
     else if (seconds > 0)
     {
-        return tt3::util::toString(seconds) + "s";
+        return rr.string(RID(EffortS), seconds);
     }
     else
     {
-        return "-";
+        return rr.string(RID(Effort));
     }
 }
 

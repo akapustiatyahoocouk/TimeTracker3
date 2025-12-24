@@ -425,8 +425,8 @@ BasicReportTemplate::BasicReportTemplate()
             ColorSpecOpt(), //  inherit
             ColorSpecOpt(), //  inherit
             UnderlineMode::None,
-            HorizontalAlignmentOpt(),   //  inherit
-            VerticalAlignment::Top));
+            HorizontalAlignment::Center,   //  inherit
+            VerticalAlignment::Middle));
 
     _addStyle(
         new BasicListStyle(

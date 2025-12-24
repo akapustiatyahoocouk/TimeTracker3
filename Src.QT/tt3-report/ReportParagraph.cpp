@@ -221,6 +221,14 @@ auto ReportParagraph::children() const -> ReportSpanElementsC
     return ReportSpanElementsC(_children.cbegin(), _children.cend());
 }
 
+void ReportParagraph::clearChildren()
+{
+    while (!_children.isEmpty())
+    {
+        delete _children[0];
+    }
+}
+
 auto ReportParagraph::resolveTextAlignment() const-> HorizontalAlignment
 {
     //  Honor own style first

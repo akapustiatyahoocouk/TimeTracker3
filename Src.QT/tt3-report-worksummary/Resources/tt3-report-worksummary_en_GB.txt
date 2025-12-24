@@ -43,3 +43,20 @@ MonthlyDataCheckBox=Monthly data
 YearlyDataCheckBox=Yearly data
 HoursPerDayLabel=Hours per day:
 WeekStartLabel=Week starts on:
+
+[ReportGenerator]
+ReportName=Work summary
+CreatedOnMessage=Created on {0}
+DailyBreakdownChapter=Daily breakdown
+WeeklyBreakdownChapter=Weekly breakdown
+MonthlyBreakdownChapter=Monthly breakdown
+YearlyBreakdownChapter=Yearly breakdown
+DateColumn=Date
+OtherColumn=Other
+TotalColumn=TOTAL
+TotalRow=TOTAL
+EffortDHMS={0}day {1}hrs {2}min
+EffortHMS={0}hrs {0}min
+EffortMS={0}min {1}sec
+EffortS={0}sec
+Effort=-

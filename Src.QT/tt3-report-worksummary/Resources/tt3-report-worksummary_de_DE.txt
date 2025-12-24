@@ -43,3 +43,20 @@ MonthlyDataCheckBox=Monatliche Daten
 YearlyDataCheckBox=Jährliche Daten
 HoursPerDayLabel=Stunden pro Tag:
 WeekStartLabel=Wochenbeginn:
+
+[ReportGenerator]
+ReportName=Arbeitsübersicht
+CreatedOnMessage=Erstellt am {0}
+DailyBreakdownChapter=Tagesübersicht
+WeeklyBreakdownChapter=Wochenübersicht
+MonthlyBreakdownChapter=Monatsübersicht
+YearlyBreakdownChapter=Jahresübersicht
+DateColumn=Datum
+OtherColumn=Sonstige
+TotalColumn=GESAMT
+TotalRow=GESAMT
+EffortDHMS={0}Tag {1}Std. {2}Min.
+EffortHMS={0}Std. {0}Min.
+EffortMS={0}Min. {1}Sek.
+EffortS={0}Sek.
+Effort=-

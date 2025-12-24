@@ -433,6 +433,49 @@ namespace tt3::util
             return string(sectionId, resourceId,
                           toString(param0), toString(param1), toString(param2));
         }
+
+        /// \brief
+        ///     Returns the string resource with the specified section
+        ///     ID and resource ID for the current default locale.
+        /// \details
+        ///     Within the resource:
+        ///     -   The placeholder strings {0}, {1}, etc. are replaced
+        ///         with the corresponding parameter.
+        ///     -   The escape sequences {{ and }} become single
+        ///         characters { and }.
+        /// \param sectionId
+        ///     The resource section ID.
+        /// \param resourceId
+        ///     The resource ID within the section.
+        /// \param param0
+        ///     The parameter to replace placeholder {0} with.
+        /// \param param1
+        ///     The parameter to replace placeholder {1} with.
+        /// \param param2
+        ///     The parameter to replace placeholder {2} with.
+        /// \param param3
+        ///     The parameter to replace placeholder {3} with.
+        /// \return
+        ///     The string resource with the specified section
+        ///     ID and resource ID for the current default locale,
+        ///     with parameter placeholders replaced with
+        ///     actual parameter vaolues..
+        /// \exception MissingResourceException
+        ///     If an error occurs (specifically, resource does not exist).
+        template <class P0, class P1, class P2, class P3>
+        QString         string(
+                                const ResourceSectionId & sectionId,
+                                const ResourceId & resourceId,
+                                const P0 & param0,
+                                const P1 & param1,
+                                const P2 & param2,
+                                const P3 & param3
+                            ) const
+        {
+            return string(sectionId, resourceId,
+                          toString(param0), toString(param1),
+                          toString(param2), toString(param3));
+        }
     };
 
     /// \class FileResourceFactory tt3-util/API.hpp
