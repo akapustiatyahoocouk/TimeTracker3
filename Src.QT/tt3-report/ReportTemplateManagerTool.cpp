@@ -54,7 +54,7 @@ QIcon ReportTemplateManagerTool::largeIcon() const
     return icon;
 }
 
-bool ReportTemplateManagerTool::enabled() const
+bool ReportTemplateManagerTool::isEnabled() const
 {
     return true;
 }

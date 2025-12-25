@@ -69,7 +69,6 @@ AboutDialog::AboutDialog(QWidget * parent)
 
 AboutDialog::~AboutDialog()
 {
-    delete _licensesPopupMenu;  //  delete nullptr is safe
     delete _ui;
 }
 
@@ -113,11 +112,13 @@ void AboutDialog::_showLicensePushButtonClicked()
     }
 
     //  Prepare the popup menu containing all applicable licenses
-    delete _licensesPopupMenu;  //  delete nullptr is safe
-    _licensesPopupMenu = new QMenu(this);
+    _licensesPopupMenu.reset(new QMenu(this));
     for (tt3::util::ILicense * license : std::as_const(_licenses))
     {
-        QAction * action = new QAction(license->smallIcon(), license->displayName());
+        QAction * action =
+            new QAction(license->smallIcon(),
+            license->displayName(),
+            this);
         _licensesPopupMenu->addAction(action);
         //  We need to connect() by name (old-style)
         //  because we privately inherit from QDialog

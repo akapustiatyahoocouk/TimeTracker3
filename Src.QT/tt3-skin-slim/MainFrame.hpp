@@ -124,29 +124,36 @@ namespace tt3::skin::slim
                             );
 
         QMenu *         _createContextMenu();
-        QAction *       _createActionMinimize();
-        QAction *       _createActionRestore();
-        QAction *       _createActionStopCurrentActivity();
+        QAction *       _createActionMinimize(QObject * parent);
+        QAction *       _createActionRestore(QObject * parent);
+        QAction *       _createActionStopCurrentActivity(QObject * parent);
 
-        QAction *       _createActionNewWorkspace();
-        QAction *       _createActionOpenWorkspace();
-        QAction *       _createActionCloseWorkspace();
-        QAction *       _createActionDestroyWorkspace();
-        QAction *       _createActionRestart();
-        QAction *       _createActionExit();
-        QAction *       _createActionManageUsers();
-        QAction *       _createActionManageActivityTypes();
-        QAction *       _createActionManagePublicActivities();
-        QAction *       _createActionManagePublicTasks();
-        QAction *       _createActionManagePrivateActivities();
-        QAction *       _createActionManagePrivateTasks();
-        QAction *       _createActionManageProjects();
-        QAction *       _createActionManageWorkStreams();
-        QAction *       _createActionManageBeneficiaries();
-        QAction *       _createActionManageMyDay();
-        QAction *       _createActionInvokeReport(tt3::report::IReportType * reportType);
+        QAction *       _createActionNewWorkspace(QObject * parent);
+        QAction *       _createActionOpenWorkspace(QObject * parent);
+        QAction *       _createActionCloseWorkspace(QObject * parent);
+        QAction *       _createActionDestroyWorkspace(QObject * parent);
+        QAction *       _createActionRestart(QObject * parent);
+        QAction *       _createActionExit(QObject * parent);
+        QAction *       _createActionManageUsers(QObject * parent);
+        QAction *       _createActionManageActivityTypes(QObject * parent);
+        QAction *       _createActionManagePublicActivities(QObject * parent);
+        QAction *       _createActionManagePublicTasks(QObject * parent);
+        QAction *       _createActionManagePrivateActivities(QObject * parent);
+        QAction *       _createActionManagePrivateTasks(QObject * parent);
+        QAction *       _createActionManageProjects(QObject * parent);
+        QAction *       _createActionManageWorkStreams(QObject * parent);
+        QAction *       _createActionManageBeneficiaries(QObject * parent);
+        QAction *       _createActionManageMyDay(QObject * parent);
+        QAction *       _createActionInvokeTool(
+                                tt3::util::ITool * tool,
+                                QObject * parent
+                            );
+        QAction *       _createActionInvokeReport(
+                                tt3::report::IReportType * reportType,
+                                QObject * parent
+                            );
 
-        QAction *       _createActionPreferences();
+        QAction *       _createActionPreferences(QObject * parent);
 
         //////////
         //  Controls

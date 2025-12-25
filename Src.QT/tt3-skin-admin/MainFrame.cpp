@@ -565,7 +565,7 @@ void MainFrame::_updateMruWorkspaces()
 
 void MainFrame::_refreshToolsMenu()
 {
-    _ui->menuTools->clear();
+    _ui->menuTools->clear();    // delete's all QActions
     auto tools = tt3::util::ToolManager::all().values();
     std::sort(
         tools.begin(),
@@ -578,7 +578,10 @@ void MainFrame::_refreshToolsMenu()
         });
     for (auto tool : std::as_const(tools))
     {
-        QAction * action = new QAction(tool->smallIcon(), tool->displayName());
+        QAction * action = new QAction(
+            tool->smallIcon(),
+            tool->displayName(),
+            _ui->menuTools);
         action->setData(QVariant::fromValue(tool));
         _ui->menuTools->addAction(action);
         connect(action,
@@ -611,8 +614,8 @@ void MainFrame::_refreshToolsMenuItemAvailability()
     for (QAction * action : _ui->menuTools->actions())
     {
         auto tool = action->data().value<tt3::util::ITool*>();
-        action->setEnabled(tool->enabled());
-        if (tool->enabled())
+        action->setEnabled(tool->isEnabled());
+        if (tool->isEnabled())
         {
             someToolEnabled = true;
         }
@@ -634,6 +637,7 @@ void MainFrame::_refreshReportsMenu()
     for (int i = 0; i < actions.size() - 2; i++)
     {
         _ui->menuReports->removeAction(actions[i]); //  deletes the action
+        delete actions[i];
     }
     //  Need to re-create the Report menu actions
     //  from available report types, sorted by display name
@@ -650,7 +654,8 @@ void MainFrame::_refreshReportsMenu()
         auto action =
             new QAction(
                 reportTypes[i]->smallIcon(),
-                reportTypes[i]->displayName());
+                reportTypes[i]->displayName(),
+                _ui->menuReports);
         action->setData(QVariant::fromValue(reportTypes[i]));
         _ui->menuReports->insertAction(
             actions[actions.size() - 2],    //  separator

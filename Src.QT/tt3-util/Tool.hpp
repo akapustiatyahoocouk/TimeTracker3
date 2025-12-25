@@ -80,7 +80,7 @@ namespace tt3::util
         ///     used) given the current state of the application.
         /// \return
         ///     True if this Tool is currently "enabled", else false.
-        virtual bool        enabled() const = 0;
+        virtual bool        isEnabled() const = 0;
 
         /// \brief
         ///     Runs the tool to completion (or error).

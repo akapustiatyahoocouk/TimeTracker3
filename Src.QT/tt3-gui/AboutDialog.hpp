@@ -58,7 +58,7 @@ namespace tt3::gui
         //  Controls
     private:
         Ui::AboutDialog *const  _ui;
-        QMenu *         _licensesPopupMenu = nullptr;
+        std::unique_ptr<QMenu>  _licensesPopupMenu = nullptr;
 
         //////////
         //  Signal handlers

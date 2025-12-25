@@ -54,7 +54,7 @@ QIcon BackupTool::largeIcon() const
     return icon;
 }
 
-bool BackupTool::enabled() const
+bool BackupTool::isEnabled() const
 {
     return true;
 }

@@ -54,7 +54,7 @@ QIcon RestoreTool::largeIcon() const
     return icon;
 }
 
-bool RestoreTool::enabled() const
+bool RestoreTool::isEnabled() const
 {
     return true;
 }

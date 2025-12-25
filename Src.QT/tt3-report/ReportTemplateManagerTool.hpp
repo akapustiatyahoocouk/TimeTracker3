@@ -32,7 +32,7 @@ namespace tt3::report
         virtual QString     description() const override;
         virtual QIcon       smallIcon() const override;
         virtual QIcon       largeIcon() const override;
-        virtual bool        enabled() const override;
+        virtual bool        isEnabled() const override;
         virtual void        run(QWidget * parent) override;
     };
 }

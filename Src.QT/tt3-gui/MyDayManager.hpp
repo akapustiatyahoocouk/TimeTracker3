@@ -255,7 +255,7 @@ namespace tt3::gui
             virtual QString     displayName() const override { return _displayName; }
             virtual QIcon       icon() const override { return _icon; }
             virtual QString     tooltip() const override { return _tooltip; }
-            virtual bool        isEmphasized() const { return true; }
+            virtual bool        isEmphasized() const override { return true; }
             virtual QString     toString() const override
             {
                 qint64 secs = qMax(0, _startedAt.secsTo(QDateTime::currentDateTime()));
