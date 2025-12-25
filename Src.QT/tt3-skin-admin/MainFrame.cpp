@@ -1245,12 +1245,6 @@ void MainFrame::_onActionRefresh()
     refresh();
 }
 
-void MainFrame::_onActionPreferences()
-{
-    tt3::gui::PreferencesDialog dlg(this);
-    dlg.doModal();
-}
-
 void MainFrame::_onActionLoginAsDifferentUser()
 {
     tt3::gui::LoginDialog dlg(this, "");
@@ -1284,6 +1278,12 @@ void MainFrame::_onActionLoginAsDifferentUser()
         }
         refresh();
     }
+}
+
+void MainFrame::_onActionPreferences()
+{
+    tt3::gui::PreferencesDialog dlg(this);
+    dlg.doModal();
 }
 
 void MainFrame::_onActionHelpContent()

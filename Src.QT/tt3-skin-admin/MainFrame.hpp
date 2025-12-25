@@ -185,8 +185,8 @@ namespace tt3::skin::admin
         void            _onActionManageMyDay();
         void            _onActionQuickReports();
         void            _onActionRefresh();
-        void            _onActionPreferences();
         void            _onActionLoginAsDifferentUser();
+        void            _onActionPreferences();
         void            _onActionHelpContent();
         void            _onActionHelpIndex();
         void            _onActionHelpSearch();

@@ -30,6 +30,7 @@ struct PreferencesManager::_Impl
         REGISTER(GeneralAppearancePreferences);
         REGISTER(GeneralStartupPreferences);
         REGISTER(GeneralDialogsPreferences);
+        REGISTER(InterfacePreferences);
     }
 
     using Registry = QMap<tt3::util::Mnemonic, Preferences*>;

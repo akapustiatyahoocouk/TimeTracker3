@@ -65,6 +65,7 @@ SOURCES += \
     GeneralStartupPreferencesEditor.cpp \
     HelpBuilderProgressWindow.cpp \
     HelpClient.cpp \
+    InterfacePreferences.cpp \
     LabelDecorations.cpp \
     ListWidgetDecorations.cpp \
     LoginDialog.cpp \

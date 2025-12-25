@@ -386,6 +386,9 @@ LoadLastWorkspaceAtStartupCheckBox=Перезагрузить последнее
 RememnerLastLoginCheckBox=Запомнить последний вход в систему
 ShowSplashScreenCheckBox=Показывать заставку при запуске
 
+[InterfacePreferences]
+DisplayName=Интерфейс
+
 [HelpBuilderProgressWindow]
 BuildingHelpLabel=Готовится справочная система...
 

@@ -153,6 +153,7 @@ namespace tt3::skin::slim
                                 QObject * parent
                             );
 
+        QAction *       _createActionLoginAsDifferentUser(QObject * parent);
         QAction *       _createActionPreferences(QObject * parent);
 
         //////////
@@ -200,6 +201,7 @@ namespace tt3::skin::slim
         void            _onActionManageBeneficiaries();
         void            _onActionManageMyDay();
 
+        void            _onActionLoginAsDifferentUser();
         void            _onActionPreferences();
     };
 }

@@ -178,6 +178,7 @@ void MainFrame::keyPressEvent(QKeyEvent * event)
         { Qt::Key_8, Qt::NoModifier,      &MainFrame::_onActionManageWorkStreams },
         { Qt::Key_9, Qt::NoModifier,      &MainFrame::_onActionManageBeneficiaries },
         { Qt::Key_0, Qt::NoModifier,      &MainFrame::_onActionManageMyDay },
+        { Qt::Key_L, Qt::ControlModifier, &MainFrame::_onActionLoginAsDifferentUser },
         { Qt::Key_P, Qt::ControlModifier, &MainFrame::_onActionPreferences }
     };
 
@@ -643,6 +644,8 @@ QMenu * MainFrame::_createContextMenu()
         contextMenu->addMenu(
             QIcon(":tt3-skin-slim/Resources/Images/Objects/SubmenuSmall.png"),
             TR("&Options"));
+    optionsMenu->addAction(_createActionLoginAsDifferentUser(contextMenu));
+    optionsMenu->addSeparator();
     optionsMenu->addAction(_createActionPreferences(contextMenu));
 
     QMenu * helpMenu =
@@ -970,6 +973,20 @@ QAction * MainFrame::_createActionInvokeReport(
     return action;
 }
 
+QAction * MainFrame::_createActionLoginAsDifferentUser(QObject * parent)
+{
+    QAction * action = new QAction(
+        QIcon(":/tt3-skin-slim/Resources/Images/Actions/LoginSmall.png"),
+        TR("&Login as a different user"),
+        parent);
+    action->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_L));
+    connect(action,
+            &QAction::triggered,
+            this,
+            &MainFrame::_onActionLoginAsDifferentUser);
+    return action;
+}
+
 QAction * MainFrame::_createActionPreferences(QObject * parent)
 {
     QAction * action = new QAction(
@@ -1293,9 +1310,44 @@ void MainFrame::_onActionManageMyDay()
     dlg.doModal();
 }
 
+void MainFrame::_onActionLoginAsDifferentUser()
+{
+    tt3::gui::LoginDialog dlg(_dialogParent(), "");
+    if (dlg.doModal() == tt3::gui::LoginDialog::Result::Ok)
+    {
+        tt3::ws::Credentials credentials = dlg.credentials();
+        try
+        {
+            if (tt3::gui::theCurrentWorkspace == nullptr ||
+                tt3::gui::theCurrentWorkspace->canAccess(credentials))   //  may throw
+            {   //  Login is fine
+                tt3::gui::theCurrentCredentials = credentials;
+            }
+            else
+            {   //  OOPS! Do we close the current workspace? Or ignore login attempt?
+                tt3::gui::ConfirmDropWorkspaceDialog dlg1(_dialogParent(), tt3::gui::theCurrentWorkspace->address());
+                if (dlg1.doModal() == tt3::gui::ConfirmDropWorkspaceDialog::Result::Yes)
+                {   //  Yes - close the current workspace and keep the new credentials
+                    tt3::ws::Workspace workspace = nullptr;
+                    tt3::gui::theCurrentWorkspace.swap(workspace);
+                    workspace->close(); //  may throw
+                    tt3::gui::theCurrentCredentials = credentials;
+                }
+                //  else forget about the re-login and keep the workspace open
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            qCritical() << ex;
+            tt3::gui::ErrorDialog::show(_dialogParent(), ex);
+        }
+        refresh();
+    }
+}
+
 void MainFrame::_onActionPreferences()
 {
-    tt3::gui::PreferencesDialog dlg(this);
+    tt3::gui::PreferencesDialog dlg(_dialogParent());
     dlg.doModal();
 }
 

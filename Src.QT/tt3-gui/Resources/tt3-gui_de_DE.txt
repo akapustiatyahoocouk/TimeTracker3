@@ -386,6 +386,9 @@ LoadLastWorkspaceAtStartupCheckBox=Letzten Arbeitsbereich beim Start neu laden
 RememnerLastLoginCheckBox=Letzte Anmeldung merken
 ShowSplashScreenCheckBox=Startbildschirm beim Start anzeigen
 
+[InterfacePreferences]
+DisplayName=Schnittstelle
+
 [HelpBuilderProgressWindow]
 BuildingHelpLabel=Erstellung der Hilfesammlung...
 

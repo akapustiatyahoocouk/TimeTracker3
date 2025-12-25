@@ -386,6 +386,9 @@ LoadLastWorkspaceAtStartupCheckBox=Reload last workspace at startup
 RememnerLastLoginCheckBox=Remember last login
 ShowSplashScreenCheckBox=Show splash screen during startup
 
+[InterfacePreferences]
+DisplayName=Interface
+
 [HelpBuilderProgressWindow]
 BuildingHelpLabel=Building the help collection...
 
