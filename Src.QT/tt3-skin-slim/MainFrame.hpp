@@ -106,6 +106,7 @@ namespace tt3::skin::slim
         void            _setFrameGeometry(const QRect & bounds);
 
         QMenu *         _createContextMenu();
+        QWidget *       _dialogParent();
 
         //////////
         //  Controls
@@ -114,6 +115,8 @@ namespace tt3::skin::slim
         QTimer          _trackPositionTimer;
         QTimer          _savePositionTimer;
         QTimer          _refreshTimer;
+        QSystemTrayIcon*_trayIcon = nullptr;
+        std::unique_ptr<QMenu>  _contextMenu;
 
         //////////
         //  Signal handlers
@@ -127,6 +130,7 @@ namespace tt3::skin::slim
         void            _currentThemeChanged(tt3::gui::ITheme*, tt3::gui::ITheme*);
         void            _currentLocaleChanged(QLocale, QLocale);
         void            _refreshTimerTimeout();
+        void            _onTrayIconActivated(QSystemTrayIcon::ActivationReason reason);
 
         void            _onActionMinimize();
         void            _onActionRestore();

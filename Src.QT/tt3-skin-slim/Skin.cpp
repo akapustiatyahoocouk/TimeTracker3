@@ -90,7 +90,8 @@ void Skin::deactivate()
 
 QMainWindow * Skin::mainWindow()
 {
-    return (_mainFrame != nullptr && _mainFrame->isVisible()) ? _mainFrame : nullptr;
+    return nullptr;
+    //  TODO kill off ? return (_mainFrame != nullptr && _mainFrame->isVisible()) ? _mainFrame : nullptr;
 }
 
 //  End of tt3-skin-slim/Skin.cpp

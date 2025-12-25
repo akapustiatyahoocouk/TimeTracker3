@@ -38,6 +38,7 @@ MainFrame::MainFrame()
     flags &= ~Qt::WindowTitleHint;
     flags &= ~Qt::WindowCloseButtonHint;
     setWindowFlags(flags);
+    setFocusPolicy(Qt::FocusPolicy::ClickFocus);
 
     this->setMinimumSize(MinimumSize);
     _loadPosition();
@@ -149,23 +150,17 @@ void MainFrame::mouseMoveEvent(QMouseEvent * event)
 
 void MainFrame::contextMenuEvent(QContextMenuEvent * event)
 {
-    QMenu * contextMenu = _createContextMenu(); //  TODO delete when ?
-    contextMenu->popup(event->globalPos());
+    _contextMenu.reset(_createContextMenu());
+    _contextMenu->popup(event->globalPos());
 }
 
 void MainFrame::keyPressEvent(QKeyEvent * event)
 {
     if (event->key() == Qt::Key_M &&
-        event->modifiers() == Qt::AltModifier)
+        event->modifiers() == Qt::ControlModifier)
     {
         event->accept();    //  we're handling it!
         _onActionMinimize();
-    }
-    else if (event->key() == Qt::Key_R &&
-             event->modifiers() == Qt::AltModifier)
-    {
-        event->accept();    //  we're handling it!
-        _onActionRestore();
     }
     else if (event->key() == Qt::Key_X &&
              event->modifiers() == Qt::ControlModifier)
@@ -266,7 +261,7 @@ QMenu * MainFrame::_createContextMenu()
 {
     QMenu * contextMenu = new QMenu();
 
-    if (this->isVisible())
+    if (_trayIcon == nullptr)
     {   //  Creating context menu for the MainFrame
         QAction * minimizeAction;
         if (QSystemTrayIcon::isSystemTrayAvailable())
@@ -283,7 +278,7 @@ QMenu * MainFrame::_createContextMenu()
                     QIcon(":/tt3-skin-slim/Resources/Images/Actions/MakeMinimizedSmall.png"),
                     TR("&Minimize"));
         }
-        minimizeAction->setShortcut(QKeySequence(Qt::ALT | Qt::Key_M));
+        minimizeAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_M));
         connect(minimizeAction,
                 &QAction::triggered,
                 this,
@@ -295,7 +290,6 @@ QMenu * MainFrame::_createContextMenu()
             contextMenu->addAction(
                 QIcon(":/tt3-skin-slim/Resources/Images/Actions/MakeWindowedSmall.png"),
                 TR("&Restore"));
-        restoreAction->setShortcut(QKeySequence(Qt::ALT | Qt::Key_R));
         connect(restoreAction,
                 &QAction::triggered,
                 this,
@@ -317,8 +311,12 @@ QMenu * MainFrame::_createContextMenu()
     return contextMenu;
 }
 
-//////////
-//  Signal handlers
+QWidget * MainFrame::_dialogParent()
+{
+    return nullptr;
+    //  TODO kill off ? return this->isVisible() ? this : nullptr;
+}
+
 //////////
 //  Signal handlers
 void MainFrame::_trackPositionTimerTimeout()
@@ -367,23 +365,55 @@ void MainFrame::_refreshTimerTimeout()
     refresh();
 }
 
+void MainFrame::_onTrayIconActivated(QSystemTrayIcon::ActivationReason reason)
+{
+    qDebug() << "MainFrame::_onTrayIconActivated(QSystemTrayIcon::ActivationReason reason)";
+    if (reason == QSystemTrayIcon::DoubleClick)
+    {   //  Restore on double-click
+        _onActionRestore();
+    }
+}
+
 void MainFrame::_onActionMinimize()
 {
-    setWindowState(Qt::WindowMinimized);
+    qDebug() << "MainFrame::_onActionMinimize()";
+    if (this->isVisible() && !this->isMinimized())
+    {   //  NOT already minimized
+        if (QSystemTrayIcon::isSystemTrayAvailable())
+        {   //  Minimize to system tray
+            _trayIcon = new QSystemTrayIcon();
+            _trayIcon->setIcon(QIcon(":/tt3-skin-slim/Resources/Images/Misc/Tt3Large.png")); // Ensure icon is in Qt resources
+            _trayIcon->setToolTip(TR("TimeTracker3"));
+            _contextMenu.reset(_createContextMenu());
+            _trayIcon->setContextMenu(_contextMenu.get());
+            connect(_trayIcon,
+                    &QSystemTrayIcon::activated,
+                    this,
+                    &MainFrame::_onTrayIconActivated);
+            _trayIcon->show();
+            setVisible(false);
+        }
+        else
+        {   //  Minimize to taskbar
+            setWindowState(Qt::WindowMinimized);
+        }
+    }
 }
 
 void MainFrame::_onActionRestore()
 {
+    delete _trayIcon;   //  "delete nullptr" is safe
+    _trayIcon = nullptr;
+    setVisible(true);
     setWindowState(Qt::WindowActive);
 }
 
 void MainFrame::_onActionExit()
 {   //  Confirm...
-    if (this->isVisible() &&
-        tt3::gui::Component::Settings::instance()->confirmExit &&
+    if (tt3::gui::Component::Settings::instance()->confirmExit &&
         !tt3::util::SystemShutdownHandler::isShutdownInProgress())
     {
-        tt3::gui::ConfirmExitDialog dlg(this);
+        tt3::gui::ConfirmExitDialog dlg(_dialogParent());
         if (dlg.doModal() != tt3::gui::ConfirmExitDialog::Result::Yes)
         {
             return;
