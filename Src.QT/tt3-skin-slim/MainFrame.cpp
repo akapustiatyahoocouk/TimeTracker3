@@ -518,6 +518,44 @@ void MainFrame::_destroyWorkspace(tt3::ws::WorkspaceAddress workspaceAddress)
     }
 }
 
+void MainFrame::_generateReport(
+    tt3::report::IReportType * reportType
+    )
+{
+    tt3::ws::Workspace workspace = tt3::gui::theCurrentWorkspace;
+    tt3::ws::Credentials credentials = tt3::gui::theCurrentCredentials;
+    try
+    {   //  We need outer handlers for report credentials manipulation...
+        tt3::ws::ReportCredentials reportCredentials =
+            workspace->beginReport( //  may throw
+                credentials,
+                workspace->objectCount(credentials) * 85 + //  1,000,000 objects -> 1 day lease...
+                    60 * 60 * 1000);    //  ...+ 1 hour
+        try
+        {   //  ...and inner handler for report job
+            tt3::report::CreateReportDialog dlg(
+                _dialogParent(),
+                workspace,
+                reportCredentials,
+                reportType);
+            //  At the moment we don't care about doModal() results
+            dlg.doModal();
+            workspace->releaseCredentials(reportCredentials);   //  may throw
+        }
+        catch (...)
+        {   //  OOPS! Cleanup & re-throw
+            workspace->releaseCredentials(reportCredentials);   //  may throw
+            throw;
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Report & we're done
+        qCritical() << ex;
+        tt3::gui::ErrorDialog::show(_dialogParent(), ex);
+    }   //  Let Errors and non-tt3 throwns use default behaviour
+    refresh();  //  workspace might have changed while report was generated
+}
+
 QMenu * MainFrame::_createContextMenu()
 {
     QMenu * contextMenu = new QMenu();
@@ -572,6 +610,20 @@ QMenu * MainFrame::_createContextMenu()
             QIcon(":tt3-skin-slim/Resources/Images/Objects/SubmenuSmall.png"),
             TR("&Reports"));
     reportsMenu->setEnabled(tt3::gui::theCurrentWorkspace != nullptr);
+    auto reportTypes =
+        tt3::report::ReportTypeManager::all().values();
+    std::sort(
+        reportTypes.begin(),
+        reportTypes.end(),
+        [](auto a, auto b)
+        {
+            return tt3::util::NaturalStringOrder::less(
+                a->displayName(), b->displayName());
+        });
+    for (auto reportType : reportTypes)
+    {
+        reportsMenu->addAction(_createActionInvokeReport(reportType));
+    }
 
     QMenu * optionsMenu =
         contextMenu->addMenu(
@@ -841,6 +893,22 @@ QAction * MainFrame::_createActionManageMyDay()
             &QAction::triggered,
             this,
             &MainFrame::_onActionManageMyDay);
+    return action;
+}
+
+QAction * MainFrame::_createActionInvokeReport(tt3::report::IReportType * reportType)
+{
+    QAction * action = new QAction(
+        reportType->smallIcon(),
+        reportType->displayName());
+    action->setEnabled(gui::theCurrentWorkspace != nullptr);
+    connect(action,
+            &QAction::triggered,
+            this,
+            [&]()
+            {
+                this->_generateReport(reportType);
+            });
     return action;
 }
 

@@ -119,6 +119,10 @@ namespace tt3::skin::slim
         bool            _reconcileCurrntCredentials(const tt3::ws::Workspace & workspace);
         void            _destroyWorkspace(tt3::ws::WorkspaceAddress workspaceAddress);
 
+        void            _generateReport(
+                                tt3::report::IReportType * reportType
+                            );
+
         QMenu *         _createContextMenu();
         QAction *       _createActionMinimize();
         QAction *       _createActionRestore();
@@ -140,6 +144,7 @@ namespace tt3::skin::slim
         QAction *       _createActionManageWorkStreams();
         QAction *       _createActionManageBeneficiaries();
         QAction *       _createActionManageMyDay();
+        QAction *       _createActionInvokeReport(tt3::report::IReportType * reportType);
 
         QAction *       _createActionPreferences();
 
