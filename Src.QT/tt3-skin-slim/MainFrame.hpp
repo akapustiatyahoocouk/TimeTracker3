@@ -104,9 +104,33 @@ namespace tt3::skin::slim
         void            _savePosition();
         void            _ensureWithinScreenBounds();
         void            _setFrameGeometry(const QRect & bounds);
+        QWidget *       _dialogParent();
+
+        bool            _createWorkspace(
+                                tt3::ws::WorkspaceAddress workspaceAddress,
+                                const QString & adminUser,
+                                const QString & adminLogin,
+                                const QString & adminPassword
+                            );
+        bool            _openWorkspace(
+                                tt3::ws::WorkspaceAddress workspaceAddress,
+                                tt3::ws::OpenMode openMode
+                            );
+        bool            _reconcileCurrntCredentials(const tt3::ws::Workspace & workspace);
+        void            _destroyWorkspace(tt3::ws::WorkspaceAddress workspaceAddress);
 
         QMenu *         _createContextMenu();
-        QWidget *       _dialogParent();
+        QAction *       _createActionMinimize();
+        QAction *       _createActionRestore();
+
+        QAction *       _createActionNewWorkspace();
+        QAction *       _createActionOpenWorkspace();
+        QAction *       _createActionCloseWorkspace();
+        QAction *       _createActionDestroyWorkspace();
+        QAction *       _createActionRestart();
+        QAction *       _createActionExit();
+
+        QAction *       _createActionPreferences();
 
         //////////
         //  Controls
@@ -134,7 +158,15 @@ namespace tt3::skin::slim
 
         void            _onActionMinimize();
         void            _onActionRestore();
+
+        void            _onActionNewWorkspace();
+        void            _onActionOpenWorkspace();
+        void            _onActionCloseWorkspace();
+        void            _onActionDestroyWorkspace();
+        void            _onActionRestart();
         void            _onActionExit();
+
+        void            _onActionPreferences();
     };
 }
 

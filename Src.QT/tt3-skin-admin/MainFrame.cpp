@@ -318,9 +318,11 @@ void MainFrame::_setFrameGeometry(const QRect & bounds)
 }
 
 bool MainFrame::_createWorkspace(
-    tt3::ws::WorkspaceAddress workspaceAddress,
-    const QString & adminUser,
-    const QString & adminLogin, const QString & adminPassword)
+        tt3::ws::WorkspaceAddress workspaceAddress,
+        const QString & adminUser,
+        const QString & adminLogin,
+        const QString & adminPassword
+    )
 {
     Q_ASSERT(workspaceAddress != nullptr);
 
