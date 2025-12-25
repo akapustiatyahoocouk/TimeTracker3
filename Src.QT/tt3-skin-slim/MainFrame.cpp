@@ -168,6 +168,16 @@ void MainFrame::keyPressEvent(QKeyEvent * event)
         { Qt::Key_N, Qt::ControlModifier, &MainFrame::_onActionNewWorkspace },
         { Qt::Key_O, Qt::ControlModifier, &MainFrame::_onActionOpenWorkspace },
         { Qt::Key_X, Qt::ControlModifier, &MainFrame::_onActionExit },
+        { Qt::Key_1, Qt::NoModifier,      &MainFrame::_onActionManageUsers },
+        { Qt::Key_2, Qt::NoModifier,      &MainFrame::_onActionManageActivityTypes },
+        { Qt::Key_3, Qt::NoModifier,      &MainFrame::_onActionManagePublicActivities },
+        { Qt::Key_4, Qt::NoModifier,      &MainFrame::_onActionManagePublicTasks },
+        { Qt::Key_5, Qt::NoModifier,      &MainFrame::_onActionManagePrivateActivities },
+        { Qt::Key_6, Qt::NoModifier,      &MainFrame::_onActionManagePrivateTasks },
+        { Qt::Key_7, Qt::NoModifier,      &MainFrame::_onActionManageProjects },
+        { Qt::Key_8, Qt::NoModifier,      &MainFrame::_onActionManageWorkStreams },
+        { Qt::Key_9, Qt::NoModifier,      &MainFrame::_onActionManageBeneficiaries },
+        { Qt::Key_0, Qt::NoModifier,      &MainFrame::_onActionManageMyDay },
         { Qt::Key_P, Qt::ControlModifier, &MainFrame::_onActionPreferences }
     };
 
@@ -520,6 +530,7 @@ QMenu * MainFrame::_createContextMenu()
     {   //  Creating context menu for a system tray icon
         contextMenu->addAction(_createActionRestore());
     }
+    contextMenu->addAction(_createActionStopCurrentActivity());
     contextMenu->addSeparator();
 
     QMenu * fileMenu =
@@ -540,6 +551,16 @@ QMenu * MainFrame::_createContextMenu()
             QIcon(":tt3-skin-slim/Resources/Images/Objects/SubmenuSmall.png"),
             TR("&Manage"));
     manageMenu->setEnabled(tt3::gui::theCurrentWorkspace != nullptr);
+    manageMenu->addAction(_createActionManageUsers());
+    manageMenu->addAction(_createActionManageActivityTypes());
+    manageMenu->addAction(_createActionManagePublicActivities());
+    manageMenu->addAction(_createActionManagePublicTasks());
+    manageMenu->addAction(_createActionManagePrivateActivities());
+    manageMenu->addAction(_createActionManagePrivateTasks());
+    manageMenu->addAction(_createActionManageProjects());
+    manageMenu->addAction(_createActionManageWorkStreams());
+    manageMenu->addAction(_createActionManageBeneficiaries());
+    manageMenu->addAction(_createActionManageMyDay());
 
     QMenu * toolsMenu =
         contextMenu->addMenu(
@@ -604,16 +625,16 @@ QAction * MainFrame::_createActionRestore()
     return action;
 }
 
-QAction * MainFrame::_createActionPreferences()
+QAction * MainFrame::_createActionStopCurrentActivity()
 {
     QAction * action = new QAction(
-        QIcon(":/tt3-skin-slim/Resources/Images/Actions/PreferencesSmall.png"),
-        TR("&Preferences"));
-    action->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_P));
+        QIcon(":/tt3-skin-slim/Resources/Images/Actions/StopSmall.png"),
+        TR("S&top current activity"));
+    action->setEnabled(gui::theCurrentActivity != nullptr);
     connect(action,
             &QAction::triggered,
             this,
-            &MainFrame::_onActionPreferences);
+            &MainFrame::_onActionStopCurrentActivity);
     return action;
 }
 
@@ -690,6 +711,149 @@ QAction * MainFrame::_createActionExit()
             &QAction::triggered,
             this,
             &MainFrame::_onActionExit);
+    return action;
+}
+
+QAction * MainFrame::_createActionManageUsers()
+{
+    QAction * action = new QAction(
+        QIcon(":/tt3-skin-slim/Resources/Images/Objects/UserSmall.png"),
+        TR("&1 - Users"));
+    action->setShortcut(QKeySequence(Qt::Key_1));
+    connect(action,
+            &QAction::triggered,
+            this,
+            &MainFrame::_onActionManageUsers);
+    return action;
+}
+
+QAction * MainFrame::_createActionManageActivityTypes()
+{
+    QAction * action = new QAction(
+        QIcon(":/tt3-skin-slim/Resources/Images/Objects/ActivityTypeSmall.png"),
+        TR("&2 - Activity types"));
+    action->setShortcut(QKeySequence(Qt::Key_2));
+    connect(action,
+            &QAction::triggered,
+            this,
+            &MainFrame::_onActionManageActivityTypes);
+    return action;
+}
+
+QAction * MainFrame::_createActionManagePublicActivities()
+{
+    QAction * action = new QAction(
+        QIcon(":/tt3-skin-slim/Resources/Images/Objects/PublicActivitySmall.png"),
+        TR("&3 - Public activities"));
+    action->setShortcut(QKeySequence(Qt::Key_3));
+    connect(action,
+            &QAction::triggered,
+            this,
+            &MainFrame::_onActionManagePublicActivities);
+    return action;
+}
+
+QAction * MainFrame::_createActionManagePublicTasks()
+{
+    QAction * action = new QAction(
+        QIcon(":/tt3-skin-slim/Resources/Images/Objects/PublicTaskSmall.png"),
+        TR("&4 - Public tasks"));
+    action->setShortcut(QKeySequence(Qt::Key_4));
+    connect(action,
+            &QAction::triggered,
+            this,
+            &MainFrame::_onActionManagePublicTasks);
+    return action;
+}
+
+QAction * MainFrame::_createActionManagePrivateActivities()
+{
+    QAction * action = new QAction(
+        QIcon(":/tt3-skin-slim/Resources/Images/Objects/PrivateActivitySmall.png"),
+        TR("&5 - Private activities"));
+    action->setShortcut(QKeySequence(Qt::Key_5));
+    connect(action,
+            &QAction::triggered,
+            this,
+            &MainFrame::_onActionManagePrivateActivities);
+    return action;
+}
+
+QAction * MainFrame::_createActionManagePrivateTasks()
+{
+    QAction * action = new QAction(
+        QIcon(":/tt3-skin-slim/Resources/Images/Objects/PrivateTaskSmall.png"),
+        TR("&6 - Private tasks"));
+    action->setShortcut(QKeySequence(Qt::Key_6));
+    connect(action,
+            &QAction::triggered,
+            this,
+            &MainFrame::_onActionManagePrivateTasks);
+    return action;
+}
+
+QAction * MainFrame::_createActionManageProjects()
+{
+    QAction * action = new QAction(
+        QIcon(":/tt3-skin-slim/Resources/Images/Objects/ProjectSmall.png"),
+        TR("&7 - Projects"));
+    action->setShortcut(QKeySequence(Qt::Key_7));
+    connect(action,
+            &QAction::triggered,
+            this,
+            &MainFrame::_onActionManageProjects);
+    return action;
+}
+
+QAction * MainFrame::_createActionManageWorkStreams()
+{
+    QAction * action = new QAction(
+        QIcon(":/tt3-skin-slim/Resources/Images/Objects/WorkStreamSmall.png"),
+        TR("&8 - Work streams"));
+    action->setShortcut(QKeySequence(Qt::Key_8));
+    connect(action,
+            &QAction::triggered,
+            this,
+            &MainFrame::_onActionManageWorkStreams);
+    return action;
+}
+
+QAction * MainFrame::_createActionManageBeneficiaries()
+{
+    QAction * action = new QAction(
+        QIcon(":/tt3-skin-slim/Resources/Images/Objects/BeneficiarySmall.png"),
+        TR("&9 - Beneficiaries"));
+    action->setShortcut(QKeySequence(Qt::Key_9));
+    connect(action,
+            &QAction::triggered,
+            this,
+            &MainFrame::_onActionManageBeneficiaries);
+    return action;
+}
+
+QAction * MainFrame::_createActionManageMyDay()
+{
+    QAction * action = new QAction(
+        QIcon(":/tt3-skin-slim/Resources/Images/Misc/MyDaySmall.png"),
+        TR("&0 - My day"));
+    action->setShortcut(QKeySequence(Qt::Key_0));
+    connect(action,
+            &QAction::triggered,
+            this,
+            &MainFrame::_onActionManageMyDay);
+    return action;
+}
+
+QAction * MainFrame::_createActionPreferences()
+{
+    QAction * action = new QAction(
+        QIcon(":/tt3-skin-slim/Resources/Images/Actions/PreferencesSmall.png"),
+        TR("&Preferences"));
+    action->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_P));
+    connect(action,
+            &QAction::triggered,
+            this,
+            &MainFrame::_onActionPreferences);
     return action;
 }
 
@@ -782,6 +946,20 @@ void MainFrame::_onActionRestore()
     _trayIcon = nullptr;
     setVisible(true);
     setWindowState(Qt::WindowActive);
+}
+
+void MainFrame::_onActionStopCurrentActivity()
+{
+    try
+    {
+        tt3::gui::theCurrentActivity.replaceWith(nullptr);
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        qCritical() << ex;
+        tt3::gui::ErrorDialog::show(_dialogParent(), ex);
+    }
+    refresh();
 }
 
 void MainFrame::_onActionNewWorkspace()
@@ -896,6 +1074,96 @@ void MainFrame::_onActionExit()
     }
     //  ...and exit
     QApplication::exit(0);
+}
+
+void MainFrame::_onActionManageUsers()
+{
+    tt3::gui::ManageUsersDialog dlg(
+        _dialogParent(),
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+}
+
+void MainFrame::_onActionManageActivityTypes()
+{
+    tt3::gui::ManageActivityTypesDialog dlg(
+        _dialogParent(),
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+}
+
+void MainFrame::_onActionManagePublicActivities()
+{
+    tt3::gui::ManagePublicActivitiesDialog dlg(
+        _dialogParent(),
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+}
+
+void MainFrame::_onActionManagePublicTasks()
+{
+    tt3::gui::ManagePublicTasksDialog dlg(
+        _dialogParent(),
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+}
+
+void MainFrame::_onActionManagePrivateActivities()
+{
+    tt3::gui::ManagePrivateActivitiesDialog dlg(
+        _dialogParent(),
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+}
+
+void MainFrame::_onActionManagePrivateTasks()
+{
+    tt3::gui::ManagePrivateTasksDialog dlg(
+        _dialogParent(),
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+}
+
+void MainFrame::_onActionManageProjects()
+{
+    tt3::gui::ManageProjectsDialog dlg(
+        _dialogParent(),
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+}
+
+void MainFrame::_onActionManageWorkStreams()
+{
+    tt3::gui::ManageWorkStreamsDialog dlg(
+        _dialogParent(),
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+}
+
+void MainFrame::_onActionManageBeneficiaries()
+{
+    tt3::gui::ManageBeneficiariesDialog dlg(
+        _dialogParent(),
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+}
+
+void MainFrame::_onActionManageMyDay()
+{
+    tt3::gui::ManageMyDayDialog dlg(
+        _dialogParent(),
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
 }
 
 void MainFrame::_onActionPreferences()

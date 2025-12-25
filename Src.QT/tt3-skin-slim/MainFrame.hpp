@@ -122,6 +122,7 @@ namespace tt3::skin::slim
         QMenu *         _createContextMenu();
         QAction *       _createActionMinimize();
         QAction *       _createActionRestore();
+        QAction *       _createActionStopCurrentActivity();
 
         QAction *       _createActionNewWorkspace();
         QAction *       _createActionOpenWorkspace();
@@ -129,6 +130,16 @@ namespace tt3::skin::slim
         QAction *       _createActionDestroyWorkspace();
         QAction *       _createActionRestart();
         QAction *       _createActionExit();
+        QAction *       _createActionManageUsers();
+        QAction *       _createActionManageActivityTypes();
+        QAction *       _createActionManagePublicActivities();
+        QAction *       _createActionManagePublicTasks();
+        QAction *       _createActionManagePrivateActivities();
+        QAction *       _createActionManagePrivateTasks();
+        QAction *       _createActionManageProjects();
+        QAction *       _createActionManageWorkStreams();
+        QAction *       _createActionManageBeneficiaries();
+        QAction *       _createActionManageMyDay();
 
         QAction *       _createActionPreferences();
 
@@ -158,6 +169,7 @@ namespace tt3::skin::slim
 
         void            _onActionMinimize();
         void            _onActionRestore();
+        void            _onActionStopCurrentActivity();
 
         void            _onActionNewWorkspace();
         void            _onActionOpenWorkspace();
@@ -165,6 +177,16 @@ namespace tt3::skin::slim
         void            _onActionDestroyWorkspace();
         void            _onActionRestart();
         void            _onActionExit();
+        void            _onActionManageUsers();
+        void            _onActionManageActivityTypes();
+        void            _onActionManagePublicActivities();
+        void            _onActionManagePublicTasks();
+        void            _onActionManagePrivateActivities();
+        void            _onActionManagePrivateTasks();
+        void            _onActionManageProjects();
+        void            _onActionManageWorkStreams();
+        void            _onActionManageBeneficiaries();
+        void            _onActionManageMyDay();
 
         void            _onActionPreferences();
     };
