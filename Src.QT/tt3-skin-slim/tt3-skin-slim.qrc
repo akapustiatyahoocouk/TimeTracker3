@@ -59,5 +59,9 @@
         <file>Resources/Images/Objects/UserSmall.png</file>
         <file>Resources/Images/Objects/WorkStreamLarge.png</file>
         <file>Resources/Images/Objects/WorkStreamSmall.png</file>
+        <file>Resources/Images/Actions/MakeMinimizedLarge.png</file>
+        <file>Resources/Images/Actions/MakeMinimizedSmall.png</file>
+        <file>Resources/Images/Actions/MakeWindowedLarge.png</file>
+        <file>Resources/Images/Actions/MakeWindowedSmall.png</file>
     </qresource>
 </RCC>

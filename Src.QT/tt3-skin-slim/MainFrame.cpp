@@ -1,6 +1,6 @@
 //
 //  tt3-skin-slim/MainFrame.cpp - tt3::skin::slim::MainFrame class implementation
-//
+//  TODO Localize via Resources
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -17,6 +17,8 @@
 #include "tt3-skin-slim/API.hpp"
 #include "ui_MainFrame.h"
 using namespace tt3::skin::slim;
+
+#define TR(s)   s   /*  TODO kill off when done localizing */
 
 //////////
 //  Construction/destruction
@@ -122,8 +124,11 @@ void MainFrame::closeEvent(QCloseEvent * event)
 
 void MainFrame::mousePressEvent(QMouseEvent * event)
 {
-    _dragging = true;
-    _dragAnchor = event->pos();
+    if (event->button() == Qt::MouseButton::LeftButton)
+    {
+        _dragging = true;
+        _dragAnchor = event->pos();
+    }
 }
 
 void MainFrame::mouseReleaseEvent(QMouseEvent * /*event*/)
@@ -139,6 +144,34 @@ void MainFrame::mouseMoveEvent(QMouseEvent * event)
         int dy = event->pos().y() - _dragAnchor.x();
         QRect r = this->frameGeometry();
         this->move(r.x() + dx, r.y() + dy);
+    }
+}
+
+void MainFrame::contextMenuEvent(QContextMenuEvent * event)
+{
+    QMenu * contextMenu = _createContextMenu(); //  TODO delete when ?
+    contextMenu->popup(event->globalPos());
+}
+
+void MainFrame::keyPressEvent(QKeyEvent * event)
+{
+    if (event->key() == Qt::Key_M &&
+        event->modifiers() == Qt::AltModifier)
+    {
+        event->accept();    //  we're handling it!
+        _onActionMinimize();
+    }
+    else if (event->key() == Qt::Key_R &&
+             event->modifiers() == Qt::AltModifier)
+    {
+        event->accept();    //  we're handling it!
+        _onActionRestore();
+    }
+    else if (event->key() == Qt::Key_X &&
+             event->modifiers() == Qt::ControlModifier)
+    {
+        event->accept();    //  we're handling it!
+        _onActionExit();
     }
 }
 
@@ -229,6 +262,61 @@ void MainFrame::_setFrameGeometry(const QRect & bounds)
         bounds.height() - (tl.y() - fg.y()));
 }
 
+QMenu * MainFrame::_createContextMenu()
+{
+    QMenu * contextMenu = new QMenu();
+
+    if (this->isVisible())
+    {   //  Creating context menu for the MainFrame
+        QAction * minimizeAction;
+        if (QSystemTrayIcon::isSystemTrayAvailable())
+        {   //  Minimize to system tray
+            minimizeAction =
+                contextMenu->addAction(
+                    QIcon(":/tt3-skin-slim/Resources/Images/Actions/MakeMinimizedSmall.png"),
+                    TR("&Minimize to system tray"));
+        }
+        else
+        {   //  Minimize to taskbar
+            minimizeAction =
+                contextMenu->addAction(
+                    QIcon(":/tt3-skin-slim/Resources/Images/Actions/MakeMinimizedSmall.png"),
+                    TR("&Minimize"));
+        }
+        minimizeAction->setShortcut(QKeySequence(Qt::ALT | Qt::Key_M));
+        connect(minimizeAction,
+                &QAction::triggered,
+                this,
+                &MainFrame::_onActionMinimize);
+    }
+    else
+    {   //  Creating context menu for a system tray icon
+        QAction * restoreAction =
+            contextMenu->addAction(
+                QIcon(":/tt3-skin-slim/Resources/Images/Actions/MakeWindowedSmall.png"),
+                TR("&Restore"));
+        restoreAction->setShortcut(QKeySequence(Qt::ALT | Qt::Key_R));
+        connect(restoreAction,
+                &QAction::triggered,
+                this,
+                &MainFrame::_onActionRestore);
+    }
+    contextMenu->addSeparator();
+
+    contextMenu->addSeparator();
+    QAction * exitAction =
+        contextMenu->addAction(
+            QIcon(":/tt3-skin-slim/Resources/Images/Actions/ExitSmall.png"),
+            TR("E&xit"));
+    exitAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_X));
+    connect(exitAction,
+            &QAction::triggered,
+            this,
+            &MainFrame::_onActionExit);
+
+    return contextMenu;
+}
+
 //////////
 //  Signal handlers
 //////////
@@ -277,6 +365,16 @@ void MainFrame::_currentLocaleChanged(QLocale, QLocale)
 void MainFrame::_refreshTimerTimeout()
 {
     refresh();
+}
+
+void MainFrame::_onActionMinimize()
+{
+    setWindowState(Qt::WindowMinimized);
+}
+
+void MainFrame::_onActionRestore()
+{
+    setWindowState(Qt::WindowActive);
 }
 
 void MainFrame::_onActionExit()

@@ -71,6 +71,10 @@ namespace tt3::skin::slim
         virtual void    mousePressEvent(QMouseEvent * event) override;
         virtual void    mouseReleaseEvent(QMouseEvent * event) override;
         virtual void    mouseMoveEvent(QMouseEvent * event) override;
+        virtual void    contextMenuEvent(QContextMenuEvent * event) override;
+
+    protected:
+        virtual void    keyPressEvent(QKeyEvent * event) override;
 
         //////////
         //  Operations
@@ -101,6 +105,8 @@ namespace tt3::skin::slim
         void            _ensureWithinScreenBounds();
         void            _setFrameGeometry(const QRect & bounds);
 
+        QMenu *         _createContextMenu();
+
         //////////
         //  Controls
     private:
@@ -122,6 +128,8 @@ namespace tt3::skin::slim
         void            _currentLocaleChanged(QLocale, QLocale);
         void            _refreshTimerTimeout();
 
+        void            _onActionMinimize();
+        void            _onActionRestore();
         void            _onActionExit();
     };
 }

@@ -31,6 +31,8 @@ Application::Application(int & argc, char ** argv)
     setOrganizationName(tt3::util::ProductInformation::organizationName());
     setOrganizationDomain(tt3::util::ProductInformation::organizationDomain());
 
+    setQuitOnLastWindowClosed(false);
+
     //  Prepare to handle system shutdown
     tt3::util::SystemShutdownHandler::addShutdownHook(_systemShutdownHook, this);
     tt3::util::SystemShutdownHandler::activate();
