@@ -49,7 +49,7 @@ namespace tt3::skin::slim
 
         //////////
         //  QWidget
-    public:
+    protected:
         /// \brief
         ///     Called to handle a "window move" event
         /// \param event
@@ -72,9 +72,8 @@ namespace tt3::skin::slim
         virtual void    mouseReleaseEvent(QMouseEvent * event) override;
         virtual void    mouseMoveEvent(QMouseEvent * event) override;
         virtual void    contextMenuEvent(QContextMenuEvent * event) override;
-
-    protected:
         virtual void    keyPressEvent(QKeyEvent * event) override;
+        virtual void    paintEvent(QPaintEvent * event) override;
 
         //////////
         //  Operations
@@ -106,12 +105,52 @@ namespace tt3::skin::slim
         bool            _dragging = false;
         QPoint          _dragAnchor;
 
+        struct _ControlAreaImpl
+        {
+            _ControlAreaImpl(
+                    const QRect & r,
+                    const QColor & b
+                ) : rect(r), bias(b) {}
+            virtual ~_ControlAreaImpl() = default;
+
+            QRect       rect;
+            QColor      bias;
+            bool        pressed = false;
+        };
+
+        struct _ActivityAreaImpl : public _ControlAreaImpl
+        {
+            _ActivityAreaImpl(
+                    const QRect & r,
+                    tt3::ws::Activity a
+                ) : _ControlAreaImpl(r, QColor(0x008000)),
+                    activity(a) {}
+
+            tt3::ws::Activity   activity;
+        };
+
+        struct _ApplicationAreaImpl : public _ControlAreaImpl
+        {
+            _ApplicationAreaImpl(
+                    const QRect & r
+                ) : _ControlAreaImpl(r, QColor(0x800080)) {}
+        };
+
+        using _ControlArea = std::shared_ptr<_ControlAreaImpl>;
+        using _ControlAreas = QList<_ControlArea>;
+
+        _ControlAreas   _controlAreas;
+
         //  Helpers
         void            _loadPosition();
         void            _savePosition();
         void            _ensureWithinScreenBounds();
         void            _setFrameGeometry(const QRect & bounds);
         QWidget *       _dialogParent();
+
+        void            _recalculateControlAreas();
+        void            _draw(QPainter & p, const _ControlArea & controlArea);
+        void            _drawRect3D(QPainter & p, const QRect & rc, const QColor & tl, const QColor & br);
 
         bool            _createWorkspace(
                                 tt3::ws::WorkspaceAddress workspaceAddress,
@@ -151,6 +190,7 @@ namespace tt3::skin::slim
         QAction *       _createActionManageWorkStreams(QObject * parent);
         QAction *       _createActionManageBeneficiaries(QObject * parent);
         QAction *       _createActionManageMyDay(QObject * parent);
+        QAction *       _createActionQuickReports(QObject * parent);
         QAction *       _createActionInvokeTool(
                                 tt3::util::ITool * tool,
                                 QObject * parent
@@ -176,6 +216,9 @@ namespace tt3::skin::slim
         QTimer          _refreshTimer;
         QSystemTrayIcon*_trayIcon = nullptr;
         std::unique_ptr<QMenu>  _contextMenu;
+
+        //  Drawing resources
+        tt3::gui::LabelDecorations  _labelDecorations;
 
         //////////
         //  Signal handlers
@@ -211,6 +254,7 @@ namespace tt3::skin::slim
         void            _onActionManageWorkStreams();
         void            _onActionManageBeneficiaries();
         void            _onActionManageMyDay();
+        void            _onActionQuickReports();
         void            _onActionLoginAsDifferentUser();
         void            _onActionPreferences();
         void            _onActionHelpContent();

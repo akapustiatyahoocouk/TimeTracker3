@@ -17,6 +17,11 @@
 #include "tt3-gui/API.hpp"
 using namespace tt3::gui;
 
+namespace tt3::gui
+{
+    extern CurrentSkin theCurrentSkin;
+}
+
 struct HelpClient::_Impl
 {
     _Impl()
@@ -58,7 +63,7 @@ struct HelpClient::_Impl
             &siteBuilder,
             [](QString errorMessage)
             {
-                ErrorDialog::show(QApplication::activeWindow(), errorMessage);
+                ErrorDialog::show(theCurrentSkin->mainWindow(), errorMessage);
             },
             Qt::QueuedConnection);
     }

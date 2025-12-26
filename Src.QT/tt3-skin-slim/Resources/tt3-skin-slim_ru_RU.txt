@@ -16,4 +16,8 @@ Description=Минимальный интерфейс для работы с Tim
 DisplayName=Минимальный интерфейс
 
 [MainFrame]
+Title=TimeTracker3
+Title.ReadOnlySuffix=[только для чтения]
+Title.CurrentActivity=Текущая активность: {0}
+
 CannotDestroyWorkspaceError=Невозможно удалить рабочую область\n{0}\nтак как она в настоящее время используется.

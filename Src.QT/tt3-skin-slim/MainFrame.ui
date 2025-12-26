@@ -14,7 +14,7 @@
    <enum>Qt::ContextMenuPolicy::DefaultContextMenu</enum>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>TimeTracker3</string>
   </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">

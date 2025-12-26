@@ -85,6 +85,7 @@ MainFrame::MainFrame()
             Qt::ConnectionType::QueuedConnection);
 
     //  Done
+    _recalculateControlAreas();
     refresh();
 
     //  Start refreshing on timer
@@ -114,6 +115,8 @@ void MainFrame::resizeEvent(QResizeEvent * event)
 {
     QMainWindow::resizeEvent(event);
     _savePositionTimer.start(500);
+    _controlAreas.clear();  //  Force recalculate all
+    _recalculateControlAreas();
 }
 
 void MainFrame::closeEvent(QCloseEvent * event)
@@ -128,12 +131,60 @@ void MainFrame::mousePressEvent(QMouseEvent * event)
     {
         _dragging = true;
         _dragAnchor = event->pos();
+        //  Control area click start ?
+        for (auto controlArea : _controlAreas)
+        {
+            if (controlArea->rect.contains(event->pos()))
+            {   //  This one!
+                controlArea->pressed = true;
+                update();
+                break;
+            }
+        }
     }
 }
 
-void MainFrame::mouseReleaseEvent(QMouseEvent * /*event*/)
+void MainFrame::mouseReleaseEvent(QMouseEvent * event)
 {
-    _dragging = false;
+    if (event->button() == Qt::MouseButton::LeftButton)
+    {
+        _dragging = false;
+        //  Un-press everything
+        tt3::ws::Activity activity = nullptr;
+        for (auto controlArea : _controlAreas)
+        {
+            if (controlArea->rect.contains(event->pos()) &&
+                controlArea->pressed)
+            {
+                controlArea->pressed = false;
+                //  Did we just un-press an activity ?
+                if (auto aca =
+                    std::dynamic_pointer_cast<_ActivityAreaImpl>(controlArea))
+                {
+                    activity = aca->activity;
+                }
+            }
+        }
+        update();
+        //  Did we do something to the current activity ?
+        if (activity != nullptr)
+        {
+            if (tt3::gui::theCurrentActivity == activity)
+            {   //  Yes - we stopped it
+                tt3::gui::theCurrentActivity.replaceWith(nullptr);
+            }
+            else
+            {   //  Yes - we started it
+                tt3::gui::theCurrentActivity.replaceWith(activity);
+            }
+            refresh();
+        }
+        else
+        {   //  Just un-pressed the application area
+            tt3::gui::theCurrentActivity.replaceWith(nullptr);
+            refresh();
+        }
+    }
 }
 
 void MainFrame::mouseMoveEvent(QMouseEvent * event)
@@ -142,8 +193,17 @@ void MainFrame::mouseMoveEvent(QMouseEvent * event)
     {
         int dx = event->pos().x() - _dragAnchor.x();
         int dy = event->pos().y() - _dragAnchor.x();
-        QRect r = this->frameGeometry();
-        this->move(r.x() + dx, r.y() + dy);
+        if (dx != 0 || dy != 0)
+        {
+            QRect r = this->frameGeometry();
+            this->move(r.x() + dx, r.y() + dy);
+            //  Un-press everything
+            for (auto controlArea : _controlAreas)
+            {
+                controlArea->pressed = false;
+            }
+            update();
+        }
     }
 }
 
@@ -177,6 +237,7 @@ void MainFrame::keyPressEvent(QKeyEvent * event)
         { Qt::Key_8, Qt::NoModifier,      &MainFrame::_onActionManageWorkStreams },
         { Qt::Key_9, Qt::NoModifier,      &MainFrame::_onActionManageBeneficiaries },
         { Qt::Key_0, Qt::NoModifier,      &MainFrame::_onActionManageMyDay },
+        { Qt::Key_Q, Qt::NoModifier,      &MainFrame::_onActionQuickReports },
         { Qt::Key_L, Qt::ControlModifier, &MainFrame::_onActionLoginAsDifferentUser },
         { Qt::Key_P, Qt::ControlModifier, &MainFrame::_onActionPreferences },
         { Qt::Key_F1,Qt::NoModifier,      &MainFrame::_onActionHelpContent },
@@ -193,32 +254,16 @@ void MainFrame::keyPressEvent(QKeyEvent * event)
             return;
         }
     }
-    /*  TODO
-    if (event->key() == Qt::Key_M &&
-        event->modifiers() == Qt::ControlModifier)
+}
+
+void MainFrame::paintEvent(QPaintEvent * /*event*/)
+{
+    QPainter p(this);
+
+    for (int i = 0; i < _controlAreas.size(); i++)
     {
-        event->accept();    //  we're handling it!
-        _onActionMinimize();
+        _draw(p, _controlAreas[i]);
     }
-    if (event->key() == Qt::Key_N &&
-        event->modifiers() == Qt::ControlModifier)
-    {
-        event->accept();    //  we're handling it!
-        _onActionNewWorkspace();
-    }
-    else if (event->key() == Qt::Key_X &&
-             event->modifiers() == Qt::ControlModifier)
-    {
-        event->accept();    //  we're handling it!
-        _onActionExit();
-    }
-    else if (event->key() == Qt::Key_P &&
-             event->modifiers() == Qt::ControlModifier)
-    {
-        event->accept();    //  we're handling it!
-        _onActionPreferences();
-    }
-    */
 }
 
 //////////
@@ -228,6 +273,7 @@ void MainFrame::show()
     if (!this->isVisible())
     {
         QMainWindow::show();
+        _recalculateControlAreas();
         setAlwaysOnTop(Component::Settings::instance()->mainFrameAlwaysOnTop);
         //  Under X11 it will be some time before the window manager
         //  stabilizes the frame position; it is at THAT time that
@@ -249,25 +295,91 @@ void MainFrame::hide()
 
 void MainFrame::refresh()
 {
-    //  TODO
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
+    tt3::ws::Workspace workspace = tt3::gui::theCurrentWorkspace;
+    tt3::ws::Credentials credentials = tt3::gui::theCurrentCredentials;
+    //  Frame title
+    QString title = rr.string(RID(Title));
+    if (credentials.isValid())
+    {
+        title += " [";
+        title += credentials.login();
+        title += "]";
+    }
+    if (workspace != nullptr)
+    {
+        title += " - ";
+        title += workspace->address()->displayForm();
+        if (workspace->isReadOnly())
+        {
+            title += " " + rr.string(RID(Title.ReadOnlySuffix));
+        }
+    }
+    setWindowTitle(title);
+
+    //  Control areas
+    _recalculateControlAreas();
+    //  TODO finish the implementation
+
+    //  Make tray ion refrect main frame's title
+    if (_trayIcon != nullptr)
+    {
+        QString tooltip = title;
+        if (gui::theCurrentActivity != nullptr)
+        {
+            try
+            {
+                tooltip +=
+                    "\n\n" +
+                    rr.string(RID(Title.CurrentActivity),
+                              gui::theCurrentActivity->displayName(credentials));   //  may throw
+                qint64 secs = qMax(0, tt3::gui::theCurrentActivity.lastChangedAt().secsTo(QDateTime::currentDateTimeUtc()));
+                char s[32];
+                sprintf(s, " [%d:%02d:%02d]",
+                        int(secs / (60 * 60)),
+                        int((secs / 60) % 60),
+                        int(secs % 60));
+                tooltip += s;
+            }
+            catch (const tt3::util::Exception & ex)
+            {   //  OOPS! Log & suppress
+                qCritical() << ex;
+                tooltip += "\n\n" + ex.errorMessage();
+            }
+        }
+        _trayIcon->setToolTip(tooltip);
+    }
+
+    //  Done
+    update();
 }
 
 void MainFrame::setAlwaysOnTop(bool alwaysOnTop)
 {
-    QMainWindow::hide();    //  must be hidden for hints change to take effect
+    Qt::WindowFlags oldFlags = windowFlags();
+    Qt::WindowFlags newFlags = oldFlags;
     if (alwaysOnTop)
-    {   //  Add topmost hint
-        Qt::WindowFlags flags = windowFlags();
-        flags |= Qt::WindowStaysOnTopHint;
-        setWindowFlags(flags);
+    {
+        newFlags |= Qt::WindowStaysOnTopHint;
     }
     else
-    {   //  Remove topmost hint
-        Qt::WindowFlags flags = windowFlags();
-        flags &= ~Qt::WindowStaysOnTopHint;
-        setWindowFlags(flags);
+    {
+        newFlags &= ~Qt::WindowStaysOnTopHint;
     }
-    QMainWindow::show();
+    if (newFlags != oldFlags)
+    {   //  Flags actually change
+        if (isVisible())
+        {   //  Must hide and re-show for change to take effect
+            QMainWindow::hide();
+            setWindowFlags(newFlags);
+            QMainWindow::show();
+        }
+        else
+        {   //  Not visible - just apply the flags
+            setWindowFlags(newFlags);
+        }
+    }
 }
 
 //////////
@@ -320,7 +432,138 @@ void MainFrame::_setFrameGeometry(const QRect & bounds)
 QWidget * MainFrame::_dialogParent()
 {
     return nullptr;
-    //  TODO kill off ? return this->isVisible() ? this : nullptr;
+}
+
+void MainFrame::_recalculateControlAreas()
+{
+    const int _MinControlAreaHeight = 32;
+
+    //  We need to distribute the quick picks list
+    QList<tt3::ws::Activity> quickPicks;
+    if (gui::theCurrentWorkspace != nullptr)
+    {   //  There MAY be a quick picks list for theCurrentCredentials
+        try
+        {
+            auto account = gui::theCurrentWorkspace->login(gui::theCurrentCredentials); //  may throw
+            quickPicks = account->quickPicksList(gui::theCurrentCredentials);      //  may throw
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            qCritical() << ex;
+            quickPicks.clear();
+        }
+    }
+    if (quickPicks.size() + 1 != _controlAreas.size())
+    {   //  Must recalculate all!
+        _controlAreas.clear();
+        QRect r = this->geometry();
+        int y = 0, dy = std::max(_MinControlAreaHeight, r.height() / int(quickPicks.size() + 1));
+        for (int i = 0; i < quickPicks.size(); i++)
+        {
+            _controlAreas.append(
+                std::make_shared<_ActivityAreaImpl>(
+                    QRect(0, y, r.width(), dy),
+                    quickPicks[i]));
+            y += dy;
+        }
+        _controlAreas.append(
+            std::make_shared<_ApplicationAreaImpl>(
+                QRect(0,
+                      y,
+                      r.width(),
+                      std::max(
+                        _MinControlAreaHeight,
+                        r.bottom() - y - r.y()))));
+    }
+
+    //  Make sure each control area represents proper
+    //  Activity in a proper state
+    for (int i = 0; i < quickPicks.size(); i++)
+    {
+        auto aa =
+            std::dynamic_pointer_cast<_ActivityAreaImpl>(_controlAreas[i]);
+        aa->activity = quickPicks[i];
+        aa->pressed = (gui::theCurrentActivity == quickPicks[i]);
+    }
+}
+
+void MainFrame::_draw(QPainter & p, const _ControlArea & controlArea)
+{
+    QColor tl[5], br[5];
+
+    //  Draw the background
+    p.fillRect(controlArea->rect, _labelDecorations.background);
+    p.fillRect(controlArea->rect.adjusted(4, 4, -4, -4), controlArea->bias);
+    //  Prepare border/fade colors
+    tl[0] = controlArea->bias.lighter();
+    tl[4] = _labelDecorations.background.lighter();
+    tl[2] = tt3::gui::ColorManager::mid(tl[0], tl[4]);
+    tl[1] = tt3::gui::ColorManager::mid(tl[0], tl[2]);
+    tl[3] = tt3::gui::ColorManager::mid(tl[2], tl[4]);
+    br[0] = controlArea->bias.darker();
+    br[4] = _labelDecorations.background.darker();
+    br[2] = tt3::gui::ColorManager::mid(br[0], br[4]);
+    br[1] = tt3::gui::ColorManager::mid(br[0], br[2]);
+    br[3] = tt3::gui::ColorManager::mid(br[2], br[4]);
+    //  Draw border
+    for (int i = 0; i < 5; i++)
+    {
+        _drawRect3D(
+            p,
+            controlArea->rect.adjusted(4 - i, 4 - i, i - 4, i - 4),
+            controlArea->pressed ? br[i] : tl[i],
+            controlArea->pressed ? tl[i] : br[i]);
+    }
+    //  Draw text
+    if (auto aca =
+        std::dynamic_pointer_cast<_ActivityAreaImpl>(controlArea))
+    {   //  Activity
+        try
+        {
+            p.setFont(
+                (tt3::gui::theCurrentActivity == aca->activity) ?
+                    _labelDecorations.emphasisFont :
+                    _labelDecorations.font);
+            p.setPen(_labelDecorations.foreground);
+            p.drawText(
+                controlArea->rect.adjusted(4, 4, -4, - 4),
+                Qt::AlignHCenter | Qt::AlignVCenter | Qt::TextWordWrap,
+                aca->activity->displayName(tt3::gui::theCurrentCredentials));   //  may throw
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            qCritical() << ex;
+            p.drawText(
+                controlArea->rect.adjusted(4, 4, -4, - 4),
+                Qt::AlignHCenter | Qt::AlignVCenter | Qt::TextWordWrap,
+                ex.errorMessage());
+        }
+    }
+    else
+    {   //  Application
+        p.setFont(
+            (tt3::gui::theCurrentActivity != nullptr) ?
+                _labelDecorations.emphasisFont :
+                _labelDecorations.font);
+        p.setPen(
+            (tt3::gui::theCurrentActivity != nullptr) ?
+                _labelDecorations.foreground :
+                _labelDecorations.disabledForeground);
+        p.drawText(
+            controlArea->rect.adjusted(4, 4, -4, - 4),
+            Qt::AlignHCenter | Qt::AlignVCenter | Qt::TextWordWrap,
+            TR("Stop current activity"));
+    }
+}
+
+void MainFrame::_drawRect3D(QPainter & p, const QRect & rc, const QColor & tl, const QColor & br)
+{
+    p.setPen(tl);
+    p.drawLine(rc.x(), rc.y(), rc.right(), rc.y());
+    p.drawLine(rc.x(), rc.y(), rc.x(), rc.bottom());
+    p.setPen(br);
+    p.drawLine(rc.right(), rc.y(), rc.right(), rc.bottom());
+    p.drawLine(rc.x(), rc.bottom(), rc.right(), rc.bottom());
 }
 
 bool MainFrame::_createWorkspace(
@@ -650,6 +893,8 @@ QMenu * MainFrame::_createContextMenu()
     {
         reportsMenu->addAction(_createActionInvokeReport(reportType, contextMenu));
     }
+    reportsMenu->addSeparator();
+    reportsMenu->addAction(_createActionQuickReports(contextMenu));
 
     QMenu * optionsMenu =
         contextMenu->addMenu(
@@ -949,6 +1194,20 @@ QAction * MainFrame::_createActionManageMyDay(QObject * parent)
     return action;
 }
 
+QAction * MainFrame::_createActionQuickReports(QObject * parent)
+{
+    QAction * action = new QAction(
+        QIcon(":/tt3-skin-slim/Resources/Images/Misc/QuickReportSmall.png"),
+        TR("&Quick reports"),
+        parent);
+    action->setShortcut(QKeySequence(Qt::Key_Q));
+    connect(action,
+            &QAction::triggered,
+            this,
+            &MainFrame::_onActionQuickReports);
+    return action;
+}
+
 QAction * MainFrame::_createActionInvokeTool(
         tt3::util::ITool * tool,
         QObject * parent
@@ -1106,6 +1365,7 @@ void MainFrame::_currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity)
 
 void MainFrame::_currentThemeChanged(tt3::gui::ITheme*, tt3::gui::ITheme*)
 {
+    _labelDecorations = tt3::gui::LabelDecorations();
     refresh();
 }
 
@@ -1372,6 +1632,15 @@ void MainFrame::_onActionManageBeneficiaries()
 void MainFrame::_onActionManageMyDay()
 {
     tt3::gui::ManageMyDayDialog dlg(
+        _dialogParent(),
+        tt3::gui::theCurrentWorkspace,
+        tt3::gui::theCurrentCredentials);
+    dlg.doModal();
+}
+
+void MainFrame::_onActionQuickReports()
+{
+    tt3::gui::QuickReportsDialog dlg(
         _dialogParent(),
         tt3::gui::theCurrentWorkspace,
         tt3::gui::theCurrentCredentials);

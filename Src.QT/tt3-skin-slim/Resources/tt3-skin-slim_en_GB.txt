@@ -16,4 +16,8 @@ Description=Provides minimalistic GUI for TimeTracker3 users
 DisplayName=Slim skin
 
 [MainFrame]
+Title=TimeTracker3
+Title.ReadOnlySuffix=[read-only]
+Title.CurrentActivity=Current activity: {0}
+
 CannotDestroyWorkspaceError=Cannot destroy workspace\n{0}\n because it is currently in use.

@@ -223,7 +223,7 @@ void MainFrame::refresh()
             title += " " + rr.string(RID(Title.ReadOnlySuffix));
         }
     }
-    this->setWindowTitle(title);
+    setWindowTitle(title);
 
     //  Menu items
     _ui->actionCloseWorkspace->setEnabled(workspace != nullptr);

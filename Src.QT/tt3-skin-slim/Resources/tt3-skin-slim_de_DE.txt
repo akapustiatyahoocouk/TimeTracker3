@@ -16,4 +16,8 @@ Description=Bietet eine minimalistische Benutzeroberfläche für TimeTracker3-Be
 DisplayName=Schlank-Skin
 
 [MainFrame]
+Title=TimeTracker3
+Title.ReadOnlySuffix=[schreibgeschützt]
+Title.CurrentActivity=Aktuelle Aktivität: {0}
+
 CannotDestroyWorkspaceError=Arbeitsbereich {0}\nkann nicht gelöscht werden, da\ner aktuell verwendet wird.
