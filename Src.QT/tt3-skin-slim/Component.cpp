@@ -79,10 +79,12 @@ const Component::Settings * Component::settings() const
 void Component::initialize()
 {
     tt3::gui::SkinManager::register(Skin::instance());
+    tt3::gui::PreferencesManager::register(SlimSkinPreferences::instance());
 }
 
 void Component::deinitialize()
 {
+    tt3::gui::PreferencesManager::unregister(SlimSkinPreferences::instance());
     tt3::gui::SkinManager::unregister(Skin::instance());
 }
 
@@ -99,7 +101,8 @@ TT3_IMPLEMENT_SINGLETON(Component::Settings)
 
 Component::Settings::Settings()
     :   mainFrameBounds(this, M(MainFrameBounds), QRect(32, 32, 200, 320)),
-        mainFrameMaximized(this, M(MainFrameMaximized), false)
+        mainFrameMaximized(this, M(MainFrameMaximized), false),
+        mainFrameAlwaysOnTop(this, M(MainFrameAlwaysOnTop), false)
 {
 }
 

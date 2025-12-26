@@ -91,6 +91,13 @@ namespace tt3::skin::slim
         ///     Refreshes this main frame and controls within
         void            refresh();
 
+        /// \brief
+        ///     Specifies whether this frame shall be a topmost
+        ///     frame even when it is inactive.
+        /// \param alwaysOnTop
+        ///     True to make this frame topmost, false to return to normal.
+        void            setAlwaysOnTop(bool alwaysOnTop);
+
         //////////
         //  Implementation
     private:

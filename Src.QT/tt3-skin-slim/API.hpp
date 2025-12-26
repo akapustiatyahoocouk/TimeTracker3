@@ -28,6 +28,8 @@
 //  TODO kill ? #include "tt3-skin-slim/Classes.hpp"
 #include "tt3-skin-slim/Component.hpp"
 
+#include "tt3-skin-slim/Preferences.hpp"
+#include "tt3-skin-slim/SlimSkinPreferencesEditor.hpp"
 #include "tt3-skin-slim/MainFrame.hpp"
 #include "tt3-skin-slim/Skin.hpp"
 

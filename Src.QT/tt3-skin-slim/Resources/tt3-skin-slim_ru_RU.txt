@@ -12,5 +12,8 @@ Copyright=Авторское право (C) {0}, Андрей Капустин
 DisplayName=Минимальный
 Description=Минимальный интерфейс для работы с TimeTracker3
 
+[SlimSkinPreferences]
+DisplayName=Минимальный интерфейс
+
 [MainFrame]
 CannotDestroyWorkspaceError=Невозможно удалить рабочую область\n{0}\nтак как она в настоящее время используется.

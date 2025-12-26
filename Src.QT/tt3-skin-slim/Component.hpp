@@ -53,6 +53,10 @@ namespace tt3::skin::slim
             /// \brief
             ///     True if the main UI frame is maximized, false if not.
             tt3::util::Setting<bool>    mainFrameMaximized;
+
+            /// \brief
+            ///     True if the main UI frame should stay on top when visible.
+            tt3::util::Setting<bool>    mainFrameAlwaysOnTop;
         };
 
         //////////

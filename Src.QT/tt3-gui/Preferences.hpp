@@ -133,6 +133,15 @@ namespace tt3::gui
         static bool     register(Preferences * preferences);
 
         /// \brief
+        ///     Un-registers the specified {references (along with its children).
+        /// \param preferences
+        ///     The preferences node to un-register.
+        /// \return
+        ///     True if preferences (and all its children) have
+        ///     un-registered successfully, else false.
+        static bool     unregister(Preferences * preferences);
+
+        /// \brief
         ///     Finds a registered Preferences by its mnemonic.
         /// \param mnemonic
         ///     The mnemonic to look for.

@@ -12,5 +12,8 @@ Copyright=Copyright (C) {0}, Andrey Kapustin
 DisplayName=Schlank
 Description=Bietet eine minimalistische Benutzeroberfläche für TimeTracker3-Benutzer
 
+[SlimSkinPreferences]
+DisplayName=Schlank-Skin
+
 [MainFrame]
 CannotDestroyWorkspaceError=Arbeitsbereich {0}\nkann nicht gelöscht werden, da\ner aktuell verwendet wird.

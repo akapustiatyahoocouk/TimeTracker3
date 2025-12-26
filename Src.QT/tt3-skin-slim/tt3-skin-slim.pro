@@ -6,14 +6,18 @@ DEFINES += TT3_SKIN_SLIM_LIBRARY
 SOURCES += \
     Component.cpp \
     MainFrame.cpp \
-    Skin.cpp
+    Skin.cpp \
+    SlimSkinPreferences.cpp \
+    SlimSkinPreferencesEditor.cpp
 
 HEADERS += \
     API.hpp \
     Component.hpp \
     Linkage.hpp \
     MainFrame.hpp \
-    Skin.hpp
+    Preferences.hpp \
+    Skin.hpp \
+    SlimSkinPreferencesEditor.hpp
 
 PRECOMPILED_HEADER = API.hpp
 
@@ -28,4 +32,5 @@ RESOURCES += \
     tt3-skin-slim.qrc
 
 FORMS += \
-    MainFrame.ui
+    MainFrame.ui \
+    SlimSkinPreferencesEditor.ui

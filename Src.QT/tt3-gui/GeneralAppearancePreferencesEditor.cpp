@@ -123,6 +123,7 @@ void GeneralAppearancePreferencesEditor::saveControlValues()
     Component::Settings::instance()->uiLocale = _selectedLocale();
     Component::Settings::instance()->activeSkin = _selectedSkin()->mnemonic();
     Component::Settings::instance()->activeTheme = _selectedTheme()->mnemonic();
+    //  Apply changes
     tt3::util::theCurrentLocale = _selectedLocale();
     theCurrentTheme = _selectedTheme();
 }

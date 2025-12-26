@@ -32,7 +32,6 @@ MainFrame::MainFrame()
     _ui->setupUi(this);
     Qt::WindowFlags flags = windowFlags();
     flags |= Qt::CustomizeWindowHint;
-    //  TODO ? flags |= Qt::WindowStaysOnTopHint;
     flags &= ~Qt::WindowSystemMenuHint;
     flags &= ~Qt::WindowMinMaxButtonsHint;
     flags &= ~Qt::WindowTitleHint;
@@ -227,6 +226,7 @@ void MainFrame::show()
     if (!this->isVisible())
     {
         QMainWindow::show();
+        setAlwaysOnTop(Component::Settings::instance()->mainFrameAlwaysOnTop);
         //  Under X11 it will be some time before the window manager
         //  stabilizes the frame position; it is at THAT time that
         //  frame position needs to be loaded and tracjed
@@ -248,6 +248,24 @@ void MainFrame::hide()
 void MainFrame::refresh()
 {
     //  TODO
+}
+
+void MainFrame::setAlwaysOnTop(bool alwaysOnTop)
+{
+    QMainWindow::hide();    //  must be hidden for hints change to take effect
+    if (alwaysOnTop)
+    {   //  Add topmost hint
+        Qt::WindowFlags flags = windowFlags();
+        flags |= Qt::WindowStaysOnTopHint;
+        setWindowFlags(flags);
+    }
+    else
+    {   //  Remove topmost hint
+        Qt::WindowFlags flags = windowFlags();
+        flags &= ~Qt::WindowStaysOnTopHint;
+        setWindowFlags(flags);
+    }
+    QMainWindow::show();
 }
 
 //////////
@@ -1051,7 +1069,6 @@ void MainFrame::_refreshTimerTimeout()
 
 void MainFrame::_onTrayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
-    qDebug() << "MainFrame::_onTrayIconActivated(QSystemTrayIcon::ActivationReason reason)";
     if (reason == QSystemTrayIcon::DoubleClick)
     {   //  Restore on double-click
         _onActionRestore();
@@ -1060,7 +1077,6 @@ void MainFrame::_onTrayIconActivated(QSystemTrayIcon::ActivationReason reason)
 
 void MainFrame::_onActionMinimize()
 {
-    qDebug() << "MainFrame::_onActionMinimize()";
     if (this->isVisible() && !this->isMinimized())
     {   //  NOT already minimized
         if (QSystemTrayIcon::isSystemTrayAvailable())

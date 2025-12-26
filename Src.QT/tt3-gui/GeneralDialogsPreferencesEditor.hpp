@@ -38,11 +38,11 @@ namespace tt3::gui
         //////////
         //  PreferencesEditor
     public:
-        virtual Preferences *   preferences() const override;
-        virtual void        loadControlValues() override;
-        virtual void        saveControlValues() override;
-        virtual void        resetControlValues() override;
-        virtual bool        isValid() const override;
+        virtual auto    preferences() const -> Preferences * override;
+        virtual void    loadControlValues() override;
+        virtual void    saveControlValues() override;
+        virtual void    resetControlValues() override;
+        virtual bool    isValid() const override;
 
         //////////
         //  Controls

@@ -17,12 +17,16 @@
 
 namespace tt3::skin::slim
 {
+    class SlimSkinPreferencesEditor;
+
     /// \class Skin tt3-skin-slim/API.hpp
     /// \brief The "TT3 slim skin".
     class TT3_SKIN_SLIM_PUBLIC Skin final
         :   public virtual tt3::gui::ISkin
     {
         TT3_DECLARE_SINGLETON(Skin)
+
+        friend class SlimSkinPreferencesEditor;
 
         //////////
         //  gui::ISkin (properties)

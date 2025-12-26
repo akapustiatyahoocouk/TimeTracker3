@@ -12,5 +12,8 @@ Copyright=Copyright (C) {0}, Andrey Kapustin
 DisplayName=Slim
 Description=Provides minimalistic GUI for TimeTracker3 users
 
+[SlimSkinPreferences]
+DisplayName=Slim skin
+
 [MainFrame]
 CannotDestroyWorkspaceError=Cannot destroy workspace\n{0}\n because it is currently in use.

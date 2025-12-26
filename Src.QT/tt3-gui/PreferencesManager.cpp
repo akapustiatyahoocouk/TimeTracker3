@@ -80,12 +80,39 @@ bool PreferencesManager::register(Preferences * preferences)
         return false;
     }
 
-    if (impl->registry.contains(preferences->mnemonic()))
+    auto key = preferences->mnemonic();
+    if (impl->registry.contains(key))
     {
         return preferences == impl->registry[preferences->mnemonic()];
     }
-    impl->registry[preferences->mnemonic()] = preferences;
+    impl->registry[key] = preferences;
     return true;
+}
+
+bool PreferencesManager::unregister(Preferences * preferences)
+{
+    Q_ASSERT(preferences != nullptr);
+
+    _Impl * impl = _impl();
+    tt3::util::Lock _(impl->guard);
+
+    //  Do the children
+    for (auto child : preferences->children())
+    {
+        if (!unregister(child))
+        {   //  OOPS! Can't proceed!
+            return false;
+        }
+    }
+    //  Do this node
+    auto key = preferences->mnemonic();
+    if (impl->registry.contains(key) &&
+        impl->registry[key] == preferences)
+    {   //  Guard against an impersonator
+        impl->registry.remove(key);
+        return true;
+    }
+    return false;
 }
 
 Preferences * PreferencesManager::find(const tt3::util::Mnemonic & mnemonic)
