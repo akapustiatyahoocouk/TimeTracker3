@@ -162,6 +162,10 @@ namespace tt3::skin::slim
 
         QAction *       _createActionLoginAsDifferentUser(QObject * parent);
         QAction *       _createActionPreferences(QObject * parent);
+        QAction *       _createActionHelpContent(QObject * parent);
+        QAction *       _createActionHelpIndex(QObject * parent);
+        QAction *       _createActionHelpSearch(QObject * parent);
+        QAction *       _createActionAbout(QObject * parent);
 
         //////////
         //  Controls
@@ -207,9 +211,12 @@ namespace tt3::skin::slim
         void            _onActionManageWorkStreams();
         void            _onActionManageBeneficiaries();
         void            _onActionManageMyDay();
-
         void            _onActionLoginAsDifferentUser();
         void            _onActionPreferences();
+        void            _onActionHelpContent();
+        void            _onActionHelpIndex();
+        void            _onActionHelpSearch();
+        void            _onActionAbout();
     };
 }
 

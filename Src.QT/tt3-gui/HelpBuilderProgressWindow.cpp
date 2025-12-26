@@ -18,10 +18,15 @@
 #include "ui_HelpBuilderProgressWindow.h"
 using namespace tt3::gui;
 
+namespace tt3::gui
+{
+    extern CurrentSkin theCurrentSkin;
+}
+
 //////////
 //  Construction/destruction
 HelpBuilderProgressWindow::HelpBuilderProgressWindow()
-    :   QDialog(QApplication::activeWindow()),
+    :   QDialog(theCurrentSkin->mainWindow()),
         _ui(new Ui::HelpBuilderProgressWindow)
 {
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(HelpBuilderProgressWindow));

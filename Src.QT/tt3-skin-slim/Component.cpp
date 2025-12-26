@@ -101,7 +101,6 @@ TT3_IMPLEMENT_SINGLETON(Component::Settings)
 
 Component::Settings::Settings()
     :   mainFrameBounds(this, M(MainFrameBounds), QRect(32, 32, 200, 320)),
-        mainFrameMaximized(this, M(MainFrameMaximized), false),
         mainFrameAlwaysOnTop(this, M(MainFrameAlwaysOnTop), false)
 {
 }

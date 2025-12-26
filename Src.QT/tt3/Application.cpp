@@ -62,18 +62,26 @@ bool Application::notify(QObject * receiver, QEvent * event)
     catch (const tt3::util::Exception & ex)
     {
         qCritical() << ex;
+        auto parent =
+            (tt3::gui::theCurrentSkin != nullptr) ?
+                tt3::gui::theCurrentSkin->mainWindow() :
+                nullptr;
         if (!tt3::util::SystemShutdownHandler::isShutdownInProgress())
         {   //  Suppress dialog if system shutdown is in progress
-            tt3::gui::ErrorDialog::show(QApplication::activeWindow(), ex);
+            tt3::gui::ErrorDialog::show(parent, ex);
         }
         return false;
     }
     catch (const tt3::util::Error & ex)
     {
         qCritical() << ex;
+        auto parent =
+            (tt3::gui::theCurrentSkin != nullptr) ?
+                tt3::gui::theCurrentSkin->mainWindow() :
+                nullptr;
         if (!tt3::util::SystemShutdownHandler::isShutdownInProgress())
         {   //  Suppress dialog if system shutdown is in progress
-            tt3::gui::ErrorDialog::show(QApplication::activeWindow(), ex);
+            tt3::gui::ErrorDialog::show(parent, ex);
         }
         return false;
     }

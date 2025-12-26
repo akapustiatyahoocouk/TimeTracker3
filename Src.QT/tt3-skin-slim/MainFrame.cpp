@@ -178,7 +178,9 @@ void MainFrame::keyPressEvent(QKeyEvent * event)
         { Qt::Key_9, Qt::NoModifier,      &MainFrame::_onActionManageBeneficiaries },
         { Qt::Key_0, Qt::NoModifier,      &MainFrame::_onActionManageMyDay },
         { Qt::Key_L, Qt::ControlModifier, &MainFrame::_onActionLoginAsDifferentUser },
-        { Qt::Key_P, Qt::ControlModifier, &MainFrame::_onActionPreferences }
+        { Qt::Key_P, Qt::ControlModifier, &MainFrame::_onActionPreferences },
+        { Qt::Key_F1,Qt::NoModifier,      &MainFrame::_onActionHelpContent },
+        { Qt::Key_F1,Qt::ControlModifier, &MainFrame::_onActionAbout }
     };
 
     for (const auto shortcut : shortcuts)
@@ -274,24 +276,15 @@ void MainFrame::_loadPosition()
 {
     _setFrameGeometry(Component::Settings::instance()->mainFrameBounds);
     _ensureWithinScreenBounds();
-    if (Component::Settings::instance()->mainFrameMaximized)
-    {
-        this->showMaximized();
-    }
 }
 
 void MainFrame::_savePosition()
 {
     if (_trackPosition)
     {
-        if (this->isMaximized())
-        {
-            Component::Settings::instance()->mainFrameMaximized = true;
-        }
-        else if (!this->isMinimized())
+        if (!this->isMinimized() && this->isVisible())
         {
             Component::Settings::instance()->mainFrameBounds = this->frameGeometry();
-            Component::Settings::instance()->mainFrameMaximized = false;
         }
     }
 }
@@ -670,6 +663,11 @@ QMenu * MainFrame::_createContextMenu()
         contextMenu->addMenu(
             QIcon(":tt3-skin-slim/Resources/Images/Objects/SubmenuSmall.png"),
             TR("&Help"));
+    helpMenu->addAction(_createActionHelpContent(contextMenu));
+    helpMenu->addAction(_createActionHelpIndex(contextMenu));
+    helpMenu->addAction(_createActionHelpSearch(contextMenu));
+    helpMenu->addSeparator();
+    helpMenu->addAction(_createActionAbout(contextMenu));
 
     contextMenu->addSeparator();
     contextMenu->addAction(_createActionExit(contextMenu));
@@ -1019,6 +1017,60 @@ QAction * MainFrame::_createActionPreferences(QObject * parent)
     return action;
 }
 
+QAction * MainFrame::_createActionHelpContent(QObject * parent)
+{
+    QAction * action = new QAction(
+        QIcon(":/tt3-skin-slim/Resources/Images/Actions/HelpContentSmall.png"),
+        TR("&Content"),
+        parent);
+    action->setShortcut(QKeySequence(Qt::Key_F1));
+    connect(action,
+            &QAction::triggered,
+            this,
+            &MainFrame::_onActionHelpContent);
+    return action;
+}
+
+QAction * MainFrame::_createActionHelpIndex(QObject * parent)
+{
+    QAction * action = new QAction(
+        QIcon(":/tt3-skin-slim/Resources/Images/Actions/HelpIndexSmall.png"),
+        TR("&Index"),
+        parent);
+    connect(action,
+            &QAction::triggered,
+            this,
+            &MainFrame::_onActionHelpIndex);
+    return action;
+}
+
+QAction * MainFrame::_createActionHelpSearch(QObject * parent)
+{
+    QAction * action = new QAction(
+        QIcon(":/tt3-skin-slim/Resources/Images/Actions/HelpSearchSmall.png"),
+        TR("&Search"),
+        parent);
+    connect(action,
+            &QAction::triggered,
+            this,
+            &MainFrame::_onActionHelpSearch);
+    return action;
+}
+
+QAction * MainFrame::_createActionAbout(QObject * parent)
+{
+    QAction * action = new QAction(
+        QIcon(":/tt3-skin-slim/Resources/Images/Actions/AboutSmall.png"),
+        TR("A&bout TimeTracker3"),
+        parent);
+    action->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_F1));
+    connect(action,
+            &QAction::triggered,
+            this,
+            &MainFrame::_onActionAbout);
+    return action;
+}
+
 //////////
 //  Signal handlers
 void MainFrame::_trackPositionTimerTimeout()
@@ -1364,6 +1416,27 @@ void MainFrame::_onActionLoginAsDifferentUser()
 void MainFrame::_onActionPreferences()
 {
     tt3::gui::PreferencesDialog dlg(_dialogParent());
+    dlg.doModal();
+}
+
+void MainFrame::_onActionHelpContent()
+{
+    tt3::gui::HelpClient::showContents();
+}
+
+void MainFrame::_onActionHelpIndex()
+{
+    tt3::gui::HelpClient::showIndex();
+}
+
+void MainFrame::_onActionHelpSearch()
+{
+    tt3::gui::HelpClient::showSearch();
+}
+
+void MainFrame::_onActionAbout()
+{
+    tt3::gui::AboutDialog dlg(_dialogParent());
     dlg.doModal();
 }
 
