@@ -40,6 +40,7 @@ namespace tt3::gui
         enum class Result
         {
             Ok,     ///< The user has confirmed changes made to Preferences.
+            OkRestartRequired,  ///< Same as OK, but TT3 needs to restart
             Cancel  ///< The user has cancelled the dialog.
         };
 

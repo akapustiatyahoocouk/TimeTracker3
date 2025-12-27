@@ -307,7 +307,6 @@ void MainFrame::_ensureWithinScreenBounds()
 
 void MainFrame::_setFrameGeometry(const QRect & bounds)
 {
-    QRect g = this->geometry();
     QRect fg = this->frameGeometry();
     QPoint tl = this->mapToGlobal(QPoint(0, 0));
     this->setGeometry(
@@ -1067,7 +1066,7 @@ void MainFrame::_onActionRestart()
         }
     }
     //  ...and restart
-    throw tt3::gui::RestartRequest();
+    QApplication::exit(-1);
 }
 
 void MainFrame::_onActionExit()
@@ -1283,7 +1282,10 @@ void MainFrame::_onActionLoginAsDifferentUser()
 void MainFrame::_onActionPreferences()
 {
     tt3::gui::PreferencesDialog dlg(this);
-    dlg.doModal();
+    if (dlg.doModal() == tt3::gui::PreferencesDialog::Result::OkRestartRequired)
+    {   //  Must restart TT3
+        QApplication::exit(-1);
+    }
 }
 
 void MainFrame::_onActionHelpContent()

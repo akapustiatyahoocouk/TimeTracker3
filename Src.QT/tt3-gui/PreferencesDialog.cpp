@@ -266,14 +266,9 @@ void PreferencesDialog::accept()
     if (_restartRequired)
     {
         RestartRequiredDialog dlg(this);
-        if (dlg.doModal() == RestartRequiredDialog::Result::Yes)
-        {
-            throw tt3::gui::RestartRequest();
-        }
-        else
-        {
-            done(int(Result::Ok));
-        }
+        done((dlg.doModal() == RestartRequiredDialog::Result::Yes) ?
+                int(Result::OkRestartRequired) :
+                int(Result::Ok));
     }
     else
     {

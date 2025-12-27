@@ -164,8 +164,6 @@ namespace tt3::skin::slim
         //  Helpers
         void            _loadPosition();
         void            _savePosition();
-        void            _ensureWithinScreenBounds();
-        void            _setFrameGeometry(const QRect & bounds);
         QWidget *       _dialogParent();
 
         void            _recalculateControlAreas();

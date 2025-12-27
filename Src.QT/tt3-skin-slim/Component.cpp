@@ -100,7 +100,7 @@ Component::Resources::~Resources() {}
 TT3_IMPLEMENT_SINGLETON(Component::Settings)
 
 Component::Settings::Settings()
-    :   mainFrameBounds(this, M(MainFrameBounds), QRect(32, 32, 200, 320)),
+    :   mainFrameGeometry(this, M(MainFrameGeometry), QByteArray()),
         mainFrameAlwaysOnTop(this, M(MainFrameAlwaysOnTop), false),
         mainFrameOpacity(this, M(MainFrameOpacity), MainFrame::MaxOpacity)
 {

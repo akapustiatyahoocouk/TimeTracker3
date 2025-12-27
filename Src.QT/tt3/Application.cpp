@@ -55,10 +55,6 @@ bool Application::notify(QObject * receiver, QEvent * event)
     {
         return QApplication::notify(receiver, event);
     }
-    catch (const tt3::gui::RestartRequest &)
-    {   //  Allow through
-        throw;
-    }
     catch (const tt3::util::Exception & ex)
     {
         qCritical() << ex;

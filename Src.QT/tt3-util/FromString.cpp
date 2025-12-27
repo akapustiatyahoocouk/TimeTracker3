@@ -29,6 +29,26 @@ namespace
             throw tt3::util::ParseException(s, scan);
         }
     }
+
+    int xdigit(const QChar & c)
+    {
+        if (c >= '0' && c <= '9')
+        {
+            return c.unicode() - '0';
+        }
+        else if (c >= 'a' && c <= 'f')
+        {
+            return c.unicode() - 'a' + 10;
+        }
+        else if (c >= 'A' && c <= 'F')
+        {
+            return c.unicode() - 'A' + 10;
+        }
+        else
+        {
+            return -1;
+        }
+    }
 }
 
 //  C++ types
@@ -670,7 +690,7 @@ QDate tt3::util::fromString<QDate>(const QString & s, qsizetype & scan)
 }
 
 template <> TT3_UTIL_PUBLIC
-    Qt::DayOfWeek tt3::util::fromString<Qt::DayOfWeek>(const QString & s, qsizetype & scan)
+Qt::DayOfWeek tt3::util::fromString<Qt::DayOfWeek>(const QString & s, qsizetype & scan)
 {
     if (scan < 0 || scan >= s.length())
     {
@@ -714,6 +734,28 @@ template <> TT3_UTIL_PUBLIC
     }
     //  OOPS! Give up
     throw ParseException(s, scan);
+}
+
+template <> TT3_UTIL_PUBLIC
+QByteArray tt3::util::fromString<QByteArray>(const QString & s, qsizetype & scan)
+{
+    if (scan < 0 || scan >= s.length())
+    {
+        throw ParseException(s, scan);
+    }
+    QByteArray result;
+    while (scan + 1 < s.length())
+    {
+        int hi = xdigit(s[scan + 0]);
+        int lo = xdigit(s[scan + 1]);
+        if (hi == -1 || lo == -1)
+        {
+            break;
+        }
+        result.append(uint8_t(hi * 16 + lo));
+        scan += 2;
+    }
+    return result;
 }
 
 //  tt3::util types

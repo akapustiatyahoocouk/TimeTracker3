@@ -176,7 +176,6 @@ HEADERS += \
     EnterCommentDialog.hpp \
     EnterTaskCompletionCommentDialog.hpp \
     ErrorDialog.hpp \
-    Exceptions.hpp \
     FullScreenReminderWindow.hpp \
     GeneralAppearancePreferencesEditor.hpp \
     GeneralDialogsPreferencesEditor.hpp \

@@ -46,9 +46,13 @@ namespace tt3::skin::slim
             //  Properties
         public:
             /// \brief
-            ///     The "normal" bounds of the main UI frame
+            ///     The "normal" geometry of the main UI frame
             ///     (that is, when it is noe minimized or maximized).
-            tt3::util::Setting<QRect>   mainFrameBounds;
+            /// \details
+            ///     Uses the internal format implemented by QMainWindow's
+            ///     saveGeometry()/restoreGeomerty(), encoded as a hex string.
+            /// TODO do the same for tt3-skin-admin's MainFrame
+            tt3::util::Setting<QByteArray>  mainFrameGeometry;
 
             /// \brief
             ///     True if the main UI frame should stay on top when visible.

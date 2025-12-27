@@ -18,6 +18,7 @@
 namespace tt3::skin::slim
 {
     class SlimSkinPreferencesEditor;
+    class MainFrame;
 
     /// \class Skin tt3-skin-slim/API.hpp
     /// \brief The "TT3 slim skin".

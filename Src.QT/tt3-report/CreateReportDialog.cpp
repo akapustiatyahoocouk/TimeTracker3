@@ -46,12 +46,12 @@ CreateReportDialog::CreateReportDialog(
         {
             return tt3::util::NaturalStringOrder::less(a->displayName(), b->displayName());
         });
-    for (auto reportType : std::as_const(reportTypes))
+    for (auto rt : std::as_const(reportTypes))
     {
         _ui->reportTypeComboBox->addItem(
-            reportType->smallIcon(),
-            reportType->displayName(),
-            QVariant::fromValue(reportType));
+            rt->smallIcon(),
+            rt->displayName(),
+            QVariant::fromValue(rt));
     }
 
     //  Populate "report format" combo box
@@ -115,13 +115,13 @@ CreateReportDialog::CreateReportDialog(
         setIcon(QIcon(":/tt3-report/Resources/Images/Actions/CancelSmall.png"));
 
     //  Create editor widgets for each report type...
-    for (auto reportType : ReportTypeManager::all())
+    for (auto rt : ReportTypeManager::all())
     {
         if (auto editor =
-            reportType->createConfigurationEditor(
+            rt->createConfigurationEditor(
                 _ui->configuratiokGroupBox, workspace, credentials))
         {
-            _configurationEditors[reportType] = editor; //  editor may be nullptr!
+            _configurationEditors[rt] = editor; //  editor may be nullptr!
             editor->loadControlValues();
             //  Listen to value change events
             //  We need to connect() by name (old-style)

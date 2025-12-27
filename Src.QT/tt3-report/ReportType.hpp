@@ -17,6 +17,8 @@
 
 namespace tt3::report
 {
+    class ReportConfigurationEditor;
+
     /// \class IReportType tt3-report/API.hpp
     /// \brief A generic "report type" is a factory for Reports.
     class TT3_REPORT_PUBLIC IReportType

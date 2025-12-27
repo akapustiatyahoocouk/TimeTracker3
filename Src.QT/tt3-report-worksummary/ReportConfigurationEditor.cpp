@@ -22,9 +22,9 @@ using namespace tt3::report::worksummary;
 //  Construction/destruction
 ReportConfigurationEditor::ReportConfigurationEditor(
         QWidget * parent,
-        tt3::ws::Workspace workspace,
-        const tt3::ws::ReportCredentials & credentials
-    ) : tt3::report::ReportConfigurationEditor(parent, workspace, credentials),
+        tt3::ws::Workspace workspace_,
+        const tt3::ws::ReportCredentials & credentials_
+    ) : tt3::report::ReportConfigurationEditor(parent, workspace_, credentials_),
         _ui(new Ui::ReportConfigurationEditor)
 {
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ReportConfigurationEditor));

@@ -37,7 +37,6 @@ MainFrame::MainFrame()
     setWindowFlags(flags);
     setFocusPolicy(Qt::FocusPolicy::ClickFocus);
     setMouseTracking(true);
-    //  TODO setProperty("windowOpacity", 0.75);
 
     this->setMinimumSize(MinimumSize);
     _loadPosition();
@@ -423,47 +422,19 @@ void MainFrame::setOpacity(int opacity)
 //  Implementation
 void MainFrame::_loadPosition()
 {
-    _setFrameGeometry(Component::Settings::instance()->mainFrameBounds);
-    _ensureWithinScreenBounds();
+    restoreGeometry(
+        Component::Settings::instance()->mainFrameGeometry.value());
 }
 
 void MainFrame::_savePosition()
 {
     if (_trackPosition)
     {
-        if (!this->isMinimized() && this->isVisible())
+        if (!isMinimized() && isVisible())
         {
-            Component::Settings::instance()->mainFrameBounds = this->frameGeometry();
+            Component::Settings::instance()->mainFrameGeometry = saveGeometry();
         }
     }
-}
-
-void MainFrame::_ensureWithinScreenBounds()
-{
-    QRect bounds = this->frameGeometry();
-    QRect workspaceRect =
-        QGuiApplication::primaryScreen()->availableGeometry();
-    bounds.setWidth(std::min(bounds.width(), workspaceRect.width()));
-    bounds.setHeight(std::min(bounds.height(), workspaceRect.height()));
-    bounds.setWidth(std::max(bounds.width(), MinimumSize.width()));
-    bounds.setHeight(std::max(bounds.height(), MinimumSize.height()));
-
-    bounds.setX(std::min(bounds.x(), workspaceRect.width() - bounds.width()));
-    bounds.setY(std::min(bounds.y(), workspaceRect.height() - bounds.height()));
-    bounds.setX(std::max(bounds.x(), workspaceRect.x()));
-    bounds.setY(std::max(bounds.y(), workspaceRect.y()));
-    _setFrameGeometry(bounds);
-}
-
-void MainFrame::_setFrameGeometry(const QRect & bounds)
-{
-    QRect fg = this->frameGeometry();
-    QPoint tl = this->mapToGlobal(QPoint(0, 0));
-    this->setGeometry(
-        bounds.x() + (tl.x() - fg.x()),
-        bounds.y() + (tl.y() - fg.y()),
-        bounds.width(),
-        bounds.height() - (tl.y() - fg.y()));
 }
 
 QWidget * MainFrame::_dialogParent()
@@ -1174,7 +1145,7 @@ QAction * MainFrame::_createActionRestart(QObject * parent)
     connect(action,
             &QAction::triggered,
             this,
-            &MainFrame::_onActionDestroyWorkspace);
+            &MainFrame::_onActionRestart);
     return action;
 }
 
@@ -1721,7 +1692,7 @@ void MainFrame::_onActionRestart()
         }
     }
     //  ...and restart
-    throw tt3::gui::RestartRequest();
+    QApplication::exit(-1);
 }
 
 void MainFrame::_onActionExit()
@@ -1876,7 +1847,10 @@ void MainFrame::_onActionLoginAsDifferentUser()
 void MainFrame::_onActionPreferences()
 {
     tt3::gui::PreferencesDialog dlg(_dialogParent());
-    dlg.doModal();
+    if (dlg.doModal() == tt3::gui::PreferencesDialog::Result::OkRestartRequired)
+    {   //  Must restart TT3
+        QApplication::exit(-1);
+    }
 }
 
 void MainFrame::_onActionHelpContent()

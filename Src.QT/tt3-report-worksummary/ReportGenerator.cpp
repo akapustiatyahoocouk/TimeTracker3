@@ -673,9 +673,9 @@ void ReportGenerator::_generateReportTable(
         auto dateRange = dateRanges[i];
         //  Skip ampty (no data) rows
         bool skipRow = true;
-        for (int i = 0; i < _columns.size(); i++)
+        for (int j = 0; j < _columns.size(); j++)
         {
-            if (_getEffort(dateRange, _columns[i]) > 0)
+            if (_getEffort(dateRange, _columns[j]) > 0)
             {
                 skipRow = false;
             }

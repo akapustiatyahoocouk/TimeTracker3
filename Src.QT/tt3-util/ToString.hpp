@@ -49,6 +49,7 @@ namespace tt3::util
     template <> TT3_UTIL_PUBLIC QString toString<QDateTime>(const QDateTime & value);
     template <> TT3_UTIL_PUBLIC QString toString<QDate>(const QDate & value);
     template <> TT3_UTIL_PUBLIC QString toString<Qt::DayOfWeek>(const Qt::DayOfWeek & value);
+    template <> TT3_UTIL_PUBLIC QString toString<QByteArray>(const QByteArray & value);
 
     //  tt3::util types
     template <> TT3_UTIL_PUBLIC QString toString<TimeSpan>(const TimeSpan & value);

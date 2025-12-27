@@ -258,6 +258,12 @@ QString tt3::util::toString<Qt::DayOfWeek>(const Qt::DayOfWeek & value)
     }
 }
 
+template <> TT3_UTIL_PUBLIC
+QString tt3::util::toString<QByteArray>(const QByteArray & value)
+{
+    return value.toHex();
+}
+
 //  tt3::util types
 template <> TT3_UTIL_PUBLIC
 QString tt3::util::toString<tt3::util::TimeSpan>(const TimeSpan & value)

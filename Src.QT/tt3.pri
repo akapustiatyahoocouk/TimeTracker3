@@ -53,7 +53,7 @@ exists($${PWD}/$${COMPONENT_NAME}/Help) {
     }
     #   Schedule proper cleanup
     QMAKE_CLEAN += $$shell_path($${DESTDIR}/Help/$${TARGET}.zip)
-    QMAKE_CLEAN += rm -f makehelp.bat $$escape_expand(\\n\\t)
+    QMAKE_CLEAN += rm -f makehelp.bat
 } else {
     #   Make sure there is no project-specific help
     QMAKE_POST_LINK += rm -f $$shell_path($${DESTDIR}/Help/$${TARGET}.zip) $$escape_expand(\\n\\t)

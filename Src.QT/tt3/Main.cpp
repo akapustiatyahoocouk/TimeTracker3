@@ -25,17 +25,13 @@ int main(int argc, char *argv[])
     //  TODO Move the next line to Application::_initialize(),
     //  right before the _selectActiveTheme() call
     app.setStyle(QStyleFactory::create("Fusion"));    //  TODO what about Linux?
-    try
-    {
-        return app.exec();
-    }
-    catch (const tt3::gui::RestartRequest &)
-    {   //  The following line does not work in e.g. QT Creator's
-        //  debugger, but after using windeployqt on the .exe AND .dlls`
-        //  the tool will bring in all dependencies from QT distrib
+    int exitCode =  app.exec();
+    if (exitCode < 0)
+    {   //  Restart required
         QProcess::startDetached(app.arguments()[0], app.arguments().mid(1));
         return 0;
     }
+    return exitCode;
 }
 
 //  End of tt3/Main.cpp

@@ -28,7 +28,6 @@
 #include "tt3-gui/Component.hpp"
 
 //  Miscellaneous helpers
-#include "tt3-gui/Exceptions.hpp"
 #include "tt3-gui/Skin.hpp"
 #include "tt3-gui/Theme.hpp"
 #include "tt3-gui/Preferences.hpp"
