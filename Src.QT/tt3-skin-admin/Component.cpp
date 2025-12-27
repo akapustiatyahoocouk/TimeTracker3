@@ -98,7 +98,7 @@ Component::Resources::~Resources() {}
 TT3_IMPLEMENT_SINGLETON(Component::Settings)
 
 Component::Settings::Settings()
-    :   mainFrameBounds(this, M(MainFrameBounds), QRect(32, 32, 480, 320)),
+    :   mainFrameGeometry(this, M(MainFrameGeometry), QByteArray()),
         mainFrameMaximized(this, M(MainFrameMaximized), false),
         mainFrameCurrentTab(this, M(MainFrameCurrentTab), 0)
 {

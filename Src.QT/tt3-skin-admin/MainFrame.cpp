@@ -264,8 +264,7 @@ void MainFrame::refresh()
 //  Implementation
 void MainFrame::_loadPosition()
 {
-    _setFrameGeometry(Component::Settings::instance()->mainFrameBounds);
-    _ensureWithinScreenBounds();
+    restoreGeometry(Component::Settings::instance()->mainFrameGeometry);
     if (Component::Settings::instance()->mainFrameMaximized)
     {
         this->showMaximized();
@@ -282,38 +281,10 @@ void MainFrame::_savePosition()
         }
         else if (!this->isMinimized())
         {
-            Component::Settings::instance()->mainFrameBounds = this->frameGeometry();
+            Component::Settings::instance()->mainFrameGeometry = this->saveGeometry();
             Component::Settings::instance()->mainFrameMaximized = false;
         }
     }
-}
-
-void MainFrame::_ensureWithinScreenBounds()
-{
-    QRect bounds = this->frameGeometry();
-    QRect workspaceRect =
-        QGuiApplication::primaryScreen()->availableGeometry();
-    bounds.setWidth(std::min(bounds.width(), workspaceRect.width()));
-    bounds.setHeight(std::min(bounds.height(), workspaceRect.height()));
-    bounds.setWidth(std::max(bounds.width(), MinimumSize.width()));
-    bounds.setHeight(std::max(bounds.height(), MinimumSize.height()));
-
-    bounds.setX(std::min(bounds.x(), workspaceRect.width() - bounds.width()));
-    bounds.setY(std::min(bounds.y(), workspaceRect.height() - bounds.height()));
-    bounds.setX(std::max(bounds.x(), workspaceRect.x()));
-    bounds.setY(std::max(bounds.y(), workspaceRect.y()));
-    _setFrameGeometry(bounds);
-}
-
-void MainFrame::_setFrameGeometry(const QRect & bounds)
-{
-    QRect fg = this->frameGeometry();
-    QPoint tl = this->mapToGlobal(QPoint(0, 0));
-    this->setGeometry(
-        bounds.x() + (tl.x() - fg.x()),
-        bounds.y() + (tl.y() - fg.y()),
-        bounds.width(),
-        bounds.height() - (tl.y() - fg.y()));
 }
 
 bool MainFrame::_createWorkspace(

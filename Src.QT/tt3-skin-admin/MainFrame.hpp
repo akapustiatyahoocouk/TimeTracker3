@@ -92,8 +92,6 @@ namespace tt3::skin::admin
         //  Helpers
         void            _loadPosition();
         void            _savePosition();
-        void            _ensureWithinScreenBounds();
-        void            _setFrameGeometry(const QRect & bounds);
 
         bool            _createWorkspace(
                                 tt3::ws::WorkspaceAddress workspaceAddress,
