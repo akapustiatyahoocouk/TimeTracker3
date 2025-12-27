@@ -37,6 +37,7 @@ MainFrame::MainFrame()
     setWindowFlags(flags);
     setFocusPolicy(Qt::FocusPolicy::ClickFocus);
     setMouseTracking(true);
+    //  TODO setProperty("windowOpacity", 0.75);
 
     this->setMinimumSize(MinimumSize);
     _loadPosition();
@@ -302,6 +303,7 @@ void MainFrame::show()
 {
     if (!this->isVisible())
     {
+        setOpacity(Component::Settings::instance()->mainFrameOpacity);
         QMainWindow::show();
         _recalculateControlAreas();
         setAlwaysOnTop(Component::Settings::instance()->mainFrameAlwaysOnTop);
@@ -409,6 +411,12 @@ void MainFrame::setAlwaysOnTop(bool alwaysOnTop)
             setWindowFlags(newFlags);
         }
     }
+}
+
+void MainFrame::setOpacity(int opacity)
+{
+    opacity = std::max(MinOpacity, std::min(MaxOpacity, opacity));
+    this->setProperty("windowOpacity", opacity / 100.0);
 }
 
 //////////

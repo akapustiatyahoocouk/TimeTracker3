@@ -53,6 +53,10 @@ namespace tt3::skin::slim
             /// \brief
             ///     True if the main UI frame should stay on top when visible.
             tt3::util::Setting<bool>    mainFrameAlwaysOnTop;
+
+            /// \brief
+            ///     The opacity of main UI frame, in % (0 == transparent, 100 == opaque).
+            tt3::util::Setting<int>     mainFrameOpacity;
         };
 
         //////////

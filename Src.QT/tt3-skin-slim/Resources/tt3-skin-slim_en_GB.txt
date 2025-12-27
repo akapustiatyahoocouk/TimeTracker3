@@ -17,6 +17,7 @@ DisplayName=Slim skin
 
 [SlimSkinPreferencesEditor]
 AlwaysOnTopCheckBox=Always on top when visible
+OpacityLabel=Opacity:
 
 [MainFrame]
 Title=TimeTracker3

@@ -17,6 +17,7 @@ DisplayName=Schlank-Skin
 
 [SlimSkinPreferencesEditor]
 AlwaysOnTopCheckBox=Immer im Vordergrund, wenn sichtbar
+OpacityLabel=Fensteropazität:
 
 [MainFrame]
 Title=TimeTracker3

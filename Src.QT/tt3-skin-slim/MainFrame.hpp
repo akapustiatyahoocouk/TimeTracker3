@@ -38,6 +38,14 @@ namespace tt3::skin::slim
         ///     The minimum size of the main frame.
         inline static const QSize MinimumSize {96, 64};
 
+        /// \brief
+        ///     The minimum allowed opacity (in %).
+        inline static const int MinOpacity = 10;
+
+        /// \brief
+        ///     The maximum allowed opacity (in %).
+        inline static const int MaxOpacity = 100;
+
         //////////
         //  Construction/destruction
     public:
@@ -100,6 +108,13 @@ namespace tt3::skin::slim
         /// \param alwaysOnTop
         ///     True to make this frame topmost, false to return to normal.
         void            setAlwaysOnTop(bool alwaysOnTop);
+
+        /// \brief
+        ///     Sets the opacity of this frame.
+        /// \param opacity
+        ///     The new opacity (in %) for this frame;
+        ///     100 == fully opaque.
+        void            setOpacity(int opacity);
 
         //////////
         //  Implementation

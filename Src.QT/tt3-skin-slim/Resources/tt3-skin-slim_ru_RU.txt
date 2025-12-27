@@ -17,6 +17,7 @@ DisplayName=Минимальный интерфейс
 
 [SlimSkinPreferencesEditor]
 AlwaysOnTopCheckBox=Всегда поверх других окон, когда отображается
+OpacityLabel=Видимость:
 
 [MainFrame]
 Title=TimeTracker3

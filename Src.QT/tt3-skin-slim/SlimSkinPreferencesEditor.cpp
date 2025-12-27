@@ -32,6 +32,12 @@ SlimSkinPreferencesEditor::SlimSkinPreferencesEditor(
     //  Set static control values
     _ui->alwaysOnTopCheckBox->setText(
         rr.string(RID(AlwaysOnTopCheckBox)));
+    _ui->opacityLabel->setText(
+        rr.string(RID(OpacityLabel)));
+
+    //  Adjust controls
+    _ui->opacitySlider->setMinimum(MainFrame::MinOpacity);
+    _ui->opacitySlider->setMaximum(MainFrame::MaxOpacity);
 
     //  Start off with current values from Settings
     loadControlValues();
@@ -54,17 +60,23 @@ void SlimSkinPreferencesEditor::loadControlValues()
 {
     _ui->alwaysOnTopCheckBox->setChecked(
         Component::Settings::instance()->mainFrameAlwaysOnTop);
+    _ui->opacitySlider->setValue(
+        Component::Settings::instance()->mainFrameOpacity);
 }
 
 void SlimSkinPreferencesEditor::saveControlValues()
 {
     Component::Settings::instance()->mainFrameAlwaysOnTop =
         _ui->alwaysOnTopCheckBox->isChecked();
+    Component::Settings::instance()->mainFrameOpacity =
+        _ui->opacitySlider->value();
     //  Apply changes
-    if (Skin::instance()->_mainFrame != nullptr)
+    if (auto mainFrame = Skin::instance()->_mainFrame)
     {
-        Skin::instance()->_mainFrame->setAlwaysOnTop(
+        mainFrame->setAlwaysOnTop(
             _ui->alwaysOnTopCheckBox->isChecked());
+        mainFrame->setOpacity(
+            _ui->opacitySlider->value());
     }
 }
 
@@ -72,6 +84,8 @@ void SlimSkinPreferencesEditor::resetControlValues()
 {
     _ui->alwaysOnTopCheckBox->setChecked(
         Component::Settings::instance()->mainFrameAlwaysOnTop.defaultValue());
+    _ui->opacitySlider->setValue(
+        Component::Settings::instance()->mainFrameOpacity.defaultValue());
 }
 
 bool SlimSkinPreferencesEditor::isValid() const
