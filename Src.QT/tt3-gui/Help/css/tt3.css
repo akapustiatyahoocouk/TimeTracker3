@@ -1,0 +1,234 @@
+﻿@font-face {
+/*
+Consolas15.fon
+CourierNew16.fon
+Px437_IBM_EGA_8x14.ttf
+PxPlus_IBM_CGA.ttf
+PxPlus_IBM_EGA_8x14.ttf
+PxPlus_IBM_VGA_8x14.ttf
+*/
+    font-family: 'MyFontName'; /*a name to be used later*/
+    src: url('../fonts/Consolas15.fon'); /*URL to font*/
+}
+
+body
+{
+	background-color: black;
+  color: #00FF00;
+	line-height: 100%;
+	font-family: MyFontName, monospace;
+	font-size: 100%;
+	
+	background-image: url("../images/body_background.jpg");
+  background-repeat: repeat;
+}
+
+body.toc
+{
+  background-image: none;
+  background-color:  #002000;
+  color: #FFFFFF;
+}
+
+#home {
+  background-color:  #006000;
+  padding-top: 0.2cm;
+  padding-bottom: 0.2cm;
+  overflow-x: auto;
+  border-radius: 7px;
+  border-color: #00A000;
+  border-width: 1;
+  border-style:solid;
+  margin-bottom: 5px;
+}
+
+.Logo {
+  float: left;
+  padding-left: 1cm;
+  padding-right: 1cm;
+  color: #FFFFE0;
+  font-size: 40px;
+  /*font-style: italic;*/
+  white-space: nowrap;
+  vertical-align: middle;
+  padding-top: 0cm;
+  padding-bottom: 0cm;
+  height: 2rem;
+  line-height: 2rem;
+  width: 70%;
+  text-align: center;
+}
+
+.LogoImage {
+  float: left;
+  height: 32px;
+  width: 32px;
+}
+
+.TopDiv {
+    float: right;
+    padding-left: 2cm;
+    padding-right: 0;
+    white-space: nowrap;
+    text-align: center;
+    height: 48px;
+}
+
+.TopMenu {
+  padding:5px;
+  vertical-align: middle;
+}
+
+.TopMenuCurrent {
+  padding: 5px;
+  vertical-align: middle;
+  border: 1px #00A000 solid;
+}
+
+#workarea {
+  background-color:  #200000;
+  border-radius: 7px;
+  border-color: #00A000;
+  border-width: 1;
+  border-style:solid;
+  width: 100%;
+  padding: 5px;
+}
+
+#navigator {
+  background-color:  #002000;
+  border-radius: 7px;
+  border-color: #00A000;
+  border-width: 1;
+  border-style:solid;
+  padding: 5px;
+}
+
+#content {
+  /*border-radius: 7px;
+  border-color: #00A000;
+  border-width: 1;
+  border-style:solid;*/
+  padding: 5px;
+  height: 1000;
+}
+
+#footer {
+  background-color:  #001000;
+  border-radius: 7px;
+  border-color: #00A000;
+  border-width: 1;
+  border-style:solid;
+  margin-top: 5px;
+  padding: 5px;
+}
+
+h1
+{
+  color: #FFFFFF;
+	font-size: 150%;
+	margin: 0;
+}
+
+h2
+{
+  color: #FFFFFF;
+	font-size: 125%;
+	margin: 0;
+}
+
+h3
+{
+  color: #FFFFFF;
+	font-size: 100%;
+	margin: 0;
+}
+
+hr {
+  border-color: #008000;
+}
+
+p {
+  padding-left: 32px;
+}
+
+ul {
+  padding-left: 64px;
+}
+
+ol {
+  padding-left: 64px;
+}
+  
+p.seealso {
+  padding-left: 0;
+	font-size: 75%;
+  color: #00F000;
+}
+
+a {
+  color: #00FF00;
+}
+
+a.seealso {
+  color: #00F000;
+}
+
+p.footer {
+  margin: 0;
+  padding: 0;
+  color: #00FF00;
+}
+
+a.toc1 {
+  margin: 0;
+  padding: 0;
+  display: block;
+  color: #00FF00;
+  font-size: 90%;
+}
+
+a.toc2 {
+  margin: 0;
+  padding: 0 0 0 0px;
+  display: block;
+  color: #00FF00;
+  font-size: 85%;
+}
+
+a.toc3 {
+  margin: 0;
+  padding: 0 0 0 0px;
+  display: block;
+  color: #00FF00;
+  font-size: 80%;
+}
+
+a.toc4 {
+  margin: 0;
+  padding: 0 0 0 0px;
+  display: block;
+  color: #00FF00;
+  font-size: 75%;
+}
+
+ul.toc {
+  margin: 10px;
+  padding: 0px;
+}
+
+li.toc1 {
+  margin-left: 0px;
+}
+
+li.toc2 {
+  margin-left: 10px;
+}
+
+li.toc3 {
+  margin-left: 20px;
+}
+
+li.toc4 {
+  margin-left: 30px;
+}
