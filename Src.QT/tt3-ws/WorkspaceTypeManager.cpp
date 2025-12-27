@@ -31,9 +31,23 @@ struct WorkspaceTypeManager::_Impl
 
     void        refreshRegistry()
     {
-        for (auto databaseType : tt3::db::api::DatabaseTypeManager::all())
+        auto newDatabaseTypes = tt3::db::api::DatabaseTypeManager::all();
+        //  Add new entries...
+        for (auto databaseType : newDatabaseTypes)
         {
-            registry[databaseType] = new WorkspaceTypeImpl(databaseType);
+            if (!registry.contains(databaseType))
+            {
+                registry[databaseType] = new WorkspaceTypeImpl(databaseType);
+            }
+        }
+        //  ...ad delete stale ones
+        for (auto databaseType : registry.keys())
+        {
+            if (!newDatabaseTypes.contains(databaseType))
+            {
+                delete registry[databaseType];
+                registry.remove(databaseType);
+            }
         }
     }
 };

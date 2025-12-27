@@ -178,11 +178,17 @@ namespace tt3::skin::slim
         QAction *       _createActionMinimize(QObject * parent);
         QAction *       _createActionRestore(QObject * parent);
         QAction *       _createActionStopCurrentActivity(QObject * parent);
+        QAction *       _createActionRefresh(QObject * parent);
 
         QAction *       _createActionNewWorkspace(QObject * parent);
         QAction *       _createActionOpenWorkspace(QObject * parent);
         QAction *       _createActionCloseWorkspace(QObject * parent);
         QAction *       _createActionDestroyWorkspace(QObject * parent);
+        QAction *       _createActionRecentWorkspaces(QObject * parent);
+        QAction *       _createActionOpenRecentWorkspace(
+                                const tt3::ws::WorkspaceAddress & workspaceAddress,
+                                QObject * parent
+                            );
         QAction *       _createActionRestart(QObject * parent);
         QAction *       _createActionExit(QObject * parent);
         QAction *       _createActionManageUsers(QObject * parent);
@@ -242,6 +248,7 @@ namespace tt3::skin::slim
         void            _onActionMinimize();
         void            _onActionRestore();
         void            _onActionStopCurrentActivity();
+        void            _onActionRefresh();
 
         void            _onActionNewWorkspace();
         void            _onActionOpenWorkspace();

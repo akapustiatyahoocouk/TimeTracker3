@@ -35,11 +35,13 @@ ActionMinimizeToSystemTray.Text=&Minimize to system tray
 ActionMinimize.Text=&Minimize
 ActionRestore.Text=&Restore
 ActionStopCurrentActivity.Text=S&top current activity
+ActionRefresh.Text=&Refresh
 
 ActionNewWorkspace.Text=&New workspace
 ActionOpenWorkspace.Text=&Open workspace
 ActionCloseWorkspace.Text=C&lose workspace
 ActionDestroyWorkspace.Text=&Destroy workspace
+ActionRecentWorkspaces.Text=&Recent workspaces
 ActionRestart.Text=Res&tart TimeTracker3
 ActionExit.Text=E&xit
 

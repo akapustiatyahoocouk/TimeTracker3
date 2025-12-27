@@ -35,11 +35,13 @@ ActionMinimizeToSystemTray.Text=&In die Taskleiste minimieren
 ActionMinimize.Text=&Minimieren
 ActionRestore.Text=&Wiederherstellen
 ActionStopCurrentActivity.Text=Aktuelle Aktivität beenden
+ActionRefresh.Text=&Aktualisieren
 
 ActionNewWorkspace.Text=&Neuer Arbeitsbereich
 ActionOpenWorkspace.Text=Arbeitsbereich ö&ffnen
 ActionCloseWorkspace.Text=Arbeitsbereich sch&ließen
 ActionDestroyWorkspace.Text=Arbeitsbereich lös&chen
+ActionRecentWorkspaces.Text=&Zuletzt Arbeitsbereiche
 ActionRestart.Text=TimeTracker3 neu s&tarten
 ActionExit.Text=Be&enden
 

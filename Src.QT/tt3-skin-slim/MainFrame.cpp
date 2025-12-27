@@ -253,6 +253,7 @@ void MainFrame::keyPressEvent(QKeyEvent * event)
     static const Shortcut shortcuts[] =
     {
         { Qt::Key_M, Qt::ControlModifier, &MainFrame::_onActionMinimize },
+        { Qt::Key_F5,Qt::NoModifier,      &MainFrame::_onActionRefresh },
         { Qt::Key_N, Qt::ControlModifier, &MainFrame::_onActionNewWorkspace },
         { Qt::Key_O, Qt::ControlModifier, &MainFrame::_onActionOpenWorkspace },
         { Qt::Key_X, Qt::ControlModifier, &MainFrame::_onActionExit },
@@ -872,6 +873,8 @@ QMenu * MainFrame::_createContextMenu()
     }
     contextMenu->addAction(_createActionStopCurrentActivity(contextMenu));
     contextMenu->addSeparator();
+    contextMenu->addAction(_createActionRefresh(contextMenu));
+    contextMenu->addSeparator();
 
     QMenu * fileMenu =
         contextMenu->addMenu(
@@ -883,6 +886,8 @@ QMenu * MainFrame::_createContextMenu()
     fileMenu->addAction(_createActionCloseWorkspace(contextMenu));
     fileMenu->addSeparator();
     fileMenu->addAction(_createActionDestroyWorkspace(contextMenu));
+    fileMenu->addSeparator();
+    fileMenu->addAction(_createActionRecentWorkspaces(contextMenu));
     fileMenu->addSeparator();
     fileMenu->addAction(_createActionRestart(contextMenu));
 
@@ -1025,6 +1030,23 @@ QAction * MainFrame::_createActionStopCurrentActivity(QObject * parent)
     return action;
 }
 
+QAction * MainFrame::_createActionRefresh(QObject * parent)
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
+    QAction * action = new QAction(
+        QIcon(":/tt3-skin-slim/Resources/Images/Actions/RefreshSmall.png"),
+        rr.string(RID(ActionRefresh.Text)),
+        parent);
+    action->setShortcut(QKeySequence(Qt::Key_F5));
+    action->setEnabled(tt3::gui::theCurrentWorkspace != nullptr);
+    connect(action,
+            &QAction::triggered,
+            this,
+            &MainFrame::_onActionRefresh);
+    return action;
+}
+
 QAction * MainFrame::_createActionNewWorkspace(QObject * parent)
 {
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
@@ -1085,6 +1107,51 @@ QAction * MainFrame::_createActionDestroyWorkspace(QObject * parent)
             &QAction::triggered,
             this,
             &MainFrame::_onActionDestroyWorkspace);
+    return action;
+}
+
+QAction * MainFrame::_createActionRecentWorkspaces(QObject * parent)
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
+    QAction * action = new QAction(
+        QIcon(":/tt3-skin-slim/Resources/Images/Objects/SubmenuSmall.png"),
+        rr.string(RID(ActionRecentWorkspaces.Text)),
+        parent);
+    QMenu * menu = new QMenu();
+    for (tt3::ws::WorkspaceAddress workspaceAddress :
+         tt3::ws::Component::Settings::instance()->recentWorkspaces.value())
+    {
+        menu->addAction(
+            _createActionOpenRecentWorkspace(workspaceAddress, menu));
+    }
+    if (menu->actions().isEmpty())
+    {
+        delete menu;
+    }
+    else
+    {
+        action->setMenu(menu);
+    }
+    return action;
+}
+
+QAction * MainFrame::_createActionOpenRecentWorkspace(
+        const tt3::ws::WorkspaceAddress & workspaceAddress,
+        QObject * parent
+    )
+{
+    QAction * action = new QAction(
+        workspaceAddress->workspaceType()->smallIcon(),
+        workspaceAddress->displayForm(),
+        parent);
+    connect(action,
+            &QAction::triggered,
+            this,
+            [=, this]()
+            {
+                _openWorkspace(workspaceAddress, tt3::ws::OpenMode::Default);
+            });
     return action;
 }
 
@@ -1529,6 +1596,23 @@ void MainFrame::_onActionStopCurrentActivity()
     {
         qCritical() << ex;
         tt3::gui::ErrorDialog::show(_dialogParent(), ex);
+    }
+    refresh();
+}
+
+void MainFrame::_onActionRefresh()
+{
+    if (tt3::gui::theCurrentWorkspace != nullptr)
+    {
+        try
+        {
+            tt3::gui::theCurrentWorkspace->refresh();
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            qCritical() << ex;
+            tt3::gui::ErrorDialog::show(this, ex);
+        }
     }
     refresh();
 }
