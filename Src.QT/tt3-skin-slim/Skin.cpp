@@ -73,7 +73,10 @@ void Skin::activate()
         _mainFrame = new MainFrame();
         _mainFrame->show();
     }
-    //  TODO if hidden, restore from system tray
+    if (!_mainFrame->isVisible())
+    {   //  If hidden, restore from system tray
+        _mainFrame->_onActionRestore();
+    }
     _mainFrame->activateWindow();
     _mainFrame->raise();
 }
@@ -90,8 +93,7 @@ void Skin::deactivate()
 
 QMainWindow * Skin::mainWindow()
 {
-    return nullptr;
-    //  TODO kill off ? return (_mainFrame != nullptr && _mainFrame->isVisible()) ? _mainFrame : nullptr;
+    return nullptr; //  It's a "side window", really
 }
 
 //  End of tt3-skin-slim/Skin.cpp

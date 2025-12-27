@@ -1,6 +1,6 @@
 //
 //  tt3-skin-slim/MainFrame.cpp - tt3::skin::slim::MainFrame class implementation
-//  TODO Localize via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -17,8 +17,6 @@
 #include "tt3-skin-slim/API.hpp"
 #include "ui_MainFrame.h"
 using namespace tt3::skin::slim;
-
-#define TR(s)   s   /*  TODO kill off when done localizing */
 
 //////////
 //  Construction/destruction
@@ -38,6 +36,7 @@ MainFrame::MainFrame()
     flags &= ~Qt::WindowCloseButtonHint;
     setWindowFlags(flags);
     setFocusPolicy(Qt::FocusPolicy::ClickFocus);
+    setMouseTracking(true);
 
     this->setMinimumSize(MinimumSize);
     _loadPosition();
@@ -94,8 +93,6 @@ MainFrame::MainFrame()
             this,
             &MainFrame::_refreshTimerTimeout);
     _refreshTimer.start(1000);
-
-    //  TODO finish the implementation
 }
 
 MainFrame::~MainFrame()
@@ -105,6 +102,35 @@ MainFrame::~MainFrame()
 
 //////////
 //  QWidget
+bool MainFrame::event(QEvent * event)
+{
+    if (event->type() == QEvent::ToolTip)
+    {
+        QHelpEvent * helpEvent = static_cast<QHelpEvent*>(event);
+        QString tooltip;
+        for (auto controlArea : _controlAreas)
+        {
+            if (controlArea->rect.contains(helpEvent->pos()))
+            {
+                if (auto aca =
+                    std::dynamic_pointer_cast<_ActivityAreaImpl>(controlArea))
+                {
+                    tooltip = aca->text;
+                }
+                else
+                {   //  Application area
+                    tooltip = windowTitle();
+                }
+            }
+        }
+        setToolTip(tooltip);
+        //  Show the tooltip at the global mouse position
+        QToolTip::showText(helpEvent->globalPos(), tooltip);
+        return true;    //  Event handled
+    }
+    return QWidget::event(event); // Propagate other events
+}
+
 void MainFrame::moveEvent(QMoveEvent * event)
 {
     QMainWindow::moveEvent(event);
@@ -129,16 +155,16 @@ void MainFrame::mousePressEvent(QMouseEvent * event)
 {
     if (event->button() == Qt::MouseButton::LeftButton)
     {
-        _dragging = true;
-        _dragAnchor = event->pos();
+        _dragAnchor = event->pos(); //  in case we start dragging
         //  Control area click start ?
         for (auto controlArea : _controlAreas)
         {
-            if (controlArea->rect.contains(event->pos()))
+            if (controlArea->rect.contains(event->pos()) &&
+                tt3::gui::theCurrentWorkspace != nullptr &&
+                !tt3::gui::theCurrentWorkspace->isReadOnly())
             {   //  This one!
                 controlArea->pressed = true;
                 update();
-                break;
             }
         }
     }
@@ -148,6 +174,7 @@ void MainFrame::mouseReleaseEvent(QMouseEvent * event)
 {
     if (event->button() == Qt::MouseButton::LeftButton)
     {
+        bool wasDragging = _dragging;
         _dragging = false;
         //  Un-press everything
         tt3::ws::Activity activity = nullptr;
@@ -167,7 +194,8 @@ void MainFrame::mouseReleaseEvent(QMouseEvent * event)
         }
         update();
         //  Did we do something to the current activity ?
-        if (activity != nullptr)
+        if (!wasDragging && activity != nullptr &&
+            !activity->workspace()->isReadOnly())
         {
             if (tt3::gui::theCurrentActivity == activity)
             {   //  Yes - we stopped it
@@ -179,7 +207,7 @@ void MainFrame::mouseReleaseEvent(QMouseEvent * event)
             }
             refresh();
         }
-        else
+        else if (!wasDragging)
         {   //  Just un-pressed the application area
             tt3::gui::theCurrentActivity.replaceWith(nullptr);
             refresh();
@@ -189,8 +217,9 @@ void MainFrame::mouseReleaseEvent(QMouseEvent * event)
 
 void MainFrame::mouseMoveEvent(QMouseEvent * event)
 {
-    if (_dragging)
+    if (event->buttons() & Qt::LeftButton)
     {
+        _dragging = true;
         int dx = event->pos().x() - _dragAnchor.x();
         int dy = event->pos().y() - _dragAnchor.x();
         if (dx != 0 || dy != 0)
@@ -320,7 +349,6 @@ void MainFrame::refresh()
 
     //  Control areas
     _recalculateControlAreas();
-    //  TODO finish the implementation
 
     //  Make tray ion refrect main frame's title
     if (_trayIcon != nullptr)
@@ -489,6 +517,7 @@ void MainFrame::_recalculateControlAreas()
 
 void MainFrame::_draw(QPainter & p, const _ControlArea & controlArea)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
     QColor tl[5], br[5];
 
     //  Draw the background
@@ -517,18 +546,34 @@ void MainFrame::_draw(QPainter & p, const _ControlArea & controlArea)
     //  Draw text
     if (auto aca =
         std::dynamic_pointer_cast<_ActivityAreaImpl>(controlArea))
-    {   //  Activity
+    {   //  Activity area
         try
         {
+            QString text = aca->activity->displayName(tt3::gui::theCurrentCredentials); //  may throw
+            if (tt3::gui::theCurrentActivity == aca->activity)
+            {
+                qint64 secs = qMax(0, tt3::gui::theCurrentActivity.lastChangedAt().secsTo(QDateTime::currentDateTimeUtc()));
+                char s[32];
+                sprintf(s, " [%d:%02d:%02d]",
+                        int(secs / (60 * 60)),
+                        int((secs / 60) % 60),
+                        int(secs % 60));
+                text += s;
+            }
             p.setFont(
                 (tt3::gui::theCurrentActivity == aca->activity) ?
                     _labelDecorations.emphasisFont :
                     _labelDecorations.font);
-            p.setPen(_labelDecorations.foreground);
+            p.setPen(
+                (tt3::gui::theCurrentWorkspace != nullptr &&
+                 !tt3::gui::theCurrentWorkspace->isReadOnly()) ?
+                    _labelDecorations.foreground :
+                    _labelDecorations.disabledForeground);
             p.drawText(
                 controlArea->rect.adjusted(4, 4, -4, - 4),
                 Qt::AlignHCenter | Qt::AlignVCenter | Qt::TextWordWrap,
-                aca->activity->displayName(tt3::gui::theCurrentCredentials));   //  may throw
+                text);
+            controlArea->text = text;
         }
         catch (const tt3::util::Exception & ex)
         {
@@ -537,10 +582,11 @@ void MainFrame::_draw(QPainter & p, const _ControlArea & controlArea)
                 controlArea->rect.adjusted(4, 4, -4, - 4),
                 Qt::AlignHCenter | Qt::AlignVCenter | Qt::TextWordWrap,
                 ex.errorMessage());
+            controlArea->text = ex.errorMessage();
         }
     }
     else
-    {   //  Application
+    {   //  Application area
         p.setFont(
             (tt3::gui::theCurrentActivity != nullptr) ?
                 _labelDecorations.emphasisFont :
@@ -552,7 +598,8 @@ void MainFrame::_draw(QPainter & p, const _ControlArea & controlArea)
         p.drawText(
             controlArea->rect.adjusted(4, 4, -4, - 4),
             Qt::AlignHCenter | Qt::AlignVCenter | Qt::TextWordWrap,
-            TR("Stop current activity"));
+            rr.string(RID(StopCurrentActivityButton)));
+        controlArea->text = windowTitle();
     }
 }
 
@@ -608,7 +655,6 @@ bool MainFrame::_createWorkspace(
         //  Replace the "current" workspace
         tt3::gui::theCurrentWorkspace.swap(workspace);
         tt3::ws::Component::Settings::instance()->addRecentWorkspace(workspaceAddress);
-        //  TODO kill off _updateMruWorkspaces();
         //  The previously "current" workspace is closed
         //  when replaced
         if (workspace != nullptr)
@@ -681,7 +727,6 @@ bool MainFrame::_openWorkspace(
         //  Use the newly open workspace
         tt3::gui::theCurrentWorkspace.swap(workspace);
         tt3::ws::Component::Settings::instance()->addRecentWorkspace(workspaceAddress);
-        //  TODO kill off _updateMruWorkspaces();
         //  The previously "current" workspace is closed
         //  when replaced
         if (workspace != nullptr)
@@ -813,6 +858,8 @@ void MainFrame::_generateReport(
 
 QMenu * MainFrame::_createContextMenu()
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QMenu * contextMenu = new QMenu();
 
     if (_trayIcon == nullptr)
@@ -829,7 +876,7 @@ QMenu * MainFrame::_createContextMenu()
     QMenu * fileMenu =
         contextMenu->addMenu(
             QIcon(":tt3-skin-slim/Resources/Images/Objects/SubmenuSmall.png"),
-            TR("&File"));
+            rr.string(RID(MenuFile.Title)));
     fileMenu->addAction(_createActionNewWorkspace(contextMenu));
     fileMenu->addAction(_createActionOpenWorkspace(contextMenu));
     fileMenu->addSeparator();
@@ -842,7 +889,7 @@ QMenu * MainFrame::_createContextMenu()
     QMenu * manageMenu =
         contextMenu->addMenu(
             QIcon(":tt3-skin-slim/Resources/Images/Objects/SubmenuSmall.png"),
-            TR("&Manage"));
+            rr.string(RID(MenuManage.Title)));
     manageMenu->setEnabled(tt3::gui::theCurrentWorkspace != nullptr);
     manageMenu->addAction(_createActionManageUsers(contextMenu));
     manageMenu->addAction(_createActionManageActivityTypes(contextMenu));
@@ -858,7 +905,7 @@ QMenu * MainFrame::_createContextMenu()
     QMenu * toolsMenu =
         contextMenu->addMenu(
             QIcon(":tt3-skin-slim/Resources/Images/Objects/SubmenuSmall.png"),
-            TR("&Tools"));
+            rr.string(RID(MenuTools.Title)));
     auto tools =
         tt3::util::ToolManager::all().values();
     std::sort(
@@ -877,7 +924,7 @@ QMenu * MainFrame::_createContextMenu()
     QMenu * reportsMenu =
         contextMenu->addMenu(
             QIcon(":tt3-skin-slim/Resources/Images/Objects/SubmenuSmall.png"),
-            TR("&Reports"));
+            rr.string(RID(MenuReports.Title)));
     reportsMenu->setEnabled(tt3::gui::theCurrentWorkspace != nullptr);
     auto reportTypes =
         tt3::report::ReportTypeManager::all().values();
@@ -899,7 +946,7 @@ QMenu * MainFrame::_createContextMenu()
     QMenu * optionsMenu =
         contextMenu->addMenu(
             QIcon(":tt3-skin-slim/Resources/Images/Objects/SubmenuSmall.png"),
-            TR("&Options"));
+            rr.string(RID(MenuOptions.Title)));
     optionsMenu->addAction(_createActionLoginAsDifferentUser(contextMenu));
     optionsMenu->addSeparator();
     optionsMenu->addAction(_createActionPreferences(contextMenu));
@@ -907,7 +954,7 @@ QMenu * MainFrame::_createContextMenu()
     QMenu * helpMenu =
         contextMenu->addMenu(
             QIcon(":tt3-skin-slim/Resources/Images/Objects/SubmenuSmall.png"),
-            TR("&Help"));
+            rr.string(RID(MenuHelp.Title)));
     helpMenu->addAction(_createActionHelpContent(contextMenu));
     helpMenu->addAction(_createActionHelpIndex(contextMenu));
     helpMenu->addAction(_createActionHelpSearch(contextMenu));
@@ -922,19 +969,21 @@ QMenu * MainFrame::_createContextMenu()
 
 QAction * MainFrame::_createActionMinimize(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action;
     if (QSystemTrayIcon::isSystemTrayAvailable())
     {   //  Minimize to system tray
         action = new QAction(
             QIcon(":/tt3-skin-slim/Resources/Images/Actions/MakeMinimizedSmall.png"),
-            TR("&Minimize to system tray"),
+            rr.string(RID(ActionMinimizeToSystemTray.Text)),
             parent);
     }
     else
     {   //  Minimize to taskbar
         action = new QAction(
             QIcon(":/tt3-skin-slim/Resources/Images/Actions/MakeMinimizedSmall.png"),
-            TR("&Minimize"),
+            rr.string(RID(ActionMinimize.Text)),
             parent);
     }
     action->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_M));
@@ -947,9 +996,11 @@ QAction * MainFrame::_createActionMinimize(QObject * parent)
 
 QAction * MainFrame::_createActionRestore(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
-        QIcon(":/tt3-skin-slim/Resources/Images/Actions/MakeWindowedSmall.png"),
-        TR("&Restore"),
+        QIcon(":/tt3-skin-slim/Resources/Images/Actions/MakeMaximizedSmall.png"),
+        rr.string(RID(ActionRestore.Text)),
         parent);
     connect(action,
             &QAction::triggered,
@@ -960,9 +1011,11 @@ QAction * MainFrame::_createActionRestore(QObject * parent)
 
 QAction * MainFrame::_createActionStopCurrentActivity(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Actions/StopSmall.png"),
-        TR("S&top current activity"),
+        rr.string(RID(ActionStopCurrentActivity.Text)),
         parent);
     action->setEnabled(gui::theCurrentActivity != nullptr);
     connect(action,
@@ -974,9 +1027,11 @@ QAction * MainFrame::_createActionStopCurrentActivity(QObject * parent)
 
 QAction * MainFrame::_createActionNewWorkspace(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Actions/CreateWorkspaceSmall.png"),
-        TR("&New workspace"),
+        rr.string(RID(ActionNewWorkspace.Text)),
         parent);
     action->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_N));
     connect(action,
@@ -988,9 +1043,11 @@ QAction * MainFrame::_createActionNewWorkspace(QObject * parent)
 
 QAction * MainFrame::_createActionOpenWorkspace(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Actions/OpenWorkspaceSmall.png"),
-        TR("&Open workspace"),
+        rr.string(RID(ActionOpenWorkspace.Text)),
         parent);
     action->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_O));
     connect(action,
@@ -1002,9 +1059,11 @@ QAction * MainFrame::_createActionOpenWorkspace(QObject * parent)
 
 QAction * MainFrame::_createActionCloseWorkspace(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Actions/CloseWorkspaceSmall.png"),
-        TR("C&lose workspace"),
+        rr.string(RID(ActionCloseWorkspace.Text)),
         parent);
     action->setEnabled(tt3::gui::theCurrentWorkspace != nullptr);
     connect(action,
@@ -1016,9 +1075,11 @@ QAction * MainFrame::_createActionCloseWorkspace(QObject * parent)
 
 QAction * MainFrame::_createActionDestroyWorkspace(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Actions/DestroyWorkspaceSmall.png"),
-        TR("&Destroy workspace"),
+        rr.string(RID(ActionDestroyWorkspace.Text)),
         parent);
     connect(action,
             &QAction::triggered,
@@ -1029,9 +1090,11 @@ QAction * MainFrame::_createActionDestroyWorkspace(QObject * parent)
 
 QAction * MainFrame::_createActionRestart(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Actions/RestartSmall.png"),
-        TR("Res&tart TimeTracker3"),
+        rr.string(RID(ActionRestart.Text)),
         parent);
     connect(action,
             &QAction::triggered,
@@ -1042,9 +1105,11 @@ QAction * MainFrame::_createActionRestart(QObject * parent)
 
 QAction * MainFrame::_createActionExit(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Actions/ExitSmall.png"),
-        TR("E&xit"),
+        rr.string(RID(ActionExit.Text)),
         parent);
     action->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_X));
     connect(action,
@@ -1056,9 +1121,11 @@ QAction * MainFrame::_createActionExit(QObject * parent)
 
 QAction * MainFrame::_createActionManageUsers(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Objects/UserSmall.png"),
-        TR("&1 - Users"),
+        rr.string(RID(ActionManageUsers.Text)),
         parent);
     action->setShortcut(QKeySequence(Qt::Key_1));
     connect(action,
@@ -1070,9 +1137,11 @@ QAction * MainFrame::_createActionManageUsers(QObject * parent)
 
 QAction * MainFrame::_createActionManageActivityTypes(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Objects/ActivityTypeSmall.png"),
-        TR("&2 - Activity types"),
+        rr.string(RID(ActionManageActivityTypes.Text)),
         parent);
     action->setShortcut(QKeySequence(Qt::Key_2));
     connect(action,
@@ -1084,9 +1153,11 @@ QAction * MainFrame::_createActionManageActivityTypes(QObject * parent)
 
 QAction * MainFrame::_createActionManagePublicActivities(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Objects/PublicActivitySmall.png"),
-        TR("&3 - Public activities"),
+        rr.string(RID(ActionManagePublicActivities.Text)),
         parent);
     action->setShortcut(QKeySequence(Qt::Key_3));
     connect(action,
@@ -1098,9 +1169,11 @@ QAction * MainFrame::_createActionManagePublicActivities(QObject * parent)
 
 QAction * MainFrame::_createActionManagePublicTasks(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Objects/PublicTaskSmall.png"),
-        TR("&4 - Public tasks"),
+        rr.string(RID(ActionManagePublicTasks.Text)),
         parent);
     action->setShortcut(QKeySequence(Qt::Key_4));
     connect(action,
@@ -1112,9 +1185,11 @@ QAction * MainFrame::_createActionManagePublicTasks(QObject * parent)
 
 QAction * MainFrame::_createActionManagePrivateActivities(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Objects/PrivateActivitySmall.png"),
-        TR("&5 - Private activities"),
+        rr.string(RID(ActionManagePrivateActivities.Text)),
         parent);
     action->setShortcut(QKeySequence(Qt::Key_5));
     connect(action,
@@ -1126,9 +1201,11 @@ QAction * MainFrame::_createActionManagePrivateActivities(QObject * parent)
 
 QAction * MainFrame::_createActionManagePrivateTasks(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Objects/PrivateTaskSmall.png"),
-        TR("&6 - Private tasks"),
+        rr.string(RID(ActionManagePrivateTasks.Text)),
         parent);
     action->setShortcut(QKeySequence(Qt::Key_6));
     connect(action,
@@ -1140,9 +1217,11 @@ QAction * MainFrame::_createActionManagePrivateTasks(QObject * parent)
 
 QAction * MainFrame::_createActionManageProjects(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Objects/ProjectSmall.png"),
-        TR("&7 - Projects"),
+        rr.string(RID(ActionManageProjects.Text)),
         parent);
     action->setShortcut(QKeySequence(Qt::Key_7));
     connect(action,
@@ -1154,9 +1233,11 @@ QAction * MainFrame::_createActionManageProjects(QObject * parent)
 
 QAction * MainFrame::_createActionManageWorkStreams(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Objects/WorkStreamSmall.png"),
-        TR("&8 - Work streams"),
+        rr.string(RID(ActionManageWorkStreams.Text)),
         parent);
     action->setShortcut(QKeySequence(Qt::Key_8));
     connect(action,
@@ -1168,9 +1249,11 @@ QAction * MainFrame::_createActionManageWorkStreams(QObject * parent)
 
 QAction * MainFrame::_createActionManageBeneficiaries(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Objects/BeneficiarySmall.png"),
-        TR("&9 - Beneficiaries"),
+        rr.string(RID(ActionManageBeneficiaries.Text)),
         parent);
     action->setShortcut(QKeySequence(Qt::Key_9));
     connect(action,
@@ -1182,9 +1265,11 @@ QAction * MainFrame::_createActionManageBeneficiaries(QObject * parent)
 
 QAction * MainFrame::_createActionManageMyDay(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Misc/MyDaySmall.png"),
-        TR("&0 - My day"),
+        rr.string(RID(ActionManageMyDay.Text)),
         parent);
     action->setShortcut(QKeySequence(Qt::Key_0));
     connect(action,
@@ -1196,9 +1281,11 @@ QAction * MainFrame::_createActionManageMyDay(QObject * parent)
 
 QAction * MainFrame::_createActionQuickReports(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Misc/QuickReportSmall.png"),
-        TR("&Quick reports"),
+        rr.string(RID(ActionQuickReports.Text)),
         parent);
     action->setShortcut(QKeySequence(Qt::Key_Q));
     connect(action,
@@ -1250,9 +1337,11 @@ QAction * MainFrame::_createActionInvokeReport(
 
 QAction * MainFrame::_createActionLoginAsDifferentUser(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Actions/LoginSmall.png"),
-        TR("&Login as a different user"),
+        rr.string(RID(ActionLoginAsDifferentUser.Text)),
         parent);
     action->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_L));
     connect(action,
@@ -1264,9 +1353,11 @@ QAction * MainFrame::_createActionLoginAsDifferentUser(QObject * parent)
 
 QAction * MainFrame::_createActionPreferences(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Actions/PreferencesSmall.png"),
-        TR("&Preferences"),
+        rr.string(RID(ActionPreferences.Text)),
         parent);
     action->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_P));
     connect(action,
@@ -1278,9 +1369,11 @@ QAction * MainFrame::_createActionPreferences(QObject * parent)
 
 QAction * MainFrame::_createActionHelpContent(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Actions/HelpContentSmall.png"),
-        TR("&Content"),
+        rr.string(RID(ActionHelpContent.Text)),
         parent);
     action->setShortcut(QKeySequence(Qt::Key_F1));
     connect(action,
@@ -1292,9 +1385,11 @@ QAction * MainFrame::_createActionHelpContent(QObject * parent)
 
 QAction * MainFrame::_createActionHelpIndex(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Actions/HelpIndexSmall.png"),
-        TR("&Index"),
+        rr.string(RID(ActionHelpIndex.Text)),
         parent);
     connect(action,
             &QAction::triggered,
@@ -1305,9 +1400,11 @@ QAction * MainFrame::_createActionHelpIndex(QObject * parent)
 
 QAction * MainFrame::_createActionHelpSearch(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Actions/HelpSearchSmall.png"),
-        TR("&Search"),
+        rr.string(RID(ActionHelpSearch.Text)),
         parent);
     connect(action,
             &QAction::triggered,
@@ -1318,9 +1415,11 @@ QAction * MainFrame::_createActionHelpSearch(QObject * parent)
 
 QAction * MainFrame::_createActionAbout(QObject * parent)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
     QAction * action = new QAction(
         QIcon(":/tt3-skin-slim/Resources/Images/Actions/AboutSmall.png"),
-        TR("A&bout TimeTracker3"),
+        rr.string(RID(ActionAbout.Text)),
         parent);
     action->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_F1));
     connect(action,
@@ -1395,7 +1494,6 @@ void MainFrame::_onActionMinimize()
         {   //  Minimize to system tray
             _trayIcon = new QSystemTrayIcon();
             _trayIcon->setIcon(QIcon(":/tt3-skin-slim/Resources/Images/Misc/Tt3Large.png")); // Ensure icon is in Qt resources
-            _trayIcon->setToolTip(TR("TimeTracker3"));
             _contextMenu.reset(_createContextMenu());
             _trayIcon->setContextMenu(_contextMenu.get());
             connect(_trayIcon,
@@ -1410,6 +1508,7 @@ void MainFrame::_onActionMinimize()
             setWindowState(Qt::WindowMinimized);
         }
     }
+    refresh();  //  to refrest tray icon tooltip
 }
 
 void MainFrame::_onActionRestore()

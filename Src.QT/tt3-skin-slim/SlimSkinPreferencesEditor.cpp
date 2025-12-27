@@ -1,6 +1,6 @@
 //
 //  tt3-skin-slim/SlimSkinPreferencesEditor.cpp - tt3::skin::slim::SlimSkinPreferencesEditor class implementation
-//  TODO Localize via Resources
+//
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
 //
@@ -25,7 +25,13 @@ SlimSkinPreferencesEditor::SlimSkinPreferencesEditor(
     ) : tt3::gui::PreferencesEditor(parent),
         _ui(new Ui::SlimSkinPreferencesEditor)
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(SlimSkinPreferencesEditor));
+
     _ui->setupUi(this);
+
+    //  Set static control values
+    _ui->alwaysOnTopCheckBox->setText(
+        rr.string(RID(AlwaysOnTopCheckBox)));
 
     //  Start off with current values from Settings
     loadControlValues();
@@ -60,7 +66,6 @@ void SlimSkinPreferencesEditor::saveControlValues()
         Skin::instance()->_mainFrame->setAlwaysOnTop(
             _ui->alwaysOnTopCheckBox->isChecked());
     }
-    //  TODO
 }
 
 void SlimSkinPreferencesEditor::resetControlValues()

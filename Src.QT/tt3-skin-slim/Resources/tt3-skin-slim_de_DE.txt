@@ -15,9 +15,53 @@ Description=Bietet eine minimalistische Benutzeroberfläche für TimeTracker3-Be
 [SlimSkinPreferences]
 DisplayName=Schlank-Skin
 
+[SlimSkinPreferencesEditor]
+AlwaysOnTopCheckBox=Immer im Vordergrund, wenn sichtbar
+
 [MainFrame]
 Title=TimeTracker3
 Title.ReadOnlySuffix=[schreibgeschützt]
 Title.CurrentActivity=Aktuelle Aktivität: {0}
+StopCurrentActivityButton=Aktuelle Aktivität beenden
+
+MenuFile.Title=&Datei
+MenuManage.Title=&Verwalten
+MenuTools.Title=&Werkzeuge
+MenuReports.Title=&Berichte
+MenuOptions.Title=&Optionen
+MenuHelp.Title=&Hilfe
+
+ActionMinimizeToSystemTray.Text=&In die Taskleiste minimieren
+ActionMinimize.Text=&Minimieren
+ActionRestore.Text=&Wiederherstellen
+ActionStopCurrentActivity.Text=Aktuelle Aktivität beenden
+
+ActionNewWorkspace.Text=&Neuer Arbeitsbereich
+ActionOpenWorkspace.Text=Arbeitsbereich ö&ffnen
+ActionCloseWorkspace.Text=Arbeitsbereich sch&ließen
+ActionDestroyWorkspace.Text=Arbeitsbereich lös&chen
+ActionRestart.Text=TimeTracker3 neu s&tarten
+ActionExit.Text=Be&enden
+
+ActionManageUsers.Text=&1 – Benutzer verwalten
+ActionManageActivityTypes.Text=&2 – Aktivitätstypen verwalten
+ActionManagePublicActivities.Text=&3 – Öffentliche Aktivitäten verwalten
+ActionManagePublicTasks.Text=&4 – Öffentliche Aufgaben verwalten
+ActionManagePrivateActivities.Text=&5 – Private Aktivitäten verwalten
+ActionManagePrivateTasks.Text=&6 – Private Aufgaben verwalten
+ActionManageProjects.Text=&7 – Projekte verwalten
+ActionManageWorkStreams.Text=&8 – Arbeitsströme verwalten
+ActionManageBeneficiaries.Text=&9 – Begünstigte verwalten
+ActionManageMyDay.Text=&0 – Meinen Tag verwalten
+
+ActionQuickReports.Text=&Schnellberichte
+
+ActionLoginAsDifferentUser.Text=&Als anderer Benutzer anmelden
+ActionPreferences.Text=&Einstellungen
+
+ActionHelpContent.Text=&Hilfeinhalt
+ActionHelpIndex.Text=&Hilfeindex
+ActionHelpSearch.Text=&Hilfesuche
+ActionAbout.Text=Ü&ber TimeTracker3
 
 CannotDestroyWorkspaceError=Arbeitsbereich {0}\nkann nicht gelöscht werden, da\ner aktuell verwendet wird.

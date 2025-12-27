@@ -29,6 +29,8 @@ namespace tt3::skin::slim
         Q_OBJECT
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(MainFrame)
 
+        friend class Skin;
+
         //////////
         //  Constants
     public:
@@ -50,6 +52,8 @@ namespace tt3::skin::slim
         //////////
         //  QWidget
     protected:
+        virtual bool    event(QEvent * event) override;
+
         /// \brief
         ///     Called to handle a "window move" event
         /// \param event
@@ -116,6 +120,7 @@ namespace tt3::skin::slim
             QRect       rect;
             QColor      bias;
             bool        pressed = false;
+            QString     text;   //  populated when painted
         };
 
         struct _ActivityAreaImpl : public _ControlAreaImpl

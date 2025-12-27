@@ -94,6 +94,7 @@
 #include <QTextDocumentFragment>
 #include <QThread>
 #include <QTimer>
+#include <QToolTip>
 #include <QTreeWidgetItem>
 #include <QUrl>
 #include <QUuid>

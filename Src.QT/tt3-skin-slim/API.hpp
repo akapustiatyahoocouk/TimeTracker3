@@ -25,7 +25,6 @@
 //////////
 //  tt3-skin-slim components
 #include "tt3-skin-slim/Linkage.hpp"
-//  TODO kill ? #include "tt3-skin-slim/Classes.hpp"
 #include "tt3-skin-slim/Component.hpp"
 
 #include "tt3-skin-slim/Preferences.hpp"

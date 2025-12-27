@@ -20,8 +20,6 @@
         <file>Resources/Images/Actions/LoginSmall.png</file>
         <file>Resources/Images/Actions/MakeMinimizedLarge.png</file>
         <file>Resources/Images/Actions/MakeMinimizedSmall.png</file>
-        <file>Resources/Images/Actions/MakeWindowedLarge.png</file>
-        <file>Resources/Images/Actions/MakeWindowedSmall.png</file>
         <file>Resources/Images/Actions/ManageUsersLarge.png</file>
         <file>Resources/Images/Actions/ManageUsersSmall.png</file>
         <file>Resources/Images/Actions/OpenWorkspaceLarge.png</file>
@@ -65,5 +63,7 @@
         <file>Resources/tt3-skin-slim_de_DE.txt</file>
         <file>Resources/tt3-skin-slim_en_GB.txt</file>
         <file>Resources/tt3-skin-slim_ru_RU.txt</file>
+        <file>Resources/Images/Actions/MakeMaximizedLarge.png</file>
+        <file>Resources/Images/Actions/MakeMaximizedSmall.png</file>
     </qresource>
 </RCC>

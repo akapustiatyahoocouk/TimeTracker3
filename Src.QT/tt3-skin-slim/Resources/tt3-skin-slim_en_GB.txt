@@ -15,9 +15,53 @@ Description=Provides minimalistic GUI for TimeTracker3 users
 [SlimSkinPreferences]
 DisplayName=Slim skin
 
+[SlimSkinPreferencesEditor]
+AlwaysOnTopCheckBox=Always on top when visible
+
 [MainFrame]
 Title=TimeTracker3
 Title.ReadOnlySuffix=[read-only]
 Title.CurrentActivity=Current activity: {0}
+StopCurrentActivityButton=Stop current activity
+
+MenuFile.Title=&File
+MenuManage.Title=&Manage
+MenuTools.Title=&Tools
+MenuReports.Title=&Reports
+MenuOptions.Title=&Options
+MenuHelp.Title=&Help
+
+ActionMinimizeToSystemTray.Text=&Minimize to system tray
+ActionMinimize.Text=&Minimize
+ActionRestore.Text=&Restore
+ActionStopCurrentActivity.Text=S&top current activity
+
+ActionNewWorkspace.Text=&New workspace
+ActionOpenWorkspace.Text=&Open workspace
+ActionCloseWorkspace.Text=C&lose workspace
+ActionDestroyWorkspace.Text=&Destroy workspace
+ActionRestart.Text=Res&tart TimeTracker3
+ActionExit.Text=E&xit
+
+ActionManageUsers.Text=&1 - Manage users
+ActionManageActivityTypes.Text=&2 - Manage activity types
+ActionManagePublicActivities.Text=&3 - Manage public activities
+ActionManagePublicTasks.Text=&4 - Manage public tasks
+ActionManagePrivateActivities.Text=&5 - Manage private activities
+ActionManagePrivateTasks.Text=&6 - Manage private tasks
+ActionManageProjects.Text=&7 - Manage projects
+ActionManageWorkStreams.Text=&8 - Manage work streams
+ActionManageBeneficiaries.Text=&9 - Manage beneficiaries
+ActionManageMyDay.Text=&0 - Manage my day
+
+ActionQuickReports.Text=&Quick reports
+
+ActionLoginAsDifferentUser.Text=&Login as a different user
+ActionPreferences.Text=&Preferences
+
+ActionHelpContent.Text=&Content
+ActionHelpIndex.Text=&Index
+ActionHelpSearch.Text=&Search
+ActionAbout.Text=A&bout TimeTracker3
 
 CannotDestroyWorkspaceError=Cannot destroy workspace\n{0}\n because it is currently in use.
