@@ -36,16 +36,24 @@ CONFIG(debug, debug|release) {
 
 exists($${PWD}/$${COMPONENT_NAME}/Help) {
     #   Pick up project-specific help as a .zip file
-    QMAKE_POST_LINK += pwd $$escape_expand(\\n\\t)
-    QMAKE_POST_LINK += cd $$shell_path($${PWD}/$${COMPONENT_NAME}/Help) $$escape_expand(\\n\\t)
-    QMAKE_POST_LINK += pwd $$escape_expand(\\n\\t)
-    QMAKE_POST_LINK += rm -f $$shell_path($${DESTDIR}/Help/$${TARGET}.zip) $$escape_expand(\\n\\t)
     QMAKE_POST_LINK += $$sprintf($${QMAKE_MKDIR_CMD}, $$shell_path($${DESTDIR}/Help)) $$escape_expand(\\n\\t)
-    QMAKE_POST_LINK += "zip -r $$shell_path($${DESTDIR}/Help/$${TARGET}.zip) . -x \"_vti_cnf/*\" -x \"*/_vti_cnf/*\" -x \"_vti_pvt/*\" -x \"*/_vti_pvt/*\" -x desktop.ini" $$escape_expand(\\n\\t)
-    QMAKE_POST_LINK += cd $${OUT_PWD} $$escape_expand(\\n\\t)
-    QMAKE_POST_LINK += pwd $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += rm -f makehelp.bat $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += echo pwd >> makehelp.bat $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += echo cd $$shell_path($${PWD}/$${COMPONENT_NAME}/Help) >> makehelp.bat $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += echo pwd >> makehelp.bat $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += echo rm -f $$shell_path($${DESTDIR}/Help/$${TARGET}.zip) >> makehelp.bat $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += echo "zip -r $$shell_path($${DESTDIR}/Help/$${TARGET}.zip) . -x \"_vti_cnf/*\" -x \"*/_vti_cnf/*\" -x \"_vti_pvt/*\" -x \"*/_vti_pvt/*\" -x desktop.ini" >> makehelp.bat $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += echo cd $${OUT_PWD} >> makehelp.bat $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += echo pwd >> makehelp.bat $$escape_expand(\\n\\t)
+    win32 {
+        QMAKE_POST_LINK += makehelp.bat $$escape_expand(\\n\\t)
+    }
+    unix {
+        QMAKE_POST_LINK += bash makehelp.bat $$escape_expand(\\n\\t)
+    }
     #   Schedule proper cleanup
     QMAKE_CLEAN += $$shell_path($${DESTDIR}/Help/$${TARGET}.zip)
+    QMAKE_CLEAN += rm -f makehelp.bat $$escape_expand(\\n\\t)
 } else {
     #   Make sure there is no project-specific help
     QMAKE_POST_LINK += rm -f $$shell_path($${DESTDIR}/Help/$${TARGET}.zip) $$escape_expand(\\n\\t)

@@ -33,7 +33,7 @@ struct WorkspaceTypeManager::_Impl
     {
         auto newDatabaseTypes = tt3::db::api::DatabaseTypeManager::all();
         //  Add new entries...
-        for (auto databaseType : newDatabaseTypes)
+        for (auto databaseType : std::as_const(newDatabaseTypes))
         {
             if (!registry.contains(databaseType))
             {

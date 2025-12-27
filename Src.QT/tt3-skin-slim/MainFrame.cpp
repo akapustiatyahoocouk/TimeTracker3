@@ -109,7 +109,7 @@ bool MainFrame::event(QEvent * event)
     {
         QHelpEvent * helpEvent = static_cast<QHelpEvent*>(event);
         QString tooltip;
-        for (auto controlArea : _controlAreas)
+        for (const auto & controlArea : std::as_const(_controlAreas))
         {
             if (controlArea->rect.contains(helpEvent->pos()))
             {
@@ -158,7 +158,7 @@ void MainFrame::mousePressEvent(QMouseEvent * event)
     {
         _dragAnchor = event->pos(); //  in case we start dragging
         //  Control area click start ?
-        for (auto controlArea : _controlAreas)
+        for (const auto & controlArea : std::as_const(_controlAreas))
         {
             if (controlArea->rect.contains(event->pos()) &&
                 tt3::gui::theCurrentWorkspace != nullptr &&
@@ -179,7 +179,7 @@ void MainFrame::mouseReleaseEvent(QMouseEvent * event)
         _dragging = false;
         //  Un-press everything
         tt3::ws::Activity activity = nullptr;
-        for (auto controlArea : _controlAreas)
+        for (const auto & controlArea : std::as_const(_controlAreas))
         {
             if (controlArea->rect.contains(event->pos()) &&
                 controlArea->pressed)
@@ -228,7 +228,7 @@ void MainFrame::mouseMoveEvent(QMouseEvent * event)
             QRect r = this->frameGeometry();
             this->move(r.x() + dx, r.y() + dy);
             //  Un-press everything
-            for (auto controlArea : _controlAreas)
+            for (const auto & controlArea : std::as_const(_controlAreas))
             {
                 controlArea->pressed = false;
             }
