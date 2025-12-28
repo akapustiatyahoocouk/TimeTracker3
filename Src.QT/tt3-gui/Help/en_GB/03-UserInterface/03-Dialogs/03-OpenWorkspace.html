@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Open Workspace dialog</title>
+<link href="../../../css/tt3.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<h1>Open Workspace dialog</h1>
+<hr />
+<p>The Open Workspace dialog is invoked when the user wants to open an already 
+existing workspace.</p>
+<p>
+<img alt="Open Workspace dialog" height="247" src="../../../images/Dialogs/03-OpenWorkspace.png" width="569" /></p>
+<p>The fields in the Open&nbsp; Workspace dialog allow the user to specify:</p>
+<ul>
+	<li><strong>Workspace type</strong> - TimeTracker3 allows using a variety of 
+	technologies to store workspaces, the simplest one of which is storing the 
+	entire workspace in a single XML file in the local file system (this is the 
+	choice ideal for individual users who need to track their working time). 
+	Other workspace types will be available depending on the installed 
+	TimeTracker3 configuration and may range from local (or remote) databases to 
+	a full-fledged remote storage.</li>
+	<li><strong>Workspace location</strong> - a workspace is uniquely identified 
+	by its "location", the exact nature of which varies with the workspace type. 
+	For XML file workspaces this will be the full path to the XML file where the 
+	workspace resides. Workspace locations are <em>not</em> directly editable; 
+	instead, the <strong>Browse</strong> button will pop up the dialog where the 
+	user can choose the location of an existing workspace in a manner 
+	appropriate for the chosen workspace type.</li>
+	<li><strong>Open as</strong> - TimeTracker allows to explicitly specify how 
+	to open an existing workspace, which can be one of:<ul>
+		<li><strong>Default</strong> - workspace will be open in read/write 
+		mode, allowing both reading and modification. However, if it is not 
+		possible, an attempt will be made to open the workspace in read-only 
+		mode.</li>
+		<li><strong>Read Only</strong> - workspace will allow only reading from; 
+		any modification of the workspace will not be permitted, This is foot 
+		for e.g. backing up a workspace or generating reports from it.</li>
+		<li><strong>Read/Write</strong> - workspace will allow modifications as 
+		well as reading. If the workspace actually exists but only allows read 
+		access (for example, when a workspace resides in a read-only file), an 
+		attempt to open it in this mode will fail/</li>
+	</ul>
+	</li>
+</ul>
+<p>When opening a workspace, TimeTracker3 will check whether the current login 
+credentials (as previously entered in the Login dialog) grant access to that 
+workspace. If not, the user will be given a choice whether to re-login with 
+different credentials, that <em>do</em> grant access to the workspace in 
+question, or to abandon the workspace opening and remain working with the 
+currently open workspace (if there is such).</p>
+<p>When switching between workspaces, the previous workspace is cleanly closed 
+before switching to the new one. Specifically, if any Activity is in the process 
+of being recorded, its recording will stop (and the corresponding Work unit will 
+be logged) before the previous workspace is closed.</p>
+<hr />
+<p class="seealso">See also: -</p>
+<h2>&nbsp;</h2>
+
+</body>
+
+</html>

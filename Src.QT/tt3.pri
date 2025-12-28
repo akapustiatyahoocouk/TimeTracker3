@@ -1,6 +1,6 @@
 QT += core gui widgets xml charts webenginewidgets
 
-TT3_VERSION=1.0.0
+TT3_VERSION=0.0.1
 
 CONFIG += c++20 strict_c++
 CONFIG += force_debug_info

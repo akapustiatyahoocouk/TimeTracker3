@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>457</width>
-    <height>201</height>
+    <width>464</width>
+    <height>202</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -146,6 +146,15 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>workspaceTypeComboBox</tabstop>
+  <tabstop>locationLineEdit</tabstop>
+  <tabstop>browsePushButton</tabstop>
+  <tabstop>userNameLineEdit</tabstop>
+  <tabstop>loginLineEdit</tabstop>
+  <tabstop>passwordLineEdit</tabstop>
+  <tabstop>confirmPasswordLineEdit</tabstop>
+ </tabstops>
  <resources>
   <include location="tt3-gui.qrc"/>
  </resources>
