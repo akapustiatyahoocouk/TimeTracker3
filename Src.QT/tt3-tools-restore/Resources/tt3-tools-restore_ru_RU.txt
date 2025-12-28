@@ -1,0 +1,43 @@
+[Plugin]
+DisplayName=Восстановление данных TimeTracker3
+Description=Поддержка восстановления данных TimeTracker3
+Copyright=Авторское право (C) {0}, Андрей Капустин
+
+[Component]
+DisplayName=Восстановление данных TimeTracker3
+Description=Поддержка восстановления данных данных TimeTracker3
+Copyright=Авторское право (C) {0}, Андрей Капустин
+
+[RestoreTool]
+DisplayName=Восстановление данных
+Description=Выполняет восстановление базы данных
+
+[ConfigureRestoreDialog]
+Title=Восстановить рабочую область
+RestoreFromLabel=Восстановить из:
+RestoreFromPushButton=Выбрать
+RestoreIntoLabel=--- В ---
+WorkspaceTypeLabel=Тип рабочей области:
+LocationLabel=Местоположение:
+BrowsePushButton=Выбрать
+OkPushButton=ОК
+CancelPushButton=Отмена
+RestoreFromDialogTitle=Восстановить из файла
+RestoreFromDialogFilter=Файлы резервной копии TimeTracker3 (*{0});;Все файлы (*.*)
+
+[RestoreProgressDialog]
+Title=Восстановление рабочей области
+RestoreLabel=Восстановление:
+FromLabel=Из файла:
+CancelPushButton=Отмена
+
+[RestoreCompletedDialog]
+Title=Восстановление завершено
+Message=Рабочая область\n{0}\nбыла успешно восстановлена из\n{1}.
+
+[RestoreCancelledDialog]
+Title=Восстановление прервано
+Message=Операция восстановления прервана
+
+[Errors]
+BackupFileCorruptException=Файл резервной копии {0} повреждён.

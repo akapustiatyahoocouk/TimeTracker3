@@ -1,0 +1,42 @@
+[Plugin]
+DisplayName=TimeTracker3 Backup
+Description=Defines data backup solution for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[Component]
+DisplayName=TimeTracker3 Backup
+Description=Defines data backup solution for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[BackupTool]
+DisplayName=Backup
+Description=Performs database backup
+
+[ConfigureBackupDialog]
+Title=Backup workspace
+BackupCurrentWorkspaceRadioButton=Backup current workspace
+OrLabel=--- Or ---
+BackupCustomWorkspaceRadioButton=Backup custom workspace
+WorkspaceTypeLabel=Workspace type:
+LocationLabel=Location:
+BrowsePushButton=Browse
+BackupToLabel=Backup to:
+BackupToPushButton=Browse
+OkPushButton=OK
+CancelPushButton=Cancel
+BackupToDialogTitle=Backup to file
+BackupToDialogFilter=TimeTracker3 backup files (*{0});;All files (*.*)
+
+[BackupProgressDialog]
+Title=Backup workspace
+BackupLabel=Backing up:
+ToLabel=To:
+CancelPushButton=Cancel
+
+[BackupCompletedDialog]
+Title=Backup completed
+Message=The workspace\n{0}\nhas been successfully backed up to\n{1}.
+
+[BackupCancelledDialog]
+Title=Backup cancelled
+Message=The backup operation has been cancelled

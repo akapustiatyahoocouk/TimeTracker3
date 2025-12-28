@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>tt3::gui::GeneralAppearancePreferencesEditor</class>
+ <widget class="QWidget" name="tt3::gui::GeneralAppearancePreferencesEditor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>266</width>
+    <height>145</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="languageLabel">
+     <property name="text">
+      <string>Language:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QComboBox" name="languageComboBox"/>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="skinLabel">
+     <property name="text">
+      <string>Skin:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QComboBox" name="skinComboBox"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="themeLabel">
+     <property name="text">
+      <string>Theme:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="themeComboBox"/>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>languageComboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>tt3::gui::GeneralAppearancePreferencesEditor</receiver>
+   <slot>_languageComboBoxCurrentIndexChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>173</x>
+     <y>24</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>135</x>
+     <y>39</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>skinComboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>tt3::gui::GeneralAppearancePreferencesEditor</receiver>
+   <slot>_skinComboBoxCurrentIndexChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>187</x>
+     <y>59</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>149</x>
+     <y>53</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>themeComboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>tt3::gui::GeneralAppearancePreferencesEditor</receiver>
+   <slot>_themeComboBoxCurrentIndexChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>187</x>
+     <y>77</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>149</x>
+     <y>53</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_languageComboBoxCurrentIndexChanged(int)</slot>
+  <slot>_skinComboBoxCurrentIndexChanged(int)</slot>
+  <slot>_themeComboBoxCurrentIndexChanged(int)</slot>
+ </slots>
+</ui>

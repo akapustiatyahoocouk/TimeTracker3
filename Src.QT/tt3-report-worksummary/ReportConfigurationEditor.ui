@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>tt3::report::worksummary::ReportConfigurationEditor</class>
+ <widget class="QWidget" name="tt3::report::worksummary::ReportConfigurationEditor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>510</width>
+    <height>346</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="4" column="3">
+    <widget class="QRadioButton" name="yearToDateRadioButton">
+     <property name="text">
+      <string>Year to date</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">dateRangeButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="QRadioButton" name="currentMonthRadioButton">
+     <property name="text">
+      <string>Current month</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">dateRangeButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="1" column="1" colspan="2">
+    <widget class="QLabel" name="userNamesLabel">
+     <property name="text">
+      <string>USER NAMES</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QRadioButton" name="singleUserRadioButton">
+     <property name="text">
+      <string>Single user</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">scopeButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QRadioButton" name="yesterdayRadioButton">
+     <property name="text">
+      <string>Yesterday</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">dateRangeButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QRadioButton" name="weekToDateRadioButton">
+     <property name="text">
+      <string>Week to date</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">dateRangeButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QPushButton" name="selectUsersPushButton">
+     <property name="text">
+      <string>Select</string>
+     </property>
+     <property name="icon">
+      <iconset resource="tt3-report-worksummary.qrc">
+       <normaloff>:/tt3-report-worksummary/Resources/Images/Actions/BrowseSmall.png</normaloff>:/tt3-report-worksummary/Resources/Images/Actions/BrowseSmall.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <widget class="QRadioButton" name="multipleUsersRadioButton">
+     <property name="text">
+      <string>Multiple users</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">scopeButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="5" column="2">
+    <widget class="QDateEdit" name="fromDateEdit">
+     <property name="calendarPopup">
+      <bool>true</bool>
+     </property>
+     <property name="timeSpec">
+      <enum>Qt::TimeSpec::LocalTime</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QRadioButton" name="todayRadioButton">
+     <property name="text">
+      <string>Today</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">dateRangeButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="scopeLabel">
+     <property name="text">
+      <string>Scope:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <widget class="QRadioButton" name="monthToDateRadioButton">
+     <property name="text">
+      <string>Month to date</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">dateRangeButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="10" column="0">
+    <widget class="QLabel" name="hoursPerDayLabel">
+     <property name="text">
+      <string>Hours per day:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="2">
+    <widget class="QCheckBox" name="weeklyDataCheckBox">
+     <property name="text">
+      <string>Weekly data</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QRadioButton" name="currentUserRadioButton">
+     <property name="text">
+      <string>Current user</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">scopeButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="2" column="3">
+    <widget class="QRadioButton" name="lastWeekRadioButton">
+     <property name="text">
+      <string>Last week</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">dateRangeButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QRadioButton" name="customDatesRadioButton">
+     <property name="text">
+      <string>From/to:</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">dateRangeButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="6" column="2">
+    <widget class="QRadioButton" name="groupByActivityRadioButton">
+     <property name="text">
+      <string>Activity</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">groupingButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="3" column="3">
+    <widget class="QRadioButton" name="currentYearRadioButton">
+     <property name="text">
+      <string>Current year</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">dateRangeButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="usersLabel">
+     <property name="text">
+      <string>Users:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QRadioButton" name="currentWeekRadioButton">
+     <property name="text">
+      <string>Current week</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">dateRangeButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="dateRangeLabel">
+     <property name="text">
+      <string>Date range:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1">
+    <widget class="QRadioButton" name="groupByActivityTypeRadioButton">
+     <property name="text">
+      <string>Activity type</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">groupingButtonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="groupByLabel">
+     <property name="text">
+      <string>Group by:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="0">
+    <widget class="QLabel" name="includeLabel">
+     <property name="text">
+      <string>Include:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="3">
+    <widget class="QDateEdit" name="toDateEdit">
+     <property name="calendarPopup">
+      <bool>true</bool>
+     </property>
+     <property name="timeSpec">
+      <enum>Qt::TimeSpec::LocalTime</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="QCheckBox" name="dailyDataCheckBox">
+     <property name="text">
+      <string>Daily data</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="1">
+    <widget class="QCheckBox" name="monthlyDataCheckBox">
+     <property name="text">
+      <string>Monthly data</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="2">
+    <widget class="QCheckBox" name="yearlyDataCheckBox">
+     <property name="text">
+      <string>Yearly data</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="1">
+    <widget class="QLineEdit" name="hoursPerDayLineEdit"/>
+   </item>
+   <item row="10" column="2">
+    <widget class="QLabel" name="weekStartLabel">
+     <property name="text">
+      <string>Week starts on:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="3">
+    <widget class="QComboBox" name="weekStartComboBox"/>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>currentUserRadioButton</tabstop>
+  <tabstop>singleUserRadioButton</tabstop>
+  <tabstop>multipleUsersRadioButton</tabstop>
+  <tabstop>selectUsersPushButton</tabstop>
+  <tabstop>todayRadioButton</tabstop>
+  <tabstop>yesterdayRadioButton</tabstop>
+  <tabstop>lastWeekRadioButton</tabstop>
+  <tabstop>currentWeekRadioButton</tabstop>
+  <tabstop>currentMonthRadioButton</tabstop>
+  <tabstop>currentYearRadioButton</tabstop>
+  <tabstop>weekToDateRadioButton</tabstop>
+  <tabstop>monthToDateRadioButton</tabstop>
+  <tabstop>yearToDateRadioButton</tabstop>
+  <tabstop>customDatesRadioButton</tabstop>
+  <tabstop>fromDateEdit</tabstop>
+  <tabstop>toDateEdit</tabstop>
+  <tabstop>groupByActivityTypeRadioButton</tabstop>
+  <tabstop>groupByActivityRadioButton</tabstop>
+  <tabstop>dailyDataCheckBox</tabstop>
+  <tabstop>weeklyDataCheckBox</tabstop>
+ </tabstops>
+ <resources>
+  <include location="tt3-report-worksummary.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>currentUserRadioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_scopeRadioButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>152</x>
+     <y>23</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>240</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>singleUserRadioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_scopeRadioButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>279</x>
+     <y>23</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>240</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>multipleUsersRadioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_scopeRadioButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>409</x>
+     <y>23</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>240</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>todayRadioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_dateRangeRadioButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>152</x>
+     <y>89</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>240</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>currentWeekRadioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_dateRangeRadioButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>279</x>
+     <y>89</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>240</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>currentMonthRadioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_dateRangeRadioButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>409</x>
+     <y>89</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>240</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>weekToDateRadioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_dateRangeRadioButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>152</x>
+     <y>121</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>240</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>monthToDateRadioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_dateRangeRadioButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>279</x>
+     <y>121</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>240</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>yearToDateRadioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_dateRangeRadioButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>409</x>
+     <y>121</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>240</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>customDatesRadioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_dateRangeRadioButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>152</x>
+     <y>155</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>240</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fromDateEdit</sender>
+   <signal>dateChanged(QDate)</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_fromToDateChanged(QDate)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>279</x>
+     <y>155</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>240</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>toDateEdit</sender>
+   <signal>dateChanged(QDate)</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_fromToDateChanged(QDate)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>409</x>
+     <y>155</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>240</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>selectUsersPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_selectUsersPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>409</x>
+     <y>58</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>240</x>
+     <y>160</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dailyDataCheckBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_includeCheckBoxStateChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>176</x>
+     <y>253</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>172</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>weeklyDataCheckBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_includeCheckBoxStateChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>307</x>
+     <y>253</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>172</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>monthlyDataCheckBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_includeCheckBoxStateChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>176</x>
+     <y>285</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>172</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>yearlyDataCheckBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_includeCheckBoxStateChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>307</x>
+     <y>285</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>172</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hoursPerDayLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::report::worksummary::ReportConfigurationEditor</receiver>
+   <slot>_hoursPerDayLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>176</x>
+     <y>318</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>172</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_scopeRadioButtonClicked()</slot>
+  <slot>_dateRangeRadioButtonClicked()</slot>
+  <slot>_fromToDateChanged(QDate)</slot>
+  <slot>_selectUsersPushButtonClicked()</slot>
+  <slot>_includeCheckBoxStateChanged(int)</slot>
+  <slot>_hoursPerDayLineEditTextChanged(QString)</slot>
+ </slots>
+ <buttongroups>
+  <buttongroup name="groupingButtonGroup"/>
+  <buttongroup name="scopeButtonGroup"/>
+  <buttongroup name="dateRangeButtonGroup"/>
+ </buttongroups>
+</ui>

@@ -1,0 +1,164 @@
+//
+//  tt3-tools-backup/BackupTool.cpp - BackupTool class implementation
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+#include "tt3-tools-backup/API.hpp"
+using namespace tt3::tools::backup;
+
+//////////
+//  Singleton
+TT3_IMPLEMENT_SINGLETON(BackupTool)
+BackupTool::BackupTool() {}
+BackupTool::~BackupTool() {}
+
+//////////
+//  tt3::uti::ITool
+BackupTool::Mnemonic BackupTool::mnemonic() const
+{
+    return M(Backup);
+}
+
+QString BackupTool::displayName() const
+{
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(BackupTool), RID(DisplayName));
+}
+
+QString BackupTool::description() const
+{
+    static Component::Resources *const resources = Component::Resources::instance();   //  idempotent
+    return resources->string(RSID(BackupTool), RID(Description));
+}
+
+QIcon BackupTool::smallIcon() const
+{
+    static const QIcon icon(":/tt3-tools-backup/Resources/Images/Misc/BackupSmall.png");
+    return icon;
+}
+
+QIcon BackupTool::largeIcon() const
+{
+    static const QIcon icon(":/tt3-tools-backup/Resources/Images/Misc/BackupLarge.png");
+    return icon;
+}
+
+bool BackupTool::isEnabled() const
+{
+    return true;
+}
+
+void BackupTool::run(QWidget * parent)
+{
+    Q_ASSERT(QThread::currentThread()->eventDispatcher() != nullptr);
+
+    //  Select workspace to backup
+    ConfigureBackupDialog dlg(parent);
+    if (dlg.doModal() != ConfigureBackupDialog::Result::Ok)
+    {
+        return;
+    }
+    tt3::ws::WorkspaceAddress workspaceAddress = dlg.selectedWorkspaceAddress();
+    tt3::ws::Workspace workspace;
+    if (tt3::gui::theCurrentWorkspace != nullptr &&
+        tt3::gui::theCurrentWorkspace->address() == workspaceAddress)
+    {   //  Use current workspace
+        workspace = tt3::gui::theCurrentWorkspace;
+    }
+    else
+    {   //  Use custom workspace
+        workspace =
+            workspaceAddress->workspaceType()->openWorkspace(   //  may throw
+                workspaceAddress,
+                tt3::ws::OpenMode::ReadOnly);
+    }
+    //  Make sure we're using the Credentials that grant
+    //  the BackupAndRestore (or Administrator) capability
+    tt3::ws::Credentials credentials = tt3::gui::theCurrentCredentials;
+    while (!credentials.isValid() ||
+           !workspace->grantsAny(   //  may throw
+                credentials,
+                tt3::ws::Capability::Administrator |
+                tt3::ws::Capability::BackupAndRestore))
+    {   //  Need to use different credentials
+        tt3::gui::ChooseReloginDialog dlg1(parent, workspaceAddress);
+        if (dlg1.doModal() != tt3::gui::ChooseReloginDialog::Result::Yes)
+        {   //  Cleanup & abort
+            if (tt3::gui::theCurrentWorkspace != workspace)
+            {
+                workspace->close();     //  may throw, but irrelevant at this point
+            }
+            return;
+        }
+        //  The user has confirmed they want to re-login
+        tt3::gui::LoginDialog dlg2(parent, QString());
+        if (dlg2.doModal() != tt3::gui::LoginDialog::Result::Ok)
+        {   //  Cleanup & abort
+            if (tt3::gui::theCurrentWorkspace != workspace)
+            {
+                workspace->close();     //  may throw, but irrelevant at this point
+            }
+            return;
+        }
+        credentials = dlg2.credentials();
+    }
+    //  At this point, we have a) the workspace to backup
+    //  and b) the credentials that allow to do so
+    QString backupDestination = dlg.selectedBackupDestination();
+    bool backupSuccessful = false;
+    try
+    {
+        BackupWriter backupWriter(
+            workspace,
+            credentials,
+            backupDestination);
+        backupSuccessful =
+            backupWriter.backupWorkspace(); //  may throw
+        //  BackupWriter's destructor closes the backup file
+    }
+    catch (...)
+    {   //  Cleanup, then re-throw
+        if (workspace != tt3::gui::theCurrentWorkspace.operator ->())
+        {
+            workspace->close();     //  may throw, but irrelevant at this point
+        }
+        throw;
+    }
+    //  Cleanup before returning
+    if (tt3::gui::theCurrentWorkspace != workspace)
+    {
+        workspace->close();     //  may throw, but irrelevant at this point
+    }
+
+    if (backupSuccessful)
+    {   //  Pop up the "backup completed" message
+        tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(BackupCompletedDialog));
+        tt3::gui::MessageDialog::show(
+            parent,
+            rr.string(RID(Title)),
+            rr.string(RID(Message),
+                      workspaceAddress->displayForm(),
+                      backupDestination));
+    }
+    else
+    {   //  Pop up the "backup cancelled" message
+        tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(BackupCancelledDialog));
+        tt3::gui::MessageDialog::show(
+            parent,
+            rr.string(RID(Title)),
+            rr.string(RID(Message)));
+    }
+}
+
+//  End of tt3-tools-backup/BackupTool.cpp

@@ -1,0 +1,35 @@
+//
+//  tt3-skin-slim/API.hpp - tt3-skin-slim master header
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+#pragma once
+
+//////////
+//  Dependencies
+#include "tt3-report/API.hpp"
+#include "tt3-gui/API.hpp"
+#include "tt3-util/API.hpp"
+
+//////////
+//  tt3-skin-slim components
+#include "tt3-skin-slim/Linkage.hpp"
+#include "tt3-skin-slim/Component.hpp"
+
+#include "tt3-skin-slim/Preferences.hpp"
+#include "tt3-skin-slim/SlimSkinPreferencesEditor.hpp"
+#include "tt3-skin-slim/MainFrame.hpp"
+#include "tt3-skin-slim/Skin.hpp"
+
+//  End of tt3-skin-slim/API.hpp

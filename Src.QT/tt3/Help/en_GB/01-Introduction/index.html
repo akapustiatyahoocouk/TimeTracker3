@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-gb" http-equiv="Content-Language" />
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Introducing TimeTracker3</title>
+<link href="../../css/tt3.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<h1>Introducing TimeTracker3</h1>
+    <hr>
+    
+    <p>TimeTracker3 is a tool that allows a computer user to 
+	record their daily progress through various activities they have to 
+	undertake.</p>
+	<p>TimeTracker3 was originally designed to meet the needs of software engineers and 
+	developers, who have to perform many different tasks during their working 
+	hours, switching from one to another; however, it can be useful for e.g. 
+	office workers - or, indeed, anyone who needs to do many things at once and 
+	to keep track of how their time is used.</p>
+	<p>The key features of TimeTracker3 are:</p>
+	<ul>
+	  <li>Ease of use.</li>
+	  <li>Portability.</li>
+	  <li>Localisation.</li>
+	</ul>
+    
+    <h2>Ease of use</h2>
+
+    <hr/>
+    <p>Before TimeTracker3 was born, a prototype (TimeTracker) was created and used in 
+	real-life projects, both commercial and open source, for several years. That 
+	gave a unique perspective to what was done right in the first place, what 
+	features needed to be added, and what features needed to change to better 
+	suit the needs of a TimeTracker3 user.</p>
+    
+    <h2>Portability</h2>
+	<p>TimeTracker3 is written in C++/Qt. This means that it can be used on any platform 
+	that supports Qt 6.10 or later - this includes Windows (10/11), Linux 
+	(GNOME and KDE UIs), and MacOS. TimeTracker3 has, in fact, been successfully tested 
+	on all these platforms.</p>
+    
+    <h2>Localisation</h2>
+	<p>TimeTracker3 is designed from the ground up to be usable internationally. It will 
+	"speak" the language of your choice; additional language packs can be added 
+	to a TimeTracker3 installation as needed.</p>
+<h2>A tool, not a web application</h2>
+<p>TimeTracker3 is a locally installed tool (and not a web application, which 
+are popular) because:</p>
+<ul>
+	<li>It is specifically required to handle the "offline" situations, where 
+	someone may need to temporarily work in an environment where access to 
+	Internet is absent (no connection at all) or limited (blocked depending on 
+	e.g. country). For a web application these situations are a showstopper. 
+	TimeTracker3 will allow its user to continue recording the daily work 
+	locally and later, when it becomes possible, to "merge" their records into 
+	the "main/organisation" workspace.</li>
+	<li>It requires tight integration with the underlying platform for several 
+	of its key features. One example is detecting when the user has left the 
+	computer (AFK, away-from-keyboard") - simply recognising the fact that user 
+	has not interacted with TimeTracker3 for a long time is not enough - the 
+	user may be busy doing their daily work, such as "development" or 
+	"dev-testing"), which TimeTracker3 must remain ticking in the background, 
+	recording the time.</li>
+	<li>A web application will not work in an environment where heightened 
+	security is required, such as an organisation where internal security policy 
+	prohibits enabling client-side JavaScript, or a situation where certain key 
+	computers are not connected to a network at all.</li>
+</ul>
+	<p class="seealso">
+        See also:
+        -
+    	</p>
+
+
+</body>
+
+</html>

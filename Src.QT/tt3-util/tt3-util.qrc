@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/tt3-util">
+        <file>Resources/Images/Objects/ComponentLarge.png</file>
+        <file>Resources/Images/Objects/ComponentSmall.png</file>
+        <file>Resources/Images/Objects/LicenseLarge.png</file>
+        <file>Resources/Images/Objects/LicenseSmall.png</file>
+        <file>Resources/Images/Objects/PluginLarge.png</file>
+        <file>Resources/Images/Objects/PluginSmall.png</file>
+        <file>Resources/Images/Objects/SubsystemLarge.png</file>
+        <file>Resources/Images/Objects/SubsystemSmall.png</file>
+        <file>Resources/Licenses/GPLv3_de.html</file>
+        <file>Resources/Licenses/GPLv3_en.html</file>
+        <file>Resources/Licenses/GPLv3_ru.html</file>
+        <file>Resources/tt3-util_en_GB.txt</file>
+        <file>Resources/tt3-util_de_DE.txt</file>
+        <file>Resources/tt3-util_ru_RU.txt</file>
+        <file>Resources/Images/Locales/de_DE_Large.png</file>
+        <file>Resources/Images/Locales/de_DE_Small.png</file>
+        <file>Resources/Images/Locales/en_GB_Large.png</file>
+        <file>Resources/Images/Locales/en_GB_Small.png</file>
+        <file>Resources/Images/Locales/ru_RU_Large.png</file>
+        <file>Resources/Images/Locales/ru_RU_Small.png</file>
+        <file>Resources/Images/Locales/WorldLarge.png</file>
+        <file>Resources/Images/Locales/WorldSmall.png</file>
+    </qresource>
+</RCC>

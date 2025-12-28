@@ -1,0 +1,98 @@
+[Component]
+DisplayName=TimeTracker3 reporting
+Description=Defines reporting framework for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[BasicReportTemplate]
+DisplayName=Basic (built-in)
+Report.Title=Title
+Report.Subtitle=Subtitle
+
+[HtmlReportFormat]
+DisplayName=HTML document
+Description=Saves report as a self-contained HTML page
+TableOfContent=Table of content
+
+[ReportTemplateManagerTool]
+DisplayName=Report template manager
+Description=Manages available Report Templates
+
+[ManageReportTemplatesDialog]
+Title=Manage report templates
+TemplatesGroupBox=Report templates
+PreviewGroupBox=Preview
+PreviewGroupBox.NotAvailable=Preview not avalable
+PreviewGroupBox.Available=Preview of {0}
+ExportPushButton=Export
+ImportPushButton=Import
+RemovePushButton=Remove
+PredefinedReportTemplates=Predefined report templates
+CustomReportTemplates=Custom report templates
+GeneratingPreview=Generating preview...
+OkPushButton=OK
+
+ExportReportTemplate=Export report template
+ImportReportTemplate=Import report template
+ReportTemplateFilter=TT3 report templates (*{0});;All files (*.*)
+ExportCompletedTitle=Export completed
+ExportCompletedMessage=Report template\n{0}\nhas been exported to\n{1}.
+RemoveReportTemplateTitle=Remove report template
+RemoveReportTemplatePrompt=Are you sure you want to remove the report template {0} ({1}) ?
+
+PreviewReport.Chapter1=1. Concerns greatest margaret
+PreviewReport.Paragraph1=Ignorant saw her her drawings marriage laughter. Case oh an that or away sigh do here upon. Acuteness you exquisite ourselves now end forfeited. Enquire ye without it garrets up himself. Interest our nor received followed was. Cultivated an up solicitude mr unpleasant.
+PreviewReport.ListItem1=Delightful unreserved impossible few estimating men favourable see entreaties.
+PreviewReport.ListItem2=She propriety immediate was improving. He or entrance humoured likewise moderate. Much nor game son say feel. Fat make met can must form into gate. Me we offending prevailed discovery.
+PreviewReport.ListItem3=Gasoline shakes beliefs widely held, while love was always the second best.
+PreviewReport.Chapter11=1.1 Promotion an ourselves
+PreviewReport.Chapter12=1.2 Perpetual sincerity
+PreviewReport.Paragraph2=Examine she brother prudent add day ham. Far stairs now coming bed oppose hunted become his.
+PreviewReport.Paragraph3=You zealously departure had procuring suspicion. Books whose front would purse if be do decay. Quitting you way formerly disposed perceive ladyship are. Common turned boy direct and yet.
+PreviewReport.Chapter2=2. Attended no do thoughts
+PreviewReport.Paragraph4=Woody equal ask saw sir weeks aware decay. Entrance prospect removing we packages strictly is no smallest he. For hopes may chief get hours day rooms. Oh no turned behind polite piqued enough at. Forbade few through inquiry blushes you.
+PreviewReport.TableHeading=Nihilism is like a painted flower
+PreviewReport.TableCell11=Issue #1
+PreviewReport.TableCell12=Is allowance instantly strangers applauded discourse so. Separate entrance welcomed sensible laughing why one moderate shy. We seeing piqued garden he. As in merry at forth least ye stood. And cold sons yet with. Delivered middleton therefore me at. Attachment companions man way excellence how her pianoforte.
+PreviewReport.TableCell21=Issue #2
+PreviewReport.TableCell22=Same an quit most an. Admitting an mr disposing sportsmen. Tried on cause no spoil arise plate. Longer ladies valley get esteem use led six. Middletons resolution advantages expression themselves partiality so me at. West none hope if sing oh sent tell is.
+PreviewReport.Link1=Go to the top
+
+[CreateReportDialog]
+Title=Generate report
+ReportAndDestinationGroupBox=Report and destination
+ReportTypeLabel=Report type:
+ReportFormatLabel=Report format:
+ReportTemplateLabel=Report template:
+DestinationLabel=Destination:
+BrowsePushButton=Browse
+ConfiguratiokGroupBox=Report configuration
+OkPushButton=OK
+CancelPushButton=Cancel
+SelectDestinationTitle=Select report destination
+SelectDestinationFilter={0} (*{1});;All files (*.*)
+
+[ReportProgressDialog]
+Title=Generating report
+GeneratingLabel=Generating: {0}
+WritingToLabel=Saving report to: {0}
+CancelPushButton=Cancel
+
+[ReportCancelledDialog]
+Title=Report cancelled
+Message=The report generation has been cancelled
+
+[ReportCreatedDialog]
+Title=Report created
+PromptLabel1=The report
+PromptLabel2=has been created successfully. Would you like to...
+OpenFilePushButton=Open the report
+OpenLocationPushButton=Open report location
+keepWorkingPushButton=Keep working
+
+[Errors]
+InvalidReportTemplateException=Invalid report template
+ReportTemplateAlreadyExistsException=Report template {0} ({1}) already exists
+ReportTemplateDoesNotExistException=Report template {0} does not exist
+StyleDoesNotExistException=Style {0} does not exist in report template {1} ({2})
+InvalidReportException=Invalid or corrupt report
+InvalidReportConfigurationException=Invalid or incompatible report configuration

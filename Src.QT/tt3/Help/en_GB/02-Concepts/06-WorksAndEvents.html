@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Works and Events</title>
+<link href="../../css/tt3.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<h1>Works and Events</h1>
+    <hr>
+    
+    <p>TimeTracker3 uses Works and Events to record the daily log of what each 
+	team member was working on. This allows both managing one's daily effort on 
+	a day-by-day basis and integrating this daily logs into aggregated 
+	activity/effort reports.</p>
+<p>
+<img alt="Works and Events" height="100%" src="../../images/Domain/WorksAndEvents.png" width="100%" /></p>
+<h1>Works</h1>
+<p>A Work (also called a Work Unit) is a record of the fact that a specific 
+period of time was dedicated to working on a specific Activity or Task. For such 
+a Work Unit, the following information is recorded:</p>
+<ul>
+	<li>Its <strong>start</strong> and <strong>end</strong> times.</li>
+	<li>Its associated <strong>Account</strong> (who did the work?)</li>
+	<li>Its associated <strong>Activity or Task</strong> (what was the time 
+	spent on?)</li>
+</ul>
+<p>TimeTracker3 will normally not allow removing recorded Work Units from the 
+historical data. Of course, someone acting as a "workspace administrator" may do 
+anything they need within the managed workspace, including the removal or old or 
+irrelevant Work Units but even then the practice is strongly discouraged.</p>
+<h2>Events</h2>
+<p>An Event is a record that, at some moment in the past, something relevant to 
+the daily work has happened. There are several kinds of Events that TimeTracker3 
+recognises and records:</p>
+<ul>
+	<li>Activity (or Task) start/end events - TimeTracker3 allows configuring 
+	specific Activities (and Tasks) to actively require the user to enter a 
+	comment when starting or stopping that specific Activity or Task (or both 
+	when starting and stopping the one).</li>
+	<li>Task completion comments - TimeTracker3 allows configuring Tasks so as 
+	to actively require the user to enter a comment when marking that Task as 
+	"completed".</li>
+	<li>Arbitrary comments - TimeTracker allows the user to enter an arbitrary 
+	comment at any time during the working day, even if that user is currently 
+	working on some Activity or Task. These comments allow for better historical 
+	perspective on what happened during a given day.</li>
+</ul>
+<p>For every Event, the following information is recorded:</p>
+<ul>
+	<li>Its <strong>occurrence</strong> time.</li>
+	<li>Its associated <strong>Account</strong> (who logged the comment?)</li>
+	<li>Its associated <strong>Activities or Tasks</strong> (which of these the 
+	comment is related to?)</li>
+</ul>
+<p>Similarly to recorded Work Units, TimeTracker3 will normally not allow 
+removing recorded Events from the historical data. Again, someone acting as a 
+"workspace administrator" may do anything they need within the managed 
+workspace, including removal of old or irrelevant Events, but even then the 
+practice is strongly discouraged.</p>
+    
+    <hr/>
+    <p class="seealso">
+        See also: -</p>
+
+</body>
+
+</html>

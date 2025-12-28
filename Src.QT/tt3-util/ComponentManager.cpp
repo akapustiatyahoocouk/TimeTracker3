@@ -1,0 +1,417 @@
+//
+//  tt3-util/ComponentManager.cpp - tt3::util::ComponentManager class implementation
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+#include "tt3-util/API.hpp"
+using namespace tt3::util;
+
+struct ComponentManager::_Impl
+{
+    using Registry = QMap<Mnemonic, IComponent*>;
+
+    Mutex       guard;
+    Registry    registry;
+};
+
+namespace
+{
+    QString iniFileName()
+    {
+        QDir home = QDir::home();
+        return home.filePath(".tt3");
+    }
+}
+
+//////////
+//  Operations
+Components ComponentManager::all()
+{
+    _Impl * impl = _impl();
+    Lock _(impl->guard);
+
+    QList<IComponent*> values = impl->registry.values();
+    return Components(values.cbegin(), values.cend());
+}
+
+bool ComponentManager::register(IComponent * component)
+{
+    Q_ASSERT(component != nullptr);
+
+    _Impl * impl = _impl();
+    Lock _(impl->guard);
+
+    if (IComponent * registeredComponent = find(component->mnemonic(), component->version()))
+    {
+        return component == registeredComponent;
+    }
+    if (!SubsystemManager::register(component->subsystem()))
+    {   //  OOPS! Can't proceed!
+        return false;
+    }
+    Mnemonic key = component->mnemonic() + "|" + util::toString(component->version());
+    impl->registry[key] = component;
+    return true;
+}
+
+bool ComponentManager::unregister(
+        IComponent * component
+    )
+{
+    Q_ASSERT(component != nullptr);
+
+    _Impl * impl = _impl();
+    Lock _(impl->guard);
+
+    auto key = component->mnemonic();
+    if (impl->registry.contains(key) &&
+        impl->registry[key] == component)
+    {   //  Guard against an impersonator
+        impl->registry.remove(key);
+        return true;
+    }
+    return false;
+}
+
+IComponent * ComponentManager::find(
+        const tt3::util::Mnemonic & mnemonic,
+        const QVersionNumber & version
+    )
+{
+    _Impl * impl = _impl();
+    Lock _(impl->guard);
+
+    Mnemonic key = mnemonic + "|" + toString(version);
+    return impl->registry.contains(key) ? impl->registry[key] : nullptr;
+}
+
+IComponent * ComponentManager::find(
+        const Mnemonic & mnemonic
+    )
+{
+    _Impl * impl = _impl();
+    Lock _(impl->guard);
+
+    IComponent * result = nullptr;
+    for (IComponent * component : impl->registry.values())
+    {
+        if (component->mnemonic() == mnemonic)
+        {
+            if (result == nullptr ||
+                component->version() > result->version())
+            {
+                result = component;
+            }
+        }
+    }
+    return result;
+}
+
+void ComponentManager::discoverComponents(
+        ProgressListener progressListener
+    )
+{
+    ResourceReader rr(Component::Resources::instance(), RSID(ComponentManager));
+
+    QString startupDirectory = QCoreApplication::applicationDirPath();
+    QString exeFile = QCoreApplication::applicationFilePath();
+    //  Discover DLLs/SOs and load Components from them
+    const auto entryInfos = QDir(startupDirectory).entryInfoList();
+    if (progressListener != nullptr)
+    {
+        progressListener(
+            rr.string(RID(DiscoveringComponents)),
+            "",
+            0.0);
+    }
+    for (int i = 0; i < entryInfos.size(); i++)
+    {
+        auto entryInfo = entryInfos[i];
+        if (entryInfo.isFile() &&
+#if defined(Q_OS_WINDOWS)
+            entryInfo.baseName().startsWith("tt3-") &&
+            entryInfo.fileName().endsWith(".dll") &&
+#elif defined(Q_OS_LINUX)
+            entryInfo.baseName().startsWith("libtt3-") &&
+            entryInfo.fileName().endsWith(".so") &&
+#else
+    #error Unsupported platform
+#endif
+            entryInfo.absoluteFilePath() != exeFile)
+        {
+            if (progressListener != nullptr)
+            {
+                progressListener(
+                    rr.string(RID(DiscoveringComponents)),
+                    entryInfo.absoluteFilePath(),
+                    float(i + 1) / float(entryInfos.size() + 1));
+            }
+            _loadLibrary(entryInfo.absoluteFilePath());
+        }
+    }
+    if (progressListener != nullptr)
+    {
+        progressListener(
+            rr.string(RID(DiscoveringComponents)),
+            "",
+            1.0);
+    }
+}
+
+void ComponentManager::initializeComponents(
+        ProgressListener progressListener
+    )
+{
+    ResourceReader rr(Component::Resources::instance(), RSID(ComponentManager));
+
+    _Impl * impl = _impl();
+    Lock _(impl->guard);
+
+    //  Count components - we'll need these counts
+    //  to report initialization progress
+    qsizetype totalComponents = impl->registry.values().size();
+    qsizetype initializedComponents = 0;
+    for (auto component : impl->registry.values())
+    {
+        if (component->_initialized)
+        {
+            initializedComponents++;
+        }
+    }
+    //  Go!
+    if (progressListener != nullptr)
+    {
+        progressListener(
+            rr.string(RID(InitializingComponents)),
+            "",
+            0.0);
+    }
+    for (bool keepGoing = true; keepGoing; )
+    {
+        keepGoing = false;
+        for (auto component : impl->registry.values())
+        {
+            if (!component->_initialized)
+            {   //  Try this one!
+                if (progressListener != nullptr)
+                {
+                    progressListener(
+                        rr.string(RID(InitializingComponents)),
+                        component->displayName(),
+                        float(initializedComponents) / float(totalComponents));
+                }
+                try
+                {
+                    component->initialize(); //  may throw
+                    component->_initialized = true;
+                    initializedComponents++;
+                    keepGoing = true;
+                }
+                catch (const Exception & ex)
+                {   //  OOPS! Log, but suppress
+                    qCritical() << ex;
+                }
+                catch (const Error & ex)
+                {   //  OOPS! Log, but suppress
+                    qCritical() << ex;
+                }
+                catch (...)
+                {   //  OOPS! Suppress, though
+                }
+            }
+        }
+
+    }
+    if (progressListener != nullptr)
+    {
+        progressListener(
+            rr.string(RID(InitializingComponents)),
+            "",
+            1.0);
+    }
+}
+
+void ComponentManager::deinitializeComponents()
+{
+    _Impl * impl = _impl();
+    Lock _(impl->guard);
+
+    for (auto component : impl->registry.values())
+    {
+        if (component->_initialized)
+        {
+            try
+            {   //  Be defensive - cleanup as many as possible
+                component->deinitialize();
+            }
+            catch (const Exception & ex)
+            {   //  OOPS! Log, but suppress
+                qCritical() << ex;
+            }
+            catch (const Error & ex)
+            {   //  OOPS! Log, but suppress
+                qCritical() << ex;
+            }
+            catch (...)
+            {   //  OOPS! Suppress, though
+            }
+            component->_initialized = false;
+        }
+    }
+}
+
+void ComponentManager::loadComponentSettings()
+{
+    _Impl * impl = _impl();
+    Lock _(impl->guard);
+
+    QFile iniFile(iniFileName());
+    if (iniFile.open(QIODevice::ReadOnly))
+    {
+        IComponent * currentComponent = nullptr;
+        QTextStream iniStream(&iniFile);
+        while (!iniStream.atEnd())
+        {
+            QString line = iniStream.readLine();
+            //  Section header ?
+            line  = line .trimmed();
+            if (line.startsWith("[") && line.endsWith("]"))
+            {
+                int separatorIndex = static_cast<int>(line.indexOf(':'));
+                if (separatorIndex == -1)
+                {
+                    currentComponent = nullptr;
+                    continue;
+                }
+                try
+                {
+                    Mnemonic componentMnemonic(line.mid(1, separatorIndex - 1));
+                    QVersionNumber componentVersion(fromString<QVersionNumber>(line.mid(separatorIndex + 1, line.length() - separatorIndex - 2)));
+                    currentComponent = find(componentMnemonic, componentVersion);
+                    continue;
+                }
+                catch (const ParseException & ex)
+                {
+                    qCritical() << ex;
+                    currentComponent = nullptr;
+                    continue;
+                }
+            }
+            //  <name> = <value>?
+            int eqIndex = static_cast<int>(line.indexOf('='));
+            if (eqIndex == -1 || currentComponent == nullptr)
+            {
+                continue;
+            }
+            Mnemonic settingMnemonic(line.mid(0, eqIndex).trimmed());
+            QString settingValueString(line.mid(eqIndex + 1).trimmed());
+            if (AbstractSetting * setting = currentComponent->settings()->findSetting(settingMnemonic))
+            {
+                setting->setValueString(settingValueString);
+            }
+        }
+    }
+    else
+    {   //  OOPS! Log, but suppress
+        qCritical() << iniFile.errorString();
+    }
+}
+
+void ComponentManager::saveComponentSettings()
+{
+    _Impl * impl = _impl();
+    Lock _(impl->guard);
+
+    QFile iniFile(iniFileName());
+    if (iniFile.open(QIODevice::WriteOnly))
+    {
+        QTextStream iniStream(&iniFile);
+
+        auto components = ComponentManager::all().values();
+        std::sort(
+            components.begin(),
+            components.end(),
+            [](auto a, auto b)
+            {
+                return a->mnemonic() < b->mnemonic();
+            });
+        for (IComponent * component : std::as_const(components))
+        {   //  Sorted by component mnemonic to simplify lookin text editor
+            iniStream << "["
+                      << component->mnemonic().toString()
+                      << ":"
+                      << toString(component->version())
+                      << "]"
+                      << Qt::endl;
+
+            QList<AbstractSetting*> componentSettings =
+                component->settings()->settings().values();
+            std::sort(
+                componentSettings.begin(),
+                componentSettings.end(),
+                [](auto a, auto b)
+                {
+                    return a->mnemonic() < b->mnemonic();
+                });
+            for (AbstractSetting * setting : std::as_const(componentSettings))
+            {   //  Sorted by setting mnemonic to simplify lookin text editor
+                iniStream << setting->mnemonic().toString()
+                          << "="
+                          << setting->valueString()
+                          << Qt::endl;
+            }
+            iniStream << Qt::endl;
+        }
+    }
+    else
+    {   //  OOPS! Log, but suppress
+        qCritical() << iniFile.errorString();
+    }
+}
+
+//////////
+//  Implementation helpers
+ComponentManager::_Impl * ComponentManager::_impl()
+{
+    static _Impl impl;
+    return &impl;
+}
+
+void ComponentManager::_loadLibrary(const QString & fileName)
+{
+    _Impl * impl = _impl();
+
+    //  Load file as a library.
+    //  NOTE, that we don't bother checking if a DLL has already
+    //  been loaded earlier - it it has, then its repeated loading
+    //  will define no new Components (because they were all registered
+    //  by static Component::Registrators when the DLL was loaded
+    //  for the 1st time), so we can safely undo the re-load.
+    qsizetype numComponents = impl->registry.size();
+    QLibrary library(fileName);
+    if (!library.load())
+    {   // OOPS! Can't!
+        return;
+    }
+    //  Upon successful load, the number of registered
+    //  Components MAY go up - otherwise we can just
+    //  unload the livrary we've just loaded
+    if (impl->registry.size() == numComponents)
+    {   //  The library defines no new Components
+        library.unload();
+        return;
+    }
+}
+
+//  End of tt3-util/ComponentManager.cpp

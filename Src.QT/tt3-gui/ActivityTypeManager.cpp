@@ -1,0 +1,578 @@
+//
+//  tt3-gui/ActivityTypeManager.cpp - tt3::gui::ActivityTypeManager class implementation
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+#include "tt3-gui/API.hpp"
+#include "ui_ActivityTypeManager.h"
+using namespace tt3::gui;
+
+namespace tt3::gui
+{
+    extern CurrentTheme theCurrentTheme;
+    extern CurrentCredentials theCurrentCredentials;
+    extern CurrentWorkspace theCurrentWorkspace;
+}
+
+//////////
+//  Construction/destruction
+ActivityTypeManager::ActivityTypeManager(
+        QWidget * parent
+    ) : QWidget(parent),
+        //  Implementation
+        _workspace(theCurrentWorkspace),
+        _credentials(theCurrentCredentials),
+        //  Controls
+        _ui(new Ui::ActivityTypeManager)
+{
+    _ui->setupUi(this);
+    _decorations = TreeWidgetDecorations(_ui->activityTypesTreeWidget);
+    _applyCurrentLocale();
+
+    //  Theme change means widget decorations change
+    connect(&theCurrentTheme,
+            &CurrentTheme::changed,
+            this,
+            &ActivityTypeManager::_currentThemeChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Locale change requires UI translation
+    connect(&tt3::util::theCurrentLocale,
+            &tt3::util::CurrentLocale::changed,
+            this,
+            &ActivityTypeManager::_currentLocaleChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Must listen to delayed refresh requests
+    connect(this,
+            &ActivityTypeManager::refreshRequested,
+            this,
+            &ActivityTypeManager::_refreshRequested,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Start listening for change notifications
+    //  on the currently "viewed" Workspace
+    _startListeningToWorkspaceChanges();
+}
+
+ActivityTypeManager::~ActivityTypeManager()
+{
+    _stopListeningToWorkspaceChanges();
+    delete _ui;
+}
+
+//////////
+//  Operaions
+tt3::ws::Workspace ActivityTypeManager::workspace() const
+{
+    return _workspace;
+}
+
+void ActivityTypeManager::setWorkspace(tt3::ws::Workspace workspace)
+{
+    if (workspace != _workspace)
+    {
+        _stopListeningToWorkspaceChanges();
+        _workspace = workspace;
+        _startListeningToWorkspaceChanges();
+        requestRefresh();
+    }
+}
+
+tt3::ws::Credentials ActivityTypeManager::credentials() const
+{
+    return _credentials;
+}
+
+void ActivityTypeManager::setCredentials(const tt3::ws::Credentials & credentials)
+{
+    if (credentials != _credentials)
+    {
+        _credentials = credentials;
+        requestRefresh();
+    }
+}
+
+void ActivityTypeManager::refresh()
+{
+    static const QIcon viewActivityTypeIcon(":/tt3-gui/Resources/Images/Actions/ViewActivityTypeLarge.png");
+    static const QIcon modifyActivityTypeIcon(":/tt3-gui/Resources/Images/Actions/ModifyActivityTypeLarge.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ActivityTypeManager));
+
+    //  We don't want a refresh() to trigger a recursive refresh()!
+    if (auto _ = RefreshGuard(_refreshUnderway)) //  Don't recurse!
+    {
+        try
+        {
+            if (_workspace == nullptr || !_credentials.isValid() ||
+                !_workspace->isOpen() ||
+                !_workspace->canAccess(_credentials))   //  may throw
+            {   //  Nothing to show...
+                _clearAndDisableAllControls();
+                return;
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! No point in proceesing.
+            qCritical() << ex;
+            _clearAndDisableAllControls();
+            return;
+        }
+
+        //  Otherwise some controls are always enabled...
+        _ui->filterLabel->setEnabled(true);
+        _ui->filterLineEdit->setEnabled(true);
+        _ui->activityTypesTreeWidget->setEnabled(true);
+
+        //  ...while others are enabled based on current
+        //  selection and permissions granted by Credentials
+        _WorkspaceModel workspaceModel = _createWorkspaceModel();
+        if (!_ui->filterLineEdit->text().trimmed().isEmpty())
+        {
+            _filterItems(workspaceModel);
+        }
+        _refreshWorkspaceTree(workspaceModel);
+
+        tt3::ws::ActivityType currentActivityType = _currentActivityType();
+        bool readOnly = _workspace->isReadOnly();
+        try
+        {
+            _ui->createActivityTypePushButton->setEnabled(
+                !readOnly &&
+                _workspace->grantsAny(  //  may throw
+                    _credentials,
+                    tt3::ws::Capability::Administrator |
+                    tt3::ws::Capability::ManageActivityTypes));
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & disable
+            qCritical() << ex;
+            _ui->createActivityTypePushButton->setEnabled(false);
+        }
+        _ui->modifyActivityTypePushButton->setEnabled(
+            currentActivityType != nullptr);
+        try
+        {
+            _ui->destroyActivityTypePushButton->setEnabled(
+                !readOnly &&
+                currentActivityType != nullptr &&
+                currentActivityType->canDestroy(_credentials));    //  may throw
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & disable
+            qCritical() << ex;
+            _ui->destroyActivityTypePushButton->setEnabled(false);
+        }
+
+        //  Some buttons need to be adjusted for ReadOnoly mode
+        try
+        {
+            if (currentActivityType != nullptr &&
+                !currentActivityType->workspace()->isReadOnly() &&
+                currentActivityType->canModify(_credentials))  //  may throw
+            {   //  RW
+                _ui->modifyActivityTypePushButton->setIcon(modifyActivityTypeIcon);
+                _ui->modifyActivityTypePushButton->setText(
+                    rr.string(RID(ModifyActivityTypePushButton)));
+            }
+            else
+            {   //  RO
+                _ui->modifyActivityTypePushButton->setIcon(viewActivityTypeIcon);
+                _ui->modifyActivityTypePushButton->setText(
+                    rr.string(RID(ViewActivityTypePushButton)));
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & simulate RO
+            qCritical() << ex;
+            _ui->modifyActivityTypePushButton->setIcon(viewActivityTypeIcon);
+            _ui->modifyActivityTypePushButton->setText(
+                rr.string(RID(ViewActivityTypePushButton)));
+        }
+    }
+}
+
+void ActivityTypeManager::requestRefresh()
+{
+    emit refreshRequested();
+}
+
+//////////
+//  View model
+ActivityTypeManager::_WorkspaceModel ActivityTypeManager::_createWorkspaceModel()
+{
+    auto workspaceModel = std::make_shared<_WorkspaceModelImpl>();
+    try
+    {
+        for (const auto & activityType : _workspace->activityTypes(_credentials))    //  may throw
+        {
+            workspaceModel->activityTypeModels.append(_createActivityTypeModel(activityType));
+        }
+        std::sort(
+            workspaceModel->activityTypeModels.begin(),
+            workspaceModel->activityTypeModels.end(),
+            [&](const auto & a, const auto & b)
+            {
+                return tt3::util::NaturalStringOrder::less(a->text, b->text);
+            });
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        qCritical() << ex;
+        workspaceModel->activityTypeModels.clear();
+    }
+    return workspaceModel;
+}
+
+ActivityTypeManager::_ActivityTypeModel ActivityTypeManager::_createActivityTypeModel(tt3::ws::ActivityType activityType)
+{
+    static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+
+    auto activityTypeModel =std::make_shared<_ActivityTypeModelImpl>(activityType);
+    try
+    {
+        activityTypeModel->text = activityType->displayName(_credentials);
+        activityTypeModel->icon = activityType->type()->smallIcon();
+        activityTypeModel->brush = _decorations.itemForeground;
+        activityTypeModel->font = _decorations.itemFont;
+        activityTypeModel->tooltip = activityType->description(_credentials).trimmed();
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        qCritical() << ex;
+        activityTypeModel->text = ex.errorMessage();
+        activityTypeModel->icon = errorIcon;
+        activityTypeModel->font = _decorations.itemFont;
+        activityTypeModel->brush = _decorations.errorItemForeground;
+        activityTypeModel->tooltip = ex.errorMessage();
+    }
+    return activityTypeModel;
+}
+
+void ActivityTypeManager::_filterItems(_WorkspaceModel workspaceModel)
+{
+    QString filter = _ui->filterLineEdit->text().trimmed();
+    Q_ASSERT(!filter.isEmpty());
+
+    for (qsizetype i = workspaceModel->activityTypeModels.size() - 1; i >= 0; i--)
+    {
+        _ActivityTypeModel activityTypeModel = workspaceModel->activityTypeModels[i];
+        if (activityTypeModel->text.indexOf(filter, 0, Qt::CaseInsensitive) != -1)
+        {   //  Item matches the filter - mark it as a match
+            activityTypeModel->brush = _decorations.filterMatchItemForeground;
+        }
+        else
+        {   //  Item does not match the filter
+            workspaceModel->activityTypeModels.removeAt(i);
+        }
+    }
+}
+
+void ActivityTypeManager::_refreshWorkspaceTree(
+        _WorkspaceModel workspaceModel
+    )
+{
+    Q_ASSERT(_workspace != nullptr);
+    Q_ASSERT(_credentials.isValid());
+
+    //  Make sure the "activity types" tree contains
+    //  a proper number of root (ActivityType) items...
+    while (_ui->activityTypesTreeWidget->topLevelItemCount() < workspaceModel->activityTypeModels.size())
+    {   //  Too few root (ActivityType) items
+        _ui->activityTypesTreeWidget->addTopLevelItem(new QTreeWidgetItem());
+    }
+    while (_ui->activityTypesTreeWidget->topLevelItemCount() > workspaceModel->activityTypeModels.size())
+    {   //  Too many root (ActivityType) items
+        delete _ui->activityTypesTreeWidget->takeTopLevelItem(
+            _ui->activityTypesTreeWidget->topLevelItemCount() - 1);
+    }
+    //  ...and that each top-level item represents
+    //  a proper ActivityType and has proper children
+    for (int i = 0; i < workspaceModel->activityTypeModels.size(); i++)
+    {
+        _refreshActivityTypeItem(
+            _ui->activityTypesTreeWidget->topLevelItem(i),
+            workspaceModel->activityTypeModels[i]);
+    }
+}
+
+void ActivityTypeManager::_refreshActivityTypeItem(
+        QTreeWidgetItem * activityTypeItem,
+        _ActivityTypeModel activityTypeModel
+    )
+{
+    Q_ASSERT(activityTypeItem != nullptr);
+    Q_ASSERT(activityTypeModel != nullptr);
+    Q_ASSERT(_credentials.isValid());
+
+    //  Refresh ActivityType item properties
+    activityTypeItem->setText(0, activityTypeModel->text);
+    activityTypeItem->setIcon(0, activityTypeModel->icon);
+    activityTypeItem->setForeground(0, activityTypeModel->brush);
+    activityTypeItem->setFont(0, activityTypeModel->font);
+    activityTypeItem->setToolTip(0, activityTypeModel->tooltip);
+    activityTypeItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(activityTypeModel->activityType));
+    //  There will be no further children
+    Q_ASSERT(activityTypeItem->childCount() == 0);
+}
+
+//////////
+//  Implementation helpers
+tt3::ws::ActivityType ActivityTypeManager::_currentActivityType()
+{
+    QTreeWidgetItem * item = _ui->activityTypesTreeWidget->currentItem();
+    return (item != nullptr) ?
+               item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::ActivityType>() :
+               nullptr;
+}
+
+void ActivityTypeManager::_setCurrentActivityType(tt3::ws::ActivityType activityType)
+{
+    for (int i = 0; i < _ui->activityTypesTreeWidget->topLevelItemCount(); i++)
+    {
+        QTreeWidgetItem * activityTypeItem = _ui->activityTypesTreeWidget->topLevelItem(i);
+        if (activityType == activityTypeItem->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::ActivityType>())
+        {   //  This one!
+            _ui->activityTypesTreeWidget->setCurrentItem(activityTypeItem);
+            return;
+        }
+    }
+}
+
+void ActivityTypeManager::_startListeningToWorkspaceChanges()
+{
+    if (_workspace != nullptr)
+    {
+        connect(_workspace.get(),
+                &tt3::ws::WorkspaceImpl::workspaceClosed,
+                this,
+                &ActivityTypeManager::_workspaceClosed,
+                Qt::ConnectionType::QueuedConnection);
+        connect(_workspace.get(),
+                &tt3::ws::WorkspaceImpl::objectCreated,
+                this,
+                &ActivityTypeManager::_objectCreated,
+                Qt::ConnectionType::QueuedConnection);
+        connect(_workspace.get(),
+                &tt3::ws::WorkspaceImpl::objectDestroyed,
+                this,
+                &ActivityTypeManager::_objectDestroyed,
+                Qt::ConnectionType::QueuedConnection);
+        connect(_workspace.get(),
+                &tt3::ws::WorkspaceImpl::objectModified,
+                this,
+                &ActivityTypeManager::_objectModified,
+                Qt::ConnectionType::QueuedConnection);
+    }
+}
+
+void ActivityTypeManager::_stopListeningToWorkspaceChanges()
+{
+    if (_workspace != nullptr)
+    {
+        disconnect(_workspace.get(),
+                   &tt3::ws::WorkspaceImpl::workspaceClosed,
+                   this,
+                   &ActivityTypeManager::_workspaceClosed);
+        disconnect(_workspace.get(),
+                   &tt3::ws::WorkspaceImpl::objectCreated,
+                   this,
+                   &ActivityTypeManager::_objectCreated);
+        disconnect(_workspace.get(),
+                   &tt3::ws::WorkspaceImpl::objectDestroyed,
+                   this,
+                   &ActivityTypeManager::_objectDestroyed);
+        disconnect(_workspace.get(),
+                   &tt3::ws::WorkspaceImpl::objectModified,
+                   this,
+                   &ActivityTypeManager::_objectModified);
+    }
+}
+
+void ActivityTypeManager::_clearAndDisableAllControls()
+{
+    _ui->activityTypesTreeWidget->clear();
+    _ui->filterLineEdit->setText("");
+    _ui->filterLabel->setEnabled(false);
+    _ui->filterLineEdit->setEnabled(false);
+    _ui->activityTypesTreeWidget->setEnabled(false);
+    _ui->createActivityTypePushButton->setEnabled(false);
+    _ui->modifyActivityTypePushButton->setEnabled(false);
+    _ui->destroyActivityTypePushButton->setEnabled(false);
+}
+
+void ActivityTypeManager::_applyCurrentLocale()
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ActivityTypeManager));
+
+    _ui->filterLabel->setText(
+        rr.string(RID(FilterLabel)));
+    _ui->createActivityTypePushButton->setText(
+        rr.string(RID(CreateActivityTypePushButton)));
+    _ui->modifyActivityTypePushButton->setText(
+        rr.string(RID(ModifyActivityTypePushButton)));
+    _ui->destroyActivityTypePushButton->setText(
+        rr.string(RID(DestroyActivityTypePushButton)));
+    refresh();
+}
+
+//////////
+//  Signal handlers
+void ActivityTypeManager::_currentThemeChanged(ITheme *, ITheme *)
+{
+    _ui->activityTypesTreeWidget->clear();
+    _decorations = TreeWidgetDecorations(_ui->activityTypesTreeWidget);
+    requestRefresh();
+}
+
+void ActivityTypeManager::_currentLocaleChanged(QLocale, QLocale)
+{
+    _applyCurrentLocale();
+    refresh();
+}
+
+void ActivityTypeManager::_activityTypesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)
+{
+    requestRefresh();
+}
+
+void ActivityTypeManager::_activityTypesTreeWidgetCustomContextMenuRequested(QPoint p)
+{
+    //  [re-]create the popup menu
+    _activityTypesTreeContextMenu.reset(new QMenu());
+    QAction * createActivityTypeAction =
+        _activityTypesTreeContextMenu->addAction(
+            _ui->createActivityTypePushButton->icon(),
+            _ui->createActivityTypePushButton->text());
+    QAction * modifyActivityTypeAction =
+        _activityTypesTreeContextMenu->addAction(
+            _ui->modifyActivityTypePushButton->icon(),
+            _ui->modifyActivityTypePushButton->text());
+    QAction * destroyActivityTypeAction =
+        _activityTypesTreeContextMenu->addAction(
+            _ui->destroyActivityTypePushButton->icon(),
+            _ui->destroyActivityTypePushButton->text());
+    //  Adjust menu item states
+    createActivityTypeAction->setEnabled(_ui->createActivityTypePushButton->isEnabled());
+    modifyActivityTypeAction->setEnabled(_ui->modifyActivityTypePushButton->isEnabled());
+    destroyActivityTypeAction->setEnabled(_ui->destroyActivityTypePushButton->isEnabled());
+    //  Set up signal handling
+    connect(createActivityTypeAction,
+            &QAction::triggered,
+            this,
+            &ActivityTypeManager::_createActivityTypePushButtonClicked);
+    connect(modifyActivityTypeAction,
+            &QAction::triggered,
+            this,
+            &ActivityTypeManager::_modifyActivityTypePushButtonClicked);
+    connect(destroyActivityTypeAction,
+            &QAction::triggered,
+            this,
+            &ActivityTypeManager::_destroyActivityTypePushButtonClicked);
+    //  Go!
+    _activityTypesTreeContextMenu->popup(_ui->activityTypesTreeWidget->mapToGlobal(p));
+}
+
+void ActivityTypeManager::_createActivityTypePushButtonClicked()
+{
+    try
+    {
+        CreateActivityTypeDialog dlg(this, _workspace, _credentials);   //  may throw
+        if (dlg.doModal() == CreateActivityTypeDialog::Result::Ok)
+        {   //  ActivityType created
+            refresh();  //  must refresh NOW
+            _setCurrentActivityType(dlg.createdActivityType());
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        qCritical() << ex;
+        tt3::gui::ErrorDialog::show(this, ex);
+    }
+}
+
+void ActivityTypeManager::_modifyActivityTypePushButtonClicked()
+{
+    if (auto activityType = _currentActivityType())
+    {
+        try
+        {
+            ModifyActivityTypeDialog dlg(this, activityType, _credentials); //  may throw
+            if (dlg.doModal() == ModifyActivityTypeDialog::Result::Ok)
+            {   //  ActivityType modified - its position in the activity types tree may have changed
+                refresh();  //  must refresh NOW
+                _setCurrentActivityType(activityType);
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            qCritical() << ex;
+            ErrorDialog::show(this, ex);
+            requestRefresh();
+        }
+    }
+}
+
+void ActivityTypeManager::_destroyActivityTypePushButtonClicked()
+{
+    if (auto activityType = _currentActivityType())
+    {
+        try
+        {
+            DestroyActivityTypeDialog dlg(this, activityType, _credentials); //  may throw
+            if (dlg.doModal() == DestroyActivityTypeDialog::Result::Ok)
+            {   //  Destroyed
+                requestRefresh();
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            qCritical() << ex;
+            ErrorDialog::show(this, ex);
+            requestRefresh();
+        }
+    }
+}
+
+void ActivityTypeManager::_filterLineEditTextChanged(QString)
+{
+    requestRefresh();
+}
+
+void ActivityTypeManager::_workspaceClosed(tt3::ws::WorkspaceClosedNotification /*notification*/)
+{
+    requestRefresh();
+}
+
+void ActivityTypeManager::_objectCreated(tt3::ws::ObjectCreatedNotification /*notification*/)
+{
+    requestRefresh();
+}
+
+void ActivityTypeManager::_objectDestroyed(tt3::ws::ObjectDestroyedNotification /*notification*/)
+{
+    requestRefresh();
+}
+
+void ActivityTypeManager::_objectModified(tt3::ws::ObjectModifiedNotification /*notification*/)
+{
+    requestRefresh();
+}
+
+void ActivityTypeManager::_refreshRequested()
+{
+    refresh();
+}
+
+//  End of tt3-gui/ActivityTypeManager.cpp

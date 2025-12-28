@@ -1,0 +1,66 @@
+[Component]
+DisplayName=TimeTracker3 work summary report
+Description=Reports working time grouped by period and activity
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[ReportType]
+DisplayName=Work summary
+Description=Reports working time grouped by period and activity
+
+[SelectUsersDialog]
+Title=Select users
+AvailableUsersLabel=Available users:
+FilterLabel=Filter:
+ChosenUsersLabel=Selected users:
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[ReportConfigurationEditor]
+ScopeLabel=Scope:
+CurrentUserRadioButton=Current user
+SingleUserRadioButton=Single user
+MultipleUsersRadioButton=Multiple users
+UsersLabel=Users:
+SelectUsersPushButton=Select
+DateRangeLabel=Date range:
+TodayRadioButton=Today
+YesterdayRadioButton=Yesterday
+LastWeekRadioButton=Last week
+CurrentWeekRadioButton=Current week
+CurrentMonthRadioButton=Current month
+CurrentYearRadioButton=Current year
+WeekToDateRadioButton=Week to date
+MonthToDateRadioButton=Month to date
+YearToDateRadioButton=Year to date
+CustomDatesRadioButton=From/to:
+GroupByLabel=Group by:
+GroupByActivityTypeRadioButton=Activity type
+GroupByActivityRadioButton=Activity
+IncludeLabel=Include:
+DailyDataCheckBox=Daily data
+WeeklyDataCheckBox=Weekly data
+MonthlyDataCheckBox=Monthly data
+YearlyDataCheckBox=Yearly data
+HoursPerDayLabel=Hours per day:
+WeekStartLabel=Week starts on:
+
+[ReportGenerator]
+ReportName=Work summary
+CreatedOnMessage=Created on {0}
+PrefaceChapter=Preface
+CreatorMessage=Created by:
+ReportedDatesMessage=Reported dates:
+IncludedUsersMessage=Included users:
+DailyBreakdownChapter=Daily breakdown
+WeeklyBreakdownChapter=Weekly breakdown
+MonthlyBreakdownChapter=Monthly breakdown
+YearlyBreakdownChapter=Yearly breakdown
+DateColumn=Date
+OtherColumn=Other
+TotalColumn=TOTAL
+TotalRow=TOTAL
+EffortDHMS={0}day {1}hrs {2}min
+EffortHMS={0}hrs {1}min
+EffortMS={0}min {1}sec
+EffortS={0}sec
+Effort=-

@@ -1,0 +1,736 @@
+//
+//  tt3-gui/PublicActivityManager.cpp - tt3::gui::PublicActivityManager class implementation
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+#include "tt3-gui/API.hpp"
+#include "ui_PublicActivityManager.h"
+using namespace tt3::gui;
+
+namespace tt3::gui
+{
+    extern CurrentTheme theCurrentTheme;
+    extern CurrentActivity theCurrentActivity;
+    extern CurrentCredentials theCurrentCredentials;
+    extern CurrentWorkspace theCurrentWorkspace;
+}
+
+//////////
+//  Construction/destruction
+PublicActivityManager::PublicActivityManager(
+        QWidget * parent
+    ) : QWidget(parent),
+        //  Implementation
+        _workspace(theCurrentWorkspace),
+        _credentials(theCurrentCredentials),
+        //  Controls
+        _ui(new Ui::PublicActivityManager),
+        _refreshTimer(this)
+{
+    _ui->setupUi(this);
+    _decorations = TreeWidgetDecorations(_ui->publicActivitiesTreeWidget);
+    _applyCurrentLocale();
+
+    //  Theme change means widget decorations change
+    connect(&theCurrentTheme,
+            &CurrentTheme::changed,
+            this,
+            &PublicActivityManager::_currentThemeChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Locale change requires UI translation
+    connect(&tt3::util::theCurrentLocale,
+            &tt3::util::CurrentLocale::changed,
+            this,
+            &PublicActivityManager::_currentLocaleChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Current activity change means, at least, a refresh
+    connect(&theCurrentActivity,
+            &CurrentActivity::changed,
+            this,
+            &PublicActivityManager::_currentActivityChanged,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Must listen to delayed refresh requests
+    connect(this,
+            &PublicActivityManager::refreshRequested,
+            this,
+            &PublicActivityManager::_refreshRequested,
+            Qt::ConnectionType::QueuedConnection);
+
+    //  Start listening for change notifications
+    //  on the currently "viewed" Workspace
+    _startListeningToWorkspaceChanges();
+
+    //  Start refreshing on timer
+    connect(&_refreshTimer,
+            &QTimer::timeout,
+            this,
+            &PublicActivityManager::_refreshTimerTimeout);
+    _refreshTimer.start(1000);
+}
+
+PublicActivityManager::~PublicActivityManager()
+{
+    _refreshTimer.stop();
+    _stopListeningToWorkspaceChanges();
+    delete _ui;
+}
+
+//////////
+//  Operaions
+tt3::ws::Workspace PublicActivityManager::workspace() const
+{
+    return _workspace;
+}
+
+void PublicActivityManager::setWorkspace(tt3::ws::Workspace workspace)
+{
+    if (workspace != _workspace)
+    {
+        _stopListeningToWorkspaceChanges();
+        _workspace = workspace;
+        _startListeningToWorkspaceChanges();
+        requestRefresh();
+    }
+}
+
+tt3::ws::Credentials PublicActivityManager::credentials() const
+{
+    return _credentials;
+}
+
+void PublicActivityManager::setCredentials(const tt3::ws::Credentials & credentials)
+{
+    if (credentials != _credentials)
+    {
+        _credentials = credentials;
+        requestRefresh();
+    }
+}
+
+void PublicActivityManager::refresh()
+{
+    static const QIcon viewPublicActivityIcon(":/tt3-gui/Resources/Images/Actions/ViewPublicActivityLarge.png");
+    static const QIcon modifyPublicActivityIcon(":/tt3-gui/Resources/Images/Actions/ModifyPublicActivityLarge.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(PublicActivityManager));
+
+    //  We don't want a refresh() to trigger a recursive refresh()!
+    if (auto _ = RefreshGuard(_refreshUnderway)) //  Don't recurse!
+    {
+        try
+        {
+            if (_workspace == nullptr || !_credentials.isValid() ||
+                !_workspace->isOpen() ||
+                !_workspace->canAccess(_credentials)) //  may throw
+            {   //  Nothing to show
+                _clearAndDisableAllControls();
+                return;
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! No point in proceesing.
+            qCritical() << ex;
+            _clearAndDisableAllControls();
+            return;
+        }
+
+        //  Otherwise some controls are always enabled...
+        _ui->filterLabel->setEnabled(true);
+        _ui->filterLineEdit->setEnabled(true);
+        _ui->publicActivitiesTreeWidget->setEnabled(true);
+
+        //  ...while others are enabled based on current
+        //  selection and permissions granted by Credentials
+        _WorkspaceModel workspaceModel =
+            _createWorkspaceModel(_workspace, _credentials, _decorations);
+        QString filter = _ui->filterLineEdit->text().trimmed();
+        if (!filter.isEmpty())
+        {
+            _filterItems(workspaceModel, filter, _decorations);
+        }
+        _refreshWorkspaceTree(
+            _ui->publicActivitiesTreeWidget,
+            workspaceModel);
+
+        tt3::ws::PublicActivity selectedPublicActivity = _selectedPublicActivity();
+        bool readOnly = _workspace->isReadOnly();
+        try
+        {
+            _ui->createPublicActivityPushButton->setEnabled(
+                !readOnly &&
+                _workspace->grantsAny(  //  may throw
+                    _credentials,
+                    tt3::ws::Capability::Administrator |
+                    tt3::ws::Capability::ManagePublicActivities));
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & disable
+            qCritical() << ex;
+            _ui->createPublicActivityPushButton->setEnabled(false);
+        }
+        _ui->modifyPublicActivityPushButton->setEnabled(
+            selectedPublicActivity != nullptr);
+        try
+        {
+            _ui->destroyPublicActivityPushButton->setEnabled(
+                !readOnly &&
+                selectedPublicActivity != nullptr &&
+                selectedPublicActivity->canDestroy(_credentials));  //  may throw
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log & disable
+            qCritical() << ex;
+            _ui->destroyPublicActivityPushButton->setEnabled(false);
+        }
+
+        try
+        {
+            _ui->startPublicActivityPushButton->setEnabled(
+                !readOnly &&
+                selectedPublicActivity != nullptr &&
+                theCurrentActivity != selectedPublicActivity &&
+                selectedPublicActivity->canStart(_credentials));    //  may throw
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //OOPS! Log & disable
+            qCritical() << ex;
+            _ui->startPublicActivityPushButton->setEnabled(false);
+        }
+        try
+        {
+            _ui->stopPublicActivityPushButton->setEnabled(
+                !readOnly &&
+                selectedPublicActivity != nullptr &&
+                theCurrentActivity == selectedPublicActivity &&
+                selectedPublicActivity->canStop(_credentials)); //  may throw
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //OOPS! Log & disable
+            qCritical() << ex;
+            _ui->stopPublicActivityPushButton->setEnabled(false);
+        }
+
+        //  Some buttons need to be adjusted for ReadOnoly mode
+        try
+        {
+            if (selectedPublicActivity != nullptr &&
+                !selectedPublicActivity->workspace()->isReadOnly() &&
+                selectedPublicActivity->canModify(_credentials))    //  may throw
+            {   //  RW
+                _ui->modifyPublicActivityPushButton->setIcon(modifyPublicActivityIcon);
+                _ui->modifyPublicActivityPushButton->setText(
+                    rr.string(RID(ModifyPublicActivityPushButton)));
+            }
+            else
+            {   //  RO
+                _ui->modifyPublicActivityPushButton->setIcon(viewPublicActivityIcon);
+                _ui->modifyPublicActivityPushButton->setText(
+                    rr.string(RID(ViewPublicActivityPushButton)));
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Simulate RO
+            qCritical() << ex;
+            _ui->modifyPublicActivityPushButton->setIcon(viewPublicActivityIcon);
+            _ui->modifyPublicActivityPushButton->setText(
+                rr.string(RID(ViewPublicActivityPushButton)));
+        }
+    }
+}
+
+void PublicActivityManager::requestRefresh()
+{
+    emit refreshRequested();
+}
+
+//////////
+//  View model
+auto PublicActivityManager::_createWorkspaceModel(
+        tt3::ws::Workspace workspace,
+        const tt3::ws::Credentials & credentials,
+        const TreeWidgetDecorations & decorations
+    )   -> PublicActivityManager::_WorkspaceModel
+{
+    auto workspaceModel = std::make_shared<_WorkspaceModelImpl>();
+    try
+    {
+        for (const auto & publicActivity : workspace->publicActivities(credentials)) //  may throw
+        {
+            workspaceModel->publicActivityModels.append(
+                _createPublicActivityModel(publicActivity, credentials, decorations));
+        }
+        std::sort(
+            workspaceModel->publicActivityModels.begin(),
+            workspaceModel->publicActivityModels.end(),
+            [&](auto a, auto b)
+            {
+                return tt3::util::NaturalStringOrder::less(a->text, b->text);
+            });
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        qCritical() << ex;
+        workspaceModel->publicActivityModels.clear();
+    }
+    return workspaceModel;
+}
+
+auto PublicActivityManager::_createPublicActivityModel(
+        tt3::ws::PublicActivity publicActivity,
+        const tt3::ws::Credentials & credentials,
+        const TreeWidgetDecorations & decorations
+    ) -> PublicActivityManager::_PublicActivityModel
+{
+    static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+
+    auto publicActivityModel = std::make_shared<_PublicActivityModelImpl>(publicActivity);
+    try
+    {
+        publicActivityModel->text = publicActivity->displayName(credentials);
+        publicActivityModel->icon = publicActivity->type()->smallIcon();
+        publicActivityModel->brush = decorations.itemForeground;
+        publicActivityModel->font = decorations.itemFont;
+        publicActivityModel->tooltip = publicActivity->description(credentials).trimmed();
+        //  A "current" activity needs some extras
+        if (theCurrentActivity == publicActivity)
+        {
+            qint64 secs = qMax(0, theCurrentActivity.lastChangedAt().secsTo(QDateTime::currentDateTimeUtc()));
+            char s[32];
+            sprintf(s, " [%d:%02d:%02d]",
+                    int(secs / (60 * 60)),
+                    int((secs / 60) % 60),
+                    int(secs % 60));
+            publicActivityModel->text += s;
+            publicActivityModel->font = decorations.itemEmphasisFont;
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        qCritical() << ex;
+        publicActivityModel->text = ex.errorMessage();
+        publicActivityModel->icon = errorIcon;
+        publicActivityModel->font = decorations.itemFont;
+        publicActivityModel->brush = decorations.errorItemForeground;
+        publicActivityModel->tooltip = ex.errorMessage();
+    }
+    return publicActivityModel;
+}
+
+void PublicActivityManager::_filterItems(
+        _WorkspaceModel workspaceModel,
+        const QString & filter,
+        const TreeWidgetDecorations & decorations
+    )
+{
+    Q_ASSERT(!filter.isEmpty());
+
+    for (qsizetype i = workspaceModel->publicActivityModels.size() - 1; i >= 0; i--)
+    {
+        _PublicActivityModel publicActivityModel = workspaceModel->publicActivityModels[i];
+        if (publicActivityModel->text.indexOf(filter, 0, Qt::CaseInsensitive) != -1)
+        {   //  Item matches the filter - mark it as a match
+            publicActivityModel->brush = decorations.filterMatchItemForeground;
+        }
+        else
+        {   //  Item does not match the filter
+            workspaceModel->publicActivityModels.removeAt(i);
+        }
+    }
+}
+
+void PublicActivityManager::_refreshWorkspaceTree(
+        QTreeWidget * publicActivitiesTreeWidget,
+        _WorkspaceModel workspaceModel
+    )
+{
+    Q_ASSERT(publicActivitiesTreeWidget != nullptr);
+    Q_ASSERT(workspaceModel != nullptr);
+
+    //  Make sure the "public activities" tree contains
+    //  a proper number of root (PublicActivity) items...
+    while (publicActivitiesTreeWidget->topLevelItemCount() < workspaceModel->publicActivityModels.size())
+    {   //  Too few root (PublicActivity) items
+        publicActivitiesTreeWidget->addTopLevelItem(new QTreeWidgetItem());
+    }
+    while (publicActivitiesTreeWidget->topLevelItemCount() > workspaceModel->publicActivityModels.size())
+    {   //  Too many root (PublicActivity) items
+        delete publicActivitiesTreeWidget->takeTopLevelItem(
+            publicActivitiesTreeWidget->topLevelItemCount() - 1);
+    }
+    //  ...and that each top-level item represents
+    //  a proper PublicActivity
+    for (int i = 0; i < workspaceModel->publicActivityModels.size(); i++)
+    {
+        _refreshPublicActivityItem(
+            publicActivitiesTreeWidget->topLevelItem(i),
+            workspaceModel->publicActivityModels[i]);
+    }
+}
+
+void PublicActivityManager::_refreshPublicActivityItem(
+        QTreeWidgetItem * publicActivityItem,
+        _PublicActivityModel publicActivityModel
+    )
+{
+    Q_ASSERT(publicActivityItem != nullptr);
+    Q_ASSERT(publicActivityModel != nullptr);
+
+    //  Refresh PublicActivity item properties
+    publicActivityItem->setText(0, publicActivityModel->text);
+    publicActivityItem->setIcon(0, publicActivityModel->icon);
+    publicActivityItem->setForeground(0, publicActivityModel->brush);
+    publicActivityItem->setFont(0, publicActivityModel->font);
+    publicActivityItem->setToolTip(0, publicActivityModel->tooltip);
+    publicActivityItem->setData(0, Qt::ItemDataRole::UserRole, QVariant::fromValue(publicActivityModel->publicActivity));
+    //  There will be no further children
+    Q_ASSERT(publicActivityItem->childCount() == 0);
+}
+
+//////////
+//  Implementation helpers
+auto PublicActivityManager::_selectedPublicActivity(
+    ) -> tt3::ws::PublicActivity
+{
+    QTreeWidgetItem * item = _ui->publicActivitiesTreeWidget->currentItem();
+    return (item != nullptr) ?
+               item->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicActivity>() :
+               nullptr;
+}
+
+void PublicActivityManager::_setSelectedPublicActivity(
+        tt3::ws::PublicActivity publicActivity
+    )
+{
+    for (int i = 0; i < _ui->publicActivitiesTreeWidget->topLevelItemCount(); i++)
+    {
+        QTreeWidgetItem * publicActivityItem = _ui->publicActivitiesTreeWidget->topLevelItem(i);
+        if (publicActivity == publicActivityItem->data(0, Qt::ItemDataRole::UserRole).value<tt3::ws::PublicActivity>())
+        {   //  This one!
+            _ui->publicActivitiesTreeWidget->setCurrentItem(publicActivityItem);
+            return;
+        }
+    }
+}
+
+void PublicActivityManager::_startListeningToWorkspaceChanges()
+{
+    if (_workspace != nullptr)
+    {
+        connect(_workspace.get(),
+                &tt3::ws::WorkspaceImpl::workspaceClosed,
+                this,
+                &PublicActivityManager::_workspaceClosed,
+                Qt::ConnectionType::QueuedConnection);
+        connect(_workspace.get(),
+                &tt3::ws::WorkspaceImpl::objectCreated,
+                this,
+                &PublicActivityManager::_objectCreated,
+                Qt::ConnectionType::QueuedConnection);
+        connect(_workspace.get(),
+                &tt3::ws::WorkspaceImpl::objectDestroyed,
+                this,
+                &PublicActivityManager::_objectDestroyed,
+                Qt::ConnectionType::QueuedConnection);
+        connect(_workspace.get(),
+                &tt3::ws::WorkspaceImpl::objectModified,
+                this,
+                &PublicActivityManager::_objectModified,
+                Qt::ConnectionType::QueuedConnection);
+    }
+}
+
+void PublicActivityManager::_stopListeningToWorkspaceChanges()
+{
+    if (_workspace != nullptr)
+    {
+        disconnect(_workspace.get(),
+                   &tt3::ws::WorkspaceImpl::workspaceClosed,
+                   this,
+                   &PublicActivityManager::_workspaceClosed);
+        disconnect(_workspace.get(),
+                   &tt3::ws::WorkspaceImpl::objectCreated,
+                   this,
+                   &PublicActivityManager::_objectCreated);
+        disconnect(_workspace.get(),
+                   &tt3::ws::WorkspaceImpl::objectDestroyed,
+                   this,
+                   &PublicActivityManager::_objectDestroyed);
+        disconnect(_workspace.get(),
+                   &tt3::ws::WorkspaceImpl::objectModified,
+                   this,
+                   &PublicActivityManager::_objectModified);
+    }
+}
+
+void PublicActivityManager::_clearAndDisableAllControls()
+{
+    _ui->publicActivitiesTreeWidget->clear();
+    _ui->filterLineEdit->setText("");
+    _ui->filterLabel->setEnabled(false);
+    _ui->filterLineEdit->setEnabled(false);
+    _ui->publicActivitiesTreeWidget->setEnabled(false);
+    _ui->createPublicActivityPushButton->setEnabled(false);
+    _ui->modifyPublicActivityPushButton->setEnabled(false);
+    _ui->destroyPublicActivityPushButton->setEnabled(false);
+    _ui->startPublicActivityPushButton->setEnabled(false);
+    _ui->stopPublicActivityPushButton->setEnabled(false);
+}
+
+void PublicActivityManager::_applyCurrentLocale()
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(PublicActivityManager));
+
+    _ui->filterLabel->setText(
+        rr.string(RID(FilterLabel)));
+    _ui->createPublicActivityPushButton->setText(
+        rr.string(RID(CreatePublicActivityPushButton)));
+    _ui->modifyPublicActivityPushButton->setText(
+        rr.string(RID(ModifyPublicActivityPushButton)));
+    _ui->destroyPublicActivityPushButton->setText(
+        rr.string(RID(DestroyPublicActivityPushButton)));
+    _ui->startPublicActivityPushButton->setText(
+        rr.string(RID(StartPublicActivityPushButton)));
+    _ui->stopPublicActivityPushButton->setText(
+        rr.string(RID(StopPublicActivityPushButton)));
+    refresh();
+}
+
+//////////
+//  Signal handlers
+void PublicActivityManager::_currentThemeChanged(ITheme *, ITheme *)
+{
+    _ui->publicActivitiesTreeWidget->clear();
+    _decorations = TreeWidgetDecorations(_ui->publicActivitiesTreeWidget);
+    requestRefresh();
+}
+
+void PublicActivityManager::_currentLocaleChanged(QLocale, QLocale)
+{
+    _applyCurrentLocale();
+    refresh();
+}
+
+void PublicActivityManager::_currentActivityChanged(tt3::ws::Activity, tt3::ws::Activity)
+{
+    requestRefresh();
+}
+
+void PublicActivityManager::_publicActivitiesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)
+{
+    requestRefresh();
+}
+
+void PublicActivityManager::_publicActivitiesTreeWidgetCustomContextMenuRequested(QPoint p)
+{
+    //  [re-]create the popup menu
+    _publicActivitiesTreeContextMenu.reset(new QMenu());
+    QAction * createPublicActivityAction =
+        _publicActivitiesTreeContextMenu->addAction(
+            _ui->createPublicActivityPushButton->icon(),
+            _ui->createPublicActivityPushButton->text());
+    QAction * modifyPublicActivityAction =
+        _publicActivitiesTreeContextMenu->addAction(
+            _ui->modifyPublicActivityPushButton->icon(),
+            _ui->modifyPublicActivityPushButton->text());
+    QAction * destroyPublicActivityAction =
+        _publicActivitiesTreeContextMenu->addAction(
+            _ui->destroyPublicActivityPushButton->icon(),
+            _ui->destroyPublicActivityPushButton->text());
+    _publicActivitiesTreeContextMenu->addSeparator();
+    QAction * startPublicActivityAction =
+        _publicActivitiesTreeContextMenu->addAction(
+            _ui->startPublicActivityPushButton->icon(),
+            _ui->startPublicActivityPushButton->text());
+    QAction * stopPublicActivityAction =
+        _publicActivitiesTreeContextMenu->addAction(
+            _ui->stopPublicActivityPushButton->icon(),
+            _ui->stopPublicActivityPushButton->text());
+    //  Adjust menu item states
+    createPublicActivityAction->setEnabled(_ui->createPublicActivityPushButton->isEnabled());
+    modifyPublicActivityAction->setEnabled(_ui->modifyPublicActivityPushButton->isEnabled());
+    destroyPublicActivityAction->setEnabled(_ui->destroyPublicActivityPushButton->isEnabled());
+    startPublicActivityAction->setEnabled(_ui->startPublicActivityPushButton->isEnabled());
+    stopPublicActivityAction->setEnabled(_ui->stopPublicActivityPushButton->isEnabled());
+    //  Set up signal handling
+    connect(createPublicActivityAction,
+            &QAction::triggered,
+            this,
+            &PublicActivityManager::_createPublicActivityPushButtonClicked);
+    connect(modifyPublicActivityAction,
+            &QAction::triggered,
+            this,
+            &PublicActivityManager::_modifyPublicActivityPushButtonClicked);
+    connect(destroyPublicActivityAction,
+            &QAction::triggered,
+            this,
+            &PublicActivityManager::_destroyPublicActivityPushButtonClicked);
+    connect(startPublicActivityAction,
+            &QAction::triggered,
+            this,
+            &PublicActivityManager::_startPublicActivityPushButtonClicked);
+    connect(stopPublicActivityAction,
+            &QAction::triggered,
+            this,
+            &PublicActivityManager::_stopPublicActivityPushButtonClicked);
+    //  Go!
+    _publicActivitiesTreeContextMenu->popup(_ui->publicActivitiesTreeWidget->mapToGlobal(p));
+}
+
+void PublicActivityManager::_createPublicActivityPushButtonClicked()
+{
+    try
+    {
+        CreatePublicActivityDialog dlg(this, _workspace, _credentials);   //  may throw
+        if (dlg.doModal() == CreatePublicActivityDialog::Result::Ok)
+        {   //  PublicActivity created
+            refresh();  //  must refresh NOW
+            _setSelectedPublicActivity(dlg.createdPublicActivity());
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        qCritical() << ex;
+        tt3::gui::ErrorDialog::show(this, ex);
+    }
+}
+
+void PublicActivityManager::_modifyPublicActivityPushButtonClicked()
+{
+    if (auto publicActivity = _selectedPublicActivity())
+    {
+        try
+        {
+            ModifyPublicActivityDialog dlg(this, publicActivity, _credentials); //  may throw
+            if (dlg.doModal() == ModifyPublicActivityDialog::Result::Ok)
+            {   //  PublicActivity modified - its position in the activity types tree may have changed
+                refresh();  //  must refresh NOW
+                _setSelectedPublicActivity(publicActivity);
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            qCritical() << ex;
+            ErrorDialog::show(this, ex);
+            requestRefresh();
+        }
+    }
+}
+
+void PublicActivityManager::_destroyPublicActivityPushButtonClicked()
+{
+    if (auto publicActivity = _selectedPublicActivity())
+    {
+        try
+        {
+            DestroyPublicActivityDialog dlg(this, publicActivity, _credentials); //  may throw
+            if (dlg.doModal() == DestroyPublicActivityDialog::Result::Ok)
+            {   //  Destroyed
+                requestRefresh();
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            qCritical() << ex;
+            ErrorDialog::show(this, ex);
+            requestRefresh();
+        }
+    }
+}
+
+void PublicActivityManager::_startPublicActivityPushButtonClicked()
+{
+    if (auto publicActivity = _selectedPublicActivity())
+    {
+        if (theCurrentActivity == publicActivity)
+        {   //  Nothing to do!
+            return;
+        }
+        try
+        {
+            theCurrentActivity.replaceWith(publicActivity);
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            qCritical() << ex;
+            ErrorDialog::show(this, ex);
+        }
+        requestRefresh();
+    }
+}
+
+void PublicActivityManager::_stopPublicActivityPushButtonClicked()
+{
+    if (auto publicActivity = _selectedPublicActivity())
+    {
+        if (theCurrentActivity != publicActivity)
+        {   //  Nothing to do!
+            return;
+        }
+        try
+        {
+            theCurrentActivity.replaceWith(nullptr);
+        }
+        catch (const tt3::util::Exception & ex)
+        {
+            qCritical() << ex;
+            ErrorDialog::show(this, ex);
+        }
+        requestRefresh();
+    }
+}
+
+void PublicActivityManager::_filterLineEditTextChanged(QString)
+{
+    requestRefresh();
+}
+
+void PublicActivityManager::_workspaceClosed(tt3::ws::WorkspaceClosedNotification /*notification*/)
+{
+    requestRefresh();
+}
+
+void PublicActivityManager::_objectCreated(tt3::ws::ObjectCreatedNotification /*notification*/)
+{
+    requestRefresh();
+}
+
+void PublicActivityManager::_objectDestroyed(tt3::ws::ObjectDestroyedNotification /*notification*/)
+{
+    requestRefresh();
+}
+
+void PublicActivityManager::_objectModified(tt3::ws::ObjectModifiedNotification /*notification*/)
+{
+    requestRefresh();
+}
+
+void PublicActivityManager::_refreshRequested()
+{
+    refresh();
+}
+
+void PublicActivityManager::_refreshTimerTimeout()
+{
+    if (tt3::ws::Activity activity = theCurrentActivity)
+    {
+        if (std::dynamic_pointer_cast<tt3::ws::PublicActivityImpl>(activity))
+        {
+            refresh();
+        }
+    }
+}
+
+//  End of tt3-gui/PublicActivityManager.cpp

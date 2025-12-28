@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Activities and Tasks</title>
+<link href="../../css/tt3.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<h1>Activities and Tasks</h1>
+    <hr>
+    
+    <p>TimeTracker3 uses Activities and Tasks to record the kinds of activity 
+	users can spend their working time on.</p>
+<p>
+<img alt="Activities and Tasks" height="100%" src="../../images/Domain/ActivitiesAndTasks.png" width="100%" /></p>
+<h2>Activities</h2>
+<p>An Activity is an indication of what kind of work the user can be performing 
+at some given moment. Examples of Activities are such as "Meetings", "Writing 
+documentation", or even "Lunch break". Once a TimeTracker workspace is properly 
+set up, the user can indicate the moment when they started or stopped the 
+corresponding Activity by a single mouse click (or, if the user's screen has 
+touch recognition functions, a single tap on the screen). In this the 
+TimeTracker is very similar to the classical chess clock - only the number of 
+buttons on the clock can vary with the time, based on what any specific user 
+does during&nbsp; different periods of time.</p>
+<p>For an Activity, the following information is kept:</p>
+<ul>
+	<li><strong>Name</strong> - a short descriptive name identifying the 
+	specific Activity.</li>
+	<li><strong>Description</strong> - a longer description, providing 
+	additional information on what a specific Activity is all about. For some 
+	Activities (such as "Lunch break") the description will not even be 
+	necessary while for others (such as "Code refactoring" and "Performance 
+	improvements") the description can e.g. provide guidelines as to what 
+	actions are considered belonging to each of the Activities.</li>
+	<li><strong>Activity type</strong> - all Activities can, and usually will, 
+	be associated with specific Activity Types (see below). These provide 
+	categorisation of Activities into broad classes (such as "Development", 
+	"Documentation", "Meetings", "R&amp;R", etc.)</li>
+	<li><strong>Workload</strong> - an Activity can be associated with a 
+	"workload" (see below), which represents a work stream towards which time 
+	spent on that Activity contributes. This allows collecting information on 
+	how much overall time was dedicated to each project, thus helping to better 
+	manage the working time of individuals and teams.</li>
+	<li><strong>Commenting requirements</strong> - an Activity may be configured 
+	to require the user to enter a comment when starting and/or stopping the 
+	activity. Examples of activity start/stop comments are situations like 
+	"Record the reason for starting code refactoring" or "Record the caller's 
+	name after an urgent support-related phone call".</li>
+	<li><strong>Reminder requirements</strong> - an Activity may be configured 
+	to present a full-screen reminder while that Activity is underway. A typical 
+	example here would be a "Lunch break" or "Meeting" Activities, where the 
+	user goes away from their computer and must, when returning to it, not 
+	forget to indicate that the away time is now over and the actual work begins 
+	again.</li>
+	<li><strong>Timeout</strong> - when the user leaves for good (for example, 
+	at the end of a working day), they may sometimes forget to "stop" their 
+	current activity, which will then continue ticking overnight, thus 
+	introducing inaccuracy to working time measurement. To prevent that, an 
+	Activity may be configured with an "inactivity timeout" - a period of time 
+	after which, if there is no user activity on the computer where TimeTracker3 
+	runs, the latter considers the user as having left and automatically records 
+	the end of the currently ticking Activity at the date and time when the last 
+	user activity was noticed. <strong>NOTE THAT</strong> for Activities not 
+	explicitly configured with an "inactivity timeout" the default timeout can 
+	also be configured on a per-User bases.</li>
+</ul>
+<h2>Tasks</h2>
+<p>Tasks are very similar to Activities in that they also indicate what the 
+user's efforts are being spent on. Tasks are different from Activities in two 
+respects:</p>
+<ul>
+	<li>Unlike Activities, which are organised into a simple list from which the 
+	"current" Activity can be chosen to work on, Tasks are organised into a
+	<strong>hierarchy</strong>, where upper-level tasks can have sub-tasks 
+	which, in turn, can have their own sub-tasks, and so on.</li>
+	<li>A Task has, in addition to all the properties of an Activity, a <strong>
+	completion status</strong>, which is an indication of whether that Task has 
+	been completed or not. This simplifies user's lives by separating the 
+	Tasks-to-be-completed from the Tasks-already-completed; TimeTracker can (and 
+	usually will) be configured to show only the not-yet-completed Tasks so that 
+	the user can better dedicate the working time to those.</li>
+	<li>A Task also has a <strong>commenting requirement</strong> - when a user 
+	marks a given Task as "completed", the Task in question may require the user 
+	to enter the short comment, typically about <em>why</em> the Task is being 
+	marked as "completed". Typical comments will be e.g. "done and tested", "no 
+	longer relevant" or even "Task rejected after a meeting".</li>
+</ul>
+<h2>Public and private Activities and Tasks</h2>
+<p>Both Activities and Tasks can be "public" or "private":</p>
+<ul>
+	<li>A <strong>public Activity or Task</strong> is visible to all users who 
+	can login to the TimeTracker3 workspace. These are organisation-wide things 
+	like a "Lunch break" Activity or "Preparation for a 2025 world conference on 
+	XYZ" Task.</li>
+	<li>A <strong>private Activity or Task</strong> are visible only to the User 
+	to whom they belong. These represent the personal backlog of that User.</li>
+</ul>
+    
+    <hr/>
+    <p class="seealso">
+        See also: <a href="04-ProjectsAndWorkStreams.html">Workloads</a></p>
+
+</body>
+
+</html>

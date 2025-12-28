@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>tt3::gui::DailyWorkQuickReportView</class>
+ <widget class="QWidget" name="tt3::gui::DailyWorkQuickReportView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>586</width>
+    <height>201</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <item row="1" column="0">
+    <widget class="QWidget" name="chartPanel" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QWidget" name="controlsPanel" native="true">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <property name="horizontalSpacing">
+       <number>4</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="1">
+       <widget class="QLabel" name="scaleLabel">
+        <property name="text">
+         <string>Scale:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QSlider" name="scaleSlider">
+        <property name="minimum">
+         <number>10</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>50</number>
+        </property>
+        <property name="sliderPosition">
+         <number>50</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="tickPosition">
+         <enum>QSlider::TickPosition::TicksBelow</enum>
+        </property>
+        <property name="tickInterval">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="6">
+       <widget class="QRadioButton" name="forDateRadioButton">
+        <property name="text">
+         <string>For date:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QLabel" name="showLabel">
+        <property name="text">
+         <string>Show:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="7">
+       <widget class="QDateEdit" name="dateEdit">
+        <property name="calendarPopup">
+         <bool>true</bool>
+        </property>
+        <property name="timeSpec">
+         <enum>Qt::TimeSpec::LocalTime</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QRadioButton" name="todayRadioButton">
+        <property name="text">
+         <string>Today</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="copyPushButton">
+        <property name="text">
+         <string>Copy</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/CopySmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/CopySmall.png</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>copyPushButton</tabstop>
+  <tabstop>todayRadioButton</tabstop>
+  <tabstop>forDateRadioButton</tabstop>
+  <tabstop>dateEdit</tabstop>
+ </tabstops>
+ <resources>
+  <include location="tt3-gui.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>todayRadioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::DailyWorkQuickReportView</receiver>
+   <slot>_dateRatioButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>123</x>
+     <y>14</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>82</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>forDateRadioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::DailyWorkQuickReportView</receiver>
+   <slot>_dateRatioButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>204</x>
+     <y>14</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>82</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dateEdit</sender>
+   <signal>dateChanged(QDate)</signal>
+   <receiver>tt3::gui::DailyWorkQuickReportView</receiver>
+   <slot>_dateEditDateChanged(QDate)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>305</x>
+     <y>14</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>82</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>copyPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::DailyWorkQuickReportView</receiver>
+   <slot>_copyPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>39</x>
+     <y>14</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>227</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>scaleSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>tt3::gui::DailyWorkQuickReportView</receiver>
+   <slot>_scaleSliderValueChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>189</x>
+     <y>14</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>292</x>
+     <y>100</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_dateRatioButtonClicked()</slot>
+  <slot>_dateEditDateChanged(QDate)</slot>
+  <slot>_copyPushButtonClicked()</slot>
+  <slot>_scaleSliderValueChanged(int)</slot>
+ </slots>
+</ui>

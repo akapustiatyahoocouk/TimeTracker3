@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Login dialog</title>
+<link href="../../../css/tt3.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<h1>Login dialog</h1>
+<hr />
+<p>The Login dialog is the first thing the user must interact with when starting 
+TimeTracker3. It established the user's credentials, which then are used to 
+decide what the user can or cannot do within TimeTracker3.</p>
+<p>
+<img alt="Login dialog" height="191" src="../../../images/Dialogs/01-Login.png" width="268" /></p>
+<p>The fields in the Login dialog allow the user to specify:</p>
+<ul>
+	<li><strong>Login</strong> - in order to access a certain TimeTracker3 
+	workspace, the login provided by the user must match one of the Accounts 
+	defined in that workspace. Furthermore, this Account must be enabled and it 
+	must belong to the User who is also enabled.</li>
+	<li><strong>Password</strong> - TimeTracker3 Accounts are protected by 
+	passwords selected arbitrarily by the Account owners.</li>
+</ul>
+<p>Note that user's credentials (login + password) that grant access to one 
+TimeTracker3 workspace may or may not grant access to a different workspace; nor 
+is the same Account (i.e. an Account with the same login and password) defined 
+in two different workspaces required to grant the same access rights.</p>
+<p>When, after logging in, the user attempts to open a workspace where the 
+specified login credentials do nor grant access, TimeTracker3 will prompt the 
+user to enter different credentials, which <em>do</em> grant such access, using 
+the same Login dialog.</p>
+<p>While working, the user can, at any time, choose to re-login with different 
+credentials. A typical example is a power user, who will re-login temporarily 
+with extended (or even a full administrator) access rights to perform workspace 
+administration tasks (such as workspace backup) and then re-login with their 
+everyday credentials to continue the daily work.</p>
+<p>When TimeTracker3 runs without a workspace (when first started, or when the 
+user forcibly closes the active workspace) the login credentials entered by the 
+user are not used - but then no useful work can be done until some workspace is 
+opened again (or a new one created).</p>
+<hr />
+<p class="seealso">See also: -</p>
+<h2>&nbsp;</h2>
+
+</body>
+
+</html>

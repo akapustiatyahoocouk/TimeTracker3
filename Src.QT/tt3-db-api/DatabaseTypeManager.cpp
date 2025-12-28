@@ -1,0 +1,89 @@
+//
+//  tt3-db-api/DatabaseTypeManager.cpp tt3::db::api::DatabaseTypeManager class implementation
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+#include "tt3-db-api/API.hpp"
+using namespace tt3::db::api;
+
+struct DatabaseTypeManager::_Impl
+{
+    using Registry = QMap<tt3::util::Mnemonic, IDatabaseType*>;
+
+    tt3::util::Mutex    guard;
+    Registry            registry;
+};
+
+//////////
+//  Operations
+bool DatabaseTypeManager::register(IDatabaseType * databaseType)
+{
+    Q_ASSERT(databaseType != nullptr);
+
+    _Impl * impl = _impl();
+    tt3::util::Lock _(impl->guard);
+
+    if (impl->registry.contains(databaseType->mnemonic()))
+    {
+        return databaseType == impl->registry[databaseType->mnemonic()];
+    }
+    impl->registry[databaseType->mnemonic()] = databaseType;
+    return true;
+}
+
+bool DatabaseTypeManager::unregister(
+        IDatabaseType * databaseType
+    )
+{
+    Q_ASSERT(databaseType != nullptr);
+
+    _Impl * impl = _impl();
+    tt3::util::Lock _(impl->guard);
+
+    auto key = databaseType->mnemonic();
+    if (impl->registry.contains(key) &&
+        impl->registry[key] == databaseType)
+    {   //  Guard against an impersonator
+        impl->registry.remove(key);
+        return true;
+    }
+    return false;
+}
+
+IDatabaseType * DatabaseTypeManager::find(const tt3::util::Mnemonic & mnemonic)
+{
+    _Impl * impl = _impl();
+    tt3::util::Lock _(impl->guard);
+
+    return impl->registry.contains(mnemonic) ? impl->registry[mnemonic] : nullptr;
+}
+
+DatabaseTypes DatabaseTypeManager::all()
+{
+    _Impl * impl = _impl();
+    tt3::util::Lock _(impl->guard);
+
+    QList<IDatabaseType*> values = impl->registry.values();
+    return DatabaseTypes(values.cbegin(), values.cend());
+}
+
+//////////
+//  Implementation helpers
+auto DatabaseTypeManager::_impl() -> _Impl *
+{
+    static _Impl impl;
+    return &impl;
+}
+
+//  End of tt3-db-api/DatabaseTypeManager.cpp

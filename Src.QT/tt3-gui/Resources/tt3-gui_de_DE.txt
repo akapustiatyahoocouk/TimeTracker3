@@ -1,0 +1,873 @@
+[Component]
+DisplayName=TimeTracker3-Benutzeroberfläche
+Description=Definiert die GUI-Funktionen für TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[AboutDialog]
+Title=Über TimeTracker3
+VersionLabel=Version {0} (Build {1} für Qt {2})
+ShowLicensePushButton=Lizenz
+ShowConfigurationPushButton=Konfiguration
+OkPushButton=Bestätigen
+
+[ActivityTypeManager]
+FilterLabel=Filter:
+CreateActivityTypePushButton=Aktivitätstyp erstellen
+ViewActivityTypePushButton=Aktivitätstyp anzeigen
+ModifyActivityTypePushButton=Aktivitätstyp ändern
+DestroyActivityTypePushButton=Aktivitätstyp löschen
+
+[AddEmailAddressDialog]
+Title=E-Mail-Adresse hinzufügen
+Prompt=E-Mail-Adresse eingeben:
+
+[AskYesNoDialog]
+AssumeYesCheckBox=Diese Bestätigung nicht erneut anfordern (angenommen, die Antwort ist „Ja“)
+YesPushButton=Ja
+NoPushButton=Nein
+
+[BeneficiaryManager]
+FilterLabel=Filter:
+CreateBeneficiaryPushButton=Begünstigten erstellen
+ViewBeneficiaryPushButton=Begünstigten anzeigen
+ModifyBeneficiaryPushButton=Begünstigten ändern
+DestroyBeneficiaryPushButton=Begünstigten löschen
+
+[ChooseReloginDialog]
+Title=Zugriff verweigert
+Prompt=Aktuelle Anmeldedaten erlauben keinen Zugriff auf\n{0}\nMöchten Sie sich mit anderen Anmeldedaten anmelden ?
+
+[ConfirmCloseWorkspaceDialog]
+Title=Arbeitsbereich schließen
+Prompt=Möchten Sie den Arbeitsbereich wirklich schließen\n{0} ?
+
+[ConfirmDestroyWorkspaceDialog]
+Title=Arbeitsbereich löschen
+Prompt=Möchten Sie den Arbeitsbereich\n{0} wirklich löschen ?\nWICHTIG: DIESE AKTION KANN SPÄTER NICHT RÜCKGÄNGIG GEMACHT WERDEN!
+
+[ConfirmDropWorkspaceDialog]
+Title=Arbeitsbereich löschen
+Prompt=Ihre neuen Anmeldeinformationen erlauben keinen Zugriff auf \n{0}.\nMöchten Sie den Arbeitsbereich schließen ?
+
+[ConfirmExitDialog]
+Title=TimeTracker3 beenden
+Prompt=Möchten Sie TimeTracker3 wirklich beenden ?
+
+[ConfirmForgetWorkspaceDialog]
+Title=Arbeitsbereich konnte nicht geöffnet werden
+Prompt=Möchten Sie den Arbeitsbereich \n{0}\naus der Liste der zuletzt verwendeten Arbeitsbereiche entfernen ?
+
+[ConfirmResetAllSettingsDialog]
+Title=Alle Einstellungen zurücksetzen
+Prompt=Möchten Sie wirklich alle Einstellungen auf die Standardwerte zurücksetzen?\nDie Auswirkungen sind erst dann dauerhaft, wenn Sie den Dialog mit „Bestätigen“ schließen.
+
+[ConfirmResetPageSettingsDialog]
+Title=Seiteneinstellungen zurücksetzen
+Prompt=Möchten Sie die Seiteneinstellungen wirklich auf die Standardwerte zurücksetzen?\nDie Auswirkungen werden erst wirksam, wenn Sie den Dialog mit „OK“ schließen.
+
+[ConfirmRestartDialog]
+Title=TimeTracker3 neu starten
+Prompt=Möchten Sie TimeTracker3 wirklich neu starten ?
+
+[CreateAccountDialog]
+Title=Konto erstellen
+UserLabel=Benutzer:
+LoginLabel=Anmelden:
+PasswordLabel=Kennwort:
+ConfirmPasswordLabel=Wiederholen:
+EmailAddressesLabel=E-Mail-Adressen:
+AddEmailAddressPushButton=Hinzufügen
+ModifyEmailAddressPushButton=Ändern
+RemoveEmailAddressPushButton=Entfernen
+CapabilitiesGroupBox=Funktionen
+AdministratorCheckBox=Administrator
+ManageUsersCheckBox=Benutzer verwalten
+ManageActivityTypesCheckBox=Aktivitätstypen verwalten
+ManageBeneficiariesCheckBox=Begünstigte verwalten
+ManageWorkloadsCheckBox=Arbeitslasten verwalten
+ManagePublicActivitiesCheckBox=Öffentliche Aktivitäten verwalten
+ManagePublicTasksCheckBox=Öffentliche Aufgaben verwalten
+ManagePrivateActivitiesCheckBox=Private Aktivitäten verwalten
+ManagePrivateTasksCheckBox=Private Aufgaben verwalten
+LogWorkCheckBox=Arbeit protokollieren
+LogEventsCheckBox=Protokollieren Ereignisse
+GenerateReportsCheckBox=Berichte erstellen
+BackupAndRestoreCheckBox=Sichern und Wiederherstellen
+EnabledCheckBox=Konto ist aktiviert
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[CreateActivityTypeDialog]
+Title=Aktivitätstyp erstellen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[CreateBeneficiaryDialog]
+Title=Begünstigten erstellen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+WorkloadsLabel=Arbeitslasten:
+SelectWorkloadsPushButton=Auswählen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[CreatePrivateActivityDialog]
+Title=Private Aktivität erstellen
+UserLabel=Benutzer:
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+ActivityTypeLabel=Aktivitätstyp:
+WorkloadLabel=Arbeitslast:
+SelectWorkloadPushButton=Auswählen
+TimeoutLabel=Zeitüberschreitung:
+TimeoutCheckBox=stoppen, wenn unbeaufsichtigt für
+HoursComboBoxItem={0} Std.
+MinutesComboBoxItem={0} Min.
+RequireCommentOnStartCheckBox=Kommentar beim Starten dieser Aktivität erforderlich
+RequireCommentOnStopCheckBox=Kommentar bei Stopp dieser Aktivität erforderlich
+FullScreenReminderCheckBox=Vollbild-Erinnerung
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[CreatePrivateTaskDialog]
+Title=Private Aufgabe erstellen
+UserLabel=Benutzer:
+ParentTaskLabel=Übergeordnet:
+NoParent=- (eine private Root-Aufgabe ohne übergeordnete Aufgabe)
+SelectParentTaskPushButton=Auswählen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+ActivityTypeLabel=Aktivitätstyp:
+WorkloadLabel=Arbeitslast:
+SelectWorkloadPushButton=Auswählen
+TimeoutLabel=Zeitüberschreitung:
+TimeoutCheckBox=stoppen, wenn unbeaufsichtigt für
+HoursComboBoxItem={0} Std.
+MinutesComboBoxItem={0} Min.
+RequireCommentOnStartCheckBox=Kommentar beim Starten dieser Aktivität erforderlich
+RequireCommentOnStopCheckBox=Kommentar bei Stopp dieser Aktivität erforderlich
+FullScreenReminderCheckBox=Vollbild-Erinnerung
+RequiresCommentOnCompletionCeckBox=Kommentar nach Abschluss erforderlich
+CompletedCheckBox=Aufgabe ist abgeschlossen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[CreateProjectDialog]
+Title=Projekt erstellen
+ParentProjectLabel=Übergeordnet:
+NoParent=- (ein Stammprojekt ohne übergeordnetes Projekt)
+SelectParentProjectPushButton=Auswählen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+BeneficiariesLabel=Begünstigte:
+SelectBeneficiariesPushButton=Auswählen
+CompletedCheckBox=Projekt abgeschlossen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[CreatePublicActivityDialog]
+Title=Öffentliche Aktivität erstellen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+ActivityTypeLabel=Aktivitätstyp:
+WorkloadLabel=Arbeitslast:
+SelectWorkloadPushButton=Auswählen
+TimeoutLabel=Zeitüberschreitung:
+TimeoutCheckBox=stoppen, wenn unbeaufsichtigt für
+HoursComboBoxItem={0} Std.
+MinutesComboBoxItem={0} Min.
+RequireCommentOnStartCheckBox=Kommentar beim Starten dieser Aktivität erforderlich
+RequireCommentOnStopCheckBox=Kommentar bei Stopp dieser Aktivität erforderlich
+FullScreenReminderCheckBox=Vollbild-Erinnerung
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[CreatePublicTaskDialog]
+Title=Öffentliche Aufgabe erstellen
+ParentTaskLabel=Übergeordnet:
+NoParent=- (eine öffentliche Root-Aufgabe ohne übergeordnete Aufgabe)
+SelectParentTaskPushButton=Auswählen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+ActivityTypeLabel=Aktivitätstyp:
+WorkloadLabel=Arbeitslast:
+SelectWorkloadPushButton=Auswählen
+TimeoutLabel=Zeitüberschreitung:
+TimeoutCheckBox=stoppen, wenn unbeaufsichtigt für
+HoursComboBoxItem={0} Std.
+MinutesComboBoxItem={0} Min.
+RequireCommentOnStartCheckBox=Kommentar beim Starten dieser Aktivität erforderlich
+RequireCommentOnStopCheckBox=Kommentar bei Stopp dieser Aktivität erforderlich
+FullScreenReminderCheckBox=Vollbild-Erinnerung
+RequiresCommentOnCompletionCeckBox=Kommentar nach Abschluss erforderlich
+CompletedCheckBox=Aufgabe ist abgeschlossen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[CreateUserDialog]
+Title=Benutzer erstellen
+RealNameLabel=Realname:
+EmailAddressesLabel=E-Mail-Adressen:
+AddEmailAddressPushButton=Hinzufügen
+ModifyEmailAddressPushButton=Ändern
+RemoveEmailAddressPushButton=Entfernen
+InactivityTimeoutLabel=Aktuelle Aktivität:
+InactivityTimeoutCheckBox=stoppen nach
+HoursComboBoxItem={0} Std.
+MinutesComboBoxItem={0} Min.
+UiLocaleLabel=UI-Gebietsschema:
+SystemDefaultLocale=- (Systemstandard)
+WorkingOnLabel=Bearbeitet an:
+WorkingOnPushButton=Auswählen
+EnabledCheckBox=Benutzer ist aktiviert
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[CreateWorkStreamDialog]
+Title=Arbeitsablauf erstellen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+BeneficiariesLabel=Begünstigte:
+SelectBeneficiariesPushButton=Auswählen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[DailyWorkQuickReport]
+DisplayName=Tägliche Arbeit
+Description=Zeigt tägliche Aktivitäten nach Kategorie und Typ an
+
+[DailyWorkQuickReportView]
+CopyPushButton=Kopieren
+ScaleLabel=Skalierung:
+ShowLabel=Anzeigen:
+TodayRadioButton=Heute
+ForDateRadioButton=Für Datum
+ConfirmCopyTitle=Bild kopiert
+ConfirmCopyMessage=Das Bild wurde in die Zwischenablage kopiert
+NoDataLabel=Keine Daten zum Anzeigen
+
+[DestroyAccountDialog]
+Title=Konto löschen
+Prompt=Möchten Sie Konto {0}\nvon Benutzer {1} wirklich löschen ?
+DetailsWE=\nFür das Konto wurden {0} Arbeitseinheiten\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse protokolliert.
+DetailsW=\nFür das Konto wurden {0} Arbeitseinheiten\n(mit einer Gesamtdauer von {1} Minute(n)) protokolliert.
+DetailsE=\nFür das Konto wurden {0} Ereignisse protokolliert.
+
+[DestroyActivityTypeDialog]
+Title=Aktivitätstyp löschen
+Prompt=Möchten Sie den Aktivitätstyp {0}, der\n{1} Aktivitäten zugewiesen sind, wirklich löschen ?
+DetailsWE=\nFür diese Aktivitäten wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse;\nalle diese verlieren ihre Zuordnung zum Aktivitätstyp.
+DetailsW=\nFür diese Aktivitäten wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n));\nalle diese verlieren ihre Zuordnung zum Aktivitätstyp.
+DetailsE=\nFür diese Aktivitäten wurden {0} Ereignisse protokolliert;\nalle diese verlieren ihre Zuordnung zum Aktivitätstyp.
+
+[DestroyBeneficiaryDialog]
+Title=Begünstigten löschen
+Prompt=Möchten Sie den Begünstigten {0}\nwirklich löschen ?
+ProjectsAndWorkStreams=\nDer Begünstigte ist {0} Projekten und {1} Arbeitsabläufen zugeordnet.
+DetailsWE=\nFür diese wurden {0} Arbeitseinheiten (mit einer Gesamtdauer von {1} Minute(n))\nund {2} Ereignisse protokolliert; alle diese verlieren ihre Zuordnung zum Begünstigten.
+DetailsW=\nFür diese wurden {0} Arbeitseinheiten (mit einer Gesamtdauer von {1} Minute(n)) protokolliert;\nalle diese verlieren ihre Zuordnung zum Begünstigten.
+DetailsE=\nFür diese wurden {0} Ereignisse protokolliert;\nalle diese verlieren ihre Zuordnung zum Begünstigten.
+
+[DestroyEventDialog]
+Title=Ereignis löschen
+Prompt=Möchten Sie das Ereignis \n{0}\ndas am {1}\nvon {2} protokolliert wurde, wirklich löschen ?
+Details=\nBezogen auf {0} {1}.
+
+[DestroyPrivateActivityDialog]
+Title=Private Aktivität löschen
+Prompt=Möchten Sie die private Aktivität {0} wirklich löschen?
+DetailsWE=\nFür die private Aktivität wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse.
+DetailsW=\nFür die private Aktivität wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)).
+DetailsE=\nFür die private Aktivität wurden {0} Ereignisse protokolliert.
+
+[DestroyPrivateTaskDialog]
+Title=Private Aufgabe löschen
+Prompt=Möchten Sie die private Aufgabe\n{0} wirklich löschen ?
+Subtasks=\nZusammen mit der Aufgabe werden auch die {0} Unteraufgaben gelöscht.
+DetailsWE=\nFür die private Aufgabe wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse.
+DetailsW=\nFür die private Aufgabe wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)).
+DetailsE=\nFür die private Aufgabe wurden {0} Ereignisse protokolliert.
+
+[DestroyProjectDialog]
+Title=Projekt löschen
+Prompt=Möchten Sie das Projekt\n{0} wirklich löschen ?
+Subprojects=\nDabei werden auch die {0} Unterprojekte zerstört.
+DetailsWE=\nFür das Projekt wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse;\nalle diese verlieren ihre Projektzuordnung.
+DetailsW=\nFür das Projekt wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n));\nalle diese verlieren ihre Projektzuordnung.
+DetailsE=\nFür das Projekt wurden {0} Ereignisse protokolliert;\nalle diese verlieren ihre Projektzuordnung.
+
+[DestroyPublicActivityDialog]
+Title=Öffentliche Aktivität löschen
+Prompt=Möchten Sie die öffentliche Aktivität {0} wirklich löschen?
+DetailsWE=\nFür die öffentliche Aktivität wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse.
+DetailsW=\nFür die öffentliche Aktivität wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)).
+DetailsE=\nFür die öffentliche Aktivität wurden {0} Ereignisse protokolliert.
+
+[DestroyPublicTaskDialog]
+Title=Öffentliche Aufgabe löschen
+Prompt=Möchten Sie die öffentliche Aufgabe\n{0} wirklich löschen ?
+Subtasks=\nZusammen mit der Aufgabe werden auch die {0} Unteraufgaben gelöscht.
+DetailsWE=\nFür die öffentliche Aufgabe wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse.
+DetailsW=\nFür die öffentliche Aufgabe wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)).
+DetailsE=\nFür die öffentliche Aufgabe wurden {0} Ereignisse protokolliert.
+
+[DestroyUserDialog]
+Title=Benutzer löschen
+Prompt=Möchten Sie Benutzer {0} mit {1} Konten wirklich löschen ?
+DetailsWE=\nFür den Benutzer wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse.
+DetailsW=\nFür den Benutzer wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)).
+DetailsE=\nFür den Benutzer wurden {0} Ereignisse protokolliert.
+
+[DestroyWorkDialog]
+Title=Arbeit löschen
+Prompt=Möchten Sie die Arbeitseinheit\n{0}..{1}\n(Dauer {2}) wirklich löschen, protokolliert von {3} gegen\n{4} {5}?
+
+[DestroyWorkStreamDialog]
+Title=Arbeitsablauf löschen
+Prompt=Möchten Sie den Arbeitsablauf {0} wirklich löschen ?
+DetailsWE=\nFür den Arbeitsablauf wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)) und {2} Ereignisse.\nAlle diese Ereignisse verlieren ihre Zuordnung zum Arbeitsablauf.
+DetailsW=\nFür den Arbeitsablauf wurden {0} Arbeitseinheiten protokolliert\n(mit einer Gesamtdauer von {1} Minute(n)).\nAlle diese Ereignisse verlieren ihre Zuordnung zum Arbeitsablauf.
+DetailsE=\nFür den Arbeitsablauf wurden {0} Ereignisse protokolliert.\nAlle diese Ereignisse verlieren ihre Zuordnung zum Arbeitsablauf.
+
+[EditStringDialog]
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[EnterActivityStartCommentDialog]
+Title={0} {1}
+Prompt=Startkommentar eingeben:
+
+[EnterActivityStopCommentDialog]
+Title={0} {1}
+Prompt=Stoppkommentar eingeben:
+
+[EnterCommentDialog]
+Title=Kommentar protokollieren
+Prompt=Kommentar eingeben:
+
+[EnterTaskCompletionCommentDialog]
+Title={0} {1}
+Prompt=Geben Sie einen Kommentar zur Aufgabenerledigung ein:
+
+[ErrorDialog]
+Title=FEHLER
+OkPushButton=Bestätigen
+
+[FullScreenReminderWindow]
+StopPushButton=Stopp
+
+[GeneralAppearancePreferences]
+DisplayName=Darstellung
+
+[GeneralAppearancePreferencesEditor]
+LanguageLabel=Sprache:
+SkinLabel=Skin:
+ThemeLabel=Farbpalette:
+
+[GeneralDialogsPreferences]
+DisplayName=Dialoge
+
+[GeneralDialogsPreferencesEditor]
+ConfirmationsGroupBox=Bestätigungen
+ConfirmCloseWorkspaceCheckBox=Bestätigung beim Schließen eines Arbeitsbereichs erforderlich
+ConfirmRestartCheckBox=Bestätigung beim Neustart von TimeTracker3 erforderlich
+ConfirmExitCheckBox=Bestätigung beim Beenden von TimeTracker3 erforderlich
+
+[GeneralPreferences]
+DisplayName=Allgemein
+
+[GeneralStartupPreferences]
+DisplayName=Startup
+
+[GeneralStartupPreferencesEditor]
+LoadLastWorkspaceAtStartupCheckBox=Letzten Arbeitsbereich beim Start neu laden
+RememnerLastLoginCheckBox=Letzte Anmeldung merken
+ShowSplashScreenCheckBox=Startbildschirm beim Start anzeigen
+
+[InterfacePreferences]
+DisplayName=Schnittstelle
+
+[HelpBuilderProgressWindow]
+BuildingHelpLabel=Erstellung der Hilfesammlung...
+
+[LoginDialog]
+Title=Anmeldung bei TimeTracker3
+LoginLabel=Anmeldung:
+PasswordLabel=Kennwort:
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[ManageActivityTypesDialog]
+Title=Aktivitätstypen verwalten
+OkPushButton=Bestätigen
+
+[ManageBeneficiariesDialog]
+Title=Begünstigte verwalten
+OkPushButton=Bestätigen
+
+[ManageMyDayDialog]
+Title=Meinen Tag organisieren
+OkPushButton=Bestätigen
+
+[ManagePrivateActivitiesDialog]
+Title=Private Aktivitäten verwalten
+OkPushButton=Bestätigen
+
+[ManagePrivateTasksDialog]
+Title=Private Aufgaben verwalten
+OkPushButton=Bestätigen
+
+[ManageProjectsDialog]
+Title=Projekte verwalten
+OkPushButton=Bestätigen
+
+[ManagePublicActivitiesDialog]
+Title=Öffentliche Aktivitäten verwalten
+OkPushButton=Bestätigen
+
+[ManageQuickPicksListDialog]
+Title=Schnellauswahlliste verwalten
+PublicActivitiesTab=Öffentliche Aktivitäten
+PublicTasksTab=Öffentliche Aufgaben
+PrivateActivitiesTab=Private Aktivitäten
+PrivateTasksTab=Private Aufgaben
+PublicActivitiesFilterLabel=Filter:
+PublicTasksFilterLabel=Filter:
+PrivateActivitiesFilterLabel=Filter:
+PrivateTasksFilterLabel=Filter:
+MoveToTopPushButton=Nach oben
+MoveUpPushButton=Nachrücken
+MoveDownPushButton=Untenrücken
+MoveToBottomPushButton=Nach unten
+RemovePushButton=Entfernen
+TaskCompletedSuffix=[Abgeschlossen]
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[ManagePublicTasksDialog]
+Title=Öffentliche Aufgaben verwalten
+OkPushButton=Bestätigen
+
+[ManageUsersDialog]
+Title=Benutzer verwalten
+OkPushButton=Bestätigen
+
+[ManageWorkStreamsDialog]
+Title=Arbeitsabläufe verwalten
+OkPushButton=Bestätigen
+
+[MessageDialog]
+OkPushButton=Bestätigen
+
+[ModifyAccountDialog]
+Title=Konto ändern
+ViewOnlyTitle=Konto anzeigen
+UserLabel=Benutzer:
+LoginLabel=Anmelden:
+PasswordLabel=Kennwort:
+ConfirmPasswordLabel=Wiederholen:
+EmailAddressesLabel=E-Mail-Adressen:
+AddEmailAddressPushButton=Hinzufügen
+ModifyEmailAddressPushButton=Ändern
+RemoveEmailAddressPushButton=Entfernen
+CapabilitiesGroupBox=Funktionen
+AdministratorCheckBox=Administrator
+ManageUsersCheckBox=Benutzer verwalten
+ManageActivityTypesCheckBox=Aktivitätstypen verwalten
+ManageBeneficiariesCheckBox=Begünstigte verwalten
+ManageWorkloadsCheckBox=Arbeitslasten verwalten
+ManagePublicActivitiesCheckBox=Öffentliche Aktivitäten verwalten
+ManagePublicTasksCheckBox=Öffentliche Aufgaben verwalten
+ManagePrivateActivitiesCheckBox=Private Aktivitäten verwalten
+ManagePrivateTasksCheckBox=Private Aufgaben verwalten
+LogWorkCheckBox=Arbeit protokollieren
+LogEventsCheckBox=Protokollieren Ereignisse
+GenerateReportsCheckBox=Berichte erstellen
+BackupAndRestoreCheckBox=Sichern und Wiederherstellen
+EnabledCheckBox=Konto ist aktiviert
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[ModifyActivityTypeDialog]
+Title=Aktivitätstyp ändern
+ViewOnlyTitle=Aktivitätstyp anzeigen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[ModifyBeneficiaryDialog]
+Title=Begünstigten ändern
+ViewOnlyTitle=Begünstigten anzeigen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+WorkloadsLabel=Arbeitslasten:
+SelectWorkloadsPushButton=Auswählen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[ModifyEmailAddressDialog]
+Title=E-Mail-Adresse ändern
+Prompt=Neue E-Mail-Adresse eingeben:
+
+[ModifyPrivateActivityDialog]
+Title=Private Aktivität ändern
+ViewOnlyTitle=Private Aktivität anzeigen
+UserLabel=Benutzer:
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+ActivityTypeLabel=Aktivitätstyp:
+WorkloadLabel=Arbeitslast:
+SelectWorkloadPushButton=Auswählen
+TimeoutLabel=Zeitüberschreitung:
+TimeoutCheckBox=stoppen, wenn unbeaufsichtigt für
+HoursComboBoxItem={0} Std.
+MinutesComboBoxItem={0} Min.
+RequireCommentOnStartCheckBox=Kommentar beim Starten dieser Aktivität erforderlich
+RequireCommentOnStopCheckBox=Kommentar bei Stopp dieser Aktivität erforderlich
+FullScreenReminderCheckBox=Vollbild-Erinnerung
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[ModifyPrivateTaskDialog]
+Title=Private Aufgabe ändern
+ViewOnlyTitle=Private Aufgabe anzeigen
+UserLabel=Benutzer:
+ParentTaskLabel=Übergeordnet:
+NoParent=- (eine private Root-Aufgabe ohne übergeordnete Aufgabe)
+SelectParentTaskPushButton=Auswählen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+ActivityTypeLabel=Aktivitätstyp:
+WorkloadLabel=Arbeitslast:
+SelectWorkloadPushButton=Auswählen
+TimeoutLabel=Zeitüberschreitung:
+TimeoutCheckBox=stoppen, wenn unbeaufsichtigt für
+HoursComboBoxItem={0} Std.
+MinutesComboBoxItem={0} Min.
+RequireCommentOnStartCheckBox=Kommentar beim Starten dieser Aktivität erforderlich
+RequireCommentOnStopCheckBox=Kommentar bei Stopp dieser Aktivität erforderlich
+FullScreenReminderCheckBox=Vollbild-Erinnerung
+RequiresCommentOnCompletionCeckBox=Kommentar nach Abschluss erforderlich
+CompletedCheckBox=Aufgabe ist abgeschlossen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[ModifyProjectDialog]
+Title=Projekt ändern
+ViewOnlyTitle=Projekt anzeigen
+ParentProjectLabel=Übergeordnet:
+NoParent=- (ein Stammprojekt ohne übergeordnetes Projekt)
+SelectParentProjectPushButton=Auswählen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+BeneficiariesLabel=Begünstigte:
+SelectBeneficiariesPushButton=Auswählen
+CompletedCheckBox=Projekt abgeschlossen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[ModifyPublicActivityDialog]
+Title=Öffentliche Aktivität ändern
+ViewOnlyTitle=Öffentliche Aktivität anzeigen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+ActivityTypeLabel=Aktivitätstyp:
+WorkloadLabel=Arbeitslast:
+SelectWorkloadPushButton=Auswählen
+TimeoutLabel=Zeitüberschreitung:
+TimeoutCheckBox=stoppen, wenn unbeaufsichtigt für
+HoursComboBoxItem={0} Std.
+MinutesComboBoxItem={0} Min.
+RequireCommentOnStartCheckBox=Kommentar beim Starten dieser Aktivität erforderlich
+RequireCommentOnStopCheckBox=Kommentar bei Stopp dieser Aktivität erforderlich
+FullScreenReminderCheckBox=Vollbild-Erinnerung
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[ModifyPublicTaskDialog]
+Title=Öffentliche Aufgabe ändern
+ViewOnlyTitle=Öffentliche Aufgabe anzeigen
+ParentTaskLabel=Übergeordnet:
+NoParent=- (eine öffentliche Root-Aufgabe ohne übergeordnete Aufgabe)
+SelectParentTaskPushButton=Auswählen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+ActivityTypeLabel=Aktivitätstyp:
+WorkloadLabel=Arbeitslast:
+SelectWorkloadPushButton=Auswählen
+TimeoutLabel=Zeitüberschreitung:
+TimeoutCheckBox=stoppen, wenn unbeaufsichtigt für
+HoursComboBoxItem={0} Std.
+MinutesComboBoxItem={0} Min.
+RequireCommentOnStartCheckBox=Kommentar beim Starten dieser Aktivität erforderlich
+RequireCommentOnStopCheckBox=Kommentar bei Stopp dieser Aktivität erforderlich
+FullScreenReminderCheckBox=Vollbild-Erinnerung
+RequiresCommentOnCompletionCeckBox=Kommentar nach Abschluss erforderlich
+CompletedCheckBox=Aufgabe ist abgeschlossen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[ModifyUserDialog]
+Title=Benutzer ändern
+ViewOnlyTitle=Benutzer anzeigen
+RealNameLabel=Realname:
+EmailAddressesLabel=E-Mail-Adressen:
+AddEmailAddressPushButton=Hinzufügen
+ModifyEmailAddressPushButton=Ändern
+RemoveEmailAddressPushButton=Entfernen
+InactivityTimeoutLabel=Aktuelle Aktivität:
+InactivityTimeoutCheckBox=stoppen nach
+HoursComboBoxItem={0} Std.
+MinutesComboBoxItem={0} Min.
+UiLocaleLabel=UI-Gebietsschema:
+SystemDefaultLocale=- (Systemstandard)
+WorkingOnLabel=Bearbeitet an:
+WorkingOnPushButton=Auswählen
+EnabledCheckBox=Benutzer ist aktiviert
+ProjectCompletedSuffix=[Projekt ist abgeschlossen]
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[ModifyWorkStreamDialog]
+Title=Arbeitsablauf ändern
+ViewOnlyTitle=Arbeitsablauf anzeigen
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+BeneficiariesLabel=Begünstigte:
+SelectBeneficiariesPushButton=Auswählen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[MyDayManager]
+NoQuickPicksLabel=Die Schnellauswahlliste ist leer.
+QuickPicksPushButton=Schnellauswahl
+FilterLabel=Anzeigen:
+LogEventPushButton=Kommentar protokollieren
+FilterDays1=Heute
+FilterDays2=Letzte 2 Tage
+FilterDays3=Letzte 3 Tage
+FilterDays7=Letzte 7 Tage
+FilterDays30=Letzte 30 Tage
+TaskCompletedSuffix=[Aufgabe abgeschlossen]
+DestroyWorkAction=Arbeit löschen
+DestroyEventAction=Ereignis löschen
+ModifyPublicActivityAction=Öffentliche Aktivität ändern
+ModifyPublicTaskAction=Öffentliche Aufgabe ändern
+ModifyPrivateActivityAction=Private Aktivität ändern
+ModifyPrivateTaskAction=Private Aufgabe ändern
+ViewPublicActivityAction=Öffentliche Aktivität anzeigen
+ViewPublicTaskAction=Öffentliche Aufgabe anzeigen
+ViewPrivateActivityAction=Private Aktivität anzeigen
+ViewPrivateTaskAction=Private anzeigen Aufgabe
+RemoveFromQuickPicksAction=Aus der Schnellauswahlliste entfernen
+
+[NewWorkspaceDialog]
+Title=Neuer Arbeitsbereich
+WorkspaceTypeLabel=Arbeitsbereichstyp:
+LocationLabel=Standort:
+BrowsePushButton=Durchsuchen
+UserNameLabel=Administrator:
+LoginLabel=Anmelden:
+PasswordLabel=Kennwort:
+ConfirmPasswordLabel=Wiederholen:
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[PreferencesDialog]
+Title=Einstellungen
+NoPropertiesLabel=Keine Eigenschaften zu bearbeiten
+ResetPushButton=Seite zurücksetzen
+ResetAllPushButton=Alle zurücksetzen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[PrivateActivityManager]
+FilterLabel=Filter:
+CreatePrivateActivityPushButton=Private Aktivität erstellen
+ModifyPrivateActivityPushButton=Private Aktivität ändern
+ViewPrivateActivityPushButton=Private Aktivität anzeigen
+DestroyPrivateActivityPushButton=Private Aktivität löschen
+StartPrivateActivityPushButton=Private Aktivität starten
+StopPrivateActivityPushButton=Private Aktivität stoppen
+UserDisabledSuffix=[Benutzer ist deaktiviert]
+
+[PrivateTaskManager]
+FilterLabel=Filter:
+CreatePrivateTaskPushButton=Private Aufgabe erstellen
+ModifyPrivateTaskPushButton=Private Aufgabe ändern
+ViewPrivateTaskPushButton=Private Aufgabe anzeigen
+DestroyPrivateTaskPushButton=Private Aufgabe löschen
+StartPrivateTaskPushButton=Private Aufgabe starten
+StopPrivateTaskPushButton=Private Aufgabe stoppen
+CompletePrivateTaskPushButton=Private Aufgabe abschließen
+UserDisabledSuffix=[Benutzer ist deaktiviert]
+TaskCompletedSuffix=[Aufgabe ist abgeschlossen]
+ShowCompletedCheckBox=Erledigte Aufgaben anzeigen
+
+[ProjectManager]
+FilterLabel=Filter:
+CreateProjectPushButton=Projekt erstellen
+ModifyProjectPushButton=Projekt ändern
+ViewProjectPushButton=Projekt anzeigen
+DestroyProjectPushButton=Projekt löschen
+CompleteProjectPushButton=Projekt abschließen
+ProjectCompletedSuffix=[Projekt ist abgeschlossen]
+ShowCompletedCheckBox=Abgeschlossene Projekte anzeigen
+
+[PublicActivityManager]
+FilterLabel=Filter:
+CreatePublicActivityPushButton=Öffentliche Aktivität erstellen
+ModifyPublicActivityPushButton=Öffentliche Aktivität ändern
+ViewPublicActivityPushButton=Öffentliche Aktivität anzeigen
+DestroyPublicActivityPushButton=Öffentliche Aktivität löschen
+StartPublicActivityPushButton=Öffentliche Aktivität starten
+StopPublicActivityPushButton=Öffentliches Aktivität stoppen
+
+[PublicTaskManager]
+FilterLabel=Filter:
+CreatePublicTaskPushButton=Öffentliche Aufgabe erstellen
+ModifyPublicTaskPushButton=Öffentliche Aufgabe ändern
+ViewPublicTaskPushButton=Öffentliche Aufgabe anzeigen
+DestroyPublicTaskPushButton=Öffentliche Aufgabe löschen
+StartPublicTaskPushButton=Öffentliche Aufgabe starten
+StopPublicTaskPushButton=Öffentliche Aufgabe stoppen
+CompletePublicTaskPushButton=Öffentliche Aufgabe abschließen
+TaskCompletedSuffix=[Aufgabe ist abgeschlossen]
+ShowCompletedCheckBox=Erledigte Aufgaben anzeigen
+
+[QuickReportBrowser]
+ShowLabel=Anzeigen:
+RefreshLabel=Aktualisieren
+RefreshPushButton=Aktualisieren
+RefreshInterval1=jede Sekunde
+RefreshInterval5=jede 5 Sekunden
+RefreshInterval10=jede 10 Sekunden
+RefreshInterval15=jede 15 Sekunden
+RefreshInterval30=jede 30 Sekunden
+RefreshInterval60=jede Minute
+RefreshInterval0=manuell
+
+[QuickReportsDialog]
+Title=Schnellberichte
+OkPushButton=Bestätigen
+
+[RestartRequiredDialog]
+Title=Neustart erforderlich
+Prompt=Eine der Änderungen an den Anwendungseinstellungen\nwird erst nach einem Neustart der Anwendung wirksam.\nMöchten Sie TimeTracker3 jetzt neu starten?
+
+[SelectBeneficiariesDialog]
+Title=Begünstigte auswählen
+FilterLabel=Filter:
+SelectedBeneficiariesLabel=Ausgewählte Begünstigte:
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[SelectPrivateTaskParentDialog]
+Title=Übergeordnete Aufgabe auswählen
+UserLabel=Benutzer:
+PromptLabel=Neue übergeordnete Aufgabe für private Aufgabe auswählen
+FilterLabel=Filter:
+ShowCompletedTasksCheckBox=Abgeschlossene Aufgaben anzeigen
+SelectionLabel=Übergeordnete Aufgabe auswählen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[SelectProjectParentDialog]
+Title=Übergeordnetes Projekt auswählen
+PromptLabel=Neues übergeordnetes Projekt auswählen
+FilterLabel=Filter:
+ShowCompletedProjectsCheckBox=Abgeschlossene Projekte anzeigen
+SelectionLabel=Ausgewähltes übergeordnetes Projekt
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[SelectPublicTaskParentDialog]
+Title=Übergeordnete Aufgabe auswählen
+PromptLabel=Neue übergeordnete Aufgabe für öffentliche Aufgabe auswählen
+FilterLabel=Filter:
+ShowCompletedTasksCheckBox=Abgeschlossene Aufgaben anzeigen
+SelectionLabel=Übergeordnete Aufgabe auswählen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[SelectWorkspaceDialog]
+Title=Arbeitsbereich auswählen
+WorkspaceTypeLabel=Arbeitsbereichstyp:
+LocationLabel=Standort:
+BrowsePushButton=Durchsuchen
+OpenAsDefaultRadioButton=Standard
+OpenAsReadOnlyRadioButton=Schreibgeschützt
+OpenAsReadWriteRadioButton=Lesen/Schreiben
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[SelectWorkloadDialog]
+Title=Arbeitslast auswählen
+ProjectsTab=Projekte
+WorkStreamsTab=Arbeitsablaufe
+ProjectsFilterLabel=Filter:
+WorkStreamsFilterLabel=Filter:
+ProjectCompletedSuffix=[Projekt abgeschlossen]
+ShowCompletedProjectsCheckBox=Abgeschlossene Projekte anzeigen
+SelectionLabel=Ausgewählte Arbeitslast:\n
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[SelectWorkloadsDialog]
+Title=Arbeitslasten auswählen
+ProjectsTab=Projekte
+WorkStreamsTab=Arbeitsablaufe
+ProjectsFilterLabel=Filter:
+WorkStreamsFilterLabel=Filter:
+ProjectCompletedSuffix=[Projekt abgeschlossen]
+ShowCompletedProjectsCheckBox=Abgeschlossene Projekte anzeigen
+SelectedWorkloadsLabel=Ausgewählte Arbeitslasten:
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[ShowConfigurationDialog]
+Title=TimeTracker3-Konfiguration
+ComponentsTab=Komponenten
+DisplayNameLabel=Name:
+DescriptionLabel=Beschreibung:
+VersionLabel=Version:
+CopyrightLabel=Copyright:
+LicenseLabel=Lizenz:
+VersionAndBuild={0} (Build {1})
+ShowLicensePushButton=Lizenz anzeigen
+OkPushButton=Bestätigen
+
+[ShowLicenseDialog]
+OkPushButton=Bestätigen
+
+[StandardThemes]
+System.DisplayName=System
+System.Description=Das Design mit den aktuellen Systemfarben
+Light.DisplayName=Hell
+Light.Description=Das Design mit hellen Farben
+Dark.DisplayName=Dunkel
+Dark.Description=Das Design mit dunklen Farben
+
+[UserManager]
+FilterLabel=Filter:
+CreateUserPushButton=Benutzer erstellen
+ModifyUserPushButton=Benutzer ändern
+ViewUserPushButton=Benutzer anzeigen
+DestroyUserPushButton=Benutzer löschen
+CreateAccountPushButton=Konto erstellen
+ModifyAccountPushButton=Konto ändern
+ViewAccountPushButton=Konto anzeigen
+DestroyAccountPushButton=Konto löschen
+ShowDisabledCheckBox=Deaktivierte Benutzer und Konten anzeigen
+UserDisabledSuffix=[Benutzer ist deaktiviert]
+AccountDisabledSuffix=[Konto ist deaktiviert]
+
+[WorkStreamManager]
+FilterLabel=Filter:
+CreateWorkStreamPushButton=Arbeitsablauf erstellen
+ViewWorkStreamPushButton=Arbeitsablauf anzeigen
+ModifyWorkStreamPushButton=Arbeitsablauf ändern
+DestroyWorkStreamPushButton=Arbeitsablauf löschen

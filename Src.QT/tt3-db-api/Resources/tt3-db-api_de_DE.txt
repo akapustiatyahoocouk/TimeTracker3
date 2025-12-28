@@ -1,0 +1,30 @@
+[Component]
+DisplayName=TimeTracker3 Datenbank API
+Description=Definiert die gemeinsame API für TimeTracker3-Datenbanken
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[ObjectTypes]
+User.DisplayName=Benutzer
+Account.DisplayName=Konto
+ActivityType.DisplayName=Aktivitätstyp
+PublicActivity.DisplayName=Öffentliche Aktivität
+PublicTask.DisplayName=Öffentliche Aufgabe
+PrivateActivity.DisplayName=Private Aktivität
+PrivateTask.DisplayName=Private Aufgabe
+Work.DisplayName=Arbeit
+Event.DisplayName=Ereignis
+Project.DisplayName=Projekt
+WorkStream.DisplayName=Arbeitsablauf
+Beneficiary.DisplayName=Begünstigter
+
+[Errors]
+InvalidDatabaseAddressException=Ungültige Datenbankadresse
+DatabaseInUseException={0} {1} wird bereits verwendet
+DatabaseCorruptException={0} {1} ist ungültig oder beschädigt
+DatabaseClosedException=Datenbank ist geschlossen
+AccessDeniedException=Zugriff verweigert
+InvalidPropertyValueException=Eigenschaft '{1}' von '{0}' kann nicht auf '{2}' gesetzt werden.
+AlreadyExistsException=Die {0} mit '{1}' = '{2}' existiert bereits
+DoesNotExistException=Die {0} mit '{1}' = '{2}' existiert nicht
+InstanceDeadException=Die Instanz ist tot
+IncompatibleInstanceException=Inkompatibel mit {0}

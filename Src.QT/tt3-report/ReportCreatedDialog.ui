@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>tt3::report::ReportCreatedDialog</class>
+ <widget class="QDialog" name="tt3::report::ReportCreatedDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>542</width>
+    <height>142</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Report created</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="tt3-report.qrc">
+    <normaloff>:/tt3-report/Resources/Images/Reports/ReportLarge.png</normaloff>:/tt3-report/Resources/Images/Reports/ReportLarge.png</iconset>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0" colspan="4">
+    <widget class="QLabel" name="promptLabel1">
+     <property name="text">
+      <string>The report file</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="4">
+    <widget class="QLabel" name="promptLabel2">
+     <property name="text">
+      <string>has neen successfully created. What would you like to do now ?</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="0" colspan="4">
+    <widget class="QLabel" name="reportFileNameLabel">
+     <property name="text">
+      <string>FILENAME</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QPushButton" name="openLocationPushButton">
+     <property name="text">
+      <string>Open report location</string>
+     </property>
+     <property name="icon">
+      <iconset resource="tt3-report.qrc">
+       <normaloff>:/tt3-report/Resources/Images/Misc/OpenFolderSmall.png</normaloff>:/tt3-report/Resources/Images/Misc/OpenFolderSmall.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="4">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="3">
+    <widget class="QPushButton" name="keepWorkingPushButton">
+     <property name="text">
+      <string>Keep working</string>
+     </property>
+     <property name="icon">
+      <iconset resource="tt3-report.qrc">
+       <normaloff>:/tt3-report/Resources/Images/Actions/OkSmall.png</normaloff>:/tt3-report/Resources/Images/Actions/OkSmall.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QPushButton" name="openFilePushButton">
+     <property name="text">
+      <string>Open report file</string>
+     </property>
+     <property name="icon">
+      <iconset resource="tt3-report.qrc">
+       <normaloff>:/tt3-report/Resources/Images/Reports/ReportSmall.png</normaloff>:/tt3-report/Resources/Images/Reports/ReportSmall.png</iconset>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="tt3-report.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>openFilePushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::ReportCreatedDialog</receiver>
+   <slot>_openFilePushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>83</x>
+     <y>117</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>270</x>
+     <y>70</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>openLocationPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::ReportCreatedDialog</receiver>
+   <slot>_openLocationPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>253</x>
+     <y>117</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>270</x>
+     <y>70</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>keepWorkingPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::ReportCreatedDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>465</x>
+     <y>117</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>270</x>
+     <y>70</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_openFilePushButtonClicked()</slot>
+  <slot>_openLocationPushButtonClicked()</slot>
+ </slots>
+</ui>

@@ -1,0 +1,423 @@
+//
+//  tt3-report/BasicReportTemplate.hpp - tt3-report basic (hardcoded) report template
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+
+namespace tt3::report
+{
+    /// \class BasicReportTemplate tt3-report/API.hpp
+    /// \brief The predefined basic report template.
+    class TT3_REPORT_PUBLIC BasicReportTemplate final
+        :   public virtual IReportTemplate
+    {
+        TT3_DECLARE_SINGLETON(BasicReportTemplate)
+
+        //////////
+        //  IReportTemplate
+    public:
+        virtual auto    mnemonic() const -> Mnemonic override;
+        virtual auto    displayName() const -> QString override;
+        virtual auto    pageSetup() const -> PageSetup override;
+        virtual auto    defaultFontSpecs() const -> FontSpecs override;
+        virtual auto    defaultFontSize() const -> TypographicSize override;
+        virtual auto    defaultFontStyle() const -> FontStyle override;
+        virtual auto    defaultTextColor() const -> ColorSpec override;
+        virtual auto    defaultBackgroundColor() const -> ColorSpec override;
+        virtual auto    defaultListIndent() const -> TypographicSize override;
+        virtual auto    defaultTableBorderType() const -> BorderType override;
+        virtual auto    defaultCellBorderType() const -> BorderType override;
+        virtual auto    defaultLinkUnderlineMode() const -> UnderlineMode override;
+        virtual auto    defaultPageNumberPlacement() const -> PageNumberPlacement override;
+
+        virtual auto    styles() const -> Styles override;
+        virtual auto    findStyle(
+                                const Mnemonic & name
+                            ) const -> IStyle * override;
+
+        virtual Report *createNewReport() const override;
+
+        //////////
+        //  Implementation
+    private:
+        const PageSetup             _pageSetup;                 //  never null
+        const FontSpecs             _defaultFontSpecs;      //  never null; unmodifiable list
+        const TypographicSize       _defaultFontSize;           //  never null
+        const FontStyle             _defaultFontStyle;          //  java.awt.Font - style bit mask
+        const ColorSpec             _defaultTextColor;          //  never null
+        const ColorSpec             _defaultBackgroundColor;    //  never null
+        const TypographicSize       _defaultListIndent;         //  never null
+        const BorderType            _defaultTableBorderType;    //  never null
+        const BorderType            _defaultCellBorderType;    //  never null
+        const UnderlineMode         _defaultLinkUnderlineMode;  //  never null
+        const PageNumberPlacement   _defaultPageNumberPlacement;
+
+        QMap<Mnemonic, BasicStyle*> _styles; //  all styles "owned" by this report template
+
+        //  Helpers
+        void            _addStyle(BasicStyle * style);
+    };
+
+    /// \class BasicStyle tt3-report/API.hpp
+    /// \brief A basic (predefined) style.
+    class TT3_REPORT_PUBLIC BasicStyle
+        :   public virtual IStyle
+    {
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicStyle)
+
+        friend class BasicReportTemplate;
+        friend class BasicCharacterStyle;
+        friend class BasicBlockStyle;
+        friend class BasicLinkStyle;
+        friend class BasicTableCellStyle;
+        friend class BasicSectionStyle;
+
+        //////////
+        //  Construction/destruction - from friends only
+    private:
+        BasicStyle(
+                const Name & name,
+                const FontSpecsOpt & fontSpecs,
+                const TypographicSizeOpt & fontSize,
+                const FontStyleOpt & fontStyle,
+                const ColorSpecOpt & textColor,
+                const ColorSpecOpt & backgroundColor,
+                const UnderlineModeOpt & underlineMode
+            );
+        virtual ~BasicStyle();
+
+        //////////
+        //  IStyle
+    public:
+        virtual auto    reportTemplate() const -> IReportTemplate * override;
+        virtual auto    name() const -> Name override;
+        virtual auto    fontSpecs() const -> FontSpecsOpt override;
+        virtual auto    fontSize() const -> TypographicSizeOpt override;
+        virtual auto    fontStyle() const -> FontStyleOpt override;
+        virtual auto    textColor() const -> ColorSpecOpt override;
+        virtual auto    backgroundColor() const -> ColorSpecOpt override;
+        virtual auto    underlineMode() const -> UnderlineModeOpt override;
+
+        //////////
+        //  Implementation
+    private:
+        const Name                  _name;
+        const FontSpecsOpt          _fontSpecs;
+        const TypographicSizeOpt    _fontSize;
+        const FontStyleOpt          _fontStyle;
+        const ColorSpecOpt          _textColor;
+        const ColorSpecOpt          _backgroundColor;
+        const UnderlineModeOpt      _underlineMode;
+    };
+
+    /// \class BasicCharacterStyle tt3-report/API.hpp
+    /// \brief A basic (predefined) character style.
+    class TT3_REPORT_PUBLIC BasicCharacterStyle
+        :   public BasicStyle,
+            public virtual ICharacterStyle
+    {
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicCharacterStyle)
+
+        friend class BasicReportTemplate;
+
+        //////////
+        //  Construction/destruction - from friends only
+    private:
+        BasicCharacterStyle(
+                const Name & name,
+                const FontSpecsOpt & fontSpecs,
+                const TypographicSizeOpt & fontSize,
+                const FontStyleOpt & fontStyle,
+                const ColorSpecOpt & textColor,
+                const ColorSpecOpt & backgroundColor,
+                const UnderlineModeOpt & underlineMode
+            );
+        virtual ~BasicCharacterStyle();
+    };
+
+    /// \class BasicBlockStyle tt3-report/API.hpp
+    /// \brief A basic (predefined) block style.
+    class TT3_REPORT_PUBLIC BasicBlockStyle
+        :   public BasicStyle,
+            public virtual IBlockStyle
+    {
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicBlockStyle)
+
+        friend class BasicParagraphStyle;
+        friend class BasicListStyle;
+        friend class BasicTableStyle;
+
+        //////////
+        //  Construction/destruction - from friends only
+    private:
+        BasicBlockStyle(
+                const Name & name,
+                const FontSpecsOpt & fontSpecs,
+                const TypographicSizeOpt & fontSize,
+                const FontStyleOpt & fontStyle,
+                const ColorSpecOpt & textColor,
+                const ColorSpecOpt & backgroundColor,
+                const UnderlineModeOpt & underlineMode,
+                const TypographicSizeOpt & leftMargin,
+                const TypographicSizeOpt & rightMargin,
+                const TypographicSizeOpt & gapAbove,
+                const TypographicSizeOpt & gapBelow
+            );
+        virtual ~BasicBlockStyle();
+
+        //////////
+        //  IBlockStyle
+    public:
+        virtual auto    leftMargin() const -> TypographicSizeOpt override;
+        virtual auto    rightMargin() const -> TypographicSizeOpt override;
+        virtual auto    gapAbove() const -> TypographicSizeOpt override;
+        virtual auto    gapBelow() const -> TypographicSizeOpt override;
+
+        //////////
+        //  Implementation
+    private:
+        const TypographicSizeOpt    _leftMargin;
+        const TypographicSizeOpt    _rightMargin;
+        const TypographicSizeOpt    _gapAbove;
+        const TypographicSizeOpt    _gapBelow;
+    };
+
+    /// \class BasicParagraphStyle tt3-report/API.hpp
+    /// \brief A basic (predefined) paragraph style.
+    class TT3_REPORT_PUBLIC BasicParagraphStyle
+        :   public BasicBlockStyle,
+            public virtual IParagraphStyle
+    {
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicParagraphStyle)
+
+        friend class BasicReportTemplate;
+
+        //////////
+        //  Construction/destruction - from friends only
+    private:
+        BasicParagraphStyle(
+                const Name & name,
+                const FontSpecsOpt & fontSpecs,
+                const TypographicSizeOpt & fontSize,
+                const FontStyleOpt & fontStyle,
+                const ColorSpecOpt & textColor,
+                const ColorSpecOpt & backgroundColor,
+                const UnderlineModeOpt & underlineMode,
+                const TypographicSizeOpt & leftMargin,
+                const TypographicSizeOpt & rightMargin,
+                const TypographicSizeOpt & gapAbove,
+                const TypographicSizeOpt & gapBelow,
+                const HorizontalAlignmentOpt & textAlignment,
+                const BorderTypeOpt & borderType
+            );
+        virtual ~BasicParagraphStyle();
+
+        //////////
+        //  IParagraphStyle
+    public:
+        virtual auto    textAlignment() const -> HorizontalAlignmentOpt override;
+        virtual auto    borderType() const -> BorderTypeOpt override;
+
+        //////////
+        //  Implementation
+    private:
+        const HorizontalAlignmentOpt    _textAlignment;
+        const BorderTypeOpt             _borderType;
+    };
+
+    /// \class BasicListStyle tt3-report/API.hpp
+    /// \brief A basic (predefined) list style.
+    class TT3_REPORT_PUBLIC BasicListStyle
+        :   public BasicBlockStyle,
+            public virtual IListStyle
+    {
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicListStyle)
+
+        friend class BasicReportTemplate;
+
+        //////////
+        //  Construction/destruction - from friends only
+    private:
+        BasicListStyle(
+                const Name & name,
+                const FontSpecsOpt & fontSpecs,
+                const TypographicSizeOpt & fontSize,
+                const FontStyleOpt & fontStyle,
+                const ColorSpecOpt & textColor,
+                const ColorSpecOpt & backgroundColor,
+                const UnderlineModeOpt & underlineMode,
+                const TypographicSizeOpt & leftMargin,
+                const TypographicSizeOpt & rightMargin,
+                const TypographicSizeOpt & gapAbove,
+                const TypographicSizeOpt & gapBelow,
+                const TypographicSizeOpt & indent
+            );
+        virtual ~BasicListStyle();
+
+        //////////
+        //  IListStyle
+    public:
+        virtual auto    indent() const -> TypographicSizeOpt override;
+
+        //////////
+        //  Implementation
+    private:
+        const TypographicSizeOpt _indent;
+    };
+
+    /// \class BasicTableStyle tt3-report/API.hpp
+    /// \brief A basic (predefined) Table style.
+    class TT3_REPORT_PUBLIC BasicTableStyle
+        :   public BasicBlockStyle,
+            public virtual ITableStyle
+    {
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicTableStyle)
+
+        friend class BasicReportTemplate;
+
+        //////////
+        //  Construction/destruction - from friends only
+    private:
+        BasicTableStyle(
+                const Name & name,
+                const FontSpecsOpt & fontSpecs,
+                const TypographicSizeOpt & fontSize,
+                const FontStyleOpt & fontStyle,
+                const ColorSpecOpt & textColor,
+                const ColorSpecOpt & backgroundColor,
+                const UnderlineModeOpt & underlineMode,
+                const TypographicSizeOpt & leftMargin,
+                const TypographicSizeOpt & rightMargin,
+                const TypographicSizeOpt & gapAbove,
+                const TypographicSizeOpt & gapBelow,
+                const BorderTypeOpt & tableBorderType,
+                const BorderTypeOpt & cellBorderType
+            );
+        virtual ~BasicTableStyle();
+
+        //////////
+        //  ITableStyle
+    public:
+        virtual auto    tableBorderType() const -> BorderTypeOpt override;
+        virtual auto    cellBorderType() const -> BorderTypeOpt override;
+
+        //////////
+        //  Implementation
+    private:
+        const BorderTypeOpt     _tableBorderType;
+        const BorderTypeOpt     _cellBorderType;
+    };
+
+    /// \class BasicTableCellStyle tt3-report/API.hpp
+    /// \brief A basic (predefined) Table cell style.
+    class TT3_REPORT_PUBLIC BasicTableCellStyle
+        :   public BasicStyle,
+            public virtual ITableCellStyle
+    {
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicTableCellStyle)
+
+        friend class BasicReportTemplate;
+
+        //////////
+        //  Construction/destruction - from friends only
+    private:
+        BasicTableCellStyle(
+                const Name & name,
+                const FontSpecsOpt & fontSpecs,
+                const TypographicSizeOpt & fontSize,
+                const FontStyleOpt & fontStyle,
+                const ColorSpecOpt & textColor,
+                const ColorSpecOpt & backgroundColor,
+                const UnderlineModeOpt & underlineMode,
+                const HorizontalAlignmentOpt & horizontalAlignment,
+                const VerticalAlignmentOpt & verticalAlignment
+            );
+        virtual ~BasicTableCellStyle();
+
+        //////////
+        //  ITableCellStyle
+    public:
+        virtual auto    horizontalAlignment() const -> HorizontalAlignmentOpt override;
+        virtual auto    verticalAlignment() const -> VerticalAlignmentOpt override;
+
+        //////////
+        //  Implementation
+    private:
+        const HorizontalAlignmentOpt    _horizontalAlignment;
+        const VerticalAlignmentOpt      _verticalAlignment;
+    };
+
+    /// \class BasicLinkStyle tt3-report/API.hpp
+    /// \brief A basic (predefined) link style.
+    class TT3_REPORT_PUBLIC BasicLinkStyle
+        :   public BasicStyle,
+            public virtual ILinkStyle
+    {
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicLinkStyle)
+
+        friend class BasicReportTemplate;
+
+        //////////
+        //  Construction/destruction - from friends only
+    private:
+        BasicLinkStyle(
+                const Name & name,
+                const FontSpecsOpt & fontSpecs,
+                const TypographicSizeOpt & fontSize,
+                const FontStyleOpt & fontStyle,
+                const ColorSpecOpt & textColor,
+                const ColorSpecOpt & backgroundColor,
+                const UnderlineModeOpt & underlineMode
+            );
+        virtual ~BasicLinkStyle();
+    };
+
+    /// \class BasicSectionStyle tt3-report/API.hpp
+    /// \brief A basic (predefined) section style.
+    class TT3_REPORT_PUBLIC BasicSectionStyle
+        :   public BasicStyle,
+            public virtual ISectionStyle
+    {
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(BasicSectionStyle)
+
+        friend class BasicReportTemplate;
+
+        //////////
+        //  Construction/destruction - from friends only
+    private:
+        BasicSectionStyle(
+                const Name & name,
+                const FontSpecsOpt & fontSpecs,
+                const TypographicSizeOpt & fontSize,
+                const FontStyleOpt & fontStyle,
+                const ColorSpecOpt & textColor,
+                const ColorSpecOpt & backgroundColor,
+                const UnderlineModeOpt & underlineMode,
+                const PageNumberPlacementOpt & pageNumberPlacement
+            );
+        virtual ~BasicSectionStyle();
+
+        //////////
+        //  ISectionStyle
+    public:
+        virtual auto    pageNumberPlacement() const -> PageNumberPlacementOpt override;
+
+        //////////
+        //  Implementation
+    private:
+        const PageNumberPlacementOpt    _pageNumberPlacement;
+    };
+}
+
+//  End of tt3-report/BasicReportTemplate.hpp

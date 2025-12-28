@@ -1,0 +1,59 @@
+[ProductInformation]
+ApplicationName=TimeTracker3
+ApplicationCopyright=Copyright (C) {0}, Andrey Kapustin
+ApplicationDisplayName=TimeTracker3
+OrganizationName=Andrey Kapustin
+OrganizationDomain=https://github.com/akapustiatyahoocouk/TimeTracker3
+Credits=Idee von: Yuri Levdik
+
+[Component]
+DisplayName=TimeTracker3 Dienstprogramm
+Description=Definiert die Dienstprogramme für TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[StandardSubsystems]
+Applications.DisplayName=Anwendungen
+Applications.Description=Anwendungen der obersten Ebene, die den TimeTracker3 bilden
+Storage.DisplayName=Datenspeicher
+Storage.Description=Komponenten für die persistente Datenspeicherung
+Gui.DisplayName=Benutzeroberfläche
+Gui.Description=Komponenten der Benutzeroberfläche
+Reporting.DisplayName=Berichterstellung
+Reporting.Description=Komponenten für Zusammenfassungen und Berichtsfunktionen
+Utility.DisplayName=Dienstprogramm
+Utility.Description=Dienstprogrammkomponenten und unterstützende Bibliotheken
+
+[MessageDigests]
+Sha1.DisplayName=SHA-1
+
+[StandardLicenses]
+GPLv3.DisplayName=GNU GPL (version 3)
+GPLv3.Description=GNU General Public License (version 3)
+
+[Language]
+de=Deutsch
+en=Englisch
+ru=Russisch
+
+[Country]
+GB=Großbritannien
+DE=Deutschland
+RU=Russland
+
+[DayOfWeek]
+Monday=Montag
+Tuesday=Dienstag
+Wednesday=Mittwoch
+Thursday=Donnerstag
+Friday=Freitag
+Saturday=Samstag
+Sunday=Sonntag
+
+[ComponentManager]
+DiscoveringComponents=Komponenten werden ermittelt...
+InitializingComponents=Komponenten werden initialisiert...
+
+[Errors]
+MissingResourceException=Fehlende Ressource [{1}]{2} in {0}
+ParseException=Fehler beim Parsen "{0}" an Position {1}
+NotImplementedError=Noch nicht implementiert

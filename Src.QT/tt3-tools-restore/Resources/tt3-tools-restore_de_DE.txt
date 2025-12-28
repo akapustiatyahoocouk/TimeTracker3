@@ -1,0 +1,43 @@
+[Plugin]
+DisplayName=TimeTracker3-Wiederherstellen
+Description=Definiert eine Datenwiederherstellungslösung für TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[Component]
+DisplayName=TimeTracker3-Wiederherstellen
+Description=Definiert eine Datenwiederherstellungslösung für TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[RestoreTool]
+DisplayName=Wiederherstellen
+Description=Erstellt eine Datenwiederherstellungslösung
+
+[ConfigureRestoreDialog]
+Title=Arbeitsbereich wiederherstellen
+RestoreFromLabel=Wiederherstellen von:
+RestoreFromPushButton=Durchsuchen
+RestoreIntoLabel=--- In ---
+WorkspaceTypeLabel=Arbeitsbereichstyp:
+LocationLabel=Speicherort:
+BrowsePushButton=Durchsuchen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+RestoreFromDialogTitle=Wiederherstellen aus Datei
+RestoreFromDialogFilter=TimeTracker3-Sicherungsdateien (*{0});;Alle Dateien (*.*)
+
+[RestoreProgressDialog]
+Title=Arbeitsbereich wiederherstellen
+RestoreLabel=Zeichenkette neu setzen:
+FromLabel=Aus Datei:
+CancelPushButton=Abbrechen
+
+[RestoreCompletedDialog]
+Title=Wiederherstellung abgeschlossen
+Message=Der Arbeitsbereich\n{0}\nwurde erfolgreich von\n{1} wiederhergestellt.
+
+[RestoreCancelledDialog]
+Title=Wiederherstellung abgebrochen
+Message=Die Wiederherstellung wurde abgebrochen.
+
+[Errors]
+BackupFileCorruptException=Die Sicherungsdatei {0} ist beschädigt.

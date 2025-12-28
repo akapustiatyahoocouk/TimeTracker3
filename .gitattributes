@@ -15,6 +15,19 @@
 *.resx text diff=cpp
 *.config text diff=cpp
 *.settings text diff=cpp
+Doxyfile text diff=cpp
+
+*.pro  text diff=cpp
+*.pri  text diff=cpp
+*.qrc  text diff=cpp
+*.ui   text diff=cpp
+*.txt  text diff=cpp
+*.htm  text diff=cpp
+*.html text diff=cpp
+*.css  text diff=cpp
+*.bat  text diff=cpp
+*.csv  text diff=cpp
+Doxyfile  text diff=cpp
 
 # Compiled Object files
 *.slo   binary
@@ -41,3 +54,11 @@
 *.exe   binary
 *.out   binary
 *.app   binary
+
+# Git
+.gitattributes  text diff=cpp
+.gitignore      text diff=cpp
+
+# TT3
+*.tt3-xml     text diff=cpp
+*.tt3-backup  text diff=cpp

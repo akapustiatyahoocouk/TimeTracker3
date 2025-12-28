@@ -1,0 +1,53 @@
+//
+//  tt3-db-xml/API.hpp - tt3-db-xml master header
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+#pragma once
+
+//////////
+//  Dependencies
+#include "tt3-db-api/API.hpp"
+#include "tt3-util/API.hpp"
+
+//////////
+//  db-db-xml components
+#include "tt3-db-xml/Linkage.hpp"
+#include "tt3-db-xml/Classes.hpp"
+#include "tt3-db-xml/Component.hpp"
+
+#include "tt3-db-xml/DatabaseType.hpp"
+#include "tt3-db-xml/DatabaseAddress.hpp"
+#include "tt3-db-xml/DatabaseLock.hpp"
+#include "tt3-db-xml/Database.hpp"
+
+#include "tt3-db-xml/Object.hpp"
+#include "tt3-db-xml/Principal.hpp"
+#include "tt3-db-xml/User.hpp"
+#include "tt3-db-xml/Account.hpp"
+#include "tt3-db-xml/ActivityType.hpp"
+#include "tt3-db-xml/Activity.hpp"
+#include "tt3-db-xml/PublicActivity.hpp"
+#include "tt3-db-xml/PrivateActivity.hpp"
+#include "tt3-db-xml/Task.hpp"
+#include "tt3-db-xml/PublicTask.hpp"
+#include "tt3-db-xml/PrivateTask.hpp"
+#include "tt3-db-xml/Workload.hpp"
+#include "tt3-db-xml/Project.hpp"
+#include "tt3-db-xml/WorkStream.hpp"
+#include "tt3-db-xml/Beneficiary.hpp"
+#include "tt3-db-xml/Work.hpp"
+#include "tt3-db-xml/Event.hpp"
+
+//  End of tt3-db-xml/API.hpp

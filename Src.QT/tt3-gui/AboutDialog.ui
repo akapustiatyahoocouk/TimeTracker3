@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>tt3::gui::AboutDialog</class>
+ <widget class="QDialog" name="tt3::gui::AboutDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>373</width>
+    <height>203</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>About TimeTracker3</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="tt3-gui.qrc">
+    <normaloff>:/tt3-gui/Resources/Images/Actions/AboutLarge.png</normaloff>:/tt3-gui/Resources/Images/Actions/AboutLarge.png</iconset>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="0" rowspan="2">
+    <widget class="QLabel" name="pictureLabel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>32</horstretch>
+       <verstretch>32</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>32</width>
+       <height>32</height>
+      </size>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="tt3-gui.qrc">:/tt3-gui/Resources/Images/Objects/Tt3Large.png</pixmap>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="5">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0" rowspan="2" colspan="2">
+    <widget class="QPushButton" name="showLicensePushButton">
+     <property name="text">
+      <string>License</string>
+     </property>
+     <property name="icon">
+      <iconset resource="tt3-gui.qrc">
+       <normaloff>:/tt3-gui/Resources/Images/Actions/ShowLicenseSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/ShowLicenseSmall.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="2" rowspan="2">
+    <widget class="QPushButton" name="showConfigurationPushButton">
+     <property name="text">
+      <string>Configuration</string>
+     </property>
+     <property name="icon">
+      <iconset resource="tt3-gui.qrc">
+       <normaloff>:/tt3-gui/Resources/Images/Actions/ShowConfigurationSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/ShowConfigurationSmall.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="3">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>31</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="7" column="4">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="5">
+    <widget class="QLabel" name="linkLabel">
+     <property name="text">
+      <string>LINK</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1" colspan="4">
+    <widget class="QLabel" name="creditsLabel">
+     <property name="text">
+      <string>&lt;CREDITS&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1" colspan="4">
+    <widget class="QLabel" name="copyrightLabel">
+     <property name="text">
+      <string>&lt;COPYRIGHT&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" colspan="4">
+    <widget class="QLabel" name="versionLabel">
+     <property name="text">
+      <string>&lt;VERSION&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" colspan="4">
+    <widget class="QLabel" name="productLabel">
+     <property name="text">
+      <string>&lt;NAME&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>showLicensePushButton</tabstop>
+  <tabstop>showConfigurationPushButton</tabstop>
+ </tabstops>
+ <resources>
+  <include location="tt3-gui.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>tt3::gui::AboutDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>showLicensePushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::AboutDialog</receiver>
+   <slot>_showLicensePushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>51</x>
+     <y>161</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>180</x>
+     <y>95</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>showConfigurationPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::AboutDialog</receiver>
+   <slot>_showConfigurationPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>161</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>180</x>
+     <y>95</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>tt3::gui::AboutDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>307</x>
+     <y>150</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>87</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_showLicensePushButtonClicked()</slot>
+  <slot>_showConfigurationPushButtonClicked()</slot>
+ </slots>
+</ui>

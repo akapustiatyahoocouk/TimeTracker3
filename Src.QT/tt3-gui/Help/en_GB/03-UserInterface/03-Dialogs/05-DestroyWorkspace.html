@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Destroy Workspace dialog</title>
+<link href="../../../css/tt3.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<h1>Destroy Workspace dialog</h1>
+<hr />
+<p>The Destroy Workspace dialog is invoked when the user wants to completely 
+destroy an already 
+existing workspace.</p>
+<p>
+<img alt="Destroy Workspace dialog" height="191" src="../../../images/Dialogs/05-DestroyWorkspace.png" width="569" /></p>
+<p>The fields in the Destroy&nbsp; Workspace dialog allow the user to specify:</p>
+<ul>
+	<li><strong>Workspace type</strong> - TimeTracker3 allows using a variety of 
+	technologies to store workspaces, the simplest one of which is storing the 
+	entire workspace in a single XML file in the local file system (this is the 
+	choice ideal for individual users who need to track their working time). 
+	Other workspace types will be available depending on the installed 
+	TimeTracker3 configuration and may range from local (or remote) databases to 
+	a full-fledged remote storage.</li>
+	<li><strong>Workspace location</strong> - a workspace is uniquely identified 
+	by its "location", the exact nature of which varies with the workspace type. 
+	For XML file workspaces this will be the full path to the XML file where the 
+	workspace resides. Workspace locations are <em>not</em> directly editable; 
+	instead, the <strong>Browse</strong> button will pop up the dialog where the 
+	user can choose the location of an existing workspace in a manner 
+	appropriate for the chosen workspace type.</li>
+</ul>
+<p>When destroying a workspace, TimeTracker3 will use the current login 
+credentials (as previously entered via a Login dialog) to verify access rights - 
+within the destroyed workspace these login credentials must belong to an enabled 
+"administrator" Account, or the workspace destruction fails.</p>
+<p>It is not possible to destroy a workspace that is currently in use. For 
+workspace types that offer shared access (such as workspaces residing in a 
+shared database or in a remote storage) the workspace in question must not be in 
+use by any TimeTracker3 instance running on any machine that can access that 
+workspace.</p>
+<hr />
+<p class="seealso">See also: -</p>
+<h2>&nbsp;</h2>
+
+</body>
+
+</html>

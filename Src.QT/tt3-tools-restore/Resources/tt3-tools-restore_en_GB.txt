@@ -1,0 +1,43 @@
+[Plugin]
+DisplayName=TimeTracker3 Restore
+Description=Defines data restore solution for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[Component]
+DisplayName=TimeTracker3 Restore
+Description=Defines data restore solution for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[RestoreTool]
+DisplayName=Restore
+Description=Performs database backup
+
+[ConfigureRestoreDialog]
+Title=Restore workspace
+RestoreFromLabel=Restore from:
+RestoreFromPushButton=Browse
+RestoreIntoLabel=--- Into ---
+WorkspaceTypeLabel=Workspace type:
+LocationLabel=Location:
+BrowsePushButton=Browse
+OkPushButton=OK
+CancelPushButton=Cancel
+RestoreFromDialogTitle=Restore from file
+RestoreFromDialogFilter=TimeTracker3 backup files (*{0});;All files (*.*)
+
+[RestoreProgressDialog]
+Title=Restore workspace
+RestoreLabel=Restoring:
+FromLabel=From file:
+CancelPushButton=Cancel
+
+[RestoreCompletedDialog]
+Title=Restore completed
+Message=The workspace\n{0}\nhas been successfully restored from\n{1}.
+
+[RestoreCancelledDialog]
+Title=Restore cancelled
+Message=The restore operation has been cancelled
+
+[Errors]
+BackupFileCorruptException=The backup file {0} is corrupt.

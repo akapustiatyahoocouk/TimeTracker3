@@ -1,0 +1,15 @@
+[Component]
+DisplayName=TimeTracker3 help
+Description=Defines help services for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[HelpSiteBuilder]
+AnalyzingMessage=Analyzing {0}
+ExtractingMessage=Extracting {0}
+BuildingTocMessage=Building table of content
+
+[Errors]
+HelpSiteDoesNotExistException=The help site\n{0}\ndoes not exist or is corrupt.
+CannotCreateDirectoryException=Cannot create directory {0}.
+FileAlreadyExistsException=The file {0} already exists and cannot be overwrirtten,
+UnsupportedProtocolException=Unsupported protocol in {0}.

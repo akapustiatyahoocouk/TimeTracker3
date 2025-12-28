@@ -1,0 +1,107 @@
+//
+//  tt3-gui/PreferencesDialog.hpp - The modal "Preferences" dialog
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+#pragma once
+#include "tt3-gui/API.hpp"
+
+namespace tt3::gui
+{
+    class Preferences;
+    class PreferencesEditor;
+
+    namespace Ui { class PreferencesDialog; }
+
+    /// \class PreferencesDialog tt3-gui/API.hpp
+    /// \brief The modal "Preferences" dialog.
+    class TT3_GUI_PUBLIC PreferencesDialog final
+        :   private QDialog
+    {
+        Q_OBJECT
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PreferencesDialog)
+
+        //////////
+        //  Types
+    public:
+        /// \brief
+        ///     The dialog result after a modal invocation.
+        enum class Result
+        {
+            Ok,     ///< The user has confirmed changes made to Preferences.
+            OkRestartRequired,  ///< Same as OK, but TT3 needs to restart
+            Cancel  ///< The user has cancelled the dialog.
+        };
+
+        //////////
+        //  Construction/destruction
+    public:
+        /// \brief
+        ///     Constructs the dialog.
+        /// \param parent
+        ///     The parent window for the dialog; nullptr == none.
+        explicit PreferencesDialog(
+                QWidget * parent
+            );
+
+        /// \brief
+        ///     Te class destructor.
+        virtual ~PreferencesDialog();
+
+        //////////
+        //  Operations
+    public:
+        /// \brief
+        ///     Runs the dialog modally.
+        /// \return
+        ///     The user's choice.
+        Result          doModal();
+
+        //////////
+        //  Implementation
+    private:
+        QMap<QTreeWidgetItem*, PreferencesEditor*>  _editorsForItems;
+        bool            _restartRequired = false;
+
+        //  Helpers
+        static bool     _compare(const Preferences * a, const Preferences * b);
+        void            _createChildItems(QTreeWidgetItem * parentItem,
+                                          QMap<Preferences*,QTreeWidgetItem*> & itemsForPreferences);
+        void            _createEditor(QTreeWidgetItem * item);
+        void            _loadCurrentPreferences(const QMap<Preferences*,QTreeWidgetItem*> & itemsForPreferences);
+        void            _saveCurrentPreferences();
+
+        //////////
+        //  Controls
+    private:
+        Ui::PreferencesDialog *const    _ui;
+        //  Dynamic controls are created at runtime
+        QLabel *            _noPropertiesLabel = nullptr;
+        QStackedLayout *    _editorsFrameLayout = nullptr;
+
+        //////////
+        //  Signal handlers
+    private slots:
+        void            _preferencesTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
+        void            _refresh();
+        void            _resetPushNuttonClicked();
+        void            _resetAllPushNuttonClicked();
+        void            _settingValueChanged();
+        virtual void    accept() override;
+        virtual void    reject() override;
+    };
+}
+
+//  End of tt3-gui/PreferencesDialog.hpp
+

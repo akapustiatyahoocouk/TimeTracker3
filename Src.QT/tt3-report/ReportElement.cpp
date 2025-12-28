@@ -1,0 +1,91 @@
+//
+//  tt3-report/ReportElement.cpp - tt3::report::ReportElement class implementation
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+#include "tt3-report/API.hpp"
+using namespace tt3::report;
+
+//////////
+//  Construction/destruction
+ReportElement::ReportElement(
+        Report * report
+    ) : _report(report)
+{
+    Q_ASSERT(_report != nullptr);
+}
+
+ReportElement::~ReportElement()
+{
+    for (auto anchor : ReportAnchors(_anchors)) //  shallow clone!
+    {
+        delete anchor;  //  removes Anchor from Element and Report
+    }
+}
+
+//////////
+//  Operations
+ReportAnchors ReportElement::anchors()
+{
+    return _anchors;
+}
+
+ReportAnchorsC ReportElement::anchors() const
+{
+    return ReportAnchorsC(_anchors.cbegin(), _anchors.cend());;
+}
+
+ReportAnchor * ReportElement::createAnchor()
+{
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    auto result = new ReportAnchor(this);
+#ifdef QT_DEBUG
+    _report->_validate();
+#endif
+    return result;
+}
+
+//////////
+//  Serialization
+void ReportElement::serialize(QDomElement & element) const
+{
+    //  Do the anchors
+    for (auto anchor : _anchors)
+    {
+        auto anchorElement =
+            element.ownerDocument().createElement(
+                anchor->xmlTagName());
+        element.appendChild(anchorElement);
+        anchor->serialize(anchorElement);
+    }
+}
+
+void ReportElement::deserialize(const QDomElement & element)
+{
+    for (QDomElement childElement = element.firstChildElement();
+         !childElement.isNull();
+         childElement = childElement.nextSiblingElement())
+    {
+        if (childElement.tagName() == ReportAnchor::XmlTagName)
+        {
+            auto anchor = createAnchor();
+            anchor->deserialize(childElement);
+        }
+        //  There may be other children handled by derived classes!
+    }
+}
+
+//  End of tt3-report/ReportElement.cpp

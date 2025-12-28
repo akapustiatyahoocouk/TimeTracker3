@@ -1,0 +1,31 @@
+<RCC>
+    <qresource prefix="/tt3-db-api">
+        <file>Resources/Images/Objects/AccountLarge.png</file>
+        <file>Resources/Images/Objects/AccountSmall.png</file>
+        <file>Resources/Images/Objects/UserLarge.png</file>
+        <file>Resources/Images/Objects/UserSmall.png</file>
+        <file>Resources/Images/Objects/ActivityTypeLarge.png</file>
+        <file>Resources/Images/Objects/ActivityTypeSmall.png</file>
+        <file>Resources/Images/Objects/PrivateActivityLarge.png</file>
+        <file>Resources/Images/Objects/PrivateActivitySmall.png</file>
+        <file>Resources/Images/Objects/PrivateTaskLarge.png</file>
+        <file>Resources/Images/Objects/PrivateTaskSmall.png</file>
+        <file>Resources/Images/Objects/PublicActivityLarge.png</file>
+        <file>Resources/Images/Objects/PublicActivitySmall.png</file>
+        <file>Resources/Images/Objects/PublicTaskLarge.png</file>
+        <file>Resources/Images/Objects/PublicTaskSmall.png</file>
+        <file>Resources/Images/Objects/BeneficiaryLarge.png</file>
+        <file>Resources/Images/Objects/BeneficiarySmall.png</file>
+        <file>Resources/Images/Objects/EventLarge.png</file>
+        <file>Resources/Images/Objects/EventSmall.png</file>
+        <file>Resources/Images/Objects/ProjectLarge.png</file>
+        <file>Resources/Images/Objects/ProjectSmall.png</file>
+        <file>Resources/Images/Objects/WorkLarge.png</file>
+        <file>Resources/Images/Objects/WorkSmall.png</file>
+        <file>Resources/Images/Objects/WorkStreamLarge.png</file>
+        <file>Resources/Images/Objects/WorkStreamSmall.png</file>
+        <file>Resources/tt3-db-api_de_DE.txt</file>
+        <file>Resources/tt3-db-api_en_GB.txt</file>
+        <file>Resources/tt3-db-api_ru_RU.txt</file>
+    </qresource>
+</RCC>

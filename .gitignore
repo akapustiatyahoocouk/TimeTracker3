@@ -1,9 +1,8 @@
-/Obj.MFC
-/Bin.MFC
-/Src.MFC/.vs
-/Src.NET/.vs
-/Bin.NET
 /Doc/TimeTracker3.ldb
-/Src.NET/TimeTracker3.Db.API/obj/Debug
-/Src.NET/TimeTracker3/obj/Debug
-/Src.NET/TimeTracker3.Util/obj/Debug
+/Build.QT
+/Bin.QT
+/Doc/Doxygen/Generated
+/Doc/Doxygen/err
+/Doc/Doxygen/out
+/Src.QT/.qtcreator/tt3-all.pro.user
+/Src.QT/tt3-all.pro.user

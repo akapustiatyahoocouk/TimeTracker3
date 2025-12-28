@@ -1,0 +1,66 @@
+[Component]
+DisplayName=Отчёт о рабочем времени TimeTracker3
+Description=Отчёт о рабочем времени, сгруппированный по периодам и видам деятельности
+Copyright=Авторское право (C) {0}, Андрей Капустин
+
+[ReportType]
+DisplayName=Сводка рабочего времени
+Description=Отчёт о рабочем времени, сгруппированный по периодам и видам деятельности
+
+[SelectUsersDialog]
+Title=Выберите пользователей
+AvailableUsersLabel=Доступные пользователи:
+FilterLabel=Фильтр:
+ChosenUsersLabel=Выбранные пользователи:
+OkPushButton=OK
+CancelPushButton=Отмена
+
+[ReportConfigurationEditor]
+ScopeLabel=Отчёт по:
+CurrentUserRadioButton=Текущему пользователю
+SingleUserRadioButton=Одному пользователю
+MultipleUsersRadioButton=Нескольким пользователям
+UsersLabel=Пользователи:
+SelectUsersPushButton=Выбрать
+DateRangeLabel=Диапазон дат:
+TodayRadioButton=Сегодня
+YesterdayRadioButton=Вчера
+LastWeekRadioButton=Прошлая неделя
+CurrentWeekRadioButton=Текущая неделя
+CurrentMonthRadioButton=Текущий месяц
+CurrentYearRadioButton=Текущий год
+WeekToDateRadioButton=Неделя по сегодня
+MonthToDateRadioButton=Месяц по сегодня
+YearToDateRadioButton=Год по сегодня
+CustomDatesRadioButton=От/до:
+GroupByLabel=Группировать по:
+GroupByActivityTypeRadioButton=Типу деятельности
+GroupByActivityRadioButton=Деятельности
+IncludeLabel=Включить:
+DailyDataCheckBox=Ежедневные данные
+WeeklyDataCheckBox=Еженедельные данные
+MonthlyDataCheckBox=Ежемесячные данные
+YearlyDataCheckBox=Годовые данные
+HoursPerDayLabel=Часов в день:
+WeekStartLabel=Неделя начинается в:
+
+[ReportGenerator]
+ReportName=Сводка рабочего времени
+CreatedOnMessage=Создано {0}
+PrefaceChapter=Предисловие
+CreatorMessage=Автор:
+ReportedDatesMessage=Период:
+IncludedUsersMessage=Включённые пользователи:
+DailyBreakdownChapter=Ежедневная разбивка
+WeeklyBreakdownChapter=Еженедельная разбивка
+MonthlyBreakdownChapter=Ежемесячная разбивка
+YearlyBreakdownChapter=Годовая разбивка
+DateColumn=Дата
+OtherColumn=Другое
+TotalColumn=ИТОГО
+TotalRow=ИТОГО
+EffortDHMS={0}день {1}час {2}мин
+EffortHMS={0}час {1}мин
+EffortMS={0}мин {1}сек
+EffortS={0}сек
+Effort=-

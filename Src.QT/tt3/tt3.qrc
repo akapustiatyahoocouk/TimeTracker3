@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/tt3">
+        <file>Resources/Images/Misc/Tt3Large.png</file>
+        <file>Resources/Images/Misc/Tt3Small.png</file>
+        <file>Resources/tt3_de_DE.txt</file>
+        <file>Resources/tt3_en_GB.txt</file>
+        <file>Resources/tt3_ru_RU.txt</file>
+    </qresource>
+</RCC>

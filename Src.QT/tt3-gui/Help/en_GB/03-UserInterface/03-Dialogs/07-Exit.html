@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Exit dialog</title>
+<style type="text/css">
+
+h1
+{
+  color: #FFFFFF;
+	font-size: 150%;
+	margin: 0;
+}
+
+hr {
+  border-color: #008000;
+}
+
+p {
+  padding-left: 32px;
+}
+
+ul {
+  padding-left: 64px;
+}
+
+p.seealso {
+  padding-left: 0;
+	font-size: 75%;
+  color: #00F000;
+}
+
+h2
+{
+  color: #FFFFFF;
+	font-size: 125%;
+	margin: 0;
+}
+
+</style>
+<link href="../../../css/tt3.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<h1>Exit dialog</h1>
+<hr />
+<p>The Exit dialog is invoked when the user explicitly chooses to exit 
+TimeTracker3.</p>
+<p>
+<img alt="Exit dialog" height="177" src="../../../images/Dialogs/07-Exit.png" width="511" /></p>
+<p>The fields in the Exit dialog allow the user to specify:</p>
+<ul>
+	<li><strong>Suppress further confirmations</strong> - in the future, 
+	whenever TimeTracker3 is started and then exited again, this confirmation 
+	dialog will not appear and the user's answer will be assumed to be "yes". 
+	This behavior can be reset (so as to explicitly ask confirmation when 
+	exiting TimeTracker3) in the General/Dialogs page of the Preferences dialog.</li>
+</ul>
+<p>When restarting TimeTracker3, the currently active workspace is cleanly closed 
+before exiting. Specifically, if any Activity is in the process 
+of being recorded, its recording will stop (and the corresponding Work unit will 
+be logged) before the workspace is closed and exit occurs.</p>
+<hr />
+<p class="seealso">See also: -</p>
+<h2>&nbsp;</h2>
+
+</body>
+
+</html>

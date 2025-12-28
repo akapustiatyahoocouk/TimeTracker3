@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>tt3::report::ManageReportTemplatesDialog</class>
+ <widget class="QDialog" name="tt3::report::ManageReportTemplatesDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>590</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Manage report templates</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="tt3-report.qrc">
+    <normaloff>:/tt3-report/Resources/Images/Reports/ReportTemplateManagerLarge.png</normaloff>:/tt3-report/Resources/Images/Reports/ReportTemplateManagerLarge.png</iconset>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_3">
+   <item row="7" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="childrenCollapsible">
+      <bool>false</bool>
+     </property>
+     <widget class="QGroupBox" name="templatesGroupBox">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="title">
+       <string>Report templates</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <property name="leftMargin">
+        <number>11</number>
+       </property>
+       <property name="topMargin">
+        <number>11</number>
+       </property>
+       <property name="rightMargin">
+        <number>11</number>
+       </property>
+       <property name="bottomMargin">
+        <number>11</number>
+       </property>
+       <item row="1" column="0">
+        <widget class="QPushButton" name="exportPushButton">
+         <property name="text">
+          <string>Export</string>
+         </property>
+         <property name="icon">
+          <iconset resource="tt3-report.qrc">
+           <normaloff>:/tt3-report/Resources/Images/Actions/ExportSmall.png</normaloff>:/tt3-report/Resources/Images/Actions/ExportSmall.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QPushButton" name="removePushButton">
+         <property name="text">
+          <string>Remove</string>
+         </property>
+         <property name="icon">
+          <iconset resource="tt3-report.qrc">
+           <normaloff>:/tt3-report/Resources/Images/Actions/RemoveSmall.png</normaloff>:/tt3-report/Resources/Images/Actions/RemoveSmall.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QPushButton" name="importPushButton">
+         <property name="text">
+          <string>Import</string>
+         </property>
+         <property name="icon">
+          <iconset resource="tt3-report.qrc">
+           <normaloff>:/tt3-report/Resources/Images/Actions/ImportSmall.png</normaloff>:/tt3-report/Resources/Images/Actions/ImportSmall.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="2">
+        <widget class="QTreeWidget" name="templatesTreeWidget">
+         <attribute name="headerVisible">
+          <bool>false</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string notr="true">1</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QGroupBox" name="previewGroupBox">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="baseSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="title">
+       <string>Preview</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <property name="leftMargin">
+        <number>11</number>
+       </property>
+       <property name="topMargin">
+        <number>11</number>
+       </property>
+       <property name="rightMargin">
+        <number>11</number>
+       </property>
+       <property name="bottomMargin">
+        <number>11</number>
+       </property>
+       <property name="spacing">
+        <number>7</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QWebEngineView" name="previewWebEngineView" native="true"/>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QWebEngineView</class>
+   <extends>QWidget</extends>
+   <header>QWebEngineView</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>templatesTreeWidget</tabstop>
+  <tabstop>exportPushButton</tabstop>
+  <tabstop>importPushButton</tabstop>
+ </tabstops>
+ <resources>
+  <include location="tt3-report.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>tt3::report::ManageReportTemplatesDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>tt3::report::ManageReportTemplatesDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>templatesTreeWidget</sender>
+   <signal>currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</signal>
+   <receiver>tt3::report::ManageReportTemplatesDialog</receiver>
+   <slot>_templateTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>199</x>
+     <y>144</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>342</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>templatesTreeWidget</sender>
+   <signal>itemExpanded(QTreeWidgetItem*)</signal>
+   <receiver>tt3::report::ManageReportTemplatesDialog</receiver>
+   <slot>_templateTreeWidgetItemExpanded(QTreeWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>199</x>
+     <y>144</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>342</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>templatesTreeWidget</sender>
+   <signal>itemCollapsed(QTreeWidgetItem*)</signal>
+   <receiver>tt3::report::ManageReportTemplatesDialog</receiver>
+   <slot>_templateTreeWidgetItemCollapsed(QTreeWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>199</x>
+     <y>144</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>342</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>importPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::ManageReportTemplatesDialog</receiver>
+   <slot>_importPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>157</x>
+     <y>262</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>342</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>removePushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::ManageReportTemplatesDialog</receiver>
+   <slot>_removePushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>326</x>
+     <y>262</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>342</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>exportPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::report::ManageReportTemplatesDialog</receiver>
+   <slot>_exportPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>66</x>
+     <y>262</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>342</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_templateTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+  <slot>_templateTreeWidgetItemExpanded(QTreeWidgetItem*)</slot>
+  <slot>_templateTreeWidgetItemCollapsed(QTreeWidgetItem*)</slot>
+  <slot>_exportPushButtonClicked()</slot>
+  <slot>_importPushButtonClicked()</slot>
+  <slot>_removePushButtonClicked()</slot>
+ </slots>
+</ui>

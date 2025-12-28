@@ -1,0 +1,98 @@
+[Component]
+DisplayName=Отчётность TimeTracker3
+Description=Определяет сервисы отчётности для TimeTracker3
+Copyright=Авторское право (C) {0}, Андрей Капустин
+
+[BasicReportTemplate]
+DisplayName=Базовый (встроенный)
+Report.Title=Заголовок
+Report.Subtitle=Подзаголовок
+
+[HtmlReportFormat]
+DisplayName=HTML документ
+Description=Сохраняет отчёт как самодостаточную HTML-страницу
+TableOfContent=Содержание
+
+[ReportTemplateManagerTool]
+DisplayName=Менеджер шаблонов отчётов
+Description=Управляет доступными шаблонами отчётов
+
+[ManageReportTemplatesDialog]
+Title=Управление шаблонами отчётов
+TemplatesGroupBox=Шаблоны отчётов
+PreviewGroupBox=Предварительный просмотр
+PreviewGroupBox.NotAvailable=Предварительный просмотр недоступен
+PreviewGroupBox.Available=Предварительный просмотр {0}
+ExportPushButton=Экспорт
+ImportPushButton=Импорт
+RemovePushButton=Удалить
+PredefinedReportTemplates=Предопределенные шаблоны отчётов
+CustomReportTemplates=Пользовательские шаблоны отчётов
+GeneratingPreview=Создание предварительного просмотра...
+OkPushButton=ОК
+
+ExportReportTemplate=Экспорт шаблона отчёта
+ImportReportTemplate=Импорт шаблона отчёта
+ReportTemplateFilter=Шаблоны отчётов TT3 (*{0});;Все файлы (*.*)
+ExportCompletedTitle=Экспорт завершён
+ExportCompletedMessage=Шаблон отчёта\n{0}\nэкспортирован в\n{1}.
+RemoveReportTemplateTitle=Удалить шаблон отчёта
+RemoveReportTemplatePrompt=Вы уверены, что хотите удалить шаблон отчёта {0} ({1}) ?
+
+PreviewReport.Chapter1=1. Наибольшие опасения Маргарет
+PreviewReport.Paragraph1=Невежественный увидел ее рисунки брак смех. Дело, о, и то или прочь вздох сделать здесь на. Острота ты изысканный мы сами теперь конец потерянный. Спросите вы без этого чердаки вверх сам. Интерес наш ни полученный следовал был. Культивированный вверх забота мистер неприятный.
+PreviewReport.ListItem1=Восхитительный безоговорочный невозможно несколько оценивающих людей благоприятный видеть мольбы.
+PreviewReport.ListItem2=Ее приличия немедленно улучшались. Он или вход был также умеренным и забавлялся. Многое, ни игра, сын, скажи, чувствуй. Толстый, чтобы встретиться, может, должен сформироваться в ворота. Мне мы, оскорбляя, преобладало открытие.
+PreviewReport.ListItem3=Бензин сотрясает широко распространенные убеждения, в то время как любовь всегда была вторым лучшим вариантом.
+PreviewReport.Chapter11=1.1 Продвижение самих себя
+PreviewReport.Chapter12=1.2 Вечная искренность
+PreviewReport.Paragraph2=Осмотрите её брата, благоразумно добавьте дневной ветчины. Далёкая лестница, теперь идущая кровать, противостоит охоте, ставшей его.
+PreviewReport.Paragraph3=Вы ревностно отбываете, вызывая подозрения. Книги, чей фронт будет сжиматься, если будет разрушаться. Оставляя вас, вы, как прежде расположенные, воспринимаете леди. Обычный превратился в мальчика, прямого и всё же.
+PreviewReport.Chapter2=2. Присутствовал, не делает мыслей.
+PreviewReport.Paragraph4=Вуди, равный спросить, видел сэра, недели, осознавая разрушение. Входная перспектива, удаляя пакеты, мы строго не самый маленький, он. Для надежд, может быть, начальник получит часы дневных комнат. О, нет, повернулся позади вежливо, достаточно задетый. Запретил немногим через расследование, краснея вам.
+PreviewReport.TableHeading=Нигилизм подобен раскрашенному цветку
+PreviewReport.TableCell11=Выпуск №1
+PreviewReport.TableCell12=Мгновенно ли незнакомцы аплодировали разговору? Отдельный вход приветствовал разумный смех, почему один умеренный застенчивый. Мы видим, как он задет садом. Как в веселье, по крайней мере, вы стояли. И холодные сыновья все еще с. Доставлен Миддлтон, поэтому мне. Привязанность товарищей, человек, способ совершенства, как ее фортепиано.
+PreviewReport.TableCell21=Выпуск №2
+PreviewReport.TableCell22=То же самое и выход большинства. Принятие господина, располагающего спортсменов. Примерил, причина не портит, возникает пластина. Дольше дамы долины получают уважение, используют вел шесть. Разрешение Миддлтона, преимущества выражения, сами по себе, пристрастность, поэтому мне. Запад, никто не надеется, если поют, о, отправлено, скажите.
+PreviewReport.Link1=Перейти к началу
+
+[CreateReportDialog]
+Title=Создать отчёт
+ReportAndDestinationGroupBox=Отчёт и место назначения
+ReportTypeLabel=Тип отчёта:
+ReportFormatLabel=Формат отчёта:
+ReportTemplateLabel=Шаблон отчёта:
+DestinationLabel=Место назначения:
+BrowsePushButton=Выбрать
+ConfiguratiokGroupBox=Конфигурация отчёта
+OkPushButton=ОК
+CancelPushButton=Отмена
+SelectDestinationTitle=Выберите место назначения отчёта
+SelectDestinationFilter={0} (*{1});;Все файлы (*.*)
+
+[ReportProgressDialog]
+Title=Создание отчёта
+GeneratingLabel=Создание: {0}
+WritingToLabel=Сохранение отчёта в: {0}
+CancelPushButton=Отмена
+
+[ReportCancelledDialog]
+Title=Отчёт отменен
+Message=Создание отчёта отменено
+
+[ReportCreatedDialog]
+Title=Отчёт создан
+PromptLabel1=Отчёт
+PromptLabel2=успешно создан. Хотите ли вы...
+OpenFilePushButton=Открыть отчёт
+OpenLocationPushButton=Открыть папку с отчётом
+keepWorkingPushButton=Продолжить работу
+
+[Errors]
+InvalidReportTemplateException=Неверный шаблон отчёта
+ReportTemplateAlreadyExistsException=Шаблон отчёта {0} ({1}) уже существует
+ReportTemplateDoesNotExistException=Шаблон отчёта {0} не существует
+StyleDoesNotExistException=Стиль {0} отсутствует в шаблоне отчёта {1} ({2})
+InvalidReportException=Недействительный или поврежденный отчёт
+InvalidReportConfigurationException=Недопустимая или несовместимая конфигурация отчета

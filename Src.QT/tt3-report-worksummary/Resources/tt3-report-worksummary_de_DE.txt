@@ -1,0 +1,66 @@
+[Component]
+DisplayName=TimeTracker3 Arbeitszeitübersichtsbericht
+Description=Erfasst Arbeitszeiten gruppiert nach Zeitraum und Aktivität
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[ReportType]
+DisplayName=Arbeitsübersicht
+Description=Berichtet die Arbeitszeit gruppiert nach Zeitraum und Aktivität
+
+[SelectUsersDialog]
+Title=Benutzer auswählen
+AvailableUsersLabel=Verfügbare Benutzer:
+FilterLabel=Filter:
+ChosenUsersLabel=Ausgewählte Benutzer:
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+
+[ReportConfigurationEditor]
+ScopeLabel=Bereich:
+CurrentUserRadioButton=Aktueller Benutzer
+SingleUserRadioButton=Einzelner Benutzer
+MultipleUsersRadioButton=Mehrere Benutzer
+UsersLabel=Benutzer:
+SelectUsersPushButton=Auswählen
+DateRangeLabel=Datumsbereich:
+TodayRadioButton=Heute
+YesterdayRadioButton=Gestern
+LastWeekRadioButton=Letzte Woche
+CurrentWeekRadioButton=Aktuelle Woche
+CurrentMonthRadioButton=Aktueller Monat
+CurrentYearRadioButton=Aktuelles Jahr
+WeekToDateRadioButton=Woche bis heute
+MonthToDateRadioButton=Monat bis heute
+YearToDateRadioButton=Jahr bis heute
+CustomDatesRadioButton=Von/Bis:
+GroupByLabel=Gruppieren nach:
+GroupByActivityTypeRadioButton=Aktivitätstyp
+GroupByActivityRadioButton=Aktivität
+IncludeLabel=Einschließen:
+DailyDataCheckBox=Täglich Daten
+WeeklyDataCheckBox=Wöchentliche Daten
+MonthlyDataCheckBox=Monatliche Daten
+YearlyDataCheckBox=Jährliche Daten
+HoursPerDayLabel=Stunden pro Tag:
+WeekStartLabel=Wochenbeginn:
+
+[ReportGenerator]
+ReportName=Arbeitsübersicht
+CreatedOnMessage=Erstellt am {0}
+PrefaceChapter=Vorwort
+CreatorMessage=Ersteller:
+ReportedDatesMessage=Gemeldete Daten:
+IncludedUsersMessage=Eingeschlossene Benutzer:
+DailyBreakdownChapter=Tagesübersicht
+WeeklyBreakdownChapter=Wochenübersicht
+MonthlyBreakdownChapter=Monatsübersicht
+YearlyBreakdownChapter=Jahresübersicht
+DateColumn=Datum
+OtherColumn=Sonstige
+TotalColumn=GESAMT
+TotalRow=GESAMT
+EffortDHMS={0}Tag {1}Std. {2}Min.
+EffortHMS={0}Std. {1}Min.
+EffortMS={0}Min. {1}Sek.
+EffortS={0}Sek.
+Effort=-

@@ -1,0 +1,96 @@
+[Plugin]
+DisplayName=TimeTracker3 Administrator skin
+Description=Defines GUI Administrator skin for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[Component]
+DisplayName=TimeTracker3 Administrator skin
+Description=Defines GUI Administrator skin for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[Skin]
+DisplayName=Administrator
+Description=Provides full management facilities for TimeTracker3 workspaces
+
+[MainFrame]
+Title=TimeTracker3
+Title.ReadOnlySuffix=[read-only]
+
+MenuFile.Title=&File
+MenuView.Title=&View
+MenuTools.Title=&Tools
+MenuReports.Title=&Reports
+MenuOptions.Title=&Options
+MenuHelp.Title=&Help
+
+ActionNewWorkspace.Text=&New workspace
+ActionNewWorkspace.Tooltip=New workspace
+ActionOpenWorkspace.Text=&Open workspace
+ActionOpenWorkspace.Tooltip=Open workspace
+ActionCloseWorkspace.Text=C&lose workspace
+ActionCloseWorkspace.Tooltip=Close workspace
+ActionDestroyWorkspace.Text=&Destroy workspace
+ActionDestroyWorkspace.Tooltip=Destroy workspace
+ActionRecentWorkspaces.Text=&Recent workspaces
+ActionRecentWorkspaces.Tooltip=Recent workspaces
+ActionRestart.Text=Res&tart TimeTracker3
+ActionRestart.Tooltip=Restart TimeTracker3
+ActionExit.Text=E&xit
+ActionExit.Tooltip=Exit
+
+ActionManageUsers.Text=&1 - Manage users
+ActionManageUsers.Tooltip=Manage users
+ActionManageActivityTypes.Text=&2 - Manage activity types
+ActionManageActivityTypes.Tooltip=Manage activity types
+ActionManagePublicActivities.Text=&3 - Manage public activities
+ActionManagePublicActivities.Tooltip=Manage public activities
+ActionManagePublicTasks.Text=&4 - Manage public tasks
+ActionManagePublicTasks.Tooltip=Manage public tasks
+ActionManagePrivateActivities.Text=&5 - Manage private activities
+ActionManagePrivateActivities.Tooltip=Manage private activities
+ActionManagePrivateTasks.Text=&6 - Manage private tasks
+ActionManagePrivateTasks.Tooltip=Manage private tasks
+ActionManageProjects.Text=&7 - Manage projects
+ActionManageProjects.Tooltip=Manage projects
+ActionManageWorkStreams.Text=&8 - Manage work streams
+ActionManageWorkStreams.Tooltip=Manage work streams
+ActionManageBeneficiaries.Text=&9 - Manage beneficiaries
+ActionManageBeneficiaries.Tooltip=Manage beneficiaries
+ActionManageMyDay.Text=&0 - Manage my day
+ActionManageMyDay.Tooltip=Manage my day
+ActionRefresh.Text=&Refresh
+ActionRefresh.Tooltip=Refresh
+
+ActionQuickReports.Text=&Quick reports
+ActionQuickReports.Tooltip=Quick reports
+
+ActionLoginAsDifferentUser.Text=&Login as a different user
+ActionLoginAsDifferentUser.Tooltip=Login as a different user
+ActionPreferences.Text=&Preferences
+ActionPreferences.Tooltip=Preferences
+
+ActionHelpContent.Text=&Content
+ActionHelpContent.Tooltip=Help content
+ActionHelpIndex.Text=&Index
+ActionHelpIndex.Tooltip=Help index
+ActionHelpSearch.Text=&Search
+ActionHelpSearch.Tooltip=Help search
+ActionAbout.Text=A&bout TimeTracker3
+ActionAbout.Tooltip=About TimeTracker3
+
+ManageUsersTab.Text=Users
+ManageActivityTypesTab.Text=Activity types
+ManagePublicActivitiesTab.Text=Public activities
+ManagePublicTasksTab.Text=Public tasks
+ManagePrivateActivitiesTab.Text=Private activities
+ManagePrivateTasksTab.Text=Private tasks
+ManageProjectsTab.Text=Projects
+ManageWorkStreamsTab.Text=Work streams
+ManageBeneficiariesTab.Text=Beneficiaries
+ManageMyDayTab.Text=My day
+QuickReportsTab.Text=Quick reports
+
+NoCurrentActivityLabel=There is no current activity
+StopActivityPushButton=Stop
+
+CannotDestroyWorkspaceError=Cannot destroy workspace\n{0}\n because it is currently in use.

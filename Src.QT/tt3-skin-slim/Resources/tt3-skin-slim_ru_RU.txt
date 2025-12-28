@@ -1,0 +1,70 @@
+[Plugin]
+DisplayName=Минимальный интерфейс TimeTracker3
+Description=Определяет минимальную версию интерфейса для TimeTracker3
+Copyright=Авторское право (C) {0}, Андрей Капустин
+
+[Component]
+DisplayName=Минимальный интерфейс TimeTracker3
+Description=Определяет минимальную версию интерфейса для TimeTracker3
+Copyright=Авторское право (C) {0}, Андрей Капустин
+
+[Skin]
+DisplayName=Минимальный
+Description=Минимальный интерфейс для работы с TimeTracker3
+
+[SlimSkinPreferences]
+DisplayName=Минимальный интерфейс
+
+[SlimSkinPreferencesEditor]
+AlwaysOnTopCheckBox=Всегда поверх других окон, когда отображается
+OpacityLabel=Видимость:
+
+[MainFrame]
+Title=TimeTracker3
+Title.ReadOnlySuffix=[только для чтения]
+Title.CurrentActivity=Текущая активность: {0}
+StopCurrentActivityButton=Остановить текущую активность
+
+MenuFile.Title=&Файл
+MenuManage.Title=&Управление
+MenuTools.Title=&Инструменты
+MenuReports.Title=&Отчёты
+MenuOptions.Title=&Параметры
+MenuHelp.Title=&Справка
+
+ActionMinimizeToSystemTray.Text=&Свернуть в системный трей
+ActionMinimize.Text=&Свернуть
+ActionRestore.Text=&Восстановить
+ActionStopCurrentActivity.Text=&Остановить текущую активность
+ActionRefresh.Text=&Обновить
+
+ActionNewWorkspace.Text=&Новая рабочая область
+ActionOpenWorkspace.Text=&Открыть рабочую область
+ActionCloseWorkspace.Text=&Закрыть рабочую область
+ActionDestroyWorkspace.Text=&Удалить рабочую область
+ActionRecentWorkspaces.Text=Не&давние рабочие области
+ActionRestart.Text=&Перезапустить TimeTracker3
+ActionExit.Text=&Выход
+
+ActionManageUsers.Text=&1 - Управление пользователями
+ActionManageActivityTypes.Text=&2 - Управление типами активности
+ActionManagePublicActivities.Text=&3 - Управление общедоступными активностями
+ActionManagePublicTasks.Text=&4 - Управление общедоступными задачами
+ActionManagePrivateActivities.Text=&5 - Управление личными активностями
+ActionManagePrivateTasks.Text=&6 - Управление личными задачами
+ActionManageProjects.Text=&7 - Управление проектами
+ActionManageWorkStreams.Text=&8 - Управление рабочими потоками
+ActionManageBeneficiaries.Text=&9 - Управление бенефициарами
+ActionManageMyDay.Text=&0 - Управление моим днём
+
+ActionQuickReports.Text=&Быстрые отчёты
+
+ActionLoginAsDifferentUser.Text=&Войти как другой пользователь
+ActionPreferences.Text=&Настройки
+
+ActionHelpContent.Text=&Содержание
+ActionHelpIndex.Text=&Индекс
+ActionHelpSearch.Text=&Поиск
+ActionAbout.Text=&О TimeTracker3
+
+CannotDestroyWorkspaceError=Невозможно удалить рабочую область\n{0}\nтак как она в настоящее время используется.

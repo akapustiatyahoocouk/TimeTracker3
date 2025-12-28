@@ -1,0 +1,31 @@
+<RCC>
+    <qresource prefix="/tt3-report">
+        <file>Resources/tt3-report_de_DE.txt</file>
+        <file>Resources/tt3-report_en_GB.txt</file>
+        <file>Resources/tt3-report_ru_RU.txt</file>
+        <file>Resources/Images/Reports/HtmlReportFormatLarge.png</file>
+        <file>Resources/Images/Reports/HtmlReportFormatSmall.png</file>
+        <file>Resources/Images/Reports/ReportTemplateLarge.png</file>
+        <file>Resources/Images/Reports/ReportTemplateManagerLarge.png</file>
+        <file>Resources/Images/Reports/ReportTemplateManagerSmall.png</file>
+        <file>Resources/Images/Reports/ReportTemplateSmall.png</file>
+        <file>Resources/Images/Misc/ClosedFolderLarge.png</file>
+        <file>Resources/Images/Misc/ClosedFolderSmall.png</file>
+        <file>Resources/Images/Misc/OpenFolderLarge.png</file>
+        <file>Resources/Images/Misc/OpenFolderSmall.png</file>
+        <file>Resources/Images/Actions/ExportLarge.png</file>
+        <file>Resources/Images/Actions/ExportSmall.png</file>
+        <file>Resources/Images/Actions/ImportLarge.png</file>
+        <file>Resources/Images/Actions/ImportSmall.png</file>
+        <file>Resources/Images/Actions/CancelLarge.png</file>
+        <file>Resources/Images/Actions/CancelSmall.png</file>
+        <file>Resources/Images/Actions/OkLarge.png</file>
+        <file>Resources/Images/Actions/OkSmall.png</file>
+        <file>Resources/Images/Actions/RemoveLarge.png</file>
+        <file>Resources/Images/Actions/RemoveSmall.png</file>
+        <file>Resources/Images/Actions/BrowseLarge.png</file>
+        <file>Resources/Images/Actions/BrowseSmall.png</file>
+        <file>Resources/Images/Reports/ReportLarge.png</file>
+        <file>Resources/Images/Reports/ReportSmall.png</file>
+    </qresource>
+</RCC>

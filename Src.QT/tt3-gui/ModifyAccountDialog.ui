@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>tt3::gui::ModifyAccountDialog</class>
+ <widget class="QDialog" name="tt3::gui::ModifyAccountDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>620</width>
+    <height>490</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Modify account</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="tt3-gui.qrc">
+    <normaloff>:/tt3-gui/Resources/Images/Actions/ModifyAccountLarge.png</normaloff>:/tt3-gui/Resources/Images/Actions/ModifyAccountLarge.png</iconset>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_3">
+   <item row="2" column="4">
+    <widget class="QLineEdit" name="confirmPasswordLineEdit">
+     <property name="echoMode">
+      <enum>QLineEdit::EchoMode::Password</enum>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QLineEdit" name="passwordLineEdit">
+     <property name="echoMode">
+      <enum>QLineEdit::EchoMode::Password</enum>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="2" colspan="4">
+    <widget class="QCheckBox" name="enabledCheckBox">
+     <property name="text">
+      <string>Account is enabled</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="6">
+    <widget class="QGroupBox" name="capabilitiesGroupBox">
+     <property name="title">
+      <string>Capabilities</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="manageWorkloadsCheckBox">
+        <property name="text">
+         <string>Manage workloads</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="manageUsersCheckBox">
+        <property name="text">
+         <string>Manage users</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QCheckBox" name="logWorkCheckBox">
+        <property name="text">
+         <string>Log work</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="administratorCheckBox">
+        <property name="text">
+         <string>Administrator</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="managePrivateActivitiesCheckBox">
+        <property name="text">
+         <string>Manage private activities</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="managePublicActivitiesCheckBox">
+        <property name="text">
+         <string>Manage public activities</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QCheckBox" name="manageBeneficiariesCheckBox">
+        <property name="text">
+         <string>Manage beneficiaries</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="manageActivityTypesCheckBox">
+        <property name="text">
+         <string>Manage activity types</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QCheckBox" name="managePrivateTasksCheckBox">
+        <property name="text">
+         <string>Manage private tasks</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QCheckBox" name="managePublicTasksCheckBox">
+        <property name="text">
+         <string>Manage public tasks</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QCheckBox" name="logEventsCheckBox">
+        <property name="text">
+         <string>Log events</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QCheckBox" name="generateReportsCheckBox">
+        <property name="text">
+         <string>Generate reports</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QCheckBox" name="backupAndRestoreCheckBox">
+        <property name="text">
+         <string>Backup and restore</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="6" column="0" colspan="6">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2" colspan="3">
+    <widget class="QLineEdit" name="loginLineEdit">
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2" colspan="4">
+    <widget class="QWidget" name="emailAddressesWidget" native="true">
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <property name="spacing">
+       <number>4</number>
+      </property>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="addEmailAddressPushButton">
+        <property name="text">
+         <string>Add</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/AddEmailAddressSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/AddEmailAddressSmall.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="modifyEmailAddressPushButton">
+        <property name="text">
+         <string>Modify</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/ModifyEmailAddressSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/ModifyEmailAddressSmall.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="removeEmailAddressPushButton">
+        <property name="text">
+         <string>Remove</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/RemoveEmailAddressSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/RemoveEmailAddressSmall.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" rowspan="3">
+       <widget class="QListWidget" name="emailAddressesListWidget"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="passwordLabel">
+     <property name="text">
+      <string>Password:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="5">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>159</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="7" column="0" colspan="6">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="3">
+    <widget class="QLabel" name="confirmPasswordLabel">
+     <property name="text">
+      <string>Confirm:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="QLabel" name="emailAddressesLabel">
+     <property name="text">
+      <string>E-mail addresses:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="loginLabel">
+     <property name="text">
+      <string>Login:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="userLabel">
+     <property name="text">
+      <string>User:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2" colspan="3">
+    <widget class="QComboBox" name="userComboBox"/>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>loginLineEdit</tabstop>
+  <tabstop>passwordLineEdit</tabstop>
+  <tabstop>confirmPasswordLineEdit</tabstop>
+  <tabstop>emailAddressesListWidget</tabstop>
+  <tabstop>addEmailAddressPushButton</tabstop>
+  <tabstop>modifyEmailAddressPushButton</tabstop>
+  <tabstop>removeEmailAddressPushButton</tabstop>
+  <tabstop>administratorCheckBox</tabstop>
+  <tabstop>manageUsersCheckBox</tabstop>
+  <tabstop>manageActivityTypesCheckBox</tabstop>
+  <tabstop>manageBeneficiariesCheckBox</tabstop>
+  <tabstop>manageWorkloadsCheckBox</tabstop>
+  <tabstop>managePublicActivitiesCheckBox</tabstop>
+  <tabstop>managePublicTasksCheckBox</tabstop>
+  <tabstop>managePrivateActivitiesCheckBox</tabstop>
+  <tabstop>managePrivateTasksCheckBox</tabstop>
+  <tabstop>logWorkCheckBox</tabstop>
+  <tabstop>logEventsCheckBox</tabstop>
+  <tabstop>generateReportsCheckBox</tabstop>
+  <tabstop>backupAndRestoreCheckBox</tabstop>
+  <tabstop>enabledCheckBox</tabstop>
+ </tabstops>
+ <resources>
+  <include location="tt3-gui.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>tt3::gui::ModifyAccountDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>309</x>
+     <y>464</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>309</x>
+     <y>244</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>tt3::gui::ModifyAccountDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>309</x>
+     <y>464</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>309</x>
+     <y>244</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>loginLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::ModifyAccountDialog</receiver>
+   <slot>_loginLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>144</x>
+     <y>24</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>309</x>
+     <y>244</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>passwordLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::ModifyAccountDialog</receiver>
+   <slot>_passwordLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>144</x>
+     <y>59</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>309</x>
+     <y>244</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>confirmPasswordLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::ModifyAccountDialog</receiver>
+   <slot>_passwordLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>358</x>
+     <y>59</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>309</x>
+     <y>244</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>emailAddressesListWidget</sender>
+   <signal>currentRowChanged(int)</signal>
+   <receiver>tt3::gui::ModifyAccountDialog</receiver>
+   <slot>_emailAddressesListWidgetCurrentRowChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>332</x>
+     <y>131</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>309</x>
+     <y>244</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>addEmailAddressPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::ModifyAccountDialog</receiver>
+   <slot>_addEmailAddressPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>561</x>
+     <y>99</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>309</x>
+     <y>244</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modifyEmailAddressPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::ModifyAccountDialog</receiver>
+   <slot>_modifyEmailAddressPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>561</x>
+     <y>131</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>309</x>
+     <y>244</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>removeEmailAddressPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::ModifyAccountDialog</receiver>
+   <slot>_removeEmailAddressPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>561</x>
+     <y>163</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>309</x>
+     <y>244</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_loginLineEditTextChanged(QString)</slot>
+  <slot>_passwordLineEditTextChanged(QString)</slot>
+  <slot>_emailAddressesListWidgetCurrentRowChanged(int)</slot>
+  <slot>_addEmailAddressPushButtonClicked()</slot>
+  <slot>_modifyEmailAddressPushButtonClicked()</slot>
+  <slot>_removeEmailAddressPushButtonClicked()</slot>
+ </slots>
+</ui>

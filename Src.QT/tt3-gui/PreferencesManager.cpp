@@ -1,0 +1,134 @@
+//
+//  tt3-gui/PreferencesManager.cpp - tt3::gui::PreferencesManager class implementation
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+#include "tt3-gui/API.hpp"
+using namespace tt3::gui;
+
+struct PreferencesManager::_Impl
+{
+    _Impl()
+    {
+#define REGISTER(Preferences)                   \
+        registry.insert(                        \
+            Preferences::instance()->mnemonic(),\
+            Preferences::instance())
+
+        REGISTER(GeneralPreferences);
+        REGISTER(GeneralAppearancePreferences);
+        REGISTER(GeneralStartupPreferences);
+        REGISTER(GeneralDialogsPreferences);
+        REGISTER(InterfacePreferences);
+    }
+
+    using Registry = QMap<tt3::util::Mnemonic, Preferences*>;
+
+    tt3::util::Mutex    guard;
+    Registry            registry;
+};
+
+//////////
+//  Operations
+QSet<Preferences*> PreferencesManager::all()
+{
+    _Impl * impl = _impl();
+    tt3::util::Lock _(impl->guard);
+
+    QList<Preferences*> values = impl->registry.values();
+    return QSet<Preferences*>(values.cbegin(), values.cend());
+}
+
+QSet<Preferences*> PreferencesManager::roots()
+{
+    _Impl * impl = _impl();
+    tt3::util::Lock _(impl->guard);
+
+    QList<Preferences*> values = impl->registry.values();
+    QSet<Preferences*> result;
+    for (Preferences * preferences : std::as_const(values))
+    {
+        if (preferences->parent() == nullptr)
+        {
+            result.insert(preferences);
+        }
+    }
+    return result;
+}
+
+bool PreferencesManager::register(Preferences * preferences)
+{
+    Q_ASSERT(preferences != nullptr);
+
+    _Impl * impl = _impl();
+    tt3::util::Lock _(impl->guard);
+
+    if (preferences->parent() != nullptr &&
+        !register(preferences->parent()))
+    {   //  OOPS! No parent - no children
+        return false;
+    }
+
+    auto key = preferences->mnemonic();
+    if (impl->registry.contains(key))
+    {
+        return preferences == impl->registry[preferences->mnemonic()];
+    }
+    impl->registry[key] = preferences;
+    return true;
+}
+
+bool PreferencesManager::unregister(Preferences * preferences)
+{
+    Q_ASSERT(preferences != nullptr);
+
+    _Impl * impl = _impl();
+    tt3::util::Lock _(impl->guard);
+
+    //  Do the children
+    for (auto child : preferences->children())
+    {
+        if (!unregister(child))
+        {   //  OOPS! Can't proceed!
+            return false;
+        }
+    }
+    //  Do this node
+    auto key = preferences->mnemonic();
+    if (impl->registry.contains(key) &&
+        impl->registry[key] == preferences)
+    {   //  Guard against an impersonator
+        impl->registry.remove(key);
+        return true;
+    }
+    return false;
+}
+
+Preferences * PreferencesManager::find(const tt3::util::Mnemonic & mnemonic)
+{
+    _Impl * impl = _impl();
+    tt3::util::Lock _(impl->guard);
+
+    return impl->registry.contains(mnemonic) ? impl->registry[mnemonic] : nullptr;
+}
+
+//////////
+//  Implementation helpers
+PreferencesManager::_Impl * PreferencesManager::_impl()
+{
+    static _Impl impl;
+    return &impl;
+}
+
+//  End of tt3-gui/PreferencesManager.cpp

@@ -1,0 +1,42 @@
+[Plugin]
+DisplayName=TimeTracker3-Sicherung
+Description=Definiert eine Datensicherungslösung für TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[Component]
+DisplayName=TimeTracker3-Sicherung
+Description=Definiert eine Datensicherungslösung für TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[BackupTool]
+DisplayName=Sicherung
+Description=Erstellt eine Datenbanksicherung
+
+[ConfigureBackupDialog]
+Title=Arbeitsbereich sichern
+BackupCurrentWorkspaceRadioButton=Aktuellen Arbeitsbereich sichern
+OrLabel=--- Oder ---
+BackupCustomWorkspaceRadioButton=Benutzerdefinierten Arbeitsbereich sichern
+WorkspaceTypeLabel=Arbeitsbereichstyp:
+LocationLabel=Speicherort:
+BrowsePushButton=Durchsuchen
+BackupToLabel=Sichern in:
+BackupToPushButton=Durchsuchen
+OkPushButton=Bestätigen
+CancelPushButton=Abbrechen
+BackupToDialogTitle=Sicherung in Datei
+BackupToDialogFilter=TimeTracker3-Sicherungsdateien (*{0});;Alle Dateien (*.*)
+
+[BackupProgressDialog]
+Title=Arbeitsbereich sichern
+BackupLabel=Sicherung wird erstellt:
+ToLabel=Ziel:
+CancelPushButton=Abbrechen
+
+[BackupCompletedDialog]
+Title=Sicherung abgeschlossen
+Message=Der Arbeitsbereich\n{0}\nwurde erfolgreich auf\n{1} aktualisiert.
+
+[BackupCancelledDialog]
+Title=Sicherung abgebrochen
+Message=Die Sicherung wurde abgebrochen.

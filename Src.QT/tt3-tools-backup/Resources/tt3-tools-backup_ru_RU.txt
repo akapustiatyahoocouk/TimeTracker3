@@ -1,0 +1,42 @@
+[Plugin]
+DisplayName=Резервное копирование TimeTracker3
+Description=Поддержка резервного копирования данных TimeTracker3
+Copyright=Авторское право (C) {0}, Андрей Капустин
+
+[Component]
+DisplayName=Резервное копирование TimeTracker3
+Description=Поддержка резервного копирования данных TimeTracker3
+Copyright=Авторское право (C) {0}, Андрей Капустин
+
+[BackupTool]
+DisplayName=Резервное копирование
+Description=Выполняет резервное копирование базы данных
+
+[ConfigureBackupDialog]
+Title=Резервное копирование
+BackupCurrentWorkspaceRadioButton=Резервное копирование текущей рабочей области
+OrLabel=--- Или ---
+BackupCustomWorkspaceRadioButton=Резервное копирование пользовательской рабочей области
+WorkspaceTypeLabel=Тип рабочей области:
+LocationLabel=Местоположение:
+BrowsePushButton=Выбрать
+BackupToLabel=Записать в:
+BackupToPushButton=Выбрать
+OkPushButton=ОК
+CancelPushButton=Отмена
+BackupToDialogTitle=Резервное копирование в файл
+BackupToDialogFilter=Файлы резервной копии TimeTracker3 (*{0});;Все файлы (*.*)
+
+[BackupProgressDialog]
+Title=Резервное копирование рабочей области
+BackupLabel=Резервное копирование:
+ToLabel=В файл:
+CancelPushButton=Отмена
+
+[BackupCompletedDialog]
+Title=Резервное копирование завершено
+Message=Рабочая область\n{0}\nбыла успешно скопирована в\n{1}.
+
+[BackupCancelledDialog]
+Title=Резервное копирование прервано
+Message=Операция резервного копирования прервана

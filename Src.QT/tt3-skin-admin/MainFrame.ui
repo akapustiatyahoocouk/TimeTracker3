@@ -1,0 +1,1129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>tt3::skin::admin::MainFrame</class>
+ <widget class="QMainWindow" name="tt3::skin::admin::MainFrame">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>527</width>
+    <height>272</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>TimeTracker3</string>
+  </property>
+  <property name="iconSize">
+   <size>
+    <width>32</width>
+    <height>32</height>
+   </size>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>4</number>
+    </property>
+    <property name="topMargin">
+     <number>4</number>
+    </property>
+    <property name="rightMargin">
+     <number>4</number>
+    </property>
+    <property name="bottomMargin">
+     <number>4</number>
+    </property>
+    <property name="spacing">
+     <number>4</number>
+    </property>
+    <item row="1" column="0">
+     <widget class="QTabWidget" name="managersTabWidget">
+      <property name="tabPosition">
+       <enum>QTabWidget::TabPosition::North</enum>
+      </property>
+      <property name="currentIndex">
+       <number>10</number>
+      </property>
+      <widget class="QWidget" name="manageUsersTab">
+       <attribute name="icon">
+        <iconset resource="tt3-skin-admin.qrc">
+         <normaloff>:/tt3-skin-admin/Resources/Images/Objects/UserSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/UserSmall.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Users</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="manageActivityTypesTab">
+       <attribute name="icon">
+        <iconset resource="tt3-skin-admin.qrc">
+         <normaloff>:/tt3-skin-admin/Resources/Images/Objects/ActivityTypeSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/ActivityTypeSmall.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Activity types</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="managePublicActivitiesTab">
+       <attribute name="icon">
+        <iconset resource="tt3-skin-admin.qrc">
+         <normaloff>:/tt3-skin-admin/Resources/Images/Objects/PublicActivitySmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/PublicActivitySmall.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Public activities</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="managePublicTasksTab">
+       <attribute name="icon">
+        <iconset resource="tt3-skin-admin.qrc">
+         <normaloff>:/tt3-skin-admin/Resources/Images/Objects/PublicTaskSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/PublicTaskSmall.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Public tasks</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="managePrivateActivitiesTab">
+       <attribute name="icon">
+        <iconset resource="../tt3-gui/tt3-gui.qrc">
+         <normaloff>:/tt3-gui/Resources/Images/Objects/PrivateActivitySmall.png</normaloff>:/tt3-gui/Resources/Images/Objects/PrivateActivitySmall.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Private activities</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="managePrivateTasksTab">
+       <attribute name="icon">
+        <iconset resource="../tt3-gui/tt3-gui.qrc">
+         <normaloff>:/tt3-gui/Resources/Images/Objects/PrivateTaskSmall.png</normaloff>:/tt3-gui/Resources/Images/Objects/PrivateTaskSmall.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Private tasks</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="manageProjectsTab">
+       <attribute name="icon">
+        <iconset resource="tt3-skin-admin.qrc">
+         <normaloff>:/tt3-skin-admin/Resources/Images/Objects/ProjectSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/ProjectSmall.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Projects</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="manageWorkStreamsTab">
+       <attribute name="icon">
+        <iconset resource="tt3-skin-admin.qrc">
+         <normaloff>:/tt3-skin-admin/Resources/Images/Objects/WorkStreamSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/WorkStreamSmall.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Work streams</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="manageBeneficiariesTab">
+       <attribute name="icon">
+        <iconset resource="tt3-skin-admin.qrc">
+         <normaloff>:/tt3-skin-admin/Resources/Images/Objects/BeneficiarySmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/BeneficiarySmall.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Beneficiaries</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="manageMyDayTab">
+       <attribute name="icon">
+        <iconset resource="tt3-skin-admin.qrc">
+         <normaloff>:/tt3-skin-admin/Resources/Images/Misc/MyDaySmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Misc/MyDaySmall.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>My day</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="quickReportsTab">
+       <attribute name="icon">
+        <iconset resource="tt3-skin-admin.qrc">
+         <normaloff>:/tt3-skin-admin/Resources/Images/Misc/QuickReportSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Misc/QuickReportSmall.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Quick reports</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QWidget" name="currentActivityPanel" native="true">
+      <layout class="QGridLayout" name="gridLayout_2">
+       <property name="leftMargin">
+        <number>2</number>
+       </property>
+       <property name="topMargin">
+        <number>2</number>
+       </property>
+       <property name="rightMargin">
+        <number>2</number>
+       </property>
+       <property name="bottomMargin">
+        <number>2</number>
+       </property>
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="stopActivityPushButton">
+         <property name="text">
+          <string>Stop</string>
+         </property>
+         <property name="icon">
+          <iconset resource="tt3-skin-admin.qrc">
+           <normaloff>:/tt3-skin-admin/Resources/Images/Actions/StopSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/StopSmall.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="currentActivityLabel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>&lt;ACTIVITY&gt;</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>527</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="actionNewWorkspace"/>
+    <addaction name="actionOpenWorkspace"/>
+    <addaction name="separator"/>
+    <addaction name="actionCloseWorkspace"/>
+    <addaction name="separator"/>
+    <addaction name="actionDestroyWorkspace"/>
+    <addaction name="separator"/>
+    <addaction name="actionRecentWorkspaces"/>
+    <addaction name="separator"/>
+    <addaction name="actionRestart"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="actionHelpContent"/>
+    <addaction name="actionHelpIndex"/>
+    <addaction name="actionHelpSearch"/>
+    <addaction name="separator"/>
+    <addaction name="actionAbout"/>
+   </widget>
+   <widget class="QMenu" name="menuOptions">
+    <property name="title">
+     <string>&amp;Options</string>
+    </property>
+    <addaction name="actionLoginAsDifferentUser"/>
+    <addaction name="separator"/>
+    <addaction name="actionPreferences"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <addaction name="actionManageUsers"/>
+    <addaction name="actionManageActivityTypes"/>
+    <addaction name="actionManagePublicActivities"/>
+    <addaction name="actionManagePublicTasks"/>
+    <addaction name="actionManagePrivateActivities"/>
+    <addaction name="actionManagePrivateTasks"/>
+    <addaction name="actionManageProjects"/>
+    <addaction name="actionManageWorkStreams"/>
+    <addaction name="actionManageBeneficiaries"/>
+    <addaction name="separator"/>
+    <addaction name="actionManageMyDay"/>
+    <addaction name="separator"/>
+    <addaction name="actionRefresh"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="title">
+     <string>&amp;Tools</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuReports">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="title">
+     <string>&amp;Reports</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionQuickReports"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuView"/>
+   <addaction name="menuTools"/>
+   <addaction name="menuReports"/>
+   <addaction name="menuOptions"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>18</width>
+     <height>18</height>
+    </size>
+   </property>
+   <property name="floatable">
+    <bool>false</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionNewWorkspace"/>
+   <addaction name="actionOpenWorkspace"/>
+   <addaction name="separator"/>
+   <addaction name="actionManageUsers"/>
+   <addaction name="actionManageActivityTypes"/>
+   <addaction name="actionManagePublicActivities"/>
+   <addaction name="actionManagePublicTasks"/>
+   <addaction name="actionManagePrivateActivities"/>
+   <addaction name="actionManagePrivateTasks"/>
+   <addaction name="actionManageProjects"/>
+   <addaction name="actionManageWorkStreams"/>
+   <addaction name="actionManageBeneficiaries"/>
+   <addaction name="separator"/>
+   <addaction name="actionManageMyDay"/>
+   <addaction name="actionQuickReports"/>
+   <addaction name="separator"/>
+   <addaction name="actionRefresh"/>
+   <addaction name="separator"/>
+   <addaction name="actionPreferences"/>
+   <addaction name="actionLoginAsDifferentUser"/>
+   <addaction name="separator"/>
+   <addaction name="actionAbout"/>
+  </widget>
+  <action name="actionAbout">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/AboutSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/AboutSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>A&amp;bout TimeTracker3</string>
+   </property>
+   <property name="iconText">
+    <string>About TimeTracker3</string>
+   </property>
+   <property name="toolTip">
+    <string>About TimeTracker3</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F1</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/ExitSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/ExitSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>E&amp;xit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="actionNewWorkspace">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/CreateWorkspaceSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/CreateWorkspaceSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;New workspace</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionOpenWorkspace">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/OpenWorkspaceSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/OpenWorkspaceSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Open workspace</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionCloseWorkspace">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/CloseWorkspaceSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/CloseWorkspaceSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>C&amp;lose workspace</string>
+   </property>
+  </action>
+  <action name="actionDestroyWorkspace">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/DestroyWorkspaceSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/DestroyWorkspaceSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Destroy workspace</string>
+   </property>
+  </action>
+  <action name="actionRecentWorkspaces">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Objects/SubmenuSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/SubmenuSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Recent workspaces</string>
+   </property>
+  </action>
+  <action name="actionHelpContent">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/HelpContentSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/HelpContentSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Content</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="actionHelpIndex">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/HelpIndexSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/HelpIndexSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Index</string>
+   </property>
+  </action>
+  <action name="actionHelpSearch">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/HelpSearchSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/HelpSearchSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Search</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/PreferencesSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/PreferencesSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Preferences</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionRestart">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/RestartSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/RestartSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>Res&amp;tart TimeTracker3</string>
+   </property>
+  </action>
+  <action name="actionLoginAsDifferentUser">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/LoginSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/LoginSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Login as a different user</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actionManageUsers">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/ManageUsersSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/ManageUsersSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;1 - Manage users</string>
+   </property>
+   <property name="iconText">
+    <string>Manage users</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage users</string>
+   </property>
+   <property name="shortcut">
+    <string>1</string>
+   </property>
+  </action>
+  <action name="actionManageActivityTypes">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Objects/ActivityTypeSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/ActivityTypeSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;2 - Manage activity types</string>
+   </property>
+   <property name="iconText">
+    <string>Manage activity types</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage activity types</string>
+   </property>
+   <property name="shortcut">
+    <string>2</string>
+   </property>
+  </action>
+  <action name="actionRefresh">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Actions/RefreshSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Actions/RefreshSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Refresh</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>
+  <action name="actionManagePublicActivities">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Objects/PublicActivitySmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/PublicActivitySmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;3 - Manage public activities</string>
+   </property>
+   <property name="iconText">
+    <string>Manage public activities</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage public activities</string>
+   </property>
+   <property name="shortcut">
+    <string>3</string>
+   </property>
+  </action>
+  <action name="actionManagePublicTasks">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Objects/PublicTaskSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/PublicTaskSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;4 - Manage public tasks</string>
+   </property>
+   <property name="iconText">
+    <string>Manage public tasks</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage public tasks</string>
+   </property>
+   <property name="shortcut">
+    <string>4</string>
+   </property>
+  </action>
+  <action name="actionManagePrivateActivities">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Objects/PrivateActivitySmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/PrivateActivitySmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;5 - Manage private activities</string>
+   </property>
+   <property name="iconText">
+    <string>Manage private activities</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage private activities</string>
+   </property>
+   <property name="shortcut">
+    <string>5</string>
+   </property>
+  </action>
+  <action name="actionManagePrivateTasks">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Objects/PrivateTaskSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/PrivateTaskSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;6 - Manage private tasks</string>
+   </property>
+   <property name="iconText">
+    <string>Manage private tasks</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage private tasks</string>
+   </property>
+   <property name="shortcut">
+    <string>6</string>
+   </property>
+  </action>
+  <action name="actionManageProjects">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Objects/ProjectSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/ProjectSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;7 - Manage projects</string>
+   </property>
+   <property name="iconText">
+    <string>Manage projects</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage projects</string>
+   </property>
+   <property name="shortcut">
+    <string>7</string>
+   </property>
+  </action>
+  <action name="actionManageWorkStreams">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Objects/WorkStreamSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/WorkStreamSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;8 - Manage work streams</string>
+   </property>
+   <property name="iconText">
+    <string>Manage work streams</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage work streams</string>
+   </property>
+   <property name="shortcut">
+    <string>8</string>
+   </property>
+  </action>
+  <action name="actionManageBeneficiaries">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Objects/BeneficiarySmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Objects/BeneficiarySmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;9 - Manage beneficiaries</string>
+   </property>
+   <property name="iconText">
+    <string>Manage beneficiaries</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage beneficiaries</string>
+   </property>
+   <property name="shortcut">
+    <string>9</string>
+   </property>
+  </action>
+  <action name="actionManageMyDay">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Misc/MyDaySmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Misc/MyDaySmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;0 - Manage my day</string>
+   </property>
+   <property name="iconText">
+    <string>Manage my day</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage my day</string>
+   </property>
+   <property name="shortcut">
+    <string>0</string>
+   </property>
+  </action>
+  <action name="actionQuickReports">
+   <property name="icon">
+    <iconset resource="tt3-skin-admin.qrc">
+     <normaloff>:/tt3-skin-admin/Resources/Images/Misc/QuickReportSmall.png</normaloff>:/tt3-skin-admin/Resources/Images/Misc/QuickReportSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Quick reports</string>
+   </property>
+   <property name="shortcut">
+    <string>Q</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../tt3-gui/tt3-gui.qrc"/>
+  <include location="tt3-skin-admin.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>actionExit</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionExit()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionOpenWorkspace</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionOpenWorkspace()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionNewWorkspace</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionNewWorkspace()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionHelpContent</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionHelpContent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionHelpIndex</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionHelpIndex()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionHelpSearch</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionHelpSearch()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionCloseWorkspace</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionCloseWorkspace()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDestroyWorkspace</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionDestroyWorkspace()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionPreferences</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionPreferences()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAbout</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionAbout()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRestart</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionRestart()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionLoginAsDifferentUser</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionLoginAsDifferentUser()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionManageUsers</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManageUsers()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>207</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionManageActivityTypes</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManageActivityTypes()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>207</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRefresh</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionRefresh()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>207</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>managersTabWidget</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_managersTabWidgetCurrentChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>263</x>
+     <y>189</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>stopActivityPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_stopActivityPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>480</x>
+     <y>77</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionManagePublicActivities</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManagePublicActivities()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionManagePublicTasks</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManagePublicTasks()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionManagePrivateActivities</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManagePrivateActivities()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionManagePrivateTasks</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManagePrivateTasks()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionManageProjects</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManageProjects()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionManageWorkStreams</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManageWorkStreams()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionManageBeneficiaries</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManageBeneficiaries()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionManageMyDay</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManageMyDay()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionQuickReports</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionQuickReports()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_onActionExit()</slot>
+  <slot>_onActionOpenWorkspace()</slot>
+  <slot>_onActionNewWorkspace()</slot>
+  <slot>_onActionHelpContent()</slot>
+  <slot>_onActionHelpIndex()</slot>
+  <slot>_onActionHelpSearch()</slot>
+  <slot>_onActionCloseWorkspace()</slot>
+  <slot>_onActionDestroyWorkspace()</slot>
+  <slot>_onActionPreferences()</slot>
+  <slot>_onActionAbout()</slot>
+  <slot>_onActionRestart()</slot>
+  <slot>_onActionLoginAsDifferentUser()</slot>
+  <slot>_onActionManageUsers()</slot>
+  <slot>_onActionManageActivityTypes()</slot>
+  <slot>_onActionRefresh()</slot>
+  <slot>_managersTabWidgetCurrentChanged(int)</slot>
+  <slot>_stopActivityPushButtonClicked()</slot>
+  <slot>_onActionManagePublicActivities()</slot>
+  <slot>_onActionManagePublicTasks()</slot>
+  <slot>_onActionManagePrivateActivities()</slot>
+  <slot>_onActionManagePrivateTasks()</slot>
+  <slot>_onActionManageProjects()</slot>
+  <slot>_onActionManageWorkStreams()</slot>
+  <slot>_onActionManageBeneficiaries()</slot>
+  <slot>_onActionManageMyDay()</slot>
+  <slot>_onActionQuickReports()</slot>
+ </slots>
+</ui>

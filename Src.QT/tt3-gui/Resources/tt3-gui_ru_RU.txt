@@ -1,0 +1,874 @@
+[Component]
+DisplayName=Пользовательский интерфейс TimeTracker3
+Description=Определяет возможности графического интерфейса для TimeTracker3
+Copyright=Авторское право (C) {0}, Андрей Капустин
+
+[AboutDialog]
+Title=О TimeTracker3
+VersionLabel=Версия {0} (сборка {1} для Qt {2})
+ShowLicensePushButton=Лицензия
+ShowConfigurationPushButton=Конфигурация
+OkPushButton=ОК
+
+[ActivityTypeManager]
+FilterLabel=Фильтр:
+CreateActivityTypePushButton=Создать тип активности
+ViewActivityTypePushButton=Просмотреть тип активности
+ModifyActivityTypePushButton=Изменить тип активности
+DestroyActivityTypePushButton=Удалить тип активности
+
+[AddEmailAddressDialog]
+Title=Добавить адрес электронной почты
+Prompt=Введите адрес электронной почты:
+
+[AskYesNoDialog]
+AssumeYesCheckBox=Больше не запрашивать это подтверждение (предполагаем, что ответ — да)
+YesPushButton=Да
+NoPushButton=Нет
+
+[BeneficiaryManager]
+FilterLabel=Фильтр:
+CreateBeneficiaryPushButton=Создать бенефициара
+ViewBeneficiaryPushButton=Просмотреть бенефициара
+ModifyBeneficiaryPushButton=Изменить бенефициара
+DestroyBeneficiaryPushButton=Удалить бенефициара
+
+[ChooseReloginDialog]
+Title=Доступ запрещён
+Prompt=Текущие учётные данные не позволяют доступ к\n{0}\nВы хотите войти с другими учётными данными ?
+
+[ConfirmCloseWorkspaceDialog]
+Title=Закрыть рабочую область
+Prompt=Вы уверены, что действительно хотите закрыть рабочую область\n{0} ?
+
+[ConfirmDestroyWorkspaceDialog]
+Title=Удалить рабочую область
+Prompt=Вы уверены, что действительно хотите удалить рабочую область\n{0} ?\nВАЖНО: ВЫ НЕ СМОЖЕТЕ ОТМЕНИТЬ ЭТО ДЕЙСТВИЕ ПОЗЖЕ!
+
+[ConfirmDropWorkspaceDialog]
+Title=Удалить рабочее пространство
+Prompt=Ваши новые учётные данные не разрешают доступ к\n{0}.\nВы хотите закрыть рабочую область ?
+
+[ConfirmExitDialog]
+Title=Выйти из TimeTracker3
+Prompt=Вы уверены, что хотите выйти из TimeTracker3 ?
+
+[ConfirmForgetWorkspaceDialog]
+Title=Не удалось открыть рабочую область
+Prompt=Удалить рабочую область\n{0}\nиз списка недавних рабочих областей ?
+
+[ConfirmResetAllSettingsDialog]
+Title=Сбросить все настройки
+Prompt=Вы уверены, что хотите сбросить все настройки до значений по умолчанию?\nЭффект не сохранится, пока вы не нажмете «ОК», чтобы закрыть диалог.
+
+[ConfirmResetPageSettingsDialog]
+Title=Сброс настроек страницы
+Prompt=Вы уверены, что хотите сбросить настройки страницы до значений по умолчанию?\nЭффект не сохранится, пока вы не нажмете «ОК», чтобы закрыть диалог.
+
+[ConfirmRestartDialog]
+Title=Перезапустить TimeTracker3
+Prompt=Вы уверены, что хотите перезапустить TimeTracker3 ?
+
+[CreateAccountDialog]
+Title=Создать учетную запись
+UserLabel=Пользователь:
+LoginLabel=Учётная запись:
+PasswordLabel=Пароль:
+ConfirmPasswordLabel=Подтвердить:
+EmailAddressesLabel=Адреса электронной почты:
+AddEmailAddressPushButton=Добавить
+ModifyEmailAddressPushButton=Изменить
+RemoveEmailAddressPushButton=Удалить
+CapabilitiesGroupBox=Возможности
+AdministratorCheckBox=Администратор
+ManageUsersCheckBox=Управление пользователями
+ManageActivityTypesCheckBox=Управление типами активностей
+ManageBeneficiariesCheckBox=Управление бенефициарами
+ManageWorkloadsCheckBox=Управление рабочими нагрузками
+ManagePublicActivitiesCheckBox=Управление общедоступными активностями
+ManagePublicTasksCheckBox=Управление общедоступными задачами
+ManagePrivateActivitiesCheckBox=Управление личными активностями
+ManagePrivateTasksCheckBox=Управление личными задачами
+LogWorkCheckBox=Ведение журнала работы
+LogEventsCheckBox=Ведение журнала событий
+GenerateReportsCheckBox=Создание отчётов
+BackupAndRestoreCheckBox=Резервное копирование и восстановление
+EnabledCheckBox=Учетная запись активна
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[CreateActivityTypeDialog]
+Title=Создать тип активности
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[CreateBeneficiaryDialog]
+Title=Создать бенефициара
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+WorkloadsLabel=Рабочие нагрузки:
+SelectWorkloadsPushButton=Выбрать
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[CreatePrivateActivityDialog]
+Title=Создать личную активность
+UserLabel=Пользователь:
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+ActivityTypeLabel=Тип активности:
+WorkloadLabel=Рабочая нагрузка:
+SelectWorkloadPushButton=Выбрать
+TimeoutLabel=Время ожидания:
+TimeoutCheckBox=Остановить, если отсутствует в течение
+HoursComboBoxItem={0} час
+MinutesComboBoxItem={0} мин
+RequireCommentOnStartCheckBox=Требовать комментарий при запуске этой активности
+RequireCommentOnStopCheckBox=Требовать комментарий при остановке этой активности
+FullScreenReminderCheckBox=Полноэкранное напоминание
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[CreatePrivateTaskDialog]
+Title=Создать личную залачу
+UserLabel=Пользователь:
+ParentTaskLabel=Родитель:
+NoParent=- (корневая частная задача без родителя)
+SelectParentTaskPushButton=Выбрать
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+ActivityTypeLabel=Тип активности:
+WorkloadLabel=Рабочая нагрузка:
+SelectWorkloadPushButton=Выбрать
+TimeoutLabel=Время ожидания:
+TimeoutCheckBox=Остановить, если нет активности в течение
+HoursComboBoxItem={0} час
+MinutesComboBoxItem={0} мин
+RequireCommentOnStartCheckBox=Требовать комментарий при запуске этой задачи
+RequireCommentOnStopCheckBox=Требовать комментарий при остановке этой задачи
+FullScreenReminderCheckBox=Полноэкранное напоминание
+RequiresCommentOnCompletionCeckBox=Требуется комментарий после завершения
+CompletedCheckBox=Задача выполнена
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[CreateProjectDialog]
+Title=Создать проект
+ParentProjectLabel=Родитель:
+NoParent=- (корневой проект без родителя)
+SelectParentProjectPushButton=Выбрать
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+BeneficiariesLabel=Бенефициары:
+SelectBeneficiariesPushButton=Выбрать
+CompletedCheckBox=Проект завершён
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[CreatePublicActivityDialog]
+Title=Создать общедоступную активность
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+ActivityTypeLabel=Тип активности:
+WorkloadLabel=Рабочая нагрузка:
+SelectWorkloadPushButton=Выбрать
+TimeoutLabel=Время ожидания:
+TimeoutCheckBox=Остановить, если нет активности в течение
+HoursComboBoxItem={0} час
+MinutesComboBoxItem={0} мин
+RequireCommentOnStartCheckBox=Требовать комментарий при запуске этой активности
+RequireCommentOnStopCheckBox=Требовать комментарий при остановке этой активности
+FullScreenReminderCheckBox=Полноэкранное напоминание
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[CreatePublicTaskDialog]
+Title=Создать общедоступную залачу
+ParentTaskLabel=Родитель:
+NoParent=- (корневая общедоступная задача без родителя)
+SelectParentTaskPushButton=Выбрать
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+ActivityTypeLabel=Тип активности:
+WorkloadLabel=Рабочая нагрузка:
+SelectWorkloadPushButton=Выбрать
+TimeoutLabel=Время ожидания:
+TimeoutCheckBox=Остановить, если нет активности в течение
+HoursComboBoxItem={0} час
+MinutesComboBoxItem={0} мин
+RequireCommentOnStartCheckBox=Требовать комментарий при запуске этой задачи
+RequireCommentOnStopCheckBox=Требовать комментарий при остановке этой задачи
+FullScreenReminderCheckBox=Полноэкранное напоминание
+RequiresCommentOnCompletionCeckBox=Требуется комментарий после завершения
+CompletedCheckBox=Задача выполнена
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[CreateUserDialog]
+Title=Создать пользователя
+RealNameLabel=Настоящее имя:
+EmailAddressesLabel=Адреса электронной почты:
+AddEmailAddressPushButton=Добавить
+ModifyEmailAddressPushButton=Изменить
+RemoveEmailAddressPushButton=Удалить
+InactivityTimeoutLabel=Текущая активность:
+InactivityTimeoutCheckBox=остановить, если нет активности в течение
+HoursComboBoxItem={0} час
+MinutesComboBoxItem={0} мин
+UiLocaleLabel=Язык интерфейса:
+SystemDefaultLocale=- (системное значение по умолчанию)
+WorkingOnLabel=Работает над:
+WorkingOnPushButton=Выбрать
+EnabledCheckBox=Пользователь активен
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[CreateWorkStreamDialog]
+Title=Создать рабочий поток
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+BeneficiariesLabel=Бенефициары:
+SelectBeneficiariesPushButton=Выбрать
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[DailyWorkQuickReport]
+DisplayName=Рабочий день
+Description=Показывает ежедневные действия по категориям и типам
+
+[DailyWorkQuickReportView]
+CopyPushButton=Копировать
+ScaleLabel=Масштаб:
+ShowLabel=Показать:
+TodayRadioButton=Сегодня
+ForDateRadioButton=Для даты
+ConfirmCopyTitle=Изображение скопировано
+ConfirmCopyMessage=Изображение скопировано в системный буфер обмена
+NoDataLabel=Нет данных для отображения
+
+[DestroyAccountDialog]
+Title=Удалить учётную запись
+Prompt=Вы уверены, что хотите удалить учётную запись {0}\nпользователя {1}?
+DetailsWE=\nДля учётной записи зарегистрировано {0} единиц работы\n(общей продолжительностью {1} минут) и {2} событий.
+DetailsW=\nДля учётной записи зарегистрировано {0} единиц работы\n(общей продолжительностью {1} минут).
+DetailsE=\nДля учётной записи зарегистрировано {0} событий.
+
+[DestroyActivityTypeDialog]
+Title=Удалить тип активности
+Prompt=Вы уверены, что хотите удалить тип активности\n{0}, назначенный {1} активностям ?
+DetailsWE=\nДля этих активностей зарегистрировано {0} единиц работы\n(общей продолжительностью {1} минут) и {2} событий;\nвсе они потеряют свою привязку к типу деятельности.
+DetailsW=\nДля этих активностей зарегистрировано {0} единиц работы\n(общей продолжительностью {1} минут);\nвсе они потеряют свою привязку к типу деятельности.
+DetailsE=\nДля этих активностей зарегистрировано {0} событий;\nвсе они потеряют свою привязку к типу деятельности.
+
+[DestroyBeneficiaryDialog]
+Title=Удалить бенефициара
+Prompt=Вы уверены, что хотите удалить бенефициара\n{0} ?
+ProjectsAndWorkStreams=\nБенефициар связан с {0} проектами и {1} рабочими потоками.
+DetailsWE=\nДля них зарегистрировано {0} единиц работы\n(общей продолжительностью {1} минут) и {2} событий;\nвсе они потеряют свою привязку к бенефициару.
+DetailsW=\nДля них зарегистрировано {0} единиц работы\n(общей продолжительностью {1} минут));\nвсе они потеряют свою привязку к бенефициару.
+DetailsE=\nДля них зарегистрировано {0} событий;\nвсе они потеряют свою привязку к бенефициару.
+
+[DestroyEventDialog]
+Title=Удалить событие
+Prompt=Вы уверены, что хотите удалить событие\n{0}\nзарегистрировано в {1}\nпользователем {2} ?
+Details=\nОтносится к {0} {1}.
+
+[DestroyPrivateActivityDialog]
+Title=Удалить личную активность
+Prompt=Вы уверены, что хотите удалить личную активность\n{0} ?
+DetailsWE=\nДля личной активности зарегистрировано {0} единиц работы\n(общей продолжительностью {1} минут) и {2} событий.
+DetailsW=\nДля личной активности зарегистрировано {0} единиц работы\n(общей продолжительностью {1} минут).
+DetailsE=\nДля личной активности зарегистрировано {0} событий.
+
+[DestroyPrivateTaskDialog]
+Title=Удалить личную задачу
+Prompt=Вы уверены, что хотите удалить личную задачу\n{0} ?
+Subtasks=\nВместе с ней будут удалены её {0} подзадач(и).
+DetailsWE=\nДля личной задачи зарегистрировано {0} единиц работы\n(общей продолжительностью {1} минут) и {2} событий.
+DetailsW=\nДля личной задачи зарегистрировано {0} единиц работы\n(общей продолжительностью {1} минут).
+DetailsE=\nДля личной задачи зарегистрировано {0} событий.
+
+[DestroyProjectDialog]
+Title=Удалить проект
+Prompt=Вы уверены, что хотите удалить проект\n{0} ?
+Subprojects=\nВместе с ним будут удалены {0} его подпроект.
+DetailsWE=\nДля проекта зарегистрировано {0} единиц работы\n(общей продолжительностью {1} минут) и {2} событий;\nвсе они потеряют свою привязку к проекту.
+DetailsW=\nДля проекта зарегистрировано {0} единиц работы\n(общей продолжительностью {1} минут));\nвсе они потеряют свою привязку к проекту.
+DetailsE=\nДля проекта зарегистрировано {0} событий;\nвсе они потеряют свою привязку к проекту.
+
+[DestroyPublicActivityDialog]
+Title=Удалить общедоступную активность
+Prompt=Вы уверены, что хотите удалить общедоступную активность{0}\n ?
+DetailsWE=\nДля общедоступной активности зарегистрировано {0} единиц работы\n(общей продолжительностью {1} минут) и {2} событий.
+DetailsW=\nДля общедоступной активности зарегистрировано {0} единиц работы\n(общей продолжительностью {1} минут).
+DetailsE=\nДля общедоступной активности зарегистрировано {0} событий.
+
+[DestroyPublicTaskDialog]
+Title=Удалить общедоступную задачу
+Prompt=Вы уверены, что хотите удалить общедоступную задачу\n{0} ?
+Subtasks=\nВместе с ней будут удалены её {0} подзадач(и).
+DetailsWE=\nДля общедоступной задачи зарегистрировано {0} единиц работы\n(общей продолжительностью {1} минут) и {2} событий.
+DetailsW=\nДля общедоступной задачи зарегистрировано {0} единиц работы\n(общей продолжительностью {1} минут).
+DetailsE=\nДля общедоступной задачи зарегистрировано {0} событий.
+
+[DestroyUserDialog]
+Title=Удалить пользователя
+Prompt=Вы уверены, что хотите удалить пользователя {0} с {1} учётными записями?
+DetailsWE=\nУ пользователя зарегистрировано {0} единиц работы\n(общей продолжительностью {1} минут) и {2} событий.
+DetailsW=\nУ пользователя зарегистрировано {0} единиц работы\n(общей продолжительностью {1} минут).
+DetailsE=\nУ пользователя зарегистрировано {0} событий.
+
+[DestroyWorkDialog]
+Title=Удалить работу
+Prompt=Вы уверены, что хотите уничтожить единицу работы\n{0}..{1}\n(продолжительность {2} зарегистрирована пользователем {3} для\n{4} {5} ?
+
+[DestroyWorkStreamDialog]
+Title=Удалить рабочий поток
+Prompt=Вы уверены, что хотите удалить рабочий поток\n{0} ?
+DetailsWE=\nДля рабочего потока зарегистрировано {0} рабочих единиц\n(общей продолжительностью {1} минут) и {2} событий;\nвсе они потеряют свою привязку к рабочему потоку.
+DetailsW=\nДля рабочего потока зарегистрировано {0} рабочих единиц\n(общей продолжительностью {1} минут);\nвсе они потеряют свою привязку к рабочему потоку.
+DetailsE=\nДля рабочего потока зарегистрировано {0} событий;\nвсе они потеряют свою привязку к рабочему потоку.
+
+[EditStringDialog]
+OkPushButton=OK
+CancelPushButton=Отмена
+
+[EnterActivityStartCommentDialog]
+Title={0} {1}
+Prompt=Введите комментарий к началу:
+
+[EnterActivityStopCommentDialog]
+Title={0} {1}
+Prompt=Введите комментарий к остановке:
+
+[EnterCommentDialog]
+Title=Добавить комментарий
+Prompt=Введите комментарий:
+
+[EnterTaskCompletionCommentDialog]
+Title={0} {1}
+Prompt=Введите комментарий к завершению задачи:
+
+[ErrorDialog]
+Title=ОШИБКА
+OkPushButton=ОК
+
+[FullScreenReminderWindow]
+StopPushButton=Остановить
+
+[GeneralAppearancePreferences]
+DisplayName=Внешний вид
+
+[GeneralAppearancePreferencesEditor]
+LanguageLabel=Язык:
+SkinLabel=Интерфейс:
+ThemeLabel=Палитра:
+
+[GeneralDialogsPreferences]
+DisplayName=Диалоги
+
+[GeneralDialogsPreferencesEditor]
+ConfirmationsGroupBox=Подтверждения
+ConfirmCloseWorkspaceCheckBox=Требовать подтверждение при закрытии рабочего пространства
+ConfirmRestartCheckBox=Требовать подтверждение при перезапуске TimeTracker3
+ConfirmExitCheckBox=Требовать подтверждение при выходе из TimeTracker3
+
+[GeneralPreferences]
+DisplayName=Общие
+
+[GeneralStartupPreferences]
+DisplayName=Автозагрузка
+
+[GeneralStartupPreferencesEditor]
+LoadLastWorkspaceAtStartupCheckBox=Перезагрузить последнее рабочее пространство при запуске
+RememnerLastLoginCheckBox=Запомнить последний вход в систему
+ShowSplashScreenCheckBox=Показывать заставку при запуске
+
+[InterfacePreferences]
+DisplayName=Интерфейс
+
+[HelpBuilderProgressWindow]
+BuildingHelpLabel=Готовится справочная система...
+
+[LoginDialog]
+Title=Вход в TimeTracker3
+LoginLabel=Логин:
+PasswordLabel=Пароль:
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[ManageActivityTypesDialog]
+Title=Управление типами активности
+OkPushButton=ОК
+
+[ManageBeneficiariesDialog]
+Title=Управление бенефициарами
+OkPushButton=OK
+
+[ManageMyDayDialog]
+Title=Управление моим днём
+OkPushButton=OK
+
+[ManagePrivateActivitiesDialog]
+Title=Управление личными активностями
+OkPushButton=OK
+
+[ManagePrivateTasksDialog]
+Title=Управление личными задачами
+OkPushButton=OK
+
+[ManageProjectsDialog]
+Title=Управление проектами
+OkPushButton=OK
+
+[ManagePublicActivitiesDialog]
+Title=Управление общедоступными активностями
+OkPushButton=OK
+
+[ManagePublicTasksDialog]
+Title=Управление общедоступными задачами
+OkPushButton=OK
+
+[ManageQuickPicksListDialog]
+Title=Управление списком быстрого выбора
+PublicActivitiesTab=Общедоступные активности
+PublicTasksTab=Общедоступные задачи
+PrivateActivitiesTab=Личные активности
+PrivateTasksTab=Личные задачи
+PublicActivitiesFilterLabel=Фильтр:
+PublicTasksFilterLabel=Фильтр:
+PrivateActivitiesFilterLabel=Фильтр:
+PrivateTasksFilterLabel=Фильтр:
+MoveToTopPushButton=Переместить в начало
+MoveUpPushButton=Переместить вверх
+MoveDownPushButton=Переместить вниз
+MoveToBottomPushButton=Переместить в конец
+RemovePushButton=Удалить
+TaskCompletedSuffix=[завершено]
+OkPushButton=OK
+CancelPushButton=Отмена
+
+[ManageUsersDialog]
+Title=Управление пользователями
+OkPushButton=OK
+
+[ManageWorkStreamsDialog]
+Title=Управление рабочими потоками
+OkPushButton=OK
+
+[MessageDialog]
+OkPushButton=OK
+
+[ModifyAccountDialog]
+Title=Изменить учетную запись
+ViewOnlyTitle=Просмотреть учетную запись
+UserLabel=Пользователь:
+LoginLabel=Учётная запись:
+PasswordLabel=Пароль:
+ConfirmPasswordLabel=Подтвердить:
+EmailAddressesLabel=Адреса электронной почты:
+AddEmailAddressPushButton=Добавить
+ModifyEmailAddressPushButton=Изменить
+RemoveEmailAddressPushButton=Удалить
+CapabilitiesGroupBox=Возможности
+AdministratorCheckBox=Администратор
+ManageUsersCheckBox=Управление пользователями
+ManageActivityTypesCheckBox=Управление типами активностей
+ManageBeneficiariesCheckBox=Управление бенефициарами
+ManageWorkloadsCheckBox=Управление рабочими нагрузками
+ManagePublicActivitiesCheckBox=Управление общедоступными активностями
+ManagePublicTasksCheckBox=Управление общедоступными задачами
+ManagePrivateActivitiesCheckBox=Управление личными активностями
+ManagePrivateTasksCheckBox=Управление личными задачами
+LogWorkCheckBox=Ведение журнала работы
+LogEventsCheckBox=Ведение журнала событий
+GenerateReportsCheckBox=Создание отчётов
+BackupAndRestoreCheckBox=Резервное копирование и восстановление
+EnabledCheckBox=Учетная запись активна
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[ModifyActivityTypeDialog]
+Title=Изменить тип активности
+ViewOnlyTitle=Просмотреть тип активности
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[ModifyBeneficiaryDialog]
+Title=Изменить бенефициара
+ViewOnlyTitle=Просмотреть бенефициара
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+WorkloadsLabel=Рабочие нагрузки:
+SelectWorkloadsPushButton=Выбрать
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[ModifyEmailAddressDialog]
+Title=Изменить адрес электронной почты
+Prompt=Введите новый адрес электронной почты:
+
+[ModifyPrivateActivityDialog]
+Title=Изменить личную активность
+ViewOnlyTitle=Просмотреть личную активность
+UserLabel=Пользователь:
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+ActivityTypeLabel=Тип активности:
+WorkloadLabel=Рабочая нагрузка:
+SelectWorkloadPushButton=Выбрать
+TimeoutLabel=Время ожидания:
+TimeoutCheckBox=Остановить, если нет активности в течение
+HoursComboBoxItem={0} час
+MinutesComboBoxItem={0} мин
+RequireCommentOnStartCheckBox=Требовать комментарий при запуске этой активности
+RequireCommentOnStopCheckBox=Требовать комментарий при остановке этой активности
+FullScreenReminderCheckBox=Полноэкранное напоминание
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[ModifyPrivateTaskDialog]
+Title=Изменить личную залачу
+ViewOnlyTitle=Просмотреть личную залачу
+UserLabel=Пользователь:
+ParentTaskLabel=Родитель:
+NoParent=- (корневая частная задача без родителя)
+SelectParentTaskPushButton=Выбрать
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+ActivityTypeLabel=Тип активности:
+WorkloadLabel=Рабочая нагрузка:
+SelectWorkloadPushButton=Выбрать
+TimeoutLabel=Время ожидания:
+TimeoutCheckBox=Остановить, если нет активности в течение
+HoursComboBoxItem={0} час
+MinutesComboBoxItem={0} мин
+RequireCommentOnStartCheckBox=Требовать комментарий при запуске этой задачи
+RequireCommentOnStopCheckBox=Требовать комментарий при остановке этой задачи
+FullScreenReminderCheckBox=Полноэкранное напоминание
+RequiresCommentOnCompletionCeckBox=Требуется комментарий после завершения
+CompletedCheckBox=Задача выполнена
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[ModifyProjectDialog]
+Title=Изменить проект
+ViewOnlyTitle=Просмотреть проект
+ParentProjectLabel=Родитель:
+NoParent=- (корневой проект без родителя)
+SelectParentProjectPushButton=Выбрать
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+BeneficiariesLabel=Бенефициары:
+SelectBeneficiariesPushButton=Выбрать
+CompletedCheckBox=Проект завершён
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[ModifyPublicActivityDialog]
+Title=Изменить общедоступную активность
+ViewOnlyTitle=Просмотреть общедоступную активность
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+ActivityTypeLabel=Тип активности:
+WorkloadLabel=Рабочая нагрузка:
+SelectWorkloadPushButton=Выбрать
+TimeoutLabel=Время ожидания:
+TimeoutCheckBox=Остановить, если нет активности в течение
+HoursComboBoxItem={0} час
+MinutesComboBoxItem={0} мин
+RequireCommentOnStartCheckBox=Требовать комментарий при запуске этой активности
+RequireCommentOnStopCheckBox=Требовать комментарий при остановке этой активности
+FullScreenReminderCheckBox=Полноэкранное напоминание
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[ModifyPublicTaskDialog]
+Title=Изменить общедоступную залачу
+ViewOnlyTitle=Просмотреть общедоступную залачу
+UserLabel=Пользователь:
+ParentTaskLabel=Родитель:
+NoParent=- (корневая общедоступная задача без родителя)
+SelectParentTaskPushButton=Выбрать
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+ActivityTypeLabel=Тип активности:
+WorkloadLabel=Рабочая нагрузка:
+SelectWorkloadPushButton=Выбрать
+TimeoutLabel=Время ожидания:
+TimeoutCheckBox=Остановить, если нет активности в течение
+HoursComboBoxItem={0} час
+MinutesComboBoxItem={0} мин
+RequireCommentOnStartCheckBox=Требовать комментарий при запуске этой задачи
+RequireCommentOnStopCheckBox=Требовать комментарий при остановке этой задачи
+FullScreenReminderCheckBox=Полноэкранное напоминание
+RequiresCommentOnCompletionCeckBox=Требуется комментарий после завершения
+CompletedCheckBox=Задача выполнена
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[ModifyUserDialog]
+Title=Изменить пользователя
+ViewOnlyTitle=Просмотреть пользователя
+RealNameLabel=Настоящее имя:
+EmailAddressesLabel=Адреса электронной почты:
+AddEmailAddressPushButton=Добавить
+ModifyEmailAddressPushButton=Изменить
+RemoveEmailAddressPushButton=Удалить
+InactivityTimeoutLabel=Текущая активность:
+InactivityTimeoutCheckBox=остановить, если нет активности в течение
+HoursComboBoxItem={0} час
+MinutesComboBoxItem={0} мин
+UiLocaleLabel=Язык интерфейса:
+SystemDefaultLocale=- (системное значение по умолчанию)
+WorkingOnLabel=Работает над:
+WorkingOnPushButton=Выбрать
+EnabledCheckBox=Пользователь активен
+ProjectCompletedSuffix=[проект завершен]
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[ModifyWorkStreamDialog]
+Title=Изменить рабочий поток
+ViewOnlyTitle=Просмотреть рабочий поток
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+BeneficiariesLabel=Бенефициары:
+SelectBeneficiariesPushButton=Выбрать
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[MyDayManager]
+NoQuickPicksLabel=Список быстрого выбора пуст
+QuickPicksPushButton=Быстрый выбор
+FilterLabel=Показать:
+LogEventPushButton=Комментарий к журналу
+FilterDays1=сегодня
+FilterDays2=последние 2 дня
+FilterDays3=последние 3 дня
+FilterDays7=последние 7 дней
+FilterDays30=последние 30 дней
+TaskCompletedSuffix=[задача выполнена]
+DestroyWorkAction=Удалить работу
+DestroyEventAction=Удалить событие
+ModifyPublicActivityAction=Изменить общедоступную активность
+ModifyPublicTaskAction=Изменить общедоступную задачу
+ModifyPrivateActivityAction=Изменить личную активность
+ModifyPrivateTaskAction=Изменить личную задачу
+ViewPublicActivityAction=Просмотреть общедоступную активность
+ViewPublicTaskAction=Просмотреть общедоступную задачу
+ViewPrivateActivityAction=Просмотреть личную активность
+ViewPrivateTaskAction=Просмотреть личную задачу
+RemoveFromQuickPicksAction=Удалить из списка быстрого выбора
+
+[NewWorkspaceDialog]
+Title=Создать рабочую область
+WorkspaceTypeLabel=Тип рабочей области:
+LocationLabel=Местоположение:
+BrowsePushButton=Выбрать
+UserNameLabel=Администратор:
+LoginLabel=Имя пользователя:
+PasswordLabel=Пароль:
+ConfirmPasswordLabel=Подтвердить:
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[PreferencesDialog]
+Title=Настройки
+NoPropertiesLabel=Нет свойств для редактирования
+ResetPushButton=Сбросить страницу
+ResetAllPushButton=Сбросить все
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[PrivateActivityManager]
+FilterLabel=Фильтр:
+CreatePrivateActivityPushButton=Создать личную активность
+ModifyPrivateActivityPushButton=Изменить личную активность
+ViewPrivateActivityPushButton=Просмотреть личную активность
+DestroyPrivateActivityPushButton=Удалить личную активность
+StartPrivateActivityPushButton=Запустить личную активность
+StopPrivateActivityPushButton=Остановить личную активность
+UserDisabledSuffix=[пользователь неактивен]
+
+[PrivateTaskManager]
+FilterLabel=Фильтр:
+CreatePrivateTaskPushButton=Создать личную задачу
+ModifyPrivateTaskPushButton=Изменить личную задачу
+ViewPrivateTaskPushButton=Просмотреть личную задачу
+DestroyPrivateTaskPushButton=Удалить личную задачу
+StartPrivateTaskPushButton=Запустить личную задачу
+StopPrivateTaskPushButton=Остановить личную задачу
+CompletePrivateTaskPushButton=Завершить личную задачу
+UserDisabledSuffix=[пользователь неактивен]
+TaskCompletedSuffix=[задача выполнена]
+ShowCompletedCheckBox=Показать завершенные задачи
+
+[ProjectManager]
+FilterLabel=Фильтр:
+CreateProjectPushButton=Создать проект
+ModifyProjectPushButton=Изменить проект
+ViewProjectPushButton=Просмотреть проект
+DestroyProjectPushButton=Удалить проект
+CompleteProjectPushButton=Завершить проект
+ProjectCompletedSuffix=[проект завершён]
+ShowCompletedCheckBox=Показать завершенные проекты
+
+[PublicActivityManager]
+FilterLabel=Фильтр:
+CreatePublicActivityPushButton=Создать общедоступную активность
+ModifyPublicActivityPushButton=Изменить общедоступную активность
+ViewPublicActivityPushButton=Просмотреть общедоступную активность
+DestroyPublicActivityPushButton=Удалить общедоступную активность
+StartPublicActivityPushButton=Запустить общедоступную активность
+StopPublicActivityPushButton=Остановить общедоступную активность
+
+[PublicTaskManager]
+FilterLabel=Фильтр:
+CreatePublicTaskPushButton=Создать общедоступную задачу
+ModifyPublicTaskPushButton=Изменить общедоступную задачу
+ViewPublicTaskPushButton=Просмотреть общедоступную задачу
+DestroyPublicTaskPushButton=Удалить общедоступную задачу
+StartPublicTaskPushButton=Запустить общедоступную задачу
+StopPublicTaskPushButton=Остановить общедоступную задачу
+CompletePublicTaskPushButton=Завершить общедоступную задачу
+TaskCompletedSuffix=[задача выполнена]
+ShowCompletedCheckBox=Показать завершенные задачи
+
+[QuickReportBrowser]
+ShowLabel=Показывать:
+RefreshLabel=Обновлять
+RefreshPushButton=Обновить
+RefreshInterval1=каждую секунду
+RefreshInterval5=каждые 5 секунд
+RefreshInterval10=каждые 10 секунд
+RefreshInterval15=каждые 15 секунд
+RefreshInterval30=каждые 30 секунд
+RefreshInterval60=каждую минуту
+RefreshInterval0=вручную
+
+[QuickReportsDialog]
+Title=Быстрые отчёты
+OkPushButton=ОК
+
+[RestartRequiredDialog]
+Title=Требуется перезапуск
+Prompt=Одно из изменений, внесённых вами в настройки приложения,\nвступит в силу только после перезапуска приложения.\nХотите перезапустить TimeTracker3 сейчас?
+
+[SelectBeneficiariesDialog]
+Title=Выбрать бенефициаров
+FilterLabel=Фильтр:
+SelectedBeneficiariesLabel=Выбранные бенефициары:
+OkPushButton=OK
+CancelPushButton=Отмена
+
+[SelectPrivateTaskParentDialog]
+Title=Выбрать родительскую задачу
+UserLabel=Пользователь:
+PromptLabel=Выбрать новую родительскую задачу для личной задачи
+FilterLabel=Фильтр:
+ShowCompletedTasksCheckBox=Показать выполненные задачи
+SelectionLabel=Выбранная родительская задача
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[SelectProjectParentDialog]
+Title=Выбрать родительский проект
+PromptLabel=Выбрать новый родительский проект
+FilterLabel=Фильтр:
+ShowCompletedProjectsCheckBox=Показать завершённые проекты
+SelectionLabel=Выбранный родительский проект
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[SelectPublicTaskParentDialog]
+Title=Выбрать родительскую задачу
+PromptLabel=Выбрать новую родительскую задачу для публичной задачи
+FilterLabel=Фильтр:
+ShowCompletedTasksCheckBox=Показать выполненные задачи
+SelectionLabel=Выбранная родительская задача
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[SelectWorkspaceDialog]
+Title=Выбор рабочей области
+WorkspaceTypeLabel=Тип рабочей области:
+LocationLabel=Местоположение:
+BrowsePushButton=Выбрать
+OpenAsDefaultRadioButton=По умолчанию
+OpenAsReadOnlyRadioButton=Только чтение
+OpenAsReadWriteRadioButton=Чтение/Запись
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[SelectWorkloadDialog]
+Title=Выбрать рабочую нагрузку
+ProjectsTab=Проекты
+WorkStreamsTab=Рабочие потоки
+ProjectsFilterLabel=Фильтр:
+WorkStreamsFilterLabel=Фильтр:
+ProjectCompletedSuffix=[проект завершен]
+ShowCompletedProjectsCheckBox=Показать завершенные проекты
+SelectionLabel=Выбранная рабочая нагрузка:\n
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[SelectWorkloadsDialog]
+Title=Выбрать рабочие нагрузки
+ProjectsTab=Проекты
+WorkStreamsTab=Рабочие потоки
+ProjectsFilterLabel=Фильтр:
+WorkStreamsFilterLabel=Фильтр:
+ProjectCompletedSuffix=[проект завершен]
+ShowCompletedProjectsCheckBox=Показать завершенные проекты
+SelectedWorkloadsLabel=Выбранные рабочие нагрузки:
+OkPushButton=ОК
+CancelPushButton=Отмена
+
+[ShowConfigurationDialog]
+Title=Конфигурация TimeTracker3
+ComponentsTab=Компоненты
+DisplayNameLabel=Название:
+DescriptionLabel=Описание:
+VersionLabel=Версия:
+CopyrightLabel=Авторское право:
+LicenseLabel=Лицензия:
+VersionAndBuild={0} (сборка {1})
+ShowLicensePushButton=Показать лицензию
+OkPushButton=ОК
+
+[ShowLicenseDialog]
+OkPushButton=OK
+
+[StandardThemes]
+System.DisplayName=Системная
+System.Description=Тема, использующая текущие системные цвета
+Light.DisplayName=Светлая
+Light.Description=Тема, использующая светлые цвета
+Dark.DisplayName=Темная
+Dark.Description=Тема, использующая темные цвета
+
+[UserManager]
+FilterLabel=Фильтр:
+CreateUserPushButton=Создать пользователя
+ModifyUserPushButton=Изменить пользователя
+ViewUserPushButton=Просмотреть пользователя
+DestroyUserPushButton=Удалить пользователя
+CreateAccountPushButton=Создать учётную запись
+ModifyAccountPushButton=Изменить учётную запись
+ViewAccountPushButton=Просмотреть учётной записи
+DestroyAccountPushButton=Удалить учётную запись
+ShowDisabledCheckBox=Показать неактивных пользователей и неактивные учётные записи
+UserDisabledSuffix=[пользователь неактивен]
+AccountDisabledSuffix=[учётная запись неактивна]
+
+[WorkStreamManager]
+FilterLabel=Фильтр:
+CreateWorkStreamPushButton=Создать рабочий поток
+ViewWorkStreamPushButton=Просмотреть рабочий поток
+ModifyWorkStreamPushButton=Изменить рабочий поток
+DestroyWorkStreamPushButton=Удалить рабочий поток

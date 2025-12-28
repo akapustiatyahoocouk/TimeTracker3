@@ -1,0 +1,873 @@
+[Component]
+DisplayName=TimeTracker3 GUI
+Description=Defines GUI facilities for TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[AboutDialog]
+Title=About TimeTracker3
+VersionLabel=Version {0} (build {1} for Qt {2})
+ShowLicensePushButton=License
+ShowConfigurationPushButton=Configuration
+OkPushButton=OK
+
+[ActivityTypeManager]
+FilterLabel=Filter:
+CreateActivityTypePushButton=Create activity type
+ViewActivityTypePushButton=View activity type
+ModifyActivityTypePushButton=Modify activity type
+DestroyActivityTypePushButton=Destroy activity type
+
+[AddEmailAddressDialog]
+Title=Add e-mail address
+Prompt=Enter e-mail address:
+
+[AskYesNoDialog]
+AssumeYesCheckBox=Do not request this confirmation again (assume the answer is yes)
+YesPushButton=Yes
+NoPushButton=No
+
+[BeneficiaryManager]
+FilterLabel=Filter:
+CreateBeneficiaryPushButton=Create beneficiary
+ViewBeneficiaryPushButton=View beneficiary
+ModifyBeneficiaryPushButton=Modify beneficiary
+DestroyBeneficiaryPushButton=Destroy beneficiary
+
+[ChooseReloginDialog]
+Title=Access denied
+Prompt=Current credentials do not allow access to\n{0}\nDo you want to log in with different credentials ?
+
+[ConfirmCloseWorkspaceDialog]
+Title=Close workspace
+Prompt=Are you sure you really want to close the workspace\n{0} ?
+
+[ConfirmDestroyWorkspaceDialog]
+Title=Destroy workspace
+Prompt=Are you sure you really want to destroy the workspace\n{0} ?\nIMPORTANT: YOU WILL NOT BE ABLE TO UNDO THIS ACTION LATER!
+
+[ConfirmDropWorkspaceDialog]
+Title=Drop workspace
+Prompt=Your new credentials do not permit access to\n{0}.\nWould you like to close the workspace ?
+
+[ConfirmExitDialog]
+Title=Exit TimeTracker3
+Prompt=Are you sure you want to exit TimeTracker3 ?
+
+[ConfirmForgetWorkspaceDialog]
+Title=Failed to open workspace
+Prompt=Would you like to remove the workspace\n{0}\nfrom the recent workspaces list ?
+
+[ConfirmResetAllSettingsDialog]
+Title=Reset all settings
+Prompt=Are you sure you want to reset all settings to their default values ?\nThe effects will not be permanent until you press 'OK' to close the dialog.
+
+[ConfirmResetPageSettingsDialog]
+Title=Reset page settings
+Prompt=Are you sure you want to reset page settings to their default values ?\nThe effects will not be permanent until you press 'OK' to close the dialog.
+
+[ConfirmRestartDialog]
+Title=Restart TimeTracker3
+Prompt=Are you sure you want to restart TimeTracker3 ?
+
+[CreateAccountDialog]
+Title=Create account
+UserLabel=User:
+LoginLabel=Login:
+PasswordLabel=Password:
+ConfirmPasswordLabel=Confirm:
+EmailAddressesLabel=E-mail addresses:
+AddEmailAddressPushButton=Add
+ModifyEmailAddressPushButton=Modify
+RemoveEmailAddressPushButton=Remove
+CapabilitiesGroupBox=Capabilities
+AdministratorCheckBox=Administrator
+ManageUsersCheckBox=Manage users
+ManageActivityTypesCheckBox=Manage activity types
+ManageBeneficiariesCheckBox=Manage beneficiaries
+ManageWorkloadsCheckBox=Manage workloads
+ManagePublicActivitiesCheckBox=Manage public activities
+ManagePublicTasksCheckBox=Manage public tasks
+ManagePrivateActivitiesCheckBox=Manage private activities
+ManagePrivateTasksCheckBox=Manage private tasks
+LogWorkCheckBox=Log work
+LogEventsCheckBox=Log events
+GenerateReportsCheckBox=Generate reports
+BackupAndRestoreCheckBox=Backup and restore
+EnabledCheckBox=Account is enabled
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[CreateActivityTypeDialog]
+Title=Create activity type
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[CreateBeneficiaryDialog]
+Title=Create beneficiary
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+WorkloadsLabel=Workloads:
+SelectWorkloadsPushButton=Select
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[CreatePrivateActivityDialog]
+Title=Create private activity
+UserLabel=User:
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+ActivityTypeLabel=Activity type:
+WorkloadLabel=Workload:
+SelectWorkloadPushButton=Select
+TimeoutLabel=Timeout:
+TimeoutCheckBox=stop if unattended for
+HoursComboBoxItem={0} hrs
+MinutesComboBoxItem={0} min
+RequireCommentOnStartCheckBox=Require comment when starting this activity
+RequireCommentOnStopCheckBox=Require comment when stopping this activity
+FullScreenReminderCheckBox=Full-screen reminder
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[CreatePrivateTaskDialog]
+Title=Create private task
+UserLabel=User:
+ParentTaskLabel=Parent:
+NoParent=- (a root private task with no parent)
+SelectParentTaskPushButton=Select
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+ActivityTypeLabel=Activity type:
+WorkloadLabel=Workload:
+SelectWorkloadPushButton=Select
+TimeoutLabel=Timeout:
+TimeoutCheckBox=stop if unattended for
+HoursComboBoxItem={0} hrs
+MinutesComboBoxItem={0} min
+RequireCommentOnStartCheckBox=Require comment when starting this activity
+RequireCommentOnStopCheckBox=Require comment when stopping this activity
+FullScreenReminderCheckBox=Full-screen reminder
+RequiresCommentOnCompletionCeckBox=Requires comment on completion
+CompletedCheckBox=Task is completed
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[CreateProjectDialog]
+Title=Create project
+ParentProjectLabel=Parent:
+NoParent=- (a root project with no parent)
+SelectParentProjectPushButton=Select
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+BeneficiariesLabel=Beneficiaries:
+SelectBeneficiariesPushButton=Select
+CompletedCheckBox=Project is completed
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[CreatePublicActivityDialog]
+Title=Create public activity
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+ActivityTypeLabel=Activity type:
+WorkloadLabel=Workload:
+SelectWorkloadPushButton=Select
+TimeoutLabel=Timeout:
+TimeoutCheckBox=stop if unattended for
+HoursComboBoxItem={0} hrs
+MinutesComboBoxItem={0} min
+RequireCommentOnStartCheckBox=Require comment when starting this activity
+RequireCommentOnStopCheckBox=Require comment when stopping this activity
+FullScreenReminderCheckBox=Full-screen reminder
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[CreatePublicTaskDialog]
+Title=Create public task
+ParentTaskLabel=Parent:
+NoParent=- (a root publlic task with no parent)
+SelectParentTaskPushButton=Select
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+ActivityTypeLabel=Activity type:
+WorkloadLabel=Workload:
+SelectWorkloadPushButton=Select
+TimeoutLabel=Timeout:
+TimeoutCheckBox=stop if unattended for
+HoursComboBoxItem={0} hrs
+MinutesComboBoxItem={0} min
+RequireCommentOnStartCheckBox=Require comment when starting this activity
+RequireCommentOnStopCheckBox=Require comment when stopping this activity
+FullScreenReminderCheckBox=Full-screen reminder
+RequiresCommentOnCompletionCeckBox=Requires comment on completion
+CompletedCheckBox=Task is completed
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[CreateUserDialog]
+Title=Create user
+RealNameLabel=Real name:
+EmailAddressesLabel=E-mail addresses:
+AddEmailAddressPushButton=Add
+ModifyEmailAddressPushButton=Modify
+RemoveEmailAddressPushButton=Remove
+InactivityTimeoutLabel=Current activity:
+InactivityTimeoutCheckBox=stop if unattended for
+HoursComboBoxItem={0} hrs
+MinutesComboBoxItem={0} min
+UiLocaleLabel=UI locale:
+SystemDefaultLocale=- (system default)
+WorkingOnLabel=Working on:
+WorkingOnPushButton=Select
+EnabledCheckBox=User is enabled
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[CreateWorkStreamDialog]
+Title=Create work stream
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+BeneficiariesLabel=Beneficiaries:
+SelectBeneficiariesPushButton=Select
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[DailyWorkQuickReport]
+DisplayName=Daily work
+Description=Shows daily activities by category and type
+
+[DailyWorkQuickReportView]
+CopyPushButton=Copy
+ScaleLabel=Scale:
+ShowLabel=Show:
+TodayRadioButton=Today
+ForDateRadioButton=For date
+ConfirmCopyTitle=Image copied
+ConfirmCopyMessage=The image has been copied to the system clipboard
+NoDataLabel=No data to display
+
+[DestroyAccountDialog]
+Title=Destroy account
+Prompt=Are you sure you want to destroy account {0}\nof user {1}?
+DetailsWE=\nThe account has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)) and {2} event(s).
+DetailsW=\nThe account has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)).
+DetailsE=\nThe account has {0} event(s) logged for it.
+
+[DestroyActivityTypeDialog]
+Title=Destroy activity type
+Prompt=Are you sure you want to destroy activity type\n{0} assigned to {1} activities ?
+DetailsWE=\nThese activities have {0} work unit(s) logged for it\n(with total duration of {1} minute(s)) and {2} event(s);\nall these will lose their attribution to the activity type.
+DetailsW=\nThese activities have {0} work unit(s) logged for it\n(with total duration of {1} minute(s));\nall these will lose their attribution to the activity type.
+DetailsE=\nThese activities have {0} event(s) logged for it;\nall these will lose their attribution to the activity type.
+
+[DestroyBeneficiaryDialog]
+Title=Destroy beneficiary
+Prompt=Are you sure you want to destroy beneficiary\n{0} ?
+ProjectsAndWorkStreams=\nThe beneficiary is associated with {0} projects and {1} work streams.
+DetailsWE=\nThese have {0} work unit(s) logged for them\n(with total duration of {1} minute(s)) and {2} event(s);\nall these will lose their attribution to the beneficiary.
+DetailsW=\nThese have {0} work unit(s) logged for them\n(with total duration of {1} minute(s));\nall these will lose their attribution to the beneficiary.
+DetailsE=\nThese have {0} event(s) logged for them;\nall these will lose their attribution to the beneficiary.
+
+[DestroyEventDialog]
+Title=Destroy event
+Prompt=Are you sure you want to destroy event\n{0}\nlogged at {1}\nby {2} ?
+Details=\nRelated to {0} {1}.
+
+[DestroyPrivateActivityDialog]
+Title=Destroy private activity
+Prompt=Are you sure you want to destroy private activity\n{0} ?
+DetailsWE=\nThe private activity has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)) and {2} event(s).
+DetailsW=\nThe private activity has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)).
+DetailsE=\nThe private activity has {0} event(s) logged for it.
+
+[DestroyPrivateTaskDialog]
+Title=Destroy private task
+Prompt=Are you sure you want to destroy private task\n{0} ?
+Subtasks=\nAlong with it, its {0} subtasks will be destroyed.
+DetailsWE=\nThe private task has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)) and {2} event(s).
+DetailsW=\nThe private task has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)).
+DetailsE=\nThe private task has {0} event(s) logged for it.
+
+[DestroyProjectDialog]
+Title=Destroy project
+Prompt=Are you sure you want to destroy project\n{0} ?
+Subprojects=\nAlong with it, its {0} subprojects will be destroyed.
+DetailsWE=\nThe project has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)) and {2} event(s);\nall these will lose their attribution to the project.
+DetailsW=\nThe project has {0} work unit(s) logged for it\n(with total duration of {1} minute(s));\nall these will lose their attribution to the project.
+DetailsE=\nThe project has {0} event(s) logged for it;\nall these will lose their attribution to the project.
+
+[DestroyPublicActivityDialog]
+Title=Destroy public activity
+Prompt=Are you sure you want to destroy public activity\n{0} ?
+DetailsWE=\nThe public activity has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)) and {2} event(s).
+DetailsW=\nThe public activity has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)).
+DetailsE=\nThe public activity has {0} event(s) logged for it.
+
+[DestroyPublicTaskDialog]
+Title=Destroy public task
+Prompt=Are you sure you want to destroy public task\n{0} ?
+Subtasks=\nAlong with it, its {0} subtasks will be destroyed.
+DetailsWE=\nThe public task has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)) and {2} event(s).
+DetailsW=\nThe public task has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)).
+DetailsE=\nThe public task has {0} event(s) logged for it.
+
+[DestroyUserDialog]
+Title=Destroy user
+Prompt=Are you sure you want to destroy user {0} with {1} accounts?
+DetailsWE=\nThe user has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)) and {2} event(s).
+DetailsW=\nThe user has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)).
+DetailsE=\nThe user has {0} event(s) logged for it.
+
+[DestroyWorkDialog]
+Title=Destroy work
+Prompt=Are you sure you want to destroy work unit\n{0}..{1}\n(duration {2} logged by {3} against\n{4} {5} ?
+
+[DestroyWorkStreamDialog]
+Title=Destroy work stream
+Prompt=Are you sure you want to destroy work stream\n{0} ?
+DetailsWE=\nThe work stream has {0} work unit(s) logged for it\n(with total duration of {1} minute(s)) and {2} event(s);\nall these will lose their attribution to the work stream.
+DetailsW=\nThe work stream has {0} work unit(s) logged for it\n(with total duration of {1} minute(s));\nall these will lose their attribution to the work stream.
+DetailsE=\nThe work stream has {0} event(s) logged for it;\nall these will lose their attribution to the work stream.
+
+[EditStringDialog]
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[EnterActivityStartCommentDialog]
+Title={0} {1}
+Prompt=Enter start comment:
+
+[EnterActivityStopCommentDialog]
+Title={0} {1}
+Prompt=Enter stop comment:
+
+[EnterCommentDialog]
+Title=Log a comment
+Prompt=Enter comment:
+
+[EnterTaskCompletionCommentDialog]
+Title={0} {1}
+Prompt=Enter task completion comment:
+
+[ErrorDialog]
+Title=ERROR
+OkPushButton=OK
+
+[FullScreenReminderWindow]
+StopPushButton=Stop
+
+[GeneralAppearancePreferences]
+DisplayName=Appearance
+
+[GeneralAppearancePreferencesEditor]
+LanguageLabel=Language:
+SkinLabel=Skin:
+ThemeLabel=Theme:
+
+[GeneralDialogsPreferences]
+DisplayName=Dialogs
+
+[GeneralDialogsPreferencesEditor]
+ConfirmationsGroupBox=Confirmations
+ConfirmCloseWorkspaceCheckBox=Require confirmation when closing a workspace
+ConfirmRestartCheckBox=Require confirmation when restarting TimeTracker3
+ConfirmExitCheckBox=Require confirmation when exiting TimeTracker3
+
+[GeneralPreferences]
+DisplayName=General
+
+[GeneralStartupPreferences]
+DisplayName=Startup
+
+[GeneralStartupPreferencesEditor]
+LoadLastWorkspaceAtStartupCheckBox=Reload last workspace at startup
+RememnerLastLoginCheckBox=Remember last login
+ShowSplashScreenCheckBox=Show splash screen during startup
+
+[InterfacePreferences]
+DisplayName=Interface
+
+[HelpBuilderProgressWindow]
+BuildingHelpLabel=Building the help collection...
+
+[LoginDialog]
+Title=Login to TimeTracker3
+LoginLabel=Login:
+PasswordLabel=Password:
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[ManageActivityTypesDialog]
+Title=Manage activity types
+OkPushButton=OK
+
+[ManageBeneficiariesDialog]
+Title=Manage beneficiaries
+OkPushButton=OK
+
+[ManageMyDayDialog]
+Title=Manage my day
+OkPushButton=OK
+
+[ManagePrivateActivitiesDialog]
+Title=Manage private activities
+OkPushButton=OK
+
+[ManagePrivateTasksDialog]
+Title=Manage private tasks
+OkPushButton=OK
+
+[ManageProjectsDialog]
+Title=Manage projects
+OkPushButton=OK
+
+[ManagePublicActivitiesDialog]
+Title=Manage public activities
+OkPushButton=OK
+
+[ManagePublicTasksDialog]
+Title=Manage public tasks
+OkPushButton=OK
+
+[ManageQuickPicksListDialog]
+Title=Manage quick picks list
+PublicActivitiesTab=Public activities
+PublicTasksTab=Public tasks
+PrivateActivitiesTab=Private activities
+PrivateTasksTab=Private tasks
+PublicActivitiesFilterLabel=Filter:
+PublicTasksFilterLabel=Filter:
+PrivateActivitiesFilterLabel=Filter:
+PrivateTasksFilterLabel=Filter:
+MoveToTopPushButton=Move to top
+MoveUpPushButton=Move up
+MoveDownPushButton=Move down
+MoveToBottomPushButton=Move to bottom
+RemovePushButton=Remove
+TaskCompletedSuffix=[task is completed]
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[ManageUsersDialog]
+Title=Manage users
+OkPushButton=OK
+
+[ManageWorkStreamsDialog]
+Title=Manage work streams
+OkPushButton=OK
+
+[MessageDialog]
+OkPushButton=OK
+
+[ModifyAccountDialog]
+Title=Modify account
+ViewOnlyTitle=View account
+UserLabel=User:
+LoginLabel=Login:
+PasswordLabel=Password:
+ConfirmPasswordLabel=Confirm:
+EmailAddressesLabel=E-mail addresses:
+AddEmailAddressPushButton=Add
+ModifyEmailAddressPushButton=Modify
+RemoveEmailAddressPushButton=Remove
+CapabilitiesGroupBox=Capabilities
+AdministratorCheckBox=Administrator
+ManageUsersCheckBox=Manage users
+ManageActivityTypesCheckBox=Manage activity types
+ManageBeneficiariesCheckBox=Manage beneficiaries
+ManageWorkloadsCheckBox=Manage workloads
+ManagePublicActivitiesCheckBox=Manage public activities
+ManagePublicTasksCheckBox=Manage public tasks
+ManagePrivateActivitiesCheckBox=Manage private activities
+ManagePrivateTasksCheckBox=Manage private tasks
+LogWorkCheckBox=Log work
+LogEventsCheckBox=Log events
+GenerateReportsCheckBox=Generate reports
+BackupAndRestoreCheckBox=Backup and restore
+EnabledCheckBox=Account is enabled
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[ModifyActivityTypeDialog]
+Title=Create activity type
+ViewOnlyTitle=View activity type
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[ModifyBeneficiaryDialog]
+Title=Create beneficiary
+ViewOnlyTitle=View beneficiary
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+WorkloadsLabel=Workloads:
+SelectWorkloadsPushButton=Select
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[ModifyEmailAddressDialog]
+Title=Modify e-mail address
+Prompt=Enter new e-mail address:
+
+[ModifyPrivateActivityDialog]
+Title=Modify private activity
+ViewOnlyTitle=View private activity
+UserLabel=User:
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+ActivityTypeLabel=Activity type:
+WorkloadLabel=Workload:
+SelectWorkloadPushButton=Select
+TimeoutLabel=Timeout:
+TimeoutCheckBox=stop if unattended for
+HoursComboBoxItem={0} hrs
+MinutesComboBoxItem={0} min
+RequireCommentOnStartCheckBox=Require comment when starting this activity
+RequireCommentOnStopCheckBox=Require comment when stopping this activity
+FullScreenReminderCheckBox=Full-screen reminder
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[ModifyPrivateTaskDialog]
+Title=Modify private task
+ViewOnlyTitle=View private task
+UserLabel=User:
+ParentTaskLabel=Parent:
+NoParent=- (a root private task with no parent)
+SelectParentTaskPushButton=Select
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+ActivityTypeLabel=Activity type:
+WorkloadLabel=Workload:
+SelectWorkloadPushButton=Select
+TimeoutLabel=Timeout:
+TimeoutCheckBox=stop if unattended for
+HoursComboBoxItem={0} hrs
+MinutesComboBoxItem={0} min
+RequireCommentOnStartCheckBox=Require comment when starting this activity
+RequireCommentOnStopCheckBox=Require comment when stopping this activity
+FullScreenReminderCheckBox=Full-screen reminder
+RequiresCommentOnCompletionCeckBox=Requires comment on completion
+CompletedCheckBox=Task is completed
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[ModifyProjectDialog]
+Title=Modify project
+ViewOnlyTitle=View project
+ParentProjectLabel=Parent:
+NoParent=- (a root project with no parent)
+SelectParentProjectPushButton=Select
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+BeneficiariesLabel=Beneficiaries:
+SelectBeneficiariesPushButton=Select
+CompletedCheckBox=Project is completed
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[ModifyPublicActivityDialog]
+Title=Modify public activity
+ViewOnlyTitle=View public activity
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+ActivityTypeLabel=Activity type:
+WorkloadLabel=Workload:
+SelectWorkloadPushButton=Select
+TimeoutLabel=Timeout:
+TimeoutCheckBox=stop if unattended for
+HoursComboBoxItem={0} hrs
+MinutesComboBoxItem={0} min
+RequireCommentOnStartCheckBox=Require comment when starting this activity
+RequireCommentOnStopCheckBox=Require comment when stopping this activity
+FullScreenReminderCheckBox=Full-screen reminder
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[ModifyPublicTaskDialog]
+Title=Modify public task
+ViewOnlyTitle=View public task
+ParentTaskLabel=Parent:
+NoParent=- (a root public task with no parent)
+SelectParentTaskPushButton=Select
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+ActivityTypeLabel=Activity type:
+WorkloadLabel=Workload:
+SelectWorkloadPushButton=Select
+TimeoutLabel=Timeout:
+TimeoutCheckBox=stop if unattended for
+HoursComboBoxItem={0} hrs
+MinutesComboBoxItem={0} min
+RequireCommentOnStartCheckBox=Require comment when starting this activity
+RequireCommentOnStopCheckBox=Require comment when stopping this activity
+FullScreenReminderCheckBox=Full-screen reminder
+RequiresCommentOnCompletionCeckBox=Requires comment on completion
+CompletedCheckBox=Task is completed
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[ModifyUserDialog]
+Title=Modify user
+ViewOnlyTitle=View user
+RealNameLabel=Real name:
+EmailAddressesLabel=E-mail addresses:
+AddEmailAddressPushButton=Add
+ModifyEmailAddressPushButton=Modify
+RemoveEmailAddressPushButton=Remove
+InactivityTimeoutLabel=Current activity:
+InactivityTimeoutCheckBox=stop if unattended for
+HoursComboBoxItem={0} hrs
+MinutesComboBoxItem={0} min
+UiLocaleLabel=UI locale:
+SystemDefaultLocale=- (system default)
+WorkingOnLabel=Working on:
+WorkingOnPushButton=Select
+EnabledCheckBox=User is enabled
+ProjectCompletedSuffix=[project is completed]
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[ModifyWorkStreamDialog]
+Title=Modify work stream
+ViewOnlyTitle=View work stream
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+BeneficiariesLabel=Beneficiaries:
+SelectBeneficiariesPushButton=Select
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[MyDayManager]
+NoQuickPicksLabel=The quick picks list is empty
+QuickPicksPushButton=Quick picks
+FilterLabel=Show:
+LogEventPushButton=Log comment
+FilterDays1=today
+FilterDays2=last 2 days
+FilterDays3=last 3 days
+FilterDays7=last 7 days
+FilterDays30=last 30 days
+TaskCompletedSuffix=[task is completed]
+DestroyWorkAction=Destroy work
+DestroyEventAction=Destroy event
+ModifyPublicActivityAction=Modify public activity
+ModifyPublicTaskAction=Modify public task
+ModifyPrivateActivityAction=Modify private activity
+ModifyPrivateTaskAction=Modify private task
+ViewPublicActivityAction=View public activity
+ViewPublicTaskAction=View public task
+ViewPrivateActivityAction=View private activity
+ViewPrivateTaskAction=View private task
+RemoveFromQuickPicksAction=Remove from quick picks list
+
+[NewWorkspaceDialog]
+Title=New workspace
+WorkspaceTypeLabel=Workspace type:
+LocationLabel=Location:
+BrowsePushButton=Browse
+UserNameLabel=Administrator:
+LoginLabel=Login:
+PasswordLabel=Password:
+ConfirmPasswordLabel=Confirm:
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[PreferencesDialog]
+Title=Preferences
+NoPropertiesLabel=No properties to edit
+ResetPushButton=Reset Page
+ResetAllPushButton=Reset All
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[PrivateActivityManager]
+FilterLabel=Filter:
+CreatePrivateActivityPushButton=Create private activity
+ModifyPrivateActivityPushButton=Modify private activity
+ViewPrivateActivityPushButton=View private activity
+DestroyPrivateActivityPushButton=Destroy private activity
+StartPrivateActivityPushButton=Start private activity
+StopPrivateActivityPushButton=Stop private activity
+UserDisabledSuffix=[user is disabled]
+
+[PrivateTaskManager]
+FilterLabel=Filter:
+CreatePrivateTaskPushButton=Create private task
+ModifyPrivateTaskPushButton=Modify private task
+ViewPrivateTaskPushButton=View private task
+DestroyPrivateTaskPushButton=Destroy private task
+StartPrivateTaskPushButton=Start private task
+StopPrivateTaskPushButton=Stop private task
+CompletePrivateTaskPushButton=Complete private task
+UserDisabledSuffix=[user is disabled]
+TaskCompletedSuffix=[task is completed]
+ShowCompletedCheckBox=Show completed tasks
+
+[ProjectManager]
+FilterLabel=Filter:
+CreateProjectPushButton=Create project
+ModifyProjectPushButton=Modify project
+ViewProjectPushButton=View project
+DestroyProjectPushButton=Destroy project
+CompleteProjectPushButton=Complete project
+ProjectCompletedSuffix=[project is completed]
+ShowCompletedCheckBox=Show completed project
+
+[PublicActivityManager]
+FilterLabel=Filter:
+CreatePublicActivityPushButton=Create public activity
+ModifyPublicActivityPushButton=Modify public activity
+ViewPublicActivityPushButton=View public activity
+DestroyPublicActivityPushButton=Destroy public activity
+StartPublicActivityPushButton=Start public activity
+StopPublicActivityPushButton=Stop public activity
+
+[PublicTaskManager]
+FilterLabel=Filter:
+CreatePublicTaskPushButton=Create public task
+ModifyPublicTaskPushButton=Modify public task
+ViewPublicTaskPushButton=View public task
+DestroyPublicTaskPushButton=Destroy public task
+StartPublicTaskPushButton=Start public task
+StopPublicTaskPushButton=Stop public task
+CompletePublicTaskPushButton=Complete public task
+TaskCompletedSuffix=[task is completed]
+ShowCompletedCheckBox=Show completed tasks
+
+[QuickReportBrowser]
+ShowLabel=Show:
+RefreshLabel=Refresh
+RefreshPushButton=Refresh
+RefreshInterval1=every second
+RefreshInterval5=every 5 seconds
+RefreshInterval10=every 10 seconds
+RefreshInterval15=every 15 seconds
+RefreshInterval30=every 30 seconds
+RefreshInterval60=every minute
+RefreshInterval0=manually
+
+[QuickReportsDialog]
+Title=Quick reports
+OkPushButton=OK
+
+[RestartRequiredDialog]
+Title=Restart required
+Prompt=One of the changes you have made to application settings\nwill take place only after the application is restarted.\nDo you want to restart TimeTracker3 now ?
+
+[SelectBeneficiariesDialog]
+Title=Select beneficiaries
+FilterLabel=Filter:
+SelectedBeneficiariesLabel=Selected beneficiaries:
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[SelectPrivateTaskParentDialog]
+Title=Select parent task
+UserLabel=User:
+PromptLabel=Select new parent for private task
+FilterLabel=Filter:
+ShowCompletedTasksCheckBox=Show completed tasks
+SelectionLabel=Selected parent task
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[SelectProjectParentDialog]
+Title=Select parent project
+PromptLabel=Select new parent for project
+FilterLabel=Filter:
+ShowCompletedProjectsCheckBox=Show completed projects
+SelectionLabel=Selected parent project
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[SelectPublicTaskParentDialog]
+Title=Select parent task
+PromptLabel=Select new parent for public task
+FilterLabel=Filter:
+ShowCompletedTasksCheckBox=Show completed tasks
+SelectionLabel=Selected parent task
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[SelectWorkspaceDialog]
+Title=Select workspace
+WorkspaceTypeLabel=Workspace type:
+LocationLabel=Location:
+BrowsePushButton=Browse
+OpenAsDefaultRadioButton=Default
+OpenAsReadOnlyRadioButton=Read Only
+OpenAsReadWriteRadioButton=Read/Write
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[SelectWorkloadDialog]
+Title=Select workload
+ProjectsTab=Projects
+WorkStreamsTab=Work streams
+ProjectsFilterLabel=Filter:
+WorkStreamsFilterLabel=Filter:
+ProjectCompletedSuffix=[project is completed]
+ShowCompletedProjectsCheckBox=Show completed projects
+SelectionLabel=Selected workload:\n
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[SelectWorkloadsDialog]
+Title=Select workloads
+ProjectsTab=Projects
+WorkStreamsTab=Work streams
+ProjectsFilterLabel=Filter:
+WorkStreamsFilterLabel=Filter:
+ProjectCompletedSuffix=[project is completed]
+ShowCompletedProjectsCheckBox=Show completed projects
+SelectedWorkloadsLabel=Selected workloads:
+OkPushButton=OK
+CancelPushButton=Cancel
+
+[ShowConfigurationDialog]
+Title=TimeTracker3 configuration
+ComponentsTab=Components
+DisplayNameLabel=Name:
+DescriptionLabel=Description:
+VersionLabel=Version:
+CopyrightLabel=Copyright:
+LicenseLabel=License:
+VersionAndBuild={0} (build {1})
+ShowLicensePushButton=Show license
+OkPushButton=OK
+
+[ShowLicenseDialog]
+OkPushButton=OK
+
+[StandardThemes]
+System.DisplayName=System
+System.Description=The theme that uses current system colors
+Light.DisplayName=Light
+Light.Description=The theme that uses light colors
+Dark.DisplayName=Dark
+Dark.Description=The theme that uses dark colors
+
+[UserManager]
+FilterLabel=Filter:
+CreateUserPushButton=Create user
+ModifyUserPushButton=Modify user
+ViewUserPushButton=View user
+DestroyUserPushButton=Destroy user
+CreateAccountPushButton=Create account
+ModifyAccountPushButton=Modify account
+ViewAccountPushButton=View account
+DestroyAccountPushButton=Destroy account
+ShowDisabledCheckBox=Show disabled users and accounts
+UserDisabledSuffix=[user is disabled]
+AccountDisabledSuffix=[account is disabled]
+
+[WorkStreamManager]
+FilterLabel=Filter:
+CreateWorkStreamPushButton=Create work stream
+ViewWorkStreamPushButton=View work stream
+ModifyWorkStreamPushButton=Modify work stream
+DestroyWorkStreamPushButton=Destroy work stream

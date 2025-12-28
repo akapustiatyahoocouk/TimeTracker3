@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/tt3-tools-backup">
+        <file>Resources/tt3-tools-backup_de_DE.txt</file>
+        <file>Resources/tt3-tools-backup_en_GB.txt</file>
+        <file>Resources/tt3-tools-backup_ru_RU.txt</file>
+        <file>Resources/Images/Misc/BackupLarge.png</file>
+        <file>Resources/Images/Misc/BackupSmall.png</file>
+        <file>Resources/Images/Actions/OpenWorkspaceLarge.png</file>
+        <file>Resources/Images/Actions/OpenWorkspaceSmall.png</file>
+        <file>Resources/Images/Actions/BrowseLarge.png</file>
+        <file>Resources/Images/Actions/BrowseSmall.png</file>
+        <file>Resources/Images/Actions/CancelLarge.png</file>
+        <file>Resources/Images/Actions/CancelSmall.png</file>
+        <file>Resources/Images/Actions/OkLarge.png</file>
+        <file>Resources/Images/Actions/OkSmall.png</file>
+    </qresource>
+</RCC>

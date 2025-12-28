@@ -1,0 +1,1081 @@
+//
+//  tt3-ws/Workspace.hpp - "Workspace" ADT support
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+#pragma once
+#include "tt3-ws/API.hpp"
+
+namespace tt3::ws
+{
+    /// \class ObjectTypeTraits tt3-ws/API.hpp
+    /// \brief The database object type traits provider
+    template <class T>
+    struct ObjectTypeTraits
+    {
+        static inline QString   objectTypeName() = delete;
+    };
+
+#define TT3_WS_DECLARE_TYPE_TRAITS(Type)                                \
+    template <>                                                     \
+    struct ObjectTypeTraits<Type>                                        \
+    {                                                               \
+        using DataObjectType = tt3::db::api::I##Type;               \
+        static inline QString   objectTypeName() { return #Type; }  \
+    };
+
+    TT3_WS_DECLARE_TYPE_TRAITS(Object)
+    TT3_WS_DECLARE_TYPE_TRAITS(Principal)
+    TT3_WS_DECLARE_TYPE_TRAITS(User)
+    TT3_WS_DECLARE_TYPE_TRAITS(Account)
+    TT3_WS_DECLARE_TYPE_TRAITS(ActivityType)
+    TT3_WS_DECLARE_TYPE_TRAITS(Activity)
+    TT3_WS_DECLARE_TYPE_TRAITS(PublicActivity)
+    TT3_WS_DECLARE_TYPE_TRAITS(PrivateActivity)
+    TT3_WS_DECLARE_TYPE_TRAITS(Task)
+    TT3_WS_DECLARE_TYPE_TRAITS(PublicTask)
+    TT3_WS_DECLARE_TYPE_TRAITS(PrivateTask)
+    TT3_WS_DECLARE_TYPE_TRAITS(Workload)
+    TT3_WS_DECLARE_TYPE_TRAITS(Project)
+    TT3_WS_DECLARE_TYPE_TRAITS(WorkStream)
+    TT3_WS_DECLARE_TYPE_TRAITS(Beneficiary)
+    TT3_WS_DECLARE_TYPE_TRAITS(Work)
+    TT3_WS_DECLARE_TYPE_TRAITS(Event)
+#undef TT3_WS_DECLARE_TYPE_TRAITS
+
+/// \class WorkspaceImpl tt3-ws/API.hpp
+    /// \brief A connection to a persistent container of data.
+    class TT3_WS_PUBLIC WorkspaceImpl final
+        :   public QObject
+    {
+        Q_OBJECT
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(WorkspaceImpl)
+
+        friend class WorkspaceTypeImpl;
+        friend std::shared_ptr<WorkspaceImpl>;
+
+        friend class ObjectImpl;
+        friend class PrincipalImpl;
+        friend class UserImpl;
+        friend class AccountImpl;
+        friend class ActivityTypeImpl;
+        friend class ActivityImpl;
+        friend class PublicActivityImpl;
+        friend class PrivateActivityImpl;
+        friend class TaskImpl;
+        friend class PublicTaskImpl;
+        friend class PrivateTaskImpl;
+        friend class WorkloadImpl;
+        friend class ProjectImpl;
+        friend class WorkStreamImpl;
+        friend class BeneficiaryImpl;
+        friend class WorkImpl;
+        friend class EventImpl;
+
+        //////////
+        //  Construction/destruction - from friends only
+    private:
+        WorkspaceImpl(
+                WorkspaceAddress address,
+                tt3::db::api::IDatabase * database
+            );
+        ~WorkspaceImpl();
+
+        //////////
+        //  Operations (general)
+    public:
+        /// \brief
+        ///     Returns the type of this Workspace.
+        /// \details
+        ///     Can be safely obtained for both open and
+        ///     closed workspaces.
+        /// \return
+        ///     The type of this Workspace.
+        auto        type(
+                        ) const -> WorkspaceType;
+
+        /// \brief
+        ///     Returns the address of this Workspace.
+        /// \details
+        ///     Can be safely obtained for both open and
+        ///     closed workspaces.
+        /// \return
+        ///     The address of this Workspace.
+        auto        address(
+                        ) const -> WorkspaceAddress;
+
+        /// \brief
+        ///     Returns the validator for this workspace.
+        /// \details
+        ///     Can be safely obtained for both open and
+        ///     closed workspaces (although WHY?)
+        /// \return
+        ///     The validator for this workspace.
+        auto        validator(
+                        ) const -> Validator *
+        {
+            return type()->validator();
+        }
+
+        /// \brief
+        ///     Checks whether this Workspace is open or closed.
+        /// \return
+        ///     True if this Workspace is open, false if closed.
+        bool        isOpen() const;
+
+        /// \brief
+        ///     Checks whether this Workspace is open (or used
+        ///     to be, while open) read-only.
+        /// \return
+        ///     True if this Workspace is open (or used
+        ///     to be, while open) read-only, else false.
+        bool        isReadOnly() const;
+
+        /// \brief
+        ///     Closes this Workspace.
+        /// \details
+        ///     Has no effect if already closed.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        close();
+
+        /// \brief
+        ///     If the Workspace performs any sort of cacing
+        ///     internally, drops all caches so that all
+        ///     subsequent accesses reflect the actual
+        ///     persistent data in the underlying database.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        refresh();
+
+        //////////
+        //  Operations (associations)
+    public:
+        /// \brief
+        ///     Returns the number of live objects in this Database.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The number of live objects in this Database.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        quint64     objectCount(
+                            const Credentials & credentials
+                        ) const;
+
+        /// \brief
+        ///     Finds the object with the specified OID.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param oid
+        ///     The OID to look for.
+        /// \return
+        ///     The object with the specified OID; nullptr
+        ///     if not found.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        template <class T>
+        T           findObjectByOid(
+                            const Credentials & credentials,
+                            const Oid & oid
+                    ) const
+        {
+            static_assert(
+                std::is_base_of<typename Object::element_type, typename T::element_type>::value,
+                "Type T must be a subtype of Object.");
+            tt3::util::Lock _(_guard);
+            _ensureOpen();  //  may throw
+
+            try
+            {
+                if (auto dataObject = _database->findObjectByOid(oid))
+                {   //  Found, but is it accessible ?
+                    Object object =
+                        _getProxy(
+                            dynamic_cast<typename ObjectTypeTraits<T>::DataObjectType*>(dataObject));
+                    return object->_canRead(credentials) ?
+                                std::dynamic_pointer_cast<typename T::element_type>(object) :
+                                nullptr;
+                }
+                return nullptr;
+
+            }
+            catch (const tt3::util::Exception & ex)
+            {   //  OOPS! Translate & re-throw
+                WorkspaceException::translateAndThrow(ex);
+            }
+        }
+
+        /// \brief
+        ///     Gets the object with the specified OID.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param oid
+        ///     The OID to look for.
+        /// \return
+        ///     The object with the specified OID.
+        /// \exception WorkspaceException
+        ///     If an error occurs or the search fails.
+        template <class T>
+        T           getObjectByOid(
+                            const Credentials & credentials,
+                            const Oid & oid
+                        ) const
+        {
+            if (T result = findObjectByOid<T>(credentials, oid))
+            {
+                return result;
+            }
+            throw DoesNotExistException(
+                ObjectTypeTraits<T>::objectTypeName(),
+                "OID",
+                oid);
+        }
+
+        /// \brief
+        ///     Returns the set of all users in this workspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all users in this workspace.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        users(
+                            const Credentials & credentials
+                        ) const -> Users;
+
+        /// \brief
+        ///     Returns the set of all accounts of all users in this workspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all accounts of all users in this workspace.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        accounts(
+                            const Credentials & credentials
+                        ) const -> Accounts;
+
+        /// \brief
+        ///     Finds the account with the specified login.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param login
+        ///     The login to look for.
+        /// \return
+        ///     The account with the specified login or
+        ///     nullptr if not found.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        findAccount(
+                            const Credentials & credentials,
+                            const QString & login
+                        ) const -> Account;
+
+        /// \brief
+        ///     Returns the set of all activity types in this workspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all activity types in this workspace.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        activityTypes(
+                            const Credentials & credentials
+                        ) const -> ActivityTypes;
+
+        /// \brief
+        ///     Returns the set of all public activities in this workspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all public activities in this workspace.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        publicActivities(
+                            const Credentials & credentials
+                        ) const -> PublicActivities;
+
+        /// \brief
+        ///     The set of all public activities in this workspace
+        ///     including those which are also tasks.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all public activities in this workspace
+        ///     including those which are also tasks.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        publicActivitiesAndTasks(
+                            const Credentials & credentials
+                        ) const -> PublicActivities;
+
+        /// \brief
+        ///     Returns the set of all public tasks in this workspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all public tasks in this workspace.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        publicTasks(
+                            const Credentials & credentials
+                        ) const -> PublicTasks;
+
+        /// \brief
+        ///     Returns the set of root public tasks in this workspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of root public tasks in this workspace.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        rootPublicTasks(
+                            const Credentials & credentials
+                        ) const -> PublicTasks;
+
+        /// \brief
+        ///     Returns the set of all Projects in this workspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all Projects in this workspace.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        projects(
+                            const Credentials & credentials
+                        ) const -> Projects;
+
+        /// \brief
+        ///     Returns the set of root Projects in this workspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of root Projects in this workspace.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        rootProjects(
+                            const Credentials & credentials
+                        ) const -> Projects;
+
+        /// \brief
+        ///     Returns the set of all WorkStreams in this workspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of all WorkStreams in this workspace.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        workStreams(
+                            const Credentials & credentials
+                        ) const -> WorkStreams;
+
+        /// \brief
+        ///     The set of Beneficiaries in this database.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     The set of Beneficiaries in this database.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        beneficiaries(
+                            const Credentials & credentials
+                        ) const -> Beneficiaries;
+
+        //////////
+        //  Operations (access control)
+    public:
+        /// \brief
+        ///     Checks whether the specified Credentials allow ANY kind of
+        ///     access to this woirkspace.
+        /// \param credentials
+        ///     The credentials to validate.
+        /// \return
+        ///     True if the specified Credentials allow ANY kind of
+        ///     access to this woirkspace, else false.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        bool        canAccess(
+                            const Credentials & credentials
+                        ) const;
+
+        /// \brief
+        ///     Returns the capabilities that the specified credentials grant
+        ///     for this workspace.
+        /// \param credentials
+        ///     The credentials to validate.
+        /// \return
+        ///     The capabilities that the specified credentials grant
+        ///     for this workspace. If none, returns Capabilities::None.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        capabilities(
+                            const Credentials & credentials
+                        ) const -> Capabilities;
+
+        /// \brief
+        ///     Checks if the specified credentials grant all of
+        ///     the specified capabilities within this workspace.
+        /// \details
+        ///     IMPORTANT: Only a single capability flag can be checked
+        //      for, not a combination of them
+        /// \param credentials
+        ///     The credentials to check.
+        /// \param requiredCapabilities
+        ///     The required capabilities.
+        /// \return
+        ///     True if the specified credentials grant all of the
+        ///     specified capabilities within this workspace, false if not.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        bool        grantsAll(
+                            const Credentials & credentials,
+                            Capabilities requiredCapabilities
+                        ) const;
+
+        /// \brief
+        ///     Checks if the specified credentials grant any of
+        ///     the specified capabilities within this workspace.
+        /// \details
+        ///     IMPORTANT: Only a single capability flag can be checked
+        //      for, not a combination of them
+        /// \param credentials
+        ///     The credentials to check.
+        /// \param requiredCapabilities
+        ///     The required capabilities.
+        /// \return
+        ///     True if the specified credentials grant any of the
+        ///     specified capabilityieswithin this workspace, false if not.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        bool        grantsAny(
+                            const Credentials & credentials,
+                            Capabilities requiredCapabilities
+                        ) const;
+
+        /// \brief
+        ///     If there exists an a) enabled account b) of an
+        ///     enabled user c) with the spcified credentials,
+        ///     returns it; otherwise returns nullptr.
+        /// \param credentials
+        ///     The credentials to perform the check for.
+        /// \return
+        ///     The enabled Account of an enabled User which matches
+        ///     the specified Credentials; nullptr if not found.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        tryLogin(
+                            const Credentials & credentials
+                        ) const -> Account;
+
+        /// \brief
+        ///     If there exists an a) enabled account b) of an
+        ///     enabled user c) with the spcified credentials,
+        ///     returns it; otherwise an error occurs.
+        /// \param credentials
+        ///     The credentials to perform the check for.
+        /// \return
+        ///     The enabled Account of an enabled User which matches
+        ///     the specified Credentials.
+        /// \exception WorkspaceException
+        ///     If an error occurs or login fails.
+        auto        login(
+                            const Credentials & credentials
+                        ) const -> Account;
+
+        //////////
+        //  Operations (life cycle)
+    public:
+        /// \brief
+        ///     Creates a new User in this workspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param enabled
+        ///     True to create initially enabled User, false for disabled.
+        /// \param emailAddresses
+        ///     The list of e-mail addresses for the new User.
+        /// \param realName
+        ///     The "real name" for the new User.
+        /// \param inactivityTimeout
+        ///     The inactivity timeout for the new User; absent == default.
+        /// \param uiLocale
+        ///     The preferred UI locale for the new User; absent == default.
+        /// \param permittedWorkloads
+        ///     The set of Workloads the new User will be allowed to work on.
+        /// \return
+        ///     The newly created User.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        createUser(
+                            const Credentials & credentials,
+                            bool enabled,
+                            const QStringList & emailAddresses,
+                            const QString & realName,
+                            const InactivityTimeout & inactivityTimeout,
+                            const UiLocale & uiLocale,
+                            const Workloads & permittedWorkloads
+                        ) -> User;
+
+        /// \brief
+        ///     Creates a new ActivityType in this workspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param displayName
+        ///     The short (1 line) user-readable display name
+        ///     for the new ActivityType.
+        /// \param description
+        ///     The multi-line user-readable description for the new
+        ///     ActivityType; with lines separated by a newline '\n' character.
+        /// \return
+        ///     The newly created ActivityType.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        createActivityType(
+                        const Credentials & credentials,
+                        const QString & displayName,
+                        const QString & description
+            ) -> ActivityType;
+
+        /// \brief
+        ///     Creates a new PublicActivity in this workspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param displayName
+        ///     The short (1 line) user-readable display name
+        ///     for the new PublicActivity.
+        /// \param description
+        ///     The multi-line user-readable description for the new
+        ///     PublicActivity; with lines separated by a newline '\\n' character.
+        /// \param timeout
+        ///     The user-does-nothing timeout for the new PublicActivity;
+        ///     absent == none.
+        /// \param requireCommentOnStart
+        ///     True if the newly created PublicActivity small require the
+        ///     user to enter a comment when it is started.
+        /// \param requireCommentOnStop
+        ///     True if the newly created PublicActivifinishedty small require the
+        ///     user to enter a comment when it is started.
+        /// \param fullScreenReminder
+        ///     True if a full-screen reminder shall be displayed while the
+        ///     newly created PublicActivity is underway.
+        /// \param activityType
+        ///     The type for the new PublicActivity; nullptr == don't assign.
+        /// \param workload
+        ///     The Workload for the new PublicActivity; nullptr == don't assign.
+        /// \return
+        ///     The newly created PublicActivity.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        createPublicActivity(
+                            const Credentials & credentials,
+                            const QString & displayName,
+                            const QString & description,
+                            const InactivityTimeout & timeout,
+                            bool requireCommentOnStart,
+                            bool requireCommentOnStop,
+                            bool fullScreenReminder,
+                            ActivityType activityType,
+                            Workload workload
+                        ) -> PublicActivity;
+
+        /// \brief
+        ///     Creates a new root PublicTask in this workspace
+        ///     (that is, a PublicTask that has no parent).
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param displayName
+        ///     The short (1 line) user-readable display name
+        ///     for the new PublicTask.
+        /// \param description
+        ///     The multi-line user-readable description for the new
+        ///     PublicTask; with lines separated by a newline '\\n' character.
+        /// \param timeout
+        ///     The user-does-nothing timeout for the new PublicTask;
+        ///     absent == none.
+        /// \param requireCommentOnStart
+        ///     True if the newly created PublicTask small require the
+        ///     user to enter a comment when it is started.
+        /// \param requireCommentOnStop
+        ///     True if the newly created PublicTask small require the
+        ///     user to enter a comment when it is started.
+        /// \param fullScreenReminder
+        ///     True if a full-screen reminder shall be displayed while the
+        ///     newly created PublicTask is underway.
+        /// \param activityType
+        ///     The type for the new PublicTask; nullptr == don't assign.
+        /// \param workload
+        ///     The Workload for the new PublicTask; nullptr == don't assign.
+        /// \param completed
+        ///     True if the PublicTask shall initially be marked as
+        ///     "completed", false if not.
+        /// \param requireCommentOnCompletion
+        ///     True if the newly created PublicTask small require the
+        ///     user to enter a comment when marking it as "completed".
+        /// \return
+        ///     The newly created PublicTask.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        createPublicTask(
+                            const Credentials & credentials,
+                            const QString & displayName,
+                            const QString & description,
+                            const InactivityTimeout & timeout,
+                            bool requireCommentOnStart,
+                            bool requireCommentOnStop,
+                            bool fullScreenReminder,
+                            ActivityType activityType,
+                            Workload workload,
+                            bool completed,
+                            bool requireCommentOnCompletion
+                        ) -> PublicTask;
+
+        /// \brief
+        ///     Creates a new root Project in this workspace
+        ///     (that is, a Project that has no parent).
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param displayName
+        ///     The short (1 line) user-readable display name
+        ///     for the new Project.
+        /// \param description
+        ///     The multi-line user-readable description for the new
+        ///     Project; with lines separated by a newline '\\n' character.
+        /// \param beneficiaries
+        ///     The set of Beneficiaries to associate with the newly
+        ///     created Project (can be empty).
+        /// \param completed
+        ///     True if the new Project shall be initially
+        ///     marked as "completed", false if not.
+        /// \return
+        ///     The newly created Project.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        createProject(
+                            const Credentials & credentials,
+                            const QString & displayName,
+                            const QString & description,
+                            const Beneficiaries & beneficiaries,
+                            bool completed
+                        ) -> Project;
+
+        /// \brief
+        ///     Creates a new work stream in this workspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param displayName
+        ///     The short (1 line) user-readable display name
+        ///     for the new WorkStream.
+        /// \param description
+        ///     The multi-line user-readable description for the new
+        ///     WorkStream; with lines separated by a newline '\\n' character.
+        /// \param beneficiaries
+        ///     The set of Beneficiaries to associate with the newly
+        ///     created WorkStream (can be empty).
+        /// \return
+        ///     The newly created WorkStream.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        createWorkStream(
+                            const Credentials & credentials,
+                            const QString & displayName,
+                            const QString & description,
+                            const Beneficiaries & beneficiaries
+                        ) -> WorkStream;
+
+        /// \brief
+        ///     Creates a new Beneficiary in this wprkspace.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param displayName
+        ///     The short (1 line) user-readable display name
+        ///     for the new Beneficiary.
+        /// \param description
+        ///     The multi-line user-readable description for the new
+        ///     Beneficiary; with lines separated by a newline '\\n' character.
+        /// \param workloads
+        ///     The workloads to associate the new Beneficiary with.
+        /// \return
+        ///     The newly created Beneficiary.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        createBeneficiary(
+                            const Credentials & credentials,
+                            const QString & displayName,
+                            const QString & description,
+                            const Workloads & workloads
+                        ) -> Beneficiary;
+
+        //////////
+        //  Operations (special access)
+    public:
+        /// \brief
+        ///     Starts a backup session,
+        /// \details
+        ///     The lease interval for the created "backup
+        ///     credentials", which should then be used for data
+        ///     access dueing the backup session is determined
+        ///     automatically based on e.g. the database size.
+        ///     Once the "backup credentials" are created, the
+        ///     workspace is placed under a "read lock", which
+        ///     means no process can modify the worksoace (not
+        ///     even the process that caused the creation of the
+        ///     lock) until the "backup credentials" are released
+        ///     or until they expire, whichever comes first.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param leaseDurationMs
+        ///     The maximum duration, in milliseconds, of the lease
+        ///     for the created backup credentials.
+        /// \return
+        ///     The special "backup credentials" that should
+        ///     be used for data access during the backup session.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        beginBackup(
+                            const Credentials & credentials,
+                            quint64 leaseDurationMs
+                        ) -> BackupCredentials;
+
+        /// \brief
+        ///     Starts a restore session,
+        /// \details
+        ///     The lease interval for the created "restore
+        ///     credentials", which should then be used for data
+        ///     access dueing the restore session is determined
+        ///     automatically based on e.g. the database size.
+        ///     Once the "restore credentials" are created, the
+        ///     workspace is placed under a "write lock", which
+        ///     means no other process can read or modify the
+        ///     worksoace except for the process that caused
+        ///     the creation of the lock) until the "restore
+        ///     credentials" are released or until they expire,
+        ///     whichever comes first.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param leaseDurationMs
+        ///     The maximum duration, in milliseconds, of the lease
+        ///     for the created restore credentials.
+        /// \return
+        ///     The special "restore credentials" that should
+        ///     be used for data access during the restore session.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        beginRestore(
+                            const Credentials & credentials,
+                            quint64 leaseDurationMs
+                        ) -> RestoreCredentials;
+
+        /// \brief
+        ///     Starts a report generation session,
+        /// \details
+        ///     The lease interval for the created "report
+        ///     credentials", which should then be used for data
+        ///     access dueing the report generation session is
+        ///     determined automatically based on e.g. the
+        ///     database size.
+        ///     Once the "report credentials" are created, the
+        ///     workspace is placed under a "read lock", which
+        ///     means no process can modify the worksoace (not
+        ///     even the process that caused the creation of the
+        ///     lock) until the "report credentials" are released
+        ///     or until they expire, whichever comes first.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \param leaseDurationMs
+        ///     The maximum duration, in milliseconds, of the lease
+        ///     for the created report credentials.
+        /// \return
+        ///     The special "report credentials" that should
+        ///     be used for data access during the report generation
+        ///     session.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        auto        beginReport(
+                            const Credentials & credentials,
+                            quint64 leaseDurationMs
+                        ) -> ReportCredentials;
+
+        /// \brief
+        ///     Releases a "backup credentials" obtained at
+        ///     the beginning of a backup session.
+        /// \details
+        ///     If the "backup credentials" have already
+        ///     veen released, the call has no effect. Normally,
+        ///     the creation of "backup credentials" places
+        ///     a "read lock" on the workspace; this "read
+        ///     lock" is released when the "backup credentials"
+        ///     that caused the lock to appear are released.
+        /// \param backupCredentials
+        ///     The backup credentials to release.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        releaseCredentials(
+                            const BackupCredentials & backupCredentials
+                        );
+
+
+        /// \brief
+        ///     Releases a "restore credentials" obtained at
+        ///     the beginning of a restore session.
+        /// \details
+        ///     If the "restore credentials" have already
+        ///     veen released, the call has no effect. Normally,
+        ///     the creation of "restore credentials" places
+        ///     a "read lock" on the workspace; this "read
+        ///     lock" is released when the "restore credentials"
+        ///     that caused the lock to appear are released.
+        /// \param restoreCredentials
+        ///     The restore credentials to release.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        releaseCredentials(
+                            const RestoreCredentials & restoreCredentials
+                        );
+
+
+        /// \brief
+        ///     Releases a "report credentials" obtained at
+        ///     the beginning of a report session.
+        /// \details
+        ///     If the "report credentials" have already
+        ///     veen released, the call has no effect. Normally,
+        ///     the creation of "report credentials" places
+        ///     a "read lock" on the workspace; this "read
+        ///     lock" is released when the "report credentials"
+        ///     that caused the lock to appear are released.
+        /// \param reportCredentials
+        ///     The report credentials to release.
+        /// \exception WorkspaceException
+        ///     If an error occurs.
+        void        releaseCredentials(
+                            const ReportCredentials & reportCredentials
+                        );
+
+        //////////
+        //  Signals
+        //  Clients are encourated to use "queued" connections.
+    signals:
+        /// \brief
+        ///     Emitted after the workspace is closed.
+        /// \param notification
+        ///     The object specifying the source and details
+        ///     of the changes made to a Workspace.
+        void        workspaceClosed(
+                            WorkspaceClosedNotification notification
+                        );
+
+        /// \brief
+        ///     Emitted after a new object is created
+        /// \param notification
+        ///     The object specifying the source and details
+        ///     of the changes made to a Workspace.
+        void        objectCreated(
+                            ObjectCreatedNotification notification
+                        );
+
+        /// \brief
+        ///     Emitted after an object is destroyed
+        /// \param notification
+        ///     The object specifying the source and details
+        ///     of the changes made to a Workspace.
+        void        objectDestroyed(
+                            ObjectDestroyedNotification notification
+                        );
+
+        /// \brief
+        ///     Emitted after an object is modified
+        /// \param notification
+        ///     The object specifying the source and details
+        ///     of the changes made to a Workspace.
+        void        objectModified(
+                            ObjectModifiedNotification notification
+                        );
+
+        //////////
+        //  Implementation
+    private:
+        mutable tt3::util::Mutex    _guard;     //  for synchronizing all accesses to workspace
+
+        const WorkspaceAddress      _address;
+        tt3::db::api::IDatabase *const _database;   //  never nullptr
+        bool                        _isOpen = true; //  all Workspaces start off as "open"
+        const bool                  _isReadOnly;
+
+        //  Access control "cache"
+        static inline const int _AccessCacheSizeCap = 16;
+        mutable QMap<Credentials, Capabilities> _goodCredentialsCache;
+        mutable QSet<Credentials>               _badCredentialsCache;
+
+        //  Object proxy cache
+        mutable QMap<Oid, Object>   _proxyCache;
+
+        //  Special access caches
+        mutable QMap<BackupCredentials, tt3::db::api::IDatabaseLock*>   _backupCredentials;
+        mutable QMap<RestoreCredentials, tt3::db::api::IDatabaseLock*>  _restoreCredentials;
+        mutable QMap<ReportCredentials, tt3::db::api::IDatabaseLock*>   _reportCredentials;
+
+        //  Helpers
+        void        _ensureOpen() const;    //  throws WorkspaceException
+        void        _markClosed();
+        auto        _validateAccessRights(  //  throws WorkspaceException
+                            const Credentials & credentials
+                        ) const -> Capabilities;
+
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IObject * dataObject
+                        ) const -> Object;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IPrincipal * dataPrincipal
+                        ) const -> Principal;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IUser * dataUser
+                        ) const -> User;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IAccount * dataAccount
+                        ) const -> Account;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IActivityType * dataActivityType
+                        ) const -> ActivityType;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IActivity * dataActivity
+                        ) const -> Activity;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IPublicActivity * dataPublicActivity
+                        ) const -> PublicActivity;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IPublicTask * dataPublicTask
+                        ) const -> PublicTask;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IPrivateActivity * dataPublicActivity
+                        ) const -> PrivateActivity;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IPrivateTask * dataPrivateTask
+                        ) const -> PrivateTask;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IWorkload * dataWorkload
+                        ) const -> Workload;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IProject * dataProject
+                        ) const -> Project;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IWorkStream * dataWorkStream
+                        ) const -> WorkStream;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IBeneficiary * dataBeneficiary
+                        ) const -> Beneficiary;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IWork * dataWork
+                        ) const -> Work;
+        auto        _getProxy(  //  throws WorkspaceException
+                            tt3::db::api::IEvent * dataEvent
+                        ) const -> Event;
+
+        bool        _isBackupCredentials(const Credentials & credentials) const
+        {   //  Inlined definition for better chance of inlining
+            Q_ASSERT(_guard.isLockedByCurrentThread());
+
+            if (!_backupCredentials.isEmpty())
+            {   //  The "if" takes fast care of most accsses
+                if (auto backupCredentialsPtr =
+                    dynamic_cast<const BackupCredentials*>(&credentials))
+                {
+                    if (_backupCredentials.contains(*backupCredentialsPtr))
+                    {   //  Cached...
+                        if (QDateTime::currentDateTimeUtc() > backupCredentialsPtr->_expireAt)
+                        {   //  ...but expired
+                            const_cast<WorkspaceImpl*>(this)->  //  we are working with an internal cache
+                                _clearExpiredBackupCredentials();
+                            return false;
+                        }
+                        //  ...and not yet expired
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        bool        _isRestoreCredentials(const Credentials & credentials) const
+        {   //  Inlined definition for better chance of inlining
+            Q_ASSERT(_guard.isLockedByCurrentThread());
+
+            if (!_restoreCredentials.isEmpty())
+            {   //  The "if" takes fast care of most accsses
+                if (auto restoreCredentialsPtr =
+                    dynamic_cast<const RestoreCredentials*>(&credentials))
+                {
+                    if (_restoreCredentials.contains(*restoreCredentialsPtr))
+                    {   //  Cached...
+                        if (QDateTime::currentDateTimeUtc() > restoreCredentialsPtr->_expireAt)
+                        {   //  ...but expired
+                            const_cast<WorkspaceImpl*>(this)->  //  we are working with an internal cache
+                                _clearExpiredRestoreCredentials();
+                            return false;
+                        }
+                        //  ...and not yet expired
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        bool        _isReportCredentials(const Credentials & credentials) const
+        {   //  Inlined definition for better chance of inlining
+            Q_ASSERT(_guard.isLockedByCurrentThread());
+
+            if (!_reportCredentials.isEmpty())
+            {   //  The "if" takes fast care of most accsses
+                if (auto reportCredentialsPtr =
+                    dynamic_cast<const ReportCredentials*>(&credentials))
+                {
+                    if (_reportCredentials.contains(*reportCredentialsPtr))
+                    {   //  Cached...
+                        if (QDateTime::currentDateTimeUtc() > reportCredentialsPtr->_expireAt)
+                        {   //  ...but expired
+                            const_cast<WorkspaceImpl*>(this)->  //  we are working with an internal cache
+                                _clearExpiredReportCredentials();
+                            return false;
+                        }
+                        //  ...and not yet expired
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        void        _clearExpiredBackupCredentials();
+        void        _clearExpiredRestoreCredentials();
+        void        _clearExpiredReportCredentials();
+
+        //////////
+        //  Signal handlers
+    private slots:
+        void        _onDatabaseClosed(
+                            tt3::db::api::DatabaseClosedNotification notification
+                        );
+        void        _onObjectCreated(
+                            tt3::db::api::ObjectCreatedNotification notification
+                        );
+        void        _onObjectDestroyed(
+                            tt3::db::api::ObjectDestroyedNotification notification
+                        );
+        void        _onObjectModified(
+                            tt3::db::api::ObjectModifiedNotification notification
+                        );
+    };
+}
+
+//  End of tt3-ws/Workspace.hpp

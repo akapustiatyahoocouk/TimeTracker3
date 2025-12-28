@@ -1,0 +1,273 @@
+//
+//  tt3-db-xml/ActivityType.cpp - tt3::db::xml::ActivityType class implementation
+//
+//  TimeTracker3
+//  Copyright (C) 2026, Andrey Kapustin
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//////////
+#include "tt3-db-xml/API.hpp"
+using namespace tt3::db::xml;
+
+//////////
+//  Construction/destruction (from DB type only)
+ActivityType::ActivityType(
+        Database * database,
+        tt3::db::api::Oid oid)
+    :   Object(database, oid)
+{
+    //  Register with parent
+    _database->_activityTypes.insert(this);
+    this->addReference();
+}
+
+ActivityType::~ActivityType()
+{
+    Q_ASSERT(!_database->_activityTypes.contains(this));
+    Q_ASSERT(_activities.isEmpty());
+}
+
+//////////
+//  tt3::db::api::IActivityType (properties)
+QString ActivityType::displayName() const
+{
+    tt3::util::Lock _(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _displayName;
+}
+
+void ActivityType::setDisplayName(
+        const QString & displayName
+    )
+{
+    tt3::util::Lock _(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (!_database->_validator->activityType()->isValidDisplayName(displayName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "displayName",
+            displayName);
+    }
+    if (displayName != _displayName)
+    {   //  Make the change (but no duplication)...
+        if (_database->_findActivityType(displayName) != nullptr)
+        {
+            throw tt3::db::api::AlreadyExistsException(
+                type(),
+                "displayName",
+                displayName);
+        }
+        _displayName = displayName;
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
+}
+
+QString ActivityType::description() const
+{
+    tt3::util::Lock _(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return _description;
+}
+
+void ActivityType::setDescription(
+        const QString & description
+    )
+{
+    tt3::util::Lock _(_database->_guard);
+    _ensureLiveAndWritable();   //  may throw
+#ifdef Q_DEBUG
+    _database->_validate(); //  may throw
+#endif
+
+    //  Validate parameters
+    if (!_database->_validator->activityType()->isValidDescription(description))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "description",
+            description);
+    }
+    if (description != _description)
+    {   //  Make the change...
+        _description = description;
+        _database->_markModified();
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  ...and we're done
+#ifdef Q_DEBUG
+        _database->_validate(); //  may throw
+#endif
+    }
+}
+
+//////////
+//  tt3::db::api::IActivityType (associations)
+auto ActivityType::activities(
+    ) const -> tt3::db::api::Activities
+{
+    tt3::util::Lock _(_database->_guard);
+    _ensureLive();  //  may throw
+    //  We assume database is consistent since last change
+
+    return tt3::db::api::Activities(_activities.cbegin(), _activities.cend());
+}
+
+//////////
+//  Implementation helpers
+void ActivityType::_makeDead()
+{
+    Q_ASSERT(_database->_guard.isLockedByCurrentThread());
+    Q_ASSERT(_isLive);
+
+    //  Break associations
+    for (Activity * activity : _activities.values())
+    {
+        Q_ASSERT(activity->_activityType == this);
+        activity->_activityType = nullptr;
+        _activities.remove(activity);
+        this->removeReference();
+        activity->removeReference();
+    }
+    _activities.clear();
+
+    //  Remove from "live" caches
+    Q_ASSERT(_database->_activityTypes.contains(this));
+    _database->_activityTypes.remove(this);
+    this->removeReference();
+
+    //  The rest is up to the base class
+    Object::_makeDead();
+}
+
+bool ActivityType::_siblingExists(
+        const QString & displayName
+    ) const
+{
+    Q_ASSERT(_database->_guard.isLockedByCurrentThread());
+
+    ActivityType * sibling = _database->_findActivityType(displayName);
+    return sibling != nullptr && sibling != this;
+}
+
+//////////
+//  Serialization
+void ActivityType::_serializeProperties(
+        QDomElement & objectElement
+    ) const
+{
+    Object::_serializeProperties(objectElement);
+
+    objectElement.setAttribute("DisplayName", _displayName);
+    objectElement.setAttribute("Description", _description);
+}
+
+void ActivityType::_serializeAggregations(
+        QDomElement & objectElement
+    ) const
+{
+    Object::_serializeAggregations(objectElement);
+}
+
+void ActivityType::_serializeAssociations(
+        QDomElement & objectElement
+    ) const
+{
+    Object::_serializeAssociations(objectElement);
+
+    _database->_serializeAssociation(
+        objectElement,
+        "Activities",
+        _activities);
+}
+
+void ActivityType::_deserializeProperties(
+        const QDomElement & objectElement
+    )
+{
+    Object::_deserializeProperties(objectElement);
+
+    _displayName = objectElement.attribute("DisplayName");
+    _description = objectElement.attribute("Description");
+}
+
+void ActivityType::_deserializeAggregations(
+        const QDomElement & objectElement
+    )
+{
+    Object::_deserializeAggregations(objectElement);
+}
+
+void ActivityType::_deserializeAssociations(
+        const QDomElement & objectElement
+    )
+{
+    Object::_deserializeAssociations(objectElement);
+
+    _database->_deserializeAssociation(
+        objectElement,
+        "Activities",
+        _activities);
+}
+
+//////////
+//  Validation
+void ActivityType::_validate(
+        Objects & validatedObjects
+    )
+{
+    Object::_validate(validatedObjects);
+
+    //  Validate properties
+    if (!_database->_validator->activityType()->isValidDisplayName(_displayName))
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseCorruptException(_database->_address);
+    }
+    if (!_database->_validator->activityType()->isValidDescription(_description))
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseCorruptException(_database->_address);
+    }
+
+    //  Validate aggregations
+
+    //  Validate associations
+    for (Activity * activity : std::as_const(_activities))
+    {
+        if (activity == nullptr ||
+            activity->_database != this->_database ||
+            !activity->_isLive ||
+            activity->_activityType != this)
+        {   //  OOPS!
+            throw tt3::db::api::DatabaseCorruptException(_database->_address);
+        }
+    }
+}
+
+//  End of tt3-db-xml/ActivityType.cpp

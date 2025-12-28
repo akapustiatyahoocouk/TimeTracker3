@@ -1,0 +1,30 @@
+[Component]
+DisplayName=TimeTracker3 database API
+Description=Defines common API for TimeTracker3 databases
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[ObjectTypes]
+User.DisplayName=User
+Account.DisplayName=Account
+ActivityType.DisplayName=Activity type
+PublicActivity.DisplayName=Public activity
+PublicTask.DisplayName=Public task
+PrivateActivity.DisplayName=Private activity
+PrivateTask.DisplayName=Private task
+Work.DisplayName=Work
+Event.DisplayName=Event
+Project.DisplayName=Project
+WorkStream.DisplayName=Work stream
+Beneficiary.DisplayName=Beneficiary
+
+[Errors]
+InvalidDatabaseAddressException=Invalid database address
+DatabaseInUseException={0} {1} is already in use
+DatabaseCorruptException={0} {1} is invalid or corrupt
+DatabaseClosedException=Database is closed
+AccessDeniedException=Access denied
+InvalidPropertyValueException=Property '{1}' of '{0}' cannot be set to '{2}'
+AlreadyExistsException=The {0} with '{1}' = '{2}' already exists
+DoesNotExistException=The {0} with '{1}' = '{2}' does not exist
+InstanceDeadException=The instance is dead
+IncompatibleInstanceException=Incompatible {0}

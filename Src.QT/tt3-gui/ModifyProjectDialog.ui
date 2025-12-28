@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>tt3::gui::ModifyProjectDialog</class>
+ <widget class="QDialog" name="tt3::gui::ModifyProjectDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>466</width>
+    <height>339</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Modify project</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="tt3-gui.qrc">
+    <normaloff>:/tt3-gui/Resources/Images/Actions/ModifyProjectLarge.png</normaloff>:/tt3-gui/Resources/Images/Actions/ModifyProjectLarge.png</iconset>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="parentProjectLabel">
+     <property name="text">
+      <string>Parent:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" colspan="2">
+    <widget class="QComboBox" name="parentProjectComboBox"/>
+   </item>
+   <item row="0" column="3">
+    <widget class="QPushButton" name="selectParentProjectPushButton">
+     <property name="text">
+      <string>Select</string>
+     </property>
+     <property name="icon">
+      <iconset resource="tt3-gui.qrc">
+       <normaloff>:/tt3-gui/Resources/Images/Actions/ViewProjectSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/ViewProjectSmall.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="displayNameLabel">
+     <property name="text">
+      <string>Name:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" colspan="3">
+    <widget class="QLineEdit" name="displayNameLineEdit"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="descriptionLabel">
+     <property name="text">
+      <string>Description:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1" colspan="3">
+    <widget class="QPlainTextEdit" name="descriptionPlainTextEdit">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>85</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="beneficiariesLabel">
+     <property name="text">
+      <string>Beneficiaries:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1" rowspan="2">
+    <widget class="QListWidget" name="beneficiariesListWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>64</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>64</height>
+      </size>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>0</width>
+       <height>64</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2" colspan="2">
+    <widget class="QPushButton" name="selectBeneficiariesPushButton">
+     <property name="text">
+      <string>Select</string>
+     </property>
+     <property name="icon">
+      <iconset resource="tt3-gui.qrc">
+       <normaloff>:/tt3-gui/Resources/Images/Actions/ViewBeneficiarySmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/ViewBeneficiarySmall.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="3">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="5" column="0" colspan="2">
+    <widget class="QCheckBox" name="completedCheckBox">
+     <property name="text">
+      <string>Project is completed</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0" colspan="4">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0" colspan="4">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>parentProjectComboBox</tabstop>
+  <tabstop>selectParentProjectPushButton</tabstop>
+  <tabstop>displayNameLineEdit</tabstop>
+  <tabstop>descriptionPlainTextEdit</tabstop>
+  <tabstop>beneficiariesListWidget</tabstop>
+  <tabstop>selectBeneficiariesPushButton</tabstop>
+  <tabstop>completedCheckBox</tabstop>
+ </tabstops>
+ <resources>
+  <include location="tt3-gui.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>tt3::gui::ModifyProjectDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>tt3::gui::ModifyProjectDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>selectParentProjectPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::ModifyProjectDialog</receiver>
+   <slot>_selectParentProjectPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>298</x>
+     <y>24</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>185</x>
+     <y>146</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>displayNameLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::ModifyProjectDialog</receiver>
+   <slot>_displayNameLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>232</x>
+     <y>59</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>185</x>
+     <y>146</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>descriptionPlainTextEdit</sender>
+   <signal>textChanged()</signal>
+   <receiver>tt3::gui::ModifyProjectDialog</receiver>
+   <slot>_descriptionPlainTextEditTextChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>232</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>185</x>
+     <y>146</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>selectBeneficiariesPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::ModifyProjectDialog</receiver>
+   <slot>_selectBeneficiariesPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>298</x>
+     <y>186</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>185</x>
+     <y>146</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_selectParentProjectPushButtonClicked()</slot>
+  <slot>_displayNameLineEditTextChanged(QString)</slot>
+  <slot>_descriptionPlainTextEditTextChanged()</slot>
+  <slot>_selectBeneficiariesPushButtonClicked()</slot>
+ </slots>
+</ui>

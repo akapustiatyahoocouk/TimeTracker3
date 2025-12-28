@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>tt3::gui::PublicTaskManager</class>
+ <widget class="QWidget" name="tt3::gui::PublicTaskManager">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>449</width>
+    <height>334</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <property name="leftMargin">
+    <number>4</number>
+   </property>
+   <property name="topMargin">
+    <number>4</number>
+   </property>
+   <property name="rightMargin">
+    <number>4</number>
+   </property>
+   <property name="bottomMargin">
+    <number>4</number>
+   </property>
+   <property name="spacing">
+    <number>4</number>
+   </property>
+   <item row="0" column="0" colspan="2">
+    <widget class="QWidget" name="filterWidget" native="true">
+     <layout class="QFormLayout" name="formLayout">
+      <property name="horizontalSpacing">
+       <number>4</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>4</number>
+      </property>
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="filterLabel">
+        <property name="text">
+         <string>Filter:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="filterLineEdit"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QTreeWidget" name="publicTasksTreeWidget">
+     <property name="contextMenuPolicy">
+      <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+     </property>
+     <attribute name="headerVisible">
+      <bool>false</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string notr="true">1</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QWidget" name="buttonsWidget" native="true">
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <property name="spacing">
+       <number>4</number>
+      </property>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="modifyPublicTaskPushButton">
+        <property name="text">
+         <string>Modify public task</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/ModifyPublicTaskSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/ModifyPublicTaskSmall.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="createPublicTaskPushButton">
+        <property name="text">
+         <string>Create public task</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/CreatePublicTaskSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/CreatePublicTaskSmall.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="4" column="0">
+       <widget class="QPushButton" name="startPublicTaskPushButton">
+        <property name="text">
+         <string>Start public task</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/StartPublicTaskSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/StartPublicTaskSmall.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QPushButton" name="stopPublicTaskPushButton">
+        <property name="text">
+         <string>Stop public task</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/StopPublicTaskSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/StopPublicTaskSmall.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="destroyPublicTaskPushButton">
+        <property name="text">
+         <string>Destroy public task</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/DestroyPublicTaskSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/DestroyPublicTaskSmall.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QPushButton" name="completePublicTaskPushButton">
+        <property name="text">
+         <string>Complete public task</string>
+        </property>
+        <property name="icon">
+         <iconset resource="tt3-gui.qrc">
+          <normaloff>:/tt3-gui/Resources/Images/Actions/CompletePublicTaskSmall.png</normaloff>:/tt3-gui/Resources/Images/Actions/CompletePublicTaskSmall.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QWidget" name="optionsWidget" native="true">
+     <layout class="QGridLayout" name="gridLayout_3">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <property name="spacing">
+       <number>4</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="showCompletedCheckBox">
+        <property name="text">
+         <string>Show completed public tasks</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>filterLineEdit</tabstop>
+  <tabstop>publicTasksTreeWidget</tabstop>
+  <tabstop>createPublicTaskPushButton</tabstop>
+  <tabstop>modifyPublicTaskPushButton</tabstop>
+  <tabstop>destroyPublicTaskPushButton</tabstop>
+  <tabstop>startPublicTaskPushButton</tabstop>
+  <tabstop>stopPublicTaskPushButton</tabstop>
+  <tabstop>completePublicTaskPushButton</tabstop>
+  <tabstop>showCompletedCheckBox</tabstop>
+ </tabstops>
+ <resources>
+  <include location="tt3-gui.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>publicTasksTreeWidget</sender>
+   <signal>currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</signal>
+   <receiver>tt3::gui::PublicTaskManager</receiver>
+   <slot>_publicTasksTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>138</x>
+     <y>177</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>232</x>
+     <y>176</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>publicTasksTreeWidget</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>tt3::gui::PublicTaskManager</receiver>
+   <slot>_publicTasksTreeWidgetCustomContextMenuRequested(QPoint)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>138</x>
+     <y>177</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>232</x>
+     <y>176</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>createPublicTaskPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::PublicTaskManager</receiver>
+   <slot>_createPublicTaskPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>354</x>
+     <y>61</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>166</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modifyPublicTaskPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::PublicTaskManager</receiver>
+   <slot>_modifyPublicTaskPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>354</x>
+     <y>92</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>166</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>destroyPublicTaskPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::PublicTaskManager</receiver>
+   <slot>_destroyPublicTaskPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>354</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>166</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>startPublicTaskPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::PublicTaskManager</receiver>
+   <slot>_startPublicTaskPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>354</x>
+     <y>161</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>166</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>stopPublicTaskPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::PublicTaskManager</receiver>
+   <slot>_stopPublicTaskPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>354</x>
+     <y>192</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>166</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>completePublicTaskPushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tt3::gui::PublicTaskManager</receiver>
+   <slot>_completePublicTaskPushButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>354</x>
+     <y>223</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>166</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>showCompletedCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>tt3::gui::PublicTaskManager</receiver>
+   <slot>_showCompletedCheckBoxToggled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>224</x>
+     <y>312</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>166</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filterLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>tt3::gui::PublicTaskManager</receiver>
+   <slot>_filterLineEditTextChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>244</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>166</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>_publicTasksTreeWidgetCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)</slot>
+  <slot>_publicTasksTreeWidgetCustomContextMenuRequested(QPoint)</slot>
+  <slot>_createPublicTaskPushButtonClicked()</slot>
+  <slot>_modifyPublicTaskPushButtonClicked()</slot>
+  <slot>_destroyPublicTaskPushButtonClicked()</slot>
+  <slot>_startPublicTaskPushButtonClicked()</slot>
+  <slot>_stopPublicTaskPushButtonClicked()</slot>
+  <slot>_completePublicTaskPushButtonClicked()</slot>
+  <slot>_showCompletedCheckBoxToggled(bool)</slot>
+  <slot>_filterLineEditTextChanged(QString)</slot>
+ </slots>
+</ui>

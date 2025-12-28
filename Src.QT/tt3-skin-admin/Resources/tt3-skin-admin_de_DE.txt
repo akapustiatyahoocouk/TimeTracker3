@@ -1,0 +1,96 @@
+[Plugin]
+DisplayName=TimeTracker3-Administrator-Skin
+Description=Definiert den GUI-Administrator-Skin für TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[Component]
+DisplayName=TimeTracker3-Administrator-Skin
+Description=Definiert den GUI-Administrator-Skin für TimeTracker3
+Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[Skin]
+DisplayName=Administrator
+Description=Bietet umfassende Verwaltungsfunktionen für TimeTracker3-Arbeitsbereiche
+
+[MainFrame]
+Title=TimeTracker3
+Title.ReadOnlySuffix=[schreibgeschützt]
+
+MenuFile.Title=&Datei
+MenuView.Title=&Ansicht
+MenuTools.Title=&Werkzeuge
+MenuReports.Title=&Berichte
+MenuOptions.Title=&Optionen
+MenuHelp.Title=&Hilfe
+
+ActionNewWorkspace.Text=&Neuer Arbeitsbereich
+ActionNewWorkspace.Tooltip=Neuer Arbeitsbereich
+ActionOpenWorkspace.Text=Arbeitsbereich ö&ffnen
+ActionOpenWorkspace.Tooltip=Arbeitsbereich öffnen
+ActionCloseWorkspace.Text=Arbeitsbereich sch&ließen
+ActionCloseWorkspace.Tooltip=Arbeitsbereich schließen
+ActionDestroyWorkspace.Text=Arbeitsbereich lös&chen
+ActionDestroyWorkspace.Tooltip=Arbeitsbereich löschen
+ActionRecentWorkspaces.Text=&Zuletzt Arbeitsbereiche
+ActionRecentWorkspaces.Tooltip=Zuletzt Arbeitsbereiche
+ActionRestart.Text=TimeTracker3 neu s&tarten
+ActionRestart.Tooltip=TimeTracker3 neu starten
+ActionExit.Text=Be&enden
+ActionExit.Tooltip=Beenden
+
+ActionManageUsers.Text=&1 – Benutzer verwalten
+ActionManageUsers.Tooltip=Benutzer verwalten
+ActionManageActivityTypes.Text=&2 – Aktivitätstypen verwalten
+ActionManageActivityTypes.Tooltip=Aktivitätstypen verwalten
+ActionManagePublicActivities.Text=&3 – Öffentliche Aktivitäten verwalten
+ActionManagePublicActivities.Tooltip=Öffentliche Aktivitäten verwalten
+ActionManagePublicTasks.Text=&4 – Öffentliche Aufgaben verwalten
+ActionManagePublicTasks.Tooltip=Öffentliche Aufgaben verwalten
+ActionManagePrivateActivities.Text=&5 – Private Aktivitäten verwalten
+ActionManagePrivateActivities.Tooltip=Private Aktivitäten verwalten
+ActionManagePrivateTasks.Text=&6 – Private Aufgaben verwalten
+ActionManagePrivateTasks.Tooltip=Private Aufgaben verwalten
+ActionManageProjects.Text=&7 – Projekte verwalten
+ActionManageProjects.Tooltip=Projekte verwalten
+ActionManageWorkStreams.Text=&8 – Arbeitsströme verwalten
+ActionManageWorkStreams.Tooltip=Arbeitsströme verwalten Streams
+ActionManageBeneficiaries.Text=&9 – Begünstigte verwalten
+ActionManageBeneficiaries.Tooltip=Begünstigte verwalten
+ActionManageMyDay.Text=&0 – Meinen Tag verwalten
+ActionManageMyDay.Tooltip=Meinen Tag verwalten
+ActionRefresh.Text=&Aktualisieren
+ActionRefresh.Tooltip=Aktualisieren
+
+ActionQuickReports.Text=&Schnellberichte
+ActionQuickReports.Tooltip=Schnellberichte
+
+ActionLoginAsDifferentUser.Text=&Als anderer Benutzer anmelden
+ActionLoginAsDifferentUser.Tooltip=Als anderer Benutzer anmelden
+ActionPreferences.Text=&Einstellungen
+ActionPreferences.Tooltip=Einstellungen
+
+ActionHelpContent.Text=&Hilfeinhalt
+ActionHelpContent.Tooltip=Hilfeinhalt
+ActionHelpIndex.Text=&Hilfeindex
+ActionHelpIndex.Tooltip=Hilfeindex
+ActionHelpSearch.Text=&Hilfesuche
+ActionHelpSearch.Tooltip=Hilfesuche
+ActionAbout.Text=Ü&ber TimeTracker3
+ActionAbout.Tooltip=Über TimeTracker3
+
+ManageUsersTab.Text=Benutzer
+ManageActivityTypesTab.Text=Aktivitätstypen
+ManagePublicActivitiesTab.Text=Öffentliche Aktivitäten
+ManagePublicTasksTab.Text=Öffentliche Aufgaben
+ManagePrivateActivitiesTab.Text=Private Aktivitäten
+ManagePrivateTasksTab.Text=Private Aufgaben
+ManageProjectsTab.Text=Projekte
+ManageWorkStreamsTab.Text=Arbeitsabläufe
+ManageBeneficiariesTab.Text=Begünstigte
+ManageMyDayTab.Text=Mein Tag
+QuickReportsTab.Text=Schnellberichte
+
+NoCurrentActivityLabel=Keine aktuelle Aktivität
+StopActivityPushButton=Stopp
+
+CannotDestroyWorkspaceError=Arbeitsbereich {0}\nkann nicht gelöscht werden, da\ner aktuell verwendet wird.
