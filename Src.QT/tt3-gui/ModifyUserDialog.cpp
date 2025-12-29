@@ -147,8 +147,7 @@ ModifyUserDialog::~ModifyUserDialog()
 
 //////////
 //  Operations
-auto ModifyUserDialog::doModal(
-    ) -> Result
+auto ModifyUserDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

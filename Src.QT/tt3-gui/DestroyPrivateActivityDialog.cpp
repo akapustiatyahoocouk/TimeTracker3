@@ -42,8 +42,7 @@ DestroyPrivateActivityDialog::DestroyPrivateActivityDialog(
 
 //////////
 //  Operations
-auto DestroyPrivateActivityDialog::doModal(
-    ) -> Result
+auto DestroyPrivateActivityDialog::doModal() -> Result
 {
     return (AskYesNoDialog::doModal() == AskYesNoDialog::Result::Yes) ?
                Result::Ok :

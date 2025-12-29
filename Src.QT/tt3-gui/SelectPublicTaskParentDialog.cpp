@@ -116,8 +116,7 @@ SelectPublicTaskParentDialog::~SelectPublicTaskParentDialog()
 
 //////////
 //  Operations
-auto SelectPublicTaskParentDialog::doModal(
-    ) -> Result
+auto SelectPublicTaskParentDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

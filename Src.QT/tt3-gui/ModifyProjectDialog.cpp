@@ -111,8 +111,7 @@ ModifyProjectDialog::~ModifyProjectDialog()
 
 //////////
 //  Operations
-auto ModifyProjectDialog::doModal(
-    ) -> Result
+auto ModifyProjectDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

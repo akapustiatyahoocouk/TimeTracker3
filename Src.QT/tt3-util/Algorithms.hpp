@@ -1,5 +1,5 @@
 //
-//  tt3-util/Algorithms.cpp - Helper algorithms
+//  tt3-util/Algorithms.hpp - Helper algorithms
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -108,4 +108,4 @@ namespace tt3::util
     };
 }
 
-//  End of tt3-util/Algorithms.cpp
+//  End of tt3-util/Algorithms.hpp

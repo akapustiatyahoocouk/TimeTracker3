@@ -173,8 +173,7 @@ ModifyAccountDialog::~ModifyAccountDialog()
 
 //////////
 //  Operations
-auto ModifyAccountDialog::doModal(
-    ) -> Result
+auto ModifyAccountDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

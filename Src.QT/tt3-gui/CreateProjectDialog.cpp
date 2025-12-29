@@ -84,8 +84,7 @@ CreateProjectDialog::~CreateProjectDialog()
 
 //////////
 //  Operations
-auto CreateProjectDialog::doModal(
-    ) -> Result
+auto CreateProjectDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

@@ -83,8 +83,7 @@ SelectWorkloadDialog::~SelectWorkloadDialog()
 
 //////////
 //  Operations
-auto SelectWorkloadDialog::doModal(
-    ) -> Result
+auto SelectWorkloadDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

@@ -1,5 +1,5 @@
 //
-//  tt3-util/Identifiers.cpp - Various identifier ADTs
+//  tt3-util/Identifiers.hpp - Various identifier ADTs
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -349,4 +349,4 @@ inline size_t qHash(const tt3::util::ResourceId & key, size_t seed = 0)
     return qHash(key.toString(), seed);
 }
 
-//  End of tt3-util/Identifiers.cpp
+//  End of tt3-util/Identifiers.hpp

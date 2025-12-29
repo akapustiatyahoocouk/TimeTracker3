@@ -98,8 +98,7 @@ SelectWorkspaceDialog::~SelectWorkspaceDialog()
 
 //////////
 //  Operations
-auto SelectWorkspaceDialog::doModal(
-    ) -> Result
+auto SelectWorkspaceDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

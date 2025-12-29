@@ -90,8 +90,7 @@ ConfigureRestoreDialog::~ConfigureRestoreDialog()
 
 //////////
 //  Operations
-auto ConfigureRestoreDialog::doModal(
-    ) -> Result
+auto ConfigureRestoreDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

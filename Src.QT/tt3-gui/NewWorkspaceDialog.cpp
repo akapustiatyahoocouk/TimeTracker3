@@ -92,8 +92,7 @@ NewWorkspaceDialog::~NewWorkspaceDialog()
 
 //////////
 //  Operations
-auto NewWorkspaceDialog::doModal(
-    ) -> Result
+auto NewWorkspaceDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

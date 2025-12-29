@@ -123,8 +123,7 @@ CreateUserDialog::~CreateUserDialog()
 
 //////////
 //  Operations
-auto CreateUserDialog::doModal(
-    ) -> Result
+auto CreateUserDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

@@ -68,8 +68,7 @@ CreateActivityTypeDialog::~CreateActivityTypeDialog()
 
 //////////
 //  Operations
-auto CreateActivityTypeDialog::doModal(
-    ) -> Result
+auto CreateActivityTypeDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

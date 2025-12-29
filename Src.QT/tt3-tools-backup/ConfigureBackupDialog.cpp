@@ -105,8 +105,7 @@ ConfigureBackupDialog::~ConfigureBackupDialog()
 
 //////////
 //  Operations
-auto ConfigureBackupDialog::doModal(
-    ) -> Result
+auto ConfigureBackupDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

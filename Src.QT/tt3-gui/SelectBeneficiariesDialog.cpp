@@ -68,8 +68,7 @@ SelectBeneficiariesDialog::~SelectBeneficiariesDialog()
 
 //////////
 //  Operations
-auto SelectBeneficiariesDialog::doModal(
-    ) -> Result
+auto SelectBeneficiariesDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

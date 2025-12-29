@@ -1,5 +1,5 @@
 //
-//  tt3-util/Macros.cpp - Helper macros
+//  tt3-util/Macros.hpp - Helper macros
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -46,4 +46,4 @@
 //  We need some dark magic with C++ keywords
 #define register register_  /*  it's a verb, not a description! */
 
-//  End of tt3-util/Macros.cpp
+//  End of tt3-util/Macros.hpp

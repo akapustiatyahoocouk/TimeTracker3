@@ -42,8 +42,7 @@ DestroyPrivateTaskDialog::DestroyPrivateTaskDialog(
 
 //////////
 //  Operations
-auto DestroyPrivateTaskDialog::doModal(
-    ) -> Result
+auto DestroyPrivateTaskDialog::doModal() -> Result
 {
     return (AskYesNoDialog::doModal() == AskYesNoDialog::Result::Yes) ?
                Result::Ok :

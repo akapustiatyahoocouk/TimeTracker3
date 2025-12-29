@@ -37,8 +37,7 @@ DestroyUserDialog::DestroyUserDialog(
 
 //////////
 //  Operations
-auto DestroyUserDialog::doModal(
-    ) -> Result
+auto DestroyUserDialog::doModal() -> Result
 {
     return (AskYesNoDialog::doModal() == AskYesNoDialog::Result::Yes) ?
                 Result::Ok :

@@ -125,8 +125,7 @@ CreatePublicActivityDialog::~CreatePublicActivityDialog()
 
 //////////
 //  Operations
-auto CreatePublicActivityDialog::doModal(
-    ) -> Result
+auto CreatePublicActivityDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

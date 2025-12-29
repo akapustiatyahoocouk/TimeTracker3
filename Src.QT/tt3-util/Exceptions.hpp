@@ -1,5 +1,5 @@
 //
-//  tt3-util/Exceptions.cpp - Exceptions framework
+//  tt3-util/Exceptions.hpp - Exceptions framework
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -326,4 +326,4 @@ QDebug operator << (QDebug debug, const tt3::util::Error & ex)
     return debug;
 }
 
-//  End of tt3-util/Exceptions.cpp
+//  End of tt3-util/Exceptions.hpp

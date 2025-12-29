@@ -70,8 +70,7 @@ SelectUsersDialog::~SelectUsersDialog()
 
 //////////
 //  Operations
-auto SelectUsersDialog::doModal(
-    ) -> Result
+auto SelectUsersDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

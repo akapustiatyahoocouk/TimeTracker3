@@ -137,8 +137,7 @@ CreatePublicTaskDialog::~CreatePublicTaskDialog()
 
 //////////
 //  Operations
-auto CreatePublicTaskDialog::doModal(
-    ) -> Result
+auto CreatePublicTaskDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

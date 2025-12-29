@@ -37,8 +37,7 @@ DestroyEventDialog::DestroyEventDialog(
 
 //////////
 //  Operations
-auto DestroyEventDialog::doModal(
-    ) -> Result
+auto DestroyEventDialog::doModal() -> Result
 {
     return (AskYesNoDialog::doModal() == AskYesNoDialog::Result::Yes) ?
                Result::Ok :

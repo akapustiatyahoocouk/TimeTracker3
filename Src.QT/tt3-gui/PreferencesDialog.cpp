@@ -102,8 +102,7 @@ PreferencesDialog::~PreferencesDialog()
 
 //////////
 //  Operations
-auto PreferencesDialog::doModal(
-    ) -> Result
+auto PreferencesDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

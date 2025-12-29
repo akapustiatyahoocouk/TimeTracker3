@@ -1,5 +1,5 @@
 //
-//  tt3-util/Settings.cpp - Persistent settinga framework
+//  tt3-util/Settings.hpp - Persistent settinga framework
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -275,4 +275,4 @@ namespace tt3::util
 //  Macro needed for MOC-generated .cpp files
 #define TT3_UTIL_SETTINGS_DEFINED
 
-//  End of tt3-util/Settings.cpp
+//  End of tt3-util/Settings.hpp

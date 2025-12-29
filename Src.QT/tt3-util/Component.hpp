@@ -1,5 +1,5 @@
 //
-//  tt3-util/Component.cpp - Component framework
+//  tt3-util/Component.hpp - Component framework
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -370,4 +370,4 @@ public:                                 \
 #endif //   def TT3_UTIL_SETTINGS_DEFINED
 }
 
-//  End of tt3-util/Component.cpp
+//  End of tt3-util/Component.hpp

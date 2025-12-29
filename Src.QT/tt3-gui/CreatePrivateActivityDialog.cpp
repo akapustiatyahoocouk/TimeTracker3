@@ -148,8 +148,7 @@ CreatePrivateActivityDialog::~CreatePrivateActivityDialog()
 
 //////////
 //  Operations
-auto CreatePrivateActivityDialog::doModal(
-    ) -> Result
+auto CreatePrivateActivityDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

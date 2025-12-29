@@ -1,5 +1,5 @@
 //
-//  tt3-util/DateTime.cpp - Date/time helpers
+//  tt3-util/DateTime.hpp - Date/time helpers
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -231,4 +231,4 @@ namespace tt3::util
     };
 }
 
-//  End of tt3-util/Plugin.cpp
+//  End of tt3-util/Plugin.hpp

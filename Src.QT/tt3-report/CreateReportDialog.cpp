@@ -175,8 +175,7 @@ CreateReportDialog::~CreateReportDialog()
 
 //////////
 //  Operations
-auto CreateReportDialog::doModal(
-    ) -> Result
+auto CreateReportDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

@@ -181,8 +181,7 @@ ModifyPublicTaskDialog::~ModifyPublicTaskDialog()
 
 //////////
 //  Operations
-auto ModifyPublicTaskDialog::doModal(
-    ) -> Result
+auto ModifyPublicTaskDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

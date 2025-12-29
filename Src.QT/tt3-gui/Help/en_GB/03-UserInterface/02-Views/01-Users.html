@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Users view</title>
+<link href="../../../css/tt3.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<h1>Users view</h1>
+<hr />
+<p>The Users view allows management of Users and Accounts (subject to access 
+permissions granted after login).</p>
+<p>
+<img alt="Users view" height="403" src="../../../images/Views/01-Users.png" width="655" /></p>
+<p>The controls in the Users view allow the user to specify:</p>
+<ul>
+	<li><strong>Users/Accounts tree</strong> - this displays the list of 
+	available Users and their Accounts. Exactly what "available" means depends 
+	on what access rights are granted by the current login credentials (as 
+	specified during the login procedure) - for ordinary users these will 
+	include only the User themselves plus that User's Accounts, while for an 
+	administrator this will include all Users and Accounts defined in the 
+	workspace.</li>
+	<li><strong>Filter</strong> - type anything here to narrow the set of 
+	displayed Users/Accounts or to quickly find a specific User or Account. The 
+	filter match can appear anywhere within the User or Account name. If some 
+	Account matches the filter but its User does not, the User will still be 
+	displayed, but will be grayed out.</li>
+	<li><strong>Show disabled users and accounts</strong> - unless checked, the 
+	Users/Accounts tree will not show Users and Accounts that are "disabled". If 
+	some User is "disabled" but its Account is not, the User will still be 
+	shown, but will be grayed out.</li>
+	<li><strong>Create user</strong> - use this button to create a new User. 
+	This will only be permitted to someone with Administrator or Manage Users 
+	capability and will be disallowed in a read-only workspace.</li>
+	<li><strong>View/Modify user</strong> - use this button to view or modify 
+	the User currently selected in the Users/Accounts tree. The meaning of this 
+	button (view or modify) will be determined by whether the current user has 
+	logged in with Administrator or Manage Users capability and whether or not 
+	the workspace is read-only.</li>
+	<li><strong>Destroy user</strong> - use this button to permanently destroy 
+	the User currently selected in the Users/Accounts tree. You will be asked to 
+	confirm the destruction, as this is a dangerous operation in that it also 
+	destroys all Accounts of that User along with all Work units and Events 
+	logged on behalf of these Accounts, thus removing some parts of the 
+	activities history. The destroy confirmation dialog that pops up will show 
+	just how much the activities history will be impacted. Therefore, it is 
+	highly recommended that Users are "disabled" rather than destroyed when they 
+	e.g. leave the company.</li>
+	<li><strong>Create account</strong> - use this button to create a new 
+	Account for the User currently selected in the Users/Accounts tree. This 
+	will only be permitted to someone with Administrator or Manage Users 
+	capability and will be disallowed in a read-only workspace.</li>
+	<li><strong>View/Modify account</strong> - use this button to view or modify 
+	the Account currently selected in the Users/Accounts tree. The meaning of 
+	this button (view or modify) will be determined by whether the current user 
+	has logged in with Administrator or Manage Users capability and whether or 
+	not the workspace is read-only.</li>
+	<li><strong>Destroy user</strong> - use this button to permanently destroy 
+	the User currently selected in the Users/Accounts tree. You will be asked to 
+	confirm the destruction, as this is a dangerous operation in that it also 
+	destroys all Accounts of that User along with all Work units and Events 
+	logged on behalf of these Accounts, thus removing some parts of the 
+	activities history. The destroy confirmation dialog that pops up will show 
+	just how much the activities history will be impacted. Therefore, it is 
+	highly recommended that Users are "disabled" rather than destroyed when they 
+	e.g. leave the company.</li>
+	<li><strong>Modify account</strong> - use this button to view or modify the 
+	User or Account currently selected in the Users/Accounts tree. The meaning 
+	of this button (view or modify) will be determined by whether the current 
+	user has logged in with Administrator or Manage Users capability and whether 
+	or not the workspace is read-only.</li>
+	<li><strong>Destroy account</strong> - use this button to permanently 
+	destroy the Account currently selected in the Users/Accounts tree. You will 
+	be asked to confirm the destruction, as this is a dangerous operation in 
+	that it also destroys all Work units and Events logged on behalf of this 
+	Account, thus removing some parts of the activities history. The destroy 
+	confirmation dialog that pops up will show just how much the activities 
+	history will be impacted. Therefore, it is highly recommended that Accounts 
+	are "disabled" rather than destroyed when they e.g. leave the company.</li>
+</ul>
+<p>Note that any user will always be able to view (in a read-only workspace) or 
+modify (in a writable workspace) their own User and Account, regardless&nbsp;of what 
+capabilities are granted by the login credentials. However, for Accounts the 
+modification of login identifier and access rights will still require 
+Administrator or Manage Users capability (while changing the Account's e.g. 
+password will not).</p>
+<p>As well as action buttons, the Users/Accounts tree allows invoking the same 
+actions (create, modify or destroy User/Account) via the context menus that pop 
+up when the Users/Accounts tree items are right-clicked.</p>
+<hr />
+<p class="seealso">See also: -</p>
+<h2>&nbsp;</h2>
+
+</body>
+
+</html>

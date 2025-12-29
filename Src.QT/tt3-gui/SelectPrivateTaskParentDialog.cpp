@@ -141,8 +141,7 @@ SelectPrivateTaskParentDialog::~SelectPrivateTaskParentDialog()
 
 //////////
 //  Operations
-auto SelectPrivateTaskParentDialog::doModal(
-    ) -> Result
+auto SelectPrivateTaskParentDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

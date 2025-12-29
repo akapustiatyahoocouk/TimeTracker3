@@ -65,8 +65,7 @@ LoginDialog::~LoginDialog()
 
 //////////
 //  Operations
-auto LoginDialog::doModal(
-    ) -> Result
+auto LoginDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

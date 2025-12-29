@@ -72,8 +72,7 @@ AskYesNoDialog::~AskYesNoDialog()
 
 //////////
 //  Operations
-auto AskYesNoDialog::doModal(
-    ) -> Result
+auto AskYesNoDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

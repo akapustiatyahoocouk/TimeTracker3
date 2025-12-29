@@ -205,8 +205,7 @@ ModifyPrivateTaskDialog::~ModifyPrivateTaskDialog()
 
 //////////
 //  Operations
-auto ModifyPrivateTaskDialog::doModal(
-    ) -> Result
+auto ModifyPrivateTaskDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

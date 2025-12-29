@@ -170,8 +170,7 @@ CreatePrivateTaskDialog::~CreatePrivateTaskDialog()
 
 //////////
 //  Operations
-auto CreatePrivateTaskDialog::doModal(
-    ) -> Result
+auto CreatePrivateTaskDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

@@ -37,8 +37,7 @@ DestroyActivityTypeDialog::DestroyActivityTypeDialog(
 
 //////////
 //  Operations
-auto DestroyActivityTypeDialog::doModal(
-    ) -> Result
+auto DestroyActivityTypeDialog::doModal() -> Result
 {
     return (AskYesNoDialog::doModal() == AskYesNoDialog::Result::Yes) ?
                Result::Ok :

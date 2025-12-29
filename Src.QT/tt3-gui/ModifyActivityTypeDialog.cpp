@@ -86,8 +86,7 @@ ModifyActivityTypeDialog::~ModifyActivityTypeDialog()
 
 //////////
 //  Operations
-auto ModifyActivityTypeDialog::doModal(
-    ) -> Result
+auto ModifyActivityTypeDialog::doModal() -> Result
 {
     return Result(this->exec());
 }

@@ -73,8 +73,7 @@ CreateBeneficiaryDialog::~CreateBeneficiaryDialog()
 
 //////////
 //  Operations
-auto CreateBeneficiaryDialog::doModal(
-    ) -> Result
+auto CreateBeneficiaryDialog::doModal() -> Result
 {
     return Result(this->exec());
 }
