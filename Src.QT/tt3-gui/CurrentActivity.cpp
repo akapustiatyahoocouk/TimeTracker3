@@ -284,14 +284,19 @@ bool CurrentActivity::quietlyReplaceWith(
                     (impl->activity != nullptr) ?
                         impl->activity->workspace()->login(credentials) :   //  may throw
                         nullptr;
+            QDateTime stoppedAt = now.addMSecs(-overdueMs);
             if (impl->activity != nullptr)
             {
                 Q_ASSERT(callerAccount != nullptr);
-                callerAccount->createWork(  //  may throw
-                    credentials,
-                    impl->lastChangedAt,
-                    now.addMSecs(-overdueMs),
-                    impl->activity);
+                if (stoppedAt > impl->lastChangedAt)
+                {   //  With overdue time anything is possible,
+                    //  so keep it safe
+                    callerAccount->createWork(  //  may throw
+                        credentials,
+                        impl->lastChangedAt,
+                        stoppedAt,
+                        impl->activity);
+                }
             }
             //  Make the change
             if (impl->reminderWindow != nullptr)

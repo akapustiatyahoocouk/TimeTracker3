@@ -53,6 +53,12 @@ new Users and modify existing Users. The only exception to this rule is that
 anyone who has an Account in a given workspace and who logs into TimeTracker3 
 using that Account will be able to modify the details of the User to which that 
 Account belongs.</p>
+<p>When a "current Activity" is stopped automatically because the user 
+inactivity time exceeds the timeout specified for the current User, the logged 
+Work item does <em>not</em> include the timeout period itself. So, for example, 
+when the User's timeout is set to 1 hour and the user starts some Activity, 
+works for 2 hours and then leave the office, 1 hour later the "current" Activity 
+will be automatically stopped ans a 2-hours-long Work item will be recorded.</p>
 <hr />
 <p class="seealso">See also: -</p>
 <h2>&nbsp;</h2>
