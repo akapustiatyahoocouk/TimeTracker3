@@ -165,6 +165,58 @@ namespace tt3::gui
                         );
 
         /// \brief
+        ///     Replaces the "current" activity with
+        ///     the specified activity.
+        /// \details
+        ///     If the "current" activity exists, it is logged
+        ///     as a Work item. Any comment requests by replaced
+        ///     or new Activity are ignored.
+        /// \param with
+        ///     The activity to set as "current"; nullptr == none.
+        /// \param credentials
+        ///     The credentials to use for data access.
+        /// \param overdueMs
+        ///     The amount of time, in milliseconds, from the current
+        ///     moment when the replacement should have taken place
+        ///     (positive values shift the moment of replacement to
+        ///     the past, negative to the future).
+        /// \return
+        ///     True if the "current" activity was actually
+        ///     replaced, false if not,
+        /// \exception WorkspaceException
+        ///     If a data access error occurs.
+        bool        quietlyReplaceWith(
+                            tt3::ws::Activity with,
+                            const tt3::ws::Credentials & credentials,
+                            qint64 overdueMs = 0
+                        );
+
+        /// \brief
+        ///     Replaces the "current" activity with the
+        ///     specified activity, using "current" credentials
+        ///     for data access.
+        /// \details
+        ///     If the "current" activity exists, it is logged
+        ///     as a Work item. Any comment requests by replaced
+        ///     or new Activity are ignored.
+        /// \param with
+        ///     The activity to set as "current"; nullptr == none.
+        /// \param overdueMs
+        ///     The amount of time, in milliseconds, from the current
+        ///     moment when the replacement should have taken place
+        ///     (positive values shift the moment of replacement to
+        ///     the past, negative to the future).
+        /// \return
+        ///     True if the "current" activity was actually
+        ///     replaced, false if not,
+        /// \exception WorkspaceException
+        ///     If a data access error occurs.
+        bool        quietlyReplaceWith(
+                            tt3::ws::Activity with,
+                            qint64 overdueMs = 0
+                        );
+
+        /// \brief
         ///     Drops the "current" activity.
         /// \details
         ///     Sets the "current" activity to nullptr.

@@ -14,6 +14,8 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
+#pragma once
+#include "tt3/API.hpp"
 
 namespace tt3
 {
@@ -22,6 +24,7 @@ namespace tt3
     class Application final
         :   public QApplication
     {
+        Q_OBJECT
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Application)
 
         //////////
@@ -65,6 +68,7 @@ namespace tt3
         //  Implementation
     private:
         bool            _initialized = false;
+        QTimer          _stateActivityChecker;
 
         //  Helpers
         void            _prepareForLogging();
@@ -85,6 +89,11 @@ namespace tt3
                                 const QMessageLogContext & context,
                             const QString & msg
                         );
+
+        //////////
+        //  Signal handlers
+    private slots:
+        void            _staleActivityCheckerTimeout();
     };
 }
 

@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Create/Modify User dialog</title>
+<link href="../../../css/tt3.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<h1>Create/Modify User dialog</h1>
+<hr />
+<p>The same dialog is used for both creating new Users and modifying existing 
+Users.</p>
+<p>
+<img alt="Create/Modify User dialog" height="467" src="../../../images/Dialogs/10-CreateModifyUser.png" width="618" /></p>
+<p>The fields in the Login dialog allow the user to specify:</p>
+<ul>
+	<li><strong>Real name</strong> - the actual name of the person or group 
+	represented by the User. While TimeTracker3 imposes no requirement that all 
+	Users have different "real names", it is recommended that they do so</li>
+	<li><strong>E-mail addresses</strong> - One or more e-mail addresses can be 
+	associated with a User. These are utilized when e.g. auto-mailing 
+	notifications (or simply to distinguish different persons who happen to have 
+	the same names). Use <strong>Add</strong>, <strong>Modify</strong> and
+	<strong>Remove</strong> buttons to manage the list of User's e-mail 
+	addresses.</li>
+	<li><strong>Current activity/Stop if unattended</strong> - these fields 
+	govern what happens if the user starts recording some Activity and then 
+	leaves the computer unattended. If this is to happen, TimeTracker3 may 
+	automatically finish the Activity in question, logging a comment to that 
+	effect. NOTE that this behavior can be overridden on a per-Activity basis 
+	(for example, to specify different inactivity timeouts for different 
+	Activities).</li>
+	<li><strong>UI locale</strong> - this specifies the language which the 
+	TimeTracker3 will use for its GUI when the user logs in using one of that 
+	User's Accounts. The default choice is to not use the User-specific UI 
+	locale, but to revert to the TimeTracker3's default UI locale which, in 
+	turn, starts off as the system UI locale.</li>
+	<li><strong>Working on</strong> - these controls restrict the Activities for 
+	which the User&nbsp; is allowed to log Work items. If the list is empty, 
+	then no restriction is in place and the User can log Work items for any 
+	visible Activity (that is, any Public Activity/Task and any of that User's 
+	Private Activities/Tasks).</li>
+	<li><strong>Enabled</strong> - by default, all Users are created as 
+	"enabled". "Disabling" a User will disallow logging in to the TimeTracker3 
+	workspace using any of that User's Accounts. NOTE that it is not possible to 
+	disable the last workspace administrator User.</li>
+</ul>
+<p>Generally an Administrator or Manage Users capability is required to create 
+new Users and modify existing Users. The only exception to this rule is that 
+anyone who has an Account in a given workspace and who logs into TimeTracker3 
+using that Account will be able to modify the details of the User to which that 
+Account belongs.</p>
+<hr />
+<p class="seealso">See also: -</p>
+<h2>&nbsp;</h2>
+
+</body>
+
+</html>

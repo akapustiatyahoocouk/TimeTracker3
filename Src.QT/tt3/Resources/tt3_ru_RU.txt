@@ -3,6 +3,10 @@ DisplayName=Приложение TimeTracker3
 Description=Определяет запуск и логику верхнего уровня приложения TimeTracker3
 Copyright=Авторское право (C) {0}, Андрей Капустин
 
+[Application]
+StaleActivityStoppedHM={0} {1} остановлена через {2}ч {3}м бездействия пользователя
+StaleActivityStoppedH={0} {1} остановлена через {2}м бездействия пользователя
+
 [Errors]
 NoSkinsDefined=Темы оформления пользовательского интерфейса не определены.
 UncaughtException=Неизвестное исключение в цикле событий

@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Create/Modify Account dialog</title>
+<link href="../../../css/tt3.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<h1>Create/Modify Account dialog</h1>
+<hr />
+<p>The same dialog is used for both creating new Accounts and modifying existing 
+Accounts.</p>
+<p>
+<img alt="Create/Modify Account dialog" height="602" src="../../../images/Dialogs/12-CreateModifyAccount.png" width="647" /></p>
+<p>The fields in the Login dialog allow the user to specify:</p>
+<ul>
+	<li><strong>User</strong> - specifies the Use to which the Account belongs. 
+	It can be freely chosen when creating a new Account; however, TimeTracker3 
+	does not currently allow re-parenting an Account to another User.</li>
+	<li>L<strong>ogin</strong> - each Account is uniquely identified by its 
+	"login", which must be unique within the containing workspace.</li>
+	<li><strong>Password</strong> and <strong>Confirm Password</strong> - in 
+	TimeTracker3 Accounts are password-protected. The user is required to type 
+	in the same password twice when creating a new Account or changing a 
+	password for an existing Account; this helps prevent unintended typing 
+	errors when entering the password.</li>
+	<li><strong>E-mail addresses</strong> - One or more e-mail addresses can be 
+	associated with an Account. These are utilized when e.g. auto-mailing 
+	notifications (or simply to distinguish different persons who happen to have 
+	the same names). Use <strong>Add</strong>, <strong>Modify</strong> and
+	<strong>Remove</strong> buttons to manage the list of Account's e-mail 
+	addresses. If the Account does not specify any e-mail addresses, the list of 
+	e-mail addresses is implicitly inherited from the Account's parent User.</li>
+	<li><strong>Capabilities</strong> - these check boxes define the sorts of 
+	operations someone logged in with that Account can and cannot perform. The 
+	available capabilities are:<ul>
+		<li><strong>Administrator</strong> - allows the account holder to do 
+		anything within the workspace, including management of private assets of 
+		the Users defined therein.</li>
+		<li><strong>Manage users</strong> - allows the account holder th create, 
+		modify and destroy Users and Accounts.</li>
+		<li><strong>Manage activity types</strong> - allows the account holder 
+		to create, modify and destroy "activity types", which is normally the 
+		project manager's responsibility. A user without that capability will be 
+		able to refer to the existing activity types, but not to create, modify 
+		or destroy them.</li>
+		<li><strong>Manage beneficiaries</strong> - allows the account holder to 
+		create, modify and manage Beneficiaries. These represent external 
+		entities who act as stakeholders in the projects that are being worked 
+		on (and who will ultimately be billed for the effort dedicated to these 
+		projects).</li>
+		<li><strong>Manage workloads</strong> - allows the account holder to 
+		create, modify and destroy Projects and Work Streams. These represent 
+		the targets that daily efforts strive to achieve,</li>
+		<li><strong>Manage public activities</strong> - allows the account 
+		holder to create, modify and destroy Public Activities. Without this 
+		capability, the user will be limited to logging Work items only against 
+		the already existing Public Activities.</li>
+		<li><strong>Manage public tasks</strong> - allows the account holder to 
+		create, modify and destroy Public Tasks. Without this capability, the 
+		user will be limited to logging Work items only against the already 
+		existing Public Tasks. This specifically relates to marking a Public 
+		Task as "completed".</li>
+		<li><strong>Manage private activities</strong> - allows the account 
+		holder to create, modify and destroy their own Private Activities. 
+		Without this capability, the user will be limited to logging Work items 
+		only against the already existing Private Activities.</li>
+		<li><strong>Manage private tasks</strong> - allows the account holder to 
+		create, modify and destroy their own Private Tasks. Without this 
+		capability, the user will be limited to logging Work items only against 
+		the already existing Private Tasks. This specifically relates to marking 
+		a Private Task as "completed".</li>
+		<li><strong>Log work</strong> - allows the account holder to log Work 
+		items against available Activities and Tasks by "starting" one of them 
+		before working on it and later "stopping" the Activity or Task when 
+		switching to doing something else.</li>
+		<li><strong>Log events</strong> - allows the account holder to log 
+		arbitrary comments into the work log. These do not contribute to the 
+		history of effort (as Work items do), but may be used to attach 
+		arbitrary notes to the daily log.</li>
+		<li><strong>Generate reports</strong> - allows the account holder to 
+		generate various reports. This capability is typically required by a 
+		team manager or project manager. Note that this capability does not 
+		apply to Quick Reports, which will always show only what the account 
+		holder is allowed to see during the normal daily operations. If granted, 
+		this capability applies to all available reports.</li>
+		<li><strong>Backup and restore</strong> - allows the account holder to 
+		perform workspace backup and restore operations. This is typically the 
+		responsibility of the system administrator.</li>
+	</ul>
+	</li>
+	<li><strong>Enabled</strong> - by default, all Accounts are created as 
+	"enabled". "Disabling" an Accountwillldisallow logging in to the TimeTracker3 
+	workspace using any of that User's Accounts. NOTE that it is not possible to 
+	disable the last workspace administrator User.Account.</li>
+</ul>
+<p>Generally an Administrator or Manage Users capability is required to create 
+new Accounts and modify existing Accounts. The only exception to this rule is that 
+anyone who has an Account in a given workspace and who logs into TimeTracker3 
+using that Account will be able to modify <em>some</em> of the details of the 
+Account in question, specifically - the Account's password and e-mail addresses 
+(but not the Account's login, capabilities or enabled status).</p>
+<hr />
+<p class="seealso">See also: -</p>
+<h2>&nbsp;</h2>
+
+</body>
+
+</html>

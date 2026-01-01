@@ -18,12 +18,14 @@
 using namespace tt3;
 #ifdef Q_OS_WINDOWS
     #include <windows.h>
+    #pragma comment(lib, "user32.lib")
 #endif
 
 //////////
 //  Construction/destruction
 Application::Application(int & argc, char ** argv)
-    :   QApplication(argc, argv)
+    :   QApplication(argc, argv),
+        _stateActivityChecker(this)
 {
     setApplicationName(tt3::util::ProductInformation::applicationName());
     setApplicationVersion(tt3::util::ProductInformation::applicationVersion().toString());
@@ -36,6 +38,12 @@ Application::Application(int & argc, char ** argv)
     //  Prepare to handle system shutdown
     tt3::util::SystemShutdownHandler::addShutdownHook(_systemShutdownHook, this);
     tt3::util::SystemShutdownHandler::activate();
+
+    //  Start checking for runaway activities
+    connect(&_stateActivityChecker,
+            &QTimer::timeout,
+            this,
+            &Application::_staleActivityCheckerTimeout);
 }
 
 Application::~Application()
@@ -270,15 +278,23 @@ void Application::_initialize()
             }
         }
     }
+
+    //  Look out for stale activities
+    _stateActivityChecker.start(/* TODO uncomment 60 * */ 1000); //  once every minute
 }
 
 void Application::_cleanup()
 {
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(Application));
+
     if (!_initialized)
     {   //  Nothing to do
         return;
     }
     _initialized = false;
+
+    //  Stop look after stale activities
+    _stateActivityChecker.stop();
 
     //  If there is a "current activity", record & stop it.
     try
@@ -392,6 +408,82 @@ void Application::_logMessageOutput(
 #else   //  Linux, etc.
     QTextStream(stdout) << stdoutMessage;
 #endif
+}
+
+//////////
+//  Signal handlers
+void Application::_staleActivityCheckerTimeout()
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(Application));
+
+    tt3::ws::Activity activity = tt3::gui::theCurrentActivity;
+    if (activity == nullptr)
+    {   //  Nothing to check
+        return;
+    }
+#if defined(Q_OS_WINDOWS)
+    LASTINPUTINFO lii;
+    lii.cbSize = sizeof(LASTINPUTINFO);
+    if (!GetLastInputInfo(&lii))
+    {   //  OOPS! Can't proceed
+        return;
+    }
+    DWORD currentTickCount = GetTickCount();
+    DWORD idleTimeMs =
+        (lii.dwTime <= currentTickCount) ?
+            (currentTickCount - lii.dwTime) :
+            currentTickCount;
+#else
+    #error Unsupported OS
+#endif
+    try
+    {
+        tt3::ws::Credentials credentials = tt3::gui::theCurrentCredentials;
+        auto account = activity->workspace()->login(credentials);
+        auto timeout = activity->timeout(credentials);
+        qint64 overdueMs = 0;   //  Activity timeout is not treated as overdue
+        if (!timeout.has_value())
+        {   //  Go to the User for defaults...
+            timeout = account->user(credentials)->inactivityTimeout(credentials);
+            if (timeout.has_value())
+            {   //  ...but count the User's timeout towards
+                //  overdue time
+                overdueMs = timeout.value().asMinutes() * 60 * 1000;
+            }
+        }
+        if (timeout.has_value() &&
+            int(idleTimeMs / (60 * 1000)) >= timeout.value().asMinutes())
+        {   //  Must stop the "current" activity...
+            tt3::gui::theCurrentActivity.quietlyReplaceWith(nullptr, overdueMs);
+            //  ...and log an Event about that
+            int h = idleTimeMs / (60 * 60 * 1000);
+            int m = idleTimeMs / (60 * 1000) % 60;
+            QString summary =
+                (h != 0) ?
+                    rr.string(RID(StaleActivityStoppedHM),
+                              activity->type()->displayName(),
+                              activity->displayName(credentials),
+                              h, m) :
+                    rr.string(RID(StaleActivityStoppedH),
+                              activity->type()->displayName(),
+                              activity->displayName(credentials),
+                              m);
+            account->createEvent(   //  may throw
+                credentials,
+                QDateTime::currentDateTimeUtc(),
+                summary,
+                tt3::ws::Activities{activity});
+            return;
+        }
+
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Log, but otherwise ignore
+        qCritical() << ex;
+    }
+    catch (...)
+    {   //  Don't let anhything through
+    }
 }
 
 //  End of tt3/Application.cpp

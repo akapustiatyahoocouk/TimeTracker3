@@ -3,6 +3,10 @@ DisplayName=TimeTracker3-Anwendung
 Description=Definiert den Start und die Top-Level-Logik der TimeTracker3-Anwendung.
 Copyright=Copyright (C) {0}, Andrey Kapustin
 
+[Application]
+StaleActivityStoppedHM={0} {1} wurde nach {2}Std. und {3}Min. Inaktivität des Benutzers beendet.
+StaleActivityStoppedH={0} {1} wurde nach {2}Min. Inaktivität des Benutzers beendet.
+
 [Errors]
 NoSkinsDefined=Keine UI-Skins definiert.
 UncaughtException=Unbekannte Ausnahme in der Ereignisschleife

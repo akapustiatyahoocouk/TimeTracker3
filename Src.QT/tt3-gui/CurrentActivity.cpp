@@ -253,11 +253,84 @@ bool CurrentActivity::replaceWith(
     return false;
 }
 
+
 bool CurrentActivity::replaceWith(
         tt3::ws::Activity with
     )
 {
     return replaceWith(with, theCurrentCredentials);
+}
+
+bool CurrentActivity::quietlyReplaceWith(
+        tt3::ws::Activity with,
+        const tt3::ws::Credentials & credentials,
+        qint64 overdueMs
+    )
+{
+    tt3::ws::Activity before, after;
+
+    //  Change is effected in a "locked" state
+    {
+        _Impl * impl = _impl();
+        tt3::util::Lock _(impl->guard);
+        Q_ASSERT(impl->instanceCount == 1);
+
+        if (with != impl->activity)
+        {   //  Log current activity, if there is one, as a Work item
+            QDateTime now = QDateTime::currentDateTimeUtc();
+            tt3::ws::Account callerAccount =
+                (with != nullptr) ?
+                    with->workspace()->login(credentials) : //  may throw
+                    (impl->activity != nullptr) ?
+                        impl->activity->workspace()->login(credentials) :   //  may throw
+                        nullptr;
+            if (impl->activity != nullptr)
+            {
+                Q_ASSERT(callerAccount != nullptr);
+                callerAccount->createWork(  //  may throw
+                    credentials,
+                    impl->lastChangedAt,
+                    now.addMSecs(-overdueMs),
+                    impl->activity);
+            }
+            //  Make the change
+            if (impl->reminderWindow != nullptr)
+            {   //  Must hide the reminder window
+                impl->reminderWindow->hide();
+            }
+
+            before = impl->activity;
+            impl->activity = with;
+            impl->lastChangedAt = now;
+            after = impl->activity;
+
+            if (with != nullptr && with->fullScreenReminder(credentials))   //  may throw
+            {   //  Must show the reminder window...
+                if (impl->reminderWindow == nullptr)
+                {   //  ...creating it first ONCE
+                    impl->reminderWindow = new FullScreenReminderWindow();
+                }
+                impl->reminderWindow->refresh();
+                impl->reminderWindow->showFullScreen();
+                impl->reminderWindow->show();
+            }
+        }
+    }
+    //  Signal is sent in a "not locked" state
+    if (before != after)
+    {
+        emit changed(before, after);
+        return true;
+    }
+    return false;
+}
+
+bool CurrentActivity::quietlyReplaceWith(
+        tt3::ws::Activity with,
+        qint64 overdueMs
+    )
+{
+    return quietlyReplaceWith(with, theCurrentCredentials, overdueMs);
 }
 
 void CurrentActivity::drop()
