@@ -32,7 +32,7 @@ MainFrame::MainFrame()
     flags |= Qt::CustomizeWindowHint;
     flags &= ~Qt::WindowSystemMenuHint;
     flags &= ~Qt::WindowMinMaxButtonsHint;
-    flags &= ~Qt::WindowTitleHint;
+    //flags &= ~Qt::WindowTitleHint;
     flags &= ~Qt::WindowCloseButtonHint;
     setWindowFlags(flags);
     setFocusPolicy(Qt::FocusPolicy::ClickFocus);

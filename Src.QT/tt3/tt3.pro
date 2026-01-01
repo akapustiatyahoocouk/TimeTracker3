@@ -26,6 +26,9 @@ LIBS += \
     -ltt3-db-api$$TARGET_SUFFIX \
     -ltt3-util$$TARGET_SUFFIX
 
+linux {
+    LIBS += -lX11 -lXss
+}
+
 DISTFILES += \
     tt3.rc
-

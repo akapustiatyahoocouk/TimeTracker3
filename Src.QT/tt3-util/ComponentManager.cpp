@@ -148,6 +148,7 @@ void ComponentManager::discoverComponents(
 #else
     #error Unsupported platform
 #endif
+            entryInfo.fileName().contains(TT3_VERSION) &&
             entryInfo.absoluteFilePath() != exeFile)
         {
             if (progressListener != nullptr)

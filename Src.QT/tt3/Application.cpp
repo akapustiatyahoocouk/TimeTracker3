@@ -16,9 +16,11 @@
 //////////
 #include "tt3/API.hpp"
 using namespace tt3;
-#ifdef Q_OS_WINDOWS
+#if defined(Q_OS_WINDOWS)
     #include <windows.h>
     #pragma comment(lib, "user32.lib")
+#elif defined(Q_OS_LINUX)
+    #include <X11/extensions/scrnsaver.h>
 #endif
 
 //////////
@@ -512,6 +514,20 @@ void Application::_staleActivityCheckerTimeout()
         (lii.dwTime <= currentTickCount) ?
             (currentTickCount - lii.dwTime) :
             currentTickCount;
+#elif defined(Q_OS_LINUX)
+    unsigned long idleTimeMs = 0;
+    if (Display * display = XOpenDisplay(NULL))
+    {
+        if (XScreenSaverInfo * info = XScreenSaverAllocInfo())
+        {
+            if (XScreenSaverQueryInfo(display, DefaultRootWindow(display), info))
+            {
+                idleTimeMs = info->idle;
+            }   //  TODO else wayland ?
+            XFree(info);
+        }
+        XCloseDisplay(display);
+    }
 #else
     #error Unsupported OS
 #endif
@@ -535,8 +551,8 @@ void Application::_staleActivityCheckerTimeout()
         {   //  Must stop the "current" activity...
             tt3::gui::theCurrentActivity.quietlyReplaceWith(nullptr, overdueMs);
             //  ...and log an Event about that
-            int h = idleTimeMs / (60 * 60 * 1000);
-            int m = idleTimeMs / (60 * 1000) % 60;
+            int h = int(idleTimeMs / (60 * 60 * 1000));
+            int m = int(idleTimeMs / (60 * 1000) % 60);
             QString summary =
                 (h != 0) ?
                     rr.string(RID(StaleActivityStoppedHM),
