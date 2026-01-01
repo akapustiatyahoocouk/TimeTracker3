@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Create/Modify Public Activity dialog</title>
+<link href="../../../css/tt3.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<h1>Create/Modify Public Activity dialog</h1>
+<hr />
+<p>The same dialog is used for both creating new Public Activities and modifying existing 
+Public Activities.</p>
+<p>
+<img alt="Create/Modify Public Activity dialog" height="481" src="../../../images/Dialogs/16-CreateModifyPublicActivity.png" width="503" /></p>
+<p>The fields in the Create/Modify Public Activity&nbsp; dialog allow the user to specify:</p>
+<ul>
+	<li><strong>Name</strong> - Public Activities are identified by short, 
+	descriptive names (such as "Dev testing", "Lunch break" and so on) which must 
+	be unique within a given workspace</li>
+	<li><strong>Description</strong> - if the Public Activity name is not 
+	self-explanatory, its description may help to clarify its meaning. Multiple 
+	lines of text may be entered here.</li>
+	<li><strong>Activity type</strong> - use this drop-down list to select the 
+	Activity Type to assign the Public Activity to.</li>
+	<li><strong>Workload</strong> - use this drop-down list and its associated 
+	selection button to assign a Public Activity to a specific Project or Work 
+	Stream. Such assignments help in tracking effort dedicated to individual 
+	Projects over a period of time.</li>
+	<li><strong>Timeout</strong> - these fields govern what happens if the user 
+	starts recording the Public Activity but then 
+	leaves the computer unattended. If this is to happen, TimeTracker3 may 
+	automatically finish the Public Activity in question, logging a comment to that 
+	effect. NOTE that this behavior overrides any "inactivity timeout" 
+	configured for the User as far as the Public Activity in question is 
+	concerned.</li>
+	<li><strong>Require comment when Starting/Stopping this activity</strong> - 
+	these two check boxes specify what happens when the Public Activity is 
+	started and stopped. If any of the two are checked, then TimeTracker3 will 
+	present a popup dialog requesting the user to enter a comment, which is then 
+	recorded into the workspace as an Event. If the Activity that is being 
+	recorded requires comment when stopped, and the switch is made to recording 
+	an Activity which requires a comment when started, the user is asked to 
+	enter the comment only once; such comment is then associated with both old 
+	and new recorded Activity.</li>
+	<li><strong>Full-screen reminder</strong> - if checked, then starting such a 
+	Public Activity will pop up a full-screen reminder window stating that the 
+	Public Activity is underway (and how long it is being recorded for); this 
+	popup window will be hidden when the recording of the Public Activity is 
+	stopped. This is beneficial for Public Activities which expect the user to 
+	leave their workplace (such as lunch breaks, meetings, etc.) - having a 
+	full-screen reminder helps the user to explicitly stop recording the Public 
+	Activity, logging am "away from keyboard" Work item and switching to the 
+	next Activity to work on.</li>
+</ul>
+<p>Only someone with Administrator or Manage Public Activities capabilities is 
+allowed to create or modify Public Activities. However, anyone who can log into a 
+given workspace can see all Public Activities defined there. The exception to 
+this rule is the case when a specific User is configured to only allow working 
+on specific Public Activities, in which case only these Public Activities will 
+be visible in the list and all other existing Public Activities will not be 
+visible.</p>
+<hr />
+<p class="seealso">See also: -</p>
+<h2>&nbsp;</h2>
+
+</body>
+
+</html>
