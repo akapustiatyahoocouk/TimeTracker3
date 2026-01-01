@@ -116,8 +116,7 @@ namespace tt3::gui
         ///     The workspace "current" before the change, nullptr == none.
         /// \param after
         ///     The workspace "current" after the change, nullptr == none.
-        void        changed(
-                            tt3::ws::Workspace before,
+        void        changed(tt3::ws::Workspace before,
                             tt3::ws::Workspace after
                         );
 

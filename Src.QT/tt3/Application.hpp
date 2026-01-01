@@ -76,6 +76,7 @@ namespace tt3
         void            _selectActiveSkin();
         void            _initialize();
         void            _cleanup();
+        void            _adjustUiLocale();
 
         static void     _systemShutdownHook(void * cbData);
 
@@ -94,6 +95,18 @@ namespace tt3
         //  Signal handlers
     private slots:
         void            _staleActivityCheckerTimeout();
+        void            _currentWorkspaceChanged(
+                                tt3::ws::Workspace before,
+                                tt3::ws::Workspace after
+                            );
+        void            _currentCredentialsChanged(
+                                tt3::ws::Credentials before,
+                                tt3::ws::Credentials after
+                            );
+        void            _workspaceObjectModified(
+                                tt3::ws::ObjectModifiedNotification notification
+                            );
+        void            _uiLocaleSettingValueChanged();
     };
 }
 

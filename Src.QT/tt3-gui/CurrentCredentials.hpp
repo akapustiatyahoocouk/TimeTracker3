@@ -81,8 +81,7 @@ namespace tt3::gui
         ///     The "current" Credentials before the change.
         /// \param after
         ///     The "current" Credentials after the change.
-        void        changed(
-                            tt3::ws::Credentials before,
+        void        changed(tt3::ws::Credentials before,
                             tt3::ws::Credentials after
                         );
 

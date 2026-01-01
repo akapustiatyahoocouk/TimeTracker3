@@ -265,6 +265,7 @@ void Application::_initialize()
                 if (workspace->canAccess(tt3::gui::theCurrentCredentials))
                 {
                     tt3::gui::theCurrentWorkspace.swap(workspace);
+                    _adjustUiLocale();  //  in case logged-in User has custom UI locale
                 }
                 else
                 {
@@ -280,7 +281,37 @@ void Application::_initialize()
     }
 
     //  Look out for stale activities
-    _stateActivityChecker.start(/* TODO uncomment 60 * */ 1000); //  once every minute
+    _stateActivityChecker.start(60 * 1000); //  once every minute
+
+    //  The "current locale" may need to be adjusted:
+    //  1.  If the "current workspace" changes.
+    //  2.  If the "current credentials" change.
+    //  3.  If the User currently logged in is modified.
+    //  4.  If the "current UI locale" global setting changes.
+    //  This is because Users can specify UI locale explicitly.
+    connect(&tt3::gui::theCurrentWorkspace,
+            &tt3::gui::CurrentWorkspace::changed,
+            this,
+            &Application::_currentWorkspaceChanged,
+            Qt::ConnectionType::QueuedConnection);
+    connect(&tt3::gui::theCurrentCredentials,
+            &tt3::gui::CurrentCredentials::changed,
+            this,
+            &Application::_currentCredentialsChanged,
+            Qt::ConnectionType::QueuedConnection);
+    connect(&tt3::gui::Component::Settings::instance()->uiLocale,
+            &tt3::util::AbstractSetting::valueChanged,
+            this,
+            &Application::_uiLocaleSettingValueChanged,
+            Qt::ConnectionType::QueuedConnection);
+    if (tt3::gui::theCurrentWorkspace != nullptr)
+    {
+        connect(tt3::gui::theCurrentWorkspace.operator ->().get(),
+                &tt3::ws::WorkspaceImpl::objectModified,
+                this,
+                &Application::_workspaceObjectModified,
+                Qt::ConnectionType::QueuedConnection);
+    }
 }
 
 void Application::_cleanup()
@@ -292,6 +323,27 @@ void Application::_cleanup()
         return;
     }
     _initialized = false;
+
+    //  Stop auto-adjusting the "current" locale
+    disconnect(&tt3::gui::theCurrentWorkspace,
+               &tt3::gui::CurrentWorkspace::changed,
+               this,
+               &Application::_currentWorkspaceChanged);
+    disconnect(&tt3::gui::theCurrentCredentials,
+               &tt3::gui::CurrentCredentials::changed,
+               this,
+               &Application::_currentCredentialsChanged);
+    disconnect(&tt3::gui::Component::Settings::instance()->uiLocale,
+               &tt3::util::AbstractSetting::valueChanged,
+               this,
+               &Application::_uiLocaleSettingValueChanged);
+    if (tt3::gui::theCurrentWorkspace != nullptr)
+    {
+        disconnect(tt3::gui::theCurrentWorkspace.operator ->().get(),
+                   &tt3::ws::WorkspaceImpl::objectModified,
+                   this,
+                   &Application::_workspaceObjectModified);
+    }
 
     //  Stop look after stale activities
     _stateActivityChecker.stop();
@@ -337,6 +389,33 @@ void Application::_cleanup()
     //  Deinitialize all Components
     tt3::util::ComponentManager::saveComponentSettings();
     tt3::util::ComponentManager::deinitializeComponents();
+}
+
+void Application::_adjustUiLocale()
+{
+    //  If there IS a "current workspace" and the "current
+    //  credentials" grant access to it AND the correesponding
+    //  User specified a custom UI locale, then use that UI locale
+    try
+    {
+        if (tt3::gui::theCurrentWorkspace != nullptr)   //  may throw
+        {
+            tt3::ws::Credentials credentials = tt3::gui::theCurrentCredentials;
+            auto user = tt3::gui::theCurrentWorkspace->login(credentials)->user(credentials);    //  may throw
+            auto uiLocale = user->uiLocale(credentials);    //  may throw
+            if (uiLocale.has_value())
+            {   //  Use this one!
+                tt3::util::theCurrentLocale = uiLocale.value();
+                return;
+            }
+        }
+    }
+    catch (...)
+    {   //  OOPS! Suppress, though Suppress
+    }
+    //  Otherwise fall back to the persistent setting
+    tt3::util::theCurrentLocale =
+        tt3::gui::Component::Settings::instance()->uiLocale;
 }
 
 void Application::_systemShutdownHook(void * cbData)
@@ -484,6 +563,52 @@ void Application::_staleActivityCheckerTimeout()
     catch (...)
     {   //  Don't let anhything through
     }
+}
+
+void Application::_currentWorkspaceChanged(
+        tt3::ws::Workspace before,
+        tt3::ws::Workspace after
+    )
+{
+    if (before != nullptr)
+    {   //  Stop listening to object changes
+        disconnect(before.get(),
+                   &tt3::ws::WorkspaceImpl::objectModified,
+                   this,
+                   &Application::_workspaceObjectModified);
+    }
+    if (after != nullptr)
+    {   //  Start listening to object changes
+        connect(after.get(),
+                &tt3::ws::WorkspaceImpl::objectModified,
+                this,
+                &Application::_workspaceObjectModified,
+                Qt::ConnectionType::QueuedConnection);
+    }
+    _adjustUiLocale();
+}
+
+void Application::_currentCredentialsChanged(
+        tt3::ws::Credentials /*before*/,
+        tt3::ws::Credentials /*after*/
+    )
+{
+    _adjustUiLocale();
+}
+
+void Application::_workspaceObjectModified(
+        tt3::ws::ObjectModifiedNotification notification
+    )
+{
+    if (notification.objectType() == tt3::ws::ObjectTypes::User::instance())
+    {   //  User's "UI locale" may have changed
+        _adjustUiLocale();
+    }
+}
+
+void Application::_uiLocaleSettingValueChanged()
+{
+    _adjustUiLocale();
 }
 
 //  End of tt3/Application.cpp
