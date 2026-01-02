@@ -206,13 +206,13 @@ namespace tt3::gui
                             );
 
         //  Helpers
-        tt3::ws::User   _selectedUser();
-        void            _setSelectedUser(
+        tt3::ws::User   _currentUser();
+        void            _setCurrentUser(
                                 tt3::ws::User user
                             );
-        auto            _selectedPrivateActivity(
+        auto            _currentPrivateActivity(
                             ) -> tt3::ws::PrivateActivity;
-        void            _setSelectedPrivateActivity(
+        void            _setCurrentPrivateActivity(
                                 tt3::ws::PrivateActivity publicActivity
                             );
         void            _startListeningToWorkspaceChanges();

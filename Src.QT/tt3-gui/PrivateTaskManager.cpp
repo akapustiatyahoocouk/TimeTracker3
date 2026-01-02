@@ -179,7 +179,7 @@ void PrivateTaskManager::refresh()
             _ui->privateTasksTreeWidget->expandAll();
         }
 
-        tt3::ws::PrivateTask selectedPrivateTask = _selectedPrivateTask();
+        tt3::ws::PrivateTask currentPrivateTask = _currentPrivateTask();
         bool readOnly = _workspace->isReadOnly();
         try
         {
@@ -189,7 +189,7 @@ void PrivateTaskManager::refresh()
                     _credentials,
                     tt3::ws::Capability::Administrator |
                         tt3::ws::Capability::ManagePrivateActivities) &&
-                (_selectedUser() != nullptr || _selectedPrivateTask() != nullptr));
+                (_currentUser() != nullptr || _currentPrivateTask() != nullptr));
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -197,13 +197,13 @@ void PrivateTaskManager::refresh()
             _ui->createPrivateTaskPushButton->setEnabled(false);
         }
         _ui->modifyPrivateTaskPushButton->setEnabled(
-            selectedPrivateTask != nullptr);
+            currentPrivateTask != nullptr);
         try
         {
             _ui->destroyPrivateTaskPushButton->setEnabled(
                 !readOnly &&
-                selectedPrivateTask != nullptr &&
-                selectedPrivateTask->canDestroy(_credentials));  //  may throw
+                currentPrivateTask != nullptr &&
+                currentPrivateTask->canDestroy(_credentials));  //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -215,10 +215,10 @@ void PrivateTaskManager::refresh()
         {
             _ui->startPrivateTaskPushButton->setEnabled(
                 !readOnly &&
-                selectedPrivateTask != nullptr &&
-                theCurrentActivity != selectedPrivateTask &&
-                !selectedPrivateTask->completed(_credentials) &&    //  may throw
-                selectedPrivateTask->canStart(_credentials));       //  may throw
+                currentPrivateTask != nullptr &&
+                theCurrentActivity != currentPrivateTask &&
+                !currentPrivateTask->completed(_credentials) &&    //  may throw
+                currentPrivateTask->canStart(_credentials));       //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -229,9 +229,9 @@ void PrivateTaskManager::refresh()
         {
             _ui->stopPrivateTaskPushButton->setEnabled(
                 !readOnly &&
-                selectedPrivateTask != nullptr &&
-                theCurrentActivity == selectedPrivateTask &&
-                selectedPrivateTask->canStop(_credentials));    //  may throw
+                currentPrivateTask != nullptr &&
+                theCurrentActivity == currentPrivateTask &&
+                currentPrivateTask->canStop(_credentials));    //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -242,9 +242,9 @@ void PrivateTaskManager::refresh()
         {
             _ui->completePrivateTaskPushButton->setEnabled(
                 !readOnly &&
-                selectedPrivateTask != nullptr &&
-                selectedPrivateTask->canModify(_credentials) &&   //  may throw
-                !selectedPrivateTask->completed(_credentials));   //  may throw
+                currentPrivateTask != nullptr &&
+                currentPrivateTask->canModify(_credentials) &&   //  may throw
+                !currentPrivateTask->completed(_credentials));   //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Report & recover
@@ -258,9 +258,9 @@ void PrivateTaskManager::refresh()
         //  Some buttons need to be adjusted for ReadOnoly mode
         try
         {
-            if (selectedPrivateTask != nullptr &&
-                !selectedPrivateTask->workspace()->isReadOnly() &&
-                selectedPrivateTask->canModify(_credentials))    //  may throw
+            if (currentPrivateTask != nullptr &&
+                !currentPrivateTask->workspace()->isReadOnly() &&
+                currentPrivateTask->canModify(_credentials))    //  may throw
             {   //  RW
                 _ui->modifyPrivateTaskPushButton->setIcon(modifyPrivateTaskIcon);
                 _ui->modifyPrivateTaskPushButton->setText(
@@ -700,7 +700,7 @@ void PrivateTaskManager::_refreshPrivateTaskItem(
 
 //////////
 //  Implementation helpers
-tt3::ws::User PrivateTaskManager::_selectedUser()
+tt3::ws::User PrivateTaskManager::_currentUser()
 {
     QTreeWidgetItem * item = _ui->privateTasksTreeWidget->currentItem();
     return (item != nullptr && item->parent() == nullptr) ?
@@ -708,7 +708,7 @@ tt3::ws::User PrivateTaskManager::_selectedUser()
                nullptr;
 }
 
-void PrivateTaskManager::_setSelectedUser(tt3::ws::User user)
+void PrivateTaskManager::_setCurrentUser(tt3::ws::User user)
 {
     for (int i = 0; i < _ui->privateTasksTreeWidget->topLevelItemCount(); i++)
     {
@@ -721,7 +721,7 @@ void PrivateTaskManager::_setSelectedUser(tt3::ws::User user)
     }
 }
 
-auto PrivateTaskManager::_selectedPrivateTask(
+auto PrivateTaskManager::_currentPrivateTask(
     ) -> tt3::ws::PrivateTask
 {
     QTreeWidgetItem * item = _ui->privateTasksTreeWidget->currentItem();
@@ -730,7 +730,7 @@ auto PrivateTaskManager::_selectedPrivateTask(
                nullptr;
 }
 
-bool PrivateTaskManager::_setSelectedPrivateTask(
+bool PrivateTaskManager::_setCurrentPrivateTask(
         tt3::ws::PrivateTask privateTask
     )
 {
@@ -745,7 +745,7 @@ bool PrivateTaskManager::_setSelectedPrivateTask(
                 _ui->privateTasksTreeWidget->setCurrentItem(item);
                 return true;
             }
-            if (_setSelectedPrivateTask(item, privateTask))
+            if (_setCurrentPrivateTask(item, privateTask))
             {   //  One of descendants selected
                 return true;
             }
@@ -754,7 +754,7 @@ bool PrivateTaskManager::_setSelectedPrivateTask(
     return false;
 }
 
-bool PrivateTaskManager::_setSelectedPrivateTask(
+bool PrivateTaskManager::_setCurrentPrivateTask(
         QTreeWidgetItem * parentItem,
         tt3::ws::PrivateTask privateTask
     )
@@ -767,7 +767,7 @@ bool PrivateTaskManager::_setSelectedPrivateTask(
             _ui->privateTasksTreeWidget->setCurrentItem(item);
             return true;
         }
-        if (_setSelectedPrivateTask(item, privateTask))
+        if (_setCurrentPrivateTask(item, privateTask))
         {   //  One of descendants selected
             return true;
         }
@@ -958,22 +958,22 @@ void PrivateTaskManager::_createPrivateTaskPushButtonClicked()
 {
     try
     {
-        if (auto user = _selectedUser())
+        if (auto user = _currentUser())
         {
             CreatePrivateTaskDialog dlg(this, user, _credentials);  //  may throw
             if (dlg.doModal() == CreatePrivateTaskDialog::Result::Ok)
-            {   //  User created
+            {   //  Private task created
                 refresh();  //  must refresh NOW
-                _setSelectedPrivateTask(dlg.createdPrivateTask());
+                _setCurrentPrivateTask(dlg.createdPrivateTask());
             }
         }
-        else if (auto parentTask = _selectedPrivateTask())
+        else if (auto parentTask = _currentPrivateTask())
         {
             CreatePrivateTaskDialog dlg(this, parentTask, _credentials);//  may throw
             if (dlg.doModal() == CreatePrivateTaskDialog::Result::Ok)
-            {   //  User created
+            {   //  Private task created
                 refresh();  //  must refresh NOW
-                _setSelectedPrivateTask(dlg.createdPrivateTask());
+                _setCurrentPrivateTask(dlg.createdPrivateTask());
             }
         }
     }
@@ -986,7 +986,7 @@ void PrivateTaskManager::_createPrivateTaskPushButtonClicked()
 
 void PrivateTaskManager::_modifyPrivateTaskPushButtonClicked()
 {
-    if (auto privateTask = _selectedPrivateTask())
+    if (auto privateTask = _currentPrivateTask())
     {
         try
         {
@@ -994,7 +994,7 @@ void PrivateTaskManager::_modifyPrivateTaskPushButtonClicked()
             if (dlg.doModal() == ModifyPrivateTaskDialog::Result::Ok)
             {   //  PrivateTask modified - its position in the private tasks tree may have changed
                 refresh();  //  must refresh NOW
-                _setSelectedPrivateTask(privateTask);
+                _setCurrentPrivateTask(privateTask);
             }
         }
         catch (const tt3::util::Exception & ex)
@@ -1008,7 +1008,7 @@ void PrivateTaskManager::_modifyPrivateTaskPushButtonClicked()
 
 void PrivateTaskManager::_destroyPrivateTaskPushButtonClicked()
 {
-    if (auto privateTask = _selectedPrivateTask())
+    if (auto privateTask = _currentPrivateTask())
     {
         try
         {
@@ -1029,7 +1029,7 @@ void PrivateTaskManager::_destroyPrivateTaskPushButtonClicked()
 
 void PrivateTaskManager::_startPrivateTaskPushButtonClicked()
 {
-    if (auto privateTask = _selectedPrivateTask())
+    if (auto privateTask = _currentPrivateTask())
     {
         if (theCurrentActivity == privateTask)
         {   //  Nothing to do!
@@ -1050,7 +1050,7 @@ void PrivateTaskManager::_startPrivateTaskPushButtonClicked()
 
 void PrivateTaskManager::_stopPrivateTaskPushButtonClicked()
 {
-    if (auto privateTask = _selectedPrivateTask())
+    if (auto privateTask = _currentPrivateTask())
     {
         if (theCurrentActivity != privateTask)
         {   //  Nothing to do!
@@ -1071,7 +1071,7 @@ void PrivateTaskManager::_stopPrivateTaskPushButtonClicked()
 
 void PrivateTaskManager::_completePrivateTaskPushButtonClicked()
 {
-    if (auto privateTask = _selectedPrivateTask())
+    if (auto privateTask = _currentPrivateTask())
     {
         try
         {

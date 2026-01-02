@@ -179,7 +179,7 @@ void PublicTaskManager::refresh()
             _ui->publicTasksTreeWidget->expandAll();
         }
 
-        tt3::ws::PublicTask selectedPublicTask = _selectedPublicTask();
+        tt3::ws::PublicTask currentPublicTask = _currentPublicTask();
         bool readOnly = _workspace->isReadOnly();
         try
         {
@@ -196,13 +196,13 @@ void PublicTaskManager::refresh()
             _ui->createPublicTaskPushButton->setEnabled(false);
         }
         _ui->modifyPublicTaskPushButton->setEnabled(
-            selectedPublicTask != nullptr);
+            currentPublicTask != nullptr);
         try
         {
             _ui->destroyPublicTaskPushButton->setEnabled(
                 !readOnly &&
-                selectedPublicTask != nullptr &&
-                selectedPublicTask->canDestroy(_credentials));  //  may throw
+                currentPublicTask != nullptr &&
+                currentPublicTask->canDestroy(_credentials));  //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Report & recover
@@ -214,10 +214,10 @@ void PublicTaskManager::refresh()
         {
             _ui->startPublicTaskPushButton->setEnabled(
                 !readOnly &&
-                selectedPublicTask != nullptr &&
-                theCurrentActivity != selectedPublicTask &&
-                !selectedPublicTask->completed(_credentials) && //  may throw
-                selectedPublicTask->canStart(_credentials));    //  may throw
+                currentPublicTask != nullptr &&
+                theCurrentActivity != currentPublicTask &&
+                !currentPublicTask->completed(_credentials) && //  may throw
+                currentPublicTask->canStart(_credentials));    //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -228,9 +228,9 @@ void PublicTaskManager::refresh()
         {
             _ui->stopPublicTaskPushButton->setEnabled(
                 !readOnly &&
-                selectedPublicTask != nullptr &&
-                theCurrentActivity == selectedPublicTask &&
-                selectedPublicTask->canStop(_credentials)); //  may throw
+                currentPublicTask != nullptr &&
+                theCurrentActivity == currentPublicTask &&
+                currentPublicTask->canStop(_credentials)); //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -241,9 +241,9 @@ void PublicTaskManager::refresh()
         {
             _ui->completePublicTaskPushButton->setEnabled(
                 !readOnly &&
-                selectedPublicTask != nullptr &&
-                selectedPublicTask->canModify(_credentials) &&   //  may throw
-                !selectedPublicTask->completed(_credentials));   //  may throw
+                currentPublicTask != nullptr &&
+                currentPublicTask->canModify(_credentials) &&   //  may throw
+                !currentPublicTask->completed(_credentials));   //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Report & disable
@@ -257,9 +257,9 @@ void PublicTaskManager::refresh()
         //  Some buttons need to be adjusted for ReadOnoly mode
         try
         {
-            if (selectedPublicTask != nullptr &&
-                !selectedPublicTask->workspace()->isReadOnly() &&
-                selectedPublicTask->canModify(_credentials))    //  may throw
+            if (currentPublicTask != nullptr &&
+                !currentPublicTask->workspace()->isReadOnly() &&
+                currentPublicTask->canModify(_credentials))    //  may throw
             {   //  RW
                 _ui->modifyPublicTaskPushButton->setIcon(modifyPublicTaskIcon);
                 _ui->modifyPublicTaskPushButton->setText(
@@ -562,7 +562,7 @@ void PublicTaskManager::_refreshPublicTaskItem(
 
 //////////
 //  Implementation helpers
-auto PublicTaskManager::_selectedPublicTask(
+auto PublicTaskManager::_currentPublicTask(
     ) -> tt3::ws::PublicTask
 {
     QTreeWidgetItem * item = _ui->publicTasksTreeWidget->currentItem();
@@ -571,7 +571,7 @@ auto PublicTaskManager::_selectedPublicTask(
                nullptr;
 }
 
-bool PublicTaskManager::_setSelectedPublicTask(
+bool PublicTaskManager::_setCurrentPublicTask(
         tt3::ws::PublicTask publicTask
     )
 {
@@ -583,7 +583,7 @@ bool PublicTaskManager::_setSelectedPublicTask(
             _ui->publicTasksTreeWidget->setCurrentItem(item);
             return true;
         }
-        if (_setSelectedPublicTask(item, publicTask))
+        if (_setCurrentPublicTask(item, publicTask))
         {   //  One of descendants selected
             return true;
         }
@@ -591,7 +591,7 @@ bool PublicTaskManager::_setSelectedPublicTask(
     return false;
 }
 
-bool PublicTaskManager::_setSelectedPublicTask(
+bool PublicTaskManager::_setCurrentPublicTask(
         QTreeWidgetItem * parentItem,
         tt3::ws::PublicTask publicTask
     )
@@ -604,7 +604,7 @@ bool PublicTaskManager::_setSelectedPublicTask(
             _ui->publicTasksTreeWidget->setCurrentItem(item);
             return true;
         }
-        if (_setSelectedPublicTask(item, publicTask))
+        if (_setCurrentPublicTask(item, publicTask))
         {   //  One of descendants selected
             return true;
         }
@@ -796,11 +796,11 @@ void PublicTaskManager::_createPublicTaskPushButtonClicked()
     try
     {
         CreatePublicTaskDialog dlg(
-            this, _workspace, _credentials, _selectedPublicTask()); //  may throw
+            this, _workspace, _credentials, _currentPublicTask()); //  may throw
         if (dlg.doModal() == CreatePublicTaskDialog::Result::Ok)
-        {   //  User created
+        {   //  Public Task created
             refresh();  //  must refresh NOW
-            _setSelectedPublicTask(dlg.createdPublicTask());
+            _setCurrentPublicTask(dlg.createdPublicTask());
         }
     }
     catch (const tt3::util::Exception & ex)
@@ -812,7 +812,7 @@ void PublicTaskManager::_createPublicTaskPushButtonClicked()
 
 void PublicTaskManager::_modifyPublicTaskPushButtonClicked()
 {
-    if (auto publicTask = _selectedPublicTask())
+    if (auto publicTask = _currentPublicTask())
     {
         try
         {
@@ -820,7 +820,7 @@ void PublicTaskManager::_modifyPublicTaskPushButtonClicked()
             if (dlg.doModal() == ModifyPublicTaskDialog::Result::Ok)
             {   //  PublicTask modified - its position in the public tasks tree may have changed
                 refresh();  //  must refresh NOW
-                _setSelectedPublicTask(publicTask);
+                _setCurrentPublicTask(publicTask);
             }
         }
         catch (const tt3::util::Exception & ex)
@@ -834,7 +834,7 @@ void PublicTaskManager::_modifyPublicTaskPushButtonClicked()
 
 void PublicTaskManager::_destroyPublicTaskPushButtonClicked()
 {
-    if (auto publicTask = _selectedPublicTask())
+    if (auto publicTask = _currentPublicTask())
     {
         try
         {
@@ -855,7 +855,7 @@ void PublicTaskManager::_destroyPublicTaskPushButtonClicked()
 
 void PublicTaskManager::_startPublicTaskPushButtonClicked()
 {
-    if (auto publicTask = _selectedPublicTask())
+    if (auto publicTask = _currentPublicTask())
     {
         if (theCurrentActivity == publicTask)
         {   //  Nothing to do!
@@ -876,7 +876,7 @@ void PublicTaskManager::_startPublicTaskPushButtonClicked()
 
 void PublicTaskManager::_stopPublicTaskPushButtonClicked()
 {
-    if (auto publicTask = _selectedPublicTask())
+    if (auto publicTask = _currentPublicTask())
     {
         if (theCurrentActivity != publicTask)
         {   //  Nothing to do!
@@ -897,7 +897,7 @@ void PublicTaskManager::_stopPublicTaskPushButtonClicked()
 
 void PublicTaskManager::_completePublicTaskPushButtonClicked()
 {
-    if (auto publicTask = _selectedPublicTask())
+    if (auto publicTask = _currentPublicTask())
     {
         try
         {

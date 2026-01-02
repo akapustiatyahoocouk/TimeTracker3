@@ -148,7 +148,7 @@ void WorkStreamManager::refresh()
             _ui->workStreamsTreeWidget,
             workspaceModel);
 
-        tt3::ws::WorkStream selectedWorkStream = _selectedWorkStream();
+        tt3::ws::WorkStream currentWorkStream = _currentWorkStream();
         bool readOnly = _workspace->isReadOnly();
         try
         {
@@ -165,13 +165,13 @@ void WorkStreamManager::refresh()
             _ui->createWorkStreamPushButton->setEnabled(false);
         }
         _ui->modifyWorkStreamPushButton->setEnabled(
-            selectedWorkStream != nullptr);
+            currentWorkStream != nullptr);
         try
         {
             _ui->destroyWorkStreamPushButton->setEnabled(
                 !readOnly &&
-                selectedWorkStream != nullptr &&
-                selectedWorkStream->canDestroy(_credentials));    //  may throw
+                currentWorkStream != nullptr &&
+                currentWorkStream->canDestroy(_credentials));    //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -182,9 +182,9 @@ void WorkStreamManager::refresh()
         //  Some buttons need to be adjusted for ReadOnoly mode
         try
         {
-            if (selectedWorkStream != nullptr &&
-                !selectedWorkStream->workspace()->isReadOnly() &&
-                selectedWorkStream->canModify(_credentials))  //  may throw
+            if (currentWorkStream != nullptr &&
+                !currentWorkStream->workspace()->isReadOnly() &&
+                currentWorkStream->canModify(_credentials))  //  may throw
             {   //  RW
                 _ui->modifyWorkStreamPushButton->setIcon(modifyWorkStreamIcon);
                 _ui->modifyWorkStreamPushButton->setText(
@@ -345,7 +345,7 @@ void WorkStreamManager::_refreshWorkStreamItem(
 
 //////////
 //  Implementation helpers
-tt3::ws::WorkStream WorkStreamManager::_selectedWorkStream()
+tt3::ws::WorkStream WorkStreamManager::_currentWorkStream()
 {
     QTreeWidgetItem * item = _ui->workStreamsTreeWidget->currentItem();
     return (item != nullptr) ?
@@ -353,7 +353,7 @@ tt3::ws::WorkStream WorkStreamManager::_selectedWorkStream()
                nullptr;
 }
 
-void WorkStreamManager::_setSelectedWorkStream(
+void WorkStreamManager::_setCurrentWorkStream(
         tt3::ws::WorkStream workStream
     )
 {
@@ -510,7 +510,7 @@ void WorkStreamManager::_createWorkStreamPushButtonClicked()
         if (dlg.doModal() == CreateWorkStreamDialog::Result::Ok)
         {   //  WorkStream created
             refresh();  //  must refresh NOW
-            _setSelectedWorkStream(dlg.createdWorkStream());
+            _setCurrentWorkStream(dlg.createdWorkStream());
         }
     }
     catch (const tt3::util::Exception & ex)
@@ -522,15 +522,15 @@ void WorkStreamManager::_createWorkStreamPushButtonClicked()
 
 void WorkStreamManager::_modifyWorkStreamPushButtonClicked()
 {
-    if (auto workStream = _selectedWorkStream())
+    if (auto workStream = _currentWorkStream())
     {
         try
         {
             ModifyWorkStreamDialog dlg(this, workStream, _credentials); //  may throw
             if (dlg.doModal() == ModifyWorkStreamDialog::Result::Ok)
-            {   //  WorkStream modified - its position in the activity types tree may have changed
+            {   //  WorkStream modified - its position in the work streams tree may have changed
                 refresh();  //  must refresh NOW
-                _setSelectedWorkStream(workStream);
+                _setCurrentWorkStream(workStream);
             }
         }
         catch (const tt3::util::Exception & ex)
@@ -544,7 +544,7 @@ void WorkStreamManager::_modifyWorkStreamPushButtonClicked()
 
 void WorkStreamManager::_destroyWorkStreamPushButtonClicked()
 {
-    if (auto workStream = _selectedWorkStream())
+    if (auto workStream = _currentWorkStream())
     {
         try
         {

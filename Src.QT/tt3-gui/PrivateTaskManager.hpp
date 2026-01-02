@@ -227,17 +227,17 @@ namespace tt3::gui
                             );
 
         //  Helpers
-        auto            _selectedUser(
+        auto            _currentUser(
                             ) -> tt3::ws::User;
-        void            _setSelectedUser(
+        void            _setCurrentUser(
                                 tt3::ws::User user
                             );
-        auto            _selectedPrivateTask(
+        auto            _currentPrivateTask(
                             ) -> tt3::ws::PrivateTask;
-        bool            _setSelectedPrivateTask(
+        bool            _setCurrentPrivateTask(
                                 tt3::ws::PrivateTask publicTask
                             );
-        bool            _setSelectedPrivateTask(
+        bool            _setCurrentPrivateTask(
                                 QTreeWidgetItem * parentItem,
                                 tt3::ws::PrivateTask publicTask
                             );

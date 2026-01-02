@@ -165,7 +165,7 @@ void PublicActivityManager::refresh()
             _ui->publicActivitiesTreeWidget,
             workspaceModel);
 
-        tt3::ws::PublicActivity selectedPublicActivity = _selectedPublicActivity();
+        tt3::ws::PublicActivity currentPublicActivity = _currentPublicActivity();
         bool readOnly = _workspace->isReadOnly();
         try
         {
@@ -182,13 +182,13 @@ void PublicActivityManager::refresh()
             _ui->createPublicActivityPushButton->setEnabled(false);
         }
         _ui->modifyPublicActivityPushButton->setEnabled(
-            selectedPublicActivity != nullptr);
+            currentPublicActivity != nullptr);
         try
         {
             _ui->destroyPublicActivityPushButton->setEnabled(
                 !readOnly &&
-                selectedPublicActivity != nullptr &&
-                selectedPublicActivity->canDestroy(_credentials));  //  may throw
+                currentPublicActivity != nullptr &&
+                currentPublicActivity->canDestroy(_credentials));  //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -200,9 +200,9 @@ void PublicActivityManager::refresh()
         {
             _ui->startPublicActivityPushButton->setEnabled(
                 !readOnly &&
-                selectedPublicActivity != nullptr &&
-                theCurrentActivity != selectedPublicActivity &&
-                selectedPublicActivity->canStart(_credentials));    //  may throw
+                currentPublicActivity != nullptr &&
+                theCurrentActivity != currentPublicActivity &&
+                currentPublicActivity->canStart(_credentials));    //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //OOPS! Log & disable
@@ -213,9 +213,9 @@ void PublicActivityManager::refresh()
         {
             _ui->stopPublicActivityPushButton->setEnabled(
                 !readOnly &&
-                selectedPublicActivity != nullptr &&
-                theCurrentActivity == selectedPublicActivity &&
-                selectedPublicActivity->canStop(_credentials)); //  may throw
+                currentPublicActivity != nullptr &&
+                theCurrentActivity == currentPublicActivity &&
+                currentPublicActivity->canStop(_credentials)); //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //OOPS! Log & disable
@@ -226,9 +226,9 @@ void PublicActivityManager::refresh()
         //  Some buttons need to be adjusted for ReadOnoly mode
         try
         {
-            if (selectedPublicActivity != nullptr &&
-                !selectedPublicActivity->workspace()->isReadOnly() &&
-                selectedPublicActivity->canModify(_credentials))    //  may throw
+            if (currentPublicActivity != nullptr &&
+                !currentPublicActivity->workspace()->isReadOnly() &&
+                currentPublicActivity->canModify(_credentials))    //  may throw
             {   //  RW
                 _ui->modifyPublicActivityPushButton->setIcon(modifyPublicActivityIcon);
                 _ui->modifyPublicActivityPushButton->setText(
@@ -401,7 +401,7 @@ void PublicActivityManager::_refreshPublicActivityItem(
 
 //////////
 //  Implementation helpers
-auto PublicActivityManager::_selectedPublicActivity(
+auto PublicActivityManager::_currentPublicActivity(
     ) -> tt3::ws::PublicActivity
 {
     QTreeWidgetItem * item = _ui->publicActivitiesTreeWidget->currentItem();
@@ -410,7 +410,7 @@ auto PublicActivityManager::_selectedPublicActivity(
                nullptr;
 }
 
-void PublicActivityManager::_setSelectedPublicActivity(
+void PublicActivityManager::_setCurrentPublicActivity(
         tt3::ws::PublicActivity publicActivity
     )
 {
@@ -597,7 +597,7 @@ void PublicActivityManager::_createPublicActivityPushButtonClicked()
         if (dlg.doModal() == CreatePublicActivityDialog::Result::Ok)
         {   //  PublicActivity created
             refresh();  //  must refresh NOW
-            _setSelectedPublicActivity(dlg.createdPublicActivity());
+            _setCurrentPublicActivity(dlg.createdPublicActivity());
         }
     }
     catch (const tt3::util::Exception & ex)
@@ -609,15 +609,15 @@ void PublicActivityManager::_createPublicActivityPushButtonClicked()
 
 void PublicActivityManager::_modifyPublicActivityPushButtonClicked()
 {
-    if (auto publicActivity = _selectedPublicActivity())
+    if (auto publicActivity = _currentPublicActivity())
     {
         try
         {
             ModifyPublicActivityDialog dlg(this, publicActivity, _credentials); //  may throw
             if (dlg.doModal() == ModifyPublicActivityDialog::Result::Ok)
-            {   //  PublicActivity modified - its position in the activity types tree may have changed
+            {   //  PublicActivity modified - its position in the public activities tree may have changed
                 refresh();  //  must refresh NOW
-                _setSelectedPublicActivity(publicActivity);
+                _setCurrentPublicActivity(publicActivity);
             }
         }
         catch (const tt3::util::Exception & ex)
@@ -631,7 +631,7 @@ void PublicActivityManager::_modifyPublicActivityPushButtonClicked()
 
 void PublicActivityManager::_destroyPublicActivityPushButtonClicked()
 {
-    if (auto publicActivity = _selectedPublicActivity())
+    if (auto publicActivity = _currentPublicActivity())
     {
         try
         {
@@ -652,7 +652,7 @@ void PublicActivityManager::_destroyPublicActivityPushButtonClicked()
 
 void PublicActivityManager::_startPublicActivityPushButtonClicked()
 {
-    if (auto publicActivity = _selectedPublicActivity())
+    if (auto publicActivity = _currentPublicActivity())
     {
         if (theCurrentActivity == publicActivity)
         {   //  Nothing to do!
@@ -673,7 +673,7 @@ void PublicActivityManager::_startPublicActivityPushButtonClicked()
 
 void PublicActivityManager::_stopPublicActivityPushButtonClicked()
 {
-    if (auto publicActivity = _selectedPublicActivity())
+    if (auto publicActivity = _currentPublicActivity())
     {
         if (theCurrentActivity != publicActivity)
         {   //  Nothing to do!

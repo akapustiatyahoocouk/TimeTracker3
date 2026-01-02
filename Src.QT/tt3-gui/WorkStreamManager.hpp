@@ -170,9 +170,9 @@ namespace tt3::gui
                             );
 
         //  Helpers
-        auto        _selectedWorkStream(
+        auto        _currentWorkStream(
                         ) -> tt3::ws::WorkStream;
-        void        _setSelectedWorkStream(
+        void        _setCurrentWorkStream(
                             tt3::ws::WorkStream workStream
                         );
         void        _startListeningToWorkspaceChanges();

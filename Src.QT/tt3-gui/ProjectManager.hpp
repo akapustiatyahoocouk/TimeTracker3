@@ -192,12 +192,12 @@ namespace tt3::gui
                             );
 
         //  Helpers
-        auto            _selectedProject(
+        auto            _currentProject(
                             ) -> tt3::ws::Project;
-        bool            _setSelectedProject(
+        bool            _setCurrentProject(
                                 tt3::ws::Project project
                             );
-        bool            _setSelectedProject(
+        bool            _setCurrentProject(
                                 QTreeWidgetItem * parentItem,
                                 tt3::ws::Project project
                             );

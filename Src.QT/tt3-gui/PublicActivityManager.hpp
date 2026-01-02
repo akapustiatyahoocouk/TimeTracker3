@@ -174,9 +174,9 @@ namespace tt3::gui
                             );
 
         //  Helpers
-        auto            _selectedPublicActivity(
+        auto            _currentPublicActivity(
                             ) -> tt3::ws::PublicActivity;
-        void            _setSelectedPublicActivity(
+        void            _setCurrentPublicActivity(
                                 tt3::ws::PublicActivity publicActivity
                             );
         void            _startListeningToWorkspaceChanges();

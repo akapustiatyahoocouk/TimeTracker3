@@ -190,12 +190,12 @@ namespace tt3::gui
                             );
 
         //  Helpers
-        auto            _selectedPublicTask(
+        auto            _currentPublicTask(
                             ) -> tt3::ws::PublicTask;
-        bool            _setSelectedPublicTask(
+        bool            _setCurrentPublicTask(
                                 tt3::ws::PublicTask publicTask
                             );
-        bool            _setSelectedPublicTask(
+        bool            _setCurrentPublicTask(
                                 QTreeWidgetItem * parentItem,
                                 tt3::ws::PublicTask publicTask
                             );

@@ -170,7 +170,7 @@ void ProjectManager::refresh()
             _ui->projectsTreeWidget->expandAll();
         }
 
-        tt3::ws::Project selectedProject = _selectedProject();
+        tt3::ws::Project currentProject = _currentProject();
         bool readOnly = _workspace->isReadOnly();
         try
         {
@@ -187,13 +187,13 @@ void ProjectManager::refresh()
             _ui->createProjectPushButton->setEnabled(false);
         }
         _ui->modifyProjectPushButton->setEnabled(
-            selectedProject != nullptr);
+            currentProject != nullptr);
         try
         {
             _ui->destroyProjectPushButton->setEnabled(
                 !readOnly &&
-                selectedProject != nullptr &&
-                selectedProject->canDestroy(_credentials));  //  may throw
+                currentProject != nullptr &&
+                currentProject->canDestroy(_credentials));  //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Report & recover
@@ -205,9 +205,9 @@ void ProjectManager::refresh()
         {
             _ui->completeProjectPushButton->setEnabled(
                 !readOnly &&
-                selectedProject != nullptr &&
-                selectedProject->canModify(_credentials) &&   //  may throw
-                !selectedProject->completed(_credentials));   //  may throw
+                currentProject != nullptr &&
+                currentProject->canModify(_credentials) &&   //  may throw
+                !currentProject->completed(_credentials));   //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Report & disable
@@ -221,9 +221,9 @@ void ProjectManager::refresh()
         //  Some buttons need to be adjusted for ReadOnoly mode
         try
         {
-            if (selectedProject != nullptr &&
-                !selectedProject->workspace()->isReadOnly() &&
-                selectedProject->canModify(_credentials))    //  may throw
+            if (currentProject != nullptr &&
+                !currentProject->workspace()->isReadOnly() &&
+                currentProject->canModify(_credentials))    //  may throw
             {   //  RW
                 _ui->modifyProjectPushButton->setIcon(modifyProjectIcon);
                 _ui->modifyProjectPushButton->setText(
@@ -514,7 +514,7 @@ void ProjectManager::_refreshProjectItem(
 
 //////////
 //  Implementation helpers
-auto ProjectManager::_selectedProject(
+auto ProjectManager::_currentProject(
     ) -> tt3::ws::Project
 {
     QTreeWidgetItem * item = _ui->projectsTreeWidget->currentItem();
@@ -523,7 +523,7 @@ auto ProjectManager::_selectedProject(
                nullptr;
 }
 
-bool ProjectManager::_setSelectedProject(
+bool ProjectManager::_setCurrentProject(
         tt3::ws::Project project
     )
 {
@@ -535,7 +535,7 @@ bool ProjectManager::_setSelectedProject(
             _ui->projectsTreeWidget->setCurrentItem(item);
             return true;
         }
-        if (_setSelectedProject(item, project))
+        if (_setCurrentProject(item, project))
         {   //  One of descendants selected
             return true;
         }
@@ -543,7 +543,7 @@ bool ProjectManager::_setSelectedProject(
     return false;
 }
 
-bool ProjectManager::_setSelectedProject(
+bool ProjectManager::_setCurrentProject(
         QTreeWidgetItem * parentItem,
         tt3::ws::Project project
     )
@@ -556,7 +556,7 @@ bool ProjectManager::_setSelectedProject(
             _ui->projectsTreeWidget->setCurrentItem(item);
             return true;
         }
-        if (_setSelectedProject(item, project))
+        if (_setCurrentProject(item, project))
         {   //  One of descendants selected
             return true;
         }
@@ -724,11 +724,11 @@ void ProjectManager::_createProjectPushButtonClicked()
     try
     {
         CreateProjectDialog dlg(
-            this, _workspace, _credentials, _selectedProject()); //  may throw
+            this, _workspace, _credentials, _currentProject()); //  may throw
         if (dlg.doModal() == CreateProjectDialog::Result::Ok)
-        {   //  User created
+        {   //  Project created
             refresh();  //  must refresh NOW
-            _setSelectedProject(dlg.createdProject());
+            _setCurrentProject(dlg.createdProject());
         }
     }
     catch (const tt3::util::Exception & ex)
@@ -740,7 +740,7 @@ void ProjectManager::_createProjectPushButtonClicked()
 
 void ProjectManager::_modifyProjectPushButtonClicked()
 {
-    if (auto project = _selectedProject())
+    if (auto project = _currentProject())
     {
         try
         {
@@ -748,7 +748,7 @@ void ProjectManager::_modifyProjectPushButtonClicked()
             if (dlg.doModal() == ModifyProjectDialog::Result::Ok)
             {   //  Project modified - its position in the projects tree may have changed
                 refresh();  //  must refresh NOW
-                _setSelectedProject(project);
+                _setCurrentProject(project);
             }
         }
         catch (const tt3::util::Exception & ex)
@@ -762,7 +762,7 @@ void ProjectManager::_modifyProjectPushButtonClicked()
 
 void ProjectManager::_destroyProjectPushButtonClicked()
 {
-    if (auto project = _selectedProject())
+    if (auto project = _currentProject())
     {
         try
         {
@@ -783,7 +783,7 @@ void ProjectManager::_destroyProjectPushButtonClicked()
 
 void ProjectManager::_completeProjectPushButtonClicked()
 {
-    if (auto project = _selectedProject())
+    if (auto project = _currentProject())
     {
         try
         {

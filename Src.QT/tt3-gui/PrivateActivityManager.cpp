@@ -169,7 +169,7 @@ void PrivateActivityManager::refresh()
             _ui->privateActivitiesTreeWidget->expandAll();
         }
 
-        tt3::ws::PrivateActivity selectedPrivateActivity = _selectedPrivateActivity();
+        tt3::ws::PrivateActivity currentPrivateActivity = _currentPrivateActivity();
         bool readOnly = _workspace->isReadOnly();
         try
         {
@@ -179,7 +179,7 @@ void PrivateActivityManager::refresh()
                     _credentials,
                     tt3::ws::Capability::Administrator |
                     tt3::ws::Capability::ManagePrivateActivities) &&
-                _selectedUser() != nullptr);
+                _currentUser() != nullptr);
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -187,13 +187,13 @@ void PrivateActivityManager::refresh()
             _ui->createPrivateActivityPushButton->setEnabled(false);
         }
         _ui->modifyPrivateActivityPushButton->setEnabled(
-            selectedPrivateActivity != nullptr);
+            currentPrivateActivity != nullptr);
         try
         {
             _ui->destroyPrivateActivityPushButton->setEnabled(
                 !readOnly &&
-                selectedPrivateActivity != nullptr &&
-                selectedPrivateActivity->canDestroy(_credentials));  //  may throw
+                currentPrivateActivity != nullptr &&
+                currentPrivateActivity->canDestroy(_credentials));  //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -205,9 +205,9 @@ void PrivateActivityManager::refresh()
         {
             _ui->startPrivateActivityPushButton->setEnabled(
                 !readOnly &&
-                selectedPrivateActivity != nullptr &&
-                theCurrentActivity != selectedPrivateActivity &&
-                selectedPrivateActivity->canStart(_credentials));   //  may throw
+                currentPrivateActivity != nullptr &&
+                theCurrentActivity != currentPrivateActivity &&
+                currentPrivateActivity->canStart(_credentials));   //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -218,9 +218,9 @@ void PrivateActivityManager::refresh()
         {
             _ui->stopPrivateActivityPushButton->setEnabled(
                 !readOnly &&
-                selectedPrivateActivity != nullptr &&
-                theCurrentActivity == selectedPrivateActivity &&
-                selectedPrivateActivity->canStop(_credentials));    //  may throw
+                currentPrivateActivity != nullptr &&
+                theCurrentActivity == currentPrivateActivity &&
+                currentPrivateActivity->canStop(_credentials));    //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -231,9 +231,9 @@ void PrivateActivityManager::refresh()
         //  Some buttons need to be adjusted for ReadOnoly mode
         try
         {
-            if (selectedPrivateActivity != nullptr &&
-                !selectedPrivateActivity->workspace()->isReadOnly() &&
-                selectedPrivateActivity->canModify(_credentials))    //  may throw
+            if (currentPrivateActivity != nullptr &&
+                !currentPrivateActivity->workspace()->isReadOnly() &&
+                currentPrivateActivity->canModify(_credentials))    //  may throw
             {   //  RW
                 _ui->modifyPrivateActivityPushButton->setIcon(modifyPrivateActivityIcon);
                 _ui->modifyPrivateActivityPushButton->setText(
@@ -531,7 +531,7 @@ void PrivateActivityManager::_refreshPrivateActivityItem(
 
 //////////
 //  Implementation helpers
-tt3::ws::User PrivateActivityManager::_selectedUser()
+tt3::ws::User PrivateActivityManager::_currentUser()
 {
     QTreeWidgetItem * item = _ui->privateActivitiesTreeWidget->currentItem();
     return (item != nullptr && item->parent() == nullptr) ?
@@ -539,7 +539,7 @@ tt3::ws::User PrivateActivityManager::_selectedUser()
                nullptr;
 }
 
-void PrivateActivityManager::_setSelectedUser(tt3::ws::User user)
+void PrivateActivityManager::_setCurrentUser(tt3::ws::User user)
 {
     for (int i = 0; i < _ui->privateActivitiesTreeWidget->topLevelItemCount(); i++)
     {
@@ -552,7 +552,7 @@ void PrivateActivityManager::_setSelectedUser(tt3::ws::User user)
     }
 }
 
-auto PrivateActivityManager::_selectedPrivateActivity(
+auto PrivateActivityManager::_currentPrivateActivity(
     ) -> tt3::ws::PrivateActivity
 {
     QTreeWidgetItem * item = _ui->privateActivitiesTreeWidget->currentItem();
@@ -561,7 +561,7 @@ auto PrivateActivityManager::_selectedPrivateActivity(
                nullptr;
 }
 
-void PrivateActivityManager::_setSelectedPrivateActivity(
+void PrivateActivityManager::_setCurrentPrivateActivity(
         tt3::ws::PrivateActivity privateActivity
     )
 {
@@ -748,13 +748,13 @@ void PrivateActivityManager::_createPrivateActivityPushButtonClicked()
 {
     try
     {
-        if (auto user = _selectedUser())
+        if (auto user = _currentUser())
         {
             CreatePrivateActivityDialog dlg(this, user, _credentials);   //  may throw
             if (dlg.doModal() == CreatePrivateActivityDialog::Result::Ok)
             {   //  PrivateActivity created
                 refresh();  //  must refresh NOW
-                _setSelectedPrivateActivity(dlg.createdPrivateActivity());
+                _setCurrentPrivateActivity(dlg.createdPrivateActivity());
             }
         }
     }
@@ -767,15 +767,15 @@ void PrivateActivityManager::_createPrivateActivityPushButtonClicked()
 
 void PrivateActivityManager::_modifyPrivateActivityPushButtonClicked()
 {
-    if (auto privateActivity = _selectedPrivateActivity())
+    if (auto privateActivity = _currentPrivateActivity())
     {
         try
         {
             ModifyPrivateActivityDialog dlg(this, privateActivity, _credentials); //  may throw
             if (dlg.doModal() == ModifyPrivateActivityDialog::Result::Ok)
-            {   //  PrivateActivity modified - its position in the activity types tree may have changed
+            {   //  PrivateActivity modified - its position in the private activities tree may have changed
                 refresh();  //  must refresh NOW
-                _setSelectedPrivateActivity(privateActivity);
+                _setCurrentPrivateActivity(privateActivity);
             }
         }
         catch (const tt3::util::Exception & ex)
@@ -789,7 +789,7 @@ void PrivateActivityManager::_modifyPrivateActivityPushButtonClicked()
 
 void PrivateActivityManager::_destroyPrivateActivityPushButtonClicked()
 {
-    if (auto privateActivity = _selectedPrivateActivity())
+    if (auto privateActivity = _currentPrivateActivity())
     {
         try
         {
@@ -810,7 +810,7 @@ void PrivateActivityManager::_destroyPrivateActivityPushButtonClicked()
 
 void PrivateActivityManager::_startPrivateActivityPushButtonClicked()
 {
-    if (auto privateActivity = _selectedPrivateActivity())
+    if (auto privateActivity = _currentPrivateActivity())
     {
         if (theCurrentActivity == privateActivity)
         {   //  Nothing to do!
@@ -831,7 +831,7 @@ void PrivateActivityManager::_startPrivateActivityPushButtonClicked()
 
 void PrivateActivityManager::_stopPrivateActivityPushButtonClicked()
 {
-    if (auto privateActivity = _selectedPrivateActivity())
+    if (auto privateActivity = _currentPrivateActivity())
     {
         if (theCurrentActivity != privateActivity)
         {   //  Nothing to do!

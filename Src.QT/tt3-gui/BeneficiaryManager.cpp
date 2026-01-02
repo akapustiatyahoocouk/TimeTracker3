@@ -524,7 +524,7 @@ void BeneficiaryManager::_modifyBeneficiaryPushButtonClicked()
         {
             ModifyBeneficiaryDialog dlg(this, beneficiary, _credentials); //  may throw
             if (dlg.doModal() == ModifyBeneficiaryDialog::Result::Ok)
-            {   //  Beneficiary modified - its position in the activity types tree may have changed
+            {   //  Beneficiary modified - its position in the beneficiaries tree may have changed
                 refresh();  //  must refresh NOW
                 _setCurrentBeneficiary(beneficiary);
             }
