@@ -31,9 +31,4 @@ QIcon IComponent::largeIcon() const
     return icon;
 }
 
-ILicense * IComponent::license() const
-{
-    return StandardLicenses::Gpl3::instance();
-}
-
 //  End of tt3-util/IComponent.cpp

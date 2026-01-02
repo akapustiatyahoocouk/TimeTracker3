@@ -56,6 +56,11 @@ QString Component::buildNumber() const
     return TT3_BUILD_DATE "-" TT3_BUILD_TIME;
 }
 
+auto Component::license() const -> tt3::util::ILicense *
+{
+    return tt3::util::StandardLicenses::Gpl3::instance();
+}
+
 Component::ISubsystem * Component::subsystem() const
 {
     return tt3::util::StandardSubsystems::Storage::instance();

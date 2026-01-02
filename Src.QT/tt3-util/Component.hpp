@@ -104,7 +104,7 @@ namespace tt3::util
         /// \return
         ///     The license of this component.
         virtual auto    license(
-                            ) const -> ILicense *;
+                            ) const -> ILicense * = 0;
 
         /// \brief
         ///     Returns the subsystem yo which this component belongs.
@@ -354,18 +354,19 @@ public:                                 \
         //////////
         //  IComponent
     public:
-        virtual Mnemonic        mnemonic() const override;
-        virtual QString         displayName() const override;
-        virtual QString         description() const override;
-        virtual QString         copyright() const override;
-        virtual QVersionNumber  version() const override;
-        virtual QString         buildNumber() const override;
-        virtual ISubsystem *    subsystem() const override;
-        virtual Resources *     resources() const override;
-        virtual Settings *      settings() override;
-        virtual const Settings *settings() const override;
-        virtual void            initialize() override;
-        virtual void            deinitialize() override;
+        virtual auto    mnemonic() const -> Mnemonic override;
+        virtual QString displayName() const override;
+        virtual QString description() const override;
+        virtual QString copyright() const override;
+        virtual auto    version() const -> QVersionNumber override;
+        virtual QString buildNumber() const override;
+        virtual auto    license() const -> ILicense * override;
+        virtual auto    subsystem() const -> ISubsystem * override;
+        virtual auto    resources() const -> Resources * override;
+        virtual auto    settings() -> Settings * override;
+        virtual auto    settings() const -> const Settings * override;
+        virtual void    initialize() override;
+        virtual void    deinitialize() override;
     };
 #endif //   def TT3_UTIL_SETTINGS_DEFINED
 }
