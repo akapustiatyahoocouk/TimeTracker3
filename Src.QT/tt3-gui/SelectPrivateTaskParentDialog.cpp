@@ -236,8 +236,8 @@ void SelectPrivateTaskParentDialog::_refresh()
         {
             PrivateTaskManager::_removeCompletedItems(userModel, _credentials);
         }
-        QString filter = _ui->filterLineEdit->text().trimmed();
-        if (!filter.isEmpty())
+        if (QString filter = _ui->filterLineEdit->text().trimmed();
+            !filter.isEmpty())
         {
             PrivateTaskManager::_filterItems(
                 userModel, filter, _decorations);

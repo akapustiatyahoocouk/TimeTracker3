@@ -200,8 +200,8 @@ void ManageQuickPicksListDialog::_refillPublicActivitiesTree()
     PublicActivityManager::_WorkspaceModel workspaceModel =
         PublicActivityManager::_createWorkspaceModel(
         _account->workspace(), _credentials, _treeWidgetDecorations);
-    QString filter = _ui->publicActivitiesFilterLineEdit->text().trimmed();
-    if (!filter.isEmpty())
+    if (QString filter = _ui->publicActivitiesFilterLineEdit->text().trimmed();
+        !filter.isEmpty())
     {
         PublicActivityManager::_filterItems(workspaceModel, filter, _treeWidgetDecorations);
     }
@@ -253,8 +253,8 @@ void ManageQuickPicksListDialog::_refillPrivateActivitiesTree()
         PrivateActivityManager::_UserModel userModel =
             PrivateActivityManager::_createUserModel(
                 _account->user(_credentials), _credentials, _treeWidgetDecorations);  //  may throw
-        QString filter = _ui->privateActivitiesFilterLineEdit->text().trimmed();
-        if (!filter.isEmpty())
+        if (QString filter = _ui->privateActivitiesFilterLineEdit->text().trimmed();
+            !filter.isEmpty())
         {
             PrivateActivityManager::_filterItems(userModel, filter, _treeWidgetDecorations);
         }

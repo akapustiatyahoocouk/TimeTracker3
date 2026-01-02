@@ -91,8 +91,7 @@ namespace tt3::util
             return result;
         }
         qsizetype prescan = scan;
-        bool separatorConsumed = false;
-        for (; ; )
+        for (bool separatorConsumed = false; ; )
         {
             //  Does a font flag start at s[scan] |
             FontStyle addend;
@@ -108,10 +107,15 @@ namespace tt3::util
             }
             if (addend.isEmpty())
             {   //  No more!
-                separatorConsumed = false;
+                if (separatorConsumed)
+                {   //  ...but we've consumed Separator at the end
+                    //  of the previous iteration
+                    prescan--;
+                }
                 break;
             }
             result |= addend;
+            separatorConsumed = false;
             //  More ?
             if (prescan < s.length() && s[prescan] == Separator)
             {
@@ -120,13 +124,8 @@ namespace tt3::util
             }
             else
             {
-                separatorConsumed = false;
                 break;
             }
-        }
-        if (separatorConsumed)
-        {
-            prescan--;
         }
         scan = prescan;
         return result;

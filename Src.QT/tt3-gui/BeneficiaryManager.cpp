@@ -139,8 +139,8 @@ void BeneficiaryManager::refresh()
         //  selection and permissions granted by Credentials
         _WorkspaceModel workspaceModel =
             _createWorkspaceModel(_workspace, _credentials, _decorations);
-        QString filter = _ui->filterLineEdit->text().trimmed();
-        if (!filter.isEmpty())
+        if (QString filter = _ui->filterLineEdit->text().trimmed();
+            !filter.isEmpty())
         {
             _filterItems(workspaceModel, filter, _decorations);
         }

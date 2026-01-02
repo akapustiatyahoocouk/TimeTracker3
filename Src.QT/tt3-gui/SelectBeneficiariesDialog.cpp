@@ -182,8 +182,8 @@ void SelectBeneficiariesDialog::_refresh()
         BeneficiaryManager::_WorkspaceModel workspaceModel =
             BeneficiaryManager::_createWorkspaceModel(
                 _workspace, _credentials, _treeWidgetDecorations);
-        QString filter = _ui->filterLineEdit->text().trimmed();
-        if (!filter.isEmpty())
+        if (QString filter = _ui->filterLineEdit->text().trimmed();
+            !filter.isEmpty())
         {
             BeneficiaryManager::_filterItems(
                 workspaceModel, filter, _treeWidgetDecorations);

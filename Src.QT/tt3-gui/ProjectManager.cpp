@@ -159,8 +159,8 @@ void ProjectManager::refresh()
         {
             _removeCompletedItems(workspaceModel, _credentials);
         }
-        QString filter = _ui->filterLineEdit->text().trimmed();
-        if (!filter.isEmpty())
+        if (QString filter = _ui->filterLineEdit->text().trimmed();
+            !filter.isEmpty())
         {
             _filterItems(workspaceModel, filter, _decorations);
         }

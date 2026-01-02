@@ -24,21 +24,23 @@ namespace
         Capability  capability;
         QString     name;
     };
+#define TT3_WS_CAPABILITY_NAME(C)  { Capability::C, #C }
     const CapabilityName capabilityNames[] =
     {
-        { Capability::Administrator, "Administrator" },
-        { Capability::ManageUsers, "ManageUsers" },
-        { Capability::ManageActivityTypes, "ManageActivityTypes" },
-        { Capability::ManageBeneficiaries, "ManageBeneficiaries" },
-        { Capability::ManageWorkloads, "ManageWorkloads" },
-        { Capability::ManagePublicActivities, "ManagePublicActivities" },
-        { Capability::ManagePublicTasks, "ManagePublicTasks" },
-        { Capability::ManagePrivateActivities, "ManagePrivateActivities" },
-        { Capability::ManagePrivateTasks, "ManagePrivateTasks" },
-        { Capability::LogWork, "LogWork" },
-        { Capability::LogEvents, "LogEvents" },
-        { Capability::GenerateReports, "GenerateReports" },
-        { Capability::BackupAndRestore, "BackupAndRestore" }
+        TT3_WS_CAPABILITY_NAME(Administrator),
+        TT3_WS_CAPABILITY_NAME(ManageUsers),
+        TT3_WS_CAPABILITY_NAME(ManageActivityTypes),
+        TT3_WS_CAPABILITY_NAME(ManageBeneficiaries),
+        TT3_WS_CAPABILITY_NAME(ManageWorkloads),
+        TT3_WS_CAPABILITY_NAME(ManagePublicActivities),
+        TT3_WS_CAPABILITY_NAME(ManagePublicTasks),
+        TT3_WS_CAPABILITY_NAME(ManagePrivateActivities),
+        TT3_WS_CAPABILITY_NAME(ManagePrivateTasks),
+        TT3_WS_CAPABILITY_NAME(LogWork),
+        TT3_WS_CAPABILITY_NAME(LogEvents),
+        TT3_WS_CAPABILITY_NAME(GenerateReports),
+        TT3_WS_CAPABILITY_NAME(BackupAndRestore)
+#undef TT3_WS_CAPABILITY_NAME
     };
 
     const char Separator = '+';
@@ -76,10 +78,9 @@ auto tt3::util::fromString<Capabilities>(
         return result;
     }
     qsizetype prescan = scan;
-    bool separatorConsumed = false;
-    for (; ; )
+    for (bool separatorConsumed = false; ; )
     {
-        //  Does a capability name start at s[scan] |
+        //  Does a capability name start at s[scan]?
         Capabilities addend;
         for (size_t i = 0; i < sizeof(capabilityNames) / sizeof(capabilityNames[0]); i++)
         {
@@ -91,11 +92,16 @@ auto tt3::util::fromString<Capabilities>(
             }
         }
         if (addend.isEmpty())
-        {   //  No more!
-            separatorConsumed = false;
+        {   //  No more...
+            if (separatorConsumed)
+            {   //  ...but we've consumed Separator at the end
+                //  of the previous iteration
+                prescan--;
+            }
             break;
         }
         result |= addend;
+        separatorConsumed = false;
         //  More ?
         if (prescan < s.length() && s[prescan] == Separator)
         {
@@ -104,13 +110,8 @@ auto tt3::util::fromString<Capabilities>(
         }
         else
         {
-            separatorConsumed = false;
             break;
         }
-    }
-    if (separatorConsumed)
-    {
-        prescan--;
     }
     scan = prescan;
     return result;

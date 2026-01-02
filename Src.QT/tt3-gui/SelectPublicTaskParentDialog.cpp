@@ -174,8 +174,8 @@ void SelectPublicTaskParentDialog::_refresh()
         {
             PublicTaskManager::_removeCompletedItems(workspaceModel, _credentials);
         }
-        QString filter = _ui->filterLineEdit->text().trimmed();
-        if (!filter.isEmpty())
+        if (QString filter = _ui->filterLineEdit->text().trimmed();
+            !filter.isEmpty())
         {
             PublicTaskManager::_filterItems(
                 workspaceModel, filter, _decorations);
