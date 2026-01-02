@@ -364,6 +364,7 @@ DisplayName=Внешний вид
 [GeneralAppearancePreferencesEditor]
 LanguageLabel=Язык:
 SkinLabel=Интерфейс:
+StyleLabel=Стиль:
 ThemeLabel=Палитра:
 
 [GeneralDialogsPreferences]

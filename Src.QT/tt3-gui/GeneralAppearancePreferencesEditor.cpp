@@ -21,6 +21,7 @@ using namespace tt3::gui;
 namespace tt3::gui
 {
     extern CurrentTheme theCurrentTheme;
+    extern CurrentStyle theCurrentStyle;
 }
 
 //////////
@@ -37,6 +38,8 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
         rr.string(RID(LanguageLabel)));
     _ui->skinLabel->setText(
         rr.string(RID(SkinLabel)));
+    _ui->styleLabel->setText(
+        rr.string(RID(StyleLabel)));
     _ui->themeLabel->setText(
         rr.string(RID(ThemeLabel)));
 
@@ -56,7 +59,6 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
                 tt3::util::LocaleManager::displayName(a),
                 tt3::util::LocaleManager::displayName(b));
         });
-
     for (const QLocale & locale : std::as_const(_locales))
     {
         _ui->languageComboBox->addItem(
@@ -66,7 +68,7 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
 
     //  Fill the skin combo box with available skins
     //  sorted by display name
-    _skins.append(SkinManager::all().values());
+    _skins = SkinManager::all().values();
     std::sort(
         _skins.begin(),
         _skins.end(),
@@ -76,20 +78,30 @@ GeneralAppearancePreferencesEditor::GeneralAppearancePreferencesEditor(QWidget *
                 a->displayName(),
                 b->displayName());
         });
-
     for (ISkin * skin : std::as_const(_skins))
     {
         _ui->skinComboBox->addItem(skin->smallIcon(), skin->displayName());
     }
 
+    //  Fill the style combo box with available styles
+    //  sorted by display name
+    _styles = StyleManager::all().values();
+    std::sort(
+        _styles.begin(),
+        _styles.end(),
+        [](auto a, auto b) { return a->displayName() < b->displayName(); });
+    for (IStyle * style : std::as_const(_styles))
+    {
+        _ui->styleComboBox->addItem(style->smallIcon(), style->displayName());
+    }
+
     //  Fill the theme combo box with available themes
     //  sorted by display name
-    _themes.append(ThemeManager::all().values());
+    _themes = ThemeManager::all().values();
     std::sort(
         _themes.begin(),
         _themes.end(),
         [](auto a, auto b) { return a->displayName() < b->displayName(); });
-
     for (ITheme * theme : std::as_const(_themes))
     {
         _ui->themeComboBox->addItem(theme->smallIcon(), theme->displayName());
@@ -115,6 +127,7 @@ void GeneralAppearancePreferencesEditor::loadControlValues()
 {
     _setSelectedLocale(Component::Settings::instance()->uiLocale);
     _setSelectedSkin(SkinManager::find(Component::Settings::instance()->activeSkin));
+    _setSelectedStyle(StyleManager::find(Component::Settings::instance()->activeStyle));
     _setSelectedTheme(ThemeManager::find(Component::Settings::instance()->activeTheme));
 }
 
@@ -122,9 +135,11 @@ void GeneralAppearancePreferencesEditor::saveControlValues()
 {
     Component::Settings::instance()->uiLocale = _selectedLocale();
     Component::Settings::instance()->activeSkin = _selectedSkin()->mnemonic();
+    Component::Settings::instance()->activeStyle = _selectedStyle()->mnemonic();
     Component::Settings::instance()->activeTheme = _selectedTheme()->mnemonic();
     //  Apply changes
     tt3::util::theCurrentLocale = _selectedLocale();
+    theCurrentStyle = _selectedStyle();
     theCurrentTheme = _selectedTheme();
 }
 
@@ -132,6 +147,7 @@ void GeneralAppearancePreferencesEditor::resetControlValues()
 {
     _setSelectedLocale(Component::Settings::instance()->uiLocale.defaultValue());
     _setSelectedSkin(SkinManager::find(Component::Settings::instance()->activeSkin.defaultValue()));
+    _setSelectedStyle(StyleManager::find(Component::Settings::instance()->activeStyle.defaultValue()));
     _setSelectedTheme(ThemeManager::find(Component::Settings::instance()->activeTheme.defaultValue()));
 }
 
@@ -182,6 +198,25 @@ void GeneralAppearancePreferencesEditor::_setSelectedSkin(tt3::gui::ISkin * skin
     }
 }
 
+tt3::gui::IStyle * GeneralAppearancePreferencesEditor::_selectedStyle()
+{
+    qsizetype n = _ui->styleComboBox->currentIndex();
+    Q_ASSERT(n >= 0 && n < _styles.size());
+    return _styles[n];
+}
+
+void GeneralAppearancePreferencesEditor::_setSelectedStyle(tt3::gui::IStyle * style)
+{
+    for (int n = 0; n < _styles.size(); n++)
+    {
+        if (_styles[n] == style)
+        {
+            _ui->styleComboBox->setCurrentIndex(n);
+            break;
+        }
+    }
+}
+
 tt3::gui::ITheme * GeneralAppearancePreferencesEditor::_selectedTheme()
 {
     qsizetype n = _ui->themeComboBox->currentIndex();
@@ -209,6 +244,11 @@ void GeneralAppearancePreferencesEditor::_languageComboBoxCurrentIndexChanged(in
 }
 
 void GeneralAppearancePreferencesEditor::_skinComboBoxCurrentIndexChanged(int)
+{
+    emit controlValueChanged();
+}
+
+void GeneralAppearancePreferencesEditor::_styleComboBoxCurrentIndexChanged(int)
 {
     emit controlValueChanged();
 }

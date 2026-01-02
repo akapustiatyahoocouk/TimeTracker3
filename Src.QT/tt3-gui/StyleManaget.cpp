@@ -1,5 +1,5 @@
 //
-//  tt3-gui/ThemeManager.cpp - tt3::gui::ThemeManager class implementation
+//  tt3-gui/StyleManager.cpp - tt3::gui::StyleManager class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -17,18 +17,19 @@
 #include "tt3-gui/API.hpp"
 using namespace tt3::gui;
 
-struct ThemeManager::_Impl
+struct StyleManager::_Impl
 {
     _Impl()
     {
-        for (auto theme : StandardThemes::all())
+        for (const auto & key : QStyleFactory::keys())
         {
-            Q_ASSERT(!registry.contains(theme->mnemonic()));
-            registry[theme->mnemonic()] = theme;
+            auto style = new BuiltinStyle(key);
+            Q_ASSERT(!registry.contains(style->mnemonic()));
+            registry[style->mnemonic()] = style;
         }
     }
 
-    using Registry = QMap<tt3::util::Mnemonic, ITheme*>;
+    using Registry = QMap<tt3::util::Mnemonic, IStyle*>;
 
     tt3::util::Mutex    guard;
     Registry            registry;
@@ -36,31 +37,31 @@ struct ThemeManager::_Impl
 
 //////////
 //  Operations
-Themes ThemeManager::all()
+Styles StyleManager::all()
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
 
     auto values = impl->registry.values();
-    return Themes(values.cbegin(), values.cend());
+    return Styles(values.cbegin(), values.cend());
 }
 
-bool ThemeManager::register(ITheme * theme)
+bool StyleManager::register(IStyle * style)
 {
-    Q_ASSERT(theme != nullptr);
+    Q_ASSERT(style != nullptr);
 
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
 
-    if (impl->registry.contains(theme->mnemonic()))
+    if (impl->registry.contains(style->mnemonic()))
     {
-        return theme == impl->registry[theme->mnemonic()];
+        return style == impl->registry[style->mnemonic()];
     }
-    impl->registry[theme->mnemonic()] = theme;
+    impl->registry[style->mnemonic()] = style;
     return true;
 }
 
-ITheme * ThemeManager::find(const tt3::util::Mnemonic & mnemonic)
+IStyle * StyleManager::find(const tt3::util::Mnemonic & mnemonic)
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
@@ -70,10 +71,10 @@ ITheme * ThemeManager::find(const tt3::util::Mnemonic & mnemonic)
 
 //////////
 //  Implementation helpers
-ThemeManager::_Impl * ThemeManager::_impl()
+StyleManager::_Impl * StyleManager::_impl()
 {
     static _Impl impl;
     return &impl;
 }
 
-//  End of tt3-gui/ThemeManager.cpp
+//  End of tt3-gui/StyleManager.cpp

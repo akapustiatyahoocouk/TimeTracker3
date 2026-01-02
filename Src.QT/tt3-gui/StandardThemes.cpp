@@ -55,13 +55,13 @@ QString StandardThemes::System::description() const
 
 QIcon StandardThemes::System::smallIcon() const
 {
-    static const QIcon icon(":/tt3-gui/Resources/Images/Misc/SystemThemeLarge.png");
+    static const QIcon icon(":/tt3-gui/Resources/Images/Misc/SystemThemeSmall.png");
     return icon;
 }
 
 QIcon StandardThemes::System::largeIcon() const
 {
-    static const QIcon icon(":/tt3-gui/Resources/Images/Misc/SystemThemeSmall.png");
+    static const QIcon icon(":/tt3-gui/Resources/Images/Misc/SystemThemeLarge.png");
     return icon;
 }
 
@@ -110,13 +110,13 @@ QString StandardThemes::Light::description() const
 
 QIcon StandardThemes::Light::smallIcon() const
 {
-    static const QIcon icon(":/tt3-gui/Resources/Images/Misc/LightThemeLarge.png");
+    static const QIcon icon(":/tt3-gui/Resources/Images/Misc/LightThemeSmall.png");
     return icon;
 }
 
 QIcon StandardThemes::Light::largeIcon() const
 {
-    static const QIcon icon(":/tt3-gui/Resources/Images/Misc/LightThemeSmall.png");
+    static const QIcon icon(":/tt3-gui/Resources/Images/Misc/LightThemeLarge.png");
     return icon;
 }
 
@@ -165,13 +165,13 @@ QString StandardThemes::Dark::description() const
 
 QIcon StandardThemes::Dark::smallIcon() const
 {
-    static const QIcon icon(":/tt3-gui/Resources/Images/Misc/DarkThemeLarge.png");
+    static const QIcon icon(":/tt3-gui/Resources/Images/Misc/DarkThemeSmall.png");
     return icon;
 }
 
 QIcon StandardThemes::Dark::largeIcon() const
 {
-    static const QIcon icon(":/tt3-gui/Resources/Images/Misc/DarkThemeSmall.png");
+    static const QIcon icon(":/tt3-gui/Resources/Images/Misc/DarkThemeLarge.png");
     return icon;
 }
 

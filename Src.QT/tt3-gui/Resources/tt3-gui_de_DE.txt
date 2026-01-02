@@ -363,7 +363,8 @@ DisplayName=Darstellung
 
 [GeneralAppearancePreferencesEditor]
 LanguageLabel=Sprache:
-SkinLabel=Skin:
+SkinLabel=Haut:
+StyleLabel=Stil:
 ThemeLabel=Farbpalette:
 
 [GeneralDialogsPreferences]

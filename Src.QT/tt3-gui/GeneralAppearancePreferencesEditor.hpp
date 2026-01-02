@@ -52,7 +52,9 @@ namespace tt3::gui
         //  Implementation
     private:
         QList<QLocale>  _locales;   //  same order as in combo box
+        //  TODO kill tyhese off - use combo box item's UserData
         QList<ISkin*>   _skins;     //  same order as in combo box
+        QList<IStyle*>  _styles;    //  same order as in combo box
         QList<ITheme*>  _themes;    //  same order as in combo box
 
         //  Helpers
@@ -60,6 +62,8 @@ namespace tt3::gui
         void                _setSelectedLocale(const QLocale & locale);
         tt3::gui::ISkin *   _selectedSkin();
         void                _setSelectedSkin(tt3::gui::ISkin * skin);
+        tt3::gui::IStyle *  _selectedStyle();
+        void                _setSelectedStyle(tt3::gui::IStyle * style);
         tt3::gui::ITheme *  _selectedTheme();
         void                _setSelectedTheme(tt3::gui::ITheme * theme);
 
@@ -73,6 +77,7 @@ namespace tt3::gui
     private slots:
         void                _languageComboBoxCurrentIndexChanged(int);
         void                _skinComboBoxCurrentIndexChanged(int);
+        void                _styleComboBoxCurrentIndexChanged(int);
         void                _themeComboBoxCurrentIndexChanged(int);
     };
 }

@@ -205,5 +205,7 @@
         <file>Resources/Images/Actions/HelpContentSmall.png</file>
         <file>Resources/Images/Actions/StopLarge.png</file>
         <file>Resources/Images/Actions/StopSmall.png</file>
+        <file>Resources/Images/Misc/StyleLarge.png</file>
+        <file>Resources/Images/Misc/StyleSmall.png</file>
     </qresource>
 </RCC>

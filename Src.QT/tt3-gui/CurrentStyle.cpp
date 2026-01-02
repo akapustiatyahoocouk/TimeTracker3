@@ -1,5 +1,5 @@
 //
-//  tt3-gui/CurrentTheme.cpp - tt3::gui::CurrentTheme class implementation
+//  tt3-gui/CurrentStyle.cpp - tt3::gui::CurrentStyle class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -17,16 +17,21 @@
 #include "tt3-gui/API.hpp"
 using namespace tt3::gui;
 
-struct CurrentTheme::_Impl
+namespace tt3::gui
+{
+    extern CurrentTheme theCurrentTheme;
+}
+
+struct CurrentStyle::_Impl
 {
     std::atomic<int>    instanceCount = 0;  //  ...to disallow a second instance
     tt3::util::Mutex    guard;
-    ITheme *            theme = nullptr;
+    IStyle *            style = nullptr;
 };
 
 //////////
 //  Construction/destruction
-CurrentTheme::CurrentTheme()
+CurrentStyle::CurrentStyle()
 {
     _Impl * impl = _impl();
     Q_ASSERT(impl->instanceCount == 0);
@@ -34,7 +39,7 @@ CurrentTheme::CurrentTheme()
     impl->instanceCount++;
 }
 
-CurrentTheme::~CurrentTheme()
+CurrentStyle::~CurrentStyle()
 {
     _Impl * impl = _impl();
     Q_ASSERT(impl->instanceCount == 1);
@@ -44,9 +49,9 @@ CurrentTheme::~CurrentTheme()
 
 //////////
 //  Operators
-void CurrentTheme::operator = (ITheme * theme)
+void CurrentStyle::operator = (IStyle * style)
 {
-    ITheme * before = nullptr, * after = nullptr;
+    IStyle * before = nullptr, * after = nullptr;
 
     //  Change is effected in a "locked" state
     {
@@ -54,11 +59,11 @@ void CurrentTheme::operator = (ITheme * theme)
         tt3::util::Lock _(impl->guard);
         Q_ASSERT(impl->instanceCount == 1);
 
-        if (theme != impl->theme)
+        if (style != impl->style)
         {
-            before = impl->theme;
-            impl->theme = theme;
-            after = impl->theme;
+            before = impl->style;
+            impl->style = style;
+            after = impl->style;
         }
     }
     //  Signal is sent in a "not locked" state
@@ -66,42 +71,48 @@ void CurrentTheme::operator = (ITheme * theme)
     {
         if (after != nullptr)
         {
-            qApp->setStyleSheet(after->css());
+            after->apply();
+            //  Must re-apply the current theme - setting
+            //  the current style reverts to default palette
+            if (theCurrentTheme != nullptr)
+            {
+                qApp->setStyleSheet(theCurrentTheme->css());
+            }
         }
         emit changed(before, after);
     }
 }
 
-ITheme * CurrentTheme::operator -> () const
+IStyle * CurrentStyle::operator -> () const
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
 
     Q_ASSERT(impl->instanceCount == 1);
-    return impl->theme;
+    return impl->style;
 }
 
-bool CurrentTheme::operator == (nullptr_t /*null*/) const
+bool CurrentStyle::operator == (nullptr_t /*null*/) const
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
-    return impl->theme == nullptr;
+    return impl->style == nullptr;
 }
 
-bool CurrentTheme::operator != (nullptr_t /*null*/) const
+bool CurrentStyle::operator != (nullptr_t /*null*/) const
 {
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
     Q_ASSERT(impl->instanceCount == 1);
 
-    return impl->theme != nullptr;
+    return impl->style != nullptr;
 }
 
 //////////
 //  Implementation helpers
-CurrentTheme::_Impl * CurrentTheme::_impl()
+CurrentStyle::_Impl * CurrentStyle::_impl()
 {
     static _Impl impl;
     return &impl;
@@ -111,7 +122,7 @@ CurrentTheme::_Impl * CurrentTheme::_impl()
 //  Global statics
 namespace tt3::gui
 {
-    Q_DECL_EXPORT CurrentTheme theCurrentTheme;
+    Q_DECL_EXPORT CurrentStyle theCurrentStyle;
 }
 
-//  End of tt3-gui/CurrentTheme.cpp
+//  End of tt3-gui/CurrentStyle.cpp

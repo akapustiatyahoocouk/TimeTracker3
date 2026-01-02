@@ -50,6 +50,10 @@ namespace tt3::gui
             tt3::util::Setting<tt3::util::Mnemonic> activeSkin;
 
             /// \brief
+            ///     The mnemonic of the active style.
+            tt3::util::Setting<tt3::util::Mnemonic> activeStyle;
+
+            /// \brief
             ///     The mnemonic of the active theme.
             tt3::util::Setting<tt3::util::Mnemonic> activeTheme;
 

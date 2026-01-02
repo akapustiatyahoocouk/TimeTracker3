@@ -22,9 +22,6 @@ using namespace tt3;
 int main(int argc, char *argv[])
 {
     Application app(argc, argv);
-    //  TODO Move the next line to Application::_initialize(),
-    //  right before the _selectActiveTheme() call
-    app.setStyle(QStyleFactory::create("Fusion"));    //  TODO what about Linux?
     int exitCode =  app.exec();
     if (exitCode < 0)
     {   //  Restart required

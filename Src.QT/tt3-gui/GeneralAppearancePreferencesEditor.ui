@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>266</width>
-    <height>145</height>
+    <width>275</width>
+    <height>202</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,17 +34,17 @@
    <item row="1" column="1">
     <widget class="QComboBox" name="skinComboBox"/>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <widget class="QLabel" name="themeLabel">
      <property name="text">
       <string>Theme:</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
+   <item row="3" column="1">
     <widget class="QComboBox" name="themeComboBox"/>
    </item>
-   <item row="3" column="0" colspan="2">
+   <item row="4" column="0" colspan="2">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Orientation::Vertical</enum>
@@ -57,8 +57,24 @@
      </property>
     </spacer>
    </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="styleLabel">
+     <property name="text">
+      <string>Style:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="styleComboBox"/>
+   </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>languageComboBox</tabstop>
+  <tabstop>skinComboBox</tabstop>
+  <tabstop>styleComboBox</tabstop>
+  <tabstop>themeComboBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -109,10 +125,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>styleComboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>tt3::gui::GeneralAppearancePreferencesEditor</receiver>
+   <slot>_styleComboBoxCurrentIndexChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>174</x>
+     <y>94</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>137</x>
+     <y>100</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_languageComboBoxCurrentIndexChanged(int)</slot>
   <slot>_skinComboBoxCurrentIndexChanged(int)</slot>
   <slot>_themeComboBoxCurrentIndexChanged(int)</slot>
+  <slot>_styleComboBoxCurrentIndexChanged(int)</slot>
  </slots>
 </ui>

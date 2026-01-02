@@ -72,6 +72,7 @@ namespace tt3
 
         //  Helpers
         void            _prepareForLogging();
+        void            _selectActiveStyle();
         void            _selectActiveTheme();
         void            _selectActiveSkin();
         void            _initialize();

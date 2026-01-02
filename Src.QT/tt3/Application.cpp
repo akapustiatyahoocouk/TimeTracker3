@@ -127,6 +127,24 @@ void Application::_prepareForLogging()
     qInstallMessageHandler(_logMessageOutput);
 }
 
+void Application::_selectActiveStyle()
+{
+    tt3::gui::IStyle * initialStyle =
+        tt3::gui::StyleManager::find(tt3::gui::Component::Settings::instance()->activeStyle);
+    if (initialStyle == nullptr)
+    {   //  Keep the default one
+        if (QApplication::style() != nullptr)
+        {   //  Use that one
+            QString styleName = QApplication::style()->name().toLower();
+            initialStyle = tt3::gui::StyleManager::find(tt3::util::Mnemonic(styleName));
+        }
+    }
+    if (initialStyle != nullptr)
+    {
+        tt3::gui::theCurrentStyle = initialStyle;
+    }
+}
+
 void Application::_selectActiveTheme()
 {
     tt3::gui::ITheme * initialTheme =
@@ -135,9 +153,6 @@ void Application::_selectActiveTheme()
         (initialTheme != nullptr) ?
             initialTheme :
             tt3::gui::StandardThemes::System::instance();
-    //  If the theme was selected "by default", update the settings
-    tt3::gui::Component::Settings::instance()->activeTheme =
-        tt3::gui::theCurrentTheme->mnemonic();
 }
 
 void Application::_selectActiveSkin()
@@ -192,6 +207,9 @@ void Application::_initialize()
     tt3::util::ComponentManager::initializeComponents();
     tt3::util::ComponentManager::loadComponentSettings();
     tt3::util::theCurrentLocale = tt3::gui::Component::Settings::instance()->uiLocale;
+    //  In case theme/style were one of the tt3-gui predefined ones...
+    _selectActiveStyle();
+    _selectActiveTheme();
 
     //  Show splash screen unless disabled
     tt3::gui::SplashScreen splashScreen;
@@ -236,6 +254,7 @@ void Application::_initialize()
     }
     splashScreen.hide();
 
+    _selectActiveStyle();
     _selectActiveTheme();
     _selectActiveSkin();
 

@@ -364,6 +364,7 @@ DisplayName=Appearance
 [GeneralAppearancePreferencesEditor]
 LanguageLabel=Language:
 SkinLabel=Skin:
+StyleLabel=Style:
 ThemeLabel=Theme:
 
 [GeneralDialogsPreferences]

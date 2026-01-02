@@ -9,6 +9,7 @@ SOURCES += \
     AddEmailAddressDialog.cpp \
     AskYesNoDialog.cpp \
     BeneficiaryManager.cpp \
+    BuiltinStyle.cpp \
     ChooseReloginDialog.cpp \
     ColorManager.cpp \
     Component.cpp \
@@ -33,6 +34,7 @@ SOURCES += \
     CurrentActivity.cpp \
     CurrentCredentials.cpp \
     CurrentSkin.cpp \
+    CurrentStyle.cpp \
     CurrentTheme.cpp \
     CurrentWorkspace.cpp \
     DailyWorkQuickReport.cpp \
@@ -121,6 +123,7 @@ SOURCES += \
     SkinManager.cpp \
     SplashScreen.cpp \
     StandardThemes.cpp \
+    StyleManaget.cpp \
     ThemeManager.cpp \
     TreeWidgetDecorations.cpp \
     UserManager.cpp \
@@ -233,6 +236,7 @@ HEADERS += \
     ShowLicenseDialog.hpp \
     Skin.hpp \
     SplashScreen.hpp \
+    Style.hpp \
     Theme.hpp \
     UiHelpers.hpp \
     UserManager.hpp \

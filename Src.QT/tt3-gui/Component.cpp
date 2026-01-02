@@ -97,6 +97,7 @@ TT3_IMPLEMENT_SINGLETON(Component::Settings)
 
 Component::Settings::Settings()
     :   activeSkin(this, M(ActiveSkin), M(-), true),
+        activeStyle(this, M(ActiveStyle), M(-), true),
         activeTheme(this, M(ActiveTheme), StandardThemes::System::instance()->mnemonic(), true),
         lastLogin(this, M(LastLogin), ""),
         uiLocale(this, M(UiLocale), QLocale(QLocale::English, QLocale::UnitedKingdom)),

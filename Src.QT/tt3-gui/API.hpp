@@ -30,6 +30,7 @@
 //  Miscellaneous helpers
 #include "tt3-gui/Skin.hpp"
 #include "tt3-gui/Theme.hpp"
+#include "tt3-gui/Style.hpp"
 #include "tt3-gui/Preferences.hpp"
 #include "tt3-gui/Color.hpp"
 #include "tt3-gui/CurrentCredentials.hpp"
