@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Public Tasks view</title>
+<link href="../../../css/tt3.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<h1>Public Tasks view</h1>
+<hr />
+<p>The Public Tasks view allows management of Public Tasks (subject to access 
+permissions granted after login). These are Tasks available to any user who 
+can login to a TimeTracker3 workspace.</p>
+<p>
+<img alt="Public Tasks view" height="377" src="../../../images/Views/04-PublicTasks.png" width="654" /></p>
+<p>The controls in the Public Tasks view allow the user to access:</p>
+<ul>
+	<li><strong>Public tasks tree</strong> - this displays the tree of 
+	available Public Tasks. Normally all Public Tasks will be visible 
+	to all users; however, if the corresponding User is configured to only be 
+	allowed to work on specific Public Tasks, then such user will only be 
+	able to see these configured Public Tasks but not the other existing 
+	Public Tasks.</li>
+	<li><strong>Filter</strong> - type anything here to narrow the set of 
+	displayed Public Tasks or to quickly find a specific Public Task. The 
+	filter match can appear anywhere within the Public Task name. If some 
+	sub-task of a Public Task matches the filter but its parent Public Task does 
+	not, the parent Public Task will still be displayed, but will be grayed out.</li>
+	<li><strong>Show completed tasks</strong> - if un-checked, Public Tasks 
+	marked as "completed" will not appear in the Public Tasks tree. An exception 
+	to this rule is a "completed" Public Task that has an "un-completed" 
+	sub-task - such a "completed" parent will appear in the Public Tasks tree 
+	but will be grayed out and visually marked as "completed".</li>
+	<li><strong>Create public task</strong> - use this button to create a new 
+	Public Task. 
+	This will only be permitted to someone with Administrator or Manage Public 
+	Tasks 
+	capability and will be disallowed in a read-only workspace.</li>
+	<li><strong>View/Modify public task</strong> - use this button to view or modify 
+	the Public Task currently selected in the Public Tasks tree. The meaning of this 
+	button (view or modify) will be determined by whether the current user has 
+	logged in with Administrator or Manage Public Tasks capability and whether or not 
+	the workspace is read-only.</li>
+	<li><strong>Destroy public task</strong> - use this button to permanently destroy 
+	the Public Task currently selected in the Public Tasks tree. You will be asked to 
+	confirm the destruction, as this is a dangerous operation in that it also 
+	destroys all its sub-tasks and all Work items and Events logged against that Public 
+	Task and its sub-tasks. The destroy confirmation 
+	dialog that pops up will show just how much the recorded work history will be 
+	impacted.</li>
+	<li><strong>Start public task</strong> - use this button to start 
+	recording the currently selected Public Task. If any Activity or Task 
+	was already being recorded, its recording is automatically stopped and the 
+	corresponding Work item is logged into the workspace.</li>
+	<li><strong>Stop public task</strong> - use this button to stop 
+	recording the Public Task that is currently being recorded. This button 
+	will only be available when such a Public Task is selected in the Public 
+	Tasks tree.</li>
+	<li><strong>Complete public task</strong> - use this button to mark the 
+	selected Public Task as "completed". The Public Task may be configured to 
+	require the user to enter a comment when it is being completed; if this is 
+	so, then the comment entry dialog will pop up. NOTE that a "completed" 
+	Public Task may be "un-completed" in order to resume working on it, but this 
+	will require Administrator capability (i.e. the Manage Public Tasks 
+	capability will not be sufficient). This ensures that the proper Public Task 
+	workflow is observed but also allows taking care of e.g. erroneous or 
+	accidental completion.</li>
+</ul>
+<p>While a Public Task is being recorded, the corresponding item in the 
+Public Tasks tree will be highlighted and its recorded duration will be 
+displayed alongside the item and updated live.</p>
+<p>Note that only one activity can be recorded at any given time. Therefore, if 
+e.g. a Public Activity or a Private Task is being recorded, starting a Public 
+Task will stop and log the previously active recording, logging the 
+corresponding Work item.</p>
+<p>As well as action buttons, the Public Tasks tree allows invoking the same 
+actions (create, modify, destroy, start, stop or complete Public Tasks) via the context menus that pop 
+up when the Public Tasks tree items are right-clicked.</p>
+<hr />
+<p class="seealso">See also: 
+<a href="../03-Dialogs/18-CreateModifyPublicTask.html">Create/Modify Public Task dialog</a>, 
+<a href="../03-Dialogs/19-DestroyPublicTask.html">Destroy 
+Public Task dialog</a></p>
+<h2>&nbsp;</h2>
+
+<p>&nbsp;</p>
+
+</body>
+
+</html>

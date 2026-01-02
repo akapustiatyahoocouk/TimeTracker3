@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-gb" http-equiv="Content-Language" />
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Create/Modify Public Task dialog</title>
+<link href="../../../css/tt3.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<h1>Create/Modify Public Task dialog</h1>
+<hr />
+<p>The same dialog is used for both creating new Public Tasks and modifying existing 
+Public Tasks.</p>
+<p>
+<img alt="Create/Modify Public Task dialog" height="586" src="../../../images/Dialogs/18-CreateModifyPublicTask.png" width="519" /></p>
+<p>The fields in the Create/Modify Public Task dialog allow the user to specify:</p>
+<ul>
+	<li><strong>Parent task</strong> - Public Tasks are organized into a 
+	hierarchy where a Public Task can have sub-tasks which, in turn, can have 
+	further sub-tasks, and so on. The parent for a Public Task is first chosen 
+	when that Public Task is created but&nbsp; can be changed later.</li>
+	<li><strong>Name</strong> - Public Tasks are identified by short, 
+	descriptive names (such as "Create German translation of the UI", "Prepare 
+	the project vision document" and so on) which must 
+	be unique within a given workspace (if the Public Task is a root Public Task 
+	that does not have a parent) or parent (if the Public Task has a parent).</li>
+	<li><strong>Description</strong> - if the Public Task name is not 
+	self-explanatory, its description may help to clarify its meaning. Multiple 
+	lines of text may be entered here.</li>
+	<li><strong>Activity type</strong> - use this drop-down list to select the 
+	Activity Type to assign the Public Task to.</li>
+	<li><strong>Workload</strong> - use this drop-down list and its associated 
+	selection button to assign a Public Task to a specific Project or Work 
+	Stream. Such assignments help in tracking effort dedicated to individual 
+	Projects over a period of time.</li>
+	<li><strong>Timeout</strong> - these fields govern what happens if the user 
+	starts recording the Public Task but then 
+	leaves the computer unattended. If this is to happen, TimeTracker3 may 
+	automatically finish the Public Task in question, logging a comment to that 
+	effect. NOTE that this behavior overrides any "inactivity timeout" 
+	configured for the User as far as the Public Task in question is 
+	concerned.</li>
+	<li><strong>Require comment when Starting/Stopping this activity</strong> - 
+	these two check boxes specify what happens when the Public Task is 
+	started and stopped. If any of the two are checked, then TimeTracker3 will 
+	present a popup dialog requesting the user to enter a comment, which is then 
+	recorded into the workspace as an Event. If the Activity that is being 
+	recorded requires comment when stopped, and the switch is made to recording 
+	a Public Task which requires a comment when started, the user is asked to 
+	enter the comment only once; such comment is then associated with both old 
+	and new recorded Activity.</li>
+	<li><strong>Full-screen reminder</strong> - if checked, then starting such a 
+	Public Task will pop up a full-screen reminder window stating that the 
+	Public Task is underway (and how long it is being recorded for); this 
+	popup window will be hidden when the recording of the Public Task is 
+	stopped. This is beneficial for Public Tasks which expect the user to 
+	leave their workplace (such as "planning meeting for the next sprint", etc.) - having a 
+	full-screen reminder helps the user to explicitly stop recording the Public 
+	Task, logging am "away from keyboard" Work item and switching to the 
+	next Activity to work on.</li>
+	<li><strong>Require comment on completion</strong> - if checked, the user 
+	will be required to enter a comment when marking the Public Task as 
+	"completed".</li>
+	<li><strong>Completed</strong> - use this check box to mark the Public Task 
+	as "completed". It can also be used to "un-complete" a Public Task, but this 
+	action requires an Administrator capability, as it breaks the normal 
+	workflow of Public Tasks.</li>
+</ul>
+<p>Only someone with Administrator or Manage Public Tasks capabilities is 
+allowed to create or modify Public Tasks. However, anyone who can log into a 
+given workspace can see all Public Tasks defined there. The exception to 
+this rule is the case when a specific User is configured to only allow working 
+on specific Public Tasks, in which case only these Public Tasks will 
+be visible in the tree and all other existing Public Tasks will not be 
+visible.</p>
+<hr />
+<p class="seealso">See also: -</p>
+<h2>&nbsp;</h2>
+
+<p>&nbsp;</p>
+
+</body>
+
+</html>
