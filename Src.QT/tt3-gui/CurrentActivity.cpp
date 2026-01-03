@@ -146,6 +146,9 @@ bool CurrentActivity::replaceWith(
         tt3::util::Lock _(impl->guard);
         Q_ASSERT(impl->instanceCount == 1);
 
+        bool reminderWindowWasVisible =
+            impl->reminderWindow != nullptr &&
+            impl->reminderWindow->isVisible();
         if (with != impl->activity)
         {   //  Enter the comment if necessary
             QString comment;
@@ -160,13 +163,25 @@ bool CurrentActivity::replaceWith(
                     //  tray, or a full-screen reminder is displayed...
                     dialogParent = QApplication::activeWindow();
                 }
+                if (reminderWindowWasVisible)
+                {   //  Hide for duration of entry
+                    impl->reminderWindow->hide();
+                }
                 EnterActivityStartCommentDialog dlg(
                     dialogParent,
                     with,
                     credentials);   //  may throw
                 if (dlg.doModal() != EnterActivityStartCommentDialog::Result::Ok)
                 {   //  OOPS! The user has cancelled the change
+                    if (reminderWindowWasVisible)
+                    {   //  Show after entry
+                        impl->reminderWindow->show();
+                    }
                     return false;
+                }
+                if (reminderWindowWasVisible)
+                {   //  Show after entry
+                    impl->reminderWindow->show();
                 }
                 comment = dlg.comment();
                 eventActivities.insert(with);
@@ -186,13 +201,25 @@ bool CurrentActivity::replaceWith(
                     //  tray, or a full-screen reminder is displayed...
                     dialogParent = QApplication::activeWindow();
                 }
+                if (reminderWindowWasVisible)
+                {   //  Hide for duration of entry
+                    impl->reminderWindow->hide();
+                }
                 EnterActivityStopCommentDialog dlg(
                     dialogParent,
                     impl->activity,
                     credentials);  //  may throw
                 if (dlg.doModal() != EnterActivityStopCommentDialog::Result::Ok)
                 {   //  OOPS! The user has cancelled the change
+                    if (reminderWindowWasVisible)
+                    {   //  Show after entry
+                        impl->reminderWindow->show();
+                    }
                     return false;
+                }
+                if (reminderWindowWasVisible)
+                {   //  Show after entry
+                    impl->reminderWindow->show();
                 }
                 comment = dlg.comment();
                 eventActivities.insert(impl->activity);
