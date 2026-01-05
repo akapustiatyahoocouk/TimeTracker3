@@ -357,7 +357,7 @@ auto Database::findObjectByOid(
     _ensureOpen();  //  may throw
     //  We assume database is consistent since last change
 
-    return _liveObjects.contains(oid) ? _liveObjects[oid] : nullptr;
+    return _liveObjects.value(oid, nullptr);
 }
 
 auto Database::users(

@@ -148,7 +148,7 @@ auto CustomReportTemplate::findStyle(
         const Mnemonic & name
     ) const -> IStyle *
 {
-    return _styles.contains(name) ? _styles[name] : nullptr;
+    return _styles.value(name, nullptr);
 }
 
 Report * CustomReportTemplate::createNewReport() const

@@ -120,7 +120,7 @@ IReportTemplate * ReportTemplateManager::find(const tt3::util::Mnemonic & mnemon
     _Impl * impl = _impl();
     tt3::util::Lock _(impl->guard);
 
-    return impl->registry.contains(mnemonic) ? impl->registry[mnemonic] : nullptr;
+    return impl->registry.value(mnemonic, nullptr);
 }
 
 //////////

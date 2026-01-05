@@ -543,7 +543,7 @@ auto BasicReportTemplate::findStyle(
         const Mnemonic & name
     ) const -> IStyle *
 {
-    return _styles.contains(name) ? _styles[name] : nullptr;
+    return _styles.value(name, nullptr);
 }
 
 Report * BasicReportTemplate::createNewReport() const
