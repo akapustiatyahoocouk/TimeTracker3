@@ -330,6 +330,11 @@ MyDayManager::_WorkModel MyDayManager::_createWorkModel(tt3::ws::Work work)
     QString displayName = activity->displayName(_credentials);  //  may throw
     QString description = activity->description(_credentials).trimmed();    //  may throw
     QString tooltip =
+        QLocale().toString(work->startedAt(_credentials).toLocalTime(), QLocale::FormatType::ShortFormat) +
+        ".." +
+        QLocale().toString(work->finishedAt(_credentials).toLocalTime(), QLocale::FormatType::ShortFormat) +
+        "\n--------------------\n";
+    tooltip +=
         description.isEmpty() ?
             displayName :
             displayName + "\n\n" + description;
@@ -347,7 +352,10 @@ MyDayManager::_WorkModel MyDayManager::_createWorkModel(tt3::ws::Work work)
 MyDayManager::_EventModel MyDayManager::_createEventModel(tt3::ws::Event event)
 {
     QString summary = event->summary(_credentials); //  may throw
-    QString tooltip = summary;
+    QString tooltip =
+        QLocale().toString(event->occurredAt(_credentials).toLocalTime(), QLocale::FormatType::ShortFormat) +
+        "\n--------------------\n";
+    tooltip += summary;
     for (const auto & activity : event->activities(_credentials))
     {
         QString description = activity->description(_credentials).trimmed();    //  may throw
@@ -436,8 +444,12 @@ void MyDayManager::_addDateIndicators(_MyDayModel myDayModel)
     {
         minDate = qMin(minDate, myDayModel->itemModels[i]->startedAt().date());
         maxDate = qMax(maxDate, myDayModel->itemModels[i]->finishedAt().date());
-        datesWithWorks.insert(minDate);
-        datesWithWorks.insert(maxDate);
+        QDate from = myDayModel->itemModels[i]->startedAt().date();
+        QDate to = myDayModel->itemModels[i]->finishedAt().date();
+        for (QDate d = from; d <= to; d = d.addDays(1))
+        {
+            datesWithWorks.insert(d);
+        }
     }
     if (minDate == maxDate)
     {   //  We need at most one date indicator...
