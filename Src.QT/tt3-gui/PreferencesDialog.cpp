@@ -73,6 +73,7 @@ PreferencesDialog::PreferencesDialog(
     _editorsFrameLayout->setCurrentWidget(_noPropertiesLabel);
 
     //  Selest last "current" item
+    _ui->preferencesTreeWidget->expandAll();
     _loadCurrentPreferences(itemsForPreferences);
 
     //  Start listening to component settings changes
