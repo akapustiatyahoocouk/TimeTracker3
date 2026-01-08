@@ -137,6 +137,7 @@ void PublicTaskManager::refresh()
     //  We don't want a refresh() to trigger a recursive refresh()!
     if (auto _ = RefreshGuard(_refreshUnderway)) //  Don't recurse!
     {
+        bool isAdministrator = false;
         try
         {
             if (_workspace == nullptr || !_credentials.isValid() ||
@@ -146,6 +147,10 @@ void PublicTaskManager::refresh()
                 _clearAndDisableAllControls();
                 return;
             }
+            isAdministrator =
+                _workspace->grantsAll(
+                    _credentials,
+                    tt3::ws::Capability::Administrator);
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! No point in proceesing.
@@ -172,6 +177,10 @@ void PublicTaskManager::refresh()
             !filter.isEmpty())
         {
             _filterItems(workspaceModel, filter, _decorations);
+        }
+        if (!isAdministrator)
+        {
+            _removeInaccessibleItems(workspaceModel, _credentials, _decorations);
         }
         _refreshWorkspaceTree(_ui->publicTasksTreeWidget, workspaceModel);
         if (!_ui->filterLineEdit->text().trimmed().isEmpty())
@@ -217,7 +226,9 @@ void PublicTaskManager::refresh()
                 currentPublicTask != nullptr &&
                 theCurrentActivity != currentPublicTask &&
                 !currentPublicTask->completed(_credentials) && //  may throw
-                currentPublicTask->canStart(_credentials));    //  may throw
+                currentPublicTask->canStart(_credentials) &&    //  may throw
+                (isAdministrator ||
+                 currentPublicTask->isAccessible(_credentials)));   //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Log & disable
@@ -243,7 +254,9 @@ void PublicTaskManager::refresh()
                 !readOnly &&
                 currentPublicTask != nullptr &&
                 currentPublicTask->canModify(_credentials) &&   //  may throw
-                !currentPublicTask->completed(_credentials));   //  may throw
+                !currentPublicTask->completed(_credentials) &&    //  may throw
+                (isAdministrator ||
+                 currentPublicTask->isAccessible(_credentials)));   //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! Report & disable
@@ -340,6 +353,11 @@ auto PublicTaskManager::_createPublicTaskModel(
         else
         {
             publicTaskModel->brush = decorations.itemForeground;
+        }
+        if (!publicTask->isAccessible(credentials))
+        {
+            publicTaskModel->text += " " + rr.string(RID(TaskInaccessibleSuffix));
+            publicTaskModel->brush = decorations.disabledItemForeground;
         }
         publicTaskModel->icon = publicTask->type()->smallIcon();
         publicTaskModel->font = decorations.itemFont;
@@ -491,6 +509,54 @@ void PublicTaskManager::_filterItems(
         else
         {   //  Item does not match the filter but has children - show as disabled
             publicTaskModel->childModels[i]->brush = decorations.disabledItemForeground;
+        }
+    }
+}
+
+void PublicTaskManager::_removeInaccessibleItems(
+        _WorkspaceModel workspaceModel,
+        const tt3::ws::Credentials & credentials,
+        const TreeWidgetDecorations & decorations
+    )
+{
+    for (qsizetype i = workspaceModel->publicTaskModels.size() - 1; i >= 0; i--)
+    {
+        _PublicTaskModel publicTaskModel = workspaceModel->publicTaskModels[i];
+        _removeInaccessibleItems(publicTaskModel, credentials, decorations);
+        if (!publicTaskModel->publicTask->isAccessible(credentials))
+        {   //  Public Task is NOT accessible
+            if (publicTaskModel->childModels.isEmpty())
+            {   //  Inaccessible item has no children - remove it
+                workspaceModel->publicTaskModels.removeAt(i);
+            }
+            else
+            {   //  Inaccessible item has children - show as disabled
+                workspaceModel->publicTaskModels[i]->brush = decorations.disabledItemForeground;
+            }
+        }
+    }
+}
+
+void PublicTaskManager::_removeInaccessibleItems(
+        _PublicTaskModel publicTaskModel,
+        const tt3::ws::Credentials & credentials,
+        const TreeWidgetDecorations & decorations
+    )
+{
+    for (qsizetype i = publicTaskModel->childModels.size() - 1; i >= 0; i--)
+    {
+        _PublicTaskModel childModel = publicTaskModel->childModels[i];
+        _removeInaccessibleItems(childModel, credentials, decorations);
+        if (!childModel->publicTask->isAccessible(credentials))
+        {   //  Child item is NOT accessible
+            if (childModel->childModels.isEmpty())
+            {   //  Inaccesible item has no children - remove it
+                publicTaskModel->childModels.removeAt(i);
+            }
+            else
+            {   //  Inaccessible item has children - show as disabled
+                publicTaskModel->childModels[i]->brush = decorations.disabledItemForeground;
+            }
         }
     }
 }

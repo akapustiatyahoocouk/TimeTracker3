@@ -4,6 +4,8 @@ greaterThan(QT_VERSION, 6.10.0):message("Qt version is compatible: $$QT_VERSION"
 else:error("This project requires Qt version 6.10.1 or higher. Found version: $$QT_VERSION")
 
 TT3_VERSION=0.0.1
+TT3_STAGE=alpha
+#   stages: alpha, beta, RTM, GA
 
 CONFIG += c++20 strict_c++
 CONFIG += force_debug_info
@@ -23,6 +25,7 @@ TARGET_SUFFIX=-$$TT3_VERSION
 DEFINES += TT3_VERSION=\\\"$$TT3_VERSION\\\"
 DEFINES += TT3_BUILD_DATE=\\\"$$TT3_BUILD_DATE\\\"
 DEFINES += TT3_BUILD_TIME=\\\"$$TT3_BUILD_TIME\\\"
+DEFINES += TT3_STAGE=\\\"$$TT3_STAGE\\\"
 INCLUDEPATH += ..
 COMPONENT_NAME = $$TARGET
 TARGET = $$TARGET$$TARGET_SUFFIX

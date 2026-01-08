@@ -130,6 +130,7 @@ void PublicActivityManager::refresh()
     //  We don't want a refresh() to trigger a recursive refresh()!
     if (auto _ = RefreshGuard(_refreshUnderway)) //  Don't recurse!
     {
+        bool isAdministrator = false;
         try
         {
             if (_workspace == nullptr || !_credentials.isValid() ||
@@ -139,6 +140,10 @@ void PublicActivityManager::refresh()
                 _clearAndDisableAllControls();
                 return;
             }
+            isAdministrator =
+                _workspace->grantsAll(
+                    _credentials,
+                    tt3::ws::Capability::Administrator);
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS! No point in proceesing.
@@ -160,6 +165,10 @@ void PublicActivityManager::refresh()
             !filter.isEmpty())
         {
             _filterItems(workspaceModel, filter, _decorations);
+        }
+        if (!isAdministrator)
+        {
+            _removeInaccessibleItems(workspaceModel, _credentials);
         }
         _refreshWorkspaceTree(
             _ui->publicActivitiesTreeWidget,
@@ -202,7 +211,9 @@ void PublicActivityManager::refresh()
                 !readOnly &&
                 currentPublicActivity != nullptr &&
                 theCurrentActivity != currentPublicActivity &&
-                currentPublicActivity->canStart(_credentials));    //  may throw
+                currentPublicActivity->canStart(_credentials) &&    //  may throw
+                (isAdministrator ||
+                 currentPublicActivity->isAccessible(_credentials)));   //  may throw
         }
         catch (const tt3::util::Exception & ex)
         {   //OOPS! Log & disable
@@ -295,13 +306,23 @@ auto PublicActivityManager::_createPublicActivityModel(
     ) -> PublicActivityManager::_PublicActivityModel
 {
     static const QIcon errorIcon(":/tt3-gui/Resources/Images/Misc/ErrorSmall.png");
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(PublicActivityManager));
 
     auto publicActivityModel = std::make_shared<_PublicActivityModelImpl>(publicActivity);
     try
     {
         publicActivityModel->text = publicActivity->displayName(credentials);
+
+        if (publicActivity->isAccessible(credentials))
+        {
+            publicActivityModel->brush = decorations.itemForeground;
+        }
+        else
+        {
+            publicActivityModel->text += " " + rr.string(RID(ActivityInaccessibleSuffix));
+            publicActivityModel->brush = decorations.disabledItemForeground;
+        }
         publicActivityModel->icon = publicActivity->type()->smallIcon();
-        publicActivityModel->brush = decorations.itemForeground;
         publicActivityModel->font = decorations.itemFont;
         publicActivityModel->tooltip = publicActivity->description(credentials).trimmed();
         //  A "current" activity needs some extras
@@ -347,6 +368,28 @@ void PublicActivityManager::_filterItems(
         else
         {   //  Item does not match the filter
             workspaceModel->publicActivityModels.removeAt(i);
+        }
+    }
+}
+
+void PublicActivityManager::_removeInaccessibleItems(
+        _WorkspaceModel workspaceModel,
+        const tt3::ws::Credentials & credentials
+    )
+{
+    for (qsizetype i = workspaceModel->publicActivityModels.size() - 1; i >= 0; i--)
+    {
+        _PublicActivityModel publicActivityModel = workspaceModel->publicActivityModels[i];
+        try
+        {
+            if (!publicActivityModel->publicActivity->isAccessible(credentials))    //  may throw
+            {   //  Item not accessible
+                workspaceModel->publicActivityModels.removeAt(i);
+            }
+        }
+        catch (const tt3::util::Exception & ex)
+        {   //  OOPS! Log, but otherwise suppress
+            qCritical() << ex;
         }
     }
 }

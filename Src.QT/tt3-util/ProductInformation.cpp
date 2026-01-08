@@ -29,6 +29,11 @@ QVersionNumber ProductInformation::applicationVersion()
     return fromString<QVersionNumber>(TT3_VERSION);
 }
 
+QString ProductInformation::applicationStage()
+{
+    return TT3_STAGE;
+}
+
 QString ProductInformation::applicationCopyright()
 {
     return Component::Resources::instance()->string(RSID(ProductInformation), RID(ApplicationCopyright), QString(TT3_BUILD_DATE).left(4));

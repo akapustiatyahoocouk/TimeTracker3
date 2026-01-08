@@ -5,7 +5,7 @@ Copyright=Copyright (C) {0}, Andrey Kapustin
 
 [AboutDialog]
 Title=About TimeTracker3
-VersionLabel=Version {0} (build {1} for Qt {2})
+VersionLabel=Version {0} {1} (build {2} for Qt {3})
 ShowLicensePushButton=License
 ShowConfigurationPushButton=Configuration
 OkPushButton=OK
@@ -726,6 +726,7 @@ ViewPublicActivityPushButton=View public activity
 DestroyPublicActivityPushButton=Destroy public activity
 StartPublicActivityPushButton=Start public activity
 StopPublicActivityPushButton=Stop public activity
+ActivityInaccessibleSuffix=[inaccessible]
 
 [PublicTaskManager]
 FilterLabel=Filter:
@@ -737,6 +738,7 @@ StartPublicTaskPushButton=Start public task
 StopPublicTaskPushButton=Stop public task
 CompletePublicTaskPushButton=Complete public task
 TaskCompletedSuffix=[task is completed]
+TaskInaccessibleSuffix=[inaccessible]
 ShowCompletedCheckBox=Show completed tasks
 
 [QuickReportBrowser]

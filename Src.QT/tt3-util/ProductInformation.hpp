@@ -33,10 +33,18 @@ namespace tt3::util
         static QString          applicationName();
 
         /// \brief
-        ///     Returns yhe version of the TT3 product.
+        ///     Returns the version of the TT3 product.
         /// \return
         ///     The version of the TT3 product.
         static QVersionNumber   applicationVersion();
+
+        /// \brief
+        ///     Returns the stage of the TT3 product.
+        /// \return
+        ///     The stage of the TT3 product (alpha, beta, RTM, etc.).
+        /// TODO add "stage" th each Component, alongside "version"
+        /// TODO and show "stage" in "show configuration" dialog too
+        static QString          applicationStage();
 
         /// \brief
         ///     Returns the short (1 line) user-readable copyright message of the TT3 product.

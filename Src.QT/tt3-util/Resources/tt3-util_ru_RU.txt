@@ -7,7 +7,7 @@ OrganizationDomain=https://github.com/akapustiatyahoocouk/TimeTracker3
 Credits=Идея: Юрий Левдик
 
 [Component]
-DisplayName=TimeTracker3 утилиты
+DisplayName=Утилиты TimeTracker3
 Description=Определяет вспомогательные службы для TimeTracker3
 Copyright=Авторское право (C) {0}, Андрей Капустин
 

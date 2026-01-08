@@ -1,5 +1,5 @@
 //
-//  s - The modal "show configuration" dialog
+//  tt3-gui/ShowConfigurationDialog.hpp - The modal "show configuration" dialog
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -71,4 +71,3 @@ namespace tt3::gui
 }
 
 //  End of tt3-gui/ShowConfigurationDialog.hpp
-

@@ -44,6 +44,7 @@ SplashScreen::SplashScreen()
         rr.string(
             RID(VersionLabel),
             tt3::util::ProductInformation::applicationVersion().toString(),
+            tt3::util::ProductInformation::applicationStage(),
             tt3::util::ProductInformation::applicationBuildNumber(),
             QString(qVersion())));
     _ui->copyrightLabel->setText(

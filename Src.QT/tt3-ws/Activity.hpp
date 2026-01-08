@@ -214,6 +214,25 @@ namespace tt3::ws
                             bool fullScreenReminder
                         );
 
+        /// \brief
+        ///     Checks if this Activity is "accessible" to
+        ///     the client with the specified credentials.
+        /// \details
+        ///     An Activity is "accessible" when a) it is not
+        ///     associated woth any Workflow or b) the Credentials
+        ///     belong to an enabled Account of an enabled User
+        ///     whose set of "permitted workloads" includes the
+        ///     Workload with which this Acvtivity is associated.
+        /// \param credentials
+        ///     The credentials of the service caller.
+        /// \return
+        ///     True if this Activity is "accessible" to
+        ///     the client with the specified credentials,
+        ///     else false.
+        bool        isAccessible(
+                            const Credentials & credentials
+                        ) const;
+
         //////////
         //  Operations (associations)
     public:

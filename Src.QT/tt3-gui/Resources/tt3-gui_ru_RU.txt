@@ -5,7 +5,7 @@ Copyright=Авторское право (C) {0}, Андрей Капустин
 
 [AboutDialog]
 Title=О TimeTracker3
-VersionLabel=Версия {0} (сборка {1} для Qt {2})
+VersionLabel=Версия {0} {1} (сборка {2} для Qt {3})
 ShowLicensePushButton=Лицензия
 ShowConfigurationPushButton=Конфигурация
 OkPushButton=ОК
@@ -591,7 +591,6 @@ CancelPushButton=Отмена
 [ModifyPublicTaskDialog]
 Title=Изменить общедоступную залачу
 ViewOnlyTitle=Просмотреть общедоступную залачу
-UserLabel=Пользователь:
 ParentTaskLabel=Родитель:
 NoParent=- (корневая общедоступная задача без родителя)
 SelectParentTaskPushButton=Выбрать
@@ -727,6 +726,7 @@ ViewPublicActivityPushButton=Просмотреть общедоступную �
 DestroyPublicActivityPushButton=Удалить общедоступную активность
 StartPublicActivityPushButton=Запустить общедоступную активность
 StopPublicActivityPushButton=Остановить общедоступную активность
+ActivityInaccessibleSuffix=[недоступна]
 
 [PublicTaskManager]
 FilterLabel=Фильтр:
@@ -738,6 +738,7 @@ StartPublicTaskPushButton=Запустить общедоступную зада
 StopPublicTaskPushButton=Остановить общедоступную задачу
 CompletePublicTaskPushButton=Завершить общедоступную задачу
 TaskCompletedSuffix=[задача выполнена]
+TaskInaccessibleSuffix=[недоступна]
 ShowCompletedCheckBox=Показать завершенные задачи
 
 [QuickReportBrowser]

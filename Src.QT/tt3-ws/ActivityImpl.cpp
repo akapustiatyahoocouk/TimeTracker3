@@ -329,6 +329,43 @@ void ActivityImpl::setFullScreenReminder(
     }
 }
 
+bool ActivityImpl::isAccessible(
+        const Credentials & credentials
+    ) const
+{
+    tt3::util::Lock _(_workspace->_guard);
+    _ensureLive();  //  may throw
+
+    try
+    {
+        //  Validate access rights
+        if (!_canRead(credentials))
+        {
+            throw AccessDeniedException();
+        }
+
+        //  Do the work
+        if (auto dataWorkload = _dataActivity->workload())
+        {
+            if (auto dataAccount =
+                _workspace->_database->tryLogin(credentials._login, credentials._password))
+            {
+                auto dataUser = dataAccount->user();
+                auto dataPermittedWorkloads = dataUser->permittedWorkloads();
+                return dataPermittedWorkloads.isEmpty() ||
+                       dataPermittedWorkloads.contains(dataWorkload);
+            }
+            return false;   //  bad Credentials
+        }
+        //  else the Activity has no associated Workload
+        return true;
+    }
+    catch (const tt3::util::Exception & ex)
+    {   //  OOPS! Translate & re-throw
+        WorkspaceException::translateAndThrow(ex);
+    }
+}
+
 //////////
 //  Operations (associations)
 auto ActivityImpl::activityType(
@@ -537,37 +574,37 @@ bool ActivityImpl::canStart(
     {
         //  Validate access rights
         if (_workspace->_isBackupCredentials(credentials) ||
+            _workspace->_isRestoreCredentials(credentials) ||
             _workspace->_isReportCredentials(credentials))
-        {   //  Special access - cannot modify anything
+        {   //  Special access - cannot start anything
             return false;
         }
-        if (!_workspace->_isRestoreCredentials(credentials))
-        {   //  No special access - use standard access rules
-            Capabilities capabilities =
-                _workspace->_validateAccessRights(credentials);
+        //  No special access - use standard access rules
+        Capabilities capabilities =
+            _workspace->_validateAccessRights(credentials);
+        if (!capabilities.contains(Capability::Administrator) &&
+            !capabilities.contains(Capability::LogWork))
+        {   //  OOPS! The caller won't be able to record the Work unit
+            return false;
+        }
+        if (_dataActivity->requireCommentOnStart() ||
+            _dataActivity->requireCommentOnStop())
+        {   //  Will need to log an Event before/after a Work item...
             if (!capabilities.contains(Capability::Administrator) &&
-                !capabilities.contains(Capability::LogWork))
-            {   //  OOPS! The caller won't be able to record the Work unit
+                !capabilities.contains(Capability::LogEvents))
+            {   //  ...but won't be able to!
                 return false;
             }
-            if (_dataActivity->requireCommentOnStart() ||
-                _dataActivity->requireCommentOnStop())
-            {   //  Will need to log an Event before/after a Work item...
-                if (!capabilities.contains(Capability::Administrator) &&
-                    !capabilities.contains(Capability::LogEvents))
-                {   //  ...but won't be able to!
-                    return false;
-                }
-            }
-            if (auto dataTask =
-                dynamic_cast<tt3::db::api::ITask*>(_dataActivity))
+        }
+        if (auto dataTask =
+            dynamic_cast<tt3::db::api::ITask*>(_dataActivity))
+        {
+            if (dataTask->completed())
             {
-                if (dataTask->completed())
-                {
-                    return false;
-                }
+                return false;
             }
-        }   //  Else special access - can modify anything
+        }
+        //  All checks passed
         return true;
     }
     catch (const tt3::util::Exception & ex)
