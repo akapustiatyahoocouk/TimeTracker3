@@ -312,7 +312,6 @@ auto PublicActivityManager::_createPublicActivityModel(
     try
     {
         publicActivityModel->text = publicActivity->displayName(credentials);
-
         if (publicActivity->isAccessible(credentials))
         {
             publicActivityModel->brush = decorations.itemForeground;

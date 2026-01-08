@@ -694,6 +694,7 @@ DestroyPrivateActivityPushButton=Private Aktivität löschen
 StartPrivateActivityPushButton=Private Aktivität starten
 StopPrivateActivityPushButton=Private Aktivität stoppen
 UserDisabledSuffix=[Benutzer ist deaktiviert]
+ActivityInaccessibleSuffix=[unzugänglich]
 
 [PrivateTaskManager]
 FilterLabel=Filter:

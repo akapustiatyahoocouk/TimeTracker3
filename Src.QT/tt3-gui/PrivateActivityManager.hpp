@@ -192,6 +192,14 @@ namespace tt3::gui
                                 const QString & filter,
                                 const TreeWidgetDecorations & decorations
                             );
+        static void     _removeInaccessibleItems(
+                                _WorkspaceModel workspaceModel,
+                                const tt3::ws::Credentials & credentials
+                            );
+        static void     _removeInaccessibleItems(
+                                _UserModel userModel,
+                                const tt3::ws::Credentials & credentials
+                            );
         static void     _refreshWorkspaceTree(
                                 QTreeWidget * privateActivitiesTreeWidget,
                                 _WorkspaceModel workspaceModel

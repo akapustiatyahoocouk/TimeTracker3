@@ -80,8 +80,8 @@ ActionAbout.Tooltip=О TimeTracker3
 
 ManageUsersTab.Text=Пользователи
 ManageActivityTypesTab.Text=Типы активности
-ManagePublicActivitiesTab.Text=Открытые активности
-ManagePublicTasksTab.Text=Открытые задачи
+ManagePublicActivitiesTab.Text=Общедоступные активности
+ManagePublicTasksTab.Text=Общедоступные задачи
 ManagePrivateActivitiesTab.Text=Личные активности
 ManagePrivateTasksTab.Text=Личные задачи
 ManageProjectsTab.Text=Проекты
