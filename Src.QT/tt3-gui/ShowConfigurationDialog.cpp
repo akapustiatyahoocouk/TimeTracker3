@@ -179,7 +179,7 @@ void ShowConfigurationDialog::_refresh()
             rr.string(
                 RID(VersionAndBuild),
                 component->version().toString(),
-                //  TODO add  "stage"
+                component->stage(),
                 component->buildNumber()));
         _ui->copyrightValue->setText(component->copyright());
         _ui->licenseValue->setText(component->license()->description());

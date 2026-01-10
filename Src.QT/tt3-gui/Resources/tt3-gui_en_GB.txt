@@ -841,7 +841,7 @@ DescriptionLabel=Description:
 VersionLabel=Version:
 CopyrightLabel=Copyright:
 LicenseLabel=License:
-VersionAndBuild={0} (build {1})
+VersionAndBuild={0} {1} (build {2})
 ShowLicensePushButton=Show license
 OkPushButton=OK
 

@@ -841,7 +841,7 @@ DescriptionLabel=Описание:
 VersionLabel=Версия:
 CopyrightLabel=Авторское право:
 LicenseLabel=Лицензия:
-VersionAndBuild={0} (сборка {1})
+VersionAndBuild={0} {1} (сборка {2})
 ShowLicensePushButton=Показать лицензию
 OkPushButton=ОК
 

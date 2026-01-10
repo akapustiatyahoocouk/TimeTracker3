@@ -51,6 +51,11 @@ QVersionNumber Component::version() const
     return fromString<QVersionNumber>(TT3_VERSION);
 }
 
+QString Component::stage() const
+{
+    return TT3_STAGE;
+}
+
 QString Component::buildNumber() const
 {
     return TT3_BUILD_DATE "-" TT3_BUILD_TIME;

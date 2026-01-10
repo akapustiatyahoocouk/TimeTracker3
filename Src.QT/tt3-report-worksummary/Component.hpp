@@ -72,6 +72,7 @@ namespace tt3::report::worksummary
         virtual QString description() const override;
         virtual QString copyright() const override;
         virtual auto    version() const -> QVersionNumber override;
+        virtual QString stage() const override;
         virtual QString buildNumber() const override;
         virtual auto    license() const -> tt3::util::ILicense * override;
         virtual auto    subsystem() const -> ISubsystem * override;

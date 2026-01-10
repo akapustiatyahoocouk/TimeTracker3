@@ -80,6 +80,13 @@ namespace tt3::util
                             ) const -> QVersionNumber = 0;
 
         /// \brief
+        ///     Returns the component stage.
+        /// \return
+        ///     The component stage ("alpha", "beta", "RTM',
+        ///     "GA", etc.
+        virtual QString stage() const = 0;
+
+        /// \brief
         ///     Returns the build number of this component.
         /// \return
         ///     The build number of this component.
@@ -359,6 +366,7 @@ public:                                 \
         virtual QString description() const override;
         virtual QString copyright() const override;
         virtual auto    version() const -> QVersionNumber override;
+        virtual QString stage() const override;
         virtual QString buildNumber() const override;
         virtual auto    license() const -> ILicense * override;
         virtual auto    subsystem() const -> ISubsystem * override;
