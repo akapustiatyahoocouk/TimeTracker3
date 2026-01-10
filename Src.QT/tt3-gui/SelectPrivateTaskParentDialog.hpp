@@ -113,6 +113,7 @@ namespace tt3::gui
         tt3::ws::User           _owner;
         tt3::ws::PrivateTask    _privateTask;
         tt3::ws::Credentials    _credentials;
+        bool                    _isAdministrator;
         tt3::ws::PrivateTask    _selectedParentTask;
         bool                    _refreshUnderway = false;
 

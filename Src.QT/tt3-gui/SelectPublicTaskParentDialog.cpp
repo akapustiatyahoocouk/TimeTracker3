@@ -56,6 +56,10 @@ SelectPublicTaskParentDialog::SelectPublicTaskParentDialog(
         _workspace(workspace),
         _publicTask(nullptr),
         _credentials(credentials),
+        _isAdministrator(
+            _workspace->grantsAll(
+                _credentials,
+                tt3::ws::Capability::Administrator)),
         _selectedParentTask(initialParentTask),
         //  Controls
         _ui(new Ui::SelectPublicTaskParentDialog),
@@ -179,6 +183,10 @@ void SelectPublicTaskParentDialog::_refresh()
         {
             PublicTaskManager::_filterItems(
                 workspaceModel, filter, _decorations);
+        }
+        if (!_isAdministrator)
+        {
+            PublicTaskManager::_removeInaccessibleItems(workspaceModel, _credentials, _decorations);
         }
         PublicTaskManager::_refreshWorkspaceTree(
             _ui->publicTasksTreeWidget, workspaceModel);

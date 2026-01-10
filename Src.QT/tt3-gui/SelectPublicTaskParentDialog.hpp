@@ -113,6 +113,7 @@ namespace tt3::gui
         tt3::ws::Workspace      _workspace;
         tt3::ws::PublicTask     _publicTask;
         tt3::ws::Credentials    _credentials;
+        bool                    _isAdministrator;
         tt3::ws::PublicTask     _selectedParentTask;
         bool                    _refreshUnderway = false;
 

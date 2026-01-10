@@ -56,6 +56,10 @@ SelectPrivateTaskParentDialog::SelectPrivateTaskParentDialog(
         _owner(owner),
         _privateTask(nullptr),
         _credentials(credentials),
+        _isAdministrator(
+            _owner->workspace()->grantsAll(
+                _credentials,
+                tt3::ws::Capability::Administrator)),
         _selectedParentTask(initialParentTask),
         //  Controls
         _ui(new Ui::SelectPrivateTaskParentDialog),
@@ -241,6 +245,10 @@ void SelectPrivateTaskParentDialog::_refresh()
         {
             PrivateTaskManager::_filterItems(
                 userModel, filter, _decorations);
+        }
+        if (!_isAdministrator)
+        {
+            PrivateTaskManager::_removeInaccessibleItems(userModel, _credentials, _decorations);
         }
         _refreshWorkspaceTree(userModel);
         _refreshCheckStates();
