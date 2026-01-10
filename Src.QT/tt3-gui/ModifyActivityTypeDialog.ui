@@ -69,6 +69,9 @@
        <height>85</height>
       </size>
      </property>
+     <property name="tabChangesFocus">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
   </layout>
