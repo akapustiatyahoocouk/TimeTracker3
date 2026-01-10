@@ -707,6 +707,7 @@ StopPrivateTaskPushButton=Stop private task
 CompletePrivateTaskPushButton=Complete private task
 UserDisabledSuffix=[user is disabled]
 TaskCompletedSuffix=[task is completed]
+TaskInaccessibleSuffix=[inaccessible]
 ShowCompletedCheckBox=Show completed tasks
 
 [ProjectManager]

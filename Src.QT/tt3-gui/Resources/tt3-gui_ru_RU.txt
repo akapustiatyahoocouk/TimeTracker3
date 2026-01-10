@@ -707,6 +707,7 @@ StopPrivateTaskPushButton=Остановить личную задачу
 CompletePrivateTaskPushButton=Завершить личную задачу
 UserDisabledSuffix=[пользователь неактивен]
 TaskCompletedSuffix=[задача выполнена]
+TaskInaccessibleSuffix=[недоступна]
 ShowCompletedCheckBox=Показать завершенные задачи
 
 [ProjectManager]
