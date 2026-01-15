@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Slim skin</title>
+<link href="../../../css/tt3.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<h1>Slim skin</h1>
+<hr />
+<p>The Slim skin is the TimeTracker3's preferred skin for everyday work, where 
+administrative tasks (such as being assigned to work on a new Task or completing 
+a Task) are rare as compared to switching between everyday tasks and activities 
+most frequently used. Its primary goal is to minimize the screen estate required 
+for TimeTracker3 to operate; however, it still provides full administrative 
+capabilities on those rare occasions when such are needed.</p>
+<p>
+<img alt="Administrator skin" src="../../../images/en_GB/Skins/SlimSkin.png" /></p>
+<p>The Slim skin's UI consists solely of the current user's Quick Picks list, 
+with each frequently used Activity or Task represented by a single button. 
+Clicking (or tapping) on one of these buttons starts recording the corresponding 
+Task Or Activity, repeated clicking (or tapping) on the same button stops the 
+recording and records the corresponding Work item.</p>
+<p>As special cases:</p>
+<ul>
+	<li>If a Task or Activity is already being recorded, clicking (or tapping) 
+	on a button representing a different Task or Activity stops the previous 
+	recording, records the corresponding Work item and starts recording the 
+	newly clicked (or tapped) Task or Activity.</li>
+	<li>If&nbsp; Task or Activity is being recorded, clicking (or tapping) on 
+	the "Stop current activity" button stops the recording and records the 
+	corresponding Work unit.</li>
+	<li>Pressing the left mouse button anywhere in the Slim skin's window and 
+	dragging the mouse around will move the window; releasing the mouse button 
+	will finalize the new position of the Slim skin's window. For touch screens 
+	the sequence of actions is press-drag-release.</li>
+	<li>To resize the Slim skin's window use the standard window resizing 
+	techniques; this normally involves dragging the window's borders.</li>
+	<li>The Slim skin's window will try to remember its position and size 
+	between runs. <em>
+The one important exception</em> is a Wayland (i.e. <em>not</em> X11) session on 
+Linux - the Wayland window compositor takes special (and questionable) pride in 
+completely ignoring the user's choice of where the application windows are 
+placed on the desktop.</li>
+</ul>
+<h2>Keyboard shortcuts</h2>
+<p>The Slim skin uses the same keyboard shortcuts as all other Skins (such as 
+Administrator skin). For example, pressing "1" brings up the Users view, 
+pressing Ctrl+P brings up the Preferences dialog, etc. These shortcuts are also 
+listed alongside the commands they invoke in the Slim skin's context menu (see 
+below).</p>
+<p>Note that Slim skin will open various views in modal dialogs, which need to 
+be closed before the normal work can resume.</p>
+<h2>The context menu</h2>
+<p>Right-clicking anywhere within the Slim skin's window pops up a context menu, 
+which contains the full complement of work-related and administrative actions 
+provided by TimeTracker3. The availability of each action is, of course, 
+subjects to the Capabilities granted by the currently logged in user and whether 
+or not the currently open workspace is read-only or not.</p>
+<h2>The system tray</h2>
+<p>As a special feature, the Slim skin's window can be minimized to the system 
+tray if the underlying OS supports the system tray. This is achieved via the 
+context menu (described in the previous section).</p>
+<p>When the TimeTracker3 has been minimized to the system tray:</p>
+<ul>
+	<li>Double-clicking the corresponding system tray icon restores the Slim 
+	skin window to its previous position and size.</li>
+	<li>Right-clicking the corresponding system tray icon pops up the same 
+	context menu as would be visible in the "windowed" mode; the only difference 
+	is in "minimize to system tray" command, available in "windowed" mode, is 
+	replaced by "restore" command that leads back to the "windowed" mode.</li>
+</ul>
+<p>IMPORTANT: The Slim skin is essentially a colorful representation of the 
+Quick Picks list for the current user. If the Quick Picks list is modified (by 
+invoking the corresponding context menu command, or by using the "P" keyboard 
+shortcut), the available Task/Activity buttons are rearranged to reflect the 
+changes made to the Quick Picks list, but the Slim skin window itself is not 
+e.g. resized. Therefore, after adding items to the Quick Picks list (or removing 
+items from it) the manual resize of the Slim skin window may be in order so as 
+to keep all items visible and not <em>too</em> large.</p>
+<p>&nbsp;</p>
+<hr />
+<p class="seealso">See also: -</p>
+<h2>&nbsp;</h2>
+
+</body>
+
+</html>
