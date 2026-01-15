@@ -130,9 +130,19 @@ ModifyUserDialog::ModifyUserDialog(
         setWindowIcon(QIcon(":/tt3-gui/Resources/Images/Actions/ViewUserLarge.png"));
         _ui->realNameLineEdit->setReadOnly(true);
         _ui->inactivityTimeoutCheckBox->setEnabled(false);
-        _ui->enabledCheckBox->setEnabled(false);
-        _ui->workingOnPushButton->setEnabled(false);
     }
+    _ui->enabledCheckBox->setEnabled(
+        !_readOnly &&
+        _user->workspace()->grantsAny(  //  may throw
+            _credentials,
+            tt3::ws::Capability::Administrator |
+            tt3::ws::Capability::ManageUsers));
+    _ui->workingOnPushButton->setEnabled(
+        !_readOnly &&
+        _user->workspace()->grantsAny(  //  may throw
+            _credentials,
+            tt3::ws::Capability::Administrator |
+            tt3::ws::Capability::ManageUsers));
 
     //  Done
     _refresh();
