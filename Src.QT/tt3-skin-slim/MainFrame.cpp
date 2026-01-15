@@ -267,6 +267,7 @@ void MainFrame::keyPressEvent(QKeyEvent * event)
         { Qt::Key_8, Qt::NoModifier,      &MainFrame::_onActionManageWorkStreams },
         { Qt::Key_9, Qt::NoModifier,      &MainFrame::_onActionManageBeneficiaries },
         { Qt::Key_0, Qt::NoModifier,      &MainFrame::_onActionManageMyDay },
+        { Qt::Key_P, Qt::NoModifier,      &MainFrame::_onActionManageQuickPicks },
         { Qt::Key_Q, Qt::NoModifier,      &MainFrame::_onActionQuickReports },
         { Qt::Key_L, Qt::ControlModifier, &MainFrame::_onActionLoginAsDifferentUser },
         { Qt::Key_P, Qt::ControlModifier, &MainFrame::_onActionPreferences },
@@ -885,6 +886,8 @@ QMenu * MainFrame::_createContextMenu()
     manageMenu->addAction(_createActionManageWorkStreams(contextMenu));
     manageMenu->addAction(_createActionManageBeneficiaries(contextMenu));
     manageMenu->addAction(_createActionManageMyDay(contextMenu));
+    manageMenu->addSeparator();
+    manageMenu->addAction(_createActionManageQuickPicks(contextMenu));
 
     QMenu * toolsMenu =
         contextMenu->addMenu(
@@ -1322,6 +1325,22 @@ QAction * MainFrame::_createActionManageMyDay(QObject * parent)
             &QAction::triggered,
             this,
             &MainFrame::_onActionManageMyDay);
+    return action;
+}
+
+QAction * MainFrame::_createActionManageQuickPicks(QObject * parent)
+{
+    tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(MainFrame));
+
+    QAction * action = new QAction(
+        QIcon(":/tt3-skin-slim/Resources/Images/Misc/QuickPicksSmall.png"),
+        rr.string(RID(ActionManageQuickPicks.Text)),
+        parent);
+    action->setShortcut(QKeySequence(Qt::Key_P));
+    connect(action,
+            &QAction::triggered,
+            this,
+            &MainFrame::_onActionManageQuickPicks);
     return action;
 }
 
@@ -1798,6 +1817,32 @@ void MainFrame::_onActionManageMyDay()
         tt3::gui::theCurrentWorkspace,
         tt3::gui::theCurrentCredentials);
     dlg.doModal();
+}
+
+void MainFrame::_onActionManageQuickPicks()
+{
+    try
+    {
+        tt3::ws::Account account =
+            tt3::gui::theCurrentWorkspace->login(
+                tt3::gui::theCurrentCredentials);
+        tt3::gui::ManageQuickPicksListDialog dlg(
+            _dialogParent(),
+            account,
+            tt3::gui::theCurrentCredentials);
+        if (dlg.doModal() == tt3::gui::ManageQuickPicksListDialog::Result::Ok)
+        {
+            account->setQuickPicksList(
+                tt3::gui::theCurrentCredentials,
+                dlg.quickPicksList());
+            refresh();
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        qCritical() << ex;
+        tt3::gui::ErrorDialog::show(this, ex);
+    }
 }
 
 void MainFrame::_onActionQuickReports()

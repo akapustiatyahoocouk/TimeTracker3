@@ -56,6 +56,7 @@ ActionManageProjects.Text=&7 - Manage projects
 ActionManageWorkStreams.Text=&8 - Manage work streams
 ActionManageBeneficiaries.Text=&9 - Manage beneficiaries
 ActionManageMyDay.Text=&0 - Manage my day
+ActionManageQuickPicks.Text=Manage quick &picks
 
 ActionQuickReports.Text=&Quick reports
 

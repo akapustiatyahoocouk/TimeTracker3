@@ -56,6 +56,7 @@ ActionManageProjects.Text=&7 - Управление проектами
 ActionManageWorkStreams.Text=&8 - Управление рабочими потоками
 ActionManageBeneficiaries.Text=&9 - Управление бенефициарами
 ActionManageMyDay.Text=&0 - Управление моим днём
+ActionManageQuickPicks.Text=Управление быстрым выбором
 
 ActionQuickReports.Text=&Быстрые отчёты
 

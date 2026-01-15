@@ -214,6 +214,7 @@ namespace tt3::skin::slim
         QAction *       _createActionManageWorkStreams(QObject * parent);
         QAction *       _createActionManageBeneficiaries(QObject * parent);
         QAction *       _createActionManageMyDay(QObject * parent);
+        QAction *       _createActionManageQuickPicks(QObject * parent);
         QAction *       _createActionQuickReports(QObject * parent);
         QAction *       _createActionInvokeTool(
                                 tt3::util::ITool * tool,
@@ -279,6 +280,7 @@ namespace tt3::skin::slim
         void            _onActionManageWorkStreams();
         void            _onActionManageBeneficiaries();
         void            _onActionManageMyDay();
+        void            _onActionManageQuickPicks();
         void            _onActionQuickReports();
         void            _onActionLoginAsDifferentUser();
         void            _onActionPreferences();
