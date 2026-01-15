@@ -76,6 +76,7 @@ namespace tt3::gui
     private:
         tt3::ws::Account        _account;
         tt3::ws::Credentials    _credentials;
+        bool                    _isAdministrator;
         bool                    _refreshUnderway = false;
 
         QList<tt3::ws::Activity>_quickPicksList;
@@ -119,6 +120,7 @@ namespace tt3::gui
         //  Controls
     private:
         Ui::ManageQuickPicksListDialog *const   _ui;
+        QTimer          _refreshTimer;
 
         //////////
         //  Signal handlers
@@ -137,6 +139,7 @@ namespace tt3::gui
         void            _publicTasksFilterLineEditTextChanged(QString);
         void            _privateActivitiesFilterLineEditTextChanged(QString);
         void            _privateTasksFilterLineEditTextChanged(QString);
+        void            _refreshTimerTimeout();
         void            accept() override;
         void            reject() override;
     };

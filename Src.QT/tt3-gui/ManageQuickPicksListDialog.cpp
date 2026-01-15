@@ -18,6 +18,11 @@
 #include "ui_ManageQuickPicksListDialog.h"
 using namespace tt3::gui;
 
+namespace tt3::gui
+{
+    extern CurrentActivity theCurrentActivity;
+}
+
 //////////
 //  Construction/destruction
 ManageQuickPicksListDialog::ManageQuickPicksListDialog(
@@ -28,9 +33,14 @@ ManageQuickPicksListDialog::ManageQuickPicksListDialog(
         //  Implementation
         _account(account),
         _credentials(credentials),
+        _isAdministrator(
+            _account->workspace()->grantsAll(
+                _credentials,
+                tt3::ws::Capability::Administrator)),
         _quickPicksList(account->quickPicksList(credentials)),
         //  Controls
-        _ui(new Ui::ManageQuickPicksListDialog)
+        _ui(new Ui::ManageQuickPicksListDialog),
+        _refreshTimer(this)
 {
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(ManageQuickPicksListDialog));
 
@@ -93,9 +103,15 @@ ManageQuickPicksListDialog::ManageQuickPicksListDialog(
     _ui->tasksTabWidget->setCurrentIndex(
         Component::Settings::instance()->manageQuickPicksListDialogTab);
 
+    connect(&_refreshTimer,
+            SIGNAL(timeout()),
+            this,
+            SLOT(_refreshTimerTimeout()));
+
     //  Done
     _refresh();
     adjustSize();
+    _refreshTimer.start(1000);
 }
 
 ManageQuickPicksListDialog::~ManageQuickPicksListDialog()
@@ -205,6 +221,10 @@ void ManageQuickPicksListDialog::_refillPublicActivitiesTree()
     {
         PublicActivityManager::_filterItems(workspaceModel, filter, _treeWidgetDecorations);
     }
+    if (!_isAdministrator)
+    {
+        PublicActivityManager::_removeInaccessibleItems(workspaceModel, _credentials);
+    }
     PublicActivityManager::_refreshWorkspaceTree(
         _ui->publicActivitiesTreeWidget,
         workspaceModel);
@@ -228,6 +248,10 @@ void ManageQuickPicksListDialog::_refillPublicTasksTree()
     if (!filter.isEmpty())
     {
         PublicTaskManager::_filterItems(workspaceModel, filter, _treeWidgetDecorations);
+    }
+    if (!_isAdministrator)
+    {
+        PublicTaskManager::_removeInaccessibleItems(workspaceModel, _credentials, _treeWidgetDecorations);
     }
     PublicTaskManager::_refreshWorkspaceTree(
         _ui->publicTasksTreeWidget,
@@ -257,6 +281,10 @@ void ManageQuickPicksListDialog::_refillPrivateActivitiesTree()
             !filter.isEmpty())
         {
             PrivateActivityManager::_filterItems(userModel, filter, _treeWidgetDecorations);
+        }
+        if (!_isAdministrator)
+        {
+            PrivateActivityManager::_removeInaccessibleItems(userModel, _credentials);
         }
         _refreshWorkspaceTree(userModel);
 
@@ -288,6 +316,10 @@ void ManageQuickPicksListDialog::_refillPrivateTasksTree()
         {
             PrivateTaskManager::_filterItems(
                 userModel, filter, _treeWidgetDecorations);
+        }
+        if (!_isAdministrator)
+        {
+            PrivateTaskManager::_removeInaccessibleItems(userModel, _credentials, _treeWidgetDecorations);
         }
         _refreshWorkspaceTree(userModel);
         if (!filter.isEmpty())
@@ -331,6 +363,7 @@ void ManageQuickPicksListDialog::_refillQuickPicksListWidget()
         QListWidgetItem * item = _ui->quickPicksListWidget->item(i);
         try
         {
+            QFont font = _treeWidgetDecorations.itemFont;
             QBrush foregrund = _treeWidgetDecorations.itemForeground;
             QString suffix;
             if (tt3::ws::Task task =
@@ -342,9 +375,22 @@ void ManageQuickPicksListDialog::_refillQuickPicksListWidget()
                     foregrund = _treeWidgetDecorations.disabledItemForeground;
                 }
             }
+            if (theCurrentActivity == _quickPicksList[i])
+            {
+                qint64 secs = qMax(0, theCurrentActivity.lastChangedAt().secsTo(QDateTime::currentDateTimeUtc()));
+                char s[32];
+                sprintf(s, " [%d:%02d:%02d]",
+                        int(secs / (60 * 60)),
+                        int((secs / 60) % 60),
+                        int(secs % 60));
+                suffix += s;
+                foregrund = _treeWidgetDecorations.itemForeground;
+                font = _treeWidgetDecorations.itemEmphasisFont;
+            }
             item->setText(_quickPicksList[i]->displayName(_credentials) + suffix);  //  may throw
             item->setIcon(_quickPicksList[i]->type()->smallIcon()); //  may throw
             item->setForeground(foregrund);
+            item->setFont(font);
         }
         catch (const tt3::util::Exception & ex)
         {   //  OOPS!
@@ -690,6 +736,31 @@ void ManageQuickPicksListDialog::_privateTasksFilterLineEditTextChanged(QString)
 {
     _refillPrivateTasksTree();
     _refresh();
+}
+
+void ManageQuickPicksListDialog::_refreshTimerTimeout()
+{
+    if (tt3::ws::Activity activity = theCurrentActivity)
+    {
+        if (std::dynamic_pointer_cast<tt3::ws::PublicTaskImpl>(activity))
+        {
+            _refillPublicTasksTree();
+        }
+        else if (std::dynamic_pointer_cast<tt3::ws::PrivateTaskImpl>(activity))
+        {
+            _refillPrivateTasksTree();
+        }
+        else if (std::dynamic_pointer_cast<tt3::ws::PublicActivityImpl>(activity))
+        {
+            _refillPublicActivitiesTree();
+        }
+        else if (std::dynamic_pointer_cast<tt3::ws::PrivateActivityImpl>(activity))
+        {
+            _refillPrivateActivitiesTree();
+        }
+        _refillQuickPicksListWidget();
+        _refresh();
+    }
 }
 
 void ManageQuickPicksListDialog::accept()
