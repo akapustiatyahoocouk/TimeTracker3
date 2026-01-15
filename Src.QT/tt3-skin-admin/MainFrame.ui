@@ -255,6 +255,8 @@
     <addaction name="separator"/>
     <addaction name="actionManageMyDay"/>
     <addaction name="separator"/>
+    <addaction name="actionManageQuickPicks"/>
+    <addaction name="separator"/>
     <addaction name="actionRefresh"/>
    </widget>
    <widget class="QMenu" name="menuTools">
@@ -676,6 +678,18 @@
    </property>
    <property name="shortcut">
     <string>Q</string>
+   </property>
+  </action>
+  <action name="actionManageQuickPicks">
+   <property name="icon">
+    <iconset resource="../tt3-gui/tt3-gui.qrc">
+     <normaloff>:/tt3-gui/Resources/Images/Misc/QuickPicksSmall.png</normaloff>:/tt3-gui/Resources/Images/Misc/QuickPicksSmall.png</iconset>
+   </property>
+   <property name="text">
+    <string>Manage quick &amp;picks</string>
+   </property>
+   <property name="shortcut">
+    <string>P</string>
    </property>
   </action>
  </widget>
@@ -1100,6 +1114,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionManageQuickPicks</sender>
+   <signal>triggered()</signal>
+   <receiver>tt3::skin::admin::MainFrame</receiver>
+   <slot>_onActionManageQuickPicks()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>_onActionExit()</slot>
@@ -1128,5 +1158,6 @@
   <slot>_onActionManageBeneficiaries()</slot>
   <slot>_onActionManageMyDay()</slot>
   <slot>_onActionQuickReports()</slot>
+  <slot>_onActionManageQuickPicks()</slot>
  </slots>
 </ui>

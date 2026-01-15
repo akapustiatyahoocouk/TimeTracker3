@@ -59,5 +59,7 @@
         <file>Resources/tt3-skin-admin_ru_RU.txt</file>
         <file>Resources/Images/Misc/QuickReportLarge.png</file>
         <file>Resources/Images/Misc/QuickReportSmall.png</file>
+        <file>Resources/Images/Misc/QuickPicksLarge.png</file>
+        <file>Resources/Images/Misc/QuickPicksSmall.png</file>
     </qresource>
 </RCC>

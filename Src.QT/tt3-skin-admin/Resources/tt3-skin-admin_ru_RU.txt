@@ -58,6 +58,8 @@ ActionManageBeneficiaries.Text=&9 - Управление бенефициара�
 ActionManageBeneficiaries.Tooltip=Управление бенефициарами
 ActionManageMyDay.Text=&0 - Управление моим днём
 ActionManageMyDay.Tooltip=Управление моим днём
+ActionManageQuickPicks.Text=Управление быстрым выбором
+ActionManageQuickPicks.Tooltip=Управление моим списком быстрого выбора
 ActionRefresh.Text=&Обновить
 ActionRefresh.Tooltip=Обновить
 

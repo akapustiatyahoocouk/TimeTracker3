@@ -824,6 +824,10 @@ void MainFrame::_applyCurrentLocale()
         rr.string(RID(ActionManageMyDay.Text)));
     _ui->actionManageMyDay->setToolTip(
         rr.string(RID(ActionManageMyDay.Tooltip)));
+    _ui->actionManageQuickPicks->setText(
+        rr.string(RID(ActionManageQuickPicks.Text)));
+    _ui->actionManageQuickPicks->setToolTip(
+        rr.string(RID(ActionManageQuickPicks.Tooltip)));
     _ui->actionRefresh->setText(
         rr.string(RID(ActionRefresh.Text)));
     _ui->actionRefresh->setToolTip(
@@ -1183,6 +1187,32 @@ void MainFrame::_onActionManageMyDay()
 #else
     _ui->managersTabWidget->setCurrentIndex(9);
 #endif
+}
+
+void MainFrame::_onActionManageQuickPicks()
+{
+    try
+    {
+        tt3::ws::Account account =
+            tt3::gui::theCurrentWorkspace->login(
+            tt3::gui::theCurrentCredentials);
+        tt3::gui::ManageQuickPicksListDialog dlg(
+            this,
+            account,
+            tt3::gui::theCurrentCredentials);
+        if (dlg.doModal() == tt3::gui::ManageQuickPicksListDialog::Result::Ok)
+        {
+            account->setQuickPicksList(
+                tt3::gui::theCurrentCredentials,
+                dlg.quickPicksList());
+            refresh();
+        }
+    }
+    catch (const tt3::util::Exception & ex)
+    {
+        qCritical() << ex;
+        tt3::gui::ErrorDialog::show(this, ex);
+    }
 }
 
 void MainFrame::_onActionQuickReports()

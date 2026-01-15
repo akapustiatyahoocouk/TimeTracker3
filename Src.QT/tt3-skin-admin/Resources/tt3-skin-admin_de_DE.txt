@@ -58,6 +58,8 @@ ActionManageBeneficiaries.Text=&9 – Begünstigte verwalten
 ActionManageBeneficiaries.Tooltip=Begünstigte verwalten
 ActionManageMyDay.Text=&0 – Meinen Tag verwalten
 ActionManageMyDay.Tooltip=Meinen Tag verwalten
+ActionManageQuickPicks.Text=Schnellauswahl verwalten
+ActionManageQuickPicks.Tooltip=Meine Schnellauswahlliste verwalten
 ActionRefresh.Text=&Aktualisieren
 ActionRefresh.Tooltip=Aktualisieren
 

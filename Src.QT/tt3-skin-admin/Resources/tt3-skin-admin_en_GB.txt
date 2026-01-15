@@ -58,6 +58,8 @@ ActionManageBeneficiaries.Text=&9 - Manage beneficiaries
 ActionManageBeneficiaries.Tooltip=Manage beneficiaries
 ActionManageMyDay.Text=&0 - Manage my day
 ActionManageMyDay.Tooltip=Manage my day
+ActionManageQuickPicks.Text=Manage quick &picks
+ActionManageQuickPicks.Tooltip=Manage my quick picks list
 ActionRefresh.Text=&Refresh
 ActionRefresh.Tooltip=Refresh
 
