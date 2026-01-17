@@ -44,33 +44,33 @@ namespace tt3::gui
         ///     Returns the mnemonic identifier of this skin.
         /// \return
         ///     The mnemonic identifier of this skin.
-        virtual Mnemonic    mnemonic() const = 0;
+        virtual auto    mnemonic() const -> Mnemonic = 0;
 
         /// \brief
         ///     Returns the user-readable display name of this skin.
         /// \return
         ///     The user-readable display name of this skin
         ///     for the current default locale.
-        virtual QString     displayName() const = 0;
+        virtual QString displayName() const = 0;
 
         /// \brief
         ///     Returns the short (1 line) description of this skin.
         /// \return
         ///     The short (1 line) description of this skin
         ///     for the current default locale.
-        virtual QString     description() const = 0;
+        virtual QString description() const = 0;
 
         /// \brief
         ///     Returns the small (16x16) icon representing this skin.
         /// \return
         ///     The small (16x16) icon representing this skin.
-        virtual QIcon       smallIcon() const = 0;
+        virtual QIcon   smallIcon() const = 0;
 
         /// \brief
         ///     Returns the large (32x32) icon representing this skin.
         /// \return
         ///     The large (32x32) icon representing this skin.
-        virtual QIcon       largeIcon() const = 0;
+        virtual QIcon   largeIcon() const = 0;
 
         /// \brief
         ///     Checks if this is a "defalt" skin.
@@ -78,7 +78,7 @@ namespace tt3::gui
         ///     True if this skin can be chosed by default
         ///     if no skin or a nonexistent skin is requested
         ///     (that is, on first TT3 start).
-        virtual bool        isDefault() const = 0;
+        virtual bool    isDefault() const = 0;
 
         //////////
         //  Operations (state)
@@ -87,26 +87,30 @@ namespace tt3::gui
         ///     Checks whether this skin is "active" (its UI is visible).
         /// \return
         ///     True if this skin is "active", else false.
-        virtual bool        isActive() const = 0;
+        virtual bool    isActive() const = 0;
 
         /// \brief
         ///     "Activates" this skin, showing its UI.
         /// \details
         ///     Has no effect if this skin is already "active".
-        virtual void        activate() = 0;
+        virtual void    activate() = 0;
 
         /// \brief
         ///     "Deactivates" this skin, hiding its UI.
         /// \details
         ///     Has no effect if this skin is already "inactive".
-        virtual void        deactivate() = 0;
+        virtual void    deactivate() = 0;
 
         /// \brief
-        ///     Returns the main frame" of this skin's UI.
+        ///     Returns the "dialog parent" of this Skin.
+        /// \details
+        ///     This is the widget that shall bre used as parent
+        ///     for any modal dialogs that pop up when this Skin
+        ///     is active.
         /// \return
-        ///     The main frame" of this skin's UI, or nullptr if
-        ///     this skin is "inactive" or its UI has no "main frame".
-        virtual QMainWindow*mainWindow() = 0;
+        ///     The "dialog parent" of this Skin; nullptr == none,
+        ///     including the case when this Skin is inactive.
+        virtual QWidget*dialogParent() = 0;
     };
 
     /// \class SkinManager tt3-gui/API.hpp

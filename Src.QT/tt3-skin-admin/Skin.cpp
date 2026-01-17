@@ -87,9 +87,9 @@ void Skin::deactivate()
     }
 }
 
-QMainWindow * Skin::mainWindow()
+QWidget * Skin::dialogParent()
 {
-    return _mainFrame;
+    return (_mainFrame != nullptr && !_mainFrame->isMinimized()) ? _mainFrame : nullptr;
 }
 
 //  End of tt3-skin-admin/Skin.cpp

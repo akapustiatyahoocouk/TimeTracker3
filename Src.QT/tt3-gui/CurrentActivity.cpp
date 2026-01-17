@@ -157,20 +157,12 @@ bool CurrentActivity::replaceWith(
                 with->requireCommentOnStart(credentials) && //  may throw
                 !tt3::util::SystemShutdownHandler::isShutdownInProgress())
             {
-                QWidget * dialogParent = theCurrentSkin->mainWindow();
-                /*  TODO kill off
-                if (dialogParent == nullptr)
-                {   //  When skin's main frame is e.g. minimized to system
-                    //  tray, or a full-screen reminder is displayed...
-                    dialogParent = QApplication::activeWindow();
-                }
-                */
                 if (reminderWindowWasVisible)
                 {   //  Hide for duration of entry
                     impl->reminderWindow->hide();
                 }
                 EnterActivityStartCommentDialog dlg(
-                    dialogParent,
+                    theCurrentSkin->dialogParent(),
                     with,
                     credentials);   //  may throw
                 if (dlg.doModal() != EnterActivityStartCommentDialog::Result::Ok)
@@ -197,20 +189,12 @@ bool CurrentActivity::replaceWith(
                      impl->activity->requireCommentOnStop(credentials) &&   //  may throw
                      !tt3::util::SystemShutdownHandler::isShutdownInProgress())
             {
-                QWidget * dialogParent = theCurrentSkin->mainWindow();
-                /*  TODO kill off
-                if (dialogParent == nullptr)
-                {   //  When skin's main frame is e.g. minimized to system
-                    //  tray, or a full-screen reminder is displayed...
-                    dialogParent = QApplication::activeWindow();
-                }
-                */
                 if (reminderWindowWasVisible)
                 {   //  Hide for duration of entry
                     impl->reminderWindow->hide();
                 }
                 EnterActivityStopCommentDialog dlg(
-                    dialogParent,
+                    theCurrentSkin->dialogParent(),
                     impl->activity,
                     credentials);  //  may throw
                 if (dlg.doModal() != EnterActivityStopCommentDialog::Result::Ok)

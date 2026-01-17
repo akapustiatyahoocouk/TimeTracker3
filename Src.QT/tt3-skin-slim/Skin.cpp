@@ -91,9 +91,9 @@ void Skin::deactivate()
     }
 }
 
-QMainWindow * Skin::mainWindow()
+QWidget * Skin::dialogParent()
 {
-    return nullptr; //  It's a "side window", really
+    return nullptr; //  Main frame is a "side window", really
 }
 
 //  End of tt3-skin-slim/Skin.cpp

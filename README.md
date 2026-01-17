@@ -27,6 +27,7 @@ A portable tool for tracking the working time dedicated to various activities.
 - Source files are .cpp and are one-per-class.
 - Stick to US English for code (identifiers, etc.) and comments (including goxygen comments).
 - User-visible strings are all in resource files and shall stick to the resource file's locale (which is part of the resource file name).
-- Doxygen comments must be written for anything that is piblic or protected (i.e. visible from outside the class). For privates, this is not necessary.
+- Doxygen comments must be written for everything that is piblic or protected (i.e. visible from outside the class). For privates, this is not necessary.
 - ALWAYS document thrown exceptions, as C++ currently has no other exception specification mechanism.
-- Catch Exceptions, don't bother with Errors - Errors are typically unrecoverable. Don't bother with std::exceptions - they are unrecoverable (such as std::bad_alloc) or indicate programming errors (std::runtime_error or std::bad_cast).
+- Catch Exceptions, don't bother with Errors - Errors are typically unrecoverable.
+- Don't bother with std::exceptions - they are unrecoverable (such as std::bad_alloc) or indicate programming errors (std::runtime_error or std::bad_cast).

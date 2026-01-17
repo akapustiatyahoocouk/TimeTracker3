@@ -164,7 +164,6 @@ namespace tt3::skin::slim
         //  Helpers
         void            _loadPosition();
         void            _savePosition();
-        QWidget *       _dialogParent();
 
         void            _recalculateControlAreas();
         void            _draw(QPainter & p, const _ControlArea & controlArea);

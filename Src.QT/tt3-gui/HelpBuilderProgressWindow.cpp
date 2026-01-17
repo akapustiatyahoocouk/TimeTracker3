@@ -26,7 +26,7 @@ namespace tt3::gui
 //////////
 //  Construction/destruction
 HelpBuilderProgressWindow::HelpBuilderProgressWindow()
-    :   QDialog(theCurrentSkin->mainWindow()),
+    :   QDialog(theCurrentSkin->dialogParent()),
         _ui(new Ui::HelpBuilderProgressWindow)
 {
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(HelpBuilderProgressWindow));

@@ -438,11 +438,6 @@ void MainFrame::_savePosition()
     }
 }
 
-QWidget * MainFrame::_dialogParent()
-{
-    return nullptr;
-}
-
 void MainFrame::_recalculateControlAreas()
 {
     const int _MinControlAreaHeight = 32;
@@ -609,7 +604,7 @@ bool MainFrame::_createWorkspace(
         tt3::gui::theCurrentWorkspace->address() == workspaceAddress)
     {   //  OOPS!
         tt3::gui::ErrorDialog::show(
-            _dialogParent(),
+            Skin::instance()->dialogParent(),
             tt3::db::api::AlreadyExistsException(
                 "Workspace", "location", workspaceAddress->displayForm()));
         return false;
@@ -631,7 +626,7 @@ bool MainFrame::_createWorkspace(
         catch (const tt3::util::Exception & ex)
         {
             qCritical() << ex;
-            tt3::gui::ErrorDialog::show(_dialogParent(), ex);
+            tt3::gui::ErrorDialog::show(Skin::instance()->dialogParent(), ex);
         }
         //  Replace the "current" workspace
         tt3::gui::theCurrentWorkspace.swap(workspace);
@@ -649,7 +644,7 @@ bool MainFrame::_createWorkspace(
                 //  this stage - a new workspace has already been
                 //  created & selected as "current"
                 qCritical() << ex;
-                tt3::gui::ErrorDialog::show(_dialogParent(), ex);
+                tt3::gui::ErrorDialog::show(Skin::instance()->dialogParent(), ex);
                 return false;
             }
         }
@@ -663,7 +658,7 @@ bool MainFrame::_createWorkspace(
     catch (const tt3::util::Exception & ex)
     {
         qCritical() << ex;
-        tt3::gui::ErrorDialog::show(_dialogParent(), ex);
+        tt3::gui::ErrorDialog::show(Skin::instance()->dialogParent(), ex);
         return false;
     }
 }
@@ -703,7 +698,7 @@ bool MainFrame::_openWorkspace(
         catch (const tt3::util::Exception & ex)
         {
             qCritical() << ex;
-            tt3::gui::ErrorDialog::show(_dialogParent(), ex);
+            tt3::gui::ErrorDialog::show(Skin::instance()->dialogParent(), ex);
         }
         //  Use the newly open workspace
         tt3::gui::theCurrentWorkspace.swap(workspace);
@@ -721,7 +716,7 @@ bool MainFrame::_openWorkspace(
                 //  this stage - a workspace has already been
                 //  opened & selected as "current"
                 qCritical() << ex;
-                tt3::gui::ErrorDialog::show(_dialogParent(), ex);
+                tt3::gui::ErrorDialog::show(Skin::instance()->dialogParent(), ex);
                 return false;
             }
         }
@@ -732,7 +727,7 @@ bool MainFrame::_openWorkspace(
     catch (const tt3::util::Exception & ex)
     {
         qCritical() << ex;
-        tt3::gui::ErrorDialog::show(_dialogParent(), ex);
+        tt3::gui::ErrorDialog::show(Skin::instance()->dialogParent(), ex);
         refresh();
         return false;
     }
@@ -779,7 +774,7 @@ void MainFrame::_destroyWorkspace(tt3::ws::WorkspaceAddress workspaceAddress)
         tt3::gui::theCurrentWorkspace->address() == workspaceAddress)
     {
         tt3::gui::ErrorDialog::show(
-            _dialogParent(),
+            Skin::instance()->dialogParent(),
             rr.string(
                 RID(CannotDestroyWorkspaceError),
                 workspaceAddress->displayForm()));
@@ -795,7 +790,7 @@ void MainFrame::_destroyWorkspace(tt3::ws::WorkspaceAddress workspaceAddress)
     catch (const tt3::util::Exception & ex)
     {
         qCritical() << ex;
-        tt3::gui::ErrorDialog::show(_dialogParent(), ex);
+        tt3::gui::ErrorDialog::show(Skin::instance()->dialogParent(), ex);
     }
 }
 
@@ -815,7 +810,7 @@ void MainFrame::_generateReport(
         try
         {   //  ...and inner handler for report job
             tt3::report::CreateReportDialog dlg(
-                _dialogParent(),
+                Skin::instance()->dialogParent(),
                 workspace,
                 reportCredentials,
                 reportType);
@@ -832,7 +827,7 @@ void MainFrame::_generateReport(
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! Report & we're done
         qCritical() << ex;
-        tt3::gui::ErrorDialog::show(_dialogParent(), ex);
+        tt3::gui::ErrorDialog::show(Skin::instance()->dialogParent(), ex);
     }   //  Let Errors and non-tt3 throwns use default behaviour
     refresh();  //  workspace might have changed while report was generated
 }
@@ -1375,7 +1370,7 @@ QAction * MainFrame::_createActionInvokeTool(
             this,
             [=, this]()
             {
-                tool->run(_dialogParent());
+                tool->run(Skin::instance()->dialogParent());
             });
     return action;
 }
@@ -1593,7 +1588,7 @@ void MainFrame::_onActionStopCurrentActivity()
     catch (const tt3::util::Exception & ex)
     {
         qCritical() << ex;
-        tt3::gui::ErrorDialog::show(_dialogParent(), ex);
+        tt3::gui::ErrorDialog::show(Skin::instance()->dialogParent(), ex);
     }
     refresh();
 }
@@ -1617,7 +1612,7 @@ void MainFrame::_onActionRefresh()
 
 void MainFrame::_onActionNewWorkspace()
 {
-    tt3::gui::NewWorkspaceDialog dlg(_dialogParent());
+    tt3::gui::NewWorkspaceDialog dlg(Skin::instance()->dialogParent());
     if (dlg.doModal() == tt3::gui::NewWorkspaceDialog::Result::Ok)
     {
         tt3::ws::WorkspaceAddress workspaceAddress = dlg.selectedWorkspaceAddress();
@@ -1629,7 +1624,7 @@ void MainFrame::_onActionNewWorkspace()
 void MainFrame::_onActionOpenWorkspace()
 {
     tt3::gui::SelectWorkspaceDialog dlg(
-        _dialogParent(),
+        Skin::instance()->dialogParent(),
         tt3::gui::SelectWorkspaceDialog::OptionalControls::OpenModeSelection);
     if (dlg.doModal() == tt3::gui::SelectWorkspaceDialog::Result::Ok)
     {
@@ -1658,7 +1653,7 @@ void MainFrame::_onActionCloseWorkspace()
     if (workspace != nullptr &&
         tt3::gui::Component::Settings::instance()->confirmCloseWorkspace)
     {
-        tt3::gui::ConfirmCloseWorkspaceDialog dlg(_dialogParent(), workspace->address());
+        tt3::gui::ConfirmCloseWorkspaceDialog dlg(Skin::instance()->dialogParent(), workspace->address());
         if (dlg.doModal() != tt3::gui::ConfirmCloseWorkspaceDialog::Result::Yes)
         {   //  ...and the user has said "no" - restore the "current"
             //  database as it was, and we're done
@@ -1676,7 +1671,7 @@ void MainFrame::_onActionCloseWorkspace()
     catch (const tt3::util::Exception & ex)
     {   //  OOPS! close() error - report, but stay "closed"
         qCritical() << ex;
-        tt3::gui::ErrorDialog::show(_dialogParent(), ex);
+        tt3::gui::ErrorDialog::show(Skin::instance()->dialogParent(), ex);
     }
     refresh();
 }
@@ -1684,7 +1679,7 @@ void MainFrame::_onActionCloseWorkspace()
 void MainFrame::_onActionDestroyWorkspace()
 {
     tt3::gui::SelectWorkspaceDialog dlg(
-        _dialogParent(),
+        Skin::instance()->dialogParent(),
         tt3::gui::SelectWorkspaceDialog::OptionalControls::None);
     if (dlg.doModal() == tt3::gui::SelectWorkspaceDialog::Result::Ok)
     {
@@ -1719,7 +1714,7 @@ void MainFrame::_onActionExit()
     if (tt3::gui::Component::Settings::instance()->confirmExit &&
         !tt3::util::SystemShutdownHandler::isShutdownInProgress())
     {
-        tt3::gui::ConfirmExitDialog dlg(_dialogParent());
+        tt3::gui::ConfirmExitDialog dlg(Skin::instance()->dialogParent());
         if (dlg.doModal() != tt3::gui::ConfirmExitDialog::Result::Yes)
         {
             return;
@@ -1732,7 +1727,7 @@ void MainFrame::_onActionExit()
 void MainFrame::_onActionManageUsers()
 {
     tt3::gui::ManageUsersDialog dlg(
-        _dialogParent(),
+        Skin::instance()->dialogParent(),
         tt3::gui::theCurrentWorkspace,
         tt3::gui::theCurrentCredentials);
     dlg.doModal();
@@ -1741,7 +1736,7 @@ void MainFrame::_onActionManageUsers()
 void MainFrame::_onActionManageActivityTypes()
 {
     tt3::gui::ManageActivityTypesDialog dlg(
-        _dialogParent(),
+        Skin::instance()->dialogParent(),
         tt3::gui::theCurrentWorkspace,
         tt3::gui::theCurrentCredentials);
     dlg.doModal();
@@ -1750,7 +1745,7 @@ void MainFrame::_onActionManageActivityTypes()
 void MainFrame::_onActionManagePublicActivities()
 {
     tt3::gui::ManagePublicActivitiesDialog dlg(
-        _dialogParent(),
+        Skin::instance()->dialogParent(),
         tt3::gui::theCurrentWorkspace,
         tt3::gui::theCurrentCredentials);
     dlg.doModal();
@@ -1759,7 +1754,7 @@ void MainFrame::_onActionManagePublicActivities()
 void MainFrame::_onActionManagePublicTasks()
 {
     tt3::gui::ManagePublicTasksDialog dlg(
-        _dialogParent(),
+        Skin::instance()->dialogParent(),
         tt3::gui::theCurrentWorkspace,
         tt3::gui::theCurrentCredentials);
     dlg.doModal();
@@ -1768,7 +1763,7 @@ void MainFrame::_onActionManagePublicTasks()
 void MainFrame::_onActionManagePrivateActivities()
 {
     tt3::gui::ManagePrivateActivitiesDialog dlg(
-        _dialogParent(),
+        Skin::instance()->dialogParent(),
         tt3::gui::theCurrentWorkspace,
         tt3::gui::theCurrentCredentials);
     dlg.doModal();
@@ -1777,7 +1772,7 @@ void MainFrame::_onActionManagePrivateActivities()
 void MainFrame::_onActionManagePrivateTasks()
 {
     tt3::gui::ManagePrivateTasksDialog dlg(
-        _dialogParent(),
+        Skin::instance()->dialogParent(),
         tt3::gui::theCurrentWorkspace,
         tt3::gui::theCurrentCredentials);
     dlg.doModal();
@@ -1786,7 +1781,7 @@ void MainFrame::_onActionManagePrivateTasks()
 void MainFrame::_onActionManageProjects()
 {
     tt3::gui::ManageProjectsDialog dlg(
-        _dialogParent(),
+        Skin::instance()->dialogParent(),
         tt3::gui::theCurrentWorkspace,
         tt3::gui::theCurrentCredentials);
     dlg.doModal();
@@ -1795,7 +1790,7 @@ void MainFrame::_onActionManageProjects()
 void MainFrame::_onActionManageWorkStreams()
 {
     tt3::gui::ManageWorkStreamsDialog dlg(
-        _dialogParent(),
+        Skin::instance()->dialogParent(),
         tt3::gui::theCurrentWorkspace,
         tt3::gui::theCurrentCredentials);
     dlg.doModal();
@@ -1804,7 +1799,7 @@ void MainFrame::_onActionManageWorkStreams()
 void MainFrame::_onActionManageBeneficiaries()
 {
     tt3::gui::ManageBeneficiariesDialog dlg(
-        _dialogParent(),
+        Skin::instance()->dialogParent(),
         tt3::gui::theCurrentWorkspace,
         tt3::gui::theCurrentCredentials);
     dlg.doModal();
@@ -1813,7 +1808,7 @@ void MainFrame::_onActionManageBeneficiaries()
 void MainFrame::_onActionManageMyDay()
 {
     tt3::gui::ManageMyDayDialog dlg(
-        _dialogParent(),
+        Skin::instance()->dialogParent(),
         tt3::gui::theCurrentWorkspace,
         tt3::gui::theCurrentCredentials);
     dlg.doModal();
@@ -1827,7 +1822,7 @@ void MainFrame::_onActionManageQuickPicks()
             tt3::gui::theCurrentWorkspace->login(
                 tt3::gui::theCurrentCredentials);
         tt3::gui::ManageQuickPicksListDialog dlg(
-            _dialogParent(),
+            Skin::instance()->dialogParent(),
             account,
             tt3::gui::theCurrentCredentials);
         if (dlg.doModal() == tt3::gui::ManageQuickPicksListDialog::Result::Ok)
@@ -1848,7 +1843,7 @@ void MainFrame::_onActionManageQuickPicks()
 void MainFrame::_onActionQuickReports()
 {
     tt3::gui::QuickReportsDialog dlg(
-        _dialogParent(),
+        Skin::instance()->dialogParent(),
         tt3::gui::theCurrentWorkspace,
         tt3::gui::theCurrentCredentials);
     dlg.doModal();
@@ -1856,7 +1851,7 @@ void MainFrame::_onActionQuickReports()
 
 void MainFrame::_onActionLoginAsDifferentUser()
 {
-    tt3::gui::LoginDialog dlg(_dialogParent(), "");
+    tt3::gui::LoginDialog dlg(Skin::instance()->dialogParent(), "");
     if (dlg.doModal() == tt3::gui::LoginDialog::Result::Ok)
     {
         tt3::ws::Credentials credentials = dlg.credentials();
@@ -1879,7 +1874,7 @@ void MainFrame::_onActionLoginAsDifferentUser()
             }
             else
             {   //  OOPS! Do we close the current workspace? Or ignore login attempt?
-                tt3::gui::ConfirmDropWorkspaceDialog dlg1(_dialogParent(), tt3::gui::theCurrentWorkspace->address());
+                tt3::gui::ConfirmDropWorkspaceDialog dlg1(Skin::instance()->dialogParent(), tt3::gui::theCurrentWorkspace->address());
                 if (dlg1.doModal() == tt3::gui::ConfirmDropWorkspaceDialog::Result::Yes)
                 {   //  Yes - close the current workspace and keep the new credentials
                     if (tt3::gui::theCurrentActivity != nullptr &&
@@ -1899,7 +1894,7 @@ void MainFrame::_onActionLoginAsDifferentUser()
         catch (const tt3::util::Exception & ex)
         {
             qCritical() << ex;
-            tt3::gui::ErrorDialog::show(_dialogParent(), ex);
+            tt3::gui::ErrorDialog::show(Skin::instance()->dialogParent(), ex);
         }
         refresh();
     }
@@ -1907,7 +1902,7 @@ void MainFrame::_onActionLoginAsDifferentUser()
 
 void MainFrame::_onActionPreferences()
 {
-    tt3::gui::PreferencesDialog dlg(_dialogParent());
+    tt3::gui::PreferencesDialog dlg(Skin::instance()->dialogParent());
     if (dlg.doModal() == tt3::gui::PreferencesDialog::Result::OkRestartRequired)
     {   //  Must restart TT3
         QApplication::exit(-1);
@@ -1931,7 +1926,7 @@ void MainFrame::_onActionHelpSearch()
 
 void MainFrame::_onActionAbout()
 {
-    tt3::gui::AboutDialog dlg(_dialogParent());
+    tt3::gui::AboutDialog dlg(Skin::instance()->dialogParent());
     dlg.doModal();
 }
 

@@ -70,7 +70,7 @@ bool Application::notify(QObject * receiver, QEvent * event)
         qCritical() << ex;
         auto parent =
             (tt3::gui::theCurrentSkin != nullptr) ?
-                tt3::gui::theCurrentSkin->mainWindow() :
+                tt3::gui::theCurrentSkin->dialogParent() :
                 nullptr;
         if (!tt3::util::SystemShutdownHandler::isShutdownInProgress())
         {   //  Suppress dialog if system shutdown is in progress
@@ -83,7 +83,7 @@ bool Application::notify(QObject * receiver, QEvent * event)
         qCritical() << ex;
         auto parent =
             (tt3::gui::theCurrentSkin != nullptr) ?
-                tt3::gui::theCurrentSkin->mainWindow() :
+                tt3::gui::theCurrentSkin->dialogParent() :
                 nullptr;
         if (!tt3::util::SystemShutdownHandler::isShutdownInProgress())
         {   //  Suppress dialog if system shutdown is in progress
@@ -96,7 +96,7 @@ bool Application::notify(QObject * receiver, QEvent * event)
         qCritical() << ex.what();
         auto parent =
             (tt3::gui::theCurrentSkin != nullptr) ?
-                tt3::gui::theCurrentSkin->mainWindow() :
+                tt3::gui::theCurrentSkin->dialogParent() :
                 nullptr;
         if (!tt3::util::SystemShutdownHandler::isShutdownInProgress())
         {   //  Suppress dialog if system shutdown is in progress
@@ -273,7 +273,7 @@ void Application::_initialize()
 
     //  Perform initial login
     tt3::gui::LoginDialog loginDialog(
-        tt3::gui::theCurrentSkin->mainWindow(),
+        tt3::gui::theCurrentSkin->dialogParent(),
         tt3::gui::Component::Settings::instance()->rememberLastLogin ?
             tt3::gui::Component::Settings::instance()->lastLogin.value() :
             "");
@@ -309,7 +309,7 @@ void Application::_initialize()
             catch (const tt3::util::Exception & ex)
             {   //  OOPS! Report
                 qCritical() << ex;
-                tt3::gui::ErrorDialog::show(tt3::gui::theCurrentSkin->mainWindow(), ex);
+                tt3::gui::ErrorDialog::show(tt3::gui::theCurrentSkin->dialogParent(), ex);
             }
         }
     }

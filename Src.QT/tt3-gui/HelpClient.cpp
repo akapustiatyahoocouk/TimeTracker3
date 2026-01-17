@@ -63,7 +63,7 @@ struct HelpClient::_Impl
             &siteBuilder,
             [](QString errorMessage)
             {
-                ErrorDialog::show(theCurrentSkin->mainWindow(), errorMessage);
+                ErrorDialog::show(theCurrentSkin->dialogParent(), errorMessage);
             },
             Qt::QueuedConnection);
     }

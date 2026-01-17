@@ -27,25 +27,25 @@ namespace tt3::skin::admin
         //////////
         //  gui::ISkin (properties)
     public:
-        virtual Mnemonic    mnemonic() const override;
-        virtual QString     displayName() const override;
-        virtual QString     description() const override;
-        virtual QIcon       smallIcon() const override;
-        virtual QIcon       largeIcon() const override;
-        virtual bool        isDefault() const override;
+        virtual auto    mnemonic() const -> Mnemonic override;
+        virtual QString displayName() const override;
+        virtual QString description() const override;
+        virtual QIcon   smallIcon() const override;
+        virtual QIcon   largeIcon() const override;
+        virtual bool    isDefault() const override;
 
         //////////
         //  gui::ISkin (state)
     public:
-        virtual bool        isActive() const override;
-        virtual void        activate() override;
-        virtual void        deactivate() override;
-        virtual QMainWindow*mainWindow() override;
+        virtual bool    isActive() const override;
+        virtual void    activate() override;
+        virtual void    deactivate() override;
+        virtual QWidget*dialogParent() override;
 
         //////////
         //  Implementation
     private:
-        MainFrame *         _mainFrame = nullptr;   //  nullptr when skin is inactive
+        MainFrame *     _mainFrame = nullptr;   //  nullptr when skin is inactive
     };
 }
 

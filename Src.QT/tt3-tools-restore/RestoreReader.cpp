@@ -86,7 +86,7 @@ bool RestoreReader::restoreWorkspace()
     {
         _progressDialog.reset(
             new RestoreProgressDialog(
-                gui::theCurrentSkin->mainWindow(),
+                gui::theCurrentSkin->dialogParent(),
                 _workspace->address()->displayForm(),
                 _restoreFile.fileName()));
         _progressDialog->setVisible(true);

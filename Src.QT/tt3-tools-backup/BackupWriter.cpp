@@ -130,7 +130,7 @@ bool BackupWriter::backupWorkspace()
     {
         _progressDialog.reset(
             new BackupProgressDialog(
-                gui::theCurrentSkin->mainWindow(),
+                gui::theCurrentSkin->dialogParent(),
                 _workspace->address()->displayForm(),
                 _backupFile.fileName()));
         _progressDialog->setVisible(true);
