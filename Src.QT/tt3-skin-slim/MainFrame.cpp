@@ -1860,11 +1860,21 @@ void MainFrame::_onActionLoginAsDifferentUser()
     if (dlg.doModal() == tt3::gui::LoginDialog::Result::Ok)
     {
         tt3::ws::Credentials credentials = dlg.credentials();
+        if (tt3::gui::theCurrentCredentials == credentials)
+        {   //  Nothing to do
+            return;
+        }
         try
         {
             if (tt3::gui::theCurrentWorkspace == nullptr ||
                 tt3::gui::theCurrentWorkspace->canAccess(credentials))   //  may throw
-            {   //  Login is fine
+            {   //  Login is fine, but must stop the "current" activity
+                if (tt3::gui::theCurrentActivity != nullptr &&
+                    !tt3::gui::theCurrentActivity.replaceWith(nullptr))
+                {   //  ...but may have to abandon the re-login if the user
+                    //  has cancelled the entering of the stopping comment
+                    return;
+                }
                 tt3::gui::theCurrentCredentials = credentials;
             }
             else
@@ -1872,12 +1882,18 @@ void MainFrame::_onActionLoginAsDifferentUser()
                 tt3::gui::ConfirmDropWorkspaceDialog dlg1(_dialogParent(), tt3::gui::theCurrentWorkspace->address());
                 if (dlg1.doModal() == tt3::gui::ConfirmDropWorkspaceDialog::Result::Yes)
                 {   //  Yes - close the current workspace and keep the new credentials
+                    if (tt3::gui::theCurrentActivity != nullptr &&
+                        !tt3::gui::theCurrentActivity.replaceWith(nullptr))
+                    {   //  ...except when the user has e.g. cancelled entering the stopping comment
+                        return;
+                    }
                     tt3::ws::Workspace workspace = nullptr;
                     tt3::gui::theCurrentWorkspace.swap(workspace);
                     workspace->close(); //  may throw
                     tt3::gui::theCurrentCredentials = credentials;
                 }
-                //  else forget about the re-login and keep the workspace open
+                //  else forget about the re-login and keep the workspace open,
+                //  and we don't have to stop the "current" activity either
             }
         }
         catch (const tt3::util::Exception & ex)

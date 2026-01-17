@@ -91,6 +91,19 @@ bool Application::notify(QObject * receiver, QEvent * event)
         }
         return false;
     }
+    catch (const std::exception & ex)
+    {   //  Just in case
+        qCritical() << ex.what();
+        auto parent =
+            (tt3::gui::theCurrentSkin != nullptr) ?
+                tt3::gui::theCurrentSkin->mainWindow() :
+                nullptr;
+        if (!tt3::util::SystemShutdownHandler::isShutdownInProgress())
+        {   //  Suppress dialog if system shutdown is in progress
+            tt3::gui::ErrorDialog::show(parent, ex.what());
+        }
+        return false;
+    }
     catch (...)
     {
         qCritical() << resources->string(RSID(Errors), RID(UncaughtException));

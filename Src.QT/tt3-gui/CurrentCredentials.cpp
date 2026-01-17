@@ -79,6 +79,24 @@ CurrentCredentials::operator const tt3::ws::Credentials & () const
     return impl->credentials;
 }
 
+bool CurrentCredentials::operator == (const tt3::ws::Credentials & op2) const
+{
+    _Impl * impl = _impl();
+    tt3::util::Lock _(impl->guard);
+    Q_ASSERT(impl->instanceCount == 1);
+
+    return impl->credentials == op2;
+}
+
+bool CurrentCredentials::operator != (const tt3::ws::Credentials & op2) const
+{
+    _Impl * impl = _impl();
+    tt3::util::Lock _(impl->guard);
+    Q_ASSERT(impl->instanceCount == 1);
+
+    return impl->credentials != op2;
+}
+
 //////////
 //  Operations
 bool CurrentCredentials::isValid() const

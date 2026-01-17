@@ -158,11 +158,13 @@ bool CurrentActivity::replaceWith(
                 !tt3::util::SystemShutdownHandler::isShutdownInProgress())
             {
                 QWidget * dialogParent = theCurrentSkin->mainWindow();
+                /*  TODO kill off
                 if (dialogParent == nullptr)
                 {   //  When skin's main frame is e.g. minimized to system
                     //  tray, or a full-screen reminder is displayed...
                     dialogParent = QApplication::activeWindow();
                 }
+                */
                 if (reminderWindowWasVisible)
                 {   //  Hide for duration of entry
                     impl->reminderWindow->hide();
@@ -196,11 +198,13 @@ bool CurrentActivity::replaceWith(
                      !tt3::util::SystemShutdownHandler::isShutdownInProgress())
             {
                 QWidget * dialogParent = theCurrentSkin->mainWindow();
+                /*  TODO kill off
                 if (dialogParent == nullptr)
                 {   //  When skin's main frame is e.g. minimized to system
                     //  tray, or a full-screen reminder is displayed...
                     dialogParent = QApplication::activeWindow();
                 }
+                */
                 if (reminderWindowWasVisible)
                 {   //  Hide for duration of entry
                     impl->reminderWindow->hide();

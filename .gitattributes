@@ -28,6 +28,7 @@ Doxyfile text diff=cpp
 *.bat  text diff=cpp
 *.csv  text diff=cpp
 Doxyfile  text diff=cpp
+*.md   text diff=cpp
 
 # Compiled Object files
 *.slo   binary

@@ -55,6 +55,24 @@ namespace tt3::gui
         ///     The "current" credentials.
                     operator const tt3::ws::Credentials &() const;
 
+        /// \brief
+        ///     Compares the "current" credentials with the specified
+        ///     Credentials for equality.
+        /// \param op2
+        ///     The 2nd Credentials to compare thre "current" credentials to.
+        /// \return
+        ///     True if the two Credentials are equal, else false.
+        bool        operator == (const tt3::ws::Credentials & op2) const;
+
+        /// \brief
+        ///     Compares the "current" credentials with the specified
+        ///     Credentials for equality.
+        /// \param op2
+        ///     The 2nd Credentials to compare thre "current" credentials to.
+        /// \return
+        ///     False if the two Credentials are equal, else true.
+        bool        operator != (const tt3::ws::Credentials & op2) const;
+
         //////////
         //  Operations
     public:
