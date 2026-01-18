@@ -390,6 +390,9 @@ ShowSplashScreenCheckBox=Показывать заставку при запус
 [InterfacePreferences]
 DisplayName=Интерфейс
 
+[StoragePreferences]
+DisplayName=Хранилище данных
+
 [HelpBuilderProgressWindow]
 BuildingHelpLabel=Готовится справочная система...
 

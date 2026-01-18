@@ -19,3 +19,6 @@ Filter=XML database files (*{0});;All files (*.*)
 [EnterExistingDatabaseAddressDialog]
 Title=Select XML file database
 Filter=XML database files (*{0});;All files (*.*)
+
+[Preferences]
+DisplayName=XML file

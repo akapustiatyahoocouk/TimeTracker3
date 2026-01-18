@@ -19,3 +19,6 @@ Filter=XML-Datenbankdateien (*{0});;Alle Dateien (*.*)
 [EnterExistingDatabaseAddressDialog]
 Title=XML-Datenbank auswählen
 Filter=XML-Datenbankdateien (*{0});;Alle Dateien (*.*)
+
+[Preferences]
+DisplayName=XML-Datenbanken

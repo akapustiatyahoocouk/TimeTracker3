@@ -19,3 +19,6 @@ Filter=Файлы базы данных XML (*{0});;Все файлы (*.*)
 [EnterExistingDatabaseAddressDialog]
 Title=Выбрать базу данных XML
 Filter=Файлы базы данных XML (*{0});;Все файлы (*.*)
+
+[Preferences]
+DisplayName=XML-файлы

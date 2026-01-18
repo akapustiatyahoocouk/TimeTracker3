@@ -6,7 +6,7 @@ Copyright=Copyright (C) {0}, Andrey Kapustin
 [AboutDialog]
 Title=About TimeTracker3
 VersionLabel=Version {0} {1} (build {2} for Qt {3})
-ShowLicensePushButton=License
+ShowLicensePushButton=Licence
 ShowConfigurationPushButton=Configuration
 OkPushButton=OK
 
@@ -368,7 +368,7 @@ StyleLabel=Style:
 ThemeLabel=Theme:
 
 [GeneralDialogsPreferences]
-DisplayName=Dialogs
+DisplayName=Dialogues
 
 [GeneralDialogsPreferencesEditor]
 ConfirmationsGroupBox=Confirmations
@@ -389,6 +389,9 @@ ShowSplashScreenCheckBox=Show splash screen during startup
 
 [InterfacePreferences]
 DisplayName=Interface
+
+[StoragePreferences]
+DisplayName=Storage
 
 [HelpBuilderProgressWindow]
 BuildingHelpLabel=Building the help collection...
@@ -840,9 +843,9 @@ DisplayNameLabel=Name:
 DescriptionLabel=Description:
 VersionLabel=Version:
 CopyrightLabel=Copyright:
-LicenseLabel=License:
+LicenseLabel=Licence:
 VersionAndBuild={0} {1} (build {2})
-ShowLicensePushButton=Show license
+ShowLicensePushButton=Show licence
 OkPushButton=OK
 
 [ShowLicenseDialog]
@@ -850,11 +853,11 @@ OkPushButton=OK
 
 [StandardThemes]
 System.DisplayName=System
-System.Description=The theme that uses current system colors
+System.Description=The theme that uses current system colours
 Light.DisplayName=Light
-Light.Description=The theme that uses light colors
+Light.Description=The theme that uses light colours
 Dark.DisplayName=Dark
-Dark.Description=The theme that uses dark colors
+Dark.Description=The theme that uses dark colours
 
 [UserManager]
 FilterLabel=Filter:

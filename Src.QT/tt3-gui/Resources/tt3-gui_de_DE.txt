@@ -390,6 +390,9 @@ ShowSplashScreenCheckBox=Startbildschirm beim Start anzeigen
 [InterfacePreferences]
 DisplayName=Schnittstelle
 
+[StoragePreferences]
+DisplayName=Datenspeicher
+
 [HelpBuilderProgressWindow]
 BuildingHelpLabel=Erstellung der Hilfesammlung...
 

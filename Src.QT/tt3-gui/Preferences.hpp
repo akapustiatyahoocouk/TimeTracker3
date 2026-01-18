@@ -243,6 +243,23 @@ namespace tt3::gui
         virtual int             order() const { return 100; }
         virtual PreferencesEditor * createEditor() override;
     };
+
+    /// \class StoragePreferences tt3-gui/API.hpp
+    /// \brief The "/Storage" preferences.
+    class TT3_GUI_PUBLIC StoragePreferences final
+        :   public Preferences
+    {
+        TT3_DECLARE_SINGLETON(StoragePreferences)
+
+        //////////
+        //  Preferences
+    public:
+        virtual Mnemonic        mnemonic() const override;
+        virtual QString         displayName() const override;
+        virtual Preferences *   parent() const override;
+        virtual int             order() const { return 200; }
+        virtual PreferencesEditor * createEditor() override;
+    };
 }
 
 //  End of tt3-gui/Preferences.hpp

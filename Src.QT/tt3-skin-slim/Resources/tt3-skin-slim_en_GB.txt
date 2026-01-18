@@ -32,8 +32,8 @@ MenuReports.Title=&Reports
 MenuOptions.Title=&Options
 MenuHelp.Title=&Help
 
-ActionMinimizeToSystemTray.Text=&Minimize to system tray
-ActionMinimize.Text=&Minimize
+ActionMinimizeToSystemTray.Text=&Minimise to system tray
+ActionMinimize.Text=&Minimise
 ActionRestore.Text=&Restore
 ActionStopCurrentActivity.Text=S&top current activity
 ActionRefresh.Text=&Refresh

@@ -15,6 +15,7 @@ SOURCES += \
     DatabaseType.cpp \
     Event.cpp \
     Object.cpp \
+    Preferences.cpp \
     Principal.cpp \
     PrivateActivity.cpp \
     PrivateTask.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     Event.hpp \
     Linkage.hpp \
     Object.hpp \
+    Preferences.hpp \
     Principal.hpp \
     PrivateActivity.hpp \
     PrivateTask.hpp \
@@ -57,6 +59,7 @@ HEADERS += \
 PRECOMPILED_HEADER = API.hpp
 
 LIBS += \
+    -ltt3-gui$$TARGET_SUFFIX \
     -ltt3-db-api$$TARGET_SUFFIX \
     -ltt3-util$$TARGET_SUFFIX
 

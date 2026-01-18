@@ -1,5 +1,5 @@
 //
-//  tt3-skin-slim/Preferences.hpp - Slim skin preferences
+//  tt3-db-xml/Preferences.hpp - XML File database preferences
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,26 +15,25 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace tt3::skin::slim
+namespace tt3::db::xml
 {
-    /// \class SlimSkinPreferences tt3-skin-slim/API.hpp
-    /// \brief The "/Interface/SlimSkin" preferences.
-    /// TODO rename to simply Preferences, and the editor too - namespace is enough for uniqueness
-    class TT3_SKIN_SLIM_PUBLIC SlimSkinPreferences final
+    /// \class Preferences tt3-db-xml/API.hpp
+    /// \brief The "/Storage/XmlFile" preferences.
+    class TT3_DB_XML_PUBLIC Preferences final
         :   public tt3::gui::Preferences
     {
-        TT3_DECLARE_SINGLETON(SlimSkinPreferences)
+        TT3_DECLARE_SINGLETON(Preferences)
 
         //////////
         //  Preferences
     public:
         virtual auto    mnemonic() const -> Mnemonic override;
         virtual QString displayName() const override;
-        virtual auto    parent() const -> Preferences* override;
+        virtual auto    parent() const -> tt3::gui::Preferences* override;
         virtual int     order() const override { return 0; }
         virtual auto    createEditor(
                             ) -> tt3::gui::PreferencesEditor * override;
     };
 }
 
-//  End of tt3-skin-slim/Preferences.hpp
+//  End of tt3-db-xml/Preferences.hpp

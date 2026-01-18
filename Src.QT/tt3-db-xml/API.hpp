@@ -18,6 +18,7 @@
 
 //////////
 //  Dependencies
+#include "tt3-gui/API.hpp"
 #include "tt3-db-api/API.hpp"
 #include "tt3-util/API.hpp"
 
@@ -49,5 +50,7 @@
 #include "tt3-db-xml/Beneficiary.hpp"
 #include "tt3-db-xml/Work.hpp"
 #include "tt3-db-xml/Event.hpp"
+
+#include "tt3-db-xml/Preferences.hpp"
 
 //  End of tt3-db-xml/API.hpp

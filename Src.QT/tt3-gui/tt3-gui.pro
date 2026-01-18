@@ -123,6 +123,7 @@ SOURCES += \
     SkinManager.cpp \
     SplashScreen.cpp \
     StandardThemes.cpp \
+    StoragePreferences.cpp \
     StyleManaget.cpp \
     ThemeManager.cpp \
     TreeWidgetDecorations.cpp \
