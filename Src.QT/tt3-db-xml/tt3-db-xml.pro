@@ -16,6 +16,7 @@ SOURCES += \
     Event.cpp \
     Object.cpp \
     Preferences.cpp \
+    PreferencesEditor.cpp \
     Principal.cpp \
     PrivateActivity.cpp \
     PrivateTask.cpp \
@@ -44,6 +45,7 @@ HEADERS += \
     Linkage.hpp \
     Object.hpp \
     Preferences.hpp \
+    PreferencesEditor.hpp \
     Principal.hpp \
     PrivateActivity.hpp \
     PrivateTask.hpp \
@@ -65,3 +67,6 @@ LIBS += \
 
 RESOURCES += \
     tt3-db-xml.qrc
+
+FORMS += \
+    PreferencesEditor.ui

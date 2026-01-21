@@ -22,3 +22,14 @@ Filter=XML-Datenbankdateien (*{0});;Alle Dateien (*.*)
 
 [Preferences]
 DisplayName=XML-Datenbanken
+
+[PreferencesEditor]
+SaveIntervalLabel=Speicherintervall:
+SaveInterval1=1 Minute
+SaveInterval2=2 Minuten
+SaveInterval3=3 Minuten
+SaveInterval5=5 Minuten
+SaveInterval10=10 Minuten
+SaveInterval15=15 Minuten
+SaveInterval30=30 Minuten
+SaveInterval60=1 Stunde

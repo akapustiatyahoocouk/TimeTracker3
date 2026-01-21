@@ -41,6 +41,14 @@ namespace tt3::db::xml
             :   public tt3::util::Settings
         {
             TT3_DECLARE_SINGLETON(Settings)
+
+            //////////
+            //  Settings
+        public:
+            /// \brief
+            ///     The interval between consecurive autosaves
+            ///     of an open database.
+            tt3::util::Setting<tt3::util::TimeSpan> saveInterval;
         };
 
         //////////

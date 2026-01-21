@@ -42,6 +42,6 @@ A portable tool for tracking the working time dedicated to various activities.
 - Use TODO inline comments to indicate places in code where further work or thinking is required. These are for minor tasks that do not need to become full-fledged issues tracked in GitHub's Project. Try to avoid other tags such as FIXME, etc. - this will make the set of comment tags to look for unknown.
 - Avoid boilerplate or repetitive code - this is what preprocessor macros (and, to a degree, templates) are for.
 - Avoid vendor-specific extensions unless absolutely necessary (such as __declspes(dllexport) for MSVC, etc.) - and hide them with macros if used.
-- Build and test on more than one platform before declaring the work done.
+- Build and test on more than one platform before declaring the work done. Similarly, test UI changes for every supported locale.
 - Don't use git-expanded tags in comments, such as svn-like $Author$, etc. - all this information is available in git commit logs.
 - Don't overdo inline method body definitions in .hpp files - that's exposing the implementation details. TT3 is not time-critical, so a few nanoseconds saved by an inline expansion of a simple method are not worth it.

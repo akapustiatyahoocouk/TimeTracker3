@@ -108,7 +108,14 @@ Component::Resources::~Resources() {}
 //////////
 //  Component::Settings
 TT3_IMPLEMENT_SINGLETON(Component::Settings)
-Component::Settings::Settings() {}
-Component::Settings::~Settings() {}
+
+Component::Settings::Settings()
+    :   saveInterval(this, M(SaveInterval), tt3::util::TimeSpan::minutes(5))
+{
+}
+
+Component::Settings::~Settings()
+{
+}
 
 //  End of tt3-db-xml/Component.cpp

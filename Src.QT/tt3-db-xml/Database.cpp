@@ -27,7 +27,8 @@ Database::Database(
         _needsSaving(false),
         _isOpen(true),
         _isReadOnly(openMode == _OpenMode::_OpenReadOnly),
-        _nextSaveAt(QDateTime::currentDateTimeUtc().addMSecs(_SaveIntervalMs)),
+        _nextSaveAt(QDateTime::currentDateTimeUtc().addSecs(
+          Component::Settings::instance()->saveInterval.value().asMinutes() * 60)),
         _lastSaveDurationMs(0),
         _saveTimer()
 {
@@ -1473,7 +1474,8 @@ void Database::_savePeriodically()
             _needsSaving = false;
             QDateTime then = QDateTime::currentDateTimeUtc();
             _lastSaveDurationMs = now.msecsTo(then);
-            _nextSaveAt = then.addMSecs(_SaveIntervalMs);
+            _nextSaveAt = then.addSecs(
+                Component::Settings::instance()->saveInterval.value().asMinutes() * 60);
         }
     }
 }

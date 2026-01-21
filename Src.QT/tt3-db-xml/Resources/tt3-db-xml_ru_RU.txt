@@ -22,3 +22,14 @@ Filter=Файлы базы данных XML (*{0});;Все файлы (*.*)
 
 [Preferences]
 DisplayName=XML-файлы
+
+[PreferencesEditor]
+SaveIntervalLabel=Интервал сохранения:
+SaveInterval1=1 минута
+SaveInterval2=2 минуты
+SaveInterval3=3 минуты
+SaveInterval5=5 минут
+SaveInterval10=10 минут
+SaveInterval15=15 минут
+SaveInterval30=30 минут
+SaveInterval60=1 час

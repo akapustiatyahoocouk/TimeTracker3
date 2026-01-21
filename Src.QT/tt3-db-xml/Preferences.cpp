@@ -45,7 +45,7 @@ auto Preferences::parent(
 auto Preferences::createEditor(
     ) -> tt3::gui::PreferencesEditor *
 {
-    return nullptr; //  TODO
+    return new PreferencesEditor(nullptr);
 }
 
 //  End of tt3-db-xml/Preferences.cpp

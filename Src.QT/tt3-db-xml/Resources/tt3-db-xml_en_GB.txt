@@ -22,3 +22,15 @@ Filter=XML database files (*{0});;All files (*.*)
 
 [Preferences]
 DisplayName=XML file
+
+[PreferencesEditor]
+SaveIntervalLabel=Save interval:
+SaveInterval1=1 minute
+SaveInterval2=2 minutes
+SaveInterval3=3 minutes
+SaveInterval5=5 minutes
+SaveInterval10=10 minutes
+SaveInterval15=15 minutes
+SaveInterval30=30 minutes
+SaveInterval60=1 hour
+

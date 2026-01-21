@@ -237,7 +237,6 @@ namespace tt3::db::xml
         bool            _isOpen;
         bool            _isReadOnly;    //  not "const" - will be faked as "false" during close()
 
-        static const int    _SaveIntervalMs = 60 * 1000;
         QDateTime       _nextSaveAt;    //  UTC
         qint64          _lastSaveDurationMs;
         QTimer          _saveTimer;

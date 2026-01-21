@@ -52,5 +52,6 @@
 #include "tt3-db-xml/Event.hpp"
 
 #include "tt3-db-xml/Preferences.hpp"
+#include "tt3-db-xml/PreferencesEditor.hpp"
 
 //  End of tt3-db-xml/API.hpp
