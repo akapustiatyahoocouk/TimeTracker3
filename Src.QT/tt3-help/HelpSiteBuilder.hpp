@@ -97,7 +97,7 @@ namespace tt3::help
     private:
         const QString   _zipFilesDirectory; //  where was the .exe launched from + "/Help"
         const QString   _helpSiteDirectory; //  underneath user's temp directory
-        static const int _ProgressMessageDelayMs = 100;
+        static const int _ProgressMessageDelayMs = 25;
 
         //  Requests sent to the worker thread
         struct _ServiceRequest
@@ -118,9 +118,18 @@ namespace tt3::help
             QString     zipFileName;    //  full path
             QDateTime   zipFileTime;    //  modification time stamp, UTC
             qint64      zipFileSize;
+
+            bool        operator == (const _HelpSource & op2) const
+            {
+                return zipFileName == op2.zipFileName &&
+                       zipFileTime == op2.zipFileTime &&
+                       zipFileSize == op2.zipFileSize;
+            }
         };
         using _HelpSources = QList<_HelpSource>;
         _HelpSources    _detectHelpSources();
+        _HelpSources    _loadHelpSources(const QString & xmlFileName);
+        void            _saveHelpSources(const QString & xmlFileName, const _HelpSources & helpSources);
         void            _processHelpSource(const _HelpSource & helpSource);
         void            _rebuildHelpSite(_RebuildHelpRequest & request);
         void            _buildToc(

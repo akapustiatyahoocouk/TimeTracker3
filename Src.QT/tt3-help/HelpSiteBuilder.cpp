@@ -45,7 +45,7 @@ HelpSiteBuilder::~HelpSiteBuilder()
 bool HelpSiteBuilder::buildHelpSite()
 {
     //  Post a "help site rebuild" request
-    //  and wit for its completion
+    //  and wait for its completion
     std::atomic<bool> comletionStatus = false;
     _workerThread.post(new _RebuildHelpRequest(comletionStatus));
     while (!comletionStatus)
@@ -81,6 +81,88 @@ auto HelpSiteBuilder::_detectHelpSources(
             return a.zipFileName < b.zipFileName;
         });
     return result;
+}
+
+auto HelpSiteBuilder::_loadHelpSources(const QString & xmlFileName) -> _HelpSources
+{
+    //  Load XML DOM
+    QDomDocument document;
+    QFile file(xmlFileName);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {   //  OOPS! Empty result == error
+        return _HelpSources();
+    }
+    if (!document.setContent(&file))
+    {   //  OOPS! Empty result == error
+        return _HelpSources();
+    }
+
+    //  Validate root element
+    QDomElement rootElement = document.documentElement();
+    if (rootElement.isNull() ||
+        rootElement.tagName() != "HelpSourcesCache" ||
+        rootElement.attribute("FormatVersion") != "1")
+    {   //  OOPS! Empty result == error
+        return _HelpSources();
+    }
+
+    //  Process help sources
+    _HelpSources result;
+    for (QDomElement element = rootElement.firstChildElement("HelpSource");
+         !element.isNull();
+         element = element.nextSiblingElement("HelpSource"))
+    {
+        _HelpSource helpSource;
+        helpSource.zipFileName = element.attribute("Name");
+        helpSource.zipFileTime =
+            tt3::util::fromString<QDateTime>(
+                element.attribute("Time"));
+        helpSource.zipFileSize =
+            tt3::util::fromString<qint64>(
+                element.attribute("Size"));
+        if (QFileInfo(helpSource.zipFileName).absoluteFilePath() != helpSource.zipFileName ||
+            !helpSource.zipFileTime.isValid() ||
+            helpSource.zipFileSize <= 0)
+        {   //  OOPS! Empty result == error
+            return _HelpSources();
+        }
+        result.append(helpSource);
+    }
+
+    //  Done
+    return result;
+}
+
+void HelpSiteBuilder::_saveHelpSources(const QString & xmlFileName, const _HelpSources & helpSources)
+{
+    //  Create DOM document with a root node
+    QDomDocument document;
+    QDomProcessingInstruction xmlDeclaration = document.createProcessingInstruction("xml", "version='1.0' encoding='UTF-8' standalone='yes'");
+    document.appendChild(xmlDeclaration);
+
+    QDomElement rootElement = document.createElement("HelpSourcesCache");
+    rootElement.setAttribute("FormatVersion", "1");
+    document.appendChild(rootElement);
+
+    //  Add elements for help sources
+    for (const auto & helpSource : helpSources)
+    {
+        QDomElement helpSourceElement = document.createElement("HelpSource");
+        helpSourceElement.setAttribute("Name", helpSource.zipFileName);
+        helpSourceElement.setAttribute("Time", tt3::util::toString(helpSource.zipFileTime));
+        helpSourceElement.setAttribute("Size", tt3::util::toString(helpSource.zipFileSize));
+        rootElement.appendChild(helpSourceElement);
+    }
+
+    //  Done - save
+    QFile file(xmlFileName);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {   //  OOPS! Suppress, though - don't write the cache
+        return;
+    }
+    QTextStream stream(&file);
+    document.save(stream, 4);
+    file.close();
 }
 
 void HelpSiteBuilder::_processHelpSource(const _HelpSource & helpSource)
@@ -137,9 +219,23 @@ void HelpSiteBuilder::_rebuildHelpSite(_RebuildHelpRequest & request)
     emit siteBuildingStarted();
     try
     {
+        const _HelpSources helpSources = _detectHelpSources();
+        //  If 1) the _helpSiteDirectory directory exists,
+        //  2) contains the HelpSources.xml file and 3) that
+        //  XML file lists exactly the same help sources as
+        //  were just discovered, we don't have to rebuild
+        //  the local help site
+        QString helpSourcesCacheFileName = QDir(_helpSiteDirectory).filePath("HelpSources.xml");
+        if (QFileInfo(helpSourcesCacheFileName).isFile() &&
+            _loadHelpSources(helpSourcesCacheFileName) == helpSources &&
+            helpSources.size() > 0) //  "load() returns empty list on error
+        {   //  Nothing to do!
+            emit siteBuildingCompleted(true);
+            request.comletionStatus = true;
+            return;
+        }
         //  Extract content from help ZIPs into the help site directory
         QDir(_helpSiteDirectory).removeRecursively();
-        const _HelpSources helpSources = _detectHelpSources();
         for (const auto & helpSource : helpSources)
         {
             emit siteBuildingProgress(
@@ -185,6 +281,7 @@ void HelpSiteBuilder::_rebuildHelpSite(_RebuildHelpRequest & request)
             }
         }
         //  Done
+        _saveHelpSources(helpSourcesCacheFileName, helpSources);
         emit siteBuildingCompleted(true);
     }
     catch (const tt3::util::Exception & ex)
