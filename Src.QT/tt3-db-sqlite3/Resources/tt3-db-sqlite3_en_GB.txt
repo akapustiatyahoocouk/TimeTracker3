@@ -1,0 +1,4 @@
+[Component]
+DisplayName=TimeTracker3 SQLite3 database support
+Description=Enables storing TimeTracker3 data in SQLite3 databases
+Copyright=Copyright (C) {0}, Andrey Kapustin

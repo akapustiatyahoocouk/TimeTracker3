@@ -40,6 +40,16 @@ CONFIG(debug, debug|release) {
     win32:LIBPATH += ../../../Bin.QT/Release
 }
 
+exists($${PWD}/$${COMPONENT_NAME}/Libs) {
+    win32 {
+        QMAKE_POST_LINK += copy /y $$shell_path($${PWD}/$${COMPONENT_NAME}/Libs/*.dll) $$shell_path($${DESTDIR}/) $$escape_expand(\\n\\t)
+    }
+#    unix {
+#        QMAKE_POST_LINK += bash makehelp.bat $$escape_expand(\\n\\t)
+#    }
+    #   TODO Schedule proper cleanup
+}
+
 exists($${PWD}/$${COMPONENT_NAME}/Help) {
     #   Pick up project-specific help as a .zip file
     QMAKE_POST_LINK += $$sprintf($${QMAKE_MKDIR_CMD}, $$shell_path($${DESTDIR}/Help)) $$escape_expand(\\n\\t)
