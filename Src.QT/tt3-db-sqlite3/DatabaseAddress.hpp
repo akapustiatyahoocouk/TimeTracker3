@@ -1,5 +1,5 @@
 //
-//  tt3-db-xml/DatabaseAddress.hpp - "XML file database address"
+//  tt3-db-sqlite3/DatabaseAddress.hpp - "SQLite3 database address"
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,11 +15,11 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace tt3::db::xml
+namespace tt3::db::sqlite3
 {
-    /// \class DatabaseAddress tt3-db-xml/API.hpp
-    /// \brief An address of an "XML file database"is its full canonical path.
-    class TT3_DB_XML_PUBLIC DatabaseAddress final
+    /// \class DatabaseAddress tt3-db-sqlite3/API.hpp
+    /// \brief An address of an "SQLite3 database"is its full canonical path.
+    class TT3_DB_SQLITE3_PUBLIC DatabaseAddress final
         :   public virtual tt3::db::api::IDatabaseAddress
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(DatabaseAddress)
@@ -55,12 +55,12 @@ namespace tt3::db::xml
         QString         _path;  //  always full path
         State           _state = State::New;
         int             _referenceCount = 0;
-
         //  Helpers
+
 #ifdef QT_DEBUG
         void            _assertState();
 #endif
     };
 }
 
-//  End of tt3-db-xml/DatabaseAddress.hpp
+//  End of tt3-db-sqlite3/DatabaseAddress.hpp

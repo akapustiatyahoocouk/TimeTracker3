@@ -4,12 +4,14 @@ TEMPLATE = lib
 DEFINES += TT3_DB_SQL_LIBRARY
 
 SOURCES += \
-    Component.cpp
+    Component.cpp \
+    Database.cpp
 
 HEADERS += \
     API.hpp \
     Classes.hpp \
     Component.hpp \
+    Database.hpp \
     Linkage.hpp
 
 PRECOMPILED_HEADER = API.hpp

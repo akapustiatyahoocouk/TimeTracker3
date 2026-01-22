@@ -23,12 +23,17 @@
 #include "tt3-util/API.hpp"
 
 #include "Libs/sqlite3.h"
-#include "Libs/sqlite3ext.h"
 
 //////////
 //  db-db-sqlite3 components
 #include "tt3-db-sqlite3/Linkage.hpp"
-//  TODO kill off ? #include "tt3-db-sqlite3/Classes.hpp"
+#include "tt3-db-sqlite3/Classes.hpp"
 #include "tt3-db-sqlite3/Component.hpp"
+
+#include "tt3-db-sqlite3/SQLite3.hpp"
+
+#include "tt3-db-sqlite3/DatabaseAddress.hpp"
+#include "tt3-db-sqlite3/DatabaseType.hpp"
+#include "tt3-db-sqlite3/Database.hpp"
 
 //  End of tt3-db-sqlite3/API.hpp

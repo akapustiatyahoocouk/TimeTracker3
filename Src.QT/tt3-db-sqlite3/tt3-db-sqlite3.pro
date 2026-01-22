@@ -4,14 +4,23 @@ TEMPLATE = lib
 DEFINES += TT3_DB_SQLITE3_LIBRARY
 
 SOURCES += \
-    Component.cpp
+    Component.cpp \
+    Database.cpp \
+    DatabaseAddress.cpp \
+    DatabaseType.cpp \
+    SQLite3.cpp
 
 HEADERS += \
     API.hpp \
+    Classes.hpp \
     Component.hpp \
+    Database.hpp \
+    DatabaseAddress.hpp \
+    DatabaseType.hpp \
     Libs/sqlite3.h \
     Libs/sqlite3ext.h \
-    Linkage.hpp
+    Linkage.hpp \
+    SQLite3.hpp
 
 LIBS += \
     -ltt3-db-sql$$TARGET_SUFFIX \

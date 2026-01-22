@@ -2,3 +2,7 @@
 DisplayName=Поддержка SQLite3 баз данных TimeTracker3
 Description=Позволяет хранить данные TimeTracker3 в базах данных SQLite3
 Copyright=Авторское право (C) {0}, Андрей Капустин
+
+[DatabaseType]
+DisplayName=SQLite3
+StatusReport=Хранилище SQLite3 работает

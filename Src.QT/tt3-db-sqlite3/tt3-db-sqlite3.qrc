@@ -3,5 +3,7 @@
         <file>Resources/tt3-db-sqlite3_de_DE.txt</file>
         <file>Resources/tt3-db-sqlite3_en_GB.txt</file>
         <file>Resources/tt3-db-sqlite3_ru_RU.txt</file>
+        <file>Resources/Images/Objects/SQLiteDatabaseTypeLarge.png</file>
+        <file>Resources/Images/Objects/SQLiteDatabaseTypeSmall.png</file>
     </qresource>
 </RCC>

@@ -1,5 +1,5 @@
 //
-//  tt3-db-sql/API.hpp - tt3-db-sql master header
+//  tt3-db-sqlite3/Classes.hpp - forward declarations and typedefs
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -14,19 +14,12 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //////////
-#pragma once
 
-//////////
-//  Dependencies
-#include "tt3-db-api/API.hpp"
-#include "tt3-util/API.hpp"
+namespace tt3::db::sqlite3
+{
+    class DatabaseType;
+    class DatabaseAddress;
+    class Database;
+}
 
-//////////
-//  db-db-sql components
-#include "tt3-db-sql/Linkage.hpp"
-#include "tt3-db-sql/Classes.hpp"
-#include "tt3-db-sql/Component.hpp"
-
-#include "tt3-db-sql/Database.hpp"
-
-//  End of tt3-db-sql/API.hpp
+//  End of tt3-db-sqlite3/Classes.hpp

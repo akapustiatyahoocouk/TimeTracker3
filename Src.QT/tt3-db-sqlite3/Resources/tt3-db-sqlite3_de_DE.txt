@@ -2,3 +2,7 @@
 DisplayName=Unterstützung für TimeTracker3-SQLite3 datenbanken
 Description=Ermöglicht das Speichern von TimeTracker3-Daten in SQLite3-Datenbanken
 Copyright=Copyright (C) {0}, Andrey Kapustin
+
+[DatabaseType]
+DisplayName=SQLite3
+Description=Der SQLite3-Speicher ist betriebsbereit.
