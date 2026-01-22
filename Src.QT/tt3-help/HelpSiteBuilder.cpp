@@ -42,12 +42,12 @@ HelpSiteBuilder::~HelpSiteBuilder()
 
 //////////
 //  Operations
-bool HelpSiteBuilder::buildHelpSite()
+bool HelpSiteBuilder::buildHelpSite(bool rebuild)
 {
     //  Post a "help site rebuild" request
     //  and wait for its completion
     std::atomic<bool> comletionStatus = false;
-    _workerThread.post(new _RebuildHelpRequest(comletionStatus));
+    _workerThread.post(new _BuildHelpRequest(rebuild, comletionStatus));
     while (!comletionStatus)
     {
         QCoreApplication::processEvents(QEventLoop::AllEvents);
@@ -212,7 +212,7 @@ void HelpSiteBuilder::_processHelpSource(const _HelpSource & helpSource)
     }
 }
 
-void HelpSiteBuilder::_rebuildHelpSite(_RebuildHelpRequest & request)
+void HelpSiteBuilder::_buildHelpSite(_BuildHelpRequest & request)
 {
     tt3::util::ResourceReader rr(Component::Resources::instance(), RSID(HelpSiteBuilder));
 
@@ -226,7 +226,8 @@ void HelpSiteBuilder::_rebuildHelpSite(_RebuildHelpRequest & request)
         //  were just discovered, we don't have to rebuild
         //  the local help site
         QString helpSourcesCacheFileName = QDir(_helpSiteDirectory).filePath("HelpSources.xml");
-        if (QFileInfo(helpSourcesCacheFileName).isFile() &&
+        if (!request.rebuild && //  CAN cache!
+            QFileInfo(helpSourcesCacheFileName).isFile() &&
             _loadHelpSources(helpSourcesCacheFileName) == helpSources &&
             helpSources.size() > 0) //  "load() returns empty list on error
         {   //  Nothing to do!
@@ -387,9 +388,9 @@ void HelpSiteBuilder::_WorkerThread::run()
         _ServiceRequest * serviceRequest = nullptr;
         if (_requestQueue.tryDequeue(serviceRequest, WaitChunkMs))
         {
-            if (auto request = dynamic_cast<_RebuildHelpRequest*>(serviceRequest))
+            if (auto request = dynamic_cast<_BuildHelpRequest*>(serviceRequest))
             {
-                _helpSiteBuilder->_rebuildHelpSite(*request);
+                _helpSiteBuilder->_buildHelpSite(*request);
             }
             delete serviceRequest;
         }

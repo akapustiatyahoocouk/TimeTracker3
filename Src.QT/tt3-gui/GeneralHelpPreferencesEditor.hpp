@@ -1,5 +1,5 @@
 //
-//  tt3-db-xml/PreferencesEditor.hpp - XML File database preferences editor
+//  tt3-gui/GeneralHelpPreferencesEditor.hpp - The "/General/Help" preferences editor
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,25 +15,27 @@
 //  GNU General Public License for more details.
 //////////
 #pragma once
-#include "tt3-db-xml/API.hpp"
+#include "tt3-gui/API.hpp"
 
-namespace tt3::db::xml
+#ifdef TT3_GUI_PREFERENCES_EDITOR_DEFINED
+
+namespace tt3::gui
 {
-    namespace Ui { class PreferencesEditor; }
+    namespace Ui { class GeneralHelpPreferencesEditor; }
 
-    /// \class PreferencesEditor tt3-db-xml/API.hpp
-    /// \brief The "/Storage/XmlFile" preferences editor.
-    class TT3_DB_XML_PUBLIC PreferencesEditor final
-        :   public tt3::gui::PreferencesEditor
+    /// \class GeneralHelpPreferencesEditor tt3-gui/API.hpp
+    /// \brief The "General/Help" preferences editor.
+    class TT3_GUI_PUBLIC GeneralHelpPreferencesEditor final
+        :   public PreferencesEditor
     {
         Q_OBJECT
-        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PreferencesEditor)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(GeneralHelpPreferencesEditor)
 
         //////////
         //  Construction/destruction
     public:
-        explicit PreferencesEditor(QWidget *parent = nullptr);
-        virtual ~PreferencesEditor();
+        explicit GeneralHelpPreferencesEditor(QWidget *parent = nullptr);
+        virtual ~GeneralHelpPreferencesEditor();
 
         //////////
         //  PreferencesEditor
@@ -45,23 +47,18 @@ namespace tt3::db::xml
         virtual bool    isValid() const override;
 
         //////////
-        //  Implementation
-    private:
-        //  Helpers
-        tt3::util::TimeSpan _selectedSaveInterval() const;
-        void                _setSelectedSaveInterval(const tt3::util::TimeSpan & saveInterval);
-
-        //////////
         //  Controls
     private:
-        Ui::PreferencesEditor *const    _ui;
+        Ui::GeneralHelpPreferencesEditor *const _ui;
 
         //////////
         //  Signal handlers
     private slots:
-        void            _saveIntervalConboBoxCurrentIndexChanged(int);
+        void            _cacheHelpCollectionCheckBoxStateChanged(int);
+        void            _systemBrowserRadioButtonClicked();
+        void            _helpViewerRadioButtonClicked();
     };
 }
 
-//  End of tt3-db-xml/PreferencesEditor.hpp
-
+#endif  //  def TT3_GUI_PREFERENCES_EDITOR_DEFINED
+//  End of tt3-gui/GeneralHelpPreferencesEditor.hpp

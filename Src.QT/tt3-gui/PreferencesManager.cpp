@@ -30,6 +30,7 @@ struct PreferencesManager::_Impl
         REGISTER(GeneralAppearancePreferences);
         REGISTER(GeneralStartupPreferences);
         REGISTER(GeneralDialogsPreferences);
+        REGISTER(GeneralHelpPreferences);
         REGISTER(InterfacePreferences);
         REGISTER(StoragePreferences);
     }

@@ -62,6 +62,8 @@ SOURCES += \
     GeneralAppearancePreferencesEditor.cpp \
     GeneralDialogsPreferences.cpp \
     GeneralDialogsPreferencesEditor.cpp \
+    GeneralHelpPreferences.cpp \
+    GeneralHelpPreferencesEditor.cpp \
     GeneralPreferences.cpp \
     GeneralStartupPreferences.cpp \
     GeneralStartupPreferencesEditor.cpp \
@@ -183,6 +185,7 @@ HEADERS += \
     FullScreenReminderWindow.hpp \
     GeneralAppearancePreferencesEditor.hpp \
     GeneralDialogsPreferencesEditor.hpp \
+    GeneralHelpPreferencesEditor.hpp \
     GeneralStartupPreferencesEditor.hpp \
     HelpBuilderProgressWindow.hpp \
     HelpClient.hpp \
@@ -267,6 +270,7 @@ FORMS += \
     FullScreenReminderWindow.ui \
     GeneralAppearancePreferencesEditor.ui \
     GeneralDialogsPreferencesEditor.ui \
+    GeneralHelpPreferencesEditor.ui \
     GeneralStartupPreferencesEditor.ui \
     HelpBuilderProgressWindow.ui \
     LoginDialog.ui \

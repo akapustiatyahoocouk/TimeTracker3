@@ -227,6 +227,23 @@ namespace tt3::gui
         virtual PreferencesEditor * createEditor() override;
     };
 
+    /// \class GeneralHelpPreferences tt3-gui/API.hpp
+    /// \brief The "/General/Help" preferences.
+    class TT3_GUI_PUBLIC GeneralHelpPreferences final
+        :   public Preferences
+    {
+        TT3_DECLARE_SINGLETON(GeneralHelpPreferences)
+
+        //////////
+        //  Preferences
+    public:
+        virtual Mnemonic        mnemonic() const override;
+        virtual QString         displayName() const override;
+        virtual Preferences *   parent() const override;
+        virtual int             order() const { return 15; }
+        virtual PreferencesEditor * createEditor() override;
+    };
+
     /// \class InterfacePreferences tt3-gui/API.hpp
     /// \brief The "/Interface" preferences.
     class TT3_GUI_PUBLIC InterfacePreferences final

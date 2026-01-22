@@ -45,6 +45,7 @@
 #include "tt3-gui/GeneralAppearancePreferencesEditor.hpp"
 #include "tt3-gui/GeneralStartupPreferencesEditor.hpp"
 #include "tt3-gui/GeneralDialogsPreferencesEditor.hpp"
+#include "tt3-gui/GeneralHelpPreferencesEditor.hpp"
 #include "tt3-gui/QuickReportView.hpp"
 #include "tt3-gui/DailyWorkQuickReportView.hpp"
 

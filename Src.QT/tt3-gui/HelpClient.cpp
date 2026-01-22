@@ -80,7 +80,8 @@ void HelpClient::showContents()
 
     _Impl * impl = _impl();
 
-    if (!impl->siteBuilder.buildHelpSite())
+    bool rebuild = !Component::Settings::instance()->cacheHelpCollection;
+    if (!impl->siteBuilder.buildHelpSite(rebuild))
     {   //  OOPS! Can't proceed
         return;
     }

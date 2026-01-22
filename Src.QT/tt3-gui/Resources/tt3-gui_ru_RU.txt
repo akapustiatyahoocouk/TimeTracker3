@@ -387,6 +387,15 @@ LoadLastWorkspaceAtStartupCheckBox=Перезагрузить последнее
 RememnerLastLoginCheckBox=Запомнить последний вход в систему
 ShowSplashScreenCheckBox=Показывать заставку при запуске
 
+[GeneralHelpPreferences]
+DisplayName=Справка
+
+[GeneralHelpPreferencesEditor]
+CacheHelpCollectionCheckBox=Кэшировать коллекцию справки
+ViewHelpInLabel=Смотреть справку в:
+SystemBrowserRadioButton=Системном браузере
+HelpVieverRadioButton=Справочной аппликации
+
 [InterfacePreferences]
 DisplayName=Интерфейс
 

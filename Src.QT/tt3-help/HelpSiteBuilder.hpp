@@ -67,10 +67,13 @@ namespace tt3::help
         /// \details
         ///     All work is done on the hidden worker thread.
         ///     Progress is reported by emitting signals below.
+        /// \param rebuild
+        ///     True to always rebuild from ZIPs, false to use the
+        ///     cached version if one is available and up-to-date.
         /// \return
         ///     True if the help site was rebuilt
         ///     successfully, else false.
-        bool        buildHelpSite();
+        bool        buildHelpSite(bool rebuild);
 
         //////////
         //  Signals - emitted in ths order only!
@@ -105,10 +108,11 @@ namespace tt3::help
             virtual ~_ServiceRequest() = default;
         };
 
-        struct _RebuildHelpRequest : public _ServiceRequest
+        struct _BuildHelpRequest : public _ServiceRequest
         {
-            _RebuildHelpRequest(std::atomic<bool> & cs)
-                :   comletionStatus(cs) {}
+            _BuildHelpRequest(bool always, std::atomic<bool> & cs)
+                :   rebuild(always), comletionStatus(cs) {}
+            const bool rebuild;
             std::atomic<bool> & comletionStatus;
         };
 
@@ -131,7 +135,7 @@ namespace tt3::help
         _HelpSources    _loadHelpSources(const QString & xmlFileName);
         void            _saveHelpSources(const QString & xmlFileName, const _HelpSources & helpSources);
         void            _processHelpSource(const _HelpSource & helpSource);
-        void            _rebuildHelpSite(_RebuildHelpRequest & request);
+        void            _buildHelpSite(_BuildHelpRequest & request);
         void            _buildToc(
                                 const QString & helpCollectionDirectory,
                                 const QString & buildingTocMessage

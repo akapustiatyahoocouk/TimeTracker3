@@ -1,5 +1,5 @@
 //
-//  tt3-gui/GeneralStartupPreferencesEditor.cpp - tt3::gui::GeneralStartupPreferencesEditor class implementation
+//  tt3-gui/GeneralAppearancePreferencesEditor.cpp - tt3::gui::GeneralAppearancePreferencesEditor class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin

@@ -387,6 +387,15 @@ LoadLastWorkspaceAtStartupCheckBox=Reload last workspace at startup
 RememnerLastLoginCheckBox=Remember last login
 ShowSplashScreenCheckBox=Show splash screen during startup
 
+[GeneralHelpPreferences]
+DisplayName=Help
+
+[GeneralHelpPreferencesEditor]
+CacheHelpCollectionCheckBox=Cache help collection
+ViewHelpInLabel=View help in:
+SystemBrowserRadioButton=System browser
+HelpVieverRadioButton=Help viewer
+
 [InterfacePreferences]
 DisplayName=Interface
 

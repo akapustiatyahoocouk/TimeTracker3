@@ -387,6 +387,15 @@ LoadLastWorkspaceAtStartupCheckBox=Letzten Arbeitsbereich beim Start neu laden
 RememnerLastLoginCheckBox=Letzte Anmeldung merken
 ShowSplashScreenCheckBox=Startbildschirm beim Start anzeigen
 
+[GeneralHelpPreferences]
+DisplayName=Hilfe
+
+[GeneralHelpPreferencesEditor]
+CacheHelpCollectionCheckBox=Hilfesammlung zwischenspeichern
+ViewHelpInLabel=Hilfe anzeigen in:
+SystemBrowserRadioButton=Systembrowser
+HelpViewerRadioButton=Hilfeanzeige
+
 [InterfacePreferences]
 DisplayName=Schnittstelle
 

@@ -134,12 +134,64 @@ Component::Settings::Settings()
         quickReportRefreshInterval(this, M(QuickReportRefreshInterval), 0),
         dailyWorkQuickReportScale(this, M(DailyWorkQuickReportScale), 70),
         dailyWorkQuickReportShowCustomDate(this, M(DailyWorkQuickReportShowCustomDate), false),
-        dailyWorkQuickReportCustomDate(this, M(DailyWorkQuickReportCustomDate), QDate::currentDate())
+        dailyWorkQuickReportCustomDate(this, M(DailyWorkQuickReportCustomDate), QDate::currentDate()),
+        //  Properties (help)
+        cacheHelpCollection(this, M(CacheHelpCollection), false),
+        helpAgent(this, M(HelpAgent), HelpAgent::SystemBrowser)
 {
 }
 
 Component::Settings::~Settings()
 {
+}
+
+//  Formatting/parsing
+namespace
+{
+    struct HelpAgentName
+    {
+        HelpAgent       helpAgent;
+        const char *    name;
+    };
+    const HelpAgentName theHelpAgentNames[] =
+    {
+        { HelpAgent::SystemBrowser, "SystemBrowser" },
+        { HelpAgent::HelpViewer,    "HelpViewer "   }
+    };
+}
+
+template <> TT3_GUI_PUBLIC
+QString tt3::util::toString<tt3::gui::HelpAgent>(const tt3::gui::HelpAgent & value)
+{
+    for (size_t i = 0; i < sizeof(theHelpAgentNames) / sizeof(theHelpAgentNames[0]); i++)
+    {
+        if (theHelpAgentNames[i].helpAgent == value)
+        {
+            return theHelpAgentNames[i].name;
+        }
+    }
+    //  Else give up
+    return theHelpAgentNames[0].name;
+}
+
+template <> TT3_GUI_PUBLIC
+tt3::gui::HelpAgent tt3::util::fromString<tt3::gui::HelpAgent>(const QString & s, qsizetype & scan)
+{
+    if (scan < 0 || scan >= s.length())
+    {   //  OOPS!
+        throw tt3::util::ParseException(s, scan);
+    }
+    QString fragment = s.mid(scan, 16);
+    for (size_t i = 0; i < sizeof(theHelpAgentNames) / sizeof(theHelpAgentNames[0]); i++)
+    {
+        if (fragment.startsWith(theHelpAgentNames[i].name))
+        {
+            scan += strlen(theHelpAgentNames[i].name);
+            return theHelpAgentNames[i].helpAgent;
+        }
+    }
+    //  OOPS! Give up
+    throw tt3::util::ParseException(s, scan);
 }
 
 //  End of tt3-gui/Component.cpp

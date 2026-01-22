@@ -17,6 +17,13 @@
 
 namespace tt3::gui
 {
+    /// \brief The external agent to use for viewing help.
+    enum class HelpAgent
+    {
+        SystemBrowser,  ///< Use system HTNL briwser.
+        HelpViewer      ///< Use TT3's own Help Viewer.
+    };
+
     /// \class Component tt3-gui/API.hpp
     /// \brief The "TT3 Gui" component.
     class TT3_GUI_PUBLIC Component final
@@ -163,6 +170,18 @@ namespace tt3::gui
             /// \brief
             ///     The custom date for DailyWork quick report.
             tt3::util::Setting<QDate>   dailyWorkQuickReportCustomDate;
+
+            //////////
+            //  Properties (help)
+        public:
+            /// \brief
+            ///     True to cache help collection, false to rebuild
+            ///     it on every help request.
+            tt3::util::Setting<bool>    cacheHelpCollection;
+
+            /// \brief
+            ///     The exterbnal agebt to use for viewing help.
+            tt3::util::Setting<HelpAgent>   helpAgent;
         };
 
         //////////
@@ -183,6 +202,16 @@ namespace tt3::gui
         virtual void    initialize() override;
         virtual void    deinitialize() override;
     };
+}
+
+//  Formatting/parsing
+namespace tt3::util
+{
+    template <> TT3_GUI_PUBLIC
+    QString toString<tt3::gui::HelpAgent>(const tt3::gui::HelpAgent & value);
+
+    template <> TT3_GUI_PUBLIC
+    tt3::gui::HelpAgent fromString<tt3::gui::HelpAgent>(const QString & s, qsizetype & scan);
 }
 
 //  End of tt3-gui/Component.hpp
