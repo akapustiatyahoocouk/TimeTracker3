@@ -1,0 +1,4 @@
+[Component]
+DisplayName=TimeTracker3 SQL database support
+Description=Enables storing TimeTracker3 data in SQL databases
+Copyright=Copyright (C) {0}, Andrey Kapustin

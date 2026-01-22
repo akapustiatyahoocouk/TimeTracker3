@@ -1,8 +1,3 @@
-[Plugin]
-DisplayName=Восстановление данных TimeTracker3
-Description=Поддержка восстановления данных TimeTracker3
-Copyright=Авторское право (C) {0}, Андрей Капустин
-
 [Component]
 DisplayName=Восстановление данных TimeTracker3
 Description=Поддержка восстановления данных данных TimeTracker3

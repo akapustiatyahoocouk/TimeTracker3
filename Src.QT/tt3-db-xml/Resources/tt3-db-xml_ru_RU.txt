@@ -1,8 +1,3 @@
-[Plugin]
-DisplayName=Базы данных в формате XML
-Description=Позволяет хранить базы данных TimeTracker3 в формате XML (однопользовательский режим)
-Copyright=Авторское право (C) {0}, Андрей Капустин
-
 [Component]
 DisplayName=Поддержка баз данных TimeTracker3 в формате XML
 Description=Позволяет хранить базы данных TimeTracker3 в формате XML (однопользовательский режим)

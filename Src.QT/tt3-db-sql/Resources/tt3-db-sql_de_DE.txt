@@ -1,0 +1,4 @@
+[Component]
+DisplayName=Unterstützung für TimeTracker3-SQL datenbanken
+Description=Ermöglicht das Speichern von TimeTracker3-Daten in SQL-Datenbanken
+Copyright=Copyright (C) {0}, Andrey Kapustin

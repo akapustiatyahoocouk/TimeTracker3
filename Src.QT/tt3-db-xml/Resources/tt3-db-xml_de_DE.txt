@@ -1,8 +1,3 @@
-[Plugin]
-DisplayName=XML-Datenbanken
-Description=Ermöglicht das Speichern von TimeTracker3-Datenbanken als XML-Dateien (Einzelbenutzer)
-Copyright=Copyright (C) {0}, Andrey Kapustin
-
 [Component]
 DisplayName=Unterstützung für TimeTracker3-XML-Datenbanken
 Description=Ermöglicht das Speichern von TimeTracker3-Datenbanken als XML-Dateien (Einzelbenutzer)

@@ -1,8 +1,3 @@
-[Plugin]
-DisplayName=TimeTracker3-Wiederherstellen
-Description=Definiert eine Datenwiederherstellungslösung für TimeTracker3
-Copyright=Copyright (C) {0}, Andrey Kapustin
-
 [Component]
 DisplayName=TimeTracker3-Wiederherstellen
 Description=Definiert eine Datenwiederherstellungslösung für TimeTracker3
