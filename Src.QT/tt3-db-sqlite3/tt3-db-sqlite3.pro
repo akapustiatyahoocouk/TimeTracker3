@@ -20,3 +20,9 @@ LIBS += \
 
 RESOURCES += \
     tt3-db-sqlite3.qrc
+
+#   Third-party libs
+win32 {
+    QMAKE_POST_LINK += copy /y $$shell_path($${PWD}/Libs/sqlite3.dll) $$shell_path($${DESTDIR}/) $$escape_expand(\\n\\t)
+    QMAKE_CLEAN += $$shell_path($${DESTDIR}/sqlite3.dll)
+}
