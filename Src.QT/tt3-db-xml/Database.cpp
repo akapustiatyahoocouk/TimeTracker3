@@ -46,7 +46,6 @@ Database::Database(
             //  Can't overwrite!
             if (QFile(_address->_path).exists())
             {   //  OOPS!
-
                 throw tt3::db::api::AlreadyExistsException(
                         DatabaseType::instance()->displayName(),
                         "location",
@@ -234,7 +233,7 @@ void Database::close()
     }
     _saveTimer.stop();
 
-    //  All active locks become orpans
+    //  All active locks become orphans
     for (DatabaseLock * databaseLock : std::as_const(_activeDatabaseLocks))
     {
         databaseLock->_database = nullptr;
@@ -335,7 +334,18 @@ void Database::refresh()
 #ifdef Q_DEBUG
     _validate();    //  may throw
 #endif
-    //  ...otherwise an all-in-RAM database performs no caching
+    //  ...otherwise an all-in-RAM database performs no
+    //  caching BUT changes must be saved to disk
+    if (_needsSaving)
+    {
+        QDateTime now = QDateTime::currentDateTimeUtc();
+        _save();    //  may throw!
+        QDateTime then = QDateTime::currentDateTimeUtc();
+        _lastSaveDurationMs = now.msecsTo(then);
+        _nextSaveAt = then.addSecs(
+            Component::Settings::instance()->saveInterval.value().asMinutes() * 60);
+        _needsSaving = false;
+    }
 }
 
 //////////
