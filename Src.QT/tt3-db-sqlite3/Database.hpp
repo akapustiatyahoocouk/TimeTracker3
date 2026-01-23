@@ -56,14 +56,21 @@ namespace tt3::db::sqlite3
         virtual void    refresh() override;
 
         //////////
+        //  tt3::db::sql::Database (database specifics)
+    protected:
+        virtual bool    isKeyword(const QString & word) const override;
+        virtual QString quoteIdentifier(const QString & identifier) const override;
+
+        //////////
         //  Implementation
     private:
         DatabaseAddress *const          _address;   //  counts as a "reference"
         tt3::db::api::IValidator *const _validator;
         ::sqlite3 *     _connection = nullptr;  //  nullptr == database is closed
         //  TODO what can we move to tt3::db::sql::Database ?
-        mutable tt3::util::Mutex    _guard;     //  for all access synchronization
         bool            _isReadOnly = false;    //  not "const" - will be faked as "false" during close()
+
+        const QSet<QString> _keywords;  //  all-uppercase
     };
 }
 

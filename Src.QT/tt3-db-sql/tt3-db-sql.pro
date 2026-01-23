@@ -12,7 +12,8 @@ HEADERS += \
     Classes.hpp \
     Component.hpp \
     Database.hpp \
-    Linkage.hpp
+    Linkage.hpp \
+    Statement.hpp
 
 PRECOMPILED_HEADER = API.hpp
 

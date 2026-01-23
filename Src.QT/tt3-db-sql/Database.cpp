@@ -227,4 +227,127 @@ auto Database::lock(
     throw tt3::util::NotImplementedError();
 }
 
+//////////
+//  Operations (database specifics)
+bool Database::isIdentifierStart(const QChar & c) const
+{
+    return (c >= 'a' && c <= 'z') ||
+           (c >= 'A' && c <= 'Z') ||
+           (c == '_');
+}
+
+bool Database::isIdentifierChar(const QChar & c) const
+{
+    return (c >= 'a' && c <= 'z') ||
+           (c >= 'A' && c <= 'Z') ||
+           (c >= '0' && c <= '9') ||
+           (c == '_');
+}
+
+void Database::executeScript(const QString & sql)
+{
+    tt3::util::Lock _(guard);
+
+    qsizetype scan = 0;     //  the next statement starts here
+    QChar quote = '\x00';   //  The opening quote currently in effect
+    while (scan < sql.length())
+    {
+        Q_ASSERT(quote.unicode() == 0); //  No quote at the beginning og a statement
+        //  Fetch the next SQL statement
+        QString statement;
+        qsizetype prescan = scan;
+        while (prescan < sql.length())
+        {
+            if (sql[prescan] == ';' && quote.isNull())
+            {   //  End of statement
+                prescan++;  //  skip ;
+                break;
+            }
+            if ((sql[prescan] == '\'' ||
+                 sql[prescan] == '"' ||
+                 sql[prescan] == '`' ||
+                 sql[prescan] == '[') &&
+                quote.isNull())
+            {   //  An opening quote
+                quote = sql[prescan++];
+                statement += quote;
+                continue;
+            }
+            if ((sql[prescan] == '\'' ||
+                 sql[prescan] == '"' ||
+                 sql[prescan] == '`') &&
+                quote == sql[prescan])
+            {   //  A symmetric closing quote
+                statement += quote;
+                quote = '\x00';
+                continue;
+            }
+            if (sql[prescan] == ']' &&
+                quote == '[')
+            {   //  An asymmetric closing quote
+                statement += ']';
+                quote = '\x00';
+                continue;
+            }
+            if (sql[prescan] == '-' &&
+                prescan + 1 < sql.length() && sql[prescan + 1] == '-' &&
+                quote.isNull())
+            {   //  -- ... \n comment
+                prescan += 2;   //  Skip --
+                while (prescan < sql.length() && sql[prescan] != '\n')
+                {   //  Skip until '\n'
+                    prescan++;
+                }
+                if (prescan < sql.length())
+                {   //  Skip '\n'
+                    prescan++;
+                }
+                continue;
+            }
+            if (sql[prescan] == '/' &&
+                prescan + 1 < sql.length() && sql[prescan + 1] == '*' &&
+                quote.isNull())
+            {   //  /* ... */ comment
+                prescan += 2;   //  Skip /*
+                bool commentClosed = false;
+                while (prescan < sql.length())
+                {
+                    if (sql[prescan] == '*' &&
+                        prescan + 1 < sql.length() && sql[prescan + 1] == '/')
+                    {   //  Skip */
+                        prescan += 2;
+                        commentClosed = true;
+                        break;
+                    }
+                    prescan++;  //  skip comment character
+                }
+                if (!commentClosed)
+                {   //  OOPS! TODO throw SQL syntax error
+                }
+                continue;
+            }
+            if (sql[prescan].isNull())
+            {   //  Be defensive!
+                statement += ' ';
+                prescan++;
+                continue;
+            }
+            //  Just a character
+            statement += sql[prescan++];
+        }
+        if (quote.unicode() != 0)
+        {   //  OOPS! TODO throw SQL syntax error
+        }
+        //  We have a statement
+        if (!statement.trimmed().isEmpty())
+        {   //  Quotes are still not database-specific, etc...
+            qDebug() << statement;
+            //  ...but createStatement() will normalize everything
+            std::unique_ptr<Statement> stat
+                { createStatement(statement) }; //  may throw
+            stat->execute();    //  may throw
+        }
+    }
+}
+
 //  End of tt3-db-sql/Database.cpp

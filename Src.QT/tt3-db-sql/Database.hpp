@@ -156,7 +156,85 @@ namespace tt3::db::sql
         }
 
         //////////
+        //  Operations (database specifics)
+    protected:
+        /// \brief
+        ///     Checks if an identifier can start with the
+        ///     specified character.
+        /// \details
+        ///     The default implementation allows a-z, A-Z or _,
+        ///     as per SQL standard.
+        /// \param c
+        ///     The character to check.
+        /// \return
+        ///     True if an identifier can start with the
+        ///     specified character, else false.
+        virtual bool    isIdentifierStart(const QChar & c) const;
+
+        /// \brief
+        ///     Checks if an identifier can contain the
+        ///     specified character.
+        /// \details
+        ///     The default implementation allows a-z, A-Z, 0-9
+        ///     or _, as per SQL standard.
+        /// \param c
+        ///     The character to check.
+        /// \return
+        ///     True if an identifier can contain the
+        ///     specified character, else false.
+        virtual bool    isIdentifierChar(const QChar & c) const;
+
+        /// \brief
+        ///     Checks if the specified work is a SQL keyword.
+        /// \details
+        ///     The set of keywprds is specific to SQL database.
+        /// \param word
+        ///     The word to check (ignoring case).
+        /// \return
+        ///     True if the specified work is a SQL keyword, else false.
+        virtual bool    isKeyword(const QString & word) const = 0;
+
+        /// \brief
+        ///     Quotes the identifier if necessary.
+        /// \details
+        ///     The syntax of quoted identifiers is specific to SQL database.
+        ///     he identifier upper/lower casing is preserved.
+        /// \param identifier
+        ///     The identifier.
+        /// \return
+        ///     The identifier, quoted if necessary, "as is" if not.
+        virtual QString quoteIdentifier(const QString & identifier) const = 0;
+
+        /// \brief
+        ///     Executes the SQL script.
+        /// \details
+        ///     The current transaction context (absent/present) is preserved.
+        /// \param sql
+        ///     The SQL script. Statement are separated by ';', comments
+        ///     and empty statements are ignored.
+        /// \exception DatabaseException
+        ///     If an error occurs. Wrap the script execution into a
+        ///     transaction to perform clean rollback if this happens.
+        virtual void    executeScript(const QString & sql);
+
+        /// \brief
+        ///     Creates a new SQL statement from the specified SQL template.
+        /// \details
+        ///     The caller is responsible for deleteing it when done.
+        /// \param sqlTemplate
+        ///     The SQL statement template with ? placeholders.
+        /// \return
+        ///     The newly created SQL statement.
+        /// \exception DatabaseException
+        ///     If an error occurs.
+        virtual auto    createStatement(const QString & sqlTemplate) -> Statement *;
+
+        //////////
         //  Implementation
+    protected:
+        /// \brief
+        ///     The guard for all access synchronization.
+        mutable tt3::util::Mutex    guard;
     private:
         tt3::db::api::ChangeNotifier    _changeNotifier;
     };

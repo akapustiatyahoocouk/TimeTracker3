@@ -28,5 +28,6 @@
 #include "tt3-db-sql/Component.hpp"
 
 #include "tt3-db-sql/Database.hpp"
+#include "tt3-db-sql/Statement.hpp"
 
 //  End of tt3-db-sql/API.hpp
