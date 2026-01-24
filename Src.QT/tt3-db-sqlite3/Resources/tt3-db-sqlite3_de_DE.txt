@@ -6,3 +6,11 @@ Copyright=Copyright (C) {0}, Andrey Kapustin
 [DatabaseType]
 DisplayName=SQLite3
 Description=Der SQLite3-Speicher ist betriebsbereit.
+
+[EnterNewDatabaseAddressDialog]
+Title=SQLite3-Datenbank erstellen
+Filter=SQLite3-Datenbankdateien (*{0});;Alle Dateien (*.*)
+
+[EnterExistingDatabaseAddressDialog]
+Title=SQLite3-Datenbank auswählen
+Filter=SQLite3-Datenbankdateien (*{0});;Alle Dateien (*.*)

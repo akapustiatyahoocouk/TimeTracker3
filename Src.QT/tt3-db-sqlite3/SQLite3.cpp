@@ -44,6 +44,7 @@ struct SQLite3::_Impl
         LIBSQLITE3_RESOLVE(sqlite3_open_v2)
         LIBSQLITE3_RESOLVE(sqlite3_close)
         LIBSQLITE3_RESOLVE(sqlite3_errstr)
+        LIBSQLITE3_RESOLVE(sqlite3_db_readonly)
 #undef LIBSQLITE3_RESOLVE
     }
 
@@ -57,8 +58,9 @@ struct SQLite3::_Impl
                         int flags,              /* Flags */
                         const char *zVfs        /* Name of VFS module to use */
                     ) = nullptr;
-    int         (*sqlite3_close)(::sqlite3 * pDb);
+    int         (*sqlite3_close)(::sqlite3 * db);
     const char *(*sqlite3_errstr)(int err);
+    int         (*sqlite3_db_readonly)(::sqlite3 * db, const char * zDbName);
 };
 
 //////////
@@ -73,12 +75,12 @@ int SQLite3::open_v2(const char * filename, ::sqlite3 ** ppDb, int flags)
     throw tt3::db::api::CustomDatabaseException(impl->errorMessage);
 }
 
-int SQLite3::close(::sqlite3 * pDb)
+int SQLite3::close(::sqlite3 * db)
 {
     _Impl * impl = _impl();
     if (impl->loaded)
     {
-        return impl->sqlite3_close(pDb);
+        return impl->sqlite3_close(db);
     }
     throw tt3::db::api::CustomDatabaseException(impl->errorMessage);
 }
@@ -89,6 +91,16 @@ const char * SQLite3::errstr(int err)
     if (impl->loaded)
     {
         return impl->sqlite3_errstr(err);
+    }
+    throw tt3::db::api::CustomDatabaseException(impl->errorMessage);
+}
+
+int SQLite3::db_readonly(::sqlite3 * db, const char * zDbName)
+{
+    _Impl * impl = _impl();
+    if (impl->loaded)
+    {
+        return impl->sqlite3_db_readonly(db, zDbName);
     }
     throw tt3::db::api::CustomDatabaseException(impl->errorMessage);
 }

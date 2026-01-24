@@ -12,7 +12,7 @@ Title=Создать базу данных в формате XML
 Filter=Файлы базы данных XML (*{0});;Все файлы (*.*)
 
 [EnterExistingDatabaseAddressDialog]
-Title=Выбрать базу данных XML
+Title=Выбрать базу данных в формате XML
 Filter=Файлы базы данных XML (*{0});;Все файлы (*.*)
 
 [Preferences]

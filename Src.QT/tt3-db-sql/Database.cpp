@@ -244,6 +244,26 @@ bool Database::isIdentifierChar(const QChar & c) const
            (c == '_');
 }
 
+bool Database::isIdentifier(const QString & word) const
+{
+    if (word.length() == 0)
+    {
+        return false;
+    }
+    if (!isIdentifierStart(word[0]))
+    {
+        return false;
+    }
+    for (int i = 0; i < word.length(); i++)
+    {
+        if (!isIdentifierChar(word[i]))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 void Database::executeScript(const QString & sql)
 {
     tt3::util::Lock _(guard);
@@ -348,6 +368,11 @@ void Database::executeScript(const QString & sql)
             stat->execute();    //  may throw
         }
     }
+}
+
+auto Database::createStatement(const QString & sqlTemplate) -> Statement *
+{
+    return new Statement(this, sqlTemplate);
 }
 
 //  End of tt3-db-sql/Database.cpp

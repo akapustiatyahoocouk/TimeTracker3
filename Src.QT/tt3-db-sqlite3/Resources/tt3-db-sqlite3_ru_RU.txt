@@ -6,3 +6,11 @@ Copyright=Авторское право (C) {0}, Андрей Капустин
 [DatabaseType]
 DisplayName=SQLite3
 StatusReport=Хранилище SQLite3 работает
+
+[EnterNewDatabaseAddressDialog]
+Title=Создать базу данных SQLite3
+Filter=Файлы базы данных SQLite3 (*{0});;Все файлы (*.*)
+
+[EnterExistingDatabaseAddressDialog]
+Title=Выбрать базу данных SQLite3
+Filter=Файлы базы данных SQLite3 (*{0});;Все файлы (*.*)

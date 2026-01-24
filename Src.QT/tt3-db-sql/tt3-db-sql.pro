@@ -5,7 +5,8 @@ DEFINES += TT3_DB_SQL_LIBRARY
 
 SOURCES += \
     Component.cpp \
-    Database.cpp
+    Database.cpp \
+    Statement.cpp
 
 HEADERS += \
     API.hpp \
@@ -13,6 +14,7 @@ HEADERS += \
     Component.hpp \
     Database.hpp \
     Linkage.hpp \
+    ResultSet.hpp \
     Statement.hpp
 
 PRECOMPILED_HEADER = API.hpp

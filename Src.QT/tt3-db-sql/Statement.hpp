@@ -17,19 +17,47 @@
 
 namespace tt3::db::sql
 {
-    /// \class SqlStatement tt3-db-sql/API.hpp
-    /// \brief The generic SQL statement.
+    /// \class Statement tt3-db-sql/API.hpp
+    /// \brief The generic SQL statement; NOT thread-safe!
     class TT3_DB_SQL_PUBLIC Statement
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Statement)
 
+        friend class Database;
+
         //////////
-        //  Construction/destruction - from friends only
-    public: //  TODO really ?
+        //  Types
+    public:
+        /// \brief The SQL Statement category
+        enum class Category
+        {
+            Select, ///< SELECT...
+            Insert, ///< INSERT...
+            Update, ///< UPDATE...
+            Delete, ///< DELETE...
+            Other   ///< SET..., etc.
+        };
+
+        //////////
+        //  Construction/destruction
+    protected:
+        /// \brief
+        ///     Constructs the statement.
+        /// \param database
+        ///     The database where the statement will be executed.
+        /// \param sqlTemplate
+        ///     The SQL template from which this Statement
+        ///     is created, with ? as 0-based positional
+        ///     parameter placeholders.
+        /// \exception DatabaseException
+        ///     If an error occurs (e.g. SQL syntax error).
         Statement(
                 Database * database,
                 const QString & sqlTemplate
             );
+    public:
+        /// \brief
+        ///     The class destructor.
         virtual ~Statement();
 
         //////////
@@ -39,7 +67,7 @@ namespace tt3::db::sql
         ///     Returns the Database to which this Statement belongs.
         /// \return
         ///     The Database to which this Statement belongs.
-        Database *      database() const;
+        Database *      database() const { return _database; }
 
         /// \brief
         ///     Returns the SQL template from which this Statement
@@ -50,39 +78,56 @@ namespace tt3::db::sql
         /// \return
         ///     The SQL template from which this Statement
         ///     was created.
-        QString         sqlTemplate() const;   //  with ? placeholders)
+        QString         sqlTemplate() const { return _sqlTemplate; }
+
+        /// \brief
+        ///     Returns thie Statement's category.
+        /// \return
+        ///     Thie Statement's category.
+        Category        category() const { return _category; }
 
         //  TODO document
-        void            resetParameters();
-        void            resetParameter(int index);
-        void            setParameter(int index, nullptr_t);
-        void            setParameter(int index, bool value);
-        void            setParameter(int index, const QString & value);
-        void            setParameter(int index, const QDateTime & value);
-        void            setParameter(int index, const tt3::util::TimeSpan & value);
-        void            setParameter(int index, const QUuid & value);
+        virtual void    resetParameters();
+        virtual void    resetParameter(int index);
+        virtual void    setParameter(int index, nullptr_t);
+        virtual void    setParameter(int index, bool value);
+        virtual void    setParameter(int index, qint64 value);
+        virtual void    setParameter(int index, const QString & value);
+        virtual void    setParameter(int index, const QDateTime & value);
+        virtual void    setParameter(int index, const tt3::util::TimeSpan & value);
+        virtual void    setParameter(int index, const tt3::db::api::Oid & value);
 
-        void            execute();
-        ResultSet *     executeQuery();
+        qint64          execute();  //  lastinsertID for INSERT, affected rows count for UPDATE/DELETE, etc.
+        ResultSet *     executeQuery(); //  never nullptr, but may be empty
 
         //////////
         //  Implementation
     private:
         Database *const _database;
-        QString         _sqlTemplate;   //  with ? placeholders
+        const QString   _sqlTemplate;   //  with ? placeholders
+        const Category  _category;
 
         //  The SQL template broken into N textual pieces
-        //  and N-1 textually represented parameters.
+        //  and N-1 textually represented parameters in between.
         //  All quoting and parameter formatting is database
         //  type - specific
         QStringList     _literalFragments;  //  [N]
         QStringList     _parameters;        //  [N-1], "" == parameter not specified
 
         //  The SQL statement, assembled as a NUL-terminated UTF-8
-        QByteArray      _sqlAsUtf8; //  re-assembled when parameter(s) change
+        QString         _sql;   //  re-assembled when parameter(s) change
 
         //  Result sets - all live instances for this statement
         QList<ResultSet*>   _liveResultSets;
+
+        //  Helpers
+        static Category _categorize(const QString & sqlTemplate);
+        static void     _consumeIdentifier(
+                                QString & accumulator,
+                                QString & identifier,
+                                Database * database
+                            );
+        void            _prepareSql();
     };
 }
 

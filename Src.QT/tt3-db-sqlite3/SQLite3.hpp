@@ -27,8 +27,9 @@ namespace tt3::db::sqlite3
         //  Operations
     public:
         static int          open_v2(const char * filename, ::sqlite3 ** ppDb, int flags);
-        static int          close(::sqlite3 * pDb);
+        static int          close(::sqlite3 * db);
         static const char * errstr(int err);
+        static int          db_readonly(::sqlite3 * db, const char * zDbName);
 
         //////////
         //  Implementtion

@@ -6,3 +6,11 @@ Copyright=Copyright (C) {0}, Andrey Kapustin
 [DatabaseType]
 DisplayName=SQLite3
 StatusReport=The SQLite3 storage is operational
+
+[EnterNewDatabaseAddressDialog]
+Title=Create SQLite3 database
+Filter=SQLite3 database files (*{0});;All files (*.*)
+
+[EnterExistingDatabaseAddressDialog]
+Title=Select SQLite3 database
+Filter=SQLite3 database files (*{0});;All files (*.*)

@@ -60,6 +60,11 @@ namespace tt3::db::sqlite3
     protected:
         virtual bool    isKeyword(const QString & word) const override;
         virtual QString quoteIdentifier(const QString & identifier) const override;
+        virtual qint64  executeInsert(const QString & sql) override;
+        virtual qint64  executeUpdate(const QString & sql) override;
+        virtual qint64  executeDelete(const QString & sql) override;
+        virtual auto    executeSelect(const QString & sql) -> tt3::db::sql::ResultSet * override;
+        virtual void    execute(const QString & sql) override;
 
         //////////
         //  Implementation

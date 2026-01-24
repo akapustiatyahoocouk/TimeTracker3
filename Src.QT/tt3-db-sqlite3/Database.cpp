@@ -181,7 +181,7 @@ Database::Database(
         _address->addReference();
     }
 
-    tt3::util::Lock _(_guard);
+    tt3::util::Lock _(guard);
 
     int err;
     switch (openMode)
@@ -203,12 +203,11 @@ Database::Database(
                 SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE);
             if (err != SQLITE_OK)
             {   //  OOPS!
-                qCritical() << SQLite3::errstr(err);
                 throw tt3::db::api::CustomDatabaseException(
                     address->_path + ": " + SQLite3::errstr(err));
             }
             Q_ASSERT(_connection != nullptr);
-            //  TODO create schema
+            _isReadOnly = false;
             break;
         case _OpenMode::_OpenReadOnly:
             //  File must exist
@@ -227,12 +226,11 @@ Database::Database(
                 SQLITE_OPEN_READONLY);
             if (err != SQLITE_OK)
             {   //  OOPS!
-                qCritical() << SQLite3::errstr(err);
                 throw tt3::db::api::CustomDatabaseException(
                     address->_path + ": " + SQLite3::errstr(err));
             }
             Q_ASSERT(_connection != nullptr);
-            //  TODO validate schema
+            _isReadOnly = true;
             break;
         case _OpenMode::_OpenReadWrite:
             //  File must exist
@@ -251,12 +249,11 @@ Database::Database(
                 SQLITE_OPEN_READWRITE);
             if (err != SQLITE_OK)
             {   //  OOPS!
-                qCritical() << SQLite3::errstr(err);
                 throw tt3::db::api::CustomDatabaseException(
                     address->_path + ": " + SQLite3::errstr(err));
             }
             Q_ASSERT(_connection != nullptr);
-            //  TODO validate schema
+            _isReadOnly = (SQLite3::db_readonly(_connection, "main") != 0);
             break;
         case _OpenMode::_Dead:
             //  We're creating a special "dead" database,
@@ -267,7 +264,36 @@ Database::Database(
         default:
             Q_ASSERT(false);
     }
-    //  TODO set the _isReadOnly flag
+
+    //  Run the init/validate script
+    if (_connection != nullptr)
+    {   //  ...except on DEAD databases
+        QString script;
+        if (openMode == _OpenMode::_Create)
+        {   //  Create schema script
+            QFile file(":/tt3-db-sqlite3/Resources/CreateDatabase.sql");
+            if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+            {   //  OOPS!
+                QString errorMessage = "Could not open resource file " + file.fileName();
+                throw tt3::db::api::CustomDatabaseException(errorMessage);
+            }
+            QTextStream in(&file);
+            script = in.readAll();
+            file.close();
+        }
+        else if (openMode != _OpenMode::_Dead)
+        {   //  TODO else validate schema script
+        }
+        try
+        {
+            executeScript(script);    //  may throw
+        }
+        catch (...)
+        {   //  OOPS! Cleanup & re-throw
+            SQLite3::close(_connection); //  suppress errors
+            throw;
+        }
+    }
 }
 
 Database::~Database()
@@ -340,6 +366,31 @@ QString Database::quoteIdentifier(const QString & identifier) const
         return '"' + identifier + '"';
     }
     return identifier;
+}
+
+qint64 Database::executeInsert(const QString & sql)
+{
+    throw tt3::util::NotImplementedError();
+}
+
+qint64 Database::executeUpdate(const QString & sql)
+{
+    throw tt3::util::NotImplementedError();
+}
+
+qint64 Database::executeDelete(const QString & sql)
+{
+    throw tt3::util::NotImplementedError();
+}
+
+auto Database::executeSelect(const QString & sql) -> tt3::db::sql::ResultSet *
+{
+    throw tt3::util::NotImplementedError();
+}
+
+void Database::execute(const QString & sql)
+{
+    throw tt3::util::NotImplementedError();
 }
 
 //  End of tt3-db-sqlite3/Database.cpp

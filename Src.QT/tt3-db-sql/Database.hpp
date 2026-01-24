@@ -25,6 +25,7 @@ namespace tt3::db::sql
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Database)
 
         friend class DatabaseType;
+        friend class Statement;
 
         //////////
         //  Construction/destruction
@@ -185,6 +186,14 @@ namespace tt3::db::sql
         virtual bool    isIdentifierChar(const QChar & c) const;
 
         /// \brief
+        ///     Checks if the specified word is a valid identifier.
+        /// \param word
+        ///     The work to check.
+        /// \return
+        ///     True if the specified word is a valid identifier, else false.
+        virtual bool    isIdentifier(const QString & word) const;
+
+        /// \brief
         ///     Checks if the specified work is a SQL keyword.
         /// \details
         ///     The set of keywprds is specific to SQL database.
@@ -228,6 +237,13 @@ namespace tt3::db::sql
         /// \exception DatabaseException
         ///     If an error occurs.
         virtual auto    createStatement(const QString & sqlTemplate) -> Statement *;
+
+        //  TODO document
+        virtual qint64  executeInsert(const QString & sql) = 0;
+        virtual qint64  executeUpdate(const QString & sql) = 0;
+        virtual qint64  executeDelete(const QString & sql) = 0;
+        virtual auto    executeSelect(const QString & sql) -> ResultSet * = 0;
+        virtual void    execute(const QString & sql) = 0;
 
         //////////
         //  Implementation
