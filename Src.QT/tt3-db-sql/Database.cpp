@@ -298,7 +298,7 @@ void Database::executeScript(const QString & sql)
                  sql[prescan] == '`') &&
                 quote == sql[prescan])
             {   //  A symmetric closing quote
-                statement += quote;
+                statement += sql[prescan++];
                 quote = '\x00';
                 continue;
             }
@@ -306,6 +306,7 @@ void Database::executeScript(const QString & sql)
                 quote == '[')
             {   //  An asymmetric closing quote
                 statement += ']';
+                prescan++;
                 quote = '\x00';
                 continue;
             }
@@ -322,6 +323,7 @@ void Database::executeScript(const QString & sql)
                 {   //  Skip '\n'
                     prescan++;
                 }
+                statement += '\n';
                 continue;
             }
             if (sql[prescan] == '/' &&
@@ -367,6 +369,8 @@ void Database::executeScript(const QString & sql)
                 { createStatement(statement) }; //  may throw
             stat->execute();    //  may throw
         }
+        //  Advance & keep going
+        scan = prescan;
     }
 }
 

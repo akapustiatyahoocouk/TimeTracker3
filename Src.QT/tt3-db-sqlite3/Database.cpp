@@ -390,7 +390,29 @@ auto Database::executeSelect(const QString & sql) -> tt3::db::sql::ResultSet *
 
 void Database::execute(const QString & sql)
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(guard);
+
+    if (_connection == nullptr)
+    {   //  OOPS! TODO move to separate method in base class
+        throw tt3::db::api::DatabaseClosedException();
+    }
+    char * errmsg = nullptr;
+    int err = SQLite3::exec(
+        _connection,
+        sql.toUtf8(),
+        nullptr,
+        nullptr,
+        &errmsg);
+    if (err != SQLITE_OK)
+    {   //  OOPS!
+        QString errorMessage =
+            (errmsg != nullptr) ?
+                errmsg :
+                SQLite3::errstr(err);
+        //  TODO sqlite3_free errmsg if not nullptr
+        throw tt3::db::api::CustomDatabaseException(
+            _address->_path + ": " + errorMessage);
+    }
 }
 
 //  End of tt3-db-sqlite3/Database.cpp

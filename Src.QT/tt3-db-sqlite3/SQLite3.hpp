@@ -30,6 +30,13 @@ namespace tt3::db::sqlite3
         static int          close(::sqlite3 * db);
         static const char * errstr(int err);
         static int          db_readonly(::sqlite3 * db, const char * zDbName);
+        static int          exec(::sqlite3 * db,
+                                    const char * sql,
+                                    int (*callback)(void*,int,char**,char**),
+                                    void * cbData,
+                                    char ** errmsg
+                                );
+
 
         //////////
         //  Implementtion

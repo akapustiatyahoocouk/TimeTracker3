@@ -45,6 +45,7 @@ struct SQLite3::_Impl
         LIBSQLITE3_RESOLVE(sqlite3_close)
         LIBSQLITE3_RESOLVE(sqlite3_errstr)
         LIBSQLITE3_RESOLVE(sqlite3_db_readonly)
+        LIBSQLITE3_RESOLVE(sqlite3_exec)
 #undef LIBSQLITE3_RESOLVE
     }
 
@@ -61,6 +62,13 @@ struct SQLite3::_Impl
     int         (*sqlite3_close)(::sqlite3 * db);
     const char *(*sqlite3_errstr)(int err);
     int         (*sqlite3_db_readonly)(::sqlite3 * db, const char * zDbName);
+    int         (*sqlite3_exec)(
+                        ::sqlite3 * db,
+                        const char * sql,
+                        int (*callback)(void*,int,char**,char**),
+                        void * cbData,
+                        char ** errmsg
+                    );
 };
 
 //////////
@@ -101,6 +109,21 @@ int SQLite3::db_readonly(::sqlite3 * db, const char * zDbName)
     if (impl->loaded)
     {
         return impl->sqlite3_db_readonly(db, zDbName);
+    }
+    throw tt3::db::api::CustomDatabaseException(impl->errorMessage);
+}
+
+int SQLite3::exec(::sqlite3 * db,
+        const char * sql,
+        int (*callback)(void*,int,char**,char**),
+        void * cbData,
+        char ** errmsg
+    )
+{
+    _Impl * impl = _impl();
+    if (impl->loaded)
+    {
+        return impl->sqlite3_exec(db, sql, callback, cbData, errmsg);
     }
     throw tt3::db::api::CustomDatabaseException(impl->errorMessage);
 }

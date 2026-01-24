@@ -117,6 +117,7 @@ Statement::Statement(
             {   //  Skip '\n'
                 scan++;
             }
+            literalFragment += '\n';
             continue;
         }
         if (_sqlTemplate[scan] == '/' &&
