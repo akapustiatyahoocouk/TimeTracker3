@@ -51,24 +51,23 @@ namespace tt3::db::xml
         //////////
         //  tt3::db::api::IObject (general)
     public:
-        virtual Database *  database() const override { return _database; }
-        virtual tt3::db::api::Oid   oid() const override { return _oid; }
-        virtual void        setOid(
-                                    const tt3::db::api::Oid & oid
-                                ) override;
-        virtual bool        isLive() const override;
+        virtual auto    database() const -> Database * override final { return _database; }
+        virtual auto    oid() const -> tt3::db::api::Oid override final { return _oid; }
+        virtual void    setOid(const tt3::db::api::Oid & oid) override final;
+        virtual bool    isLive() const override final;
 
         //////////
         //  tt3::db::api::IObject (life cycle)
-        virtual void        destroy() override final;
+    public:
+        virtual void    destroy() override final;
 
         //////////
         //  tt3::db::api::IObject (reference counting)
     public:
-        virtual State       state() const override;
-        virtual int         referenceCount() const override;
-        virtual void        addReference() override;
-        virtual void        removeReference() override;
+        virtual State   state() const override final;
+        virtual int     referenceCount() const override final;
+        virtual void    addReference() override final;
+        virtual void    removeReference() override final;
 
         //////////
         //  Implementation

@@ -18,7 +18,6 @@ HEADERS += \
     DatabaseAddress.hpp \
     DatabaseType.hpp \
     Libs/sqlite3.h \
-    Libs/sqlite3ext.h \
     Linkage.hpp \
     SQLite3.hpp
 

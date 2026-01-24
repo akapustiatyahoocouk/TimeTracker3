@@ -31,4 +31,5 @@
 #include "tt3-db-sql/Statement.hpp"
 #include "tt3-db-sql/ResultSet.hpp"
 
+#include "tt3-db-sql/Object.hpp"
 //  End of tt3-db-sql/API.hpp

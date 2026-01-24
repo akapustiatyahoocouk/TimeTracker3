@@ -268,7 +268,15 @@ QString tt3::util::toString<QByteArray>(const QByteArray & value)
 template <> TT3_UTIL_PUBLIC
 QString tt3::util::toString<tt3::util::TimeSpan>(const TimeSpan & value)
 {
-    return value.isValid() ? toString(value.asMinutes()) : "?";
+    if (value.isValid() && value.asMinutes() >= 0)
+    {
+        return "PT" +
+               toString(value.asMinutes() / 60) +
+               "H" +
+               toString(value.asMinutes() % 60) +
+               "M";
+    }
+    return "#INV";
 }
 
 template <> TT3_UTIL_PUBLIC

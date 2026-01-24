@@ -762,13 +762,27 @@ QByteArray tt3::util::fromString<QByteArray>(const QString & s, qsizetype & scan
 template <> TT3_UTIL_PUBLIC
 tt3::util::TimeSpan tt3::util::fromString<tt3::util::TimeSpan>(const QString & s, qsizetype & scan)
 {
-    if (scan < s.length() && s[scan] == '?')
-    {
-        scan++;
-        return tt3::util::TimeSpan::Invalid;
+    static QRegularExpression regex("PT([0-9]{1,5})H([0-9]{1,2})M");
+
+    if (scan < 0 || scan >= s.length())
+    {   //  OOPS! Can't be!
+        throw ParseException(s, scan);
     }
-    int minutes = fromString<int>(s, scan);
-    return tt3::util::TimeSpan::minutes(minutes);
+
+    if (s.mid(scan, 4) == "#INV")
+    {
+        scan += 4;
+        return TimeSpan::Invalid;
+    }
+    QRegularExpressionMatch match = regex.match(s.mid(scan));
+    if (match.hasMatch())
+    {
+        int h = fromString<int>(match.captured(1).trimmed(), 0);
+        int m = fromString<int>(match.captured(2).trimmed(), 0);
+        scan += int(match.capturedLength());
+        return TimeSpan::hours(h) + TimeSpan::minutes(m);
+    }
+    throw ParseException(s, scan);
 }
 
 template <> TT3_UTIL_PUBLIC

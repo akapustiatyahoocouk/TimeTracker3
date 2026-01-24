@@ -14,6 +14,7 @@ HEADERS += \
     Component.hpp \
     Database.hpp \
     Linkage.hpp \
+    Object.hpp \
     ResultSet.hpp \
     Statement.hpp
 
