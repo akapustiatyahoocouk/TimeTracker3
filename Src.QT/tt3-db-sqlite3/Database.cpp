@@ -370,17 +370,110 @@ QString Database::quoteIdentifier(const QString & identifier) const
 
 qint64 Database::executeInsert(const QString & sql)
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(guard);
+
+    if (_connection == nullptr)
+    {   //  OOPS! TODO move to separate method in base class
+        throw tt3::db::api::DatabaseClosedException();
+    }
+    if (_isReadOnly)
+    {   //  OOPS! TODO move to separate method in base class
+        throw tt3::db::api::AccessDeniedException();
+    }
+
+    char * errmsg = nullptr;
+    int err = SQLite3::exec(
+        _connection,
+        sql.toUtf8(),
+        nullptr,
+        nullptr,
+        &errmsg);
+    if (err != SQLITE_OK)
+    {   //  OOPS!
+        QString errorMessage =
+            (errmsg != nullptr) ?
+                errmsg :
+                SQLite3::errstr(err);
+        if (errmsg != nullptr)
+        {
+            SQLite3::free(errmsg);
+        }
+        throw tt3::db::api::CustomDatabaseException(errorMessage);
+    }
+    //  Need affected rows count
+    return SQLite3::last_insert_rowid(_connection);
 }
 
 qint64 Database::executeUpdate(const QString & sql)
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(guard);
+
+    if (_connection == nullptr)
+    {   //  OOPS! TODO move to separate method in base class
+        throw tt3::db::api::DatabaseClosedException();
+    }
+    if (_isReadOnly)
+    {   //  OOPS! TODO move to separate method in base class
+        throw tt3::db::api::AccessDeniedException();
+    }
+
+    char * errmsg = nullptr;
+    int err = SQLite3::exec(
+        _connection,
+        sql.toUtf8(),
+        nullptr,
+        nullptr,
+        &errmsg);
+    if (err != SQLITE_OK)
+    {   //  OOPS!
+        QString errorMessage =
+            (errmsg != nullptr) ?
+                errmsg :
+                SQLite3::errstr(err);
+        if (errmsg != nullptr)
+        {
+            SQLite3::free(errmsg);
+        }
+        throw tt3::db::api::CustomDatabaseException(errorMessage);
+    }
+    //  Need affected rows count
+    return SQLite3::changes64(_connection);
 }
 
 qint64 Database::executeDelete(const QString & sql)
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(guard);
+
+    if (_connection == nullptr)
+    {   //  OOPS! TODO move to separate method in base class
+        throw tt3::db::api::DatabaseClosedException();
+    }
+    if (_isReadOnly)
+    {   //  OOPS! TODO move to separate method in base class
+        throw tt3::db::api::AccessDeniedException();
+    }
+
+    char * errmsg = nullptr;
+    int err = SQLite3::exec(
+        _connection,
+        sql.toUtf8(),
+        nullptr,
+        nullptr,
+        &errmsg);
+    if (err != SQLITE_OK)
+    {   //  OOPS!
+        QString errorMessage =
+            (errmsg != nullptr) ?
+                errmsg :
+                SQLite3::errstr(err);
+        if (errmsg != nullptr)
+        {
+            SQLite3::free(errmsg);
+        }
+        throw tt3::db::api::CustomDatabaseException(errorMessage);
+    }
+    //  Need affected rows count
+    return SQLite3::changes64(_connection);
 }
 
 auto Database::executeSelect(const QString & sql) -> tt3::db::sql::ResultSet *
@@ -409,9 +502,11 @@ void Database::execute(const QString & sql)
             (errmsg != nullptr) ?
                 errmsg :
                 SQLite3::errstr(err);
-        //  TODO sqlite3_free errmsg if not nullptr
-        throw tt3::db::api::CustomDatabaseException(
-            _address->_path + ": " + errorMessage);
+        if (errmsg != nullptr)
+        {
+            SQLite3::free(errmsg);
+        }
+        throw tt3::db::api::CustomDatabaseException(errorMessage);
     }
 }
 

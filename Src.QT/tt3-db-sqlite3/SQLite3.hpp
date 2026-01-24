@@ -36,7 +36,9 @@ namespace tt3::db::sqlite3
                                     void * cbData,
                                     char ** errmsg
                                 );
-
+        static qint64       changes64(::sqlite3 * db);
+        static qint64       last_insert_rowid(::sqlite3 * db);
+        static void         free(void * p);
 
         //////////
         //  Implementtion

@@ -46,29 +46,36 @@ struct SQLite3::_Impl
         LIBSQLITE3_RESOLVE(sqlite3_errstr)
         LIBSQLITE3_RESOLVE(sqlite3_db_readonly)
         LIBSQLITE3_RESOLVE(sqlite3_exec)
+        LIBSQLITE3_RESOLVE(sqlite3_changes64)
+        LIBSQLITE3_RESOLVE(sqlite3_last_insert_rowid)
+        LIBSQLITE3_RESOLVE(sqlite3_free)
 #undef LIBSQLITE3_RESOLVE
     }
 
-    QLibrary    libSqlite3;
-    QString     errorMessage;   //  "" = loaded successfully
-    bool        loaded = true;
+    QLibrary        libSqlite3;
+    QString         errorMessage;   //  "" = loaded successfully
+    bool            loaded = true;
+
     //  Symbols = nullptr when not defined
-    int         (*sqlite3_open_v2)(
-                        const char * filename,   /* Database filename (UTF-8) */
-                        ::sqlite3 ** ppDb,         /* OUT: SQLite db handle */
-                        int flags,              /* Flags */
-                        const char *zVfs        /* Name of VFS module to use */
-                    ) = nullptr;
-    int         (*sqlite3_close)(::sqlite3 * db);
-    const char *(*sqlite3_errstr)(int err);
-    int         (*sqlite3_db_readonly)(::sqlite3 * db, const char * zDbName);
-    int         (*sqlite3_exec)(
-                        ::sqlite3 * db,
-                        const char * sql,
-                        int (*callback)(void*,int,char**,char**),
-                        void * cbData,
-                        char ** errmsg
-                    );
+    int             (*sqlite3_open_v2)(
+                            const char * filename,   /* Database filename (UTF-8) */
+                            ::sqlite3 ** ppDb,         /* OUT: SQLite db handle */
+                            int flags,              /* Flags */
+                            const char *zVfs        /* Name of VFS module to use */
+                        ) = nullptr;
+    int             (*sqlite3_close)(::sqlite3 * db) = nullptr;
+    const char *    (*sqlite3_errstr)(int err) = nullptr;
+    int             (*sqlite3_db_readonly)(::sqlite3 * db, const char * zDbName) = nullptr;
+    int             (*sqlite3_exec)(
+                            ::sqlite3 * db,
+                            const char * sql,
+                            int (*callback)(void*,int,char**,char**),
+                            void * cbData,
+                            char ** errmsg
+                        )  = nullptr;
+    sqlite3_int64   (*sqlite3_changes64)(::sqlite3 * db) = nullptr;
+    sqlite3_int64   (*sqlite3_last_insert_rowid)(::sqlite3 * db) = nullptr;
+    void            (*sqlite3_free)(void * p) = nullptr;
 };
 
 //////////
@@ -124,6 +131,37 @@ int SQLite3::exec(::sqlite3 * db,
     if (impl->loaded)
     {
         return impl->sqlite3_exec(db, sql, callback, cbData, errmsg);
+    }
+    throw tt3::db::api::CustomDatabaseException(impl->errorMessage);
+}
+
+qint64 SQLite3::changes64(::sqlite3 * db)
+{
+    _Impl * impl = _impl();
+    if (impl->loaded)
+    {
+        return impl->sqlite3_changes64(db);
+    }
+    throw tt3::db::api::CustomDatabaseException(impl->errorMessage);
+}
+
+qint64 SQLite3::last_insert_rowid(::sqlite3 * db)
+{
+    _Impl * impl = _impl();
+    if (impl->loaded)
+    {
+        return impl->sqlite3_last_insert_rowid(db);
+    }
+    throw tt3::db::api::CustomDatabaseException(impl->errorMessage);
+}
+
+void SQLite3::free(void * p)
+{
+    _Impl * impl = _impl();
+    if (impl->loaded)
+    {
+        impl->sqlite3_free(p);
+        return;
     }
     throw tt3::db::api::CustomDatabaseException(impl->errorMessage);
 }
