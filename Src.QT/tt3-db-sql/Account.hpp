@@ -1,5 +1,5 @@
 //
-//  tt3-db-xml/Account.hpp - a login account
+//  tt3-db-sql/Account.hpp - a login account
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,26 +15,20 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace tt3::db::xml
+namespace tt3::db::sql
 {
-    /// \class Account tt3-db-xml/API.hpp
-    /// \brief A login account in an XML file database.
-    class TT3_DB_XML_PUBLIC Account final
+    /// \class Account tt3-db-sql/API.hpp
+    /// \brief A login account in an SQL database.
+    class TT3_DB_SQL_PUBLIC Account final
         :   public Principal,
             public virtual tt3::db::api::IAccount
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Account)
 
-        friend class Database;
-        friend class User;
-        friend class Activity;
-        friend class Work;
-        friend class Event;
-
         //////////
         //  Construction/destruction (from DB type only)
     private:
-        Account(User * user, tt3::db::api::Oid oid);
+        Account(Database * database, qint64 pk);
         virtual ~Account();
 
         //////////
@@ -96,52 +90,16 @@ namespace tt3::db::xml
         //////////
         //  Implementation
     private:
-        //  Properties
-        QString         _login;
-        QString         _passwordHash;  //  SHA-1 uppercase hexstring
-        tt3::db::api::Capabilities  _capabilities;
-        //  Aggregations
-        Works           _works;         //  count as "reference"
-        Events          _events;        //  count as "reference"
-        //  Associations
-        User *          _user;          //  counts as "reference"
-        QList<Activity*>_quickPicksList; //  count as "reference"
+        //  Cached properties
+        CachedProperty<QString>     _login;
+        CachedProperty<QString>     _passwordHash;  //  SHA-1 uppercase hexstring
+        CachedProperty<tt3::db::api::Capabilities>  _capabilities;
 
-        //  Helpers
-        virtual void    _makeDead() override;
-        virtual void    _setPasswordHash(
-                                const QString & passwordHash
-                            ) override;
-
-        //////////
-        //  Serialization
-    private:
-        virtual void    _serializeProperties(
-                                QDomElement & objectElement
-                            ) const override;
-        virtual void    _serializeAggregations(
-                                QDomElement & objectElement
-                            ) const override;
-        virtual void    _serializeAssociations(
-                                QDomElement & objectElement
-                            ) const override;
-
-        virtual void    _deserializeProperties(
-                                const QDomElement & objectElement
-                            ) override; //  throws tt3::util::ParseException
-        virtual void    _deserializeAggregations(
-                                const QDomElement & objectElement
-                            ) override; //  throws tt3::util::ParseException
-        virtual void    _deserializeAssociations(
-                                const QDomElement & objectElement
-                            ) override;  //  throws tt3::util::ParseException
-
-        //////////
-        //  Validation
-    private:
-        virtual void    _validate(
-                                Objects & validatedObjects
-                             ) override; //  throws tt3::db::api::DatabaseException
+        virtual void    _invalidateCachedProperties() override;
+        virtual void    _loadCachedProperties() override;
+        void            _saveLogin(const QString & login);
+        void            _savePasswordHash(const QString & passwordHash);
+        void            _saveCapabilities(tt3::db::api::Capabilities  capabilities);
     };
 }
 

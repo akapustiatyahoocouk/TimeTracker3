@@ -510,4 +510,28 @@ void Database::execute(const QString & sql)
     }
 }
 
+void Database::ensureOpen() const
+{
+    Q_ASSERT(guard.isLockedByCurrentThread());
+
+    if (_connection == nullptr)
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseClosedException();
+    }
+}
+
+void Database::ensureOpenAndWritable() const
+{
+    Q_ASSERT(guard.isLockedByCurrentThread());
+
+    if (_connection == nullptr)
+    {   //  OOPS!
+        throw tt3::db::api::DatabaseClosedException();
+    }
+    if (_isReadOnly)
+    {   //  OOPS!
+        throw tt3::db::api::AccessDeniedException();
+    }
+}
+
 //  End of tt3-db-sqlite3/Database.cpp

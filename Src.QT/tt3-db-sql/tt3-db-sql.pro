@@ -6,17 +6,24 @@ DEFINES += TT3_DB_SQL_LIBRARY
 SOURCES += \
     Component.cpp \
     Database.cpp \
-    Statement.cpp
+    Object.cpp \
+    Principal.cpp \
+    Statement.cpp \
+    User.cpp
 
 HEADERS += \
     API.hpp \
+    Account.hpp \
+    CachedProperty.hpp \
     Classes.hpp \
     Component.hpp \
     Database.hpp \
     Linkage.hpp \
     Object.hpp \
+    Principal.hpp \
     ResultSet.hpp \
-    Statement.hpp
+    Statement.hpp \
+    User.hpp
 
 PRECOMPILED_HEADER = API.hpp
 

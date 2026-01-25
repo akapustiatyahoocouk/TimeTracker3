@@ -31,5 +31,10 @@
 #include "tt3-db-sql/Statement.hpp"
 #include "tt3-db-sql/ResultSet.hpp"
 
+#include "tt3-db-sql/CachedProperty.hpp"
 #include "tt3-db-sql/Object.hpp"
+#include "tt3-db-sql/Principal.hpp"
+#include "tt3-db-sql/User.hpp"
+#include "tt3-db-sql/Account.hpp"
+
 //  End of tt3-db-sql/API.hpp

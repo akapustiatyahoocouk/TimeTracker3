@@ -225,7 +225,6 @@ void Object::_ensureLiveAndWritable() const
 void Object::_makeDead()
 {
     Q_ASSERT(_database->_guard.isLockedByCurrentThread());
-    Q_ASSERT(_database->_guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
     Q_ASSERT(_database->_liveObjects.contains(_oid));
 

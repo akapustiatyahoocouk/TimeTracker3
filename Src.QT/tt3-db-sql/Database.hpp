@@ -26,6 +26,9 @@ namespace tt3::db::sql
 
         friend class DatabaseType;
         friend class Statement;
+        friend class Object;
+        friend class Principal;
+        friend class User;
 
         //////////
         //  Construction/destruction
@@ -245,6 +248,24 @@ namespace tt3::db::sql
         virtual auto    executeSelect(const QString & sql) -> ResultSet * = 0;
         virtual void    execute(const QString & sql) = 0;
 
+        /// \brief
+        ///     Checks if the database is open.
+        /// \details
+        ///     The implementation can safely assime the
+        ///     "guard" is already locked by the calling thread.
+        /// \exception DatabaseException
+        ///     If the database is closed.
+        virtual void    ensureOpen() const = 0;
+
+        /// \brief
+        ///     Checks if the database is open and writable.
+        /// \details
+        ///     The implementation can safely assime the
+        ///     "guard" is already locked by the calling thread.
+        /// \exception DatabaseException
+        ///     If the database is closed or read-only.
+        virtual void    ensureOpenAndWritable() const = 0;
+
         //////////
         //  Implementation
     protected:
@@ -253,6 +274,10 @@ namespace tt3::db::sql
         mutable tt3::util::Mutex    guard;
     private:
         tt3::db::api::ChangeNotifier    _changeNotifier;
+
+        //  Object caches - NOT count as "references"
+        QMap<qint64, Object*>   _liveObjects;   //  All "live" objects
+        QMap<qint64, Object*>   _graveyard;     //  All "dead" objects
     };
 }
 

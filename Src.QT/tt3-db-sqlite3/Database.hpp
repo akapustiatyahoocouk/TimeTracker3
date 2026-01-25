@@ -66,6 +66,9 @@ namespace tt3::db::sqlite3
         virtual auto    executeSelect(const QString & sql) -> tt3::db::sql::ResultSet * override;
         virtual void    execute(const QString & sql) override;
 
+        virtual void    ensureOpen() const override;
+        virtual void    ensureOpenAndWritable() const override;
+
         //////////
         //  Implementation
     private:

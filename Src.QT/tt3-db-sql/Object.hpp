@@ -24,6 +24,9 @@ namespace tt3::db::sql
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Object)
 
+        friend class Principal;
+        friend class User;
+
         //////////
         //  Construction/destruction (from DB type only)
     private:
@@ -61,6 +64,18 @@ namespace tt3::db::sql
         State           _state = State::New;
         int             _referenceCount = 0;
         bool            _isLive = true;
+
+        //  Cached properties
+        CachedProperty<tt3::db::api::Oid>   _oid;
+
+        virtual void    _invalidateCachedProperties();
+        virtual void    _loadCachedProperties() = 0;
+        void            _saveOid(const tt3::db::api::Oid & oid);
+
+        //  Helpers
+        void            _ensureLive() const;
+        void            _ensureLiveAndWritable() const;
+        virtual void    _makeDead();
     };
 }
 

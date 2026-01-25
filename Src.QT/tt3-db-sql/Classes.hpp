@@ -20,6 +20,8 @@ namespace tt3::db::sql
     class Database;
     class Statement;
     class ResultSet;
+
+    class Object;
 }
 
 //  End of tt3-db-sql/Classes.hpp
