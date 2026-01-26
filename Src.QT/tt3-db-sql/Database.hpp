@@ -29,6 +29,7 @@ namespace tt3::db::sql
         friend class Object;
         friend class Principal;
         friend class User;
+        friend class Account;
 
         //////////
         //  Construction/destruction
@@ -217,6 +218,11 @@ namespace tt3::db::sql
         ///     The identifier, quoted if necessary, "as is" if not.
         virtual QString quoteIdentifier(const QString & identifier) const = 0;
 
+        virtual void    beginTransaction() = 0;
+        virtual void    commitTransaction() = 0;
+        virtual void    rollbackTransaction() = 0;
+        virtual bool    isTransactionInProgress() const = 0;
+
         /// \brief
         ///     Executes the SQL script.
         /// \details
@@ -278,6 +284,10 @@ namespace tt3::db::sql
         //  Object caches - NOT count as "references"
         QMap<qint64, Object*>   _liveObjects;   //  All "live" objects
         QMap<qint64, Object*>   _graveyard;     //  All "dead" objects
+
+        //  Helpers
+        using _ObjId = std::tuple<qint64, tt3::db::api::Oid>;
+        _ObjId          _createObject(tt3::db::api::IObjectType * objectType);
     };
 }
 

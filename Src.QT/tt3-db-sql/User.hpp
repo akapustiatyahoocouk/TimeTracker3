@@ -25,6 +25,8 @@ namespace tt3::db::sql
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(User)
 
+        friend class Database;
+
         //////////
         //  Construction/destruction (from DB type only)
     private:

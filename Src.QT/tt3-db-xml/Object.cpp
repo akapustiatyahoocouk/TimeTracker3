@@ -57,7 +57,7 @@ void Object::setOid(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -86,7 +86,7 @@ void Object::setOid(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -104,13 +104,13 @@ void Object::destroy()
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
     _makeDead();
 
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 }

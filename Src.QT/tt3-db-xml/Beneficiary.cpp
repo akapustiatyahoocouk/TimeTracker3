@@ -52,7 +52,7 @@ void Beneficiary::setDisplayName(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -80,7 +80,7 @@ void Beneficiary::setDisplayName(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -101,7 +101,7 @@ void Beneficiary::setDescription(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -122,7 +122,7 @@ void Beneficiary::setDescription(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -146,7 +146,7 @@ void Beneficiary::setWorkloads(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -207,7 +207,7 @@ void Beneficiary::setWorkloads(
                     _database, xmlWorkload->type(), xmlWorkload->_oid));
         }
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -219,7 +219,7 @@ void Beneficiary::addWorkload(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -256,7 +256,7 @@ void Beneficiary::addWorkload(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, xmlWorkload->type(), xmlWorkload->_oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -268,7 +268,7 @@ void Beneficiary::removeWorkload(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -305,7 +305,7 @@ void Beneficiary::removeWorkload(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, xmlWorkload->type(), xmlWorkload->_oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }

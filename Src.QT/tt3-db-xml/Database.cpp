@@ -331,7 +331,7 @@ void Database::refresh()
     tt3::util::Lock _(_guard);
 
     _ensureOpen();  //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _validate();    //  may throw
 #endif
     //  ...otherwise an all-in-RAM database performs no
@@ -588,7 +588,7 @@ auto Database::createUser(
 {
     tt3::util::Lock _(_guard);
     _ensureOpenAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _validate();    //  may throw
 #endif
 
@@ -671,7 +671,7 @@ auto Database::createUser(
                 this, xmlWorkload->type(), xmlWorkload->_oid));
     }
     //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _validate();    //  may throw
 #endif
     return user;
@@ -684,7 +684,7 @@ auto Database::createActivityType(
 {
     tt3::util::Lock _(_guard);
     _ensureOpenAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _validate();    //  may throw
 #endif
 
@@ -723,7 +723,7 @@ auto Database::createActivityType(
         new tt3::db::api::ObjectCreatedNotification(
             this, activityType->type(), activityType->_oid));
     //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _validate();    //  may throw
 #endif
     return activityType;
@@ -742,7 +742,7 @@ auto Database::createPublicActivity(
 {
     tt3::util::Lock _(_guard);
     _ensureOpenAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _validate();    //  may throw
 #endif
 
@@ -841,7 +841,7 @@ auto Database::createPublicActivity(
                 this, xmlWorkload->type(), xmlWorkload->_oid));
     }
     //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _validate();    //  may throw
 #endif
     return publicActivity;
@@ -862,7 +862,7 @@ auto Database::createPublicTask(
 {
     tt3::util::Lock _(_guard);
     _ensureOpenAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _validate();    //  may throw
 #endif
 
@@ -963,7 +963,7 @@ auto Database::createPublicTask(
                 this, xmlWorkload->type(), xmlWorkload->_oid));
     }
     //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _validate();    //  may throw
 #endif
     return publicTask;
@@ -978,7 +978,7 @@ auto Database::createProject(
 {
     tt3::util::Lock _(_guard);
     _ensureOpenAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _validate();    //  may throw
 #endif
 
@@ -1054,7 +1054,7 @@ auto Database::createProject(
                 this, xmlBeneficiary->type(), xmlBeneficiary->_oid));
     }
     //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _validate();    //  may throw
 #endif
     return project;
@@ -1068,7 +1068,7 @@ auto Database::createWorkStream(
 {
     tt3::util::Lock _(_guard);
     _ensureOpenAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _validate();    //  may throw
 #endif
 
@@ -1143,7 +1143,7 @@ auto Database::createWorkStream(
                 this, xmlBeneficiary->type(), xmlBeneficiary->_oid));
     }
     //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _validate();    //  may throw
 #endif
     return workStream;
@@ -1157,7 +1157,7 @@ auto Database::createBeneficiary(
 {
     tt3::util::Lock _(_guard);
     _ensureOpenAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _validate();    //  may throw
 #endif
 
@@ -1232,7 +1232,7 @@ auto Database::createBeneficiary(
                 this, xmlWorkload->type(), xmlWorkload->_oid));
     }
     //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _validate();    //  may throw
 #endif
     return beneficiary;

@@ -46,7 +46,7 @@ void Principal::setEnabled(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -59,7 +59,7 @@ void Principal::setEnabled(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -81,7 +81,7 @@ void Principal::setEmailAddresses(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -102,7 +102,7 @@ void Principal::setEmailAddresses(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }

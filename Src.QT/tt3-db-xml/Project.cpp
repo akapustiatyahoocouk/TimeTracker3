@@ -66,7 +66,7 @@ void Project::setCompleted(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -79,7 +79,7 @@ void Project::setCompleted(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -103,7 +103,7 @@ void Project::setParent(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -167,7 +167,7 @@ void Project::setParent(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -194,7 +194,7 @@ auto Project::createChild(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -271,7 +271,7 @@ auto Project::createChild(
                 _database, xmlBeneficiary->type(), xmlBeneficiary->_oid));
     }
     //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
     return project;

@@ -50,7 +50,7 @@ void Workload::setDisplayName(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -78,7 +78,7 @@ void Workload::setDisplayName(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -99,7 +99,7 @@ void Workload::setDescription(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -120,7 +120,7 @@ void Workload::setDescription(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -154,7 +154,7 @@ void Workload::setBeneficiaries(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -215,7 +215,7 @@ void Workload::setBeneficiaries(
                     _database, xmlBeneficiary->type(), xmlBeneficiary->_oid));
         }
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -227,7 +227,7 @@ void Workload::addBeneficiary(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -264,7 +264,7 @@ void Workload::addBeneficiary(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, xmlBeneficiary->type(), xmlBeneficiary->_oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -276,7 +276,7 @@ void Workload::removeBeneficiary(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -313,7 +313,7 @@ void Workload::removeBeneficiary(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, xmlBeneficiary->type(), xmlBeneficiary->_oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -335,7 +335,7 @@ void Workload::setAssignedUsers(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -396,7 +396,7 @@ void Workload::setAssignedUsers(
                     _database, xmlUser->type(), xmlUser->_oid));
         }
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -408,7 +408,7 @@ void Workload::addAssignedUser(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -445,7 +445,7 @@ void Workload::addAssignedUser(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, xmlUser->type(), xmlUser->_oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -457,7 +457,7 @@ void Workload::removeAssignedUser(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -494,7 +494,7 @@ void Workload::removeAssignedUser(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, xmlUser->type(), xmlUser->_oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }

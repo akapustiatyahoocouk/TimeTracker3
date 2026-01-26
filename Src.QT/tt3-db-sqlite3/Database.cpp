@@ -368,18 +368,108 @@ QString Database::quoteIdentifier(const QString & identifier) const
     return identifier;
 }
 
+void Database::beginTransaction()
+{
+    tt3::util::Lock _(guard);
+    ensureOpen();
+
+    if (_transactionInProgress)
+    {   //  OOPS! TODO throw
+    }
+    char * errmsg = nullptr;
+    int err = SQLite3::exec(
+        _connection,
+        "BEGIN IMMEDIATE TRANSACTION",
+        nullptr,
+        nullptr,
+        &errmsg);
+    if (err != SQLITE_OK)
+    {   //  OOPS!
+        QString errorMessage =
+            (errmsg != nullptr) ?
+                errmsg :
+                SQLite3::errstr(err);
+        if (errmsg != nullptr)
+        {
+            SQLite3::free(errmsg);
+        }
+        throw tt3::db::api::CustomDatabaseException(errorMessage);
+    }
+    _transactionInProgress = true;
+}
+
+void Database::commitTransaction()
+{
+    tt3::util::Lock _(guard);
+    ensureOpen();
+
+    if (!_transactionInProgress)
+    {   //  OOPS! TODO throw
+    }
+    char * errmsg = nullptr;
+    int err = SQLite3::exec(
+        _connection,
+        "COMMIT TRANSACTION",
+        nullptr,
+        nullptr,
+        &errmsg);
+    if (err != SQLITE_OK)
+    {   //  OOPS!
+        QString errorMessage =
+            (errmsg != nullptr) ?
+                errmsg :
+                SQLite3::errstr(err);
+        if (errmsg != nullptr)
+        {
+            SQLite3::free(errmsg);
+        }
+        throw tt3::db::api::CustomDatabaseException(errorMessage);
+    }
+    _transactionInProgress = false;
+}
+
+void Database::rollbackTransaction()
+{
+    tt3::util::Lock _(guard);
+    ensureOpen();
+
+    if (!_transactionInProgress)
+    {   //  OOPS! TODO throw
+    }
+    char * errmsg = nullptr;
+    int err = SQLite3::exec(
+        _connection,
+        "ROLLBACK TRANSACTION",
+        nullptr,
+        nullptr,
+        &errmsg);
+    if (err != SQLITE_OK)
+    {   //  OOPS!
+        QString errorMessage =
+            (errmsg != nullptr) ?
+                errmsg :
+                SQLite3::errstr(err);
+        if (errmsg != nullptr)
+        {
+            SQLite3::free(errmsg);
+        }
+        throw tt3::db::api::CustomDatabaseException(errorMessage);
+    }
+    _transactionInProgress = false;
+}
+
+bool Database::isTransactionInProgress() const
+{
+    tt3::util::Lock _(guard);
+    ensureOpen();
+
+    return _transactionInProgress;
+}
+
 qint64 Database::executeInsert(const QString & sql)
 {
     tt3::util::Lock _(guard);
-
-    if (_connection == nullptr)
-    {   //  OOPS! TODO move to separate method in base class
-        throw tt3::db::api::DatabaseClosedException();
-    }
-    if (_isReadOnly)
-    {   //  OOPS! TODO move to separate method in base class
-        throw tt3::db::api::AccessDeniedException();
-    }
+    ensureOpenAndWritable();
 
     char * errmsg = nullptr;
     int err = SQLite3::exec(
@@ -407,15 +497,7 @@ qint64 Database::executeInsert(const QString & sql)
 qint64 Database::executeUpdate(const QString & sql)
 {
     tt3::util::Lock _(guard);
-
-    if (_connection == nullptr)
-    {   //  OOPS! TODO move to separate method in base class
-        throw tt3::db::api::DatabaseClosedException();
-    }
-    if (_isReadOnly)
-    {   //  OOPS! TODO move to separate method in base class
-        throw tt3::db::api::AccessDeniedException();
-    }
+    ensureOpenAndWritable();
 
     char * errmsg = nullptr;
     int err = SQLite3::exec(
@@ -443,15 +525,7 @@ qint64 Database::executeUpdate(const QString & sql)
 qint64 Database::executeDelete(const QString & sql)
 {
     tt3::util::Lock _(guard);
-
-    if (_connection == nullptr)
-    {   //  OOPS! TODO move to separate method in base class
-        throw tt3::db::api::DatabaseClosedException();
-    }
-    if (_isReadOnly)
-    {   //  OOPS! TODO move to separate method in base class
-        throw tt3::db::api::AccessDeniedException();
-    }
+    ensureOpenAndWritable();
 
     char * errmsg = nullptr;
     int err = SQLite3::exec(
@@ -484,11 +558,8 @@ auto Database::executeSelect(const QString & sql) -> tt3::db::sql::ResultSet *
 void Database::execute(const QString & sql)
 {
     tt3::util::Lock _(guard);
+    ensureOpen();
 
-    if (_connection == nullptr)
-    {   //  OOPS! TODO move to separate method in base class
-        throw tt3::db::api::DatabaseClosedException();
-    }
     char * errmsg = nullptr;
     int err = SQLite3::exec(
         _connection,

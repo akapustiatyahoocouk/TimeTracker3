@@ -63,6 +63,10 @@ namespace tt3::db::sqlite3
         virtual qint64  executeInsert(const QString & sql) override;
         virtual qint64  executeUpdate(const QString & sql) override;
         virtual qint64  executeDelete(const QString & sql) override;
+        virtual void    beginTransaction() override;
+        virtual void    commitTransaction() override;
+        virtual void    rollbackTransaction() override;
+        virtual bool    isTransactionInProgress() const override;
         virtual auto    executeSelect(const QString & sql) -> tt3::db::sql::ResultSet * override;
         virtual void    execute(const QString & sql) override;
 
@@ -75,8 +79,8 @@ namespace tt3::db::sqlite3
         DatabaseAddress *const          _address;   //  counts as a "reference"
         tt3::db::api::IValidator *const _validator;
         ::sqlite3 *     _connection = nullptr;  //  nullptr == database is closed
-        //  TODO what can we move to tt3::db::sql::Database ?
         bool            _isReadOnly = false;    //  not "const" - will be faked as "false" during close()
+        bool            _transactionInProgress = false;
 
         const QSet<QString> _keywords;  //  all-uppercase
     };

@@ -22,6 +22,9 @@ namespace tt3::db::sql
     class ResultSet;
 
     class Object;
+    class Principal;
+    class User;
+    class Account;
 }
 
 //  End of tt3-db-sql/Classes.hpp

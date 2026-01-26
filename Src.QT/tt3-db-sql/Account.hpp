@@ -100,6 +100,9 @@ namespace tt3::db::sql
         void            _saveLogin(const QString & login);
         void            _savePasswordHash(const QString & passwordHash);
         void            _saveCapabilities(tt3::db::api::Capabilities  capabilities);
+
+        //  Helpers
+        virtual void    _makeDead() override;
     };
 }
 

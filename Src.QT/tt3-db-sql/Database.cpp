@@ -148,7 +148,151 @@ auto Database::createUser(
         const tt3::db::api::Workloads & permittedWorkloads
     ) -> tt3::db::api::IUser *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(guard);
+    ensureOpenAndWritable();    //  may throw
+
+    //  Validate parameters
+    if (!validator()->principal()->isValidEmailAddresses(emailAddresses))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::User::instance(),
+            "emailAddresses",
+            emailAddresses.join(','));
+    }
+    if (!validator()->user()->isValidRealName(realName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::User::instance(),
+            "realName",
+            realName);
+    }
+    if (!validator()->user()->isValidInactivityTimeout(inactivityTimeout))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::User::instance(),
+            "inactivityTimeout",
+            inactivityTimeout.value());
+    }
+    if (!validator()->user()->isValidUiLocale(uiLocale))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::User::instance(),
+            "uiLocale",
+            uiLocale.value());
+    }
+    if (permittedWorkloads.contains(nullptr))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::User::instance(),
+            "workloads",
+            nullptr);
+    }
+
+    /*  TODO
+    Workloads xmlPermittedWorkloads =
+        tt3::util::transform(
+            permittedWorkloads,
+            [&](auto w)
+            {
+                Q_ASSERT(w != nullptr); //  should have been caught earlier!
+                auto xmlWorkload = dynamic_cast<Workload*>(w);
+                if (xmlWorkload == nullptr ||
+                    xmlWorkload->_database != this ||
+                    !xmlWorkload->_isLive)
+                {   //  OOPS!
+                    throw tt3::db::api::IncompatibleInstanceException(w->type());
+                }
+                return xmlWorkload;
+            });
+    */
+
+    User * user = nullptr;
+    try
+    {
+        beginTransaction(); //  may throw
+
+        //  Do the work - create [objects] row..
+        _ObjId objId = _createObject(tt3::db::api::ObjectTypes::User::instance()); //  may throw
+        //  ...then [users] row...
+        std::unique_ptr<Statement> stat
+        {   createStatement(
+                "INSERT INTO [users]"
+                "       ([pk],[enabled],[emailaddresses],"
+                "        [realname],[inactivitytimeout],[uilocale]"
+                "       VALUES(?,?,?,?,?,?)") };
+        stat->setParameter(0, std::get<0>(objId));
+        stat->setParameter(1, enabled);
+        if (emailAddresses.isEmpty())
+        {
+            stat->setParameter(2, nullptr);
+        }
+        else
+        {
+            stat->setParameter(2, emailAddresses.join('\n'));
+        }
+        stat->setParameter(3, realName);
+        if (inactivityTimeout.has_value())
+        {
+            stat->setParameter(4, inactivityTimeout.value());
+        }
+        else
+        {
+            stat->setParameter(4, nullptr);
+        }
+        if (uiLocale.has_value())
+        {
+            stat->setParameter(5, tt3::util::toString(uiLocale.value()));
+        }
+        else
+        {
+            stat->setParameter(5, nullptr);
+        }
+        stat->execute();    //  may throw
+
+        //  Associate User with Workloads
+        /*  TODO
+        for (Workload * xmlWorkload : std::as_const(xmlPermittedWorkloads))
+        {
+            user->_permittedWorkloads.insert(xmlWorkload);
+            xmlWorkload->_assignedUsers.insert(user);
+            user->addReference();
+            xmlWorkload->addReference();
+        }
+        */
+
+        commitTransaction();//  may throw
+
+        //  Create & register the User object...
+        user = new User(this, std::get<0>(objId));
+        //  ...setting its cached properties to initial values
+        user->_oid = std::get<1>(objId);
+        user->_enabled = enabled;
+        user->_emailAddresses = emailAddresses;
+        user->_realName = realName;
+        user->_inactivityTimeout = inactivityTimeout;
+        user->_uiLocale = uiLocale;
+    }
+    catch (...)
+    {   //  OOPS! Cleanup, then re-throw
+        rollbackTransaction();  //  may throw, but at this point who cares?
+        throw;
+    }
+    //  ...schedule change notifications...
+    _changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            this, user->type(), user->_oid));
+    //  TODO post change notification to the database
+    /*  TODO
+    for (Workload * xmlWorkload : std::as_const(xmlPermittedWorkloads))
+    {
+        _changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                this, xmlWorkload->type(), xmlWorkload->_oid));
+        //  TODO post change notification to the database
+    }
+    */
+    //  ...and we're done
+    return user;
 }
 
 auto Database::createActivityType(
@@ -377,6 +521,45 @@ void Database::executeScript(const QString & sql)
 auto Database::createStatement(const QString & sqlTemplate) -> Statement *
 {
     return new Statement(this, sqlTemplate);
+}
+
+//////////
+//  Implementation helpers
+Database::_ObjId Database::_createObject(tt3::db::api::IObjectType * objectType)
+{
+    Q_ASSERT(guard.isLockedByCurrentThread());
+
+    std::unique_ptr<Statement> stat1
+    {   createStatement(
+            "SELECT *"
+            "  FROM [objects]"
+            " WHERE [oid] = ?") };
+    for (int n = 0; n < 100; n++)
+    {
+        auto oid = tt3::db::api::Oid::createRandom();
+        //  Does the OID already exist ?
+        stat1->setParameter(0, oid);
+        std::unique_ptr<ResultSet> rs
+            { stat1->executeQuery() };  //  may throw
+        if (rs->size() > 0)
+        {   //  OOPS! Already used, however unlikely
+            continue;
+        }
+        //  Insert [objects] row
+        std::unique_ptr<Statement> stat2
+        {   createStatement(
+                "INSERT INTO [objects]"
+                "       ([oid],[type])"
+                " VALUES(?,?)") };
+        stat2->setParameter(0, oid);
+        stat2->setParameter(1, objectType->mnemonic().toString());
+        qint64 pk = stat2->execute();   //  may throw
+        //  All done
+        return std::make_tuple(pk, oid);
+    }
+    //  This is insane! Give up!
+    //  TODO throw
+    return std::make_tuple(-1, tt3::db::api::Oid::Invalid);
 }
 
 //  End of tt3-db-sql/Database.cpp

@@ -63,7 +63,7 @@ DatabaseCorruptException::DatabaseCorruptException(
     :   _databaseTypeDisplayName(databaseAddress->databaseType()->displayName()),
         _databaseAddressDisplayForm(databaseAddress->displayForm())
 {
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     #if defined(Q_OS_WINDOWS)
         __debugbreak();
     #elif defined(Q_OS_LINUX) || defined(Q_OS_UNIX)

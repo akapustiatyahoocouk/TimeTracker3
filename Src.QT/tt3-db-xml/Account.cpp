@@ -53,7 +53,7 @@ void Account::setLogin(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -85,7 +85,7 @@ void Account::setLogin(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -106,7 +106,7 @@ void Account::setPassword(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -135,7 +135,7 @@ void Account::setPassword(
         new tt3::db::api::ObjectModifiedNotification(
             _database, type(), _oid));
     //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 }
@@ -156,7 +156,7 @@ void Account::setCapabilities(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -169,7 +169,7 @@ void Account::setCapabilities(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -203,7 +203,7 @@ void Account::setQuickPicksList(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -259,7 +259,7 @@ void Account::setQuickPicksList(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -341,7 +341,7 @@ auto Account::createWork(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -384,8 +384,8 @@ auto Account::createWork(
             _database, xmlActivity->type(), xmlActivity->_oid));
 
     //  ...and we're done
-#ifdef Q_DEBUG
-    _validate();    //  may throw
+#ifndef Q_NODEBUG
+    _database->_validate();    //  may throw
 #endif
     return work;
 }
@@ -398,7 +398,7 @@ auto Account::createEvent(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -461,8 +461,8 @@ auto Account::createEvent(
     }
 
 //  ...and we're done
-#ifdef Q_DEBUG
-    _validate();    //  may throw
+#ifndef Q_NODEBUG
+    _database->_validate();    //  may throw
 #endif
     return event;
 }
@@ -506,7 +506,7 @@ void Account::_setPasswordHash(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -534,7 +534,7 @@ void Account::_setPasswordHash(
         new tt3::db::api::ObjectModifiedNotification(
             _database, type(), _oid));
     //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 }

@@ -4,6 +4,7 @@ TEMPLATE = lib
 DEFINES += TT3_DB_SQL_LIBRARY
 
 SOURCES += \
+    Account.cpp \
     Component.cpp \
     Database.cpp \
     Object.cpp \

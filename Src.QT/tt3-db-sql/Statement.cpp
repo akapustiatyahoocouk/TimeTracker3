@@ -209,7 +209,7 @@ void Statement::setParameter(int index, qint64 value)
 
     if (index >= 0 && index < _parameters.size())
     {   //  Be defensive in release mode
-        throw tt3::util::NotImplementedError();
+        _parameters[index] = tt3::util::toString(value);
     }
 }
 
@@ -239,7 +239,7 @@ void Statement::setParameter(int index, const tt3::util::TimeSpan & value)
 
     if (index >= 0 && index < _parameters.size())
     {   //  Be defensive in release mode
-        throw tt3::util::NotImplementedError();
+        _parameters[index] = tt3::util::toString(value);
     }
 }
 
@@ -249,7 +249,7 @@ void Statement::setParameter(int index, const tt3::db::api::Oid & value)
 
     if (index >= 0 && index < _parameters.size())
     {   //  Be defensive in release mode
-        throw tt3::util::NotImplementedError();
+        _parameters[index] = tt3::util::toString(value);
     }
 }
 
@@ -273,6 +273,37 @@ qint64 Statement::execute()
         default:    //  ...to shut up the compiler;
             _database->execute(_sql);   //  may throw
             return 0;
+    }
+}
+
+ResultSet * Statement::executeQuery()
+{
+    _prepareSql();  //  may throw
+    qint64 count;
+    switch (_category)
+    {
+        case Category::Select:
+            return _database->executeSelect(_sql);  //  may thro)w
+        case Category::Insert:
+            count = _database->executeInsert(_sql);  //  may throw
+            //  TODO return an artificial ResultSet
+            //  with a single row and COUNT column
+            throw tt3::util::NotImplementedError();
+        case Category::Update:
+            count = _database->executeUpdate(_sql);  //  may throw
+            //  TODO return an artificial ResultSet
+            //  with a single row and COUNT column
+            throw tt3::util::NotImplementedError();
+        case Category::Delete:
+            count = _database->executeDelete(_sql);  //  may throw
+            //  TODO return an artificial ResultSet
+            //  with a single row and COUNT column
+            throw tt3::util::NotImplementedError();
+        case Category::Other:
+        default:    //  ...to shut up the compiler;
+            _database->execute(_sql);   //  may throw
+            //  TODO return an empty artificial ResultSet
+            throw tt3::util::NotImplementedError();
     }
 }
 

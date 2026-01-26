@@ -51,7 +51,7 @@ void User::setRealName(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -72,7 +72,7 @@ void User::setRealName(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -94,7 +94,7 @@ void User::setInactivityTimeout(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -116,7 +116,7 @@ void User::setInactivityTimeout(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -138,7 +138,7 @@ void User::setUiLocale(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -160,7 +160,7 @@ void User::setUiLocale(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -242,7 +242,7 @@ void User::setPermittedWorkloads(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -303,7 +303,7 @@ void User::setPermittedWorkloads(
                     _database, xmlWorkload->type(), xmlWorkload->_oid));
         }
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -315,7 +315,7 @@ void User::addPermittedWorkload(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -352,7 +352,7 @@ void User::addPermittedWorkload(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, xmlWorkload->type(), xmlWorkload->_oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -364,7 +364,7 @@ void User::removePermittedWorkload(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -401,7 +401,7 @@ void User::removePermittedWorkload(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, xmlWorkload->type(), xmlWorkload->_oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -419,7 +419,7 @@ auto User::createAccount(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -476,7 +476,7 @@ auto User::createAccount(
         new tt3::db::api::ObjectCreatedNotification(
             _database, account->type(), account->_oid));
     //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
     return account;
@@ -495,7 +495,7 @@ auto User::createPrivateActivity(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -598,8 +598,8 @@ auto User::createPrivateActivity(
                 _database, xmlWorkload->type(), xmlWorkload->_oid));
     }
     //  ...and we're done
-#ifdef Q_DEBUG
-    _validate();    //  may throw
+#ifndef Q_NODEBUG
+    _database->_validate();    //  may throw
 #endif
     return privateActivity;
 }
@@ -619,7 +619,7 @@ auto User::createPrivateTask(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -724,8 +724,8 @@ auto User::createPrivateTask(
                 _database, xmlWorkload->type(), xmlWorkload->_oid));
     }
     //  ...and we're done
-#ifdef Q_DEBUG
-    _validate();    //  may throw
+#ifndef Q_NODEBUG
+    _database->_validate();    //  may throw
 #endif
     return privateTask;
 }

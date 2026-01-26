@@ -17,6 +17,9 @@
 
 namespace tt3::db::sql
 {
+    /// \class CachedProperty tt3-db-xml/API.hpp
+    /// \brief A property that resides in a database and
+    ///        is cached for performance.
     template <class T>
     class CachedProperty final
     {
@@ -33,19 +36,69 @@ namespace tt3::db::sql
         //////////
         //  Construction/destruction
     public:
+        /// \brief
+        ///     Constructs the cached property.
+        /// \param loader
+        ///     The agent to call to reload property value
+        ///     from database.
         explicit CachedProperty(Loader loader);
+
+        /// \brief
+        ///     The class destructor.
         ~CachedProperty() = default;
 
         //////////
         //  Operators
     public:
+        /// \brief
+        ///     Returns the value of this property.
+        /// \details
+        ///     If the property value is not cached or the
+        ///     cache has expired, reloads the value using
+        ///     the associated Loader.
+        /// \return
+        ///     the value of this property.
+        /// \exception DatabaseException
+        ///     If the property loading fails.
                     operator T() const { return value(); }
+
+        /// \brief
+        ///     Sets the value of this property.
+        /// \details
+        ///     The valus is not automatically stored to the database.
+        ///     The recommended approach is to store the value and
+        ///     THEN to update the value of the cached property.
+        ///     This way, if the store fails, the cached property
+        ///     remains intact.
+        /// \param src
+        ///     The new value for this property.
         void        operator = (const T & src) { setValue(src); }
 
         //////////
         //  Operations
     public:
+        /// \brief
+        ///     Returns the value of this property.
+        /// \details
+        ///     If the property value is not cached or the
+        ///     cache has expired, reloads the value using
+        ///     the associated Loader.
+        /// \return
+        ///     the value of this property.
+        /// \exception DatabaseException
+        ///     If the property loading fails.
         T           value() const;
+
+        /// \brief
+        ///     Sets the value of this property.
+        /// \details
+        ///     The valus is not automatically stored to the database.
+        ///     The recommended approach is to store the value and
+        ///     THEN to update the value of the cached property.
+        ///     This way, if the store fails, the cached property
+        ///     remains intact.
+        /// \param value
+        ///     The new value for this property.
         void        setValue(const T & value);
 
         /// \brief

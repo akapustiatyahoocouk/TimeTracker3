@@ -80,7 +80,7 @@ void PublicTask::setParent(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable();   //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate(); //  may throw
 #endif
 
@@ -144,7 +144,7 @@ void PublicTask::setParent(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));
         //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
         _database->_validate(); //  may throw
 #endif
     }
@@ -177,7 +177,7 @@ auto PublicTask::createChild(
 {
     tt3::util::Lock _(_database->_guard);
     _ensureLiveAndWritable(); //  may throw
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate();    //  may throw
 #endif
 
@@ -281,7 +281,7 @@ auto PublicTask::createChild(
                 _database, xmlWorkload->type(), xmlWorkload->_oid));
     }
     //  ...and we're done
-#ifdef Q_DEBUG
+#ifndef Q_NODEBUG
     _database->_validate();    //  may throw
 #endif
     return child;
