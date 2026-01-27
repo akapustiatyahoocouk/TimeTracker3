@@ -183,7 +183,7 @@ void Statement::resetParameter(int index)
     }
 }
 
-void Statement::setParameter(int index, nullptr_t)
+void Statement::setNullParameter(int index)
 {
     Q_ASSERT(index >= 0 && index < _parameters.size());
 
@@ -193,7 +193,7 @@ void Statement::setParameter(int index, nullptr_t)
     }
 }
 
-void Statement::setParameter(int index, bool value)
+void Statement::setBoolParameter(int index, bool value)
 {
     Q_ASSERT(index >= 0 && index < _parameters.size());
 
@@ -203,7 +203,7 @@ void Statement::setParameter(int index, bool value)
     }
 }
 
-void Statement::setParameter(int index, qint64 value)
+void Statement::setIntParameter(int index, qint64 value)
 {
     Q_ASSERT(index >= 0 && index < _parameters.size());
 
@@ -213,7 +213,7 @@ void Statement::setParameter(int index, qint64 value)
     }
 }
 
-void Statement::setParameter(int index, const QString & value)
+void Statement::setStringParameter(int index, const QString & value)
 {
     Q_ASSERT(index >= 0 && index < _parameters.size());
 
@@ -263,7 +263,7 @@ void Statement::setParameter(int index, const QString & value)
     }
 }
 
-void Statement::setParameter(int index, const QDateTime & value)
+void Statement::setDateTimeParameter(int index, const QDateTime & value)
 {
     Q_ASSERT(index >= 0 && index < _parameters.size());
 
@@ -275,7 +275,7 @@ void Statement::setParameter(int index, const QDateTime & value)
     }
 }
 
-void Statement::setParameter(int index, const tt3::util::TimeSpan & value)
+void Statement::setTimeSpanParameter(int index, const tt3::util::TimeSpan & value)
 {
     Q_ASSERT(index >= 0 && index < _parameters.size());
 
@@ -285,7 +285,7 @@ void Statement::setParameter(int index, const tt3::util::TimeSpan & value)
     }
 }
 
-void Statement::setParameter(int index, const tt3::db::api::Oid & value)
+void Statement::setOidParameter(int index, const tt3::db::api::Oid & value)
 {
     Q_ASSERT(index >= 0 && index < _parameters.size());
 

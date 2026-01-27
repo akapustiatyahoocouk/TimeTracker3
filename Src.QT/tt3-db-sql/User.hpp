@@ -126,6 +126,7 @@ namespace tt3::db::sql
 
         //  Helpers
         virtual void    _makeDead() override;
+        virtual QString _tableName() const override { return "users"; }
     };
 }
 

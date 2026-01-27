@@ -89,13 +89,13 @@ namespace tt3::db::sql
         //  TODO document
         virtual void    resetParameters();
         virtual void    resetParameter(int index);
-        virtual void    setParameter(int index, nullptr_t);
-        virtual void    setParameter(int index, bool value);
-        virtual void    setParameter(int index, qint64 value);
-        virtual void    setParameter(int index, const QString & value);
-        virtual void    setParameter(int index, const QDateTime & value);
-        virtual void    setParameter(int index, const tt3::util::TimeSpan & value);
-        virtual void    setParameter(int index, const tt3::db::api::Oid & value);
+        virtual void    setNullParameter(int index);
+        virtual void    setBoolParameter(int index, bool value);
+        virtual void    setIntParameter(int index, qint64 value);
+        virtual void    setStringParameter(int index, const QString & value);
+        virtual void    setDateTimeParameter(int index, const QDateTime & value);
+        virtual void    setTimeSpanParameter(int index, const tt3::util::TimeSpan & value);
+        virtual void    setOidParameter(int index, const tt3::db::api::Oid & value);
 
         qint64          execute();  //  lastinsertID for INSERT, affected rows count for UPDATE/DELETE, etc.
         ResultSet *     executeQuery(); //  never nullptr, but may be empty

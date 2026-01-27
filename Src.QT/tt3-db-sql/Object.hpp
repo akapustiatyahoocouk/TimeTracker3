@@ -77,7 +77,8 @@ namespace tt3::db::sql
         //  Helpers
         void            _ensureLive() const;
         void            _ensureLiveAndWritable() const;
-        virtual void    _makeDead();
+        virtual void    _makeDead();    //  TODO split into "remove row(s) from database" and "make Object instance dead" methods
+        virtual QString _tableName() const = 0; //  where this object resides
     };
 }
 

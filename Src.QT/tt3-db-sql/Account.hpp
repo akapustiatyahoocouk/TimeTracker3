@@ -111,6 +111,7 @@ namespace tt3::db::sql
                                 const QString & passwordHash
                             ) override;
         virtual void    _makeDead() override;
+        virtual QString _tableName() const override { return "accounts"; }
     };
 }
 

@@ -121,7 +121,7 @@ auto Database::findAccount(
             "SELECT [pk]"
             "  FROM [accounts]"
             " WHERE [login] = ?") };
-    stat->setParameter(0, login);
+    stat->setStringParameter(0, login);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };
     if (rs->next())
@@ -229,8 +229,8 @@ auto Database::tryLogin(
             "   AND [accounts].[passwordhash] = ?"
             "   AND [users].[enabled] = 'Y'"
             "   AND [accounts].[enabled] = 'Y'") };
-    stat->setParameter(0, login);
-    stat->setParameter(1, passwordHash);
+    stat->setStringParameter(0, login);
+    stat->setStringParameter(1, passwordHash);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };
     if (rs->next())
@@ -335,32 +335,32 @@ auto Database::createUser(
                 "       ([pk],[enabled],[emailaddresses],"
                 "        [realname],[inactivitytimeout],[uilocale])"
                 "       VALUES(?,?,?,?,?,?)") };
-        stat->setParameter(0, std::get<0>(objIds));
-        stat->setParameter(1, enabled);
+        stat->setIntParameter(0, std::get<0>(objIds));
+        stat->setBoolParameter(1, enabled);
         if (emailAddresses.isEmpty())
         {
-            stat->setParameter(2, nullptr);
+            stat->setNullParameter(2);
         }
         else
         {
-            stat->setParameter(2, emailAddresses.join('\n'));
+            stat->setStringParameter(2, emailAddresses.join('\n'));
         }
-        stat->setParameter(3, realName);
+        stat->setStringParameter(3, realName);
         if (inactivityTimeout.has_value())
         {
-            stat->setParameter(4, inactivityTimeout.value());
+            stat->setTimeSpanParameter(4, inactivityTimeout.value());
         }
         else
         {
-            stat->setParameter(4, nullptr);
+            stat->setNullParameter(4);
         }
         if (uiLocale.has_value())
         {
-            stat->setParameter(5, tt3::util::toString(uiLocale.value()));
+            stat->setStringParameter(5, tt3::util::toString(uiLocale.value()));
         }
         else
         {
-            stat->setParameter(5, nullptr);
+            stat->setNullParameter(5);
         }
         stat->execute();    //  may throw
 
@@ -653,7 +653,7 @@ Database::_ObjIds Database::_createObject(tt3::db::api::IObjectType * objectType
     {
         auto oid = tt3::db::api::Oid::createRandom();
         //  Does the OID already exist ?
-        stat1->setParameter(0, oid);
+        stat1->setOidParameter(0, oid);
         std::unique_ptr<ResultSet> rs
             { stat1->executeQuery() };  //  may throw
         if (rs->size() > 0)
@@ -666,8 +666,8 @@ Database::_ObjIds Database::_createObject(tt3::db::api::IObjectType * objectType
                 "INSERT INTO [objects]"
                 "       ([oid],[type])"
                 " VALUES(?,?)") };
-        stat2->setParameter(0, oid);
-        stat2->setParameter(1, objectType->mnemonic().toString());
+        stat2->setOidParameter(0, oid);
+        stat2->setStringParameter(1, objectType->mnemonic().toString());
         qint64 pk = stat2->execute();   //  may throw
         //  All done
         return std::make_tuple(pk, oid);

@@ -296,7 +296,7 @@ void Account::_loadCachedProperties()
         "  FROM [objects],[accounts]"
         " WHERE [objects].[pk] = ?"
         "   AND [accounts].[pk] = [objects].[pk]") };
-    stat->setParameter(0, _pk);
+    stat->setIntParameter(0, _pk);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };   //  may throw
     if (!rs->next())
