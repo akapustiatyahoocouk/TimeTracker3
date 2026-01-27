@@ -157,13 +157,31 @@ void User::setUiLocale(
 auto User::accounts(
     ) const -> tt3::db::api::Accounts
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(_database->guard);
+    _ensureLive();
+
+    //  TODO cache PKs
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+            "SELECT [pk]"
+            "  FROM [accounts]"
+            " WHERE [fk_user] = ?") };
+    stat->setParameter(0, _pk);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };   //  may throw
+    tt3::db::api::Accounts result;
+    while (rs->next())
+    {
+        result.insert(_database->_getObject<Account>(rs->value(0, -1)));
+    }
+    return result;
 }
 
 auto User::privateActivities(
     ) const -> tt3::db::api::PrivateActivities
 {
-    throw tt3::util::NotImplementedError();
+    //  TODO implement and TODO cache PKs
+    return tt3::db::api::PrivateActivities();
 }
 
 auto User::privateActivitiesAndTasks(
@@ -181,7 +199,8 @@ auto User::privateTasks(
 auto User::rootPrivateTasks(
     ) const -> tt3::db::api::PrivateTasks
 {
-    throw tt3::util::NotImplementedError();
+    //  TODO implement and TODO cache PKs
+    return tt3::db::api::PrivateTasks();
 }
 
 auto User::permittedWorkloads(
@@ -329,6 +348,7 @@ auto User::createAccount(
         account->_login = login;
         account->_passwordHash = passwordHash;
         account->_capabilities = capabilities;
+        account->_fkUser = _pk;
     }
     catch (...)
     {   //  OOPS! Cleanup, then re-throw

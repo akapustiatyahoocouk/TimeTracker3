@@ -35,7 +35,21 @@ auto Database::findObjectByOid(
 auto Database::users(
     ) const -> tt3::db::api::Users
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(guard);
+    ensureOpen();
+
+    std::unique_ptr<Statement> stat
+    {   createStatement(
+            "SELECT [pk]"
+            "  FROM [users]") };
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };   //  may throw
+    tt3::db::api::Users result;
+    while (rs->next())
+    {
+        result.insert(_getObject<User>(rs->value(0, -1)));
+    }
+    return result;
 }
 
 auto Database::accounts(
@@ -51,6 +65,7 @@ auto Database::findAccount(
     tt3::util::Lock _(guard);
     ensureOpen();
 
+    //  TODO cache PKs
     std::unique_ptr<Statement> stat
     {   createStatement(
             "SELECT [pk]"
@@ -69,7 +84,8 @@ auto Database::findAccount(
 auto Database::activityTypes(
     ) const -> tt3::db::api::ActivityTypes
 {
-    throw tt3::util::NotImplementedError();
+    //  TODO implement and TODO cache
+    return tt3::db::api::ActivityTypes();
 }
 
 auto Database::findActivityType(
@@ -82,7 +98,8 @@ auto Database::findActivityType(
 auto Database::publicActivities(
     ) const -> tt3::db::api::PublicActivities
 {
-    throw tt3::util::NotImplementedError();
+    //  TODO implement and TODO cache PKs
+    return tt3::db::api::PublicActivities();
 }
 
 auto Database::findPublicActivity(
@@ -107,7 +124,8 @@ auto Database::publicTasks(
 auto Database::rootPublicTasks(
     ) const -> tt3::db::api::PublicTasks
 {
-    throw tt3::util::NotImplementedError();
+    //  TODO implement and TODO cache PKs
+    return tt3::db::api::PublicTasks();
 }
 
 auto Database::projects(
@@ -119,19 +137,22 @@ auto Database::projects(
 auto Database::rootProjects(
     ) const -> tt3::db::api::Projects
 {
-    throw tt3::util::NotImplementedError();
+    //  TODO implement and TODO cache PKs
+    return tt3::db::api::Projects();
 }
 
 auto Database::workStreams(
     ) const -> tt3::db::api::WorkStreams
 {
-    throw tt3::util::NotImplementedError();
+    //  TODO implement and TODO cache PKs
+    return tt3::db::api::WorkStreams();
 }
 
 auto Database::beneficiaries(
     ) const -> tt3::db::api::Beneficiaries
 {
-    throw tt3::util::NotImplementedError();
+    //  TODO implement and TODO cache PKs
+    return tt3::db::api::Beneficiaries();
 }
 
 //////////

@@ -26,7 +26,8 @@ Account::Account(
         //  Cached properties
         _login([this] { _loadCachedProperties(); }),
         _passwordHash([this] { _loadCachedProperties(); }),
-        _capabilities([this] { _loadCachedProperties(); })
+        _capabilities([this] { _loadCachedProperties(); }),
+        _fkUser([this] { _loadCachedProperties(); })
 {
 }
 
@@ -166,7 +167,7 @@ auto Account::user(
     tt3::util::Lock _(_database->guard);
     _ensureLive();  //  may throw
 
-    throw tt3::util::NotImplementedError();
+    return _database->_getObject<User>(_fkUser);    //  Cache load may throw
 }
 
 auto Account::quickPicksList(

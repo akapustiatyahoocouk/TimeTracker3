@@ -98,6 +98,8 @@ namespace tt3::db::sql
         CachedProperty<QString>     _passwordHash;  //  SHA-1 uppercase hexstring
         CachedProperty<tt3::db::api::Capabilities>  _capabilities;
 
+        CachedProperty<qint64>     _fkUser;
+
         virtual void    _invalidateCachedProperties() override;
         virtual void    _loadCachedProperties() override;
         void            _saveLogin(const QString & login);
