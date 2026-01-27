@@ -18,6 +18,47 @@
 using namespace tt3::db::sql;
 
 //////////
+//  tt3::db::api::IDatabase (general)
+void Database::close()
+{
+    Q_ASSERT(guard.isLockedByCurrentThread());
+
+    //  All active locks become orphans
+    //  TODO
+
+    //  Emit "database is closed" change notification
+    //  directly - all signal/slot connections wibb
+    //  soon be broken
+    tt3::db::api::DatabaseClosedNotification n(this);
+    emit changeNotifier()->databaseClosed(n);
+
+    //  Disconnect all slots from notification signals
+    QObject::disconnect(
+        changeNotifier(),
+        &tt3::db::api::ChangeNotifier::databaseClosed,
+        nullptr, nullptr);
+    QObject::disconnect(
+        changeNotifier(),
+        &tt3::db::api::ChangeNotifier::objectCreated,
+        nullptr, nullptr);
+    QObject::disconnect(
+        changeNotifier(),
+        &tt3::db::api::ChangeNotifier::objectDestroyed,
+        nullptr, nullptr);
+    QObject::disconnect(
+        changeNotifier(),
+        &tt3::db::api::ChangeNotifier::objectModified,
+        nullptr, nullptr);
+
+    //  All live objects become dead
+    for (auto object : _liveObjects.values())
+    {
+        object->_makeDead();
+    }
+    Q_ASSERT(_liveObjects.isEmpty());
+}
+
+//////////
 //  tt3::db::api::IDatabase (associations)
 quint64 Database::objectCount(
     ) const
@@ -47,7 +88,7 @@ auto Database::users(
     tt3::db::api::Users result;
     while (rs->next())
     {
-        result.insert(_getObject<User>(rs->value(0, -1)));
+        result.insert(_getObject<User>(rs->intValue(0)));
     }
     return result;
 }
@@ -76,7 +117,7 @@ auto Database::findAccount(
         { stat->executeQuery() };
     if (rs->next())
     {   //  Got it!
-        return _getObject<Account>(rs->value(0, -1));
+        return _getObject<Account>(rs->intValue(0));
     }
     return nullptr;
 }
@@ -185,7 +226,7 @@ auto Database::tryLogin(
         { stat->executeQuery() };
     if (rs->next())
     {
-        return _getObject<Account>(rs->value(0, -1));
+        return _getObject<Account>(rs->intValue(0));
     }
     return nullptr;
 }

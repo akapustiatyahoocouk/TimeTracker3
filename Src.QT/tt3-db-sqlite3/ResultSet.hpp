@@ -42,8 +42,14 @@ namespace tt3::db::sqlite3
         virtual bool    next() override;
         virtual bool    isNull(int columnIndex) const override;
         virtual bool    isNull(const QString & columnName) const override;
-        virtual qint64  value(int columnIndex, qint64 defaultValue) const override;
-        virtual qint64  value(const QString & columnName, qint64 defaultValue) const override;
+        virtual bool    boolValue(int columnIndex, bool defaultValue = false) const override;
+        virtual bool    boolValue(const QString & columnName, bool defaultValue = false) const override;
+        virtual qint64  intValue(int columnIndex, qint64 defaultValue = 0) const override;
+        virtual qint64  intValue(const QString & columnName, qint64 defaultValue = 0) const override;
+        virtual QString stringValue(int columnIndex, const QString & defaultValue = "") const override;
+        virtual QString stringValue(const QString & columnName, const QString & defaultValue = "") const override;
+        virtual Oid     oidValue(int columnIndex, const Oid & defaultValue = Oid::Invalid) const override;
+        virtual Oid     oidValue(const QString & columnName, const Oid & defaultValue = Oid::Invalid) const override;
 
         //////////
         //  Implementation
@@ -51,7 +57,8 @@ namespace tt3::db::sqlite3
         QList<QString>  _columns;   //  all-UPPERCASE column names
         mutable QMap<QString, int>  _columnIndices; //  COLUMN NAME UPPERCASED -> column index
 
-        using _Row = QList<QString>;    //  Values as SQL constants, e.g. 1, 'abc' or NULL
+        using _Cell = std::tuple<QString, bool>;    //  str-value, is-null
+        using _Row = QList<_Cell>;
         using _Rows = QList<_Row>;
         _Rows           _rows;
 

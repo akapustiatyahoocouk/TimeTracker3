@@ -24,6 +24,11 @@ namespace tt3::db::sql
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(ResultSet)
 
         //////////
+        //  Types
+    public:
+        using Oid = tt3::db::api::Oid;
+
+        //////////
         //  Construction/destruction
     protected:
         /// \brief
@@ -47,8 +52,15 @@ namespace tt3::db::sql
         virtual bool    next() = 0;
         virtual bool    isNull(int columnIndex) const = 0;
         virtual bool    isNull(const QString & columnName) const = 0;
-        virtual qint64  value(int columnIndex, qint64 defaultValue) const = 0;
-        virtual qint64  value(const QString & columnName, qint64 defaultValue) const = 0;
+        virtual bool    boolValue(int columnIndex, bool defaultValue = false) const = 0;
+        virtual bool    boolValue(const QString & columnName, bool defaultValue = false) const = 0;
+        virtual qint64  intValue(int columnIndex, qint64 defaultValue = 0) const = 0;
+        virtual qint64  intValue(const QString & columnName, qint64 defaultValue = 0) const = 0;
+        virtual QString stringValue(int columnIndex, const QString & defaultValue = "") const = 0;
+        virtual QString stringValue(const QString & columnName, const QString & defaultValue = "") const = 0;
+
+        virtual Oid     oidValue(int columnIndex, const Oid & defaultValue = Oid::Invalid) const = 0;
+        virtual Oid     oidValue(const QString & columnName, const Oid & defaultValue = Oid::Invalid) const = 0;
     };
 }
 

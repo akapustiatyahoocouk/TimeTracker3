@@ -346,7 +346,19 @@ bool Database::isReadOnly() const
 
 void Database::close()
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(guard);
+
+    if (_connection == nullptr)
+    {   //  Already closed
+        return;
+    }
+
+    //  Close the connection
+    SQLite3::close(_connection);
+    _connection = nullptr;
+
+    //  The rest is up to the base class
+    tt3::db::sql::Database::close();
 }
 
 void Database::refresh()
@@ -656,7 +668,15 @@ int Database::_selectCallback(void * cbData, int argc, char ** argv,char ** colN
     ResultSet::_Row row;
     for (int i = 0; i < argc; i++)
     {
-        row.append(argv[i]);
+        if (argv[i] != nullptr)
+        {   //  Store as string
+            auto s = QString::fromUtf8(argv[i], -1);    //  use strlen()
+            row.append(std::make_tuple(s, false));
+        }
+        else
+        {   //  Record as NULL
+            row.append(std::make_tuple("", true));
+        }
     }
     resultSet->_rows.append(row);
     return 0;   //  keep going

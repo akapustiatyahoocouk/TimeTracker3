@@ -270,7 +270,108 @@ void Account::_invalidateCachedProperties()
 
 void Account::_loadCachedProperties()
 {
-    throw tt3::util::NotImplementedError();
+    Q_ASSERT(_database->guard.isLockedByCurrentThread());
+
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+        "SELECT [objects].[oid] AS [oid],"
+        "       [accounts].[fk_user] AS [fk_user],"
+        "       [accounts].[enabled] AS [enabled],"
+        "       [accounts].[emailaddresses] AS [emailaddresses],"
+        "       [accounts].[login] AS [login],"
+        "       [accounts].[passwordhash] AS [passwordhash],"
+        "       [accounts].[administrator] AS [administrator],"
+        "       [accounts].[manageusers] AS [manageusers],"
+        "       [accounts].[manageactivitytypes] AS [manageactivitytypes],"
+        "       [accounts].[managebeneficiaries] AS [managebeneficiaries],"
+        "       [accounts].[manageworkloads] AS [manageworkloads],"
+        "       [accounts].[managepublicactivities] AS [managepublicactivities],"
+        "       [accounts].[managepublictasks] AS [managepublictasks],"
+        "       [accounts].[manageprivateactivities] AS [manageprivateactivities],"
+        "       [accounts].[manageprivatetasks] AS [manageprivatetasks],"
+        "       [accounts].[logwork] AS [logwork],"
+        "       [accounts].[logevents] AS [logevents],"
+        "       [accounts].[generatereports] AS [generatereports],"
+        "       [accounts].[backupandrestore] AS [backupandrestore]"
+        "  FROM [objects],[accounts]"
+        " WHERE [objects].[pk] = ?"
+        "   AND [accounts].[pk] = [objects].[pk]") };
+    stat->setParameter(0, _pk);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };   //  may throw
+    if (!rs->next())
+    {   //  OOPS! Account row does not exist
+        _makeDead();
+        throw tt3::db::api::InstanceDeadException();
+    }
+    //  Account row exists and is now "current" in "rs"
+    _oid = rs->oidValue("oid");
+    _enabled = rs->boolValue("enabled");
+    QStringList emailAddresses;
+    if (!rs->isNull("emailaddresses"))
+    {
+        emailAddresses = rs->stringValue("emailaddresses").split("\n");
+    }
+    _emailAddresses = emailAddresses;
+    _login = rs->stringValue("login");
+    _passwordHash = rs->stringValue("passwordhash");
+
+    tt3::db::api::Capabilities capabilities;
+    if (rs->boolValue("administrator"))
+    {
+        capabilities |= tt3::db::api::Capability::Administrator;
+    }
+    if (rs->boolValue("manageusers"))
+    {
+        capabilities |= tt3::db::api::Capability::ManageUsers;
+    }
+    if (rs->boolValue("manageactivitytypes"))
+    {
+        capabilities |= tt3::db::api::Capability::ManageActivityTypes;
+    }
+    if (rs->boolValue("managebeneficiaries"))
+    {
+        capabilities |= tt3::db::api::Capability::ManageBeneficiaries;
+    }
+    if (rs->boolValue("manageworkloads"))
+    {
+        capabilities |= tt3::db::api::Capability::ManageWorkloads;
+    }
+    if (rs->boolValue("managepublicactivities"))
+    {
+        capabilities |= tt3::db::api::Capability::ManagePublicActivities;
+    }
+    if (rs->boolValue("managepublictasks"))
+    {
+        capabilities |= tt3::db::api::Capability::ManagePublicTasks;
+    }
+    if (rs->boolValue("manageprivateactivities"))
+    {
+        capabilities |= tt3::db::api::Capability::ManagePrivateActivities;
+    }
+    if (rs->boolValue("manageprivatetasks"))
+    {
+        capabilities |= tt3::db::api::Capability::ManagePrivateTasks;
+    }
+    if (rs->boolValue("logwork"))
+    {
+        capabilities |= tt3::db::api::Capability::LogWork;
+    }
+    if (rs->boolValue("logevents"))
+    {
+        capabilities |= tt3::db::api::Capability::LogEvents;
+    }
+    if (rs->boolValue("generatereports"))
+    {
+        capabilities |= tt3::db::api::Capability::GenerateReports;
+    }
+    if (rs->boolValue("backupandrestore"))
+    {
+        capabilities |= tt3::db::api::Capability::BackupAndRestore;
+    }
+    _capabilities = capabilities;
+
+    _fkUser = rs->intValue("fk_user");
 }
 
 void Account::_saveLogin(const QString & /*login*/)

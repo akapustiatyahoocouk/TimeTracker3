@@ -39,6 +39,11 @@ namespace tt3::db::sql
         virtual ~Database() = default;
 
         //////////
+        //  tt3::db::api::IDatabase (general)
+    public:
+        virtual void    close() override;
+
+        //////////
         //  tt3::db::api::IDatabase (associations)
     public:
         virtual quint64 objectCount(

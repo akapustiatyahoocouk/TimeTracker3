@@ -48,8 +48,8 @@ bool ResultSet::isNull(int columnIndex) const
         Q_ASSERT(false);
         return false;
     }
-    QString s = _rows[_currentRow][columnIndex];
-    return s.compare("NULL", Qt::CaseInsensitive) == 0;
+    const auto & cell = _rows[_currentRow][columnIndex];
+    return std::get<1>(cell);
 }
 
 bool ResultSet::isNull(const QString & columnName) const
@@ -57,7 +57,7 @@ bool ResultSet::isNull(const QString & columnName) const
     return isNull(_columnIndex(columnName));
 }
 
-qint64 ResultSet::value(int columnIndex, qint64 defaultValue) const
+bool ResultSet::boolValue(int columnIndex, bool defaultValue) const
 {
     if (_currentRow < 0 || _currentRow >= _rows.size())
     {   //  OOPS! Be defensive in release mode
@@ -67,22 +67,121 @@ qint64 ResultSet::value(int columnIndex, qint64 defaultValue) const
     if (columnIndex < 0 || columnIndex >= _columns.size())
     {   //  OOPS! Be defensive in release mode
         Q_ASSERT(false);
+        return defaultValue;
+    }
+    const auto & cell = _rows[_currentRow][columnIndex];
+    if (std::get<1>(cell))
+    {   //  NULL
+        return defaultValue;
+    }
+    else if (std::get<0>(cell) == "Y")
+    {
+        return true;
+    }
+    else if (std::get<0>(cell) == "N")
+    {
         return false;
     }
-    QString s = _rows[_currentRow][columnIndex];
-    return tt3::util::fromString<qint64>(s);
+    else
+    {
+        return defaultValue;
+    }
 }
 
-qint64 ResultSet::value(const QString & columnName, qint64 defaultValue) const
+bool ResultSet::boolValue(const QString & columnName, bool defaultValue) const
 {
-    return value(_columnIndex(columnName), defaultValue);
+    return boolValue(_columnIndex(columnName), defaultValue);
+}
+
+qint64 ResultSet::intValue(int columnIndex, qint64 defaultValue) const
+{
+    if (_currentRow < 0 || _currentRow >= _rows.size())
+    {   //  OOPS! Be defensive in release mode
+        Q_ASSERT(false);
+        return defaultValue;
+    }
+    if (columnIndex < 0 || columnIndex >= _columns.size())
+    {   //  OOPS! Be defensive in release mode
+        Q_ASSERT(false);
+        return defaultValue;
+    }
+    const auto & cell = _rows[_currentRow][columnIndex];
+    if (std::get<1>(cell))
+    {   //  NULL
+        return defaultValue;
+    }
+    else
+    {   //  Go via quint64 - otherwise fromString call will be ambiguous
+        return tt3::util::fromString<quint64>(std::get<0>(cell), defaultValue);
+    }
+}
+
+qint64 ResultSet::intValue(const QString & columnName, qint64 defaultValue) const
+{
+    return intValue(_columnIndex(columnName), defaultValue);
+}
+
+QString ResultSet::stringValue(int columnIndex, const QString & defaultValue) const
+{
+    if (_currentRow < 0 || _currentRow >= _rows.size())
+    {   //  OOPS! Be defensive in release mode
+        Q_ASSERT(false);
+        return defaultValue;
+    }
+    if (columnIndex < 0 || columnIndex >= _columns.size())
+    {   //  OOPS! Be defensive in release mode
+        Q_ASSERT(false);
+        return defaultValue;
+    }
+    const auto & cell = _rows[_currentRow][columnIndex];
+    if (std::get<1>(cell))
+    {   //  NULL
+        return defaultValue;
+    }
+    else
+    {
+        return std::get<0>(cell);
+    }
+}
+
+QString ResultSet::stringValue(const QString & columnName, const QString & defaultValue) const
+{
+    return stringValue(_columnIndex(columnName), defaultValue);
+}
+
+ResultSet::Oid ResultSet::oidValue(int columnIndex, const Oid & defaultValue) const
+{
+    if (_currentRow < 0 || _currentRow >= _rows.size())
+    {   //  OOPS! Be defensive in release mode
+        Q_ASSERT(false);
+        return defaultValue;
+    }
+    if (columnIndex < 0 || columnIndex >= _columns.size())
+    {   //  OOPS! Be defensive in release mode
+        Q_ASSERT(false);
+        return defaultValue;
+    }
+    const auto & cell = _rows[_currentRow][columnIndex];
+    if (std::get<1>(cell))
+    {   //  NULL
+        return defaultValue;
+    }
+    else
+    {
+        return tt3::util::fromString(std::get<0>(cell), defaultValue);
+    }
+}
+
+ResultSet::Oid ResultSet::oidValue(const QString & columnName, const Oid & defaultValue) const
+{
+    return oidValue(_columnIndex(columnName), defaultValue);
 }
 
 //////////
 //  Implementation helpers
 int ResultSet::_columnIndex(const QString & columnName) const
 {   //  We need columns -> indexes map
-    if (_columnIndices.isEmpty() && !_columnIndices.isEmpty())
+    if (_columnIndices.isEmpty() && !_columns.isEmpty())
     {
         for (int i = 0; i < _columns.size(); i++)
         {

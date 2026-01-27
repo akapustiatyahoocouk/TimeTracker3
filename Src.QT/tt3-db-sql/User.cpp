@@ -172,7 +172,7 @@ auto User::accounts(
     tt3::db::api::Accounts result;
     while (rs->next())
     {
-        result.insert(_database->_getObject<Account>(rs->value(0, -1)));
+        result.insert(_database->_getObject<Account>(rs->intValue(0)));
     }
     return result;
 }
