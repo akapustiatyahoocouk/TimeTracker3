@@ -409,7 +409,51 @@ void User::_invalidateCachedProperties()
 
 void User::_loadCachedProperties()
 {
-    throw tt3::util::NotImplementedError();
+    Q_ASSERT(_database->guard.isLockedByCurrentThread());
+
+    std::unique_ptr<Statement> stat
+        {   _database->createStatement(
+            "SELECT [objects].[oid] AS [oid],"
+            "       [users].[enabled] AS [enabled],"
+            "       [users].[emailaddresses] AS [emailaddresses],"
+            "       [users].[realname] AS [realname],"
+            "       [users].[inactivitytimeout] AS [inactivitytimeout],"
+            "       [users].[uilocale] AS [uilocale]"
+            "  FROM [objects],[users]"
+            " WHERE [objects].[pk] = ?"
+            "   AND [users].[pk] = [objects].[pk]") };
+    stat->setParameter(0, _pk);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };   //  may throw
+    if (!rs->next())
+    {   //  OOPS! User row does not exist
+        _makeDead();
+        throw tt3::db::api::InstanceDeadException();
+    }
+    //  User row exists and is now "current" in "rs"
+    _oid = rs->oidValue("oid");
+    _enabled = rs->boolValue("enabled");
+    QStringList emailAddresses;
+    if (!rs->isNull("emailaddresses"))
+    {
+        emailAddresses = rs->stringValue("emailaddresses").split("\n");
+    }
+    _emailAddresses = emailAddresses;
+    _realName = rs->stringValue("realname");
+
+    tt3::db::api::InactivityTimeout inactivityTimeout;
+    if (!rs->isNull("inactivitytimeout"))
+    {
+        inactivityTimeout = rs->timeSpanValue("inactivitytimeout");
+    }
+    _inactivityTimeout = inactivityTimeout;
+
+    tt3::db::api::UiLocale uiLocale;
+    if (!rs->isNull("uilocale"))
+    {
+        uiLocale = QLocale(rs->stringValue("uilocale"));
+    }
+    _uiLocale = uiLocale;
 }
 
 void User::_saveRealName(const QString & realName)

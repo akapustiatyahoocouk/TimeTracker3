@@ -149,6 +149,34 @@ QString ResultSet::stringValue(const QString & columnName, const QString & defau
     return stringValue(_columnIndex(columnName), defaultValue);
 }
 
+auto ResultSet::timeSpanValue(int columnIndex, const tt3::util::TimeSpan & defaultValue) const -> tt3::util::TimeSpan
+{
+    if (_currentRow < 0 || _currentRow >= _rows.size())
+    {   //  OOPS! Be defensive in release mode
+        Q_ASSERT(false);
+        return defaultValue;
+    }
+    if (columnIndex < 0 || columnIndex >= _columns.size())
+    {   //  OOPS! Be defensive in release mode
+        Q_ASSERT(false);
+        return defaultValue;
+    }
+    const auto & cell = _rows[_currentRow][columnIndex];
+    if (std::get<1>(cell))
+    {   //  NULL
+        return defaultValue;
+    }
+    else
+    {
+        return tt3::util::fromString(std::get<0>(cell), defaultValue);
+    }
+}
+
+auto ResultSet::timeSpanValue(const QString & columnName, const tt3::util::TimeSpan & defaultValue) const -> tt3::util::TimeSpan
+{
+    return timeSpanValue(_columnIndex(columnName), defaultValue);
+}
+
 ResultSet::Oid ResultSet::oidValue(int columnIndex, const Oid & defaultValue) const
 {
     if (_currentRow < 0 || _currentRow >= _rows.size())

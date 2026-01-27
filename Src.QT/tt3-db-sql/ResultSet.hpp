@@ -59,6 +59,8 @@ namespace tt3::db::sql
         virtual QString stringValue(int columnIndex, const QString & defaultValue = "") const = 0;
         virtual QString stringValue(const QString & columnName, const QString & defaultValue = "") const = 0;
 
+        virtual auto    timeSpanValue(int columnIndex, const tt3::util::TimeSpan & defaultValue = tt3::util::TimeSpan::Invalid) const -> tt3::util::TimeSpan = 0;
+        virtual auto    timeSpanValue(const QString & columnName, const tt3::util::TimeSpan & defaultValue = tt3::util::TimeSpan::Invalid) const -> tt3::util::TimeSpan = 0;
         virtual Oid     oidValue(int columnIndex, const Oid & defaultValue = Oid::Invalid) const = 0;
         virtual Oid     oidValue(const QString & columnName, const Oid & defaultValue = Oid::Invalid) const = 0;
     };

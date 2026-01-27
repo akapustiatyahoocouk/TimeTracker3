@@ -52,8 +52,17 @@ void Database::close()
 
     //  All live objects become dead
     for (auto object : _liveObjects.values())
-    {
-        object->_makeDead();
+    {   //  We can't use "object->_makeDead();", as THAT
+        //  will destroy database rows
+        object->_isLive = false;
+        _liveObjects.remove(object->_pk);
+        _graveyard.insert(object->_pk, object);
+        //  Can we recycle now ?
+        if (object->_referenceCount == 0 /* TODO uncomment &&
+        _database->_activeDatabaseLocks.isEmpty()*/)
+        {   //  Yes!
+            delete this;
+        }
     }
     Q_ASSERT(_liveObjects.isEmpty());
 }

@@ -48,6 +48,9 @@ namespace tt3::db::sqlite3
         virtual qint64  intValue(const QString & columnName, qint64 defaultValue = 0) const override;
         virtual QString stringValue(int columnIndex, const QString & defaultValue = "") const override;
         virtual QString stringValue(const QString & columnName, const QString & defaultValue = "") const override;
+
+        virtual auto    timeSpanValue(int columnIndex, const tt3::util::TimeSpan & defaultValue = tt3::util::TimeSpan::Invalid) const -> tt3::util::TimeSpan override;
+        virtual auto    timeSpanValue(const QString & columnName, const tt3::util::TimeSpan & defaultValue = tt3::util::TimeSpan::Invalid) const -> tt3::util::TimeSpan override;
         virtual Oid     oidValue(int columnIndex, const Oid & defaultValue = Oid::Invalid) const override;
         virtual Oid     oidValue(const QString & columnName, const Oid & defaultValue = Oid::Invalid) const override;
 
