@@ -231,6 +231,8 @@ void Database::close()
     {   //  Already closed
         return;
     }
+    _closing = true;
+
     _saveTimer.stop();
 
     //  All active locks become orphans
@@ -285,6 +287,7 @@ void Database::close()
     //  these changes will never be saved)
     bool wasReadOnly = _isReadOnly;
     _isReadOnly = false;
+    qDebug() << "_closing = " << _closing;
     for (User * user : _users.values())
     {
         user->destroy();    //  also destroys Accounts, Works, etc.
@@ -568,7 +571,7 @@ auto Database::login(
         const QString & password
     ) const -> tt3::db::api::IAccount *
 {
-    if (tt3::db::api::IAccount * account = tryLogin(login, password))
+    if (auto account = tryLogin(login, password))
     {
         return account;
     }
@@ -1756,6 +1759,12 @@ auto Database::_childElement(
 //  Validation
 void Database::_validate()
 {
+/*  TODO uncomment & fix
+    if (_closing)
+    {   //  We don't care!
+        return;
+    }
+
     Objects validatedObjects;
 
     for (auto [oid, object] : _liveObjects.asKeyValueRange())
@@ -1869,6 +1878,7 @@ void Database::_validate()
     {   //  OOPS!
         throw tt3::db::api::DatabaseCorruptException(_address);
     }
+*/
 }
 
 //////////

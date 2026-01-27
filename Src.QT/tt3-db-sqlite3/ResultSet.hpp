@@ -38,27 +38,26 @@ namespace tt3::db::sqlite3
         //////////
         //  tt3::db::sql::ResultSet
     public:
-        virtual qint64  size() const override { return _rowCount; }
+        virtual qint64  size() const override { return _rows.size(); }
         virtual bool    next() override;
         virtual bool    isNull(int columnIndex) const override;
         virtual bool    isNull(const QString & columnName) const override;
+        virtual qint64  value(int columnIndex, qint64 defaultValue) const override;
+        virtual qint64  value(const QString & columnName, qint64 defaultValue) const override;
 
         //////////
         //  Implementation
     private:
-        qint64          _rowCount = 0;
         QList<QString>  _columns;   //  all-UPPERCASE column names
         mutable QMap<QString, int>  _columnIndices; //  COLUMN NAME UPPERCASED -> column index
 
-        qint64          _currentRow = -1;   //  -1 == before 1st, _rowCount == after last
-
         using _Row = QList<QString>;    //  Values as SQL constants, e.g. 1, 'abc' or NULL
         using _Rows = QList<_Row>;
-
         _Rows           _rows;
 
+        qint64          _currentRow = -1;   //  -1 == before 1st, _rowCount == after last
+
         //  Helpers
-        bool            _ensureCurrentRow() const;
         int             _columnIndex(const QString & columnName) const;
     };
 }

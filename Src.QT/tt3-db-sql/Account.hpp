@@ -25,6 +25,7 @@ namespace tt3::db::sql
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Account)
 
+        friend class Database;
         friend class User;
 
         //////////

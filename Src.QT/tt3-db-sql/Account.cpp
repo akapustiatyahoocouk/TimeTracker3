@@ -175,7 +175,8 @@ auto Account::quickPicksList(
     tt3::util::Lock _(_database->guard);
     _ensureLive();  //  may throw
 
-    throw tt3::util::NotImplementedError();
+    //  TODO impement
+    return QList<tt3::db::api::IActivity*>();
 }
 
 void Account::setQuickPicksList(
@@ -205,7 +206,8 @@ auto Account::works(
     tt3::util::Lock _(_database->guard);
     _ensureLive();  //  may throw
 
-    throw tt3::util::NotImplementedError();
+    //  TODO implement
+    return tt3::db::api::Works();
 }
 
 auto Account::events(
@@ -225,7 +227,8 @@ auto Account::events(
     tt3::util::Lock _(_database->guard);
     _ensureLive();  //  may throw
 
-    throw tt3::util::NotImplementedError();
+    //  TODO implement
+    return tt3::db::api::Events();
 }
 
 //////////

@@ -236,6 +236,7 @@ namespace tt3::db::xml
         bool            _needsSaving;
         bool            _isOpen;
         bool            _isReadOnly;    //  not "const" - will be faked as "false" during close()
+        bool            _closing = false;
 
         QDateTime       _nextSaveAt;    //  UTC
         qint64          _lastSaveDurationMs;

@@ -21,50 +21,65 @@ using namespace tt3::db::sqlite3;
 //  tt3::db::sql::ResultSet
 bool ResultSet::next()
 {
-    if (_rowCount == 0)
+    if (_rows.size() == 0)
     {   //  Can't advance
         return false;
     }
-    else if (_currentRow >= _rowCount)
+    else if (_currentRow >= _rows.size())
     {   //  Already at end
         return false;
     }
     else
     {   //  Advance & check
         _currentRow++;
-        return _currentRow < _rowCount;
+        return _currentRow < _rows.size();
     }
 }
 
 bool ResultSet::isNull(int columnIndex) const
 {
-    _ensureCurrentRow();
+    if (_currentRow < 0 || _currentRow >= _rows.size())
+    {   //  OOPS! Be defensive in release mode
+        Q_ASSERT(false);
+        return false;
+    }
+    if (columnIndex < 0 || columnIndex >= _columns.size())
+    {   //  OOPS! Be defensive in release mode
+        Q_ASSERT(false);
+        return false;
+    }
     QString s = _rows[_currentRow][columnIndex];
     return s.compare("NULL", Qt::CaseInsensitive) == 0;
 }
 
 bool ResultSet::isNull(const QString & columnName) const
 {
-    _ensureCurrentRow();
-    QString s = _rows[_currentRow][_columnIndex(columnName)];
-    return s.compare("NULL", Qt::CaseInsensitive) == 0;
+    return isNull(_columnIndex(columnName));
 }
 
+qint64 ResultSet::value(int columnIndex, qint64 defaultValue) const
+{
+    if (_currentRow < 0 || _currentRow >= _rows.size())
+    {   //  OOPS! Be defensive in release mode
+        Q_ASSERT(false);
+        return defaultValue;
+    }
+    if (columnIndex < 0 || columnIndex >= _columns.size())
+    {   //  OOPS! Be defensive in release mode
+        Q_ASSERT(false);
+        return false;
+    }
+    QString s = _rows[_currentRow][columnIndex];
+    return tt3::util::fromString<qint64>(s);
+}
+
+qint64 ResultSet::value(const QString & columnName, qint64 defaultValue) const
+{
+    return value(_columnIndex(columnName), defaultValue);
+}
 
 //////////
 //  Implementation helpers
-bool ResultSet::_ensureCurrentRow() const
-{
-    if (_currentRow < 0 || _currentRow >= _rowCount)
-    {   //  OOPS! TODO throw proper exception
-        Q_ASSERT(false);
-    }
-    if (columnIndex < 0 || columnIndex >= _columns.size())
-    {   //  OOPS! TODO throw proper exception
-        Q_ASSERT(false);
-    }
-}
-
 int ResultSet::_columnIndex(const QString & columnName) const
 {   //  We need columns -> indexes map
     if (_columnIndices.isEmpty() && !_columnIndices.isEmpty())
@@ -74,7 +89,7 @@ int ResultSet::_columnIndex(const QString & columnName) const
             _columnIndices[_columns[i]] = i;
         }
     }
-    //  Reanslate the column name to index
+    //  Translate the column name to index
     return _columnIndices.value(columnName.toUpper(), -1);
 }
 

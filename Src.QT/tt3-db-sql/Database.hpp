@@ -282,32 +282,32 @@ namespace tt3::db::sql
         tt3::db::api::ChangeNotifier    _changeNotifier;
 
         //  Object caches - NOT count as "references"
-        QMap<qint64, Object*>   _liveObjects;   //  All "live" objects
-        QMap<qint64, Object*>   _graveyard;     //  All "dead" objects
+        mutable QMap<qint64, Object*>   _liveObjects;   //  All "live" objects
+        mutable QMap<qint64, Object*>   _graveyard;     //  All "dead" objects
 
         //  Helpers
         using _ObjIds = std::tuple<qint64, tt3::db::api::Oid>;
         _ObjIds         _createObject(tt3::db::api::IObjectType * objectType);
 
         template <class T>
-        T *             _findObject(qint64 pk)
+        T *             _findObject(qint64 pk) const
         {
             Q_ASSERT(guard.isLockedByCurrentThread());
             if (Object * obj = _liveObjects.value(pk, nullptr))
             {   //  Reuse the live object
-                return dynamic_cast<T>(obj);
+                return dynamic_cast<T*>(obj);
             }
             if (Object * obj = _graveyard.value(pk, nullptr))
             {   //  Object dead - reuse, but invoking its services will fail
-                return dynamic_cast<T>(obj);
+                return dynamic_cast<T*>(obj);
             }
-            T * t = new T(this, pk);
+            T * t = new T(const_cast<Database*>(this), pk);
             _liveObjects[pk] = t;
             return t;
         }
 
         template <class T>
-        T *             _getObject(qint64 pk)
+        T *             _getObject(qint64 pk) const
         {
             if (T * t = _findObject<T>(pk))
             {

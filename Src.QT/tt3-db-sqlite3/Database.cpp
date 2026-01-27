@@ -635,7 +635,7 @@ void Database::ensureOpenAndWritable() const
 int Database::_selectCallback(void * cbData, int argc, char ** argv,char ** colNames)
 {
     auto resultSet = static_cast<ResultSet*>(cbData);
-    if (resultSet->_rowCount == 0)
+    if (resultSet->_rows.size() == 0)
     {   //  Set up column names ONCE
         for (int i = 0; i < argc; i++)
         {

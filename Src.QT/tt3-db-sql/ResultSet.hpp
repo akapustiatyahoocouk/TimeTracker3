@@ -47,6 +47,8 @@ namespace tt3::db::sql
         virtual bool    next() = 0;
         virtual bool    isNull(int columnIndex) const = 0;
         virtual bool    isNull(const QString & columnName) const = 0;
+        virtual qint64  value(int columnIndex, qint64 defaultValue) const = 0;
+        virtual qint64  value(const QString & columnName, qint64 defaultValue) const = 0;
     };
 }
 

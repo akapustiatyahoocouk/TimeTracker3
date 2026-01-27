@@ -61,7 +61,7 @@ auto Database::findAccount(
         { stat->executeQuery() };
     if (rs->next())
     {   //  Got it!
-        return _getObject<Account>(pk);
+        return _getObject<Account>(rs->value(0, -1));
     }
     return nullptr;
 }
@@ -164,17 +164,21 @@ auto Database::tryLogin(
         { stat->executeQuery() };
     if (rs->next())
     {
-        return _getObject<Account>(pk);
+        return _getObject<Account>(rs->value(0, -1));
     }
     return nullptr;
 }
 
 auto Database::login(
-        const QString & /*login*/,
-        const QString & /*password*/
+        const QString & login,
+        const QString & password
     ) const -> tt3::db::api::IAccount *
 {
-    throw tt3::util::NotImplementedError();
+    if (auto account = tryLogin(login, password))
+    {
+        return account;
+    }
+    throw tt3::db::api::AccessDeniedException();
 }
 
 //////////
