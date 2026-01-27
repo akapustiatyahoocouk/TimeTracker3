@@ -471,7 +471,7 @@ auto User::createAccount(
     //  ...schedule change notifications...
     _database->_changeNotifier.post(
         new tt3::db::api::ObjectModifiedNotification(
-            _database, type(), _oid));
+            _database, this->type(), this->_oid));
     _database->_changeNotifier.post(
         new tt3::db::api::ObjectCreatedNotification(
             _database, account->type(), account->_oid));

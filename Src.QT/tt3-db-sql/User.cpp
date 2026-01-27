@@ -191,21 +191,21 @@ auto User::permittedWorkloads(
 }
 
 void User::setPermittedWorkloads(
-        const tt3::db::api::Workloads & workloads
+        const tt3::db::api::Workloads & /*workloads*/
     )
 {
     throw tt3::util::NotImplementedError();
 }
 
 void User::addPermittedWorkload(
-        tt3::db::api::IWorkload * workload
+        tt3::db::api::IWorkload * /*workload*/
     )
 {
     throw tt3::util::NotImplementedError();
 }
 
 void User::removePermittedWorkload(
-        tt3::db::api::IWorkload * workload
+        tt3::db::api::IWorkload * /*workload*/
     )
 {
     throw tt3::util::NotImplementedError();
@@ -221,7 +221,130 @@ auto User::createAccount(
         tt3::db::api::Capabilities capabilities
     ) -> tt3::db::api::IAccount *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(_database->guard);
+    _ensureLiveAndWritable();
+
+    //  Validate parameters
+    if (!_database->validator()->principal()->isValidEmailAddresses(emailAddresses))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Account::instance(),
+            "emailAddresses",
+            emailAddresses.join(','));
+    }
+    if (!_database->validator()->account()->isValidLogin(login))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Account::instance(),
+            "login",
+            login);
+    }
+    if (!_database->validator()->account()->isValidPassword(password))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Account::instance(),
+            "password",
+            password);
+    }
+
+    //  Logins must be unique per database.
+    //  SQL "UNIQUE login" constraint would take care of
+    //  that, but try for a better (non-SQL) error message
+    if (_database->findAccount(login) != nullptr)
+    {   //  OOPS! Already there!
+        throw tt3::db::api::AlreadyExistsException(
+            tt3::db::api::ObjectTypes::Account::instance(),
+            "login",
+            login);
+    }
+
+    std::unique_ptr<tt3::util::IMessageDigest::Builder> digestBuilder
+        { tt3::util::StandardMessageDigests::Sha1::instance()->createBuilder() };
+    digestBuilder->digestFragment(password);
+    QString passwordHash = digestBuilder->digestAsString();
+
+    Account * account = nullptr;
+    try
+    {
+        _database->beginTransaction(); //  may throw
+
+        //  Do the work - create [objects] row..
+        Database::_ObjIds objIds = _database->_createObject(tt3::db::api::ObjectTypes::Account::instance());//  may throw
+        //  ...then [users] row...
+        std::unique_ptr<Statement> stat
+            {   _database->createStatement(
+                "INSERT INTO [accounts]"
+                "       ([pk],[fk_user],[enabled],[emailaddresses],"
+                "        [login],[passwordhash],"
+                "        [administrator],"
+                "        [manageusers],"
+                "        [manageactivitytypes],"
+                "        [managebeneficiaries],"
+                "        [manageworkloads],"
+                "        [managepublicactivities],"
+                "        [managepublictasks],"
+                "        [manageprivateactivities],"
+                "        [manageprivatetasks],"
+                "        [logwork],"
+                "        [logevents],"
+                "        [generatereports],"
+                "        [backupandrestore])"
+                "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)") };
+        stat->setParameter(0, std::get<0>(objIds));
+        stat->setParameter(1, _pk);
+        stat->setParameter(2, enabled);
+        if (emailAddresses.isEmpty())
+        {
+            stat->setParameter(3, nullptr);
+        }
+        else
+        {
+            stat->setParameter(3, emailAddresses.join('\n'));
+        }
+        stat->setParameter(4, login);
+        stat->setParameter(5, passwordHash);
+        stat->setParameter(6, capabilities.contains(tt3::db::api::Capability::Administrator));
+        stat->setParameter(7, capabilities.contains(tt3::db::api::Capability::ManageUsers));
+        stat->setParameter(8, capabilities.contains(tt3::db::api::Capability::ManageActivityTypes));
+        stat->setParameter(9, capabilities.contains(tt3::db::api::Capability::ManageBeneficiaries));
+        stat->setParameter(10, capabilities.contains(tt3::db::api::Capability::ManageWorkloads));
+        stat->setParameter(11, capabilities.contains(tt3::db::api::Capability::ManagePublicActivities));
+        stat->setParameter(12, capabilities.contains(tt3::db::api::Capability::ManagePublicTasks));
+        stat->setParameter(13, capabilities.contains(tt3::db::api::Capability::ManagePrivateActivities));
+        stat->setParameter(14, capabilities.contains(tt3::db::api::Capability::ManagePrivateTasks));
+        stat->setParameter(15, capabilities.contains(tt3::db::api::Capability::LogWork));
+        stat->setParameter(16, capabilities.contains(tt3::db::api::Capability::LogEvents));
+        stat->setParameter(17, capabilities.contains(tt3::db::api::Capability::GenerateReports));
+        stat->setParameter(18, capabilities.contains(tt3::db::api::Capability::BackupAndRestore));
+        stat->execute();    //  may throw
+
+        _database->commitTransaction();//  may throw
+
+        //  Create & register the Account object...
+        account = new Account(_database, std::get<0>(objIds));
+        //  ...setting its cached properties to initial values
+        account->_oid = std::get<1>(objIds);
+        account->_enabled = enabled;
+        account->_emailAddresses = emailAddresses;
+        account->_login = login;
+        account->_passwordHash = passwordHash;
+        account->_capabilities = capabilities;
+    }
+    catch (...)
+    {   //  OOPS! Cleanup, then re-throw
+        _database->rollbackTransaction();  //  may throw, but at this point who cares?
+        throw;
+    }
+    //  ...schedule change notifications...
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectModifiedNotification(
+            _database, this->type(), this->_oid));
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            _database, account->type(), account->_oid));
+    //  TODO post change notifications to the database
+    //  ...and we're done
+    return account;
 }
 
 auto User::createPrivateActivity(

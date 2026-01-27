@@ -26,7 +26,7 @@ quint64 Database::objectCount(
 }
 
 auto Database::findObjectByOid(
-        const tt3::db::api::Oid & oid
+        const tt3::db::api::Oid & /*oid*/
     ) const -> tt3::db::api::IObject *
 {
     throw tt3::util::NotImplementedError();
@@ -45,7 +45,7 @@ auto Database::accounts(
 }
 
 auto Database::findAccount(
-        const QString & login
+        const QString & /*login*/
     ) const -> tt3::db::api::IAccount *
 {
     throw tt3::util::NotImplementedError();
@@ -58,7 +58,7 @@ auto Database::activityTypes(
 }
 
 auto Database::findActivityType(
-        const QString & displayName
+        const QString & /*displayName*/
     ) -> tt3::db::api::IActivityType *
 {
     throw tt3::util::NotImplementedError();
@@ -71,7 +71,7 @@ auto Database::publicActivities(
 }
 
 auto Database::findPublicActivity(
-        const QString & displayName
+        const QString & /*displayName*/
     ) -> tt3::db::api::IPublicActivity *
 {
     throw tt3::util::NotImplementedError();
@@ -122,16 +122,16 @@ auto Database::beneficiaries(
 //////////
 //  tt3::db::api::IDatabase (access control)
 auto Database::tryLogin(
-        const QString & login,
-        const QString & password
+        const QString & /*login*/,
+        const QString & /*password*/
     ) const -> tt3::db::api::IAccount *
 {
     throw tt3::util::NotImplementedError();
 }
 
 auto Database::login(
-        const QString & login,
-        const QString & password
+        const QString & /*login*/,
+        const QString & /*password*/
     ) const -> tt3::db::api::IAccount *
 {
     throw tt3::util::NotImplementedError();
@@ -212,7 +212,7 @@ auto Database::createUser(
         beginTransaction(); //  may throw
 
         //  Do the work - create [objects] row..
-        _ObjId objId = _createObject(tt3::db::api::ObjectTypes::User::instance()); //  may throw
+        _ObjIds objIds = _createObject(tt3::db::api::ObjectTypes::User::instance()); //  may throw
         //  ...then [users] row...
         std::unique_ptr<Statement> stat
         {   createStatement(
@@ -220,7 +220,7 @@ auto Database::createUser(
                 "       ([pk],[enabled],[emailaddresses],"
                 "        [realname],[inactivitytimeout],[uilocale])"
                 "       VALUES(?,?,?,?,?,?)") };
-        stat->setParameter(0, std::get<0>(objId));
+        stat->setParameter(0, std::get<0>(objIds));
         stat->setParameter(1, enabled);
         if (emailAddresses.isEmpty())
         {
@@ -263,9 +263,9 @@ auto Database::createUser(
         commitTransaction();//  may throw
 
         //  Create & register the User object...
-        user = new User(this, std::get<0>(objId));
+        user = new User(this, std::get<0>(objIds));
         //  ...setting its cached properties to initial values
-        user->_oid = std::get<1>(objId);
+        user->_oid = std::get<1>(objIds);
         user->_enabled = enabled;
         user->_emailAddresses = emailAddresses;
         user->_realName = realName;
@@ -296,8 +296,8 @@ auto Database::createUser(
 }
 
 auto Database::createActivityType(
-        const QString & displayName,
-        const QString & description
+        const QString & /*displayName*/,
+        const QString & /*description*/
     ) -> tt3::db::api::IActivityType *
 {
     throw tt3::util::NotImplementedError();
@@ -525,7 +525,7 @@ auto Database::createStatement(const QString & sqlTemplate) -> Statement *
 
 //////////
 //  Implementation helpers
-Database::_ObjId Database::_createObject(tt3::db::api::IObjectType * objectType)
+Database::_ObjIds Database::_createObject(tt3::db::api::IObjectType * objectType)
 {
     Q_ASSERT(guard.isLockedByCurrentThread());
 

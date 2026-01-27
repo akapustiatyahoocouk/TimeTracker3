@@ -25,6 +25,8 @@ namespace tt3::db::sql
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Account)
 
+        friend class User;
+
         //////////
         //  Construction/destruction (from DB type only)
     private:
@@ -99,9 +101,12 @@ namespace tt3::db::sql
         virtual void    _loadCachedProperties() override;
         void            _saveLogin(const QString & login);
         void            _savePasswordHash(const QString & passwordHash);
-        void            _saveCapabilities(tt3::db::api::Capabilities  capabilities);
+        void            _saveCapabilities(tt3::db::api::Capabilities capabilities);
 
         //  Helpers
+        virtual void    _setPasswordHash(
+                                const QString & passwordHash
+                            ) override;
         virtual void    _makeDead() override;
     };
 }

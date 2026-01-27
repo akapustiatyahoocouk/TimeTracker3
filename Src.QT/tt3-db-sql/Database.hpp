@@ -286,8 +286,8 @@ namespace tt3::db::sql
         QMap<qint64, Object*>   _graveyard;     //  All "dead" objects
 
         //  Helpers
-        using _ObjId = std::tuple<qint64, tt3::db::api::Oid>;
-        _ObjId          _createObject(tt3::db::api::IObjectType * objectType);
+        using _ObjIds = std::tuple<qint64, tt3::db::api::Oid>;
+        _ObjIds         _createObject(tt3::db::api::IObjectType * objectType);
     };
 }
 

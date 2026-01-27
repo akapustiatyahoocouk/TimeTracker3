@@ -179,7 +179,7 @@ auto Account::quickPicksList(
 }
 
 void Account::setQuickPicksList(
-        const QList<tt3::db::api::IActivity*> & quickPicksList
+        const QList<tt3::db::api::IActivity*> & /*quickPicksList*/
     )
 {
     tt3::util::Lock _(_database->guard);
@@ -198,8 +198,8 @@ auto Account::works(
 }
 
 auto Account::works(
-        const QDateTime & from,
-        const QDateTime & to
+        const QDateTime & /*from*/,
+        const QDateTime & /*to*/
     ) const -> tt3::db::api::Works
 {
     tt3::util::Lock _(_database->guard);
@@ -218,8 +218,8 @@ auto Account::events(
 }
 
 auto Account::events(
-        const QDateTime & from,
-        const QDateTime & to
+        const QDateTime & /*from*/,
+        const QDateTime & /*to*/
     ) const -> tt3::db::api::Events
 {
     tt3::util::Lock _(_database->guard);
@@ -231,9 +231,9 @@ auto Account::events(
 //////////
 //  tt3::db::api::IAccount (life cycle)
 auto Account::createWork(
-        const QDateTime & startedAt,
-        const QDateTime & finishedAt,
-        tt3::db::api::IActivity * activity
+        const QDateTime & /*startedAt*/,
+        const QDateTime & /*finishedAt*/,
+        tt3::db::api::IActivity * /*activity*/
     ) -> tt3::db::api::IWork *
 {
     tt3::util::Lock _(_database->guard);
@@ -243,9 +243,9 @@ auto Account::createWork(
 }
 
 auto Account::createEvent(
-        const QDateTime & occurredAt,
-        const QString & summary,
-        const tt3::db::api::Activities & activities
+        const QDateTime & /*occurredAt*/,
+        const QString & /*summary*/,
+        const tt3::db::api::Activities & /*activities*/
     ) -> tt3::db::api::IEvent *
 {
     tt3::util::Lock _(_database->guard);
@@ -269,23 +269,30 @@ void Account::_loadCachedProperties()
     throw tt3::util::NotImplementedError();
 }
 
-void Account::_saveLogin(const QString & login)
+void Account::_saveLogin(const QString & /*login*/)
 {
     throw tt3::util::NotImplementedError();
 }
 
-void Account::_savePasswordHash(const QString & passwordHash)
+void Account::_savePasswordHash(const QString & /*passwordHash*/)
 {
     throw tt3::util::NotImplementedError();
 }
 
-void Account::_saveCapabilities(tt3::db::api::Capabilities  capabilities)
+void Account::_saveCapabilities(tt3::db::api::Capabilities /*capabilities*/)
 {
     throw tt3::util::NotImplementedError();
 }
 
 //////////
 //  Implementation helpers
+void Account::_setPasswordHash(
+        const QString & /*passwordHash*/
+    )
+{
+    throw tt3::util::NotImplementedError();
+}
+
 void Account::_makeDead()
 {
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
