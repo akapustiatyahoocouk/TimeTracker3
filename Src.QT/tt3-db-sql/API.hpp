@@ -30,6 +30,7 @@
 #include "tt3-db-sql/Database.hpp"
 #include "tt3-db-sql/Statement.hpp"
 #include "tt3-db-sql/ResultSet.hpp"
+#include "tt3-db-sql/Transaction.hpp"
 
 #include "tt3-db-sql/CachedProperty.hpp"
 #include "tt3-db-sql/Object.hpp"

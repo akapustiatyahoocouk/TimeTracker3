@@ -321,77 +321,71 @@ auto Database::createUser(
             });
     */
 
-    User * user = nullptr;
-    try
+    //  Begin transaction for the changes
+    Transaction transaction(this);  //  may throw
+
+    //  Do the work - create [objects] row..
+    _ObjIds objIds = _createObject(tt3::db::api::ObjectTypes::User::instance()); //  may throw
+    //  ...then [users] row...
+    std::unique_ptr<Statement> stat
+    {   createStatement(
+            "INSERT INTO [users]"
+            "       ([pk],[enabled],[emailaddresses],"
+            "        [realname],[inactivitytimeout],[uilocale])"
+            "       VALUES(?,?,?,?,?,?)") };
+    stat->setIntParameter(0, std::get<0>(objIds));
+    stat->setBoolParameter(1, enabled);
+    if (emailAddresses.isEmpty())
     {
-        beginTransaction(); //  may throw
-
-        //  Do the work - create [objects] row..
-        _ObjIds objIds = _createObject(tt3::db::api::ObjectTypes::User::instance()); //  may throw
-        //  ...then [users] row...
-        std::unique_ptr<Statement> stat
-        {   createStatement(
-                "INSERT INTO [users]"
-                "       ([pk],[enabled],[emailaddresses],"
-                "        [realname],[inactivitytimeout],[uilocale])"
-                "       VALUES(?,?,?,?,?,?)") };
-        stat->setIntParameter(0, std::get<0>(objIds));
-        stat->setBoolParameter(1, enabled);
-        if (emailAddresses.isEmpty())
-        {
-            stat->setNullParameter(2);
-        }
-        else
-        {
-            stat->setStringParameter(2, emailAddresses.join('\n'));
-        }
-        stat->setStringParameter(3, realName);
-        if (inactivityTimeout.has_value())
-        {
-            stat->setTimeSpanParameter(4, inactivityTimeout.value());
-        }
-        else
-        {
-            stat->setNullParameter(4);
-        }
-        if (uiLocale.has_value())
-        {
-            stat->setStringParameter(5, tt3::util::toString(uiLocale.value()));
-        }
-        else
-        {
-            stat->setNullParameter(5);
-        }
-        stat->execute();    //  may throw
-
-        //  Associate User with Workloads
-        /*  TODO
-        for (Workload * xmlWorkload : std::as_const(xmlPermittedWorkloads))
-        {
-            user->_permittedWorkloads.insert(xmlWorkload);
-            xmlWorkload->_assignedUsers.insert(user);
-            user->addReference();
-            xmlWorkload->addReference();
-        }
-        */
-
-        commitTransaction();//  may throw
-
-        //  Create & register the User object...
-        user = new User(this, std::get<0>(objIds));
-        //  ...setting its cached properties to initial values
-        user->_oid = std::get<1>(objIds);
-        user->_enabled = enabled;
-        user->_emailAddresses = emailAddresses;
-        user->_realName = realName;
-        user->_inactivityTimeout = inactivityTimeout;
-        user->_uiLocale = uiLocale;
+        stat->setNullParameter(2);
     }
-    catch (...)
-    {   //  OOPS! Cleanup, then re-throw
-        rollbackTransaction();  //  may throw, but at this point who cares?
-        throw;
+    else
+    {
+        stat->setStringParameter(2, emailAddresses.join('\n'));
     }
+    stat->setStringParameter(3, realName);
+    if (inactivityTimeout.has_value())
+    {
+        stat->setTimeSpanParameter(4, inactivityTimeout.value());
+    }
+    else
+    {
+        stat->setNullParameter(4);
+    }
+    if (uiLocale.has_value())
+    {
+        stat->setStringParameter(5, tt3::util::toString(uiLocale.value()));
+    }
+    else
+    {
+        stat->setNullParameter(5);
+    }
+    stat->execute();    //  may throw
+
+    //  Associate User with Workloads
+    /*  TODO
+    for (Workload * xmlWorkload : std::as_const(xmlPermittedWorkloads))
+    {
+        user->_permittedWorkloads.insert(xmlWorkload);
+        xmlWorkload->_assignedUsers.insert(user);
+        user->addReference();
+        xmlWorkload->addReference();
+    }
+    */
+
+    //  We're done with the changes
+    transaction.commit();   //  may throw
+
+    //  Create & register the User object...
+    User * user = new User(this, std::get<0>(objIds));
+    //  ...setting its cached properties to initial values
+    user->_oid = std::get<1>(objIds);
+    user->_enabled = enabled;
+    user->_emailAddresses = emailAddresses;
+    user->_realName = realName;
+    user->_inactivityTimeout = inactivityTimeout;
+    user->_uiLocale = uiLocale;
+
     //  ...schedule change notifications...
     _changeNotifier.post(
         new tt3::db::api::ObjectCreatedNotification(
@@ -419,40 +413,40 @@ auto Database::createActivityType(
 }
 
 auto Database::createPublicActivity(
-        const QString & displayName,
-        const QString & description,
-        const tt3::db::api::InactivityTimeout & timeout,
-        bool requireCommentOnStart,
-        bool requireCommentOnStop,
-        bool fullScreenReminder,
-        tt3::db::api::IActivityType * activityType,
-        tt3::db::api::IWorkload * workload
+        const QString & /*displayName*/,
+        const QString & /*description*/,
+        const tt3::db::api::InactivityTimeout & /*timeout*/,
+        bool /*requireCommentOnStart*/,
+        bool /*requireCommentOnStop*/,
+        bool /*fullScreenReminder*/,
+        tt3::db::api::IActivityType * /*activityType*/,
+        tt3::db::api::IWorkload * /*workload*/
     ) -> tt3::db::api::IPublicActivity *
 {
     throw tt3::util::NotImplementedError();
 }
 
 auto Database::createPublicTask(
-        const QString & displayName,
-        const QString & description,
-        const tt3::db::api::InactivityTimeout & timeout,
-        bool requireCommentOnStart,
-        bool requireCommentOnStop,
-        bool fullScreenReminder,
-        tt3::db::api::IActivityType * activityType,
-        tt3::db::api::IWorkload * workload,
-        bool completed,
-        bool requireCommentOnCompletion
+        const QString & /*displayName*/,
+        const QString & /*description*/,
+        const tt3::db::api::InactivityTimeout & /*timeout*/,
+        bool /*requireCommentOnStart*/,
+        bool /*requireCommentOnStop*/,
+        bool /*fullScreenReminder*/,
+        tt3::db::api::IActivityType * /*activityType*/,
+        tt3::db::api::IWorkload * /*workload*/,
+        bool /*completed*/,
+        bool /*requireCommentOnCompletion*/
     ) -> tt3::db::api::IPublicTask *
 {
     throw tt3::util::NotImplementedError();
 }
 
 auto Database::createProject(
-        const QString & displayName,
-        const QString & description,
-        const tt3::db::api::Beneficiaries & beneficiaries,
-        bool completed
+        const QString & /*displayName*/,
+        const QString & /*description*/,
+        const tt3::db::api::Beneficiaries & /*beneficiaries*/,
+        bool /*completed*/
     ) -> tt3::db::api::IProject *
 {
     throw tt3::util::NotImplementedError();
@@ -468,9 +462,9 @@ auto Database::createWorkStream(
 }
 
 auto Database::createBeneficiary(
-        const QString & displayName,
-        const QString & description,
-        const tt3::db::api::Workloads & workloads
+        const QString & /*displayName*/,
+        const QString & /*description*/,
+        const tt3::db::api::Workloads & /*workloads*/
     ) -> tt3::db::api::IBeneficiary *
 {
     throw tt3::util::NotImplementedError();
@@ -479,8 +473,8 @@ auto Database::createBeneficiary(
 //////////
 //  IDatabase (locking)
 auto Database::lock(
-        tt3::db::api::IDatabaseLock::LockType lockType,
-        unsigned long timeoutMs
+        tt3::db::api::IDatabaseLock::LockType /*lockType*/,
+        unsigned long /*timeoutMs*/
     ) -> tt3::db::api::IDatabaseLock *
 {
     throw tt3::util::NotImplementedError();

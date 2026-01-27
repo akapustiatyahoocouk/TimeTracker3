@@ -10,6 +10,7 @@ SOURCES += \
     Object.cpp \
     Principal.cpp \
     Statement.cpp \
+    Transaction.cpp \
     User.cpp
 
 HEADERS += \
@@ -24,6 +25,7 @@ HEADERS += \
     Principal.hpp \
     ResultSet.hpp \
     Statement.hpp \
+    Transaction.hpp \
     User.hpp
 
 PRECOMPILED_HEADER = API.hpp

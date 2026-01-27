@@ -283,79 +283,73 @@ auto User::createAccount(
     digestBuilder->digestFragment(password);
     QString passwordHash = digestBuilder->digestAsString();
 
-    Account * account = nullptr;
-    try
+    //  Begin transaction for the changes
+    Transaction transaction(_database); //  may throw
+
+    //  Do the work - create [objects] row..
+    Database::_ObjIds objIds = _database->_createObject(tt3::db::api::ObjectTypes::Account::instance());//  may throw
+    //  ...then [users] row...
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+            "INSERT INTO [accounts]"
+            "       ([pk],[fk_user],[enabled],[emailaddresses],"
+            "        [login],[passwordhash],"
+            "        [administrator],"
+            "        [manageusers],"
+            "        [manageactivitytypes],"
+            "        [managebeneficiaries],"
+            "        [manageworkloads],"
+            "        [managepublicactivities],"
+            "        [managepublictasks],"
+            "        [manageprivateactivities],"
+            "        [manageprivatetasks],"
+            "        [logwork],"
+            "        [logevents],"
+            "        [generatereports],"
+            "        [backupandrestore])"
+            "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)") };
+    stat->setIntParameter(0, std::get<0>(objIds));
+    stat->setIntParameter(1, _pk);
+    stat->setBoolParameter(2, enabled);
+    if (emailAddresses.isEmpty())
     {
-        _database->beginTransaction(); //  may throw
-
-        //  Do the work - create [objects] row..
-        Database::_ObjIds objIds = _database->_createObject(tt3::db::api::ObjectTypes::Account::instance());//  may throw
-        //  ...then [users] row...
-        std::unique_ptr<Statement> stat
-            {   _database->createStatement(
-                "INSERT INTO [accounts]"
-                "       ([pk],[fk_user],[enabled],[emailaddresses],"
-                "        [login],[passwordhash],"
-                "        [administrator],"
-                "        [manageusers],"
-                "        [manageactivitytypes],"
-                "        [managebeneficiaries],"
-                "        [manageworkloads],"
-                "        [managepublicactivities],"
-                "        [managepublictasks],"
-                "        [manageprivateactivities],"
-                "        [manageprivatetasks],"
-                "        [logwork],"
-                "        [logevents],"
-                "        [generatereports],"
-                "        [backupandrestore])"
-                "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)") };
-        stat->setIntParameter(0, std::get<0>(objIds));
-        stat->setIntParameter(1, _pk);
-        stat->setBoolParameter(2, enabled);
-        if (emailAddresses.isEmpty())
-        {
-            stat->setNullParameter(3);
-        }
-        else
-        {
-            stat->setStringParameter(3, emailAddresses.join('\n'));
-        }
-        stat->setStringParameter(4, login);
-        stat->setStringParameter(5, passwordHash);
-        stat->setBoolParameter(6, capabilities.contains(tt3::db::api::Capability::Administrator));
-        stat->setBoolParameter(7, capabilities.contains(tt3::db::api::Capability::ManageUsers));
-        stat->setBoolParameter(8, capabilities.contains(tt3::db::api::Capability::ManageActivityTypes));
-        stat->setBoolParameter(9, capabilities.contains(tt3::db::api::Capability::ManageBeneficiaries));
-        stat->setBoolParameter(10, capabilities.contains(tt3::db::api::Capability::ManageWorkloads));
-        stat->setBoolParameter(11, capabilities.contains(tt3::db::api::Capability::ManagePublicActivities));
-        stat->setBoolParameter(12, capabilities.contains(tt3::db::api::Capability::ManagePublicTasks));
-        stat->setBoolParameter(13, capabilities.contains(tt3::db::api::Capability::ManagePrivateActivities));
-        stat->setBoolParameter(14, capabilities.contains(tt3::db::api::Capability::ManagePrivateTasks));
-        stat->setBoolParameter(15, capabilities.contains(tt3::db::api::Capability::LogWork));
-        stat->setBoolParameter(16, capabilities.contains(tt3::db::api::Capability::LogEvents));
-        stat->setBoolParameter(17, capabilities.contains(tt3::db::api::Capability::GenerateReports));
-        stat->setBoolParameter(18, capabilities.contains(tt3::db::api::Capability::BackupAndRestore));
-        stat->execute();    //  may throw
-
-        _database->commitTransaction();//  may throw
-
-        //  Create & register the Account object...
-        account = new Account(_database, std::get<0>(objIds));
-        //  ...setting its cached properties to initial values
-        account->_oid = std::get<1>(objIds);
-        account->_enabled = enabled;
-        account->_emailAddresses = emailAddresses;
-        account->_login = login;
-        account->_passwordHash = passwordHash;
-        account->_capabilities = capabilities;
-        account->_fkUser = _pk;
+        stat->setNullParameter(3);
     }
-    catch (...)
-    {   //  OOPS! Cleanup, then re-throw
-        _database->rollbackTransaction();  //  may throw, but at this point who cares?
-        throw;
+    else
+    {
+        stat->setStringParameter(3, emailAddresses.join('\n'));
     }
+    stat->setStringParameter(4, login);
+    stat->setStringParameter(5, passwordHash);
+    stat->setBoolParameter(6, capabilities.contains(tt3::db::api::Capability::Administrator));
+    stat->setBoolParameter(7, capabilities.contains(tt3::db::api::Capability::ManageUsers));
+    stat->setBoolParameter(8, capabilities.contains(tt3::db::api::Capability::ManageActivityTypes));
+    stat->setBoolParameter(9, capabilities.contains(tt3::db::api::Capability::ManageBeneficiaries));
+    stat->setBoolParameter(10, capabilities.contains(tt3::db::api::Capability::ManageWorkloads));
+    stat->setBoolParameter(11, capabilities.contains(tt3::db::api::Capability::ManagePublicActivities));
+    stat->setBoolParameter(12, capabilities.contains(tt3::db::api::Capability::ManagePublicTasks));
+    stat->setBoolParameter(13, capabilities.contains(tt3::db::api::Capability::ManagePrivateActivities));
+    stat->setBoolParameter(14, capabilities.contains(tt3::db::api::Capability::ManagePrivateTasks));
+    stat->setBoolParameter(15, capabilities.contains(tt3::db::api::Capability::LogWork));
+    stat->setBoolParameter(16, capabilities.contains(tt3::db::api::Capability::LogEvents));
+    stat->setBoolParameter(17, capabilities.contains(tt3::db::api::Capability::GenerateReports));
+    stat->setBoolParameter(18, capabilities.contains(tt3::db::api::Capability::BackupAndRestore));
+    stat->execute();    //  may throw
+
+    //  We're done with the changes
+    transaction.commit();   //  may throw
+
+    //  Create & register the Account object...
+    Account * account = new Account(_database, std::get<0>(objIds));
+    //  ...setting its cached properties to initial values
+    account->_oid = std::get<1>(objIds);
+    account->_enabled = enabled;
+    account->_emailAddresses = emailAddresses;
+    account->_login = login;
+    account->_passwordHash = passwordHash;
+    account->_capabilities = capabilities;
+    account->_fkUser = _pk;
+
     //  ...schedule change notifications...
     _database->_changeNotifier.post(
         new tt3::db::api::ObjectModifiedNotification(

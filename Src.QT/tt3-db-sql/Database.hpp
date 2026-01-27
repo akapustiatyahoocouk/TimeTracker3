@@ -26,6 +26,7 @@ namespace tt3::db::sql
 
         friend class DatabaseType;
         friend class Statement;
+        friend class Transaction;
         friend class Object;
         friend class Principal;
         friend class User;
@@ -223,9 +224,35 @@ namespace tt3::db::sql
         ///     The identifier, quoted if necessary, "as is" if not.
         virtual QString quoteIdentifier(const QString & identifier) const = 0;
 
+        /// \brief
+        ///     Begins a transaction.
+        /// \details
+        ///     If a transaction is already underway,
+        ///     the call is an error.
+        /// \exception DatabaseException
+        ///     If an error occurs; transaction is not started.
         virtual void    beginTransaction() = 0;
+
+        /// \brief
+        ///     Commits the transaction that is currently underway.
+        /// \details
+        ///     If there is no transaction underway, the call is an error.
+        /// \exception DatabaseException
+        ///     If an error occurs; transaction is still terminated.
         virtual void    commitTransaction() = 0;
+
+        /// \brief
+        ///     Rolls back the transaction that is currently underway.
+        /// \details
+        ///     If there is no transaction underway, the call is an error.
+        /// \exception DatabaseException
+        ///     If an error occurs; transaction is still terminated.
         virtual void    rollbackTransaction() = 0;
+
+        /// \brief
+        ///     Checks if there is a transaction currently underway.
+        /// \return
+        ///     True if there is a transaction currently underway, else false.
         virtual bool    isTransactionInProgress() const = 0;
 
         /// \brief
