@@ -334,7 +334,9 @@ auto Database::validator(
 
 bool Database::isOpen() const
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(guard);
+
+    return _connection != nullptr;
 }
 
 bool Database::isReadOnly() const
@@ -552,7 +554,30 @@ qint64 Database::executeDelete(const QString & sql)
 
 auto Database::executeSelect(const QString & sql) -> tt3::db::sql::ResultSet *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(guard);
+    ensureOpenAndWritable();
+
+    std::unique_ptr<ResultSet> rs { new ResultSet() };
+    char * errmsg = nullptr;
+    int err = SQLite3::exec(
+        _connection,
+        sql.toUtf8(),
+        _selectCallback,
+        rs.get(),
+        &errmsg);
+    if (err != SQLITE_OK)
+    {   //  OOPS!
+        QString errorMessage =
+            (errmsg != nullptr) ?
+                errmsg :
+                SQLite3::errstr(err);
+        if (errmsg != nullptr)
+        {
+            SQLite3::free(errmsg);
+        }
+        throw tt3::db::api::CustomDatabaseException(errorMessage);
+    }
+    return rs.release();
 }
 
 void Database::execute(const QString & sql)
@@ -603,6 +628,38 @@ void Database::ensureOpenAndWritable() const
     {   //  OOPS!
         throw tt3::db::api::AccessDeniedException();
     }
+}
+
+//////////
+//  Implementation helpers
+int Database::_selectCallback(void * cbData, int argc, char ** argv,char ** colNames)
+{
+    auto resultSet = static_cast<ResultSet*>(cbData);
+    if (resultSet->_rowCount == 0)
+    {   //  Set up column names ONCE
+        for (int i = 0; i < argc; i++)
+        {
+            resultSet->_columns.append(colNames[i]);
+        }
+    }
+#ifndef Q_NODEBUG
+    else
+    {   //  Make sure column names match
+        Q_ASSERT(resultSet->_columns.size() == argc);
+        for (int i = 0; i < argc; i++)
+        {
+            Q_ASSERT(resultSet->_columns[i] == colNames[i]);
+        }
+    }
+#endif
+    //  Add new row
+    ResultSet::_Row row;
+    for (int i = 0; i < argc; i++)
+    {
+        row.append(argv[i]);
+    }
+    resultSet->_rows.append(row);
+    return 0;   //  keep going
 }
 
 //  End of tt3-db-sqlite3/Database.cpp

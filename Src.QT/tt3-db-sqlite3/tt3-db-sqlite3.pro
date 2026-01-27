@@ -19,6 +19,7 @@ HEADERS += \
     DatabaseType.hpp \
     Libs/sqlite3.h \
     Linkage.hpp \
+    ResultSet.hpp \
     SQLite3.hpp
 
 LIBS += \

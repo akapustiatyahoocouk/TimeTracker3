@@ -28,11 +28,11 @@ namespace tt3::db::sql
     protected:
         /// \brief
         ///     Constructs the result set.
-        ResultSet();
+        ResultSet() = default;
     public:
         /// \brief
         ///     The class destructor.
-        virtual ~ResultSet();
+        virtual ~ResultSet() = default;
 
         //////////
         //  Operations

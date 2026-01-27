@@ -112,7 +112,7 @@ namespace tt3::db::sql
         //  All quoting and parameter formatting is database
         //  type - specific
         QStringList     _literalFragments;  //  [N]
-        QStringList     _parameters;        //  [N-1], "" == parameter not specified
+        QStringList     _parameters;        //  [N-1], "" == parameter not specified, uses SQL value syntax
 
         //  The SQL statement, assembled as a NUL-terminated UTF-8
         QString         _sql;   //  re-assembled when parameter(s) change

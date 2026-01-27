@@ -219,7 +219,47 @@ void Statement::setParameter(int index, const QString & value)
 
     if (index >= 0 && index < _parameters.size())
     {   //  Be defensive in release mode
-        throw tt3::util::NotImplementedError();
+        //  1.  ANSI SQL uses || as string concatenation operator.
+        //  2.  We want CHAR(code) for codes 0..31 and 127; any
+        //      other character can be part of the string literal
+        //  3.  Single quote '' becomes '' within a literal.
+        //  4.  Backslash \ does not start an escape sequence
+        QString result, literalFragment;
+        for (int i = 0; i < value.length(); i++)
+        {
+            QChar c = value[i];
+            if (c.unicode() < 32 || c.unicode() == 127)
+            {   //  Need an explicit code point
+                if (!literalFragment.isEmpty())
+                {   //  Quote & consume
+                    if (!result.isEmpty())
+                    {
+                        result += " || ";
+                    }
+                    result += '\'' + literalFragment + '\'';
+                    literalFragment.clear();
+                    result += "CHAR(" + tt3::util::toString(int(c.unicode())) +")";
+                }
+            }
+            else if (c == '\'')
+            {   //  ' -> literal ''
+                literalFragment += "''";
+            }
+            else
+            {   //  any other literal character
+                literalFragment += c;
+            }
+        }
+        //  Must consume the last literal fragment
+        if (!literalFragment.isEmpty() || result.isEmpty())
+        {   //  Quote & consume
+            if (!result.isEmpty())
+            {
+                result += " || ";
+            }
+            result += '\'' + literalFragment + '\'';
+        }
+        _parameters[index] = result;
     }
 }
 
@@ -229,6 +269,8 @@ void Statement::setParameter(int index, const QDateTime & value)
 
     if (index >= 0 && index < _parameters.size())
     {   //  Be defensive in release mode
+        //  TODO se QL syntax
+        //  'YYYY-MM-DD HH:MM:SS.mmm'
         throw tt3::util::NotImplementedError();
     }
 }
@@ -239,7 +281,7 @@ void Statement::setParameter(int index, const tt3::util::TimeSpan & value)
 
     if (index >= 0 && index < _parameters.size())
     {   //  Be defensive in release mode
-        _parameters[index] = tt3::util::toString(value);
+        _parameters[index] = '\'' + tt3::util::toString(value) + '\'';
     }
 }
 
@@ -249,7 +291,7 @@ void Statement::setParameter(int index, const tt3::db::api::Oid & value)
 
     if (index >= 0 && index < _parameters.size())
     {   //  Be defensive in release mode
-        _parameters[index] = tt3::util::toString(value);
+        _parameters[index] = '\'' + tt3::util::toString(value) + '\'';
     }
 }
 

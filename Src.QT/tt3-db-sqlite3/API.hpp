@@ -35,5 +35,6 @@
 #include "tt3-db-sqlite3/DatabaseAddress.hpp"
 #include "tt3-db-sqlite3/DatabaseType.hpp"
 #include "tt3-db-sqlite3/Database.hpp"
+#include "tt3-db-sqlite3/ResultSet.hpp"
 
 //  End of tt3-db-sqlite3/API.hpp

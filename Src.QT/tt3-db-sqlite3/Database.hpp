@@ -83,6 +83,9 @@ namespace tt3::db::sqlite3
         bool            _transactionInProgress = false;
 
         const QSet<QString> _keywords;  //  all-uppercase
+
+        //  Helpers
+        static int      _selectCallback(void * cbData, int argc, char ** argv,char ** colNames);
     };
 }
 

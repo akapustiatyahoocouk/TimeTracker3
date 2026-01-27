@@ -218,7 +218,7 @@ auto Database::createUser(
         {   createStatement(
                 "INSERT INTO [users]"
                 "       ([pk],[enabled],[emailaddresses],"
-                "        [realname],[inactivitytimeout],[uilocale]"
+                "        [realname],[inactivitytimeout],[uilocale])"
                 "       VALUES(?,?,?,?,?,?)") };
         stat->setParameter(0, std::get<0>(objId));
         stat->setParameter(1, enabled);
