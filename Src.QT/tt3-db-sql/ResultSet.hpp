@@ -42,6 +42,11 @@ namespace tt3::db::sql
         /// \return
         ///     The number of rows in this result set.
         virtual qint64  size() const = 0;
+
+        //  TODO document
+        virtual bool    next() = 0;
+        virtual bool    isNull(int columnIndex) const = 0;
+        virtual bool    isNull(const QString & columnName) const = 0;
     };
 }
 

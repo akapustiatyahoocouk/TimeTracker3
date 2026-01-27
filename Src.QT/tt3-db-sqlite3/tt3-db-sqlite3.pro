@@ -8,6 +8,7 @@ SOURCES += \
     Database.cpp \
     DatabaseAddress.cpp \
     DatabaseType.cpp \
+    ResultSet.cpp \
     SQLite3.cpp
 
 HEADERS += \

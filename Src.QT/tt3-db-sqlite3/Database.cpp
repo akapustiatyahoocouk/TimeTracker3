@@ -341,7 +341,7 @@ bool Database::isOpen() const
 
 bool Database::isReadOnly() const
 {
-    throw tt3::util::NotImplementedError();
+    return _isReadOnly;
 }
 
 void Database::close()
@@ -639,7 +639,7 @@ int Database::_selectCallback(void * cbData, int argc, char ** argv,char ** colN
     {   //  Set up column names ONCE
         for (int i = 0; i < argc; i++)
         {
-            resultSet->_columns.append(colNames[i]);
+            resultSet->_columns.append(QString(colNames[i]).toUpper());
         }
     }
 #ifndef Q_NODEBUG
@@ -648,7 +648,7 @@ int Database::_selectCallback(void * cbData, int argc, char ** argv,char ** colN
         Q_ASSERT(resultSet->_columns.size() == argc);
         for (int i = 0; i < argc; i++)
         {
-            Q_ASSERT(resultSet->_columns[i] == colNames[i]);
+            Q_ASSERT(resultSet->_columns[i] == QString(colNames[i]).toUpper());
         }
     }
 #endif

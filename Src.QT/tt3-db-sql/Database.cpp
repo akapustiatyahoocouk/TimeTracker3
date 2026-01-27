@@ -45,10 +45,25 @@ auto Database::accounts(
 }
 
 auto Database::findAccount(
-        const QString & /*login*/
+        const QString & login
     ) const -> tt3::db::api::IAccount *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(guard);
+    ensureOpen();
+
+    std::unique_ptr<Statement> stat
+    {   createStatement(
+            "SELECT [pk]"
+            "  FROM [accounts]"
+            " WHERE [login] = ?") };
+    stat->setParameter(0, login);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };
+    if (rs->next())
+    {   //  Got it!
+        return _getObject<Account>(pk);
+    }
+    return nullptr;
 }
 
 auto Database::activityTypes(
@@ -122,11 +137,36 @@ auto Database::beneficiaries(
 //////////
 //  tt3::db::api::IDatabase (access control)
 auto Database::tryLogin(
-        const QString & /*login*/,
-        const QString & /*password*/
+        const QString & login,
+        const QString & password
     ) const -> tt3::db::api::IAccount *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(guard);
+    ensureOpen();
+
+    std::unique_ptr<tt3::util::IMessageDigest::Builder> digestBuilder
+        { tt3::util::StandardMessageDigests::Sha1::instance()->createBuilder() };
+    digestBuilder->digestFragment(password);
+    QString passwordHash = digestBuilder->digestAsString();
+
+    std::unique_ptr<Statement> stat
+    {   createStatement(
+            "SELECT [accounts].[pk]"
+            "  FROM [users],[accounts]"
+            " WHERE [accounts].[fk_user] = [users].[pk]"
+            "   AND [accounts].[login] = ?"
+            "   AND [accounts].[passwordhash] = ?"
+            "   AND [users].[enabled] = 'Y'"
+            "   AND [accounts].[enabled] = 'Y'") };
+    stat->setParameter(0, login);
+    stat->setParameter(1, passwordHash);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };
+    if (rs->next())
+    {
+        return _getObject<Account>(pk);
+    }
+    return nullptr;
 }
 
 auto Database::login(
@@ -344,9 +384,9 @@ auto Database::createProject(
 }
 
 auto Database::createWorkStream(
-        const QString & displayName,
-        const QString & description,
-        const tt3::db::api::Beneficiaries & beneficiaries
+        const QString & /*displayName*/,
+        const QString & /*description*/,
+        const tt3::db::api::Beneficiaries & /*beneficiaries*/
     ) -> tt3::db::api::IWorkStream *
 {
     throw tt3::util::NotImplementedError();
@@ -518,9 +558,9 @@ void Database::executeScript(const QString & sql)
     }
 }
 
-auto Database::createStatement(const QString & sqlTemplate) -> Statement *
+auto Database::createStatement(const QString & sqlTemplate) const -> Statement *
 {
-    return new Statement(this, sqlTemplate);
+    return new Statement(const_cast<Database*>(this), sqlTemplate);
 }
 
 //////////

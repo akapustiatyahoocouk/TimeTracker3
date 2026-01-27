@@ -245,7 +245,7 @@ namespace tt3::db::sql
         ///     The newly created SQL statement.
         /// \exception DatabaseException
         ///     If an error occurs.
-        virtual auto    createStatement(const QString & sqlTemplate) -> Statement *;
+        virtual auto    createStatement(const QString & sqlTemplate) const -> Statement *;
 
         //  TODO document
         virtual qint64  executeInsert(const QString & sql) = 0;
@@ -288,6 +288,34 @@ namespace tt3::db::sql
         //  Helpers
         using _ObjIds = std::tuple<qint64, tt3::db::api::Oid>;
         _ObjIds         _createObject(tt3::db::api::IObjectType * objectType);
+
+        template <class T>
+        T *             _findObject(qint64 pk)
+        {
+            Q_ASSERT(guard.isLockedByCurrentThread());
+            if (Object * obj = _liveObjects.value(pk, nullptr))
+            {   //  Reuse the live object
+                return dynamic_cast<T>(obj);
+            }
+            if (Object * obj = _graveyard.value(pk, nullptr))
+            {   //  Object dead - reuse, but invoking its services will fail
+                return dynamic_cast<T>(obj);
+            }
+            T * t = new T(this, pk);
+            _liveObjects[pk] = t;
+            return t;
+        }
+
+        template <class T>
+        T *             _getObject(qint64 pk)
+        {
+            if (T * t = _findObject<T>(pk))
+            {
+                return t;
+            }
+            //  TODO what?
+            throw tt3::util::NotImplementedError();
+        }
     };
 }
 
