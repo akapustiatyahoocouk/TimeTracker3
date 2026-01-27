@@ -238,6 +238,7 @@ void Statement::setStringParameter(int index, const QString & value)
                     }
                     result += '\'' + literalFragment + '\'';
                     literalFragment.clear();
+                    result += " || ";
                     result += "CHAR(" + tt3::util::toString(int(c.unicode())) +")";
                 }
             }

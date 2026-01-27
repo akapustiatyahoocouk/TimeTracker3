@@ -478,12 +478,54 @@ void User::_saveRealName(const QString & realName)
 
 void User::_saveInactivityTimeout(const tt3::db::api::InactivityTimeout & inactivityTimeout)
 {
-    throw tt3::util::NotImplementedError();
+    Q_ASSERT(_database->guard.isLockedByCurrentThread());
+
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+        "UPDATE [users]"
+        "   SET [inactivitytimeout] = ?"
+        " WHERE [pk] = ?") };
+    if (inactivityTimeout.has_value())
+    {
+        stat->setTimeSpanParameter(0, inactivityTimeout.value());
+    }
+    else
+    {
+        stat->setNullParameter(0);
+    }
+    stat->setIntParameter(1, _pk);
+    auto affectedRows = stat->execute();    //  may throw
+    if (affectedRows == 0)
+    {   //  OOPS! Row since deleted!
+        _makeDead();
+        throw tt3::db::api::InstanceDeadException();
+    }
 }
 
 void User::_saveUiLocale(const tt3::db::api::UiLocale & uiLocale)
 {
-    throw tt3::util::NotImplementedError();
+    Q_ASSERT(_database->guard.isLockedByCurrentThread());
+
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+        "UPDATE [users]"
+        "   SET [uilocale] = ?"
+        " WHERE [pk] = ?") };
+    if (uiLocale.has_value())
+    {
+        stat->setStringParameter(0, tt3::util::toString(uiLocale.value()));
+    }
+    else
+    {
+        stat->setNullParameter(0);
+    }
+    stat->setIntParameter(1, _pk);
+    auto affectedRows = stat->execute();    //  may throw
+    if (affectedRows == 0)
+    {   //  OOPS! Row since deleted!
+        _makeDead();
+        throw tt3::db::api::InstanceDeadException();
+    }
 }
 
 //////////

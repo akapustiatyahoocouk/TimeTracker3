@@ -374,19 +374,85 @@ void Account::_loadCachedProperties()
     _fkUser = rs->intValue("fk_user");
 }
 
-void Account::_saveLogin(const QString & /*login*/)
+void Account::_saveLogin(const QString & login)
 {
-    throw tt3::util::NotImplementedError();
+    Q_ASSERT(_database->guard.isLockedByCurrentThread());
+
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+        "UPDATE [accounts]"
+        "   SET [login] = ?"
+        " WHERE [pk] = ?") };
+    stat->setStringParameter(0, login);
+    stat->setIntParameter(1, _pk);
+    auto affectedRows = stat->execute();    //  may throw
+    if (affectedRows == 0)
+    {   //  OOPS! Row since deleted!
+        _makeDead();
+        throw tt3::db::api::InstanceDeadException();
+    }
 }
 
-void Account::_savePasswordHash(const QString & /*passwordHash*/)
+void Account::_savePasswordHash(const QString & passwordHash)
 {
-    throw tt3::util::NotImplementedError();
+    Q_ASSERT(_database->guard.isLockedByCurrentThread());
+
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+        "UPDATE [accounts]"
+        "   SET [passwordhash] = ?"
+        " WHERE [pk] = ?") };
+    stat->setStringParameter(0, passwordHash);
+    stat->setIntParameter(1, _pk);
+    auto affectedRows = stat->execute();    //  may throw
+    if (affectedRows == 0)
+    {   //  OOPS! Row since deleted!
+        _makeDead();
+        throw tt3::db::api::InstanceDeadException();
+    }
 }
 
-void Account::_saveCapabilities(tt3::db::api::Capabilities /*capabilities*/)
+void Account::_saveCapabilities(tt3::db::api::Capabilities capabilities)
 {
-    throw tt3::util::NotImplementedError();
+    Q_ASSERT(_database->guard.isLockedByCurrentThread());
+
+    std::unique_ptr<Statement> stat
+        {   _database->createStatement(
+            "UPDATE [accounts]"
+            "   SET [administrator] = ?,"
+            "       [manageusers] = ?,"
+            "       [manageactivitytypes] = ?,"
+            "       [managebeneficiaries] = ?,"
+            "       [manageworkloads] = ?,"
+            "       [managepublicactivities] = ?,"
+            "       [managepublictasks] = ?,"
+            "       [manageprivateactivities] = ?,"
+            "       [manageprivatetasks] = ?,"
+            "       [logwork] = ?,"
+            "       [logevents] = ?,"
+            "       [generatereports] = ?,"
+            "       [backupandrestore] = ?"
+            " WHERE [pk] = ?") };
+    stat->setBoolParameter(0, capabilities.contains(tt3::db::api::Capability::Administrator));
+    stat->setBoolParameter(1, capabilities.contains(tt3::db::api::Capability::ManageUsers));
+    stat->setBoolParameter(2, capabilities.contains(tt3::db::api::Capability::ManageActivityTypes));
+    stat->setBoolParameter(3, capabilities.contains(tt3::db::api::Capability::ManageBeneficiaries));
+    stat->setBoolParameter(4, capabilities.contains(tt3::db::api::Capability::ManageWorkloads));
+    stat->setBoolParameter(5, capabilities.contains(tt3::db::api::Capability::ManagePublicActivities));
+    stat->setBoolParameter(6, capabilities.contains(tt3::db::api::Capability::ManagePublicTasks));
+    stat->setBoolParameter(7, capabilities.contains(tt3::db::api::Capability::ManagePrivateActivities));
+    stat->setBoolParameter(8, capabilities.contains(tt3::db::api::Capability::ManagePrivateActivities));
+    stat->setBoolParameter(9, capabilities.contains(tt3::db::api::Capability::LogWork));
+    stat->setBoolParameter(10, capabilities.contains(tt3::db::api::Capability::LogEvents));
+    stat->setBoolParameter(11, capabilities.contains(tt3::db::api::Capability::GenerateReports));
+    stat->setBoolParameter(12, capabilities.contains(tt3::db::api::Capability::BackupAndRestore));
+    stat->setIntParameter(13, _pk);
+    auto affectedRows = stat->execute();    //  may throw
+    if (affectedRows == 0)
+    {   //  OOPS! Row since deleted!
+        _makeDead();
+        throw tt3::db::api::InstanceDeadException();
+    }
 }
 
 //////////

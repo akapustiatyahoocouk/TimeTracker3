@@ -131,7 +131,28 @@ void Principal::_saveEnabled(bool enabled)
 
 void Principal::_saveEmailAddresses(const QStringList & emailAddresses)
 {
-    throw tt3::util::NotImplementedError();
+    Q_ASSERT(_database->guard.isLockedByCurrentThread());
+
+    std::unique_ptr<Statement> stat
+        {   _database->createStatement(
+            "UPDATE [" + _tableName() + "]"
+            "   SET [emailaddresses] = ?"
+            " WHERE [pk] = ?") };
+    if (emailAddresses.isEmpty())
+    {
+        stat->setNullParameter(0);
+    }
+    else
+    {
+        stat->setStringParameter(0, emailAddresses.join("\n"));
+    }
+    stat->setIntParameter(1, _pk);
+    auto affectedRows = stat->execute();    //  may throw
+    if (affectedRows == 0)
+    {   //  OOPS! Row since deleted!
+        _makeDead();
+        throw tt3::db::api::InstanceDeadException();
+    }
 }
 
 //  End of tt3-db-sql/Principal.cpp
