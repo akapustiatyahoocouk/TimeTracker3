@@ -28,6 +28,7 @@ namespace tt3::db::sql
         friend class Principal;
         friend class User;
         friend class Account;
+        friend class ActivityType;
 
         //////////
         //  Construction/destruction (from DB type only)
@@ -77,7 +78,9 @@ namespace tt3::db::sql
         //  Helpers
         void            _ensureLive() const;
         void            _ensureLiveAndWritable() const;
-        virtual void    _makeDead();    //  TODO split into "remove row(s) from database" and "make Object instance dead" methods
+        virtual void    _deleteCascade() = 0;   //  may throw
+        virtual void    _removeFromDatabase();  //  may throw
+        void            _makeDead();            //  may throw
         virtual QString _tableName() const = 0; //  where this object resides
     };
 }

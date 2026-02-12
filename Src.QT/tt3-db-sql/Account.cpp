@@ -73,9 +73,14 @@ void Account::setLogin(
 
     if (login != _login)    //  Cache load may throw
     {   //  Make the change...
-        //  TODO wrap database access into a transaction
+        //  Begin transaction for the changes
+        Transaction transaction(_database); //  may throw
+        //  Save, THEN cache
         _saveLogin(login);  //  may throw
         _login = login;
+        //  We're done with the changes
+        transaction.commit();   //  may throw
+
         //  ...schedule change notifications...
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
@@ -117,9 +122,14 @@ void Account::setPassword(
 
     if (passwordHash != _passwordHash)  //  Cache load may throw
     {   //  Make the change...
-        //  TODO wrap database access into a transaction
+        //  Begin transaction for the changes
+        Transaction transaction(_database); //  may throw
+        //  Save, THEN cache
         _savePasswordHash(passwordHash);    //  may throw
         _passwordHash = passwordHash;
+        //  We're done with the changes
+        transaction.commit();   //  may throw
+
         //  ...schedule change notifications...
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
@@ -147,9 +157,14 @@ void Account::setCapabilities(
 
     if (capabilities != _capabilities)
     {   //  Make the change...
-        //  TODO wrap database access into a transaction
+        //  Begin transaction for the changes
+        Transaction transaction(_database); //  may throw
+        //  Save, THEN cache
         _saveCapabilities(capabilities);    //  may throw
         _capabilities = capabilities;
+        //  We're done with the changes
+        transaction.commit();   //  may throw
+
         //  ...schedule change notifications...
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
@@ -464,15 +479,30 @@ void Account::_setPasswordHash(
     throw tt3::util::NotImplementedError();
 }
 
-void Account::_makeDead()
+void Account::_deleteCascade()
 {
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
+    Q_ASSERT(_database->_liveObjects.contains(_pk));
 
+    //  TODO Works
+    //  TODO Events
     throw tt3::util::NotImplementedError();
+}
 
-    //  The rest is up to the base class
-    Principal::_makeDead();
+void Account::_removeFromDatabase()
+{
+    Q_ASSERT(_database->guard.isLockedByCurrentThread());
+    Q_ASSERT(_isLive);
+    Q_ASSERT(_database->_liveObjects.contains(_pk));
+
+    std::unique_ptr<Statement> stat
+        {   _database->createStatement(
+            "DELETE FROM [accounts]"
+            " WHERE [pk] = ?") };
+    stat->setIntParameter(0, _pk);
+    stat->execute();    //  may throw
+    Principal::_removeFromDatabase();
 }
 
 //  End of tt3-db-sql/Account.cpp

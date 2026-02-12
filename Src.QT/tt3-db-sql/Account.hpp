@@ -110,7 +110,8 @@ namespace tt3::db::sql
         virtual void    _setPasswordHash(
                                 const QString & passwordHash
                             ) override;
-        virtual void    _makeDead() override;
+        virtual void    _deleteCascade() override;  //  may throw
+        virtual void    _removeFromDatabase() override; //  may throw
         virtual QString _tableName() const override { return "accounts"; }
     };
 }

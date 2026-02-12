@@ -37,5 +37,6 @@
 #include "tt3-db-sql/Principal.hpp"
 #include "tt3-db-sql/User.hpp"
 #include "tt3-db-sql/Account.hpp"
+#include "tt3-db-sql/ActivityType.hpp"
 
 //  End of tt3-db-sql/API.hpp

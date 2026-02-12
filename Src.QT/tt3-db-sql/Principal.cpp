@@ -50,9 +50,14 @@ void Principal::setEnabled(
 
     if (enabled != _enabled)    //  cache load may throw
     {   //  Make the change...
-        //  TODO wrap database access into a transaction
+        //  Begin transaction for the changes
+        Transaction transaction(_database); //  may throw
+        //  Save, THEN cache
         _saveEnabled(enabled);  //  may throw
         _enabled = enabled;
+        //  We're done with the changes
+        transaction.commit();   //  may throw
+
         //  ...schedule change notifications...
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
@@ -89,9 +94,14 @@ void Principal::setEmailAddresses(
 
     if (emailAddresses != _emailAddresses)  //  cache load may throw
     {   //  Make the change...
-        //  TODO wrap database access into a transaction
+        //  Begin transaction for the changes
+        Transaction transaction(_database); //  may throw
+        //  Save, THEN cache
         _saveEmailAddresses(emailAddresses);    //  may throw
         _emailAddresses = emailAddresses;
+        //  We're done with the changes
+        transaction.commit();   //  may throw
+
         //  ...schedule change notifications...
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(

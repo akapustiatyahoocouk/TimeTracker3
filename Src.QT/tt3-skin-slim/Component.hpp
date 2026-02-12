@@ -51,7 +51,6 @@ namespace tt3::skin::slim
             /// \details
             ///     Uses the internal format implemented by QMainWindow's
             ///     saveGeometry()/restoreGeomerty(), encoded as a hex string.
-            /// TODO do the same for tt3-skin-admin's MainFrame
             tt3::util::Setting<QByteArray>  mainFrameGeometry;
 
             /// \brief

@@ -88,6 +88,7 @@ auto Database::users(
     tt3::util::Lock _(guard);
     ensureOpen();
 
+    //  TODO cache PKs
     std::unique_ptr<Statement> stat
     {   createStatement(
             "SELECT [pk]"
@@ -106,6 +107,7 @@ auto Database::accounts(
     ) const -> tt3::db::api::Accounts
 {
     throw tt3::util::NotImplementedError();
+    //  TODO cache PKs
 }
 
 auto Database::findAccount(
@@ -134,15 +136,45 @@ auto Database::findAccount(
 auto Database::activityTypes(
     ) const -> tt3::db::api::ActivityTypes
 {
-    //  TODO implement and TODO cache
-    return tt3::db::api::ActivityTypes();
+    tt3::util::Lock _(guard);
+    ensureOpen();
+
+    //  TODO cache PKs
+    std::unique_ptr<Statement> stat
+        {   createStatement(
+            "SELECT [pk]"
+            "  FROM [activitytypes]") };
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };   //  may throw
+    tt3::db::api::ActivityTypes result;
+    while (rs->next())
+    {
+        result.insert(_getObject<ActivityType>(rs->intValue(0)));
+    }
+    return result;
 }
 
 auto Database::findActivityType(
-        const QString & /*displayName*/
+        const QString & displayName
     ) -> tt3::db::api::IActivityType *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(guard);
+    ensureOpen();
+
+    //  TODO cache PKs
+    std::unique_ptr<Statement> stat
+        {   createStatement(
+            "SELECT [pk]"
+            "  FROM [activitytypes]"
+            " WHERE [displayname] = ?") };
+    stat->setStringParameter(0, displayName);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };
+    if (rs->next())
+    {   //  Got it!
+        return _getObject<ActivityType>(rs->intValue(0));
+    }
+    return nullptr;
 }
 
 auto Database::publicActivities(
@@ -405,11 +437,80 @@ auto Database::createUser(
 }
 
 auto Database::createActivityType(
-        const QString & /*displayName*/,
-        const QString & /*description*/
+        const QString & displayName,
+        const QString & description
     ) -> tt3::db::api::IActivityType *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(guard);
+    ensureOpenAndWritable();   //  may throw
+
+    //  Validate parameters
+    if (!validator()->activityType()->isValidDisplayName(displayName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::ActivityType::instance(),
+            "displayName",
+            displayName);
+    }
+    if (!validator()->activityType()->isValidDescription(description))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::ActivityType::instance(),
+            "description",
+            description);
+    }
+
+    //  Display names must be unique.
+    //  SQL "UNIQUE displayname" constraint would take care of
+    //  that, but try for a better (non-SQL) error message
+    if (findActivityType(displayName) != nullptr)
+    {   //  OOPS!
+        throw tt3::db::api::AlreadyExistsException(
+            tt3::db::api::ObjectTypes::ActivityType::instance(),
+            "displayName",
+            displayName);
+    }
+
+    //  Begin transaction for the changes
+    Transaction transaction(this);  //  may throw
+
+    //  Do the work - create [objects] row..
+    _ObjIds objIds = _createObject(tt3::db::api::ObjectTypes::ActivityType::instance()); //  may throw
+    //  ...then [activitytypes] row...
+    std::unique_ptr<Statement> stat
+    {   createStatement(
+        "INSERT INTO [activitytypes]"
+        "       ([pk],[displayname],[description])"
+        "       VALUES(?,?,?)") };
+    stat->setIntParameter(0, std::get<0>(objIds));
+    stat->setStringParameter(1, displayName);
+    if (description.isEmpty())
+    {
+        stat->setNullParameter(2);
+    }
+    else
+    {
+        stat->setStringParameter(2, description);
+    }
+    stat->execute();    //  may throw
+
+    //  We're done with the changes
+    transaction.commit();   //  may throw
+
+    //  Create & register the ActivityType object...
+    ActivityType * activityType = new ActivityType(this, std::get<0>(objIds));
+    //  ...setting its cached properties to initial values
+    activityType->_oid = std::get<1>(objIds);
+    activityType->_displayName = displayName;
+    activityType->_description = description;
+
+    //  ...schedule change notifications...
+    _changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            this, activityType->type(), activityType->_oid));
+    //  TODO post change notification to the database
+    //  ...and we're done
+    return activityType;
 }
 
 auto Database::createPublicActivity(

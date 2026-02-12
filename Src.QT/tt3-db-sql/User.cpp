@@ -60,9 +60,14 @@ void User::setRealName(
 
     if (realName != _realName)  //  Cache load may throw
     {   //  Make the change...
-        //  TODO wrap database access into a transaction
+        //  Begin transaction for the changes
+        Transaction transaction(_database); //  may throw
+        //  Save, THEN cache
         _saveRealName(realName);    //  may throw
         _realName = realName;
+        //  We're done with the changes
+        transaction.commit();   //  may throw
+
         //  ...schedule change notifications....
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
@@ -100,9 +105,14 @@ void User::setInactivityTimeout(
 
     if (inactivityTimeout != _inactivityTimeout.value())    //  Cache load may throw
     {   //  Make the change...
-        //  TODO wrap database access into a transaction
+        //  Begin transaction for the changes
+        Transaction transaction(_database); //  may throw
+        //  Save, THEN cache
         _saveInactivityTimeout(inactivityTimeout);  //  may throw
         _inactivityTimeout = inactivityTimeout;
+        //  We're done with the changes
+        transaction.commit();   //  may throw
+
         //  ...schedule change notifications...
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
@@ -140,9 +150,14 @@ void User::setUiLocale(
 
     if (uiLocale != _uiLocale.value())  //  Cache load may throw
     {   //  Make the change...
-        //  TODO wrap database access into a transaction
+        //  Begin transaction for the changes
+        Transaction transaction(_database); //  may throw
+        //  Save, THEN cache
         _saveUiLocale(uiLocale);    //  may throw
         _uiLocale = uiLocale;
+        //  We're done with the changes
+        transaction.commit();   //  may throw
+
         //  ...schedule change notifications...
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
@@ -524,15 +539,30 @@ void User::_saveUiLocale(const tt3::db::api::UiLocale & uiLocale)
 
 //////////
 //  Implementation helpers
-void User::_makeDead()
+void User::_deleteCascade()
 {
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
+    Q_ASSERT(_database->_liveObjects.contains(_pk));
 
+    //  TODO private activities and tasks
+    //  TODO Accounts
     throw tt3::util::NotImplementedError();
+}
 
-    //  The rest is up to the base class
-    Principal::_makeDead();
+void User::_removeFromDatabase()
+{
+    Q_ASSERT(_database->guard.isLockedByCurrentThread());
+    Q_ASSERT(_isLive);
+    Q_ASSERT(_database->_liveObjects.contains(_pk));
+
+    std::unique_ptr<Statement> stat
+        {   _database->createStatement(
+            "DELETE FROM [users]"
+            " WHERE [pk] = ?") };
+    stat->setIntParameter(0, _pk);
+    stat->execute();    //  may throw
+    Principal::_removeFromDatabase();
 }
 
 //  End of tt3-db-sql/User.cpp

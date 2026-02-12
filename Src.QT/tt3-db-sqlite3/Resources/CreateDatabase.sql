@@ -5,7 +5,8 @@ CREATE TABLE [objects] (
     PRIMARY KEY([pk] AUTOINCREMENT),
     UNIQUE([oid]),
     CHECK(([type] = 'User') OR
-          ([type] = 'Account'))
+          ([type] = 'Account') OR
+          ([type] = 'ActivityType'))
 );
 
 CREATE TABLE [users] (
@@ -25,7 +26,7 @@ CREATE TABLE [accounts] (
     [fk_user]                   INTEGER NOT NULL,
     [enabled]                   CHAR(1) NOT NULL,       --  'Y' or 'N'
     [emailaddresses]            TEXT,                   --  '\n' - separated, NULL == none
-    [login]                     VARCHAR(127) NOT NULL,  --  as per DefaultValidator
+    [login]                     VARCHAR(127) NOT NULL UNIQUE, --  as per DefaultValidator
     [passwordhash]              CHAR(40) NOT NULL,      --  SHA-1 uppercase hexstring
     [administrator]             CHAR(1) NOT NULL,       --  'Y' or 'N'
     [manageusers]               CHAR(1) NOT NULL,       --  'Y' or 'N'
@@ -59,4 +60,11 @@ CREATE TABLE [accounts] (
     CHECK(([backupandrestore] = 'Y') OR ([backupandrestore] = 'N'))
 );
 CREATE INDEX [idx_account_user] ON [accounts] ([fk_user]);
-CREATE INDEX [idx_account_login] ON [accounts] ([login]);
+
+CREATE TABLE [activitytypes] (
+    [pk]                INTEGER NOT NULL UNIQUE,
+    [displayname]       VARCHAR(127) NOT NULL UNIQUE,   --  as per DefaultValidator
+    [description]       TEXT,          --  '\n' for newlines, NULL == none
+    PRIMARY KEY([pk]),
+    FOREIGN KEY([pk]) REFERENCES [objects]([pk])
+);

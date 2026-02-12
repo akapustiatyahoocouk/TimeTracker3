@@ -87,7 +87,7 @@ void SelectUsersDialog::_refresh()
             //  All users...
             auto users = _workspace->users(_credentials);
             if (QString filter = _ui->filterLineEdit->text().trimmed();
-                !filter.isEmpty())  //  TODO can we use the same trick elsewhere ?
+                !filter.isEmpty())
             {   //  Perform filtering
                 for (const auto & user : users.values())    //  shallow kind-of-clone
                 {

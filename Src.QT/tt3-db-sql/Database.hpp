@@ -31,6 +31,7 @@ namespace tt3::db::sql
         friend class Principal;
         friend class User;
         friend class Account;
+        friend class ActivityType;
 
         //////////
         //  Construction/destruction
@@ -309,6 +310,7 @@ namespace tt3::db::sql
     protected:
         /// \brief
         ///     The guard for all access synchronization.
+        //  TODO can we make this private???
         mutable tt3::util::Mutex    guard;
     private:
         tt3::db::api::ChangeNotifier    _changeNotifier;

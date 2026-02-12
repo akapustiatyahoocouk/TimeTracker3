@@ -67,7 +67,23 @@ void Object::setOid(
     tt3::util::Lock _(_database->guard);
     _ensureLiveAndWritable();
 
-    throw tt3::util::NotImplementedError();
+    if (oid != _oid)    //  Cacle load may throw
+    {   //  Make the change...
+        //  Begin transaction for the changes
+        Transaction transaction(_database); //  may throw
+        //  Save, THEN cache
+        _saveOid(oid);
+        _oid = oid;
+        //  We're done with the changes
+        transaction.commit();   //  may throw
+
+        //  ...schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  TODO post change notification to the database
+        //  ...and we're done
+    }
 }
 
 bool Object::isLive() const
@@ -83,8 +99,11 @@ void Object::destroy()
     tt3::util::Lock _(_database->guard);
     _ensureLiveAndWritable();   //  may throw
 
-    //  TODO wrap in a transaction
-    _makeDead();
+    Transaction transaction(_database);
+    _deleteCascade();       //  may throw
+    _removeFromDatabase();  //  may throw
+    _makeDead();            //  may throw
+    transaction.commit();   //  may throw
 }
 
 //////////
@@ -171,6 +190,25 @@ void Object::removeReference()
 }
 
 //////////
+//  Cached properties
+void Object::_saveOid(const tt3::db::api::Oid & oid)
+{
+    std::unique_ptr<Statement> stat
+        {   _database->createStatement(
+            "UPDATE [objects]"
+            "   SET [oid] = ?"
+            " WHERE [pk] = ?") };
+    stat->setOidParameter(0, oid);
+    stat->setIntParameter(1, _pk);
+    auto affectedRows = stat->execute();    //  may throw
+    if (affectedRows == 0)
+    {   //  OOPS! Row since deleted!
+        _makeDead();
+        throw tt3::db::api::InstanceDeadException();
+    }
+}
+
+//////////
 //  Implementation helpers
 void Object::_invalidateCachedProperties()
 {
@@ -201,13 +239,26 @@ void Object::_ensureLiveAndWritable() const
     }
 }
 
+void Object::_removeFromDatabase()
+{
+    Q_ASSERT(_database->guard.isLockedByCurrentThread());
+    Q_ASSERT(_isLive);
+    Q_ASSERT(_database->_liveObjects.contains(_pk));
+
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+            "DELETE FROM [objects]"
+            " WHERE [pk] = ?") };
+    stat->setIntParameter(0, _pk);
+    stat->execute();    //  may throw
+}
+
 void Object::_makeDead()
 {
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
     Q_ASSERT(_database->_liveObjects.contains(_pk));
 
-    //  TODO delete [objects] row
     //  Make this object "dead"
     _isLive = false;
     _database->_liveObjects.remove(_pk);
@@ -216,6 +267,7 @@ void Object::_makeDead()
     _database->_changeNotifier.post(
         new tt3::db::api::ObjectDestroyedNotification(
             _database, type(), _oid));
+    //  TODO write notification to the database
     //  Can we recycle now ?
     if (_referenceCount == 0 /* TODO uncomment &&
         _database->_activeDatabaseLocks.isEmpty()*/)

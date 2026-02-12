@@ -270,7 +270,7 @@ void Statement::setDateTimeParameter(int index, const QDateTime & value)
 
     if (index >= 0 && index < _parameters.size())
     {   //  Be defensive in release mode
-        //  TODO se QL syntax
+        //  TODO Use SQL syntax
         //  'YYYY-MM-DD HH:MM:SS.mmm'
         throw tt3::util::NotImplementedError();
     }

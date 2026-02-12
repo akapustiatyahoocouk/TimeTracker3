@@ -125,7 +125,8 @@ namespace tt3::db::sql
         void            _saveUiLocale(const tt3::db::api::UiLocale & uiLocale);
 
         //  Helpers
-        virtual void    _makeDead() override;
+        virtual void    _deleteCascade() override;  //  may throw
+        virtual void    _removeFromDatabase() override; //  may throw
         virtual QString _tableName() const override { return "users"; }
     };
 }

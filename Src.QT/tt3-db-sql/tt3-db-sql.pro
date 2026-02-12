@@ -5,6 +5,7 @@ DEFINES += TT3_DB_SQL_LIBRARY
 
 SOURCES += \
     Account.cpp \
+    ActivityType.cpp \
     Component.cpp \
     Database.cpp \
     Object.cpp \
@@ -16,6 +17,7 @@ SOURCES += \
 HEADERS += \
     API.hpp \
     Account.hpp \
+    ActivityType.hpp \
     CachedProperty.hpp \
     Classes.hpp \
     Component.hpp \
