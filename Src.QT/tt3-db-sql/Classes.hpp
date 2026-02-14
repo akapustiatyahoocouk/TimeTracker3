@@ -25,6 +25,13 @@ namespace tt3::db::sql
     class Principal;
     class User;
     class Account;
+    class ActivityType;
+    class Activity;
+    class PublicActivity;
+    class PrivateActivity;
+    class Task;
+    class PublicTask;
+    class PrivateTask;
 }
 
 //  End of tt3-db-sql/Classes.hpp

@@ -68,3 +68,32 @@ CREATE TABLE [activitytypes] (
     PRIMARY KEY([pk]),
     FOREIGN KEY([pk]) REFERENCES [objects]([pk])
 );
+
+CREATE TABLE [activities] (
+    [pk]                INTEGER NOT NULL UNIQUE,
+    [fk_parent]         INTEGER,        -- NULL == Task has no parent OR Activity, not Task
+    [fk_owner]          INTEGER,        -- NULL == Public, else Private
+    [fk_type]           INTEGER,        -- NULL == not assigned to anActivityType
+    [displayname]       VARCHAR(127) NOT NULL UNIQUE,   --  as per DefaultValidator
+    [description]       TEXT,          --  '\n' for newlines, NULL == none
+    [timeout]           VARCHAR(12),--  'PThhhhhHmmM', NULL == absent
+    [requirecommentonstart] CHAR(1) NOT NULL,       --  'Y' or 'N'
+    [requirecommentonstop]  CHAR(1) NOT NULL,       --  'Y' or 'N'
+    [fullscreenreminder]    CHAR(1) NOT NULL,       --  'Y' or 'N'
+    [completed]         CHAR(1),                    --  'Y' or 'N' for Tasks, NULL for Activities
+    [requirecommentoncompletion] CHAR(1),           --  'Y' or 'N' for Tasks, NULL for Activities
+    PRIMARY KEY([pk]),
+    FOREIGN KEY([pk]) REFERENCES [objects]([pk]),
+    FOREIGN KEY([fk_parent]) REFERENCES [activities]([pk]) ON DELETE CASCADE,
+    FOREIGN KEY([fk_owner]) REFERENCES [users]([pk]) ON DELETE CASCADE,
+    FOREIGN KEY([fk_type]) REFERENCES [activitytypes]([pk]) ON DELETE SET NULL,
+    CHECK(([requirecommentonstart] = 'Y') OR ([requirecommentonstart] = 'N')),
+    CHECK(([requirecommentonstop] = 'Y') OR ([requirecommentonstop] = 'N')),
+    CHECK(([fullscreenreminder] = 'Y') OR ([fullscreenreminder] = 'N')),
+    CHECK(([completed] IS NULL) OR ([completed] = 'Y') OR ([completed] = 'N')),
+    CHECK(([requirecommentoncompletion] IS NULL) OR ([requirecommentoncompletion] = 'Y') OR ([requirecommentoncompletion] = 'N'))
+);
+CREATE UNIQUE INDEX idx_activity_display_name ON [activities]([fk_owner],[fk_parent],[displayname]);
+CREATE INDEX [idx_activity_parent] ON [activities] ([fk_parent]);
+CREATE INDEX [idx_activity_owner] ON [activities] ([fk_owner]);
+CREATE INDEX [idx_activity_completed] ON [activities] ([completed]);

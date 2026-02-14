@@ -32,6 +32,12 @@ namespace tt3::db::sql
         friend class User;
         friend class Account;
         friend class ActivityType;
+        friend class Activity;
+        friend class PublicActivity;
+        friend class PrivateActivity;
+        friend class Task;
+        friend class PublicTask;
+        friend class PrivateTask;
 
         //////////
         //  Construction/destruction
@@ -294,6 +300,7 @@ namespace tt3::db::sql
         ///     "guard" is already locked by the calling thread.
         /// \exception DatabaseException
         ///     If the database is closed.
+        /// TODO can we make this private ?
         virtual void    ensureOpen() const = 0;
 
         /// \brief
@@ -303,6 +310,7 @@ namespace tt3::db::sql
         ///     "guard" is already locked by the calling thread.
         /// \exception DatabaseException
         ///     If the database is closed or read-only.
+        /// TODO can we make this private ?
         virtual void    ensureOpenAndWritable() const = 0;
 
         //////////
@@ -322,6 +330,7 @@ namespace tt3::db::sql
         //  Helpers
         using _ObjIds = std::tuple<qint64, tt3::db::api::Oid>;
         _ObjIds         _createObject(tt3::db::api::IObjectType * objectType);
+        PublicTask *    _findRootPublicTask(const QString & displayName) const;
 
         template <class T>
         T *             _findObject(qint64 pk) const

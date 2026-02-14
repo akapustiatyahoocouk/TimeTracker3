@@ -124,7 +124,48 @@ void ActivityType::setDescription(
 auto ActivityType::activities(
     ) const -> tt3::db::api::Activities
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(_database->guard);
+    _ensureLive();
+
+    //  TODO cache PKs
+    //  TODO this "SEKECT" needs to go into a
+    //  separate "Database::_getActivity(qint64 pk)" method
+    std::unique_ptr<Statement> stat
+        {   _database->createStatement(
+            "SELECT [objects].[pk] AS [pk],"
+            "       [objects].[type] AS [type]"
+            "  FROM [objects],[activities]"
+            " WHERE [activities].[pk] = [objects].[pk] AND"
+            "       [activities].[fk_type] = ?") };
+    stat->setIntParameter(0, _pk);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };   //  may throw
+    tt3::db::api::Activities result;
+    while (rs->next())
+    {
+        tt3::util::Mnemonic mnemonic { rs->stringValue(1) };
+        if (mnemonic == tt3::db::api::ObjectTypes::PublicActivity::instance()->mnemonic())
+        {
+            result.insert(_database->_getObject<PublicActivity>(rs->intValue(0)));
+        }
+        else if (mnemonic == tt3::db::api::ObjectTypes::PrivateActivity::instance()->mnemonic())
+        {
+            result.insert(_database->_getObject<PrivateActivity>(rs->intValue(0)));
+        }
+        else if (mnemonic == tt3::db::api::ObjectTypes::PublicTask::instance()->mnemonic())
+        {
+            result.insert(_database->_getObject<PublicTask>(rs->intValue(0)));
+        }
+        else if (mnemonic == tt3::db::api::ObjectTypes::PrivateTask::instance()->mnemonic())
+        {
+            result.insert(_database->_getObject<PrivateTask>(rs->intValue(0)));
+        }
+        else
+        {   //  OOPS! Can't be!
+            qCritical() << "Unknown activity type " << mnemonic.toString();
+        }
+    }
+    return result;
 }
 
 //////////

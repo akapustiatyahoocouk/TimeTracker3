@@ -38,5 +38,11 @@
 #include "tt3-db-sql/User.hpp"
 #include "tt3-db-sql/Account.hpp"
 #include "tt3-db-sql/ActivityType.hpp"
+#include "tt3-db-sql/Activity.hpp"
+#include "tt3-db-sql/PublicActivity.hpp"
+#include "tt3-db-sql/PrivateActivity.hpp"
+#include "tt3-db-sql/Task.hpp"
+#include "tt3-db-sql/PublicTask.hpp"
+#include "tt3-db-sql/PrivateTask.hpp"
 
 //  End of tt3-db-sql/API.hpp

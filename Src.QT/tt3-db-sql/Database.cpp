@@ -367,31 +367,16 @@ auto Database::createUser(
             "       VALUES(?,?,?,?,?,?)") };
     stat->setIntParameter(0, std::get<0>(objIds));
     stat->setBoolParameter(1, enabled);
-    if (emailAddresses.isEmpty())
-    {
-        stat->setNullParameter(2);
-    }
-    else
-    {
+    emailAddresses.isEmpty() ?
+        stat->setNullParameter(2) :
         stat->setStringParameter(2, emailAddresses.join('\n'));
-    }
     stat->setStringParameter(3, realName);
-    if (inactivityTimeout.has_value())
-    {
-        stat->setTimeSpanParameter(4, inactivityTimeout.value());
-    }
-    else
-    {
+    inactivityTimeout.has_value() ?
+        stat->setTimeSpanParameter(4, inactivityTimeout.value()) :
         stat->setNullParameter(4);
-    }
-    if (uiLocale.has_value())
-    {
-        stat->setStringParameter(5, tt3::util::toString(uiLocale.value()));
-    }
-    else
-    {
+    uiLocale.has_value() ?
+        stat->setStringParameter(5, tt3::util::toString(uiLocale.value())) :
         stat->setNullParameter(5);
-    }
     stat->execute();    //  may throw
 
     //  Associate User with Workloads
@@ -484,14 +469,9 @@ auto Database::createActivityType(
         "       VALUES(?,?,?)") };
     stat->setIntParameter(0, std::get<0>(objIds));
     stat->setStringParameter(1, displayName);
-    if (description.isEmpty())
-    {
-        stat->setNullParameter(2);
-    }
-    else
-    {
+    description.isEmpty() ?
+        stat->setNullParameter(2) :
         stat->setStringParameter(2, description);
-    }
     stat->execute();    //  may throw
 
     //  We're done with the changes
@@ -514,32 +494,221 @@ auto Database::createActivityType(
 }
 
 auto Database::createPublicActivity(
-        const QString & /*displayName*/,
-        const QString & /*description*/,
-        const tt3::db::api::InactivityTimeout & /*timeout*/,
-        bool /*requireCommentOnStart*/,
-        bool /*requireCommentOnStop*/,
-        bool /*fullScreenReminder*/,
-        tt3::db::api::IActivityType * /*activityType*/,
+        const QString & displayName,
+        const QString & description,
+        const tt3::db::api::InactivityTimeout & timeout,
+        bool requireCommentOnStart,
+        bool requireCommentOnStop,
+        bool fullScreenReminder,
+        tt3::db::api::IActivityType * activityType,
         tt3::db::api::IWorkload * /*workload*/
     ) -> tt3::db::api::IPublicActivity *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(guard);
+    ensureOpenAndWritable();   //  may throw
+
+    //  Validate parameters
+    if (!validator()->publicActivity()->isValidDisplayName(displayName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PublicActivity::instance(),
+            "displayName",
+            displayName);
+    }
+    if (!validator()->publicActivity()->isValidDescription(description))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PublicActivity::instance(),
+            "description",
+            description);
+    }
+    if (timeout.has_value() &&
+        !validator()->publicActivity()->isValidTimeout(timeout))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PublicActivity::instance(),
+            "timeout",
+            timeout.value());
+    }
+    ActivityType * sqlActivityType = nullptr;
+    if (activityType != nullptr)
+    {
+        sqlActivityType = dynamic_cast<ActivityType*>(activityType);
+        if (sqlActivityType == nullptr ||
+            sqlActivityType->_database != this ||
+            !sqlActivityType->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(activityType->type());
+        }
+    }
+    /*  TODO
+    Workload * xmlWorkload = nullptr;
+    if (workload != nullptr)
+    {
+        xmlWorkload = dynamic_cast<Workload*>(workload);
+        if (xmlWorkload == nullptr ||
+            xmlWorkload->_database != this ||
+            !xmlWorkload->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(workload->type());
+        }
+    }
+    */
+
+    //  Display names must be unique
+    //  SQL "UNIQUE displayname" constraint would take care of
+    //  that, but try for a better (non-SQL) error message
+    if (findPublicActivity(displayName) != nullptr)
+    {   //  OOPS!
+        throw tt3::db::api::AlreadyExistsException(
+            tt3::db::api::ObjectTypes::PublicActivity::instance(),
+            "displayName",
+            displayName);
+    }
+
+    //  Begin transaction for the changes
+    Transaction transaction(this);  //  may throw
+
+    //  Do the work - create [objects] row..
+    _ObjIds objIds = _createObject(tt3::db::api::ObjectTypes::PublicActivity::instance()); //  may throw
+    //  ...then [users] row...
+    std::unique_ptr<Statement> stat
+        {   createStatement(
+            "INSERT INTO [activities]"
+            "       ([pk],"
+            "        [fk_parent],[fk_owner],[fk_type],"
+            "        [displayname],[description],[timeout],"
+            "        [requirecommentonstart],"
+            "        [requirecommentonstop],"
+            "        [fullscreenreminder],"
+            "        [completed],[requirecommentoncompletion])"
+        "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?)") };
+    stat->setIntParameter(0, std::get<0>(objIds));
+    stat->setNullParameter(1);
+    stat->setNullParameter(2);
+    (sqlActivityType != nullptr) ?
+        stat->setIntParameter(3, sqlActivityType->_pk) :
+        stat->setNullParameter(3);
+    stat->setStringParameter(4, displayName);
+    description.isEmpty() ?
+        stat->setNullParameter(5) :
+        stat->setStringParameter(5, description);
+    timeout.has_value() ?
+        stat->setTimeSpanParameter(6, timeout.value()) :
+        stat->setNullParameter(6);
+    stat->setBoolParameter(7, requireCommentOnStart);
+    stat->setBoolParameter(8, requireCommentOnStop);
+    stat->setBoolParameter(9, fullScreenReminder);
+    stat->setNullParameter(10);
+    stat->setNullParameter(11);
+    stat->execute();    //  may throw
+
+    //  TODO associate with Workload
+
+    //  We're done with the changes
+    transaction.commit();   //  may throw
+
+    //  Create & register the PublicActivity object...
+    PublicActivity * publicActivity = new PublicActivity(this, std::get<0>(objIds));
+    //  ...setting its cached properties to initial values
+    publicActivity->_oid = std::get<1>(objIds);
+    publicActivity->_displayName = displayName;
+    publicActivity->_description = description;
+    publicActivity->_timeout = timeout;
+    publicActivity->_requireCommentOnStart = requireCommentOnStart;
+    publicActivity->_requireCommentOnStop = requireCommentOnStop;
+    publicActivity->_fullScreenReminder = fullScreenReminder;
+    publicActivity->_fkActivityType =
+        (sqlActivityType != nullptr) ?
+            sqlActivityType->_pk :
+            std::optional<qint64>();
+
+    //  ...schedule change notifications...
+    _changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            this, publicActivity->type(), publicActivity->_oid));
+    //  TODO ActivityType and Workload are also Modified
+    //  TODO post change notification to the database
+
+    //  ...and we're done
+    return publicActivity;
 }
 
 auto Database::createPublicTask(
-        const QString & /*displayName*/,
-        const QString & /*description*/,
-        const tt3::db::api::InactivityTimeout & /*timeout*/,
+        const QString & displayName,
+        const QString & description,
+        const tt3::db::api::InactivityTimeout & timeout,
         bool /*requireCommentOnStart*/,
         bool /*requireCommentOnStop*/,
         bool /*fullScreenReminder*/,
-        tt3::db::api::IActivityType * /*activityType*/,
+        tt3::db::api::IActivityType * activityType,
         tt3::db::api::IWorkload * /*workload*/,
         bool /*completed*/,
         bool /*requireCommentOnCompletion*/
     ) -> tt3::db::api::IPublicTask *
 {
+    tt3::util::Lock _(guard);
+    ensureOpenAndWritable();   //  may throw
+
+    //  Validate parameters
+    if (!validator()->publicTask()->isValidDisplayName(displayName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PublicTask::instance(),
+            "displayName",
+            displayName);
+    }
+    if (!validator()->publicTask()->isValidDescription(description))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PublicTask::instance(),
+            "description",
+            description);
+    }
+    if (timeout.has_value() &&
+        !validator()->publicTask()->isValidTimeout(timeout))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PublicTask::instance(),
+            "timeout",
+            timeout.value());
+    }
+    ActivityType * sqlActivityType = nullptr;
+    if (activityType != nullptr)
+    {
+        sqlActivityType = dynamic_cast<ActivityType*>(activityType);
+        if (sqlActivityType == nullptr ||
+            sqlActivityType->_database != this ||
+            !sqlActivityType->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(activityType->type());
+        }
+    }
+    /*  TODO
+    Workload * xmlWorkload = nullptr;
+    if (workload != nullptr)
+    {
+        xmlWorkload = dynamic_cast<Workload*>(workload);
+        if (xmlWorkload == nullptr ||
+            xmlWorkload->_database != this ||
+            !xmlWorkload->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(workload->type());
+        }
+    }
+    */
+
+    //  Display names must be unique
+    //  SQL "UNIQUE displayname" constraint would take care of
+    //  that, but try for a better (non-SQL) error message
+    if (_findRootPublicTask(displayName) != nullptr)
+    {   //  OOPS!
+        throw tt3::db::api::AlreadyExistsException(
+            tt3::db::api::ObjectTypes::PublicTask::instance(),
+            "displayName",
+            displayName);
+    }
+
     throw tt3::util::NotImplementedError();
 }
 
@@ -770,6 +939,26 @@ Database::_ObjIds Database::_createObject(tt3::db::api::IObjectType * objectType
     //  This is insane! Give up!
     //  TODO throw
     return std::make_tuple(-1, tt3::db::api::Oid::Invalid);
+}
+
+PublicTask * Database::_findRootPublicTask(const QString & displayName) const
+{
+    std::unique_ptr<Statement> stat
+    {   createStatement(
+            "SELECT [pk]"
+            "  FROM [activities]"
+            " WHERE [displayname] = ?"
+            "   AND [fk_owner] IS NULL"         //  Public
+            "   AND [fk_parent] IS NULL"        //  Root
+            "   AND [completed] IS NOT NULL") };//  Task
+    stat->setStringParameter(0, displayName);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };
+    if (rs->next())
+    {   //  Got it!
+        return _getObject<PublicTask>(rs->intValue(0));
+    }
+    return nullptr;
 }
 
 //  End of tt3-db-sql/Database.cpp

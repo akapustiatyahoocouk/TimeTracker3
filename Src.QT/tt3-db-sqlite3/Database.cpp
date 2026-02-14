@@ -268,6 +268,7 @@ Database::Database(
     //  Run the init/validate script
     if (_connection != nullptr)
     {   //  ...except on DEAD databases
+        execute("PRAGMA foreign_keys = ON");    //  may throw
         QString script;
         if (openMode == _OpenMode::_Create)
         {   //  Create schema script

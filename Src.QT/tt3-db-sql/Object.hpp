@@ -29,6 +29,12 @@ namespace tt3::db::sql
         friend class User;
         friend class Account;
         friend class ActivityType;
+        friend class Activity;
+        friend class PublicActivity;
+        friend class PrivateActivity;
+        friend class Task;
+        friend class PublicTask;
+        friend class PrivateTask;
 
         //////////
         //  Construction/destruction (from DB type only)

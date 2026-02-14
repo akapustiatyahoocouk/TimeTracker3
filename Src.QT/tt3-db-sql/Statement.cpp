@@ -264,7 +264,7 @@ void Statement::setStringParameter(int index, const QString & value)
     }
 }
 
-void Statement::setDateTimeParameter(int index, const QDateTime & value)
+void Statement::setDateTimeParameter(int index, const QDateTime & /*value*/)
 {
     Q_ASSERT(index >= 0 && index < _parameters.size());
 
