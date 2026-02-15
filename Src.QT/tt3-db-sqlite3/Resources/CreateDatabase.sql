@@ -6,7 +6,11 @@ CREATE TABLE [objects] (
     UNIQUE([oid]),
     CHECK(([type] = 'User') OR
           ([type] = 'Account') OR
-          ([type] = 'ActivityType'))
+          ([type] = 'ActivityType') OR
+          ([type] = 'PublicActivity') OR
+          ([type] = 'PrivateActivity') OR
+          ([type] = 'PublicTask') OR
+          ([type] = 'PrivateTask'))
 );
 
 CREATE TABLE [users] (

@@ -81,9 +81,25 @@ void PublicActivity::_loadCachedProperties()
 
 //////////
 //  Implementation helpers
-bool PublicActivity::_siblingExists(const QString & /*displayName*/) const
+bool PublicActivity::_siblingExists(const QString & displayName) const
 {
-    throw tt3::util::NotImplementedError();
+    Q_ASSERT(_database->guard.isLockedByCurrentThread());
+    Q_ASSERT(_isLive);
+    Q_ASSERT(_database->_liveObjects.contains(_pk));
+
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+        "SELECT [pk]"
+        "  FROM [activities]"
+        " WHERE [displayname] = ?"
+        "   AND [pk] <> ?"
+        "   AND [fk_owner] IS NULL"     //  Public
+        "   AND [completed] IS NULL") };//  Activity
+    stat->setStringParameter(0, displayName);
+    stat->setIntParameter(1, _pk);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };
+    return rs->next();  //  row exists ?
 }
 
 //  End of tt3-db-sql/PublicActivity.cpp

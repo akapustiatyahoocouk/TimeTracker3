@@ -128,6 +128,9 @@ namespace tt3::db::sql
         virtual void    _deleteCascade() override;  //  may throw
         virtual void    _removeFromDatabase() override; //  may throw
         virtual QString _tableName() const override { return "users"; }
+        auto            _findPrivateActivity(
+                                const QString & displayName
+                            ) const -> PrivateActivity *;
     };
 }
 

@@ -160,14 +160,9 @@ void Task::_saveFkParent(const std::optional<qint64> & fkParent)
         "UPDATE [activities]"
         "   SET [fk_parent] = ?"
         " WHERE [pk] = ?") };
-    if (fkParent.has_value())
-    {
-        stat->setBoolParameter(0, fkParent.value());
-    }
-    else
-    {
+    fkParent.has_value() ?
+        stat->setIntParameter(0, fkParent.value()) :
         stat->setNullParameter(0);
-    }
     stat->setIntParameter(1, _pk);
     auto affectedRows = stat->execute();    //  may throw
     if (affectedRows == 0)

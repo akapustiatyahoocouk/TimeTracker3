@@ -72,6 +72,7 @@ namespace tt3::db::sql
         virtual void    _deleteCascade() override;  //  may throw
         virtual bool    _siblingExists(const QString & displayName) const override;
         PublicTask *    _findChild(const QString & displayName) const;
+        void            _collectParentClosure(PublicTasks & closure);
     };
 }
 

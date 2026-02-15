@@ -141,9 +141,9 @@ auto Database::activityTypes(
 
     //  TODO cache PKs
     std::unique_ptr<Statement> stat
-        {   createStatement(
-            "SELECT [pk]"
-            "  FROM [activitytypes]") };
+    {   createStatement(
+        "SELECT [pk]"
+        "  FROM [activitytypes]") };
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };   //  may throw
     tt3::db::api::ActivityTypes result;
@@ -180,15 +180,49 @@ auto Database::findActivityType(
 auto Database::publicActivities(
     ) const -> tt3::db::api::PublicActivities
 {
-    //  TODO implement and TODO cache PKs
-    return tt3::db::api::PublicActivities();
+    tt3::util::Lock _(guard);
+    ensureOpen();
+
+    //  TODO cache PKs
+    std::unique_ptr<Statement> stat
+    {   createStatement(
+        "SELECT [pk]"
+        "  FROM [activities]"
+        " WHERE [fk_owner] IS NULL"     //  Public
+        "   AND [completed] IS NULL") };//  Activity
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };   //  may throw
+    tt3::db::api::PublicActivities result;
+    while (rs->next())
+    {
+        result.insert(_getObject<PublicActivity>(rs->intValue(0)));
+    }
+    return result;
 }
 
 auto Database::findPublicActivity(
-        const QString & /*displayName*/
+        const QString & displayName
     ) -> tt3::db::api::IPublicActivity *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(guard);
+    ensureOpen();
+
+    //  TODO cache PKs
+    std::unique_ptr<Statement> stat
+    {   createStatement(
+        "SELECT [pk]"
+        "  FROM [activities]"
+        " WHERE [displayname] = ?"
+        "   AND [fk_owner] IS NULL"     //  Public
+        "   AND [completed] IS NULL") };//  Activity
+    stat->setStringParameter(0, displayName);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };
+    if (rs->next())
+    {   //  Got it!
+        return _getObject<PublicActivity>(rs->intValue(0));
+    }
+    return nullptr;
 }
 
 auto Database::publicActivitiesAndTasks(
@@ -200,14 +234,48 @@ auto Database::publicActivitiesAndTasks(
 auto Database::publicTasks(
     ) const -> tt3::db::api::PublicTasks
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(guard);
+    ensureOpen();
+
+    //  TODO cache PKs
+    std::unique_ptr<Statement> stat
+        {   createStatement(
+            "SELECT [pk]"
+            "  FROM [activities]"
+            "   AND [fk_owner] IS NULL"         //  Public
+            "   AND [completed] IS NOT NULL") };//  Task
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };   //  may throw
+    tt3::db::api::PublicTasks result;
+    while (rs->next())
+    {
+        result.insert(_getObject<PublicTask>(rs->intValue(0)));
+    }
+    return result;
 }
 
 auto Database::rootPublicTasks(
     ) const -> tt3::db::api::PublicTasks
 {
-    //  TODO implement and TODO cache PKs
-    return tt3::db::api::PublicTasks();
+    tt3::util::Lock _(guard);
+    ensureOpen();
+
+    //  TODO cache PKs
+    std::unique_ptr<Statement> stat
+    {   createStatement(
+        "SELECT [pk]"
+        "  FROM [activities]"
+        " WHERE [fk_parent] IS NULL"        //  Root
+        "   AND [fk_owner] IS NULL"         //  Public
+        "   AND [completed] IS NOT NULL") };//  Task
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };   //  may throw
+    tt3::db::api::PublicTasks result;
+    while (rs->next())
+    {
+        result.insert(_getObject<PublicTask>(rs->intValue(0)));
+    }
+    return result;
 }
 
 auto Database::projects(
@@ -571,7 +639,7 @@ auto Database::createPublicActivity(
 
     //  Do the work - create [objects] row..
     _ObjIds objIds = _createObject(tt3::db::api::ObjectTypes::PublicActivity::instance()); //  may throw
-    //  ...then [users] row...
+    //  ...then [activities] row...
     std::unique_ptr<Statement> stat
         {   createStatement(
             "INSERT INTO [activities]"
@@ -638,13 +706,13 @@ auto Database::createPublicTask(
         const QString & displayName,
         const QString & description,
         const tt3::db::api::InactivityTimeout & timeout,
-        bool /*requireCommentOnStart*/,
-        bool /*requireCommentOnStop*/,
-        bool /*fullScreenReminder*/,
+        bool requireCommentOnStart,
+        bool requireCommentOnStop,
+        bool fullScreenReminder,
         tt3::db::api::IActivityType * activityType,
         tt3::db::api::IWorkload * /*workload*/,
-        bool /*completed*/,
-        bool /*requireCommentOnCompletion*/
+        bool completed,
+        bool requireCommentOnCompletion
     ) -> tt3::db::api::IPublicTask *
 {
     tt3::util::Lock _(guard);
@@ -709,7 +777,75 @@ auto Database::createPublicTask(
             displayName);
     }
 
-    throw tt3::util::NotImplementedError();
+    //  Begin transaction for the changes
+    Transaction transaction(this);  //  may throw
+
+    //  Do the work - create [objects] row..
+    _ObjIds objIds = _createObject(tt3::db::api::ObjectTypes::PublicTask::instance()); //  may throw
+    //  ...then [activities] row...
+    std::unique_ptr<Statement> stat
+    {   createStatement(
+        "INSERT INTO [activities]"
+        "       ([pk],"
+        "        [fk_parent],[fk_owner],[fk_type],"
+        "        [displayname],[description],[timeout],"
+        "        [requirecommentonstart],"
+        "        [requirecommentonstop],"
+        "        [fullscreenreminder],"
+        "        [completed],[requirecommentoncompletion])"
+        "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?)") };
+    stat->setIntParameter(0, std::get<0>(objIds));
+    stat->setNullParameter(1);
+    stat->setNullParameter(2);
+    (sqlActivityType != nullptr) ?
+        stat->setIntParameter(3, sqlActivityType->_pk) :
+        stat->setNullParameter(3);
+    stat->setStringParameter(4, displayName);
+    description.isEmpty() ?
+        stat->setNullParameter(5) :
+        stat->setStringParameter(5, description);
+    timeout.has_value() ?
+        stat->setTimeSpanParameter(6, timeout.value()) :
+        stat->setNullParameter(6);
+    stat->setBoolParameter(7, requireCommentOnStart);
+    stat->setBoolParameter(8, requireCommentOnStop);
+    stat->setBoolParameter(9, fullScreenReminder);
+    stat->setBoolParameter(10, completed);
+    stat->setBoolParameter(11, requireCommentOnCompletion);
+    stat->execute();    //  may throw
+
+    //  TODO associate with Workload
+
+    //  We're done with the changes
+    transaction.commit();   //  may throw
+
+    //  Create & register the PublicTask object...
+    PublicTask * publicTask = new PublicTask(this, std::get<0>(objIds));
+    //  ...setting its cached properties to initial values
+    publicTask->_oid = std::get<1>(objIds);
+    publicTask->_displayName = displayName;
+    publicTask->_description = description;
+    publicTask->_timeout = timeout;
+    publicTask->_requireCommentOnStart = requireCommentOnStart;
+    publicTask->_requireCommentOnStop = requireCommentOnStop;
+    publicTask->_fullScreenReminder = fullScreenReminder;
+    publicTask->_fkActivityType =
+        (sqlActivityType != nullptr) ?
+            sqlActivityType->_pk :
+            std::optional<qint64>();
+    publicTask->_requireCommentOnCompletion = requireCommentOnCompletion;
+    publicTask->_completed = completed;
+    publicTask->_fkParent = std::optional<qint64>();
+
+    //  ...schedule change notifications...
+    _changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            this, publicTask->type(), publicTask->_oid));
+    //  TODO ActivityType and Workload are also Modified
+    //  TODO post change notification to the database
+
+    //  ...and we're done
+    return publicTask;
 }
 
 auto Database::createProject(

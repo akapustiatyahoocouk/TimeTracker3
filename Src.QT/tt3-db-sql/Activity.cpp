@@ -353,7 +353,7 @@ void Activity::setWorkload(
         tt3::db::api::IWorkload * /*workload*/
     )
 {
-    throw tt3::util::NotImplementedError();
+    //  TODO implement
 }
 
 auto Activity::works(
@@ -516,14 +516,9 @@ void Activity::_saveFkActivityType(const std::optional<qint64> & fkActivityType)
         "UPDATE [activities]"
         "   SET [fk_type] = ?"
         " WHERE [pk] = ?") };
-    if (fkActivityType.has_value())
-    {
-        stat->setBoolParameter(0, fkActivityType.value());
-    }
-    else
-    {
+    fkActivityType.has_value() ?
+        stat->setIntParameter(0, fkActivityType.value()) :
         stat->setNullParameter(0);
-    }
     stat->setIntParameter(1, _pk);
     auto affectedRows = stat->execute();    //  may throw
     if (affectedRows == 0)

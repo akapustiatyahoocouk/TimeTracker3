@@ -118,6 +118,8 @@
     #pragma warning(disable:4866)   //  compiler may not enforce left-to-right evaluation order for call to 'C++17 operator'
     #pragma warning(disable:5045)   //  Compiler will insert Spectre mitigation for memory load if /Qspectre switch specified
     #pragma warning(disable:5249)   //  '<CLASS>::<MEMBER>' of type '<TYPE' has named enumerators with values that cannot be represented in the given bit field width of '<WIDTH>'.
+    //  Some warnings better be errors
+    #pragma warning(error:4715)     //  '<FUNCTION>': not all control paths return a value
 #else
     #error Unsupported C++ toolchain
 #endif

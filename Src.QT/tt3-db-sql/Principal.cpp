@@ -148,14 +148,9 @@ void Principal::_saveEmailAddresses(const QStringList & emailAddresses)
             "UPDATE [" + _tableName() + "]"
             "   SET [emailaddresses] = ?"
             " WHERE [pk] = ?") };
-    if (emailAddresses.isEmpty())
-    {
-        stat->setNullParameter(0);
-    }
-    else
-    {
+    emailAddresses.isEmpty() ?
+        stat->setNullParameter(0) :
         stat->setStringParameter(0, emailAddresses.join("\n"));
-    }
     stat->setIntParameter(1, _pk);
     auto affectedRows = stat->execute();    //  may throw
     if (affectedRows == 0)

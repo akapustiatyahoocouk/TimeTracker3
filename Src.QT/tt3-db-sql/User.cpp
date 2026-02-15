@@ -195,8 +195,25 @@ auto User::accounts(
 auto User::privateActivities(
     ) const -> tt3::db::api::PrivateActivities
 {
-    //  TODO implement and TODO cache PKs
-    return tt3::db::api::PrivateActivities();
+    tt3::util::Lock _(_database->guard);
+    _ensureLive();
+
+    //  TODO cache PKs
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+        "SELECT [pk]"
+        "  FROM [activities]"
+        " WHERE [fk_owner] = ?"         //  {rivate to this UserPublic}
+        "   AND [completed] IS NULL") };//  Activity
+    stat->setIntParameter(0, _pk);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };   //  may throw
+    tt3::db::api::PrivateActivities result;
+    while (rs->next())
+    {
+        result.insert(_database->_getObject<PrivateActivity>(rs->intValue(0)));
+    }
+    return result;
 }
 
 auto User::privateActivitiesAndTasks(
@@ -326,14 +343,9 @@ auto User::createAccount(
     stat->setIntParameter(0, std::get<0>(objIds));
     stat->setIntParameter(1, _pk);
     stat->setBoolParameter(2, enabled);
-    if (emailAddresses.isEmpty())
-    {
-        stat->setNullParameter(3);
-    }
-    else
-    {
+    emailAddresses.isEmpty() ?
+        stat->setNullParameter(3) :
         stat->setStringParameter(3, emailAddresses.join('\n'));
-    }
     stat->setStringParameter(4, login);
     stat->setStringParameter(5, passwordHash);
     stat->setBoolParameter(6, capabilities.contains(tt3::db::api::Capability::Administrator));
@@ -378,17 +390,145 @@ auto User::createAccount(
 }
 
 auto User::createPrivateActivity(
-        const QString & /*displayName*/,
-        const QString & /*description*/,
-        const tt3::db::api::InactivityTimeout & /*timeout*/,
-        bool /*requireCommentOnStart*/,
-        bool /*requireCommentOnStop*/,
-        bool /*fullScreenReminder*/,
-        tt3::db::api::IActivityType * /*activityType*/,
+        const QString & displayName,
+        const QString & description,
+        const tt3::db::api::InactivityTimeout & timeout,
+        bool requireCommentOnStart,
+        bool requireCommentOnStop,
+        bool fullScreenReminder,
+        tt3::db::api::IActivityType * activityType,
         tt3::db::api::IWorkload * /*workload*/
     ) -> tt3::db::api::IPrivateActivity *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(_database->guard);
+    _ensureLiveAndWritable();
+
+    //  Validate parameters
+    if (!_database->validator()->publicActivity()->isValidDisplayName(displayName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PublicActivity::instance(),
+            "displayName",
+            displayName);
+    }
+    if (!_database->validator()->publicActivity()->isValidDescription(description))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PublicActivity::instance(),
+            "description",
+            description);
+    }
+    if (timeout.has_value() &&
+        !_database->validator()->publicActivity()->isValidTimeout(timeout))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::PublicActivity::instance(),
+            "timeout",
+            timeout.value());
+    }
+    ActivityType * sqlActivityType = nullptr;
+    if (activityType != nullptr)
+    {
+        sqlActivityType = dynamic_cast<ActivityType*>(activityType);
+        if (sqlActivityType == nullptr ||
+            sqlActivityType->_database != _database ||
+            !sqlActivityType->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(activityType->type());
+        }
+    }
+    /*  TODO
+    Workload * xmlWorkload = nullptr;
+    if (workload != nullptr)
+    {
+        xmlWorkload = dynamic_cast<Workload*>(workload);
+        if (xmlWorkload == nullptr ||
+            xmlWorkload->_database != this ||
+            !xmlWorkload->_isLive)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(workload->type());
+        }
+    }
+    */
+
+    //  Display names must be unique
+    //  SQL "UNIQUE displayname" constraint would take care of
+    //  that, but try for a better (non-SQL) error message
+    if (_findPrivateActivity(displayName) != nullptr)
+    {   //  OOPS!
+        throw tt3::db::api::AlreadyExistsException(
+            tt3::db::api::ObjectTypes::PublicActivity::instance(),
+            "displayName",
+            displayName);
+    }
+
+    //  Begin transaction for the changes
+    Transaction transaction(_database);  //  may throw
+
+    //  Do the work - create [objects] row..
+    Database::_ObjIds objIds = _database->_createObject(tt3::db::api::ObjectTypes::PrivateActivity::instance()); //  may throw
+    //  ...then [activities] row...
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+        "INSERT INTO [activities]"
+        "       ([pk],"
+        "        [fk_parent],[fk_owner],[fk_type],"
+        "        [displayname],[description],[timeout],"
+        "        [requirecommentonstart],"
+        "        [requirecommentonstop],"
+        "        [fullscreenreminder],"
+        "        [completed],[requirecommentoncompletion])"
+        "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?)") };
+    stat->setIntParameter(0, std::get<0>(objIds));
+    stat->setNullParameter(1);
+    stat->setIntParameter(2, _pk);
+    (sqlActivityType != nullptr) ?
+        stat->setIntParameter(3, sqlActivityType->_pk) :
+        stat->setNullParameter(3);
+    stat->setStringParameter(4, displayName);
+    description.isEmpty() ?
+        stat->setNullParameter(5) :
+        stat->setStringParameter(5, description);
+    timeout.has_value() ?
+        stat->setTimeSpanParameter(6, timeout.value()) :
+        stat->setNullParameter(6);
+    stat->setBoolParameter(7, requireCommentOnStart);
+    stat->setBoolParameter(8, requireCommentOnStop);
+    stat->setBoolParameter(9, fullScreenReminder);
+    stat->setNullParameter(10);
+    stat->setNullParameter(11);
+    stat->execute();    //  may throw
+
+    //  TODO associate with Workload
+
+    //  We're done with the changes
+    transaction.commit();   //  may throw
+
+    //  Create & register the PrivateActivity object...
+    PrivateActivity * privateActivity = new PrivateActivity(_database, std::get<0>(objIds));
+    //  ...setting its cached properties to initial values
+    privateActivity->_oid = std::get<1>(objIds);
+    privateActivity->_displayName = displayName;
+    privateActivity->_description = description;
+    privateActivity->_timeout = timeout;
+    privateActivity->_requireCommentOnStart = requireCommentOnStart;
+    privateActivity->_requireCommentOnStop = requireCommentOnStop;
+    privateActivity->_fullScreenReminder = fullScreenReminder;
+    privateActivity->_fkActivityType =
+        (sqlActivityType != nullptr) ?
+            sqlActivityType->_pk :
+            std::optional<qint64>();
+    privateActivity->_fkOwner = _pk;
+
+    //  ...schedule change notifications...
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            _database, privateActivity->type(), privateActivity->_oid));
+    //  TODO ActivityType and Workload are also Modified
+    //  TODO post change notification to the database
+
+    //  ...and we're done
+    return privateActivity;
 }
 
 auto User::createPrivateTask(
@@ -494,14 +634,9 @@ void User::_saveInactivityTimeout(const tt3::db::api::InactivityTimeout & inacti
         "UPDATE [users]"
         "   SET [inactivitytimeout] = ?"
         " WHERE [pk] = ?") };
-    if (inactivityTimeout.has_value())
-    {
-        stat->setTimeSpanParameter(0, inactivityTimeout.value());
-    }
-    else
-    {
+    inactivityTimeout.has_value() ?
+        stat->setTimeSpanParameter(0, inactivityTimeout.value()) :
         stat->setNullParameter(0);
-    }
     stat->setIntParameter(1, _pk);
     auto affectedRows = stat->execute();    //  may throw
     if (affectedRows == 0)
@@ -520,14 +655,9 @@ void User::_saveUiLocale(const tt3::db::api::UiLocale & uiLocale)
         "UPDATE [users]"
         "   SET [uilocale] = ?"
         " WHERE [pk] = ?") };
-    if (uiLocale.has_value())
-    {
-        stat->setStringParameter(0, tt3::util::toString(uiLocale.value()));
-    }
-    else
-    {
+    uiLocale.has_value() ?
+        stat->setStringParameter(0, tt3::util::toString(uiLocale.value())) :
         stat->setNullParameter(0);
-    }
     stat->setIntParameter(1, _pk);
     auto affectedRows = stat->execute();    //  may throw
     if (affectedRows == 0)
@@ -563,6 +693,33 @@ void User::_removeFromDatabase()
     stat->setIntParameter(0, _pk);
     stat->execute();    //  may throw
     Principal::_removeFromDatabase();
+}
+
+auto User::_findPrivateActivity(
+        const QString & displayName
+    ) const -> PrivateActivity *
+{
+    Q_ASSERT(_database->guard.isLockedByCurrentThread());
+    Q_ASSERT(_isLive);
+    Q_ASSERT(_database->_liveObjects.contains(_pk));
+
+    //  TODO cache PKs
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+        "SELECT [pk]"
+        "  FROM [activities]"
+        " WHERE [displayname] = ?"
+        "   AND [fk_owner] = ?"         //  Private to this User
+        "   AND [completed] IS NULL") };//  Activity
+    stat->setStringParameter(0, displayName);
+    stat->setIntParameter(1, _pk);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };
+    if (rs->next())
+    {   //  Got it!
+        return _database->_getObject<PrivateActivity>(rs->intValue(0));
+    }
+    return nullptr;
 }
 
 //  End of tt3-db-sql/User.cpp

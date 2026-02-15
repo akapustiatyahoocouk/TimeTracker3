@@ -102,12 +102,26 @@ void PrivateActivity::_loadCachedProperties()
 
 //////////
 //  Implementation helpers
-bool PrivateActivity::_siblingExists(const QString & /*displayName*/) const
+bool PrivateActivity::_siblingExists(const QString & displayName) const
 {
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
+    Q_ASSERT(_database->_liveObjects.contains(_pk));
 
-    throw tt3::util::NotImplementedError();
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+        "SELECT [pk]"
+        "  FROM [activities]"
+        " WHERE [displayname] = ?"
+        "   AND [pk] <> ?"
+        "   AND [fk_owner] = ?"         //  Private to this User
+        "   AND [completed] IS NULL") };//  Activity
+    stat->setStringParameter(0, displayName);
+    stat->setIntParameter(1, _pk);
+    stat->setIntParameter(2, _fkOwner); //  Cache load may throw
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };
+    return rs->next();  //  row exists ?
 }
 
 //  End of tt3-db-sql/PrivateActivity.cpp
