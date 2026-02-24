@@ -46,13 +46,56 @@ auto PrivateTask::parent(
 }
 
 void PrivateTask::setParent(
-        IPrivateTask * /*parent*/
+        IPrivateTask * parent
     )
 {
     tt3::util::Lock _(_database->guard);
     _ensureLiveAndWritable();   //  may throw
 
-    throw tt3::util::NotImplementedError();
+    PrivateTask * sqlParent = nullptr;
+    if (parent != nullptr)
+    {
+        sqlParent = dynamic_cast<PrivateTask*>(parent);
+        if (sqlParent == nullptr ||
+            !sqlParent->_isLive ||
+            sqlParent->_database != this->_database ||
+            sqlParent->_fkOwner.value() != _fkOwner.value())    //  Cache load may throw
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(parent->type());
+        }
+    }
+    std::optional<qint64> fkParent =
+        (sqlParent != nullptr) ?
+            sqlParent->_pk :
+            std::optional<qint64>();
+    if (fkParent != _fkParent.value())  //  Cache load may throw
+    {   //  Make the change
+        //  Begin transaction for the changes
+        Transaction transaction(_database); //  may throw
+        //  ...ensuring we're not creating a oarent/child loop...
+        if (sqlParent != nullptr)
+        {
+            PrivateTasks parentClosure;
+            sqlParent->_collectParentClosure(parentClosure);
+            if (parentClosure.contains(this))
+            {   //  OOPS!
+                throw tt3::db::api::IncompatibleInstanceException(sqlParent->type());
+            }
+        }
+        //  Save, THEN cache
+        _saveFkParent(fkParent);
+        _fkParent = fkParent;
+        //  We're done with the changes
+        transaction.commit();   //  may throw
+
+        //  ...schedule change notifications....
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));
+        //  TODO post change notification to the database
+        //  TODO "modified" changes for old & new parent PrivateTask
+        //  ...and we're done
+    }
 }
 
 auto PrivateTask::children(
@@ -84,13 +127,13 @@ auto PrivateTask::createChild(
         const QString & displayName,
         const QString & description,
         const tt3::db::api::InactivityTimeout & timeout,
-        bool /*requireCommentOnStart*/,
-        bool /*requireCommentOnStop*/,
-        bool /*fullScreenReminder*/,
+        bool requireCommentOnStart,
+        bool requireCommentOnStop,
+        bool fullScreenReminder,
         tt3::db::api::IActivityType * activityType,
         tt3::db::api::IWorkload * /*workload*/,
-        bool /*completed*/,
-        bool /*requireCommentOnCompletion*/
+        bool completed,
+        bool requireCommentOnCompletion
     ) -> tt3::db::api::IPrivateTask *
 {
     tt3::util::Lock _(_database->guard);
@@ -145,6 +188,8 @@ auto PrivateTask::createChild(
     */
 
     //  Display names must be unique
+    //  SQL "UNIQUE displayname" constraint would take care of
+    //  that, but try for a better (non-SQL) error message
     if (_findChild(displayName) != nullptr)
     {   //  OOPS!
         throw tt3::db::api::AlreadyExistsException(
@@ -153,7 +198,80 @@ auto PrivateTask::createChild(
             displayName);
     }
 
-    throw tt3::util::NotImplementedError();
+    //  Begin transaction for the changes
+    Transaction transaction(_database);  //  may throw
+
+    //  Do the work - create [objects] row..
+    Database::_ObjIds objIds = _database->_createObject(tt3::db::api::ObjectTypes::PublicTask::instance()); //  may throw
+    //  ...then [activities] row...
+    std::unique_ptr<Statement> stat
+        {   _database->createStatement(
+            "INSERT INTO [activities]"
+            "       ([pk],"
+            "        [fk_parent],[fk_owner],[fk_type],"
+            "        [displayname],[description],[timeout],"
+            "        [requirecommentonstart],"
+            "        [requirecommentonstop],"
+            "        [fullscreenreminder],"
+            "        [completed],[requirecommentoncompletion])"
+            "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?)") };
+    stat->setIntParameter(0, std::get<0>(objIds));
+    stat->setIntParameter(1, _pk);
+    stat->setIntParameter(2, _fkOwner); //  Cache load may throw
+    (sqlActivityType != nullptr) ?
+        stat->setIntParameter(3, sqlActivityType->_pk) :
+        stat->setNullParameter(3);
+    stat->setStringParameter(4, displayName);
+    description.isEmpty() ?
+        stat->setNullParameter(5) :
+        stat->setStringParameter(5, description);
+    timeout.has_value() ?
+        stat->setTimeSpanParameter(6, timeout.value()) :
+        stat->setNullParameter(6);
+    stat->setBoolParameter(7, requireCommentOnStart);
+    stat->setBoolParameter(8, requireCommentOnStop);
+    stat->setBoolParameter(9, fullScreenReminder);
+    stat->setBoolParameter(10, completed);
+    stat->setBoolParameter(11, requireCommentOnCompletion);
+    stat->execute();    //  may throw
+
+    //  TODO associate with Workload
+
+    //  We're done with the changes
+    tt3::db::api::Oid oid = _oid;   //  Cache load may throw
+    transaction.commit();   //  may throw
+
+    //  Create & register the PrivateTask object...
+    PrivateTask * privateTask = new PrivateTask(_database, std::get<0>(objIds));
+    //  ...setting its cached properties to initial values
+    privateTask->_oid = std::get<1>(objIds);
+    privateTask->_displayName = displayName;
+    privateTask->_description = description;
+    privateTask->_timeout = timeout;
+    privateTask->_requireCommentOnStart = requireCommentOnStart;
+    privateTask->_requireCommentOnStop = requireCommentOnStop;
+    privateTask->_fullScreenReminder = fullScreenReminder;
+    privateTask->_fkActivityType =
+        (sqlActivityType != nullptr) ?
+            sqlActivityType->_pk :
+            std::optional<qint64>();
+    privateTask->_fkOwner = _fkOwner.value();   //  Cache load may throw
+    privateTask->_requireCommentOnCompletion = requireCommentOnCompletion;
+    privateTask->_completed = completed;
+    privateTask->_fkParent = _pk;
+
+    //  ...schedule change notifications...
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectModifiedNotification(
+            _database, this->type(), oid));
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            _database, privateTask->type(), privateTask->_oid));
+    //  TODO ActivityType and Workload are also Modified
+    //  TODO post change notification to the database
+
+    //  ...and we're done
+    return privateTask;
 }
 
 //////////
@@ -175,6 +293,7 @@ void PrivateTask::_loadCachedProperties()
             "       [activities].[fk_parent] AS [fk_parent],"
             "       [activities].[fk_owner] AS [fk_owner],"
             "       [activities].[fk_type] AS [fk_type],"
+            "       [activities].[fk_workload] AS [fk_workload],"
             "       [activities].[displayname] AS [displayname],"
             "       [activities].[description] AS [description],"
             "       [activities].[timeout] AS [timeout],"
@@ -209,6 +328,10 @@ void PrivateTask::_loadCachedProperties()
         rs->isNull("fk_type") ?
             std::optional<qint64>() :
             rs->intValue("fk_type");
+    _fkWorkload =
+        rs->isNull("fk_workload") ?
+            std::optional<qint64>() :
+            rs->intValue("fk_workload");
     _fkOwner = rs->intValue("fk_owner");
     _requireCommentOnCompletion = rs->boolValue("requirecommentoncompletion");
     _completed = rs->boolValue("completed");
@@ -226,26 +349,105 @@ void PrivateTask::_deleteCascade()
     Q_ASSERT(_isLive);
     Q_ASSERT(_database->_liveObjects.contains(_pk));
 
-    //  TODO child tasks
+    //  Child tasks - can't rely on SQL DELETE CASCADE
+    for (auto child : children())
+    {
+        child->destroy();
+    }
 
     //  There's no _deleteCascade() at PrivateActivity or Task level
     Activity::_deleteCascade();
-    throw tt3::util::NotImplementedError();
 }
 
-bool PrivateTask::_siblingExists(const QString & /*displayName*/) const
+bool PrivateTask::_siblingExists(const QString & displayName) const
 {
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
 
-    throw tt3::util::NotImplementedError();
+    Q_ASSERT(_database->guard.isLockedByCurrentThread());
+    Q_ASSERT(_isLive);
+    Q_ASSERT(_database->_liveObjects.contains(_pk));
+
+    if (_fkParent.value().has_value())  //  Cache load may throw
+    {   //  We're looking for a child public task
+        std::unique_ptr<Statement> stat
+            {   _database->createStatement(
+                "SELECT [pk]"
+                "  FROM [activities]"
+                " WHERE [displayname] = ?"
+                "   AND [pk] <> ?"
+                "   AND [fk_owner] = ?"             //  Private to this User
+                "   AND [completed] IS NOT NULL"    //  Task
+                "   AND [fk_parent] = ?") };        //  with the same parent
+        stat->setStringParameter(0, displayName);
+        stat->setIntParameter(1, _pk);
+        stat->setIntParameter(2, _fkOwner); //  Cache load may throw
+        stat->setIntParameter(3, _fkParent.value().value());    //  Cache load may throw
+        std::unique_ptr<ResultSet> rs
+            { stat->executeQuery() };
+        return rs->next();  //  row exists ?
+    }
+    else
+    {   //  We're looking for a root private task
+        std::unique_ptr<Statement> stat
+        {   _database->createStatement(
+            "SELECT [pk]"
+            "  FROM [activities]"
+            " WHERE [displayname] = ?"
+            "   AND [pk] <> ?"
+            "   AND [fk_owner] = ?"             //  Private to this User
+            "   AND [completed] IS NOT NULL"    //  Task
+            "   AND [fk_parent] IS NULL") };    //  Root
+        stat->setStringParameter(0, displayName);
+        stat->setIntParameter(1, _pk);
+        stat->setIntParameter(2, _fkOwner); //  Cache load may throw
+        std::unique_ptr<ResultSet> rs
+            { stat->executeQuery() };
+        return rs->next();  //  row exists ?
+    }
 }
 
-PrivateTask * PrivateTask::_findChild(const QString & /*displayName*/) const
+PrivateTask * PrivateTask::_findChild(const QString & displayName) const
 {
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
+    Q_ASSERT(_isLive);
+    Q_ASSERT(_database->_liveObjects.contains(_pk));
 
-    throw tt3::util::NotImplementedError();
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+        "SELECT [pk]"
+        "  FROM [activities]"
+        " WHERE [displayname] = ?"
+        "   AND [fk_owner] = ?"         //  Private to this User
+        "   AND [completed] IS NOT NULL"//  Task
+        "   AND [fk_parent] = ?") };    //  with this as parent
+    stat->setStringParameter(0, displayName);
+    stat->setIntParameter(1, _fkOwner); //  Cache load may throw
+    stat->setIntParameter(2, _pk);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };
+    if (rs->next())
+    {   //  Row exists
+        return _database->_getObject<PrivateTask>(rs->intValue(0));
+    }
+    return nullptr;
+}
+
+void PrivateTask::_collectParentClosure(PrivateTasks & closure)
+{
+    Q_ASSERT(_database->guard.isLockedByCurrentThread());
+    Q_ASSERT(_isLive);
+    Q_ASSERT(_database->_liveObjects.contains(_pk));
+
+    closure.insert(this);
+    PrivateTask * parentTask =
+        _fkParent.value().has_value() ?  //  Cache load may throw
+            _database->_getObject<PrivateTask>(_fkParent.value().value()) :  //  Cache load may throw
+            nullptr;
+    if (parentTask != nullptr && !closure.contains(parentTask))
+    {
+        parentTask->_collectParentClosure(closure);
+    }
 }
 
 //  End of tt3-db-sql/PrivateTask.cpp

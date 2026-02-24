@@ -237,6 +237,7 @@ auto PublicTask::createChild(
     //  TODO associate with Workload
 
     //  We're done with the changes
+    tt3::db::api::Oid oid = _oid;   //  Cache load may throw
     transaction.commit();   //  may throw
 
     //  Create & register the PublicTask object...
@@ -258,6 +259,9 @@ auto PublicTask::createChild(
     publicTask->_fkParent = _pk;
 
     //  ...schedule change notifications...
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectModifiedNotification(
+            _database, this->type(), oid));
     _database->_changeNotifier.post(
         new tt3::db::api::ObjectCreatedNotification(
             _database, publicTask->type(), publicTask->_oid));
@@ -287,6 +291,7 @@ void PublicTask::_loadCachedProperties()
             "       [activities].[fk_parent] AS [fk_parent],"
             "       [activities].[fk_owner] AS [fk_owner],"
             "       [activities].[fk_type] AS [fk_type],"
+            "       [activities].[fk_workload] AS [fk_workload],"
             "       [activities].[displayname] AS [displayname],"
             "       [activities].[description] AS [description],"
             "       [activities].[timeout] AS [timeout],"
@@ -321,6 +326,10 @@ void PublicTask::_loadCachedProperties()
         rs->isNull("fk_type") ?
             std::optional<qint64>() :
             rs->intValue("fk_type");
+    _fkWorkload =
+        rs->isNull("fk_workload") ?
+            std::optional<qint64>() :
+            rs->intValue("fk_workload");
     _requireCommentOnCompletion = rs->boolValue("requirecommentoncompletion");
     _completed = rs->boolValue("completed");
     _fkParent =
@@ -337,11 +346,14 @@ void PublicTask::_deleteCascade()
     Q_ASSERT(_isLive);
     Q_ASSERT(_database->_liveObjects.contains(_pk));
 
-    //  TODO child tasks
+    //  Child tasks - can't rely on SQL DELETE CASCADE
+    for (auto child : children())
+    {
+        child->destroy();
+    }
 
     //  There's no _deleteCascade() at PublicActivity or Task level
     Activity::_deleteCascade();
-    throw tt3::util::NotImplementedError();
 }
 
 bool PublicTask::_siblingExists(

@@ -27,6 +27,7 @@ namespace tt3::db::sql
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(PrivateTask)
 
         friend class Database;
+        friend class User;
 
         //////////
         //  Construction/destruction (from DB type only)
@@ -72,6 +73,7 @@ namespace tt3::db::sql
         virtual void    _deleteCascade() override;  //  may throw
         virtual bool    _siblingExists(const QString & displayName) const override;
         PrivateTask *   _findChild(const QString & displayName) const;
+        void            _collectParentClosure(PrivateTasks & closure);
     };
 }
 

@@ -1,5 +1,5 @@
 //
-//  tt3-db-sql/ActivityType.cpp - tt3::db::sql::ActivityType class implementation
+//  tt3-db-sql/Workload.cpp - tt3::db::sql::Workload class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,21 +19,23 @@ using namespace tt3::db::sql;
 
 //////////
 //  Construction/destruction (from DB type only)
-ActivityType::ActivityType(Database * database, qint64 pk)
-    :   Object(database, pk),
+Workload::Workload(
+        Database * database,
+        qint64 pk
+    ) : Object(database, pk),
         //  Cached propertirs
         _displayName([this] { _loadCachedProperties(); }),
         _description([this] { _loadCachedProperties(); })
 {
 }
 
-ActivityType::~ActivityType()
+Workload::~Workload()
 {
 }
 
 //////////
-//  tt3::db::api::IActivityType (properties)
-QString ActivityType::displayName() const
+//  tt3::db::api::IWorkload (properties)
+QString Workload::displayName() const
 {
     tt3::util::Lock _(_database->guard);
     _ensureLive();  //  may throw
@@ -41,7 +43,7 @@ QString ActivityType::displayName() const
     return _displayName;    //  Cache load may throw
 }
 
-void ActivityType::setDisplayName(
+void Workload::setDisplayName(
         const QString & displayName
     )
 {
@@ -49,7 +51,7 @@ void ActivityType::setDisplayName(
     _ensureLiveAndWritable();   //  may throw
 
     //  Validate parameters
-    if (!_database->validator()->activityType()->isValidDisplayName(displayName))
+    if (!_database->validator()->workload()->isValidDisplayName(displayName))
     {
         throw tt3::db::api::InvalidPropertyValueException(
             type(),
@@ -76,7 +78,7 @@ void ActivityType::setDisplayName(
     }
 }
 
-QString ActivityType::description() const
+QString Workload::description() const
 {
     tt3::util::Lock _(_database->guard);
     _ensureLive();  //  may throw
@@ -84,7 +86,7 @@ QString ActivityType::description() const
     return _description;    //  Cache load may throw
 }
 
-void ActivityType::setDescription(
+void Workload::setDescription(
         const QString & description
     )
 {
@@ -92,7 +94,7 @@ void ActivityType::setDescription(
     _ensureLiveAndWritable();   //  may throw
 
     //  Validate parameters
-    if (!_database->validator()->activityType()->isValidDescription(description))
+    if (!_database->validator()->workload()->isValidDescription(description))
     {
         throw tt3::db::api::InvalidPropertyValueException(
             type(),
@@ -120,96 +122,110 @@ void ActivityType::setDescription(
 }
 
 //////////
-//  tt3::db::api::IActivityType (associations)
-auto ActivityType::activities(
+//  tt3::db::api::IWorkload (associations)
+auto Workload::contributingActivities(
     ) const -> tt3::db::api::Activities
 {
     tt3::util::Lock _(_database->guard);
-    _ensureLive();
+    _ensureLive();  //  may throw
 
-    //  TODO cache PKs
-    //  TODO this "SEKECT" needs to go into a
-    //  separate "Database::_getActivity(qint64 pk)" method
-    std::unique_ptr<Statement> stat
-        {   _database->createStatement(
-            "SELECT [objects].[pk] AS [pk],"
-            "       [objects].[type] AS [type]"
-            "  FROM [objects],[activities]"
-            " WHERE [activities].[pk] = [objects].[pk] AND"
-            "       [activities].[fk_type] = ?") };
-    stat->setIntParameter(0, _pk);
-    std::unique_ptr<ResultSet> rs
-        { stat->executeQuery() };   //  may throw
-    tt3::db::api::Activities result;
-    while (rs->next())
-    {
-        tt3::util::Mnemonic mnemonic { rs->stringValue(1) };
-        if (mnemonic == tt3::db::api::ObjectTypes::PublicActivity::instance()->mnemonic())
-        {
-            result.insert(_database->_getObject<PublicActivity>(rs->intValue(0)));
-        }
-        else if (mnemonic == tt3::db::api::ObjectTypes::PrivateActivity::instance()->mnemonic())
-        {
-            result.insert(_database->_getObject<PrivateActivity>(rs->intValue(0)));
-        }
-        else if (mnemonic == tt3::db::api::ObjectTypes::PublicTask::instance()->mnemonic())
-        {
-            result.insert(_database->_getObject<PublicTask>(rs->intValue(0)));
-        }
-        else if (mnemonic == tt3::db::api::ObjectTypes::PrivateTask::instance()->mnemonic())
-        {
-            result.insert(_database->_getObject<PrivateTask>(rs->intValue(0)));
-        }
-        else
-        {   //  OOPS! Can't be!
-            qCritical() << "Unknown activity type " << mnemonic.toString();
-        }
-    }
-    return result;
+    return tt3::db::api::Activities();  //  TODO implement properly
+}
+
+auto Workload::beneficiaries(
+    ) const -> tt3::db::api::Beneficiaries
+{
+    tt3::util::Lock _(_database->guard);
+    _ensureLive();  //  may throw
+
+    return tt3::db::api::Beneficiaries();   //  TODO implement properly
+}
+
+void Workload::setBeneficiaries(
+        const tt3::db::api::Beneficiaries & /*beneficiaries*/
+    )
+{
+    tt3::util::Lock _(_database->guard);
+    _ensureLiveAndWritable();   //  may throw
+
+    throw tt3::util::NotImplementedError();
+}
+
+void Workload::addBeneficiary(
+        tt3::db::api::IBeneficiary * /*beneficiary*/
+    )
+{
+    tt3::util::Lock _(_database->guard);
+    _ensureLiveAndWritable();   //  may throw
+
+    throw tt3::util::NotImplementedError();
+}
+
+void Workload::removeBeneficiary(
+        tt3::db::api::IBeneficiary * /*beneficiary*/
+    )
+{
+    tt3::util::Lock _(_database->guard);
+    _ensureLiveAndWritable();   //  may throw
+
+    throw tt3::util::NotImplementedError();
+}
+
+auto Workload::assignedUsers(
+    ) const -> tt3::db::api::Users
+{
+    tt3::util::Lock _(_database->guard);
+    _ensureLive();  //  may throw
+
+    return tt3::db::api::Users();   //  TODO implement properly
+}
+
+void Workload::setAssignedUsers(
+        const tt3::db::api::Users & /*users*/
+    )
+{
+    tt3::util::Lock _(_database->guard);
+    _ensureLiveAndWritable();   //  may throw
+
+    throw tt3::util::NotImplementedError();
+}
+
+void Workload::addAssignedUser(
+        tt3::db::api::IUser * /*user*/
+    )
+{
+    tt3::util::Lock _(_database->guard);
+    _ensureLiveAndWritable();   //  may throw
+
+    throw tt3::util::NotImplementedError();
+}
+
+void Workload::removeAssignedUser(
+        tt3::db::api::IUser * /*user*/
+    )
+{
+    tt3::util::Lock _(_database->guard);
+    _ensureLiveAndWritable();   //  may throw
+
+    throw tt3::util::NotImplementedError();
 }
 
 //////////
 //  Cached properties
-void ActivityType::_invalidateCachedProperties()
+void Workload::_invalidateCachedProperties()
 {
     Object::_invalidateCachedProperties();
     _displayName.invalidate();
     _description.invalidate();
 }
 
-void ActivityType::_loadCachedProperties()
-{
-    Q_ASSERT(_database->guard.isLockedByCurrentThread());
-
-    std::unique_ptr<Statement> stat
-        {   _database->createStatement(
-            "SELECT [objects].[oid] AS [oid],"
-            "       [activitytypes].[displayname] AS [displayname],"
-            "       [activitytypes].[description] AS [description]"
-            "  FROM [objects],[activitytypes]"
-            " WHERE [objects].[pk] = ?"
-            "   AND [activitytypes].[pk] = [objects].[pk]") };
-    stat->setIntParameter(0, _pk);
-    std::unique_ptr<ResultSet> rs
-        { stat->executeQuery() };   //  may throw
-    if (!rs->next())
-    {   //  OOPS! User row does not exist
-        _makeDead();
-        throw tt3::db::api::InstanceDeadException();
-    }
-    //  ActivityType row exists and is now "current" in "rs"
-    _oid = rs->oidValue("oid");
-    _displayName = rs->stringValue("displayname");
-    _description = rs->stringValue("description");
-}
-
-void ActivityType::_saveDisplayName(const QString & displayName)
+void Workload::_saveDisplayName(const QString & displayName)
 {
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [activitytypes]"
+        "UPDATE [workloads]"
         "   SET [displayname] = ?"
         " WHERE [pk] = ?") };
     stat->setStringParameter(0, displayName);
@@ -222,13 +238,13 @@ void ActivityType::_saveDisplayName(const QString & displayName)
     }
 }
 
-void ActivityType::_saveDescription(const QString & description)
+void Workload::_saveDescription(const QString & description)
 {
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [activitytypes]"
+        "UPDATE [workloads]"
         "   SET [description] = ?"
         " WHERE [pk] = ?") };
     description.isEmpty() ?
@@ -245,7 +261,7 @@ void ActivityType::_saveDescription(const QString & description)
 
 //////////
 //  Implementation helpers
-void ActivityType::_deleteCascade()
+void Workload::_deleteCascade()
 {
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
@@ -255,23 +271,14 @@ void ActivityType::_deleteCascade()
     //  _deleteCascade() non-abstract and kill this method ?
 }
 
-void ActivityType::_removeFromDatabase()
+void Workload::_removeFromDatabase()
 {
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
     Q_ASSERT(_database->_liveObjects.contains(_pk));
 
-    //  TODO all Activities associated with this ActivityType
-    //  must lose their associations
-    //  TODO and notifications issued too
-
-    std::unique_ptr<Statement> stat
-    {   _database->createStatement(
-        "DELETE FROM [activitytypes]"
-        " WHERE [pk] = ?") };
-    stat->setIntParameter(0, _pk);
-    stat->execute();    //  may throw
-    Object::_removeFromDatabase();
+    //  TODO break associations
+    throw tt3::util::NotImplementedError();
 }
 
-//  End of tt3-db-sql/ActivityType.cpp
+//  End of tt3-db-sql/Workload.cpp

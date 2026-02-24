@@ -134,6 +134,7 @@ namespace tt3::db::api
         ///     including those which are also tasks.
         /// \exception DatabaseException
         ///     If an error occurs.
+        /// TODO remove this method from public API
         virtual auto    privateActivitiesAndTasks(
                             ) const -> PrivateActivities = 0;
 
@@ -143,6 +144,7 @@ namespace tt3::db::api
         ///     The set of all private tasks of this User.
         /// \exception DatabaseException
         ///     If an error occurs.
+        /// TODO remove this method from public API
         virtual auto    privateTasks(
                             ) const -> PrivateTasks = 0;
 

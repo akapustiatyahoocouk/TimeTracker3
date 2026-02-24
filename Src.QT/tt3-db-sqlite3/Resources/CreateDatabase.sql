@@ -73,11 +73,27 @@ CREATE TABLE [activitytypes] (
     FOREIGN KEY([pk]) REFERENCES [objects]([pk])
 );
 
+CREATE TABLE [workloads] (
+    [pk]                INTEGER NOT NULL UNIQUE,
+    [fk_parent]         INTEGER,        -- NULL == Project has no parent OR WorkStream, not Project
+    [displayname]       VARCHAR(127) NOT NULL UNIQUE,   --  as per DefaultValidator
+    [description]       TEXT,           --  '\n' for newlines, NULL == none
+    [completed]         CHAR(1),        --  'Y' or 'N' for Projects, NULL for WorkStreams
+    PRIMARY KEY([pk]),
+    FOREIGN KEY([pk]) REFERENCES [objects]([pk]),
+    FOREIGN KEY([fk_parent]) REFERENCES [workloads]([pk]) ON DELETE CASCADE,
+    CHECK(([completed] IS NULL) OR ([completed] = 'Y') OR ([completed] = 'N'))
+);
+CREATE UNIQUE INDEX idx_workload_display_name ON [workloads]([fk_parent],[displayname]);
+CREATE INDEX [idx_workload_parent] ON [workloads] ([fk_parent]);
+CREATE INDEX [idx_workload_completed] ON [workloads] ([completed]);
+
 CREATE TABLE [activities] (
     [pk]                INTEGER NOT NULL UNIQUE,
     [fk_parent]         INTEGER,        -- NULL == Task has no parent OR Activity, not Task
     [fk_owner]          INTEGER,        -- NULL == Public, else Private
-    [fk_type]           INTEGER,        -- NULL == not assigned to anActivityType
+    [fk_type]           INTEGER,        -- NULL == not assigned to an ActivityType
+    [fk_workload]       INTEGER,        -- NULL == not assigned to a Workload
     [displayname]       VARCHAR(127) NOT NULL UNIQUE,   --  as per DefaultValidator
     [description]       TEXT,          --  '\n' for newlines, NULL == none
     [timeout]           VARCHAR(12),--  'PThhhhhHmmM', NULL == absent
@@ -91,6 +107,7 @@ CREATE TABLE [activities] (
     FOREIGN KEY([fk_parent]) REFERENCES [activities]([pk]) ON DELETE CASCADE,
     FOREIGN KEY([fk_owner]) REFERENCES [users]([pk]) ON DELETE CASCADE,
     FOREIGN KEY([fk_type]) REFERENCES [activitytypes]([pk]) ON DELETE SET NULL,
+    FOREIGN KEY([fk_workload]) REFERENCES [workloads]([pk]) ON DELETE SET NULL,
     CHECK(([requirecommentonstart] = 'Y') OR ([requirecommentonstart] = 'N')),
     CHECK(([requirecommentonstop] = 'Y') OR ([requirecommentonstop] = 'N')),
     CHECK(([fullscreenreminder] = 'Y') OR ([fullscreenreminder] = 'N')),

@@ -35,6 +35,8 @@ namespace tt3::db::sql
         friend class Task;
         friend class PublicTask;
         friend class PrivateTask;
+        friend class Workload;
+        friend class WorkStream;
 
         //////////
         //  Construction/destruction (from DB type only)

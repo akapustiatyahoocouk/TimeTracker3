@@ -769,7 +769,7 @@ auto Database::createPublicTask(
     //  Display names must be unique
     //  SQL "UNIQUE displayname" constraint would take care of
     //  that, but try for a better (non-SQL) error message
-    if (_findRootPublicTask(displayName) != nullptr)
+    if (_rootPublicTaskExists(displayName))
     {   //  OOPS!
         throw tt3::db::api::AlreadyExistsException(
             tt3::db::api::ObjectTypes::PublicTask::instance(),
@@ -859,12 +859,103 @@ auto Database::createProject(
 }
 
 auto Database::createWorkStream(
-        const QString & /*displayName*/,
-        const QString & /*description*/,
-        const tt3::db::api::Beneficiaries & /*beneficiaries*/
+        const QString & displayName,
+        const QString & description,
+        const tt3::db::api::Beneficiaries & beneficiaries
     ) -> tt3::db::api::IWorkStream *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(guard);
+    ensureOpenAndWritable();   //  may throw
+
+    //  Validate parameters
+    if (!validator()->workStream()->isValidDisplayName(displayName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::WorkStream::instance(),
+            "displayName",
+            displayName);
+    }
+    if (!validator()->workStream()->isValidDescription(description))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::WorkStream::instance(),
+            "description",
+            description);
+    }
+    if (beneficiaries.contains(nullptr))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::WorkStream::instance(),
+            "beneficiaries",
+            nullptr);
+    }
+
+    /*  TODO
+    Beneficiaries xmlBeneficiaries =
+        tt3::util::transform(
+            beneficiaries,
+            [&](auto b)
+            {
+                Q_ASSERT(b != nullptr);   //  should have been caught earlier
+                auto xmlBeneficiary = dynamic_cast<Beneficiary*>(b);
+                if (xmlBeneficiary == nullptr ||
+                    xmlBeneficiary->_database != this ||
+                    !xmlBeneficiary->_isLive)
+                {   //  OOPS!
+                    throw tt3::db::api::IncompatibleInstanceException(b->type());
+                }
+                return xmlBeneficiary;
+            });
+    */
+
+    //  Display names must be unique.
+    //  SQL "UNIQUE displayname" constraint would take care of
+    //  that, but try for a better (non-SQL) error message
+    if (_workStreamExists(displayName))
+    {   //  OOPS!
+        throw tt3::db::api::AlreadyExistsException(
+            tt3::db::api::ObjectTypes::WorkStream::instance(),
+            "displayName",
+            displayName);
+    }
+
+    //  Begin transaction for the changes
+    Transaction transaction(this);  //  may throw
+
+    //  Do the work - create [objects] row..
+    _ObjIds objIds = _createObject(tt3::db::api::ObjectTypes::WorkStream::instance()); //  may throw
+    //  ...then [worklooads] row...
+    std::unique_ptr<Statement> stat
+    {   createStatement(
+        "INSERT INTO [workloads]"
+        "       ([pk],[fk_parent],[displayname],[description],[completed])"
+        "       VALUES(?,?,?,?,?)") };
+    stat->setIntParameter(0, std::get<0>(objIds));
+    stat->setNullParameter(1);
+    stat->setStringParameter(2, displayName);
+    description.isEmpty() ?
+        stat->setNullParameter(3) :
+        stat->setStringParameter(3, description);
+    stat->setNullParameter(4);
+    stat->execute();    //  may throw
+
+    //  We're done with the changes
+    transaction.commit();   //  may throw
+
+    //  Create & register the WorkStream object...
+    WorkStream * workStream = new WorkStream(this, std::get<0>(objIds));
+    //  ...setting its cached properties to initial values
+    workStream->_oid = std::get<1>(objIds);
+    workStream->_displayName = displayName;
+    workStream->_description = description;
+
+    //  ...schedule change notifications...
+    _changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            this, workStream->type(), workStream->_oid));
+    //  TODO post change notification to the database
+    //  ...and we're done
+    return workStream;
 }
 
 auto Database::createBeneficiary(
@@ -1077,7 +1168,7 @@ Database::_ObjIds Database::_createObject(tt3::db::api::IObjectType * objectType
     return std::make_tuple(-1, tt3::db::api::Oid::Invalid);
 }
 
-PublicTask * Database::_findRootPublicTask(const QString & displayName) const
+bool Database::_rootPublicTaskExists(const QString & displayName) const
 {
     std::unique_ptr<Statement> stat
     {   createStatement(
@@ -1090,11 +1181,21 @@ PublicTask * Database::_findRootPublicTask(const QString & displayName) const
     stat->setStringParameter(0, displayName);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };
-    if (rs->next())
-    {   //  Got it!
-        return _getObject<PublicTask>(rs->intValue(0));
-    }
-    return nullptr;
+    return rs->next();  //  row exists ?
+}
+
+bool Database::_workStreamExists(const QString & displayName) const
+{
+    std::unique_ptr<Statement> stat
+    {   createStatement(
+        "SELECT [pk]"
+        "  FROM [workloads]"
+        " WHERE [displayname] = ?"
+        "   AND [completed] IS NULL") };//  WorkStream
+    stat->setStringParameter(0, displayName);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };
+    return rs->next();  //  row exists ?
 }
 
 //  End of tt3-db-sql/Database.cpp

@@ -63,6 +63,7 @@ void PrivateActivity::_loadCachedProperties()
             "       [activities].[fk_parent] AS [fk_parent],"
             "       [activities].[fk_owner] AS [fk_owner],"
             "       [activities].[fk_type] AS [fk_type],"
+            "       [activities].[fk_workload] AS [fk_workload],"
             "       [activities].[displayname] AS [displayname],"
             "       [activities].[description] AS [description],"
             "       [activities].[timeout] AS [timeout],"
@@ -97,6 +98,10 @@ void PrivateActivity::_loadCachedProperties()
         rs->isNull("fk_type") ?
             std::optional<qint64>() :
             rs->intValue("fk_type");
+    _fkWorkload =
+        rs->isNull("fk_workload") ?
+            std::optional<qint64>() :
+            rs->intValue("fk_workload");
     _fkOwner = rs->intValue("fk_owner");
 }
 

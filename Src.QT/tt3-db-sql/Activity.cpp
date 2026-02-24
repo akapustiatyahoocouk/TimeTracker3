@@ -30,7 +30,8 @@ Activity::Activity(
         _requireCommentOnStart([this] { _loadCachedProperties(); }),
         _requireCommentOnStop([this] { _loadCachedProperties(); }),
         _fullScreenReminder([this] { _loadCachedProperties(); }),
-        _fkActivityType([this] { _loadCachedProperties(); })
+        _fkActivityType([this] { _loadCachedProperties(); }),
+        _fkWorkload([this] { _loadCachedProperties(); })
 {
 }
 
@@ -388,6 +389,7 @@ void Activity::_invalidateCachedProperties()
     _requireCommentOnStop.invalidate();
     _fullScreenReminder.invalidate();
     _fkActivityType.invalidate();
+    _fkWorkload.invalidate();
     //  TODO other associations
 }
 
@@ -419,7 +421,9 @@ void Activity::_saveDescription(const QString & description)
         "UPDATE [activities]"
         "   SET [description] = ?"
         " WHERE [pk] = ?") };
-    stat->setStringParameter(0, description);
+    description.isEmpty() ?
+        stat->setNullParameter(0) :
+        stat->setStringParameter(0, description);
     stat->setIntParameter(1, _pk);
     auto affectedRows = stat->execute();    //  may throw
     if (affectedRows == 0)
@@ -528,8 +532,29 @@ void Activity::_saveFkActivityType(const std::optional<qint64> & fkActivityType)
     }
 }
 
+void Activity::_saveFkWorkload(const std::optional<qint64> & fkWorkload)
+{
+    Q_ASSERT(_database->guard.isLockedByCurrentThread());
+
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+        "UPDATE [activities]"
+        "   SET [fk_workload] = ?"
+        " WHERE [pk] = ?") };
+    fkWorkload.has_value() ?
+        stat->setIntParameter(0, fkWorkload.value()) :
+        stat->setNullParameter(0);
+    stat->setIntParameter(1, _pk);
+    auto affectedRows = stat->execute();    //  may throw
+    if (affectedRows == 0)
+    {   //  OOPS! Row since deleted!
+        _makeDead();
+        throw tt3::db::api::InstanceDeadException();
+    }
+}
+
 //////////
-//  Implementatuion helpers
+//  Implementation helpers
 void Activity::_deleteCascade()
 {
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
@@ -538,8 +563,6 @@ void Activity::_deleteCascade()
 
     //  TODO works and events
     //  TODO remove from quick picks lists
-    //  TODO etc.
-    throw tt3::util::NotImplementedError();
 }
 
 void Activity::_removeFromDatabase()

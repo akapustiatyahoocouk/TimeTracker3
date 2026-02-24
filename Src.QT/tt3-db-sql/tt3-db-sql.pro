@@ -18,7 +18,9 @@ SOURCES += \
     Statement.cpp \
     Task.cpp \
     Transaction.cpp \
-    User.cpp
+    User.cpp \
+    WorkStream.cpp \
+    Workload.cpp
 
 HEADERS += \
     API.hpp \
@@ -40,7 +42,9 @@ HEADERS += \
     Statement.hpp \
     Task.hpp \
     Transaction.hpp \
-    User.hpp
+    User.hpp \
+    WorkStream.hpp \
+    Workload.hpp
 
 PRECOMPILED_HEADER = API.hpp
 

@@ -1,5 +1,5 @@
 //
-//  tt3-db-xml/Workload.hpp - a generic workload
+//  tt3-db-sql/Workload.hpp - a generic workload
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,29 +15,23 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace tt3::db::xml
+namespace tt3::db::sql
 {
-    /// \class Workload tt3-db-xml/API.hpp
-    /// \brief A generic workload in an XML database.
-    class TT3_DB_XML_PUBLIC Workload
+    /// \class Workload tt3-db-sql/API.hpp
+    /// \brief A generic workload in an SQL database.
+    class TT3_DB_SQL_PUBLIC Workload
         :   public Object,
             public virtual tt3::db::api::IWorkload
     {
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Workload)
 
         friend class Database;
-        friend class User;
-        friend class Activity;
-        friend class PublicTask;
-        friend class PrivateTask;
-        friend class Project;
         friend class WorkStream;
-        friend class Beneficiary;
 
         //////////
         //  Construction/destruction (from DB type only)
     private:
-        Workload(Database * database, tt3::db::api::Oid oid);
+        Workload(Database * database, qint64 pk);
         virtual ~Workload();
 
         //////////
@@ -85,48 +79,20 @@ namespace tt3::db::xml
         //////////
         //  Implementation
     private:
-        //  Properties
-        QString         _displayName;
-        QString         _description;
-        //  Associations
-        Beneficiaries   _beneficiaries; //  count as "references"
-        Users           _assignedUsers; //  count as "references"
-        Activities      _contributingActivities;    //  count as "references"
+        //  Cached properties
+        CachedProperty<QString> _displayName;
+        CachedProperty<QString> _description;
+
+        virtual void    _invalidateCachedProperties() override;
+        void            _saveDisplayName(const QString & displayName);
+        void            _saveDescription(const QString & description);
 
         //  Helpers
         virtual bool    _siblingExists(const QString & displayName) const = 0;
-        virtual void    _makeDead() override;
-
-        //////////
-        //  Serialization
-    private:
-        virtual void    _serializeProperties(
-                                QDomElement & objectElement
-                            ) const override;
-        virtual void    _serializeAggregations(
-                                QDomElement & objectElement
-                            ) const override;
-        virtual void    _serializeAssociations(
-                                QDomElement & objectElement
-                            ) const override;
-
-        virtual void    _deserializeProperties(
-                                const QDomElement & objectElement
-                            ) override; //  throws tt3::util::ParseException
-        virtual void    _deserializeAggregations(
-                                const QDomElement & objectElement
-                            ) override; //  throws tt3::util::ParseException
-        virtual void    _deserializeAssociations(
-                                const QDomElement & objectElement
-                            ) override;  //  throws tt3::util::ParseException
-
-        //////////
-        //  Validation
-    private:
-        virtual void    _validate(
-                                Objects & validatedObjects
-                            ) override; //  throws(tt3::db::api::DatabaseException
+        virtual void    _deleteCascade() override;  //  may throw
+        virtual void    _removeFromDatabase() override; //  may throw
+        virtual QString _tableName() const override { return "workloads"; }
     };
 }
 
-//  End of tt3-db-xml/Workload.hpp
+//  End of tt3-db-sql/Workload.hpp

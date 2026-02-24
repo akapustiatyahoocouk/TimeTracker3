@@ -161,6 +161,7 @@ namespace tt3::db::api
         /// \return
         ///     The ActivityType with the required display name
         ///     or nullptr if not found.
+        /// TODO remove this method from public API
         virtual auto    findActivityType(
                                 const QString & displayName
                             ) -> IActivityType * = 0;
@@ -184,6 +185,7 @@ namespace tt3::db::api
         /// \return
         ///     The PublicActivity (which is NOT also a PublicTask!) with
         ///     the required display name or nullptr if not found.
+        /// TODO remove this method from public API
         virtual auto    findPublicActivity(
                                 const QString & displayName
                             ) -> IPublicActivity * = 0;
@@ -196,6 +198,7 @@ namespace tt3::db::api
         ///     including those which are also tasks.
         /// \exception DatabaseException
         ///     If an error occurs.
+        /// TODO remove this method from public API
         virtual auto    publicActivitiesAndTasks(
                             ) const -> PublicActivities = 0;
 
@@ -205,6 +208,7 @@ namespace tt3::db::api
         ///     The set of all public tasks in this database.
         /// \exception DatabaseException
         ///     If an error occurs.
+        /// TODO remove this method from public API
         virtual auto    publicTasks(
                             ) const -> PublicTasks = 0;
 
@@ -223,6 +227,7 @@ namespace tt3::db::api
         ///     The set of all Projects in this database.
         /// \exception DatabaseException
         ///     If an error occurs.
+        /// TODO remove this method from public API
         virtual auto    projects(
                             ) const -> Projects = 0;
 

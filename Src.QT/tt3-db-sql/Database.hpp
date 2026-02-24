@@ -38,6 +38,8 @@ namespace tt3::db::sql
         friend class Task;
         friend class PublicTask;
         friend class PrivateTask;
+        friend class Workload;
+        friend class WorkStream;
 
         //////////
         //  Construction/destruction
@@ -330,7 +332,8 @@ namespace tt3::db::sql
         //  Helpers
         using _ObjIds = std::tuple<qint64, tt3::db::api::Oid>;
         _ObjIds         _createObject(tt3::db::api::IObjectType * objectType);
-        PublicTask *    _findRootPublicTask(const QString & displayName) const;
+        bool            _rootPublicTaskExists(const QString & displayName) const;
+        bool            _workStreamExists(const QString & displayName) const;
 
         template <class T>
         T *             _findObject(qint64 pk) const

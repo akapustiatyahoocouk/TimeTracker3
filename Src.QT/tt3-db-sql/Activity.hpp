@@ -102,6 +102,7 @@ namespace tt3::db::sql
         CachedProperty<bool>    _fullScreenReminder;
 
         CachedProperty<std::optional<qint64>>   _fkActivityType;
+        CachedProperty<std::optional<qint64>>   _fkWorkload;
 
         virtual void    _invalidateCachedProperties() override;
         void            _saveDisplayName(const QString & displayName);
@@ -111,6 +112,7 @@ namespace tt3::db::sql
         void            _saveRequireCommentOnStop(bool requireCommentOnStop);
         void            _saveFullScreenReminder(bool fullScreenReminder);
         void            _saveFkActivityType(const std::optional<qint64> & fkActivityType);
+        void            _saveFkWorkload(const std::optional<qint64> & fkWorkload);
 
         /*  TODO
         Workload *      _workload = nullptr;    //  counts as "reference" uness nullptr

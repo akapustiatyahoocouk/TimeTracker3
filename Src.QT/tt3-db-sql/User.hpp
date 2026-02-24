@@ -131,6 +131,9 @@ namespace tt3::db::sql
         auto            _findPrivateActivity(
                                 const QString & displayName
                             ) const -> PrivateActivity *;
+        auto            _findRootPrivateTask(
+                                const QString & displayName
+                            ) const -> PrivateTask *;
     };
 }
 

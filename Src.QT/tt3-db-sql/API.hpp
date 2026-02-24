@@ -44,5 +44,7 @@
 #include "tt3-db-sql/Task.hpp"
 #include "tt3-db-sql/PublicTask.hpp"
 #include "tt3-db-sql/PrivateTask.hpp"
+#include "tt3-db-sql/Workload.hpp"
+#include "tt3-db-sql/WorkStream.hpp"
 
 //  End of tt3-db-sql/API.hpp
