@@ -1,5 +1,5 @@
 //
-//  tt3-db-xml/Project.hpp - a project
+//  tt3-db-sql/Project.hpp - a project
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -15,11 +15,11 @@
 //  GNU General Public License for more details.
 //////////
 
-namespace tt3::db::xml
+namespace tt3::db::sql
 {
-    /// \class Project tt3-db-xml/API.hpp
-    /// \brief A project in an XML file database.
-    class TT3_DB_XML_PUBLIC Project final
+    /// \class Project tt3-db-sql/API.hpp
+    /// \brief A project in an SQL database.
+    class TT3_DB_SQL_PUBLIC Project final
         :   public Workload,
             public virtual tt3::db::api::IProject
     {
@@ -30,8 +30,7 @@ namespace tt3::db::xml
         //////////
         //  Construction/destruction (from DB type only)
     private:
-        Project(Database * database, tt3::db::api::Oid oid);
-        Project(Project * parent, tt3::db::api::Oid oid);
+        Project(Database * database, qint64 pk);
         virtual ~Project();
 
         //////////
@@ -67,49 +66,22 @@ namespace tt3::db::xml
         //////////
         //  Implementation
     private:
-        //  Properties
-        bool            _completed;
-        //  Associations
-        Project *       _parent;    //  counts as "reference" unless nullptr
-        //  Aggregations
-        Projects        _children;  //  count as "references"
+        //  Cached properties
+        CachedProperty<bool>    _completed;
+
+        CachedProperty<std::optional<qint64>>   _fkParent;
+
+        virtual void    _invalidateCachedProperties() override;
+        virtual void    _loadCachedProperties() override;
+        void            _saveCompleted(bool completed);
+        void            _saveFkParent(const std::optional<qint64> & fkParent);
 
         //  Helpers
         virtual bool    _siblingExists(const QString & displayName) const override;
-        virtual void    _makeDead() override;
-        Project *       _findChild(const QString & displayName) const;
+        virtual void    _deleteCascade() override;  //  may throw
+        bool            _childExists(const QString & displayName) const;    //  TODO use the same "...exists" instead of "find..." wherever possible
         void            _collectParentClosure(Projects & closure);
-
-        //////////
-        //  Serialization
-    private:
-        virtual void    _serializeProperties(
-                                QDomElement & objectElement
-                            ) const override;
-        virtual void    _serializeAggregations(
-                                QDomElement & objectElement
-                            ) const override;
-        virtual void    _serializeAssociations(
-                                QDomElement & objectElement
-                            ) const override;
-
-        virtual void    _deserializeProperties(
-                                const QDomElement & objectElement
-                            ) override; //  throws tt3::util::ParseException)
-        virtual void    _deserializeAggregations(
-                                const QDomElement & objectElement
-                            ) override; //  throws tt3::util::ParseException)
-        virtual void    _deserializeAssociations(
-                                const QDomElement & objectElement
-                            ) override;  //  throws tt3::util::ParseException
-
-        //////////
-        //  Validation
-    private:
-        virtual void    _validate(  //  throws tt3::db::api::DatabaseException
-                                Objects & validatedObjects
-                            ) override;
     };
 }
 
-//  End of tt3-db-xml/Project.hpp
+//  End of tt3-db-sql/Project.hpp

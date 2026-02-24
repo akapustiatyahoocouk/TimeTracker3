@@ -864,13 +864,106 @@ auto Database::createPublicTask(
 }
 
 auto Database::createProject(
-        const QString & /*displayName*/,
-        const QString & /*description*/,
-        const tt3::db::api::Beneficiaries & /*beneficiaries*/,
-        bool /*completed*/
+        const QString & displayName,
+        const QString & description,
+        const tt3::db::api::Beneficiaries & beneficiaries,
+        bool completed
     ) -> tt3::db::api::IProject *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(guard);
+    ensureOpenAndWritable();   //  may throw
+
+    //  Validate parameters
+    if (!validator()->project()->isValidDisplayName(displayName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Project::instance(),
+            "displayName",
+            displayName);
+    }
+    if (!validator()->project()->isValidDescription(description))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Project::instance(),
+            "description",
+            description);
+    }
+    if (beneficiaries.contains(nullptr))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Project::instance(),
+            "beneficiaries",
+            nullptr);
+    }
+
+    /*  TODO
+    Beneficiaries xmlBeneficiaries =
+        tt3::util::transform(
+            beneficiaries,
+            [&](auto b)
+            {
+                Q_ASSERT(b != nullptr);   //  should have been caught earlier
+                auto xmlBeneficiary = dynamic_cast<Beneficiary*>(b);
+                if (xmlBeneficiary == nullptr ||
+                    xmlBeneficiary->_database != this ||
+                    !xmlBeneficiary->_isLive)
+                {   //  OOPS!
+                    throw tt3::db::api::IncompatibleInstanceException(b->type());
+                }
+                return xmlBeneficiary;
+            });
+    */
+
+    //  Display names must be unique.
+    //  SQL "UNIQUE displayname" constraint would take care of
+    //  that, but try for a better (non-SQL) error message
+    if (_rootProjectExists(displayName))
+    {   //  OOPS!
+        throw tt3::db::api::AlreadyExistsException(
+            tt3::db::api::ObjectTypes::Project::instance(),
+            "displayName",
+            displayName);
+    }
+
+    //  Begin transaction for the changes
+    Transaction transaction(this);  //  may throw
+
+    //  Do the work - create [objects] row..
+    _ObjIds objIds = _createObject(tt3::db::api::ObjectTypes::Project::instance()); //  may throw
+    //  ...then [worklooads] row...
+    std::unique_ptr<Statement> stat
+    {   createStatement(
+        "INSERT INTO [workloads]"
+        "       ([pk],[fk_parent],[displayname],[description],[completed])"
+        "       VALUES(?,?,?,?,?)") };
+    stat->setIntParameter(0, std::get<0>(objIds));
+    stat->setNullParameter(1);
+    stat->setStringParameter(2, displayName);
+    description.isEmpty() ?
+        stat->setNullParameter(3) :
+        stat->setStringParameter(3, description);
+    stat->setBoolParameter(4, completed);
+    stat->execute();    //  may throw
+
+    //  We're done with the changes
+    transaction.commit();   //  may throw
+
+    //  Create & register the Project object...
+    Project * project = new Project(this, std::get<0>(objIds));
+    //  ...setting its cached properties to initial values
+    project->_oid = std::get<1>(objIds);
+    project->_displayName = displayName;
+    project->_description = description;
+    project->_fkParent = std::optional<qint64>();
+    project->_completed = completed;
+
+    //  ...schedule change notifications...
+    _changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            this, project->type(), project->_oid));
+    //  TODO post change notification to the database
+    //  ...and we're done
+    return project;
 }
 
 auto Database::createWorkStream(
@@ -1207,6 +1300,21 @@ bool Database::_workStreamExists(const QString & displayName) const
         "  FROM [workloads]"
         " WHERE [displayname] = ?"
         "   AND [completed] IS NULL") };//  WorkStream
+    stat->setStringParameter(0, displayName);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };
+    return rs->next();  //  row exists ?
+}
+
+bool Database::_rootProjectExists(const QString & displayName) const
+{
+    std::unique_ptr<Statement> stat
+    {   createStatement(
+        "SELECT [pk]"
+        "  FROM [workloads]"
+        " WHERE [displayname] = ?"
+        "   AND [fk_parent] IS NULL"        //  root
+        "   AND [completed] IS NOT NULL") };//  Project
     stat->setStringParameter(0, displayName);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };

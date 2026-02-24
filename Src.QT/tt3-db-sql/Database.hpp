@@ -39,6 +39,7 @@ namespace tt3::db::sql
         friend class PublicTask;
         friend class PrivateTask;
         friend class Workload;
+        friend class Project;
         friend class WorkStream;
 
         //////////
@@ -334,6 +335,7 @@ namespace tt3::db::sql
         _ObjIds         _createObject(tt3::db::api::IObjectType * objectType);
         bool            _rootPublicTaskExists(const QString & displayName) const;
         bool            _workStreamExists(const QString & displayName) const;
+        bool            _rootProjectExists(const QString & displayName) const;
 
         template <class T>
         T *             _findObject(qint64 pk) const

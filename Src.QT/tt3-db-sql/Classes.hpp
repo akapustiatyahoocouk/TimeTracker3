@@ -39,6 +39,7 @@ namespace tt3::db::sql
     //  Collections
     using PublicTasks = QSet<PublicTask*>;
     using PrivateTasks = QSet<PrivateTask*>;
+    using Projects = QSet<Project*>;
 }
 
 //  End of tt3-db-sql/Classes.hpp

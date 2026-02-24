@@ -36,6 +36,7 @@ namespace tt3::db::sql
         friend class PublicTask;
         friend class PrivateTask;
         friend class Workload;
+        friend class Project;
         friend class WorkStream;
 
         //////////

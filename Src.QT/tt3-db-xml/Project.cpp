@@ -119,7 +119,7 @@ void Project::setParent(
         }
     }
     if (xmlParent != _parent)
-    {   //  Make sure we're not creating a oarent/child loop...
+    {   //  Make sure we're not creating a parent/child loop...
         if (xmlParent != nullptr)
         {
             Projects parentClosure;

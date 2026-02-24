@@ -13,6 +13,7 @@ SOURCES += \
     Principal.cpp \
     PrivateActivity.cpp \
     PrivateTask.cpp \
+    Project.cpp \
     PublicActivity.cpp \
     PublicTask.cpp \
     Statement.cpp \
@@ -36,6 +37,7 @@ HEADERS += \
     Principal.hpp \
     PrivateActivity.hpp \
     PrivateTask.hpp \
+    Project.hpp \
     PublicActivity.hpp \
     PublicTask.hpp \
     ResultSet.hpp \

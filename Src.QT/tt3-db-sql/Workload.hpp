@@ -26,6 +26,7 @@ namespace tt3::db::sql
         TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Workload)
 
         friend class Database;
+        friend class Project;
         friend class WorkStream;
 
         //////////

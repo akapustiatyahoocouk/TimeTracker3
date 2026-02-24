@@ -72,7 +72,7 @@ void PrivateTask::setParent(
     {   //  Make the change
         //  Begin transaction for the changes
         Transaction transaction(_database); //  may throw
-        //  ...ensuring we're not creating a oarent/child loop...
+        //  ...ensuring we're not creating a parent/child loop...
         if (sqlParent != nullptr)
         {
             PrivateTasks parentClosure;
@@ -350,6 +350,7 @@ void PrivateTask::_deleteCascade()
     Q_ASSERT(_database->_liveObjects.contains(_pk));
 
     //  Child tasks - can't rely on SQL DELETE CASCADE
+    //  PLUS we need delete notifications for children
     for (auto child : children())
     {
         child->destroy();
@@ -361,9 +362,6 @@ void PrivateTask::_deleteCascade()
 
 bool PrivateTask::_siblingExists(const QString & displayName) const
 {
-    Q_ASSERT(_database->guard.isLockedByCurrentThread());
-    Q_ASSERT(_isLive);
-
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
     Q_ASSERT(_database->_liveObjects.contains(_pk));

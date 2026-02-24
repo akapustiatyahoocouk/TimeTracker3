@@ -52,7 +52,7 @@ void WorkStream::_loadCachedProperties()
         _makeDead();
         throw tt3::db::api::InstanceDeadException();
     }
-    //  ActivityType row exists and is now "current" in "rs"
+    //  Workloads row exists and is now "current" in "rs"
     _oid = rs->oidValue("oid");
     _displayName = rs->stringValue("displayname");
     _description = rs->stringValue("description");
