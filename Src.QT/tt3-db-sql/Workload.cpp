@@ -60,7 +60,15 @@ void Workload::setDisplayName(
     }
 
     if (displayName != _displayName)    //  Cache load may throw
-    {   //  Make the change...
+    {   //  Make the change (but no duplication)...
+        if (_siblingExists(displayName))
+        {
+            throw tt3::db::api::AlreadyExistsException(
+                type(),
+                "displayName",
+                displayName);
+        }
+
         //  Begin transaction for the changes
         Transaction transaction(_database); //  may throw
         //  Save, THEN cache
@@ -142,13 +150,13 @@ auto Workload::beneficiaries(
 }
 
 void Workload::setBeneficiaries(
-        const tt3::db::api::Beneficiaries & /*beneficiaries*/
+        const tt3::db::api::Beneficiaries & beneficiaries
     )
 {
     tt3::util::Lock _(_database->guard);
     _ensureLiveAndWritable();   //  may throw
 
-    throw tt3::util::NotImplementedError();
+    Q_ASSERT(beneficiaries.isEmpty());  //  TODO implement properly
 }
 
 void Workload::addBeneficiary(

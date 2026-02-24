@@ -10,7 +10,12 @@ CREATE TABLE [objects] (
           ([type] = 'PublicActivity') OR
           ([type] = 'PrivateActivity') OR
           ([type] = 'PublicTask') OR
-          ([type] = 'PrivateTask'))
+          ([type] = 'PrivateTask') OR
+          ([type] = 'Project') OR
+          ([type] = 'WorkStream') OR
+          ([type] = 'Beneficiary') OR
+          ([type] = 'Work') OR
+          ([type] = 'Event'))
 );
 
 CREATE TABLE [users] (

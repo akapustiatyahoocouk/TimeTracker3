@@ -294,8 +294,23 @@ auto Database::rootProjects(
 auto Database::workStreams(
     ) const -> tt3::db::api::WorkStreams
 {
-    //  TODO implement and TODO cache PKs
-    return tt3::db::api::WorkStreams();
+    tt3::util::Lock _(guard);
+    ensureOpen();
+
+    //  TODO cache PKs
+    std::unique_ptr<Statement> stat
+    {   createStatement(
+        "SELECT [pk]"
+        "  FROM [workloads]"
+        " WHERE [completed] IS NULL") };    //  WorkStream
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };   //  may throw
+    tt3::db::api::WorkStreams result;
+    while (rs->next())
+    {
+        result.insert(_getObject<WorkStream>(rs->intValue(0)));
+    }
+    return result;
 }
 
 auto Database::beneficiaries(
