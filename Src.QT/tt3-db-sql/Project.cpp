@@ -280,8 +280,8 @@ void Project::_loadCachedProperties()
         {   _database->createStatement(
             "SELECT [objects].[oid] AS [oid],"
             "       [workloads].[displayname] AS [displayname],"
-            "       [workloads].[description] AS [description]"
-            "       [workloads].[completed] AS [completed]"
+            "       [workloads].[description] AS [description],"
+            "       [workloads].[completed] AS [completed],"
             "       [workloads].[fk_parent] AS [fk_parent]"
             "  FROM [objects],[workloads]"
             " WHERE [objects].[pk] = ?"

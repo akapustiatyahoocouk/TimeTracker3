@@ -287,8 +287,24 @@ auto Database::projects(
 auto Database::rootProjects(
     ) const -> tt3::db::api::Projects
 {
-    //  TODO implement and TODO cache PKs
-    return tt3::db::api::Projects();
+    tt3::util::Lock _(guard);
+    ensureOpen();
+
+    //  TODO cache PKs
+    std::unique_ptr<Statement> stat
+    {   createStatement(
+        "SELECT [pk]"
+        "  FROM [workloads]"
+        " WHERE [fk_parent] IS NULL"        //  Root
+        "   AND [completed] IS NOT NULL") };//  Project
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };   //  may throw
+    tt3::db::api::Projects result;
+    while (rs->next())
+    {
+        result.insert(_getObject<Project>(rs->intValue(0)));
+    }
+    return result;
 }
 
 auto Database::workStreams(

@@ -81,7 +81,7 @@ CREATE TABLE [activitytypes] (
 CREATE TABLE [workloads] (
     [pk]                INTEGER NOT NULL UNIQUE,
     [fk_parent]         INTEGER,        -- NULL == Project has no parent OR WorkStream, not Project
-    [displayname]       VARCHAR(127) NOT NULL UNIQUE,   --  as per DefaultValidator
+    [displayname]       VARCHAR(127) NOT NULL,  --  as per DefaultValidator
     [description]       TEXT,           --  '\n' for newlines, NULL == none
     [completed]         CHAR(1),        --  'Y' or 'N' for Projects, NULL for WorkStreams
     PRIMARY KEY([pk]),
@@ -99,7 +99,7 @@ CREATE TABLE [activities] (
     [fk_owner]          INTEGER,        -- NULL == Public, else Private
     [fk_type]           INTEGER,        -- NULL == not assigned to an ActivityType
     [fk_workload]       INTEGER,        -- NULL == not assigned to a Workload
-    [displayname]       VARCHAR(127) NOT NULL UNIQUE,   --  as per DefaultValidator
+    [displayname]       VARCHAR(127) NOT NULL,  --  as per DefaultValidator
     [description]       TEXT,          --  '\n' for newlines, NULL == none
     [timeout]           VARCHAR(12),--  'PThhhhhHmmM', NULL == absent
     [requirecommentonstart] CHAR(1) NOT NULL,       --  'Y' or 'N'
