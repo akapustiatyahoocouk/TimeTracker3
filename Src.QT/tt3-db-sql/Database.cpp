@@ -600,7 +600,7 @@ auto Database::createPublicActivity(
         bool requireCommentOnStop,
         bool fullScreenReminder,
         tt3::db::api::IActivityType * activityType,
-        tt3::db::api::IWorkload * /*workload*/
+        tt3::db::api::IWorkload * workload
     ) -> tt3::db::api::IPublicActivity *
 {
     tt3::util::Lock _(guard);
@@ -629,6 +629,7 @@ auto Database::createPublicActivity(
             "timeout",
             timeout.value());
     }
+
     ActivityType * sqlActivityType = nullptr;
     if (activityType != nullptr)
     {
@@ -640,19 +641,18 @@ auto Database::createPublicActivity(
             throw tt3::db::api::IncompatibleInstanceException(activityType->type());
         }
     }
-    /*  TODO
-    Workload * xmlWorkload = nullptr;
+
+    Workload * sqlWorkload = nullptr;
     if (workload != nullptr)
     {
-        xmlWorkload = dynamic_cast<Workload*>(workload);
-        if (xmlWorkload == nullptr ||
-            xmlWorkload->_database != this ||
-            !xmlWorkload->_isLive)
+        sqlWorkload = dynamic_cast<Workload*>(workload);
+        if (sqlWorkload == nullptr ||
+            sqlWorkload->_database != this ||
+            !sqlWorkload->_isLive)
         {   //  OOPS!
             throw tt3::db::api::IncompatibleInstanceException(workload->type());
         }
     }
-    */
 
     //  Display names must be unique
     //  SQL "UNIQUE displayname" constraint would take care of
@@ -675,34 +675,35 @@ auto Database::createPublicActivity(
         {   createStatement(
             "INSERT INTO [activities]"
             "       ([pk],"
-            "        [fk_parent],[fk_owner],[fk_type],"
+            "        [fk_parent],[fk_owner],[fk_type],[fk_workload],"
             "        [displayname],[description],[timeout],"
             "        [requirecommentonstart],"
             "        [requirecommentonstop],"
             "        [fullscreenreminder],"
             "        [completed],[requirecommentoncompletion])"
-        "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?)") };
+        "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)") };
     stat->setIntParameter(0, std::get<0>(objIds));
     stat->setNullParameter(1);
     stat->setNullParameter(2);
     (sqlActivityType != nullptr) ?
         stat->setIntParameter(3, sqlActivityType->_pk) :
         stat->setNullParameter(3);
-    stat->setStringParameter(4, displayName);
+    (sqlWorkload != nullptr) ?
+        stat->setIntParameter(4, sqlWorkload->_pk) :
+        stat->setNullParameter(4);
+    stat->setStringParameter(5, displayName);
     description.isEmpty() ?
-        stat->setNullParameter(5) :
-        stat->setStringParameter(5, description);
+        stat->setNullParameter(6) :
+        stat->setStringParameter(6, description);
     timeout.has_value() ?
-        stat->setTimeSpanParameter(6, timeout.value()) :
-        stat->setNullParameter(6);
-    stat->setBoolParameter(7, requireCommentOnStart);
-    stat->setBoolParameter(8, requireCommentOnStop);
-    stat->setBoolParameter(9, fullScreenReminder);
-    stat->setNullParameter(10);
+        stat->setTimeSpanParameter(7, timeout.value()) :
+        stat->setNullParameter(7);
+    stat->setBoolParameter(8, requireCommentOnStart);
+    stat->setBoolParameter(9, requireCommentOnStop);
+    stat->setBoolParameter(10, fullScreenReminder);
     stat->setNullParameter(11);
+    stat->setNullParameter(12);
     stat->execute();    //  may throw
-
-    //  TODO associate with Workload
 
     //  We're done with the changes
     transaction.commit();   //  may throw
@@ -721,12 +722,27 @@ auto Database::createPublicActivity(
         (sqlActivityType != nullptr) ?
             sqlActivityType->_pk :
             std::optional<qint64>();
+    publicActivity->_fkWorkload =
+        (sqlWorkload != nullptr) ?
+            sqlWorkload->_pk :
+            std::optional<qint64>();
 
     //  ...schedule change notifications...
     _changeNotifier.post(
         new tt3::db::api::ObjectCreatedNotification(
-            this, publicActivity->type(), publicActivity->_oid));
-    //  TODO ActivityType and Workload are also Modified
+            this, publicActivity->type(), publicActivity->_oid));   //  Cache load may throw
+    if (sqlActivityType != nullptr)
+    {
+        _changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                this, sqlActivityType->type(), sqlActivityType->_oid)); //  Cache load may throw
+    }
+    if (sqlWorkload != nullptr)
+    {
+        _changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                this, sqlWorkload->type(), sqlWorkload->_oid)); //  Cache load may throw
+    }
     //  TODO post change notification to the database
 
     //  ...and we're done
@@ -851,7 +867,7 @@ auto Database::createPublicTask(
     //  We're done with the changes
     transaction.commit();   //  may throw
 
-    //  Create & register the PublicTask object...
+    //  Create the PublicTask object...
     PublicTask * publicTask = new PublicTask(this, std::get<0>(objIds));
     //  ...setting its cached properties to initial values
     publicTask->_oid = std::get<1>(objIds);
@@ -865,6 +881,10 @@ auto Database::createPublicTask(
         (sqlActivityType != nullptr) ?
             sqlActivityType->_pk :
             std::optional<qint64>();
+    publicTask->_fkWorkload =
+        (sqlWorkload != nullptr) ?
+            sqlWorkload->_pk :
+            std::optional<qint64>();
     publicTask->_requireCommentOnCompletion = requireCommentOnCompletion;
     publicTask->_completed = completed;
     publicTask->_fkParent = std::optional<qint64>();
@@ -872,18 +892,18 @@ auto Database::createPublicTask(
     //  ...schedule change notifications...
     _changeNotifier.post(
         new tt3::db::api::ObjectCreatedNotification(
-            this, publicTask->type(), publicTask->_oid));
+            this, publicTask->type(), publicTask->_oid));   //  Cache load may throw
     if (sqlActivityType != nullptr)
     {
         _changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
-                this, sqlActivityType->type(), sqlActivityType->_oid));
+                this, sqlActivityType->type(), sqlActivityType->_oid)); //  Cache load may throw
     }
     if (sqlWorkload != nullptr)
     {
         _changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
-                this, sqlWorkload->type(), sqlWorkload->_oid));
+                this, sqlWorkload->type(), sqlWorkload->_oid)); //  Cache load may throw
     }
     //  TODO post change notification to the database
 
