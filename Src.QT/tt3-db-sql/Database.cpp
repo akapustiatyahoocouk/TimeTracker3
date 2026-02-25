@@ -1337,4 +1337,50 @@ bool Database::_rootProjectExists(const QString & displayName) const
     return rs->next();  //  row exists ?
 }
 
+Workload * Database::_getWorkload(qint64 pk) const
+{
+    Q_ASSERT(guard.isLockedByCurrentThread());
+
+    //  Can we answer with an existing instance ?
+    if (Object * obj = _liveObjects.value(pk, nullptr))
+    {   //  Reuse the live object
+        if (auto workload = dynamic_cast<Workload*>(obj))
+        {
+            return workload;
+        }
+    }
+    if (Object * obj = _graveyard.value(pk, nullptr))
+    {   //  Object dead - reuse, but invoking its services will fail
+        if (auto workload = dynamic_cast<Workload*>(obj))
+        {
+            return workload;
+        }
+    }
+    //  Need to ascertain object's existence and type
+    std::unique_ptr<Statement> stat
+    {   createStatement(
+        "SELECT [type]"
+        "  FROM [objects]"
+        " WHERE [pk] = ?") };
+    stat->setIntParameter(0, pk);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };
+    if (rs->next())
+    {   //  Row exists
+        auto type = tt3::util::Mnemonic(rs->stringValue("type"));
+        if (type == tt3::db::api::ObjectTypes::Project::instance()->mnemonic())
+        {   //  Cache will be checked again, but we don't expect this
+            //  to happen much - frequently used objects will stay cached
+            return _getObject<Project>(pk);
+        }
+        if (type == tt3::db::api::ObjectTypes::WorkStream::instance()->mnemonic())
+        {   //  Cache will be checked again, but we don't expect this
+            //  to happen much - frequently used objects will stay cached
+            return _getObject<WorkStream>(pk);
+        }
+    }
+    //  OOPS! Does not exist OR is not a Workload
+    throw tt3::db::api::DoesNotExistException("Workload", "pk", pk);
+}
+
 //  End of tt3-db-sql/Database.cpp

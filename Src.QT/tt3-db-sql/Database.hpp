@@ -339,8 +339,9 @@ namespace tt3::db::sql
 
         template <class T>
         T *             _findObject(qint64 pk) const
-        {
+        {   //  TODO merge with _getObject()
             Q_ASSERT(guard.isLockedByCurrentThread());
+
             if (Object * obj = _liveObjects.value(pk, nullptr))
             {   //  Reuse the live object
                 return dynamic_cast<T*>(obj);
@@ -361,9 +362,10 @@ namespace tt3::db::sql
             {
                 return t;
             }
-            //  TODO what?
+            //  TODO throw tt3::db::api::DoesNotExistException(T, "pk", pk);
             throw tt3::util::NotImplementedError();
         }
+        Workload *      _getWorkload(qint64 pk) const;
     };
 }
 

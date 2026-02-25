@@ -19,6 +19,7 @@ namespace tt3::db::xml
 {
     /// \class ObjectTypeTraits tt3-db-xml/API.hpp
     /// \brief The database object type traits provider
+    /// TODO move to tt3::db::api, into ObjectType.hpp
     template <class T>
     struct ObjectTypeTraits
     {

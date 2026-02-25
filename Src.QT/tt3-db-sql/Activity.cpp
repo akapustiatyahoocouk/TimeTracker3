@@ -345,16 +345,66 @@ auto Activity::workload(
 {
     tt3::util::Lock _(_database->guard);
     _ensureLive();  //  may throw
-    //  We assume database is consistent since last change
 
-    return nullptr; //  TODO implement
+    return _fkWorkload.value().has_value() ?    //  Cache load may throw
+                _database->_getWorkload(_fkWorkload.value().value()) :  //  Cache load may throw
+               nullptr;
 }
 
 void Activity::setWorkload(
-        tt3::db::api::IWorkload * /*workload*/
+        tt3::db::api::IWorkload * workload
     )
 {
-    //  TODO implement
+    tt3::util::Lock _(_database->guard);
+    _ensureLiveAndWritable();
+
+    Workload * oldWorkload =
+        _fkWorkload.value().has_value() ?    //  Cache load may throw
+            _database->_getWorkload(_fkWorkload.value().value()) :  //  Cache load may throw
+            nullptr;
+    Workload * newWorkload = nullptr;
+    std::optional<qint64> fkNewWorkload;
+    if (workload != nullptr)
+    {
+        newWorkload = dynamic_cast<Workload*>(workload);
+        if (newWorkload == nullptr ||
+            !newWorkload->_isLive ||
+            newWorkload->_database != this->_database)
+        {   //  OOPS!
+            throw tt3::db::api::IncompatibleInstanceException(workload->type());
+        }
+        fkNewWorkload = newWorkload->_pk;
+    }
+    if (_fkWorkload.value() != fkNewWorkload)   //  Cache load may throw
+    {   //  Make the change...
+        //  Begin transaction for the changes
+        Transaction transaction(_database); //  may throw
+        //  Save, THEN cache
+        _saveFkWorkload(fkNewWorkload);    //  may throw
+        _fkWorkload = fkNewWorkload;
+        //  We're done with the changes
+        transaction.commit();   //  may throw
+
+        //  ...schedule change notifications....
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));  //  Cache load may throw
+        if (oldWorkload != nullptr)
+        {
+            _database->_changeNotifier.post(
+                new tt3::db::api::ObjectModifiedNotification(
+                    _database, oldWorkload->type(), oldWorkload->_oid));    //  Cache load may throw
+        }
+        if (newWorkload != nullptr)
+        {
+            _database->_changeNotifier.post(
+                new tt3::db::api::ObjectModifiedNotification(
+                    _database, newWorkload->type(), newWorkload->_oid));    //  Cache load may throw
+        }
+        //  TODO post change notification to the database
+        //  TODO "modified" changes for old & new ActivityTypes
+        //  ...and we're done
+    }
 }
 
 auto Activity::works(
