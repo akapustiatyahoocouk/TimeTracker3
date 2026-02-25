@@ -324,6 +324,9 @@ namespace tt3::db::sql
         //  TODO can we make this private???
         mutable tt3::util::Mutex    guard;
     private:
+        //  TODO derive a tt3::db::sql::ChangeNotifier class
+        //  from tt3::db::api::ChangeNotifier and override the post()
+        //  method to ALSO write change notification to the database
         tt3::db::api::ChangeNotifier    _changeNotifier;
 
         //  Object caches - NOT count as "references"

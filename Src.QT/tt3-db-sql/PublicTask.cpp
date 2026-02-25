@@ -130,7 +130,7 @@ auto PublicTask::createChild(
         bool requireCommentOnStop,
         bool fullScreenReminder,
         tt3::db::api::IActivityType * activityType,
-        tt3::db::api::IWorkload * /*workload*/,
+        tt3::db::api::IWorkload * workload,
         bool completed,
         bool requireCommentOnCompletion
     ) -> tt3::db::api::IPublicTask *
@@ -161,6 +161,7 @@ auto PublicTask::createChild(
             "timeout",
             timeout.value());
     }
+
     ActivityType * sqlActivityType = nullptr;
     if (activityType != nullptr)
     {
@@ -172,19 +173,18 @@ auto PublicTask::createChild(
             throw tt3::db::api::IncompatibleInstanceException(activityType->type());
         }
     }
-    /*  TODO
-    Workload * xmlWorkload = nullptr;
+
+    Workload * sqlWorkload = nullptr;
     if (workload != nullptr)
     {
-        xmlWorkload = dynamic_cast<Workload*>(workload);
-        if (xmlWorkload == nullptr ||
-            xmlWorkload->_database != _database ||
-            !xmlWorkload->_isLive)
+        sqlWorkload = dynamic_cast<Workload*>(workload);
+        if (sqlWorkload == nullptr ||
+            sqlWorkload->_database != _database ||
+            !sqlWorkload->_isLive)
         {   //  OOPS!
             throw tt3::db::api::IncompatibleInstanceException(workload->type());
         }
     }
-    */
 
     //  Display names must be unique
     //  SQL "UNIQUE displayname" constraint would take care of
@@ -207,37 +207,37 @@ auto PublicTask::createChild(
     {   _database->createStatement(
         "INSERT INTO [activities]"
         "       ([pk],"
-        "        [fk_parent],[fk_owner],[fk_type],"
+        "        [fk_parent],[fk_owner],[fk_type],[fk_workload],"
         "        [displayname],[description],[timeout],"
         "        [requirecommentonstart],"
         "        [requirecommentonstop],"
         "        [fullscreenreminder],"
         "        [completed],[requirecommentoncompletion])"
-        "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?)") };
+        "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)") };
     stat->setIntParameter(0, std::get<0>(objIds));
     stat->setIntParameter(1, _pk);
     stat->setNullParameter(2);
     (sqlActivityType != nullptr) ?
         stat->setIntParameter(3, sqlActivityType->_pk) :
         stat->setNullParameter(3);
-    stat->setStringParameter(4, displayName);
+    (sqlWorkload != nullptr) ?
+        stat->setIntParameter(4, sqlWorkload->_pk) :
+        stat->setNullParameter(4);
+    stat->setStringParameter(5, displayName);
     description.isEmpty() ?
-        stat->setNullParameter(5) :
-        stat->setStringParameter(5, description);
+        stat->setNullParameter(6) :
+        stat->setStringParameter(6, description);
     timeout.has_value() ?
-        stat->setTimeSpanParameter(6, timeout.value()) :
-        stat->setNullParameter(6);
-    stat->setBoolParameter(7, requireCommentOnStart);
-    stat->setBoolParameter(8, requireCommentOnStop);
-    stat->setBoolParameter(9, fullScreenReminder);
-    stat->setBoolParameter(10, completed);
-    stat->setBoolParameter(11, requireCommentOnCompletion);
+        stat->setTimeSpanParameter(7, timeout.value()) :
+        stat->setNullParameter(7);
+    stat->setBoolParameter(8, requireCommentOnStart);
+    stat->setBoolParameter(9, requireCommentOnStop);
+    stat->setBoolParameter(10, fullScreenReminder);
+    stat->setBoolParameter(11, completed);
+    stat->setBoolParameter(12, requireCommentOnCompletion);
     stat->execute();    //  may throw
 
-    //  TODO associate with Workload
-
     //  We're done with the changes
-    tt3::db::api::Oid oid = _oid;   //  Cache load may throw
     transaction.commit();   //  may throw
 
     //  Create & register the PublicTask object...
@@ -254,6 +254,10 @@ auto PublicTask::createChild(
         (sqlActivityType != nullptr) ?
             sqlActivityType->_pk :
             std::optional<qint64>();
+    publicTask->_fkWorkload =
+        (sqlWorkload != nullptr) ?
+            sqlWorkload->_pk :
+            std::optional<qint64>();
     publicTask->_requireCommentOnCompletion = requireCommentOnCompletion;
     publicTask->_completed = completed;
     publicTask->_fkParent = _pk;
@@ -261,11 +265,22 @@ auto PublicTask::createChild(
     //  ...schedule change notifications...
     _database->_changeNotifier.post(
         new tt3::db::api::ObjectModifiedNotification(
-            _database, this->type(), oid));
+            _database, this->type(), _oid));    //  Cache load may throw
     _database->_changeNotifier.post(
         new tt3::db::api::ObjectCreatedNotification(
             _database, publicTask->type(), publicTask->_oid));
-    //  TODO ActivityType and Workload are also Modified
+    if (sqlActivityType != nullptr)
+    {
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, sqlActivityType->type(), sqlActivityType->_oid)); //  Cache load may throw
+    }
+    if (sqlWorkload != nullptr)
+    {
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, sqlWorkload->type(), sqlWorkload->_oid)); //  Cache load may throw
+    }
     //  TODO post change notification to the database
 
     //  ...and we're done
