@@ -191,18 +191,105 @@ auto Account::quickPicksList(
     tt3::util::Lock _(_database->guard);
     _ensureLive();  //  may throw
 
-    //  TODO impement
-    return QList<tt3::db::api::IActivity*>();
+    //  TODO cache PKs
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+        "SELECT [fk_activity],[order]"
+        "  FROM [account_quick_picks]"
+        " WHERE [fk_account] = ?"
+        " ORDER BY [order]") };
+    stat->setIntParameter(0, _pk);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };   //  may throw
+    QList<tt3::db::api::IActivity*> result;
+    while (rs->next())
+    {
+        result.append(_database->_getActivity(rs->intValue(0)));
+    }
+    return result;
 }
 
 void Account::setQuickPicksList(
-        const QList<tt3::db::api::IActivity*> & /*quickPicksList*/
+        const QList<tt3::db::api::IActivity*> & quickPicksList
     )
 {
     tt3::util::Lock _(_database->guard);
     _ensureLiveAndWritable();   //  may throw
 
-    throw tt3::util::NotImplementedError();
+    //  Validate parameters
+    if (quickPicksList.contains(nullptr))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "quickPicksList",
+            nullptr);
+    }
+    if (quickPicksList.size() != tt3::util::unique(quickPicksList).size())
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "quickPicksList",
+            "?");
+    }
+
+    QList<Activity*> oldQuickPicksList =
+        tt3::util::transform(
+            this->quickPicksList(), //  may throw
+            [&](auto a)
+            {
+                Q_ASSERT(a != nullptr); //  should have been caught earlier!
+                auto sqlActivity = dynamic_cast<Activity*>(a);
+                if (sqlActivity == nullptr ||
+                    sqlActivity->_database != this->_database ||
+                    !sqlActivity->_isLive)
+                {   //  OOPS!
+                    throw tt3::db::api::IncompatibleInstanceException(a->type());
+                }
+                return sqlActivity;
+            });
+    QList<Activity*> newQuickPicksList =
+        tt3::util::transform(
+            quickPicksList,
+            [&](auto a)
+            {
+                Q_ASSERT(a != nullptr); //  should have been caught earlier!
+                auto sqlActivity = dynamic_cast<Activity*>(a);
+                if (sqlActivity == nullptr ||
+                    sqlActivity->_database != this->_database ||
+                    !sqlActivity->_isLive)
+                {   //  OOPS!
+                    throw tt3::db::api::IncompatibleInstanceException(a->type());
+                }
+                return sqlActivity;
+            });
+
+    if (newQuickPicksList != oldQuickPicksList)
+    {   //  Make the change - kill old quick picks list...
+        std::unique_ptr<Statement> stat
+        {   _database->createStatement(
+            "DELETE FROM [account_quick_picks]"
+            " WHERE [fk_account] = ?") };
+        stat->setIntParameter(0, _pk);
+        stat->execute();    //  may throw
+        //  ...and set up the new one
+        for (int i = 0; i < newQuickPicksList.size(); i++)
+        {
+            std::unique_ptr<Statement> stat
+                {   _database->createStatement(
+                    "INSERT INTO [account_quick_picks]"
+                    "       ([fk_account],[fk_activity],[order])"
+                    "       VALUES(?,?,?)") };
+            stat->setIntParameter(0, _pk);
+            stat->setIntParameter(1, newQuickPicksList[i]->_pk);
+            stat->setIntParameter(2, i);
+            stat->execute();    //  may throw
+        }
+        //  Schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));  //  Cache load may throw
+        //  ...and we're done
+    }
 }
 
 auto Account::works(

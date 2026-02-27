@@ -133,3 +133,15 @@ CREATE TABLE [user_workloads] (
 );
 CREATE INDEX [idx_user_workloads_user] ON [user_workloads] ([fk_user]);
 CREATE INDEX [idx_user_workloads_workload] ON [user_workloads] ([fk_workload]);
+
+CREATE TABLE [account_quick_picks] (
+    [fk_account]        INTEGER NOT NULL,
+    [fk_activity]       INTEGER NOT NULL,
+    [order]             INTEGER NOT NULL,   --  0-based
+    PRIMARY KEY([fk_account],[fk_activity]),
+    FOREIGN KEY([fk_account]) REFERENCES [accounts]([pk]) ON DELETE CASCADE,
+    FOREIGN KEY([fk_activity]) REFERENCES [activities]([pk]) ON DELETE CASCADE
+);
+CREATE INDEX [idx_account_quick_picks_account] ON [account_quick_picks] ([fk_account]);
+CREATE INDEX [idx_account_quick_picks_account_order] ON [account_quick_picks] ([fk_account],[order]);
+CREATE UNIQUE INDEX [idx_account_quick_picks_order] ON [account_quick_picks] ([fk_account],[fk_activity],[order]);

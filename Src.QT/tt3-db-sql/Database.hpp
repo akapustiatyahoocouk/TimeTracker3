@@ -369,6 +369,7 @@ namespace tt3::db::sql
             throw tt3::util::NotImplementedError();
         }
         Workload *      _getWorkload(qint64 pk) const;
+        Activity *      _getActivity(qint64 pk) const;
     };
 }
 
