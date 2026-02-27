@@ -377,22 +377,102 @@ void User::setPermittedWorkloads(
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
                 _database, type(), _oid));  //  Cache load may throw
-        //  TODO affected Workloads are Modified
     }
 }
 
 void User::addPermittedWorkload(
-        tt3::db::api::IWorkload * /*workload*/
+        tt3::db::api::IWorkload * workload
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(_database->guard);
+    _ensureLiveAndWritable();   //  may throw
+
+    //  Validate parameters
+    if (workload == nullptr)
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "workload",
+            nullptr);
+    }
+
+    Workload * sqlWorkload = dynamic_cast<Workload*>(workload);
+    if (sqlWorkload == nullptr ||
+        sqlWorkload->_database != this->_database ||
+        !sqlWorkload->_isLive)
+    {   //  OOPS!
+        throw tt3::db::api::IncompatibleInstanceException(workload->type());
+    }
+    if (!permittedWorkloads().contains(sqlWorkload))    //  may throw
+    {   //  Make the changes
+        std::unique_ptr<Statement> stat
+        {   _database->createStatement(
+            "INSERT INTO [user_workloads]"
+            "       ([fk_user],[fk_workload])"
+            "       SELECT ?,?"
+            "        WHERE NOT EXISTS ("
+            "           SELECT 1"
+            "             FROM [user_workloads]"
+            "            WHERE [fk_user] = ?"
+            "              AND [fk_workload] = ?)") };
+        stat->setIntParameter(0, _pk);
+        stat->setIntParameter(1, sqlWorkload->_pk);
+        stat->setIntParameter(2, _pk);
+        stat->setIntParameter(3, sqlWorkload->_pk);
+        stat->execute();    //  may throw
+        //  Schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));  //  Cache load may throw
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, sqlWorkload->type(), sqlWorkload->_oid));    //  Cache load may throw
+        //  ...and we're done
+    }
 }
 
 void User::removePermittedWorkload(
-        tt3::db::api::IWorkload * /*workload*/
+        tt3::db::api::IWorkload * workload
     )
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(_database->guard);
+    _ensureLiveAndWritable();   //  may throw
+
+    //  Validate parameters
+    if (workload == nullptr)
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            type(),
+            "workload",
+            nullptr);
+    }
+
+    Workload * sqlWorkload = dynamic_cast<Workload*>(workload);
+    if (sqlWorkload == nullptr ||
+        sqlWorkload->_database != this->_database ||
+        !sqlWorkload->_isLive)
+    {   //  OOPS!
+        throw tt3::db::api::IncompatibleInstanceException(workload->type());
+    }
+    if (!permittedWorkloads().contains(sqlWorkload))    //  may throw
+    {   //  Make the changes
+        std::unique_ptr<Statement> stat
+        {   _database->createStatement(
+            "DELETE FROM [user_workloads]"
+            " WHERE [fk_user] = ?"
+            "   AND [fk_workload] = ?") };
+        stat->setIntParameter(0, _pk);
+        stat->setIntParameter(1, sqlWorkload->_pk);
+        stat->execute();    //  may throw
+        //  Schedule change notifications...
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, type(), _oid));  //  Cache load may throw
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectModifiedNotification(
+                _database, sqlWorkload->type(), sqlWorkload->_oid));    //  Cache load may throw
+        //  ...and we're done
+    }
 }
 
 //////////
