@@ -123,3 +123,13 @@ CREATE UNIQUE INDEX idx_activity_display_name ON [activities]([fk_owner],[fk_par
 CREATE INDEX [idx_activity_parent] ON [activities] ([fk_parent]);
 CREATE INDEX [idx_activity_owner] ON [activities] ([fk_owner]);
 CREATE INDEX [idx_activity_completed] ON [activities] ([completed]);
+
+CREATE TABLE [user_workloads] (
+    [fk_user]       INTEGER NOT NULL,
+    [fk_workload]   INTEGER NOT NULL,
+    PRIMARY KEY([fk_user],[fk_workload]),
+    FOREIGN KEY([fk_user]) REFERENCES [users]([pk]) ON DELETE CASCADE,
+    FOREIGN KEY([fk_workload]) REFERENCES [workloads]([pk]) ON DELETE CASCADE
+);
+CREATE INDEX [idx_user_workloads_user] ON [user_workloads] ([fk_user]);
+CREATE INDEX [idx_user_workloads_workload] ON [user_workloads] ([fk_workload]);
