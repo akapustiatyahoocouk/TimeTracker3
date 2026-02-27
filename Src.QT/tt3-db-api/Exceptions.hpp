@@ -456,6 +456,7 @@ namespace tt3::db::api
         QString         _objectTypeName;
         QString         _propertyName;
         QString         _propertyValueString;
+        //  TODO QString _context;  for "exists under <context>; "" == no context
     };
 
     /// \class DoesNotExistException tt3-db-api/API.hpp

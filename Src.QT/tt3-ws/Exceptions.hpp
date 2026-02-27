@@ -486,6 +486,7 @@ namespace tt3::ws
         QString         _objectTypeName;
         QString         _propertyName;
         QString         _propertyValueString;
+        //  TODO QString _context;  for "exists under <context>; "" == no context
     };
 
     /// \class DoesNotExistException tt3-ws/API.hpp
