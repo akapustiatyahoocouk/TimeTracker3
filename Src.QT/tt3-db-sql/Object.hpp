@@ -39,6 +39,7 @@ namespace tt3::db::sql
         friend class Project;
         friend class WorkStream;
         friend class Work;
+        friend class Event;
 
         //////////
         //  Construction/destruction (from DB type only)

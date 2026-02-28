@@ -194,7 +194,7 @@ void Object::removeReference()
 void Object::_saveOid(const tt3::db::api::Oid & oid)
 {
     std::unique_ptr<Statement> stat
-        {   _database->createStatement(
+    {   _database->createStatement(
             "UPDATE [objects]"
             "   SET [oid] = ?"
             " WHERE [pk] = ?") };
@@ -245,6 +245,19 @@ void Object::_removeFromDatabase()
     Q_ASSERT(_isLive);
     Q_ASSERT(_database->_liveObjects.contains(_pk));
 
+    //  Schedule change notifications
+    try
+    {
+        _database->_changeNotifier.post(
+            new tt3::db::api::ObjectDestroyedNotification(
+                _database, type(), _oid));  //  Cache load may throw
+        //  TODO write notification to the database
+    }
+    catch (...)
+    {   //  Better a lost notification than a failed deletion
+    }
+
+    //  Delete database row
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
             "DELETE FROM [objects]"
@@ -263,11 +276,6 @@ void Object::_makeDead()
     _isLive = false;
     _database->_liveObjects.remove(_pk);
     _database->_graveyard.insert(_pk, this);
-    //  Schedule change notifications
-    _database->_changeNotifier.post(
-        new tt3::db::api::ObjectDestroyedNotification(
-            _database, type(), _oid));
-    //  TODO write notification to the database
     //  Can we recycle now ?
     if (_referenceCount == 0 /* TODO uncomment &&
         _database->_activeDatabaseLocks.isEmpty()*/)

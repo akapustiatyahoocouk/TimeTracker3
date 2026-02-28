@@ -106,7 +106,7 @@ auto PrivateTask::children(
 
     //  TODO cache PKs
     std::unique_ptr<Statement> stat
-        {   _database->createStatement(
+    {   _database->createStatement(
             "SELECT [pk]"
             "  FROM [activities]"
             " WHERE [fk_parent] = ?") };
@@ -205,7 +205,7 @@ auto PrivateTask::createChild(
     Database::_ObjIds objIds = _database->_createObject(tt3::db::api::ObjectTypes::PublicTask::instance()); //  may throw
     //  ...then [activities] row...
     std::unique_ptr<Statement> stat
-        {   _database->createStatement(
+    {   _database->createStatement(
             "INSERT INTO [activities]"
             "       ([pk],"
             "        [fk_parent],[fk_owner],[fk_type],[fk_workload],"
@@ -303,7 +303,7 @@ void PrivateTask::_loadCachedProperties()
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
 
     std::unique_ptr<Statement> stat
-        {   _database->createStatement(
+    {   _database->createStatement(
             "SELECT [objects].[oid] AS [oid],"
             "       [objects].[type] AS [type],"
             "       [activities].[fk_parent] AS [fk_parent],"
@@ -385,7 +385,7 @@ bool PrivateTask::_siblingExists(const QString & displayName) const
     if (_fkParent.value().has_value())  //  Cache load may throw
     {   //  We're looking for a child public task
         std::unique_ptr<Statement> stat
-            {   _database->createStatement(
+        {   _database->createStatement(
                 "SELECT [pk]"
                 "  FROM [activities]"
                 " WHERE [displayname] = ?"
@@ -405,13 +405,13 @@ bool PrivateTask::_siblingExists(const QString & displayName) const
     {   //  We're looking for a root private task
         std::unique_ptr<Statement> stat
         {   _database->createStatement(
-            "SELECT [pk]"
-            "  FROM [activities]"
-            " WHERE [displayname] = ?"
-            "   AND [pk] <> ?"
-            "   AND [fk_owner] = ?"             //  Private to this User
-            "   AND [completed] IS NOT NULL"    //  Task
-            "   AND [fk_parent] IS NULL") };    //  Root
+                "SELECT [pk]"
+                "  FROM [activities]"
+                " WHERE [displayname] = ?"
+                "   AND [pk] <> ?"
+                "   AND [fk_owner] = ?"             //  Private to this User
+                "   AND [completed] IS NOT NULL"    //  Task
+                "   AND [fk_parent] IS NULL") };    //  Root
         stat->setStringParameter(0, displayName);
         stat->setIntParameter(1, _pk);
         stat->setIntParameter(2, _fkOwner); //  Cache load may throw
@@ -429,12 +429,12 @@ PrivateTask * PrivateTask::_findChild(const QString & displayName) const
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "SELECT [pk]"
-        "  FROM [activities]"
-        " WHERE [displayname] = ?"
-        "   AND [fk_owner] = ?"         //  Private to this User
-        "   AND [completed] IS NOT NULL"//  Task
-        "   AND [fk_parent] = ?") };    //  with this as parent
+            "SELECT [pk]"
+            "  FROM [activities]"
+            " WHERE [displayname] = ?"
+            "   AND [fk_owner] = ?"         //  Private to this User
+            "   AND [completed] IS NOT NULL"//  Task
+            "   AND [fk_parent] = ?") };    //  with this as parent
     stat->setStringParameter(0, displayName);
     stat->setIntParameter(1, _fkOwner); //  Cache load may throw
     stat->setIntParameter(2, _pk);

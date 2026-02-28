@@ -49,5 +49,6 @@
 #include "tt3-db-sql/WorkStream.hpp"
 //  TODO uncomment #include "tt3-db-sql/Beneficiary.hpp"
 #include "tt3-db-sql/Work.hpp"
+#include "tt3-db-sql/Event.hpp"
 
 //  End of tt3-db-sql/API.hpp

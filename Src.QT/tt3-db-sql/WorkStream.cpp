@@ -38,12 +38,12 @@ void WorkStream::_loadCachedProperties()
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "SELECT [objects].[oid] AS [oid],"
-        "       [workloads].[displayname] AS [displayname],"
-        "       [workloads].[description] AS [description]"
-        "  FROM [objects],[workloads]"
-        " WHERE [objects].[pk] = ?"
-        "   AND [workloads].[pk] = [objects].[pk]") };
+            "SELECT [objects].[oid] AS [oid],"
+            "       [workloads].[displayname] AS [displayname],"
+            "       [workloads].[description] AS [description]"
+            "  FROM [objects],[workloads]"
+            " WHERE [objects].[pk] = ?"
+            "   AND [workloads].[pk] = [objects].[pk]") };
     stat->setIntParameter(0, _pk);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };   //  may throw
@@ -69,11 +69,11 @@ bool WorkStream::_siblingExists(
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "SELECT [pk]"
-        "  FROM [workloads]"
-        " WHERE [displayname] = ?"
-        "   AND [pk] <> ?"
-        "   AND [completed] IS NULL") };//  WorkStream
+            "SELECT [pk]"
+            "  FROM [workloads]"
+            " WHERE [displayname] = ?"
+            "   AND [pk] <> ?"
+            "   AND [completed] IS NULL") };//  WorkStream
     stat->setStringParameter(0, displayName);
     stat->setIntParameter(1, _pk);
     std::unique_ptr<ResultSet> rs

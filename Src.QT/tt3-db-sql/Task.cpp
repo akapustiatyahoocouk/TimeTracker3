@@ -119,9 +119,9 @@ void Task::_saveRequireCommentOnCompletion(bool requireCommentOnCompletion)
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [activities]"
-        "   SET [requirecommentoncompletion] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [activities]"
+            "   SET [requirecommentoncompletion] = ?"
+            " WHERE [pk] = ?") };
     stat->setBoolParameter(0, requireCommentOnCompletion);
     stat->setIntParameter(1, _pk);
     auto affectedRows = stat->execute();    //  may throw
@@ -138,9 +138,9 @@ void Task::_saveCompleted(bool completed)
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [activities]"
-        "   SET [completed] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [activities]"
+            "   SET [completed] = ?"
+            " WHERE [pk] = ?") };
     stat->setBoolParameter(0, completed);
     stat->setIntParameter(1, _pk);
     auto affectedRows = stat->execute();    //  may throw
@@ -157,9 +157,9 @@ void Task::_saveFkParent(const std::optional<qint64> & fkParent)
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [activities]"
-        "   SET [fk_parent] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [activities]"
+            "   SET [fk_parent] = ?"
+            " WHERE [pk] = ?") };
     fkParent.has_value() ?
         stat->setIntParameter(0, fkParent.value()) :
         stat->setNullParameter(0);

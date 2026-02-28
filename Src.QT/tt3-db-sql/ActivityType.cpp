@@ -131,7 +131,7 @@ auto ActivityType::activities(
     //  TODO this "SEKECT" needs to go into a
     //  separate "Database::_getActivity(qint64 pk)" method
     std::unique_ptr<Statement> stat
-        {   _database->createStatement(
+    {   _database->createStatement(
             "SELECT [objects].[pk] AS [pk],"
             "       [objects].[type] AS [type]"
             "  FROM [objects],[activities]"
@@ -183,12 +183,12 @@ void ActivityType::_loadCachedProperties()
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "SELECT [objects].[oid] AS [oid],"
-        "       [activitytypes].[displayname] AS [displayname],"
-        "       [activitytypes].[description] AS [description]"
-        "  FROM [objects],[activitytypes]"
-        " WHERE [objects].[pk] = ?"
-        "   AND [activitytypes].[pk] = [objects].[pk]") };
+            "SELECT [objects].[oid] AS [oid],"
+            "       [activitytypes].[displayname] AS [displayname],"
+            "       [activitytypes].[description] AS [description]"
+            "  FROM [objects],[activitytypes]"
+            " WHERE [objects].[pk] = ?"
+            "   AND [activitytypes].[pk] = [objects].[pk]") };
     stat->setIntParameter(0, _pk);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };   //  may throw
@@ -209,9 +209,9 @@ void ActivityType::_saveDisplayName(const QString & displayName)
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [activitytypes]"
-        "   SET [displayname] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [activitytypes]"
+            "   SET [displayname] = ?"
+            " WHERE [pk] = ?") };
     stat->setStringParameter(0, displayName);
     stat->setIntParameter(1, _pk);
     auto affectedRows = stat->execute();    //  may throw
@@ -228,9 +228,9 @@ void ActivityType::_saveDescription(const QString & description)
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [activitytypes]"
-        "   SET [description] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [activitytypes]"
+            "   SET [description] = ?"
+            " WHERE [pk] = ?") };
     description.isEmpty() ?
         stat->setNullParameter(0) :
         stat->setStringParameter(0, description);
@@ -267,8 +267,8 @@ void ActivityType::_removeFromDatabase()
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "DELETE FROM [activitytypes]"
-        " WHERE [pk] = ?") };
+            "DELETE FROM [activitytypes]"
+            " WHERE [pk] = ?") };
     stat->setIntParameter(0, _pk);
     stat->execute();    //  may throw
     Object::_removeFromDatabase();

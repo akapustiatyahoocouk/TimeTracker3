@@ -40,6 +40,7 @@ namespace tt3::db::sql
     class Event;
 
     //  Collections
+    using Activities = QSet<Activity*>;
     using PublicTasks = QSet<PublicTask*>;
     using PrivateTasks = QSet<PrivateTask*>;
     using Workloads = QSet<Workload*>;

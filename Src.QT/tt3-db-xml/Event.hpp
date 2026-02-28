@@ -96,4 +96,4 @@ namespace tt3::db::xml
     };
 }
 
-//  End of tt3-db-xml/ActivityType.hpp
+//  End of tt3-db-xml/Event.hpp

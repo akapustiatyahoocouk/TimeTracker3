@@ -1,5 +1,5 @@
 //
-//  tt3-db-sql/Work.cpp - tt3::db::sql::Work class implementation
+//  tt3-db-sql/Event.cpp - tt3::db::sql::Event class implementation
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -19,45 +19,45 @@ using namespace tt3::db::sql;
 
 //////////
 //  Construction/destruction (from DB type only)
-Work::Work(
+Event::Event(
         Database * database,
         qint64 pk
     ) : Object(database, pk),
-        //  Cached roperties
-        _startedAt([this] { _loadCachedProperties(); }),
-        _finishedAt([this] { _loadCachedProperties(); }),
+        //  Cached properties
+        _occurredAt([this] { _loadCachedProperties(); }),
+        _summary([this] { _loadCachedProperties(); }),
         _fkAccount([this] { _loadCachedProperties(); }),
-        _fkActivity([this] { _loadCachedProperties(); })
+        _fkActivities([this] { _loadCachedProperties(); })
 {
 }
 
-Work::~Work()
+Event::~Event()
 {
 }
 
 //////////
-//  tt3::db::api::IWork (properties)
-auto Work::startedAt(
+//  tt3::db::api::IEvent (properties)
+auto Event::occurredAt(
     ) const -> QDateTime
 {
     tt3::util::Lock _(_database->guard);
     _ensureLive();  //  may throw
 
-    return _startedAt;  //  Cache load may throw
+    return _occurredAt; //  Cache load may throw
 }
 
-auto Work::finishedAt(
-    ) const -> QDateTime
+auto Event::summary(
+    ) const -> QString
 {
     tt3::util::Lock _(_database->guard);
     _ensureLive();  //  may throw
 
-    return _finishedAt; //  Cache load may throw
+    return _summary;    //  Cache load may throw
 }
 
 //////////
-//  tt3::db::api::IWork (associations)
-auto Work::account(
+//  tt3::db::api::IEvent (associations)
+auto Event::account(
     ) const -> tt3::db::api::IAccount *
 {
     tt3::util::Lock _(_database->guard);
@@ -66,40 +66,46 @@ auto Work::account(
     return _database->_getObject<Account>(_fkAccount);  //  Cache load may throw
 }
 
-auto Work::activity(
-    ) const -> tt3::db::api::IActivity *
+auto Event::activities(
+    ) const -> tt3::db::api::Activities
 {
     tt3::util::Lock _(_database->guard);
     _ensureLive();  //  may throw
 
-    return _database->_getActivity(_fkActivity);    //  Cache load may throw
+    tt3::db::api::Activities result;
+    for (qint64 fkActivity : _fkActivities.value()) //  Cache load may throw
+    {
+        result.insert(_database->_getActivity(fkActivity));
+    }
+    return result;
 }
 
 //////////
-//  Cached roperties
-void Work::_invalidateCachedProperties()
+//  Cached properties
+void Event::_invalidateCachedProperties()
 {
     Object::_invalidateCachedProperties();
-    _startedAt.invalidate();
-    _finishedAt.invalidate();
+    _occurredAt.invalidate();
+    _summary.invalidate();
     _fkAccount.invalidate();
-    _fkActivity.invalidate();
+    _fkActivities.invalidate();
 }
 
-void Work::_loadCachedProperties()
+void Event::_loadCachedProperties()
 {
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
             "SELECT [objects].[oid] AS [oid],"
-            "       [works].[fk_account] AS [fk_account],"
-            "       [works].[fk_activity] AS [fk_activity],"
-            "       [works].[startedat] AS [startedat],"
-            "       [works].[finishedat] AS [finishedat]"
-            "  FROM [objects],[works]"
+            "       [events].[fk_account] AS [fk_account],"
+            "       [events].[fk_activity1] AS [fk_activity1],"
+            "       [events].[fk_activity2] AS [fk_activity2],"
+            "       [events].[occurredat] AS [occurredat],"
+            "       [events].[summary] AS [summary]"
+            "  FROM [objects],[events]"
             " WHERE [objects].[pk] = ?"
-            "   AND [works].[pk] = [objects].[pk]") };
+            "   AND [events].[pk] = [objects].[pk]") };
     stat->setIntParameter(0, _pk);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };   //  may throw
@@ -110,15 +116,24 @@ void Work::_loadCachedProperties()
     }
     //  Work row exists and is now "current" in "rs"
     _oid = rs->oidValue("oid");
-    _startedAt = tt3::util::fromString<QDateTime>(rs->stringValue("startedat"));
-    _finishedAt = tt3::util::fromString<QDateTime>(rs->stringValue("finishedat"));
+    _occurredAt = tt3::util::fromString<QDateTime>(rs->stringValue("occurredat"));
+    _summary = rs->stringValue("summary");
     _fkAccount = rs->intValue("fk_account");
-    _fkActivity = rs->intValue("fk_activity");
+    QSet<qint64> fkActivities;
+    if (!rs->isNull("fk_activity1"))
+    {
+        fkActivities.insert(rs->intValue("fk_activity1"));
+    }
+    if (!rs->isNull("fk_activity2"))
+    {
+        fkActivities.insert(rs->intValue("fk_activity2"));
+    }
+    _fkActivities = fkActivities;
 }
 
 //////////
 //  Implementation helpers
-void Work::_deleteCascade()  //  may thro
+void Event::_deleteCascade()  //  may thro
 {
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
@@ -128,7 +143,7 @@ void Work::_deleteCascade()  //  may thro
     //  _deleteCascade() non-abstract and kill this method ?
 }
 
-void Work::_removeFromDatabase()
+void Event::_removeFromDatabase()
 {
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
     Q_ASSERT(_isLive);
@@ -148,11 +163,14 @@ void Work::_removeFromDatabase()
     }
     try
     {
-        auto activity = _database->_getActivity(_fkActivity);  //  Cache load may thro
-        _database->_changeNotifier.post(
-            new tt3::db::api::ObjectModifiedNotification(
-                _database, activity->type(), activity->_oid));  //  may throw
-        //  TODO write notifications to the database
+        for (qint64 fkActivity : _fkActivities.value()) //  Cache load may throw
+        {
+            auto activity = _database->_getActivity(fkActivity);  //  Cache load may thro
+            _database->_changeNotifier.post(
+                new tt3::db::api::ObjectModifiedNotification(
+                    _database, activity->type(), activity->_oid));  //  may throw
+            //  TODO write notifications to the database
+        }
     }
     catch (...)
     {   //  Better a lost notification than a failed deletion
@@ -161,7 +179,7 @@ void Work::_removeFromDatabase()
     //  Delete database row
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-            "DELETE FROM [works]"
+            "DELETE FROM [events]"
             " WHERE [pk] = ?") };
     stat->setIntParameter(0, _pk);
     stat->execute();    //  may throw
@@ -170,4 +188,4 @@ void Work::_removeFromDatabase()
     Object::_removeFromDatabase();
 }
 
-//  End of tt3-db-sql/Work.cpp
+//  End of tt3-db-sql/Event.cpp

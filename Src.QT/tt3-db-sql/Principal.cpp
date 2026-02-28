@@ -144,7 +144,7 @@ void Principal::_saveEmailAddresses(const QStringList & emailAddresses)
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
 
     std::unique_ptr<Statement> stat
-        {   _database->createStatement(
+    {   _database->createStatement(
             "UPDATE [" + _tableName() + "]"
             "   SET [emailaddresses] = ?"
             " WHERE [pk] = ?") };

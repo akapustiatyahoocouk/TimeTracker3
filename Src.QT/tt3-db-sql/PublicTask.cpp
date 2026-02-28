@@ -106,9 +106,9 @@ auto PublicTask::children(
     //  TODO cache PKs
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "SELECT [pk]"
-        "  FROM [activities]"
-        " WHERE [fk_parent] = ?") };
+            "SELECT [pk]"
+            "  FROM [activities]"
+            " WHERE [fk_parent] = ?") };
     stat->setIntParameter(0, _pk);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };   //  may throw
@@ -205,15 +205,15 @@ auto PublicTask::createChild(
     //  ...then [activities] row...
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "INSERT INTO [activities]"
-        "       ([pk],"
-        "        [fk_parent],[fk_owner],[fk_type],[fk_workload],"
-        "        [displayname],[description],[timeout],"
-        "        [requirecommentonstart],"
-        "        [requirecommentonstop],"
-        "        [fullscreenreminder],"
-        "        [completed],[requirecommentoncompletion])"
-        "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)") };
+            "INSERT INTO [activities]"
+            "       ([pk],"
+            "        [fk_parent],[fk_owner],[fk_type],[fk_workload],"
+            "        [displayname],[description],[timeout],"
+            "        [requirecommentonstart],"
+            "        [requirecommentonstop],"
+            "        [fullscreenreminder],"
+            "        [completed],[requirecommentoncompletion])"
+            "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)") };
     stat->setIntParameter(0, std::get<0>(objIds));
     stat->setIntParameter(1, _pk);
     stat->setNullParameter(2);
@@ -300,7 +300,7 @@ void PublicTask::_loadCachedProperties()
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
 
     std::unique_ptr<Statement> stat
-        {   _database->createStatement(
+    {   _database->createStatement(
             "SELECT [objects].[oid] AS [oid],"
             "       [objects].[type] AS [type],"
             "       [activities].[fk_parent] AS [fk_parent],"
@@ -384,13 +384,13 @@ bool PublicTask::_siblingExists(
     {   //  We're looking for a child public task
         std::unique_ptr<Statement> stat
         {   _database->createStatement(
-            "SELECT [pk]"
-            "  FROM [activities]"
-            " WHERE [displayname] = ?"
-            "   AND [pk] <> ?"
-            "   AND [fk_owner] IS NULL"         //  Public
-            "   AND [completed] IS NOT NULL"    //  Task
-            "   AND [fk_parent] = ?") };        //  with the same parent
+                "SELECT [pk]"
+                "  FROM [activities]"
+                " WHERE [displayname] = ?"
+                "   AND [pk] <> ?"
+                "   AND [fk_owner] IS NULL"         //  Public
+                "   AND [completed] IS NOT NULL"    //  Task
+                "   AND [fk_parent] = ?") };        //  with the same parent
         stat->setStringParameter(0, displayName);
         stat->setIntParameter(1, _pk);
         stat->setIntParameter(2, _fkParent.value().value());    //  Cache load may throw
@@ -402,13 +402,13 @@ bool PublicTask::_siblingExists(
     {   //  We're looking for a root public task
         std::unique_ptr<Statement> stat
         {   _database->createStatement(
-            "SELECT [pk]"
-            "  FROM [activities]"
-            " WHERE [displayname] = ?"
-            "   AND [pk] <> ?"
-            "   AND [fk_owner] IS NULL"         //  Public
-            "   AND [completed] IS NOT NULL"    //  Task
-            "   AND [fk_parent] IS NULL") };    //  Root
+                "SELECT [pk]"
+                "  FROM [activities]"
+                " WHERE [displayname] = ?"
+                "   AND [pk] <> ?"
+                "   AND [fk_owner] IS NULL"         //  Public
+                "   AND [completed] IS NOT NULL"    //  Task
+                "   AND [fk_parent] IS NULL") };    //  Root
         stat->setStringParameter(0, displayName);
         stat->setIntParameter(1, _pk);
         std::unique_ptr<ResultSet> rs
@@ -427,12 +427,12 @@ PublicTask * PublicTask::_findChild(
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "SELECT [pk]"
-        "  FROM [activities]"
-        " WHERE [displayname] = ?"
-        "   AND [fk_owner] IS NULL"         //  Public
-        "   AND [completed] IS NOT NULL"    //  Task
-        "   AND [fk_parent] = ?") };        //  with this as parent
+            "SELECT [pk]"
+            "  FROM [activities]"
+            " WHERE [displayname] = ?"
+            "   AND [fk_owner] IS NULL"         //  Public
+            "   AND [completed] IS NOT NULL"    //  Task
+            "   AND [fk_parent] = ?") };        //  with this as parent
     stat->setStringParameter(0, displayName);
     stat->setIntParameter(1, _pk);
     std::unique_ptr<ResultSet> rs

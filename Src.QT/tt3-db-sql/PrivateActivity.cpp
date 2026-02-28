@@ -57,7 +57,7 @@ void PrivateActivity::_loadCachedProperties()
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
 
     std::unique_ptr<Statement> stat
-        {   _database->createStatement(
+    {   _database->createStatement(
             "SELECT [objects].[oid] AS [oid],"
             "       [objects].[type] AS [type],"
             "       [activities].[fk_parent] AS [fk_parent],"
@@ -115,12 +115,12 @@ bool PrivateActivity::_siblingExists(const QString & displayName) const
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "SELECT [pk]"
-        "  FROM [activities]"
-        " WHERE [displayname] = ?"
-        "   AND [pk] <> ?"
-        "   AND [fk_owner] = ?"         //  Private to this User
-        "   AND [completed] IS NULL") };//  Activity
+            "SELECT [pk]"
+            "  FROM [activities]"
+            " WHERE [displayname] = ?"
+            "   AND [pk] <> ?"
+            "   AND [fk_owner] = ?"         //  Private to this User
+            "   AND [completed] IS NULL") };//  Activity
     stat->setStringParameter(0, displayName);
     stat->setIntParameter(1, _pk);
     stat->setIntParameter(2, _fkOwner); //  Cache load may throw

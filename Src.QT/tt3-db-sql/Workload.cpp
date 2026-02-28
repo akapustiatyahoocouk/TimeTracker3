@@ -233,9 +233,9 @@ void Workload::_saveDisplayName(const QString & displayName)
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [workloads]"
-        "   SET [displayname] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [workloads]"
+            "   SET [displayname] = ?"
+            " WHERE [pk] = ?") };
     stat->setStringParameter(0, displayName);
     stat->setIntParameter(1, _pk);
     auto affectedRows = stat->execute();    //  may throw
@@ -252,9 +252,9 @@ void Workload::_saveDescription(const QString & description)
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [workloads]"
-        "   SET [description] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [workloads]"
+            "   SET [description] = ?"
+            " WHERE [pk] = ?") };
     description.isEmpty() ?
         stat->setNullParameter(0) :
         stat->setStringParameter(0, description);

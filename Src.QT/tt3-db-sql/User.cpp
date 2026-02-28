@@ -201,10 +201,10 @@ auto User::privateActivities(
     //  TODO cache PKs
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "SELECT [pk]"
-        "  FROM [activities]"
-        " WHERE [fk_owner] = ?"         //  Private to this UserPublic}
-        "   AND [completed] IS NULL") };//  Activity
+            "SELECT [pk]"
+            "  FROM [activities]"
+            " WHERE [fk_owner] = ?"         //  Private to this UserPublic}
+            "   AND [completed] IS NULL") };//  Activity
     stat->setIntParameter(0, _pk);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };   //  may throw
@@ -237,11 +237,11 @@ auto User::rootPrivateTasks(
     //  TODO cache PKs
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "SELECT [pk]"
-        "  FROM [activities]"
-        " WHERE [fk_owner] = ?"             //  Private to this UserPublic}
-        "   AND [fk_parent] IS NULL"        //  Root
-        "   AND [completed] IS NOT NULL") };//  Task
+            "SELECT [pk]"
+            "  FROM [activities]"
+            " WHERE [fk_owner] = ?"             //  Private to this UserPublic}
+            "   AND [fk_parent] IS NULL"        //  Root
+            "   AND [completed] IS NOT NULL") };//  Task
     stat->setIntParameter(0, _pk);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };   //  may throw
@@ -262,9 +262,9 @@ auto User::permittedWorkloads(
     //  TODO cache PKs
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "SELECT [fk_workload]"
-        "  FROM [user_workloads]"
-        " WHERE [fk_user] = ?") };
+            "SELECT [fk_workload]"
+            "  FROM [user_workloads]"
+            " WHERE [fk_user] = ?") };
     stat->setIntParameter(0, _pk);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };   //  may throw
@@ -333,9 +333,9 @@ void User::setPermittedWorkloads(
             {
                 std::unique_ptr<Statement> stat
                 {   _database->createStatement(
-                    "DELETE FROM [user_workloads]"
-                    " WHERE [fk_user] = ?"
-                    "   AND [fk_workload] = ?") };
+                        "DELETE FROM [user_workloads]"
+                        " WHERE [fk_user] = ?"
+                        "   AND [fk_workload] = ?") };
                 stat->setIntParameter(0, _pk);
                 stat->setIntParameter(1, workload->_pk);
                 stat->execute();    //  may throw
@@ -352,14 +352,14 @@ void User::setPermittedWorkloads(
             {
                 std::unique_ptr<Statement> stat
                 {   _database->createStatement(
-                    "INSERT INTO [user_workloads]"
-                    "       ([fk_user],[fk_workload])"
-                    "       SELECT ?,?"
-                    "        WHERE NOT EXISTS ("
-                    "           SELECT 1"
-                    "             FROM [user_workloads]"
-                    "            WHERE [fk_user] = ?"
-                    "              AND [fk_workload] = ?)") };
+                        "INSERT INTO [user_workloads]"
+                        "       ([fk_user],[fk_workload])"
+                        "       SELECT ?,?"
+                        "        WHERE NOT EXISTS ("
+                        "           SELECT 1"
+                        "             FROM [user_workloads]"
+                        "            WHERE [fk_user] = ?"
+                        "              AND [fk_workload] = ?)") };
                 stat->setIntParameter(0, _pk);
                 stat->setIntParameter(1, workload->_pk);
                 stat->setIntParameter(2, _pk);
@@ -407,14 +407,14 @@ void User::addPermittedWorkload(
     {   //  Make the changes
         std::unique_ptr<Statement> stat
         {   _database->createStatement(
-            "INSERT INTO [user_workloads]"
-            "       ([fk_user],[fk_workload])"
-            "       SELECT ?,?"
-            "        WHERE NOT EXISTS ("
-            "           SELECT 1"
-            "             FROM [user_workloads]"
-            "            WHERE [fk_user] = ?"
-            "              AND [fk_workload] = ?)") };
+                "INSERT INTO [user_workloads]"
+                "       ([fk_user],[fk_workload])"
+                "       SELECT ?,?"
+                "        WHERE NOT EXISTS ("
+                "           SELECT 1"
+                "             FROM [user_workloads]"
+                "            WHERE [fk_user] = ?"
+                "              AND [fk_workload] = ?)") };
         stat->setIntParameter(0, _pk);
         stat->setIntParameter(1, sqlWorkload->_pk);
         stat->setIntParameter(2, _pk);
@@ -458,9 +458,9 @@ void User::removePermittedWorkload(
     {   //  Make the changes
         std::unique_ptr<Statement> stat
         {   _database->createStatement(
-            "DELETE FROM [user_workloads]"
-            " WHERE [fk_user] = ?"
-            "   AND [fk_workload] = ?") };
+                "DELETE FROM [user_workloads]"
+                " WHERE [fk_user] = ?"
+                "   AND [fk_workload] = ?") };
         stat->setIntParameter(0, _pk);
         stat->setIntParameter(1, sqlWorkload->_pk);
         stat->execute();    //  may throw
@@ -682,15 +682,15 @@ auto User::createPrivateActivity(
     //  ...then [activities] row...
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "INSERT INTO [activities]"
-        "       ([pk],"
-        "        [fk_parent],[fk_owner],[fk_type],[fk_workload],"
-        "        [displayname],[description],[timeout],"
-        "        [requirecommentonstart],"
-        "        [requirecommentonstop],"
-        "        [fullscreenreminder],"
-        "        [completed],[requirecommentoncompletion])"
-        "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)") };
+            "INSERT INTO [activities]"
+            "       ([pk],"
+            "        [fk_parent],[fk_owner],[fk_type],[fk_workload],"
+            "        [displayname],[description],[timeout],"
+            "        [requirecommentonstart],"
+            "        [requirecommentonstop],"
+            "        [fullscreenreminder],"
+            "        [completed],[requirecommentoncompletion])"
+            "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)") };
     stat->setIntParameter(0, std::get<0>(objIds));
     stat->setNullParameter(1);
     stat->setIntParameter(2, _pk);
@@ -842,15 +842,15 @@ auto User::createPrivateTask(
     //  ...then [activities] row...
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "INSERT INTO [activities]"
-        "       ([pk],"
-        "        [fk_parent],[fk_owner],[fk_type],[fk_workload],"
-        "        [displayname],[description],[timeout],"
-        "        [requirecommentonstart],"
-        "        [requirecommentonstop],"
-        "        [fullscreenreminder],"
-        "        [completed],[requirecommentoncompletion])"
-        "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)") };
+            "INSERT INTO [activities]"
+            "       ([pk],"
+            "        [fk_parent],[fk_owner],[fk_type],[fk_workload],"
+            "        [displayname],[description],[timeout],"
+            "        [requirecommentonstart],"
+            "        [requirecommentonstop],"
+            "        [fullscreenreminder],"
+            "        [completed],[requirecommentoncompletion])"
+            "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)") };
     stat->setIntParameter(0, std::get<0>(objIds));
     stat->setNullParameter(1);
     stat->setIntParameter(2, _pk);
@@ -937,7 +937,7 @@ void User::_loadCachedProperties()
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
 
     std::unique_ptr<Statement> stat
-        {   _database->createStatement(
+    {   _database->createStatement(
             "SELECT [objects].[oid] AS [oid],"
             "       [users].[enabled] AS [enabled],"
             "       [users].[emailaddresses] AS [emailaddresses],"
@@ -1006,9 +1006,9 @@ void User::_saveInactivityTimeout(const tt3::db::api::InactivityTimeout & inacti
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [users]"
-        "   SET [inactivitytimeout] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [users]"
+            "   SET [inactivitytimeout] = ?"
+            " WHERE [pk] = ?") };
     inactivityTimeout.has_value() ?
         stat->setTimeSpanParameter(0, inactivityTimeout.value()) :
         stat->setNullParameter(0);
@@ -1027,9 +1027,9 @@ void User::_saveUiLocale(const tt3::db::api::UiLocale & uiLocale)
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [users]"
-        "   SET [uilocale] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [users]"
+            "   SET [uilocale] = ?"
+            " WHERE [pk] = ?") };
     uiLocale.has_value() ?
         stat->setStringParameter(0, tt3::util::toString(uiLocale.value())) :
         stat->setNullParameter(0);
@@ -1062,7 +1062,7 @@ void User::_removeFromDatabase()
     Q_ASSERT(_database->_liveObjects.contains(_pk));
 
     std::unique_ptr<Statement> stat
-        {   _database->createStatement(
+    {   _database->createStatement(
             "DELETE FROM [users]"
             " WHERE [pk] = ?") };
     stat->setIntParameter(0, _pk);
@@ -1081,11 +1081,11 @@ auto User::_findPrivateActivity(
     //  TODO cache PKs
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "SELECT [pk]"
-        "  FROM [activities]"
-        " WHERE [displayname] = ?"
-        "   AND [fk_owner] = ?"         //  Private to this User
-        "   AND [completed] IS NULL") };//  Activity
+            "SELECT [pk]"
+            "  FROM [activities]"
+            " WHERE [displayname] = ?"
+            "   AND [fk_owner] = ?"         //  Private to this User
+            "   AND [completed] IS NULL") };//  Activity
     stat->setStringParameter(0, displayName);
     stat->setIntParameter(1, _pk);
     std::unique_ptr<ResultSet> rs
@@ -1107,7 +1107,7 @@ auto User::_findRootPrivateTask(
 
     //  TODO cache PKs
     std::unique_ptr<Statement> stat
-        {   _database->createStatement(
+    {   _database->createStatement(
             "SELECT [pk]"
             "  FROM [activities]"
             " WHERE [displayname] = ?"

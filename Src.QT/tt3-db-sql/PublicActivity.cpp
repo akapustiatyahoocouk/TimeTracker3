@@ -38,23 +38,23 @@ void PublicActivity::_loadCachedProperties()
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "SELECT [objects].[oid] AS [oid],"
-        "       [objects].[type] AS [type],"
-        "       [activities].[fk_parent] AS [fk_parent],"
-        "       [activities].[fk_owner] AS [fk_owner],"
-        "       [activities].[fk_type] AS [fk_type],"
-        "       [activities].[fk_workload] AS [fk_workload],"
-        "       [activities].[displayname] AS [displayname],"
-        "       [activities].[description] AS [description],"
-        "       [activities].[timeout] AS [timeout],"
-        "       [activities].[requirecommentonstart] AS [requirecommentonstart],"
-        "       [activities].[requirecommentonstop] AS [requirecommentonstop],"
-        "       [activities].[fullscreenreminder] AS [fullscreenreminder],"
-        "       [activities].[completed] AS [completed],"
-        "       [activities].[requirecommentoncompletion] AS [requirecommentoncompletion]"
-        "  FROM [objects],[activities]"
-        " WHERE [objects].[pk] = ?"
-        "   AND [activities].[pk] = [objects].[pk]") };
+            "SELECT [objects].[oid] AS [oid],"
+            "       [objects].[type] AS [type],"
+            "       [activities].[fk_parent] AS [fk_parent],"
+            "       [activities].[fk_owner] AS [fk_owner],"
+            "       [activities].[fk_type] AS [fk_type],"
+            "       [activities].[fk_workload] AS [fk_workload],"
+            "       [activities].[displayname] AS [displayname],"
+            "       [activities].[description] AS [description],"
+            "       [activities].[timeout] AS [timeout],"
+            "       [activities].[requirecommentonstart] AS [requirecommentonstart],"
+            "       [activities].[requirecommentonstop] AS [requirecommentonstop],"
+            "       [activities].[fullscreenreminder] AS [fullscreenreminder],"
+            "       [activities].[completed] AS [completed],"
+            "       [activities].[requirecommentoncompletion] AS [requirecommentoncompletion]"
+            "  FROM [objects],[activities]"
+            " WHERE [objects].[pk] = ?"
+            "   AND [activities].[pk] = [objects].[pk]") };
     stat->setIntParameter(0, _pk);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };   //  may throw
@@ -94,12 +94,12 @@ bool PublicActivity::_siblingExists(const QString & displayName) const
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "SELECT [pk]"
-        "  FROM [activities]"
-        " WHERE [displayname] = ?"
-        "   AND [pk] <> ?"
-        "   AND [fk_owner] IS NULL"     //  Public
-        "   AND [completed] IS NULL") };//  Activity
+            "SELECT [pk]"
+            "  FROM [activities]"
+            " WHERE [displayname] = ?"
+            "   AND [pk] <> ?"
+            "   AND [fk_owner] IS NULL"     //  Public
+            "   AND [completed] IS NULL") };//  Activity
     stat->setStringParameter(0, displayName);
     stat->setIntParameter(1, _pk);
     std::unique_ptr<ResultSet> rs

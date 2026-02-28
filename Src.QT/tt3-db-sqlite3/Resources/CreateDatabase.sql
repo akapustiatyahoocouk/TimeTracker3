@@ -160,3 +160,19 @@ CREATE TABLE [works] (
 CREATE INDEX [idx_works_account] ON [works] ([fk_account]);
 CREATE INDEX [idx_works_startedat] ON [works] ([startedat]);
 CREATE INDEX [idx_works_finishedat] ON [works] ([finishedat]);
+
+CREATE TABLE [events] (
+    [pk]                INTEGER NOT NULL UNIQUE,
+    [fk_account]        INTEGER NOT NULL,
+    [fk_activity1]      INTEGER,
+    [fk_activity2]      INTEGER,
+    [occurredat]        CHAR(19) NOT NULL,  --  yyyymmddThhmmss.ttt
+    [summary]           VARCHAR(255) NOT NULL,  --  as per DefaultValidator
+    PRIMARY KEY([pk]),
+    FOREIGN KEY([pk]) REFERENCES [objects]([pk]),
+    FOREIGN KEY([fk_account]) REFERENCES [accounts]([pk]) ON DELETE CASCADE,
+    FOREIGN KEY([fk_activity1]) REFERENCES [activities]([pk]) ON DELETE CASCADE,
+    FOREIGN KEY([fk_activity2]) REFERENCES [activities]([pk]) ON DELETE CASCADE
+);
+CREATE INDEX [idx_events_account] ON [events] ([fk_account]);
+CREATE INDEX [idx_events_occurredat] ON [events] ([occurredat]);

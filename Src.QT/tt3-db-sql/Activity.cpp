@@ -449,9 +449,9 @@ void Activity::_saveDisplayName(const QString & displayName)
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [activities]"
-        "   SET [displayname] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [activities]"
+            "   SET [displayname] = ?"
+            " WHERE [pk] = ?") };
     stat->setStringParameter(0, displayName);
     stat->setIntParameter(1, _pk);
     auto affectedRows = stat->execute();    //  may throw
@@ -468,9 +468,9 @@ void Activity::_saveDescription(const QString & description)
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [activities]"
-        "   SET [description] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [activities]"
+            "   SET [description] = ?"
+            " WHERE [pk] = ?") };
     description.isEmpty() ?
         stat->setNullParameter(0) :
         stat->setStringParameter(0, description);
@@ -489,9 +489,9 @@ void Activity::_saveTimeout(const tt3::db::api::InactivityTimeout & timeout)
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [activities]"
-        "   SET [timeout] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [activities]"
+            "   SET [timeout] = ?"
+            " WHERE [pk] = ?") };
     timeout.has_value() ?   //  TODO use the same trick where SQL parameters are NULLable
         stat->setTimeSpanParameter(0, timeout.value()) :
         stat->setNullParameter(0);
@@ -510,9 +510,9 @@ void Activity::_saveRequireCommentOnStart(bool requireCommentOnStart)
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [activities]"
-        "   SET [requirecommentonstart] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [activities]"
+            "   SET [requirecommentonstart] = ?"
+            " WHERE [pk] = ?") };
     stat->setBoolParameter(0, requireCommentOnStart);
     stat->setIntParameter(1, _pk);
     auto affectedRows = stat->execute();    //  may throw
@@ -529,9 +529,9 @@ void Activity::_saveRequireCommentOnStop(bool requireCommentOnStop)
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [activities]"
-        "   SET [requirecommentonstop] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [activities]"
+            "   SET [requirecommentonstop] = ?"
+            " WHERE [pk] = ?") };
     stat->setBoolParameter(0, requireCommentOnStop);
     stat->setIntParameter(1, _pk);
     auto affectedRows = stat->execute();    //  may throw
@@ -548,9 +548,9 @@ void Activity::_saveFullScreenReminder(bool fullScreenReminder)
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [activities]"
-        "   SET [fullscreenreminder] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [activities]"
+            "   SET [fullscreenreminder] = ?"
+            " WHERE [pk] = ?") };
     stat->setBoolParameter(0, fullScreenReminder);
     stat->setIntParameter(1, _pk);
     auto affectedRows = stat->execute();    //  may throw
@@ -567,9 +567,9 @@ void Activity::_saveFkActivityType(const std::optional<qint64> & fkActivityType)
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [activities]"
-        "   SET [fk_type] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [activities]"
+            "   SET [fk_type] = ?"
+            " WHERE [pk] = ?") };
     fkActivityType.has_value() ?
         stat->setIntParameter(0, fkActivityType.value()) :
         stat->setNullParameter(0);
@@ -588,9 +588,9 @@ void Activity::_saveFkWorkload(const std::optional<qint64> & fkWorkload)
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [activities]"
-        "   SET [fk_workload] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [activities]"
+            "   SET [fk_workload] = ?"
+            " WHERE [pk] = ?") };
     fkWorkload.has_value() ?
         stat->setIntParameter(0, fkWorkload.value()) :
         stat->setNullParameter(0);
@@ -622,7 +622,7 @@ void Activity::_removeFromDatabase()
     Q_ASSERT(_database->_liveObjects.contains(_pk));
 
     std::unique_ptr<Statement> stat
-        {   _database->createStatement(
+    {   _database->createStatement(
             "DELETE FROM [activities]"
             " WHERE [pk] = ?") };
     stat->setIntParameter(0, _pk);

@@ -143,9 +143,9 @@ auto Project::children(
     //  TODO cache PKs
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "SELECT [pk]"
-        "  FROM [workloads]"
-        " WHERE [fk_parent] = ?") };
+            "SELECT [pk]"
+            "  FROM [workloads]"
+            " WHERE [fk_parent] = ?") };
     stat->setIntParameter(0, _pk);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };   //  may throw
@@ -227,9 +227,9 @@ auto Project::createChild(
     //  ...then [worklooads] row...
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "INSERT INTO [workloads]"
-        "       ([pk],[fk_parent],[displayname],[description],[completed])"
-        "       VALUES(?,?,?,?,?)") };
+            "INSERT INTO [workloads]"
+            "       ([pk],[fk_parent],[displayname],[description],[completed])"
+            "       VALUES(?,?,?,?,?)") };
     stat->setIntParameter(0, std::get<0>(objIds));
     stat->setIntParameter(1, _pk);
     stat->setStringParameter(2, displayName);
@@ -277,7 +277,7 @@ void Project::_loadCachedProperties()
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
 
     std::unique_ptr<Statement> stat
-        {   _database->createStatement(
+    {   _database->createStatement(
             "SELECT [objects].[oid] AS [oid],"
             "       [workloads].[displayname] AS [displayname],"
             "       [workloads].[description] AS [description],"
@@ -311,9 +311,9 @@ void Project::_saveCompleted(bool completed)
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [workloads]"
-        "   SET [completed] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [workloads]"
+            "   SET [completed] = ?"
+            " WHERE [pk] = ?") };
     stat->setBoolParameter(0, completed);
     stat->setIntParameter(1, _pk);
     auto affectedRows = stat->execute();    //  may throw
@@ -330,9 +330,9 @@ void Project::_saveFkParent(const std::optional<qint64> & fkParent)
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [workloads]"
-        "   SET [fk_parent] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [workloads]"
+            "   SET [fk_parent] = ?"
+            " WHERE [pk] = ?") };
     fkParent.has_value() ?
         stat->setIntParameter(0, fkParent.value()) :
         stat->setNullParameter(0);
@@ -357,12 +357,12 @@ bool Project::_siblingExists(const QString & displayName) const
     {   //  We're looking for a child project
         std::unique_ptr<Statement> stat
         {   _database->createStatement(
-            "SELECT [pk]"
-            "  FROM [workloads]"
-            " WHERE [displayname] = ?"
-            "   AND [pk] <> ?"
-            "   AND [completed] IS NOT NULL"    //  Project
-            "   AND [fk_parent] = ?") };        //  with the same parent
+                "SELECT [pk]"
+                "  FROM [workloads]"
+                " WHERE [displayname] = ?"
+                "   AND [pk] <> ?"
+                "   AND [completed] IS NOT NULL"    //  Project
+                "   AND [fk_parent] = ?") };        //  with the same parent
         stat->setStringParameter(0, displayName);
         stat->setIntParameter(1, _pk);
         stat->setIntParameter(2, _fkParent.value().value());    //  Cache load may throw
@@ -374,12 +374,12 @@ bool Project::_siblingExists(const QString & displayName) const
     {   //  We're looking for a root project
         std::unique_ptr<Statement> stat
         {   _database->createStatement(
-            "SELECT [pk]"
-            "  FROM [workloads]"
-            " WHERE [displayname] = ?"
-            "   AND [pk] <> ?"
-            "   AND [completed] IS NOT NULL"    //  Project
-            "   AND [fk_parent] IS NULL") };    //  Root
+                "SELECT [pk]"
+                "  FROM [workloads]"
+                " WHERE [displayname] = ?"
+                "   AND [pk] <> ?"
+                "   AND [completed] IS NOT NULL"    //  Project
+                "   AND [fk_parent] IS NULL") };    //  Root
         stat->setStringParameter(0, displayName);
         stat->setIntParameter(1, _pk);
         std::unique_ptr<ResultSet> rs
@@ -413,11 +413,11 @@ bool Project::_childExists(const QString & displayName) const
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "SELECT [pk]"
-        "  FROM [workloads]"
-        " WHERE [displayname] = ?"
-        "   AND [completed] IS NOT NULL"    //  Project
-        "   AND [fk_parent] = ?") };        //  with this as parent
+            "SELECT [pk]"
+            "  FROM [workloads]"
+            " WHERE [displayname] = ?"
+            "   AND [completed] IS NOT NULL"    //  Project
+            "   AND [fk_parent] = ?") };        //  with this as parent
     stat->setStringParameter(0, displayName);
     stat->setIntParameter(1, _pk);
     std::unique_ptr<ResultSet> rs

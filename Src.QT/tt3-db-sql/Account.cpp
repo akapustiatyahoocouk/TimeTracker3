@@ -194,10 +194,10 @@ auto Account::quickPicksList(
     //  TODO cache PKs
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "SELECT [fk_activity],[order]"
-        "  FROM [account_quick_picks]"
-        " WHERE [fk_account] = ?"
-        " ORDER BY [order]") };
+            "SELECT [fk_activity],[order]"
+            "  FROM [account_quick_picks]"
+            " WHERE [fk_account] = ?"
+            " ORDER BY [order]") };
     stat->setIntParameter(0, _pk);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };   //  may throw
@@ -267,15 +267,15 @@ void Account::setQuickPicksList(
     {   //  Make the change - kill old quick picks list...
         std::unique_ptr<Statement> stat
         {   _database->createStatement(
-            "DELETE FROM [account_quick_picks]"
-            " WHERE [fk_account] = ?") };
+                "DELETE FROM [account_quick_picks]"
+                " WHERE [fk_account] = ?") };
         stat->setIntParameter(0, _pk);
         stat->execute();    //  may throw
         //  ...and set up the new one
         for (int i = 0; i < newQuickPicksList.size(); i++)
         {
             std::unique_ptr<Statement> stat
-                {   _database->createStatement(
+            {   _database->createStatement(
                     "INSERT INTO [account_quick_picks]"
                     "       ([fk_account],[fk_activity],[order])"
                     "       VALUES(?,?,?)") };
@@ -301,9 +301,9 @@ auto Account::works(
     //  TODO cache PKs
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "SELECT [pk]"
-        "  FROM [works]"
-        " WHERE [fk_account] = ?") };
+            "SELECT [pk]"
+            "  FROM [works]"
+            " WHERE [fk_account] = ?") };
     stat->setIntParameter(0, _pk);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };   //  may throw
@@ -326,11 +326,11 @@ auto Account::works(
     //  TODO cache PKs for the last used datetime range
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "SELECT [pk]"
-        "  FROM [works]"
-        " WHERE [fk_account] = ?"
-        "   AND [startedat] <= ?"
-        "   AND [finishedat] >= ?") };
+            "SELECT [pk]"
+            "  FROM [works]"
+            " WHERE [fk_account] = ?"
+            "   AND [startedat] <= ?"
+            "   AND [finishedat] >= ?") };
     stat->setIntParameter(0, _pk);
     stat->setStringParameter(1, tt3::util::toString(to));
     stat->setStringParameter(2, tt3::util::toString(from));
@@ -350,19 +350,50 @@ auto Account::events(
     tt3::util::Lock _(_database->guard);
     _ensureLive();  //  may throw
 
-    throw tt3::util::NotImplementedError();
+    //  TODO cache PKs
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+            "SELECT [pk]"
+            "  FROM [events]"
+            " WHERE [fk_account] = ?") };
+    stat->setIntParameter(0, _pk);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };   //  may throw
+    tt3::db::api::Events result;
+    while (rs->next())
+    {
+        result.insert(_database->_getObject<Event>(rs->intValue(0)));
+    }
+    return result;
 }
 
 auto Account::events(
-        const QDateTime & /*from*/,
-        const QDateTime & /*to*/
+        const QDateTime & from,
+        const QDateTime & to
     ) const -> tt3::db::api::Events
 {
     tt3::util::Lock _(_database->guard);
     _ensureLive();  //  may throw
 
-    //  TODO implement
-    return tt3::db::api::Events();
+    //  TODO cache PKs for the last used datetime range
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+            "SELECT [pk]"
+            "  FROM [events]"
+            " WHERE [fk_account] = ?"
+            "   AND [occurredat] >= ?"
+            "   AND [occurredat] <= ?") };
+    stat->setIntParameter(0, _pk);
+    stat->setStringParameter(1, tt3::util::toString(from));
+    stat->setStringParameter(2, tt3::util::toString(to));
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };   //  may throw
+    tt3::db::api::Events result;
+    while (rs->next())
+    {
+        result.insert(_database->_getObject<Event>(rs->intValue(0)));
+    }
+    return result;
 }
 
 //////////
@@ -399,12 +430,12 @@ auto Account::createWork(
 
     //  Do the work - create [objects] row..
     Database::_ObjIds objIds = _database->_createObject(tt3::db::api::ObjectTypes::Work::instance());//  may throw
-    //  ...then [users] row...
+    //  ...then [works] row...
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "INSERT INTO [works]"
-        "       ([pk],[fk_account],[fk_activity],[startedat],[finishedat])"
-        "       VALUES(?,?,?,?,?)") };
+            "INSERT INTO [works]"
+            "       ([pk],[fk_account],[fk_activity],[startedat],[finishedat])"
+            "       VALUES(?,?,?,?,?)") };
     stat->setIntParameter(0, std::get<0>(objIds));
     stat->setIntParameter(1, _pk);
     stat->setIntParameter(2, sqlActivity->_pk);
@@ -415,7 +446,7 @@ auto Account::createWork(
     //  We're done with the changes
     transaction.commit();   //  may throw
 
-    //  Create & register the Account object...
+    //  Create & register the Work object...
     Work * work = new Work(_database, std::get<0>(objIds));
     //  ...setting its cached properties to initial values
     work->_oid = std::get<1>(objIds);
@@ -440,15 +471,121 @@ auto Account::createWork(
 }
 
 auto Account::createEvent(
-        const QDateTime & /*occurredAt*/,
-        const QString & /*summary*/,
-        const tt3::db::api::Activities & /*activities*/
+        const QDateTime & occurredAt,
+        const QString & summary,
+        const tt3::db::api::Activities & activities
     ) -> tt3::db::api::IEvent *
 {
     tt3::util::Lock _(_database->guard);
     _ensureLiveAndWritable();   //  may throw
 
-    throw tt3::util::NotImplementedError();
+    //  Validate parameters
+    if (!_database->validator()->event()->isValidOccurredAt(occurredAt))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Event::instance(),
+            "occurredAt",
+            tt3::util::toString(occurredAt));
+    }
+    if (!_database->validator()->event()->isValidSummary(summary))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Event::instance(),
+            "summary",
+            summary);
+    }
+    if (activities.size() > 2)
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Event::instance(),
+            "activities",
+            activities.size());
+    }
+
+    Activity * sqlActivity1 = nullptr;
+    Activity * sqlActivity2 = nullptr;
+    Activities sqlActivities =
+        tt3::util::transform(
+            activities,
+            [&](auto a)
+            {
+                auto sqlActivity = dynamic_cast<Activity*>(a);
+                if (sqlActivity == nullptr ||
+                    sqlActivity->_database != this->_database ||
+                    !sqlActivity->_isLive)
+                {   //  OOPS!
+                    throw tt3::db::api::IncompatibleInstanceException(
+                        tt3::db::api::ObjectTypes::ActivityType::instance());
+                }
+                return sqlActivity;
+            });
+    //  The first (and only) 2 Activities are special
+    for (auto sqlActivity : sqlActivities)
+    {
+        if (sqlActivity1 == nullptr)
+        {
+            sqlActivity1 = sqlActivity;
+        }
+        else if (sqlActivity2 == nullptr)
+        {
+            sqlActivity2 = sqlActivity;
+        }
+    }
+
+    //  Begin transaction for the changes
+    Transaction transaction(_database); //  may throw
+
+    //  Do the work - create [objects] row..
+    Database::_ObjIds objIds = _database->_createObject(tt3::db::api::ObjectTypes::Event::instance());//  may throw
+    //  ...then [events] row...
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+            "INSERT INTO [events]"
+            "       ([pk],[fk_account],[fk_activity1],[fk_activity2],[occurredat],[summary])"
+            "       VALUES(?,?,?,?,?,?)") };
+    stat->setIntParameter(0, std::get<0>(objIds));
+    stat->setIntParameter(1, _pk);
+    (sqlActivity1 != nullptr) ?
+        stat->setIntParameter(2, sqlActivity1->_pk) :
+        stat->setNullParameter(2);
+    (sqlActivity2 != nullptr) ?
+        stat->setIntParameter(3, sqlActivity2->_pk) :
+        stat->setNullParameter(3);
+    stat->setStringParameter(4, tt3::util::toString(occurredAt));
+    stat->setStringParameter(5, summary);
+    stat->execute();    //  may throw
+
+    //  We're done with the changes
+    transaction.commit();   //  may throw
+
+    //  Create & register the Event object...
+    Event * event = new Event(_database, std::get<0>(objIds));
+    //  ...setting its cached properties to initial values
+    event->_oid = std::get<1>(objIds);
+    event->_occurredAt = occurredAt;
+    event->_summary = summary;
+    event->_fkAccount = _pk;
+    event->_fkActivities =
+        tt3::util::transform(
+            sqlActivities,
+            [](auto sqlActivity)
+            {
+                return sqlActivity->_pk;
+            });
+
+    //  ...schedule change notifications...
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            _database, event->type(), event->_oid));  //  Cache load may throw
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectModifiedNotification(
+            _database, this->type(), this->_oid));  //  Cache load may throw
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectModifiedNotification(
+            _database, event->type(), event->_oid));  //  Cache load may throw
+    //  TODO post change notifications to the database
+    //  ...and we're done
+    return event;
 }
 
 //////////
@@ -467,28 +604,28 @@ void Account::_loadCachedProperties()
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "SELECT [objects].[oid] AS [oid],"
-        "       [accounts].[fk_user] AS [fk_user],"
-        "       [accounts].[enabled] AS [enabled],"
-        "       [accounts].[emailaddresses] AS [emailaddresses],"
-        "       [accounts].[login] AS [login],"
-        "       [accounts].[passwordhash] AS [passwordhash],"
-        "       [accounts].[administrator] AS [administrator],"
-        "       [accounts].[manageusers] AS [manageusers],"
-        "       [accounts].[manageactivitytypes] AS [manageactivitytypes],"
-        "       [accounts].[managebeneficiaries] AS [managebeneficiaries],"
-        "       [accounts].[manageworkloads] AS [manageworkloads],"
-        "       [accounts].[managepublicactivities] AS [managepublicactivities],"
-        "       [accounts].[managepublictasks] AS [managepublictasks],"
-        "       [accounts].[manageprivateactivities] AS [manageprivateactivities],"
-        "       [accounts].[manageprivatetasks] AS [manageprivatetasks],"
-        "       [accounts].[logwork] AS [logwork],"
-        "       [accounts].[logevents] AS [logevents],"
-        "       [accounts].[generatereports] AS [generatereports],"
-        "       [accounts].[backupandrestore] AS [backupandrestore]"
-        "  FROM [objects],[accounts]"
-        " WHERE [objects].[pk] = ?"
-        "   AND [accounts].[pk] = [objects].[pk]") };
+            "SELECT [objects].[oid] AS [oid],"
+            "       [accounts].[fk_user] AS [fk_user],"
+            "       [accounts].[enabled] AS [enabled],"
+            "       [accounts].[emailaddresses] AS [emailaddresses],"
+            "       [accounts].[login] AS [login],"
+            "       [accounts].[passwordhash] AS [passwordhash],"
+            "       [accounts].[administrator] AS [administrator],"
+            "       [accounts].[manageusers] AS [manageusers],"
+            "       [accounts].[manageactivitytypes] AS [manageactivitytypes],"
+            "       [accounts].[managebeneficiaries] AS [managebeneficiaries],"
+            "       [accounts].[manageworkloads] AS [manageworkloads],"
+            "       [accounts].[managepublicactivities] AS [managepublicactivities],"
+            "       [accounts].[managepublictasks] AS [managepublictasks],"
+            "       [accounts].[manageprivateactivities] AS [manageprivateactivities],"
+            "       [accounts].[manageprivatetasks] AS [manageprivatetasks],"
+            "       [accounts].[logwork] AS [logwork],"
+            "       [accounts].[logevents] AS [logevents],"
+            "       [accounts].[generatereports] AS [generatereports],"
+            "       [accounts].[backupandrestore] AS [backupandrestore]"
+            "  FROM [objects],[accounts]"
+            " WHERE [objects].[pk] = ?"
+            "   AND [accounts].[pk] = [objects].[pk]") };
     stat->setIntParameter(0, _pk);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };   //  may throw
@@ -573,9 +710,9 @@ void Account::_saveLogin(const QString & login)
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [accounts]"
-        "   SET [login] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [accounts]"
+            "   SET [login] = ?"
+            " WHERE [pk] = ?") };
     stat->setStringParameter(0, login);
     stat->setIntParameter(1, _pk);
     auto affectedRows = stat->execute();    //  may throw
@@ -592,9 +729,9 @@ void Account::_savePasswordHash(const QString & passwordHash)
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "UPDATE [accounts]"
-        "   SET [passwordhash] = ?"
-        " WHERE [pk] = ?") };
+            "UPDATE [accounts]"
+            "   SET [passwordhash] = ?"
+            " WHERE [pk] = ?") };
     stat->setStringParameter(0, passwordHash);
     stat->setIntParameter(1, _pk);
     auto affectedRows = stat->execute();    //  may throw
@@ -610,7 +747,7 @@ void Account::_saveCapabilities(tt3::db::api::Capabilities capabilities)
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
 
     std::unique_ptr<Statement> stat
-        {   _database->createStatement(
+    {   _database->createStatement(
             "UPDATE [accounts]"
             "   SET [administrator] = ?,"
             "       [manageusers] = ?,"
@@ -626,9 +763,9 @@ void Account::_saveCapabilities(tt3::db::api::Capabilities capabilities)
             "       [generatereports] = ?,"
             "       [backupandrestore] = ?"
             " WHERE [pk] = ?") };
-    stat->setBoolParameter(0, capabilities.contains(tt3::db::api::Capability::Administrator));
-    stat->setBoolParameter(1, capabilities.contains(tt3::db::api::Capability::ManageUsers));
-    stat->setBoolParameter(2, capabilities.contains(tt3::db::api::Capability::ManageActivityTypes));
+        stat->setBoolParameter(0, capabilities.contains(tt3::db::api::Capability::Administrator));
+        stat->setBoolParameter(1, capabilities.contains(tt3::db::api::Capability::ManageUsers));
+        stat->setBoolParameter(2, capabilities.contains(tt3::db::api::Capability::ManageActivityTypes));
     stat->setBoolParameter(3, capabilities.contains(tt3::db::api::Capability::ManageBeneficiaries));
     stat->setBoolParameter(4, capabilities.contains(tt3::db::api::Capability::ManageWorkloads));
     stat->setBoolParameter(5, capabilities.contains(tt3::db::api::Capability::ManagePublicActivities));
@@ -676,8 +813,8 @@ void Account::_removeFromDatabase()
 
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
-        "DELETE FROM [accounts]"
-        " WHERE [pk] = ?") };
+            "DELETE FROM [accounts]"
+            " WHERE [pk] = ?") };
     stat->setIntParameter(0, _pk);
     stat->execute();    //  may throw
     Principal::_removeFromDatabase();

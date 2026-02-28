@@ -9,6 +9,7 @@ SOURCES += \
     ActivityType.cpp \
     Component.cpp \
     Database.cpp \
+    Event.cpp \
     Object.cpp \
     Principal.cpp \
     PrivateActivity.cpp \
@@ -33,6 +34,7 @@ HEADERS += \
     Classes.hpp \
     Component.hpp \
     Database.hpp \
+    Event.hpp \
     Linkage.hpp \
     Object.hpp \
     Principal.hpp \

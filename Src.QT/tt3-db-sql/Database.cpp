@@ -142,8 +142,8 @@ auto Database::activityTypes(
     //  TODO cache PKs
     std::unique_ptr<Statement> stat
     {   createStatement(
-        "SELECT [pk]"
-        "  FROM [activitytypes]") };
+            "SELECT [pk]"
+            "  FROM [activitytypes]") };
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };   //  may throw
     tt3::db::api::ActivityTypes result;
@@ -163,7 +163,7 @@ auto Database::findActivityType(
 
     //  TODO cache PKs
     std::unique_ptr<Statement> stat
-        {   createStatement(
+    {   createStatement(
             "SELECT [pk]"
             "  FROM [activitytypes]"
             " WHERE [displayname] = ?") };
@@ -186,10 +186,10 @@ auto Database::publicActivities(
     //  TODO cache PKs
     std::unique_ptr<Statement> stat
     {   createStatement(
-        "SELECT [pk]"
-        "  FROM [activities]"
-        " WHERE [fk_owner] IS NULL"     //  Public
-        "   AND [completed] IS NULL") };//  Activity
+            "SELECT [pk]"
+            "  FROM [activities]"
+            " WHERE [fk_owner] IS NULL"     //  Public
+            "   AND [completed] IS NULL") };//  Activity
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };   //  may throw
     tt3::db::api::PublicActivities result;
@@ -210,11 +210,11 @@ auto Database::findPublicActivity(
     //  TODO cache PKs
     std::unique_ptr<Statement> stat
     {   createStatement(
-        "SELECT [pk]"
-        "  FROM [activities]"
-        " WHERE [displayname] = ?"
-        "   AND [fk_owner] IS NULL"     //  Public
-        "   AND [completed] IS NULL") };//  Activity
+            "SELECT [pk]"
+            "  FROM [activities]"
+            " WHERE [displayname] = ?"
+            "   AND [fk_owner] IS NULL"     //  Public
+            "   AND [completed] IS NULL") };//  Activity
     stat->setStringParameter(0, displayName);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };
@@ -239,7 +239,7 @@ auto Database::publicTasks(
 
     //  TODO cache PKs
     std::unique_ptr<Statement> stat
-        {   createStatement(
+    {   createStatement(
             "SELECT [pk]"
             "  FROM [activities]"
             "   AND [fk_owner] IS NULL"         //  Public
@@ -263,11 +263,11 @@ auto Database::rootPublicTasks(
     //  TODO cache PKs
     std::unique_ptr<Statement> stat
     {   createStatement(
-        "SELECT [pk]"
-        "  FROM [activities]"
-        " WHERE [fk_parent] IS NULL"        //  Root
-        "   AND [fk_owner] IS NULL"         //  Public
-        "   AND [completed] IS NOT NULL") };//  Task
+            "SELECT [pk]"
+            "  FROM [activities]"
+            " WHERE [fk_parent] IS NULL"        //  Root
+            "   AND [fk_owner] IS NULL"         //  Public
+            "   AND [completed] IS NOT NULL") };//  Task
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };   //  may throw
     tt3::db::api::PublicTasks result;
@@ -293,10 +293,10 @@ auto Database::rootProjects(
     //  TODO cache PKs
     std::unique_ptr<Statement> stat
     {   createStatement(
-        "SELECT [pk]"
-        "  FROM [workloads]"
-        " WHERE [fk_parent] IS NULL"        //  Root
-        "   AND [completed] IS NOT NULL") };//  Project
+            "SELECT [pk]"
+            "  FROM [workloads]"
+            " WHERE [fk_parent] IS NULL"        //  Root
+            "   AND [completed] IS NOT NULL") };//  Project
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };   //  may throw
     tt3::db::api::Projects result;
@@ -316,9 +316,9 @@ auto Database::workStreams(
     //  TODO cache PKs
     std::unique_ptr<Statement> stat
     {   createStatement(
-        "SELECT [pk]"
-        "  FROM [workloads]"
-        " WHERE [completed] IS NULL") };    //  WorkStream
+            "SELECT [pk]"
+            "  FROM [workloads]"
+            " WHERE [completed] IS NULL") };    //  WorkStream
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };   //  may throw
     tt3::db::api::WorkStreams result;
@@ -563,9 +563,9 @@ auto Database::createActivityType(
     //  ...then [activitytypes] row...
     std::unique_ptr<Statement> stat
     {   createStatement(
-        "INSERT INTO [activitytypes]"
-        "       ([pk],[displayname],[description])"
-        "       VALUES(?,?,?)") };
+            "INSERT INTO [activitytypes]"
+            "       ([pk],[displayname],[description])"
+            "       VALUES(?,?,?)") };
     stat->setIntParameter(0, std::get<0>(objIds));
     stat->setStringParameter(1, displayName);
     description.isEmpty() ?
@@ -672,7 +672,7 @@ auto Database::createPublicActivity(
     _ObjIds objIds = _createObject(tt3::db::api::ObjectTypes::PublicActivity::instance()); //  may throw
     //  ...then [activities] row...
     std::unique_ptr<Statement> stat
-        {   createStatement(
+    {   createStatement(
             "INSERT INTO [activities]"
             "       ([pk],"
             "        [fk_parent],[fk_owner],[fk_type],[fk_workload],"
@@ -681,7 +681,7 @@ auto Database::createPublicActivity(
             "        [requirecommentonstop],"
             "        [fullscreenreminder],"
             "        [completed],[requirecommentoncompletion])"
-        "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)") };
+            "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)") };
     stat->setIntParameter(0, std::get<0>(objIds));
     stat->setNullParameter(1);
     stat->setNullParameter(2);
@@ -832,15 +832,15 @@ auto Database::createPublicTask(
     //  ...then [activities] row...
     std::unique_ptr<Statement> stat
     {   createStatement(
-        "INSERT INTO [activities]"
-        "       ([pk],"
-        "        [fk_parent],[fk_owner],[fk_type],[fk_workload],"
-        "        [displayname],[description],[timeout],"
-        "        [requirecommentonstart],"
-        "        [requirecommentonstop],"
-        "        [fullscreenreminder],"
-        "        [completed],[requirecommentoncompletion])"
-        "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)") };
+            "INSERT INTO [activities]"
+            "       ([pk],"
+            "        [fk_parent],[fk_owner],[fk_type],[fk_workload],"
+            "        [displayname],[description],[timeout],"
+            "        [requirecommentonstart],"
+            "        [requirecommentonstop],"
+            "        [fullscreenreminder],"
+            "        [completed],[requirecommentoncompletion])"
+            "       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)") };
     stat->setIntParameter(0, std::get<0>(objIds));
     stat->setNullParameter(1);
     stat->setNullParameter(2);
@@ -981,9 +981,9 @@ auto Database::createProject(
     //  ...then [worklooads] row...
     std::unique_ptr<Statement> stat
     {   createStatement(
-        "INSERT INTO [workloads]"
-        "       ([pk],[fk_parent],[displayname],[description],[completed])"
-        "       VALUES(?,?,?,?,?)") };
+            "INSERT INTO [workloads]"
+            "       ([pk],[fk_parent],[displayname],[description],[completed])"
+            "       VALUES(?,?,?,?,?)") };
     stat->setIntParameter(0, std::get<0>(objIds));
     stat->setNullParameter(1);
     stat->setStringParameter(2, displayName);
@@ -1083,9 +1083,9 @@ auto Database::createWorkStream(
     //  ...then [worklooads] row...
     std::unique_ptr<Statement> stat
     {   createStatement(
-        "INSERT INTO [workloads]"
-        "       ([pk],[fk_parent],[displayname],[description],[completed])"
-        "       VALUES(?,?,?,?,?)") };
+            "INSERT INTO [workloads]"
+            "       ([pk],[fk_parent],[displayname],[description],[completed])"
+            "       VALUES(?,?,?,?,?)") };
     stat->setIntParameter(0, std::get<0>(objIds));
     stat->setNullParameter(1);
     stat->setStringParameter(2, displayName);
@@ -1344,10 +1344,10 @@ bool Database::_workStreamExists(const QString & displayName) const
 {
     std::unique_ptr<Statement> stat
     {   createStatement(
-        "SELECT [pk]"
-        "  FROM [workloads]"
-        " WHERE [displayname] = ?"
-        "   AND [completed] IS NULL") };//  WorkStream
+            "SELECT [pk]"
+            "  FROM [workloads]"
+            " WHERE [displayname] = ?"
+            "   AND [completed] IS NULL") };//  WorkStream
     stat->setStringParameter(0, displayName);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };
@@ -1358,11 +1358,11 @@ bool Database::_rootProjectExists(const QString & displayName) const
 {
     std::unique_ptr<Statement> stat
     {   createStatement(
-        "SELECT [pk]"
-        "  FROM [workloads]"
-        " WHERE [displayname] = ?"
-        "   AND [fk_parent] IS NULL"        //  root
-        "   AND [completed] IS NOT NULL") };//  Project
+            "SELECT [pk]"
+            "  FROM [workloads]"
+            " WHERE [displayname] = ?"
+            "   AND [fk_parent] IS NULL"        //  root
+            "   AND [completed] IS NOT NULL") };//  Project
     stat->setStringParameter(0, displayName);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };
@@ -1391,9 +1391,9 @@ Workload * Database::_getWorkload(qint64 pk) const
     //  Need to ascertain object's existence and type
     std::unique_ptr<Statement> stat
     {   createStatement(
-        "SELECT [type]"
-        "  FROM [objects]"
-        " WHERE [pk] = ?") };
+            "SELECT [type]"
+            "  FROM [objects]"
+            " WHERE [pk] = ?") };
     stat->setIntParameter(0, pk);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };
@@ -1437,9 +1437,9 @@ Activity * Database::_getActivity(qint64 pk) const
     //  Need to ascertain object's existence and type
     std::unique_ptr<Statement> stat
     {   createStatement(
-        "SELECT [type]"
-        "  FROM [objects]"
-        " WHERE [pk] = ?") };
+            "SELECT [type]"
+            "  FROM [objects]"
+            " WHERE [pk] = ?") };
     stat->setIntParameter(0, pk);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };

@@ -206,4 +206,4 @@ void Event::_validate(
     }
 }
 
-//  End of tt3-db-xml/Account.cpp
+//  End of tt3-db-xml/Event.cpp
