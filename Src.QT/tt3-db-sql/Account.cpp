@@ -298,19 +298,50 @@ auto Account::works(
     tt3::util::Lock _(_database->guard);
     _ensureLive();  //  may throw
 
-    throw tt3::util::NotImplementedError();
+    //  TODO cache PKs
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+        "SELECT [pk]"
+        "  FROM [works]"
+        " WHERE [fk_account] = ?") };
+    stat->setIntParameter(0, _pk);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };   //  may throw
+    tt3::db::api::Works result;
+    while (rs->next())
+    {
+        result.insert(_database->_getObject<Work>(rs->intValue(0)));
+    }
+    return result;
 }
 
 auto Account::works(
-        const QDateTime & /*from*/,
-        const QDateTime & /*to*/
+        const QDateTime & from,
+        const QDateTime & to
     ) const -> tt3::db::api::Works
 {
     tt3::util::Lock _(_database->guard);
     _ensureLive();  //  may throw
 
-    //  TODO implement
-    return tt3::db::api::Works();
+    //  TODO cache PKs for the last used datetime range
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+        "SELECT [pk]"
+        "  FROM [works]"
+        " WHERE [fk_account] = ?"
+        "   AND [startedat] <= ?"
+        "   AND [finishedat] >= ?") };
+    stat->setIntParameter(0, _pk);
+    stat->setStringParameter(1, tt3::util::toString(to));
+    stat->setStringParameter(2, tt3::util::toString(from));
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };   //  may throw
+    tt3::db::api::Works result;
+    while (rs->next())
+    {
+        result.insert(_database->_getObject<Work>(rs->intValue(0)));
+    }
+    return result;
 }
 
 auto Account::events(
@@ -337,15 +368,75 @@ auto Account::events(
 //////////
 //  tt3::db::api::IAccount (life cycle)
 auto Account::createWork(
-        const QDateTime & /*startedAt*/,
-        const QDateTime & /*finishedAt*/,
-        tt3::db::api::IActivity * /*activity*/
+        const QDateTime & startedAt,
+        const QDateTime & finishedAt,
+        tt3::db::api::IActivity * activity
     ) -> tt3::db::api::IWork *
 {
     tt3::util::Lock _(_database->guard);
     _ensureLiveAndWritable();   //  may throw
 
-    throw tt3::util::NotImplementedError();
+    //  Validate parameters
+    if (!_database->validator()->work()->isValidStartedFinishedAt(startedAt, finishedAt))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Work::instance(),
+            "startedAt+finishedAt",
+            tt3::util::toString(startedAt) + "/" +
+                tt3::util::toString(finishedAt));
+    }
+    auto sqlActivity = dynamic_cast<Activity*>(activity);
+    if (sqlActivity == nullptr ||
+        sqlActivity->_database != this->_database ||
+        !sqlActivity->_isLive)
+    {   //  OOPS!
+        throw tt3::db::api::IncompatibleInstanceException(
+            tt3::db::api::ObjectTypes::ActivityType::instance());
+    }
+
+    //  Begin transaction for the changes
+    Transaction transaction(_database); //  may throw
+
+    //  Do the work - create [objects] row..
+    Database::_ObjIds objIds = _database->_createObject(tt3::db::api::ObjectTypes::Work::instance());//  may throw
+    //  ...then [users] row...
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+        "INSERT INTO [works]"
+        "       ([pk],[fk_account],[fk_activity],[startedat],[finishedat])"
+        "       VALUES(?,?,?,?,?)") };
+    stat->setIntParameter(0, std::get<0>(objIds));
+    stat->setIntParameter(1, _pk);
+    stat->setIntParameter(2, sqlActivity->_pk);
+    stat->setStringParameter(3, tt3::util::toString(startedAt));
+    stat->setStringParameter(4, tt3::util::toString(finishedAt));
+    stat->execute();    //  may throw
+
+    //  We're done with the changes
+    transaction.commit();   //  may throw
+
+    //  Create & register the Account object...
+    Work * work = new Work(_database, std::get<0>(objIds));
+    //  ...setting its cached properties to initial values
+    work->_oid = std::get<1>(objIds);
+    work->_startedAt = startedAt;
+    work->_finishedAt = finishedAt;
+    work->_fkAccount = _pk;
+    work->_fkActivity = sqlActivity->_pk;
+
+    //  ...schedule change notifications...
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            _database, work->type(), work->_oid));  //  Cache load may throw
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectModifiedNotification(
+            _database, this->type(), this->_oid));  //  Cache load may throw
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectModifiedNotification(
+            _database, work->type(), work->_oid));  //  Cache load may throw
+    //  TODO post change notifications to the database
+    //  ...and we're done
+    return work;
 }
 
 auto Account::createEvent(
@@ -584,9 +675,9 @@ void Account::_removeFromDatabase()
     Q_ASSERT(_database->_liveObjects.contains(_pk));
 
     std::unique_ptr<Statement> stat
-        {   _database->createStatement(
-            "DELETE FROM [accounts]"
-            " WHERE [pk] = ?") };
+    {   _database->createStatement(
+        "DELETE FROM [accounts]"
+        " WHERE [pk] = ?") };
     stat->setIntParameter(0, _pk);
     stat->execute();    //  may throw
     Principal::_removeFromDatabase();

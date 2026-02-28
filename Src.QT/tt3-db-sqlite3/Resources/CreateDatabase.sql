@@ -145,3 +145,18 @@ CREATE TABLE [account_quick_picks] (
 CREATE INDEX [idx_account_quick_picks_account] ON [account_quick_picks] ([fk_account]);
 CREATE INDEX [idx_account_quick_picks_account_order] ON [account_quick_picks] ([fk_account],[order]);
 CREATE UNIQUE INDEX [idx_account_quick_picks_order] ON [account_quick_picks] ([fk_account],[fk_activity],[order]);
+
+CREATE TABLE [works] (
+    [pk]                INTEGER NOT NULL UNIQUE,
+    [fk_account]        INTEGER NOT NULL,
+    [fk_activity]       INTEGER NOT NULL,
+    [startedat]         CHAR(19) NOT NULL,  --  yyyymmddThhmmss.ttt
+    [finishedat]        CHAR(19) NOT NULL,  --  yyyymmddThhmmss.ttt
+    PRIMARY KEY([pk]),
+    FOREIGN KEY([pk]) REFERENCES [objects]([pk]),
+    FOREIGN KEY([fk_account]) REFERENCES [accounts]([pk]) ON DELETE CASCADE,
+    FOREIGN KEY([fk_activity]) REFERENCES [activities]([pk]) ON DELETE CASCADE
+);
+CREATE INDEX [idx_works_account] ON [works] ([fk_account]);
+CREATE INDEX [idx_works_startedat] ON [works] ([startedat]);
+CREATE INDEX [idx_works_finishedat] ON [works] ([finishedat]);

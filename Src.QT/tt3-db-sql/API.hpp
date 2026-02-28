@@ -47,5 +47,7 @@
 #include "tt3-db-sql/Workload.hpp"
 #include "tt3-db-sql/Project.hpp"
 #include "tt3-db-sql/WorkStream.hpp"
+//  TODO uncomment #include "tt3-db-sql/Beneficiary.hpp"
+#include "tt3-db-sql/Work.hpp"
 
 //  End of tt3-db-sql/API.hpp

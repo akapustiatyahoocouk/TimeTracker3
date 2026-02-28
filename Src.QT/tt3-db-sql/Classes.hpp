@@ -35,6 +35,9 @@ namespace tt3::db::sql
     class Workload;
     class Project;
     class WorkStream;
+    class Beneficiary;
+    class Work;
+    class Event;
 
     //  Collections
     using PublicTasks = QSet<PublicTask*>;

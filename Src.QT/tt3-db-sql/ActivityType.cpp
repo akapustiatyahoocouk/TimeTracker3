@@ -182,13 +182,13 @@ void ActivityType::_loadCachedProperties()
     Q_ASSERT(_database->guard.isLockedByCurrentThread());
 
     std::unique_ptr<Statement> stat
-        {   _database->createStatement(
-            "SELECT [objects].[oid] AS [oid],"
-            "       [activitytypes].[displayname] AS [displayname],"
-            "       [activitytypes].[description] AS [description]"
-            "  FROM [objects],[activitytypes]"
-            " WHERE [objects].[pk] = ?"
-            "   AND [activitytypes].[pk] = [objects].[pk]") };
+    {   _database->createStatement(
+        "SELECT [objects].[oid] AS [oid],"
+        "       [activitytypes].[displayname] AS [displayname],"
+        "       [activitytypes].[description] AS [description]"
+        "  FROM [objects],[activitytypes]"
+        " WHERE [objects].[pk] = ?"
+        "   AND [activitytypes].[pk] = [objects].[pk]") };
     stat->setIntParameter(0, _pk);
     std::unique_ptr<ResultSet> rs
         { stat->executeQuery() };   //  may throw

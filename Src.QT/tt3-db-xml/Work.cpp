@@ -82,7 +82,6 @@ auto Work::activity(
     return _activity;
 }
 
-
 //////////
 //  Implementation helpers
 void Work::_makeDead()
@@ -198,4 +197,4 @@ void Work::_validate(
     }
 }
 
-//  End of tt3-db-xml/Account.cpp
+//  End of tt3-db-xml/Work.cpp

@@ -41,6 +41,7 @@ namespace tt3::db::sql
         friend class Workload;
         friend class Project;
         friend class WorkStream;
+        friend class Work;
 
         //////////
         //  Construction/destruction

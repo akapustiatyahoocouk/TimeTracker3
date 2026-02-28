@@ -20,6 +20,7 @@ SOURCES += \
     Task.cpp \
     Transaction.cpp \
     User.cpp \
+    Work.cpp \
     WorkStream.cpp \
     Workload.cpp
 
@@ -45,6 +46,7 @@ HEADERS += \
     Task.hpp \
     Transaction.hpp \
     User.hpp \
+    Work.hpp \
     WorkStream.hpp \
     Workload.hpp
 
