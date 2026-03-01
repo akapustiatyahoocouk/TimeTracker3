@@ -68,7 +68,6 @@ namespace tt3::db::sql
         //  Helpers
         virtual void    _deleteCascade() override;  //  may throw
         virtual void    _removeFromDatabase() override; //  may throw
-        virtual QString _tableName() const override { return "activitytypes"; }
     };
 }
 

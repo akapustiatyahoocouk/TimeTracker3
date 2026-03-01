@@ -144,9 +144,23 @@ auto Workload::beneficiaries(
     ) const -> tt3::db::api::Beneficiaries
 {
     tt3::util::Lock _(_database->guard);
-    _ensureLive();  //  may throw
+    _ensureLive();
 
-    return tt3::db::api::Beneficiaries();   //  TODO implement properly
+    //  TODO cache PKs
+    std::unique_ptr<Statement> stat
+        {   _database->createStatement(
+            "SELECT [fk_beneficiary]"
+            "  FROM [workload_beneficiaries]"
+            " WHERE [fk_workload] = ?") };
+    stat->setIntParameter(0, _pk);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };   //  may throw
+    tt3::db::api::Beneficiaries result;
+    while (rs->next())
+    {
+        result.insert(_database->_getObject<Beneficiary>(rs->intValue(0)));
+    }
+    return result;
 }
 
 void Workload::setBeneficiaries(
@@ -286,6 +300,7 @@ void Workload::_removeFromDatabase()
     Q_ASSERT(_database->_liveObjects.contains(_pk));
 
     //  TODO break associations
+    //  TODO implement
     throw tt3::util::NotImplementedError();
 }
 

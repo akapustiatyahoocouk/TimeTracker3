@@ -41,6 +41,7 @@ namespace tt3::db::sql
         friend class Workload;
         friend class Project;
         friend class WorkStream;
+        friend class Beneficiary;
         friend class Work;
         friend class Event;
 
@@ -341,6 +342,7 @@ namespace tt3::db::sql
         bool            _rootPublicTaskExists(const QString & displayName) const;
         bool            _workStreamExists(const QString & displayName) const;
         bool            _rootProjectExists(const QString & displayName) const;
+        bool            _beneficiaryExists(const QString & displayName) const;
 
         template <class T>
         T *             _findObject(qint64 pk) const

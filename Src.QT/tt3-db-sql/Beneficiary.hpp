@@ -1,5 +1,5 @@
 //
-//  tt3-db-sql/Workload.hpp - a generic workload
+//  tt3-db-sql/Beneficiary.hpp - a Beneficiary
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -17,26 +17,24 @@
 
 namespace tt3::db::sql
 {
-    /// \class Workload tt3-db-sql/API.hpp
-    /// \brief A generic workload in an SQL database.
-    class TT3_DB_SQL_PUBLIC Workload
+    /// \class Beneficiary tt3-db-sql/API.hpp
+    /// \brief A generic beneficiary in an SQL database.
+    class TT3_DB_SQL_PUBLIC Beneficiary
         :   public Object,
-            public virtual tt3::db::api::IWorkload
+            public virtual tt3::db::api::IBeneficiary
     {
-        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Workload)
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(Beneficiary)
 
         friend class Database;
-        friend class Project;
-        friend class WorkStream;
 
         //////////
         //  Construction/destruction (from DB type only)
     private:
-        Workload(Database * database, qint64 pk);
-        virtual ~Workload();
+        Beneficiary(Database * database, qint64 pkd);
+        virtual ~Beneficiary();
 
         //////////
-        //  tt3::db::api::IWorkload (properties)
+        //  tt3::db::api::IBeneficiary (properties)
     public:
         virtual QString displayName(
                             ) const override;
@@ -50,31 +48,18 @@ namespace tt3::db::sql
                             ) override;
 
         //////////
-        //  tt3::db::api::IWorkload (associations)
+        //  tt3::db::api::IBeneficiary (associations)
     public:
-        virtual auto    contributingActivities(
-                            ) const -> tt3::db::api::Activities override;
-        virtual auto    beneficiaries(
-                            ) const -> tt3::db::api::Beneficiaries override;
-        virtual void    setBeneficiaries(
-                                const tt3::db::api::Beneficiaries & beneficiaries
+        virtual auto    workloads(
+                            ) const -> tt3::db::api::Workloads override;
+        virtual void    setWorkloads(
+                                const tt3::db::api::Workloads & workloads
                             ) override;
-        virtual void    addBeneficiary(
-                                tt3::db::api::IBeneficiary * beneficiary
+        virtual void    addWorkload(
+                                tt3::db::api::IWorkload * workload
                             ) override;
-        virtual void    removeBeneficiary(
-                                tt3::db::api::IBeneficiary * beneficiary
-                            ) override;
-        virtual auto    assignedUsers(
-                            ) const -> tt3::db::api::Users override;
-        virtual void    setAssignedUsers(
-                                const tt3::db::api::Users & users
-                            ) override;
-        virtual void    addAssignedUser(
-                                tt3::db::api::IUser * user
-                            ) override;
-        virtual void    removeAssignedUser(
-                                tt3::db::api::IUser * user
+        virtual void    removeWorkload(
+                                tt3::db::api::IWorkload * workload
                             ) override;
 
         //////////
@@ -85,14 +70,15 @@ namespace tt3::db::sql
         CachedProperty<QString> _description;
 
         virtual void    _invalidateCachedProperties() override;
+        virtual void    _loadCachedProperties() override;
         void            _saveDisplayName(const QString & displayName);
         void            _saveDescription(const QString & description);
 
         //  Helpers
-        virtual bool    _siblingExists(const QString & displayName) const = 0;
+        bool            _siblingExists(const QString & displayName) const;
         virtual void    _deleteCascade() override;  //  may throw
         virtual void    _removeFromDatabase() override; //  may throw
     };
 }
 
-//  End of tt3-db-sql/Workload.hpp
+//  End of tt3-db-sql/Beneficiary.hpp

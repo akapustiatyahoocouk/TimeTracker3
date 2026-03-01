@@ -58,7 +58,14 @@ void ActivityType::setDisplayName(
     }
 
     if (displayName != _displayName)    //  Cache load may throw
-    {   //  Make the change...
+    {   //  Make the change (but no duplication!)
+        if (_database->findActivityType(displayName) != nullptr)
+        {
+            throw tt3::db::api::AlreadyExistsException(
+                type(),
+                "displayName",
+                displayName);
+        }
         //  Begin transaction for the changes
         Transaction transaction(_database); //  may throw
         //  Save, THEN cache
@@ -70,7 +77,7 @@ void ActivityType::setDisplayName(
         //  ...schedule change notifications....
         _database->_changeNotifier.post(
             new tt3::db::api::ObjectModifiedNotification(
-                _database, type(), _oid));
+                _database, type(), _oid));  //  Cache load may throw
         //  TODO post change notification to the database
         //  ...and we're done
     }

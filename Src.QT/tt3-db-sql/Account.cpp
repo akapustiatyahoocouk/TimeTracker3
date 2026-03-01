@@ -811,12 +811,16 @@ void Account::_removeFromDatabase()
     Q_ASSERT(_isLive);
     Q_ASSERT(_database->_liveObjects.contains(_pk));
 
+    //  TODO break associations - with notifications
+
+    //  Delete [acounts] row
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
             "DELETE FROM [accounts]"
             " WHERE [pk] = ?") };
     stat->setIntParameter(0, _pk);
     stat->execute();    //  may throw
+    //  The rest is up to the base class
     Principal::_removeFromDatabase();
 }
 

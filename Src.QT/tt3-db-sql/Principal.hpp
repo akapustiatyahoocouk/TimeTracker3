@@ -59,6 +59,9 @@ namespace tt3::db::sql
         virtual void    _invalidateCachedProperties() override;
         void            _saveEnabled(bool enabled);
         void            _saveEmailAddresses(const QStringList & emailAddresses);
+
+        //  Helpers
+        virtual QString _tableName() const = 0; //  where this object resides. TODO move to Principal and remove from non-Principal classes
     };
 }
 

@@ -38,6 +38,7 @@ namespace tt3::db::sql
         friend class Workload;
         friend class Project;
         friend class WorkStream;
+        friend class Beneficiary;
         friend class Work;
         friend class Event;
 
@@ -92,7 +93,6 @@ namespace tt3::db::sql
         virtual void    _deleteCascade() = 0;   //  may throw
         virtual void    _removeFromDatabase();  //  may throw
         void            _makeDead();            //  may throw
-        virtual QString _tableName() const = 0; //  where this object resides. TODO move to Principal and remove from non-Principal classes
     };
 }
 

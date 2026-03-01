@@ -1,5 +1,5 @@
 //
-//  tt3-db-xml/Beneficiary.hpp - a generic Beneficiary
+//  tt3-db-xml/Beneficiary.hpp - a Beneficiary
 //
 //  TimeTracker3
 //  Copyright (C) 2026, Andrey Kapustin
@@ -109,4 +109,4 @@ namespace tt3::db::xml
     };
 }
 
-//  End of tt3-db-xml/ActivityType.hpp
+//  End of tt3-db-xml/Beneficiary.hpp

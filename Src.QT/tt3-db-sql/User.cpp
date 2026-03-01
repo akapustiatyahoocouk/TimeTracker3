@@ -403,32 +403,30 @@ void User::addPermittedWorkload(
     {   //  OOPS!
         throw tt3::db::api::IncompatibleInstanceException(workload->type());
     }
-    if (!permittedWorkloads().contains(sqlWorkload))    //  may throw
-    {   //  Make the changes
-        std::unique_ptr<Statement> stat
-        {   _database->createStatement(
-                "INSERT INTO [user_workloads]"
-                "       ([fk_user],[fk_workload])"
-                "       SELECT ?,?"
-                "        WHERE NOT EXISTS ("
-                "           SELECT 1"
-                "             FROM [user_workloads]"
-                "            WHERE [fk_user] = ?"
-                "              AND [fk_workload] = ?)") };
-        stat->setIntParameter(0, _pk);
-        stat->setIntParameter(1, sqlWorkload->_pk);
-        stat->setIntParameter(2, _pk);
-        stat->setIntParameter(3, sqlWorkload->_pk);
-        stat->execute();    //  may throw
-        //  Schedule change notifications...
-        _database->_changeNotifier.post(
-            new tt3::db::api::ObjectModifiedNotification(
-                _database, type(), _oid));  //  Cache load may throw
-        _database->_changeNotifier.post(
-            new tt3::db::api::ObjectModifiedNotification(
-                _database, sqlWorkload->type(), sqlWorkload->_oid));    //  Cache load may throw
-        //  ...and we're done
-    }
+    //  Make the changes UNCONDITIONALLY (to avoid database race)
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+            "INSERT INTO [user_workloads]"
+            "       ([fk_user],[fk_workload])"
+            "       SELECT ?,?"
+            "        WHERE NOT EXISTS ("
+            "           SELECT 1"
+            "             FROM [user_workloads]"
+            "            WHERE [fk_user] = ?"
+            "              AND [fk_workload] = ?)") };
+    stat->setIntParameter(0, _pk);
+    stat->setIntParameter(1, sqlWorkload->_pk);
+    stat->setIntParameter(2, _pk);
+    stat->setIntParameter(3, sqlWorkload->_pk);
+    stat->execute();    //  may throw
+    //  Schedule change notifications...
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectModifiedNotification(
+            _database, type(), _oid));  //  Cache load may throw
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectModifiedNotification(
+            _database, sqlWorkload->type(), sqlWorkload->_oid));    //  Cache load may throw
+    //  ...and we're done
 }
 
 void User::removePermittedWorkload(
@@ -454,25 +452,23 @@ void User::removePermittedWorkload(
     {   //  OOPS!
         throw tt3::db::api::IncompatibleInstanceException(workload->type());
     }
-    if (!permittedWorkloads().contains(sqlWorkload))    //  may throw
-    {   //  Make the changes
-        std::unique_ptr<Statement> stat
-        {   _database->createStatement(
-                "DELETE FROM [user_workloads]"
-                " WHERE [fk_user] = ?"
-                "   AND [fk_workload] = ?") };
-        stat->setIntParameter(0, _pk);
-        stat->setIntParameter(1, sqlWorkload->_pk);
-        stat->execute();    //  may throw
-        //  Schedule change notifications...
-        _database->_changeNotifier.post(
-            new tt3::db::api::ObjectModifiedNotification(
-                _database, type(), _oid));  //  Cache load may throw
-        _database->_changeNotifier.post(
-            new tt3::db::api::ObjectModifiedNotification(
-                _database, sqlWorkload->type(), sqlWorkload->_oid));    //  Cache load may throw
-        //  ...and we're done
-    }
+    //  Make the changes UNCONDITIONALLY (to avoid database race)
+    std::unique_ptr<Statement> stat
+    {   _database->createStatement(
+            "DELETE FROM [user_workloads]"
+            " WHERE [fk_user] = ?"
+            "   AND [fk_workload] = ?") };
+    stat->setIntParameter(0, _pk);
+    stat->setIntParameter(1, sqlWorkload->_pk);
+    stat->execute();    //  may throw
+    //  Schedule change notifications...
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectModifiedNotification(
+            _database, type(), _oid));  //  Cache load may throw
+    _database->_changeNotifier.post(
+        new tt3::db::api::ObjectModifiedNotification(
+            _database, sqlWorkload->type(), sqlWorkload->_oid));    //  Cache load may throw
+    //  ...and we're done
 }
 
 //////////
@@ -1061,6 +1057,8 @@ void User::_removeFromDatabase()
     Q_ASSERT(_isLive);
     Q_ASSERT(_database->_liveObjects.contains(_pk));
 
+    //  TODO un-link permittedWorkloads() with notifications
+    //  Delete [users] row
     std::unique_ptr<Statement> stat
     {   _database->createStatement(
             "DELETE FROM [users]"

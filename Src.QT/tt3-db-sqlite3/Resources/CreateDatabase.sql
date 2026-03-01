@@ -146,6 +146,24 @@ CREATE INDEX [idx_account_quick_picks_account] ON [account_quick_picks] ([fk_acc
 CREATE INDEX [idx_account_quick_picks_account_order] ON [account_quick_picks] ([fk_account],[order]);
 CREATE UNIQUE INDEX [idx_account_quick_picks_order] ON [account_quick_picks] ([fk_account],[fk_activity],[order]);
 
+CREATE TABLE [beneficiaries] (
+    [pk]                INTEGER NOT NULL UNIQUE,
+    [displayname]       VARCHAR(127) NOT NULL UNIQUE,   --  as per DefaultValidator
+    [description]       TEXT,          --  '\n' for newlines, NULL == none
+    PRIMARY KEY([pk]),
+    FOREIGN KEY([pk]) REFERENCES [objects]([pk])
+);
+
+CREATE TABLE [workload_beneficiaries] (
+    [fk_workload]       INTEGER NOT NULL,
+    [fk_beneficiary]    INTEGER NOT NULL,
+    PRIMARY KEY([fk_workload],[fk_beneficiary]),
+    FOREIGN KEY([fk_workload]) REFERENCES [users]([pk]) ON DELETE CASCADE,
+    FOREIGN KEY([fk_beneficiary]) REFERENCES [workloads]([pk]) ON DELETE CASCADE
+);
+CREATE INDEX [idx_workload_beneficiaries_workload] ON [workload_beneficiaries] ([fk_workload]);
+CREATE INDEX [idx_workload_beneficiaries_beneficiary] ON [workload_beneficiaries] ([fk_beneficiary]);
+
 CREATE TABLE [works] (
     [pk]                INTEGER NOT NULL UNIQUE,
     [fk_account]        INTEGER NOT NULL,

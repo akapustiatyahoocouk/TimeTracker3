@@ -125,7 +125,7 @@ auto Database::findAccount(
             " WHERE [login] = ?") };
     stat->setStringParameter(0, login);
     std::unique_ptr<ResultSet> rs
-        { stat->executeQuery() };
+        { stat->executeQuery() };   //  may throw
     if (rs->next())
     {   //  Got it!
         return _getObject<Account>(rs->intValue(0));
@@ -169,7 +169,7 @@ auto Database::findActivityType(
             " WHERE [displayname] = ?") };
     stat->setStringParameter(0, displayName);
     std::unique_ptr<ResultSet> rs
-        { stat->executeQuery() };
+        { stat->executeQuery() };   //  may throw
     if (rs->next())
     {   //  Got it!
         return _getObject<ActivityType>(rs->intValue(0));
@@ -217,7 +217,7 @@ auto Database::findPublicActivity(
             "   AND [completed] IS NULL") };//  Activity
     stat->setStringParameter(0, displayName);
     std::unique_ptr<ResultSet> rs
-        { stat->executeQuery() };
+        { stat->executeQuery() };   //  may throw
     if (rs->next())
     {   //  Got it!
         return _getObject<PublicActivity>(rs->intValue(0));
@@ -363,7 +363,7 @@ auto Database::tryLogin(
     stat->setStringParameter(0, login);
     stat->setStringParameter(1, passwordHash);
     std::unique_ptr<ResultSet> rs
-        { stat->executeQuery() };
+        { stat->executeQuery() };   //  may throw
     if (rs->next())
     {
         return _getObject<Account>(rs->intValue(0));
@@ -1336,7 +1336,7 @@ bool Database::_rootPublicTaskExists(const QString & displayName) const
             "   AND [completed] IS NOT NULL") };//  Task
     stat->setStringParameter(0, displayName);
     std::unique_ptr<ResultSet> rs
-        { stat->executeQuery() };
+        { stat->executeQuery() };   //  may throw
     return rs->next();  //  row exists ?
 }
 
@@ -1350,7 +1350,7 @@ bool Database::_workStreamExists(const QString & displayName) const
             "   AND [completed] IS NULL") };//  WorkStream
     stat->setStringParameter(0, displayName);
     std::unique_ptr<ResultSet> rs
-        { stat->executeQuery() };
+        { stat->executeQuery() };   //  may throw
     return rs->next();  //  row exists ?
 }
 
@@ -1365,7 +1365,20 @@ bool Database::_rootProjectExists(const QString & displayName) const
             "   AND [completed] IS NOT NULL") };//  Project
     stat->setStringParameter(0, displayName);
     std::unique_ptr<ResultSet> rs
-        { stat->executeQuery() };
+        { stat->executeQuery() };   //  may throw
+    return rs->next();  //  row exists ?
+}
+
+bool Database::_beneficiaryExists(const QString & displayName) const
+{
+    std::unique_ptr<Statement> stat
+    {   createStatement(
+            "SELECT [pk]"
+            "  FROM [beneficiaries]"
+            " WHERE [displayname] = ?") };//  WorkStream
+    stat->setStringParameter(0, displayName);
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };   //  may throw
     return rs->next();  //  row exists ?
 }
 
@@ -1396,7 +1409,7 @@ Workload * Database::_getWorkload(qint64 pk) const
             " WHERE [pk] = ?") };
     stat->setIntParameter(0, pk);
     std::unique_ptr<ResultSet> rs
-        { stat->executeQuery() };
+        { stat->executeQuery() };   //  may throw
     if (rs->next())
     {   //  Row exists
         auto type = tt3::util::Mnemonic(rs->stringValue("type"));
@@ -1442,7 +1455,7 @@ Activity * Database::_getActivity(qint64 pk) const
             " WHERE [pk] = ?") };
     stat->setIntParameter(0, pk);
     std::unique_ptr<ResultSet> rs
-        { stat->executeQuery() };
+        { stat->executeQuery() };   //  may throw
     if (rs->next())
     {   //  Row exists
         auto type = tt3::util::Mnemonic(rs->stringValue("type"));
