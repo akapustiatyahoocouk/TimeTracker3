@@ -329,19 +329,19 @@ ResultSet * Statement::executeQuery()
             return _database->executeSelect(_sql);  //  may thro)w
         case Category::Insert:
             count = _database->executeInsert(_sql);  //  may throw
-            //  TODO return an artificial ResultSet
+            //  Return an artificial ResultSet
             //  with a single row and COUNT column
-            throw tt3::util::NotImplementedError();
+            return new CountResultSet(count);
         case Category::Update:
             count = _database->executeUpdate(_sql);  //  may throw
-            //  TODO return an artificial ResultSet
+            //  Return an artificial ResultSet
             //  with a single row and COUNT column
-            throw tt3::util::NotImplementedError();
+            return new CountResultSet(count);
         case Category::Delete:
             count = _database->executeDelete(_sql);  //  may throw
-            //  TODO return an artificial ResultSet
+            //  Return an artificial ResultSet
             //  with a single row and COUNT column
-            throw tt3::util::NotImplementedError();
+            return new CountResultSet(count);
         case Category::Other:
         default:    //  ...to shut up the compiler;
             _database->execute(_sql);   //  may throw

@@ -155,11 +155,12 @@ CREATE TABLE [beneficiaries] (
 );
 
 CREATE TABLE [workload_beneficiaries] (
-    [fk_workload]       INTEGER NOT NULL,
+    [fk_workload]       INTEn
+    GER NOT NULL,
     [fk_beneficiary]    INTEGER NOT NULL,
     PRIMARY KEY([fk_workload],[fk_beneficiary]),
-    FOREIGN KEY([fk_workload]) REFERENCES [users]([pk]) ON DELETE CASCADE,
-    FOREIGN KEY([fk_beneficiary]) REFERENCES [workloads]([pk]) ON DELETE CASCADE
+    FOREIGN KEY([fk_workload]) REFERENCES [workloads]([pk]) ON DELETE CASCADE,
+    FOREIGN KEY([fk_beneficiary]) REFERENCES [beneficiaries]([pk]) ON DELETE CASCADE
 );
 CREATE INDEX [idx_workload_beneficiaries_workload] ON [workload_beneficiaries] ([fk_workload]);
 CREATE INDEX [idx_workload_beneficiaries_beneficiary] ON [workload_beneficiaries] ([fk_beneficiary]);

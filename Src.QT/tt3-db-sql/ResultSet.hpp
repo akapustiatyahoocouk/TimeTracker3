@@ -26,6 +26,7 @@ namespace tt3::db::sql
         //////////
         //  Types
     public:
+        /// \brief Brings a type into scope for code readability
         using Oid = tt3::db::api::Oid;
 
         //////////
@@ -63,6 +64,53 @@ namespace tt3::db::sql
         virtual auto    timeSpanValue(const QString & columnName, const tt3::util::TimeSpan & defaultValue = tt3::util::TimeSpan::Invalid) const -> tt3::util::TimeSpan = 0;
         virtual Oid     oidValue(int columnIndex, const Oid & defaultValue = Oid::Invalid) const = 0;
         virtual Oid     oidValue(const QString & columnName, const Oid & defaultValue = Oid::Invalid) const = 0;
+    };
+
+    /// \class CountResultSet tt3-db-sql/API.hpp
+    /// \brief The result set containing a single row with a single COUNT column.
+    class TT3_DB_SQL_PUBLIC CountResultSet : public ResultSet
+    {
+        TT3_CANNOT_ASSIGN_OR_COPY_CONSTRUCT(CountResultSet)
+
+        //////////
+        //  Constants
+    public:
+        /// \brief
+        ///     The name of the artificial row containing the count
+        ///     of the rows affected by INSERT/UPDATE/DELETE.
+        inline static const QString CountColumnName = "COUNT";
+
+        //////////
+        //  Construction/destruction
+    public:
+        explicit CountResultSet(qint64 count);
+        virtual ~CountResultSet();
+
+        //////////
+        //  ResultSet
+    public:
+        virtual qint64  size() const override;
+        virtual bool    next() override;
+        virtual bool    isNull(int columnIndex) const override;
+        virtual bool    isNull(const QString & columnName) const override;
+        virtual bool    boolValue(int columnIndex, bool defaultValue = false) const override;
+        virtual bool    boolValue(const QString & columnName, bool defaultValue = false) const override;
+        virtual qint64  intValue(int columnIndex, qint64 defaultValue = 0) const override;
+        virtual qint64  intValue(const QString & columnName, qint64 defaultValue = 0) const override;
+        virtual QString stringValue(int columnIndex, const QString & defaultValue = "") const override;
+        virtual QString stringValue(const QString & columnName, const QString & defaultValue = "") const override;
+        virtual auto    timeSpanValue(int columnIndex, const tt3::util::TimeSpan & defaultValue = tt3::util::TimeSpan::Invalid) const -> tt3::util::TimeSpan override;
+        virtual auto    timeSpanValue(const QString & columnName, const tt3::util::TimeSpan & defaultValue = tt3::util::TimeSpan::Invalid) const -> tt3::util::TimeSpan override;
+        virtual Oid     oidValue(int columnIndex, const Oid & defaultValue = Oid::Invalid) const override;
+        virtual Oid     oidValue(const QString & columnName, const Oid & defaultValue = Oid::Invalid) const override;
+
+        //////////
+        //  Implementation
+    private:
+        const qint64    _count;
+
+        //  -1 == before COUNT row, 0 == COUNT row, 1 == finished
+        int             _currentRow;
     };
 }
 

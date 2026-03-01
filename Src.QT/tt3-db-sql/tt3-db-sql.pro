@@ -9,6 +9,7 @@ SOURCES += \
     ActivityType.cpp \
     Beneficiary.cpp \
     Component.cpp \
+    CountResultSet.cpp \
     Database.cpp \
     Event.cpp \
     Object.cpp \

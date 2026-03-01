@@ -332,8 +332,22 @@ auto Database::workStreams(
 auto Database::beneficiaries(
     ) const -> tt3::db::api::Beneficiaries
 {
-    //  TODO implement and TODO cache PKs
-    return tt3::db::api::Beneficiaries();
+    tt3::util::Lock _(guard);
+    ensureOpen();
+
+    //  TODO cache PKs
+    std::unique_ptr<Statement> stat
+    {   createStatement(
+            "SELECT [pk]"
+            "  FROM [beneficiaries]") };
+    std::unique_ptr<ResultSet> rs
+        { stat->executeQuery() };   //  may throw
+    tt3::db::api::Beneficiaries result;
+    while (rs->next())
+    {
+        result.insert(_getObject<Beneficiary>(rs->intValue(0)));
+    }
+    return result;
 }
 
 //////////
@@ -1115,12 +1129,117 @@ auto Database::createWorkStream(
 }
 
 auto Database::createBeneficiary(
-        const QString & /*displayName*/,
-        const QString & /*description*/,
-        const tt3::db::api::Workloads & /*workloads*/
+        const QString & displayName,
+        const QString & description,
+        const tt3::db::api::Workloads & workloads
     ) -> tt3::db::api::IBeneficiary *
 {
-    throw tt3::util::NotImplementedError();
+    tt3::util::Lock _(guard);
+    ensureOpenAndWritable();   //  may throw
+
+    //  Validate parameters
+    if (!validator()->beneficiary()->isValidDisplayName(displayName))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Beneficiary::instance(),
+            "displayName",
+            displayName);
+    }
+    if (!validator()->beneficiary()->isValidDescription(description))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Beneficiary::instance(),
+            "description",
+            description);
+    }
+    if (workloads.contains(nullptr))
+    {
+        throw tt3::db::api::InvalidPropertyValueException(
+            tt3::db::api::ObjectTypes::Beneficiary::instance(),
+            "workloads",
+            nullptr);
+    }
+
+    Workloads sqlWorkloads =
+        tt3::util::transform(
+            workloads,
+            [&](auto w)
+            {
+                Q_ASSERT(w != nullptr); //  should have been caught earlier!
+                auto sqlWorkload = dynamic_cast<Workload*>(w);
+                if (sqlWorkload == nullptr ||
+                    sqlWorkload->_database != this ||
+                    !sqlWorkload->_isLive)
+                {   //  OOPS!
+                    throw tt3::db::api::IncompatibleInstanceException(w->type());
+                }
+                return sqlWorkload;
+            });
+
+    //  Display names must be unique
+    //  SQL "UNIQUE displayname" constraint would take care of
+    //  that, but try for a better (non-SQL) error message
+    if (_beneficiaryExists(displayName))
+    {   //  OOPS!
+        throw tt3::db::api::AlreadyExistsException(
+            tt3::db::api::ObjectTypes::Beneficiary::instance(),
+            "displayName",
+            displayName);
+    }
+
+    //  Begin transaction for the changes
+    Transaction transaction(this);  //  may throw
+
+    //  Do the work - create [objects] row..
+    _ObjIds objIds = _createObject(tt3::db::api::ObjectTypes::Beneficiary::instance()); //  may throw
+    //  ...then [worklooads] row...
+    std::unique_ptr<Statement> stat1
+    {   createStatement(
+            "INSERT INTO [beneficiaries]"
+            "       ([pk],[displayname],[description])"
+            "       VALUES(?,?,?)") };
+    stat1->setIntParameter(0, std::get<0>(objIds));
+    stat1->setStringParameter(1, displayName);
+    description.isEmpty() ?
+        stat1->setNullParameter(2) :
+        stat1->setStringParameter(2, description);
+    stat1->execute();    //  may throw
+
+    //  Link the newly created Beneficiary with Workloads
+    for (auto sqlWorkload : sqlWorkloads)
+    {
+        std::unique_ptr<Statement> stat2
+        {   createStatement(
+                "INSERT INTO [workload_beneficiaries]"
+                "       ([fk_workload],[fk_beneficiary])"
+                "       VALUES(?,?)") };
+        stat2->setIntParameter(0, sqlWorkload->_pk);
+        stat2->setIntParameter(1, std::get<0>(objIds));
+        stat2->execute();    //  may throw
+        //  Schedule change notification doe Workload
+        _changeNotifier.post(
+            new tt3::db::api::ObjectCreatedNotification(
+                this, sqlWorkload->type(), sqlWorkload->_oid));
+        //  TODO post change notification to the database
+    }
+
+    //  We're done with the changes
+    transaction.commit();   //  may throw
+
+    //  Create the Beneficiary object...
+    Beneficiary * beneficiary = new Beneficiary(this, std::get<0>(objIds));
+    //  ...setting its cached properties to initial values
+    beneficiary->_oid = std::get<1>(objIds);
+    beneficiary->_displayName = displayName;
+    beneficiary->_description = description;
+
+    //  ...schedule change notifications...
+    _changeNotifier.post(
+        new tt3::db::api::ObjectCreatedNotification(
+            this, beneficiary->type(), beneficiary->_oid));
+    //  TODO post change notification to the database
+    //  ...and we're done
+    return beneficiary;
 }
 
 //////////
